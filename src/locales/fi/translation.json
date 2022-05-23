@@ -1,0 +1,10 @@
+{
+  "homePage": {
+    "header": {
+      "title": "Digitaalinen väyläkortti"
+    },
+    "map": {
+      "content": "TODO: Kartta"
+    }
+  }
+}
