@@ -1,0 +1,7 @@
+{
+  "name": "DVK",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
