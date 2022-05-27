@@ -4,7 +4,25 @@
       "title": "Squat-laskenta"
     },
     "squat": {
-      "content": "TODO: Squat-laskenta"
+      "content": "TODO: Squat-laskenta",
+      "vessel": {
+        "search-ship-name": "Etsi alus...",
+        "bulker": "[fi] Bulker / Tanker",
+        "container": "[fi] Container",
+        "ferry": "[fi] Ferry",
+        "lng-tanker": "[fi] LNG Tanker"
+      },
+      "environment": {
+        "open-water": "Avovesipoikkileikkaus",
+        "sloped-channel": "Luiskapoikkileikkaus",
+        "channel": "Kanavapoikkileikkaus",
+        "open-water-description": "Avovesipoikkileikkaus",
+        "sloped-channel-description": "Ruopattu väylä tai kapeikko",
+        "channel-description": "Kanava tai hyvin kapea salmi"
+      },
+      "calculations": {
+        "title": "Laskelmat"
+      }
     }
   }
 }
