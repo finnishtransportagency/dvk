@@ -34,7 +34,7 @@ export const vesselProfiles = [
   { id: 1, name: "homePage.squat.vessel.bulker" },
   { id: 2, name: "homePage.squat.vessel.container" },
   { id: 3, name: "homePage.squat.vessel.ferry" },
-  { id: 4, name: "homePage.squat.vessel.lng-tanker" }
+  { id: 4, name: "homePage.squat.vessel.LNG-tanker" }
 ];
 export const fairwayForms = [
   { id: 1, name: "homePage.squat.environment.open-water", desc: "homePage.squat.environment.open-water-description", img: "assets/fairway-A.png" },

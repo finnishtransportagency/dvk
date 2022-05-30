@@ -26,54 +26,54 @@ const Environment: React.FC<ContainerProps> = () => {
   return (
     <IonCard>
       <IonCardHeader>
-        <IonCardSubtitle>Information about weather conditions etc.</IonCardSubtitle>
-        <IonCardTitle>Environment</IonCardTitle>
+        <IonCardSubtitle>{t("homePage.squat.environment.description")}</IonCardSubtitle>
+        <IonCardTitle>{t("homePage.squat.environment.title")}</IonCardTitle>
       </IonCardHeader>
 
       <IonCardContent>
         <IonAccordionGroup>
           <IonAccordion value="weather">
             <IonItem slot="header">
-              <IonLabel>Weather</IonLabel>
+              <IonLabel>{t("homePage.squat.environment.weather")}</IonLabel>
             </IonItem>
       
             <IonList slot="content">
               <IonItem>
-                <IonLabel position="stacked">Set Wind Speed (m/s)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-wind-speed")} (m/s)</IonLabel>
                 <IonRange min={0} max={35} pin={true} name="windSpeed" value={state.environment.weather.windSpeed} onIonChange={e => updateAction(e, 'environment-weather')} />
                 <IonText color="secondary">
                   <p>{state.environment.weather.windSpeed} m/s</p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set True Wind / Wave Direction (deg)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-true-wind-or-wave-direction")} (deg)</IonLabel>
                 <IonRange min={0} max={350} step={10} name="windDirection" pin={true} pinFormatter={degreeFormatter} value={state.environment.weather.windDirection} onIonChange={e => updateAction(e, 'environment-weather')} />
                 <IonText color="secondary">
                   <p>{state.environment.weather.windDirection}&deg;</p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set Wave Height (m)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-wave-height")} (m)</IonLabel>
                 <IonRange min={0.0} max={5.0} step={0.1} name="waveHeight" pin={true} pinFormatter={decimalFormatter} value={state.environment.weather.waveHeight} onIonChange={e => updateAction(e, 'environment-weather')} />
                 <IonText color="secondary">
-                  <p>{state.environment.weather.waveHeight.toFixed(1)} m</p>
+                  <p>{state.environment.weather.waveHeight.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 1})} m</p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set Wave Period (s)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-wave-period")} (s)</IonLabel>
                 <IonInput type="number" min="0" step="1" name="wavePeriod" value={state.environment.weather.wavePeriod? state.environment.weather.wavePeriod : null} onIonChange={e => updateAction(e, 'environment-weather')} />
               </IonItem>
               <IonItem>
                 <IonGrid>
                   <IonRow>
                     <IonCol size-sm="6">
-                      <IonLabel position="stacked">Wave Length (m)</IonLabel>
+                      <IonLabel position="stacked">{t("homePage.squat.environment.wave-length")} (m)</IonLabel>
                       <IonText>
                         <p>{(state.environment.weather.windSpeed * state.environment.weather.waveHeight).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
                       </IonText>
                     </IonCol>
                     <IonCol size-sm="6">
-                      <IonLabel position="stacked">Wave Amplitude (m)</IonLabel>
+                      <IonLabel position="stacked">{t("homePage.squat.environment.wave-amplitude")} (m)</IonLabel>
                       <IonText>
                         <p>{(state.environment.weather.waveHeight * state.vessel.general.blockCoefficient * 0.1).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
                       </IonText>
@@ -85,20 +85,20 @@ const Environment: React.FC<ContainerProps> = () => {
           </IonAccordion>
           <IonAccordion value="fairway">
             <IonItem slot="header">
-              <IonLabel>Fairway</IonLabel>
+              <IonLabel>{t("homePage.squat.environment.fairway")}</IonLabel>
             </IonItem>
 
             <IonList slot="content">
               <IonItem>
-                <IonLabel position="stacked">Swept Depth (m)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.swept-depth")} (m)</IonLabel>
                 <IonInput type="number" min="0" step="0.1" name="sweptDepth" value={state.environment.fairway.sweptDepth? state.environment.fairway.sweptDepth : null} placeholder={zero.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 1})} onIonChange={e => updateAction(e, 'environment-fairway')} />
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Water Level (m)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.water-level")} (m)</IonLabel>
                 <IonInput type="number" min="0" step="0.01" name="waterLevel" value={state.environment.fairway.waterLevel? state.environment.fairway.waterLevel : null} placeholder={zero.toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} onIonChange={e => updateAction(e, 'environment-fairway')} />
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Form of Fairway</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.form-of-fairway")}</IonLabel>
                 <IonSelect value={state.environment.fairway.fairwayForm} name="fairwayForm" onIonChange={e => updateAction(e, 'environment-fairway')}>
                   {fairwayForms.map((fairway) => (
                     <IonSelectOption key={fairway.id} value={fairway}>{t(fairway.name)}</IonSelectOption>
@@ -110,7 +110,7 @@ const Environment: React.FC<ContainerProps> = () => {
                   <IonRow className="ion-justify-content-between ion-align-items-center">
                     <IonCol>
                       <IonItem>
-                        <IonLabel position="stacked">Channel Width (m)</IonLabel>
+                        <IonLabel position="stacked">{t("homePage.squat.environment.channel-width")} (m)</IonLabel>
                         <IonInput type="number" min="0" name="channelWidth" value={state.environment.fairway.channelWidth} placeholder="0" onIonChange={e => updateAction(e, 'environment-fairway')} />
                       </IonItem>
                     </IonCol>
@@ -140,13 +140,13 @@ const Environment: React.FC<ContainerProps> = () => {
                   <IonRow>
                     <IonCol size-lg="6">
                       <IonItem>
-                        <IonLabel position="stacked">Scale of Slope</IonLabel>
+                        <IonLabel position="stacked">{t("homePage.squat.environment.scale-of-slope")}</IonLabel>
                         <IonInput type="number" min="0" name="slopeScale" value={state.environment.fairway.slopeScale} placeholder="0" onIonChange={e => updateAction(e, 'environment-fairway')} />
                       </IonItem>
                     </IonCol>
                     <IonCol size-lg="6">
                       <IonItem>
-                        <IonLabel position="stacked">Height of Slope (m)</IonLabel>
+                        <IonLabel position="stacked">{t("homePage.squat.environment.height-of-slope")} (m)</IonLabel>
                         <IonInput type="number" min="0" name="slopeHeight" value={state.environment.fairway.slopeHeight} placeholder="0" onIonChange={e => updateAction(e, 'environment-fairway')} />
                       </IonItem>
                     </IonCol>
@@ -157,59 +157,59 @@ const Environment: React.FC<ContainerProps> = () => {
           </IonAccordion>
           <IonAccordion value="vessel">
             <IonItem slot="header">
-              <IonLabel>Vessel</IonLabel>
+              <IonLabel>{t("homePage.squat.environment.vessel")}</IonLabel>
             </IonItem>
       
             <IonList slot="content">
               <IonItem>
-                <IonLabel position="stacked">Set Vessel Course (deg)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-vessel-course")} (deg)</IonLabel>
                 <IonRange min={0} max={350} step={10} name="vesselCourse" pin={true} pinFormatter={degreeFormatter} value={state.environment.vessel.vesselCourse} onIonChange={e => updateAction(e, 'environment-vessel')}></IonRange>
                 <IonText color="secondary">
                   <p>{state.environment.vessel.vesselCourse}&deg;</p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set Vessel Speed (kts)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-vessel-speed")} (kts)</IonLabel>
                 <IonRange min={0} max={35} name="vesselSpeed" pin={true} value={state.environment.vessel.vesselSpeed} onIonChange={e => updateAction(e, 'environment-vessel')}></IonRange>
                 <IonText color="secondary">
                   <p>{state.environment.vessel.vesselSpeed} kts</p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set Turning Radius (nm)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-turning-radius")} (nm)</IonLabel>
                 <IonRange min={0.1} max={2.0} step={0.05} name="turningRadius" pin={true} pinFormatter={decimalFormatter} value={state.environment.vessel.turningRadius} onIonChange={e => updateAction(e, 'environment-vessel')}></IonRange>
                 <IonText color="secondary">
-                  <p>{state.environment.vessel.turningRadius.toFixed(2)} nm</p>
+                  <p>{state.environment.vessel.turningRadius.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 2})} nm</p>
                 </IonText>
               </IonItem>
             </IonList>
           </IonAccordion>
           <IonAccordion value="attribute">
             <IonItem slot="header">
-              <IonLabel>Attribute</IonLabel>
+              <IonLabel>{t("homePage.squat.environment.attribute")}</IonLabel>
             </IonItem>
       
             <IonList slot="content">
               <IonItem>
-                <IonLabel position="stacked">Set Density of Air (kg/m<sup>3</sup>)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-density-of-air")} (kg/m<sup>3</sup>)</IonLabel>
                 <IonRange min={1} max={1.5} step={0.1} name="airDensity" pin={true} ticks={true} snaps={true} pinFormatter={decimalFormatter} value={state.environment.attribute.airDensity} onIonChange={e => updateAction(e, 'environment-attribute')} />
                 <IonText color="secondary">
                   <p>{state.environment.attribute.airDensity} kg/m<sup>3</sup></p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Set Density of Water (kg/m<sup>3</sup>)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.set-density-of-water")} (kg/m<sup>3</sup>)</IonLabel>
                 <IonRange min={1000} max={1025} name="waterDensity" pin={true} value={state.environment.attribute.waterDensity} onIonChange={e => updateAction(e, 'environment-attribute')} />
                 <IonText color="secondary">
                   <p>{state.environment.attribute.waterDensity} kg/m<sup>3</sup></p>
                 </IonText>
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Required UKC (m)</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.required-UKC")} (m)</IonLabel>
                 <IonInput type="number" min="0" step="0.01" name="requiredUKC" placeholder={zero.toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} value={state.environment.attribute.requiredUKC} onIonChange={e => updateAction(e, 'environment-attribute')} />
               </IonItem>
               <IonItem>
-                <IonLabel position="stacked">Safety Margin Wind Force</IonLabel>
+                <IonLabel position="stacked">{t("homePage.squat.environment.safety-margin-wind-force")}</IonLabel>
                 <IonRange min={0} max={25} step={1} name="safetyMarginWindForce" pin={true} pinFormatter={percentFormatter} value={state.environment.attribute.safetyMarginWindForce} onIonChange={e => updateAction(e, 'environment-attribute')} />
                 <IonText color="secondary">
                   <p>{state.environment.attribute.safetyMarginWindForce} %</p>
