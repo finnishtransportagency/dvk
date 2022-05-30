@@ -1,6 +1,6 @@
-// Common interfaces
+// Common types
 
-interface Vessel {
+type Vessel = {
   id: number;
   name: string;
   lengthBPP: number;
@@ -8,12 +8,12 @@ interface Vessel {
   depth: number;
 };
 
-interface VesselProfile {
+type VesselProfile = {
   id: number;
   name: string;
 };
 
-interface FairwayForm {
+type FairwayForm = {
   id: number;
   name: string;
   desc: string;
@@ -180,7 +180,7 @@ export const SquatReducer = (state: State, action: Action) => {
     case 'reset':
       return initialState;
     default:
-      //throw new Error(`Unknown action type: ${action}`);
+      console.warn(`Unknown action type, state not updated.`);
       return state;
   }
 };
