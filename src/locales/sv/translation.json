@@ -1,10 +1,10 @@
 {
   "homePage": {
     "header": {
-      "title": "[sv] Digitaalinen väyläkortti"
+      "title": "[sv] Digital farledskort"
     },
     "map": {
-      "content": "[sv] TODO: Kartta"
+      "content": "[sv] TODO: Karta"
     }
   }
 }
