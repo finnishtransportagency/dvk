@@ -25,11 +25,21 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
+
   return (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/">
+            <Home />
+          </Route>
+          <Route exact path="/fi/">
+            <Home />
+          </Route>
+          <Route exact path="/sv/">
+            <Home />
+          </Route>
+          <Route exact path="/en/">
             <Home />
           </Route>
         </IonRouterOutlet>
