@@ -2,6 +2,7 @@ import React from 'react';
 import './Squat.css';
 import { useTranslation } from "react-i18next";
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
+import { PinFormatter } from '@ionic/core';
 import i18n from '../i18n';
 
 import Calculations from './Calculations';
@@ -11,9 +12,9 @@ import Environment from './Environment';
 interface ContainerProps { }
 
 // Initialize common formatters
-export const percentFormatter = (value: number) => `${value}%`;
-export const degreeFormatter = (value: number) => `${value}°`;
-export const decimalFormatter = (value: number) => `${value.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 2})}`;
+export const percentFormatter: PinFormatter = (value: number) => `${value}%`;
+export const degreeFormatter: PinFormatter = (value: number) => `${value}°`;
+export const decimalFormatter: PinFormatter = (value: number) => `${value.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 2})}`;
 
 const Squat: React.FC<ContainerProps> = () => {
   const { t } = useTranslation();
