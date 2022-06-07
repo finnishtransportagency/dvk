@@ -48,7 +48,7 @@ export class SquatPipeline extends Construct {
         },
         phases: {
           install: {
-            commands: ["echo update npm", "node -v", "npm -v"],
+            commands: ["echo Show node versions", "node -v", "npm -v"],
             "runtime-versions": {
               nodejs: "14.x",
             },
@@ -58,8 +58,8 @@ export class SquatPipeline extends Construct {
           },
         },
         artifacts: {
-          "base-directory": "squat",
-          files: "build/*",
+          "base-directory": "squat/build",
+          files: "**/*",
         },
       }),
     });

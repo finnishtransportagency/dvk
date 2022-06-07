@@ -49,6 +49,13 @@ export class SquatSite extends Construct {
     //const certificate = acm.Certificate.fromCertificateArn(this, "certificate", props.cloudfrontCertificateArn),
     // new CfnOutput(this, "Certificate", { value: certificate.certificateArn });
 
+    // Sallitaan query stringit kieliversioiden bookmarkkaamista ajatelleen
+    const requestPolicy = new cloudfront.OriginRequestPolicy(this, "SiteRequestPolicy", {
+      originRequestPolicyName: "SquatPolicy",
+      comment: "Allow query strings",
+      queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
+    });
+
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, "SiteDistribution", {
       //certificate: certificate,
@@ -68,6 +75,7 @@ export class SquatSite extends Construct {
         compress: true,
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        originRequestPolicy: requestPolicy,
       },
     });
 
@@ -77,12 +85,5 @@ export class SquatSite extends Construct {
       exportName: "SquatDistribution",
     }); //TODO: exportName ympariston mukaan
 
-    // Deploy site contents to S3 bucket
-    new s3deploy.BucketDeployment(this, "DeployWithInvalidation", {
-      sources: [s3deploy.Source.asset("../build")],
-      destinationBucket: siteBucket,
-      distribution,
-      distributionPaths: ["/*"],
-    });
   }
 }
