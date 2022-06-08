@@ -100,7 +100,7 @@ export class SquatPipeline extends Construct {
 
     // Add Cloudfront invalidation permissions to the project
     const distributionArn = `arn:aws:cloudfront::${account}:distribution/${importedDistributionId}`;
-    console.log("distribution ARN: ", distributionArn);
+
     invalidateBuildProject.addToRolePolicy(
       new iam.PolicyStatement({
         resources: [distributionArn],
