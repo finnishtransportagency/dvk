@@ -54,7 +54,7 @@ export class SquatPipeline extends Construct {
             },
           },
           build: {
-            commands: ["echo build squat app", "cd squat", "npm install", "npm run build"],
+            commands: ["echo build squat app", "cd squat", "npm ci", "npm run build"],
           },
         },
         artifacts: {
