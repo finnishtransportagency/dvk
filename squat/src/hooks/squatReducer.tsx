@@ -59,7 +59,7 @@ export type State = {
       deckCargo: number;
       bowThruster: number;
       bowThrusterEfficiency: number;
-      profileSelected: VesselProfile|null;
+      profileSelected: VesselProfile;
     },
     stability: {
       KG: number;
@@ -77,7 +77,7 @@ export type State = {
     fairway: {
       sweptDepth: number;
       waterLevel: number;
-      fairwayForm: FairwayForm|null;
+      fairwayForm: FairwayForm;
       channelWidth: number;
       slopeScale: number;
       slopeHeight: number;
@@ -121,7 +121,7 @@ export const initialState = {
       windSurface: 0,
       deckCargo: 0,
       bowThruster: 0,
-      bowThrusterEfficiency: 100,
+      bowThrusterEfficiency: 1,
       profileSelected: vesselProfiles[0]
     },
     stability: {
@@ -154,7 +154,7 @@ export const initialState = {
       airDensity: 1.3,
       waterDensity: 1005,
       requiredUKC: 0.5,
-      safetyMarginWindForce: 25
+      safetyMarginWindForce: 0.25
     }
   }
 };

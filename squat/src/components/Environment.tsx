@@ -49,7 +49,7 @@ const Environment: React.FC<ContainerProps> = () => {
                 <IonLabel position="stacked">{t("homePage.squat.environment.set-true-wind-or-wave-direction")} (deg)</IonLabel>
                 <IonRange min={0} max={350} step={10} name="windDirection" pin={true} pinFormatter={degreeFormatter} value={state.environment.weather.windDirection} onIonChange={e => updateAction(e, 'environment-weather')} />
                 <IonText color="secondary">
-                  <p>{state.environment.weather.windDirection}&deg;</p>
+                  <p>{state.environment.weather.windDirection.toString().padStart(3, '0')}</p>
                 </IonText>
               </IonItem>
               <IonItem>
@@ -165,7 +165,7 @@ const Environment: React.FC<ContainerProps> = () => {
                 <IonLabel position="stacked">{t("homePage.squat.environment.set-vessel-course")} (deg)</IonLabel>
                 <IonRange min={0} max={350} step={10} name="vesselCourse" pin={true} pinFormatter={degreeFormatter} value={state.environment.vessel.vesselCourse} onIonChange={e => updateAction(e, 'environment-vessel')}></IonRange>
                 <IonText color="secondary">
-                  <p>{state.environment.vessel.vesselCourse}&deg;</p>
+                  <p>{state.environment.vessel.vesselCourse.toString().padStart(3, '0')}</p>
                 </IonText>
               </IonItem>
               <IonItem>
@@ -210,9 +210,9 @@ const Environment: React.FC<ContainerProps> = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">{t("homePage.squat.environment.safety-margin-wind-force")}</IonLabel>
-                <IonRange min={0} max={25} step={1} name="safetyMarginWindForce" pin={true} pinFormatter={percentFormatter} value={state.environment.attribute.safetyMarginWindForce} onIonChange={e => updateAction(e, 'environment-attribute')} />
+                <IonRange min={0} max={0.25} step={0.01} name="safetyMarginWindForce" pin={true} pinFormatter={percentFormatter} value={state.environment.attribute.safetyMarginWindForce} onIonChange={e => updateAction(e, 'environment-attribute')} />
                 <IonText color="secondary">
-                  <p>{state.environment.attribute.safetyMarginWindForce} %</p>
+                  <p>{state.environment.attribute.safetyMarginWindForce * 100} %</p>
                 </IonText>
               </IonItem>
             </IonList>

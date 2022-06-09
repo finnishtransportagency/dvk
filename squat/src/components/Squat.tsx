@@ -12,8 +12,8 @@ import Environment from './Environment';
 interface ContainerProps { }
 
 // Initialize common formatters
-export const percentFormatter: PinFormatter = (value: number) => `${value}%`;
-export const degreeFormatter: PinFormatter = (value: number) => `${value}°`;
+export const percentFormatter: PinFormatter = (value: number) => `${value * 100}%`;
+export const degreeFormatter: PinFormatter = (value: number) => `${value.toString().padStart(3, '0')}`;
 export const decimalFormatter: PinFormatter = (value: number) => `${value.toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 2})}`;
 
 const Squat: React.FC<ContainerProps> = () => {

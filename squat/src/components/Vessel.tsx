@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from "react-i18next";
 import { IonText, IonList, IonItem, IonInput, IonLabel, IonAccordionGroup, IonAccordion, IonRange, IonSelect, IonSelectOption,
@@ -15,6 +15,20 @@ const zero: number = 0;
 const Vessel: React.FC<ContainerProps> = () => {
   const { t, i18n } = useTranslation();
   const { state, dispatch } = useSquatContext();
+
+  useEffect(() => {
+    dispatch({
+      type: 'vessel-general',
+      payload: { key: "displacement", value: Math.round(state.vessel.general.lengthBPP * state.vessel.general.breadth * state.vessel.general.draught * state.vessel.general.blockCoefficient * state.environment.attribute.waterDensity / 1000).toString() },
+    });
+  }, [state.vessel.general.lengthBPP, state.vessel.general.breadth, state.vessel.general.draught, state.vessel.general.blockCoefficient, state.environment.attribute.waterDensity]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'vessel-stability',
+      payload: { key: "KB", value: (state.vessel.general.draught / 2).toFixed(2).toString() },
+    });
+  }, [state.vessel.general.draught]);
 
   const updateAction = (event: CustomEvent, actionType: 'vessel-select' | 'vessel-general' | 'vessel-detailed' | 'vessel-stability') => {
     dispatch({
@@ -96,9 +110,9 @@ const Vessel: React.FC<ContainerProps> = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">{t("homePage.squat.vessel.bow-thruster-efficiency")}</IonLabel>
-                <IonRange min={0} max={100} step={25} name="bowThrusterEfficiency" snaps={true} pinFormatter={percentFormatter} pin={true} value={state.vessel.detailed.bowThrusterEfficiency} onIonChange={e => updateAction(e, 'vessel-detailed')} />
+                <IonRange min={0} max={1} step={0.25} name="bowThrusterEfficiency" snaps={true} pinFormatter={percentFormatter} pin={true} value={state.vessel.detailed.bowThrusterEfficiency} onIonChange={e => updateAction(e, 'vessel-detailed')} />
                 <IonText color="secondary">
-                  <p>{state.vessel.detailed.bowThrusterEfficiency} %</p>
+                  <p>{state.vessel.detailed.bowThrusterEfficiency * 100} %</p>
                 </IonText>
               </IonItem>
               <IonItem>
@@ -127,7 +141,7 @@ const Vessel: React.FC<ContainerProps> = () => {
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">{t("homePage.squat.vessel.KB")}</IonLabel>
-                <IonInput type="number" min="0" name="KB" value={state.vessel.stability.KB} placeholder="0" onIonChange={e => updateAction(e, 'vessel-stability')} />
+                <IonInput type="number" min="0" step="0.01" name="KB" value={state.vessel.stability.KB? state.vessel.stability.KB : null} placeholder={zero.toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} onIonChange={e => updateAction(e, 'vessel-stability')} />
               </IonItem>
             </IonList>
           </IonAccordion>
