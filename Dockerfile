@@ -1,6 +1,5 @@
 FROM node:16-alpine
-USER node
-
 ENV WORK /opt/dvk
 WORKDIR ${WORK}
-RUN mkdir -p ${WORK}
+RUN mkdir -p ${WORK} && chown node:node ${WORK}
+USER node
