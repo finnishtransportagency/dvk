@@ -25,7 +25,7 @@ export class SquatPipeline extends Construct {
       repo: "dvk",
       oauthToken: SecretValue.secretsManager("dev/dvk/github"),
       output: sourceOutput,
-      branch: "main", //TODO: valita github webhook lambdalta event tiedot?
+      branch: "main", //TODO: valitaan github webhook lambdalta event tiedot?
     });
 
     const sourceStage = pipeline.addStage({
@@ -78,7 +78,7 @@ export class SquatPipeline extends Construct {
       ],
     });
 
-    const importedDistributionId = cdk.Fn.importValue("SquatDistribution"); //TODO: imoprt ympariston mukaan
+    const importedDistributionId = cdk.Fn.importValue("SquatDistribution" + props.env);
 
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, "InvalidateProject", {
@@ -108,7 +108,7 @@ export class SquatPipeline extends Construct {
       })
     );
 
-    const importedBucketValue = cdk.Fn.importValue("SquatBucket"); //TODO: import bucketin nimi ympariston mukaan
+    const importedBucketValue = cdk.Fn.importValue("SquatBucket" + props.env);
 
     const deployStage = pipeline.addStage({
       stageName: "Deploy",

@@ -1,7 +1,6 @@
 import { Construct } from "constructs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
-import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import * as cloudfront_origins from "aws-cdk-lib/aws-cloudfront-origins";
 import { CfnOutput, Duration, Stack } from "aws-cdk-lib";
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -10,6 +9,7 @@ interface SquatSiteProps {
   domainName: string;
   siteSubDomain: string;
   cloudfrontCertificateArn?: string;
+  env: string;
 }
 
 export class SquatSite extends Construct {
@@ -18,7 +18,7 @@ export class SquatSite extends Construct {
 
     const siteDomain = props.siteSubDomain + "." + props.domainName;
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, "cloudfront-OAI", {
-      comment: `OAI for ${id}`,
+      comment: `OAI for ${id}-${props.env}`,
     });
 
     new CfnOutput(this, "Site", { value: "https://" + siteDomain });
@@ -41,8 +41,8 @@ export class SquatSite extends Construct {
     new CfnOutput(this, "Bucket", {
       value: siteBucket.bucketName,
       description: "The name of Squat app S3",
-      exportName: "SquatBucket",
-    }); //TODO: exportName ympariston mukaan
+      exportName: "SquatBucket" + props.env,
+    });
 
     // TLS certificate
     //TODO kun saatu vaylapilvelta sertifikaatti:
@@ -51,7 +51,7 @@ export class SquatSite extends Construct {
 
     // Sallitaan query stringit kieliversioiden bookmarkkaamista ajatelleen
     const requestPolicy = new cloudfront.OriginRequestPolicy(this, "SiteRequestPolicy", {
-      originRequestPolicyName: "SquatPolicy",
+      originRequestPolicyName: "SquatPolicy" + props.env,
       comment: "Allow query strings",
       queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
     });
@@ -82,8 +82,7 @@ export class SquatSite extends Construct {
     new CfnOutput(this, "DistributionId", {
       value: distribution.distributionId,
       description: "Squat distribution name",
-      exportName: "SquatDistribution",
-    }); //TODO: exportName ympariston mukaan
-
+      exportName: "SquatDistribution" + props.env,
+    });
   }
 }
