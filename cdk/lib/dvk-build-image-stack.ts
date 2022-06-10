@@ -44,19 +44,6 @@ export class DvkBuildImageStack extends Stack {
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: [
-          /*"logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "s3:PutObject",
-          "s3:GetObject",
-          "s3:GetObjectVersion",
-          "s3:GetBucketAcl",
-          "s3:GetBucketLocation",
-          "codebuild:CreateReportGroup",
-          "codebuild:CreateReport",
-          "codebuild:UpdateReport",
-          "codebuild:BatchPutTestCases",
-          "codebuild:BatchPutCodeCoverages",*/
           "ecr:BatchCheckLayerAvailability",
           "ecr:CompleteLayerUpload",
           "ecr:GetAuthorizationToken",
