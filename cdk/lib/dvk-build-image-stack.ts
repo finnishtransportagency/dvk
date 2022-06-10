@@ -10,6 +10,10 @@ import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 export class DvkBuildImageStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
+    const imageRepoName = 'dvk-buildimage'
+    new cdk.aws_ecr.Repository(this, "BuildImageRepository", {
+      repositoryName: imageRepoName
+    });
     const pipeline = new codepipeline.Pipeline(this, "BuildImagePipeline", {
       crossAccountKeys: false,
     });
@@ -37,7 +41,7 @@ export class DvkBuildImageStack extends Stack {
       environmentVariables: {
         "AWS_DEFAULT_REGION": { value: "eu-west-1" },
         "AWS_ACCOUNT_ID": { value: account },
-        "IMAGE_REPO_NAME": { value: "dvk-buildimage" },
+        "IMAGE_REPO_NAME": { value: imageRepoName },
         "IMAGE_TAG": { value: "1.0.0" },
       },
       buildSpec: codebuild.BuildSpec.fromSourceFilename("./cdk/lib/image-buildspec.yml"),

@@ -7,6 +7,7 @@ const app = new cdk.App();
 new DvkBuildImageStack(app, 'DvkBuildImageStack', {
   env: { 
     account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION },
-    stackName: 'DvkBuildImageStack',
+    region: process.env.CDK_DEFAULT_REGION 
+  },
+  stackName: 'DvkBuildImageStack',
 });
