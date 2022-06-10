@@ -28,7 +28,7 @@ export class DvkBuildImageStack extends Stack {
       stageName: "Source",
       actions: [sourceAction],
     });
-
+    const account = cdk.Stack.of(this).account;
     const buildProject = new codebuild.PipelineProject(this, "ImageBuild", {
       environment: {
         buildImage: LinuxBuildImage.STANDARD_5_0,
@@ -36,7 +36,7 @@ export class DvkBuildImageStack extends Stack {
       },
       environmentVariables: {
         "AWS_DEFAULT_REGION": { value: "eu-west-1" },
-        "AWS_ACCOUNT_ID": { value: "012525309247" },
+        "AWS_ACCOUNT_ID": { value: account },
         "IMAGE_REPO_NAME": { value: "dvk-buildimage" },
         "IMAGE_TAG": { value: "1.0.0" },
       },
