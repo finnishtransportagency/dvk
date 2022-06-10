@@ -10,7 +10,7 @@ import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 export class DvkBuildImageStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-    const imageRepoName = 'dvk-buildimage'
+    const imageRepoName = "dvk-buildimage"
     new cdk.aws_ecr.Repository(this, "BuildImageRepository", {
       repositoryName: imageRepoName
     });
