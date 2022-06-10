@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { SecretValue, Stack } from "aws-cdk-lib";
+import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
 import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -26,7 +26,7 @@ export class SquatPipeline extends Construct {
       repo: "dvk",
       oauthToken: SecretValue.secretsManager("dev/dvk/github"),
       output: sourceOutput,
-      branch: "main", //TODO: valitaan github webhook lambdalta event tiedot?
+      branch: this.getBranch(props.env),
     });
 
     const sourceStage = pipeline.addStage({
@@ -126,5 +126,22 @@ export class SquatPipeline extends Construct {
         }),
       ],
     });
+
+    new CfnOutput(this, "DistributionId", {
+      value: pipeline.pipelineName,
+      description: "Squat pipeline name",
+      exportName: "SquatPipeline" + props.env,
+    });
+  }
+
+  private getBranch(env: string): string {
+    switch (env) {
+      case "prod":
+        return "prod";
+      case "test":
+        return "test";
+      default:
+        return "main";
+    }
   }
 }
