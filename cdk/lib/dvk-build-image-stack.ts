@@ -5,6 +5,7 @@ import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 
 export class DvkBuildImageStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -20,6 +21,7 @@ export class DvkBuildImageStack extends Stack {
       oauthToken: SecretValue.secretsManager("dev/dvk/github"),
       output: sourceOutput,
       branch: "DVK-14",
+      trigger: GitHubTrigger.NONE,
     });
 
     pipeline.addStage({
