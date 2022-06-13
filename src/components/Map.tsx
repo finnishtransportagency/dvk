@@ -1,9 +1,7 @@
 import './Map.css';
 import { useTranslation } from 'react-i18next';
 
-interface ContainerProps { }
-
-const Map: React.FC<ContainerProps> = () => {
+const Map: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div>
