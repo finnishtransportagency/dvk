@@ -6,6 +6,7 @@ import * as iam from "aws-cdk-lib/aws-iam";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
+import { Repository } from "aws-cdk-lib/aws-ecr";
 interface SquatPipelineProps {
   env: string;
 }
@@ -34,10 +35,11 @@ export class SquatPipeline extends Construct {
     });
 
     // Create the build project for Squat app
-    // Tarvitsee STANDARD 5.0 Ubuntu OS, koska tarvitaan node > 14
     const squatBuildProject = new codebuild.PipelineProject(this, "SquatBuild", {
       environment: {
-        buildImage: LinuxBuildImage.STANDARD_5_0,
+        buildImage: LinuxBuildImage.fromEcrRepository(
+          Repository.fromRepositoryName(this, "DvkBuildImage", "dvk-buildimage"), "1.0.0"
+        ),
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: "0.2",
@@ -49,9 +51,6 @@ export class SquatPipeline extends Construct {
         phases: {
           install: {
             commands: ["echo Show node versions", "node -v", "npm -v"],
-            "runtime-versions": {
-              nodejs: "14.x",
-            },
           },
           build: {
             commands: ["echo build squat app", "cd squat", "npm ci", "npm run build"],
