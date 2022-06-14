@@ -127,10 +127,10 @@ export class SquatPipeline extends Construct {
       ],
     });
 
-    new CfnOutput(this, "DistributionId", {
+    new CfnOutput(this, "PipelineName", {
       value: pipeline.pipelineName,
       description: "Squat pipeline name",
-      exportName: "SquatPipeline" + props.env,
+      exportName: "SquatPipeline-" + props.env,
     });
   }
 

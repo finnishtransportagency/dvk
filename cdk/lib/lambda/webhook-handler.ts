@@ -5,6 +5,7 @@ const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
 
 const handler = async function (event: any, context: any) {
   //TODO: validoi github webhook pyynto kts. github headerit ja secret
+  console.log("validate signature:", event.headers);
 
   console.log(event);
   console.log(devPipelineSquat);
@@ -18,12 +19,16 @@ const handler = async function (event: any, context: any) {
     console.log(response.pipelines);
   } catch (error) {
     console.log(error);
+    return {
+      statusCode: 400,
+      body: `Cannot process event: ${error}`,
+    };
   }
 
   return {
     statusCode: 200,
     headers: {},
-    body: JSON.stringify("success"),
+    body: JSON.stringify({ received: true }),
   };
 };
 
