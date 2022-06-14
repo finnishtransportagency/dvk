@@ -47,7 +47,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "lint": "eslint --cache src/**.{ts,tsx}"
+    "lint": "eslint --cache --config .eslintrc.json --ext .js,.jsx,.ts,.tsx ."
   },
   "eslintConfig": {
     "extends": [
