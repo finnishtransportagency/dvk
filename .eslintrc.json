@@ -1,12 +1,20 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "node": true
     },
     "extends": [
+        "react-app",
         "eslint:recommended",
+        "airbnb-typescript",
+        "airbnb/hooks",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended",
         "prettier"
     ],
     "parser": "@typescript-eslint/parser",
@@ -15,7 +23,8 @@
             "jsx": true
         },
         "ecmaVersion": "latest",
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
         "react",
@@ -23,13 +32,21 @@
         "prettier"
     ],
     "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            }
+        },
         "react": {
             "version": "detect"
         }
     },
     "rules": {
-        "react/react-in-jsx-scope": "off",
-        "prettier/prettier": ["error"],
-        "@typescript-eslint/no-empty-function": "off"
+        "prettier/prettier": ["error"]
     }
 }
