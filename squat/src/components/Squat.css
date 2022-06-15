@@ -1,0 +1,13 @@
+ion-grid.danger {
+  background-color: rgb(255, 248, 251);
+  border: solid 1px rgb(255, 112, 166);
+  margin-bottom: 1em;
+}
+
+ion-grid.danger ion-icon {
+  color: rgb(239, 62, 129);
+}
+
+ion-grid.danger ion-text {
+  color: rgb(36, 34, 34);
+}
