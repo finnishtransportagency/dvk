@@ -73,6 +73,8 @@ export type State = {
       windDirection: number;
       waveHeight: number;
       wavePeriod: number;
+      waveLength: number[];
+      waveAmplitude: number[];
     },
     fairway: {
       sweptDepth: number;
@@ -102,7 +104,7 @@ export type Action =
         | 'environment-weather' | 'environment-fairway' | 'environment-vessel' | 'environment-attribute';
       payload: {
         key: string;
-        value: string;
+        value: string | number[];
       };
     }
   | { type: 'reset' };
@@ -135,7 +137,9 @@ export const initialState = {
       windSpeed: 0,
       windDirection: 90,
       waveHeight: 0,
-      wavePeriod: 0
+      wavePeriod: 0,
+      waveLength: [0, 0],
+      waveAmplitude: [0, 0]
     },
     fairway: {
       sweptDepth: 0,
