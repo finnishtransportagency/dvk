@@ -17,9 +17,9 @@ const i18n = use(initReactI18next).init({
       translation: translationEN,
     },
   },
-  lng: "fi",
-  fallbackLng: "fi",
-  preload: ["fi", "en", "sv"],
+  lng: 'fi',
+  fallbackLng: 'fi',
+  preload: ['fi', 'en', 'sv'],
   debug: true,
 
   interpolation: {

@@ -10,7 +10,7 @@ const Home: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle>{t('homePage.header.title')}</IonTitle>
-          <IonButtons slot='end'>
+          <IonButtons slot="end">
             <IonButton onClick={() => i18n.changeLanguage('fi')}>FI</IonButton>
             <IonButton onClick={() => i18n.changeLanguage('en')}>EN</IonButton>
             <IonButton onClick={() => i18n.changeLanguage('sv')}>SV</IonButton>
