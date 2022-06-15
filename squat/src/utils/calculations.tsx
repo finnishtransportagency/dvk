@@ -25,6 +25,10 @@ function nauticalMilesToMetres(x: number) {
   return x * 1852;
 }
 
+export function knotsToMetresPerSecond(x: number) {
+  return x * 1.852 / 3.6;
+}
+
 // Squat calculations
 
 // 1. Vessel
@@ -37,14 +41,14 @@ export function calculateKB(draught: number) {
 }
 
 // 2. Environment
-
-// 3. Wind, drift & squat calculations
-export function calculateVesselSpeedMS(vesselSpeed: number) {
-  return vesselSpeed * 1.852 / 3.6;
+export function calculateFroudeNumber(vesselSpeed: number, sweptDepth: number, waterLevel: number) {
+  // Froude_Nro_HG_Cal | (Set_Vessel_Speed*1852/3600)/(Sqrt(9.81*(Swept_Depth+Water_Level)))
+  return knotsToMetresPerSecond(vesselSpeed) / Math.sqrt(GRAVITATIONAL_ACCELERATION * (Number(sweptDepth) + Number(waterLevel)));
 }
 
+// 3. Wind, drift & squat calculations
 export function calculateApparentWindProperties(vesselSpeed: number, vesselCourse: number, windSpeed: number, windDirection: number) {
-  var vesselSpeedMS = calculateVesselSpeedMS(vesselSpeed);
+  var vesselSpeedMS = knotsToMetresPerSecond(vesselSpeed);
   var angleDiff = vesselCourse - windDirection;
   var windAngleDriftRAD = toRad(Math.abs(angleDiff));
   if (Math.abs(angleDiff) > 180) {
@@ -149,7 +153,7 @@ export function calculateEstimatedDriftAngle(lengthBPP: number, draught: number,
       - DRIFT_COEFFICIENTS[profileIndex][driftIndex]) / 10)) + DRIFT_COEFFICIENTS[profileIndex][driftIndex];
     // (Air_Density_Drift_Cal/Sea_Density_Drift_Cal)*((Apparent_Wind_Velocity_Drift_Cal/Ship_Speed_Drift_Cal)*(Apparent_Wind_Velocity_Drift_Cal/Ship_Speed_Drift_Cal))
     // *(Total_Lateral_Surface_Area_Drift_Cal /((Vessel_Draught_Drift_Cal*Vessel_Draught_Drift_Cal))*Cn_Drift_Cal)/ (Pi()*(0.5+(2.4*Vessel_Draught_Drift_Cal/'Length_ BPP_Drift_Cal')))
-    return (airDensity / waterDensity) * Math.pow(apparentWindVelocityDrift / calculateVesselSpeedMS(vesselSpeed), 2)
+    return (airDensity / waterDensity) * Math.pow(apparentWindVelocityDrift / knotsToMetresPerSecond(vesselSpeed), 2)
       * (Math.abs(windSurface) / (Math.pow(draught, 2)) * driftCoefficient) / (Math.PI * (0.5 + (2.4 * draught / lengthBPP)));
 }
 
@@ -170,7 +174,7 @@ export function calculateHeelDueWind(lengthBPP: number, breadth: number, windSur
 }
 
 export function calculateHeelDuringTurn(vesselSpeed: number, turningRadius: number, KG: number, GM: number, KB: number) {
-  var vesselSpeedMS = calculateVesselSpeedMS(vesselSpeed);
+  var vesselSpeedMS = knotsToMetresPerSecond(vesselSpeed);
   // Tan((Speed_HG_Cal*Speed_HG_Cal*BG_HG_Cal)/(9.81*Radius_HG_Cal*GM))
   return toDeg(Math.tan((Math.pow(vesselSpeedMS, 2) * Math.abs(KG - KB)) / (GRAVITATIONAL_ACCELERATION * nauticalMilesToMetres(turningRadius) * GM)));
 }
@@ -222,8 +226,7 @@ export function calculateSquatHG(lengthBPP: number, breadth: number, draught: nu
   // Ks_HG_Cal
   // If(Value(s1_Multiplier_From_Curve_HG_Cal.Text) > 0.03, Value(s1_Multiplier_From_Curve_HG_Cal.Text)*7.45+0.76 , 1)
   var Ks = s1Multiplier > 0.03? (s1Multiplier * 7.45) + 0.76 : 1;
-  // Froude_Nro_HG_Cal | (Set_Vessel_Speed*1852/3600)/(Sqrt(9.81*(Swept_Depth+Water_Level)))
-  var froudeNumber = calculateVesselSpeedMS(vesselSpeed) / Math.sqrt(GRAVITATIONAL_ACCELERATION * (Number(sweptDepth) + Number(waterLevel)));
+  var froudeNumber = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
   // Froude_Nro1_HG_Cal | 1-Froude_Nro_HG_Cal^2
   var froudeNumber1 = 1 - Math.pow(froudeNumber, 2);
   

@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from "react-i18next";
 import { IonText, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonLabel, IonAccordionGroup, IonAccordion, IonRange, IonSelect,
-  IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
+  IonSelectOption, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonChip, IonPopover, IonContent, IonImg, IonIcon } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import { percentFormatter, degreeFormatter, decimalFormatter } from './Squat';
 import { fairwayForms } from '../hooks/squatReducer';
-import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
+import { warningOutline } from 'ionicons/icons';
+import { calculateFroudeNumber, calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
 
 interface ContainerProps { }
 
@@ -38,6 +39,21 @@ const Environment: React.FC<ContainerProps> = () => {
     });
   };
 
+  // Validations
+  const isReliabilityAnIssue = () => {
+    //  If(Value(Froude_Nro_HG_Cal.Text) > 0.7, "Reliability Issue - Froude Number > 0,7", If(Value(Block_Coefficient.Text) < 0.6, "Reliability Issue - Block Coefficient < 0,60", If(Value(Block_Coefficient.Text) > 0.8, "Reliability Issue - Block Coefficient > 0,80", "")))
+    var froudeNumber = calculateFroudeNumber(state.environment.vessel.vesselSpeed, state.environment.fairway.sweptDepth, state.environment.fairway.waterLevel);
+
+    if (froudeNumber > 0.7) {
+      return <>{t("homePage.squat.environment.reliability-issue-froude-number")} &gt; {(0.7).toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 1})}</>;
+    } else if (state.vessel.general.blockCoefficient < 0.6) {
+      return <>{t("homePage.squat.environment.reliability-issue-block-coefficient")} &lt; {(0.6).toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 1})}</>;
+    } else if (state.vessel.general.blockCoefficient > 0.8) {
+      return <>{t("homePage.squat.environment.reliability-issue-block-coefficient")} &gt; {(0.8).toLocaleString(i18n.language, {minimumFractionDigits: 1, maximumFractionDigits: 1})}</>;
+    }
+    return "";
+  };
+
   return (
     <IonCard>
       <IonCardHeader>
@@ -46,6 +62,19 @@ const Environment: React.FC<ContainerProps> = () => {
       </IonCardHeader>
 
       <IonCardContent>
+        {isReliabilityAnIssue() &&
+          <IonGrid className="danger">
+            <IonRow className="ion-align-items-center">
+              <IonCol size="auto">
+                <IonIcon size="large" icon={warningOutline} />
+              </IonCol>
+              <IonCol>
+                <IonText>{isReliabilityAnIssue()}</IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        }
+
         <IonAccordionGroup>
           <IonAccordion value="weather">
             <IonItem slot="header">
