@@ -7,6 +7,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Repository } from "aws-cdk-lib/aws-ecr";
+import { GitHubTrigger } from "aws-cdk-lib/aws-codepipeline-actions";
 interface SquatPipelineProps {
   env: string;
 }
@@ -27,6 +28,7 @@ export class SquatPipeline extends Construct {
       oauthToken: SecretValue.secretsManager("dev/dvk/github"),
       output: sourceOutput,
       branch: this.getBranch(props.env),
+      trigger: GitHubTrigger.NONE,
     });
 
     const sourceStage = pipeline.addStage({
@@ -38,7 +40,8 @@ export class SquatPipeline extends Construct {
     const squatBuildProject = new codebuild.PipelineProject(this, "SquatBuild", {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(
-          Repository.fromRepositoryName(this, "DvkBuildImage", "dvk-buildimage"), "1.0.0"
+          Repository.fromRepositoryName(this, "DvkBuildImage", "dvk-buildimage"),
+          "1.0.0"
         ),
       },
       buildSpec: codebuild.BuildSpec.fromObject({

@@ -32,7 +32,7 @@ const handler = async function (event: any, context: any) {
   if (!commit) {
     return {
       statusCode: 400,
-      body: `No commit found`,
+      body: `No commit found in payload`,
     };
   }
 
@@ -40,9 +40,10 @@ const handler = async function (event: any, context: any) {
   const commitRemoved: string[] = commit.removed;
   const commitModified: string[] = commit.modified;
 
-  getDistinctFolders(commitAdded);
-  getDistinctFolders(commitRemoved);
-  getDistinctFolders(commitModified);
+  // TODO: tarvitaanko erottelua tiedostotapahtuman perusteella vai ei
+  getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
+  // getDistinctFolders(commitRemoved);
+  // getDistinctFolders(commitModified);
 
   // TODO: kaynnista oikea pipeline
   try {
@@ -67,7 +68,8 @@ const handler = async function (event: any, context: any) {
 
 const validBranches = ["main", "test", "prod"];
 function isDevTestProd(branch: string) {
-  return validBranches.includes(branch);
+  const fullBranchName = branch.replace("refs/heads/", "").trim();
+  return validBranches.includes(fullBranchName.slice(0, fullBranchName.indexOf("/")));
 }
 
 const ignoredTypes = ["txt", "md", "gitignore", "dockerignore", "pdf"];
