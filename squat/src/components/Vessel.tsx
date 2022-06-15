@@ -7,6 +7,7 @@ import { IonText, IonList, IonItem, IonInput, IonLabel, IonAccordionGroup, IonAc
 import { useSquatContext } from '../hooks/squatContext';
 import { percentFormatter } from './Squat';
 import { vessels, vesselProfiles } from '../hooks/squatReducer';
+import { calculateDisplacement, calculateKB } from '../utils/calculations';
 
 interface ContainerProps { }
 
@@ -19,14 +20,14 @@ const Vessel: React.FC<ContainerProps> = () => {
   useEffect(() => {
     dispatch({
       type: 'vessel-general',
-      payload: { key: "displacement", value: Math.round(state.vessel.general.lengthBPP * state.vessel.general.breadth * state.vessel.general.draught * state.vessel.general.blockCoefficient * state.environment.attribute.waterDensity / 1000).toString() },
+      payload: { key: "displacement", value: calculateDisplacement(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.vessel.general.draught, state.vessel.general.blockCoefficient, state.environment.attribute.waterDensity).toString() },
     });
   }, [state.vessel.general.lengthBPP, state.vessel.general.breadth, state.vessel.general.draught, state.vessel.general.blockCoefficient, state.environment.attribute.waterDensity]);
 
   useEffect(() => {
     dispatch({
       type: 'vessel-stability',
-      payload: { key: "KB", value: (state.vessel.general.draught / 2).toFixed(2).toString() },
+      payload: { key: "KB", value: calculateKB(state.vessel.general.draught).toFixed(2).toString() },
     });
   }, [state.vessel.general.draught]);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from "react-i18next";
 import { IonText, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonLabel, IonAccordionGroup, IonAccordion, IonRange, IonSelect,
@@ -7,6 +7,7 @@ import { IonText, IonGrid, IonRow, IonCol, IonList, IonItem, IonInput, IonLabel,
 import { useSquatContext } from '../hooks/squatContext';
 import { percentFormatter, degreeFormatter, decimalFormatter } from './Squat';
 import { fairwayForms } from '../hooks/squatReducer';
+import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
 
 interface ContainerProps { }
 
@@ -15,6 +16,20 @@ const zero: number = 0;
 const Environment: React.FC<ContainerProps> = () => {
   const { t, i18n } = useTranslation();
   const { state, dispatch } = useSquatContext();
+
+  useEffect(() => {
+    dispatch({
+      type: 'environment-weather',
+      payload: { key: "waveLength", value: calculateWaveLengthProperties(state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth) },
+    });
+  }, [state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'environment-weather',
+      payload: { key: "waveAmplitude", value: calculateWaveAmplitudeProperties(state.vessel.general.lengthBPP, state.environment.weather.waveHeight, state.environment.weather.waveLength) },
+    });
+  }, [state.vessel.general.lengthBPP, state.environment.weather.wavePeriod, state.environment.weather.waveHeight, state.environment.weather.waveLength]);
 
   const updateAction = (event: CustomEvent, actionType: 'environment-weather' | 'environment-fairway' | 'environment-vessel' | 'environment-attribute') => {
     dispatch({
@@ -69,13 +84,13 @@ const Environment: React.FC<ContainerProps> = () => {
                     <IonCol size-sm="6">
                       <IonLabel position="stacked">{t("homePage.squat.environment.wave-length")} (m)</IonLabel>
                       <IonText>
-                        <p>{(state.environment.weather.windSpeed * state.environment.weather.waveHeight).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
+                        <p>{(isNaN(state.environment.weather.waveLength[0])? 0 : state.environment.weather.waveLength[0]).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
                       </IonText>
                     </IonCol>
                     <IonCol size-sm="6">
                       <IonLabel position="stacked">{t("homePage.squat.environment.wave-amplitude")} (m)</IonLabel>
                       <IonText>
-                        <p>{(state.environment.weather.waveHeight * state.vessel.general.blockCoefficient * 0.1).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
+                        <p>{(isNaN(state.environment.weather.waveAmplitude[0])? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(i18n.language, {minimumFractionDigits: 2, maximumFractionDigits: 2})} m</p>
                       </IonText>
                     </IonCol>
                   </IonRow>
