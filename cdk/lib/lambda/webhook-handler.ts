@@ -1,4 +1,4 @@
-import { CodePipelineClient, ListPipelinesCommand } from "@aws-sdk/client-codepipeline";
+import { CodePipelineClient, StartPipelineExecutionCommand } from "@aws-sdk/client-codepipeline";
 
 const devPipelineSquat = process.env.DEV_PIPELINE_SQUAT;
 const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
@@ -16,7 +16,6 @@ const handler = async function (event: any, context: any) {
   //TODO: validoi github webhook pyynto kts. github headerit ja secret
   validateSignature(event.headers);
 
-  //TODO: parsi event tiedot
   const githubData = event.body;
   const branch = githubData.ref;
 
@@ -41,22 +40,33 @@ const handler = async function (event: any, context: any) {
   const commitModified: string[] = commit.modified;
 
   // TODO: tarvitaanko erottelua tiedostotapahtuman perusteella vai ei
-  getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
-  // getDistinctFolders(commitRemoved);
-  // getDistinctFolders(commitModified);
+  const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
 
-  // TODO: kaynnista oikea pipeline
-  try {
-    const client = new CodePipelineClient({});
-    const command = new ListPipelinesCommand({});
-    const response = await client.send(command);
-    console.log(response.pipelines);
-  } catch (error) {
-    console.log(error);
+  if (!folders || folders.length < 1) {
     return {
       statusCode: 400,
-      body: `Cannot process event: ${error}`,
+      body: `No suitable application files or folders in commit`,
     };
+  }
+
+  // TODO: kaynnistysmahdollisuus muillekin kuin squatille
+  if (folders.includes("squat")) {
+    const pipelineName = getPipelineName(branch, "squat");
+    console.log("pipleline name chosen: ", pipelineName);
+    try {
+      const client = new CodePipelineClient({});
+      const command = new StartPipelineExecutionCommand({
+        name: pipelineName,
+      });
+      const response = await client.send(command);
+      console.log("pipeline execution started: ", response.pipelineExecutionId);
+    } catch (error) {
+      console.log(error);
+      return {
+        statusCode: 400,
+        body: `Cannot process event: ${error}`,
+      };
+    }
   }
 
   return {
@@ -66,10 +76,30 @@ const handler = async function (event: any, context: any) {
   };
 };
 
+function getPipelineName(branch: string, folder: string) {
+  const branchName = parseBranchName(branch);
+  switch (folder) {
+    case "squat":
+      if (branchName === "main") {
+        return devPipelineSquat;
+      } else if (branchName === "test") {
+        return testPipelineSquat;
+      }
+      return undefined;
+    default:
+      return undefined;
+  }
+}
+
 const validBranches = ["main", "test", "prod"];
 function isDevTestProd(branch: string) {
+  return validBranches.includes(parseBranchName(branch));
+}
+
+function parseBranchName(branch: string) {
   const fullBranchName = branch.replace("refs/heads/", "").trim();
-  return validBranches.includes(fullBranchName.slice(0, fullBranchName.indexOf("/")));
+  console.log("parsed branch name: ", fullBranchName.slice(0, fullBranchName.indexOf("/")));
+  return fullBranchName.slice(0, fullBranchName.indexOf("/"));
 }
 
 const ignoredTypes = ["txt", "md", "gitignore", "dockerignore", "pdf"];
@@ -112,7 +142,7 @@ type EventHeaders = {
   "x-hub-signature": string;
 };
 function validateSignature(headers: EventHeaders) {
-  // validate signature
+  // TODO: validate signature
   console.log("validating headers", headers);
 }
 
