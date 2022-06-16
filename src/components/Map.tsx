@@ -1,3 +1,4 @@
+import React from 'react';
 import './Map.css';
 import { useTranslation } from 'react-i18next';
 
