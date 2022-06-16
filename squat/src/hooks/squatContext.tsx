@@ -1,9 +1,9 @@
 import React, { Dispatch } from 'react';
-import { State, Action } from './squatReducer'
+import { State, Action } from './squatReducer';
 
 interface IContextProps {
   state: State;
-  dispatch: Dispatch<Action>
+  dispatch: Dispatch<Action>;
 }
 
 const SquatContext = React.createContext({} as IContextProps);
