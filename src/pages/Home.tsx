@@ -1,3 +1,4 @@
+import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonButton } from '@ionic/react';
 import Map from '../components/Map';
 import { useTranslation } from 'react-i18next';
