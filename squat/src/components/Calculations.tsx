@@ -45,64 +45,9 @@ import {
 
 import { warningOutline } from 'ionicons/icons';
 
-// Declare computation result types and initial values
-type WindForceAndDriftResult = {
-  relativeWindDirection: number;
-  relativeWindSpeed: number;
-  windForce: number;
-  waveForce: number;
-  bowThrusterForce: number;
-  remainingSafetyMargin: number;
-  externalForceRequired: number;
-  estimatedDriftAngle: number;
-  estimatedBreadth: number;
-};
-type SquatResult = {
-  heelDueWind: number;
-  constantHeelDuringTurn: number;
-  correctedDraught: number;
-  correctedDraughtDuringTurn: number;
-  UKCVesselMotions: number[][];
-  UKCStraightCourse: number[];
-  UKCDuringTurn: number[];
-  squatBarrass: number;
-  squatHG: number;
-  squatHGListed: number;
-};
-
-const initialWindForceAndDriftResult = {
-  relativeWindDirection: 0,
-  relativeWindSpeed: 0,
-  windForce: 0,
-  waveForce: 0,
-  bowThrusterForce: 0,
-  remainingSafetyMargin: 0,
-  externalForceRequired: 0,
-  estimatedDriftAngle: 0,
-  estimatedBreadth: 0,
-};
-const initialSquatResult = {
-  heelDueWind: 0,
-  constantHeelDuringTurn: 0,
-  correctedDraught: 0,
-  correctedDraughtDuringTurn: 0,
-  UKCVesselMotions: [
-    [0, 0],
-    [0, 0],
-  ],
-  UKCStraightCourse: [0, 0],
-  UKCDuringTurn: [0, 0],
-  squatBarrass: 0,
-  squatHG: 0,
-  squatHGListed: 0,
-};
-
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const { state } = useSquatContext();
-
-  const [windForceAndDriftResult, setWindForceAndDriftResult] = useState<WindForceAndDriftResult>(initialWindForceAndDriftResult);
-  const [squatResult, setSquatResult] = useState<SquatResult>(initialSquatResult);
+  const { state, dispatch } = useSquatContext();
 
   const [showBarrass, setShowBarrass] = useState<boolean>(false);
 
@@ -118,9 +63,12 @@ const Calculations: React.FC = () => {
       return false;
     }
     if (
-      (showBarrass ? squatResult.UKCDuringTurn[0] : squatResult.UKCDuringTurn[1]) < state.environment.attribute.requiredUKC ||
-      (showBarrass ? squatResult.UKCStraightCourse[0] : squatResult.UKCStraightCourse[1]) < state.environment.attribute.requiredUKC ||
-      (showBarrass ? squatResult.UKCVesselMotions[0][0] : squatResult.UKCVesselMotions[0][1]) < state.environment.attribute.requiredUKC
+      (showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1]) <
+        state.environment.attribute.requiredUKC ||
+      (showBarrass ? state.calculations.squat.UKCStraightCourse[0] : state.calculations.squat.UKCStraightCourse[1]) <
+        state.environment.attribute.requiredUKC ||
+      (showBarrass ? state.calculations.squat.UKCVesselMotions[0][0] : state.calculations.squat.UKCVesselMotions[0][1]) <
+        state.environment.attribute.requiredUKC
     ) {
       return true;
     }
@@ -179,17 +127,23 @@ const Calculations: React.FC = () => {
     // 3.2 Estimated breadth due to drift
     const estimatedBreadth = calculateEstimatedBreadth(state.vessel.general.lengthBPP, state.vessel.general.breadth, estimatedDriftAngle);
 
-    // Update wind/wave force and drift results
-    setWindForceAndDriftResult({
-      relativeWindDirection: apparentWindAngleDrift,
-      relativeWindSpeed: apparentWindVelocityDrift,
-      windForce: isNaN(windForce) ? 0 : windForce,
-      waveForce: isNaN(waveForce) ? 0 : waveForce,
-      bowThrusterForce: bowThrusterForce,
-      remainingSafetyMargin: isNaN(remainingSafetyMargin) ? 0 : remainingSafetyMargin,
-      externalForceRequired: minExternalForce,
-      estimatedDriftAngle: isFinite(estimatedDriftAngle) ? toDeg(estimatedDriftAngle) : 0,
-      estimatedBreadth: estimatedBreadth,
+    // Update state object with wind/wave and drift computation results
+    dispatch({
+      type: 'calculations',
+      payload: {
+        key: 'forces',
+        value: {
+          relativeWindDirection: apparentWindAngleDrift,
+          relativeWindSpeed: apparentWindVelocityDrift,
+          windForce: windForce,
+          waveForce: waveForce,
+          bowThrusterForce: bowThrusterForce,
+          remainingSafetyMargin: remainingSafetyMargin,
+          externalForceRequired: minExternalForce,
+          estimatedDriftAngle: estimatedDriftAngle,
+          estimatedBreadth: estimatedBreadth,
+        },
+      },
     });
   }, [
     state.vessel.general.lengthBPP,
@@ -206,6 +160,7 @@ const Calculations: React.FC = () => {
     state.environment.vessel.vesselCourse,
     state.environment.attribute.airDensity,
     state.environment.attribute.waterDensity,
+    dispatch,
   ]);
 
   // 2. Squat
@@ -217,7 +172,7 @@ const Calculations: React.FC = () => {
       state.vessel.general.displacement,
       state.vessel.stability.GM,
       state.vessel.stability.KB,
-      windForceAndDriftResult.windForce
+      state.calculations.forces.windForce
     );
 
     // 2.2 Heel During Turn
@@ -283,19 +238,24 @@ const Calculations: React.FC = () => {
       UKCStraightCourseHG
     );
 
-    // Update squat results
-    // TODO: Handle NaN-check in view?
-    setSquatResult({
-      heelDueWind: isNaN(heelDueWind) ? 0 : heelDueWind,
-      constantHeelDuringTurn: isNaN(constantHeelDuringTurn) ? 0 : constantHeelDuringTurn,
-      correctedDraught: isNaN(correctedDraught) ? 0 : correctedDraught,
-      correctedDraughtDuringTurn: isNaN(correctedDraughtDuringTurn) ? 0 : correctedDraughtDuringTurn,
-      UKCVesselMotions: [UKCVesselMotionBarrass, UKCVesselMotionHG],
-      UKCStraightCourse: [isNaN(UKCStraightCourseBarrass) ? 0 : UKCStraightCourseBarrass, isNaN(UKCStraightCourseHG) ? 0 : UKCStraightCourseHG],
-      UKCDuringTurn: [isNaN(UKCDuringTurnBarrass) ? 0 : UKCDuringTurnBarrass, isNaN(UKCDuringTurnHG) ? 0 : UKCDuringTurnHG],
-      squatBarrass: isNaN(squatBarrass) ? 0 : squatBarrass,
-      squatHG: isNaN(squatHG) ? 0 : squatHG,
-      squatHGListed: isNaN(squatHGListed) ? 0 : squatHGListed, // TODO: remove if not needed
+    // Update state object with squat computation results
+    dispatch({
+      type: 'calculations',
+      payload: {
+        key: 'squat',
+        value: {
+          heelDueWind: heelDueWind,
+          constantHeelDuringTurn: constantHeelDuringTurn,
+          correctedDraught: correctedDraught,
+          correctedDraughtDuringTurn: correctedDraughtDuringTurn,
+          UKCVesselMotions: [UKCVesselMotionBarrass, UKCVesselMotionHG],
+          UKCStraightCourse: [UKCStraightCourseBarrass, UKCStraightCourseHG],
+          UKCDuringTurn: [UKCDuringTurnBarrass, UKCDuringTurnHG],
+          squatBarrass: squatBarrass,
+          squatHG: squatHG,
+          squatHGListed: squatHGListed,
+        },
+      },
     });
   }, [
     state.vessel.general.lengthBPP,
@@ -316,7 +276,8 @@ const Calculations: React.FC = () => {
     state.environment.fairway.slopeHeight,
     state.environment.vessel.vesselSpeed,
     state.environment.vessel.turningRadius,
-    windForceAndDriftResult.windForce,
+    state.calculations.forces.windForce,
+    dispatch,
   ]);
 
   return (
@@ -353,7 +314,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{Math.round(windForceAndDriftResult.relativeWindDirection ? windForceAndDriftResult.relativeWindDirection : 0)}&deg;</h4>
+                    <h4>{Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}&deg;</h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -363,7 +324,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{Math.round(windForceAndDriftResult.relativeWindSpeed)} m/s</h4>
+                    <h4>{Math.round(state.calculations.forces.relativeWindSpeed)} m/s</h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -375,7 +336,11 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.windForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}</h4>
+                    <h4>
+                      {(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
+                        maximumFractionDigits: 1,
+                      })}
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -387,7 +352,11 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.waveForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}</h4>
+                    <h4>
+                      {(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
+                        maximumFractionDigits: 1,
+                      })}
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -399,7 +368,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}</h4>
+                    <h4>{state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}</h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -409,7 +378,13 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.remainingSafetyMargin.toLocaleString(i18n.language, { maximumFractionDigits: 1 })} %</h4>
+                    <h4>
+                      {(isNaN(state.calculations.forces.remainingSafetyMargin) ? '' : state.calculations.forces.remainingSafetyMargin).toLocaleString(
+                        i18n.language,
+                        { maximumFractionDigits: 1 }
+                      )}{' '}
+                      %
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -420,8 +395,8 @@ const Calculations: React.FC = () => {
                 <IonNote slot="end">
                   <IonText>
                     <h4>
-                      {windForceAndDriftResult.externalForceRequired > 0
-                        ? windForceAndDriftResult.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
+                      {state.calculations.forces.externalForceRequired > 0
+                        ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
                         : '-'}
                     </h4>
                   </IonText>
@@ -441,7 +416,12 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{squatResult.heelDueWind.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}&deg;</h4>
+                    <h4>
+                      {(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
+                        maximumFractionDigits: 2,
+                      })}
+                      &deg;
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -451,7 +431,12 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{squatResult.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}&deg;</h4>
+                    <h4>
+                      {isNaN(state.calculations.squat.constantHeelDuringTurn)
+                        ? ''
+                        : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                      &deg;
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -461,7 +446,12 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{squatResult.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
+                    <h4>
+                      {isNaN(state.calculations.squat.correctedDraught)
+                        ? ''
+                        : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
+                      m
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -471,7 +461,12 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{squatResult.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
+                    <h4>
+                      {isNaN(state.calculations.squat.correctedDraughtDuringTurn)
+                        ? ''
+                        : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
+                      m
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -489,7 +484,13 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{squatResult.UKCVesselMotions[showBarrass ? 0 : 1][0].toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
+                    <h4>
+                      {(isNaN(state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0])
+                        ? 0
+                        : state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0]
+                      ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
+                      m
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -500,9 +501,14 @@ const Calculations: React.FC = () => {
                 <IonNote slot="end">
                   <IonText>
                     <h4>
-                      {(showBarrass ? squatResult.UKCStraightCourse[0] : squatResult.UKCStraightCourse[1]).toLocaleString(i18n.language, {
-                        maximumFractionDigits: 2,
-                      })}{' '}
+                      {isNaN(showBarrass ? state.calculations.squat.UKCStraightCourse[0] : state.calculations.squat.UKCStraightCourse[1])
+                        ? ''
+                        : (showBarrass
+                            ? state.calculations.squat.UKCStraightCourse[0]
+                            : state.calculations.squat.UKCStraightCourse[1]
+                          ).toLocaleString(i18n.language, {
+                            maximumFractionDigits: 2,
+                          })}{' '}
                       m
                     </h4>
                   </IonText>
@@ -515,9 +521,14 @@ const Calculations: React.FC = () => {
                 <IonNote slot="end">
                   <IonText>
                     <h4>
-                      {(showBarrass ? squatResult.UKCDuringTurn[0] : squatResult.UKCDuringTurn[1]).toLocaleString(i18n.language, {
-                        maximumFractionDigits: 2,
-                      })}{' '}
+                      {isNaN(showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1])
+                        ? ''
+                        : (showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1]).toLocaleString(
+                            i18n.language,
+                            {
+                              maximumFractionDigits: 2,
+                            }
+                          )}{' '}
                       m
                     </h4>
                   </IonText>
@@ -531,9 +542,14 @@ const Calculations: React.FC = () => {
                     </IonLabel>
                   </div>
                   <IonLabel>
-                    {(showBarrass || isUKCUnderMinimum() ? squatResult.squatBarrass : squatResult.squatHG).toLocaleString(i18n.language, {
-                      maximumFractionDigits: 2,
-                    })}{' '}
+                    {isNaN(showBarrass || isUKCUnderMinimum() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG)
+                      ? ''
+                      : (showBarrass || isUKCUnderMinimum()
+                          ? state.calculations.squat.squatBarrass
+                          : state.calculations.squat.squatHG
+                        ).toLocaleString(i18n.language, {
+                          maximumFractionDigits: 2,
+                        })}{' '}
                     m
                   </IonLabel>
                   <IonNote slot="end">
@@ -565,7 +581,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{Math.round(windForceAndDriftResult.relativeWindDirection ? windForceAndDriftResult.relativeWindDirection : 0)}&deg;</h4>
+                    <h4>{Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}&deg;</h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -575,7 +591,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{Math.round(windForceAndDriftResult.relativeWindSpeed)} m/s</h4>
+                    <h4>{Math.round(state.calculations.forces.relativeWindSpeed)} m/s</h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -585,7 +601,13 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.estimatedDriftAngle.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}&deg;</h4>
+                    <h4>
+                      {(isFinite(state.calculations.forces.estimatedDriftAngle)
+                        ? toDeg(state.calculations.forces.estimatedDriftAngle)
+                        : ''
+                      ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                      &deg;
+                    </h4>
                   </IonText>
                 </IonNote>
               </IonItem>
@@ -595,7 +617,7 @@ const Calculations: React.FC = () => {
                 </IonLabel>
                 <IonNote slot="end">
                   <IonText>
-                    <h4>{windForceAndDriftResult.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
+                    <h4>{state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
                   </IonText>
                 </IonNote>
               </IonItem>

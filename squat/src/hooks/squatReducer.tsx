@@ -101,6 +101,34 @@ export type State = {
       safetyMarginWindForce: number;
     };
   };
+  calculations: {
+    forces: {
+      relativeWindDirection: number;
+      relativeWindSpeed: number;
+      windForce: number;
+      waveForce: number;
+      bowThrusterForce: number;
+      remainingSafetyMargin: number;
+      externalForceRequired: number;
+      estimatedDriftAngle: number;
+      estimatedBreadth: number;
+    };
+    squat: {
+      heelDueWind: number;
+      constantHeelDuringTurn: number;
+      correctedDraught: number;
+      correctedDraughtDuringTurn: number;
+      UKCVesselMotions: number[][];
+      UKCStraightCourse: number[];
+      UKCDuringTurn: number[];
+      squatBarrass: number;
+      squatHG: number;
+      squatHGListed: number;
+    };
+    intermediate: {
+      froudeNumber: number;
+    };
+  };
 };
 
 export type Action =
@@ -113,10 +141,12 @@ export type Action =
         | 'environment-weather'
         | 'environment-fairway'
         | 'environment-vessel'
-        | 'environment-attribute';
+        | 'environment-attribute'
+        | 'calculations'
+        | 'calculations-intermediate';
       payload: {
         key: string;
-        value: string | number[];
+        value: number | number[] | object;
       };
     }
   | { type: 'reset' };
@@ -173,6 +203,37 @@ export const initialState = {
       safetyMarginWindForce: 0.25,
     },
   },
+  calculations: {
+    forces: {
+      relativeWindDirection: 0,
+      relativeWindSpeed: 0,
+      windForce: 0,
+      waveForce: 0,
+      bowThrusterForce: 0,
+      remainingSafetyMargin: 0,
+      externalForceRequired: 0,
+      estimatedDriftAngle: 0,
+      estimatedBreadth: 0,
+    },
+    squat: {
+      heelDueWind: 0,
+      constantHeelDuringTurn: 0,
+      correctedDraught: 0,
+      correctedDraughtDuringTurn: 0,
+      UKCVesselMotions: [
+        [0, 0],
+        [0, 0],
+      ],
+      UKCStraightCourse: [0, 0],
+      UKCDuringTurn: [0, 0],
+      squatBarrass: 0,
+      squatHG: 0,
+      squatHGListed: 0,
+    },
+    intermediate: {
+      froudeNumber: 0,
+    },
+  },
 };
 
 export const SquatReducer = (state: State, action: Action) => {
@@ -201,6 +262,16 @@ export const SquatReducer = (state: State, action: Action) => {
       return {
         ...state,
         environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: action.payload.value } },
+      };
+    case 'calculations':
+      return {
+        ...state,
+        calculations: { ...state.calculations, [action.payload.key]: action.payload.value },
+      };
+    case 'calculations-intermediate':
+      return {
+        ...state,
+        calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: action.payload.value } },
       };
     case 'reset':
       return initialState;

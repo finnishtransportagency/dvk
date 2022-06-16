@@ -41,7 +41,7 @@ const Vessel: React.FC = () => {
           state.vessel.general.draught,
           state.vessel.general.blockCoefficient,
           state.environment.attribute.waterDensity
-        ).toString(),
+        ),
       },
     });
   }, [
@@ -56,14 +56,14 @@ const Vessel: React.FC = () => {
   useEffect(() => {
     dispatch({
       type: 'vessel-stability',
-      payload: { key: 'KB', value: calculateKB(state.vessel.general.draught).toFixed(2).toString() },
+      payload: { key: 'KB', value: calculateKB(state.vessel.general.draught) },
     });
   }, [state.vessel.general.draught, dispatch]);
 
   const updateAction = (event: CustomEvent, actionType: 'vessel-select' | 'vessel-general' | 'vessel-detailed' | 'vessel-stability') => {
     dispatch({
       type: actionType,
-      payload: { key: (event.target as HTMLInputElement).name, value: (event.detail as HTMLInputElement).value },
+      payload: { key: (event.target as HTMLInputElement).name, value: Number((event.detail as HTMLInputElement).value) },
     });
   };
 
