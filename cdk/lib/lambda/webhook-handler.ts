@@ -148,7 +148,7 @@ const handler = async function (event: any) {
   // TODO: kaynnistysmahdollisuus muillekin kuin squatille
   if (folders.includes('squat')) {
     const pipelineName = getPipelineName(branch, 'squat');
-    console.log('pipleline name chosen: ', pipelineName);
+    console.log('pipeline name chosen: ', pipelineName);
     try {
       const client = new CodePipelineClient({});
       const command = new StartPipelineExecutionCommand({
