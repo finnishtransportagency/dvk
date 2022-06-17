@@ -91,6 +91,17 @@
         "estimated-drift-angle": "[fi] Estimated Drift Angle",
         "estimated-vessel-breadth-due-drift": "[fi] Estimated Vessel Breadth Due Drift"
       }
+    },
+    "squatChart": {
+      "xAxisLabel": "Nopeus (kn)",
+      "yAxisLabel": "Squat (m)",
+      "levels": {
+        "bottom": "Pohja",
+        "underSweptDepth": "Haraustason alapuoleinen vesi"  ,
+        "netUKC": "Kölivara",
+        "otherMovement": "Muu liikevara",
+        "squat": "Painaumavara"
+      }
     }
   },
   "common": {
