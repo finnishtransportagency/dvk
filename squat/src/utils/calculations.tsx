@@ -227,8 +227,12 @@ export function calculateSquatHG(
   slopeScale: number,
   slopeHeight: number,
   vesselSpeed: number,
-  draughtDuringTurn: number
+  draughtDuringTurn: number,
+  C0Coefficient?: number
 ) {
+  if (!C0Coefficient) {
+    C0Coefficient = 2.4;
+  }
   // Ship_m2_HG_Cal | 0.98*Breadth_HG_Cal*Vessel_Draught
   const shipM2 = 0.98 * breadth * draught;
   // Channel_m2_HG_Cal | Channel_Width*Swept_Depth+Swept_Depth*Swept_Depth/Slope_Scale
@@ -265,11 +269,11 @@ export function calculateSquatHG(
 
   // Final squat HG value (Squat_HG_Cal)
   // (2.4*Ks_HG_Cal*Block_Coefficient*Breadth*Vessel_Draught*Froude_Nro_HG_Cal*Froude_Nro_HG_Cal)/(Length_BPP*Sqrt(Froude_Nro1_HG_Cal))
-  const squatHG = (2.4 * Ks * blockCoefficient * breadth * draught * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
+  const squatHG = (C0Coefficient * Ks * blockCoefficient * breadth * draught * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
   // Final squat HG Listed value (Squat_Listed_HG_Cal)
   // (2.4*Ks_HG_Cal*Block_Coefficient*Breadth*'Draught_during turn_HG_Cal'*Froude_Nro_HG_Cal*Froude_Nro_HG_Cal)/(Length_BPP*Sqrt(Froude_Nro1_HG_Cal))
   const squatHGListed =
-    (2.4 * Ks * blockCoefficient * breadth * draughtDuringTurn * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
+    (C0Coefficient * Ks * blockCoefficient * breadth * draughtDuringTurn * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
 
   return [squatHG, squatHGListed];
 }
