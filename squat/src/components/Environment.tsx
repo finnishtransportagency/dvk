@@ -260,7 +260,6 @@ const Environment: React.FC = () => {
                 <IonLabel position="stacked">{t('homePage.squat.environment.water-level')} (m)</IonLabel>
                 <IonInput
                   type="number"
-                  min="0"
                   step="0.1"
                   name="waterLevel"
                   value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
