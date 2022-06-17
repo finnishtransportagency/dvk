@@ -83,7 +83,7 @@ export function calculateBowThrusterForce(bowThruster: number, bowThrusterEffici
 
 export function calculateSafetyMargin(bowThrusterForce: number, windForce: number, waveForce: number) {
   // (((Bow_Thruster_Force*2)-(Wind_Force+Wave_Force))/Bow_Thruster_Force)*100
-  return ((bowThrusterForce * 2 - (windForce + waveForce)) / bowThrusterForce) * 100;
+  return (bowThrusterForce * 2 - (windForce + waveForce)) / bowThrusterForce;
 }
 
 export function calculateMinimumExternalForce(bowThrusterForce: number, windForce: number, waveForce: number) {

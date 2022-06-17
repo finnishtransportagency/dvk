@@ -43,7 +43,7 @@ import {
   toDeg,
 } from '../utils/calculations';
 
-import { warningOutline } from 'ionicons/icons';
+import { warningOutline, alertCircleOutline } from 'ionicons/icons';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -73,6 +73,28 @@ const Calculations: React.FC = () => {
       return true;
     }
     return false;
+  };
+
+  // Field validations
+  const isSafetyMarginInsufficient = () => {
+    // If(Value(Remaining_Safety_Margin.Text) < Set_Safety_Margin.Value/100, 5, 0)
+    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce;
+  };
+  const isExternalForceRequired = () => {
+    // If(Value(Minimum_Force_Required.Text) > 0, 5, 0)
+    return state.calculations.forces.externalForceRequired > 0;
+  };
+  const isUKCShipMotionsUnderRequired = () => {
+    // If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), 5, 0)
+    return state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0] < state.environment.attribute.requiredUKC;
+  };
+  const isUKCStraightUnderRequired = () => {
+    // If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), 5, 0)
+    return state.calculations.squat.UKCStraightCourse[showBarrass ? 0 : 1] < state.environment.attribute.requiredUKC;
+  };
+  const isUKCDuringTurnUnderRequired = () => {
+    // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), 5, 0)
+    return state.calculations.squat.UKCDuringTurn[showBarrass ? 0 : 1] < state.environment.attribute.requiredUKC;
   };
 
   // useEffects to calculate results by input value update
@@ -379,12 +401,17 @@ const Calculations: React.FC = () => {
                   <small>{t('homePage.squat.calculations.remaining-safety-margin')}</small>
                 </IonLabel>
                 <IonNote slot="end">
-                  <IonText>
+                  <IonText color={isSafetyMarginInsufficient() ? 'danger' : ''}>
+                    {isSafetyMarginInsufficient() && (
+                      <div title={t('homePage.squat.calculations.insufficient-safety-margin')}>
+                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
+                      </div>
+                    )}
                     <h4>
-                      {(isNaN(state.calculations.forces.remainingSafetyMargin) ? '' : state.calculations.forces.remainingSafetyMargin).toLocaleString(
-                        i18n.language,
-                        { maximumFractionDigits: 1 }
-                      )}{' '}
+                      {(isNaN(state.calculations.forces.remainingSafetyMargin)
+                        ? ''
+                        : state.calculations.forces.remainingSafetyMargin * 100
+                      ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}{' '}
                       %
                     </h4>
                   </IonText>
@@ -395,7 +422,12 @@ const Calculations: React.FC = () => {
                   <small>{t('homePage.squat.calculations.minimum-external-force-required')}</small>
                 </IonLabel>
                 <IonNote slot="end">
-                  <IonText>
+                  <IonText color={isExternalForceRequired() ? 'danger' : ''}>
+                    {isExternalForceRequired() && (
+                      <div title={t('homePage.squat.calculations.external-force-required')}>
+                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
+                      </div>
+                    )}
                     <h4>
                       {state.calculations.forces.externalForceRequired > 0
                         ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
@@ -485,7 +517,12 @@ const Calculations: React.FC = () => {
                   <small>{t('homePage.squat.calculations.UKC-vessel-motions')} (m)</small>
                 </IonLabel>
                 <IonNote slot="end">
-                  <IonText>
+                  <IonText color={isUKCShipMotionsUnderRequired() ? 'danger' : ''}>
+                    {isUKCShipMotionsUnderRequired() && (
+                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
+                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
+                      </div>
+                    )}
                     <h4>
                       {(isNaN(state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0])
                         ? 0
@@ -501,7 +538,12 @@ const Calculations: React.FC = () => {
                   <small>{t('homePage.squat.calculations.UKC-straight-course')} (m)</small>
                 </IonLabel>
                 <IonNote slot="end">
-                  <IonText>
+                  <IonText color={isUKCStraightUnderRequired() ? 'danger' : ''}>
+                    {isUKCStraightUnderRequired() && (
+                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
+                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
+                      </div>
+                    )}
                     <h4>
                       {isNaN(showBarrass ? state.calculations.squat.UKCStraightCourse[0] : state.calculations.squat.UKCStraightCourse[1])
                         ? ''
@@ -521,7 +563,12 @@ const Calculations: React.FC = () => {
                   <small>{t('homePage.squat.calculations.UKC-during-turn')} (m)</small>
                 </IonLabel>
                 <IonNote slot="end">
-                  <IonText>
+                  <IonText color={isUKCDuringTurnUnderRequired() ? 'danger' : ''}>
+                    {isUKCDuringTurnUnderRequired() && (
+                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
+                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
+                      </div>
+                    )}
                     <h4>
                       {isNaN(showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1])
                         ? ''
