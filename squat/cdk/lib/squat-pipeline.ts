@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { SecretValue, Stack } from "aws-cdk-lib";
+import { CfnOutput, SecretValue, Stack } from "aws-cdk-lib";
 import * as codepipeline from "aws-cdk-lib/aws-codepipeline";
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as iam from "aws-cdk-lib/aws-iam";
@@ -7,6 +7,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { Construct } from "constructs";
 import { LinuxBuildImage } from "aws-cdk-lib/aws-codebuild";
 import { Repository } from "aws-cdk-lib/aws-ecr";
+import { GitHubTrigger } from "aws-cdk-lib/aws-codepipeline-actions";
 interface SquatPipelineProps {
   env: string;
 }
@@ -26,7 +27,8 @@ export class SquatPipeline extends Construct {
       repo: "dvk",
       oauthToken: SecretValue.secretsManager("dev/dvk/github"),
       output: sourceOutput,
-      branch: "main", //TODO: valitaan github webhook lambdalta event tiedot?
+      branch: this.getBranch(props.env),
+      trigger: GitHubTrigger.NONE,
     });
 
     const sourceStage = pipeline.addStage({
@@ -38,7 +40,8 @@ export class SquatPipeline extends Construct {
     const squatBuildProject = new codebuild.PipelineProject(this, "SquatBuild", {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(
-          Repository.fromRepositoryName(this, "DvkBuildImage", "dvk-buildimage"), "1.0.0"
+          Repository.fromRepositoryName(this, "DvkBuildImage", "dvk-buildimage"),
+          "1.0.0"
         ),
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -126,5 +129,22 @@ export class SquatPipeline extends Construct {
         }),
       ],
     });
+
+    new CfnOutput(this, "PipelineName", {
+      value: pipeline.pipelineName,
+      description: "Squat pipeline name",
+      exportName: "SquatPipeline-" + props.env,
+    });
+  }
+
+  private getBranch(env: string): string {
+    switch (env) {
+      case "prod":
+        return "prod";
+      case "test":
+        return "test";
+      default:
+        return "main";
+    }
   }
 }
