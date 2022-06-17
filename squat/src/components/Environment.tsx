@@ -45,6 +45,7 @@ const Environment: React.FC = () => {
       payload: {
         key: 'waveLength',
         value: calculateWaveLengthProperties(state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth),
+        elType: 'object',
       },
     });
   }, [state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth, dispatch]);
@@ -59,6 +60,7 @@ const Environment: React.FC = () => {
           state.environment.weather.waveHeight,
           state.environment.weather.waveLength
         ),
+        elType: 'object',
       },
     });
   }, [
@@ -75,7 +77,11 @@ const Environment: React.FC = () => {
   ) => {
     dispatch({
       type: actionType,
-      payload: { key: (event.target as HTMLInputElement).name, value: Number((event.detail as HTMLInputElement).value) },
+      payload: {
+        key: (event.target as HTMLInputElement).name,
+        value: (event.detail as HTMLInputElement).value,
+        elType: (event.target as HTMLInputElement).tagName,
+      },
     });
   };
 

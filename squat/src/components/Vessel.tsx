@@ -63,7 +63,11 @@ const Vessel: React.FC = () => {
   const updateAction = (event: CustomEvent, actionType: 'vessel-select' | 'vessel-general' | 'vessel-detailed' | 'vessel-stability') => {
     dispatch({
       type: actionType,
-      payload: { key: (event.target as HTMLInputElement).name, value: Number((event.detail as HTMLInputElement).value) },
+      payload: {
+        key: (event.target as HTMLInputElement).name,
+        value: (event.target as HTMLInputElement).value,
+        elType: (event.target as HTMLInputElement).tagName,
+      },
     });
   };
 

@@ -143,6 +143,7 @@ const Calculations: React.FC = () => {
           estimatedDriftAngle: estimatedDriftAngle,
           estimatedBreadth: estimatedBreadth,
         },
+        elType: 'object',
       },
     });
   }, [
@@ -255,6 +256,7 @@ const Calculations: React.FC = () => {
           squatHG: squatHG,
           squatHGListed: squatHGListed,
         },
+        elType: 'object',
       },
     });
   }, [

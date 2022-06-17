@@ -131,26 +131,6 @@ export type State = {
   };
 };
 
-export type Action =
-  | {
-      type:
-        | 'vessel-select'
-        | 'vessel-general'
-        | 'vessel-detailed'
-        | 'vessel-stability'
-        | 'environment-weather'
-        | 'environment-fairway'
-        | 'environment-vessel'
-        | 'environment-attribute'
-        | 'calculations'
-        | 'calculations-intermediate';
-      payload: {
-        key: string;
-        value: number | number[] | object;
-      };
-    }
-  | { type: 'reset' };
-
 export const initialState = {
   vessel: {
     vesselSelected: null,
@@ -236,42 +216,76 @@ export const initialState = {
   },
 };
 
+export type Action =
+  | {
+      type:
+        | 'vessel-select'
+        | 'vessel-general'
+        | 'vessel-detailed'
+        | 'vessel-stability'
+        | 'environment-weather'
+        | 'environment-fairway'
+        | 'environment-vessel'
+        | 'environment-attribute'
+        | 'calculations'
+        | 'calculations-intermediate';
+      payload: {
+        key: string;
+        value: string | number | number[] | object;
+        elType?: string;
+      };
+    }
+  | { type: 'reset' };
+
 export const SquatReducer = (state: State, action: Action) => {
+  // Sort out correct value type from input element
+  let inputValue: string | number | number[] | object = '';
+  if (action.type !== 'reset') {
+    switch (action.payload.elType?.toLocaleLowerCase()) {
+      case 'ion-select':
+      case 'object':
+        inputValue = action.payload.value;
+        break;
+      default:
+        inputValue = Number(action.payload.value);
+    }
+  }
+  // Return updated state
   switch (action.type) {
     case 'vessel-select':
-      return { ...state, vessel: { ...state.vessel, [action.payload.key]: action.payload.value } };
+      return { ...state, vessel: { ...state.vessel, [action.payload.key]: inputValue } };
     case 'vessel-general':
-      return { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: inputValue } } };
     case 'vessel-detailed':
-      return { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: inputValue } } };
     case 'vessel-stability':
-      return { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: inputValue } } };
     case 'environment-weather':
       return {
         ...state,
-        environment: { ...state.environment, weather: { ...state.environment.weather, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, weather: { ...state.environment.weather, [action.payload.key]: inputValue } },
       };
     case 'environment-fairway':
       return {
         ...state,
-        environment: { ...state.environment, fairway: { ...state.environment.fairway, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, fairway: { ...state.environment.fairway, [action.payload.key]: inputValue } },
       };
     case 'environment-vessel':
-      return { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: action.payload.value } } };
+      return { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: inputValue } } };
     case 'environment-attribute':
       return {
         ...state,
-        environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: inputValue } },
       };
     case 'calculations':
       return {
         ...state,
-        calculations: { ...state.calculations, [action.payload.key]: action.payload.value },
+        calculations: { ...state.calculations, [action.payload.key]: inputValue },
       };
     case 'calculations-intermediate':
       return {
         ...state,
-        calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: action.payload.value } },
+        calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: inputValue } },
       };
     case 'reset':
       return initialState;
