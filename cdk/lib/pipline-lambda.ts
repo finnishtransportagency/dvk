@@ -4,6 +4,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as nodejsfunction from "aws-cdk-lib/aws-lambda-nodejs";
 import * as iam from "aws-cdk-lib/aws-iam";
 import { CfnOutput } from "aws-cdk-lib";
+import * as ssm from "aws-cdk-lib/aws-ssm";
 
 export class PipelineLambda extends Construct {
   constructor(scope: Construct, id: string) {
@@ -11,6 +12,11 @@ export class PipelineLambda extends Construct {
 
     const importedSquatPipelineNameDev = cdk.Fn.importValue("SquatPipeline-dev");
     const importedSquatPipelineNameTest = cdk.Fn.importValue("SquatPipeline-test");
+    const storedGithubWebhookSecret = ssm.StringParameter.valueForStringParameter(
+      this,
+      "/github/WebhookSecret",
+      1
+    );
 
     const handler = new nodejsfunction.NodejsFunction(this, "WebhookHandler", {
       runtime: lambda.Runtime.NODEJS_16_X,
@@ -19,6 +25,7 @@ export class PipelineLambda extends Construct {
       environment: {
         DEV_PIPELINE_SQUAT: importedSquatPipelineNameDev,
         TEST_PIPELINE_SQUAT: importedSquatPipelineNameTest,
+        WEBHOOK_SECRET: storedGithubWebhookSecret,
       },
     });
 

@@ -1,7 +1,9 @@
 import { CodePipelineClient, StartPipelineExecutionCommand } from "@aws-sdk/client-codepipeline";
+import { createHmac } from "crypto";
 
 const devPipelineSquat = process.env.DEV_PIPELINE_SQUAT;
 const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
+const webhookSecret = process.env.WEBHOOK_SECRET;
 
 const handler = async function (event: any, context: any) {
   console.log("Full event", event);
@@ -13,10 +15,16 @@ const handler = async function (event: any, context: any) {
       body: `Cannot process http method: ${method}`,
     };
   }
-  //TODO: validoi github webhook pyynto kts. github headerit ja secret
-  validateSignature(event.headers);
 
-  const githubData = event.body;
+  const valid = validateSignature(event);
+  if (!valid) {
+    return {
+      statusCode: 403,
+      body: `Signature isn't valid`,
+    };
+  }
+
+  const githubData = JSON.parse(event.body);
   const branch = githubData.ref;
 
   if (!branch || !isDevTestProd(branch)) {
@@ -30,7 +38,7 @@ const handler = async function (event: any, context: any) {
 
   if (!commit) {
     return {
-      statusCode: 400,
+      statusCode: 404,
       body: `No commit found in payload`,
     };
   }
@@ -98,8 +106,10 @@ function isDevTestProd(branch: string) {
 
 function parseBranchName(branch: string) {
   const fullBranchName = branch.replace("refs/heads/", "").trim();
-  console.log("parsed branch name: ", fullBranchName.slice(0, fullBranchName.indexOf("/")));
-  return fullBranchName.slice(0, fullBranchName.indexOf("/"));
+  const endIndex = fullBranchName.indexOf("/");
+  const branchName = fullBranchName.slice(0, endIndex > 0 ? endIndex : undefined);
+  console.log("parsed branch name", branchName);
+  return branchName;
 }
 
 const ignoredTypes = ["txt", "md", "gitignore", "dockerignore", "pdf"];
@@ -141,9 +151,22 @@ type EventHeaders = {
   "x-github-hook-installation-target-type": string;
   "x-hub-signature": string;
 };
-function validateSignature(headers: EventHeaders) {
-  // TODO: validate signature
-  console.log("validating headers", headers);
+function validateSignature(event: any): boolean {
+  if (!webhookSecret) {
+    console.error("webhook secret is missing");
+    return false;
+  }
+  const body = JSON.parse(event.body);
+  const headers: EventHeaders = event.headers;
+  if (!body || !headers) {
+    console.error("error parsing body or headers");
+    return false;
+  }
+  const hmacHex = createHmac("sha256", webhookSecret).update(event.body).digest("hex");
+  const githubHex = headers["x-hub-signature-256"].split("sha256=").pop();
+  console.log("hmac hex header received: ", githubHex);
+
+  return hmacHex === githubHex;
 }
 
 export { handler };
