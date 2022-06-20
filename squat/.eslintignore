@@ -2,3 +2,4 @@ reportWebVitals.ts
 serviceWorkerRegistration.ts
 service-worker.ts
 build
+capacitor.config.ts
