@@ -96,6 +96,17 @@
         "insufficient-safety-margin": "[fi] Insufficient Safety Margin",
         "external-force-required": "[fi] External Force Required"
       }
+    },
+    "squatChart": {
+      "xAxisLabel": "Nopeus (kn)",
+      "yAxisLabel": "Squat (m)",
+      "levels": {
+        "bottom": "Pohja",
+        "underSweptDepth": "Haraustason alapuoleinen vesi"  ,
+        "netUKC": "Kölivara",
+        "otherMovement": "Muu liikevara",
+        "squat": "Painaumavara"
+      }
     }
   },
   "common": {
