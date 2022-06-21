@@ -17,12 +17,17 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonIcon,
 } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import { percentFormatter } from './Squat';
 import { vessels, vesselProfiles } from '../hooks/squatReducer';
 import { calculateDisplacement, calculateKB } from '../utils/calculations';
+import { warningOutline } from 'ionicons/icons';
 
 const zero = 0;
 
@@ -41,7 +46,7 @@ const Vessel: React.FC = () => {
           state.vessel.general.draught,
           state.vessel.general.blockCoefficient,
           state.environment.attribute.waterDensity
-        ).toString(),
+        ),
       },
     });
   }, [
@@ -56,15 +61,40 @@ const Vessel: React.FC = () => {
   useEffect(() => {
     dispatch({
       type: 'vessel-stability',
-      payload: { key: 'KB', value: calculateKB(state.vessel.general.draught).toFixed(2).toString() },
+      payload: { key: 'KB', value: calculateKB(state.vessel.general.draught) },
     });
   }, [state.vessel.general.draught, dispatch]);
 
   const updateAction = (event: CustomEvent, actionType: 'vessel-select' | 'vessel-general' | 'vessel-detailed' | 'vessel-stability') => {
     dispatch({
       type: actionType,
-      payload: { key: (event.target as HTMLInputElement).name, value: (event.detail as HTMLInputElement).value },
+      payload: {
+        key: (event.target as HTMLInputElement).name,
+        value: (event.target as HTMLInputElement).value,
+        elType: (event.target as HTMLInputElement).tagName,
+      },
     });
+  };
+
+  // Validations
+  const isTugUseRecommended = () => {
+    // If(Value(Bow_Thruster_Force.Text) > 0, If(Value(Minimum_Force_Required.Text) > 0, true, false))
+    if (state.calculations.forces.bowThrusterForce > 0 && state.calculations.forces.externalForceRequired > 0) {
+      return true;
+    }
+    return false;
+  };
+  const isThrusterUnableToLiftBow = () => {
+    // If(Value(Bow_Thruster_Force.Text) > 0, If((Length_BPP*0.25*(Wind_Force+Wave_Force))-(Length_BPP*0.75*Bow_Thruster*1.34/100)>0, true, false))
+    if (
+      state.calculations.forces.bowThrusterForce > 0 &&
+      state.vessel.general.lengthBPP * 0.25 * (state.calculations.forces.windForce + state.calculations.forces.waveForce) -
+        (state.vessel.general.lengthBPP * 0.75 * state.vessel.detailed.bowThruster * 1.34) / 100 >
+        0
+    ) {
+      return true;
+    }
+    return false;
   };
 
   return (
@@ -75,6 +105,31 @@ const Vessel: React.FC = () => {
       </IonCardHeader>
 
       <IonCardContent>
+        {isTugUseRecommended() && (
+          <IonGrid className="danger">
+            <IonRow className="ion-align-items-center">
+              <IonCol size="auto">
+                <IonIcon size="large" icon={warningOutline} />
+              </IonCol>
+              <IonCol>
+                <IonText>{t('homePage.squat.vessel.tug-use-recommended')}</IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
+        {isThrusterUnableToLiftBow() && (
+          <IonGrid className="danger">
+            <IonRow className="ion-align-items-center">
+              <IonCol size="auto">
+                <IonIcon size="large" icon={warningOutline} />
+              </IonCol>
+              <IonCol>
+                <IonText>{t('homePage.squat.vessel.thruster-unable-to-lift-bow')}</IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        )}
+
         <IonAccordionGroup>
           <IonAccordion value="vessel">
             <IonItem slot="header">

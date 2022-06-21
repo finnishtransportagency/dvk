@@ -101,25 +101,35 @@ export type State = {
       safetyMarginWindForce: number;
     };
   };
+  calculations: {
+    forces: {
+      relativeWindDirection: number;
+      relativeWindSpeed: number;
+      windForce: number;
+      waveForce: number;
+      bowThrusterForce: number;
+      remainingSafetyMargin: number;
+      externalForceRequired: number;
+      estimatedDriftAngle: number;
+      estimatedBreadth: number;
+    };
+    squat: {
+      heelDueWind: number;
+      constantHeelDuringTurn: number;
+      correctedDraught: number;
+      correctedDraughtDuringTurn: number;
+      UKCVesselMotions: number[][];
+      UKCStraightCourse: number[];
+      UKCDuringTurn: number[];
+      squatBarrass: number;
+      squatHG: number;
+      squatHGListed: number;
+    };
+    intermediate: {
+      froudeNumber: number;
+    };
+  };
 };
-
-export type Action =
-  | {
-      type:
-        | 'vessel-select'
-        | 'vessel-general'
-        | 'vessel-detailed'
-        | 'vessel-stability'
-        | 'environment-weather'
-        | 'environment-fairway'
-        | 'environment-vessel'
-        | 'environment-attribute';
-      payload: {
-        key: string;
-        value: string | number[];
-      };
-    }
-  | { type: 'reset' };
 
 export const initialState = {
   vessel: {
@@ -173,34 +183,109 @@ export const initialState = {
       safetyMarginWindForce: 0.25,
     },
   },
+  calculations: {
+    forces: {
+      relativeWindDirection: 0,
+      relativeWindSpeed: 0,
+      windForce: 0,
+      waveForce: 0,
+      bowThrusterForce: 0,
+      remainingSafetyMargin: 0,
+      externalForceRequired: 0,
+      estimatedDriftAngle: 0,
+      estimatedBreadth: 0,
+    },
+    squat: {
+      heelDueWind: 0,
+      constantHeelDuringTurn: 0,
+      correctedDraught: 0,
+      correctedDraughtDuringTurn: 0,
+      UKCVesselMotions: [
+        [0, 0],
+        [0, 0],
+      ],
+      UKCStraightCourse: [0, 0],
+      UKCDuringTurn: [0, 0],
+      squatBarrass: 0,
+      squatHG: 0,
+      squatHGListed: 0,
+    },
+    intermediate: {
+      froudeNumber: 0,
+    },
+  },
 };
 
+export type Action =
+  | {
+      type:
+        | 'vessel-select'
+        | 'vessel-general'
+        | 'vessel-detailed'
+        | 'vessel-stability'
+        | 'environment-weather'
+        | 'environment-fairway'
+        | 'environment-vessel'
+        | 'environment-attribute'
+        | 'calculations'
+        | 'calculations-intermediate';
+      payload: {
+        key: string;
+        value: string | number | number[] | object;
+        elType?: string;
+      };
+    }
+  | { type: 'reset' };
+
 export const SquatReducer = (state: State, action: Action) => {
+  // Sort out correct value type from input element
+  let inputValue: string | number | number[] | object = '';
+  if (action.type !== 'reset') {
+    switch (action.payload.elType?.toLocaleLowerCase()) {
+      case 'ion-select':
+      case 'object':
+        inputValue = action.payload.value;
+        break;
+      default:
+        inputValue = Number(action.payload.value);
+    }
+  }
+  // Return updated state
   switch (action.type) {
     case 'vessel-select':
-      return { ...state, vessel: { ...state.vessel, [action.payload.key]: action.payload.value } };
+      return { ...state, vessel: { ...state.vessel, [action.payload.key]: inputValue } };
     case 'vessel-general':
-      return { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: inputValue } } };
     case 'vessel-detailed':
-      return { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: inputValue } } };
     case 'vessel-stability':
-      return { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: action.payload.value } } };
+      return { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: inputValue } } };
     case 'environment-weather':
       return {
         ...state,
-        environment: { ...state.environment, weather: { ...state.environment.weather, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, weather: { ...state.environment.weather, [action.payload.key]: inputValue } },
       };
     case 'environment-fairway':
       return {
         ...state,
-        environment: { ...state.environment, fairway: { ...state.environment.fairway, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, fairway: { ...state.environment.fairway, [action.payload.key]: inputValue } },
       };
     case 'environment-vessel':
-      return { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: action.payload.value } } };
+      return { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: inputValue } } };
     case 'environment-attribute':
       return {
         ...state,
-        environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: action.payload.value } },
+        environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: inputValue } },
+      };
+    case 'calculations':
+      return {
+        ...state,
+        calculations: { ...state.calculations, [action.payload.key]: inputValue },
+      };
+    case 'calculations-intermediate':
+      return {
+        ...state,
+        calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: inputValue } },
       };
     case 'reset':
       return initialState;
