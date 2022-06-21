@@ -29,7 +29,7 @@ const SquatChart: React.FC = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const calculateSquat = (speed: number) => {
+    const calculateSquat = (speed: number, C0Coefficient: number) => {
       const constantHeelDuringTurn = calculateHeelDuringTurn(
         state.environment.vessel.vesselSpeed,
         state.environment.vessel.turningRadius,
@@ -56,7 +56,8 @@ const SquatChart: React.FC = () => {
         state.environment.fairway.slopeScale,
         state.environment.fairway.slopeHeight,
         speed,
-        correctedDraughtDuringTurn
+        correctedDraughtDuringTurn,
+        C0Coefficient
       );
 
       return squatHG;
@@ -69,7 +70,7 @@ const SquatChart: React.FC = () => {
       const marginTop = 50;
       const marginBottom = 50;
 
-      const yDomainBottom = Number(state.environment.fairway.waterLevel) - Number(state.vessel.general.draught);
+      const yDomainBottom = Number(state.environment.fairway.sweptDepth) + 1 - Number(state.vessel.general.draught);
       const yDomainSweptDepth = Number(state.environment.fairway.sweptDepth) - Number(state.vessel.general.draught);
       const yDomainMax = yDomainBottom + 1;
 
@@ -209,24 +210,24 @@ const SquatChart: React.FC = () => {
         .attr('y', 20)
         .text(`${t('homePage.squatChart.yAxisLabel')}`);
 
-      /* Add squat line */
-      const dataPoints: Array<{ speed: number; squat: number }> = [];
-      const speedStep = 1;
-
-      for (let i = minSpeed; i < maxSpeed; i += speedStep) {
-        dataPoints.push({ speed: i, squat: calculateSquat(i) });
-      }
-
-      dataPoints.push({ speed: maxSpeed, squat: calculateSquat(maxSpeed) });
+      /* Add squat lines */
 
       /* Squat c0 = 2.4 */
-      const data: Array<[number, number]> = dataPoints.map((item) => {
+      const dataPoints24: Array<{ speed: number; squat: number }> = [];
+
+      for (let i = minSpeed; i < maxSpeed; i += 1) {
+        dataPoints24.push({ speed: i, squat: calculateSquat(i, 2.4) });
+      }
+
+      dataPoints24.push({ speed: maxSpeed, squat: calculateSquat(maxSpeed, 2.4) });
+
+      const data24: Array<[number, number]> = dataPoints24.map((item) => {
         return [item.speed, item.squat];
       });
 
       svg
         .append('path')
-        .datum(data)
+        .datum(data24)
         .attr(
           'd',
           d3
@@ -244,8 +245,16 @@ const SquatChart: React.FC = () => {
         .attr('fill', 'none');
 
       /* Squat c0 = 2.0 */
-      const data20: Array<[number, number]> = dataPoints.map((item) => {
-        return [item.speed, (item.squat / 2.4) * 2.0];
+      const dataPoints20: Array<{ speed: number; squat: number }> = [];
+
+      for (let i = minSpeed; i < maxSpeed; i += 1) {
+        dataPoints20.push({ speed: i, squat: calculateSquat(i, 2.0) });
+      }
+
+      dataPoints20.push({ speed: maxSpeed, squat: calculateSquat(maxSpeed, 2.0) });
+
+      const data20: Array<[number, number]> = dataPoints20.map((item) => {
+        return [item.speed, item.squat];
       });
 
       svg
@@ -274,10 +283,7 @@ const SquatChart: React.FC = () => {
       vesselSpeed = 0;
     }
 
-    if (
-      Number(state.environment.fairway.sweptDepth) > 1 &&
-      Number(state.environment.fairway.waterLevel) > Number(state.environment.fairway.sweptDepth)
-    ) {
+    if (Number(state.vessel.general.draught) > 0 && Number(state.environment.fairway.sweptDepth) > Number(state.vessel.general.draught)) {
       buildGraph(vesselSpeed, vesselSpeed + 10);
     } else {
       const svg = d3.select(ref.current);
