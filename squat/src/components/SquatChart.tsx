@@ -268,17 +268,17 @@ const SquatChart: React.FC = () => {
         .attr('fill', 'none');
     };
 
-    let minSpeed = state.environment.vessel.vesselSpeed;
+    let vesselSpeed = state.environment.vessel.vesselSpeed;
 
-    if (!minSpeed) {
-      minSpeed = 0;
+    if (!vesselSpeed) {
+      vesselSpeed = 0;
     }
 
     if (
       Number(state.environment.fairway.sweptDepth) > 1 &&
       Number(state.environment.fairway.waterLevel) > Number(state.environment.fairway.sweptDepth)
     ) {
-      buildGraph(minSpeed, minSpeed + 10);
+      buildGraph(vesselSpeed, vesselSpeed + 10);
     } else {
       const svg = d3.select(ref.current);
       /* Clear svg */
