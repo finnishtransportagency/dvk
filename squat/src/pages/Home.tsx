@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonFooter, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
@@ -28,6 +28,14 @@ const Home: React.FC = () => {
         <Squat />
         <SquatChart />
       </IonContent>
+      {/*-- Fade Footer --*/}
+      <IonFooter collapse="fade" className="small">
+        <IonToolbar>
+          <IonTitle size="small" slot="end">
+            <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+          </IonTitle>
+        </IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 };

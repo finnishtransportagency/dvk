@@ -30,7 +30,9 @@
         "stability": "[fi] Stability",
         "KG": "[fi] KG",
         "GM": "[fi] GM",
-        "KB": "[fi] KB"
+        "KB": "[fi] KB",
+        "tug-use-recommended": "[fi] Tug Use Is Recommended",
+        "thruster-unable-to-lift-bow": "[fi] Thruster Is Unable To Lift Bow When Running Optimal Speed Astern"
       },
       "environment": {
         "title": "Ympäristö",
@@ -64,7 +66,8 @@
         "set-density-of-water": "Aseta veden tiheys",
         "required-UKC": "[fi] Required UKC",
         "safety-margin-wind-force": "[fi] Safety Margin Wind Force",
-        "reliability-issue-block-coefficient": "[fi] Reliability Issue - Block Coefficient"
+        "reliability-issue-block-coefficient": "[fi] Reliability Issue - Block Coefficient",
+        "reliability-issue-froude-number": "[fi] Reliability Issue - Froude Number"
       },
       "calculations": {
         "title": "Laskenta",
@@ -89,7 +92,9 @@
         "UKC-under-required-minimum": "[fi] UKC Under Required Minimum",
         "drift": "[fi] Drift",
         "estimated-drift-angle": "[fi] Estimated Drift Angle",
-        "estimated-vessel-breadth-due-drift": "[fi] Estimated Vessel Breadth Due Drift"
+        "estimated-vessel-breadth-due-drift": "[fi] Estimated Vessel Breadth Due Drift",
+        "insufficient-safety-margin": "[fi] Insufficient Safety Margin",
+        "external-force-required": "[fi] External Force Required"
       }
     },
     "squatChart": {

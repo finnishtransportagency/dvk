@@ -45,6 +45,7 @@ const Environment: React.FC = () => {
       payload: {
         key: 'waveLength',
         value: calculateWaveLengthProperties(state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth),
+        elType: 'object',
       },
     });
   }, [state.environment.weather.wavePeriod, state.environment.fairway.sweptDepth, dispatch]);
@@ -59,6 +60,7 @@ const Environment: React.FC = () => {
           state.environment.weather.waveHeight,
           state.environment.weather.waveLength
         ),
+        elType: 'object',
       },
     });
   }, [
@@ -75,7 +77,11 @@ const Environment: React.FC = () => {
   ) => {
     dispatch({
       type: actionType,
-      payload: { key: (event.target as HTMLInputElement).name, value: (event.detail as HTMLInputElement).value },
+      payload: {
+        key: (event.target as HTMLInputElement).name,
+        value: (event.detail as HTMLInputElement).value,
+        elType: (event.target as HTMLInputElement).tagName,
+      },
     });
   };
 
@@ -254,11 +260,10 @@ const Environment: React.FC = () => {
                 <IonLabel position="stacked">{t('homePage.squat.environment.water-level')} (m)</IonLabel>
                 <IonInput
                   type="number"
-                  min="0"
-                  step="0.01"
+                  step="0.1"
                   name="waterLevel"
                   value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
-                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   onIonChange={(e) => updateAction(e, 'environment-fairway')}
                 />
               </IonItem>

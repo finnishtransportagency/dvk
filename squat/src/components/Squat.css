@@ -11,3 +11,7 @@ ion-grid.danger ion-icon {
 ion-grid.danger ion-text {
   color: rgb(36, 34, 34);
 }
+
+ion-icon {
+  pointer-events: none;
+}

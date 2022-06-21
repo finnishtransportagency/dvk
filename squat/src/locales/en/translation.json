@@ -30,7 +30,9 @@
         "stability": "Stability",
         "KG": "KG",
         "GM": "GM",
-        "KB": "KB"
+        "KB": "KB",
+        "tug-use-recommended": "Tug Use Is Recommended",
+        "thruster-unable-to-lift-bow": "Thruster Is Unable To Lift Bow When Running Optimal Speed Astern"
       },
       "environment": {
         "title": "Environment",
@@ -64,7 +66,8 @@
         "set-density-of-water": "Set Density of Water",
         "required-UKC": "Required UKC",
         "safety-margin-wind-force": "Safety Margin Wind Force",
-        "reliability-issue-block-coefficient": "Reliability Issue - Block Coefficient"
+        "reliability-issue-block-coefficient": "Reliability Issue - Block Coefficient",
+        "reliability-issue-froude-number": "[fi] Reliability Issue - Froude Number"
       },
       "calculations": {
         "title": "Calculations",
@@ -86,10 +89,12 @@
         "UKC-vessel-motions": "UKC Vessel Motions",
         "UKC-straight-course": "UKC Straight Course",
         "UKC-during-turn": "UKC During Turn",
-        "UKC-under-required-minimum": "[fi] UKC Under Required Minimum",
+        "UKC-under-required-minimum": "UKC Under Required Minimum",
         "drift": "Drift",
         "estimated-drift-angle": "Estimated Drift Angle",
-        "estimated-vessel-breadth-due-drift": "Estimated Vessel Breadth Due Drift"
+        "estimated-vessel-breadth-due-drift": "Estimated Vessel Breadth Due Drift",
+        "insufficient-safety-margin": "Insufficient Safety Margin",
+        "external-force-required": "External Force Required"
       }
     },
     "squatChart": {
