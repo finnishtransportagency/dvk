@@ -4,12 +4,13 @@ This is a blank project for CDK development with TypeScript.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-## Installing stacks
+## Deploying stacks
 
 Login to AWS account using `aws sso login` command. Setup your AWS_PROFILE environment variable to correspond your login credentials.
 Run `npm run postlogin` to synchonize CDK credentials.
 
-Setup environment variable ENVIRONMENT to correspond your installing target.
+Setup environment variable ENVIRONMENT to correspond your installing target. You can list available stacks using `cdk ls` command.
+There is also predefined deploy commands configured for npm run scripts.
 ## Useful commands
 
 * `npm run login`   AWS SSO login and CDK credential synchronization
