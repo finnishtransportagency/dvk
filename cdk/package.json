@@ -11,8 +11,8 @@
     "cdk": "cdk",
     "login": "aws sso login",
     "postlogin": "cdk-sso-sync $AWS_PROFILE",
-    "deploy:image": "cdk deploy DvkBuildImageStack --require-approval never",
-    "deploy:lambda": "cdk deploy DvkPipelineLambdaStack --require-approval never"
+    "deploy:image": "cdk --profile=$AWS_PROFILE deploy DvkBuildImageStack --require-approval never",
+    "deploy:lambda": "cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaStack --require-approval never"
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",

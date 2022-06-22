@@ -11,10 +11,10 @@
     "cdk": "cdk",
     "login": "aws sso login",
     "postlogin": "cdk-sso-sync $AWS_PROFILE",
-    "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk deploy SquatPipelineStack --require-approval never",
-    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk deploy SquatPipelineStack --require-approval never",
-    "deploy:site:dev": "cross-env ENVIRONMENT=dev cdk deploy SquatSiteStack --require-approval never",
-    "deploy:site:test": "cross-env ENVIRONMENT=test cdk deploy SquatSiteStack --require-approval never"
+    "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy SquatPipelineStack --require-approval never",
+    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy SquatPipelineStack --require-approval never",
+    "deploy:site:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
+    "deploy:site:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never"
   },
   "devDependencies": {
     "@types/jest": "^27.5.0",
