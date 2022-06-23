@@ -70,9 +70,16 @@ const SquatChart: React.FC = () => {
       const marginTop = 50;
       const marginBottom = 50;
 
-      const yDomainBottom = Number(state.environment.fairway.sweptDepth) + 1 - Number(state.vessel.general.draught);
-      const yDomainSweptDepth = Number(state.environment.fairway.sweptDepth) - Number(state.vessel.general.draught);
-      const yDomainMax = yDomainBottom + 1;
+      const yDomainSweptDepth =
+        Number(state.environment.fairway.sweptDepth) + Number(state.environment.fairway.waterLevel) - Number(state.vessel.general.draught);
+
+      /* TODO: Use water depth in state when available */
+      const yDomainWaterDepth = yDomainSweptDepth + 0.5;
+
+      /* TODO: Get from calculation result if available */
+      const yDomainOtherMovementHeight = 0.5;
+
+      const bottomLayerHeightPx = 20;
 
       const xScale = d3
         .scaleLinear()
@@ -82,8 +89,8 @@ const SquatChart: React.FC = () => {
 
       const yScale = d3
         .scaleLinear()
-        .domain([0, yDomainMax])
-        .range([0, height - marginTop - marginBottom]);
+        .domain([0, yDomainWaterDepth])
+        .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
       const yAxisGenerator = d3.axisLeft(yScale);
 
       const svg = d3.select(ref.current);
@@ -112,20 +119,22 @@ const SquatChart: React.FC = () => {
       };
 
       addChartLayer({
-        y: marginTop + yScale(yDomainBottom),
-        height: yScale(yDomainMax - yDomainBottom),
+        y: marginTop + yScale(yDomainWaterDepth),
+        height: 20,
         fillColor: '#000000',
         label: t('homePage.squatChart.levels.bottom'),
         labelColor: '#ffffff',
       });
 
-      addChartLayer({
-        y: marginTop + yScale(yDomainSweptDepth),
-        height: yScale(yDomainBottom - yDomainSweptDepth),
-        fillColor: '#ffcccc',
-        label: t('homePage.squatChart.levels.underSweptDepth'),
-        labelColor: '#000000',
-      });
+      if (yDomainWaterDepth > yDomainSweptDepth) {
+        addChartLayer({
+          y: marginTop + yScale(yDomainSweptDepth),
+          height: yScale(yDomainWaterDepth - yDomainSweptDepth),
+          fillColor: '#ffcccc',
+          label: t('homePage.squatChart.levels.underSweptDepth'),
+          labelColor: '#000000',
+        });
+      }
 
       addChartLayer({
         y: marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC),
@@ -136,8 +145,8 @@ const SquatChart: React.FC = () => {
       });
 
       addChartLayer({
-        y: marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - 0.6),
-        height: yScale(0.6),
+        y: marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
+        height: yScale(yDomainOtherMovementHeight),
         fillColor: '#cc99ff',
         label: t('homePage.squatChart.levels.otherMovement'),
         labelColor: '#000000',
@@ -145,7 +154,7 @@ const SquatChart: React.FC = () => {
 
       addChartLayer({
         y: marginTop,
-        height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - 0.6),
+        height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
         fillColor: '#ccffff',
         label: t('homePage.squatChart.levels.squat'),
         labelColor: '#000000',
