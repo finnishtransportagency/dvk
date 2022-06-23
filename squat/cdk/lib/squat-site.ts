@@ -93,7 +93,7 @@ export class SquatSite extends Construct {
       originRequestPolicy: requestPolicy,
     };
     const additionalBehaviors: Record<string, BehaviorOptions> = {
-      '/squat/*': squatBehavior,
+      '/squat*': squatBehavior,
     };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
