@@ -4,12 +4,22 @@ import * as cdk from 'aws-cdk-lib';
 import { DvkBuildImageStack } from '../lib/dvk-build-image-stack';
 import { App, StackProps } from 'aws-cdk-lib';
 import { PipelineLambda } from '../lib/pipeline-lambda';
+import Config from '../lib/config';
+import { DvkPipeline } from '../lib/dvk-pipeline';
 
 class DvkPipelineLambdaStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
     super(parent, id, props);
 
     new PipelineLambda(this, 'DvkPipelineLambda');
+  }
+}
+
+class DvkPipelineStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps, env: string) {
+    super(parent, id, props);
+
+    new DvkPipeline(this, 'DvkPipeline', { env });
   }
 }
 
@@ -30,3 +40,19 @@ new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
   },
   stackName: 'DvkPipelineLambdaStack',
 });
+
+const appEnv = Config.getEnvironment();
+console.log('app environment:', appEnv);
+
+new DvkPipelineStack(
+  app,
+  'DvkPipelineStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: 'eu-west-1',
+    },
+    stackName: 'DvkPipelineStack-' + appEnv,
+  },
+  appEnv
+);

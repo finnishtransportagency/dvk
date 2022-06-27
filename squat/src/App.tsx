@@ -39,16 +39,7 @@ const App: React.FC = () => {
     <SquatContext.Provider value={providerState}>
       <IonApp>
         <IonReactRouter>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/fi/">
-            <Home />
-          </Route>
-          <Route exact path="/sv/">
-            <Home />
-          </Route>
-          <Route exact path="/en/">
+          <Route path="*">
             <Home />
           </Route>
         </IonReactRouter>

@@ -5,6 +5,7 @@ import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CfnOutput, Duration, Stack } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import { BehaviorOptions } from 'aws-cdk-lib/aws-cloudfront';
 
 interface SquatSiteProps {
   domainName: string;
@@ -24,25 +25,43 @@ export class SquatSite extends Construct {
 
     new CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
 
-    // Content bucket
-    const siteBucket = new s3.Bucket(this, 'SiteBucket', {
-      bucketName: siteDomain,
+    // Squat bucket
+    const squatBucket = new s3.Bucket(this, 'SiteBucket', {
+      bucketName: `squat.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
     });
 
     // Grant access to cloudfront
-    siteBucket.addToResourcePolicy(
+    squatBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject'],
-        resources: [siteBucket.arnForObjects('*')],
+        resources: [squatBucket.arnForObjects('*')],
         principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
       })
     );
     new CfnOutput(this, 'Bucket', {
-      value: siteBucket.bucketName,
+      value: squatBucket.bucketName,
       description: 'The name of Squat app S3',
       exportName: 'SquatBucket' + props.env,
+    });
+
+    const dvkBucket = new s3.Bucket(this, 'DVKBucket', {
+      bucketName: `dvk.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
+    dvkBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [dvkBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    new CfnOutput(this, 'DVK Bucket name', {
+      value: dvkBucket.bucketName,
+      description: 'The name of DVK app S3',
+      exportName: 'DVKBucket' + props.env,
     });
 
     // TLS certificate
@@ -59,7 +78,23 @@ export class SquatSite extends Construct {
       comment: 'Allow query strings',
       queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
     });
-
+    const squatBehavior = {
+      origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      originRequestPolicy: requestPolicy,
+    };
+    const dvkBehavior = {
+      origin: new cloudfront_origins.S3Origin(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      originRequestPolicy: requestPolicy,
+    };
+    const additionalBehaviors: Record<string, BehaviorOptions> = {
+      '/squat*': squatBehavior,
+    };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       certificate,
@@ -70,17 +105,12 @@ export class SquatSite extends Construct {
         {
           httpStatus: 403,
           responseHttpStatus: 403,
-          responsePagePath: '/error.html',
+          responsePagePath: '/index.html',
           ttl: Duration.minutes(30),
         },
       ],
-      defaultBehavior: {
-        origin: new cloudfront_origins.S3Origin(siteBucket, { originAccessIdentity: cloudfrontOAI }),
-        compress: true,
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-        originRequestPolicy: requestPolicy,
-      },
+      additionalBehaviors,
+      defaultBehavior: dvkBehavior,
     });
 
     new CfnOutput(this, 'DistributionId', {

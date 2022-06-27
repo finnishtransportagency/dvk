@@ -8,7 +8,7 @@ import Config from '../lib/config';
 class SquatSiteStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps, env: string) {
     super(parent, id, props);
-    const cloudfrontCertificateArn = new Config(this).getStringParameter('CloudFrontCertificateArn');
+    const cloudfrontCertificateArn = Config.isPermanentEnvironment() ? new Config(this).getStringParameter('CloudFrontCertificateArn') : undefined;
     new SquatSite(this, 'SquatSite', {
       domainName: env === 'prod' ? 'vaylapilvi.fi' : 'testivaylapilvi.fi',
       siteSubDomain: env === 'prod' ? 'dvk' : 'dvk' + env,
@@ -28,7 +28,6 @@ class SquatPipelineStack extends cdk.Stack {
 /* get the user set application environment */
 const appEnv = Config.getEnvironment();
 console.log('app environment:', appEnv);
-if (!appEnv) process.exit(-1);
 
 const app = new cdk.App();
 
