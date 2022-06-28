@@ -15,6 +15,10 @@
         "netUKC": "[sv] Kölivara",
         "otherMovement": "[sv] Muu liikevara",
         "squat": "[sv] Painaumavara"
+      },
+      "legends": {
+        "squat20": "[sv] 2,0 squat smax",
+        "squat24": "[sv] 2,4 squat smax"
       }
     }
   }

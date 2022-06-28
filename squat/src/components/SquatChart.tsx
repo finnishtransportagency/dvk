@@ -66,9 +66,12 @@ const SquatChart: React.FC = () => {
     const buildGraph = (minSpeed: number, maxSpeed: number) => {
       const height = Math.round(width / 2);
       const marginLeft = 50;
-      const marginRight = 50;
-      const marginTop = 50;
+      const marginRight = 30;
+      const marginTop = 30;
       const marginBottom = 50;
+
+      const squat20Color = '#0000ff';
+      const squat24Color = '#ff0000';
 
       const yDomainSweptDepth =
         Number(state.environment.fairway.sweptDepth) + Number(state.environment.fairway.waterLevel) - Number(state.vessel.general.draught);
@@ -98,6 +101,34 @@ const SquatChart: React.FC = () => {
 
       /* Clear svg */
       svg.selectAll('*').remove();
+
+      /* Add legends */
+      const legend20 = svg.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+      legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat20Color);
+      legend20
+        .append('text')
+        .text(t('homePage.squatChart.legends.squat20'))
+        .attr('text-anchor', 'left')
+        .attr('dominant-baseline', 'middle')
+        .attr('x', 15)
+        .attr('y', 10 / 2)
+        .attr('font-size', '10px')
+        .attr('fill', '#000000');
+
+      const box = legend20.node()?.getBBox();
+      const legend20Width = box ? box.width : 0;
+
+      const legend24 = svg.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
+      legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat24Color);
+      legend24
+        .append('text')
+        .text(t('homePage.squatChart.legends.squat24'))
+        .attr('text-anchor', 'left')
+        .attr('dominant-baseline', 'middle')
+        .attr('x', 15)
+        .attr('y', 10 / 2)
+        .attr('font-size', '10px')
+        .attr('fill', '#000000');
 
       /* Add chart layers */
       const addChartLayer = (attr: { y: number; height: number; fillColor: string; label: string; labelColor: string }) => {
@@ -219,8 +250,8 @@ const SquatChart: React.FC = () => {
           .attr('fill', 'none');
       };
 
-      addSquatLine(2.0, '#0000ff');
-      addSquatLine(2.4, '#ff0000');
+      addSquatLine(2.0, squat20Color);
+      addSquatLine(2.4, squat24Color);
     };
 
     let vesselSpeed = state.environment.vessel.vesselSpeed;
