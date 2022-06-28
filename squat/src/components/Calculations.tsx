@@ -315,8 +315,8 @@ const Calculations: React.FC = () => {
         {isUKCUnderMinimum() && (
           <IonGrid className="danger">
             <IonRow className="ion-align-items-center">
-              <IonCol size="auto">
-                <IonIcon size="large" icon={warningOutline} />
+              <IonCol size="auto" className="icon">
+                <IonIcon icon={warningOutline} color="danger" />
               </IonCol>
               <IonCol>
                 <IonText>{t('homePage.squat.calculations.UKC-under-required-minimum')}</IonText>

@@ -130,8 +130,8 @@ const Environment: React.FC = () => {
         {isReliabilityAnIssue() && (
           <IonGrid className="danger">
             <IonRow className="ion-align-items-center">
-              <IonCol size="auto">
-                <IonIcon size="large" icon={warningOutline} />
+              <IonCol size="auto" className="icon">
+                <IonIcon icon={warningOutline} color="danger" />
               </IonCol>
               <IonCol>
                 <IonText>{isReliabilityAnIssue()}</IonText>
