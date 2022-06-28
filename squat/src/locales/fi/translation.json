@@ -99,6 +99,8 @@
     }
   },
   "common": {
-    "tonnes": "tonnia"
+    "tonnes": "tonnia",
+    "required": "Pakollinen",
+    "value-out-of-range": "Virheellinen arvo"
   }
 }

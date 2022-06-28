@@ -99,6 +99,8 @@
     }
   },
   "common": {
-    "tonnes": "tonnes"
+    "tonnes": "tonnes",
+    "required": "Required",
+    "value-out-of-range": "Out of range"
   }
 }
