@@ -14,9 +14,12 @@
     "deploy:image": "cdk --profile=$AWS_PROFILE deploy DvkBuildImageStack --require-approval never",
     "deploy:lambda": "cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaStack --require-approval never",
     "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy DvkPipelineStack --require-approval never",
-    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack --require-approval never"
+    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack --require-approval never",
+    "generate": "graphql-codegen"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.5.1",
     "@types/jest": "^27.5.0",
     "@types/node": "10.17.27",
     "@types/prettier": "2.6.0",
@@ -30,10 +33,12 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
+    "@aws-cdk/aws-appsync-alpha": "2.29.1-alpha.0",
     "@aws-sdk/client-codepipeline": "^3.109.0",
     "@types/aws-lambda": "^8.10.101",
-    "aws-cdk-lib": "2.27.0",
+    "aws-cdk-lib": "2.29.1",
     "constructs": "^10.0.0",
+    "graphql": "^16.5.0",
     "pino": "^8.1.0",
     "source-map-support": "^0.5.21"
   }

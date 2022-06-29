@@ -7,7 +7,7 @@ type Query {
 }
 
 type Fairway {
-  id: ID
+  id: Int!
   nameFI: String!
   nameSV: String
 }

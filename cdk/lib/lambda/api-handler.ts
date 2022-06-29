@@ -1,8 +1,11 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
+import { Fairway } from '../../graphql/generated';
 import { log } from './logger';
 
 export type LambdaResult = {
-  data: unknown;
+  data: {
+    result: Fairway[];
+  };
 };
 
 export type AppSyncEventArguments = unknown;
@@ -11,7 +14,6 @@ export async function handleEvent(event: AppSyncResolverEvent<AppSyncEventArgume
   log.info(`handleEvent(${event.info.fieldName})`);
   return {
     data: {
-      __typename: 'Fairway',
       result: [
         {
           id: 4927,
