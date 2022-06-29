@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG } from '../utils/calculations';
+import './SquatChart.css';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation();
@@ -26,6 +27,9 @@ const SquatChart: React.FC = () => {
       };
     };
     window.addEventListener('resize', handleResize());
+    if (ref != null && ref.current != null) {
+      setWidth(ref.current.clientWidth);
+    }
   }, []);
 
   useLayoutEffect(() => {
@@ -269,7 +273,12 @@ const SquatChart: React.FC = () => {
     }
   }, [state, width, t]);
 
-  return <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />;
+  return (
+    <>
+      <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
+      <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
+    </>
+  );
 };
 
 export default SquatChart;

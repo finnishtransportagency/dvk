@@ -98,6 +98,7 @@
       }
     },
     "squatChart": {
+      "heading": "Aluksen squat nopeuden funktiona",
       "xAxisLabel": "Nopeus (kn)",
       "yAxisLabel": "Squat (m)",
       "levels": {
