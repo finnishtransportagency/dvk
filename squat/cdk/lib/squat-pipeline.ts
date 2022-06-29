@@ -27,7 +27,7 @@ export class SquatPipeline extends Construct {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'DVK-62',
+      branch: this.getBranch(props.env),
       trigger: GitHubTrigger.NONE,
     });
 
