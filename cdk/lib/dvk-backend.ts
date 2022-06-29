@@ -8,6 +8,7 @@ export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
     const backendLambda = new NodejsFunction(this, 'APIHandler' + env, {
+      functionName: 'dvk-graphql-backend-' + env,
       runtime: lambda.Runtime.NODEJS_16_X,
       entry: 'lib/lambda/api-handler.ts',
       handler: 'handleEvent',

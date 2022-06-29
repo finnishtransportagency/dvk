@@ -1,7 +1,7 @@
 import pino, { LogFn } from 'pino';
 
 const level = process.env.LOG_LEVEL ? process.env.LOG_LEVEL : 'info';
-const pretty = process.env.USE_PINO_PRETTY == 'true';
+const pretty = process.env.USE_PINO_PRETTY === 'true';
 
 const reportError = (error: Error): void => {
   console.warn(error);
@@ -14,7 +14,7 @@ function getLogger(tag: string) {
       target: 'pino-pretty',
       options: {
         colorize: true,
-        messageFormat: '{tag} {uid} {msg}',
+        messageFormat: '{tag} {msg}',
         ignore: 'tag,uid',
       },
     };
@@ -35,6 +35,7 @@ function getLogger(tag: string) {
     },
     timestamp: () => `,"time":"${new Date(Date.now()).toISOString()}"`,
     hooks: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       logMethod(inputArgs: any[], method: LogFn) {
         for (const inputArg of inputArgs) {
           if (inputArg instanceof Error) {
