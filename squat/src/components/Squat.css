@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;display=swap');
 
-h1, h2, h3, h4, h5, h6, .sc-ion-input-md-h, ion-select, ion-note {
-  font-family: "Exo 2", sans-serif;
+body {
+  --ion-font-family: "Exo 2", sans-serif;
 }
+
 ion-text h1 {
   font-size: 2.2rem;
 }
@@ -65,11 +66,6 @@ ion-item.item.only-label {
   --padding-start: 0;
 }
 
-ion-item.item.only-label ion-label {
-  font-family: "Exo 2", sans-serif;
-  margin: 0;
-}
-
 ion-item.item.required-label {
   --inner-padding-start: 0;
   --inner-padding-end: 5px;
@@ -82,8 +78,7 @@ ion-item.item.required-label {
   right: 0;
 }
 
-ion-item.item.required-label ion-label {
-  font-family: "Exo 2", sans-serif;
+ion-item.item.only-label ion-label, ion-item.item.required-label ion-label {
   margin: 0;
 }
 
@@ -122,7 +117,6 @@ ion-note.input-error ion-icon {
   max-width: none;
   margin-left: 0;
   overflow: visible;
-  font-family: "Exo 2", sans-serif;
 }
 
 .native-input.sc-ion-input-md {
@@ -132,5 +126,4 @@ ion-note.input-error ion-icon {
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;
-  font-family: "Exo 2", sans-serif;
 }
