@@ -1,6 +1,5 @@
 import React from 'react';
 import './Squat.css';
-import { useTranslation } from 'react-i18next';
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
 import { PinFormatter } from '@ionic/core/dist/types/components/range/range-interface';
 
@@ -17,8 +16,6 @@ export const decimalFormatter: PinFormatter = (value: number) =>
   `${value.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 2 })}`;
 
 const Squat: React.FC = () => {
-  const { t } = useTranslation();
-
   return (
     <>
       <TitleBar />
