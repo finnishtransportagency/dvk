@@ -77,8 +77,7 @@ const SquatChart: React.FC = () => {
       const squat20Color = '#0000ff';
       const squat24Color = '#ff0000';
 
-      const yDomainSweptDepth =
-        Number(state.environment.fairway.sweptDepth) + Number(state.environment.fairway.waterLevel) - Number(state.vessel.general.draught);
+      const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel - state.vessel.general.draught;
 
       /* TODO: Use water depth in state when available */
       const yDomainWaterDepth = yDomainSweptDepth + 0.5;
@@ -264,7 +263,7 @@ const SquatChart: React.FC = () => {
       vesselSpeed = 0;
     }
 
-    if (Number(state.vessel.general.draught) > 0 && Number(state.environment.fairway.sweptDepth) > Number(state.vessel.general.draught)) {
+    if (state.vessel.general.draught > 0 && state.environment.fairway.sweptDepth > state.vessel.general.draught) {
       buildGraph(vesselSpeed, vesselSpeed + 10);
     } else {
       const svg = d3.select(ref.current);
