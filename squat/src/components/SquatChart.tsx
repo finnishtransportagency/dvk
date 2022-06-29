@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
-import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG } from '../utils/calculations';
+import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG, calculateFroudeNumber } from '../utils/calculations';
 import './SquatChart.css';
 
 const SquatChart: React.FC = () => {
@@ -67,7 +67,7 @@ const SquatChart: React.FC = () => {
       return squatHG;
     };
 
-    const buildGraph = (minSpeed: number, maxSpeed: number) => {
+    const buildGraph = () => {
       const height = Math.round(width / 2);
       const marginLeft = 50;
       const marginRight = 30;
@@ -77,13 +77,45 @@ const SquatChart: React.FC = () => {
       const squat20Color = '#0000ff';
       const squat24Color = '#ff0000';
 
+      let minSpeed = state.environment.vessel.vesselSpeed;
+
+      if (!minSpeed) {
+        minSpeed = 0;
+      }
+
+      const maxSpeed = minSpeed + 10;
+
+      const paramsValid = (() => {
+        const isBetween = (value: number, min: number, max: number) => {
+          return value >= min && value <= max;
+        };
+        if (state.vessel.general.lengthBPP <= 0) return false;
+        if (state.vessel.general.breadth <= 0) return false;
+        if (state.vessel.general.draught <= 0) return false;
+        if (state.environment.vessel.vesselSpeed < 0) return false;
+        if (state.environment.fairway.sweptDepth <= state.vessel.general.draught) return false;
+        if (!isBetween(state.vessel.general.blockCoefficient, 0.6, 0.8)) return false;
+        if (!isBetween(state.vessel.general.breadth / state.vessel.general.draught, 2.19, 3.5)) return false;
+        if (!isBetween(state.vessel.general.lengthBPP / state.vessel.general.breadth, 5.5, 8.5)) return false;
+        const fn = calculateFroudeNumber(
+          state.environment.vessel.vesselSpeed,
+          state.environment.fairway.sweptDepth,
+          state.environment.fairway.waterLevel
+        );
+        if (fn > 0.7) return false;
+        return true;
+      })();
+
       const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel - state.vessel.general.draught;
 
       /* TODO: Use water depth in state when available */
-      const yDomainWaterDepth = yDomainSweptDepth + 0.5;
+      const yDomainWaterDepth = yDomainSweptDepth;
 
-      /* TODO: Get from calculation result if available */
-      const yDomainOtherMovementHeight = 0.5;
+      let yDomainOtherMovementHeight = state.calculations.squat.correctedDraughtDuringTurn - state.vessel.general.draught;
+
+      if (Number.isNaN(yDomainOtherMovementHeight) || yDomainOtherMovementHeight < 0.5) {
+        yDomainOtherMovementHeight = 0.5;
+      }
 
       const bottomLayerHeightPx = 20;
 
@@ -105,8 +137,19 @@ const SquatChart: React.FC = () => {
       /* Clear svg */
       svg.selectAll('*').remove();
 
+      if (!paramsValid) {
+        const gsFilter = svg.append('filter').attr('id', 'grayscale');
+        gsFilter.append('feColorMatrix').attr('type', 'matrix').attr('values', '0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 1 0');
+      }
+
+      const container = svg.append('g');
+
+      if (!paramsValid) {
+        container.attr('filter', 'url(#grayscale)');
+      }
+
       /* Add legends */
-      const legend20 = svg.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+      const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
       legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat20Color);
       legend20
         .append('text')
@@ -121,7 +164,7 @@ const SquatChart: React.FC = () => {
       const box = legend20.node()?.getBBox();
       const legend20Width = box ? box.width : 0;
 
-      const legend24 = svg.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
+      const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
       legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat24Color);
       legend24
         .append('text')
@@ -135,7 +178,7 @@ const SquatChart: React.FC = () => {
 
       /* Add chart layers */
       const addChartLayer = (attr: { y: number; height: number; fillColor: string; label: string; labelColor: string }) => {
-        const layer = svg.append('g').attr('transform', `translate(${marginLeft}, ${attr.y})`);
+        const layer = container.append('g').attr('transform', `translate(${marginLeft}, ${attr.y})`);
         layer
           .append('rect')
           .attr('width', width - marginLeft - marginRight)
@@ -198,12 +241,12 @@ const SquatChart: React.FC = () => {
 
       xAxisGenerator.tickFormat(d3.format('.1f'));
       xAxisGenerator.tickSize(0 - (height - marginTop - marginBottom));
-      const xAxis = svg.append('g').call(xAxisGenerator);
+      const xAxis = container.append('g').call(xAxisGenerator);
       xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`);
       xAxis.select('.domain').remove();
       xAxis.selectAll('.tick line').attr('stroke-width', '.2');
 
-      svg
+      container
         .append('text')
         .attr('text-anchor', 'middle')
         .attr('x', marginLeft + (width - marginLeft - marginRight) / 2)
@@ -211,10 +254,10 @@ const SquatChart: React.FC = () => {
         .text(`${t('homePage.squatChart.xAxisLabel')}`);
 
       yAxisGenerator.tickFormat(d3.format('.1f'));
-      const yAxis = svg.append('g').call(yAxisGenerator);
+      const yAxis = container.append('g').call(yAxisGenerator);
       yAxis.attr('transform', `translate(${marginLeft}, ${marginTop})`);
 
-      svg
+      container
         .append('text')
         .attr('text-anchor', 'middle')
         .attr('transform', 'rotate(-90)')
@@ -233,7 +276,7 @@ const SquatChart: React.FC = () => {
 
         data.push([maxSpeed, calculateSquat(maxSpeed, C0Coefficient)]);
 
-        svg
+        container
           .append('path')
           .datum(data)
           .attr(
@@ -253,23 +296,13 @@ const SquatChart: React.FC = () => {
           .attr('fill', 'none');
       };
 
-      addSquatLine(2.0, squat20Color);
-      addSquatLine(2.4, squat24Color);
+      if (paramsValid) {
+        addSquatLine(2.0, squat20Color);
+        addSquatLine(2.4, squat24Color);
+      }
     };
 
-    let vesselSpeed = state.environment.vessel.vesselSpeed;
-
-    if (!vesselSpeed) {
-      vesselSpeed = 0;
-    }
-
-    if (state.vessel.general.draught > 0 && state.environment.fairway.sweptDepth > state.vessel.general.draught) {
-      buildGraph(vesselSpeed, vesselSpeed + 10);
-    } else {
-      const svg = d3.select(ref.current);
-      /* Clear svg */
-      svg.selectAll('*').remove();
-    }
+    buildGraph();
   }, [state, width, t]);
 
   return (
