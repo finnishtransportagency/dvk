@@ -47,6 +47,7 @@
         "fairway": "Väylä",
         "swept-depth": "Väylän harattu syvyys",
         "water-level": "[fi] Water Level",
+        "estimated-water-depth": "Arvioitu vedensyvyys",
         "form-of-fairway": "Väylän poikkileikkaustyyppi",
         "open-water": "Avovesi",
         "sloped-channel": "Luiska",
@@ -66,6 +67,7 @@
         "set-density-of-water": "Aseta veden tiheys",
         "required-UKC": "[fi] Required UKC",
         "safety-margin-wind-force": "[fi] Safety Margin Wind Force",
+        "clearance-for-other-motions": "Muu liikevara",
         "reliability-issue-block-coefficient": "[fi] Reliability Issue - Block Coefficient",
         "reliability-issue-froude-number": "[fi] Reliability Issue - Froude Number"
       },
