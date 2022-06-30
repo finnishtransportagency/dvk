@@ -1,39 +1,24 @@
 import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import {
-  IonText,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonList,
-  IonItem,
-  IonInput,
-  IonLabel,
-  IonAccordionGroup,
-  IonAccordion,
-  IonRange,
-  IonSelect,
-  IonSelectOption,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonChip,
-  IonPopover,
-  IonContent,
-  IonImg,
-  IonIcon,
-} from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
-import { percentFormatter, degreeFormatter, decimalFormatter } from './Squat';
 import { fairwayForms } from '../hooks/squatReducer';
-import { warningOutline } from 'ionicons/icons';
-import { calculateFroudeNumber, calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
+import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
+import { isReliabilityAnIssue } from '../utils/validations';
+import Alert from './Alert';
+import InputField from './InputField';
+import SectionTitle from './SectionTitle';
+import SelectField from './SelectField';
+import LabelField from './LabelField';
 
 const zero = 0;
+const kgPerCubicM = (
+  <>
+    kg/m<sup>3</sup>
+  </>
+);
 
 const Environment: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -71,422 +56,389 @@ const Environment: React.FC = () => {
     dispatch,
   ]);
 
-  const updateAction = (
-    event: CustomEvent,
-    actionType: 'environment-weather' | 'environment-fairway' | 'environment-vessel' | 'environment-attribute'
-  ) => {
-    dispatch({
-      type: actionType,
-      payload: {
-        key: (event.target as HTMLInputElement).name,
-        value: (event.detail as HTMLInputElement).value,
-        elType: (event.target as HTMLInputElement).tagName,
-      },
-    });
-  };
-
   // Validations
-  const isReliabilityAnIssue = () => {
-    //  If(Value(Froude_Nro_HG_Cal.Text) > 0.7, "Reliability Issue - Froude Number > 0,7", If(Value(Block_Coefficient.Text) < 0.6, "Reliability Issue - Block Coefficient < 0,60", If(Value(Block_Coefficient.Text) > 0.8, "Reliability Issue - Block Coefficient > 0,80", "")))
-    const froudeNumber = calculateFroudeNumber(
+  const checkIsReliabilityAnIssue = () => {
+    return isReliabilityAnIssue(
+      state.vessel.general.blockCoefficient,
       state.environment.vessel.vesselSpeed,
       state.environment.fairway.sweptDepth,
       state.environment.fairway.waterLevel
     );
+  };
 
-    if (froudeNumber > 0.7) {
-      return (
-        <>
-          {t('homePage.squat.environment.reliability-issue-froude-number')} &gt;{' '}
-          {(0.7).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-        </>
-      );
-    } else if (state.vessel.general.blockCoefficient < 0.6) {
-      return (
-        <>
-          {t('homePage.squat.environment.reliability-issue-block-coefficient')} &lt;{' '}
-          {(0.6).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-        </>
-      );
-    } else if (state.vessel.general.blockCoefficient > 0.8) {
-      return (
-        <>
-          {t('homePage.squat.environment.reliability-issue-block-coefficient')} &gt;{' '}
-          {(0.8).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-        </>
-      );
+  // Field validation
+  const isFieldValid = (name: string) => {
+    for (const [k, v] of Object.entries(state.validations)) {
+      if (k === name) return v as boolean;
     }
-    return '';
+    return undefined;
+  };
+  const setFieldClass = (name: string) => {
+    if (isFieldValid(name) === undefined) return '';
+    return isFieldValid(name) ? 'ion-valid' : 'ion-invalid';
   };
 
   return (
-    <IonCard>
-      <IonCardHeader>
-        <IonCardSubtitle>{t('homePage.squat.environment.description')}</IonCardSubtitle>
-        <IonCardTitle>{t('homePage.squat.environment.title')}</IonCardTitle>
-      </IonCardHeader>
+    <>
+      <IonText color="dark" className="equal-margin-top">
+        <h2>
+          <strong>{t('homePage.squat.environment.title')}</strong>
+        </h2>
+      </IonText>
 
-      <IonCardContent>
-        {isReliabilityAnIssue() && (
-          <IonGrid className="danger">
-            <IonRow className="ion-align-items-center">
-              <IonCol size="auto">
-                <IonIcon size="large" icon={warningOutline} />
-              </IonCol>
+      <>
+        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} />}
+
+        <SectionTitle
+          title={t('homePage.squat.environment.weather')}
+          valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
+        />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-wind-speed')}
+                name="windSpeed"
+                value={state.environment.weather.windSpeed ? state.environment.weather.windSpeed : null}
+                placeholder="0"
+                min="0"
+                max="35"
+                unit="m/s"
+                fieldClass={setFieldClass('windSpeed')}
+                actionType="environment-weather"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-true-wind-or-wave-direction')}
+                name="windDirection"
+                value={state.environment.weather.windDirection ? state.environment.weather.windDirection : null}
+                placeholder={zero.toString().padStart(3, '0')}
+                min="0"
+                max="350"
+                step="10"
+                unit="deg"
+                fieldClass={setFieldClass('windDirection')}
+                actionType="environment-weather"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-wave-height')}
+                name="waveHeight"
+                value={state.environment.weather.waveHeight ? state.environment.weather.waveHeight : null}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                min="0"
+                max="5"
+                step="0.1"
+                unit="m"
+                fieldClass={setFieldClass('waveHeight')}
+                actionType="environment-weather"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-wave-period')}
+                name="wavePeriod"
+                value={state.environment.weather.wavePeriod ? state.environment.weather.wavePeriod : null}
+                placeholder="0"
+                min="0"
+                unit="s"
+                fieldClass={setFieldClass('wavePeriod')}
+                actionType="environment-weather"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.environment.wave-length')}
+                value={(isNaN(state.environment.weather.waveLength[0]) ? 0 : state.environment.weather.waveLength[0]).toLocaleString(i18n.language, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+              />
+            </IonCol>
+            <IonCol size-sm="6">
+              <LabelField
+                title={t('homePage.squat.environment.wave-amplitude')}
+                value={(isNaN(state.environment.weather.waveAmplitude[0]) ? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(
+                  i18n.language,
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}
+                unit="m"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+
+        <SectionTitle
+          title={t('homePage.squat.environment.fairway')}
+          valid={
+            isFieldValid('sweptDepth') &&
+            isFieldValid('waterLevel') &&
+            isFieldValid('waterDepth') &&
+            isFieldValid('channelWidth') &&
+            isFieldValid('slopeScale') &&
+            isFieldValid('slopeHeight')
+          }
+        />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.swept-depth')}
+                name="sweptDepth"
+                value={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : null}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                min="0"
+                step="0.1"
+                unit="m"
+                fieldClass={setFieldClass('sweptDepth')}
+                actionType="environment-fairway"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.water-level')}
+                name="waterLevel"
+                value={state.environment.fairway.waterLevel}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                step="0.1"
+                unit="m"
+                fieldClass={setFieldClass('waterLevel')}
+                actionType="environment-fairway"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.estimated-water-depth')}
+                name="waterDepth"
+                value={state.environment.fairway.waterDepth ? state.environment.fairway.waterDepth : null}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                min="0"
+                step="0.1"
+                unit="m"
+                fieldClass={setFieldClass('waterDepth')}
+                actionType="environment-fairway"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <SelectField
+                title={t('homePage.squat.environment.form-of-fairway')}
+                name="fairwayForm"
+                value={state.environment.fairway.fairwayForm}
+                options={fairwayForms}
+                actionType="environment-fairway"
+                required
+                translateOptions
+              />
+            </IonCol>
+          </IonRow>
+          {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
+            <IonRow className="ion-justify-content-between ion-align-items-center">
               <IonCol>
-                <IonText>{isReliabilityAnIssue()}</IonText>
+                <InputField
+                  title={t('homePage.squat.environment.channel-width')}
+                  name="channelWidth"
+                  value={state.environment.fairway.channelWidth}
+                  placeholder="0"
+                  unit="m"
+                  fieldClass={setFieldClass('channelWidth')}
+                  actionType="environment-fairway"
+                />
+              </IonCol>
+              <IonCol size-xs="auto">
+                <IonChip color="primary" outline id="trigger-fairwayinfo">
+                  ?
+                </IonChip>
+                <IonPopover trigger="trigger-fairwayinfo">
+                  <IonContent>
+                    {state.environment.fairway.fairwayForm && (
+                      <IonContent className="ion-padding-horizontal ion-text-center">
+                        <IonText color="secondary">
+                          <h4>{t(state.environment.fairway.fairwayForm.name)}</h4>
+                        </IonText>
+                        <p>{t(state.environment.fairway.fairwayForm.desc)}</p>
+                      </IonContent>
+                    )}
+                    <IonImg src={state.environment.fairway.fairwayForm?.img} />
+                  </IonContent>
+                </IonPopover>
               </IonCol>
             </IonRow>
-          </IonGrid>
-        )}
+          )}
+          {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
+            <IonRow>
+              <IonCol size="6">
+                <InputField
+                  title={t('homePage.squat.environment.scale-of-slope')}
+                  name="slopeScale"
+                  value={state.environment.fairway.slopeScale}
+                  placeholder="0"
+                  fieldClass={setFieldClass('slopeScale')}
+                  actionType="environment-fairway"
+                />
+              </IonCol>
+              <IonCol size="6">
+                <InputField
+                  title={t('homePage.squat.environment.height-of-slope')}
+                  name="slopeHeight"
+                  value={state.environment.fairway.slopeHeight}
+                  placeholder="0"
+                  unit="m"
+                  fieldClass={setFieldClass('slopeHeight')}
+                  actionType="environment-fairway"
+                />
+              </IonCol>
+            </IonRow>
+          )}
+        </IonGrid>
 
-        <IonAccordionGroup>
-          <IonAccordion value="weather">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.environment.weather')}</IonLabel>
-            </IonItem>
+        <SectionTitle
+          title={t('homePage.squat.environment.vessel')}
+          valid={isFieldValid('vesselCourse') && isFieldValid('vesselSpeed') && isFieldValid('turningRadius')}
+        />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-vessel-course')}
+                name="vesselCourse"
+                value={state.environment.vessel.vesselCourse}
+                placeholder={zero.toString().padStart(3, '0')}
+                max="350"
+                step="10"
+                unit="deg"
+                fieldClass={setFieldClass('vesselCourse')}
+                actionType="environment-vessel"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-vessel-speed')}
+                name="vesselSpeed"
+                value={state.environment.vessel.vesselSpeed}
+                placeholder="0"
+                max="35"
+                unit="kts"
+                fieldClass={setFieldClass('vesselSpeed')}
+                actionType="environment-vessel"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-turning-radius')}
+                name="turningRadius"
+                value={state.environment.vessel.turningRadius}
+                placeholder="0"
+                min="0.1"
+                max="2"
+                step="0.05"
+                unit="nm"
+                fieldClass={setFieldClass('turningRadius')}
+                actionType="environment-vessel"
+                helper={
+                  Number('0.1').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
+                  ' - ' +
+                  Number('2').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
+                  ' nm'
+                }
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-wind-speed')} (m/s)</IonLabel>
-                <IonRange
-                  min={0}
-                  max={35}
-                  pin={true}
-                  name="windSpeed"
-                  value={state.environment.weather.windSpeed}
-                  onIonChange={(e) => updateAction(e, 'environment-weather')}
-                />
-                <IonText color="secondary">
-                  <p>{state.environment.weather.windSpeed} m/s</p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-true-wind-or-wave-direction')} (deg)</IonLabel>
-                <IonRange
-                  min={0}
-                  max={350}
-                  step={10}
-                  name="windDirection"
-                  pin={true}
-                  pinFormatter={degreeFormatter}
-                  value={state.environment.weather.windDirection}
-                  onIonChange={(e) => updateAction(e, 'environment-weather')}
-                />
-                <IonText color="secondary">
-                  <p>{state.environment.weather.windDirection.toString().padStart(3, '0')}</p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-wave-height')} (m)</IonLabel>
-                <IonRange
-                  min={0.0}
-                  max={5.0}
-                  step={0.1}
-                  name="waveHeight"
-                  pin={true}
-                  pinFormatter={decimalFormatter}
-                  value={state.environment.weather.waveHeight}
-                  onIonChange={(e) => updateAction(e, 'environment-weather')}
-                />
-                <IonText color="secondary">
-                  <p>
-                    {state.environment.weather.waveHeight.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
-                  </p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-wave-period')} (s)</IonLabel>
-                <IonInput
-                  type="number"
-                  min="0"
-                  step="1"
-                  name="wavePeriod"
-                  value={state.environment.weather.wavePeriod ? state.environment.weather.wavePeriod : null}
-                  onIonChange={(e) => updateAction(e, 'environment-weather')}
-                />
-              </IonItem>
-              <IonItem>
-                <IonGrid>
-                  <IonRow>
-                    <IonCol size-sm="6">
-                      <IonLabel position="stacked">{t('homePage.squat.environment.wave-length')} (m)</IonLabel>
-                      <IonText>
-                        <p>
-                          {(isNaN(state.environment.weather.waveLength[0]) ? 0 : state.environment.weather.waveLength[0]).toLocaleString(
-                            i18n.language,
-                            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                          )}{' '}
-                          m
-                        </p>
-                      </IonText>
-                    </IonCol>
-                    <IonCol size-sm="6">
-                      <IonLabel position="stacked">{t('homePage.squat.environment.wave-amplitude')} (m)</IonLabel>
-                      <IonText>
-                        <p>
-                          {(isNaN(state.environment.weather.waveAmplitude[0]) ? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(
-                            i18n.language,
-                            { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                          )}{' '}
-                          m
-                        </p>
-                      </IonText>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-          <IonAccordion value="fairway">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.environment.fairway')}</IonLabel>
-            </IonItem>
-
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.swept-depth')} (m)</IonLabel>
-                <IonInput
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  name="sweptDepth"
-                  value={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : null}
-                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                  onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                />
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.water-level')} (m)</IonLabel>
-                <IonInput
-                  type="number"
-                  step="0.1"
-                  name="waterLevel"
-                  value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
-                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                  onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                />
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.form-of-fairway')}</IonLabel>
-                <IonSelect
-                  value={state.environment.fairway.fairwayForm}
-                  name="fairwayForm"
-                  onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                >
-                  {fairwayForms.map((fairway) => (
-                    <IonSelectOption key={fairway.id} value={fairway}>
-                      {t(fairway.name)}
-                    </IonSelectOption>
-                  ))}
-                </IonSelect>
-              </IonItem>
-              {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
-                <IonGrid>
-                  <IonRow className="ion-justify-content-between ion-align-items-center">
-                    <IonCol>
-                      <IonItem>
-                        <IonLabel position="stacked">{t('homePage.squat.environment.channel-width')} (m)</IonLabel>
-                        <IonInput
-                          type="number"
-                          min="0"
-                          name="channelWidth"
-                          value={state.environment.fairway.channelWidth}
-                          placeholder="0"
-                          onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                        />
-                      </IonItem>
-                    </IonCol>
-                    <IonCol size-xs="auto">
-                      <IonChip color="primary" outline id="trigger-fairwayinfo">
-                        <IonLabel>?</IonLabel>
-                      </IonChip>
-                      <IonPopover trigger="trigger-fairwayinfo">
-                        <IonContent>
-                          {state.environment.fairway.fairwayForm && (
-                            <IonContent className="ion-padding-horizontal ion-text-center">
-                              <IonText color="secondary">
-                                <h4>{t(state.environment.fairway.fairwayForm.name)}</h4>
-                              </IonText>
-                              <p>{t(state.environment.fairway.fairwayForm.desc)}</p>
-                            </IonContent>
-                          )}
-                          <IonImg src={state.environment.fairway.fairwayForm?.img} />
-                        </IonContent>
-                      </IonPopover>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              )}
-              {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
-                <IonGrid>
-                  <IonRow>
-                    <IonCol size-lg="6">
-                      <IonItem>
-                        <IonLabel position="stacked">{t('homePage.squat.environment.scale-of-slope')}</IonLabel>
-                        <IonInput
-                          type="number"
-                          min="0"
-                          name="slopeScale"
-                          value={state.environment.fairway.slopeScale}
-                          placeholder="0"
-                          onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                        />
-                      </IonItem>
-                    </IonCol>
-                    <IonCol size-lg="6">
-                      <IonItem>
-                        <IonLabel position="stacked">{t('homePage.squat.environment.height-of-slope')} (m)</IonLabel>
-                        <IonInput
-                          type="number"
-                          min="0"
-                          name="slopeHeight"
-                          value={state.environment.fairway.slopeHeight}
-                          placeholder="0"
-                          onIonChange={(e) => updateAction(e, 'environment-fairway')}
-                        />
-                      </IonItem>
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              )}
-            </IonList>
-          </IonAccordion>
-          <IonAccordion value="vessel">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.environment.vessel')}</IonLabel>
-            </IonItem>
-
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-vessel-course')} (deg)</IonLabel>
-                <IonRange
-                  min={0}
-                  max={350}
-                  step={10}
-                  name="vesselCourse"
-                  pin={true}
-                  pinFormatter={degreeFormatter}
-                  value={state.environment.vessel.vesselCourse}
-                  onIonChange={(e) => updateAction(e, 'environment-vessel')}
-                ></IonRange>
-                <IonText color="secondary">
-                  <p>{state.environment.vessel.vesselCourse.toString().padStart(3, '0')}</p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-vessel-speed')} (kts)</IonLabel>
-                <IonRange
-                  min={0}
-                  max={35}
-                  name="vesselSpeed"
-                  pin={true}
-                  value={state.environment.vessel.vesselSpeed}
-                  onIonChange={(e) => updateAction(e, 'environment-vessel')}
-                ></IonRange>
-                <IonText color="secondary">
-                  <p>{state.environment.vessel.vesselSpeed} kts</p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.set-turning-radius')} (nm)</IonLabel>
-                <IonRange
-                  min={0.1}
-                  max={2.0}
-                  step={0.05}
-                  name="turningRadius"
-                  pin={true}
-                  pinFormatter={decimalFormatter}
-                  value={state.environment.vessel.turningRadius}
-                  onIonChange={(e) => updateAction(e, 'environment-vessel')}
-                ></IonRange>
-                <IonText color="secondary">
-                  <p>
-                    {state.environment.vessel.turningRadius.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 2 })} nm
-                  </p>
-                </IonText>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-          <IonAccordion value="attribute">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.environment.attribute')}</IonLabel>
-            </IonItem>
-
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel position="stacked">
-                  {t('homePage.squat.environment.set-density-of-air')} (kg/m<sup>3</sup>)
-                </IonLabel>
-                <IonRange
-                  min={1}
-                  max={1.5}
-                  step={0.1}
-                  name="airDensity"
-                  pin={true}
-                  ticks={true}
-                  snaps={true}
-                  pinFormatter={decimalFormatter}
-                  value={state.environment.attribute.airDensity}
-                  onIonChange={(e) => updateAction(e, 'environment-attribute')}
-                />
-                <IonText color="secondary">
-                  <p>
-                    {state.environment.attribute.airDensity} kg/m<sup>3</sup>
-                  </p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">
-                  {t('homePage.squat.environment.set-density-of-water')} (kg/m<sup>3</sup>)
-                </IonLabel>
-                <IonRange
-                  min={1000}
-                  max={1025}
-                  name="waterDensity"
-                  pin={true}
-                  value={state.environment.attribute.waterDensity}
-                  onIonChange={(e) => updateAction(e, 'environment-attribute')}
-                />
-                <IonText color="secondary">
-                  <p>
-                    {state.environment.attribute.waterDensity} kg/m<sup>3</sup>
-                  </p>
-                </IonText>
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.required-UKC')} (m)</IonLabel>
-                <IonInput
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  name="requiredUKC"
-                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  value={state.environment.attribute.requiredUKC}
-                  onIonChange={(e) => updateAction(e, 'environment-attribute')}
-                />
-              </IonItem>
-              <IonItem>
-                <IonLabel position="stacked">{t('homePage.squat.environment.safety-margin-wind-force')}</IonLabel>
-                <IonRange
-                  min={0}
-                  max={0.25}
-                  step={0.01}
-                  name="safetyMarginWindForce"
-                  pin={true}
-                  pinFormatter={percentFormatter}
-                  value={state.environment.attribute.safetyMarginWindForce}
-                  onIonChange={(e) => updateAction(e, 'environment-attribute')}
-                />
-                <IonText color="secondary">
-                  <p>{state.environment.attribute.safetyMarginWindForce * 100} %</p>
-                </IonText>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-        </IonAccordionGroup>
-      </IonCardContent>
-    </IonCard>
+        <SectionTitle
+          title={t('homePage.squat.environment.attribute')}
+          valid={isFieldValid('airDensity') && isFieldValid('waterDensity') && isFieldValid('requiredUKC') && isFieldValid('motionClearance')}
+        />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-density-of-air')}
+                name="airDensity"
+                value={state.environment.attribute.airDensity}
+                placeholder="1.3"
+                min="1"
+                max="1.5"
+                step="0.1"
+                unit={kgPerCubicM}
+                fieldClass={setFieldClass('airDensity')}
+                actionType="environment-attribute"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.set-density-of-water')}
+                name="waterDensity"
+                value={state.environment.attribute.waterDensity}
+                placeholder="1.3"
+                min="1000"
+                max="1025"
+                unit={kgPerCubicM}
+                fieldClass={setFieldClass('waterDensity')}
+                actionType="environment-attribute"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.required-UKC')}
+                name="requiredUKC"
+                value={state.environment.attribute.requiredUKC}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                min="0"
+                step="0.05"
+                unit="m"
+                fieldClass={setFieldClass('requiredUKC')}
+                actionType="environment-attribute"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.clearance-for-other-motions')}
+                name="motionClearance"
+                value={state.environment.attribute.motionClearance}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                min="0"
+                step="0.05"
+                unit="m"
+                fieldClass={setFieldClass('motionClearance')}
+                actionType="environment-attribute"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <InputField
+                title={t('homePage.squat.environment.safety-margin-wind-force')}
+                name="safetyMarginWindForce"
+                value={state.environment.attribute.safetyMarginWindForce}
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                min="0"
+                max="25"
+                unit="%"
+                fieldClass={setFieldClass('safetyMarginWindForce')}
+                actionType="environment-attribute"
+                helper="0 - 25 %"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </>
+    </>
   );
 };
 

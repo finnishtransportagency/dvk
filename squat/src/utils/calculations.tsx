@@ -78,7 +78,7 @@ export function calculateWaveForce(waterDensity: number, lengthBPP: number, wave
 
 export function calculateBowThrusterForce(bowThruster: number, bowThrusterEfficiency: number) {
   // (Bow_Thruster*1.34/100)*Set_Bow_Thruster_Efficiency.Value*25/100
-  return ((bowThruster * 1.34) / 100) * bowThrusterEfficiency;
+  return (((bowThruster * 1.34) / 100) * bowThrusterEfficiency) / 100;
 }
 
 export function calculateSafetyMargin(bowThrusterForce: number, windForce: number, waveForce: number) {
