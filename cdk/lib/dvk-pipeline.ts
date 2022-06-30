@@ -42,6 +42,7 @@ export class DvkPipeline extends Construct {
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.0'),
+        privileged: true,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
