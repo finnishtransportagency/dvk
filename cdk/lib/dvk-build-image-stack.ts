@@ -42,7 +42,7 @@ export class DvkBuildImageStack extends Stack {
         AWS_DEFAULT_REGION: { value: 'eu-west-1' },
         AWS_ACCOUNT_ID: { value: account },
         IMAGE_REPO_NAME: { value: imageRepoName },
-        IMAGE_TAG: { value: '1.0.0' },
+        IMAGE_TAG: { value: '1.0.1' },
       },
       buildSpec: codebuild.BuildSpec.fromSourceFilename('./cdk/lib/image-buildspec.yml'),
     });

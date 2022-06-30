@@ -5,7 +5,7 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 
@@ -41,8 +41,12 @@ export class DvkPipeline extends Construct {
     // Create the build project for DVK app
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.0'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
         privileged: true,
+        computeType: ComputeType.MEDIUM,
+        environmentVariables: {
+          ENVIRONMENT: { value: props.env },
+        },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -51,14 +55,7 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: [
-              'echo build dvk app',
-              'npm ci',
-              'npm run build',
-              'cd cdk',
-              'npm ci',
-              `ENVIRONMENT=${props.env} npm run cdk deploy DvkBackendStack`,
-            ],
+            commands: ['echo build dvk app', 'npm ci', 'npm run build', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
           },
         },
         artifacts: {
