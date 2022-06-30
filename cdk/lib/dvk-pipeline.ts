@@ -8,6 +8,7 @@ import { Construct } from 'constructs';
 import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 interface DvkPipelineProps {
   env: string;
@@ -64,6 +65,13 @@ export class DvkPipeline extends Construct {
         },
       }),
     });
+    dvkBuildProject.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:GetSecretValue', 's3:*', 'sts:*'],
+        resources: ['*'],
+      })
+    );
 
     const buildOutput = new codepipeline.Artifact();
 
