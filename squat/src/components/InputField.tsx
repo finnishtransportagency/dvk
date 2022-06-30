@@ -46,7 +46,9 @@ const InputField: React.FC<InputProps> = (props) => {
   return (
     <>
       <IonItem lines="none" className="only-label">
-        <IonLabel color="dark">{props.title}</IonLabel>
+        <IonLabel color="dark" title={props.title}>
+          {props.title}
+        </IonLabel>
       </IonItem>
       {props.required && (
         <IonItem lines="none" className="required-label">

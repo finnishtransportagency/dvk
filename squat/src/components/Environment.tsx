@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import { IonText, IonGrid, IonRow, IonCol, IonItem, IonLabel, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms } from '../hooks/squatReducer';
@@ -11,6 +11,7 @@ import Alert from './Alert';
 import InputField from './InputField';
 import SectionTitle from './SectionTitle';
 import SelectField from './SelectField';
+import LabelField from './LabelField';
 
 const zero = 0;
 const kgPerCubicM = (
@@ -152,36 +153,24 @@ const Environment: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol size="6">
-              <IonItem lines="none" className="only-label">
-                <IonLabel color="dark">{t('homePage.squat.environment.wave-length')}</IonLabel>
-              </IonItem>
-              <IonItem lines="none">
-                <IonText>
-                  {(isNaN(state.environment.weather.waveLength[0]) ? 0 : state.environment.weather.waveLength[0]).toLocaleString(i18n.language, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </IonText>
-                <IonLabel slot="end" color="medium">
-                  m
-                </IonLabel>
-              </IonItem>
+              <LabelField
+                title={t('homePage.squat.environment.wave-length')}
+                value={(isNaN(state.environment.weather.waveLength[0]) ? 0 : state.environment.weather.waveLength[0]).toLocaleString(i18n.language, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+              />
             </IonCol>
             <IonCol size-sm="6">
-              <IonItem lines="none" className="only-label">
-                <IonLabel color="dark">{t('homePage.squat.environment.wave-amplitude')}</IonLabel>
-              </IonItem>
-              <IonItem lines="none">
-                <IonText>
-                  {(isNaN(state.environment.weather.waveAmplitude[0]) ? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(
-                    i18n.language,
-                    { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                  )}
-                </IonText>
-                <IonLabel slot="end" color="medium">
-                  m
-                </IonLabel>
-              </IonItem>
+              <LabelField
+                title={t('homePage.squat.environment.wave-amplitude')}
+                value={(isNaN(state.environment.weather.waveAmplitude[0]) ? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(
+                  i18n.language,
+                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
+                )}
+                unit="m"
+              />
             </IonCol>
           </IonRow>
         </IonGrid>

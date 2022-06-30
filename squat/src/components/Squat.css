@@ -28,6 +28,7 @@ ion-grid.no-padding ion-col {
 }
 ion-grid.divider {
   border-bottom: 1px solid var(--ion-color-light);
+  min-height: 24px;
 }
 
 .flipped {
