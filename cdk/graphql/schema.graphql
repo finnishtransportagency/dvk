@@ -12,7 +12,7 @@ type Fairway {
   nameFI: String!
   nameSV: String
   length: Int
-  depth1: Int
-  depth2: Int
-  depth3: Int
+  depth1: Float
+  depth2: Float
+  depth3: Float
 }

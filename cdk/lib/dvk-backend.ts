@@ -3,7 +3,6 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from 'aws-cdk-lib';
-import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
@@ -27,13 +26,13 @@ export class DvkBackendStack extends Stack {
       xrayEnabled: true,
     });
     for (const lambdaFunc of lambdaFunctions) {
+      console.log(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${lambdaFunc.typeName}-${lambdaFunc.functionName}-${env}`, {
         functionName: `${lambdaFunc.typeName}-${lambdaFunc.functionName}-${env}`,
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
       });
-      backendLambda.role?.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy'));
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${lambdaFunc.functionName}`, backendLambda);
       lambdaDataSource.createResolver({
         typeName: lambdaFunc.typeName,

@@ -3,7 +3,7 @@ import { Fairway } from '../../../../graphql/generated';
 import { log } from '../../logger';
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairway[]> => {
-  log.info(`fairways(${JSON.stringify(event)})`);
+  log.info(`fairways(${event.identity})`);
   return [
     {
       id: 4927,
