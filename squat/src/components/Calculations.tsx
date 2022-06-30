@@ -78,7 +78,7 @@ const Calculations: React.FC = () => {
   // Field validations
   const isSafetyMarginInsufficient = () => {
     // If(Value(Remaining_Safety_Margin.Text) < Set_Safety_Margin.Value/100, 5, 0)
-    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce;
+    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce / 100;
   };
   const isExternalForceRequired = () => {
     // If(Value(Minimum_Force_Required.Text) > 0, 5, 0)
