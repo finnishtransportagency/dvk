@@ -78,7 +78,7 @@ const Calculations: React.FC = () => {
   // Field validations
   const isSafetyMarginInsufficient = () => {
     // If(Value(Remaining_Safety_Margin.Text) < Set_Safety_Margin.Value/100, 5, 0)
-    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce;
+    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce / 100;
   };
   const isExternalForceRequired = () => {
     // If(Value(Minimum_Force_Required.Text) > 0, 5, 0)
@@ -315,8 +315,8 @@ const Calculations: React.FC = () => {
         {isUKCUnderMinimum() && (
           <IonGrid className="danger">
             <IonRow className="ion-align-items-center">
-              <IonCol size="auto">
-                <IonIcon size="large" icon={warningOutline} />
+              <IonCol size="auto" className="icon">
+                <IonIcon icon={warningOutline} color="danger" />
               </IonCol>
               <IonCol>
                 <IonText>{t('homePage.squat.calculations.UKC-under-required-minimum')}</IonText>

@@ -2,6 +2,7 @@
   "name": "squat",
   "version": "0.1.1",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.6.0",

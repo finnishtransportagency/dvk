@@ -84,6 +84,7 @@ export type State = {
     fairway: {
       sweptDepth: number;
       waterLevel: number;
+      waterDepth: number;
       fairwayForm: FairwayForm;
       channelWidth: number;
       slopeScale: number;
@@ -99,6 +100,7 @@ export type State = {
       waterDensity: number;
       requiredUKC: number;
       safetyMarginWindForce: number;
+      motionClearance: number;
     };
   };
   calculations: {
@@ -129,6 +131,7 @@ export type State = {
       froudeNumber: number;
     };
   };
+  validations: Record<string, unknown>;
 };
 
 export const initialState = {
@@ -145,7 +148,7 @@ export const initialState = {
       windSurface: 0,
       deckCargo: 0,
       bowThruster: 0,
-      bowThrusterEfficiency: 1,
+      bowThrusterEfficiency: 100,
       profileSelected: vesselProfiles[0],
     },
     stability: {
@@ -166,6 +169,7 @@ export const initialState = {
     fairway: {
       sweptDepth: 0,
       waterLevel: 0,
+      waterDepth: 0,
       fairwayForm: fairwayForms[0],
       channelWidth: 0,
       slopeScale: 0,
@@ -180,7 +184,8 @@ export const initialState = {
       airDensity: 1.3,
       waterDensity: 1005,
       requiredUKC: 0.5,
-      safetyMarginWindForce: 0.25,
+      safetyMarginWindForce: 25,
+      motionClearance: 0.3,
     },
   },
   calculations: {
@@ -214,6 +219,7 @@ export const initialState = {
       froudeNumber: 0,
     },
   },
+  validations: { blockCoefficient: true, displacement: true, bowThrusterEfficiency: true, deckCargo: true, windDirection: true, turningRadius: true },
 };
 
 export type Action =
@@ -228,10 +234,11 @@ export type Action =
         | 'environment-vessel'
         | 'environment-attribute'
         | 'calculations'
-        | 'calculations-intermediate';
+        | 'calculations-intermediate'
+        | 'validation';
       payload: {
         key: string;
-        value: string | number | number[] | object;
+        value: string | number | number[] | object | boolean;
         elType?: string;
       };
     }
@@ -239,11 +246,12 @@ export type Action =
 
 export const SquatReducer = (state: State, action: Action) => {
   // Sort out correct value type from input element
-  let inputValue: string | number | number[] | object = '';
+  let inputValue: string | number | number[] | object | boolean = '';
   if (action.type !== 'reset') {
     switch (action.payload.elType?.toLocaleLowerCase()) {
       case 'ion-select':
       case 'object':
+      case 'boolean':
         inputValue = action.payload.value;
         break;
       default:
@@ -286,6 +294,11 @@ export const SquatReducer = (state: State, action: Action) => {
       return {
         ...state,
         calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: inputValue } },
+      };
+    case 'validation':
+      return {
+        ...state,
+        validations: { ...state.validations, [action.payload.key]: inputValue },
       };
     case 'reset':
       return initialState;

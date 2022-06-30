@@ -47,6 +47,7 @@
         "fairway": "Fairway",
         "swept-depth": "Swept Depth",
         "water-level": "Water Level",
+        "estimated-water-depth": "Estimated water depth",
         "form-of-fairway": "Form of Fairway",
         "open-water": "Open Water",
         "sloped-channel": "Sloped Channel",
@@ -66,6 +67,7 @@
         "set-density-of-water": "Set Density of Water",
         "required-UKC": "Required UKC",
         "safety-margin-wind-force": "Safety Margin Wind Force",
+        "clearance-for-other-motions": "Clearance for Other Motions",
         "reliability-issue-block-coefficient": "Reliability Issue - Block Coefficient",
         "reliability-issue-froude-number": "[fi] Reliability Issue - Froude Number"
       },
@@ -115,6 +117,8 @@
     }
   },
   "common": {
-    "tonnes": "tonnes"
+    "tonnes": "tonnes",
+    "required": "Required",
+    "value-out-of-range": "Out of range"
   }
 }
