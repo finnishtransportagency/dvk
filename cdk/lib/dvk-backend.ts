@@ -7,7 +7,7 @@ import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
-import lambdaFunctions from './lambda/graphql/lambdas';
+import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {

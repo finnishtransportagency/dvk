@@ -5,3 +5,4 @@ capacitor.config.ts
 build
 squat
 cdk.out
+cdk/graphql/generated.ts

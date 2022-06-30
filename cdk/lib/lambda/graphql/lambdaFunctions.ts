@@ -1,7 +1,8 @@
 import * as path from 'path';
+
 interface BackendLambda {
   entry: string;
-  functionName: string;
+  functionName: string; // this should correlate to graphql schema function name
   typeName: 'Query' | 'Mutation';
 }
 
