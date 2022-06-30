@@ -29,7 +29,7 @@ export class DvkPipeline extends Construct {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: this.getBranch(props.env),
+      branch: 'DVK-63', //this.getBranch(props.env),
       trigger: GitHubTrigger.NONE,
     });
 
@@ -50,7 +50,14 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build dvk app', 'npm ci', 'npm run build'],
+            commands: [
+              'echo build dvk app',
+              'npm ci',
+              'npm run build',
+              'cd cdk',
+              'npm ci',
+              `ENVIRONMENT=${props.env} npm run cdk deploy DvkBackendStack`,
+            ],
           },
         },
         artifacts: {
