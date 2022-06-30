@@ -108,8 +108,11 @@ const SquatChart: React.FC = () => {
 
       const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel - state.vessel.general.draught;
 
-      /* TODO: Use water depth in state when available */
-      const yDomainWaterDepth = yDomainSweptDepth;
+      let yDomainWaterDepth = state.environment.fairway.waterDepth - state.vessel.general.draught;
+
+      if (Number.isNaN(yDomainWaterDepth) || yDomainWaterDepth < yDomainSweptDepth) {
+        yDomainWaterDepth = yDomainSweptDepth;
+      }
 
       let yDomainOtherMovementHeight = state.calculations.squat.correctedDraughtDuringTurn - state.vessel.general.draught;
 
@@ -195,13 +198,15 @@ const SquatChart: React.FC = () => {
           .attr('fill', attr.labelColor);
       };
 
-      addChartLayer({
-        y: marginTop + yScale(yDomainWaterDepth),
-        height: 20,
-        fillColor: '#000000',
-        label: t('homePage.squatChart.levels.bottom'),
-        labelColor: '#ffffff',
-      });
+      if (yDomainWaterDepth > 0 || yDomainSweptDepth > 0) {
+        addChartLayer({
+          y: marginTop + yScale(yDomainWaterDepth),
+          height: 20,
+          fillColor: '#000000',
+          label: t('homePage.squatChart.levels.bottom'),
+          labelColor: '#ffffff',
+        });
+      }
 
       if (yDomainWaterDepth > yDomainSweptDepth) {
         addChartLayer({
@@ -213,29 +218,39 @@ const SquatChart: React.FC = () => {
         });
       }
 
-      addChartLayer({
-        y: marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC),
-        height: yScale(state.environment.attribute.requiredUKC),
-        fillColor: '#99ccff',
-        label: t('homePage.squatChart.levels.netUKC'),
-        labelColor: '#000000',
-      });
+      if (yDomainSweptDepth > 0) {
+        const yDomainUKCh = Math.min(yDomainSweptDepth, state.environment.attribute.requiredUKC);
+        const yDomainUKCy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC);
+        addChartLayer({
+          y: marginTop + yScale(yDomainUKCy),
+          height: yScale(yDomainUKCh),
+          fillColor: '#99ccff',
+          label: t('homePage.squatChart.levels.netUKC'),
+          labelColor: '#000000',
+        });
+      }
 
-      addChartLayer({
-        y: marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
-        height: yScale(yDomainOtherMovementHeight),
-        fillColor: '#cc99ff',
-        label: t('homePage.squatChart.levels.otherMovement'),
-        labelColor: '#000000',
-      });
+      if (yDomainSweptDepth - state.environment.attribute.requiredUKC > 0) {
+        const yDomainOMh = Math.min(yDomainOtherMovementHeight, yDomainSweptDepth - state.environment.attribute.requiredUKC);
+        const yDomainOMy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight);
+        addChartLayer({
+          y: marginTop + yScale(yDomainOMy),
+          height: yScale(yDomainOMh),
+          fillColor: '#cc99ff',
+          label: t('homePage.squatChart.levels.otherMovement'),
+          labelColor: '#000000',
+        });
+      }
 
-      addChartLayer({
-        y: marginTop,
-        height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
-        fillColor: '#ccffff',
-        label: t('homePage.squatChart.levels.squat'),
-        labelColor: '#000000',
-      });
+      if (yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight > 0) {
+        addChartLayer({
+          y: marginTop,
+          height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
+          fillColor: '#ccffff',
+          label: t('homePage.squatChart.levels.squat'),
+          labelColor: '#000000',
+        });
+      }
 
       /* Add axis */
 
