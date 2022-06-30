@@ -5,6 +5,17 @@
     },
     "squat": {
       "content": "[sv] TODO: Squat-laskenta"
+    },
+    "squatChart": {
+      "xAxisLabel": "[sv] Nopeus (kn)",
+      "yAxisLabel": "[sv] Squat (m)",
+      "levels": {
+        "bottom": "[sv] Pohja",
+        "underSweptDepth": "[sv] Haraustason alapuoleinen vesi"  ,
+        "netUKC": "[sv] Kölivara",
+        "otherMovement": "[sv] Muu liikevara",
+        "squat": "[sv] Painaumavara"
+      }
     }
   }
 }

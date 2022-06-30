@@ -8,16 +8,18 @@ import { Construct } from 'constructs';
 import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
-interface SquatPipelineProps {
+
+interface DvkPipelineProps {
   env: string;
 }
-export class SquatPipeline extends Construct {
-  constructor(scope: Stack, id: string, props: SquatPipelineProps) {
+
+export class DvkPipeline extends Construct {
+  constructor(scope: Stack, id: string, props: DvkPipelineProps) {
     super(scope, id);
 
     const account = cdk.Stack.of(this).account;
 
-    const pipeline = new codepipeline.Pipeline(this, 'SquatPipeline', {
+    const pipeline = new codepipeline.Pipeline(this, 'DvkPipeline', {
       crossAccountKeys: false,
     });
     const sourceOutput = new codepipeline.Artifact();
@@ -36,28 +38,23 @@ export class SquatPipeline extends Construct {
       actions: [sourceAction],
     });
 
-    // Create the build project for Squat app
-    const squatBuildProject = new codebuild.PipelineProject(this, 'SquatBuild', {
+    // Create the build project for DVK app
+    const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.0'),
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
-        env: {
-          variables: {
-            CODEBUILD_SRC_DIR: '/squat',
-          },
-        },
         phases: {
           install: {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build squat app', 'cd squat', 'npm ci', 'BUILD_PATH=./build/squat npm run build'],
+            commands: ['echo build dvk app', 'npm ci', 'npm run build'],
           },
         },
         artifacts: {
-          'base-directory': 'squat/build',
+          'base-directory': 'build',
           files: '**/*',
         },
       }),
@@ -69,8 +66,8 @@ export class SquatPipeline extends Construct {
       stageName: 'Build',
       actions: [
         new cdk.aws_codepipeline_actions.CodeBuildAction({
-          actionName: 'BuildSquatApp',
-          project: squatBuildProject,
+          actionName: 'BuildDvkApp',
+          project: dvkBuildProject,
           input: sourceOutput,
           outputs: [buildOutput],
         }),
@@ -107,7 +104,7 @@ export class SquatPipeline extends Construct {
       })
     );
 
-    const importedBucketValue = cdk.Fn.importValue('SquatBucket' + props.env);
+    const importedBucketValue = cdk.Fn.importValue('DVKBucket' + props.env);
 
     pipeline.addStage({
       stageName: 'Deploy',
@@ -129,8 +126,8 @@ export class SquatPipeline extends Construct {
 
     new CfnOutput(this, 'PipelineName', {
       value: pipeline.pipelineName,
-      description: 'Squat pipeline name',
-      exportName: 'SquatPipeline-' + props.env,
+      description: 'DVK pipeline name',
+      exportName: 'DvkPipeline-' + props.env,
     });
   }
 
