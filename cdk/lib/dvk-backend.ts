@@ -31,7 +31,7 @@ export class DvkBackendStack extends Stack {
         functionName: `${lambdaFunc.typeName}-${lambdaFunc.functionName}-${env}`,
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
-        handler: 'handleEvent',
+        handler: 'handler',
       });
       backendLambda.role?.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('CloudWatchLambdaInsightsExecutionRolePolicy'));
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${lambdaFunc.functionName}`, backendLambda);

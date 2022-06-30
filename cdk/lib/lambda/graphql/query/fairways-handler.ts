@@ -2,8 +2,8 @@ import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { Fairway } from '../../../../graphql/generated';
 import { log } from '../../logger';
 
-export async function handleEvent(event: AppSyncResolverEvent<void>): Promise<Fairway[]> {
-  log.info(`handleEvent(${JSON.stringify(event)})`);
+export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairway[]> => {
+  log.info(`fairways(${JSON.stringify(event)})`);
   return [
     {
       id: 4927,
@@ -21,4 +21,4 @@ export async function handleEvent(event: AppSyncResolverEvent<void>): Promise<Fa
       nameSV: 'Kemi angörin',
     },
   ];
-}
+};
