@@ -72,28 +72,29 @@ export class SquatSite extends Construct {
       new CfnOutput(this, 'Certificate', { value: certificate.certificateArn });
     }
 
-    // Sallitaan query stringit kieliversioiden bookmarkkaamista ajatelleen
-    const requestPolicy = new cloudfront.OriginRequestPolicy(this, 'SiteRequestPolicy', {
-      originRequestPolicyName: 'SquatPolicy' + props.env,
-      comment: 'Allow query strings',
-      queryStringBehavior: cloudfront.OriginRequestQueryStringBehavior.all(),
+    // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
+    const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction', {
+      code: cloudfront.FunctionCode.fromFile({filePath: './lib/lambda/router/squatRequestRouter.js'}),
     });
-    const squatBehavior = {
+
+    const squatBehavior:BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      originRequestPolicy: requestPolicy,
+      functionAssociations: [{
+        function: cfFunction,
+        eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+      }]
     };
     const dvkBehavior = {
       origin: new cloudfront_origins.S3Origin(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      originRequestPolicy: requestPolicy,
     };
     const additionalBehaviors: Record<string, BehaviorOptions> = {
-      '/squat*': squatBehavior,
+      'squat/*': squatBehavior,
     };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
@@ -101,14 +102,6 @@ export class SquatSite extends Construct {
       defaultRootObject: 'index.html',
       domainNames,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-      errorResponses: [
-        {
-          httpStatus: 403,
-          responseHttpStatus: 403,
-          responsePagePath: '/index.html',
-          ttl: Duration.minutes(30),
-        },
-      ],
       additionalBehaviors,
       defaultBehavior: dvkBehavior,
     });
