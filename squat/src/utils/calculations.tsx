@@ -190,8 +190,7 @@ export function calculateHeelDueWind(lengthBPP: number, windSurface: number, dis
   // GM/Wind_Moment/Displacement
   const windHeel = GM / (windMoment / displacement);
   // If(IsBlank(GM), "", Text(Acot(Radians(Wind_Heel)), "0.0"))
-  const windHeelDeg = acot(toRad(windHeel));
-  return windHeelDeg;
+  return acot(toRad(windHeel));
 }
 
 export function calculateHeelDuringTurn(vesselSpeed: number, turningRadius: number, KG: number, GM: number, KB: number) {
@@ -259,7 +258,15 @@ export function calculateSquatHG(
   const k1 = aCoefficients[0] + aCoefficients[1] * s + aCoefficients[2] * Math.pow(s, 2) + aCoefficients[3] * Math.pow(s, 3);
   // s1_Multiplier_From_Curve_HG_Cal
   // If(Select_Fairway_Form.SelectedText.Value ="Open Water", 0.03, If(Select_Fairway_Form.SelectedText.Value = "Sloped Channel", Text(S_HG_Cal/K1_HG_Cal), Text(S_HG_Cal)))
-  const s1Multiplier = fairwayFormIndex === 0 ? 0.03 : fairwayFormIndex === 2 ? s / k1 : s;
+  let s1Multiplier = 0.03;
+  switch (fairwayFormIndex) {
+    case 1:
+      s1Multiplier = s;
+      break;
+    case 2:
+      s1Multiplier = s / k1;
+      break;
+  }
   // Ks_HG_Cal
   // If(Value(s1_Multiplier_From_Curve_HG_Cal.Text) > 0.03, Value(s1_Multiplier_From_Curve_HG_Cal.Text)*7.45+0.76 , 1)
   const Ks = s1Multiplier > 0.03 ? s1Multiplier * 7.45 + 0.76 : 1;
@@ -324,8 +331,18 @@ export function calculateWaveAmplitudeProperties(lengthBPP: number, waveHeight: 
 
   // RAO_HG_Cal | If(Value(x_Value_HG_Cal.Text) > 2.6, 1, If(Value(x_Value_HG_Cal.Text) >= 0.65, Ln(x_Value_HG_Cal)*0.7061+0.3453, 0))
   // RAOShallow_HG_Cal | If(Value(x_ShallowValue_HG_Cal.Text) > 2.6, 1, If(Value(x_ShallowValue_HG_Cal.Text) >= 0.65, Ln(x_ShallowValue_HG_Cal)*0.7061+0.3453, 0))
-  const RAODeep = xValue > 2.6 ? 1 : xValue < 0.65 ? 0 : Math.log(xValue) * 0.7061 + 0.3453;
-  const RAOShallow = xValueShallow > 2.6 ? 1 : xValueShallow < 0.65 ? 0 : Math.log(xValueShallow) * 0.7061 + 0.3453;
+  let RAODeep = Math.log(xValue) * 0.7061 + 0.3453;
+  if (xValue > 2.6) {
+    RAODeep = 1;
+  } else if (xValue < 0.65) {
+    RAODeep = 0;
+  }
+  let RAOShallow = Math.log(xValueShallow) * 0.7061 + 0.3453;
+  if (xValueShallow > 2.6) {
+    RAOShallow = 1;
+  } else if (xValueShallow < 0.65) {
+    RAOShallow = 0;
+  }
   // Wavenumber_HG_Cal | Pi()*2/Wavelength_HG_Cal
   // WavenumberShallow_HG_Cal | Pi()*2/WavelengthShallow_HG_Cal
   const waveNumber = (Math.PI * 2) / waveLength[1];

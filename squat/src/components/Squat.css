@@ -34,6 +34,25 @@ ion-grid.divider {
 .flipped {
   transform: rotate(180deg);
 }
+.use-flex {
+  display: flex;
+}
+.align-right {
+  text-align: right;
+}
+
+ion-toggle.squat-toggle {
+  --background: #fff;
+  --background-checked: #fff;
+  --handle-background: var(--ion-color-primary);
+  --handle-background-checked: var(--ion-color-primary);
+  --handle-width: 14px;
+  --handle-height: 14px;
+  height: 12px;
+  padding: 3px;
+  border: 2px solid var(--ion-color-primary);
+  border-radius: var(--border-radius);
+}
 
 /* General alerts */
 ion-grid.danger {
@@ -96,20 +115,21 @@ ion-item.item-interactive.item-select {
   padding: 0;
 }
 
-ion-item.item-interactive.ion-invalid {
-  --border-color: var(--highlight-color-invalid);
-}
-
-ion-item.item-interactive.ion-invalid ion-note.input-error {
-  display: flex;
-  align-items: center;
-}
-
 .full-width {
   width: 100%;
 }
 
-ion-note.input-error ion-icon {
+ion-item.item-interactive.ion-invalid {
+  --border-color: var(--highlight-color-invalid);
+}
+
+ion-item.item-interactive.ion-invalid ion-note.input-error, ion-text.input-error {
+  display: flex;
+  align-items: center;
+  line-height: 1rem;
+}
+
+ion-note.input-error ion-icon, ion-text.input-error ion-icon {
   padding-right: 4px;
   font-size: 14px;
 }

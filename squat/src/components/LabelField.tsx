@@ -19,15 +19,11 @@ const LabelField: React.FC<LabelProps> = (props) => {
         </IonLabel>
       </IonItem>
       <IonItem lines="none">
-        <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className="input-error">
-          {props.error && <IonIcon icon={alertCircleOutline} color="danger" size="small" />}
+        <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
+          {props.error && <IonIcon icon={alertCircleOutline} color="danger" />}
           {props.value}
         </IonText>
-        {props.unit && (
-          <IonLabel slot="end" color="medium">
-            {props.unit}
-          </IonLabel>
-        )}
+        {props.unit && <IonLabel color="medium">&nbsp;{props.unit}</IonLabel>}
         {props.helper && <IonNote slot="helper">{props.helper}</IonNote>}
       </IonItem>
     </>

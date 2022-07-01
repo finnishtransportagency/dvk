@@ -131,6 +131,10 @@ export type State = {
       froudeNumber: number;
     };
   };
+  status: {
+    showDeepWaterValues: boolean;
+    showBarrass: boolean;
+  };
   validations: Record<string, unknown>;
 };
 
@@ -219,6 +223,10 @@ export const initialState = {
       froudeNumber: 0,
     },
   },
+  status: {
+    showDeepWaterValues: false,
+    showBarrass: false,
+  },
   validations: { blockCoefficient: true, displacement: true, bowThrusterEfficiency: true, deckCargo: true, windDirection: true, turningRadius: true },
 };
 
@@ -235,6 +243,7 @@ export type Action =
         | 'environment-attribute'
         | 'calculations'
         | 'calculations-intermediate'
+        | 'status'
         | 'validation';
       payload: {
         key: string;
@@ -294,6 +303,11 @@ export const SquatReducer = (state: State, action: Action) => {
       return {
         ...state,
         calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: inputValue } },
+      };
+    case 'status':
+      return {
+        ...state,
+        status: { ...state.status, [action.payload.key]: inputValue },
       };
     case 'validation':
       return {

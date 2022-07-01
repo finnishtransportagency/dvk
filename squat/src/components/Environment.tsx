@@ -78,6 +78,16 @@ const Environment: React.FC = () => {
     return isFieldValid(name) ? 'ion-valid' : 'ion-invalid';
   };
 
+  // Determine values to show
+  const getWaveLength = () => {
+    const currentValue = state.environment.weather.waveLength[state.status.showDeepWaterValues ? 1 : 0];
+    return isNaN(currentValue) ? 0 : currentValue;
+  };
+  const getWaveAmplitude = () => {
+    const currentValue = state.environment.weather.waveAmplitude[state.status.showDeepWaterValues ? 1 : 0];
+    return isNaN(currentValue) ? 0 : currentValue;
+  };
+
   return (
     <>
       <IonText color="dark" className="equal-margin-top">
@@ -155,20 +165,14 @@ const Environment: React.FC = () => {
             <IonCol size="6">
               <LabelField
                 title={t('homePage.squat.environment.wave-length')}
-                value={(isNaN(state.environment.weather.waveLength[0]) ? 0 : state.environment.weather.waveLength[0]).toLocaleString(i18n.language, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                value={getWaveLength().toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 unit="m"
               />
             </IonCol>
             <IonCol size-sm="6">
               <LabelField
                 title={t('homePage.squat.environment.wave-amplitude')}
-                value={(isNaN(state.environment.weather.waveAmplitude[0]) ? 0 : state.environment.weather.waveAmplitude[0]).toLocaleString(
-                  i18n.language,
-                  { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                )}
+                value={getWaveAmplitude().toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 unit="m"
               />
             </IonCol>
@@ -250,6 +254,7 @@ const Environment: React.FC = () => {
                   name="channelWidth"
                   value={state.environment.fairway.channelWidth}
                   placeholder="0"
+                  min="0"
                   unit="m"
                   fieldClass={setFieldClass('channelWidth')}
                   actionType="environment-fairway"
@@ -283,6 +288,7 @@ const Environment: React.FC = () => {
                   name="slopeScale"
                   value={state.environment.fairway.slopeScale}
                   placeholder="0"
+                  min="0"
                   fieldClass={setFieldClass('slopeScale')}
                   actionType="environment-fairway"
                 />
@@ -293,6 +299,7 @@ const Environment: React.FC = () => {
                   name="slopeHeight"
                   value={state.environment.fairway.slopeHeight}
                   placeholder="0"
+                  min="0"
                   unit="m"
                   fieldClass={setFieldClass('slopeHeight')}
                   actionType="environment-fairway"
@@ -314,6 +321,7 @@ const Environment: React.FC = () => {
                 name="vesselCourse"
                 value={state.environment.vessel.vesselCourse}
                 placeholder={zero.toString().padStart(3, '0')}
+                min="0"
                 max="350"
                 step="10"
                 unit="deg"
@@ -327,6 +335,7 @@ const Environment: React.FC = () => {
                 name="vesselSpeed"
                 value={state.environment.vessel.vesselSpeed}
                 placeholder="0"
+                min="0"
                 max="35"
                 unit="kts"
                 fieldClass={setFieldClass('vesselSpeed')}

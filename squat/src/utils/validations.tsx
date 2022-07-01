@@ -3,6 +3,7 @@ import { calculateFroudeNumber } from './calculations';
 import i18n from '../i18n';
 import { t } from 'i18next';
 
+// General validations
 export const isTugUseRecommended = (bowThrusterForce: number, externalForceRequired: number) => {
   // If(Value(Bow_Thruster_Force.Text) > 0, If(Value(Minimum_Force_Required.Text) > 0, true, false))
   if (bowThrusterForce > 0 && externalForceRequired > 0) {
@@ -45,4 +46,51 @@ export const isReliabilityAnIssue = (blockCoefficient: number, vesselSpeed: numb
     );
   }
   return '';
+};
+
+export const isUKCUnderMinimum = (
+  sweptDepth: number,
+  requiredUKC: number,
+  UKCDuringTurn: number[],
+  UKCStraightCourse: number[],
+  UKCVesselMotions: number[][],
+  showBarrass: boolean
+) => {
+  // If(IsBlank(Swept_Depth), false,
+  // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), true, false))))
+  if (!sweptDepth) {
+    return false;
+  }
+  if (
+    (showBarrass ? UKCDuringTurn[0] : UKCDuringTurn[1]) < requiredUKC ||
+    (showBarrass ? UKCStraightCourse[0] : UKCStraightCourse[1]) < requiredUKC ||
+    (showBarrass ? UKCVesselMotions[0][0] : UKCVesselMotions[0][1]) < requiredUKC
+  ) {
+    return true;
+  }
+  return false;
+};
+
+// Field validations
+export const isSafetyMarginInsufficient = (safetyMarginWindForce: number, remainingSafetyMargin: number) => {
+  // If(Value(Remaining_Safety_Margin.Text) < Set_Safety_Margin.Value/100, 5, 0)
+  return remainingSafetyMargin < safetyMarginWindForce / 100;
+};
+
+export const isExternalForceRequired = (externalForceRequired: number) => {
+  // If(Value(Minimum_Force_Required.Text) > 0, 5, 0)
+  return externalForceRequired > 0;
+};
+
+export const isUKCShipMotionsUnderRequired = (requiredUKC: number, UKCVesselMotions: number[][], showBarrass: boolean) => {
+  // If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), 5, 0)
+  return UKCVesselMotions[showBarrass ? 0 : 1][0] < requiredUKC;
+};
+export const isUKCStraightUnderRequired = (requiredUKC: number, UKCStraightCourse: number[], showBarrass: boolean) => {
+  // If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), 5, 0)
+  return UKCStraightCourse[showBarrass ? 0 : 1] < requiredUKC;
+};
+export const isUKCDuringTurnUnderRequired = (requiredUKC: number, UKCDuringTurn: number[], showBarrass: boolean) => {
+  // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), 5, 0)
+  return UKCDuringTurn[showBarrass ? 0 : 1] < requiredUKC;
 };
