@@ -2,7 +2,8 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
-import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG } from '../utils/calculations';
+import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG, calculateFroudeNumber } from '../utils/calculations';
+import './SquatChart.css';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation();
@@ -26,6 +27,9 @@ const SquatChart: React.FC = () => {
       };
     };
     window.addEventListener('resize', handleResize());
+    if (ref != null && ref.current != null) {
+      setWidth(ref.current.clientWidth);
+    }
   }, []);
 
   useLayoutEffect(() => {
@@ -63,16 +67,60 @@ const SquatChart: React.FC = () => {
       return squatHG;
     };
 
-    const buildGraph = (minSpeed: number, maxSpeed: number) => {
+    const buildGraph = () => {
       const height = Math.round(width / 2);
       const marginLeft = 50;
-      const marginRight = 50;
-      const marginTop = 50;
+      const marginRight = 30;
+      const marginTop = 30;
       const marginBottom = 50;
 
-      const yDomainBottom = Number(state.environment.fairway.sweptDepth) + 1 - Number(state.vessel.general.draught);
-      const yDomainSweptDepth = Number(state.environment.fairway.sweptDepth) - Number(state.vessel.general.draught);
-      const yDomainMax = yDomainBottom + 1;
+      const squat20Color = '#0000ff';
+      const squat24Color = '#ff0000';
+
+      let minSpeed = state.environment.vessel.vesselSpeed;
+
+      if (!minSpeed) {
+        minSpeed = 0;
+      }
+
+      const maxSpeed = minSpeed + 10;
+
+      const paramsValid = (() => {
+        const isBetween = (value: number, min: number, max: number) => {
+          return value >= min && value <= max;
+        };
+        if (state.vessel.general.lengthBPP <= 0) return false;
+        if (state.vessel.general.breadth <= 0) return false;
+        if (state.vessel.general.draught <= 0) return false;
+        if (state.environment.vessel.vesselSpeed < 0) return false;
+        if (state.environment.fairway.sweptDepth <= state.vessel.general.draught) return false;
+        if (!isBetween(state.vessel.general.blockCoefficient, 0.6, 0.8)) return false;
+        if (!isBetween(state.vessel.general.breadth / state.vessel.general.draught, 2.19, 3.5)) return false;
+        if (!isBetween(state.vessel.general.lengthBPP / state.vessel.general.breadth, 5.5, 8.5)) return false;
+        const fn = calculateFroudeNumber(
+          state.environment.vessel.vesselSpeed,
+          state.environment.fairway.sweptDepth,
+          state.environment.fairway.waterLevel
+        );
+        if (fn > 0.7) return false;
+        return true;
+      })();
+
+      const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel - state.vessel.general.draught;
+
+      let yDomainWaterDepth = state.environment.fairway.waterDepth - state.vessel.general.draught;
+
+      if (Number.isNaN(yDomainWaterDepth) || yDomainWaterDepth < yDomainSweptDepth) {
+        yDomainWaterDepth = yDomainSweptDepth;
+      }
+
+      let yDomainOtherMovementHeight = state.calculations.squat.correctedDraughtDuringTurn - state.vessel.general.draught;
+
+      if (Number.isNaN(yDomainOtherMovementHeight) || yDomainOtherMovementHeight < 0.5) {
+        yDomainOtherMovementHeight = 0.5;
+      }
+
+      const bottomLayerHeightPx = 20;
 
       const xScale = d3
         .scaleLinear()
@@ -82,127 +130,149 @@ const SquatChart: React.FC = () => {
 
       const yScale = d3
         .scaleLinear()
-        .domain([0, yDomainMax])
-        .range([0, height - marginTop - marginBottom]);
+        .domain([0, yDomainWaterDepth])
+        .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
       const yAxisGenerator = d3.axisLeft(yScale);
 
-      xAxisGenerator.tickFormat(d3.format('.1f'));
-      xAxisGenerator.tickSize(0 - (height - marginTop - marginBottom));
-
-      yAxisGenerator.tickFormat(d3.format('.1f'));
-
       const svg = d3.select(ref.current);
-
       svg.attr('viewBox', `0 0 ${width} ${height}`);
 
       /* Clear svg */
       svg.selectAll('*').remove();
 
-      /* Add depth levels */
-      const bar1 = svg.append('g').attr('transform', `translate(${marginLeft}, ${marginTop + yScale(yDomainBottom)})`);
-      bar1
-        .append('rect')
-        .attr('width', width - marginLeft - marginRight)
-        .attr('height', yScale(yDomainMax - yDomainBottom))
-        .attr('fill', '#000000');
-      bar1
-        .append('text')
-        .text(`${t('homePage.squatChart.levels.bottom')}`)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('x', (width - marginLeft - marginRight) / 2)
-        .attr('y', yScale(yDomainMax - yDomainBottom) / 2)
-        .attr('font-size', '0.8em')
-        .attr('fill', '#ffffff');
+      if (!paramsValid) {
+        const gsFilter = svg.append('filter').attr('id', 'grayscale');
+        gsFilter.append('feColorMatrix').attr('type', 'matrix').attr('values', '0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 1 0');
+      }
 
-      const bar2 = svg.append('g').attr('transform', `translate(${marginLeft}, ${marginTop + yScale(yDomainSweptDepth)})`);
-      bar2
-        .append('rect')
-        .attr('width', width - marginLeft - marginRight)
-        .attr('height', yScale(yDomainBottom - yDomainSweptDepth))
-        .attr('fill', '#ffcccc');
-      bar2
+      const container = svg.append('g');
+
+      if (!paramsValid) {
+        container.attr('filter', 'url(#grayscale)');
+      }
+
+      /* Add legends */
+      const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+      legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat20Color);
+      legend20
         .append('text')
-        .text(`${t('homePage.squatChart.levels.underSweptDepth')}`)
-        .attr('text-anchor', 'middle')
+        .text(t('homePage.squatChart.legends.squat20'))
+        .attr('text-anchor', 'left')
         .attr('dominant-baseline', 'middle')
-        .attr('x', (width - marginLeft - marginRight) / 2)
-        .attr('y', yScale(yDomainBottom - yDomainSweptDepth) / 2)
-        .attr('font-size', '0.8em')
+        .attr('x', 15)
+        .attr('y', 10 / 2)
+        .attr('font-size', '10px')
         .attr('fill', '#000000');
 
-      const bar3 = svg
-        .append('g')
-        .attr('transform', `translate(${marginLeft}, ${marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC)})`);
-      bar3
-        .append('rect')
-        .attr('width', width - marginLeft - marginRight)
-        .attr('height', yScale(state.environment.attribute.requiredUKC))
-        .attr('fill', '#99ccff');
-      bar3
+      const box = legend20.node()?.getBBox();
+      const legend20Width = box ? box.width : 0;
+
+      const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
+      legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat24Color);
+      legend24
         .append('text')
-        .text(`${t('homePage.squatChart.levels.netUKC')}`)
-        .attr('text-anchor', 'middle')
+        .text(t('homePage.squatChart.legends.squat24'))
+        .attr('text-anchor', 'left')
         .attr('dominant-baseline', 'middle')
-        .attr('x', (width - marginLeft - marginRight) / 2)
-        .attr('y', yScale(state.environment.attribute.requiredUKC) / 2)
-        .attr('font-size', '0.8em')
+        .attr('x', 15)
+        .attr('y', 10 / 2)
+        .attr('font-size', '10px')
         .attr('fill', '#000000');
 
-      const bar4 = svg
-        .append('g')
-        .attr('transform', `translate(${marginLeft}, ${marginTop + yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - 0.6)})`);
-      bar4
-        .append('rect')
-        .attr('width', width - marginLeft - marginRight)
-        .attr('height', yScale(0.6))
-        .attr('fill', '#cc99ff');
-      bar4
-        .append('text')
-        .text(`${t('homePage.squatChart.levels.otherMovement')}`)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('x', (width - marginLeft - marginRight) / 2)
-        .attr('y', yScale(0.6) / 2)
-        .attr('font-size', '0.8em')
-        .attr('fill', '#000000');
+      /* Add chart layers */
+      const addChartLayer = (attr: { y: number; height: number; fillColor: string; label: string; labelColor: string }) => {
+        const layer = container.append('g').attr('transform', `translate(${marginLeft}, ${attr.y})`);
+        layer
+          .append('rect')
+          .attr('width', width - marginLeft - marginRight)
+          .attr('height', attr.height)
+          .attr('fill', attr.fillColor);
+        layer
+          .append('text')
+          .text(attr.label)
+          .attr('text-anchor', 'middle')
+          .attr('dominant-baseline', 'middle')
+          .attr('x', (width - marginLeft - marginRight) / 2)
+          .attr('y', attr.height / 2)
+          .attr('font-size', '0.8em')
+          .attr('fill', attr.labelColor);
+      };
 
-      const bar5 = svg.append('g').attr('transform', `translate(${marginLeft}, ${marginTop})`);
-      bar5
-        .append('rect')
-        .attr('width', width - marginLeft - marginRight)
-        .attr('height', yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - 0.6))
-        .attr('fill', '#ccffff');
-      bar5
-        .append('text')
-        .text(`${t('homePage.squatChart.levels.squat')}`)
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('x', (width - marginLeft - marginRight) / 2)
-        .attr('y', yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - 0.6) / 2)
-        .attr('font-size', '0.8em')
-        .attr('fill', '#000000');
+      if (yDomainWaterDepth > 0 || yDomainSweptDepth > 0) {
+        addChartLayer({
+          y: marginTop + yScale(yDomainWaterDepth),
+          height: 20,
+          fillColor: '#000000',
+          label: t('homePage.squatChart.levels.bottom'),
+          labelColor: '#ffffff',
+        });
+      }
+
+      if (yDomainWaterDepth > yDomainSweptDepth) {
+        addChartLayer({
+          y: marginTop + yScale(yDomainSweptDepth),
+          height: yScale(yDomainWaterDepth - yDomainSweptDepth),
+          fillColor: '#ffcccc',
+          label: t('homePage.squatChart.levels.underSweptDepth'),
+          labelColor: '#000000',
+        });
+      }
+
+      if (yDomainSweptDepth > 0) {
+        const yDomainUKCh = Math.min(yDomainSweptDepth, state.environment.attribute.requiredUKC);
+        const yDomainUKCy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC);
+        addChartLayer({
+          y: marginTop + yScale(yDomainUKCy),
+          height: yScale(yDomainUKCh),
+          fillColor: '#99ccff',
+          label: t('homePage.squatChart.levels.netUKC'),
+          labelColor: '#000000',
+        });
+      }
+
+      if (yDomainSweptDepth - state.environment.attribute.requiredUKC > 0) {
+        const yDomainOMh = Math.min(yDomainOtherMovementHeight, yDomainSweptDepth - state.environment.attribute.requiredUKC);
+        const yDomainOMy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight);
+        addChartLayer({
+          y: marginTop + yScale(yDomainOMy),
+          height: yScale(yDomainOMh),
+          fillColor: '#cc99ff',
+          label: t('homePage.squatChart.levels.otherMovement'),
+          labelColor: '#000000',
+        });
+      }
+
+      if (yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight > 0) {
+        addChartLayer({
+          y: marginTop,
+          height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
+          fillColor: '#ccffff',
+          label: t('homePage.squatChart.levels.squat'),
+          labelColor: '#000000',
+        });
+      }
 
       /* Add axis */
-      const xAxis = svg.append('g').call(xAxisGenerator);
-      const yAxis = svg.append('g').call(yAxisGenerator);
 
+      xAxisGenerator.tickFormat(d3.format('.1f'));
+      xAxisGenerator.tickSize(0 - (height - marginTop - marginBottom));
+      const xAxis = container.append('g').call(xAxisGenerator);
       xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`);
-
       xAxis.select('.domain').remove();
-
       xAxis.selectAll('.tick line').attr('stroke-width', '.2');
 
-      yAxis.attr('transform', `translate(${marginLeft}, ${marginTop})`);
-
-      svg
+      container
         .append('text')
         .attr('text-anchor', 'middle')
         .attr('x', marginLeft + (width - marginLeft - marginRight) / 2)
         .attr('y', height - 20)
         .text(`${t('homePage.squatChart.xAxisLabel')}`);
 
-      svg
+      yAxisGenerator.tickFormat(d3.format('.1f'));
+      const yAxis = container.append('g').call(yAxisGenerator);
+      yAxis.attr('transform', `translate(${marginLeft}, ${marginTop})`);
+
+      container
         .append('text')
         .attr('text-anchor', 'middle')
         .attr('transform', 'rotate(-90)')
@@ -212,87 +282,50 @@ const SquatChart: React.FC = () => {
 
       /* Add squat lines */
 
-      /* Squat c0 = 2.4 */
-      const dataPoints24: Array<{ speed: number; squat: number }> = [];
+      const addSquatLine = (C0Coefficient: number, color: string) => {
+        const data: Array<[number, number]> = [];
 
-      for (let i = minSpeed; i < maxSpeed; i += 1) {
-        dataPoints24.push({ speed: i, squat: calculateSquat(i, 2.4) });
+        for (let i = minSpeed; i < maxSpeed; i += 0.1) {
+          data.push([i, calculateSquat(i, C0Coefficient)]);
+        }
+
+        data.push([maxSpeed, calculateSquat(maxSpeed, C0Coefficient)]);
+
+        container
+          .append('path')
+          .datum(data)
+          .attr(
+            'd',
+            d3
+              .line()
+              .x((d) => {
+                return xScale(d[0]);
+              })
+              .y((d) => {
+                return yScale(d[1]);
+              })
+          )
+          .attr('transform', `translate(${marginLeft}, ${marginTop})`)
+          .attr('stroke', color)
+          .attr('stroke-width', '2px')
+          .attr('fill', 'none');
+      };
+
+      if (paramsValid) {
+        addSquatLine(2.0, squat20Color);
+        addSquatLine(2.4, squat24Color);
       }
-
-      dataPoints24.push({ speed: maxSpeed, squat: calculateSquat(maxSpeed, 2.4) });
-
-      const data24: Array<[number, number]> = dataPoints24.map((item) => {
-        return [item.speed, item.squat];
-      });
-
-      svg
-        .append('path')
-        .datum(data24)
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => {
-              return xScale(d[0]);
-            })
-            .y((d) => {
-              return yScale(d[1]);
-            })
-        )
-        .attr('transform', `translate(${marginLeft}, ${marginTop})`)
-        .attr('stroke', '#ff0000')
-        .attr('stroke-width', '2px')
-        .attr('fill', 'none');
-
-      /* Squat c0 = 2.0 */
-      const dataPoints20: Array<{ speed: number; squat: number }> = [];
-
-      for (let i = minSpeed; i < maxSpeed; i += 1) {
-        dataPoints20.push({ speed: i, squat: calculateSquat(i, 2.0) });
-      }
-
-      dataPoints20.push({ speed: maxSpeed, squat: calculateSquat(maxSpeed, 2.0) });
-
-      const data20: Array<[number, number]> = dataPoints20.map((item) => {
-        return [item.speed, item.squat];
-      });
-
-      svg
-        .append('path')
-        .datum(data20)
-        .attr(
-          'd',
-          d3
-            .line()
-            .x((d) => {
-              return xScale(d[0]);
-            })
-            .y((d) => {
-              return yScale(d[1]);
-            })
-        )
-        .attr('transform', `translate(${marginLeft}, ${marginTop})`)
-        .attr('stroke', '#0000ff')
-        .attr('stroke-width', '2px')
-        .attr('fill', 'none');
     };
 
-    let vesselSpeed = state.environment.vessel.vesselSpeed;
-
-    if (!vesselSpeed) {
-      vesselSpeed = 0;
-    }
-
-    if (Number(state.vessel.general.draught) > 0 && Number(state.environment.fairway.sweptDepth) > Number(state.vessel.general.draught)) {
-      buildGraph(vesselSpeed, vesselSpeed + 10);
-    } else {
-      const svg = d3.select(ref.current);
-      /* Clear svg */
-      svg.selectAll('*').remove();
-    }
+    buildGraph();
   }, [state, width, t]);
 
-  return <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />;
+  return (
+    <>
+      <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
+      <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
+    </>
+  );
 };
 
 export default SquatChart;

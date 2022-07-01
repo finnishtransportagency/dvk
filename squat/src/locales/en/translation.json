@@ -100,6 +100,7 @@
       }
     },
     "squatChart": {
+      "heading": "[en] Aluksen squat nopeuden funktiona",
       "xAxisLabel": "[en] Nopeus (kn)",
       "yAxisLabel": "[en] Squat (m)",
       "levels": {
@@ -108,6 +109,10 @@
         "netUKC": "[en] Kölivara",
         "otherMovement": "[en] Muu liikevara",
         "squat": "[en] Painaumavara"
+      },
+      "legends": {
+        "squat20": "[en] 2,0 squat smax",
+        "squat24": "[en] 2,4 squat smax"
       }
     }
   },
