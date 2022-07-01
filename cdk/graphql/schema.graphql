@@ -1,0 +1,18 @@
+schema { 
+  query: Query
+}
+
+type Query {
+  fairways: [Fairway!]!
+  fairway(id: Int!): Fairway
+}
+
+type Fairway {
+  id: Int!
+  nameFI: String!
+  nameSV: String
+  length: Int
+  depth1: Float
+  depth2: Float
+  depth3: Float
+}

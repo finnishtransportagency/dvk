@@ -40,6 +40,10 @@
                     ".ts",
                     ".tsx"
                 ]
+            },
+            "typescript": {
+                "alwaysTryTypes": true,
+                "paths": [ "./tsconfig.json", "./cdk/tsconfig.json" ]
             }
         },
         "react": {

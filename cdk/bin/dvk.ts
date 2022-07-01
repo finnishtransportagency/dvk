@@ -6,6 +6,7 @@ import { App, StackProps } from 'aws-cdk-lib';
 import { PipelineLambda } from '../lib/pipeline-lambda';
 import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
+import { DvkBackendStack } from '../lib/dvk-backend';
 
 class DvkPipelineLambdaStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -53,6 +54,19 @@ new DvkPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'DvkPipelineStack-' + appEnv,
+  },
+  appEnv
+);
+
+new DvkBackendStack(
+  app,
+  'DvkBackendStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: 'eu-west-1',
+    },
+    stackName: 'DvkBackendStack-' + appEnv,
   },
   appEnv
 );

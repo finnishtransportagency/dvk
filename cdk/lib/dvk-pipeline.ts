@@ -5,9 +5,10 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 interface DvkPipelineProps {
   env: string;
@@ -41,7 +42,7 @@ export class DvkPipeline extends Construct {
     // Create the build project for DVK app
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.0'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -104,11 +105,44 @@ export class DvkPipeline extends Construct {
       })
     );
 
+    const dvkCdkProject = new codebuild.PipelineProject(this, 'DvkCdkBuild', {
+      environment: {
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkCdkBuildImage', 'dvk-buildimage'), '1.0.1'),
+        computeType: ComputeType.MEDIUM,
+        environmentVariables: {
+          ENVIRONMENT: { value: props.env },
+        },
+      },
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          install: {
+            commands: ['echo Show node versions', 'node -v', 'npm -v'],
+          },
+          build: {
+            commands: ['echo deploy cdk stack', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
+          },
+        },
+      }),
+    });
+    dvkCdkProject.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:GetSecretValue', 's3:*', 'sts:*'],
+        resources: ['*'],
+      })
+    );
+
     const importedBucketValue = cdk.Fn.importValue('DVKBucket' + props.env);
 
     pipeline.addStage({
       stageName: 'Deploy',
       actions: [
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'CdkDeploy',
+          project: dvkCdkProject,
+          input: sourceOutput,
+        }),
         new cdk.aws_codepipeline_actions.S3DeployAction({
           actionName: 'S3Deploy',
           bucket: s3.Bucket.fromBucketName(this, 'Bucket', importedBucketValue.toString()),

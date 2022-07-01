@@ -1,6 +1,6 @@
 #!/bin/bash
 REPO=012525309247.dkr.ecr.eu-west-1.amazonaws.com
-BUILD_IMAGE_VERSION=1.0.0
+BUILD_IMAGE_VERSION=1.0.1
 IMAGE=dvk-buildimage
 REPO_TAG=$REPO/$IMAGE:$BUILD_IMAGE_VERSION
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $REPO
