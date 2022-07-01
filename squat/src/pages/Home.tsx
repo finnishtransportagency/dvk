@@ -24,7 +24,7 @@ const Home: React.FC = () => {
           </IonSelect>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent>
         <Squat />
         <SquatChart />
       </IonContent>
