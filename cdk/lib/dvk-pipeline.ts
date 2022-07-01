@@ -30,7 +30,7 @@ export class DvkPipeline extends Construct {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'DVK-63', //this.getBranch(props.env),
+      branch: this.getBranch(props.env),
       trigger: GitHubTrigger.NONE,
     });
 
@@ -43,11 +43,6 @@ export class DvkPipeline extends Construct {
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
-        privileged: true,
-        computeType: ComputeType.MEDIUM,
-        environmentVariables: {
-          ENVIRONMENT: { value: props.env },
-        },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -56,7 +51,7 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build dvk app', 'npm ci', 'npm run build', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
+            commands: ['echo build dvk app', 'npm ci', 'npm run build'],
           },
         },
         artifacts: {
@@ -65,13 +60,6 @@ export class DvkPipeline extends Construct {
         },
       }),
     });
-    dvkBuildProject.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:GetSecretValue', 's3:*', 'sts:*'],
-        resources: ['*'],
-      })
-    );
 
     const buildOutput = new codepipeline.Artifact();
 
@@ -117,11 +105,44 @@ export class DvkPipeline extends Construct {
       })
     );
 
+    const dvkCdkProject = new codebuild.PipelineProject(this, 'DvkCdkBuild', {
+      environment: {
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkCdkBuildImage', 'dvk-buildimage'), '1.0.1'),
+        computeType: ComputeType.MEDIUM,
+        environmentVariables: {
+          ENVIRONMENT: { value: props.env },
+        },
+      },
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          install: {
+            commands: ['echo Show node versions', 'node -v', 'npm -v'],
+          },
+          build: {
+            commands: ['echo deploy cdk stack', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
+          },
+        },
+      }),
+    });
+    dvkCdkProject.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:GetSecretValue', 's3:*', 'sts:*'],
+        resources: ['*'],
+      })
+    );
+
     const importedBucketValue = cdk.Fn.importValue('DVKBucket' + props.env);
 
     pipeline.addStage({
       stageName: 'Deploy',
       actions: [
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'CdkDeploy',
+          project: dvkCdkProject,
+          input: sourceOutput,
+        }),
         new cdk.aws_codepipeline_actions.S3DeployAction({
           actionName: 'S3Deploy',
           bucket: s3.Bucket.fromBucketName(this, 'Bucket', importedBucketValue.toString()),
