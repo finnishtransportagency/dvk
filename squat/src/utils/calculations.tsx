@@ -331,8 +331,18 @@ export function calculateWaveAmplitudeProperties(lengthBPP: number, waveHeight: 
 
   // RAO_HG_Cal | If(Value(x_Value_HG_Cal.Text) > 2.6, 1, If(Value(x_Value_HG_Cal.Text) >= 0.65, Ln(x_Value_HG_Cal)*0.7061+0.3453, 0))
   // RAOShallow_HG_Cal | If(Value(x_ShallowValue_HG_Cal.Text) > 2.6, 1, If(Value(x_ShallowValue_HG_Cal.Text) >= 0.65, Ln(x_ShallowValue_HG_Cal)*0.7061+0.3453, 0))
-  const RAODeep = xValue > 2.6 ? 1 : xValue < 0.65 ? 0 : Math.log(xValue) * 0.7061 + 0.3453;
-  const RAOShallow = xValueShallow > 2.6 ? 1 : xValueShallow < 0.65 ? 0 : Math.log(xValueShallow) * 0.7061 + 0.3453;
+  let RAODeep = Math.log(xValue) * 0.7061 + 0.3453;
+  if (xValue > 2.6) {
+    RAODeep = 1;
+  } else if (xValue < 0.65) {
+    RAODeep = 0;
+  }
+  let RAOShallow = Math.log(xValueShallow) * 0.7061 + 0.3453;
+  if (xValueShallow > 2.6) {
+    RAOShallow = 1;
+  } else if (xValueShallow < 0.65) {
+    RAOShallow = 0;
+  }
   // Wavenumber_HG_Cal | Pi()*2/Wavelength_HG_Cal
   // WavenumberShallow_HG_Cal | Pi()*2/WavelengthShallow_HG_Cal
   const waveNumber = (Math.PI * 2) / waveLength[1];

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonItem, IonNote, IonButton, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
