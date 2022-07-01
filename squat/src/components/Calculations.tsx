@@ -1,25 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import {
-  IonText,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonAccordionGroup,
-  IonNote,
-  IonButton,
-  IonAccordion,
-  IonCard,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonCardContent,
-  IonIcon,
-  IonGrid,
-  IonRow,
-  IonCol,
-} from '@ionic/react';
+import { IonText, IonItem, IonNote, IonButton, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import {
@@ -43,58 +25,32 @@ import {
   toDeg,
 } from '../utils/calculations';
 
-import { warningOutline, alertCircleOutline } from 'ionicons/icons';
+import Alert from './Alert';
+import SectionTitle from './SectionTitle';
+import LabelField from './LabelField';
+import {
+  isExternalForceRequired,
+  isSafetyMarginInsufficient,
+  isUKCDuringTurnUnderRequired,
+  isUKCShipMotionsUnderRequired,
+  isUKCStraightUnderRequired,
+  isUKCUnderMinimum,
+} from '../utils/validations';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation();
   const { state, dispatch } = useSquatContext();
 
-  const [showBarrass, setShowBarrass] = useState<boolean>(false);
-
-  const toggleSquat = (value: boolean) => {
-    setShowBarrass(value);
-  };
-
   // Validations
-  const isUKCUnderMinimum = () => {
-    // If(IsBlank(Swept_Depth), false,
-    // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), true, false))))
-    if (!state.environment.fairway.sweptDepth) {
-      return false;
-    }
-    if (
-      (showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1]) <
-        state.environment.attribute.requiredUKC ||
-      (showBarrass ? state.calculations.squat.UKCStraightCourse[0] : state.calculations.squat.UKCStraightCourse[1]) <
-        state.environment.attribute.requiredUKC ||
-      (showBarrass ? state.calculations.squat.UKCVesselMotions[0][0] : state.calculations.squat.UKCVesselMotions[0][1]) <
-        state.environment.attribute.requiredUKC
-    ) {
-      return true;
-    }
-    return false;
-  };
-
-  // Field validations
-  const isSafetyMarginInsufficient = () => {
-    // If(Value(Remaining_Safety_Margin.Text) < Set_Safety_Margin.Value/100, 5, 0)
-    return state.calculations.forces.remainingSafetyMargin < state.environment.attribute.safetyMarginWindForce / 100;
-  };
-  const isExternalForceRequired = () => {
-    // If(Value(Minimum_Force_Required.Text) > 0, 5, 0)
-    return state.calculations.forces.externalForceRequired > 0;
-  };
-  const isUKCShipMotionsUnderRequired = () => {
-    // If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), 5, 0)
-    return state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0] < state.environment.attribute.requiredUKC;
-  };
-  const isUKCStraightUnderRequired = () => {
-    // If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), 5, 0)
-    return state.calculations.squat.UKCStraightCourse[showBarrass ? 0 : 1] < state.environment.attribute.requiredUKC;
-  };
-  const isUKCDuringTurnUnderRequired = () => {
-    // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), 5, 0)
-    return state.calculations.squat.UKCDuringTurn[showBarrass ? 0 : 1] < state.environment.attribute.requiredUKC;
+  const checkIsUKCUnderMinimum = () => {
+    return isUKCUnderMinimum(
+      state.environment.fairway.sweptDepth,
+      state.environment.attribute.requiredUKC,
+      state.calculations.squat.UKCDuringTurn,
+      state.calculations.squat.UKCStraightCourse,
+      state.calculations.squat.UKCVesselMotions,
+      state.status.showBarrass
+    );
   };
 
   // useEffects to calculate results by input value update
@@ -304,377 +260,330 @@ const Calculations: React.FC = () => {
     dispatch,
   ]);
 
-  return (
-    <IonCard color="secondary">
-      <IonCardHeader>
-        <IonCardSubtitle>{t('homePage.squat.calculations.description')}</IonCardSubtitle>
-        <IonCardTitle>{t('homePage.squat.calculations.title')}</IonCardTitle>
-      </IonCardHeader>
+  // Update status to state
+  const setStateStatus = (key: string, value: boolean) => {
+    dispatch({
+      type: 'status',
+      payload: { key: key, value: value, elType: 'boolean' },
+    });
+  };
 
-      <IonCardContent>
-        {isUKCUnderMinimum() && (
-          <IonGrid className="danger">
+  // Determine values to show
+  const getUKCVesselMotionValue = () => {
+    const currentValue = state.calculations.squat.UKCVesselMotions[state.status.showBarrass ? 0 : 1][state.status.showDeepWaterValues ? 1 : 0];
+    return isNaN(currentValue) ? 0 : currentValue;
+  };
+  const getUKCStraightCourseValue = () => {
+    const currentValue = state.calculations.squat.UKCStraightCourse[state.status.showBarrass ? 0 : 1];
+    return isNaN(currentValue) ? '' : currentValue;
+  };
+  const getUKCDuringTurnValue = () => {
+    const currentValue = state.calculations.squat.UKCDuringTurn[state.status.showBarrass ? 0 : 1];
+    return isNaN(currentValue) ? '' : currentValue;
+  };
+  const getSquatValue = () => {
+    const currentValue =
+      state.status.showBarrass || checkIsUKCUnderMinimum() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
+    return isNaN(currentValue) ? '' : currentValue;
+  };
+
+  return (
+    <>
+      <IonText color="dark" className="equal-margin-top">
+        <h2>
+          <strong>{t('homePage.squat.calculations.title')}</strong>
+        </h2>
+      </IonText>
+
+      <>
+        {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
+
+        <IonNote>
+          <IonButton size="small" shape="round" fill="outline" strong={true}>
+            ?
+          </IonButton>
+        </IonNote>
+        <IonItem lines="none" className="only-label">
+          <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
-              <IonCol size="auto" className="icon">
-                <IonIcon icon={warningOutline} color="danger" />
+              <IonCol size="5">
+                <IonLabel color={state.status.showDeepWaterValues ? 'medium' : 'primary'}>Shallow Water</IonLabel>
               </IonCol>
-              <IonCol>
-                <IonText>{t('homePage.squat.calculations.UKC-under-required-minimum')}</IonText>
+              <IonCol size="2" className="ion-justify-content-center use-flex">
+                <IonToggle
+                  checked={state.status.showDeepWaterValues}
+                  onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.checked)}
+                  className="squat-toggle"
+                  //disabled={getSquatValue() === ''}
+                />
+              </IonCol>
+              <IonCol size="5">
+                <IonLabel color={state.status.showDeepWaterValues ? 'primary' : 'medium'} className="align-right">
+                  {t('homePage.squat.calculations.deep-water-values')}
+                </IonLabel>
               </IonCol>
             </IonRow>
           </IonGrid>
-        )}
+        </IonItem>
+        <IonItem lines="none" className="only-label">
+          <IonGrid className="no-padding">
+            <IonRow className="ion-align-items-center">
+              <IonCol size="5">
+                <IonLabel color={state.status.showBarrass ? 'medium' : 'primary'}>Huuska/Guliev</IonLabel>
+              </IonCol>
+              <IonCol size="2" className="ion-justify-content-center use-flex">
+                <IonToggle
+                  checked={state.status.showBarrass}
+                  onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
+                  className="squat-toggle"
+                  disabled={getSquatValue() === ''}
+                />
+              </IonCol>
+              <IonCol size="5">
+                <IonLabel color={state.status.showBarrass ? 'primary' : 'medium'} className="align-right">
+                  Barrass
+                </IonLabel>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonItem>
 
-        <IonAccordionGroup>
-          <IonAccordion value="windforce">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.calculations.wind-force')}</IonLabel>
-            </IonItem>
+        <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.heel-due-wind')}
+                value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="deg"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.constant-heel-during-turn')}
+                value={
+                  isNaN(state.calculations.squat.constantHeelDuringTurn)
+                    ? ''
+                    : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="deg"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.corrected-draught')}
+                value={
+                  isNaN(state.calculations.squat.correctedDraught)
+                    ? ''
+                    : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="m"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.corrected-draught-during-turn')}
+                value={
+                  isNaN(state.calculations.squat.correctedDraughtDuringTurn)
+                    ? ''
+                    : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="m"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.UKC-vessel-motions')}
+                value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="m"
+                error={
+                  isUKCShipMotionsUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCVesselMotions,
+                    state.status.showBarrass
+                  )
+                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    : ''
+                }
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.UKC-straight-course')}
+                value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+                error={
+                  isUKCStraightUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCStraightCourse,
+                    state.status.showBarrass
+                  )
+                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    : ''
+                }
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.UKC-during-turn')}
+                value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+                error={
+                  isUKCDuringTurnUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCDuringTurn,
+                    state.status.showBarrass
+                  )
+                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    : ''
+                }
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.squat') + ', ' + t(state.environment.fairway.fairwayForm?.name)}
+                value={getSquatValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.relative-wind-direction')} (deg)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}&deg;</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.relative-wind-speed')} (m/s)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{Math.round(state.calculations.forces.relativeWindSpeed)} m/s</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>
-                    {t('homePage.squat.calculations.wind-force')} ({t('common.tonnes')})
-                  </small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
-                        maximumFractionDigits: 1,
-                      })}
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>
-                    {t('homePage.squat.calculations.wave-force')} ({t('common.tonnes')})
-                  </small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
-                        maximumFractionDigits: 1,
-                      })}
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>
-                    {t('homePage.squat.calculations.bow-thruster-force')} ({t('common.tonnes')})
-                  </small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.remaining-safety-margin')}</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText color={isSafetyMarginInsufficient() ? 'danger' : ''}>
-                    {isSafetyMarginInsufficient() && (
-                      <div title={t('homePage.squat.calculations.insufficient-safety-margin')}>
-                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
-                      </div>
-                    )}
-                    <h4>
-                      {(isNaN(state.calculations.forces.remainingSafetyMargin)
-                        ? ''
-                        : state.calculations.forces.remainingSafetyMargin * 100
-                      ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}{' '}
-                      %
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.minimum-external-force-required')}</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText color={isExternalForceRequired() ? 'danger' : ''}>
-                    {isExternalForceRequired() && (
-                      <div title={t('homePage.squat.calculations.external-force-required')}>
-                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
-                      </div>
-                    )}
-                    <h4>
-                      {state.calculations.forces.externalForceRequired > 0
-                        ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
-                        : '-'}
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-          <IonAccordion value="squat">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.calculations.squat')}</IonLabel>
-            </IonItem>
+        <SectionTitle title={t('homePage.squat.calculations.wind-force')} hideValidity />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.relative-wind-direction')}
+                value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
+                unit="deg"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.relative-wind-speed')}
+                value={Math.round(state.calculations.forces.relativeWindSpeed)}
+                unit="m/s"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.wind-force')}
+                value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
+                unit={t('common.tonnes')}
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.wave-force')}
+                value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
+                unit={t('common.tonnes')}
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.bow-thruster-force')}
+                value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
+                unit={t('common.tonnes')}
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.remaining-safety-margin')}
+                value={(isNaN(state.calculations.forces.remainingSafetyMargin)
+                  ? ''
+                  : state.calculations.forces.remainingSafetyMargin * 100
+                ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
+                unit="%"
+                error={
+                  isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin)
+                    ? t('homePage.squat.calculations.insufficient-safety-margin')
+                    : ''
+                }
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <LabelField
+                title={t('homePage.squat.calculations.minimum-external-force-required')}
+                value={
+                  state.calculations.forces.externalForceRequired > 0
+                    ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
+                    : '-'
+                }
+                error={
+                  isExternalForceRequired(state.calculations.forces.externalForceRequired)
+                    ? t('homePage.squat.calculations.external-force-required')
+                    : ''
+                }
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
 
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.heel-due-wind')} (deg)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
-                        maximumFractionDigits: 2,
-                      })}
-                      &deg;
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.constant-heel-during-turn')} (deg)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {isNaN(state.calculations.squat.constantHeelDuringTurn)
-                        ? ''
-                        : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                      &deg;
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.corrected-draught')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {isNaN(state.calculations.squat.correctedDraught)
-                        ? ''
-                        : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
-                      m
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.corrected-draught-during-turn')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {isNaN(state.calculations.squat.correctedDraughtDuringTurn)
-                        ? ''
-                        : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
-                      m
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonButton size="small">{t('homePage.squat.calculations.deep-water-values')}</IonButton>
-                <IonNote slot="end">
-                  <IonButton size="small" shape="round" fill="outline" strong={true}>
-                    ?
-                  </IonButton>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.UKC-vessel-motions')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText color={isUKCShipMotionsUnderRequired() ? 'danger' : ''}>
-                    {isUKCShipMotionsUnderRequired() && (
-                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
-                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
-                      </div>
-                    )}
-                    <h4>
-                      {(isNaN(state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0])
-                        ? 0
-                        : state.calculations.squat.UKCVesselMotions[showBarrass ? 0 : 1][0]
-                      ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}{' '}
-                      m
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.UKC-straight-course')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText color={isUKCStraightUnderRequired() ? 'danger' : ''}>
-                    {isUKCStraightUnderRequired() && (
-                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
-                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
-                      </div>
-                    )}
-                    <h4>
-                      {isNaN(showBarrass ? state.calculations.squat.UKCStraightCourse[0] : state.calculations.squat.UKCStraightCourse[1])
-                        ? ''
-                        : (showBarrass
-                            ? state.calculations.squat.UKCStraightCourse[0]
-                            : state.calculations.squat.UKCStraightCourse[1]
-                          ).toLocaleString(i18n.language, {
-                            maximumFractionDigits: 2,
-                          })}{' '}
-                      m
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.UKC-during-turn')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText color={isUKCDuringTurnUnderRequired() ? 'danger' : ''}>
-                    {isUKCDuringTurnUnderRequired() && (
-                      <div title={t('homePage.squat.calculations.UKC-under-required-minimum')}>
-                        <IonIcon icon={alertCircleOutline} color="danger" size="small" />
-                      </div>
-                    )}
-                    <h4>
-                      {isNaN(showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1])
-                        ? ''
-                        : (showBarrass ? state.calculations.squat.UKCDuringTurn[0] : state.calculations.squat.UKCDuringTurn[1]).toLocaleString(
-                            i18n.language,
-                            {
-                              maximumFractionDigits: 2,
-                            }
-                          )}{' '}
-                      m
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              {state.environment.fairway.fairwayForm && (
-                <IonItem>
-                  <div>
-                    <IonLabel position="stacked">
-                      {t('homePage.squat.calculations.squat')}, {t(state.environment.fairway.fairwayForm.name)} (m)
-                    </IonLabel>
-                  </div>
-                  <IonLabel>
-                    {isNaN(showBarrass || isUKCUnderMinimum() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG)
-                      ? ''
-                      : (showBarrass || isUKCUnderMinimum()
-                          ? state.calculations.squat.squatBarrass
-                          : state.calculations.squat.squatHG
-                        ).toLocaleString(i18n.language, {
-                          maximumFractionDigits: 2,
-                        })}{' '}
-                    m
-                  </IonLabel>
-                  <IonNote slot="end">
-                    <IonButton
-                      size="small"
-                      shape="round"
-                      fill="outline"
-                      strong={true}
-                      title={t('homePage.squat.calculations.show-barrass-value')}
-                      onPointerDown={() => toggleSquat(true)}
-                      onPointerUp={() => toggleSquat(false)}
-                    >
-                      ?
-                    </IonButton>
-                  </IonNote>
-                </IonItem>
-              )}
-            </IonList>
-          </IonAccordion>
-          <IonAccordion value="drift">
-            <IonItem slot="header">
-              <IonLabel>{t('homePage.squat.calculations.drift')}</IonLabel>
-            </IonItem>
-
-            <IonList slot="content">
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.relative-wind-direction')} (deg)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}&deg;</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.relative-wind-speed')} (m/s)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{Math.round(state.calculations.forces.relativeWindSpeed)} m/s</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.estimated-drift-angle')} (deg)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>
-                      {(isFinite(state.calculations.forces.estimatedDriftAngle)
-                        ? toDeg(state.calculations.forces.estimatedDriftAngle)
-                        : ''
-                      ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                      &deg;
-                    </h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-              <IonItem>
-                <IonLabel>
-                  <small>{t('homePage.squat.calculations.estimated-vessel-breadth-due-drift')} (m)</small>
-                </IonLabel>
-                <IonNote slot="end">
-                  <IonText>
-                    <h4>{state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })} m</h4>
-                  </IonText>
-                </IonNote>
-              </IonItem>
-            </IonList>
-          </IonAccordion>
-        </IonAccordionGroup>
-      </IonCardContent>
-    </IonCard>
+        <SectionTitle title={t('homePage.squat.calculations.drift')} hideValidity />
+        <IonGrid className="no-padding">
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.relative-wind-direction')}
+                value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
+                unit="deg"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.relative-wind-speed')}
+                value={Math.round(state.calculations.forces.relativeWindSpeed)}
+                unit="m/s"
+              />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.estimated-drift-angle')}
+                value={(isFinite(state.calculations.forces.estimatedDriftAngle)
+                  ? toDeg(state.calculations.forces.estimatedDriftAngle)
+                  : ''
+                ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="deg"
+              />
+            </IonCol>
+            <IonCol size="6">
+              <LabelField
+                title={t('homePage.squat.calculations.estimated-vessel-breadth-due-drift')}
+                value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="m"
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </>
+    </>
   );
 };
 
