@@ -307,14 +307,16 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel color={state.status.showDeepWaterValues ? 'medium' : 'primary'}>Shallow Water</IonLabel>
+                <IonLabel color={state.status.showDeepWaterValues ? 'medium' : 'primary'}>
+                  {t('homePage.squat.calculations.shallow-water-values')}
+                </IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
                   checked={state.status.showDeepWaterValues}
                   onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.checked)}
                   className="squat-toggle"
-                  //disabled={getSquatValue() === ''}
+                  disabled={!state.environment.weather.waveLength[0]}
                 />
               </IonCol>
               <IonCol size="5">
@@ -329,7 +331,7 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'medium' : 'primary'}>Huuska/Guliev</IonLabel>
+                <IonLabel color={state.status.showBarrass ? 'medium' : 'primary'}>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
@@ -341,7 +343,7 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="5">
                 <IonLabel color={state.status.showBarrass ? 'primary' : 'medium'} className="align-right">
-                  Barrass
+                  {t('homePage.squat.calculations.squat-barrass')}
                 </IonLabel>
               </IonCol>
             </IonRow>
