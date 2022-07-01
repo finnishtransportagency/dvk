@@ -17,7 +17,11 @@ export class DvkBackendStack extends Stack {
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
+          apiKeyConfig: {
+            expires: cdk.Expiration.atDate(this.createApiKeyExpiration()),
+          },
         },
+        additionalAuthorizationModes: [{ authorizationType: appsync.AuthorizationType.IAM }],
       },
       logConfig: {
         fieldLogLevel: FieldLogLevel.ALL,
@@ -62,5 +66,15 @@ export class DvkBackendStack extends Stack {
     const end = entry.lastIndexOf('/');
     const start = entry.substring(0, end).lastIndexOf('/');
     return entry.substring(start + 1, start + 2).toUpperCase() + entry.substring(start + 2, end);
+  }
+
+  private createApiKeyExpiration() {
+    const apiKeyExpiration = new Date();
+    //   Add 365 days
+    apiKeyExpiration.setDate(apiKeyExpiration.getDate() + 365);
+    // Round down to the first day of month to keep it static in deployments for a month
+    apiKeyExpiration.setDate(1);
+    apiKeyExpiration.setHours(0, 0, 0, 0);
+    return apiKeyExpiration;
   }
 }
