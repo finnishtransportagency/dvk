@@ -12,18 +12,26 @@ const Home: React.FC = () => {
     i18n.changeLanguage(lang);
   };
 
+  const showHeader = (): boolean => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sh = urlParams.get('showHeader');
+    return sh && sh === 'false' ? false : true;
+  };
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar color="primary">
-          <IonTitle>{t('homePage.header.title')}</IonTitle>
-          <IonSelect slot="end" value={i18n.language} className="ion-padding" onIonChange={(e) => changeLanguage(e.detail.value)}>
-            <IonSelectOption value="fi">fi</IonSelectOption>
-            <IonSelectOption value="sv">sv</IonSelectOption>
-            <IonSelectOption value="en">en</IonSelectOption>
-          </IonSelect>
-        </IonToolbar>
-      </IonHeader>
+      {showHeader() && (
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>{t('homePage.header.title')}</IonTitle>
+            <IonSelect slot="end" value={i18n.language} className="ion-padding" onIonChange={(e) => changeLanguage(e.detail.value)}>
+              <IonSelectOption value="fi">fi</IonSelectOption>
+              <IonSelectOption value="sv">sv</IonSelectOption>
+              <IonSelectOption value="en">en</IonSelectOption>
+            </IonSelect>
+          </IonToolbar>
+        </IonHeader>
+      )}
       <IonContent>
         <Squat />
         <SquatChart />
