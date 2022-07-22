@@ -1,7 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
 import { IonApp, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
 import { SquatReducer, initialState } from './hooks/squatReducer';
 import SquatContext from './hooks/squatContext';
 import Home from './pages/Home';
@@ -38,11 +36,7 @@ const App: React.FC = () => {
   return (
     <SquatContext.Provider value={providerState}>
       <IonApp>
-        <IonReactRouter>
-          <Route path="*">
-            <Home />
-          </Route>
-        </IonReactRouter>
+        <Home />
       </IonApp>
     </SquatContext.Provider>
   );
