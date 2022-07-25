@@ -6,7 +6,8 @@ import * as cdk from 'aws-cdk-lib';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
-import lambdaFunctions from './lambda/graphql/lambdaFunctions';
+import lambdaFunctions, { TypeName } from './lambda/graphql/lambdaFunctions';
+import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
@@ -29,26 +30,46 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: true,
     });
+    const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
-      const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
+      const typeName = lambdaFunc.typeName || (this.parseTypeName(lambdaFunc.entry) as TypeName);
       const fieldName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
+        environment: {
+          FAIRWAY_TABLE: fairwayTable.tableName,
+        },
       });
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${fieldName}`, backendLambda);
       lambdaDataSource.createResolver({
         typeName: typeName,
         fieldName: fieldName,
       });
+      if (typeName === 'Query' || typeName === 'Subscription') {
+        fairwayTable.grantReadData(backendLambda);
+      } else {
+        fairwayTable.grantReadWriteData(backendLambda);
+      }
     }
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
     });
     new cdk.CfnOutput(this, 'AppSyncAPIURL', {
       value: api.graphqlUrl || '',
+    });
+  }
+
+  private createFairwayTable(env: string): Table {
+    return new Table(this, 'FairwayTable', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: `Fairway-${env}`,
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.NUMBER,
+      },
     });
   }
 
