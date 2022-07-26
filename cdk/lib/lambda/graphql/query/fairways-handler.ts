@@ -7,18 +7,27 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
   return [
     {
       id: 4927,
-      nameFI: 'Vuosaari',
-      nameSV: 'Nordsjöleden',
+      name: {
+        fi: 'Vuosaari',
+        sv: 'Nordsjöleden',
+        en: '',
+      },
     },
     {
       id: 2345,
-      nameFI: 'Uudenkaupungin väylä',
-      nameSV: 'Farleden till Nystad',
+      name: {
+        fi: 'Uudenkaupungin väylä',
+        sv: 'Farleden till Nystad',
+        en: '',
+      },
     },
     {
       id: 10,
-      nameFI: 'Kemin edusta',
-      nameSV: 'Kemi angörin',
+      name: {
+        fi: 'Kemin edusta',
+        sv: 'Kemi angörin',
+        en: '',
+      },
     },
   ];
 };

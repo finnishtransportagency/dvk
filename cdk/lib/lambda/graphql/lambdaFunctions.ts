@@ -2,7 +2,7 @@ import * as path from 'path';
 
 interface BackendLambda {
   entry: string;
-  functionName?: string; // this should correlate to graphql schema function name
+  fieldName?: string; // this should correlate to graphql schema field name
   typeName?: TypeName;
 }
 

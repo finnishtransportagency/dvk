@@ -33,7 +33,7 @@ export class DvkBackendStack extends Stack {
     const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName || (this.parseTypeName(lambdaFunc.entry) as TypeName);
-      const fieldName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
+      const fieldName = lambdaFunc.fieldName || this.parseFieldName(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
@@ -90,12 +90,7 @@ export class DvkBackendStack extends Stack {
   }
 
   private createApiKeyExpiration() {
-    const apiKeyExpiration = new Date();
-    //   Add 365 days
-    apiKeyExpiration.setDate(apiKeyExpiration.getDate() + 365);
-    // Round down to the first day of month to keep it static in deployments for a month
-    apiKeyExpiration.setDate(1);
-    apiKeyExpiration.setHours(0, 0, 0, 0);
-    return apiKeyExpiration;
+    const now = new Date();
+    return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 }

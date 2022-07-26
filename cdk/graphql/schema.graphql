@@ -9,10 +9,15 @@ type Query {
 
 type Fairway {
   id: Int!
-  nameFI: String!
-  nameSV: String
+  name: Text!
   length: Int
   depth1: Float
   depth2: Float
   depth3: Float
+}
+
+type Text {
+  fi: String!
+  sv: String!
+  en: String!
 }
