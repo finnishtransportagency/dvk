@@ -1,6 +1,6 @@
 type FairwayModel = {
   id: number;
-  nameEN: string;
+  name: string;
 };
 
 export default FairwayModel;

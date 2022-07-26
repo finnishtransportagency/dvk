@@ -1,12 +1,13 @@
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
-let client: DynamoDBClient;
+let client: DynamoDBDocumentClient;
 
-function getDynamoDBClient(): DynamoDBClient {
+function getDynamoDBDocumentClient(): DynamoDBDocumentClient {
   if (!client) {
-    client = new DynamoDBClient({ region: 'eu-west-1' });
+    client = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-1' }));
   }
   return client;
 }
 
-export { getDynamoDBClient };
+export { getDynamoDBDocumentClient };

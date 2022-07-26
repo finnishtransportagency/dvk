@@ -8,6 +8,8 @@ import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
 import lambdaFunctions, { TypeName } from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
+import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import Config from './config';
 
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
@@ -41,7 +43,9 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         environment: {
           FAIRWAY_TABLE: fairwayTable.tableName,
+          LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${fieldName}`, backendLambda);
       lambdaDataSource.createResolver({
