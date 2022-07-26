@@ -6,7 +6,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
-import lambdaFunctions, { TypeName } from './lambda/graphql/lambdaFunctions';
+import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
@@ -34,7 +34,7 @@ export class DvkBackendStack extends Stack {
     });
     const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
-      const typeName = lambdaFunc.typeName || (this.parseTypeName(lambdaFunc.entry) as TypeName);
+      const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
       const fieldName = lambdaFunc.fieldName || this.parseFieldName(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
@@ -52,10 +52,10 @@ export class DvkBackendStack extends Stack {
         typeName: typeName,
         fieldName: fieldName,
       });
-      if (typeName === 'Query' || typeName === 'Subscription') {
-        fairwayTable.grantReadData(backendLambda);
-      } else {
+      if (typeName === 'Mutation') {
         fairwayTable.grantReadWriteData(backendLambda);
+      } else {
+        fairwayTable.grantReadData(backendLambda);
       }
     }
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {

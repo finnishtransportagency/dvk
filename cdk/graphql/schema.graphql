@@ -14,6 +14,13 @@ type Fairway {
   depth1: Float
   depth2: Float
   depth3: Float
+  navigationLines: [NavigationLine!]
+}
+
+type NavigationLine {
+  id: Int!
+  depth: Float
+  geometry: String
 }
 
 type Text {
