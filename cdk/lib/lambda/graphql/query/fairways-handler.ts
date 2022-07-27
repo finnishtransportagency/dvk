@@ -22,6 +22,10 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
         sv: apiModel.nimiSV || '',
         en: dbModelMap.get(apiModel.id)?.name || '',
       },
+      depth1: apiModel.kulkuSyvyys1,
+      depth2: apiModel.kulkuSyvyys2,
+      depth3: apiModel.kulkuSyvyys3,
+      length: apiModel.pituus,
     };
     return fairway;
   });

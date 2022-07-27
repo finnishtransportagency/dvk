@@ -17,10 +17,10 @@ export const handler: AppSyncResolverHandler<QueryFairwayArgs, Fairway> = async 
       sv: apiModel.nimiSV || '',
       en: dbModel?.name || '',
     },
-    length: 230,
-    depth1: 15.5,
-    depth2: 15,
-    depth3: 14,
+    depth1: apiModel.kulkuSyvyys1,
+    depth2: apiModel.kulkuSyvyys2,
+    depth3: apiModel.kulkuSyvyys3,
+    length: apiModel.pituus,
   };
   return fairway;
 };

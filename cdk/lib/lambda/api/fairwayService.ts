@@ -1,18 +1,47 @@
 import { vuosaari, kemi, uusikaupunki } from './sample/fairways.json';
 
-export type FairwayAPIModel = {
+export type MitoitusAPIModel = {
+  id: number;
+  tyyppi: string;
+  pituus: number;
+  leveys: number;
+  syvays: number;
+  normaaliKaantosade?: number;
+  minimiKaantosade?: number;
+  normaaliLeveys?: number;
+  minimiLeveys?: number;
+  varavesi?: string;
+  lisatieto?: string;
+  mareografi?: string;
+};
+
+export type MitoitusAlusAPIModel = {
+  id: number;
+  tyyppi: string;
+  pituus: number;
+  leveys: number;
+  syvays: number;
+};
+
+export type VaylaAPIModel = {
   id: number;
   nimiFI: string;
   nimiSV?: string;
+  kulkuSyvyys1?: number;
+  kulkuSyvyys2?: number;
+  kulkuSyvyys3?: number;
+  pituus?: number;
+  mitoitukset?: MitoitusAPIModel[];
+  mitoitusAlukset?: MitoitusAlusAPIModel[];
 };
 
 export class FairwayService {
-  public getFairways(): FairwayAPIModel[] {
+  public getFairways(): VaylaAPIModel[] {
     // TODO: call vatu api
     return [vuosaari, kemi, uusikaupunki];
   }
 
-  public getFairway(id: number): FairwayAPIModel {
+  public getFairway(id: number): VaylaAPIModel {
     // TODO: call vatu api
     if (id === 10) {
       return kemi;

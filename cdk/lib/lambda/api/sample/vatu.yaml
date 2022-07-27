@@ -1,0 +1,324 @@
+swagger: "2.0"
+info:
+  description: "VATU api Digitaaliselle väyläkortille"
+  version: "1.0.0"
+  title: "VATU api"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "api.testivaylapilvi.fi"
+basePath: "/vatu"
+schemes:
+- "https"
+paths:
+  /vayla:
+    get:
+      summary: "Pääväylien haku"
+      responses:
+        "200":
+          description: "Kaikki pääväylät listana"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Vayla"
+  /vayla/{jnro}:
+    get:
+      summary: "Väylän haku numerolla"
+      description: "Väylän tarkemmat tiedot."
+      produces:
+      - "application/json"
+      parameters:
+      - name: "jnro"
+        in: "path"
+        description: "Väylän numero"
+        required: true
+        type: integer
+        format: int64
+      responses:
+        "200":
+          description: "Väylan tiedot"
+          schema:
+            $ref: "#/definitions/Vayla"
+        "400":
+          description: "Väylän numero virheellinen"
+        "404":
+          description: "Väylää ei löydy"
+      security:
+      - api_key: []
+  /vayla/{jnro}/turvalaitteet:
+    get:
+      summary: "Turvalaitteiden haku väylälle"
+      parameters:
+        - name: "jnro"
+          in: "path"
+          description: "Väylän numero"
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "Turvalaitteet tietyllä väylällä"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Turvalaite"
+  /vayla/{jnro}/rajoitusalueet:
+    get:
+      summary: "Rajoitusalueiden haku väylälle"
+      parameters:
+        - name: "jnro"
+          in: "path"
+          description: "Väylän numero"
+          required: true
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: "Rajoitusalueet tietyllä väylällä"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Rajoitusalue"
+  /vayla/{jnro}/vaylaalueet:
+    get:
+      summary: "Väyläalueiden haku väylälle"
+      parameters:
+        - name: "jnro"
+          in: "path"
+          description: "Väylän numero"
+          type: integer
+          format: int64
+          required: true
+      responses:
+        "200":
+          description: "Väyläalueet tietyllä väylällä"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/VaylaAlue"
+  /vayla/{jnro}/navigointilinjat:
+    get:
+      summary: "Navigointilinjojen haku väylälle"
+      parameters:
+        - name: "jnro"
+          in: "path"
+          description: "Väylän numero"
+          type: integer
+          format: int64
+          required: true
+      responses:
+        "200":
+          description: "Navigointilinjat tietyllä väylällä"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/NavigointiLinja"
+  /navigointilinjat:
+    get:
+      summary: "Pääväylien navigointilinjojen haku"
+      responses:
+        "200":
+          description: "Navigointilinjat alueilla"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/NavigointiLinja"
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Vayla:
+    type: object
+    required:
+    - "jnro"
+    properties:
+      jnro:
+        type: integer
+        example: 10
+      nimiFI:
+        type: string
+        example: "Kemin edusta"
+      nimiSV:
+        type: string
+        example: "Kemi angöring"
+      kulkuSyvyys1:
+        type: number
+        example: 12.5
+      kulkuSyvyys2:
+        type: number
+        example: 13
+      kulkuSyvyys3:
+        type: number
+        example: 9
+      pituus:
+        type: number
+        example: 45.2
+      mitoitusAlukset:
+        type: array
+        items:
+          $ref: "#/definitions/Mitoitusalus"
+      mitoitukset:
+        type: array
+        items: 
+          $ref: "#/definitions/Mitoitus"
+  GeoJSON:
+    description: "https://app.swaggerhub.com/apis/OlivierMartineau/GeoJSON/1.0.1"
+    type: object
+    example: >
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [125.6, 10.1]
+        },
+        "properties": {
+          "name": "Dinagat Islands"
+        }
+      }
+  Mitoitusalus:
+    type: object
+    required:
+    - "id"
+    properties:
+      id:
+        type: integer
+        example: 254214
+      tyyppi:
+        type: integer
+        example: 3
+      pituus:
+        type: number
+        example: 280
+      leveys:
+        type: number
+        example: 33
+      syvays:
+        type: number
+        example: 13
+  Mitoitus:
+    type: object
+    required:
+      - "id"
+    properties:
+      id:
+        type: integer
+        example: 134832
+      tyyppi:
+        type: integer
+        example: 3
+      pituus:
+        type: number
+        example: 280
+      leveys:
+        type: number
+        example: 33
+      syvays:
+        type: number
+        example: 13
+      normaaliKaantosade:
+        type: number
+        example: 2000
+      minimiKaantosade:
+        type: number
+        example: 1400
+      normaaliLeveys:
+        type: number
+        example: 250
+      minimiLeveys:
+        type: number
+        example: 200
+      varavesi:
+        type: string
+        example: "2,0 - 2,5"
+      lisatieto:
+        type: string
+        example: "Huom. 2. mitoitusalus= Bulk-alus, Pituus (l) 210m, Leveys (b) 33,5m, Syväys13m"
+      mareografi:
+        type: string
+  Turvalaite:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: "Turvalaitteen uniikki id"
+      jnro:
+        type: integer
+        example: 1234
+        description: "Väylän numero"
+      tila:
+        type: string
+      nimiFI:
+        type: string
+      nimiSV:
+        type: string
+      lisatietoFI:
+        type: string
+      lisatietoSV:
+        type: string
+      geometry:
+        type: "object"
+        $ref: "#/definitions/GeoJSON"
+  Rajoitusalue:
+    description: "Väylän jnro, rajoitusalueen nimi, tyyppi ja alueen koordinaatit"
+    type: object
+    properties:
+      id:
+        type: integer
+        description: "Alueen uniikki id"
+      jnro:
+        type: integer
+        description: "Väylän numero"
+      rajoitusTyypit:
+        description: "Pilkulla eroteltu lista rajoitustyypeistä"
+        type: string
+        example: "1"
+      suuruus:
+        type: number
+        example: 17
+        description: "Esimerkiksi nopeusrajoitus km/h"
+      pituus:
+        type: number
+        example: 4653
+        description: "Alueen pituus"
+      geometry:
+        type: object
+        $ref: "#/definitions/GeoJSON"
+  VaylaAlue:
+      description: "Väylän jnro, alueen haraussyvyys ja alueen koordinaatit"
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Alueen uniikki id"
+          example: 246497
+        jnro:
+          type: integer
+          example: 4927
+        harausSyvyys:
+          type: number
+          example: 15.5
+        vertausTaso:
+          type: string
+          example: "MW2015"
+        geometry:
+          type: object
+          $ref: "#/definitions/GeoJSON"
+  NavigointiLinja:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: "Linjan uniikki id"
+      jnro:
+        type: integer
+        description: "Väylän numero"
+      harausSyvyys:
+        type: number
+      geometry:
+        type: object
+        $ref: "#/definitions/GeoJSON"
+externalDocs:
+  description: "VATU määrittely"
+  url: "https://extranet.vayla.fi/wiki/display/DVKTP/VATU"

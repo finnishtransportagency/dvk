@@ -10,7 +10,7 @@ type Query {
 type Fairway {
   id: Int!
   name: Text!
-  length: Int
+  length: Float
   depth1: Float
   depth2: Float
   depth3: Float
@@ -25,6 +25,6 @@ type NavigationLine {
 
 type Text {
   fi: String!
-  sv: String!
-  en: String!
+  sv: String
+  en: String
 }
