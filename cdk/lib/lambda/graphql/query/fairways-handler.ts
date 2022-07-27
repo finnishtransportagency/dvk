@@ -1,40 +1,28 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { Fairway } from '../../../../graphql/generated';
-import FairwayModel from '../../db/fairwayModel';
+import { FairwayService } from '../../api/fairwayService';
+import FairwayDBModel from '../../db/fairwayModel';
 import { log } from '../../logger';
+
+const fairwayService = new FairwayService();
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairway[]> => {
   log.info(`fairways(${event.identity})`);
-  const fairways = await FairwayModel.getAll();
-  const modelMap = new Map<number, FairwayModel>();
+  const fairways = await FairwayDBModel.getAll();
   log.debug('fairways: %o', fairways);
+  const dbModelMap = new Map<number, FairwayDBModel>();
   fairways.forEach((fairway) => {
-    modelMap.set(fairway.id, fairway);
+    dbModelMap.set(fairway.id, fairway);
   });
-  return [
-    {
-      id: 4927,
+  return fairwayService.getFairways().map((apiModel) => {
+    const fairway: Fairway = {
+      id: apiModel.id,
       name: {
-        fi: 'Vuosaari',
-        sv: 'Nordsjöleden',
-        en: modelMap.get(4927)?.name || '',
+        fi: apiModel.nimiFI,
+        sv: apiModel.nimiSV || '',
+        en: dbModelMap.get(apiModel.id)?.name || '',
       },
-    },
-    {
-      id: 2345,
-      name: {
-        fi: 'Uudenkaupungin väylä',
-        sv: 'Farleden till Nystad',
-        en: modelMap.get(2345)?.name || '',
-      },
-    },
-    {
-      id: 10,
-      name: {
-        fi: 'Kemin edusta',
-        sv: 'Kemi angörin',
-        en: modelMap.get(10)?.name || '',
-      },
-    },
-  ];
+    };
+    return fairway;
+  });
 };

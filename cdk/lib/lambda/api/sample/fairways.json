@@ -1,0 +1,17 @@
+{
+  "vuosaari": {
+    "id": 4927,
+    "nimiFI": "Vuosaari",
+    "nimiSV": "Nordsjöleden"
+  },
+  "uusikaupunki": {
+    "id": 2345,
+    "nimiFI": "Uudenkaupungin väylä",
+    "nimiSV": "Farleden till Nystad"
+  },
+  "kemi": {
+    "id": 10,
+    "nimiFI": "Kemin edusta",
+    "nimiSV": "Kemi angörin"
+  }
+}
