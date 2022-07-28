@@ -239,6 +239,9 @@ definitions:
         type: string
   Turvalaite:
     type: object
+    required:
+      - "id"
+      - "jnro"
     properties:
       id:
         type: integer
@@ -263,6 +266,9 @@ definitions:
   Rajoitusalue:
     description: "Väylän jnro, rajoitusalueen nimi, tyyppi ja alueen koordinaatit"
     type: object
+    required:
+      - "id"
+      - "jnro"
     properties:
       id:
         type: integer
@@ -288,6 +294,9 @@ definitions:
   VaylaAlue:
       description: "Väylän jnro, alueen haraussyvyys ja alueen koordinaatit"
       type: object
+      required:
+      - "id"
+      - "jnro"
       properties:
         id:
           type: integer
@@ -307,6 +316,9 @@ definitions:
           $ref: "#/definitions/GeoJSON"
   NavigointiLinja:
     type: object
+    required:
+      - "id"
+      - "jnro"
     properties:
       id:
         type: integer
@@ -314,7 +326,11 @@ definitions:
       jnro:
         type: integer
         description: "Väylän numero"
+      pituus:
+        type: number
       harausSyvyys:
+        type: number
+      syvyys:
         type: number
       geometry:
         type: object

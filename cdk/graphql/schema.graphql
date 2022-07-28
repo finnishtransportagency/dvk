@@ -21,9 +21,16 @@ type Fairway {
 type NavigationLine {
   id: Int!
   fairwayId: Int!
+  length: Float
   draft: Float
   draft2: Float
-  geometry: String
+  geometry: Geometry
+}
+
+type Geometry {
+  type: String
+  bbox: [Float]
+  coordinates: [[Float]]
 }
 
 type Text {
