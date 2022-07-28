@@ -1,7 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
 import { Fairway, QueryFairwayArgs } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import FairwayDBModel from '../../db/fairwayModel';
+import FairwayDBModel from '../../db/fairwayDBModel';
 import { FairwayService } from '../../api/fairwayService';
 
 const fairwayService = new FairwayService();
