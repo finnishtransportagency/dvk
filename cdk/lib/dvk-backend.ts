@@ -27,10 +27,10 @@ export class DvkBackendStack extends Stack {
         additionalAuthorizationModes: [{ authorizationType: appsync.AuthorizationType.IAM }],
       },
       logConfig: {
-        fieldLogLevel: FieldLogLevel.ALL,
+        fieldLogLevel: FieldLogLevel.NONE,
         excludeVerboseContent: true,
       },
-      xrayEnabled: true,
+      xrayEnabled: false,
     });
     const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
@@ -47,7 +47,7 @@ export class DvkBackendStack extends Stack {
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
-      const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${fieldName}`, backendLambda);
+      const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${typeName}-${fieldName}`, backendLambda);
       lambdaDataSource.createResolver({
         typeName: typeName,
         fieldName: fieldName,

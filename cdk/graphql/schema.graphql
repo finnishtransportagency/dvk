@@ -5,21 +5,24 @@ schema {
 type Query {
   fairways: [Fairway!]!
   fairway(id: Int!): Fairway
+  navigationLines: [NavigationLine!]!
 }
 
 type Fairway {
   id: Int!
   name: Text!
   length: Float
-  depth1: Float
-  depth2: Float
-  depth3: Float
+  draft1: Float
+  draft2: Float
+  draft3: Float
   navigationLines: [NavigationLine!]
 }
 
 type NavigationLine {
   id: Int!
-  depth: Float
+  fairwayId: Int!
+  draft: Float
+  draft2: Float
   geometry: String
 }
 

@@ -14,9 +14,12 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'query/fairway-handler.ts'),
   },
   {
-    entry: path.join(__dirname, 'query/navigationLines-handler.ts'),
+    entry: path.join(__dirname, 'query/fairwayNavigationLines-handler.ts'),
     typeName: 'Fairway',
     fieldName: 'navigationLines',
+  },
+  {
+    entry: path.join(__dirname, 'query/navigationLines-handler.ts'),
   },
 ];
 

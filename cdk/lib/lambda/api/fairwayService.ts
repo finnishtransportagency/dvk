@@ -2,7 +2,7 @@ import { vuosaari, kemi, uusikaupunki } from './sample/fairways.json';
 
 export type MitoitusAPIModel = {
   id: number;
-  tyyppi: string;
+  tyyppi: number;
   pituus: number;
   leveys: number;
   syvays: number;
@@ -17,7 +17,7 @@ export type MitoitusAPIModel = {
 
 export type MitoitusAlusAPIModel = {
   id: number;
-  tyyppi: string;
+  tyyppi: number;
   pituus: number;
   leveys: number;
   syvays: number;
