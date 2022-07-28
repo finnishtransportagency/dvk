@@ -8,7 +8,7 @@ import uusikaupunkiJson from './data/uusikaupunki.json';
 
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
-  console.log(`Table names : ${response.TableNames}`);
+  console.log(`Table names: ${response.TableNames}`);
   const tableName = `Fairway-${Config.getEnvironment()}`;
   if (response.TableNames?.includes(tableName)) {
     await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: vuosaariJson }));
