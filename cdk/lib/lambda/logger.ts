@@ -21,5 +21,5 @@ function getLogger(tag: string) {
   });
 }
 
-export const log = getLogger('BACKEND');
-export const auditLog = getLogger('AUDIT');
+export const log = getLogger('DVK_BACKEND');
+export const auditLog = getLogger('DVK_AUDIT');

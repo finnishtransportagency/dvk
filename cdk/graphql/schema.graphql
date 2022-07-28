@@ -15,7 +15,31 @@ type Fairway {
   draft1: Float
   draft2: Float
   draft3: Float
+  sizings: [Sizing!]
+  sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
+}
+
+type SizingVessel {
+  id: Int!
+  type: Int
+  length: Float
+  width: Float
+  draft: Float
+}
+
+type Sizing {
+  id: Int!
+  length: Float
+  width: Float
+  draft: Float
+  normalTurningCircle: Float
+  minimumTurningCircle: Float
+  normalWidth: Float
+  minimumWidth: Float
+  additionalInformation: String
+  mareograph: String
+  reserveWater: String
 }
 
 type NavigationLine {

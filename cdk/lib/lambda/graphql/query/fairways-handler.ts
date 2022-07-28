@@ -15,18 +15,6 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
     dbModelMap.set(fairway.id, fairway);
   });
   return fairwayService.getFairways().map((apiModel) => {
-    const fairway: Fairway = {
-      id: apiModel.id,
-      name: {
-        fi: apiModel.nimiFI,
-        sv: apiModel.nimiSV || '',
-        en: dbModelMap.get(apiModel.id)?.name || '',
-      },
-      draft1: apiModel.kulkuSyvyys1,
-      draft2: apiModel.kulkuSyvyys2,
-      draft3: apiModel.kulkuSyvyys3,
-      length: apiModel.pituus,
-    };
-    return fairway;
+    return fairwayService.mapModelsToFairway(apiModel, dbModelMap.get(apiModel.id));
   });
 };
