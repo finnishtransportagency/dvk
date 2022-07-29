@@ -60,9 +60,11 @@ export class DvkBackendStack extends Stack {
     }
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
+      exportName: 'AppSyncAPIKey' + env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIURL', {
       value: api.graphqlUrl || '',
+      exportName: 'AppSyncAPIURL' + env,
     });
   }
 
