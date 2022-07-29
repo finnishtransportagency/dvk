@@ -8,10 +8,12 @@ interface FairwaysProps {
 }
 
 const Fairways: React.FC<FairwaysProps> = (props) => {
+  const { i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
     <ul>
       {props.data?.fairways.map((fairway, idx) => {
-        return <li key={idx}>{fairway.name.fi}</li>;
+        return <li key={idx}>{fairway.name[lang]}</li>;
       })}
     </ul>
   );
