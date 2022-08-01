@@ -10,6 +10,10 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
+import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
+import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
@@ -58,6 +62,11 @@ export class DvkBackendStack extends Stack {
         fairwayTable.grantReadData(backendLambda);
       }
     }
+    const alb = this.createALB(env);
+    new cdk.CfnOutput(this, 'LoadBalancerAPIURL', {
+      value: alb.loadBalancerDnsName || '',
+      exportName: 'LoadBalancerAPIURL' + env,
+    });
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
       exportName: 'AppSyncAPIKey' + env,
@@ -98,5 +107,35 @@ export class DvkBackendStack extends Stack {
   private createApiKeyExpiration() {
     const now = new Date();
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
+  }
+
+  private createALB(env: string): ApplicationLoadBalancer {
+    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: 'DvkDev-VPC' });
+    const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, { vpc, internetFacing: false, loadBalancerName: `DvkALB-${env}` });
+    const httpListener = alb.addListener('HTTPListener', {
+      port: 80,
+      protocol: ApplicationProtocol.HTTP,
+      defaultAction: ListenerAction.fixedResponse(404),
+    });
+    let index = 1;
+    for (const lambdaFunc of apiLambdaFunctions) {
+      const functionName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
+      const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
+        functionName: `${functionName}-${env}`.toLocaleLowerCase(),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        entry: lambdaFunc.entry,
+        handler: 'handler',
+        environment: {
+          LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+        },
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+      });
+      httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
+        targets: [new LambdaTarget(backendLambda)],
+        priority: index++,
+        conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
+      });
+    }
+    return alb;
   }
 }
