@@ -110,14 +110,18 @@ export class DvkBackendStack extends Stack {
   }
 
   private createALB(env: string): ApplicationLoadBalancer {
-    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: 'DvkDev-VPC' });
-    const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, { vpc, internetFacing: false, loadBalancerName: `DvkALB-${env}` });
+    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
+    const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
+      vpc,
+      internetFacing: !Config.isPermanentEnvironment(),
+      loadBalancerName: `DvkALB-${env}`,
+    });
     const httpListener = alb.addListener('HTTPListener', {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
     });
-    let index = 1;
+    let index = 10;
     for (const lambdaFunc of apiLambdaFunctions) {
       const functionName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
@@ -136,6 +140,34 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
     }
+    if (!Config.isPermanentEnvironment()) {
+      // add CORS config
+      const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
+        functionName: `cors-${env}`.toLocaleLowerCase(),
+        runtime: lambda.Runtime.NODEJS_16_X,
+        entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
+        handler: 'handler',
+        environment: {
+          LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+        },
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+      });
+      httpListener.addTargets('HTTPListenerTarget-CORS', {
+        targets: [new LambdaTarget(corsLambda)],
+        priority: 1,
+        conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
+      });
+    }
     return alb;
+  }
+
+  private getVPCName(env: string): string {
+    if (env === 'dev') {
+      return 'DvkDev-VPC';
+    } else if (env === 'test') {
+      return 'DvkTest-VPC';
+    } else {
+      return 'Default-VPC';
+    }
   }
 }
