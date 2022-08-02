@@ -23,14 +23,14 @@ type Hello = {
   hello: string;
 };
 
-async function fetchData(): Promise<Response> {
-  return fetch(process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/csv' : '/api/csv');
+async function fetchData(): Promise<Hello> {
+  return (await fetch(process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/csv' : '/api/csv')).json();
 }
 
 const Csv: React.FC = () => {
   const [csvString, setCsvString] = useState<string>('');
   useEffect(() => {
-    fetchData().then(async (response) => setCsvString(((await response.json()) as Hello).hello));
+    fetchData().then((response) => setCsvString(response.hello));
   }, [csvString]);
   return <p>{csvString}</p>;
 };
