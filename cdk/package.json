@@ -19,7 +19,8 @@
     "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack --require-approval never",
     "generate": "graphql-codegen",
     "log:backend": "aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
-    "dynamodb": "ts-node bin/dynamodb.ts"
+    "dynamodb": "ts-node bin/dynamodb.ts",
+    "setup": "ts-node bin/setup.ts"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.6.2",
@@ -39,9 +40,10 @@
   },
   "dependencies": {
     "@aws-cdk/aws-appsync-alpha": "2.29.1-alpha.0",
-    "@aws-sdk/client-codepipeline": "^3.131.0",
-    "@aws-sdk/client-dynamodb": "^3.131.0",
-    "@aws-sdk/lib-dynamodb": "^3.131.0",
+    "@aws-sdk/client-codepipeline": "^3.141.0",
+    "@aws-sdk/client-dynamodb": "^3.141.0",
+    "@aws-sdk/lib-dynamodb": "^3.141.0",
+    "@aws-sdk/client-cloudformation": "^3.141.0",
     "@types/aws-lambda": "^8.10.101",
     "aws-cdk-lib": "2.29.1",
     "constructs": "^10.0.0",

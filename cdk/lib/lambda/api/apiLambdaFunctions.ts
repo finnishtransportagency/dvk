@@ -8,8 +8,8 @@ interface BackendAPILambda {
 
 const apiLambdaFunctions: BackendAPILambda[] = [
   {
-    entry: path.join(__dirname, 'map-handler.ts'),
-    pathPattern: '/api/map',
+    entry: path.join(__dirname, 'csv-handler.ts'),
+    pathPattern: '/api/csv',
   },
 ];
 

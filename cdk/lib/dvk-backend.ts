@@ -140,24 +140,22 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
     }
-    if (!Config.isPermanentEnvironment()) {
-      // add CORS config
-      const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
-        functionName: `cors-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_16_X,
-        entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
-        handler: 'handler',
-        environment: {
-          LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
-        },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
-      });
-      httpListener.addTargets('HTTPListenerTarget-CORS', {
-        targets: [new LambdaTarget(corsLambda)],
-        priority: 1,
-        conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
-      });
-    }
+    // add CORS config
+    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
+      functionName: `cors-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+      },
+      logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+    });
+    httpListener.addTargets('HTTPListenerTarget-CORS', {
+      targets: [new LambdaTarget(corsLambda)],
+      priority: 1,
+      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
+    });
     return alb;
   }
 
