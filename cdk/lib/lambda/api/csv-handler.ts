@@ -6,6 +6,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   // TODO implement
   return {
     statusCode: 200,
-    body: JSON.stringify('Hello from Lambda!'),
+    body: JSON.stringify({ hello: 'Hello from Lambda!' }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Access-Control-Allow-Methods': '*',
+      'Access-Control-Allow-Headers': '*',
+    },
   };
 };

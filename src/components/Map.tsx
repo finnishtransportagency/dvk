@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Map.css';
 import { useTranslation } from 'react-i18next';
 import { FindAllFairwaysQuery, useFindAllFairwaysQuery } from '../graphql/generated';
@@ -19,6 +19,22 @@ const Fairways: React.FC<FairwaysProps> = (props) => {
   );
 };
 
+type Hello = {
+  hello: string;
+};
+
+async function fetchData(): Promise<Response> {
+  return fetch(process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/csv' : '/api/csv');
+}
+
+const Csv: React.FC = () => {
+  const [csvString, setCsvString] = useState<string>('');
+  useEffect(() => {
+    fetchData().then(async (response) => setCsvString(((await response.json()) as Hello).hello));
+  }, [csvString]);
+  return <p>{csvString}</p>;
+};
+
 const Map: React.FC = () => {
   const { t } = useTranslation();
   const { data } = useFindAllFairwaysQuery();
@@ -26,6 +42,7 @@ const Map: React.FC = () => {
     <div>
       <p>{t('homePage.map.content')}</p>
       <Fairways data={data} />
+      <Csv />
     </div>
   );
 };
