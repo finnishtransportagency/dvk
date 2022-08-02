@@ -31,7 +31,7 @@ const Csv: React.FC = () => {
   const [csvString, setCsvString] = useState<string>('');
   useEffect(() => {
     fetchData().then((response) => setCsvString(response.hello));
-  }, [csvString]);
+  }, []);
   return <p>{csvString}</p>;
 };
 
