@@ -39,11 +39,14 @@ export class DvkPipeline extends Construct {
       actions: [sourceAction],
     });
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
+    const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
     // Create the build project for DVK app
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
         environmentVariables: {
+          // TODO: should be removed for permanent environments once DVK-65 is done (proxy routing)
+          REACT_APP_API_URL: { value: importedAppSyncAPIURL },
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
         },
       },
