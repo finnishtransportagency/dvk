@@ -9,7 +9,7 @@ const euWestCFClient = new CloudFormationClient({ region: 'eu-west-1' });
 type BackendStackOutputs = {
   AppSyncAPIURL: string;
   AppSyncAPIKey: string;
-  LoadBalancerAPIURL: string;
+  LoadBalancerDnsName: string;
 };
 
 async function readStackOutputsForRawStackName(stackName: string): Promise<Record<string, string>> {
@@ -45,7 +45,7 @@ async function main() {
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerAPIURL}/api`,
+    REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
   });
 }
 

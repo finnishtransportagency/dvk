@@ -63,9 +63,9 @@ export class DvkBackendStack extends Stack {
       }
     }
     const alb = this.createALB(env);
-    new cdk.CfnOutput(this, 'LoadBalancerAPIURL', {
+    new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
-      exportName: 'LoadBalancerAPIURL' + env,
+      exportName: 'LoadBalancerDnsName' + env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
