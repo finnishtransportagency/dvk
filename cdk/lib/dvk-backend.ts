@@ -121,7 +121,23 @@ export class DvkBackendStack extends Stack {
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
     });
-    let index = 10;
+    let index = 1;
+    // add CORS config
+    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
+      functionName: `cors-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_16_X,
+      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+      },
+      logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+    });
+    httpListener.addTargets('HTTPListenerTarget-CORS', {
+      targets: [new LambdaTarget(corsLambda)],
+      priority: index++,
+      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
+    });
     for (const lambdaFunc of apiLambdaFunctions) {
       const functionName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
@@ -140,22 +156,6 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
     }
-    // add CORS config
-    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
-      functionName: `cors-${env}`.toLocaleLowerCase(),
-      runtime: lambda.Runtime.NODEJS_16_X,
-      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
-      handler: 'handler',
-      environment: {
-        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
-      },
-      logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
-    });
-    httpListener.addTargets('HTTPListenerTarget-CORS', {
-      targets: [new LambdaTarget(corsLambda)],
-      priority: 1,
-      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
-    });
     return alb;
   }
 
