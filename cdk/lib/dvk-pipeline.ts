@@ -30,7 +30,7 @@ export class DvkPipeline extends Construct {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'DVK-64', //this.getBranch(props.env),
+      branch: this.getBranch(props.env),
       trigger: GitHubTrigger.NONE,
     });
 
