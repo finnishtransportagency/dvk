@@ -113,7 +113,7 @@ export class SquatSite extends Construct {
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
     const proxyUrl = config.getStringParameter('DMZProxyEndpoint');
     const corsResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'CORSResponsePolicy', {
-      responseHeadersPolicyName: 'CORSResponsePolicy',
+      responseHeadersPolicyName: 'CORSResponsePolicy' + props.env,
       corsBehavior: {
         accessControlAllowCredentials: false,
         accessControlAllowMethods: ['ALL'],
