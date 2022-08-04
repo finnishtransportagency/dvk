@@ -7,7 +7,9 @@ const fairwayTable = process.env.FAIRWAY_TABLE;
 class FairwayDBModel {
   id: number;
 
-  name: string;
+  name?: string;
+
+  geotiff?: string[];
 
   static async get(id: number): Promise<FairwayDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayTable, Key: { id } }));

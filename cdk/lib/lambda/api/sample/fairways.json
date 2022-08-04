@@ -69,5 +69,17 @@
     "kulkuSyvyys1": 10,
     "kulkuSyvyys2": 8,
     "pituus": 60.9
+  },
+  "saimaa_5": {
+    "jnro": 6375,
+    "nimiFI": "Saimaa Sulkava"
+  },
+  "saimaa_18_19": {
+    "jnro": 7030,
+    "nimiFI": "Saimaa Leppävirta"
+  },
+  "saimaa_28": {
+    "jnro": 7160,
+    "nimiFI": "Saimaa Kuopio"
   }
 }

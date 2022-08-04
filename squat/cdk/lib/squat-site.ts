@@ -76,6 +76,25 @@ export class SquatSite extends Construct {
       exportName: 'DVKBucket' + props.env,
     });
 
+    // Pohjatopografia bucket
+    const geoTiffBucket = new s3.Bucket(this, 'GeoTIFFBucket', {
+      bucketName: `geotiff.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
+    geoTiffBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [squatBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    new CfnOutput(this, 'GeoTIFF Bucket', {
+      value: squatBucket.bucketName,
+      description: 'The name of GeoTIFF bucket',
+      exportName: 'GeoTIFFBucket' + props.env,
+    });
+
     // TLS certificate
     let certificate, domainNames;
     if (props.cloudfrontCertificateArn) {
@@ -107,6 +126,12 @@ export class SquatSite extends Construct {
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     };
+    const geoTiffBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+    };
     const config = new Config(this);
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
     const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
@@ -130,6 +155,7 @@ export class SquatSite extends Construct {
       : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), true, corsResponsePolicy, { 'x-api-key': importedAppSyncAPIKey });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat/*': squatBehavior,
+      'geotiff/*': geoTiffBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
     };

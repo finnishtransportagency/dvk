@@ -2,9 +2,9 @@ import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import Config from '../lib/config';
 import { getDynamoDBDocumentClient } from '../lib/lambda/db/dynamoClient';
-import vuosaariJson from './data/vuosaari.json';
-import kemiJson from './data/kemi.json';
-import uusikaupunkiJson from './data/uusikaupunki.json';
+import vuosaariJson from './data/4927/vuosaari.json';
+import kemiJson from './data/10/kemi.json';
+import uusikaupunkiJson from './data/2345/uusikaupunki.json';
 
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
