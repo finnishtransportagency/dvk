@@ -1,0 +1,10 @@
+query findAllFairways {
+  fairways {
+    id
+    name {
+      fi
+      sv
+      en
+    }
+  }
+}
