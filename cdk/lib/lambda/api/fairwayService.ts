@@ -26,7 +26,7 @@ export type MitoitusAlusAPIModel = {
 };
 
 export type VaylaAPIModel = {
-  id: number;
+  jnro: number;
   nimiFI: string;
   nimiSV?: string;
   kulkuSyvyys1?: number;
@@ -56,7 +56,7 @@ export class FairwayService {
 
   public mapModelsToFairway(apiModel: VaylaAPIModel, dbModel?: FairwayDBModel): Fairway {
     const fairway: Fairway = {
-      id: apiModel.id,
+      id: apiModel.jnro,
       name: {
         fi: apiModel.nimiFI,
         sv: apiModel.nimiSV || '',
