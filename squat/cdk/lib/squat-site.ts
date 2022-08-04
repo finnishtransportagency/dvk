@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import { CfnOutput, Stack } from 'aws-cdk-lib';
+import { CfnOutput, Duration, Stack } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as cdk from 'aws-cdk-lib';
@@ -13,6 +13,7 @@ import {
   OriginProtocolPolicy,
   OriginRequestPolicy,
   OriginSslPolicy,
+  ResponseHeadersPolicy,
   ViewerProtocolPolicy,
 } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
@@ -109,12 +110,24 @@ export class SquatSite extends Construct {
     const config = new Config(this);
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
     const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
+    const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
     const proxyUrl = config.getStringParameter('DMZProxyEndpoint');
+    const corsResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'CORSResponsePolicy', {
+      responseHeadersPolicyName: 'CORSResponsePolicy',
+      corsBehavior: {
+        accessControlAllowCredentials: false,
+        accessControlAllowMethods: ['ALL'],
+        accessControlAllowOrigins: ['*'],
+        accessControlAllowHeaders: ['*'],
+        originOverride: false,
+        accessControlMaxAge: Duration.seconds(600),
+      },
+    });
     const proxyBehavior = this.createProxyBehavior(proxyUrl);
-    const apiProxyBehavior = Config.isPermanentEnvironment() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
-    const graphqlProxyBehavior = Config.isPermanentEnvironment()
+    const apiProxyBehavior = this.useHAProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
+    const graphqlProxyBehavior = this.useHAProxy()
       ? proxyBehavior
-      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL));
+      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), true, corsResponsePolicy, { 'x-api-key': importedAppSyncAPIKey });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat/*': squatBehavior,
       '/graphql': graphqlProxyBehavior,
@@ -137,17 +150,29 @@ export class SquatSite extends Construct {
     });
   }
 
-  private createProxyBehavior(domainName: string, useSSL = true) {
+  private useHAProxy(): boolean {
+    // TODO: return true for permanent environments once proxy routing working
+    return false;
+  }
+
+  private createProxyBehavior(
+    domainName: string,
+    useSSL = true,
+    corsResponsePolicy: ResponseHeadersPolicy | undefined = undefined,
+    customHeaders: Record<string, string> | undefined = undefined
+  ) {
     const dmzBehavior: BehaviorOptions = {
       compress: true,
       origin: new HttpOrigin(domainName, {
         originSslProtocols: [OriginSslPolicy.TLS_V1_2, OriginSslPolicy.TLS_V1_2, OriginSslPolicy.TLS_V1, OriginSslPolicy.SSL_V3],
         protocolPolicy: useSSL ? OriginProtocolPolicy.HTTPS_ONLY : OriginProtocolPolicy.HTTP_ONLY,
+        customHeaders,
       }),
       cachePolicy: CachePolicy.CACHING_DISABLED,
-      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
+      originRequestPolicy: corsResponsePolicy ? OriginRequestPolicy.CORS_CUSTOM_ORIGIN : OriginRequestPolicy.ALL_VIEWER,
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      responseHeadersPolicy: corsResponsePolicy,
     };
     return dmzBehavior;
   }
