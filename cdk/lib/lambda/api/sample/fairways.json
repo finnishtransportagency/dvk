@@ -1,6 +1,6 @@
 {
   "vuosaari": {
-    "id": 4927,
+    "jnro": 4927,
     "nimiFI": "Vuosaari",
     "nimiSV": "Nordsjöleden",
     "kulkuSyvyys1": 13,
@@ -32,7 +32,7 @@
     ]
   },
   "uusikaupunki": {
-    "id": 2345,
+    "jnro": 2345,
     "nimiFI": "Uudenkaupungin väylä",
     "nimiSV": "Farleden till Nystad",
     "kulkuSyvyys1": 12.5,
@@ -63,7 +63,7 @@
     ]
   },
   "kemi": {
-    "id": 10,
+    "jnro": 10,
     "nimiFI": "Kemin edusta",
     "nimiSV": "Kemi angörin",
     "kulkuSyvyys1": 10,
