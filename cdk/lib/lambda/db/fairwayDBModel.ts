@@ -9,7 +9,7 @@ class FairwayDBModel {
 
   name?: string;
 
-  geotiff?: string[];
+  geotiffImages?: string[];
 
   static async get(id: number): Promise<FairwayDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayTable, Key: { id } }));

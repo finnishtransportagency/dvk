@@ -45,7 +45,7 @@ async function main() {
       const fairway = JSON.parse(fs.readFileSync(file).toString()) as FairwayDBModel;
       const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
       if (geoTiffMap.get(fairway.id)) {
-        fairway.geotiff = geoTiffMap.get(fairway.id)?.map((f) => {
+        fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
           const i = f.lastIndexOf('/');
           const filename = f.substring(i + 1);
           const command = new PutObjectCommand({
