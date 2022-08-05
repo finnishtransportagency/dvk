@@ -19,7 +19,7 @@
     "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack --require-approval never",
     "generate": "graphql-codegen",
     "log:backend": "aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
-    "dynamodb": "ts-node bin/dynamodb.ts",
+    "datasync": "ts-node bin/datasync.ts",
     "setup": "ts-node bin/setup.ts"
   },
   "devDependencies": {
