@@ -85,12 +85,12 @@ export class SquatSite extends Construct {
     geoTiffBucket.addToResourcePolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject'],
-        resources: [squatBucket.arnForObjects('*')],
+        resources: [geoTiffBucket.arnForObjects('*')],
         principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
       })
     );
     new CfnOutput(this, 'GeoTIFF Bucket', {
-      value: squatBucket.bucketName,
+      value: geoTiffBucket.bucketName,
       description: 'The name of GeoTIFF bucket',
       exportName: 'GeoTIFFBucket' + props.env,
     });
@@ -126,11 +126,21 @@ export class SquatSite extends Construct {
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     };
+    // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
+    const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/geotiffRequestRouter.js' }),
+    });
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: geoTiffCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
     };
     const config = new Config(this);
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
