@@ -18,6 +18,7 @@ import {
 } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import Config from './config';
+import * as fs from 'fs';
 
 interface SquatSiteProps {
   domainName: string;
@@ -29,6 +30,8 @@ interface SquatSiteProps {
 export class SquatSite extends Construct {
   constructor(parent: Stack, id: string, props: SquatSiteProps) {
     super(parent, id);
+
+    const config = new Config(this);
 
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
     const cloudfrontOAI = new cloudfront.OriginAccessIdentity(this, 'cloudfront-OAI', {
@@ -89,6 +92,20 @@ export class SquatSite extends Construct {
       code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/squatRequestRouter.js' }),
     });
 
+    // Cloudfront function suorittamaan basic autentikaatiota
+    const basicUserName = config.getStringParameter('BasicUsername');
+    const basicPassword = config.getStringParameter('BasicPassword');
+    const authString = cdk.Fn.base64(basicUserName + ':' + basicPassword);
+
+    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('UTF-8');
+    const authFunctionCode = cdk.Fn.sub(authSourceCode, {
+      AUTH_STRING: authString,
+    });
+
+    const authFunction = new cloudfront.Function(this, 'DvkAuthFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(authFunctionCode),
+    });
+
     const squatBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
@@ -106,8 +123,14 @@ export class SquatSite extends Construct {
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: authFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
     };
-    const config = new Config(this);
+
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
     const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
