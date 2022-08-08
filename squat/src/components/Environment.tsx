@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import { IonText, IonGrid, IonRow, IonCol, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms } from '../hooks/squatReducer';
 import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
-import { isReliabilityAnIssue } from '../utils/validations';
+import { isFieldValid, isReliabilityAnIssue, setFieldClass } from '../utils/validations';
 import Alert from './Alert';
 import InputField from './InputField';
 import SectionTitle from './SectionTitle';
-import SelectField from './SelectField';
 import LabelField from './LabelField';
+import RadioSelectField from './RadioSelectField';
 
 const zero = 0;
 const kgPerCubicM = (
@@ -66,18 +66,6 @@ const Environment: React.FC = () => {
     );
   };
 
-  // Field validation
-  const isFieldValid = (name: string) => {
-    for (const [k, v] of Object.entries(state.validations)) {
-      if (k === name) return v as boolean;
-    }
-    return undefined;
-  };
-  const setFieldClass = (name: string) => {
-    if (isFieldValid(name) === undefined) return '';
-    return isFieldValid(name) ? 'ion-valid' : 'ion-invalid';
-  };
-
   // Determine values to show
   const getWaveLength = () => {
     const currentValue = state.environment.weather.waveLength[state.status.showDeepWaterValues ? 1 : 0];
@@ -101,7 +89,12 @@ const Environment: React.FC = () => {
 
         <SectionTitle
           title={t('homePage.squat.environment.weather')}
-          valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
+          valid={
+            isFieldValid('windSpeed', state.validations) &&
+            isFieldValid('windDirection', state.validations) &&
+            isFieldValid('waveHeight', state.validations) &&
+            isFieldValid('wavePeriod', state.validations)
+          }
         />
         <IonGrid className="no-padding">
           <IonRow>
@@ -114,7 +107,7 @@ const Environment: React.FC = () => {
                 min="0"
                 max="35"
                 unit="m/s"
-                fieldClass={setFieldClass('windSpeed')}
+                fieldClass={setFieldClass('windSpeed', state.validations)}
                 actionType="environment-weather"
               />
             </IonCol>
@@ -128,7 +121,7 @@ const Environment: React.FC = () => {
                 max="350"
                 step="10"
                 unit="deg"
-                fieldClass={setFieldClass('windDirection')}
+                fieldClass={setFieldClass('windDirection', state.validations)}
                 actionType="environment-weather"
               />
             </IonCol>
@@ -144,7 +137,7 @@ const Environment: React.FC = () => {
                 max="5"
                 step="0.1"
                 unit="m"
-                fieldClass={setFieldClass('waveHeight')}
+                fieldClass={setFieldClass('waveHeight', state.validations)}
                 actionType="environment-weather"
               />
             </IonCol>
@@ -156,7 +149,7 @@ const Environment: React.FC = () => {
                 placeholder="0"
                 min="0"
                 unit="s"
-                fieldClass={setFieldClass('wavePeriod')}
+                fieldClass={setFieldClass('wavePeriod', state.validations)}
                 actionType="environment-weather"
               />
             </IonCol>
@@ -182,12 +175,12 @@ const Environment: React.FC = () => {
         <SectionTitle
           title={t('homePage.squat.environment.fairway')}
           valid={
-            isFieldValid('sweptDepth') &&
-            isFieldValid('waterLevel') &&
-            isFieldValid('waterDepth') &&
-            isFieldValid('channelWidth') &&
-            isFieldValid('slopeScale') &&
-            isFieldValid('slopeHeight')
+            isFieldValid('sweptDepth', state.validations) &&
+            isFieldValid('waterDepth', state.validations) &&
+            (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth', state.validations) : true) &&
+            (state.environment.fairway.fairwayForm === fairwayForms[2]
+              ? isFieldValid('slopeScale', state.validations) && isFieldValid('slopeHeight', state.validations)
+              : true)
           }
         />
         <IonGrid className="no-padding">
@@ -201,7 +194,8 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.1"
                 unit="m"
-                fieldClass={setFieldClass('sweptDepth')}
+                required
+                fieldClass={setFieldClass('sweptDepth', state.validations)}
                 actionType="environment-fairway"
               />
             </IonCol>
@@ -213,7 +207,7 @@ const Environment: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                 step="0.1"
                 unit="m"
-                fieldClass={setFieldClass('waterLevel')}
+                fieldClass={setFieldClass('waterLevel', state.validations)}
                 actionType="environment-fairway"
               />
             </IonCol>
@@ -228,14 +222,15 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.1"
                 unit="m"
-                fieldClass={setFieldClass('waterDepth')}
+                required
+                fieldClass={setFieldClass('waterDepth', state.validations)}
                 actionType="environment-fairway"
               />
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
-              <SelectField
+              <RadioSelectField
                 title={t('homePage.squat.environment.form-of-fairway')}
                 name="fairwayForm"
                 value={state.environment.fairway.fairwayForm}
@@ -243,6 +238,38 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
                 required
                 translateOptions
+                infoContentTitle={t('homePage.squat.environment.form-of-fairway-info-title')}
+                infoContent={
+                  <>
+                    <p>{t('homePage.squat.environment.form-of-fairway-info-content')}</p>
+                    <IonGrid>
+                      {fairwayForms.map((option) => (
+                        <IonRow key={option.id}>
+                          <IonCol size="4">
+                            <IonLabel>
+                              {option.id}. &nbsp; {t(option.name)}
+                            </IonLabel>
+                          </IonCol>
+                          <IonCol size="8">
+                            <IonLabel className="ion-text-wrap">{t(option.desc)}</IonLabel>
+                          </IonCol>
+                        </IonRow>
+                      ))}
+                    </IonGrid>
+                    <IonGrid>
+                      <IonRow>
+                        {fairwayForms.map((option) => (
+                          <IonCol key={option.id} className="align-center">
+                            <IonImg src={option.img} />
+                            <p>
+                              {option.id}. {t(option.name)}
+                            </p>
+                          </IonCol>
+                        ))}
+                      </IonRow>
+                    </IonGrid>
+                  </>
+                }
               />
             </IonCol>
           </IonRow>
@@ -256,27 +283,9 @@ const Environment: React.FC = () => {
                   placeholder="0"
                   min="0"
                   unit="m"
-                  fieldClass={setFieldClass('channelWidth')}
+                  fieldClass={setFieldClass('channelWidth', state.validations)}
                   actionType="environment-fairway"
                 />
-              </IonCol>
-              <IonCol size-xs="auto">
-                <IonChip color="primary" outline id="trigger-fairwayinfo">
-                  ?
-                </IonChip>
-                <IonPopover trigger="trigger-fairwayinfo">
-                  <IonContent>
-                    {state.environment.fairway.fairwayForm && (
-                      <IonContent className="ion-padding-horizontal ion-text-center">
-                        <IonText color="secondary">
-                          <h4>{t(state.environment.fairway.fairwayForm.name)}</h4>
-                        </IonText>
-                        <p>{t(state.environment.fairway.fairwayForm.desc)}</p>
-                      </IonContent>
-                    )}
-                    <IonImg src={state.environment.fairway.fairwayForm?.img} />
-                  </IonContent>
-                </IonPopover>
               </IonCol>
             </IonRow>
           )}
@@ -289,7 +298,7 @@ const Environment: React.FC = () => {
                   value={state.environment.fairway.slopeScale}
                   placeholder="0"
                   min="0"
-                  fieldClass={setFieldClass('slopeScale')}
+                  fieldClass={setFieldClass('slopeScale', state.validations)}
                   actionType="environment-fairway"
                 />
               </IonCol>
@@ -301,7 +310,7 @@ const Environment: React.FC = () => {
                   placeholder="0"
                   min="0"
                   unit="m"
-                  fieldClass={setFieldClass('slopeHeight')}
+                  fieldClass={setFieldClass('slopeHeight', state.validations)}
                   actionType="environment-fairway"
                 />
               </IonCol>
@@ -311,7 +320,11 @@ const Environment: React.FC = () => {
 
         <SectionTitle
           title={t('homePage.squat.environment.vessel')}
-          valid={isFieldValid('vesselCourse') && isFieldValid('vesselSpeed') && isFieldValid('turningRadius')}
+          valid={
+            isFieldValid('vesselCourse', state.validations) &&
+            isFieldValid('vesselSpeed', state.validations) &&
+            isFieldValid('turningRadius', state.validations)
+          }
         />
         <IonGrid className="no-padding">
           <IonRow>
@@ -325,7 +338,7 @@ const Environment: React.FC = () => {
                 max="350"
                 step="10"
                 unit="deg"
-                fieldClass={setFieldClass('vesselCourse')}
+                fieldClass={setFieldClass('vesselCourse', state.validations)}
                 actionType="environment-vessel"
               />
             </IonCol>
@@ -338,7 +351,7 @@ const Environment: React.FC = () => {
                 min="0"
                 max="35"
                 unit="kts"
-                fieldClass={setFieldClass('vesselSpeed')}
+                fieldClass={setFieldClass('vesselSpeed', state.validations)}
                 actionType="environment-vessel"
               />
             </IonCol>
@@ -354,7 +367,7 @@ const Environment: React.FC = () => {
                 max="2"
                 step="0.05"
                 unit="nm"
-                fieldClass={setFieldClass('turningRadius')}
+                fieldClass={setFieldClass('turningRadius', state.validations)}
                 actionType="environment-vessel"
                 helper={
                   Number('0.1').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) +
@@ -369,7 +382,12 @@ const Environment: React.FC = () => {
 
         <SectionTitle
           title={t('homePage.squat.environment.attribute')}
-          valid={isFieldValid('airDensity') && isFieldValid('waterDensity') && isFieldValid('requiredUKC') && isFieldValid('motionClearance')}
+          valid={
+            isFieldValid('airDensity', state.validations) &&
+            isFieldValid('waterDensity', state.validations) &&
+            isFieldValid('requiredUKC', state.validations) &&
+            isFieldValid('motionClearance', state.validations)
+          }
         />
         <IonGrid className="no-padding">
           <IonRow>
@@ -383,7 +401,7 @@ const Environment: React.FC = () => {
                 max="1.5"
                 step="0.1"
                 unit={kgPerCubicM}
-                fieldClass={setFieldClass('airDensity')}
+                fieldClass={setFieldClass('airDensity', state.validations)}
                 actionType="environment-attribute"
               />
             </IonCol>
@@ -396,7 +414,7 @@ const Environment: React.FC = () => {
                 min="1000"
                 max="1025"
                 unit={kgPerCubicM}
-                fieldClass={setFieldClass('waterDensity')}
+                fieldClass={setFieldClass('waterDensity', state.validations)}
                 actionType="environment-attribute"
               />
             </IonCol>
@@ -411,7 +429,7 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.05"
                 unit="m"
-                fieldClass={setFieldClass('requiredUKC')}
+                fieldClass={setFieldClass('requiredUKC', state.validations)}
                 actionType="environment-attribute"
               />
             </IonCol>
@@ -424,7 +442,7 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.05"
                 unit="m"
-                fieldClass={setFieldClass('motionClearance')}
+                fieldClass={setFieldClass('motionClearance', state.validations)}
                 actionType="environment-attribute"
               />
             </IonCol>
@@ -439,7 +457,7 @@ const Environment: React.FC = () => {
                 min="0"
                 max="25"
                 unit="%"
-                fieldClass={setFieldClass('safetyMarginWindForce')}
+                fieldClass={setFieldClass('safetyMarginWindForce', state.validations)}
                 actionType="environment-attribute"
                 helper="0 - 25 %"
               />
