@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import { IonText, IonItem, IonNote, IonButton, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
+import { IonText, IonItem, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import {
@@ -30,12 +30,14 @@ import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import {
   isExternalForceRequired,
+  isReliabilityAnIssue,
   isSafetyMarginInsufficient,
   isUKCDuringTurnUnderRequired,
   isUKCShipMotionsUnderRequired,
   isUKCStraightUnderRequired,
   isUKCUnderMinimum,
 } from '../utils/validations';
+import Modal from './Modal';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -50,6 +52,14 @@ const Calculations: React.FC = () => {
       state.calculations.squat.UKCStraightCourse,
       state.calculations.squat.UKCVesselMotions,
       state.status.showBarrass
+    );
+  };
+  const checkIsReliabilityAnIssue = () => {
+    return isReliabilityAnIssue(
+      state.vessel.general.blockCoefficient,
+      state.environment.vessel.vesselSpeed,
+      state.environment.fairway.sweptDepth,
+      state.environment.fairway.waterLevel
     );
   };
 
@@ -283,7 +293,7 @@ const Calculations: React.FC = () => {
   };
   const getSquatValue = () => {
     const currentValue =
-      state.status.showBarrass || checkIsUKCUnderMinimum() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
+      state.status.showBarrass || checkIsReliabilityAnIssue() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
     return isNaN(currentValue) ? '' : currentValue;
   };
 
@@ -292,22 +302,21 @@ const Calculations: React.FC = () => {
       <IonText color="dark" className="equal-margin-top">
         <h2>
           <strong>{t('homePage.squat.calculations.title')}</strong>
+          <Modal title={t('homePage.squat.calculations.info-title')} content={<p>{t('homePage.squat.calculations.info-content')}</p>} />
         </h2>
       </IonText>
 
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
 
-        <IonNote>
-          <IonButton size="small" shape="round" fill="outline" strong={true}>
-            ?
-          </IonButton>
-        </IonNote>
         <IonItem lines="none" className="only-label">
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel color={state.status.showDeepWaterValues ? 'medium' : 'primary'}>
+                <IonLabel
+                  color={state.status.showDeepWaterValues ? 'medium' : 'primary'}
+                  title={t('homePage.squat.calculations.shallow-water-values')}
+                >
                   {t('homePage.squat.calculations.shallow-water-values')}
                 </IonLabel>
               </IonCol>
@@ -320,7 +329,11 @@ const Calculations: React.FC = () => {
                 />
               </IonCol>
               <IonCol size="5">
-                <IonLabel color={state.status.showDeepWaterValues ? 'primary' : 'medium'} className="align-right">
+                <IonLabel
+                  color={state.status.showDeepWaterValues ? 'primary' : 'medium'}
+                  className="align-right"
+                  title={t('homePage.squat.calculations.deep-water-values')}
+                >
                   {t('homePage.squat.calculations.deep-water-values')}
                 </IonLabel>
               </IonCol>
@@ -335,10 +348,10 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
-                  checked={state.status.showBarrass}
+                  checked={checkIsReliabilityAnIssue() !== '' ? true : state.status.showBarrass}
                   onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
                   className="squat-toggle"
-                  disabled={getSquatValue() === ''}
+                  disabled={getSquatValue() === '' || checkIsReliabilityAnIssue() !== ''}
                 />
               </IonCol>
               <IonCol size="5">
@@ -413,6 +426,17 @@ const Calculations: React.FC = () => {
                     ? t('homePage.squat.calculations.UKC-under-required-minimum')
                     : ''
                 }
+                infoContentTitle={t('homePage.squat.calculations.vessel-motions-assumptions')}
+                infoContent={
+                  <>
+                    <p>{t('homePage.squat.calculations.vessel-motions-assumptions')}:</p>
+                    <ul>
+                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-1')}</li>
+                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-2')}</li>
+                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-3')}</li>
+                    </ul>
+                  </>
+                }
               />
             </IonCol>
             <IonCol size="6">
@@ -460,6 +484,13 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 2,
                 })}
                 unit="m"
+                helper={
+                  '(' +
+                  (checkIsReliabilityAnIssue() !== '' || state.status.showBarrass
+                    ? t('homePage.squat.calculations.squat-barrass')
+                    : t('homePage.squat.calculations.squat-HG')) +
+                  ')'
+                }
               />
             </IonCol>
           </IonRow>
