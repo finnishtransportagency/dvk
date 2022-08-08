@@ -87,11 +87,6 @@ export class SquatSite extends Construct {
       new CfnOutput(this, 'Certificate', { value: certificate.certificateArn });
     }
 
-    // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
-    const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/squatRequestRouter.js' }),
-    });
-
     // Cloudfront function suorittamaan basic autentikaatiota
     const basicUserName = config.getStringParameter('BasicUsername');
     const basicPassword = config.getStringParameter('BasicPassword');
@@ -104,6 +99,17 @@ export class SquatSite extends Construct {
 
     const authFunction = new cloudfront.Function(this, 'DvkAuthFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(authFunctionCode),
+    });
+
+    // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
+    // Nyt myos auth koodi upotettuna
+    const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('UTF-8');
+    const routerFunctionCode = cdk.Fn.sub(routerSourceCode, {
+      AUTH_STRING: authString,
+    });
+
+    const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(routerFunctionCode),
     });
 
     const squatBehavior: BehaviorOptions = {

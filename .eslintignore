@@ -7,3 +7,4 @@ squat
 cdk.out
 cdk/graphql/generated.ts
 src/graphql/generated.ts
+cdk/lib/lambda/auth/authFunction.js
