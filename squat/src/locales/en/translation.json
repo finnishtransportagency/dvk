@@ -55,6 +55,8 @@
         "open-water-description": "[en] Avovesipoikkileikkaus",
         "sloped-channel-description": "[en] Ruopattu väylä tai kapeikko",
         "channel-description": "[en] Kanava tai hyvin kapea salmi",
+        "form-of-fairway-info-title": "Selection of Channel Type",
+        "form-of-fairway-info-content": "[en] Valitse tarkasteltavaa väyläkohtaa vastaava poikkileikkaustyyppi.",
         "channel-width": "Channel Width",
         "scale-of-slope": "Scale of Slope",
         "height-of-slope": "Height of Slope",
@@ -69,11 +71,13 @@
         "safety-margin-wind-force": "Safety Margin Wind Force",
         "clearance-for-other-motions": "Clearance for Other Motions",
         "reliability-issue-block-coefficient": "Reliability Issue - Block Coefficient",
-        "reliability-issue-froude-number": "[fi] Reliability Issue - Froude Number"
+        "reliability-issue-froude-number": "Reliability Issue - Froude Number"
       },
       "calculations": {
         "title": "Calculations",
         "description": "Results of automatic calculations",
+        "info-title": "Options for Calculations",
+        "info-content": "[en] Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska-Guliev (oletus) tai Barrass -kaavoja",
         "wind-force": "Wind Force",
         "relative-wind-direction": "Relative Wind Direction",
         "relative-wind-speed": "Relative Wind Speed",
@@ -92,6 +96,7 @@
         "deep-water-values": "Deep Water",
         "shallow-water-values": "Shallow Water",
         "UKC-vessel-motions": "UKC Vessel Motions",
+        "vessel-motions-assumptions": "Vessel Motions Assumptions",
         "UKC-straight-course": "UKC Straight Course",
         "UKC-during-turn": "UKC During Turn",
         "UKC-under-required-minimum": "UKC Under Required Minimum",
@@ -122,6 +127,8 @@
   "common": {
     "tonnes": "tonnes",
     "required": "Required",
-    "value-out-of-range": "Out of range"
+    "value-out-of-range": "Out of range",
+    "close": "Close",
+    "more-info": "More info"
   }
 }

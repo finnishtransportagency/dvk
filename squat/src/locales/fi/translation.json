@@ -55,6 +55,8 @@
         "open-water-description": "Avovesipoikkileikkaus",
         "sloped-channel-description": "Ruopattu väylä tai kapeikko",
         "channel-description": "Kanava tai hyvin kapea salmi",
+        "form-of-fairway-info-title": "Poikkileikkaustyypin valinta",
+        "form-of-fairway-info-content": "Valitse tarkasteltavaa väyläkohtaa vastaava poikkileikkaustyyppi.",
         "channel-width": "Väylän leveys",
         "scale-of-slope": "Luiskan kaltevuus",
         "height-of-slope": "Luiskan korkeus",
@@ -74,6 +76,8 @@
       "calculations": {
         "title": "Laskenta",
         "description": "Automaattisen laskennan tulokset",
+        "info-title": "Laskentaan liittyvät valinnat",
+        "info-content": "Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska-Guliev (oletus) tai Barrass -kaavoja",
         "wind-force": "[fi] Wind Force",
         "relative-wind-direction": "[fi] Relative Wind Direction",
         "relative-wind-speed": "[fi] Relative Wind Speed",
@@ -92,6 +96,10 @@
         "deep-water-values": "[fi] Deep Water",
         "shallow-water-values": "[fi] Shallow Water",
         "UKC-vessel-motions": "[fi] UKC Vessel Motions",
+        "vessel-motions-assumptions": "[fi] Vessel Motions Assumptions",
+        "vessel-motions-assumption-1": "[fi] The highest motion is due to pitch in head and following long crested waves",
+        "vessel-motions-assumption-2": "[fi] Head and following waves are considered only",
+        "vessel-motions-assumption-3": "[fi] Water depth to draft ration is approximately 1,2",
         "UKC-straight-course": "[fi] UKC Straight Course",
         "UKC-during-turn": "[fi] UKC During Turn",
         "UKC-under-required-minimum": "[fi] UKC Under Required Minimum",
@@ -122,6 +130,8 @@
   "common": {
     "tonnes": "tonnia",
     "required": "Pakollinen",
-    "value-out-of-range": "Virheellinen arvo"
+    "value-out-of-range": "Virheellinen arvo",
+    "close": "Sulje",
+    "more-info": "Lisätietoja"
   }
 }
