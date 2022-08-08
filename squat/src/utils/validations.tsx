@@ -94,3 +94,15 @@ export const isUKCDuringTurnUnderRequired = (requiredUKC: number, UKCDuringTurn:
   // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), 5, 0)
   return UKCDuringTurn[showBarrass ? 0 : 1] < requiredUKC;
 };
+
+// Field validation checks
+export const isFieldValid = (name: string, validations: Record<string, boolean>) => {
+  for (const [k, v] of Object.entries(validations)) {
+    if (k === name) return v;
+  }
+  return undefined;
+};
+export const setFieldClass = (name: string, validations: Record<string, boolean>) => {
+  if (isFieldValid(name, validations) === undefined) return '';
+  return isFieldValid(name, validations) ? 'ion-valid' : 'ion-invalid';
+};

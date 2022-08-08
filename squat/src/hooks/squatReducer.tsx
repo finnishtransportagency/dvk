@@ -140,7 +140,7 @@ export type State = {
     showDeepWaterValues: boolean;
     showBarrass: boolean;
   };
-  validations: Record<string, unknown>;
+  validations: Record<string, boolean>;
 };
 
 export const initialState = {
