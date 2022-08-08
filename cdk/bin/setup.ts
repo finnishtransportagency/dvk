@@ -12,6 +12,10 @@ type BackendStackOutputs = {
   LoadBalancerDnsName: string;
 };
 
+type FrontendStackOutputs = {
+  CloudFrontDomainName: string;
+};
+
 async function readStackOutputsForRawStackName(stackName: string): Promise<Record<string, string>> {
   const output: DescribeStacksCommandOutput = await euWestCFClient.send(new DescribeStacksCommand({ StackName: stackName }));
   return (
@@ -25,8 +29,12 @@ async function readStackOutputsForRawStackName(stackName: string): Promise<Recor
   );
 }
 
-export async function readBackendStackOutputs(): Promise<BackendStackOutputs> {
+async function readBackendStackOutputs(): Promise<BackendStackOutputs> {
   return (await readStackOutputsForRawStackName('DvkBackendStack-' + Config.getEnvironment())) as BackendStackOutputs;
+}
+
+async function readFrontendStackOutputs(): Promise<FrontendStackOutputs> {
+  return (await readStackOutputsForRawStackName('SquatSiteStack-' + Config.getEnvironment())) as FrontendStackOutputs;
 }
 
 function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
@@ -42,10 +50,12 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
 
 async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
+  const frontendStackOutputs = await readFrontendStackOutputs();
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
     REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
+    REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName,
   });
 }
 
