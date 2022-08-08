@@ -1,0 +1,10 @@
+query findAllNavigationLines {
+  navigationLines {
+    id
+    fairwayId
+    geometry {
+      type
+      coordinates
+    }
+  }
+}

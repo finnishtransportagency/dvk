@@ -5,7 +5,19 @@ import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import { CfnOutput, Duration, Stack } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
-import { BehaviorOptions } from 'aws-cdk-lib/aws-cloudfront';
+import * as cdk from 'aws-cdk-lib';
+import {
+  AllowedMethods,
+  BehaviorOptions,
+  CachePolicy,
+  OriginProtocolPolicy,
+  OriginRequestPolicy,
+  OriginSslPolicy,
+  ResponseHeadersPolicy,
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
+import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import Config from './config';
 
 interface SquatSiteProps {
   domainName: string;
@@ -73,19 +85,21 @@ export class SquatSite extends Construct {
     }
 
     // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
-    const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction', {
-      code: cloudfront.FunctionCode.fromFile({filePath: './lib/lambda/router/squatRequestRouter.js'}),
+    const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/squatRequestRouter.js' }),
     });
 
-    const squatBehavior:BehaviorOptions = {
+    const squatBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      functionAssociations: [{
-        function: cfFunction,
-        eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-      }]
+      functionAssociations: [
+        {
+          function: cfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
     };
     const dvkBehavior = {
       origin: new cloudfront_origins.S3Origin(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
@@ -93,8 +107,31 @@ export class SquatSite extends Construct {
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
     };
+    const config = new Config(this);
+    const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
+    const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
+    const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
+    const proxyUrl = config.getStringParameter('DMZProxyEndpoint');
+    const corsResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'CORSResponsePolicy', {
+      responseHeadersPolicyName: 'CORSResponsePolicy' + props.env,
+      corsBehavior: {
+        accessControlAllowCredentials: false,
+        accessControlAllowMethods: ['ALL'],
+        accessControlAllowOrigins: ['*'],
+        accessControlAllowHeaders: ['*'],
+        originOverride: false,
+        accessControlMaxAge: Duration.seconds(600),
+      },
+    });
+    const proxyBehavior = this.createProxyBehavior(proxyUrl);
+    const apiProxyBehavior = this.useHAProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
+    const graphqlProxyBehavior = this.useHAProxy()
+      ? proxyBehavior
+      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), true, corsResponsePolicy, { 'x-api-key': importedAppSyncAPIKey });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat/*': squatBehavior,
+      '/graphql': graphqlProxyBehavior,
+      '/api/*': apiProxyBehavior,
     };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
@@ -111,5 +148,32 @@ export class SquatSite extends Construct {
       description: 'Squat distribution name',
       exportName: 'SquatDistribution' + props.env,
     });
+  }
+
+  private useHAProxy(): boolean {
+    // TODO: return true for permanent environments once proxy routing working
+    return false;
+  }
+
+  private createProxyBehavior(
+    domainName: string,
+    useSSL = true,
+    corsResponsePolicy: ResponseHeadersPolicy | undefined = undefined,
+    customHeaders: Record<string, string> | undefined = undefined
+  ) {
+    const dmzBehavior: BehaviorOptions = {
+      compress: true,
+      origin: new HttpOrigin(domainName, {
+        originSslProtocols: [OriginSslPolicy.TLS_V1_2, OriginSslPolicy.TLS_V1_2, OriginSslPolicy.TLS_V1, OriginSslPolicy.SSL_V3],
+        protocolPolicy: useSSL ? OriginProtocolPolicy.HTTPS_ONLY : OriginProtocolPolicy.HTTP_ONLY,
+        customHeaders,
+      }),
+      cachePolicy: CachePolicy.CACHING_DISABLED,
+      originRequestPolicy: corsResponsePolicy ? OriginRequestPolicy.CORS_CUSTOM_ORIGIN : OriginRequestPolicy.ALL_VIEWER,
+      allowedMethods: AllowedMethods.ALLOW_ALL,
+      viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      responseHeadersPolicy: corsResponsePolicy,
+    };
+    return dmzBehavior;
   }
 }

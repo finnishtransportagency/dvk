@@ -2,8 +2,8 @@ import * as path from 'path';
 
 interface BackendLambda {
   entry: string;
-  functionName?: string; // this should correlate to graphql schema function name
-  typeName?: 'Query' | 'Mutation';
+  fieldName?: string; // this should correlate to graphql schema field name
+  typeName?: string;
 }
 
 const lambdaFunctions: BackendLambda[] = [
@@ -12,6 +12,14 @@ const lambdaFunctions: BackendLambda[] = [
   },
   {
     entry: path.join(__dirname, 'query/fairway-handler.ts'),
+  },
+  {
+    entry: path.join(__dirname, 'query/fairwayNavigationLines-handler.ts'),
+    typeName: 'Fairway',
+    fieldName: 'navigationLines',
+  },
+  {
+    entry: path.join(__dirname, 'query/navigationLines-handler.ts'),
   },
 ];
 
