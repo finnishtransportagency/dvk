@@ -37,13 +37,18 @@ export const vesselProfiles = [
   { id: 4, name: 'homePage.squat.vessel.LNG-tanker' },
 ];
 export const fairwayForms = [
-  { id: 1, name: 'homePage.squat.environment.open-water', desc: 'homePage.squat.environment.open-water-description', img: 'assets/fairway-A.png' },
-  { id: 2, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/fairway-C.png' },
+  {
+    id: 1,
+    name: 'homePage.squat.environment.open-water',
+    desc: 'homePage.squat.environment.open-water-description',
+    img: 'assets/open_water_small.svg',
+  },
+  { id: 2, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/channel_small.svg' },
   {
     id: 3,
     name: 'homePage.squat.environment.sloped-channel',
     desc: 'homePage.squat.environment.sloped-channel-description',
-    img: 'assets/fairway-B.png',
+    img: 'assets/sloped_channel_small.svg',
   },
 ];
 
@@ -259,6 +264,7 @@ export const SquatReducer = (state: State, action: Action) => {
   if (action.type !== 'reset') {
     switch (action.payload.elType?.toLocaleLowerCase()) {
       case 'ion-select':
+      case 'ion-radio-group':
       case 'object':
       case 'boolean':
         inputValue = action.payload.value;
