@@ -10,7 +10,7 @@ import SectionTitle from './SectionTitle';
 import InputField from './InputField';
 import Alert from './Alert';
 import SelectField from './SelectField';
-import { isFieldValid, isThrusterUnableToLiftBow, isTugUseRecommended, setFieldClass } from '../utils/validations';
+import { isThrusterUnableToLiftBow, isTugUseRecommended } from '../utils/validations';
 
 const zero = 0;
 const mSquared = (
@@ -53,6 +53,18 @@ const Vessel: React.FC = () => {
     });
   }, [state.vessel.general.draught, dispatch]);
 
+  // Field validation
+  const isFieldValid = (name: string) => {
+    for (const [k, v] of Object.entries(state.validations)) {
+      if (k === name) return v as boolean;
+    }
+    return undefined;
+  };
+  const setFieldClass = (name: string) => {
+    if (isFieldValid(name) === undefined) return '';
+    return isFieldValid(name) ? 'ion-valid' : 'ion-invalid';
+  };
+
   return (
     <>
       <IonText color="dark" className="equal-margin-top">
@@ -91,11 +103,11 @@ const Vessel: React.FC = () => {
         <SectionTitle
           title={t('homePage.squat.vessel.general')}
           valid={
-            isFieldValid('lengthBPP', state.validations) &&
-            isFieldValid('breadth', state.validations) &&
-            isFieldValid('draught', state.validations) &&
-            isFieldValid('blockCoefficient', state.validations) &&
-            isFieldValid('displacement', state.validations)
+            isFieldValid('lengthBPP') &&
+            isFieldValid('breadth') &&
+            isFieldValid('draught') &&
+            isFieldValid('blockCoefficient') &&
+            isFieldValid('displacement')
           }
         />
         <IonGrid className="no-padding">
@@ -110,7 +122,7 @@ const Vessel: React.FC = () => {
                 min="0"
                 step="0.01"
                 unit="m"
-                fieldClass={setFieldClass('lengthBPP', state.validations)}
+                fieldClass={setFieldClass('lengthBPP')}
                 actionType="vessel-general"
               />
             </IonCol>
@@ -124,7 +136,7 @@ const Vessel: React.FC = () => {
                 min="0"
                 step="0.01"
                 unit="m"
-                fieldClass={setFieldClass('breadth', state.validations)}
+                fieldClass={setFieldClass('breadth')}
                 actionType="vessel-general"
               />
             </IonCol>
@@ -140,7 +152,7 @@ const Vessel: React.FC = () => {
                 min="0"
                 step="0.01"
                 unit="m"
-                fieldClass={setFieldClass('draught', state.validations)}
+                fieldClass={setFieldClass('draught')}
                 actionType="vessel-general"
               />
             </IonCol>
@@ -154,7 +166,7 @@ const Vessel: React.FC = () => {
                 min="0"
                 max="1"
                 step="0.01"
-                fieldClass={setFieldClass('blockCoefficient', state.validations)}
+                fieldClass={setFieldClass('blockCoefficient')}
                 actionType="vessel-general"
               />
             </IonCol>
@@ -169,7 +181,7 @@ const Vessel: React.FC = () => {
                 placeholder="0"
                 min="0"
                 unit="mt"
-                fieldClass={setFieldClass('displacement', state.validations)}
+                fieldClass={setFieldClass('displacement')}
                 actionType="vessel-general"
               />
             </IonCol>
@@ -179,12 +191,7 @@ const Vessel: React.FC = () => {
 
         <SectionTitle
           title={t('homePage.squat.vessel.detailed')}
-          valid={
-            isFieldValid('windSurface', state.validations) &&
-            isFieldValid('deckCargo', state.validations) &&
-            isFieldValid('bowThruster', state.validations) &&
-            isFieldValid('bowThrusterEfficiency', state.validations)
-          }
+          valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
         />
         <IonGrid className="no-padding">
           <IonRow>
@@ -197,7 +204,7 @@ const Vessel: React.FC = () => {
                 placeholder="0"
                 min="0"
                 unit={mSquared}
-                fieldClass={setFieldClass('windSurface', state.validations)}
+                fieldClass={setFieldClass('windSurface')}
                 actionType="vessel-detailed"
               />
             </IonCol>
@@ -209,7 +216,7 @@ const Vessel: React.FC = () => {
                 placeholder="0"
                 min="0"
                 unit={mSquared}
-                fieldClass={setFieldClass('deckCargo', state.validations)}
+                fieldClass={setFieldClass('deckCargo')}
                 actionType="vessel-detailed"
               />
             </IonCol>
@@ -224,7 +231,7 @@ const Vessel: React.FC = () => {
                 placeholder="0"
                 min="0"
                 unit="kW"
-                fieldClass={setFieldClass('bowThruster', state.validations)}
+                fieldClass={setFieldClass('bowThruster')}
                 actionType="vessel-detailed"
               />
             </IonCol>
@@ -240,7 +247,7 @@ const Vessel: React.FC = () => {
                 step="25"
                 unit="%"
                 helper="0 - 100 %"
-                fieldClass={setFieldClass('bowThrusterEfficiency', state.validations)}
+                fieldClass={setFieldClass('bowThrusterEfficiency')}
                 actionType="vessel-detailed"
               />
             </IonCol>
@@ -260,10 +267,7 @@ const Vessel: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <SectionTitle
-          title={t('homePage.squat.vessel.stability')}
-          valid={isFieldValid('KG', state.validations) && isFieldValid('GM', state.validations) && isFieldValid('KB', state.validations)}
-        />
+        <SectionTitle title={t('homePage.squat.vessel.stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
         <IonGrid className="no-padding">
           <IonRow>
             <IonCol size="6">
@@ -275,7 +279,7 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min="0"
                 step="0.01"
-                fieldClass={setFieldClass('KG', state.validations)}
+                fieldClass={setFieldClass('KG')}
                 actionType="vessel-stability"
               />
             </IonCol>
@@ -288,7 +292,7 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min="0"
                 step="0.01"
-                fieldClass={setFieldClass('GM', state.validations)}
+                fieldClass={setFieldClass('GM')}
                 actionType="vessel-stability"
               />
             </IonCol>
@@ -303,7 +307,7 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min="0"
                 step="0.01"
-                fieldClass={setFieldClass('KB', state.validations)}
+                fieldClass={setFieldClass('KB')}
                 actionType="vessel-stability"
               />
             </IonCol>
