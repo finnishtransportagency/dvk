@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonText } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
+import Label from './Label';
 
 interface LabelProps {
   title: string;
@@ -8,16 +9,15 @@ interface LabelProps {
   unit?: string | ReactElement;
   error?: string;
   helper?: string;
+  infoContentTitle?: string;
+  infoContent?: string | ReactElement;
 }
 
 const LabelField: React.FC<LabelProps> = (props) => {
   return (
     <>
-      <IonItem lines="none" className="only-label">
-        <IonLabel color="dark" title={props.title}>
-          {props.title}
-        </IonLabel>
-      </IonItem>
+      <Label title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
+
       <IonItem lines="none">
         <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
           {props.error && <IonIcon icon={alertCircleOutline} color="danger" />}

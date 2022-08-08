@@ -1,8 +1,9 @@
 import React from 'react';
-import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonItem, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
+import Label from './Label';
 
 type OptionType = {
   id: number;
@@ -19,6 +20,8 @@ interface SelectProps {
   fieldClass?: string;
   actionType: Action['type'];
   translateOptions?: boolean;
+  infoContentTitle?: string;
+  infoContent?: string;
 }
 
 const SelectField: React.FC<SelectProps> = (props) => {
@@ -38,14 +41,8 @@ const SelectField: React.FC<SelectProps> = (props) => {
 
   return (
     <>
-      <IonItem lines="none" className="only-label">
-        <IonLabel color="dark">{props.title}</IonLabel>
-      </IonItem>
-      {props.required && (
-        <IonItem lines="none" className="required-label">
-          <IonLabel color="dark">*</IonLabel>
-        </IonItem>
-      )}
+      <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
+
       <IonItem fill="outline" className={props.fieldClass}>
         <IonSelect value={props.value} name={props.name} onIonChange={(e) => updateAction(e, props.actionType)} className="full-width">
           {props.options.map((option) => (
