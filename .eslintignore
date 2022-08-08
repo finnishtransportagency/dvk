@@ -6,3 +6,4 @@ build
 squat
 cdk.out
 cdk/graphql/generated.ts
+src/graphql/generated.ts

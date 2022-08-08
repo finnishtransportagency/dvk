@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@capacitor/app": "1.1.1",
     "@capacitor/core": "3.6.0",
     "@capacitor/haptics": "1.1.4",
@@ -19,6 +20,7 @@
     "@types/react-dom": "^18.0.6",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
+    "graphql": "^16.5.0",
     "i18next": "^21.8.16",
     "ionicons": "^6.0.2",
     "react": "^18.2.0",
@@ -43,11 +45,13 @@
     "workbox-streams": "^6.5.4"
   },
   "scripts": {
+    "prestart": "npm run generate",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "lint": "eslint --cache --config .eslintrc.json --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --cache --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
+    "generate": "graphql-codegen"
   },
   "eslintConfig": {
     "extends": [
@@ -69,6 +73,10 @@
   },
   "devDependencies": {
     "@capacitor/cli": "3.6.0",
+    "@graphql-codegen/cli": "^2.11.3",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-operations": "^2.5.2",
+    "@graphql-codegen/typescript-react-apollo": "^3.3.2",
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "eslint": "^8.21.0",

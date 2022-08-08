@@ -5,14 +5,60 @@ schema {
 type Query {
   fairways: [Fairway!]!
   fairway(id: Int!): Fairway
+  navigationLines: [NavigationLine!]!
 }
 
 type Fairway {
   id: Int!
-  nameFI: String!
-  nameSV: String
-  length: Int
-  depth1: Float
-  depth2: Float
-  depth3: Float
+  name: Text!
+  length: Float
+  draft1: Float
+  draft2: Float
+  draft3: Float
+  sizings: [Sizing!]
+  sizingVessels: [SizingVessel!]
+  navigationLines: [NavigationLine!]
+}
+
+type SizingVessel {
+  id: Int!
+  type: Int
+  length: Float
+  width: Float
+  draft: Float
+}
+
+type Sizing {
+  id: Int!
+  length: Float
+  width: Float
+  draft: Float
+  normalTurningCircle: Float
+  minimumTurningCircle: Float
+  normalWidth: Float
+  minimumWidth: Float
+  additionalInformation: String
+  mareograph: String
+  reserveWater: String
+}
+
+type NavigationLine {
+  id: Int!
+  fairwayId: Int!
+  length: Float
+  draft: Float
+  draft2: Float
+  geometry: Geometry
+}
+
+type Geometry {
+  type: String
+  bbox: [Float]
+  coordinates: [[Float]]
+}
+
+type Text {
+  fi: String!
+  sv: String
+  en: String
 }
