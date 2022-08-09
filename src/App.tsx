@@ -45,7 +45,7 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route path="*">
+        <Route exact path="/">
           <ApolloProvider client={client}>
             <Home />
           </ApolloProvider>
