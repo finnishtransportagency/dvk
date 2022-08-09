@@ -18,6 +18,7 @@ type Fairway {
   sizings: [Sizing!]
   sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
+  geotiffImages: [String]
 }
 
 type SizingVessel {

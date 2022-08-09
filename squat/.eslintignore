@@ -3,3 +3,5 @@ serviceWorkerRegistration.ts
 service-worker.ts
 build
 capacitor.config.ts
+cdk/lib/lambda/router/geotiffRequestRouter.js
+cdk/lib/lambda/router/squatRequestRouter.js

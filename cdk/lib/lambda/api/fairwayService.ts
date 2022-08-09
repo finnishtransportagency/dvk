@@ -1,6 +1,6 @@
 import { Fairway, Sizing, SizingVessel } from '../../../graphql/generated';
 import FairwayDBModel from '../db/fairwayDBModel';
-import { vuosaari, kemi, uusikaupunki } from './sample/fairways.json';
+import { vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_28, saimaa_5 } from './sample/fairways.json';
 
 export type MitoitusAPIModel = {
   id: number;
@@ -40,7 +40,7 @@ export type VaylaAPIModel = {
 export class FairwayService {
   public getFairways(): VaylaAPIModel[] {
     // TODO: call vatu api
-    return [vuosaari, kemi, uusikaupunki];
+    return [vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_5, saimaa_28];
   }
 
   public getFairway(id: number): VaylaAPIModel {
@@ -49,6 +49,12 @@ export class FairwayService {
       return kemi;
     } else if (id === 2345) {
       return uusikaupunki;
+    } else if (id === 6375) {
+      return saimaa_5;
+    } else if (id === 7030) {
+      return saimaa_18_19;
+    } else if (id === 7160) {
+      return saimaa_28;
     } else {
       return vuosaari;
     }
@@ -95,6 +101,7 @@ export class FairwayService {
       return sizing;
     });
     fairway.sizings = sizings;
+    fairway.geotiffImages = dbModel?.geotiffImages;
     return fairway;
   }
 }

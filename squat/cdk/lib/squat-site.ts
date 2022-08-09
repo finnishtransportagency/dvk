@@ -55,7 +55,7 @@ export class SquatSite extends Construct {
         principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
       })
     );
-    new CfnOutput(this, 'Bucket', {
+    new CfnOutput(parent, 'Bucket', {
       value: squatBucket.bucketName,
       description: 'The name of Squat app S3',
       exportName: 'SquatBucket' + props.env,
@@ -73,10 +73,29 @@ export class SquatSite extends Construct {
         principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
       })
     );
-    new CfnOutput(this, 'DVK Bucket name', {
+    new CfnOutput(parent, 'DVK Bucket name', {
       value: dvkBucket.bucketName,
       description: 'The name of DVK app S3',
       exportName: 'DVKBucket' + props.env,
+    });
+
+    // Pohjatopografia bucket
+    const geoTiffBucket = new s3.Bucket(this, 'GeoTIFFBucket', {
+      bucketName: `geotiff.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    });
+    geoTiffBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [geoTiffBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    new CfnOutput(parent, 'GeoTIFF Bucket', {
+      value: geoTiffBucket.bucketName,
+      description: 'The name of GeoTIFF bucket',
+      exportName: 'GeoTIFFBucket' + props.env,
     });
 
     // TLS certificate
@@ -84,7 +103,7 @@ export class SquatSite extends Construct {
     if (props.cloudfrontCertificateArn) {
       certificate = acm.Certificate.fromCertificateArn(this, 'certificate', props.cloudfrontCertificateArn);
       domainNames = [siteDomain];
-      new CfnOutput(this, 'Certificate', { value: certificate.certificateArn });
+      new CfnOutput(parent, 'Certificate', { value: certificate.certificateArn });
     }
 
     // Cloudfront function suorittamaan basic autentikaatiota
@@ -152,13 +171,32 @@ export class SquatSite extends Construct {
         accessControlMaxAge: Duration.seconds(600),
       },
     });
+    // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
+    const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/geotiffRequestRouter.js' }),
+    });
+    const geoTiffBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
+      originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: geoTiffCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
+    };
     const proxyBehavior = this.createProxyBehavior(proxyUrl);
-    const apiProxyBehavior = this.useHAProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
-    const graphqlProxyBehavior = this.useHAProxy()
+    const apiProxyBehavior = this.useProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
+    const graphqlProxyBehavior = this.useProxy()
       ? proxyBehavior
       : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), true, corsResponsePolicy, { 'x-api-key': importedAppSyncAPIKey });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat/*': squatBehavior,
+      'geotiff/*': geoTiffBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
     };
@@ -172,14 +210,19 @@ export class SquatSite extends Construct {
       defaultBehavior: dvkBehavior,
     });
 
-    new CfnOutput(this, 'DistributionId', {
+    new CfnOutput(parent, 'DistributionId', {
       value: distribution.distributionId,
       description: 'Squat distribution name',
       exportName: 'SquatDistribution' + props.env,
     });
+    new CfnOutput(parent, 'CloudFrontDomainName', {
+      value: distribution.distributionDomainName,
+      description: 'Squat distribution domain name',
+      exportName: 'CloudFrontDomainName' + props.env,
+    });
   }
 
-  private useHAProxy(): boolean {
+  private useProxy(): boolean {
     // TODO: return true for permanent environments once proxy routing working
     return false;
   }
