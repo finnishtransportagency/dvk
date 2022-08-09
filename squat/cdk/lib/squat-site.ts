@@ -171,9 +171,13 @@ export class SquatSite extends Construct {
         accessControlMaxAge: Duration.seconds(600),
       },
     });
+    const geotiffSourceCode = fs.readFileSync(`${__dirname}/lambda/router/geotiffRequestRouter.js`).toString('UTF-8');
+    const geotiffFunctionCode = cdk.Fn.sub(geotiffSourceCode, {
+      AUTH_STRING: authString,
+    });
     // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
     const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/geotiffRequestRouter.js' }),
+      code: cloudfront.FunctionCode.fromInline(geotiffFunctionCode),
     });
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
@@ -189,11 +193,13 @@ export class SquatSite extends Construct {
         },
       ],
     };
-    const proxyBehavior = this.createProxyBehavior(proxyUrl);
-    const apiProxyBehavior = this.useProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, false);
+    const proxyBehavior = this.createProxyBehavior(proxyUrl, authFunction);
+    const apiProxyBehavior = this.useProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     const graphqlProxyBehavior = this.useProxy()
       ? proxyBehavior
-      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), true, corsResponsePolicy, { 'x-api-key': importedAppSyncAPIKey });
+      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, corsResponsePolicy, {
+          'x-api-key': importedAppSyncAPIKey,
+        });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat/*': squatBehavior,
       'geotiff/*': geoTiffBehavior,
@@ -223,12 +229,12 @@ export class SquatSite extends Construct {
   }
 
   private useProxy(): boolean {
-    // TODO: return true for permanent environments once proxy routing working
-    return false;
+    return Config.isPermanentEnvironment();
   }
 
   private createProxyBehavior(
     domainName: string,
+    authFunction: cloudfront.Function,
     useSSL = true,
     corsResponsePolicy: ResponseHeadersPolicy | undefined = undefined,
     customHeaders: Record<string, string> | undefined = undefined
@@ -245,6 +251,12 @@ export class SquatSite extends Construct {
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       responseHeadersPolicy: corsResponsePolicy,
+      functionAssociations: [
+        {
+          function: authFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
     };
     return dmzBehavior;
   }
