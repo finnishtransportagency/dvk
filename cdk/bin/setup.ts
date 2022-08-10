@@ -80,13 +80,14 @@ async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
   const frontendStackOutputs = await readFrontendStackOutputs();
   const envParameters = await readParametersForEnv(Config.getEnvironment());
+  const restAPIUrl = Config.isPermanentEnvironment()
+    ? 'https://' + envParameters.DMZProxyEndpoint
+    : 'http://' + backendStackOutputs.LoadBalancerDnsName;
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
+    REACT_APP_REST_API_URL: `${restAPIUrl}/api`,
     REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName,
-    REACT_APP_BASIC_USERNAME: envParameters.BasicUsername,
-    REACT_APP_BASIC_PASSWORD: envParameters.BasicPassword,
   });
 }
 
