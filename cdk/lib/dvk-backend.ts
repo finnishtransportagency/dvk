@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -10,16 +10,25 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
-import { Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Peer, Port, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
-
+import { WafConfig } from './wafConfig';
 export class DvkBackendStack extends Stack {
+  private env: string;
+
+  private config: Config;
+
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
+    this.env = env;
+    this.config = new Config(this);
+  }
+
+  async process() {
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
-      name: 'dvk-graphql-api-' + env,
+      name: 'dvk-graphql-api-' + this.env,
       schema: appsync.Schema.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
       authorizationConfig: {
         defaultAuthorization: {
@@ -36,12 +45,15 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
-    const fairwayTable = this.createFairwayTable(env);
+    if (Config.isPermanentEnvironment()) {
+      new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', this.config.getStringParameter('WAFAllowedAddresses')));
+    }
+    const fairwayTable = this.createFairwayTable(this.env);
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
       const fieldName = lambdaFunc.fieldName || this.parseFieldName(lambdaFunc.entry);
-      const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
-        functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
+      const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${this.env}`, {
+        functionName: `${typeName}-${fieldName}-${this.env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
@@ -62,18 +74,18 @@ export class DvkBackendStack extends Stack {
         fairwayTable.grantReadData(backendLambda);
       }
     }
-    const alb = this.createALB(env);
+    const alb = await this.createALB(this.env);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
-      exportName: 'LoadBalancerDnsName' + env,
+      exportName: 'LoadBalancerDnsName' + this.env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
-      exportName: 'AppSyncAPIKey' + env,
+      exportName: 'AppSyncAPIKey' + this.env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIURL', {
       value: api.graphqlUrl || '',
-      exportName: 'AppSyncAPIURL' + env,
+      exportName: 'AppSyncAPIURL' + this.env,
     });
   }
 
@@ -109,12 +121,18 @@ export class DvkBackendStack extends Stack {
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
-  private createALB(env: string): ApplicationLoadBalancer {
+  private async createALB(env: string): Promise<ApplicationLoadBalancer> {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
+    let securityGroup: SecurityGroup | undefined = undefined;
+    if (!Config.isPermanentEnvironment()) {
+      securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
+      securityGroup.addIngressRule(Peer.ipv4(`${process.env.PUBLIC_IP}/32`), Port.tcp(80), `Developer ip for ${env}`);
+    }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
       internetFacing: !Config.isPermanentEnvironment(),
       loadBalancerName: `DvkALB-${env}`,
+      securityGroup,
     });
     const httpListener = alb.addListener('HTTPListener', {
       port: 80,
