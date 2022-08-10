@@ -171,13 +171,9 @@ export class SquatSite extends Construct {
         accessControlMaxAge: Duration.seconds(600),
       },
     });
-    const geotiffSourceCode = fs.readFileSync(`${__dirname}/lambda/router/geotiffRequestRouter.js`).toString('UTF-8');
-    const geotiffFunctionCode = cdk.Fn.sub(geotiffSourceCode, {
-      AUTH_STRING: authString,
-    });
     // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
     const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromInline(geotiffFunctionCode),
+      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/geotiffRequestRouter.js' }),
     });
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),

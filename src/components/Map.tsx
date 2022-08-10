@@ -27,10 +27,19 @@ async function fetchData(): Promise<Hello> {
   return (await fetch(process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/csv' : '/api/csv')).json();
 }
 
+function fetchGeoTIFF(): Promise<Response> {
+  return fetch(
+    process.env.REACT_APP_FRONTEND_DOMAIN_NAME
+      ? 'https://' + process.env.REACT_APP_FRONTEND_DOMAIN_NAME + '/geotiff/6375/Saimaa_5_5m_ruutu.tif'
+      : '/geotiff/6375/Saimaa_5_5m_ruutu.tif'
+  );
+}
+
 const Csv: React.FC = () => {
   const [csvString, setCsvString] = useState<string>('');
   useEffect(() => {
     fetchData().then((response) => setCsvString(response.hello));
+    fetchGeoTIFF().then((response) => console.log('GeoTIFF HTTP status: ' + response.status));
   }, []);
   return <p>{csvString}</p>;
 };
