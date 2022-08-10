@@ -13,6 +13,7 @@ import {
   OriginProtocolPolicy,
   OriginRequestPolicy,
   OriginSslPolicy,
+  PriceClass,
   ResponseHeadersPolicy,
   ViewerProtocolPolicy,
 } from 'aws-cdk-lib/aws-cloudfront';
@@ -210,6 +211,7 @@ export class SquatSite extends Construct {
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       additionalBehaviors,
       defaultBehavior: dvkBehavior,
+      priceClass: PriceClass.PRICE_CLASS_100,
     });
 
     new CfnOutput(parent, 'DistributionId', {
