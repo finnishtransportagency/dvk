@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 REPO=012525309247.dkr.ecr.eu-west-1.amazonaws.com
 BUILD_IMAGE_VERSION=1.0.1
 IMAGE=dvk-buildimage
@@ -7,7 +7,7 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 aws ecr create-repository --repository-name $IMAGE > /dev/null 2>&1
 docker pull $REPO_TAG > /dev/null 2>&1
 docker build --progress=plain --cache-from $REPO_TAG -t $IMAGE:$BUILD_IMAGE_VERSION ../../ && docker tag $IMAGE:$BUILD_IMAGE_VERSION $REPO_TAG
-if [ "$1" = "--push" ] 
+if [ "$1" = "--push" ]
 then
   docker push $REPO_TAG
 fi
