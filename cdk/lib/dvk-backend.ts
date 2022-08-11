@@ -16,19 +16,10 @@ import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
 export class DvkBackendStack extends Stack {
-  private env: string;
-
-  private config: Config;
-
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
-    this.env = env;
-    this.config = new Config(this);
-  }
-
-  async process() {
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
-      name: 'dvk-graphql-api-' + this.env,
+      name: 'dvk-graphql-api-' + env,
       schema: appsync.Schema.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
       authorizationConfig: {
         defaultAuthorization: {
@@ -45,15 +36,16 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
+    const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
-      new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', this.config.getStringParameter('WAFAllowedAddresses')));
+      new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
     }
-    const fairwayTable = this.createFairwayTable(this.env);
+    const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
       const fieldName = lambdaFunc.fieldName || this.parseFieldName(lambdaFunc.entry);
-      const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${this.env}`, {
-        functionName: `${typeName}-${fieldName}-${this.env}`.toLocaleLowerCase(),
+      const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
+        functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
@@ -74,18 +66,18 @@ export class DvkBackendStack extends Stack {
         fairwayTable.grantReadData(backendLambda);
       }
     }
-    const alb = await this.createALB(this.env);
+    const alb = this.createALB(env);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
-      exportName: 'LoadBalancerDnsName' + this.env,
+      exportName: 'LoadBalancerDnsName' + env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIKey', {
       value: api.apiKey || '',
-      exportName: 'AppSyncAPIKey' + this.env,
+      exportName: 'AppSyncAPIKey' + env,
     });
     new cdk.CfnOutput(this, 'AppSyncAPIURL', {
       value: api.graphqlUrl || '',
-      exportName: 'AppSyncAPIURL' + this.env,
+      exportName: 'AppSyncAPIURL' + env,
     });
   }
 
@@ -121,7 +113,7 @@ export class DvkBackendStack extends Stack {
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
-  private async createALB(env: string): Promise<ApplicationLoadBalancer> {
+  private createALB(env: string): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     let securityGroup: SecurityGroup | undefined = undefined;
     if (!Config.isPermanentEnvironment()) {
