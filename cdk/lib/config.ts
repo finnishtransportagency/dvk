@@ -16,7 +16,18 @@ class Config {
     if (process.env.ENVIRONMENT) {
       return process.env.ENVIRONMENT;
     }
-    throw new Error('Environment variable ENVIRONMENT missing');
+    throw new Error(Config.errorMessage('ENVIRONMENT'));
+  }
+
+  private static errorMessage(variable: string): string {
+    return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
+  }
+
+  static getPublicIP(): string {
+    if (process.env.PUBLIC_IP) {
+      return process.env.PUBLIC_IP;
+    }
+    throw new Error(Config.errorMessage('PUBLIC_IP'));
   }
 
   public getStringParameter(parameterName: string): string {

@@ -126,7 +126,7 @@ export class DvkBackendStack extends Stack {
     let securityGroup: SecurityGroup | undefined = undefined;
     if (!Config.isPermanentEnvironment()) {
       securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
-      securityGroup.addIngressRule(Peer.ipv4(`${process.env.PUBLIC_IP}/32`), Port.tcp(80), `Developer ip for ${env}`);
+      securityGroup.addIngressRule(Peer.ipv4(`${Config.getPublicIP()}/32`), Port.tcp(80), `Developer ip for ${env}`);
     }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
