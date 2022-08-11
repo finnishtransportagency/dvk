@@ -138,6 +138,7 @@ export class DvkBackendStack extends Stack {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
+      open: Config.isPermanentEnvironment(),
     });
     let index = 1;
     // add CORS config
