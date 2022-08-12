@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import './Squat.css';
 import { useTranslation } from 'react-i18next';
-import { IonText, IonGrid, IonRow, IonCol, IonChip, IonPopover, IonContent, IonImg } from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms } from '../hooks/squatReducer';
@@ -10,8 +10,8 @@ import { isReliabilityAnIssue } from '../utils/validations';
 import Alert from './Alert';
 import InputField from './InputField';
 import SectionTitle from './SectionTitle';
-import SelectField from './SelectField';
 import LabelField from './LabelField';
+import RadioSelectField from './RadioSelectField';
 
 const zero = 0;
 const kgPerCubicM = (
@@ -183,11 +183,9 @@ const Environment: React.FC = () => {
           title={t('homePage.squat.environment.fairway')}
           valid={
             isFieldValid('sweptDepth') &&
-            isFieldValid('waterLevel') &&
             isFieldValid('waterDepth') &&
-            isFieldValid('channelWidth') &&
-            isFieldValid('slopeScale') &&
-            isFieldValid('slopeHeight')
+            (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth') : true) &&
+            (state.environment.fairway.fairwayForm === fairwayForms[2] ? isFieldValid('slopeScale') && isFieldValid('slopeHeight') : true)
           }
         />
         <IonGrid className="no-padding">
@@ -201,6 +199,7 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.1"
                 unit="m"
+                required
                 fieldClass={setFieldClass('sweptDepth')}
                 actionType="environment-fairway"
               />
@@ -228,6 +227,7 @@ const Environment: React.FC = () => {
                 min="0"
                 step="0.1"
                 unit="m"
+                required
                 fieldClass={setFieldClass('waterDepth')}
                 actionType="environment-fairway"
               />
@@ -235,7 +235,7 @@ const Environment: React.FC = () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              <SelectField
+              <RadioSelectField
                 title={t('homePage.squat.environment.form-of-fairway')}
                 name="fairwayForm"
                 value={state.environment.fairway.fairwayForm}
@@ -243,6 +243,38 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
                 required
                 translateOptions
+                infoContentTitle={t('homePage.squat.environment.form-of-fairway-info-title')}
+                infoContent={
+                  <>
+                    <p>{t('homePage.squat.environment.form-of-fairway-info-content')}</p>
+                    <IonGrid>
+                      {fairwayForms.map((option) => (
+                        <IonRow key={option.id}>
+                          <IonCol size="4">
+                            <IonLabel>
+                              {option.id}. &nbsp; {t(option.name)}
+                            </IonLabel>
+                          </IonCol>
+                          <IonCol size="8">
+                            <IonLabel className="ion-text-wrap">{t(option.desc)}</IonLabel>
+                          </IonCol>
+                        </IonRow>
+                      ))}
+                    </IonGrid>
+                    <IonGrid>
+                      <IonRow>
+                        {fairwayForms.map((option) => (
+                          <IonCol key={option.id} className="align-center">
+                            <IonImg src={option.img} />
+                            <p>
+                              {option.id}. {t(option.name)}
+                            </p>
+                          </IonCol>
+                        ))}
+                      </IonRow>
+                    </IonGrid>
+                  </>
+                }
               />
             </IonCol>
           </IonRow>
@@ -259,24 +291,6 @@ const Environment: React.FC = () => {
                   fieldClass={setFieldClass('channelWidth')}
                   actionType="environment-fairway"
                 />
-              </IonCol>
-              <IonCol size-xs="auto">
-                <IonChip color="primary" outline id="trigger-fairwayinfo">
-                  ?
-                </IonChip>
-                <IonPopover trigger="trigger-fairwayinfo">
-                  <IonContent>
-                    {state.environment.fairway.fairwayForm && (
-                      <IonContent className="ion-padding-horizontal ion-text-center">
-                        <IonText color="secondary">
-                          <h4>{t(state.environment.fairway.fairwayForm.name)}</h4>
-                        </IonText>
-                        <p>{t(state.environment.fairway.fairwayForm.desc)}</p>
-                      </IonContent>
-                    )}
-                    <IonImg src={state.environment.fairway.fairwayForm?.img} />
-                  </IonContent>
-                </IonPopover>
               </IonCol>
             </IonRow>
           )}

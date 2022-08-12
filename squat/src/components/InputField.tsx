@@ -4,6 +4,7 @@ import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
+import Label from './Label';
 
 interface InputProps {
   title: string;
@@ -18,6 +19,8 @@ interface InputProps {
   helper?: string;
   fieldClass?: string;
   actionType: Action['type'];
+  infoContentTitle?: string;
+  infoContent?: string;
 }
 
 const InputField: React.FC<InputProps> = (props) => {
@@ -45,16 +48,8 @@ const InputField: React.FC<InputProps> = (props) => {
 
   return (
     <>
-      <IonItem lines="none" className="only-label">
-        <IonLabel color="dark" title={props.title}>
-          {props.title}
-        </IonLabel>
-      </IonItem>
-      {props.required && (
-        <IonItem lines="none" className="required-label">
-          <IonLabel color="dark">*</IonLabel>
-        </IonItem>
-      )}
+      <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
+
       <IonItem fill="outline" className={props.fieldClass}>
         <IonInput
           type="number"
