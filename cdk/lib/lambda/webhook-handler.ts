@@ -173,7 +173,7 @@ const handler = async function (event: any) {
     await kaynnistaPipeline(squatPipelineName);
   }
   // ja DVK-pipelinet
-  if (folders.includes('src') || folders.includes('public')) {
+  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
     const dvkPipelineName = getPipelineName(branch, 'dvk');
     await kaynnistaPipeline(dvkPipelineName);
   }
