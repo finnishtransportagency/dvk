@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Fn, Stack, StackProps } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -10,11 +10,11 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
-import { Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Peer, Port, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
-
+import { WafConfig } from './wafConfig';
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
@@ -36,6 +36,10 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
+    const config = new Config(this);
+    if (Config.isPermanentEnvironment()) {
+      new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
+    }
     const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
@@ -111,15 +115,22 @@ export class DvkBackendStack extends Stack {
 
   private createALB(env: string): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
+    let securityGroup: SecurityGroup | undefined = undefined;
+    if (!Config.isPermanentEnvironment()) {
+      securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
+      securityGroup.addIngressRule(Peer.ipv4(`${Config.getPublicIP()}/32`), Port.tcp(80), `Developer ip for ${env}`);
+    }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
       internetFacing: !Config.isPermanentEnvironment(),
       loadBalancerName: `DvkALB-${env}`,
+      securityGroup,
     });
     const httpListener = alb.addListener('HTTPListener', {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
+      open: Config.isPermanentEnvironment(),
     });
     let index = 1;
     // add CORS config
