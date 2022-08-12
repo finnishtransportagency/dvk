@@ -85,20 +85,24 @@ const Vessel: React.FC = () => {
           state.calculations.forces.waveForce
         ) && <Alert title={t('homePage.squat.vessel.thruster-unable-to-lift-bow')} />}
 
-        <SectionTitle title={t('homePage.squat.vessel.select-vessel')} hideValidity />
-        <IonGrid className="no-padding">
-          <IonRow>
-            <IonCol size="12">
-              <SelectField
-                title={t('homePage.squat.vessel.select-ship-name')}
-                name="vesselSelected"
-                value={state.vessel.vesselSelected}
-                options={vessels}
-                actionType="vessel-select"
-              />
-            </IonCol>
-          </IonRow>
-        </IonGrid>
+        {false && (
+          <>
+            <SectionTitle title={t('homePage.squat.vessel.select-vessel')} hideValidity />
+            <IonGrid className="no-padding">
+              <IonRow>
+                <IonCol size="12">
+                  <SelectField
+                    title={t('homePage.squat.vessel.select-ship-name')}
+                    name="vesselSelected"
+                    value={state.vessel.vesselSelected}
+                    options={vessels}
+                    actionType="vessel-select"
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </>
+        )}
 
         <SectionTitle
           title={t('homePage.squat.vessel.general')}
