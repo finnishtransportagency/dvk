@@ -3,6 +3,8 @@ import { createHmac } from 'crypto';
 
 const devPipelineSquat = process.env.DEV_PIPELINE_SQUAT;
 const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
+const devPipelineDVK = process.env.DEV_PIPELINE_DVK;
+const testPipelineDVK = process.env.TEST_PIPELINE_DVK;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
 function parseBranchName(branch: string) {
@@ -13,14 +15,21 @@ function parseBranchName(branch: string) {
   return branchName;
 }
 
-function getPipelineName(branch: string, folder: string) {
+function getPipelineName(branch: string, appName: string) {
   const branchName = parseBranchName(branch);
-  switch (folder) {
+  switch (appName) {
     case 'squat':
       if (branchName === 'main') {
         return devPipelineSquat;
       } else if (branchName === 'test') {
         return testPipelineSquat;
+      }
+      return undefined;
+    case 'dvk':
+      if (branchName === 'main') {
+        return devPipelineDVK;
+      } else if (branchName === 'test') {
+        return testPipelineDVK;
       }
       return undefined;
     default:
@@ -92,6 +101,20 @@ function validateSignature(event: any): boolean {
   return hmacHex === githubHex;
 }
 
+async function kaynnistaPipeline(pipelineName: string | undefined) {
+  console.log('starting pipeline: ', pipelineName);
+  try {
+    const client = new CodePipelineClient({});
+    const command = new StartPipelineExecutionCommand({
+      name: pipelineName,
+    });
+    const response = await client.send(command);
+    console.log('pipeline execution started: ', response.pipelineExecutionId);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handler = async function (event: any) {
   console.log('Full event', event);
@@ -135,7 +158,6 @@ const handler = async function (event: any) {
   const commitRemoved: string[] = commit.removed;
   const commitModified: string[] = commit.modified;
 
-  // TODO: tarvitaanko erottelua tiedostotapahtuman perusteella vai ei
   const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
 
   if (!folders || folders.length < 1) {
@@ -145,24 +167,15 @@ const handler = async function (event: any) {
     };
   }
 
-  // TODO: kaynnistysmahdollisuus muillekin kuin squatille
+  // Kaynnista tarvittaessa squat-pipelinet
   if (folders.includes('squat')) {
-    const pipelineName = getPipelineName(branch, 'squat');
-    console.log('pipeline name chosen: ', pipelineName);
-    try {
-      const client = new CodePipelineClient({});
-      const command = new StartPipelineExecutionCommand({
-        name: pipelineName,
-      });
-      const response = await client.send(command);
-      console.log('pipeline execution started: ', response.pipelineExecutionId);
-    } catch (error) {
-      console.log(error);
-      return {
-        statusCode: 400,
-        body: `Cannot process event: ${error}`,
-      };
-    }
+    const squatPipelineName = getPipelineName(branch, 'squat');
+    await kaynnistaPipeline(squatPipelineName);
+  }
+  // ja DVK-pipelinet
+  if (folders.includes('src') || folders.includes('public')) {
+    const dvkPipelineName = getPipelineName(branch, 'dvk');
+    await kaynnistaPipeline(dvkPipelineName);
   }
 
   return {
