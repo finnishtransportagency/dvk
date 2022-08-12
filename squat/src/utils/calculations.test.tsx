@@ -1,6 +1,5 @@
-// @ts-nocheck
-import React from 'react';
-import { SquatReducer, initialState } from '../hooks/squatReducer';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+import { SquatReducer, initialState, Action } from '../hooks/squatReducer';
 import {
   toDeg,
   knotsToMetresPerSecond,
@@ -43,7 +42,7 @@ test('calculates correct displacement value', () => {
 });
 
 test('calculates correct KB value', () => {
-  const updateAction = { type: 'vessel-stability', payload: { key: 'KB', value: calculateKB(20) } };
+  const updateAction = { type: 'vessel-stability', payload: { key: 'KB', value: calculateKB(20) } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
   expect(updatedState.vessel.stability.KB).toEqual(10);
 });
@@ -131,18 +130,18 @@ test('calculates correct squat value (Huuska-Guliev)', () => {
   const [squatHG, squatHGListed] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 5, 15, 20.1, 2.4);
   expect(Number(squatHG.toFixed(2))).toEqual(1.49);
   expect(Number(squatHGListed.toFixed(2))).toEqual(1.5);
-  const [squatHG_2, squatHGListed_2] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 8, 15, 20.1, 2.4);
-  expect(Number(squatHG_2.toFixed(2))).toEqual(1.49);
-  expect(Number(squatHGListed_2.toFixed(2))).toEqual(1.5);
-  const [squatHG_3, squatHGListed_3] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 10, 15, 20.1, 2.4);
-  expect(Number(squatHG_3.toFixed(2))).toEqual(1.49);
-  expect(Number(squatHGListed_3.toFixed(2))).toEqual(1.5);
-  const [squatHG_4, squatHGListed_4] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 14, 15, 20.1, 2.4);
-  expect(Number(squatHG_4.toFixed(2))).toEqual(1.49);
-  expect(Number(squatHGListed_4.toFixed(2))).toEqual(1.5);
-  const [squatHG_5, squatHGListed_5] = calculateSquatHG(200, 15, 15, 0.75, 18, 0, 1, 30, 10, 10, 15, 20.1);
-  expect(Number(squatHG_5.toFixed(2))).toEqual(3.05);
-  expect(Number(squatHGListed_5.toFixed(2))).toEqual(4.08);
+  const [squatHG2, squatHGListed2] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 8, 15, 20.1, 2.4);
+  expect(Number(squatHG2.toFixed(2))).toEqual(1.49);
+  expect(Number(squatHGListed2.toFixed(2))).toEqual(1.5);
+  const [squatHG3, squatHGListed3] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 10, 15, 20.1, 2.4);
+  expect(Number(squatHG3.toFixed(2))).toEqual(1.49);
+  expect(Number(squatHGListed3.toFixed(2))).toEqual(1.5);
+  const [squatHG4, squatHGListed4] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 14, 15, 20.1, 2.4);
+  expect(Number(squatHG4.toFixed(2))).toEqual(1.49);
+  expect(Number(squatHGListed4.toFixed(2))).toEqual(1.5);
+  const [squatHG5, squatHGListed5] = calculateSquatHG(200, 15, 15, 0.75, 18, 0, 1, 30, 10, 10, 15, 20.1);
+  expect(Number(squatHG5.toFixed(2))).toEqual(3.05);
+  expect(Number(squatHGListed5.toFixed(2))).toEqual(4.08);
 });
 
 test('calculates correct UKC value with straight course', () => {
@@ -167,12 +166,12 @@ test('calculates correct wave amplitude properties', () => {
   const [waveAmplitudeShallow, waveAmplitudeDeep] = calculateWaveAmplitudeProperties(200, 2, [200, 500]);
   expect(Number(waveAmplitudeShallow.toFixed(2))).toEqual(1.08);
   expect(Number(waveAmplitudeDeep.toFixed(2))).toEqual(1.25);
-  const [waveAmplitudeShallow_2, waveAmplitudeDeep_2] = calculateWaveAmplitudeProperties(100, 2, [400, 500]);
-  expect(Number(waveAmplitudeShallow_2.toFixed(2))).toEqual(0.79);
-  expect(Number(waveAmplitudeDeep_2.toFixed(2))).toEqual(0.63);
-  const [waveAmplitudeShallow_3, waveAmplitudeDeep_3] = calculateWaveAmplitudeProperties(220, 2, [100, 130]);
-  expect(Number(waveAmplitudeShallow_3)).toEqual(0);
-  expect(Number(waveAmplitudeDeep_3)).toEqual(0);
+  const [waveAmplitudeShallow2, waveAmplitudeDeep2] = calculateWaveAmplitudeProperties(100, 2, [400, 500]);
+  expect(Number(waveAmplitudeShallow2.toFixed(2))).toEqual(0.79);
+  expect(Number(waveAmplitudeDeep2.toFixed(2))).toEqual(0.63);
+  const [waveAmplitudeShallow3, waveAmplitudeDeep3] = calculateWaveAmplitudeProperties(220, 2, [100, 130]);
+  expect(Number(waveAmplitudeShallow3)).toEqual(0);
+  expect(Number(waveAmplitudeDeep3)).toEqual(0);
 });
 
 test('calculates correct UKC vessel motions values', () => {

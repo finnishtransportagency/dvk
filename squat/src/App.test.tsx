@@ -1,10 +1,11 @@
-// @ts-nocheck
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import { SquatReducer, initialState } from './hooks/squatReducer';
+import { SquatReducer, initialState, Action } from './hooks/squatReducer';
 
 beforeAll(() => {
+  // @ts-ignore
   window.SVGElement.prototype.getBBox = () => ({
     x: 0,
     y: 0,
@@ -12,6 +13,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
+  // @ts-ignore
   delete window.SVGElement.prototype.getBBox;
 });
 
@@ -23,7 +25,7 @@ test('renders without crashing', () => {
 it('reducer returns new state after update action', () => {
   const state = SquatReducer(initialState, { type: 'reset' });
   expect(state.vessel.stability.GM).toEqual(0);
-  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } };
+  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
   expect(updatedState.vessel.stability.GM).toEqual(2);
 });
@@ -85,6 +87,7 @@ it('all reducer actions are working', () => {
 
   // Test also unknown action type
   const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  // @ts-ignore
   SquatReducer(state, { type: 'unknown', payload: { key: 'unknown', value: true } });
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
 });

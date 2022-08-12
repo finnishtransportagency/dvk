@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React from 'react';
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   isTugUseRecommended,
   isThrusterUnableToLiftBow,
