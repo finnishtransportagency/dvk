@@ -132,9 +132,6 @@ export type State = {
       squatHG: number;
       squatHGListed: number;
     };
-    intermediate: {
-      froudeNumber: number;
-    };
   };
   status: {
     showDeepWaterValues: boolean;
@@ -224,9 +221,6 @@ export const initialState = {
       squatHG: 0,
       squatHGListed: 0,
     },
-    intermediate: {
-      froudeNumber: 0,
-    },
   },
   status: {
     showDeepWaterValues: false,
@@ -247,7 +241,6 @@ export type Action =
         | 'environment-vessel'
         | 'environment-attribute'
         | 'calculations'
-        | 'calculations-intermediate'
         | 'status'
         | 'validation';
       payload: {
@@ -304,11 +297,6 @@ export const SquatReducer = (state: State, action: Action) => {
       return {
         ...state,
         calculations: { ...state.calculations, [action.payload.key]: inputValue },
-      };
-    case 'calculations-intermediate':
-      return {
-        ...state,
-        calculations: { ...state.calculations, intermediate: { ...state.calculations.intermediate, [action.payload.key]: inputValue } },
       };
     case 'status':
       return {
