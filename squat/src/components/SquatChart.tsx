@@ -1,8 +1,15 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { IonGrid, IonRow, IonCol } from '@ionic/react';
 import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
-import { calculateDraughtDuringTurn, calculateHeelDuringTurn, calculateSquatHG, calculateFroudeNumber } from '../utils/calculations';
+import {
+  calculateDraughtDuringTurn,
+  calculateHeelDuringTurn,
+  calculateSquatHG,
+  calculateFroudeNumber,
+  calculateSquatBarrass,
+} from '../utils/calculations';
 import './SquatChart.css';
 
 const SquatChart: React.FC = () => {
@@ -33,7 +40,7 @@ const SquatChart: React.FC = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const calculateSquat = (speed: number, C0Coefficient: number) => {
+    const calculateHGSquat = (speed: number, C0Coefficient: number) => {
       const constantHeelDuringTurn = calculateHeelDuringTurn(
         state.environment.vessel.vesselSpeed,
         state.environment.vessel.turningRadius,
@@ -67,6 +74,10 @@ const SquatChart: React.FC = () => {
       return squatHG;
     };
 
+    const calculateBarrassSquat = (speed: number) => {
+      return calculateSquatBarrass(state.vessel.general.draught, state.vessel.general.blockCoefficient, state.environment.fairway.sweptDepth, speed);
+    };
+
     const buildGraph = () => {
       const height = Math.round(width / 2);
       const marginLeft = 50;
@@ -74,8 +85,9 @@ const SquatChart: React.FC = () => {
       const marginTop = 30;
       const marginBottom = 50;
 
-      const squat20Color = '#0000ff';
-      const squat24Color = '#ff0000';
+      const squatHG20Color = '#0000ff';
+      const squatHG24Color = '#ff0000';
+      const squatBarrassColor = '#ffa500';
 
       let minSpeed = state.environment.vessel.vesselSpeed;
 
@@ -150,34 +162,6 @@ const SquatChart: React.FC = () => {
       if (!paramsValid) {
         container.attr('filter', 'url(#grayscale)');
       }
-
-      /* Add legends */
-      const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
-      legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat20Color);
-      legend20
-        .append('text')
-        .text(t('homePage.squatChart.legends.squat20'))
-        .attr('text-anchor', 'left')
-        .attr('dominant-baseline', 'middle')
-        .attr('x', 15)
-        .attr('y', 10 / 2)
-        .attr('font-size', '10px')
-        .attr('fill', '#000000');
-
-      const box = legend20.node()?.getBBox();
-      const legend20Width = box ? box.width : 0;
-
-      const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
-      legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squat24Color);
-      legend24
-        .append('text')
-        .text(t('homePage.squatChart.legends.squat24'))
-        .attr('text-anchor', 'left')
-        .attr('dominant-baseline', 'middle')
-        .attr('x', 15)
-        .attr('y', 10 / 2)
-        .attr('font-size', '10px')
-        .attr('fill', '#000000');
 
       /* Add chart layers */
       const addChartLayer = (attr: { y: number; height: number; fillColor: string; label: string; labelColor: string }) => {
@@ -280,16 +264,61 @@ const SquatChart: React.FC = () => {
         .attr('y', 20)
         .text(`${t('homePage.squatChart.yAxisLabel')}`);
 
+      /* Add legends */
+
+      const addHGLegend = () => {
+        const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+        legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG20Color);
+        legend20
+          .append('text')
+          .text(t('homePage.squatChart.legends.squatHG20'))
+          .attr('text-anchor', 'left')
+          .attr('dominant-baseline', 'middle')
+          .attr('x', 15)
+          .attr('y', 10 / 2)
+          .attr('font-size', '10px')
+          .attr('fill', '#000000');
+
+        const box = legend20.node()?.getBBox();
+        const legend20Width = box ? box.width : 0;
+
+        const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
+        legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG24Color);
+        legend24
+          .append('text')
+          .text(t('homePage.squatChart.legends.squatHG24'))
+          .attr('text-anchor', 'left')
+          .attr('dominant-baseline', 'middle')
+          .attr('x', 15)
+          .attr('y', 10 / 2)
+          .attr('font-size', '10px')
+          .attr('fill', '#000000');
+      };
+
+      const addBarrassLegend = () => {
+        const legend = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+        legend.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatBarrassColor);
+        legend
+          .append('text')
+          .text(t('homePage.squatChart.legends.squatBarrass'))
+          .attr('text-anchor', 'left')
+          .attr('dominant-baseline', 'middle')
+          .attr('x', 15)
+          .attr('y', 10 / 2)
+          .attr('font-size', '10px')
+          .attr('fill', '#000000');
+      };
+
       /* Add squat lines */
 
-      const addSquatLine = (C0Coefficient: number, color: string) => {
+      const addHGSquatLine = (C0Coefficient: number, color: string) => {
         const data: Array<[number, number]> = [];
 
         for (let i = minSpeed; i < maxSpeed; i += 0.1) {
-          data.push([i, calculateSquat(i, C0Coefficient)]);
+          data.push([i, calculateHGSquat(i, C0Coefficient)]);
         }
 
-        data.push([maxSpeed, calculateSquat(maxSpeed, C0Coefficient)]);
+        data.push([maxSpeed, calculateHGSquat(maxSpeed, C0Coefficient)]);
 
         container
           .append('path')
@@ -311,9 +340,46 @@ const SquatChart: React.FC = () => {
           .attr('fill', 'none');
       };
 
-      if (paramsValid) {
-        addSquatLine(2.0, squat20Color);
-        addSquatLine(2.4, squat24Color);
+      const addBarrassSquatLine = (color: string) => {
+        const data: Array<[number, number]> = [];
+
+        for (let i = minSpeed; i < maxSpeed; i += 0.1) {
+          data.push([i, calculateBarrassSquat(i)]);
+        }
+
+        data.push([maxSpeed, calculateBarrassSquat(maxSpeed)]);
+
+        container
+          .append('path')
+          .datum(data)
+          .attr(
+            'd',
+            d3
+              .line()
+              .x((d) => {
+                return xScale(d[0]);
+              })
+              .y((d) => {
+                return yScale(d[1]);
+              })
+          )
+          .attr('transform', `translate(${marginLeft}, ${marginTop})`)
+          .attr('stroke', color)
+          .attr('stroke-width', '2px')
+          .attr('fill', 'none');
+      };
+
+      if (state.status.showBarrass) {
+        addBarrassLegend();
+        if (paramsValid) {
+          addBarrassSquatLine(squatBarrassColor);
+        }
+      } else {
+        addHGLegend();
+        if (paramsValid) {
+          addHGSquatLine(2.0, squatHG20Color);
+          addHGSquatLine(2.4, squatHG24Color);
+        }
       }
     };
 
@@ -321,10 +387,14 @@ const SquatChart: React.FC = () => {
   }, [state, width, t]);
 
   return (
-    <>
-      <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
-      <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
-    </>
+    <IonGrid>
+      <IonRow>
+        <IonCol>
+          <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
+          <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   );
 };
 
