@@ -182,8 +182,8 @@ export class SquatSite extends Construct {
     });
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
-      originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: corsResponsePolicy,
+      originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
