@@ -20,6 +20,7 @@ import {
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import Config from './config';
 import * as fs from 'fs';
+import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 
 interface SquatSiteProps {
   domainName: string;
@@ -46,6 +47,7 @@ export class SquatSite extends Construct {
       bucketName: `squat.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
 
     // Grant access to cloudfront
@@ -66,6 +68,7 @@ export class SquatSite extends Construct {
       bucketName: `dvk.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
     dvkBucket.addToResourcePolicy(
       new iam.PolicyStatement({
@@ -85,6 +88,7 @@ export class SquatSite extends Construct {
       bucketName: `geotiff.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
     geoTiffBucket.addToResourcePolicy(
       new iam.PolicyStatement({
