@@ -11,7 +11,6 @@ import {
   Source,
 } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
@@ -34,33 +33,28 @@ export class DvkFeaturePipelineStack extends Stack {
             commands: [
               'npm ci',
               'npm run generate',
-              'npm run lint',
               'cd squat',
               'npm ci',
-              'npm run lint',
               'npm run build',
               'npx serve -s build &',
+              'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
-              'docker run --rm -v `pwd`:/opt/robotframework/reports:Z -v `pwd`:/opt/robotframework/tests:Z -e BROWSER=chrome --network host 012525309247.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.0',
+              'pip3 install --user --no-cache-dir -r requirements.txt',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome .',
             ],
           },
         },
+        cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
       }),
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.0'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
       },
       grantReportGroupPermissions: true,
       badge: true,
-    }).addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['ecr:*', 'ssm:*', 'secretsmanager:GetSecretValue'],
-        resources: ['*'],
-      })
-    );
+    });
   }
 }
