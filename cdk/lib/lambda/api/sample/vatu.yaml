@@ -134,7 +134,7 @@ paths:
           type: string
           required: false
         - name: "bbox"
-          description: "Kaksi koordinaattipistettä pilkulla eroteltuna, esimerkiksi 2328884.082838105,8453636.996209785,2345260.376050125,8469075.064289864"
+          description: "Kaksi koordinaattipistettä koordinaatistossa EPSG:4258 pilkulla eroteltuna, esimerkiksi 2328884.082838105,8453636.996209785,2345260.376050125,8469075.064289864"
           in: query
           type: string
           required: false
