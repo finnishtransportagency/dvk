@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/named
 import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
+// eslint-disable-next-line import/named
 import { PutCommand } from '@aws-sdk/lib-dynamodb';
 import Config from '../lib/config';
 import { getDynamoDBDocumentClient } from '../lib/lambda/db/dynamoClient';

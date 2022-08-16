@@ -38,3 +38,15 @@ To set environment variables you can use following command where myenv is your e
 | dev | Development environment
 | test | Testing environment
 | prod | Production environment
+
+## Quick setup
+Commands for installing own environment to AWS. Just replace myenv and your_aws_profile with your environment name and AWS profile name.
+```
+npm install
+export AWS_PROFILE=your_aws_profile
+npm run login
+. ./bin/setenv.sh myenv
+npm run deploy:backend
+npm run setup
+npm run datasync
+```
