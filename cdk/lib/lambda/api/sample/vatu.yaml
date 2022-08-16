@@ -13,10 +13,21 @@ schemes:
 paths:
   /vayla:
     get:
-      summary: "Pääväylien haku"
+      summary: "Väylien haku"
+      parameters:
+        - name: "vaylaluokka"
+          description: "Väyläluokka, pilkulla eroteltu lista"
+          in: query
+          type: string
+          required: false
+        - name: "jnro"
+          description: "Väylän juokseva numero, pilkulla eroteltu lista"
+          in: query
+          type: string
+          required: false
       responses:
         "200":
-          description: "Kaikki pääväylät listana"
+          description: "Kaikki tai tiettyjen luokkien/numeroiden väylät listana mitoituksineen, mitoitusaluksineen ja luokituksineen"
           schema:
             type: array
             items:
@@ -101,7 +112,7 @@ paths:
       summary: "Navigointilinjojen haku väylälle"
       parameters:
         - name: "jnro"
-          in: "path"
+          in: path
           description: "Väylän numero"
           type: integer
           format: int64
@@ -115,10 +126,21 @@ paths:
               $ref: "#/definitions/NavigointiLinja"
   /navigointilinjat:
     get:
-      summary: "Pääväylien navigointilinjojen haku"
+      summary: "Navigointilinjojen haku"
+      parameters:
+        - name: "tyyppi"
+          description: "Navigointilinjan tyyppi, pilkulla eroteltu lista"
+          in: query
+          type: string
+          required: false
+        - name: "bbox"
+          description: "Kaksi koordinaattipistettä pilkulla eroteltuna, esimerkiksi 2328884.082838105,8453636.996209785,2345260.376050125,8469075.064289864"
+          in: query
+          type: string
+          required: false
       responses:
         "200":
-          description: "Navigointilinjat alueilla"
+          description: "Kaikki tai tietyn tyyppiset navigointilinjat alueilla"
           schema:
             type: array
             items:
@@ -184,6 +206,7 @@ definitions:
     properties:
       id:
         type: integer
+        description: "Aluksen uniikki id"
         example: 254214
       tyyppi:
         type: integer
@@ -204,6 +227,7 @@ definitions:
     properties:
       id:
         type: integer
+        description: "Mitoituksen uniikki id"
         example: 134832
       tyyppi:
         type: integer
