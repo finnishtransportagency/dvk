@@ -122,8 +122,9 @@
         "squat": "Painaumavara"
       },
       "legends": {
-        "squat20": "2,0 squat smax",
-        "squat24": "2,4 squat smax"
+        "squatHG20": "Huuska/Guliev C0 = 2,0: squat smax",
+        "squatHG24": "Huuska/Guliev C0 = 2,4: squat smax",
+        "squatBarrass": "Barrass: squat smax"
       }
     }
   },
