@@ -32,3 +32,8 @@ test/log.html
 test/output.xml
 test/report.html
 test/*.png
+log.html
+output.xml
+interactive_console_output.xml
+report.html
+*.png
