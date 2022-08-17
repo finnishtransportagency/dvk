@@ -1,8 +1,32 @@
+@font-face {
+  font-family: "Exo2";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./font/static/Exo2-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Exo2";
+  font-weight: 600;
+  font-style: normal;
+  src: url("./font/static/Exo2-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Exo2";
+  font-weight: 700;
+  font-style: normal;
+  src: url("./font/static/Exo2-Bold.ttf") format("truetype");
+}
+
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
 /** Ionic CSS Variables **/
 :root {
+  /** Vayla default font */
+  --ion-font-family: "Exo2";
+
   /** primary (Vayla dark blue) **/
   --ion-color-primary: #0064af;
   --ion-color-primary-rgb: 0, 100, 175;
