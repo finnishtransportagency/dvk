@@ -1,4 +1,5 @@
 import {
+  Artifacts,
   BuildSpec,
   Cache,
   ComputeType,
@@ -13,10 +14,18 @@ import {
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id, { stackName: 'DvkFeaturePipelineStack' });
+    const featureBucket = new Bucket(this, 'FeatureBucket', {
+      bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
+      publicReadAccess: false,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+    });
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
@@ -75,6 +84,17 @@ export class DvkFeaturePipelineStack extends Stack {
       },
       grantReportGroupPermissions: true,
       badge: true,
-    });
+      artifacts: Artifacts.s3({
+        bucket: featureBucket,
+        includeBuildId: false,
+        packageZip: false,
+      }),
+    }).addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['s3:*'],
+        resources: [featureBucket.bucketArn],
+      })
+    );
   }
 }
