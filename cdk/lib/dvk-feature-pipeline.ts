@@ -54,7 +54,7 @@ export class DvkFeaturePipelineStack extends Stack {
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'squat-tests': { files: 'squat/junit.xml' },
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
-          'roobot-tests': { files: 'test/report/xunit.xml' },
+          'robot-tests': { files: 'test/report/xunit.xml' },
         },
         artifacts: { files: 'test/report/**/*', 'discard-paths': 'yes', name: 'report/robot/$CODEBUILD_BUILD_NUMBER' },
       }),
