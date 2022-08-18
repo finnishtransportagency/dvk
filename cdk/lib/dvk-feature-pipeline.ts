@@ -69,7 +69,7 @@ export class DvkFeaturePipelineStack extends Stack {
           'base-directory': 'test/report',
           files: '**/*',
           'discard-paths': 'yes',
-          name: 'report/robot/$CODEBUILD_BUILD_NUMBER',
+          name: '$CODEBUILD_BUILD_NUMBER',
         },
       }),
       source: gitHubSource,
