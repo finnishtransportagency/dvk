@@ -38,3 +38,4 @@ interactive_console_output.xml
 report.html
 *.png
 junit.xml
+xunit.xml
