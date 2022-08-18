@@ -132,6 +132,12 @@ export class SquatPipeline extends Construct {
       description: 'Squat pipeline name',
       exportName: 'SquatPipeline-' + props.env,
     });
+
+    new CfnOutput(this, 'PipelineARN', {
+      value: pipeline.pipelineArn,
+      description: 'Squat pipeline ARN',
+      exportName: 'SquatPipeline-ARN-' + props.env,
+    });
   }
 
   private getBranch(env: string): string {
