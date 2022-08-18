@@ -28,3 +28,14 @@ yarn-error.log*
 .eslintcache
 
 src/graphql/generated.ts
+test/log.html
+test/output.xml
+test/report.html
+test/*.png
+log.html
+output.xml
+interactive_console_output.xml
+report.html
+*.png
+junit.xml
+xunit.xml

@@ -7,6 +7,7 @@ import { PipelineLambda } from '../lib/pipeline-lambda';
 import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
 import { DvkBackendStack } from '../lib/dvk-backend';
+import { DvkFeaturePipelineStack } from '../lib/dvk-feature-pipeline';
 
 class DvkPipelineLambdaStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -70,3 +71,5 @@ new DvkBackendStack(
   },
   appEnv
 );
+
+new DvkFeaturePipelineStack(app, 'DvkFeaturePipelineStack');
