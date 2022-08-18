@@ -56,7 +56,12 @@ export class DvkFeaturePipelineStack extends Stack {
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'robot-tests': { files: 'test/report/xunit.xml' },
         },
-        artifacts: { files: 'test/report/**/*', 'discard-paths': 'yes', name: 'report/robot/$CODEBUILD_BUILD_NUMBER' },
+        artifacts: {
+          'base-directory': 'test/report',
+          files: '**/*',
+          'discard-paths': 'yes',
+          name: 'report/robot/$CODEBUILD_BUILD_NUMBER',
+        },
       }),
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
