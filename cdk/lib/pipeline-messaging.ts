@@ -6,6 +6,7 @@ import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as nodejsfunction from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
+import * as subscription from 'aws-cdk-lib/aws-sns-subscriptions';
 export class PipelineMessaging extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -34,21 +35,26 @@ export class PipelineMessaging extends Construct {
 
     // Shared SNS and message handler
     const topic = new sns.Topic(this, 'DvkBuildNotificationsTopic');
-    new sns.Subscription(this, 'LambdaSubscription', {
-      topic,
-      protocol: sns.SubscriptionProtocol.LAMBDA,
-      endpoint: messageHandler.functionArn,
-    });
-
-    // pipelineMap.forEach((pipelineId, pipelineARN) => {
-    //   const pipeline = codepipeline.Pipeline.fromPipelineArn(this, 'ImportedPipeline' + pipelineId, pipelineARN);
-
-    //   // Pipeline notification
-    //   const rule = new notifications.NotificationRule(this, 'NotificationRule' + pipelineId, {
-    //     source: pipeline,
-    //     events: ['codebuild-project-build-state-succeeded', 'codebuild-project-build-state-failed'],
-    //     targets: [topic],
-    //   });
+    const lambdaSubsciption = topic.addSubscription(new subscription.LambdaSubscription(messageHandler));
+    // const subscription = new sns.Subscription(this, 'LambdaSubscription', {
+    //   topic,
+    //   protocol: sns.SubscriptionProtocol.LAMBDA,
+    //   endpoint: messageHandler.functionArn,
     // });
+
+    pipelineMap.forEach((pipelineId, pipelineARN) => {
+      const pipeline = codepipeline.Pipeline.fromPipelineArn(this, 'ImportedPipeline' + pipelineId, pipelineARN);
+
+      // Pipeline notification
+      const rule = new notifications.NotificationRule(this, 'NotificationRule' + pipelineId, {
+        source: pipeline,
+        events: [
+          'codepipeline-pipeline-pipeline-execution-started',
+          'codepipeline-pipeline-pipeline-execution-succeeded',
+          'codepipeline-pipeline-pipeline-execution-failed',
+        ],
+        targets: [topic],
+      });
+    });
   }
 }
