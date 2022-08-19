@@ -31,7 +31,7 @@ export class DvkSonarPipelineStack extends Stack {
     new Project(this, 'DvkSonarQube', {
       projectName: 'DvkSonarQube',
       buildSpec: BuildSpec.fromObject({
-        env: { 'secrets-manager': { SONARQUBE_ACCESS_TOKEN: 'SonarQubeAccessToken:SonarQubeAccessToken' } },
+        env: { 'secrets-manager': { SONARQUBE_ACCESS_TOKEN: 'SonarQubeAccessToken' } },
         version: '0.2',
         phases: {
           build: {
