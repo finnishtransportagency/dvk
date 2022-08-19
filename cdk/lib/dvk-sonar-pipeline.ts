@@ -1,5 +1,4 @@
 import {
-  Artifacts,
   BuildSpec,
   Cache,
   ComputeType,
@@ -42,7 +41,9 @@ export class DvkSonarPipelineStack extends Stack {
               'cd squat && npm ci && cd cdk && npm ci && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
-              `npx sonarqube-scanner -Dsonar.host.url=${process.env.SONARQUBE_HOST_URL} -Dsonar.login=${process.env.SONARQUBE_ACCESS_TOKEN} -Dsonar.projectKey=DVK -Dsonar.projectVersion=`,
+              'cd ..',
+              'export DVK_VERSION=`node -p "require(\'./package.json\').version"`',
+              `echo npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK -Dsonar.projectVersion=$DVK_VERSION`,
             ],
           },
         },

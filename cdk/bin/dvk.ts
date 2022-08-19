@@ -8,6 +8,7 @@ import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
 import { DvkBackendStack } from '../lib/dvk-backend';
 import { DvkFeaturePipelineStack } from '../lib/dvk-feature-pipeline';
+import { DvkSonarPipelineStack } from '../lib/dvk-sonar-pipeline';
 
 class DvkPipelineLambdaStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -73,3 +74,5 @@ new DvkBackendStack(
 );
 
 new DvkFeaturePipelineStack(app, 'DvkFeaturePipelineStack');
+
+new DvkSonarPipelineStack(app, 'DvkSonarPipelineStack');
