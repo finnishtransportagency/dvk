@@ -1,4 +1,5 @@
 import {
+  BuildEnvironmentVariableType,
   BuildSpec,
   Cache,
   ComputeType,
@@ -14,6 +15,7 @@ import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import Config from './config';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class DvkSonarPipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -29,6 +31,7 @@ export class DvkSonarPipelineStack extends Stack {
     new Project(this, 'DvkSonarQube', {
       projectName: 'DvkSonarQube',
       buildSpec: BuildSpec.fromObject({
+        env: { 'secrets-manager': { SONARQUBE_ACCESS_TOKEN: 'SonarQubeAccessToken:SonarQubeAccessToken' } },
         version: '0.2',
         phases: {
           build: {
@@ -58,11 +61,20 @@ export class DvkSonarPipelineStack extends Stack {
         environmentVariables: {
           CI: { value: true },
           SONARQUBE_HOST_URL: { value: config.getGlobalStringParameter('SonarQubeHostURL') },
-          SONARQUBE_ACCESS_TOKEN: { value: config.getGlobalStringParameter('SonarQubeAccessToken') },
+          SONARQUBE_ACCESS_TOKEN: {
+            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+            value: 'SonarQubeAccessToken',
+          },
         },
       },
       grantReportGroupPermissions: true,
       badge: true,
-    });
+    }).addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['secretsmanager:GetSecretValue'],
+        resources: ['arn:aws:secretsmanager:eu-west-1:012525309247:secret:SonarQubeAccessToken-06Xsnx'],
+      })
+    );
   }
 }
