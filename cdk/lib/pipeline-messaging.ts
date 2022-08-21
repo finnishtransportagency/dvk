@@ -7,6 +7,7 @@ import * as nodejsfunction from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as subscription from 'aws-cdk-lib/aws-sns-subscriptions';
+import { CfnOutput } from 'aws-cdk-lib';
 export class PipelineMessaging extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -22,25 +23,20 @@ export class PipelineMessaging extends Construct {
     });
 
     const importedSquatPipelineArnDev = cdk.Fn.importValue('SquatPipeline-ARN-dev');
-    // const importedSquatPipelineArnTest = cdk.Fn.importValue('SquatPipeline-ARN-test');
-    // const importedDVKPipelineArnDev = cdk.Fn.importValue('DvkPipeline-ARN-dev');
-    // const importedDVKPipelineArnTest = cdk.Fn.importValue('DvkPipeline-ARN-test');
+    const importedSquatPipelineArnTest = cdk.Fn.importValue('SquatPipeline-ARN-test');
+    const importedDVKPipelineArnDev = cdk.Fn.importValue('DvkPipeline-ARN-dev');
+    const importedDVKPipelineArnTest = cdk.Fn.importValue('DvkPipeline-ARN-test');
 
     const pipelineMap = new Map([
       [importedSquatPipelineArnDev, '-squat-dev'],
-      //   [importedSquatPipelineArnTest, '-squat-test'],
-      //   [importedDVKPipelineArnDev, '-dvk-dev'],
-      //   [importedDVKPipelineArnTest, '-dvk-test'],
+      [importedSquatPipelineArnTest, '-squat-test'],
+      [importedDVKPipelineArnDev, '-dvk-dev'],
+      [importedDVKPipelineArnTest, '-dvk-test'],
     ]);
 
     // Shared SNS and message handler
     const topic = new sns.Topic(this, 'DvkBuildNotificationsTopic');
     const lambdaSubsciption = topic.addSubscription(new subscription.LambdaSubscription(messageHandler));
-    // const subscription = new sns.Subscription(this, 'LambdaSubscription', {
-    //   topic,
-    //   protocol: sns.SubscriptionProtocol.LAMBDA,
-    //   endpoint: messageHandler.functionArn,
-    // });
 
     pipelineMap.forEach((pipelineId, pipelineARN) => {
       const pipeline = codepipeline.Pipeline.fromPipelineArn(this, 'ImportedPipeline' + pipelineId, pipelineARN);
@@ -55,6 +51,13 @@ export class PipelineMessaging extends Construct {
         ],
         targets: [topic],
       });
+      console.log('Rule created', rule.notificationRuleArn);
+    });
+
+    new CfnOutput(this, 'TopicARN', {
+      value: topic.topicArn,
+      description: 'Notifications SNS topic ARN',
+      exportName: 'NotificationsTopicARN',
     });
   }
 }
