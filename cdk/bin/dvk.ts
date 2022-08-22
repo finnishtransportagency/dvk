@@ -8,6 +8,7 @@ import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
 import { DvkBackendStack } from '../lib/dvk-backend';
 import { DvkFeaturePipelineStack } from '../lib/dvk-feature-pipeline';
+import { DvkSonarPipelineStack } from '../lib/dvk-sonar-pipeline';
 import { PipelineMessaging } from '../lib/pipeline-messaging';
 
 class DvkPipelineMessagingStack extends cdk.Stack {
@@ -82,6 +83,7 @@ new DvkBackendStack(
 
 new DvkFeaturePipelineStack(app, 'DvkFeaturePipelineStack');
 
+new DvkSonarPipelineStack(app, 'DvkSonarPipelineStack');
 new DvkPipelineMessagingStack(app, 'DvkPipelineMessagingStack', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
