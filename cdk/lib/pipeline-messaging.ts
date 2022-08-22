@@ -42,7 +42,7 @@ export class PipelineMessaging extends Construct {
       const pipeline = codepipeline.Pipeline.fromPipelineArn(this, 'ImportedPipeline' + pipelineId, pipelineARN);
 
       // Pipeline notification
-      const rule = new notifications.NotificationRule(this, 'NotificationRule' + pipelineId, {
+      new notifications.NotificationRule(this, 'NotificationRule' + pipelineId, {
         source: pipeline,
         events: [
           'codepipeline-pipeline-pipeline-execution-started',
@@ -51,7 +51,6 @@ export class PipelineMessaging extends Construct {
         ],
         targets: [topic],
       });
-      console.log('Rule created', rule.notificationRuleArn);
     });
 
     new CfnOutput(this, 'TopicARN', {

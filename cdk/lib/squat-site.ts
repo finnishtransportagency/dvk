@@ -116,7 +116,7 @@ export class SquatSite extends Construct {
     const basicPassword = config.getStringParameter('BasicPassword');
     const authString = cdk.Fn.base64(basicUserName + ':' + basicPassword);
 
-    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('UTF-8');
+    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('utf-8');
     const authFunctionCode = cdk.Fn.sub(authSourceCode, {
       AUTH_STRING: authString,
     });
@@ -127,7 +127,7 @@ export class SquatSite extends Construct {
 
     // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
     // Nyt myos auth koodi upotettuna
-    const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('UTF-8');
+    const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('utf-8');
     const routerFunctionCode = cdk.Fn.sub(routerSourceCode, {
       AUTH_STRING: authString,
     });
