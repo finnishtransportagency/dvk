@@ -166,6 +166,12 @@ export class DvkPipeline extends Construct {
       description: 'DVK pipeline name',
       exportName: 'DvkPipeline-' + props.env,
     });
+
+    new CfnOutput(this, 'PipelineARN', {
+      value: pipeline.pipelineArn,
+      description: 'DVK pipeline ARN',
+      exportName: 'DvkPipeline-ARN-' + props.env,
+    });
   }
 
   private getBranch(env: string): string {
