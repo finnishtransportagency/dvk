@@ -46,7 +46,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@ionic/core|@stencil/core)/\"",
     "eject": "react-scripts eject",
-    "lint": "eslint --config .eslintrc.json --ext .js,.jsx,.ts,.tsx ."
+    "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx ."
   },
   "eslintConfig": {
     "extends": [
