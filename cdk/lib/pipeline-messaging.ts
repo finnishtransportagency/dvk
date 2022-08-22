@@ -36,7 +36,7 @@ export class PipelineMessaging extends Construct {
 
     // Shared SNS and message handler
     const topic = new sns.Topic(this, 'DvkBuildNotificationsTopic');
-    const lambdaSubsciption = topic.addSubscription(new subscription.LambdaSubscription(messageHandler));
+    topic.addSubscription(new subscription.LambdaSubscription(messageHandler));
 
     pipelineMap.forEach((pipelineId, pipelineARN) => {
       const pipeline = codepipeline.Pipeline.fromPipelineArn(this, 'ImportedPipeline' + pipelineId, pipelineARN);
