@@ -6,14 +6,14 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
 ## Deploying stacks
 
-Login to AWS account using `aws sso login` command. Setup your AWS_PROFILE environment variable to correspond your login credentials.
-Run `npm run postlogin` to synchonize CDK credentials.
+Setup your AWS_PROFILE environment variable to correspond your login credentials. Login to AWS account using `npm run login` command.
 
-Setup environment variable ENVIRONMENT to correspond your installing target. You can list available stacks using `cdk ls` command.
-There is also predefined deploy commands configured for npm run scripts.
+Setup environment variables using [./bin/setenv.sh](./bin/setenv.sh) script. You can list available stacks using `npm run cdk ls` command.
+There is also predefined deploy commands configured for [npm run scripts](#useful-commands).
 
-Run `npm run setup` to write .env.local file for local development.
+Run `npm run setup` to write [.env.local](../.env.local) file for local development.
 
+Bundling of lambda function uses [esbuild](https://esbuild.github.io). If this tool is not installed globally, cdk tries to use docker image instead.
 ## Useful commands
 
 * `npm run login`   AWS SSO login and CDK credential synchronization
@@ -26,6 +26,9 @@ Run `npm run setup` to write .env.local file for local development.
 * `npm run cdk deploy`  deploy this stack to your default AWS account/region
 * `npm run cdk diff`    compare deployed stack with current state
 * `npm run cdk synth`   emits the synthesized CloudFormation template
+* `npm run deploy:backend`          deploy backend stack
+* `npm run deploy:backend:hostswap` deploy backend stack assets only (lambda)
+* `npm run deploy:frontend`         deploy frontend stack
 
 ## Environment variables
 To set environment variables you can use following command where myenv is your environment name.
