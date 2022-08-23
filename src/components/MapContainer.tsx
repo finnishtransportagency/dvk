@@ -13,6 +13,7 @@ import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import './MapContainer.css';
 import bgMapStyles from './taustakartta.json';
+import { MAP } from '../utils/constants';
 
 const MapContainer: React.FC = () => {
   const mapElement = useRef<HTMLDivElement>(null);
@@ -26,11 +27,10 @@ const MapContainer: React.FC = () => {
     initializeMap(true);
     const apiKey = 'feb4713a-8ea0-4ea3-ae95-47feeec14d20';
     const tileUrl = `https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`;
-    const epsg = 'EPSG:3067';
-    const maxZoom = 14;
-    const extent = [-548576, 6291456, 1548576, 8388608];
+    const epsg = MAP.EPSG;
+    const extent = MAP.EXTENT;
     const center = [384920, 6671856];
-    const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
+    const resolutions = MAP.RESOLUTIONS;
     const tileGrid = new TileGrid({
       extent: extent,
       resolutions: resolutions,
@@ -46,7 +46,7 @@ const MapContainer: React.FC = () => {
 
     if (!projection) {
       projection = new Projection({
-        code: 'EPSG:3067',
+        code: epsg,
       });
     }
 
@@ -64,8 +64,6 @@ const MapContainer: React.FC = () => {
         resolutions: resolutions,
         center: center,
         zoom: 10,
-        maxZoom: 15,
-        minZoom: 1,
       }),
       controls: [],
     });
@@ -75,18 +73,16 @@ const MapContainer: React.FC = () => {
       taustakartta: new VectorTileSource({
         projection: projection,
         tileGrid: tileGrid,
-        minZoom: 1,
-        maxZoom: maxZoom,
         format: new MVT(),
         url: tileUrl,
       }),
     };
 
     const layers: Array<VectorTileLayer> = [];
-    const buckets: Array<{ source: VectorTileSource; layers: Array<VectorTileLayer> }> = [];
+    const buckets: Array<{ source: string; layers: Array<string> }> = [];
 
     let currentSource: string;
-    bgMapStyles.layers.forEach((layer: any) => {
+    bgMapStyles.layers.forEach((layer) => {
       if (!layer.source) {
         return;
       }
@@ -100,7 +96,7 @@ const MapContainer: React.FC = () => {
       buckets[buckets.length - 1].layers.push(layer.id);
     });
 
-    buckets.forEach((bucket: { source: VectorTileSource; layers: Array<any> }) => {
+    buckets.forEach((bucket: { source: string; layers: Array<string> }) => {
       const source = sources.taustakartta;
       if (!source) {
         return;
