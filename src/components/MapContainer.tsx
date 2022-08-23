@@ -11,7 +11,6 @@ import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
-import { defaults as defaultControls } from 'ol/control';
 import './MapContainer.css';
 import bgMapStyles from './taustakartta.json';
 
@@ -68,7 +67,7 @@ const MapContainer: React.FC = () => {
         maxZoom: 15,
         minZoom: 1,
       }),
-      controls: defaultControls(),
+      controls: [],
     });
     // override with tileURL
     // styleJSON has tileJSON url which does not work without further dev
