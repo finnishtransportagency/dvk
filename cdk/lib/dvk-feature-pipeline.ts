@@ -12,7 +12,7 @@ import {
   Source,
 } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
-import { Stack } from 'aws-cdk-lib';
+import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
@@ -25,6 +25,7 @@ export class DvkFeaturePipelineStack extends Stack {
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      lifecycleRules: [{ expiration: Duration.days(30) }],
     });
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
@@ -45,7 +46,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'cd cdk && npm ci && npm run generate && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
-              'cd squat && npm ci && cd cdk && npm ci && cd ..',
+              'cd squat && npm ci',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
