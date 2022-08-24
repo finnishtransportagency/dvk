@@ -64,6 +64,7 @@ new DvkBuildImageStack(app, 'DvkBuildImageStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkBuildImageStack',
+  tags: Config.tags,
 });
 
 new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
@@ -72,6 +73,7 @@ new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkPipelineLambdaStack',
+  tags: Config.tags,
 });
 
 const appEnv = Config.getEnvironment();
@@ -86,6 +88,7 @@ new DvkPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'DvkPipelineStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -99,6 +102,7 @@ new DvkBackendStack(
       region: 'eu-west-1',
     },
     stackName: 'DvkBackendStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -112,6 +116,7 @@ new DvkPipelineMessagingStack(app, 'DvkPipelineMessagingStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkPipelineMessagingStack',
+  tags: Config.tags,
 });
 
 new SquatSiteStack(
@@ -123,6 +128,7 @@ new SquatSiteStack(
       region: 'eu-west-1',
     },
     stackName: 'SquatSiteStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -136,6 +142,7 @@ new SquatPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'SquatPipelineStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
