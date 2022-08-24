@@ -46,6 +46,7 @@ To set environment variables you can use following command where myenv is your e
 Commands for installing own environment to AWS. Just replace myenv and your_aws_profile with your environment name and AWS profile name.
 ```
 npm install
+npm run generate
 export AWS_PROFILE=your_aws_profile
 npm run login
 . ./bin/setenv.sh myenv
