@@ -22,6 +22,7 @@ Bundling of lambda function uses [esbuild](https://esbuild.github.io). If this t
 * `npm run test`    perform the jest unit tests
 * `npm run setup`       write local environment variables to .env.local file
 * `npm run datasync`    update DynammoDB table and S3 GeoTIFF bucket data to specified environment (ENVIRONMENT variable)
+* `npm run generate`    generate types from GraphQL schema
 * `npm run cdk ls`      list all stacks on your default AWS account/region
 * `npm run cdk deploy`  deploy this stack to your default AWS account/region
 * `npm run cdk diff`    compare deployed stack with current state
