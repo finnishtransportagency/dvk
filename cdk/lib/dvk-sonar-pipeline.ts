@@ -40,7 +40,7 @@ export class DvkSonarPipelineStack extends Stack {
               'npm run generate',
               'cd cdk && npm ci && npm run generate && cd ..',
               'npm run lint',
-              'npm run test -- --coverage --reporters=jest-junit',
+              'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
               'cd squat && npm ci',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
