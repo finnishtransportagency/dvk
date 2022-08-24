@@ -55,7 +55,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
     "eject": "react-scripts eject",
-    "lint": "eslint --cache --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
+    "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
     "generate": "graphql-codegen"
   },
   "eslintConfig": {
@@ -93,7 +93,8 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.30.1",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "jest-junit": "^14.0.0"
   },
   "description": "An Ionic project"
 }

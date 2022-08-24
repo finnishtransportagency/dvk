@@ -33,6 +33,10 @@ class Config {
   public getStringParameter(parameterName: string): string {
     return ssm.StringParameter.valueForStringParameter(this.scope, `/${Config.getEnvironment()}/${parameterName}`);
   }
+
+  public getGlobalStringParameter(parameterName: string): string {
+    return ssm.StringParameter.valueForStringParameter(this.scope, `/${parameterName}`);
+  }
 }
 
 export default Config;

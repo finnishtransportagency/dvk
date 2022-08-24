@@ -1,0 +1,5 @@
+# Add extra libraries or update existing ones
+# Preinstalled libraries: https://github.com/ppodgorsek/docker-robot-framework/blob/master/Dockerfile
+robotframework==5.0.1
+robotframework-requests==0.9.3
+robotframework-seleniumlibrary==6.0.0
