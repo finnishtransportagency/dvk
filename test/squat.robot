@@ -2,7 +2,7 @@
 Library			SeleniumLibrary
 
 *** Variables ***
-${BROWSER}		%{BROWSER}
+${BROWSER}		headlesschrome
 
 *** Test Cases ***
 Open Squat

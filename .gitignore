@@ -39,3 +39,4 @@ report.html
 *.png
 junit.xml
 xunit.xml
+test/geckodriver-*.log
