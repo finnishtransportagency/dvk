@@ -25,7 +25,7 @@ const MapContainer: React.FC = () => {
       return;
     }
     initializeMap(true);
-    const apiKey = 'feb4713a-8ea0-4ea3-ae95-47feeec14d20';
+    const apiKey = process.env.REACT_APP_BG_MAP_API_KEY;
     const tileUrl = `https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`;
     const extent = [-548576, 6291456, 1548576, 8388608];
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
