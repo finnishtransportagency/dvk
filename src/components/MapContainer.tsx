@@ -27,10 +27,8 @@ const MapContainer: React.FC = () => {
     initializeMap(true);
     const apiKey = 'feb4713a-8ea0-4ea3-ae95-47feeec14d20';
     const tileUrl = `https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`;
-    const epsg = MAP.EPSG;
-    const extent = MAP.EXTENT;
-    const center = [384920, 6671856];
-    const resolutions = MAP.RESOLUTIONS;
+    const extent = [-548576, 6291456, 1548576, 8388608];
+    const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     const tileGrid = new TileGrid({
       extent: extent,
       resolutions: resolutions,
@@ -38,15 +36,15 @@ const MapContainer: React.FC = () => {
     });
 
     proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
-    proj4.defs('EPSG:3067', '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs');
+    proj4.defs(MAP.EPSG, '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs');
     register(proj4);
-    let projection = getProjection(epsg);
+    let projection = getProjection(MAP.EPSG);
 
     projection?.setExtent(extent);
 
     if (!projection) {
       projection = new Projection({
-        code: epsg,
+        code: MAP.EPSG,
       });
     }
 
@@ -61,9 +59,11 @@ const MapContainer: React.FC = () => {
       target: mapElement.current as HTMLElement,
       view: new View({
         projection: projection,
-        resolutions: resolutions,
-        center: center,
-        zoom: 10,
+        resolutions: MAP.RESOLUTIONS,
+        center: MAP.INIT_CENTER,
+        resolution: MAP.INIT_RESOLUTION,
+        extent: MAP.EXTENT,
+        constrainOnlyCenter: true,
       }),
       controls: [],
     });

@@ -26,7 +26,7 @@
     "i18next": "^21.8.16",
     "ionicons": "^6.0.2",
     "ol": "^7.0.0",
-    "ol-mapbox-style": "^9.0.0",
+    "ol-mapbox-style": "^9.1.0",
     "proj4": "^2.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
