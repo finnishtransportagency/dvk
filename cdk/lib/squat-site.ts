@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import { CfnOutput, Duration, Stack } from 'aws-cdk-lib';
+import { CfnOutput, Duration, Stack, Tags } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as cdk from 'aws-cdk-lib';
@@ -89,6 +89,7 @@ export class SquatSite extends Construct {
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      versioned: true,
     });
     geoTiffBucket.addToResourcePolicy(
       new iam.PolicyStatement({
@@ -97,6 +98,7 @@ export class SquatSite extends Construct {
         principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
       })
     );
+    Tags.of(geoTiffBucket).add('Backups-' + Config.getEnvironment(), 'true');
     new CfnOutput(parent, 'GeoTIFF Bucket', {
       value: geoTiffBucket.bucketName,
       description: 'The name of GeoTIFF bucket',

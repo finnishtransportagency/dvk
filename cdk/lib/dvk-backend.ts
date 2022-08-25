@@ -1,4 +1,4 @@
-import { Fn, Stack, StackProps } from 'aws-cdk-lib';
+import { Fn, Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -66,6 +66,7 @@ export class DvkBackendStack extends Stack {
         fairwayTable.grantReadData(backendLambda);
       }
     }
+    Tags.of(fairwayTable).add('Backups-' + Config.getEnvironment(), 'true');
     const alb = this.createALB(env);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
@@ -89,6 +90,7 @@ export class DvkBackendStack extends Stack {
         name: 'id',
         type: AttributeType.NUMBER,
       },
+      pointInTimeRecovery: true,
     });
   }
 

@@ -12,7 +12,15 @@ import { DvkSonarPipelineStack } from '../lib/dvk-sonar-pipeline';
 import { PipelineMessaging } from '../lib/pipeline-messaging';
 import { SquatSite } from '../lib/squat-site';
 import { SquatPipeline } from '../lib/squat-pipeline';
+import { BackupServices } from '../lib/dvk-backup-services';
 
+class DvkBackupServicesStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps) {
+    super(parent, id, props);
+
+    new BackupServices(this, 'DvkBackupServices');
+  }
+}
 class DvkPipelineMessagingStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
     super(parent, id, props);
@@ -146,3 +154,12 @@ new SquatPipelineStack(
   },
   appEnv
 );
+
+new DvkBackupServicesStack(app, 'DvkBackupServicesStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+  stackName: 'DvkBackupServicesStack-' + appEnv,
+  tags: Config.tags,
+});
