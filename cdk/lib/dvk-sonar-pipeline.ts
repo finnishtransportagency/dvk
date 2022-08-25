@@ -25,13 +25,12 @@ export class DvkSonarPipelineStack extends Stack {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
-      webhookFilters: [FilterGroup.inEventOf(EventAction.PULL_REQUEST_MERGED).andBaseBranchIs('main')],
+      webhookFilters: [FilterGroup.inEventOf(EventAction.PUSH).andBranchIs('main')],
     };
     const gitHubSource = Source.gitHub(sourceProps);
     new Project(this, 'DvkSonarQube', {
       projectName: 'DvkSonarQube',
       buildSpec: BuildSpec.fromObject({
-        env: { 'secrets-manager': { SONARQUBE_ACCESS_TOKEN: 'SonarQubeAccessToken' } },
         version: '0.2',
         phases: {
           build: {
@@ -46,7 +45,7 @@ export class DvkSonarPipelineStack extends Stack {
               'npm run test -- --coverage --reporters=jest-junit',
               'cd ..',
               'export DVK_VERSION=`node -p "require(\'./package.json\').version"`',
-              `echo npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK -Dsonar.projectVersion=$DVK_VERSION`,
+              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
             ],
           },
         },

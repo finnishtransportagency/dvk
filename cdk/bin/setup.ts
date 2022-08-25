@@ -3,11 +3,14 @@
 import { CloudFormationClient, DescribeStacksCommand, DescribeStacksCommandOutput } from '@aws-sdk/client-cloudformation';
 // eslint-disable-next-line import/named
 import { GetParametersByPathCommand, GetParametersByPathCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
+// eslint-disable-next-line import/named
+import { GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandOutput, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import * as fs from 'fs';
 import Config from '../lib/config';
 
 const euWestCFClient = new CloudFormationClient({ region: 'eu-west-1' });
 const euWestSSMClient = new SSMClient({ region: 'eu-west-1' });
+const euWestSecretClient = new SecretsManagerClient({ region: 'eu-west-1' });
 
 type BackendStackOutputs = {
   AppSyncAPIURL: string;
@@ -57,10 +60,29 @@ async function readParametersByPath(path: string): Promise<Record<string, string
   return variables;
 }
 
+async function readSecrets(path: string, global = false): Promise<Record<string, string>> {
+  const variables: Record<string, string> = {};
+  let nextToken;
+  do {
+    const filters = [{ Key: 'name', Values: [(global ? '!' : '') + path] }];
+    const output: ListSecretsCommandOutput = await euWestSecretClient.send(new ListSecretsCommand({ Filters: filters, NextToken: nextToken }));
+    for (const param of output.SecretList || []) {
+      const value = await euWestSecretClient.send(new GetSecretValueCommand({ SecretId: param.ARN }));
+      if (param.Name && value.SecretString) {
+        variables[global ? param.Name : param.Name.replace(path, '')] = value.SecretString;
+      }
+    }
+    nextToken = output.NextToken;
+  } while (nextToken);
+  return variables;
+}
+
 async function readParametersForEnv<T extends Record<string, string>>(environment: string): Promise<T> {
   const results: Record<string, string> = {
     ...(await readParametersByPath('/')), // Read global parameters from root
     ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
+    ...(await readSecrets(environment + '/', true)),
+    ...(await readSecrets(environment + '/')),
   };
   return results as T;
 }
@@ -80,13 +102,12 @@ async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
   const frontendStackOutputs = await readFrontendStackOutputs();
   const envParameters = await readParametersForEnv(Config.getEnvironment());
-  console.log('Parameter store variables:');
-  console.log(envParameters);
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
     REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
     REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName,
+    REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
   });
 }
 
