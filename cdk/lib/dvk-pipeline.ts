@@ -52,7 +52,6 @@ export class DvkPipeline extends Construct {
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
-        env: { 'secrets-manager': { REACT_APP_BG_MAP_API_KEY: 'BGMapApiKey' } },
         version: '0.2',
         phases: {
           install: {

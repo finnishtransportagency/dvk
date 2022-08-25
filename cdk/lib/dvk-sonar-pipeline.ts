@@ -25,13 +25,13 @@ export class DvkSonarPipelineStack extends Stack {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
-      webhookFilters: [FilterGroup.inEventOf(EventAction.PULL_REQUEST_MERGED).andBaseBranchIs('main')],
+      branchOrRef: 'main',
+      webhookFilters: [FilterGroup.inEventOf(EventAction.PUSH)],
     };
     const gitHubSource = Source.gitHub(sourceProps);
     new Project(this, 'DvkSonarQube', {
       projectName: 'DvkSonarQube',
       buildSpec: BuildSpec.fromObject({
-        env: { 'secrets-manager': { SONARQUBE_ACCESS_TOKEN: 'SonarQubeAccessToken' } },
         version: '0.2',
         phases: {
           build: {
