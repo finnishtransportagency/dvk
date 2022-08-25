@@ -45,7 +45,7 @@ export class DvkSonarPipelineStack extends Stack {
               'npm run test -- --coverage --reporters=jest-junit',
               'cd ..',
               'export DVK_VERSION=`node -p "require(\'./package.json\').version"`',
-              `echo npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK -Dsonar.projectVersion=$DVK_VERSION`,
+              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
             ],
           },
         },
