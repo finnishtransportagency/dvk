@@ -25,8 +25,7 @@ export class DvkSonarPipelineStack extends Stack {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
-      branchOrRef: 'main',
-      webhookFilters: [FilterGroup.inEventOf(EventAction.PUSH)],
+      webhookFilters: [FilterGroup.inEventOf(EventAction.PUSH).andBranchIs('main')],
     };
     const gitHubSource = Source.gitHub(sourceProps);
     new Project(this, 'DvkSonarQube', {
