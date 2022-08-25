@@ -1,5 +1,6 @@
 import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButtons, IonButton } from '@ionic/react';
+import MapContainer from '../components/MapContainer';
 import Map from '../components/Map';
 import { useTranslation } from 'react-i18next';
 import './Home.css';
@@ -18,7 +19,8 @@ const Home: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent className="ion-no-padding">
+        <MapContainer />
         <Map />
       </IonContent>
     </IonPage>
