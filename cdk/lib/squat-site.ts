@@ -20,6 +20,7 @@ import {
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import Config from './config';
 import * as fs from 'fs';
+import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 
 interface SquatSiteProps {
   domainName: string;
@@ -46,6 +47,7 @@ export class SquatSite extends Construct {
       bucketName: `squat.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
 
     // Grant access to cloudfront
@@ -66,6 +68,7 @@ export class SquatSite extends Construct {
       bucketName: `dvk.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
     dvkBucket.addToResourcePolicy(
       new iam.PolicyStatement({
@@ -85,6 +88,7 @@ export class SquatSite extends Construct {
       bucketName: `geotiff.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
     });
     geoTiffBucket.addToResourcePolicy(
       new iam.PolicyStatement({
@@ -112,7 +116,7 @@ export class SquatSite extends Construct {
     const basicPassword = config.getStringParameter('BasicPassword');
     const authString = cdk.Fn.base64(basicUserName + ':' + basicPassword);
 
-    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('UTF-8');
+    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('utf-8');
     const authFunctionCode = cdk.Fn.sub(authSourceCode, {
       AUTH_STRING: authString,
     });
@@ -123,7 +127,7 @@ export class SquatSite extends Construct {
 
     // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
     // Nyt myos auth koodi upotettuna
-    const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('UTF-8');
+    const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('utf-8');
     const routerFunctionCode = cdk.Fn.sub(routerSourceCode, {
       AUTH_STRING: authString,
     });
@@ -160,7 +164,6 @@ export class SquatSite extends Construct {
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
     const importedAppSyncAPIURL = cdk.Fn.importValue('AppSyncAPIURL' + props.env);
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
-    const proxyUrl = config.getStringParameter('DMZProxyEndpoint');
     const corsResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'CORSResponsePolicy', {
       responseHeadersPolicyName: 'CORSResponsePolicy' + props.env,
       corsBehavior: {
@@ -178,8 +181,8 @@ export class SquatSite extends Construct {
     });
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
-      originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: corsResponsePolicy,
+      originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -190,9 +193,9 @@ export class SquatSite extends Construct {
         },
       ],
     };
-    const proxyBehavior = this.createProxyBehavior(proxyUrl, authFunction);
-    const apiProxyBehavior = this.useProxy() ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
-    const graphqlProxyBehavior = this.useProxy()
+    const proxyBehavior = this.useProxy() ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction) : undefined;
+    const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
+    const graphqlProxyBehavior = proxyBehavior
       ? proxyBehavior
       : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, corsResponsePolicy, {
           'x-api-key': importedAppSyncAPIKey,

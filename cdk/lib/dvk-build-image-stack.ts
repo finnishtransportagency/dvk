@@ -14,6 +14,10 @@ export class DvkBuildImageStack extends Stack {
     new cdk.aws_ecr.Repository(this, 'BuildImageRepository', {
       repositoryName: imageRepoName,
     });
+    const robotImageRepoName = 'dvk-robotimage';
+    new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
+      repositoryName: robotImageRepoName,
+    });
     const pipeline = new codepipeline.Pipeline(this, 'BuildImagePipeline', {
       crossAccountKeys: false,
     });
@@ -33,7 +37,33 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = new codebuild.PipelineProject(this, 'ImageBuild', {
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.1', '.', 'ImageBuild');
+    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.0', 'test', 'RobotImageBuild');
+    pipeline.addStage({
+      stageName: 'Build',
+      actions: [
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'BuildDVKImage',
+          project: buildProject,
+          input: sourceOutput,
+        }),
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'BuildRobotImage',
+          project: robotBuildProject,
+          input: sourceOutput,
+        }),
+      ],
+    });
+  }
+
+  private buildProject(
+    account: string,
+    imageRepoName: string,
+    version: string,
+    dockerFileDirectory: string,
+    name: string
+  ): codebuild.PipelineProject {
+    const buildProject = new codebuild.PipelineProject(this, name, {
       environment: {
         buildImage: LinuxBuildImage.STANDARD_5_0,
         privileged: true,
@@ -42,7 +72,8 @@ export class DvkBuildImageStack extends Stack {
         AWS_DEFAULT_REGION: { value: 'eu-west-1' },
         AWS_ACCOUNT_ID: { value: account },
         IMAGE_REPO_NAME: { value: imageRepoName },
-        IMAGE_TAG: { value: '1.0.1' },
+        IMAGE_TAG: { value: version },
+        DOCKERFILE_DIR: { value: dockerFileDirectory },
       },
       buildSpec: codebuild.BuildSpec.fromSourceFilename('./cdk/lib/image-buildspec.yml'),
     });
@@ -60,16 +91,6 @@ export class DvkBuildImageStack extends Stack {
         resources: ['*'],
       })
     );
-
-    pipeline.addStage({
-      stageName: 'Build',
-      actions: [
-        new cdk.aws_codepipeline_actions.CodeBuildAction({
-          actionName: 'BuildDVKImage',
-          project: buildProject,
-          input: sourceOutput,
-        }),
-      ],
-    });
+    return buildProject;
   }
 }
