@@ -2,7 +2,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import { SquatReducer, initialState, Action } from './hooks/squatReducer';
+import { SquatReducer, initialState, Action, getFieldValue } from './hooks/squatReducer';
+import { createShareableLink } from './utils/helpers';
 
 beforeAll(() => {
   // @ts-ignore
@@ -17,20 +18,29 @@ afterAll(() => {
   delete window.SVGElement.prototype.getBBox;
 });
 
-test('renders without crashing', () => {
+it('renders without crashing', () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
 });
 
-it('reducer returns new state after update action', () => {
+test('reducer returns new state after update action', () => {
   const state = SquatReducer(initialState, { type: 'reset' });
-  expect(state.vessel.stability.GM).toEqual(0);
+  expect(state.vessel.stability.GM).toEqual(0.15);
   const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
   expect(updatedState.vessel.stability.GM).toEqual(2);
 });
 
-it('all reducer actions are working', () => {
+it('creates shareable link correctly', () => {
+  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
+  const updatedState = SquatReducer(initialState, updateAction);
+
+  const currentURL = window.location.href.split('?')[0];
+  const shareableLink = createShareableLink(updatedState);
+  expect(shareableLink).toBe(currentURL + '?GM=2');
+});
+
+test('all reducer actions are working', () => {
   // Use all action types to update state
   let state = SquatReducer(initialState, { type: 'reset' });
   state = SquatReducer(state, {
@@ -86,8 +96,26 @@ it('all reducer actions are working', () => {
   expect(state.validations.lengthBPP).toEqual(true);
 
   // Test also unknown action type
-  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
+    return null;
+  });
   // @ts-ignore
   SquatReducer(state, { type: 'unknown', payload: { key: 'unknown', value: true } });
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
+});
+
+test('setting default value under minimum or above maximum is swallowed', () => {
+  const location = {
+    ...window.location,
+    search: '?profileSelected=9&GM=0&KG=1&fairwayForm=-2',
+  };
+  Object.defineProperty(window, 'location', {
+    writable: true,
+    value: location,
+  });
+
+  expect(getFieldValue('profileSelected', 0, 0, 3, true)).toEqual(3);
+  expect(getFieldValue('fairwayForm', 1, 0, 2, true)).toEqual(0);
+  expect(getFieldValue('GM', 1, 0.15)).toEqual(0);
+  expect(getFieldValue('KG', 0)).toEqual(1);
 });
