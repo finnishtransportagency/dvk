@@ -18,7 +18,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
     <>
       <Label title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
-      <IonItem lines="none">
+      <IonItem lines="none" className="item-static">
         <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
           {props.error && <IonIcon icon={alertCircleOutline} color="danger" />}
           {props.value}

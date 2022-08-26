@@ -50,6 +50,13 @@ ion-grid.divider {
 .left-padding {
   padding-left: 5px;
 }
+.top-padding {
+  padding-top: 10px;
+}
+
+.small-text {
+  font-size: 14px;
+}
 
 ion-toggle.squat-toggle {
   --background: #fff;
@@ -62,6 +69,12 @@ ion-toggle.squat-toggle {
   padding: 3px;
   border: 2px solid var(--ion-color-primary);
   border-radius: var(--border-radius);
+}
+
+ion-textarea {
+  word-break: break-all;
+  margin-top: 0 !important;
+  --padding-start: 10px !important;
 }
 
 /* General alerts */
@@ -122,6 +135,10 @@ ion-item.item-interactive.ion-invalid {
   --border-color: var(--highlight-color-invalid);
 }
 
+ion-item.item-static {
+  --min-height: 42px;
+}
+
 ion-item.item.align-center .sc-ion-label-md-s p {
   margin: 0.25rem 0;
 }
@@ -180,6 +197,11 @@ ion-button.icon-only {
   height: auto;
   margin: 0 0 0 5px;
   vertical-align: top;
+}
+
+ion-icon.medium {
+  font-size: 22px;
+  --ionicon-stroke-width: 32px;
 }
 
 /* Footer */
