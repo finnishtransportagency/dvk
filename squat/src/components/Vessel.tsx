@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
-import { vessels, vesselProfiles } from '../hooks/squatReducer';
+import { vesselProfiles } from '../hooks/squatReducer';
 import { calculateDisplacement, calculateKB } from '../utils/calculations';
 import SectionTitle from './SectionTitle';
 import InputField from './InputField';
