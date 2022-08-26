@@ -57,7 +57,9 @@ const InputField: React.FC<InputProps> = (props) => {
             {props.unit}
           </IonLabel>
         )}
-        {props.helper && <IonNote slot="helper">{props.helper}</IonNote>}
+        <IonNote slot="helper" className="input-helper">
+          {props.helper}
+        </IonNote>
         <IonNote slot="error" className="input-error">
           <IonIcon icon={alertCircleOutline} color="danger" />
           {props.value ? t('common.value-out-of-range') : t('common.required')}

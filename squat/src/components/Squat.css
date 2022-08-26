@@ -97,7 +97,7 @@ ion-icon {
 /* Forms */
 ion-item.item.only-label {
   --min-height: 30px;
-  --padding-top: 8px;
+  --padding-top: 2px;
   --padding-start: 0;
   --inner-padding-start: 0;
   --inner-padding-end: 0;
@@ -149,10 +149,13 @@ ion-item.item.align-center ion-radio {
   width: 100%;
 }
 
+ion-note.input-helper {
+  min-height: 20px;
+}
+
 ion-item.item-interactive.ion-invalid ion-note.input-error, ion-text.input-error {
   display: flex;
   align-items: center;
-  line-height: 1rem;
 }
 
 ion-note.input-error ion-icon, ion-text.input-error ion-icon {

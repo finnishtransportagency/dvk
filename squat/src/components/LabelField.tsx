@@ -24,7 +24,11 @@ const LabelField: React.FC<LabelProps> = (props) => {
           {props.value}
         </IonText>
         {props.unit && <IonLabel color="medium">&nbsp;{props.unit}</IonLabel>}
-        {props.helper && <IonNote slot="helper">{props.helper}</IonNote>}
+        {props.helper && (
+          <IonNote slot="helper" className="input-helper">
+            {props.helper}
+          </IonNote>
+        )}
       </IonItem>
     </>
   );

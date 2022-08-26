@@ -176,6 +176,7 @@ const Environment: React.FC = () => {
                 title={t('homePage.squat.environment.wave-length')}
                 value={getWaveLength().toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 unit="m"
+                helper=" "
               />
             </IonCol>
             <IonCol size-sm="6">
@@ -183,6 +184,7 @@ const Environment: React.FC = () => {
                 title={t('homePage.squat.environment.wave-amplitude')}
                 value={getWaveAmplitude().toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 unit="m"
+                helper=" "
               />
             </IonCol>
           </IonRow>
