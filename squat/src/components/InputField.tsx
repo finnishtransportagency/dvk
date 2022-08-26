@@ -16,7 +16,7 @@ interface InputProps {
   max?: string;
   step?: string;
   unit?: string | ReactElement;
-  helper?: string;
+  helper?: string | ReactElement;
   fieldClass?: string;
   actionType: Action['type'];
   infoContentTitle?: string;
@@ -51,19 +51,7 @@ const InputField: React.FC<InputProps> = (props) => {
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
       <IonItem fill="outline" className={props.fieldClass}>
-        <IonInput
-          type="number"
-          min={props.min}
-          max={props.max}
-          step={props.step}
-          name={props.name}
-          required={props.required}
-          value={props.value}
-          placeholder={props.placeholder}
-          onIonChange={(e) => updateAction(e, props.actionType)}
-          debounce={50}
-          inputmode="numeric"
-        />
+        <IonInput type="number" {...props} onIonChange={(e) => updateAction(e, props.actionType)} debounce={50} inputmode="decimal" />
         {props.unit && (
           <IonLabel slot="end" color="medium">
             {props.unit}
