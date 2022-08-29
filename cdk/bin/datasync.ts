@@ -7,6 +7,7 @@ import fs from 'fs';
 import FairwayDBModel from '../lib/lambda/db/fairwayDBModel';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
+import { argv } from 'process';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -23,24 +24,30 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
   return arrayOfFiles;
 }
 
+function getGeoTiffMap(arrayOfFiles: string[]) {
+  const geoTiffMap = new Map<number, string[]>();
+  for (const file of arrayOfFiles.filter((f) => f.endsWith('.tif'))) {
+    const id = file.match(/\/\d*\//)?.toString();
+    if (id) {
+      const fairwayId = parseInt(id.substring(1, id.length - 1), 10);
+      if (!geoTiffMap.get(fairwayId)) {
+        geoTiffMap.set(fairwayId, []);
+      }
+      geoTiffMap.get(fairwayId)?.push(file);
+    }
+  }
+  return geoTiffMap;
+}
+
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
-  const tableName = `Fairway-${Config.getEnvironment()}`;
+  const tableName = `FairwayCard-${Config.getEnvironment()}`;
   if (response.TableNames?.includes(tableName)) {
-    const directoryPath = path.join(__dirname, 'data');
+    const directoryPath = process.argv.length < 2 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', argv[2]);
+    console.log(`Processing directory ${directoryPath}`);
     const arrayOfFiles = getAllFiles(directoryPath, []);
-    const geoTiffMap = new Map<number, string[]>();
-    for (const file of arrayOfFiles.filter((f) => f.endsWith('.tif'))) {
-      const id = file.match(/\/\d*\//)?.toString();
-      if (id) {
-        const fairwayId = parseInt(id.substring(1, id.length - 1), 10);
-        if (!geoTiffMap.get(fairwayId)) {
-          geoTiffMap.set(fairwayId, []);
-        }
-        geoTiffMap.get(fairwayId)?.push(file);
-      }
-    }
+    const geoTiffMap = getGeoTiffMap(arrayOfFiles);
     for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
       const fairway = JSON.parse(fs.readFileSync(file).toString()) as FairwayDBModel;
       const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
