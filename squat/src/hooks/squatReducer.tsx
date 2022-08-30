@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { createShareableLink } from '../utils/helpers';
 
 // Common types
 
@@ -196,7 +197,7 @@ export const fieldParams: Record<string, FieldParam> = {
   motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm' },
 };
 
-// Initialize field values from url parameter if set and check validity
+// Set initially valid fields
 let validatedFields = {
   blockCoefficient: true,
   windSurface: true,
@@ -221,6 +222,7 @@ let validatedFields = {
   motionClearance: true,
 };
 
+// Initialize field values from url parameter if set and check validity
 export const getFieldValue = (fieldName: string, force?: boolean) => {
   const queryParams = new URLSearchParams(window.location.search);
   const defaultValue = fieldParams[fieldName].default;
@@ -335,9 +337,6 @@ export const initialState: State = {
   validations: validatedFields,
 };
 
-// Reset current url
-//window.history.replaceState(null, document.title, window.location.href.split('?')[0]);
-
 export type Action =
   | {
       type:
@@ -358,12 +357,13 @@ export type Action =
         elType?: string;
       };
     }
-  | { type: 'reset' };
+  | { type: 'reset' }
+  | { type: 'url' };
 
 export const SquatReducer = (state: State, action: Action) => {
   // Sort out correct value type from input element
   let inputValue: string | number | number[] | object | boolean = '';
-  if (action.type !== 'reset') {
+  if (action.type !== 'reset' && action.type !== 'url') {
     switch (action.payload.elType?.toLocaleLowerCase()) {
       case 'ion-select':
       case 'ion-radio-group':
@@ -419,6 +419,10 @@ export const SquatReducer = (state: State, action: Action) => {
       };
     case 'reset':
       return initialState;
+    case 'url':
+      // Update current url to match state
+      window.history.replaceState(null, document.title, createShareableLink(state));
+      return state;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;

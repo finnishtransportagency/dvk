@@ -44,6 +44,9 @@ const InputField: React.FC<InputProps> = (props) => {
         elType: (event.target as HTMLInputElement).tagName,
       },
     });
+    dispatch({
+      type: 'url',
+    });
   };
 
   return (
