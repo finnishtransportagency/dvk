@@ -150,7 +150,7 @@ ion-item.item.align-center ion-radio {
 }
 
 ion-note.input-helper {
-  min-height: 20px;
+  min-height: 19px;
 }
 
 ion-item.item-interactive.ion-invalid ion-note.input-error, ion-text.input-error {
