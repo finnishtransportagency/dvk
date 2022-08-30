@@ -112,15 +112,20 @@ test('all reducer actions are working', () => {
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
 });
 
+test('call url action', () => {
+  SquatReducer(initialState, { type: 'url' });
+  expect(window.location.search).toEqual('?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10');
+});
+
 it('creates shareable link correctly', () => {
   const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
 
-  const shareableLink = createShareableLink(updatedState);
+  const shareableLink = createShareableLink(updatedState, true);
   expect(shareableLink).toBe(baseURL + '?GM=2');
 });
 
-test('setting default value under minimum or above maximum is swallowed', () => {
+test('setting default value under minimum or above maximum is swallowed when forced', () => {
   expect(getFieldValue('profileSelected', true)).toEqual(3);
   expect(getFieldValue('fairwayForm', true)).toEqual(0);
   expect(getFieldValue('GM')).toEqual(0);
