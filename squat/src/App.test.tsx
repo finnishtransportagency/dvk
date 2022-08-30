@@ -3,13 +3,30 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 import { SquatReducer, initialState, Action, getFieldValue } from './hooks/squatReducer';
-import { createShareableLink } from './utils/helpers';
+import { copyToClipboard, createShareableLink } from './utils/helpers';
+
+const baseURL = 'http://localhost:8080/';
 
 beforeAll(() => {
   // @ts-ignore
   window.SVGElement.prototype.getBBox = () => ({
     x: 0,
     y: 0,
+  });
+
+  const location = {
+    ...window.location,
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10',
+  };
+  Object.defineProperty(window, 'location', {
+    writable: true,
+    value: location,
+  });
+
+  Object.defineProperty(navigator, 'clipboard', {
+    value: {
+      writeText: jest.fn().mockImplementation(() => Promise.resolve()),
+    },
   });
 });
 
@@ -29,15 +46,6 @@ test('reducer returns new state after update action', () => {
   const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
   expect(updatedState.vessel.stability.GM).toEqual(2);
-});
-
-it('creates shareable link correctly', () => {
-  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
-  const updatedState = SquatReducer(initialState, updateAction);
-
-  const currentURL = window.location.href.split('?')[0];
-  const shareableLink = createShareableLink(updatedState);
-  expect(shareableLink).toBe(currentURL + '?GM=2');
 });
 
 test('all reducer actions are working', () => {
@@ -104,18 +112,26 @@ test('all reducer actions are working', () => {
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
 });
 
-test('setting default value under minimum or above maximum is swallowed', () => {
-  const location = {
-    ...window.location,
-    search: '?profileSelected=9&GM=0&KG=1&fairwayForm=-2',
-  };
-  Object.defineProperty(window, 'location', {
-    writable: true,
-    value: location,
-  });
+it('creates shareable link correctly', () => {
+  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
+  const updatedState = SquatReducer(initialState, updateAction);
 
-  expect(getFieldValue('profileSelected', 0, 0, 3, true)).toEqual(3);
-  expect(getFieldValue('fairwayForm', 1, 0, 2, true)).toEqual(0);
-  expect(getFieldValue('GM', 1, 0.15)).toEqual(0);
-  expect(getFieldValue('KG', 0)).toEqual(1);
+  const shareableLink = createShareableLink(updatedState);
+  expect(shareableLink).toBe(baseURL + '?GM=2');
+});
+
+test('setting default value under minimum or above maximum is swallowed', () => {
+  expect(getFieldValue('profileSelected', true)).toEqual(3);
+  expect(getFieldValue('fairwayForm', true)).toEqual(0);
+  expect(getFieldValue('GM')).toEqual(0);
+  expect(getFieldValue('channelWidth')).toEqual(10);
+});
+
+it('should call clipboard.writeText', () => {
+  jest.spyOn(navigator.clipboard, 'writeText');
+
+  copyToClipboard('copyTextToClipboard');
+
+  expect(navigator.clipboard.writeText).toBeCalledTimes(1);
+  expect(navigator.clipboard.writeText).toHaveBeenCalledWith('copyTextToClipboard');
 });
