@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
-import { vesselProfiles } from '../hooks/squatReducer';
+import { fieldParams, vesselProfiles } from '../hooks/squatReducer';
 import { calculateDisplacement, calculateKB } from '../utils/calculations';
 import SectionTitle from './SectionTitle';
 import InputField from './InputField';
@@ -13,11 +13,6 @@ import SelectField from './SelectField';
 import { isThrusterUnableToLiftBow, isTugUseRecommended } from '../utils/validations';
 
 const zero = 0;
-const mSquared = (
-  <>
-    m<sup>2</sup>
-  </>
-);
 
 const Vessel: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -121,10 +116,10 @@ const Vessel: React.FC = () => {
                 value={state.vessel.general.lengthBPP ? state.vessel.general.lengthBPP : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="350"
+                min={fieldParams.lengthBPP.min}
+                max={fieldParams.lengthBPP.max}
                 step="0.01"
-                unit="m"
+                unit={fieldParams.lengthBPP.unit}
                 fieldClass={setFieldClass('lengthBPP')}
                 actionType="vessel-general"
                 helper="0 – 350 m"
@@ -137,10 +132,10 @@ const Vessel: React.FC = () => {
                 value={state.vessel.general.breadth ? state.vessel.general.breadth : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="50"
+                min={fieldParams.breadth.min}
+                max={fieldParams.breadth.max}
                 step="0.01"
-                unit="m"
+                unit={fieldParams.breadth.unit}
                 fieldClass={setFieldClass('breadth')}
                 actionType="vessel-general"
                 helper="0 – 50 m"
@@ -155,10 +150,10 @@ const Vessel: React.FC = () => {
                 value={state.vessel.general.draught ? state.vessel.general.draught : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="20"
+                min={fieldParams.draught.min}
+                max={fieldParams.draught.max}
                 step="0.01"
-                unit="m"
+                unit={fieldParams.draught.unit}
                 fieldClass={setFieldClass('draught')}
                 actionType="vessel-general"
                 helper="0 – 20 m"
@@ -171,8 +166,8 @@ const Vessel: React.FC = () => {
                 value={state.vessel.general.blockCoefficient ? state.vessel.general.blockCoefficient : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0.4"
-                max="1"
+                min={fieldParams.blockCoefficient.min}
+                max={fieldParams.blockCoefficient.max}
                 step="0.01"
                 fieldClass={setFieldClass('blockCoefficient')}
                 actionType="vessel-general"
@@ -193,9 +188,9 @@ const Vessel: React.FC = () => {
                 value={state.vessel.general.displacement}
                 required
                 placeholder="0"
-                min="0"
-                max="250000"
-                unit="mt"
+                min={fieldParams.displacement.min}
+                max={fieldParams.displacement.max}
+                unit={fieldParams.displacement.unit}
                 fieldClass={setFieldClass('displacement')}
                 actionType="vessel-general"
                 helper="0 – 250 000 mt"
@@ -216,14 +211,13 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.total-lateral-wind-surface')}
                 name="windSurface"
                 value={state.vessel.detailed.windSurface ? state.vessel.detailed.windSurface : null}
-                required
                 placeholder="0"
-                min="0"
-                max="25000"
-                unit={mSquared}
+                min={fieldParams.windSurface.min}
+                max={fieldParams.windSurface.max}
+                unit={fieldParams.windSurface.unit}
                 fieldClass={setFieldClass('windSurface')}
                 actionType="vessel-detailed"
-                helper={<>0 – 25 000 {mSquared}</>}
+                helper={<>0 – 25 000 {fieldParams.windSurface.unit}</>}
               />
             </IonCol>
             <IonCol size="6">
@@ -232,12 +226,12 @@ const Vessel: React.FC = () => {
                 name="deckCargo"
                 value={state.vessel.detailed.deckCargo ? state.vessel.detailed.deckCargo : null}
                 placeholder="0"
-                min="0"
-                max="20000"
-                unit={mSquared}
+                min={fieldParams.deckCargo.min}
+                max={fieldParams.deckCargo.max}
+                unit={fieldParams.deckCargo.unit}
                 fieldClass={setFieldClass('deckCargo')}
                 actionType="vessel-detailed"
-                helper={<>0 – 20 000 {mSquared}</>}
+                helper={<>0 – 20 000 {fieldParams.deckCargo.unit}</>}
               />
             </IonCol>
           </IonRow>
@@ -247,11 +241,10 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.bow-thruster')}
                 name="bowThruster"
                 value={state.vessel.detailed.bowThruster ? state.vessel.detailed.bowThruster : null}
-                required
                 placeholder="0"
-                min="0"
-                max="5500"
-                unit="kW"
+                min={fieldParams.bowThruster.min}
+                max={fieldParams.bowThruster.max}
+                unit={fieldParams.bowThruster.unit}
                 fieldClass={setFieldClass('bowThruster')}
                 actionType="vessel-detailed"
                 helper="0 – 5500 kW"
@@ -262,11 +255,10 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.bow-thruster-efficiency')}
                 name="bowThrusterEfficiency"
                 value={state.vessel.detailed.bowThrusterEfficiency ? state.vessel.detailed.bowThrusterEfficiency : null}
-                required
                 placeholder="0"
-                min="0"
-                max="100"
-                unit="%"
+                min={fieldParams.bowThrusterEfficiency.min}
+                max={fieldParams.bowThrusterEfficiency.max}
+                unit={fieldParams.bowThrusterEfficiency.unit}
                 fieldClass={setFieldClass('bowThrusterEfficiency')}
                 actionType="vessel-detailed"
                 helper="0 – 100 %"
@@ -298,8 +290,8 @@ const Vessel: React.FC = () => {
                 value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="20"
+                min={fieldParams.KG.min}
+                max={fieldParams.KG.max}
                 step="0.01"
                 fieldClass={setFieldClass('KG')}
                 actionType="vessel-stability"
@@ -318,8 +310,8 @@ const Vessel: React.FC = () => {
                 value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0.15"
-                max="5"
+                min={fieldParams.GM.min}
+                max={fieldParams.GM.max}
                 step="0.01"
                 fieldClass={setFieldClass('GM')}
                 actionType="vessel-stability"
@@ -340,8 +332,8 @@ const Vessel: React.FC = () => {
                 value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="15"
+                min={fieldParams.KB.min}
+                max={fieldParams.KB.max}
                 step="0.01"
                 fieldClass={setFieldClass('KB')}
                 actionType="vessel-stability"

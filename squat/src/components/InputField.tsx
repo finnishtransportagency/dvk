@@ -12,8 +12,8 @@ interface InputProps {
   value: number | string | null;
   required?: boolean;
   placeholder: string;
-  min?: string;
-  max?: string;
+  min?: number;
+  max?: number;
   step?: string;
   unit?: string | ReactElement;
   helper?: string | ReactElement;

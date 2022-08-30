@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
-import { fairwayForms } from '../hooks/squatReducer';
+import { fairwayForms, fieldParams } from '../hooks/squatReducer';
 import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
 import { isReliabilityAnIssue } from '../utils/validations';
 import Alert from './Alert';
@@ -14,11 +14,6 @@ import LabelField from './LabelField';
 import RadioSelectField from './RadioSelectField';
 
 const zero = 0;
-const kgPerCubicM = (
-  <>
-    kg/m<sup>3</sup>
-  </>
-);
 
 const Environment: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -111,12 +106,12 @@ const Environment: React.FC = () => {
                 name="windSpeed"
                 value={state.environment.weather.windSpeed ? state.environment.weather.windSpeed : null}
                 placeholder="0"
-                min="0"
-                max="35"
-                unit="m/s"
+                min={fieldParams.windSpeed.min}
+                max={fieldParams.windSpeed.max}
+                unit={fieldParams.windSpeed.unit}
                 fieldClass={setFieldClass('windSpeed')}
                 actionType="environment-weather"
-                helper="0 – 25 m/s"
+                helper="0 – 35 m/s"
               />
             </IonCol>
             <IonCol size="6">
@@ -125,9 +120,9 @@ const Environment: React.FC = () => {
                 name="windDirection"
                 value={state.environment.weather.windDirection ? state.environment.weather.windDirection : null}
                 placeholder={zero.toString().padStart(3, '0')}
-                min="0"
-                max="350"
-                unit="deg"
+                min={fieldParams.windDirection.min}
+                max={fieldParams.windDirection.max}
+                unit={fieldParams.windDirection.unit}
                 fieldClass={setFieldClass('windDirection')}
                 actionType="environment-weather"
                 helper="0 – 350 deg"
@@ -141,10 +136,10 @@ const Environment: React.FC = () => {
                 name="waveHeight"
                 value={state.environment.weather.waveHeight ? state.environment.weather.waveHeight : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                min="0"
-                max="15"
+                min={fieldParams.waveHeight.min}
+                max={fieldParams.waveHeight.max}
                 step="0.1"
-                unit="m"
+                unit={fieldParams.waveHeight.unit}
                 fieldClass={setFieldClass('waveHeight')}
                 actionType="environment-weather"
                 helper={
@@ -160,13 +155,19 @@ const Environment: React.FC = () => {
                 title={t('homePage.squat.environment.set-wave-period')}
                 name="wavePeriod"
                 value={state.environment.weather.wavePeriod ? state.environment.weather.wavePeriod : null}
-                placeholder="0"
-                min="0"
-                max="20"
-                unit="s"
+                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                min={fieldParams.wavePeriod.min}
+                max={fieldParams.wavePeriod.max}
+                step="0.1"
+                unit={fieldParams.wavePeriod.unit}
                 fieldClass={setFieldClass('wavePeriod')}
                 actionType="environment-weather"
-                helper="0 – 20 s"
+                helper={
+                  <>
+                    {Number('0').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
+                    {Number('20').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s
+                  </>
+                }
               />
             </IonCol>
           </IonRow>
@@ -207,10 +208,10 @@ const Environment: React.FC = () => {
                 name="sweptDepth"
                 value={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                min="0"
-                max="20"
+                min={fieldParams.sweptDepth.min}
+                max={fieldParams.sweptDepth.max}
                 step="0.1"
-                unit="m"
+                unit={fieldParams.sweptDepth.unit}
                 required
                 fieldClass={setFieldClass('sweptDepth')}
                 actionType="environment-fairway"
@@ -226,12 +227,12 @@ const Environment: React.FC = () => {
               <InputField
                 title={t('homePage.squat.environment.water-level')}
                 name="waterLevel"
-                value={state.environment.fairway.waterLevel}
+                value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                min="-1.5"
-                max="1.5"
+                min={fieldParams.waterLevel.min}
+                max={fieldParams.waterLevel.max}
                 step="0.1"
-                unit="m"
+                unit={fieldParams.waterLevel.unit}
                 fieldClass={setFieldClass('waterLevel')}
                 actionType="environment-fairway"
                 helper={
@@ -250,17 +251,19 @@ const Environment: React.FC = () => {
                 name="waterDepth"
                 value={state.environment.fairway.waterDepth ? state.environment.fairway.waterDepth : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                min="0"
-                max="30"
+                min={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : fieldParams.waterDepth.min}
+                max={fieldParams.waterDepth.max}
                 step="0.1"
-                unit="m"
-                required
+                unit={fieldParams.waterDepth.unit}
                 fieldClass={setFieldClass('waterDepth')}
                 actionType="environment-fairway"
                 helper={
                   <>
-                    {Number('0').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('30').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
+                    {Number(state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : '0').toLocaleString(i18n.language, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}{' '}
+                    – {Number('30').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
                   </>
                 }
               />
@@ -319,8 +322,8 @@ const Environment: React.FC = () => {
                   name="channelWidth"
                   value={state.environment.fairway.channelWidth}
                   placeholder="0"
-                  min="0"
-                  unit="m"
+                  min={fieldParams.channelWidth.min}
+                  unit={fieldParams.channelWidth.unit}
                   fieldClass={setFieldClass('channelWidth')}
                   actionType="environment-fairway"
                 />
@@ -335,7 +338,7 @@ const Environment: React.FC = () => {
                   name="slopeScale"
                   value={state.environment.fairway.slopeScale}
                   placeholder="0"
-                  min="0"
+                  min={fieldParams.slopeScale.min}
                   fieldClass={setFieldClass('slopeScale')}
                   actionType="environment-fairway"
                 />
@@ -346,8 +349,8 @@ const Environment: React.FC = () => {
                   name="slopeHeight"
                   value={state.environment.fairway.slopeHeight}
                   placeholder="0"
-                  min="0"
-                  unit="m"
+                  min={fieldParams.slopeHeight.min}
+                  unit={fieldParams.slopeHeight.unit}
                   fieldClass={setFieldClass('slopeHeight')}
                   actionType="environment-fairway"
                 />
@@ -368,9 +371,9 @@ const Environment: React.FC = () => {
                 name="vesselCourse"
                 value={state.environment.vessel.vesselCourse}
                 placeholder={zero.toString().padStart(3, '0')}
-                min="0"
-                max="350"
-                unit="deg"
+                min={fieldParams.vesselCourse.min}
+                max={fieldParams.vesselCourse.max}
+                unit={fieldParams.vesselCourse.unit}
                 fieldClass={setFieldClass('vesselCourse')}
                 actionType="environment-vessel"
                 helper="0 – 350 deg"
@@ -382,9 +385,9 @@ const Environment: React.FC = () => {
                 name="vesselSpeed"
                 value={state.environment.vessel.vesselSpeed}
                 placeholder="0"
-                min="0"
-                max="35"
-                unit="kts"
+                min={fieldParams.vesselSpeed.min}
+                max={fieldParams.vesselSpeed.max}
+                unit={fieldParams.vesselSpeed.unit}
                 fieldClass={setFieldClass('vesselSpeed')}
                 actionType="environment-vessel"
                 helper="0 – 35 kts"
@@ -398,10 +401,10 @@ const Environment: React.FC = () => {
                 name="turningRadius"
                 value={state.environment.vessel.turningRadius}
                 placeholder="0"
-                min="0.1"
-                max="2"
+                min={fieldParams.turningRadius.min}
+                max={fieldParams.turningRadius.max}
                 step="0.05"
-                unit="nm"
+                unit={fieldParams.turningRadius.unit}
                 fieldClass={setFieldClass('turningRadius')}
                 actionType="environment-vessel"
                 helper={
@@ -427,16 +430,17 @@ const Environment: React.FC = () => {
                 name="airDensity"
                 value={state.environment.attribute.airDensity}
                 placeholder="1.3"
-                min="1"
-                max="1.5"
+                min={fieldParams.airDensity.min}
+                max={fieldParams.airDensity.max}
                 step="0.1"
-                unit={kgPerCubicM}
+                unit={fieldParams.airDensity.unit}
                 fieldClass={setFieldClass('airDensity')}
                 actionType="environment-attribute"
                 helper={
                   <>
                     {Number('1').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} {kgPerCubicM}
+                    {Number('1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}{' '}
+                    {fieldParams.airDensity.unit}
                   </>
                 }
               />
@@ -447,12 +451,12 @@ const Environment: React.FC = () => {
                 name="waterDensity"
                 value={state.environment.attribute.waterDensity}
                 placeholder="1000"
-                min="1000"
-                max="1025"
-                unit={kgPerCubicM}
+                min={fieldParams.waterDensity.min}
+                max={fieldParams.waterDensity.max}
+                unit={fieldParams.waterDensity.unit}
                 fieldClass={setFieldClass('waterDensity')}
                 actionType="environment-attribute"
-                helper={<>1000 – 1025 {kgPerCubicM}</>}
+                helper={<>1000 – 1025 {fieldParams.waterDensity.unit}</>}
               />
             </IonCol>
           </IonRow>
@@ -463,10 +467,10 @@ const Environment: React.FC = () => {
                 name="requiredUKC"
                 value={state.environment.attribute.requiredUKC}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0.5"
-                max="5"
+                min={fieldParams.requiredUKC.min}
+                max={fieldParams.requiredUKC.max}
                 step="0.05"
-                unit="m"
+                unit={fieldParams.requiredUKC.unit}
                 fieldClass={setFieldClass('requiredUKC')}
                 actionType="environment-attribute"
                 helper={
@@ -483,10 +487,10 @@ const Environment: React.FC = () => {
                 name="motionClearance"
                 value={state.environment.attribute.motionClearance}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="3"
+                min={fieldParams.motionClearance.min}
+                max={fieldParams.motionClearance.max}
                 step="0.05"
-                unit="m"
+                unit={fieldParams.motionClearance.unit}
                 fieldClass={setFieldClass('motionClearance')}
                 actionType="environment-attribute"
                 helper={
@@ -505,9 +509,9 @@ const Environment: React.FC = () => {
                 name="safetyMarginWindForce"
                 value={state.environment.attribute.safetyMarginWindForce}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min="0"
-                max="25"
-                unit="%"
+                min={fieldParams.safetyMarginWindForce.min}
+                max={fieldParams.safetyMarginWindForce.max}
+                unit={fieldParams.safetyMarginWindForce.unit}
                 fieldClass={setFieldClass('safetyMarginWindForce')}
                 actionType="environment-attribute"
                 helper="0 – 25 %"

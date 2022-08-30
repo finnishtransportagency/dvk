@@ -1,3 +1,5 @@
+import React, { ReactElement } from 'react';
+
 // Common types
 
 type Vessel = {
@@ -18,6 +20,13 @@ type FairwayForm = {
   name: string;
   desc: string;
   img: string;
+};
+
+type FieldParam = {
+  default: number;
+  min: number;
+  max?: number;
+  unit?: string | ReactElement;
 };
 
 // Initialize data
@@ -140,23 +149,87 @@ export type State = {
   validations: Record<string, unknown>;
 };
 
+const mSquared = (
+  <>
+    m<sup>2</sup>
+  </>
+);
+const kgPerCubicM = (
+  <>
+    kg/m<sup>3</sup>
+  </>
+);
+
+// Declare field parameters
+export const fieldParams: Record<string, FieldParam> = {
+  lengthBPP: { default: 0, min: 0, max: 350, unit: 'm' },
+  breadth: { default: 0, min: 0, max: 50, unit: 'm' },
+  draught: { default: 0, min: 0, max: 20, unit: 'm' },
+  blockCoefficient: { default: 0.75, min: 0.4, max: 1 },
+  displacement: { default: 0, min: 0, max: 250000, unit: 'mt' },
+  windSurface: { default: 0, min: 0, max: 25000, unit: mSquared },
+  deckCargo: { default: 0, min: 0, max: 20000, unit: mSquared },
+  bowThruster: { default: 0, min: 0, max: 5500, unit: 'kW' },
+  bowThrusterEfficiency: { default: 100, min: 0, max: 100, unit: '%' },
+  profileSelected: { default: 0, min: 0, max: 3 },
+  KG: { default: 0, min: 0, max: 20 },
+  GM: { default: 0.15, min: 0.15, max: 5 },
+  KB: { default: 0, min: 0, max: 15 },
+  windSpeed: { default: 0, min: 0, max: 35, unit: 'm/s' },
+  windDirection: { default: 90, min: 0, max: 350, unit: 'deg' },
+  waveHeight: { default: 0, min: 0, max: 15, unit: 'm' },
+  wavePeriod: { default: 0, min: 0, max: 20, unit: 's' },
+  sweptDepth: { default: 0, min: 0, max: 20, unit: 'm' },
+  waterLevel: { default: 0, min: -1.5, max: 1.5, unit: 'm' },
+  waterDepth: { default: 0, min: 0, max: 30, unit: 'm' },
+  fairwayForm: { default: 0, min: 0, max: 2 },
+  channelWidth: { default: 0, min: 0, unit: 'm' },
+  slopeScale: { default: 0, min: 0 },
+  slopeHeight: { default: 0, min: 0, unit: 'm' },
+  vesselCourse: { default: 0, min: 0, max: 350, unit: 'deg' },
+  vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
+  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm' },
+  airDensity: { default: 1.3, min: 1, max: 1.5, unit: kgPerCubicM },
+  waterDensity: { default: 1005, min: 1000, max: 1025, unit: kgPerCubicM },
+  requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm' },
+  safetyMarginWindForce: { default: 25, min: 0, max: 25, unit: '%' },
+  motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm' },
+};
+
 // Initialize field values from url parameter if set and check validity
 let validatedFields = {
   blockCoefficient: true,
-  displacement: true,
-  bowThrusterEfficiency: true,
+  windSurface: true,
   deckCargo: true,
+  bowThruster: true,
+  bowThrusterEfficiency: true,
+  vesselProfile: true,
   GM: true,
+  windSpeed: true,
   windDirection: true,
+  waveHeight: true,
+  wavePeriod: true,
+  waterDepth: true,
+  fairwayForm: true,
+  vesselCourse: true,
+  vesselSpeed: true,
   turningRadius: true,
+  airDensity: true,
+  waterDensity: true,
+  requiredUKC: true,
+  safetyMarginWindForce: true,
+  motionClearance: true,
 };
 
-export const getFieldValue = (fieldName: string, defaultValue: number, min?: number, max?: number, force?: boolean) => {
+export const getFieldValue = (fieldName: string, force?: boolean) => {
   const queryParams = new URLSearchParams(window.location.search);
+  const defaultValue = fieldParams[fieldName].default;
+  const min = fieldParams[fieldName].min;
+  const max = fieldParams[fieldName].max;
   let currentValue = queryParams.get(fieldName) ? Number(queryParams.get(fieldName)?.replace(',', '.')) : defaultValue;
 
   if (force) {
-    if ((min || typeof min == 'number') && currentValue < min) {
+    if (currentValue < min) {
       currentValue = min;
     } else if (max && currentValue > max) {
       currentValue = max;
@@ -166,65 +239,65 @@ export const getFieldValue = (fieldName: string, defaultValue: number, min?: num
   if (currentValue !== defaultValue) {
     validatedFields = {
       ...validatedFields,
-      [fieldName]: (min || typeof min == 'number' ? currentValue >= min : true) && (max ? currentValue <= max : true),
+      [fieldName]: currentValue >= min && (max ? currentValue <= max : true),
     };
   }
   return currentValue;
 };
 
 // Set initial state
-export const initialState = {
+export const initialState: State = {
   vessel: {
     vesselSelected: null,
     general: {
-      lengthBPP: getFieldValue('lengthBPP', 0, 0, 350),
-      breadth: getFieldValue('breadth', 0, 0, 50),
-      draught: getFieldValue('draught', 0, 0, 20),
-      blockCoefficient: getFieldValue('blockCoefficient', 0.75, 0.4, 1),
-      displacement: getFieldValue('displacement', 0, 0, 250000),
+      lengthBPP: getFieldValue('lengthBPP'),
+      breadth: getFieldValue('breadth'),
+      draught: getFieldValue('draught'),
+      blockCoefficient: getFieldValue('blockCoefficient'),
+      displacement: getFieldValue('displacement'),
     },
     detailed: {
-      windSurface: getFieldValue('windSurface', 0, 0, 25000),
-      deckCargo: getFieldValue('deckCargo', 0, 0, 20000),
-      bowThruster: getFieldValue('bowThruster', 0, 0, 5500),
-      bowThrusterEfficiency: getFieldValue('bowThrusterEfficiency', 100, 0, 100),
-      profileSelected: vesselProfiles[getFieldValue('profileSelected', 0, 0, 3, true)],
+      windSurface: getFieldValue('windSurface'),
+      deckCargo: getFieldValue('deckCargo'),
+      bowThruster: getFieldValue('bowThruster'),
+      bowThrusterEfficiency: getFieldValue('bowThrusterEfficiency'),
+      profileSelected: vesselProfiles[getFieldValue('profileSelected', true)],
     },
     stability: {
-      KG: getFieldValue('KG', 0, 0, 20),
-      GM: getFieldValue('GM', 0.15, 0.15, 5),
-      KB: getFieldValue('KB', 0, 0, 15),
+      KG: getFieldValue('KG'),
+      GM: getFieldValue('GM'),
+      KB: getFieldValue('KB'),
     },
   },
   environment: {
     weather: {
-      windSpeed: getFieldValue('windSpeed', 0, 0, 35),
-      windDirection: getFieldValue('windDirection', 90, 0, 350),
-      waveHeight: getFieldValue('waveHeight', 0, 0, 15),
-      wavePeriod: getFieldValue('wavePeriod', 0, 0, 20),
+      windSpeed: getFieldValue('windSpeed'),
+      windDirection: getFieldValue('windDirection'),
+      waveHeight: getFieldValue('waveHeight'),
+      wavePeriod: getFieldValue('wavePeriod'),
       waveLength: [0, 0],
       waveAmplitude: [0, 0],
     },
     fairway: {
-      sweptDepth: getFieldValue('sweptDepth', 0, 0, 20),
-      waterLevel: getFieldValue('waterLevel', 0, -1.5, 1.5),
-      waterDepth: getFieldValue('waterDepth', 0, 0, 30),
-      fairwayForm: fairwayForms[getFieldValue('fairwayForm', 0, 0, 2, true)],
-      channelWidth: getFieldValue('channelWidth', 0, 0),
-      slopeScale: getFieldValue('slopeScale', 0, 0),
-      slopeHeight: getFieldValue('slopeHeight', 0, 0),
+      sweptDepth: getFieldValue('sweptDepth'),
+      waterLevel: getFieldValue('waterLevel'),
+      waterDepth: getFieldValue('waterDepth'),
+      fairwayForm: fairwayForms[getFieldValue('fairwayForm', true)],
+      channelWidth: getFieldValue('channelWidth'),
+      slopeScale: getFieldValue('slopeScale'),
+      slopeHeight: getFieldValue('slopeHeight'),
     },
     vessel: {
-      vesselCourse: getFieldValue('vesselCourse', 0, 0, 350),
-      vesselSpeed: getFieldValue('vesselSpeed', 0, 0, 35),
-      turningRadius: getFieldValue('turningRadius', 0.75, 0.1, 2),
+      vesselCourse: getFieldValue('vesselCourse'),
+      vesselSpeed: getFieldValue('vesselSpeed'),
+      turningRadius: getFieldValue('turningRadius'),
     },
     attribute: {
-      airDensity: getFieldValue('airDensity', 1.3, 1, 1.5),
-      waterDensity: getFieldValue('waterDensity', 1005, 1000, 1025),
-      requiredUKC: getFieldValue('requiredUKC', 0.5, 0.5, 5),
-      safetyMarginWindForce: getFieldValue('safetyMarginWindForce', 25, 0, 25),
-      motionClearance: getFieldValue('motionClearance', 0.3, 0, 3),
+      airDensity: getFieldValue('airDensity'),
+      waterDensity: getFieldValue('waterDensity'),
+      requiredUKC: getFieldValue('requiredUKC'),
+      safetyMarginWindForce: getFieldValue('safetyMarginWindForce'),
+      motionClearance: getFieldValue('motionClearance'),
     },
   },
   calculations: {
