@@ -16,7 +16,7 @@ beforeAll(() => {
 
   const location = {
     ...window.location,
-    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10',
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true',
   };
   Object.defineProperty(window, 'location', {
     writable: true,
@@ -114,7 +114,7 @@ test('all reducer actions are working', () => {
 
 test('call url action', () => {
   SquatReducer(initialState, { type: 'url' });
-  expect(window.location.search).toEqual('?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10');
+  expect(window.location.search).toEqual('?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true');
 });
 
 it('creates shareable link correctly', () => {
