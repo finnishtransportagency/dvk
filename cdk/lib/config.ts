@@ -4,12 +4,18 @@ import * as ssm from 'aws-cdk-lib/aws-ssm';
 class Config {
   private scope: Construct;
 
+  public static readonly tags = { Environment: Config.getEnvironment(), Project: 'dvk' };
+
   constructor(scope: Construct) {
     this.scope = scope;
   }
 
   static isPermanentEnvironment() {
     return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) >= 0;
+  }
+
+  static isProductionEnvironment() {
+    return 'prod' === Config.getEnvironment();
   }
 
   static getEnvironment(): string {

@@ -12,7 +12,15 @@ import { DvkSonarPipelineStack } from '../lib/dvk-sonar-pipeline';
 import { PipelineMessaging } from '../lib/pipeline-messaging';
 import { SquatSite } from '../lib/squat-site';
 import { SquatPipeline } from '../lib/squat-pipeline';
+import { BackupServices } from '../lib/dvk-backup-services';
 
+class DvkBackupServicesStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps) {
+    super(parent, id, props);
+
+    new BackupServices(this, 'DvkBackupServices');
+  }
+}
 class DvkPipelineMessagingStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
     super(parent, id, props);
@@ -64,6 +72,7 @@ new DvkBuildImageStack(app, 'DvkBuildImageStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkBuildImageStack',
+  tags: Config.tags,
 });
 
 new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
@@ -72,6 +81,7 @@ new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkPipelineLambdaStack',
+  tags: Config.tags,
 });
 
 const appEnv = Config.getEnvironment();
@@ -86,6 +96,7 @@ new DvkPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'DvkPipelineStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -99,6 +110,7 @@ new DvkBackendStack(
       region: 'eu-west-1',
     },
     stackName: 'DvkBackendStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -112,6 +124,7 @@ new DvkPipelineMessagingStack(app, 'DvkPipelineMessagingStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkPipelineMessagingStack',
+  tags: Config.tags,
 });
 
 new SquatSiteStack(
@@ -123,6 +136,7 @@ new SquatSiteStack(
       region: 'eu-west-1',
     },
     stackName: 'SquatSiteStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
@@ -136,6 +150,16 @@ new SquatPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'SquatPipelineStack-' + appEnv,
+    tags: Config.tags,
   },
   appEnv
 );
+
+new DvkBackupServicesStack(app, 'DvkBackupServicesStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+  stackName: 'DvkBackupServicesStack-' + appEnv,
+  tags: Config.tags,
+});
