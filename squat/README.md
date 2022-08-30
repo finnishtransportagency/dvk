@@ -36,7 +36,10 @@
 
         <!-- Pass url params to iframe from parent window, baseURL is used creating shareable link and named field values to adjust default values. -->
         <script>
-          document.getElementById("squatIframe").src = "http://localhost:3000/" + (window.location.search.length? window.location.search + "&" : "?") + "showHeader=false&baseURL=" + window.location.href.split('?')[0];
+          const baseURL = window.location.href.split('?')[0];
+          document.getElementById("squatIframe").src = "http://localhost:3000/" + (window.location.search.length? window.location.search + "&" : "?") + "showHeader=false&baseURL=" + baseURL;
+          // Reset current url
+          window.history.replaceState(null, document.title, baseURL);
         </script>
 
         <!-- TODO: adjust iframe height based on content? -->

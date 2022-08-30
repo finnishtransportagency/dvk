@@ -9,11 +9,12 @@ const getQuerystringForField = (fieldName: string, value: number) => {
   return '';
 };
 
-export const createShareableLink = (currentState: State) => {
+export const createShareableLink = (currentState: State, useBaseURL?: boolean) => {
   // Get current base url (use given if available)
   const urlParams = new URLSearchParams(window.location.search);
   const baseURL = urlParams.get('baseURL');
-  const currentURL = baseURL ? baseURL : window.location.href.split('?')[0];
+  const showHeader = urlParams.get('showHeader');
+  const currentURL = useBaseURL && baseURL ? baseURL : window.location.href.split('?')[0];
 
   // Build query string based on current state
   let parametres = [];
@@ -60,6 +61,8 @@ export const createShareableLink = (currentState: State) => {
     return param && param?.length > 0 ? true : false;
   });
 
+  if (showHeader && !useBaseURL) parametres.push('showHeader=' + showHeader);
+  if (baseURL && !useBaseURL) parametres.push('baseURL=' + baseURL);
   return currentURL + (parametres.length ? '?' + parametres.join('&') : '');
 };
 

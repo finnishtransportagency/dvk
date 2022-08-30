@@ -13,7 +13,7 @@ const TitleBar: React.FC = () => {
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
 
   const handleCopyClick = () => {
-    copyToClipboard(createShareableLink(state));
+    copyToClipboard(createShareableLink(state, true));
     setShowCopyToast(true);
   };
 
@@ -38,7 +38,7 @@ const TitleBar: React.FC = () => {
                       <p>{t('homePage.header.shareable-link-body')}</p>
                       <IonItem lines="none">
                         <IonItem fill="outline">
-                          <IonTextarea value={createShareableLink(state)} autoGrow readonly className="small-text" />
+                          <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
                         </IonItem>
                         <IonButton
                           fill="clear"
