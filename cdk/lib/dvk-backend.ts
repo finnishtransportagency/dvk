@@ -42,8 +42,8 @@ export class DvkBackendStack extends Stack {
     }
     const fairwayTable = this.createFairwayTable(env);
     for (const lambdaFunc of lambdaFunctions) {
-      const typeName = lambdaFunc.typeName || this.parseTypeName(lambdaFunc.entry);
-      const fieldName = lambdaFunc.fieldName || this.parseFieldName(lambdaFunc.entry);
+      const typeName = lambdaFunc.typeName;
+      const fieldName = lambdaFunc.fieldName;
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
@@ -94,22 +94,6 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private parseFieldName(entry: string): string {
-    // parse handler name from entry removing -handler.ts
-    // example /home/xxx/dvk/cdk/lib/lambda/graphql/query/fairway-handler.ts => fairway
-    const start = entry.lastIndexOf('/');
-    const end = entry.indexOf('-', start);
-    return entry.substring(start + 1, end);
-  }
-
-  private parseTypeName(entry: string): string {
-    // parse last folder name from entry
-    // example /home/xxx/dvk/cdk/lib/lambda/graphql/query/fairways-handler.ts => Query
-    const end = entry.lastIndexOf('/');
-    const start = entry.substring(0, end).lastIndexOf('/');
-    return entry.substring(start + 1, start + 2).toUpperCase() + entry.substring(start + 2, end);
-  }
-
   private createApiKeyExpiration() {
     const now = new Date();
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
@@ -152,7 +136,7 @@ export class DvkBackendStack extends Stack {
       conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
     });
     for (const lambdaFunc of apiLambdaFunctions) {
-      const functionName = lambdaFunc.functionName || this.parseFieldName(lambdaFunc.entry);
+      const functionName = lambdaFunc.functionName;
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
         functionName: `${functionName}-${env}`.toLocaleLowerCase(),
         runtime: lambda.Runtime.NODEJS_16_X,
