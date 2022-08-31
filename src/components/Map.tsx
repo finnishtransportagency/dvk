@@ -7,7 +7,7 @@ interface FairwayCardsProps {
   data?: FindAllFairwayCardsQuery;
 }
 
-const Fairways: React.FC<FairwayCardsProps> = (props) => {
+const FairwayCards: React.FC<FairwayCardsProps> = (props) => {
   const { i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
@@ -50,7 +50,7 @@ const Map: React.FC = () => {
   return (
     <div>
       <p>{t('homePage.map.content')}</p>
-      <Fairways data={data} />
+      <FairwayCards data={data} />
       <Csv />
     </div>
   );
