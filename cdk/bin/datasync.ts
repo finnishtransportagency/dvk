@@ -44,14 +44,16 @@ async function main() {
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
   const tableName = `FairwayCard-${Config.getEnvironment()}`;
   if (response.TableNames?.includes(tableName)) {
-    const directoryPath = process.argv.length < 2 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', argv[2]);
-    console.log(`Processing directory ${directoryPath}`);
+    const directoryPath = process.argv.length < 3 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', argv[2]);
+    console.log(`Scanning directory: ${directoryPath}`);
     const arrayOfFiles = getAllFiles(directoryPath, []);
     const geoTiffMap = getGeoTiffMap(arrayOfFiles);
     for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
       const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
       const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
+      console.log(`Fairway card: ${fairwayCard.name?.fi}`);
       for (const fairway of fairwayCard.fairways) {
+        console.log(`Fairway: ${fairway.id}`);
         if (geoTiffMap.get(fairway.id)) {
           fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
             const i = f.lastIndexOf('/');
@@ -66,6 +68,7 @@ async function main() {
             return filename;
           });
           await Promise.all(s3Outputs);
+          console.log(`${fairway.geotiffImages?.length || 0} image(s) uploaded`);
         }
       }
       await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
