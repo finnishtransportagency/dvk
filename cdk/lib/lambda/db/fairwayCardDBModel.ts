@@ -2,7 +2,7 @@ import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
-const fairwayTable = process.env.FAIRWAY_CARD_TABLE;
+const fairwayCardTable = process.env.FAIRWAY_CARD_TABLE;
 
 type Text = {
   fi: string;
@@ -24,14 +24,14 @@ class FairwayCardDBModel {
   fairways: FairwayDBModel[];
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayTable, Key: { id } }));
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name);
     return fairwayCard;
   }
 
   static async getAll(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: fairwayTable }));
+    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: fairwayCardTable }));
     const fairways = response.Items as FairwayCardDBModel[] | undefined;
     if (fairways) {
       log.debug('%d fairway card(s) found', fairways.length);
