@@ -1,5 +1,5 @@
 import { Fairway, Sizing, SizingVessel } from '../../../graphql/generated';
-import FairwayCardDBModel, { FairwayDBModel } from '../db/fairwayCardDBModel';
+import { FairwayDBModel } from '../db/fairwayCardDBModel';
 import { vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_28, saimaa_5 } from './sample/fairways.json';
 
 export type MitoitusAPIModel = {

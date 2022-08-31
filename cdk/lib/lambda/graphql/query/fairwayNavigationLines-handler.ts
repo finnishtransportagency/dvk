@@ -1,12 +1,12 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import { Fairway, NavigationLine, QueryFairwayArgs } from '../../../../graphql/generated';
+import { Fairway, NavigationLine, QueryFairwayCardArgs } from '../../../../graphql/generated';
 import { NavigationLinesService } from '../../api/navigationLinesService';
 import { log } from '../../logger';
 
 const navigationService = new NavigationLinesService();
 
-export const handler: AppSyncResolverHandler<QueryFairwayArgs, NavigationLine[], Fairway> = async (
-  event: AppSyncResolverEvent<QueryFairwayArgs>
+export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (
+  event: AppSyncResolverEvent<QueryFairwayCardArgs>
 ): Promise<NavigationLine[]> => {
   log.info(`navigationLines(${event.source?.id})`);
   const lines = navigationService.getNavigationLinesByFairway(event.source?.id);
