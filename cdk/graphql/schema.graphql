@@ -3,9 +3,15 @@ schema {
 }
 
 type Query {
-  fairways: [Fairway!]!
-  fairway(id: Int!): Fairway
+  fairwayCards: [FairwayCard!]!
+  fairwayCard(id: String!): Fairway
   navigationLines: [NavigationLine!]!
+}
+
+type FairwayCard {
+  id: ID!
+  name: Text!
+  fairways: [Fairway!]!
 }
 
 type Fairway {

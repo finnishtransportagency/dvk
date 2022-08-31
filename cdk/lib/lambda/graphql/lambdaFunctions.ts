@@ -8,14 +8,14 @@ interface BackendLambda {
 
 const lambdaFunctions: BackendLambda[] = [
   {
-    entry: path.join(__dirname, 'query/fairways-handler.ts'),
+    entry: path.join(__dirname, 'query/fairwaysCards-handler.ts'),
     typeName: 'Query',
-    fieldName: 'fairways',
+    fieldName: 'fairwayCards',
   },
   {
-    entry: path.join(__dirname, 'query/fairway-handler.ts'),
+    entry: path.join(__dirname, 'query/fairwayCard-handler.ts'),
     typeName: 'Query',
-    fieldName: 'fairway',
+    fieldName: 'fairwayCard',
   },
   {
     entry: path.join(__dirname, 'query/fairwayNavigationLines-handler.ts'),

@@ -1,0 +1,14 @@
+{
+  "id": "uusikaupunki",
+  "name": {
+    "fi": "Uudenkaupungin väylä",
+    "sv": "[sv] Uudenkaupungin väylä",
+    "en": "Uusikaupunki channel"
+  },
+  "fairways": [
+    {
+      "id": 2345,
+      "name": "Uusikaupunki channel"
+    }
+  ]
+}

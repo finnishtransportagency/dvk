@@ -1,5 +1,5 @@
 import { Fairway, Sizing, SizingVessel } from '../../../graphql/generated';
-import FairwayDBModel from '../db/fairwayDBModel';
+import FairwayCardDBModel, { FairwayDBModel } from '../db/fairwayCardDBModel';
 import { vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_28, saimaa_5 } from './sample/fairways.json';
 
 export type MitoitusAPIModel = {
@@ -60,20 +60,20 @@ export class FairwayService {
     }
   }
 
-  public mapModelsToFairway(apiModel: VaylaAPIModel, dbModel?: FairwayDBModel): Fairway {
+  public mapModelsToFairway(apiModel?: VaylaAPIModel, dbModel?: FairwayDBModel): Fairway {
     const fairway: Fairway = {
-      id: apiModel.jnro,
+      id: apiModel?.jnro || dbModel?.id || 0,
       name: {
-        fi: apiModel.nimiFI,
-        sv: apiModel.nimiSV || '',
+        fi: apiModel?.nimiFI || '',
+        sv: apiModel?.nimiSV || '',
         en: dbModel?.name || '',
       },
-      draft1: apiModel.kulkuSyvyys1,
-      draft2: apiModel.kulkuSyvyys2,
-      draft3: apiModel.kulkuSyvyys3,
-      length: apiModel.pituus,
+      draft1: apiModel?.kulkuSyvyys1,
+      draft2: apiModel?.kulkuSyvyys2,
+      draft3: apiModel?.kulkuSyvyys3,
+      length: apiModel?.pituus,
     };
-    const vessels = apiModel.mitoitusAlukset?.map((vesselModel) => {
+    const vessels = apiModel?.mitoitusAlukset?.map((vesselModel) => {
       const vessel: SizingVessel = {
         id: vesselModel.id,
         type: vesselModel.tyyppi,
@@ -84,7 +84,7 @@ export class FairwayService {
       return vessel;
     });
     fairway.sizingVessels = vessels;
-    const sizings = apiModel.mitoitukset?.map((sizingModel) => {
+    const sizings = apiModel?.mitoitukset?.map((sizingModel) => {
       const sizing: Sizing = {
         id: sizingModel.id,
         draft: sizingModel.syvays,
@@ -101,7 +101,6 @@ export class FairwayService {
       return sizing;
     });
     fairway.sizings = sizings;
-    fairway.geotiffImages = dbModel?.geotiffImages;
     return fairway;
   }
 }

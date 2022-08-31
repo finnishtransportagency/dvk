@@ -1,0 +1,14 @@
+{
+  "id": "kemi",
+  "name": {
+    "fi": "Kemin väylä",
+    "sv": "[sv] Kemin väylä",
+    "en": "Kemi Ajos fairway"
+  },
+  "fairways": [
+    {
+      "id": 10,
+      "name": "Kemi Ajos fairway"
+    }
+  ]
+}

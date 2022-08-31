@@ -4,7 +4,7 @@ import Config from '../lib/config';
 import { getDynamoDBDocumentClient } from '../lib/lambda/db/dynamoClient';
 import path from 'path';
 import fs from 'fs';
-import FairwayDBModel from '../lib/lambda/db/fairwayDBModel';
+import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
 import { argv } from 'process';
@@ -49,26 +49,28 @@ async function main() {
     const arrayOfFiles = getAllFiles(directoryPath, []);
     const geoTiffMap = getGeoTiffMap(arrayOfFiles);
     for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
-      const fairway = JSON.parse(fs.readFileSync(file).toString()) as FairwayDBModel;
+      const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
       const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
-      if (geoTiffMap.get(fairway.id)) {
-        fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
-          const i = f.lastIndexOf('/');
-          const filename = f.substring(i + 1);
-          const command = new PutObjectCommand({
-            Key: `${fairway.id}/${filename}`,
-            Bucket: `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`,
-            Body: fs.readFileSync(f),
+      for (const fairway of fairwayCard.fairways) {
+        if (geoTiffMap.get(fairway.id)) {
+          fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
+            const i = f.lastIndexOf('/');
+            const filename = f.substring(i + 1);
+            const command = new PutObjectCommand({
+              Key: `${fairway.id}/${filename}`,
+              Bucket: `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`,
+              Body: fs.readFileSync(f),
+            });
+            const s3Response = s3Client.send(command);
+            s3Outputs.push(s3Response);
+            return filename;
           });
-          const s3Response = s3Client.send(command);
-          s3Outputs.push(s3Response);
-          return filename;
-        });
-        await Promise.all(s3Outputs);
+          await Promise.all(s3Outputs);
+        }
       }
-      await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairway }));
+      await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
     }
-    console.log(`Fairway table ${tableName} updated`);
+    console.log(`FairwayCard table ${tableName} updated`);
   }
 }
 
