@@ -37,6 +37,9 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
         elType: (event.target as HTMLInputElement).tagName,
       },
     });
+    dispatch({
+      type: 'url',
+    });
   };
 
   return (

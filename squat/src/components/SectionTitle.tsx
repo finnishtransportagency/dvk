@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
-import { checkmarkSharp } from 'ionicons/icons';
+import { checkmarkCircle, radioButtonOff } from 'ionicons/icons';
 
 interface SectionProps {
   title: string;
@@ -21,7 +21,7 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
         </IonCol>
         {!props.hideValidity && (
           <IonCol size="auto" className="ion-align-self-center">
-            <IonIcon icon={checkmarkSharp} color={props.valid ? 'success' : 'medium'} size="small" />
+            <IonIcon icon={props.valid ? checkmarkCircle : radioButtonOff} color={props.valid ? 'success' : 'medium'} className="medium" />
           </IonCol>
         )}
       </IonRow>

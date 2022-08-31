@@ -43,6 +43,13 @@ ion-grid.divider {
 .left-padding {
   padding-left: 5px;
 }
+.top-padding {
+  padding-top: 10px;
+}
+
+.small-text {
+  font-size: 14px;
+}
 
 ion-toggle.squat-toggle {
   --background: #fff;
@@ -55,6 +62,12 @@ ion-toggle.squat-toggle {
   padding: 3px;
   border: 2px solid var(--ion-color-primary);
   border-radius: var(--border-radius);
+}
+
+ion-textarea {
+  word-break: break-all;
+  margin-top: 0 !important;
+  --padding-start: 10px !important;
 }
 
 /* General alerts */
@@ -84,7 +97,7 @@ ion-icon {
 /* Forms */
 ion-item.item.only-label {
   --min-height: 30px;
-  --padding-top: 8px;
+  --padding-top: 2px;
   --padding-start: 0;
   --inner-padding-start: 0;
   --inner-padding-end: 0;
@@ -115,6 +128,10 @@ ion-item.item-interactive.ion-invalid {
   --border-color: var(--highlight-color-invalid);
 }
 
+ion-item.item-static {
+  --min-height: 42px;
+}
+
 ion-item.item.align-center .sc-ion-label-md-s p {
   margin: 0.25rem 0;
 }
@@ -132,10 +149,13 @@ ion-item.item.align-center ion-radio {
   width: 100%;
 }
 
+ion-note.input-helper {
+  min-height: 19px;
+}
+
 ion-item.item-interactive.ion-invalid ion-note.input-error, ion-text.input-error {
   display: flex;
   align-items: center;
-  line-height: 1rem;
 }
 
 ion-note.input-error ion-icon, ion-text.input-error ion-icon {
@@ -173,6 +193,11 @@ ion-button.icon-only {
   height: auto;
   margin: 0 0 0 5px;
   vertical-align: top;
+}
+
+ion-icon.medium {
+  font-size: 22px;
+  --ionicon-stroke-width: 32px;
 }
 
 /* Footer */

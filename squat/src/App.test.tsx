@@ -2,13 +2,31 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import { SquatReducer, initialState, Action } from './hooks/squatReducer';
+import { SquatReducer, initialState, Action, getFieldValue } from './hooks/squatReducer';
+import { copyToClipboard, createShareableLink } from './utils/helpers';
+
+const baseURL = 'http://localhost:8080/';
 
 beforeAll(() => {
   // @ts-ignore
   window.SVGElement.prototype.getBBox = () => ({
     x: 0,
     y: 0,
+  });
+
+  const location = {
+    ...window.location,
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true',
+  };
+  Object.defineProperty(window, 'location', {
+    writable: true,
+    value: location,
+  });
+
+  Object.defineProperty(navigator, 'clipboard', {
+    value: {
+      writeText: jest.fn().mockImplementation(() => Promise.resolve()),
+    },
   });
 });
 
@@ -17,20 +35,20 @@ afterAll(() => {
   delete window.SVGElement.prototype.getBBox;
 });
 
-test('renders without crashing', () => {
+it('renders without crashing', () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
 });
 
-it('reducer returns new state after update action', () => {
+test('reducer returns new state after update action', () => {
   const state = SquatReducer(initialState, { type: 'reset' });
-  expect(state.vessel.stability.GM).toEqual(0);
+  expect(state.vessel.stability.GM).toEqual(0.15);
   const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
   expect(updatedState.vessel.stability.GM).toEqual(2);
 });
 
-it('all reducer actions are working', () => {
+test('all reducer actions are working', () => {
   // Use all action types to update state
   let state = SquatReducer(initialState, { type: 'reset' });
   state = SquatReducer(state, {
@@ -86,8 +104,39 @@ it('all reducer actions are working', () => {
   expect(state.validations.lengthBPP).toEqual(true);
 
   // Test also unknown action type
-  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
+    return null;
+  });
   // @ts-ignore
   SquatReducer(state, { type: 'unknown', payload: { key: 'unknown', value: true } });
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
+});
+
+test('call url action', () => {
+  SquatReducer(initialState, { type: 'url' });
+  expect(window.location.search).toEqual('?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true');
+});
+
+it('creates shareable link correctly', () => {
+  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
+  const updatedState = SquatReducer(initialState, updateAction);
+
+  const shareableLink = createShareableLink(updatedState, true);
+  expect(shareableLink).toBe(baseURL + '?GM=2');
+});
+
+test('setting default value under minimum or above maximum is swallowed when forced', () => {
+  expect(getFieldValue('profileSelected', true)).toEqual(3);
+  expect(getFieldValue('fairwayForm', true)).toEqual(0);
+  expect(getFieldValue('GM')).toEqual(0);
+  expect(getFieldValue('channelWidth')).toEqual(10);
+});
+
+it('should call clipboard.writeText', () => {
+  jest.spyOn(navigator.clipboard, 'writeText');
+
+  copyToClipboard('copyTextToClipboard');
+
+  expect(navigator.clipboard.writeText).toBeCalledTimes(1);
+  expect(navigator.clipboard.writeText).toHaveBeenCalledWith('copyTextToClipboard');
 });

@@ -366,7 +366,7 @@ const Calculations: React.FC = () => {
         <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.heel-due-wind')}
                 value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
@@ -375,7 +375,7 @@ const Calculations: React.FC = () => {
                 unit="deg"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.constant-heel-during-turn')}
                 value={
@@ -386,9 +386,8 @@ const Calculations: React.FC = () => {
                 unit="deg"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.corrected-draught')}
                 value={
@@ -399,7 +398,7 @@ const Calculations: React.FC = () => {
                 unit="m"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.corrected-draught-during-turn')}
                 value={
@@ -410,9 +409,8 @@ const Calculations: React.FC = () => {
                 unit="m"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.UKC-vessel-motions')}
                 value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
@@ -439,7 +437,7 @@ const Calculations: React.FC = () => {
                 }
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.UKC-straight-course')}
                 value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
@@ -457,9 +455,8 @@ const Calculations: React.FC = () => {
                 }
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.UKC-during-turn')}
                 value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
@@ -477,7 +474,7 @@ const Calculations: React.FC = () => {
                 }
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.squat') + ', ' + t(state.environment.fairway.fairwayForm?.name)}
                 value={getSquatValue().toLocaleString(i18n.language, {
@@ -499,23 +496,22 @@ const Calculations: React.FC = () => {
         <SectionTitle title={t('homePage.squat.calculations.wind-force')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="deg"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-speed')}
                 value={Math.round(state.calculations.forces.relativeWindSpeed)}
                 unit="m/s"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.wind-force')}
                 value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
@@ -524,7 +520,7 @@ const Calculations: React.FC = () => {
                 unit={t('common.tonnes')}
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.wave-force')}
                 value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
@@ -533,16 +529,15 @@ const Calculations: React.FC = () => {
                 unit={t('common.tonnes')}
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.bow-thruster-force')}
                 value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
                 unit={t('common.tonnes')}
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.remaining-safety-margin')}
                 value={(isNaN(state.calculations.forces.remainingSafetyMargin)
@@ -557,9 +552,8 @@ const Calculations: React.FC = () => {
                 }
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
+
+            <IonCol size="12" sizeSm="6" sizeLg="12">
               <LabelField
                 title={t('homePage.squat.calculations.minimum-external-force-required')}
                 value={
@@ -580,23 +574,22 @@ const Calculations: React.FC = () => {
         <SectionTitle title={t('homePage.squat.calculations.drift')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="deg"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-speed')}
                 value={Math.round(state.calculations.forces.relativeWindSpeed)}
                 unit="m/s"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol size="6">
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.estimated-drift-angle')}
                 value={(isFinite(state.calculations.forces.estimatedDriftAngle)
@@ -606,7 +599,7 @@ const Calculations: React.FC = () => {
                 unit="deg"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.estimated-vessel-breadth-due-drift')}
                 value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}

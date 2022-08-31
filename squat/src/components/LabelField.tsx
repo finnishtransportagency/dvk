@@ -18,13 +18,17 @@ const LabelField: React.FC<LabelProps> = (props) => {
     <>
       <Label title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
-      <IonItem lines="none">
+      <IonItem lines="none" className="item-static">
         <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
           {props.error && <IonIcon icon={alertCircleOutline} color="danger" />}
           {props.value}
         </IonText>
         {props.unit && <IonLabel color="medium">&nbsp;{props.unit}</IonLabel>}
-        {props.helper && <IonNote slot="helper">{props.helper}</IonNote>}
+        {props.helper && (
+          <IonNote slot="helper" className="input-helper">
+            {props.helper}
+          </IonNote>
+        )}
       </IonItem>
     </>
   );

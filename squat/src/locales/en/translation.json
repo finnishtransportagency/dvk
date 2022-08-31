@@ -1,7 +1,11 @@
 {
   "homePage": {
     "header": {
-      "title": "[en] Squat-laskenta"
+      "title": "[en] Squat-laskenta",
+      "shareable-link-title": "Create a shareable link",
+      "shareable-link-body": "Below is a a link that you can use to share you're calculations' current status to anyone.",
+      "copy-to-clipboard": "Copy to clipboard",
+      "copied-to-clipboard": "Copied to clipboard!"
     },
     "squat": {
       "content": "[en] Squat-laskenta",
