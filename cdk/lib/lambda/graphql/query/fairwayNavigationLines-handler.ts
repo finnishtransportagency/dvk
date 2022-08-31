@@ -6,10 +6,10 @@ import { log } from '../../logger';
 const navigationService = new NavigationLinesService();
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (
-  event: AppSyncResolverEvent<QueryFairwayCardArgs>
+  event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
 ): Promise<NavigationLine[]> => {
-  log.info(`navigationLines(${event.source?.id})`);
-  const lines = navigationService.getNavigationLinesByFairway(event.source?.id);
+  log.info(`navigationLines(${event.source.id})`);
+  const lines = navigationService.getNavigationLinesByFairway(event.source.id);
   return lines.map((apiLine) => {
     const line: NavigationLine = {
       id: apiLine.id,

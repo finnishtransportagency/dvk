@@ -211,5 +211,18 @@
         "coordinates": [[], []]
       }
     }
+  ],
+  "saimaa": [
+    {
+      "id": 300,
+      "jnro": 7030,
+      "pituus": 60,
+      "harausSyvyys": 6,
+      "syvyys": 8,
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [[], []]
+      }
+    }
   ]
 }

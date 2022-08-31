@@ -22,8 +22,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, FairwayCard |
       fairways: [],
     };
     for (const fairway of dbModel?.fairways || []) {
-      const apiModel = fairwayService.getFairway(fairway.id);
-      card.fairways.push(fairwayService.mapModelsToFairway(apiModel, fairway));
+      card.fairways.push(fairwayService.mapModelsToFairway(undefined, fairway));
     }
     return card;
   }

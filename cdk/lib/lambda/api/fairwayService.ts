@@ -101,6 +101,7 @@ export class FairwayService {
       return sizing;
     });
     fairway.sizings = sizings;
+    fairway.geotiffImages = dbModel?.geotiffImages;
     return fairway;
   }
 }
