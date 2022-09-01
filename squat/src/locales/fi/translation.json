@@ -1,7 +1,11 @@
 {
   "homePage": {
     "header": {
-      "title": "Squat-laskenta"
+      "title": "Squat-laskenta",
+      "shareable-link-title": "Luo jaettava linkki",
+      "shareable-link-body": "Alla näkyvää linkkiä voi käyttää laskentatulosten (ja/tai nykyisten arvojen) jakamiseen kenelle tahansa.",
+      "copy-to-clipboard": "Kopioi leikepöydälle",
+      "copied-to-clipboard": "Kopioitu leikepöydälle!"
     },
     "squat": {
       "content": "Squat-laskenta",
@@ -43,7 +47,7 @@
         "set-wave-height": "Aallonkorkeus",
         "set-wave-period": "[fi] Set Wave Period",
         "wave-length": "Aallonpituus",
-        "wave-amplitude": "Aallon korkeus",
+        "wave-amplitude": "Aallon amplitudi",
         "fairway": "Väylä",
         "swept-depth": "Haraussyvyys",
         "water-level": "Vallitseva vedenkorkeus",

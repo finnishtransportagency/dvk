@@ -6,6 +6,8 @@ import { closeOutline, helpCircleOutline } from 'ionicons/icons';
 interface ModalProps {
   title: string;
   content: string | ReactElement;
+  trigger?: ReactElement;
+  triggerTitle?: string;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -14,8 +16,8 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   return (
     <>
-      <IonButton fill="clear" className="icon-only" onClick={() => setIsOpen(true)} title={t('common.more-info')}>
-        <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />
+      <IonButton fill="clear" className="icon-only" onClick={() => setIsOpen(true)} title={props.triggerTitle || t('common.more-info')}>
+        {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
       <IonModal isOpen={isOpen}>
         <IonHeader>
@@ -31,7 +33,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         </IonHeader>
         <IonContent className="ion-padding">
           {props.content}
-          <IonItem lines="none" className="no-padding">
+          <IonItem lines="none" className="no-padding top-padding">
             <IonButton slot="end" size="default" onClick={() => setIsOpen(false)} shape="round">
               {t('common.close')}
             </IonButton>

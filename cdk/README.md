@@ -13,7 +13,7 @@ There is also predefined deploy commands configured for [npm run scripts](#usefu
 
 Run `npm run setup` to write [.env.local](../.env.local) file for local development.
 
-Bundling of lambda function uses [esbuild](https://esbuild.github.io). If this tool is not installed globally, cdk tries to use docker image instead.
+Bundling of lambda function uses [esbuild](https://esbuild.github.io).
 ## Useful commands
 
 * `npm run login`   AWS SSO login and CDK credential synchronization
