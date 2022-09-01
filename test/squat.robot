@@ -3,6 +3,7 @@ Library			SeleniumLibrary
 
 *** Variables ***
 ${BROWSER}		headlesschrome
+${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Squat-laskenta"]
 
 *** Test Cases ***
 Open Squat
