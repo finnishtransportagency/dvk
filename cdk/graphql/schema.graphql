@@ -4,7 +4,7 @@ schema {
 
 type Query {
   fairwayCards: [FairwayCard!]!
-  fairwayCard(id: String!): Fairway
+  fairwayCard(id: String!): FairwayCard
   navigationLines: [NavigationLine!]!
 }
 
