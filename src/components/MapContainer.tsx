@@ -9,11 +9,13 @@ import { get as getProjection } from 'ol/proj';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import Zoom from 'ol/control/Zoom';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import './MapContainer.css';
 import bgMapStyles from './taustakartta.json';
 import { MAP } from '../utils/constants';
+import 'ol/ol.css';
 
 const MapContainer: React.FC = () => {
   const mapElement = useRef<HTMLDivElement>(null);
@@ -65,7 +67,7 @@ const MapContainer: React.FC = () => {
         extent: MAP.EXTENT,
         constrainOnlyCenter: true,
       }),
-      controls: [],
+      controls: [new Zoom()],
     });
     // override with tileURL
     // styleJSON has tileJSON url which does not work without further dev
