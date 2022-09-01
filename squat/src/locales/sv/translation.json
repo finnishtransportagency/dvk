@@ -5,7 +5,8 @@
       "shareable-link-title": "[sv] Create a shareable link",
       "shareable-link-body": "[sv] Below is a a link that you can use to share you're calculations' current status to anyone.",
       "copy-to-clipboard": "[sv] Copy to clipboard",
-      "copied-to-clipboard": "[sv] Copied to clipboard!"
+      "copied-to-clipboard": "[sv] Copied to clipboard!",
+      "print": "[sv] Print page"
     },
     "squat": {
       "content": "[sv] Squat-laskenta",

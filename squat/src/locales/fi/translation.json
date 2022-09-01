@@ -5,7 +5,8 @@
       "shareable-link-title": "Luo jaettava linkki",
       "shareable-link-body": "Alla näkyvää linkkiä voi käyttää laskentatulosten (ja/tai nykyisten arvojen) jakamiseen kenelle tahansa.",
       "copy-to-clipboard": "Kopioi leikepöydälle",
-      "copied-to-clipboard": "Kopioitu leikepöydälle!"
+      "copied-to-clipboard": "Kopioitu leikepöydälle!",
+      "print": "Tulosta sivu"
     },
     "squat": {
       "content": "Squat-laskenta",
