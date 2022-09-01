@@ -135,7 +135,7 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo deploy cdk stack', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
+            commands: ['echo deploy cdk stack', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack SquatSiteStack'],
           },
         },
       }),
