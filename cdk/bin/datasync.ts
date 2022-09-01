@@ -7,7 +7,6 @@ import fs from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
-import { argv } from 'process';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -44,7 +43,7 @@ async function main() {
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
   const tableName = `FairwayCard-${Config.getEnvironment()}`;
   if (response.TableNames?.includes(tableName)) {
-    const directoryPath = process.argv.length < 3 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', argv[2]);
+    const directoryPath = process.argv.length < 3 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', process.argv[2]);
     console.log(`Scanning directory: ${directoryPath}`);
     const arrayOfFiles = getAllFiles(directoryPath, []);
     const geoTiffMap = getGeoTiffMap(arrayOfFiles);
