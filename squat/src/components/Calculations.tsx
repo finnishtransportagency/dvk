@@ -29,7 +29,9 @@ import Alert from './Alert';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import {
+  isBreadthDraughtRatioOutOfRange,
   isExternalForceRequired,
+  isLengthBreadthRatioOutOfRange,
   isReliabilityAnIssue,
   isSafetyMarginInsufficient,
   isUKCDuringTurnUnderRequired,
@@ -61,6 +63,13 @@ const Calculations: React.FC = () => {
       state.environment.fairway.sweptDepth,
       state.environment.fairway.waterLevel
     );
+  };
+  const checkIsBarrassActive = () => {
+    return checkIsReliabilityAnIssue() !== '' ||
+      isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) !== '' ||
+      isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) !== ''
+      ? true
+      : state.status.showBarrass;
   };
 
   // useEffects to calculate results by input value update
@@ -292,8 +301,7 @@ const Calculations: React.FC = () => {
     return isNaN(currentValue) ? '' : currentValue;
   };
   const getSquatValue = () => {
-    const currentValue =
-      state.status.showBarrass || checkIsReliabilityAnIssue() ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
+    const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
     return isNaN(currentValue) ? '' : currentValue;
   };
 
@@ -348,7 +356,7 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
-                  checked={checkIsReliabilityAnIssue() !== '' ? true : state.status.showBarrass}
+                  checked={checkIsBarrassActive()}
                   onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
                   className="squat-toggle"
                   disabled={getSquatValue() === '' || checkIsReliabilityAnIssue() !== ''}

@@ -36,6 +36,8 @@
         "KG": "[sv] KG",
         "GM": "[sv] GM",
         "KB": "[sv] KB",
+        "lengthBPP-breadth-ratio": "[sv] Pituus-leveyssuhde",
+        "breadth-draught-ratio": "[sv] Leveys-syväyssuhde",
         "tug-use-recommended": "[sv] Tug Use Is Recommended",
         "thruster-unable-to-lift-bow": "[sv] Thruster Is Unable To Lift Bow When Running Optimal Speed Astern"
       },
