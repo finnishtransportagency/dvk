@@ -10,7 +10,12 @@ import SectionTitle from './SectionTitle';
 import InputField from './InputField';
 import Alert from './Alert';
 import SelectField from './SelectField';
-import { isThrusterUnableToLiftBow, isTugUseRecommended } from '../utils/validations';
+import {
+  isBreadthDraughtRatioOutOfRange,
+  isLengthBreadthRatioOutOfRange,
+  isThrusterUnableToLiftBow,
+  isTugUseRecommended,
+} from '../utils/validations';
 
 const zero = 0;
 
@@ -69,6 +74,12 @@ const Vessel: React.FC = () => {
       </IonText>
 
       <>
+        {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) && (
+          <Alert title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth)} />
+        )}
+        {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) && (
+          <Alert title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught)} />
+        )}
         {isTugUseRecommended(state.calculations.forces.bowThrusterForce, state.calculations.forces.externalForceRequired) && (
           <Alert title={t('homePage.squat.vessel.tug-use-recommended')} />
         )}
