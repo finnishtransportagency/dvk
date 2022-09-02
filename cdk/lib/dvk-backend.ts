@@ -40,7 +40,7 @@ export class DvkBackendStack extends Stack {
     if (Config.isPermanentEnvironment()) {
       new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
     }
-    const fairwayTable = this.createFairwayTable(env);
+    const fairwayCardTable = this.createFairwayCardTable(env);
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -50,7 +50,7 @@ export class DvkBackendStack extends Stack {
         entry: lambdaFunc.entry,
         handler: 'handler',
         environment: {
-          FAIRWAY_TABLE: fairwayTable.tableName,
+          FAIRWAY_CARD_TABLE: fairwayCardTable.tableName,
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -61,12 +61,12 @@ export class DvkBackendStack extends Stack {
         fieldName: fieldName,
       });
       if (typeName === 'Mutation') {
-        fairwayTable.grantReadWriteData(backendLambda);
+        fairwayCardTable.grantReadWriteData(backendLambda);
       } else {
-        fairwayTable.grantReadData(backendLambda);
+        fairwayCardTable.grantReadData(backendLambda);
       }
     }
-    Tags.of(fairwayTable).add('Backups-' + Config.getEnvironment(), 'true');
+    Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     const alb = this.createALB(env);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
@@ -82,13 +82,13 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createFairwayTable(env: string): Table {
-    return new Table(this, 'FairwayTable', {
+  private createFairwayCardTable(env: string): Table {
+    return new Table(this, 'FairwayCardTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
-      tableName: `Fairway-${env}`,
+      tableName: `FairwayCard-${env}`,
       partitionKey: {
         name: 'id',
-        type: AttributeType.NUMBER,
+        type: AttributeType.STRING,
       },
       pointInTimeRecovery: true,
     });
@@ -104,7 +104,11 @@ export class DvkBackendStack extends Stack {
     let securityGroup: SecurityGroup | undefined = undefined;
     if (!Config.isPermanentEnvironment()) {
       securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
-      securityGroup.addIngressRule(Peer.ipv4(`${Config.getPublicIP()}/32`), Port.tcp(80), `Developer ip for ${env}`);
+      securityGroup.addIngressRule(
+        Peer.ipv4(`${Config.getPublicIP() + (Config.getPublicIP().indexOf('/') === -1 ? '/32' : '')}`),
+        Port.tcp(80),
+        `Developer ip for ${env}`
+      );
     }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,

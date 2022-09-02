@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import './Map.css';
 import { useTranslation } from 'react-i18next';
-import { FindAllFairwaysQuery, useFindAllFairwaysQuery } from '../graphql/generated';
+import { FindAllFairwayCardsQuery, useFindAllFairwayCardsQuery } from '../graphql/generated';
 
-interface FairwaysProps {
-  data?: FindAllFairwaysQuery;
+interface FairwayCardsProps {
+  data?: FindAllFairwayCardsQuery;
 }
 
-const Fairways: React.FC<FairwaysProps> = (props) => {
+const FairwayCards: React.FC<FairwayCardsProps> = (props) => {
   const { i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
     <ul>
-      {props.data?.fairways.map((fairway, idx) => {
-        return <li key={idx}>{fairway.name[lang]}</li>;
+      {props.data?.fairwayCards.map((fairwayCard, idx) => {
+        return <li key={idx}>{fairwayCard.name[lang]}</li>;
       })}
     </ul>
   );
@@ -46,11 +46,11 @@ const Csv: React.FC = () => {
 
 const Map: React.FC = () => {
   const { t } = useTranslation();
-  const { data } = useFindAllFairwaysQuery();
+  const { data } = useFindAllFairwayCardsQuery();
   return (
     <div>
       <p>{t('homePage.map.content')}</p>
-      <Fairways data={data} />
+      <FairwayCards data={data} />
       <Csv />
     </div>
   );
