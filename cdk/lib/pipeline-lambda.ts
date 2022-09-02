@@ -14,6 +14,7 @@ export class PipelineLambda extends Construct {
     const importedSquatPipelineNameTest = cdk.Fn.importValue('SquatPipeline-test');
     const importedDVKPipelineNameDev = cdk.Fn.importValue('DvkPipeline-dev');
     const importedDVKPipelineNameTest = cdk.Fn.importValue('DvkPipeline-test');
+    const importedBuildimagePipelineName = cdk.Fn.importValue('BuildimagePipeline');
     const storedGithubWebhookSecret = ssm.StringParameter.valueForStringParameter(this, '/github/WebhookSecret', 1);
 
     const handler = new nodejsfunction.NodejsFunction(this, 'WebhookHandler', {
@@ -25,6 +26,7 @@ export class PipelineLambda extends Construct {
         TEST_PIPELINE_SQUAT: importedSquatPipelineNameTest,
         DEV_PIPELINE_DVK: importedDVKPipelineNameDev,
         TEST_PIPELINE_DVK: importedDVKPipelineNameTest,
+        BUILDIMAGE_PIPELINE: importedBuildimagePipelineName,
         WEBHOOK_SECRET: storedGithubWebhookSecret,
       },
     });

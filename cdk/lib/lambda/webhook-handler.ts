@@ -5,6 +5,7 @@ const devPipelineSquat = process.env.DEV_PIPELINE_SQUAT;
 const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
 const devPipelineDVK = process.env.DEV_PIPELINE_DVK;
 const testPipelineDVK = process.env.TEST_PIPELINE_DVK;
+const buildimagePipeline = process.env.BUILDIMAGE_PIPELINE;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
 function parseBranchName(branch: string) {
@@ -30,6 +31,11 @@ function getPipelineName(branch: string, appName: string) {
         return devPipelineDVK;
       } else if (branchName === 'test') {
         return testPipelineDVK;
+      }
+      return undefined;
+    case 'image':
+      if (branchName === 'main') {
+        return buildimagePipeline;
       }
       return undefined;
     default:
