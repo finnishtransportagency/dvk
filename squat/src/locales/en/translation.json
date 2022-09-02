@@ -36,6 +36,8 @@
         "KG": "KG",
         "GM": "GM",
         "KB": "KB",
+        "lengthBPP-breadth-ratio": "Length-Breadth Ratio",
+        "breadth-draught-ratio": "Breadth-Draught Ratio",
         "tug-use-recommended": "Tug Use Is Recommended",
         "thruster-unable-to-lift-bow": "Thruster Is Unable To Lift Bow When Running Optimal Speed Astern"
       },
