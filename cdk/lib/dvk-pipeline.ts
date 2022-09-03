@@ -141,7 +141,7 @@ export class DvkPipeline extends Construct {
               'cd cdk',
               'npm ci',
               'npm run generate',
-              'npm run cdk deploy DvkBackendStack SquatSiteStack -- --require-approval never',
+              'npm run cdk deploy DvkBackendStack SquatSiteStack DvkBackupServicesStack -- --require-approval never',
             ],
           },
         },
