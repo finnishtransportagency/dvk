@@ -8,6 +8,12 @@ const testPipelineDVK = process.env.TEST_PIPELINE_DVK;
 const buildimagePipeline = process.env.BUILDIMAGE_PIPELINE;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
+enum APPS {
+  SQUAT = 'squat',
+  DVK = 'dvk',
+  IMAGE = 'image',
+}
+
 function parseBranchName(branch: string) {
   const fullBranchName = branch.replace('refs/heads/', '').trim();
   const endIndex = fullBranchName.indexOf('/');
@@ -19,25 +25,25 @@ function parseBranchName(branch: string) {
 function getPipelineName(branch: string, appName: string) {
   const branchName = parseBranchName(branch);
   switch (appName) {
-    case 'squat':
+    case APPS.SQUAT:
       if (branchName === 'main') {
         return devPipelineSquat;
       } else if (branchName === 'test') {
         return testPipelineSquat;
       }
       return undefined;
-    case 'dvk':
+    case APPS.DVK:
       if (branchName === 'main') {
         return devPipelineDVK;
       } else if (branchName === 'test') {
         return testPipelineDVK;
       }
       return undefined;
-    case 'image':
+    case APPS.IMAGE:
       if (branchName === 'main') {
         return buildimagePipeline;
       }
-      return undefined;
+      return undefined; // build imaget tarpeen paivittaa vain main-haarasta
     default:
       return undefined;
   }
@@ -53,18 +59,28 @@ function getDistinctFolders(fileinfo: string[]): string[] {
   console.log('fileinfo in: ', fileinfo);
   const filteredFiles = fileinfo.filter((file) => {
     const extension = file.split('.').pop();
-    if (extension && ignoredTypes.includes(extension)) {
-      console.log('removing ignored file: ', file);
+    const folderSeparatorIndex = file.indexOf('/');
+    if (folderSeparatorIndex < 1 || (extension && ignoredTypes.includes(extension))) {
+      console.log('removing root file or ignored file: ', file);
       return false;
     }
     return true;
   });
   console.log('after removing ignored files: ', filteredFiles);
+
   const folders = filteredFiles.map((filteredFile) => filteredFile.slice(0, filteredFile.indexOf('/')));
   const distinctFolders = [...new Set<string>(folders)];
   console.log('distinct folders: ', distinctFolders);
 
   return distinctFolders;
+}
+function hasDockerFiles(fileinfo: string[]): boolean {
+  console.log('checking for dockerfiles');
+  if (fileinfo.includes('Dockerfile') || fileinfo.includes('test/Dockerfile')) {
+    console.log('found dockerfile');
+    return true;
+  }
+  return false;
 }
 
 type EventHeaders = {
@@ -87,6 +103,25 @@ type EventHeaders = {
   'x-github-hook-installation-target-type': string;
   'x-hub-signature': string;
 };
+
+interface GithubUser {
+  name: string;
+  email: string;
+  username: string;
+}
+interface GithubCommit {
+  id: string;
+  tree_id: string;
+  distinct: boolean;
+  message: string;
+  timestamp: string;
+  url: string;
+  author: GithubUser;
+  committer: GithubUser;
+  added: string[];
+  removed: string[];
+  modified: string[];
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateSignature(event: any): boolean {
@@ -151,22 +186,27 @@ const handler = async function (event: any) {
     };
   }
 
-  const commit = githubData?.commits?.[0];
-
-  if (!commit) {
+  const commits: GithubCommit[] = githubData?.commits;
+  if (!commits) {
     return {
       statusCode: 404,
-      body: `No commit found in payload`,
+      body: `No commits found in payload`,
     };
   }
 
-  const commitAdded: string[] = commit.added;
-  const commitRemoved: string[] = commit.removed;
-  const commitModified: string[] = commit.modified;
+  let commitAdded: string[] = [];
+  let commitRemoved: string[] = [];
+  let commitModified: string[] = [];
+  commits.forEach((commit: GithubCommit) => {
+    commitAdded = commitAdded.concat(commit.added);
+    commitRemoved = commitRemoved.concat(commit.removed);
+    commitModified = commitModified.concat(commit.modified);
+  });
 
   const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
+  const isDockerFiles = hasDockerFiles(commitAdded.concat(commitRemoved).concat(commitModified));
 
-  if (!folders || folders.length < 1) {
+  if (!isDockerFiles && (!folders || folders.length < 1)) {
     return {
       statusCode: 400,
       body: `No suitable application files or folders in commit`,
@@ -175,13 +215,19 @@ const handler = async function (event: any) {
 
   // Kaynnista tarvittaessa squat-pipelinet
   if (folders.includes('squat')) {
-    const squatPipelineName = getPipelineName(branch, 'squat');
-    await kaynnistaPipeline(squatPipelineName);
+    const squatPipelineName = getPipelineName(branch, APPS.SQUAT);
+    if (squatPipelineName) await kaynnistaPipeline(squatPipelineName);
   }
   // ja DVK-pipelinet
   if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
-    const dvkPipelineName = getPipelineName(branch, 'dvk');
-    await kaynnistaPipeline(dvkPipelineName);
+    const dvkPipelineName = getPipelineName(branch, APPS.DVK);
+    if (dvkPipelineName) await kaynnistaPipeline(dvkPipelineName);
+  }
+
+  // ja build image -pipeline
+  if (isDockerFiles) {
+    const imagePipelineName = getPipelineName(branch, APPS.IMAGE);
+    if (imagePipelineName) await kaynnistaPipeline(imagePipelineName);
   }
 
   return {
