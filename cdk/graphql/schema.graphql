@@ -12,6 +12,7 @@ type FairwayCard {
   id: ID!
   name: Text!
   fairways: [Fairway!]!
+  lineText: Text
 }
 
 type Fairway {
@@ -21,10 +22,25 @@ type Fairway {
   draft1: Float
   draft2: Float
   draft3: Float
+  statementStart: Text
+  statementEnd: Text
+  lighting: Boolean
   sizings: [Sizing!]
   sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
+  areas: [Area!]
   geotiffImages: [String]
+}
+
+type Area {
+  id: Int!
+  geometry: Geometry
+  sizingSpeed: Float
+  sizingSpeed2: Float
+  depth: Float
+  draft: Float
+  qualityClass: Int
+  type: Int
 }
 
 type SizingVessel {
@@ -53,8 +69,11 @@ type NavigationLine {
   id: Int!
   fairwayId: Int!
   length: Float
+  depth: Float
   draft: Float
-  draft2: Float
+  type: Int
+  qualityClass: Int
+  direction: Float
   geometry: Geometry
 }
 
