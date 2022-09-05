@@ -181,7 +181,7 @@ export const fieldParams: Record<string, FieldParam> = {
   waveHeight: { default: 0, min: 0, max: 15, unit: 'm' },
   wavePeriod: { default: 0, min: 0, max: 20, unit: 's' },
   sweptDepth: { default: 0, min: 0, max: 20, unit: 'm' },
-  waterLevel: { default: 0, min: -1.5, max: 1.5, unit: 'm' },
+  waterLevel: { default: 0, min: -150, max: 150, unit: 'cm' },
   waterDepth: { default: 0, min: 0, max: 30, unit: 'm' },
   fairwayForm: { default: 0, min: 0, max: 2 },
   channelWidth: { default: 0, min: 0, unit: 'm' },

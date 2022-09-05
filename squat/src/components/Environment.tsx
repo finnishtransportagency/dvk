@@ -231,19 +231,13 @@ const Environment: React.FC = () => {
                 title={t('homePage.squat.environment.water-level')}
                 name="waterLevel"
                 value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
-                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                placeholder="0"
                 min={fieldParams.waterLevel.min}
                 max={fieldParams.waterLevel.max}
-                step="0.1"
                 unit={fieldParams.waterLevel.unit}
                 fieldClass={setFieldClass('waterLevel')}
                 actionType="environment-fairway"
-                helper={
-                  <>
-                    {Number('-1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
-                  </>
-                }
+                helper="-150 – 150 cm"
               />
             </IonCol>
           </IonRow>

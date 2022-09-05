@@ -118,7 +118,7 @@ const SquatChart: React.FC = () => {
         return true;
       })();
 
-      const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel - state.vessel.general.draught;
+      const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel / 100 - state.vessel.general.draught;
 
       let yDomainWaterDepth = state.environment.fairway.waterDepth - state.vessel.general.draught;
 
