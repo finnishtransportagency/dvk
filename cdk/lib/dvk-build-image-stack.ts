@@ -1,4 +1,4 @@
-import { Stack, StackProps, SecretValue } from 'aws-cdk-lib';
+import { Stack, StackProps, SecretValue, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
@@ -53,6 +53,12 @@ export class DvkBuildImageStack extends Stack {
           input: sourceOutput,
         }),
       ],
+    });
+
+    new CfnOutput(this, 'PipelineName', {
+      value: pipeline.pipelineName,
+      description: 'Project buildimage pipeline name',
+      exportName: 'BuildimagePipeline',
     });
   }
 
