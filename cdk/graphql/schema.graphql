@@ -13,6 +13,56 @@ type FairwayCard {
   name: Text!
   fairways: [Fairway!]!
   lineText: Text
+  anchorage: [Text]
+  navigationCondition: Text
+  iceCondition: Text
+  speedLimit: [Text]
+  visibility: Text
+  windGauge: Text
+  vesselRecommendation: Text
+  seaLevel: Text
+  windRecommendation: Text
+  trafficService: TrafficService
+  harbor: Harbor
+}
+
+type TrafficService {
+  pilot: Pilot
+  vts: VTS
+  tug: Text
+}
+
+type VTS {
+  name: Text
+  phoneNumber: String
+  email: [String]
+  vhf: String
+}
+
+type Pilot {
+  email: String
+  telephoneNumber: String
+  fax: String
+  internet: String
+  pilotPlace: Geometry
+  pilotPlaceText: String
+  pilotJourney: String
+}
+
+type Harbor {
+  wharf: [Wharf]
+  name: Text
+  phoneNumber: String
+  fax: String
+  email: String
+  internet: String
+}
+
+type Wharf {
+  name: Text
+  freeText: Text
+  cargo: Text
+  geometry: Geometry
 }
 
 type Fairway {

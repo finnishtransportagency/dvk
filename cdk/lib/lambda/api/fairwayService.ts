@@ -38,9 +38,9 @@ export type VaylaAPIModel = {
 };
 
 export class FairwayService {
-  public getFairways(): VaylaAPIModel[] {
+  public getFairways(fairwayIds: number[]): VaylaAPIModel[] {
     // TODO: call vatu api
-    return [vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_5, saimaa_28];
+    return [vuosaari, kemi, uusikaupunki, saimaa_18_19, saimaa_5, saimaa_28].filter((v) => fairwayIds.includes(v.jnro));
   }
 
   public getFairway(id: number): VaylaAPIModel {

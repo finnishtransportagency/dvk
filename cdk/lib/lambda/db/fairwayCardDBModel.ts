@@ -20,7 +20,7 @@ export type FairwayDBModel = {
 export type TrafficService = {
   pilot?: Pilot;
   vts?: VTS;
-  tug?: string;
+  tug?: Text;
 };
 
 export type VTS = {
