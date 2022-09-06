@@ -56,20 +56,20 @@ const Calculations: React.FC = () => {
       state.status.showBarrass
     );
   };
-  const checkIsReliabilityAnIssue = () => {
-    return isReliabilityAnIssue(
-      state.vessel.general.blockCoefficient,
-      state.environment.vessel.vesselSpeed,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel
+  const checkIsBarrassForced = () => {
+    return (
+      isReliabilityAnIssue(
+        state.vessel.general.blockCoefficient,
+        state.environment.vessel.vesselSpeed,
+        state.environment.fairway.sweptDepth,
+        state.environment.fairway.waterLevel
+      ) !== '' ||
+      isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) !== '' ||
+      isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) !== ''
     );
   };
   const checkIsBarrassActive = () => {
-    return checkIsReliabilityAnIssue() !== '' ||
-      isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) !== '' ||
-      isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) !== ''
-      ? true
-      : state.status.showBarrass;
+    return checkIsBarrassForced() ? true : state.status.showBarrass;
   };
 
   // useEffects to calculate results by input value update
@@ -321,11 +321,12 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel
-                  color={state.status.showDeepWaterValues ? 'medium' : 'primary'}
-                  title={t('homePage.squat.calculations.shallow-water-values')}
-                >
-                  {t('homePage.squat.calculations.shallow-water-values')}
+                <IonLabel color={state.status.showDeepWaterValues ? 'dark' : 'primary'} title={t('homePage.squat.calculations.shallow-water-values')}>
+                  {state.status.showDeepWaterValues ? (
+                    t('homePage.squat.calculations.shallow-water-values')
+                  ) : (
+                    <strong>{t('homePage.squat.calculations.shallow-water-values')}</strong>
+                  )}
                 </IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
@@ -338,11 +339,15 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="5">
                 <IonLabel
-                  color={state.status.showDeepWaterValues ? 'primary' : 'medium'}
+                  color={state.status.showDeepWaterValues ? 'primary' : 'dark'}
                   className="align-right"
                   title={t('homePage.squat.calculations.deep-water-values')}
                 >
-                  {t('homePage.squat.calculations.deep-water-values')}
+                  {state.status.showDeepWaterValues ? (
+                    <strong>{t('homePage.squat.calculations.deep-water-values')}</strong>
+                  ) : (
+                    t('homePage.squat.calculations.deep-water-values')
+                  )}
                 </IonLabel>
               </IonCol>
             </IonRow>
@@ -352,19 +357,29 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'medium' : 'primary'}>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
+                <IonLabel color={state.status.showBarrass ? 'dark' : 'primary'}>
+                  {state.status.showBarrass ? (
+                    t('homePage.squat.calculations.squat-HG')
+                  ) : (
+                    <strong>{t('homePage.squat.calculations.squat-HG')}</strong>
+                  )}
+                </IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
                   checked={checkIsBarrassActive()}
                   onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
                   className="squat-toggle"
-                  disabled={getSquatValue() === '' || checkIsReliabilityAnIssue() !== ''}
+                  disabled={getSquatValue() === '' || checkIsBarrassForced()}
                 />
               </IonCol>
               <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'primary' : 'medium'} className="align-right">
-                  {t('homePage.squat.calculations.squat-barrass')}
+                <IonLabel color={state.status.showBarrass ? 'primary' : 'dark'} className="align-right">
+                  {state.status.showBarrass ? (
+                    <strong>{t('homePage.squat.calculations.squat-barrass')}</strong>
+                  ) : (
+                    t('homePage.squat.calculations.squat-barrass')
+                  )}
                 </IonLabel>
               </IonCol>
             </IonRow>
@@ -490,11 +505,11 @@ const Calculations: React.FC = () => {
                 })}
                 unit="m"
                 helper={
-                  '(' +
-                  (checkIsReliabilityAnIssue() !== '' || state.status.showBarrass
-                    ? t('homePage.squat.calculations.squat-barrass')
-                    : t('homePage.squat.calculations.squat-HG')) +
-                  ')'
+                  getSquatValue() !== ''
+                    ? '(' +
+                      (checkIsBarrassActive() ? t('homePage.squat.calculations.squat-barrass') : t('homePage.squat.calculations.squat-HG')) +
+                      ')'
+                    : ''
                 }
               />
             </IonCol>
