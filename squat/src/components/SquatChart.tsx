@@ -89,12 +89,7 @@ const SquatChart: React.FC = () => {
       const squatHG24Color = '#ff0000';
       const squatBarrassColor = '#ffa500';
 
-      let minSpeed = state.environment.vessel.vesselSpeed;
-
-      if (!minSpeed) {
-        minSpeed = 0;
-      }
-
+      const minSpeed = state.environment.vessel.vesselSpeed > 5 ? state.environment.vessel.vesselSpeed - 5 : 0;
       const maxSpeed = minSpeed + 10;
 
       const paramsValid = (() => {
