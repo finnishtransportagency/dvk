@@ -126,11 +126,7 @@ const SquatChart: React.FC = () => {
         yDomainWaterDepth = yDomainSweptDepth;
       }
 
-      let yDomainOtherMovementHeight = state.calculations.squat.correctedDraughtDuringTurn - state.vessel.general.draught;
-
-      if (Number.isNaN(yDomainOtherMovementHeight) || yDomainOtherMovementHeight < 0.5) {
-        yDomainOtherMovementHeight = 0.5;
-      }
+      const yDomainOtherMovementHeight = state.environment.attribute.motionClearance;
 
       const bottomLayerHeightPx = 20;
 
