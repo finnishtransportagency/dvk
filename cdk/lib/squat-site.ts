@@ -195,6 +195,16 @@ export class SquatSite extends Construct {
         },
       ],
     };
+
+    const vectorMapBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.HttpOrigin('avoin-karttakuva.maanmittauslaitos.fi'),
+      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      compress: true,
+      cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+    };
+
     const proxyBehavior = this.useProxy() ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction) : undefined;
     const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     const graphqlProxyBehavior = proxyBehavior
@@ -207,6 +217,7 @@ export class SquatSite extends Construct {
       'geotiff/*': geoTiffBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
+      'vectortiles/*': vectorMapBehavior,
     };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
