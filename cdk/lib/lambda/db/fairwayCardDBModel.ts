@@ -40,7 +40,7 @@ export type Pilot = {
 };
 
 export type Harbor = {
-  wharf?: Wharf[];
+  quays?: Quay[];
   name?: Text;
   phoneNumber?: string;
   fax?: string;
@@ -48,9 +48,11 @@ export type Harbor = {
   internet?: string;
 };
 
-export type Wharf = {
+export type Quay = {
   name?: Text;
-  freeText?: Text;
+  length?: number;
+  draft?: number[];
+  extraInfo?: Text;
   cargo?: Text;
   geometry?: Geometry;
 };
