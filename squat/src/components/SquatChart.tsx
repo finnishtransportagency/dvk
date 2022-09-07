@@ -236,6 +236,14 @@ const SquatChart: React.FC = () => {
       xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`);
       xAxis.select('.domain').remove();
       xAxis.selectAll('.tick line').attr('stroke-width', '.2');
+      xAxis
+        .selectAll('.tick')
+        // eslint-disable-next-line
+        .filter((elem: any) => {
+          return elem === state.environment.vessel.vesselSpeed;
+        })
+        .attr('font-weight', 'bold')
+        .attr('font-style', 'italic');
 
       container
         .append('text')
