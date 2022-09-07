@@ -112,9 +112,10 @@ test('all reducer actions are working', () => {
   expect(consoleSpy).toHaveBeenCalledWith('Unknown action type, state not updated.');
 });
 
-test('call url action', () => {
-  SquatReducer(initialState, { type: 'url' });
-  expect(window.location.search).toEqual('?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true');
+test('fallthrough reducer action', () => {
+  const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2, fallThrough: true } } as Action;
+  const updatedState = SquatReducer(initialState, updateAction);
+  expect(updatedState.vessel.stability.GM).toEqual(0.15);
 });
 
 it('creates shareable link correctly', () => {
