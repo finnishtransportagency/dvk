@@ -18,9 +18,15 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   const fairways = fairwayService.getFairways(fairwayIds);
   return fairways.map((apiFairway) => {
     const fairway = fairwayMap.get(apiFairway.jnro);
+    log.debug('fairway: %o', fairway);
     return {
-      ...fairwayService.mapModelsToFairway(apiFairway),
+      ...fairwayService.mapAPIModelToFairway(apiFairway),
       ...fairway,
+      name: {
+        fi: apiFairway.nimiFI,
+        sv: apiFairway.nimiSV,
+        en: fairway?.name.en,
+      },
     };
   });
 };

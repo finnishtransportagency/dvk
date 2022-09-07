@@ -1,12 +1,12 @@
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Geometry } from '../../../graphql/generated';
+import { GeometryPoint } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
 const fairwayCardTable = process.env.FAIRWAY_CARD_TABLE;
 
 export type Text = {
-  fi: string;
+  fi?: string;
   sv?: string;
   en?: string;
 };
@@ -35,7 +35,7 @@ export type Pilot = {
   phoneNumber?: string;
   fax?: string;
   internet?: string;
-  geometry?: Geometry;
+  geometry?: GeometryPoint;
   pilotJourney?: number;
 };
 
@@ -54,7 +54,7 @@ export type Quay = {
   draft?: number[];
   extraInfo?: Text;
   cargo?: Text;
-  geometry?: Geometry;
+  geometry?: GeometryPoint;
 };
 
 class FairwayCardDBModel {
@@ -93,7 +93,7 @@ class FairwayCardDBModel {
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
-    log.debug('Fairway card name: %s', fairwayCard?.name);
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
 

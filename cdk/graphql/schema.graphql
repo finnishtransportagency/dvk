@@ -44,7 +44,7 @@ type Pilot {
   phoneNumber: String
   fax: String
   internet: String
-  geometry: Geometry
+  geometry: GeometryPoint
   pilotJourney: Float
 }
 
@@ -63,7 +63,7 @@ type Quay {
   draft: [Float]
   extraInfo: Text
   cargo: Text
-  geometry: Geometry
+  geometry: GeometryPoint
 }
 
 type Fairway {
@@ -134,8 +134,14 @@ type Geometry {
   coordinates: [[Float]]
 }
 
+type GeometryPoint {
+  type: String
+  bbox: [Float]
+  coordinates: [Float]
+}
+
 type Text {
-  fi: String!
+  fi: String
   sv: String
   en: String
 }

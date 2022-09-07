@@ -126,7 +126,7 @@
         "draft": [12.5],
         "extraInfo": {
           "fi": "säädettävä ramppi",
-          "sv": "",
+          "sv": "justerbar ramp",
           "en": "adjustable ramp"
         }
       },
@@ -140,7 +140,7 @@
         "draft": [10.5, 12.5],
         "extraInfo": {
           "fi": "2 kpl kiinteää ramppia",
-          "sv": "",
+          "sv": "2 fasta ramper",
           "en": "2 fixed ramps"
         },
         "geometry": {
@@ -158,7 +158,7 @@
         "draft": [12.5],
         "extraInfo": {
           "fi": "2 kpl kiinteää ramppia",
-          "sv": "",
+          "sv": "2 fasta ramper",
           "en": "2 fixed ramps"
         },
         "geometry": {
@@ -176,7 +176,7 @@
         "draft": [10.5],
         "extraInfo": {
           "fi": "2 kpl säädettävää tuplaramppia",
-          "sv": "",
+          "sv": "2 justerbara dubbelramper",
           "en": "2 adjustable ramps"
         },
         "geometry": {
@@ -194,7 +194,7 @@
         "draft": [12.5, 14.3],
         "extraInfo": {
           "fi": "konttialuksille, 1 kiinteä ramppi",
-          "sv": "",
+          "sv": "containerfartyg, fast ramp",
           "en": "containers, fixed ramp"
         },
         "cargo": {
@@ -217,7 +217,7 @@
         "draft": [12.5, 14.3],
         "extraInfo": {
           "fi": "konttialuksille, 1 kiinteä ramppi",
-          "sv": "",
+          "sv": "containerfartyg, fast ramp",
           "en": "containers, fixed ramp"
         },
         "cargo": {
@@ -240,7 +240,7 @@
         "draft": [10.5, 14.3],
         "extraInfo": {
           "fi": "2 kpl kiinteää ramppia",
-          "sv": "",
+          "sv": "2 fasta ramper",
           "en": "2 fixed ramps"
         },
         "cargo": {
@@ -263,7 +263,7 @@
         "draft": [12.5],
         "extraInfo": {
           "fi": "1 kiinteä ramppi",
-          "sv": "",
+          "sv": "fast ramp",
           "en": "fixed ramp"
         },
         "geometry": {
@@ -281,7 +281,7 @@
         "draft": [12.5],
         "extraInfo": {
           "fi": "2 kpl kiinteää ramppia",
-          "sv": "",
+          "sv": "2 fasta ramper",
           "en": "2 fixed ramps"
         },
         "geometry": {
@@ -299,7 +299,7 @@
         "draft": [12.5, 14.3],
         "extraInfo": {
           "fi": "2 kpl kiinteää ramppia",
-          "sv": "",
+          "sv": "2 fasta ramper",
           "en": "2 fixed ramps"
         },
         "geometry": {
