@@ -302,11 +302,11 @@ const SquatChart: React.FC = () => {
 
       /* Add squat lines */
 
-      const addHGSquatLine = (C0Coefficient: number, color: string) => {
+      const addSquatLine = (calculateSquat: (speed: number) => number, color: string) => {
         const data: Array<[number, number]> = [];
 
         for (let i = minSpeed, step = 0.1; i < maxSpeed; i += step) {
-          const squat = calculateHGSquat(i, C0Coefficient);
+          const squat = calculateSquat(i);
           if (squat >= yDomainWaterDepth) {
             i -= step;
             step /= 10;
@@ -319,63 +319,12 @@ const SquatChart: React.FC = () => {
           }
         }
         if (data[data.length - 1][1] < yDomainWaterDepth) {
-          const maxSpeedSquat = calculateHGSquat(maxSpeed, C0Coefficient);
+          const maxSpeedSquat = calculateSquat(maxSpeed);
           if (maxSpeedSquat < yDomainWaterDepth) {
             data.push([maxSpeed, maxSpeedSquat]);
           } else {
             for (let i = data[data.length - 1][0] + 0.001; i < maxSpeed; i += 0.001) {
-              const squat = calculateHGSquat(i, C0Coefficient);
-              if (squat >= yDomainWaterDepth) {
-                data.push([i, squat]);
-                break;
-              }
-            }
-          }
-        }
-
-        container
-          .append('path')
-          .datum(data)
-          .attr(
-            'd',
-            d3
-              .line()
-              .x((d) => {
-                return xScale(d[0]);
-              })
-              .y((d) => {
-                return yScale(d[1]);
-              })
-          )
-          .attr('transform', `translate(${marginLeft}, ${marginTop})`)
-          .attr('stroke', color)
-          .attr('stroke-width', '2px')
-          .attr('fill', 'none');
-      };
-
-      const addBarrassSquatLine = (color: string) => {
-        const data: Array<[number, number]> = [];
-
-        for (let i = minSpeed, step = 0.1; i < maxSpeed; i += step) {
-          const squat = calculateBarrassSquat(i);
-          if (squat >= yDomainWaterDepth) {
-            i -= step;
-            step /= 10;
-            if (step < 0.0005) {
-              data.push([i, squat]);
-              break;
-            }
-          } else {
-            data.push([i, squat]);
-          }
-        }
-        if (data[data.length - 1][1] < yDomainWaterDepth) {
-          const maxSpeedSquat = calculateBarrassSquat(maxSpeed);
-          if (maxSpeedSquat < yDomainWaterDepth) {
-            data.push([maxSpeed, maxSpeedSquat]);
-          } else {
-            for (let i = data[data.length - 1][0] + 0.001; i < maxSpeed; i += 0.001) {
-              const squat = calculateBarrassSquat(i);
+              const squat = calculateSquat(i);
               if (squat >= yDomainWaterDepth) {
                 data.push([i, squat]);
                 break;
@@ -407,13 +356,19 @@ const SquatChart: React.FC = () => {
       if (state.status.showBarrass) {
         addBarrassLegend();
         if (paramsValid) {
-          addBarrassSquatLine(squatBarrassColor);
+          addSquatLine(calculateBarrassSquat, squatBarrassColor);
         }
       } else {
         addHGLegend();
         if (paramsValid) {
-          addHGSquatLine(2.0, squatHG20Color);
-          addHGSquatLine(2.4, squatHG24Color);
+          const getHGSquatFunc = (C0Coefficient: number) => {
+            return (speed: number) => {
+              return calculateHGSquat(speed, C0Coefficient);
+            };
+          };
+
+          addSquatLine(getHGSquatFunc(2.0), squatHG20Color);
+          addSquatLine(getHGSquatFunc(2.4), squatHG24Color);
         }
       }
     };
