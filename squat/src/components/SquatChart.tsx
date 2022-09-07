@@ -305,11 +305,33 @@ const SquatChart: React.FC = () => {
       const addHGSquatLine = (C0Coefficient: number, color: string) => {
         const data: Array<[number, number]> = [];
 
-        for (let i = minSpeed; i < maxSpeed; i += 0.1) {
-          data.push([i, calculateHGSquat(i, C0Coefficient)]);
+        for (let i = minSpeed, step = 0.1; i < maxSpeed; i += step) {
+          const squat = calculateHGSquat(i, C0Coefficient);
+          if (squat >= yDomainWaterDepth) {
+            i -= step;
+            step /= 10;
+            if (step < 0.0005) {
+              data.push([i, squat]);
+              break;
+            }
+          } else {
+            data.push([i, squat]);
+          }
         }
-
-        data.push([maxSpeed, calculateHGSquat(maxSpeed, C0Coefficient)]);
+        if (data[data.length - 1][1] < yDomainWaterDepth) {
+          const maxSpeedSquat = calculateHGSquat(maxSpeed, C0Coefficient);
+          if (maxSpeedSquat < yDomainWaterDepth) {
+            data.push([maxSpeed, maxSpeedSquat]);
+          } else {
+            for (let i = data[data.length - 1][0] + 0.001; i < maxSpeed; i += 0.001) {
+              const squat = calculateHGSquat(i, C0Coefficient);
+              if (squat >= yDomainWaterDepth) {
+                data.push([i, squat]);
+                break;
+              }
+            }
+          }
+        }
 
         container
           .append('path')
@@ -334,11 +356,33 @@ const SquatChart: React.FC = () => {
       const addBarrassSquatLine = (color: string) => {
         const data: Array<[number, number]> = [];
 
-        for (let i = minSpeed; i < maxSpeed; i += 0.1) {
-          data.push([i, calculateBarrassSquat(i)]);
+        for (let i = minSpeed, step = 0.1; i < maxSpeed; i += step) {
+          const squat = calculateBarrassSquat(i);
+          if (squat >= yDomainWaterDepth) {
+            i -= step;
+            step /= 10;
+            if (step < 0.0005) {
+              data.push([i, squat]);
+              break;
+            }
+          } else {
+            data.push([i, squat]);
+          }
         }
-
-        data.push([maxSpeed, calculateBarrassSquat(maxSpeed)]);
+        if (data[data.length - 1][1] < yDomainWaterDepth) {
+          const maxSpeedSquat = calculateBarrassSquat(maxSpeed);
+          if (maxSpeedSquat < yDomainWaterDepth) {
+            data.push([maxSpeed, maxSpeedSquat]);
+          } else {
+            for (let i = data[data.length - 1][0] + 0.001; i < maxSpeed; i += 0.001) {
+              const squat = calculateBarrassSquat(i);
+              if (squat >= yDomainWaterDepth) {
+                data.push([i, squat]);
+                break;
+              }
+            }
+          }
+        }
 
         container
           .append('path')
