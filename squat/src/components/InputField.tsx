@@ -76,6 +76,7 @@ const InputField: React.FC<InputProps> = (props) => {
           placeholder={props.placeholder}
           onIonChange={(e) => innerUpdateAction(e, props.actionType)}
           onIonBlur={(e) => updateAction(e, props.actionType)}
+          debounce={50}
           inputmode="decimal"
         />
         {props.unit && (
