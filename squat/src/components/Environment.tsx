@@ -125,7 +125,7 @@ const Environment: React.FC = () => {
                 unit={fieldParams.windDirection.unit}
                 fieldClass={setFieldClass('windDirection')}
                 actionType="environment-weather"
-                helper="0 – 350 deg"
+                helper="0 – 359 deg"
               />
             </IonCol>
           </IonRow>
@@ -373,7 +373,7 @@ const Environment: React.FC = () => {
                 unit={fieldParams.vesselCourse.unit}
                 fieldClass={setFieldClass('vesselCourse')}
                 actionType="environment-vessel"
-                helper="0 – 350 deg"
+                helper="0 – 359 deg"
               />
             </IonCol>
             <IonCol size="6">

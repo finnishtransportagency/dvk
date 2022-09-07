@@ -37,9 +37,6 @@ const SelectField: React.FC<SelectProps> = (props) => {
         elType: (event.target as HTMLInputElement).tagName,
       },
     });
-    dispatch({
-      type: 'url',
-    });
   };
 
   return (

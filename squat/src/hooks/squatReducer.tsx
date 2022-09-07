@@ -177,7 +177,7 @@ export const fieldParams: Record<string, FieldParam> = {
   GM: { default: 0.15, min: 0.15, max: 5 },
   KB: { default: 0, min: 0, max: 15 },
   windSpeed: { default: 0, min: 0, max: 35, unit: 'm/s' },
-  windDirection: { default: 90, min: 0, max: 350, unit: 'deg' },
+  windDirection: { default: 90, min: 0, max: 359, unit: 'deg' },
   waveHeight: { default: 0, min: 0, max: 15, unit: 'm' },
   wavePeriod: { default: 0, min: 0, max: 20, unit: 's' },
   sweptDepth: { default: 0, min: 0, max: 20, unit: 'm' },
@@ -187,7 +187,7 @@ export const fieldParams: Record<string, FieldParam> = {
   channelWidth: { default: 0, min: 0, unit: 'm' },
   slopeScale: { default: 0, min: 0 },
   slopeHeight: { default: 0, min: 0, unit: 'm' },
-  vesselCourse: { default: 0, min: 0, max: 350, unit: 'deg' },
+  vesselCourse: { default: 0, min: 0, max: 359, unit: 'deg' },
   vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
   turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm' },
   airDensity: { default: 1.3, min: 1, max: 1.5, unit: kgPerCubicM },
@@ -355,15 +355,15 @@ export type Action =
         key: string;
         value: string | number | number[] | object | boolean;
         elType?: string;
+        fallThrough?: boolean;
       };
     }
-  | { type: 'reset' }
-  | { type: 'url' };
+  | { type: 'reset' };
 
 export const SquatReducer = (state: State, action: Action) => {
   // Sort out correct value type from input element
   let inputValue: string | number | number[] | object | boolean = '';
-  if (action.type !== 'reset' && action.type !== 'url') {
+  if (action.type !== 'reset') {
     switch (action.payload.elType?.toLocaleLowerCase()) {
       case 'ion-select':
       case 'ion-radio-group':
@@ -375,56 +375,67 @@ export const SquatReducer = (state: State, action: Action) => {
         inputValue = Number(action.payload.value);
     }
   }
+  let newState;
   // Return updated state
   switch (action.type) {
     case 'vessel-select':
-      return { ...state, vessel: { ...state.vessel, [action.payload.key]: inputValue } };
+      newState = { ...state, vessel: { ...state.vessel, [action.payload.key]: inputValue } };
+      break;
     case 'vessel-general':
-      return { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: inputValue } } };
+      newState = { ...state, vessel: { ...state.vessel, general: { ...state.vessel.general, [action.payload.key]: inputValue } } };
+      break;
     case 'vessel-detailed':
-      return { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: inputValue } } };
+      newState = { ...state, vessel: { ...state.vessel, detailed: { ...state.vessel.detailed, [action.payload.key]: inputValue } } };
+      break;
     case 'vessel-stability':
-      return { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: inputValue } } };
+      newState = { ...state, vessel: { ...state.vessel, stability: { ...state.vessel.stability, [action.payload.key]: inputValue } } };
+      break;
     case 'environment-weather':
-      return {
+      newState = {
         ...state,
         environment: { ...state.environment, weather: { ...state.environment.weather, [action.payload.key]: inputValue } },
       };
+      break;
     case 'environment-fairway':
-      return {
+      newState = {
         ...state,
         environment: { ...state.environment, fairway: { ...state.environment.fairway, [action.payload.key]: inputValue } },
       };
+      break;
     case 'environment-vessel':
-      return { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: inputValue } } };
+      newState = { ...state, environment: { ...state.environment, vessel: { ...state.environment.vessel, [action.payload.key]: inputValue } } };
+      break;
     case 'environment-attribute':
-      return {
+      newState = {
         ...state,
         environment: { ...state.environment, attribute: { ...state.environment.attribute, [action.payload.key]: inputValue } },
       };
+      break;
     case 'calculations':
-      return {
+      newState = {
         ...state,
         calculations: { ...state.calculations, [action.payload.key]: inputValue },
       };
+      break;
     case 'status':
-      return {
+      newState = {
         ...state,
         status: { ...state.status, [action.payload.key]: inputValue },
       };
+      break;
     case 'validation':
-      return {
+      newState = {
         ...state,
         validations: { ...state.validations, [action.payload.key]: inputValue },
       };
+      break;
     case 'reset':
       return initialState;
-    case 'url':
-      // Update current url to match state
-      window.history.replaceState(null, document.title, createShareableLink(state));
-      return state;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;
   }
+  // Update current url to match new state
+  window.history.replaceState(null, document.title, createShareableLink(newState));
+  return action.payload.fallThrough ? state : newState;
 };
