@@ -32,12 +32,11 @@ export type VTS = {
 
 export type Pilot = {
   email?: string;
-  telephoneNumber?: string;
+  phoneNumber?: string;
   fax?: string;
   internet?: string;
-  pilotPlace?: Geometry;
-  pilotPlaceText?: string;
-  pilotJourney?: string;
+  geometry?: Geometry;
+  pilotJourney?: number;
 };
 
 export type Harbor = {
@@ -68,6 +67,8 @@ class FairwayCardDBModel {
   navigationCondition?: Text;
 
   iceCondition?: Text;
+
+  attention?: Text;
 
   speedLimit?: Text[];
 

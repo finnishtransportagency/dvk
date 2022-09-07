@@ -41,16 +41,15 @@ type VTS {
 
 type Pilot {
   email: String
-  telephoneNumber: String
+  phoneNumber: String
   fax: String
   internet: String
-  pilotPlace: Geometry
-  pilotPlaceText: String
-  pilotJourney: String
+  geometry: Geometry
+  pilotJourney: Float
 }
 
 type Harbor {
-  wharf: [Wharf]
+  wharfs: [Wharf]
   name: Text
   phoneNumber: String
   fax: String
