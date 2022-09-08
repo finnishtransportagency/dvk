@@ -29,14 +29,20 @@ type FairwayCard {
 type TrafficService {
   pilot: Pilot
   vts: VTS
-  tug: Text
+  tugs: [Tug]
+}
+
+type Tug {
+  name: Text
+  phoneNumber: String
+  fax: String
 }
 
 type VTS {
   name: Text
   phoneNumber: String
   email: [String]
-  vhf: String
+  vhf: Int
 }
 
 type Pilot {

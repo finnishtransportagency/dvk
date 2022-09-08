@@ -28,13 +28,13 @@
     }
   ],
   "navigationCondition": {
-    "fi": " Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Eestiluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
+    "fi": "Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Eestiluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
     "sv": "Farledens yttre del är öppen sjö och oskyddad för O-S-V vind. Från Estlotan till hamnen löper farleden i skydd av holmar och skär.",
     "en": "The approach is at open sea and is unsheltered against E-S-W winds. From Eestiluoto to the harbour the channel is protected by islands and skerries."
   },
   "iceCondition": {
     "fi": "Jää ongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista saattaa esiintyä Eestiluodon etelä- ja pohjoispuoleisilla alueilla.",
-    "sv": " Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning i områdena S och N om Estlotan.",
+    "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning i områdena S och N om Estlotan.",
     "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasional ice ridging in the areas S and N of Eestiluoto."
   },
   "attention": {
@@ -44,8 +44,8 @@
   },
   "speedLimit": [
     {
-      "fi": "Talvikaudella (1.11.–31.3.) Vuosaaren väylän välillä Krokholmshället – Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.",
-      "sv": "Under vintersäsongen (1.11 -31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn.",
+      "fi": "Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.",
+      "sv": "Under vintersäsongen (1.11 - 31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn.",
       "en": "During the winter season (1 November - 31 March) a speed limit of 24/h will be in force (in the channel) between Krokholmshället and Vuosaari Harbour."
     }
   ],
@@ -97,13 +97,19 @@
         "helsinki.vts@fintraffic.fi",
         "supervisors.hki@fintraffic.fi"
       ],
-      "vhf": "71"
+      "vhf": 71
     },
-    "tug": {
-      "fi": "Yksityiset hinaajat tarvittaessa.",
-      "sv": "Privata bogserbåtar vid behov.",
-      "en": "Privately owned tugs available."
-    }
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privata bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        },
+        "phoneNumber": "",
+        "fax": ""
+      }
+    ]
   },
   "harbor": {
     "name": {

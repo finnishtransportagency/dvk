@@ -20,7 +20,7 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
       arrayOfFiles.push(path.join(dirPath, '/', file));
     }
   });
-  return arrayOfFiles;
+  return arrayOfFiles.filter((f) => !f.endsWith('template.json'));
 }
 
 function getGeoTiffMap(arrayOfFiles: string[]) {

@@ -8,9 +8,9 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
   const card: FairwayCard = {
     id: dbModel.id,
     name: {
-      fi: dbModel.name?.fi || '',
-      sv: dbModel.name?.sv || '',
-      en: dbModel.name?.en || '',
+      fi: dbModel.name?.fi,
+      sv: dbModel.name?.sv,
+      en: dbModel.name?.en,
     },
     fairways: [],
     anchorage: dbModel.anchorage,

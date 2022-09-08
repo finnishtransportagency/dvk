@@ -22,14 +22,20 @@ export type FairwayDBModel = {
 export type TrafficService = {
   pilot?: Pilot;
   vts?: VTS;
-  tug?: Text;
+  tugs?: Tug[];
+};
+
+export type Tug = {
+  name?: Text;
+  phoneNumber?: string;
+  fax?: string;
 };
 
 export type VTS = {
   name?: Text;
   phoneNumber?: string;
   email?: string[];
-  vhf?: string;
+  vhf?: number;
 };
 
 export type Pilot = {
