@@ -27,6 +27,16 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
         sv: apiFairway.nimiSV,
         en: fairway?.name.en,
       },
+      statementStart: {
+        fi: apiFairway.selosteAlkaa,
+        sv: fairway?.statementStart?.sv,
+        en: fairway?.statementStart?.en,
+      },
+      statementEnd: {
+        fi: apiFairway.selostePaattyy,
+        sv: fairway?.statementEnd?.sv,
+        en: fairway?.statementEnd?.en,
+      },
     };
   });
 };

@@ -5,6 +5,8 @@
     "nimiSV": "Nordsjöleden",
     "kulkuSyvyys1": 13,
     "pituus": 32.8,
+    "selosteAlkaa": "Suomenlahti, avomeri",
+    "selostePaattyy": "Vuosaaren satamaan",
     "mitoitusAlukset": [
       {
         "id": 254214,

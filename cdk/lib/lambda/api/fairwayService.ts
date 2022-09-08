@@ -33,6 +33,8 @@ export type VaylaAPIModel = {
   kulkuSyvyys2?: number;
   kulkuSyvyys3?: number;
   pituus?: number;
+  selosteAlkaa?: string;
+  selostePaattyy?: string;
   mitoitukset?: MitoitusAPIModel[];
   mitoitusAlukset?: MitoitusAlusAPIModel[];
 };
@@ -65,6 +67,14 @@ export class FairwayService {
       id: dbModel.id,
       name: {
         en: dbModel.name,
+      },
+      statementStart: {
+        sv: dbModel.statementStart?.sv,
+        en: dbModel.statementStart?.en,
+      },
+      statementEnd: {
+        sv: dbModel.statementEnd?.sv,
+        en: dbModel.statementEnd?.en,
       },
     };
     fairway.geotiffImages = dbModel.geotiffImages;

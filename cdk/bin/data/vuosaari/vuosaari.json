@@ -325,7 +325,15 @@
   "fairways": [
     {
       "id": 4927,
-      "name": "Vuosaari channel"
+      "name": "Vuosaari channel",
+      "statementStart": {
+        "sv": "[sv] Suomenlahti, avomeri",
+        "en": "[en] Suomenlahti, avomeri"
+      },
+      "statementEnd": {
+        "sv": "[sv] Vuosaaren satamaan",
+        "en": "[en] Vuosaaren satamaan"
+      }
     }
   ]
 }

@@ -14,6 +14,8 @@ export type Text = {
 export type FairwayDBModel = {
   id: number;
   name?: string;
+  statementStart?: Text;
+  statementEnd?: Text;
   geotiffImages?: string[];
 };
 
