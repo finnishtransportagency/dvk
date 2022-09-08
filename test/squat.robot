@@ -152,13 +152,13 @@ Check Input Fields In Detailed Section
 
 Check Input Fields In Fairway Section
 	Page Should Contain Element    ${SWEPTDEPTH_INPUT}
-    Page Should Contain Element    ${WATERLEVEL_INPUT}
-    Page Should Contain Element    ${WATERDEPTH_INPUT}
+	Page Should Contain Element    ${WATERLEVEL_INPUT}
+	Page Should Contain Element    ${WATERDEPTH_INPUT}
 
 Check Input Fields In Stability Section
 	Page Should Contain Element    ${KG_INPUT}
-    Page Should Contain Element    ${GM_INPUT}
-    Page Should Contain Element    ${KB_INPUT}
+	Page Should Contain Element    ${GM_INPUT}
+	Page Should Contain Element    ${KB_INPUT}
 
 Check Input Fields In Vessel Section
 	Page Should Contain Element    ${VESSEL_COURSE_INPUT}
