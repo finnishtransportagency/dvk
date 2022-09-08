@@ -102,15 +102,6 @@ Check UI Elements In English Language
 	Check Input Fields Attribute Section
 
 *** Keywords ***
-Check Squat Calculator Labels
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Squat-laskenta
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Aluksen tiedot
-	Element Should Contain    ${YMPARISTO_HEADER}    Ympäristö
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Laskenta
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen squat nopeuden funktiona
-
 Change Squat Calculator Language To
 	[Arguments]    ${language}
 	Click Element    ${LANGUAGE_SELECT_BUTTON}
@@ -162,8 +153,8 @@ Check Input Fields In Stability Section
 
 Check Input Fields In Vessel Section
 	Page Should Contain Element    ${VESSEL_COURSE_INPUT}
-    Page Should Contain Element    ${VESSEL_SPEED_INPUT}
-    Page Should Contain Element    ${TURNING_RADIUS_INPUT}
+	Page Should Contain Element    ${VESSEL_SPEED_INPUT}
+	Page Should Contain Element    ${TURNING_RADIUS_INPUT}
 
 Check Input Fields Attribute Section
 	Page Should Contain Element    ${AIRDENSITY_INPUT}
