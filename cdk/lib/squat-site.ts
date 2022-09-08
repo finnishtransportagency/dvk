@@ -42,12 +42,18 @@ export class SquatSite extends Construct {
 
     new CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
 
+    const s3DeletePolicy: Pick<s3.BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
+    };
+
     // Squat bucket
     const squatBucket = new s3.Bucket(this, 'SiteBucket', {
       bucketName: `squat.${siteDomain}`,
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
     });
 
     // Grant access to cloudfront
@@ -69,6 +75,7 @@ export class SquatSite extends Construct {
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
     });
     dvkBucket.addToResourcePolicy(
       new iam.PolicyStatement({
@@ -90,6 +97,7 @@ export class SquatSite extends Construct {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
+      ...s3DeletePolicy,
     });
     geoTiffBucket.addToResourcePolicy(
       new iam.PolicyStatement({
