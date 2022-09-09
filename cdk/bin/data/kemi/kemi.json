@@ -5,10 +5,231 @@
     "sv": "[sv] Kemin väylä",
     "en": "Kemi Ajos fairway"
   },
+  "lineText": {
+    "fi": "Linjoja on kolme, joista sisin on merkitty linjatauluin",
+    "sv": "Tre linjer, varav den innersta utmärkt med enstavlor.",
+    "en": "Three lines, the innermost marked by boards."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylän ulko-osalla on tilaa ankkuroida ja ohittaa Kemi 1 ja Kemi 3 välillä. Sisäosalla on ankkurointi- ja ohituspaikka Inakarin kohdalla väylän länsipuolella n. 2 km ennen satamaa, syvyys 14 - 16 m, hiekkapohja, kardinaalimerkintä, suojaton merituulilla.",
+      "sv": "I angöringen finns plats för ankring och passage mellan Kemi 1 och Kemi 3. I inloppet finns plats för ankring och passage vid Inakari, ca 2 km före hamn, djup 14 - 16 m, sandbotten, kardinalutmärkning, oskyddad vid havsvindar.",
+      "en": "There is an area for anchoring and overtaking in the approach, between Kemi 1 and Kemi 3. Another area for anchoring and overtaking is situated in the entrance at Inakari, on the W side of the channel, about 2 km before harbour, depth 14 - 16 m, sand seabed, cardinal marks, unsheltered from sea winds"
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylä kapenee Heben jälkeen 200 metriin ja väylän loppuosa on ruopattua kaivantoa 1 mpk pituudelta, leveys 200 m. Kova tuuli ja merenkäynti voivat vaikeuttaa navigointia välillä Hebe – satama, merenkäynti pääsee satamaan asti.",
+    "sv": "Farleden blir smalare efter Hebe till 200 m och den sista sjömilen består av en uppmuddrad 200 m bred farled. Hård vind och sjögång kan försvåra navigeringen mellan Hebe och hamnen; sjögång ända in i hamn.",
+    "en": "After Hebe the channel narrows to 200 m and the rest of the fairway is dredged, its width being 200 m. Strong winds and heavy seas may impede navigation between Hebe and the harbour; heavy sea state all the way to the harbour."
+  },
+  "iceCondition": {
+    "fi": "Alkutalvesta jää liikkuu koko väyläalueella, poijut ja viitat saattavat olla jään alla. Kemi 1 ja Kemi 2 välisellä alueella on yleensä pahoja jääahtaumia. Keskitalvella on 50 - 80 cm kiintojäätä Ajoksesta 10 - 20 km etäisyydellä.",
+    "sv": "I början av vintern rörlig is i hela farledsområdet, bojarna och prickar kan då vara tryckta under isen. Svåra isvallar vanliga, mellan Kemi 1 och Kemi 2. Under midvintern finns 50-80 cm tjock fastis 10-20 km utanför Ajos.",
+    "en": "In early winter the ice is in movement in the whole fairway and buoys and spar buoys may be pressed under ice (surface). Between Kemi 1 and Kemi 2 heavy ice ridges difficult to force. In midwinter 50-80 cm thick fast ice about 10-20 km off Ajos."
+  },
+  "attention": {
+    "fi": "Tässä väyläkortissa esitettyjen syvyystietojen vertaustaso on N2000 (BSCD2000).",
+    "sv": "Referensnivå för djupuppgifter är N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
+    "en": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000)."
+  },
+  "windGauge": {
+    "fi": "Rannikkosääasemat, Kemi 1 majakalla.",
+    "sv": "Vädret vid kuststationerna, fyren Kemi 1.",
+    "en": "Marine weather observations, Kemi 1 lighthouse."
+  },
+  "vesselRecommendation": {
+    "fi": "Ilman tehokkaita ohjailuominaisuuksia olevilla aluksilla on hinaajan käyttö satamassa tarpeellista yli 10 m/s tuulilla.",
+    "sv": "Fartyg utan effektiva manöveregenskaper bör anlita bogserhjälp när vindstyrkan överstiger 10 m/s.",
+    "en": "Ships without advanced manoeuvring characteristics should employ tugs in the harbour if wind speed exceeds 10 m/s."
+  },
+  "seaLevel": {
+    "fi": "Kemi mareografi",
+    "sv": "Kemi mareograf",
+    "en": "Kemi mareograph"
+  },
+  "windRecommendation": {
+    "fi": "Mitoitusalukselle kriittiset tuulirajat ovat osuudella Ristinmatala - Inakari 15 m/s, suunta KO-E-LU, osuudella Inakari - satama 10 m/s, suunta KO-E-LU.",
+    "sv": "Kritisk gräns för det dimensionerande fartyget är 15 m/s på sträckan Ristinmatala–Inakari, riktning NE-S-NW; 10 m/s på sträckan Inakari–hamnen, riktning NO-S-NV.",
+    "en": "Critical wind forces for the design ship 15 m/s between Ristinmatala and Inakari, direction NE-SNW; 10 m/s between Inakari and the harbour, direction NE-S-NW."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "pilotJourney": 10.8,
+      "extraInfo": {
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat.",
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [65.2928, 24.1902]
+      }
+    },
+    "vts": {
+      "name": {
+        "fi": "Bothnia VTS",
+        "sv": "Bothnia VTS",
+        "en": "Bothnia VTS"
+      },
+      "phoneNumber": "+358204487356",
+      "email": [
+        "bothnia.vts@fintraffic.fi"
+      ],
+      "vhf": 67
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Arctia Karhu Oy, hinaajat Ahto 3600 kw, Jääsalo 2 x 1294 kW, Ulla 883 kW. Tilataan Kemistä.",
+          "sv": "Arctia Karhu Ab, bogserbåtar, Ahto 3600 kw, Jääsalo 2 x 1294 kW, Ulla 883 kW. Beställning från Kemi.",
+          "en": "Arctia Karhu Ltd, tugs, Ahto 3600 kw, Jääsalo, 2 x 1294 kW, and Ulla, 883 kW. To be ordered from Kemi"
+        },
+        "phoneNumber": [
+          "+358400392904",
+          "+358400442904"
+        ],
+        "email": "towing@arctia.fi"
+      }
+    ]
+  },
+  "harbor": {
+    "name": {
+      "fi": "Kemin Satama Oy",
+      "sv": "Kemi hamn Ab",
+      "en": "Kemi Port Ltd"
+    },
+    "phoneNumber": "+35816258100",
+    "harborBasin": {
+      "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
+      "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
+      "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay."
+    },
+    "quays": [
+      {
+        "name": {
+          "fi": "Öljylaituri",
+          "sv": "Oljekajen",
+          "en": "Oil terminal"
+        },
+        "draft": [11.2],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t",
+          "sv": "Mobilkranar  6-100 t",
+          "en": "Mobile crane 6-100 t"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      },
+      {
+        "name": {
+          "fi": "Laituri I, paikat 1-2",
+          "sv": "Kaj I, platserna 1-2",
+          "en": "Quay I, berths 1-2"
+        },
+        "length": 160,
+        "draft": [10.6],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+          "en": "Mobile crane 6-100 t, ro-ro berth"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      },
+      {
+        "name": {
+          "fi": "Laituri I, paikat 3-4",
+          "sv": "Kaj I, platserna 3-4",
+          "en": "Quay I, berths 3-4"
+        },
+        "length": 179,
+        "draft": [9.2],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+          "en": "Mobile crane 6-100 t, ro-ro berth"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      },
+      {
+        "name": {
+          "fi": "Laituri II, paikat 5-7",
+          "sv": "Kaj II, platserna 5-7",
+          "en": "Quay II, berths 5-7"
+        },
+        "length": 292,
+        "draft": [9.2],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+          "en": "Mobile crane 6-100 t, ro-ro berth"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      },
+      {
+        "name": {
+          "fi": "Laituri III, paikat 8-9",
+          "sv": "Kaj III, platserna 8-9",
+          "en": "Quay III, berths 8-9"
+        },
+        "length": 178,
+        "draft": [11.2],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+          "en": "Mobile crane 6-100 t, ro-ro berth"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      },
+      {
+        "name": {
+          "fi": "Laituri IV, paikat 10-11",
+          "sv": "Kaj IV, platserna 10-11",
+          "en": "Quay IV, berths 10-11"
+        },
+        "length": 178,
+        "draft": [11.2],
+        "cargo": {
+          "fi": "Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Mobilkranar  6-100t, kajplatser för ro-ro-fartyg",
+          "en": "Mobile crane 6-100 t, ro-ro berth"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": []
+        }
+      }
+    ]
+  },
   "fairways": [
     {
       "id": 10,
-      "name": "Kemi Ajos fairway"
+      "name": "Kemi Ajos fairway",
+      "statementStart": {
+        "sv": "[sv] Kemi 1 E-puolella.",
+        "en": "[en] Kemi 1 E-puolella."
+      },
+      "statementEnd": {
+        "sv": "[sv] Ajoksen satama.",
+        "en": "[en] Ajoksen satama."
+      }
     }
   ]
 }

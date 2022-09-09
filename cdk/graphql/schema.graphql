@@ -34,8 +34,9 @@ type TrafficService {
 
 type Tug {
   name: Text
-  phoneNumber: String
+  phoneNumber: [String]
   fax: String
+  email: String
 }
 
 type VTS {
@@ -52,6 +53,7 @@ type Pilot {
   internet: String
   geometry: GeometryPoint
   pilotJourney: Float
+  extraInfo: Text
 }
 
 type Harbor {
@@ -61,6 +63,7 @@ type Harbor {
   fax: String
   email: String
   internet: String
+  harborBasin: Text
 }
 
 type Quay {

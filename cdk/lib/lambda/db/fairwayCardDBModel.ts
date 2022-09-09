@@ -27,8 +27,9 @@ export type TrafficService = {
 
 export type Tug = {
   name?: Text;
-  phoneNumber?: string;
+  phoneNumber?: string[];
   fax?: string;
+  email?: string;
 };
 
 export type VTS = {
@@ -45,6 +46,7 @@ export type Pilot = {
   internet?: string;
   geometry?: GeometryPoint;
   pilotJourney?: number;
+  extraInfo?: Text;
 };
 
 export type Harbor = {
@@ -54,6 +56,7 @@ export type Harbor = {
   fax?: string;
   email?: string;
   internet?: string;
+  harborBasin?: Text;
 };
 
 export type Quay = {

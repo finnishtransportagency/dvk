@@ -71,6 +71,11 @@
       "fax": "",
       "internet": "",
       "pilotJourney": 0,
+      "extraInfo": {
+        "fi": "",
+        "sv": "",
+        "en": ""
+      },
       "geometry": {
         "type": "Point",
         "coordinates": []
@@ -95,8 +100,11 @@
           "sv": "",
           "en": ""
         },
-        "phoneNumber": "",
-        "fax": ""
+        "phoneNumber": [
+          ""
+        ],
+        "fax": "",
+        "email": ""
       }
     ]
   },
@@ -110,6 +118,11 @@
     "fax": "",
     "email": "",
     "internet": "",
+    "harborBasin": {
+      "fi": "",
+      "sv": "",
+      "en": ""
+    },
     "quays": [
       {
         "name": {

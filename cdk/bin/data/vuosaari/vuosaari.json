@@ -37,11 +37,6 @@
     "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning i områdena S och N om Estlotan.",
     "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasional ice ridging in the areas S and N of Eestiluoto."
   },
-  "attention": {
-    "fi": "",
-    "sv": "",
-    "en": ""
-  },
   "speedLimit": [
     {
       "fi": "Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.",
@@ -53,21 +48,6 @@
     "fi": "Näkyvyyden tulee olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä oltava vähintään 1,0 M.",
     "sv": "Bör vara minst 300 m för alla fartyg. Dessutom krävs minst 1,0 M sikt för fartyg med en längd över 200 m.",
     "en": "Minimum visibility for all vessels 300 m. Minimum visibility for vessels of more than 200 m in length, 1.0 nautical mile."
-  },
-  "windGauge": {
-    "fi": "",
-    "sv": "",
-    "en": ""
-  },
-  "vesselRecommendation": {
-    "fi": "",
-    "sv": "",
-    "en": ""
-  },
-  "seaLevel": {
-    "fi": "",
-    "sv": "",
-    "en": ""
   },
   "windRecommendation": {
     "fi": "Yli 200 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.",
@@ -105,9 +85,7 @@
           "fi": "Yksityiset hinaajat tarvittaessa.",
           "sv": "Privata bogserbåtar vid behov.",
           "en": "Privately owned tugs available."
-        },
-        "phoneNumber": "",
-        "fax": ""
+        }
       }
     ]
   },
@@ -339,6 +317,18 @@
       "statementEnd": {
         "sv": "[sv] Vuosaaren satamaan",
         "en": "[en] Vuosaaren satamaan"
+      }
+    },
+    {
+      "id": 4921,
+      "name": "[en] Vuosaaren sataman väylä",
+      "statementStart": {
+        "sv": "[sv] Vuosaaren väylältä",
+        "en": "[en] Vuosaaren väylältä"
+      },
+      "statementEnd": {
+        "sv": "[sv] Vuosaaren satama",
+        "en": "[en] Vuosaaren satama"
       }
     }
   ]
