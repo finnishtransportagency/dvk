@@ -29,10 +29,7 @@ import Alert from './Alert';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import {
-  isBreadthDraughtRatioOutOfRange,
   isExternalForceRequired,
-  isLengthBreadthRatioOutOfRange,
-  isReliabilityAnIssue,
   isSafetyMarginInsufficient,
   isUKCDuringTurnUnderRequired,
   isUKCShipMotionsUnderRequired,
@@ -55,21 +52,6 @@ const Calculations: React.FC = () => {
       state.calculations.squat.UKCVesselMotions,
       state.status.showBarrass
     );
-  };
-  const checkIsBarrassForced = () => {
-    return (
-      isReliabilityAnIssue(
-        state.vessel.general.blockCoefficient,
-        state.environment.vessel.vesselSpeed,
-        state.environment.fairway.sweptDepth,
-        state.environment.fairway.waterLevel
-      ) !== '' ||
-      isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) !== '' ||
-      isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) !== ''
-    );
-  };
-  const checkIsBarrassActive = () => {
-    return checkIsBarrassForced() ? true : state.status.showBarrass;
   };
 
   // useEffects to calculate results by input value update
@@ -304,6 +286,11 @@ const Calculations: React.FC = () => {
     const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
     return isNaN(currentValue) ? '' : currentValue;
   };
+  const printSquatHelper = () => {
+    if (getSquatValue() !== '')
+      return '(' + (state.status.showBarrass ? t('homePage.squat.calculations.squat-barrass') : t('homePage.squat.calculations.squat-HG')) + ')';
+    return '';
+  };
 
   return (
     <>
@@ -367,10 +354,10 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
-                  checked={checkIsBarrassActive()}
+                  checked={state.status.showBarrass}
                   onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
                   className="squat-toggle"
-                  disabled={getSquatValue() === '' || checkIsBarrassForced()}
+                  disabled={getSquatValue() === ''}
                 />
               </IonCol>
               <IonCol size="5">
@@ -504,13 +491,7 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 2,
                 })}
                 unit="m"
-                helper={
-                  getSquatValue() !== ''
-                    ? '(' +
-                      (checkIsBarrassActive() ? t('homePage.squat.calculations.squat-barrass') : t('homePage.squat.calculations.squat-HG')) +
-                      ')'
-                    : ''
-                }
+                helper={printSquatHelper()}
               />
             </IonCol>
           </IonRow>
