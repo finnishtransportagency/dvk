@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { IonIcon, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,10 @@ const InputField: React.FC<InputProps> = (props) => {
   const { t } = useTranslation();
   const { dispatch } = useSquatContext();
   const [value, setValue] = useState<string | number | null>(props.value);
+
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
 
   const innerUpdateAction = (event: CustomEvent, actionType: Action['type']) => {
     setValue((event.target as HTMLInputElement).value);
