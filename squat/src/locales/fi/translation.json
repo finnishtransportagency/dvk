@@ -115,7 +115,7 @@
         "estimated-vessel-breadth-due-drift": "[fi] Estimated Vessel Breadth Due Drift",
         "insufficient-safety-margin": "[fi] Insufficient Safety Margin",
         "external-force-required": "[fi] External Force Required",
-        "HG-out-of-bounds-switch-to-barrass": "[fi] Huuska-Guliev Out of Bounds, Switch to Barrass"
+        "HG-out-of-bounds-switch-to-barrass": "[fi] Huuska-Guliev-rajoituksen ylitys. Laskenta on kuitenkin mahdollista suorittaa Barrass-metodilla."
       }
     },
     "squatChart": {
