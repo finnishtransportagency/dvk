@@ -4,7 +4,13 @@
       "title": "[sv] Digitaalinen väyläkortti"
     },
     "map": {
-      "content": "[sv] TODO: Kartta"
+      "content": "[sv] TODO: Kartta",
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "[sv] Lähennä",
+          "zoomOutTipLabel": "[sv] Loitonna"
+        }
+      }
     }
   }
 }
