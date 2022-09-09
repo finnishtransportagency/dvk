@@ -4,7 +4,13 @@
       "title": "[en] Digitaalinen väyläkortti"
     },
     "map": {
-      "content": "[en] TODO: Kartta"
+      "content": "[en] TODO: Kartta",
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "Zoom in",
+          "zoomOutTipLabel": "Zoom out"
+        }
+      }
     }
   }
 }

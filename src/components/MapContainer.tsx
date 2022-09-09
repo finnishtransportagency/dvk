@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './Map.css';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Map from 'ol/Map';
 import View from 'ol/View';
 import Projection from 'ol/proj/Projection';
@@ -9,18 +9,21 @@ import { get as getProjection } from 'ol/proj';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
+import Zoom from 'ol/control/Zoom';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import './MapContainer.css';
 import bgMapStyles from './taustakartta.json';
 import { MAP } from '../utils/constants';
+import 'ol/ol.css';
 
 const MapContainer: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const mapElement = useRef<HTMLDivElement>(null);
 
   const [mapInitialized, initializeMap] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (mapInitialized) {
       return;
     }
@@ -69,8 +72,28 @@ const MapContainer: React.FC = () => {
         extent: MAP.EXTENT,
         constrainOnlyCenter: true,
       }),
-      controls: [],
     });
+
+    let zoomControl = new Zoom({
+      zoomInLabel: '',
+      zoomOutLabel: '',
+      zoomInTipLabel: t('homePage.map.controls.zoom.zoomInTipLabel'),
+      zoomOutTipLabel: t('homePage.map.controls.zoom.zoomOutTipLabel'),
+    });
+
+    map.addControl(zoomControl);
+
+    i18n.on('languageChanged', () => {
+      map.removeControl(zoomControl);
+      zoomControl = new Zoom({
+        zoomInLabel: '',
+        zoomOutLabel: '',
+        zoomInTipLabel: t('homePage.map.controls.zoom.zoomInTipLabel'),
+        zoomOutTipLabel: t('homePage.map.controls.zoom.zoomOutTipLabel'),
+      });
+      map.addControl(zoomControl);
+    });
+
     // override with tileURL
     // styleJSON has tileJSON url which does not work without further dev
     const sources: { taustakartta: VectorTileSource } = {
@@ -119,7 +142,7 @@ const MapContainer: React.FC = () => {
     setTimeout(() => {
       map.updateSize();
     }, 0);
-  }, [mapInitialized]);
+  }, [mapInitialized, t, i18n]);
 
   return <div id="mapContainer" ref={mapElement}></div>;
 };
