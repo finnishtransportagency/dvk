@@ -6,8 +6,6 @@ import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms, fieldParams } from '../hooks/squatReducer';
 import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
-import { isReliabilityAnIssue } from '../utils/validations';
-import Alert from './Alert';
 import InputField from './InputField';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
@@ -74,16 +72,6 @@ const Environment: React.FC = () => {
     });
   }, [state.environment.fairway.sweptDepth, dispatch]);
 
-  // Validations
-  const checkIsReliabilityAnIssue = () => {
-    return isReliabilityAnIssue(
-      state.vessel.general.blockCoefficient,
-      state.environment.vessel.vesselSpeed,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel
-    );
-  };
-
   // Field validation
   const isFieldValid = (name: string) => {
     for (const [k, v] of Object.entries(state.validations)) {
@@ -115,8 +103,6 @@ const Environment: React.FC = () => {
       </IonText>
 
       <>
-        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} />}
-
         <SectionTitle
           title={t('homePage.squat.environment.weather')}
           valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}

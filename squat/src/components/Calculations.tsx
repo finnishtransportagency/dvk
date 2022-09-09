@@ -29,7 +29,10 @@ import Alert from './Alert';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import {
+  isBreadthDraughtRatioOutOfRange,
   isExternalForceRequired,
+  isLengthBreadthRatioOutOfRange,
+  isReliabilityAnIssue,
   isSafetyMarginInsufficient,
   isUKCDuringTurnUnderRequired,
   isUKCShipMotionsUnderRequired,
@@ -43,6 +46,15 @@ const Calculations: React.FC = () => {
   const { state, dispatch } = useSquatContext();
 
   // Validations
+  const checkIsReliabilityAnIssue = () => {
+    return isReliabilityAnIssue(
+      state.vessel.general.blockCoefficient,
+      state.environment.vessel.vesselSpeed,
+      state.environment.fairway.sweptDepth,
+      state.environment.fairway.waterLevel,
+      state.status.showBarrass
+    );
+  };
   const checkIsUKCUnderMinimum = () => {
     return isUKCUnderMinimum(
       state.environment.fairway.sweptDepth,
@@ -372,6 +384,20 @@ const Calculations: React.FC = () => {
             </IonRow>
           </IonGrid>
         </IonItem>
+
+        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
+        {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
+          <Alert
+            title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass)}
+            className="top-margin"
+          />
+        )}
+        {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass) && (
+          <Alert
+            title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass)}
+            className="top-margin"
+          />
+        )}
 
         <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
         <IonGrid className="no-padding">
