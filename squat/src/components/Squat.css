@@ -115,6 +115,12 @@ ion-item.item.only-label ion-label {
   margin: 0;
 }
 
+@media screen and (max-width: 575px) {
+  ion-item.item.only-label ion-label {
+    white-space: normal;
+  }
+}
+
 ion-item.item-interactive {
   --border-color: var(--ion-color-dark);
   --min-height: 40px;

@@ -208,7 +208,7 @@ const Environment: React.FC = () => {
                 name="sweptDepth"
                 value={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                min={fieldParams.sweptDepth.min}
+                min={state.vessel.general.draught ? Math.ceil(state.vessel.general.draught * 10) / 10 : fieldParams.sweptDepth.min}
                 max={fieldParams.sweptDepth.max}
                 step="0.1"
                 unit={fieldParams.sweptDepth.unit}
@@ -217,8 +217,11 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
                 helper={
                   <>
-                    {Number('0').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('20').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
+                    {Number(state.vessel.general.draught ? Math.ceil(state.vessel.general.draught * 10) / 10 : '0').toLocaleString(i18n.language, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}{' '}
+                    – {Number('20').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
                   </>
                 }
               />
@@ -228,19 +231,13 @@ const Environment: React.FC = () => {
                 title={t('homePage.squat.environment.water-level')}
                 name="waterLevel"
                 value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
-                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                placeholder="0"
                 min={fieldParams.waterLevel.min}
                 max={fieldParams.waterLevel.max}
-                step="0.1"
                 unit={fieldParams.waterLevel.unit}
                 fieldClass={setFieldClass('waterLevel')}
                 actionType="environment-fairway"
-                helper={
-                  <>
-                    {Number('-1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('1.5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} m
-                  </>
-                }
+                helper="-150 – 150 cm"
               />
             </IonCol>
           </IonRow>

@@ -126,6 +126,7 @@ export class DvkPipeline extends Construct {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           ENVIRONMENT: { value: props.env },
+          PUBLIC_IP: { value: '0.0.0.0/0' },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -135,7 +136,13 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo deploy cdk stack', 'cd cdk', 'npm ci', 'npm run generate', 'npm run cdk deploy DvkBackendStack'],
+            commands: [
+              'echo deploy cdk stack',
+              'cd cdk',
+              'npm ci',
+              'npm run generate',
+              'npm run cdk deploy DvkBackendStack SquatSiteStack DvkBackupServicesStack -- --require-approval never',
+            ],
           },
         },
       }),

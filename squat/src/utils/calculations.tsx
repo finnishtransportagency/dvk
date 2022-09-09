@@ -43,7 +43,7 @@ export function calculateKB(draught: number) {
 // 2. Environment
 export function calculateFroudeNumber(vesselSpeed: number, sweptDepth: number, waterLevel: number) {
   // Froude_Nro_HG_Cal | (Set_Vessel_Speed*1852/3600)/(Sqrt(9.81*(Swept_Depth+Water_Level)))
-  return knotsToMetresPerSecond(vesselSpeed) / Math.sqrt(GRAVITATIONAL_ACCELERATION * (sweptDepth + waterLevel));
+  return knotsToMetresPerSecond(vesselSpeed) / Math.sqrt(GRAVITATIONAL_ACCELERATION * (sweptDepth + waterLevel / 100));
 }
 
 // 3. Wind, drift & squat calculations
@@ -287,7 +287,7 @@ export function calculateSquatHG(
 
 export function calculateUKCStraightCourse(sweptDepth: number, waterLevel: number, correctedDraught: number, squatBarrass: number, squatHG: number) {
   // Swept_Depth+Water_Level-Draught_Heel-Squat
-  const resultWOSquat = sweptDepth + waterLevel - correctedDraught;
+  const resultWOSquat = sweptDepth + waterLevel / 100 - correctedDraught;
   return [resultWOSquat - squatBarrass, resultWOSquat - squatHG];
 }
 
@@ -300,7 +300,7 @@ export function calculateUKCDuringTurn(
   squatHG: number
 ) {
   // (Swept_Depth+Water_Level)-(Draught_During_Turn-Vessel_Draught)*2-Vessel_Draught-Squat
-  const resultWOSquat = sweptDepth + waterLevel - (correctedDraughtDuringTurn - draught) * 2 - draught;
+  const resultWOSquat = sweptDepth + waterLevel / 100 - (correctedDraughtDuringTurn - draught) * 2 - draught;
   return [resultWOSquat - squatBarrass, resultWOSquat - squatHG];
 }
 

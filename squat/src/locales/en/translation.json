@@ -5,7 +5,8 @@
       "shareable-link-title": "Create a shareable link",
       "shareable-link-body": "Below is a a link that you can use to share you're calculations' current status to anyone.",
       "copy-to-clipboard": "Copy to clipboard",
-      "copied-to-clipboard": "Copied to clipboard!"
+      "copied-to-clipboard": "Copied to clipboard!",
+      "print": "Print page"
     },
     "squat": {
       "content": "[en] Squat-laskenta",
@@ -35,6 +36,8 @@
         "KG": "KG",
         "GM": "GM",
         "KB": "KB",
+        "lengthBPP-breadth-ratio": "Length-Breadth Ratio",
+        "breadth-draught-ratio": "Breadth-Draught Ratio",
         "tug-use-recommended": "Tug Use Is Recommended",
         "thruster-unable-to-lift-bow": "Thruster Is Unable To Lift Bow When Running Optimal Speed Astern"
       },

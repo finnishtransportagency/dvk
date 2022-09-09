@@ -11,6 +11,48 @@ export const isTugUseRecommended = (bowThrusterForce: number, externalForceRequi
   }
   return false;
 };
+export const isLengthBreadthRatioOutOfRange = (lengthBPP: number, breadth: number) => {
+  if (!lengthBPP || !breadth) return '';
+  // 5.5 <= lengthBPP / breadth <= 8.5
+  const ratio = lengthBPP / breadth;
+  if (ratio < 5.5) {
+    return (
+      <>
+        {t('homePage.squat.vessel.lengthBPP-breadth-ratio')} &lt;{' '}
+        {(5.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+      </>
+    );
+  } else if (ratio > 8.5) {
+    return (
+      <>
+        {t('homePage.squat.vessel.lengthBPP-breadth-ratio')} &gt;{' '}
+        {(8.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+      </>
+    );
+  }
+  return '';
+};
+export const isBreadthDraughtRatioOutOfRange = (breadth: number, draught: number) => {
+  if (!breadth || !draught) return '';
+  // 2.19 <= breadth / draught <= 3.5
+  const ratio = breadth / draught;
+  if (ratio < 2.19) {
+    return (
+      <>
+        {t('homePage.squat.vessel.breadth-draught-ratio')} &lt;{' '}
+        {(2.19).toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      </>
+    );
+  } else if (ratio > 3.5) {
+    return (
+      <>
+        {t('homePage.squat.vessel.breadth-draught-ratio')} &gt;{' '}
+        {(3.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+      </>
+    );
+  }
+  return '';
+};
 export const isThrusterUnableToLiftBow = (lengthBPP: number, bowThruster: number, bowThrusterForce: number, windForce: number, waveForce: number) => {
   // If(Value(Bow_Thruster_Force.Text) > 0, If((Length_BPP*0.25*(Wind_Force+Wave_Force))-(Length_BPP*0.75*Bow_Thruster*1.34/100)>0, true, false))
   if (bowThrusterForce > 0 && lengthBPP * 0.25 * (windForce + waveForce) - (lengthBPP * 0.75 * bowThruster * 1.34) / 100 > 0) {

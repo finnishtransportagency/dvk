@@ -1,0 +1,14 @@
+{
+  "id": "vuosaari",
+  "name": {
+    "fi": "Vuosaaren väylä",
+    "sv": "Nordsjöleden",
+    "en": "Vuosaari channel"
+  },
+  "fairways": [
+    {
+      "id": 4927,
+      "name": "Vuosaari channel"
+    }
+  ]
+}

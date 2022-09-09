@@ -1,4 +1,4 @@
-import { vuosaari, kemi, uusikaupunki } from './sample/navigationLines.json';
+import { vuosaari, kemi, uusikaupunki, saimaa } from './sample/navigationLines.json';
 
 export type NavigointiLinjaAPIModel = {
   id: number;
@@ -21,8 +21,10 @@ export class NavigationLinesService {
       return kemi;
     } else if (id === 2345) {
       return uusikaupunki;
-    } else {
+    } else if (id === 4927) {
       return vuosaari;
+    } else {
+      return saimaa;
     }
   }
 }
