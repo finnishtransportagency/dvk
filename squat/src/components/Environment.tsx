@@ -51,6 +51,29 @@ const Environment: React.FC = () => {
     dispatch,
   ]);
 
+  useEffect(() => {
+    if (state.environment.fairway.sweptDepth)
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: 'sweptDepth',
+          value: ((document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+  }, [state.vessel.general.draught, state.environment.fairway.sweptDepth, dispatch]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'validation',
+      payload: {
+        key: 'waterDepth',
+        value: ((document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+        elType: 'boolean',
+      },
+    });
+  }, [state.environment.fairway.sweptDepth, dispatch]);
+
   // Validations
   const checkIsReliabilityAnIssue = () => {
     return isReliabilityAnIssue(
