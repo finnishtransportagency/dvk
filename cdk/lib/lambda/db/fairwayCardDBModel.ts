@@ -56,6 +56,7 @@ export type Harbor = {
   fax?: string;
   email?: string;
   internet?: string;
+  extraInfo?: Text;
   harborBasin?: Text;
 };
 
@@ -97,7 +98,9 @@ class FairwayCardDBModel {
 
   trafficService?: TrafficService;
 
-  harbor?: Harbor;
+  harbors?: Harbor[];
+
+  cargo?: Text[];
 
   fairways: FairwayDBModel[];
 

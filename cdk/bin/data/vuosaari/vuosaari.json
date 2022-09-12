@@ -89,223 +89,225 @@
       }
     ]
   },
-  "harbor": {
-    "name": {
-      "fi": "Helsingin Satama Oy, Helsinki",
-      "sv": "Helsingfors Hamn, Helsingfors",
-      "en": "Port of Helsinki, Helsinki"
-    },
-    "phoneNumber": "+35893101621",
-    "fax": "+358931033802",
-    "email": "port.helsinki@portofhelsinki.fi",
-    "internet": "https://www.portofhelsinki.fi/",
-    "quays": [
+  "harbors": [
       {
-        "name": {
-          "fi": "A laituri",
-          "sv": "A kajen",
-          "en": "Quay A"
-        },
-        "length": 180,
-        "draft": [12.5],
-        "extraInfo": {
-          "fi": "säädettävä ramppi",
-          "sv": "justerbar ramp",
-          "en": "adjustable ramp"
-        }
+      "name": {
+        "fi": "Helsingin Satama Oy, Helsinki",
+        "sv": "Helsingfors Hamn, Helsingfors",
+        "en": "Port of Helsinki, Helsinki"
       },
-      {
-        "name": {
-          "fi": "AP pistolaituri",
-          "sv": "AP kajen (pir)",
-          "en": "Quay AP (pier)"
+      "phoneNumber": "+35893101621",
+      "fax": "+358931033802",
+      "email": "port.helsinki@portofhelsinki.fi",
+      "internet": "https://www.portofhelsinki.fi/",
+      "quays": [
+        {
+          "name": {
+            "fi": "A laituri",
+            "sv": "A kajen",
+            "en": "Quay A"
+          },
+          "length": 180,
+          "draft": [12.5],
+          "extraInfo": {
+            "fi": "säädettävä ramppi",
+            "sv": "justerbar ramp",
+            "en": "adjustable ramp"
+          }
         },
-        "length": 215,
-        "draft": [10.5, 12.5],
-        "extraInfo": {
-          "fi": "2 kpl kiinteää ramppia",
-          "sv": "2 fasta ramper",
-          "en": "2 fixed ramps"
+        {
+          "name": {
+            "fi": "AP pistolaituri",
+            "sv": "AP kajen (pir)",
+            "en": "Quay AP (pier)"
+          },
+          "length": 215,
+          "draft": [10.5, 12.5],
+          "extraInfo": {
+            "fi": "2 kpl kiinteää ramppia",
+            "sv": "2 fasta ramper",
+            "en": "2 fixed ramps"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
         },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
+        {
+          "name": {
+            "fi": "BP pistolaituri",
+            "sv": "BP kajen (pir)",
+            "en": "Quay BP (pier)"
+          },
+          "length": 250,
+          "draft": [12.5],
+          "extraInfo": {
+            "fi": "2 kpl kiinteää ramppia",
+            "sv": "2 fasta ramper",
+            "en": "2 fixed ramps"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "CP pistolaituri",
+            "sv": "CP kajen (pir)",
+            "en": "Quay CP (pier)"
+          },
+          "length": 250,
+          "draft": [10.5],
+          "extraInfo": {
+            "fi": "2 kpl säädettävää tuplaramppia",
+            "sv": "2 justerbara dubbelramper",
+            "en": "2 adjustable ramps"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "D laituri",
+            "sv": "D kajen",
+            "en": "Quay D"
+          },
+          "length": 750,
+          "draft": [12.5, 14.3],
+          "extraInfo": {
+            "fi": "konttialuksille, 1 kiinteä ramppi",
+            "sv": "containerfartyg, fast ramp",
+            "en": "containers, fixed ramp"
+          },
+          "cargo": {
+            "fi": "2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m",
+            "sv": "2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m",
+            "en": "2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "E laituri",
+            "sv": "E kajen",
+            "en": "Quay E"
+          },
+          "length": 750,
+          "draft": [12.5, 14.3],
+          "extraInfo": {
+            "fi": "konttialuksille, 1 kiinteä ramppi",
+            "sv": "containerfartyg, fast ramp",
+            "en": "containers, fixed ramp"
+          },
+          "cargo": {
+            "fi": "4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m",
+            "sv": "4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m",
+            "en": "4 container cranes, lifting capacity 65/90 t, outreach 46 m"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "F laituri",
+            "sv": "F kajen",
+            "en": "Quay F"
+          },
+          "length": 497,
+          "draft": [10.5, 14.3],
+          "extraInfo": {
+            "fi": "2 kpl kiinteää ramppia",
+            "sv": "2 fasta ramper",
+            "en": "2 fixed ramps"
+          },
+          "cargo": {
+            "fi": "konttinosturi, nostokyky 40/50 tn, ulottuma 34 m",
+            "sv": "containerkran, lyftkapacitet 40/50 t, räckvidd 34 m",
+            "en": "container crane, lifting capacity 40/50 t, outreach 34 m"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "VG9 laituri",
+            "sv": "VG9 kajen",
+            "en": "Quay VG9"
+          },
+          "length": 162,
+          "draft": [12.5],
+          "extraInfo": {
+            "fi": "1 kiinteä ramppi",
+            "sv": "fast ramp",
+            "en": "fixed ramp"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "GP 1 pistolaituri",
+            "sv": "GP 1 kajen (pir)",
+            "en": "Quay GP 1 (pier)"
+          },
+          "length": 204,
+          "draft": [12.5],
+          "extraInfo": {
+            "fi": "2 kpl kiinteää ramppia",
+            "sv": "2 fasta ramper",
+            "en": "2 fixed ramps"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "GP 2 pistolaituri",
+            "sv": "GP 2 kajen (pir)",
+            "en": "Quay GP 2 (pier)"
+          },
+          "length": 204,
+          "draft": [12.5, 14.3],
+          "extraInfo": {
+            "fi": "2 kpl kiinteää ramppia",
+            "sv": "2 fasta ramper",
+            "en": "2 fixed ramps"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "VGA laituri",
+            "sv": "VGA kajen",
+            "en": "Quay VGA"
+          },
+          "length": 189,
+          "draft": [14.3],
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
         }
-      },
-      {
-        "name": {
-          "fi": "BP pistolaituri",
-          "sv": "BP kajen (pir)",
-          "en": "Quay BP (pier)"
-        },
-        "length": 250,
-        "draft": [12.5],
-        "extraInfo": {
-          "fi": "2 kpl kiinteää ramppia",
-          "sv": "2 fasta ramper",
-          "en": "2 fixed ramps"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "CP pistolaituri",
-          "sv": "CP kajen (pir)",
-          "en": "Quay CP (pier)"
-        },
-        "length": 250,
-        "draft": [10.5],
-        "extraInfo": {
-          "fi": "2 kpl säädettävää tuplaramppia",
-          "sv": "2 justerbara dubbelramper",
-          "en": "2 adjustable ramps"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "D laituri",
-          "sv": "D kajen",
-          "en": "Quay D"
-        },
-        "length": 750,
-        "draft": [12.5, 14.3],
-        "extraInfo": {
-          "fi": "konttialuksille, 1 kiinteä ramppi",
-          "sv": "containerfartyg, fast ramp",
-          "en": "containers, fixed ramp"
-        },
-        "cargo": {
-          "fi": "2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m",
-          "sv": "2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m",
-          "en": "2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "E laituri",
-          "sv": "E kajen",
-          "en": "Quay E"
-        },
-        "length": 750,
-        "draft": [12.5, 14.3],
-        "extraInfo": {
-          "fi": "konttialuksille, 1 kiinteä ramppi",
-          "sv": "containerfartyg, fast ramp",
-          "en": "containers, fixed ramp"
-        },
-        "cargo": {
-          "fi": "4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m",
-          "sv": "4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m",
-          "en": "4 container cranes, lifting capacity 65/90 t, outreach 46 m"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "F laituri",
-          "sv": "F kajen",
-          "en": "Quay F"
-        },
-        "length": 497,
-        "draft": [10.5, 14.3],
-        "extraInfo": {
-          "fi": "2 kpl kiinteää ramppia",
-          "sv": "2 fasta ramper",
-          "en": "2 fixed ramps"
-        },
-        "cargo": {
-          "fi": "konttinosturi, nostokyky 40/50 tn, ulottuma 34 m",
-          "sv": "containerkran, lyftkapacitet 40/50 t, räckvidd 34 m",
-          "en": "container crane, lifting capacity 40/50 t, outreach 34 m"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "VG9 laituri",
-          "sv": "VG9 kajen",
-          "en": "Quay VG9"
-        },
-        "length": 162,
-        "draft": [12.5],
-        "extraInfo": {
-          "fi": "1 kiinteä ramppi",
-          "sv": "fast ramp",
-          "en": "fixed ramp"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "GP 1 pistolaituri",
-          "sv": "GP 1 kajen (pir)",
-          "en": "Quay GP 1 (pier)"
-        },
-        "length": 204,
-        "draft": [12.5],
-        "extraInfo": {
-          "fi": "2 kpl kiinteää ramppia",
-          "sv": "2 fasta ramper",
-          "en": "2 fixed ramps"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "GP 2 pistolaituri",
-          "sv": "GP 2 kajen (pir)",
-          "en": "Quay GP 2 (pier)"
-        },
-        "length": 204,
-        "draft": [12.5, 14.3],
-        "extraInfo": {
-          "fi": "2 kpl kiinteää ramppia",
-          "sv": "2 fasta ramper",
-          "en": "2 fixed ramps"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "VGA laituri",
-          "sv": "VGA kajen",
-          "en": "Quay VGA"
-        },
-        "length": 189,
-        "draft": [14.3],
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      }
-    ]
-  },
+      ]
+    }
+  ],
   "fairways": [
     {
       "id": 4927,

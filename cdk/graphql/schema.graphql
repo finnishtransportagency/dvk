@@ -23,7 +23,8 @@ type FairwayCard {
   seaLevel: Text
   windRecommendation: Text
   trafficService: TrafficService
-  harbor: Harbor
+  cargo: [Text]
+  harbors: [Harbor]
 }
 
 type TrafficService {
@@ -63,6 +64,7 @@ type Harbor {
   fax: String
   email: String
   internet: String
+  extraInfo: Text
   harborBasin: Text
 }
 

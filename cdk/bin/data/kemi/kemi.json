@@ -96,128 +96,130 @@
       }
     ]
   },
-  "harbor": {
-    "name": {
-      "fi": "Kemin Satama Oy",
-      "sv": "Kemi hamn Ab",
-      "en": "Kemi Port Ltd"
-    },
-    "phoneNumber": "+35816258100",
-    "harborBasin": {
-      "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
-      "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
-      "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay."
-    },
-    "quays": [
+  "harbors": [
       {
-        "name": {
-          "fi": "Öljylaituri",
-          "sv": "Oljekajen",
-          "en": "Oil terminal"
-        },
-        "draft": [11.2],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t",
-          "sv": "Mobilkranar  6-100 t",
-          "en": "Mobile crane 6-100 t"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
+      "name": {
+        "fi": "Kemin Satama Oy",
+        "sv": "Kemi hamn Ab",
+        "en": "Kemi Port Ltd"
       },
-      {
-        "name": {
-          "fi": "Laituri I, paikat 1-2",
-          "sv": "Kaj I, platserna 1-2",
-          "en": "Quay I, berths 1-2"
-        },
-        "length": 160,
-        "draft": [10.6],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t, peräporttipaikka",
-          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-          "en": "Mobile crane 6-100 t, ro-ro berth"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
+      "phoneNumber": "+35816258100",
+      "harborBasin": {
+        "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
+        "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
+        "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay."
       },
-      {
-        "name": {
-          "fi": "Laituri I, paikat 3-4",
-          "sv": "Kaj I, platserna 3-4",
-          "en": "Quay I, berths 3-4"
+      "quays": [
+        {
+          "name": {
+            "fi": "Öljylaituri",
+            "sv": "Oljekajen",
+            "en": "Oil terminal"
+          },
+          "draft": [11.2],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t",
+            "sv": "Mobilkranar  6-100 t",
+            "en": "Mobile crane 6-100 t"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
         },
-        "length": 179,
-        "draft": [9.2],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t, peräporttipaikka",
-          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-          "en": "Mobile crane 6-100 t, ro-ro berth"
+        {
+          "name": {
+            "fi": "Laituri I, paikat 1-2",
+            "sv": "Kaj I, platserna 1-2",
+            "en": "Quay I, berths 1-2"
+          },
+          "length": 160,
+          "draft": [10.6],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t, peräporttipaikka",
+            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+            "en": "Mobile crane 6-100 t, ro-ro berth"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
         },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
+        {
+          "name": {
+            "fi": "Laituri I, paikat 3-4",
+            "sv": "Kaj I, platserna 3-4",
+            "en": "Quay I, berths 3-4"
+          },
+          "length": 179,
+          "draft": [9.2],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t, peräporttipaikka",
+            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+            "en": "Mobile crane 6-100 t, ro-ro berth"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "Laituri II, paikat 5-7",
+            "sv": "Kaj II, platserna 5-7",
+            "en": "Quay II, berths 5-7"
+          },
+          "length": 292,
+          "draft": [9.2],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t, peräporttipaikka",
+            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+            "en": "Mobile crane 6-100 t, ro-ro berth"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "Laituri III, paikat 8-9",
+            "sv": "Kaj III, platserna 8-9",
+            "en": "Quay III, berths 8-9"
+          },
+          "length": 178,
+          "draft": [11.2],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t, peräporttipaikka",
+            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+            "en": "Mobile crane 6-100 t, ro-ro berth"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        },
+        {
+          "name": {
+            "fi": "Laituri IV, paikat 10-11",
+            "sv": "Kaj IV, platserna 10-11",
+            "en": "Quay IV, berths 10-11"
+          },
+          "length": 178,
+          "draft": [11.2],
+          "cargo": {
+            "fi": "Autonosturi 6-100 t, peräporttipaikka",
+            "sv": "Mobilkranar  6-100t, kajplatser för ro-ro-fartyg",
+            "en": "Mobile crane 6-100 t, ro-ro berth"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
         }
-      },
-      {
-        "name": {
-          "fi": "Laituri II, paikat 5-7",
-          "sv": "Kaj II, platserna 5-7",
-          "en": "Quay II, berths 5-7"
-        },
-        "length": 292,
-        "draft": [9.2],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t, peräporttipaikka",
-          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-          "en": "Mobile crane 6-100 t, ro-ro berth"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "Laituri III, paikat 8-9",
-          "sv": "Kaj III, platserna 8-9",
-          "en": "Quay III, berths 8-9"
-        },
-        "length": 178,
-        "draft": [11.2],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t, peräporttipaikka",
-          "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-          "en": "Mobile crane 6-100 t, ro-ro berth"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      },
-      {
-        "name": {
-          "fi": "Laituri IV, paikat 10-11",
-          "sv": "Kaj IV, platserna 10-11",
-          "en": "Quay IV, berths 10-11"
-        },
-        "length": 178,
-        "draft": [11.2],
-        "cargo": {
-          "fi": "Autonosturi 6-100 t, peräporttipaikka",
-          "sv": "Mobilkranar  6-100t, kajplatser för ro-ro-fartyg",
-          "en": "Mobile crane 6-100 t, ro-ro berth"
-        },
-        "geometry": {
-          "type": "Point",
-          "coordinates": []
-        }
-      }
-    ]
-  },
+      ]
+    }
+  ],
   "fairways": [
     {
       "id": 10,
