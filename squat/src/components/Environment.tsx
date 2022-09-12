@@ -50,7 +50,11 @@ const Environment: React.FC = () => {
   ]);
 
   useEffect(() => {
-    if (state.environment.fairway.sweptDepth)
+    if (
+      state.environment.fairway.sweptDepth &&
+      document.getElementsByName('sweptDepth').length &&
+      (document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild
+    ) {
       dispatch({
         type: 'validation',
         payload: {
@@ -59,17 +63,20 @@ const Environment: React.FC = () => {
           elType: 'boolean',
         },
       });
+    }
   }, [state.vessel.general.draught, state.environment.fairway.sweptDepth, dispatch]);
 
   useEffect(() => {
-    dispatch({
-      type: 'validation',
-      payload: {
-        key: 'waterDepth',
-        value: ((document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-        elType: 'boolean',
-      },
-    });
+    if (document.getElementsByName('waterDepth').length && (document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild) {
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: 'waterDepth',
+          value: ((document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+    }
   }, [state.environment.fairway.sweptDepth, dispatch]);
 
   // Field validation
