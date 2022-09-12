@@ -309,7 +309,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.KG')}
                 name="KG"
                 value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KG.min}
                 max={fieldParams.KG.max}
@@ -329,7 +328,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.GM')}
                 name="GM"
                 value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.GM.min}
                 max={fieldParams.GM.max}
@@ -351,7 +349,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.KB')}
                 name="KB"
                 value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KB.min}
                 max={fieldParams.KB.max}
