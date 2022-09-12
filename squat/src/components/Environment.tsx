@@ -6,8 +6,6 @@ import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms, fieldParams } from '../hooks/squatReducer';
 import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
-import { isReliabilityAnIssue } from '../utils/validations';
-import Alert from './Alert';
 import InputField from './InputField';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
@@ -51,15 +49,35 @@ const Environment: React.FC = () => {
     dispatch,
   ]);
 
-  // Validations
-  const checkIsReliabilityAnIssue = () => {
-    return isReliabilityAnIssue(
-      state.vessel.general.blockCoefficient,
-      state.environment.vessel.vesselSpeed,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel
-    );
-  };
+  useEffect(() => {
+    if (
+      state.environment.fairway.sweptDepth &&
+      document.getElementsByName('sweptDepth').length &&
+      (document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild
+    ) {
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: 'sweptDepth',
+          value: ((document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+    }
+  }, [state.vessel.general.draught, state.environment.fairway.sweptDepth, dispatch]);
+
+  useEffect(() => {
+    if (document.getElementsByName('waterDepth').length && (document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild) {
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: 'waterDepth',
+          value: ((document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+    }
+  }, [state.environment.fairway.sweptDepth, dispatch]);
 
   // Field validation
   const isFieldValid = (name: string) => {
@@ -92,8 +110,6 @@ const Environment: React.FC = () => {
       </IonText>
 
       <>
-        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} />}
-
         <SectionTitle
           title={t('homePage.squat.environment.weather')}
           valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
@@ -125,7 +141,7 @@ const Environment: React.FC = () => {
                 unit={fieldParams.windDirection.unit}
                 fieldClass={setFieldClass('windDirection')}
                 actionType="environment-weather"
-                helper="0 – 350 deg"
+                helper="0 – 359 deg"
               />
             </IonCol>
           </IonRow>
@@ -373,7 +389,7 @@ const Environment: React.FC = () => {
                 unit={fieldParams.vesselCourse.unit}
                 fieldClass={setFieldClass('vesselCourse')}
                 actionType="environment-vessel"
-                helper="0 – 350 deg"
+                helper="0 – 359 deg"
               />
             </IonCol>
             <IonCol size="6">

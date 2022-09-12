@@ -111,7 +111,8 @@
         "estimated-drift-angle": "Estimated Drift Angle",
         "estimated-vessel-breadth-due-drift": "Estimated Vessel Breadth Due Drift",
         "insufficient-safety-margin": "Insufficient Safety Margin",
-        "external-force-required": "External Force Required"
+        "external-force-required": "External Force Required",
+        "HG-out-of-bounds-switch-to-barrass": "Huuska-Guliev Constraint Out of Bounds, Switch to Barrass"
       }
     },
     "squatChart": {

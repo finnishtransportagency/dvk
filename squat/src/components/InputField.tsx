@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { IonIcon, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import { alertCircleOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
@@ -26,8 +26,14 @@ interface InputProps {
 const InputField: React.FC<InputProps> = (props) => {
   const { t } = useTranslation();
   const { dispatch } = useSquatContext();
+  const [value, setValue] = useState<string | number | null>(props.value);
 
-  const updateAction = (event: CustomEvent, actionType: Action['type']) => {
+  useEffect(() => {
+    setValue(props.value);
+  }, [props.value]);
+
+  const innerUpdateAction = (event: CustomEvent, actionType: Action['type']) => {
+    setValue((event.target as HTMLInputElement).value);
     dispatch({
       type: 'validation',
       payload: {
@@ -42,10 +48,19 @@ const InputField: React.FC<InputProps> = (props) => {
         key: (event.target as HTMLInputElement).name,
         value: (event.target as HTMLInputElement).value,
         elType: (event.target as HTMLInputElement).tagName,
+        fallThrough: true,
       },
     });
+  };
+
+  const updateAction = (event: CustomEvent, actionType: Action['type']) => {
     dispatch({
-      type: 'url',
+      type: actionType,
+      payload: {
+        key: (event.target as HTMLInputElement).name,
+        value: (event.target as HTMLInputElement).value,
+        elType: (event.target as HTMLInputElement).tagName,
+      },
     });
   };
 
@@ -54,7 +69,20 @@ const InputField: React.FC<InputProps> = (props) => {
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
       <IonItem fill="outline" className={props.fieldClass}>
-        <IonInput type="number" {...props} onIonChange={(e) => updateAction(e, props.actionType)} debounce={50} inputmode="decimal" />
+        <IonInput
+          type="number"
+          min={props.min}
+          max={props.max}
+          step={props.step}
+          name={props.name}
+          required={props.required}
+          value={value}
+          placeholder={props.placeholder}
+          onIonChange={(e) => innerUpdateAction(e, props.actionType)}
+          onIonBlur={(e) => updateAction(e, props.actionType)}
+          debounce={50}
+          inputmode="decimal"
+        />
         {props.unit && (
           <IonLabel slot="end" color="medium">
             {props.unit}
@@ -65,7 +93,7 @@ const InputField: React.FC<InputProps> = (props) => {
         </IonNote>
         <IonNote slot="error" className="input-error">
           <IonIcon icon={alertCircleOutline} color="danger" />
-          {props.value ? t('common.value-out-of-range') : t('common.required')}
+          {value ? t('common.value-out-of-range') : t('common.required')}
         </IonNote>
       </IonItem>
     </>

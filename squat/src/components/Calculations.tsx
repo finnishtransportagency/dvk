@@ -46,6 +46,15 @@ const Calculations: React.FC = () => {
   const { state, dispatch } = useSquatContext();
 
   // Validations
+  const checkIsReliabilityAnIssue = () => {
+    return isReliabilityAnIssue(
+      state.vessel.general.blockCoefficient,
+      state.environment.vessel.vesselSpeed,
+      state.environment.fairway.sweptDepth,
+      state.environment.fairway.waterLevel,
+      state.status.showBarrass
+    );
+  };
   const checkIsUKCUnderMinimum = () => {
     return isUKCUnderMinimum(
       state.environment.fairway.sweptDepth,
@@ -55,21 +64,6 @@ const Calculations: React.FC = () => {
       state.calculations.squat.UKCVesselMotions,
       state.status.showBarrass
     );
-  };
-  const checkIsReliabilityAnIssue = () => {
-    return isReliabilityAnIssue(
-      state.vessel.general.blockCoefficient,
-      state.environment.vessel.vesselSpeed,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel
-    );
-  };
-  const checkIsBarrassActive = () => {
-    return checkIsReliabilityAnIssue() !== '' ||
-      isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) !== '' ||
-      isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) !== ''
-      ? true
-      : state.status.showBarrass;
   };
 
   // useEffects to calculate results by input value update
@@ -304,6 +298,11 @@ const Calculations: React.FC = () => {
     const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
     return isNaN(currentValue) ? '' : currentValue;
   };
+  const printSquatHelper = () => {
+    if (getSquatValue() !== '')
+      return '(' + (state.status.showBarrass ? t('homePage.squat.calculations.squat-barrass') : t('homePage.squat.calculations.squat-HG')) + ')';
+    return '';
+  };
 
   return (
     <>
@@ -321,11 +320,12 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel
-                  color={state.status.showDeepWaterValues ? 'medium' : 'primary'}
-                  title={t('homePage.squat.calculations.shallow-water-values')}
-                >
-                  {t('homePage.squat.calculations.shallow-water-values')}
+                <IonLabel color={state.status.showDeepWaterValues ? 'dark' : 'primary'} title={t('homePage.squat.calculations.shallow-water-values')}>
+                  {state.status.showDeepWaterValues ? (
+                    t('homePage.squat.calculations.shallow-water-values')
+                  ) : (
+                    <strong>{t('homePage.squat.calculations.shallow-water-values')}</strong>
+                  )}
                 </IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
@@ -338,11 +338,15 @@ const Calculations: React.FC = () => {
               </IonCol>
               <IonCol size="5">
                 <IonLabel
-                  color={state.status.showDeepWaterValues ? 'primary' : 'medium'}
+                  color={state.status.showDeepWaterValues ? 'primary' : 'dark'}
                   className="align-right"
                   title={t('homePage.squat.calculations.deep-water-values')}
                 >
-                  {t('homePage.squat.calculations.deep-water-values')}
+                  {state.status.showDeepWaterValues ? (
+                    <strong>{t('homePage.squat.calculations.deep-water-values')}</strong>
+                  ) : (
+                    t('homePage.squat.calculations.deep-water-values')
+                  )}
                 </IonLabel>
               </IonCol>
             </IonRow>
@@ -352,24 +356,48 @@ const Calculations: React.FC = () => {
           <IonGrid className="no-padding">
             <IonRow className="ion-align-items-center">
               <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'medium' : 'primary'}>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
+                <IonLabel color={state.status.showBarrass ? 'dark' : 'primary'}>
+                  {state.status.showBarrass ? (
+                    t('homePage.squat.calculations.squat-HG')
+                  ) : (
+                    <strong>{t('homePage.squat.calculations.squat-HG')}</strong>
+                  )}
+                </IonLabel>
               </IonCol>
               <IonCol size="2" className="ion-justify-content-center use-flex">
                 <IonToggle
-                  checked={checkIsBarrassActive()}
+                  checked={state.status.showBarrass}
                   onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
                   className="squat-toggle"
-                  disabled={getSquatValue() === '' || checkIsReliabilityAnIssue() !== ''}
+                  disabled={getSquatValue() === ''}
                 />
               </IonCol>
               <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'primary' : 'medium'} className="align-right">
-                  {t('homePage.squat.calculations.squat-barrass')}
+                <IonLabel color={state.status.showBarrass ? 'primary' : 'dark'} className="align-right">
+                  {state.status.showBarrass ? (
+                    <strong>{t('homePage.squat.calculations.squat-barrass')}</strong>
+                  ) : (
+                    t('homePage.squat.calculations.squat-barrass')
+                  )}
                 </IonLabel>
               </IonCol>
             </IonRow>
           </IonGrid>
         </IonItem>
+
+        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
+        {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
+          <Alert
+            title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass)}
+            className="top-margin"
+          />
+        )}
+        {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass) && (
+          <Alert
+            title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass)}
+            className="top-margin"
+          />
+        )}
 
         <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
         <IonGrid className="no-padding">
@@ -489,13 +517,7 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 2,
                 })}
                 unit="m"
-                helper={
-                  '(' +
-                  (checkIsReliabilityAnIssue() !== '' || state.status.showBarrass
-                    ? t('homePage.squat.calculations.squat-barrass')
-                    : t('homePage.squat.calculations.squat-HG')) +
-                  ')'
-                }
+                helper={printSquatHelper()}
               />
             </IonCol>
           </IonRow>

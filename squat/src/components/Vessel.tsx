@@ -10,12 +10,7 @@ import SectionTitle from './SectionTitle';
 import InputField from './InputField';
 import Alert from './Alert';
 import SelectField from './SelectField';
-import {
-  isBreadthDraughtRatioOutOfRange,
-  isLengthBreadthRatioOutOfRange,
-  isThrusterUnableToLiftBow,
-  isTugUseRecommended,
-} from '../utils/validations';
+import { isThrusterUnableToLiftBow, isTugUseRecommended } from '../utils/validations';
 
 const zero = 0;
 
@@ -53,6 +48,19 @@ const Vessel: React.FC = () => {
     });
   }, [state.vessel.general.draught, dispatch]);
 
+  useEffect(() => {
+    if (document.getElementsByName('blockCoefficient').length && (document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild) {
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: 'blockCoefficient',
+          value: ((document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+    }
+  }, [state.status.showBarrass, dispatch]);
+
   // Field validation
   const isFieldValid = (name: string) => {
     for (const [k, v] of Object.entries(state.validations)) {
@@ -74,12 +82,6 @@ const Vessel: React.FC = () => {
       </IonText>
 
       <>
-        {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth) && (
-          <Alert title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth)} />
-        )}
-        {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught) && (
-          <Alert title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught)} />
-        )}
         {isTugUseRecommended(state.calculations.forces.bowThrusterForce, state.calculations.forces.externalForceRequired) && (
           <Alert title={t('homePage.squat.vessel.tug-use-recommended')} />
         )}
@@ -174,18 +176,28 @@ const Vessel: React.FC = () => {
               <InputField
                 title={t('homePage.squat.vessel.block-coefficient')}
                 name="blockCoefficient"
-                value={state.vessel.general.blockCoefficient ? state.vessel.general.blockCoefficient : null}
+                value={state.vessel.general.blockCoefficient}
                 required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min={fieldParams.blockCoefficient.min}
-                max={fieldParams.blockCoefficient.max}
+                min={state.status.showBarrass ? fieldParams.blockCoefficient.min : 0.6}
+                max={state.status.showBarrass ? fieldParams.blockCoefficient.max : 0.8}
                 step="0.01"
                 fieldClass={setFieldClass('blockCoefficient')}
                 actionType="vessel-general"
                 helper={
                   <>
-                    {Number('0.4').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('1').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+                    {(state.status.showBarrass ? fieldParams.blockCoefficient.min : 0.6).toLocaleString(i18n.language, {
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    })}{' '}
+                    –{' '}
+                    {(state.status.showBarrass && fieldParams.blockCoefficient.max ? fieldParams.blockCoefficient.max : 0.8).toLocaleString(
+                      i18n.language,
+                      {
+                        minimumFractionDigits: 1,
+                        maximumFractionDigits: 1,
+                      }
+                    )}
                   </>
                 }
               />
@@ -299,7 +311,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.KG')}
                 name="KG"
                 value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KG.min}
                 max={fieldParams.KG.max}
@@ -319,7 +330,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.GM')}
                 name="GM"
                 value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.GM.min}
                 max={fieldParams.GM.max}
@@ -341,7 +351,6 @@ const Vessel: React.FC = () => {
                 title={t('homePage.squat.vessel.KB')}
                 name="KB"
                 value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
-                required
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KB.min}
                 max={fieldParams.KB.max}

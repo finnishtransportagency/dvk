@@ -11,7 +11,7 @@ export const isTugUseRecommended = (bowThrusterForce: number, externalForceRequi
   }
   return false;
 };
-export const isLengthBreadthRatioOutOfRange = (lengthBPP: number, breadth: number) => {
+export const isLengthBreadthRatioOutOfRange = (lengthBPP: number, breadth: number, showBarrass?: boolean) => {
   if (!lengthBPP || !breadth) return '';
   // 5.5 <= lengthBPP / breadth <= 8.5
   const ratio = lengthBPP / breadth;
@@ -20,6 +20,12 @@ export const isLengthBreadthRatioOutOfRange = (lengthBPP: number, breadth: numbe
       <>
         {t('homePage.squat.vessel.lengthBPP-breadth-ratio')} &lt;{' '}
         {(5.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
   } else if (ratio > 8.5) {
@@ -27,12 +33,18 @@ export const isLengthBreadthRatioOutOfRange = (lengthBPP: number, breadth: numbe
       <>
         {t('homePage.squat.vessel.lengthBPP-breadth-ratio')} &gt;{' '}
         {(8.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
   }
   return '';
 };
-export const isBreadthDraughtRatioOutOfRange = (breadth: number, draught: number) => {
+export const isBreadthDraughtRatioOutOfRange = (breadth: number, draught: number, showBarrass?: boolean) => {
   if (!breadth || !draught) return '';
   // 2.19 <= breadth / draught <= 3.5
   const ratio = breadth / draught;
@@ -41,6 +53,12 @@ export const isBreadthDraughtRatioOutOfRange = (breadth: number, draught: number
       <>
         {t('homePage.squat.vessel.breadth-draught-ratio')} &lt;{' '}
         {(2.19).toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
   } else if (ratio > 3.5) {
@@ -48,6 +66,12 @@ export const isBreadthDraughtRatioOutOfRange = (breadth: number, draught: number
       <>
         {t('homePage.squat.vessel.breadth-draught-ratio')} &gt;{' '}
         {(3.5).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
   }
@@ -61,7 +85,13 @@ export const isThrusterUnableToLiftBow = (lengthBPP: number, bowThruster: number
   return false;
 };
 
-export const isReliabilityAnIssue = (blockCoefficient: number, vesselSpeed: number, sweptDepth: number, waterLevel: number) => {
+export const isReliabilityAnIssue = (
+  blockCoefficient: number,
+  vesselSpeed: number,
+  sweptDepth: number,
+  waterLevel: number,
+  showBarrass?: boolean
+) => {
   //  If(Value(Froude_Nro_HG_Cal.Text) > 0.7, "Reliability Issue - Froude Number > 0,7", If(Value(Block_Coefficient.Text) < 0.6, "Reliability Issue - Block Coefficient < 0,60", If(Value(Block_Coefficient.Text) > 0.8, "Reliability Issue - Block Coefficient > 0,80", "")))
   const froudeNumber = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
 
@@ -72,18 +102,30 @@ export const isReliabilityAnIssue = (blockCoefficient: number, vesselSpeed: numb
         {(0.7).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
       </>
     );
-  } else if (blockCoefficient < 0.6) {
+  } else if (blockCoefficient < (showBarrass ? 0.4 : 0.6)) {
     return (
       <>
         {t('homePage.squat.environment.reliability-issue-block-coefficient')} &lt;{' '}
-        {(0.6).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {(showBarrass ? 0.4 : 0.6).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
-  } else if (blockCoefficient > 0.8) {
+  } else if (blockCoefficient > (showBarrass ? 1 : 0.8)) {
     return (
       <>
         {t('homePage.squat.environment.reliability-issue-block-coefficient')} &gt;{' '}
-        {(0.8).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {(showBarrass ? 1 : 0.8).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
+        {!showBarrass && (
+          <>
+            <br />
+            {t('homePage.squat.calculations.HG-out-of-bounds-switch-to-barrass')}
+          </>
+        )}
       </>
     );
   }
