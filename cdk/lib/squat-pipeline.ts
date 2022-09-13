@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { CfnOutput, SecretValue, Stack } from 'aws-cdk-lib';
+import { Arn, CfnOutput, SecretValue, Stack } from 'aws-cdk-lib';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -127,11 +127,36 @@ export class SquatPipeline extends Construct {
         TARGET_BUCKET: { value: importedBucketValue },
       },
     });
-    const s3Arn = `arn::aws:s3:::${importedBucketValue}/*`;
+
+    const s3RootArn = Arn.format({
+      region: '',
+      service: 's3',
+      resource: importedBucketValue,
+      account: '',
+      partition: 'aws',
+    });
+
+    const s3FolderArn = Arn.format({
+      region: '',
+      service: 's3',
+      resource: importedBucketValue,
+      resourceName: 'squat/*',
+      account: '',
+      partition: 'aws',
+    });
+
     emptyS3BuildProject.addToRolePolicy(
       new iam.PolicyStatement({
-        resources: [s3Arn],
-        actions: ['s3:ListObjectsV2'],
+        resources: [s3RootArn],
+        actions: ['s3:ListBucket', 's3:GetBucketLocation'],
+        effect: Effect.ALLOW,
+      })
+    );
+
+    emptyS3BuildProject.addToRolePolicy(
+      new iam.PolicyStatement({
+        resources: [s3FolderArn],
+        actions: ['s3:GetObject', 's3:GetObjectAcl', 's3:DeleteObject'],
         effect: Effect.ALLOW,
       })
     );
