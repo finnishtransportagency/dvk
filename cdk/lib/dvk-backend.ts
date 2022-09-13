@@ -91,6 +91,7 @@ export class DvkBackendStack extends Stack {
         type: AttributeType.STRING,
       },
       pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
     });
   }
 
