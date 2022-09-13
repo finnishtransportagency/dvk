@@ -106,11 +106,7 @@
             "en": "Olympia quay"
           },
           "length": 370,
-          "draft": [7.5, 8.8],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [7.5, 8.8]
         },
         {
           "name": {
@@ -119,11 +115,7 @@
             "en": "Makasiini quay"
           },
           "length": 240,
-          "draft": [7.3, 7.5, 7.8],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [7.3, 7.5, 7.8]
         },
         {
           "name": {
@@ -132,11 +124,7 @@
             "en": "Pakkahuone quay EPL"
           },
           "length": 130,
-          "draft": [6],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [6]
         },
         {
           "name": {
@@ -145,11 +133,7 @@
             "en": "Katajanokka quays"
           },
           "length": 740,
-          "draft": [8.8],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [8.8]
         },
         {
           "name": {
@@ -158,11 +142,7 @@
             "en": "Cruise ship quays"
           },
           "length": 350,
-          "draft": [10.3, 10],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [10.3, 10]
         },
         {
           "name": {
@@ -171,11 +151,7 @@
             "en": "Hanasaari quay"
           },
           "length": 330,
-          "draft": [9.35],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [9.35]
         }
       ]
     }

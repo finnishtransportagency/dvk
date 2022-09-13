@@ -23,7 +23,6 @@ type FairwayCard {
   seaLevel: Text
   windRecommendation: Text
   trafficService: TrafficService
-  cargo: [Text]
   harbors: [Harbor]
 }
 
@@ -66,6 +65,7 @@ type Harbor {
   internet: String
   extraInfo: Text
   harborBasin: Text
+  cargo: [Text]
 }
 
 type Quay {
@@ -73,7 +73,6 @@ type Quay {
   length: Float
   draft: [Float]
   extraInfo: Text
-  cargo: Text
   geometry: GeometryPoint
 }
 

@@ -97,18 +97,6 @@
       }
     ]
   },
-  "cargo": [
-    {
-      "fi": "Fortum: nostureita yksityisillä yrittäjillä",
-      "sv": "Fortum: privata företags kranar",
-      "en": "Cranes available from private companies"
-    },
-    {
-      "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
-      "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål",
-      "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
-    }
-  ],
   "harbors": [
     {
       "name": {
@@ -118,6 +106,13 @@
       },
       "phoneNumber": "+358447334550",
       "email": "satama@portofnaantali.fi",
+      "cargo": [
+        {
+          "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+          "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål",
+          "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
+        }
+      ],
       "quays": [
         {
           "name": {
@@ -208,6 +203,13 @@
       },
       "phoneNumber": "+358504586487",
       "email": "naantali.harbour@neste.com",
+      "cargo": [
+        {
+          "fi": "Fortum: nostureita yksityisillä yrittäjillä",
+          "sv": "Fortum: privata företags kranar",
+          "en": "Cranes available from private companies"
+        }
+      ],
       "quays": [
         {
           "name": {

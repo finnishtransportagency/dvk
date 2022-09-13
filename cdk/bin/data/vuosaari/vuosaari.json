@@ -100,6 +100,23 @@
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
       "internet": "https://www.portofhelsinki.fi/",
+      "cargo": [
+        {
+          "fi": "D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m",
+          "sv": "D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m",
+          "en": "Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m"
+        },
+        {
+          "fi": "E laituri: 4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m",
+          "sv": "E kajen: 4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m",
+          "en": "Quay E: 4 container cranes, lifting capacity 65/90 t, outreach 46 m"
+        },
+        {
+          "fi": "F laituri: konttinosturi, nostokyky 40/50 tn, ulottuma 34 m",
+          "sv": "F kajen: containerkran, lyftkapacitet 40/50 t, räckvidd 34 m",
+          "en": "Quay F: container crane, lifting capacity 40/50 t, outreach 34 m"
+        }
+      ],
       "quays": [
         {
           "name": {
@@ -127,10 +144,6 @@
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
             "en": "2 fixed ramps"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -145,10 +158,6 @@
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
             "en": "2 fixed ramps"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -163,10 +172,6 @@
             "fi": "2 kpl säädettävää tuplaramppia",
             "sv": "2 justerbara dubbelramper",
             "en": "2 adjustable ramps"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -181,15 +186,6 @@
             "fi": "konttialuksille, 1 kiinteä ramppi",
             "sv": "containerfartyg, fast ramp",
             "en": "containers, fixed ramp"
-          },
-          "cargo": {
-            "fi": "2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m",
-            "sv": "2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m",
-            "en": "2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -204,15 +200,6 @@
             "fi": "konttialuksille, 1 kiinteä ramppi",
             "sv": "containerfartyg, fast ramp",
             "en": "containers, fixed ramp"
-          },
-          "cargo": {
-            "fi": "4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m",
-            "sv": "4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m",
-            "en": "4 container cranes, lifting capacity 65/90 t, outreach 46 m"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -227,15 +214,6 @@
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
             "en": "2 fixed ramps"
-          },
-          "cargo": {
-            "fi": "konttinosturi, nostokyky 40/50 tn, ulottuma 34 m",
-            "sv": "containerkran, lyftkapacitet 40/50 t, räckvidd 34 m",
-            "en": "container crane, lifting capacity 40/50 t, outreach 34 m"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -250,10 +228,6 @@
             "fi": "1 kiinteä ramppi",
             "sv": "fast ramp",
             "en": "fixed ramp"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -268,10 +242,6 @@
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
             "en": "2 fixed ramps"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -286,10 +256,6 @@
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
             "en": "2 fixed ramps"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
           }
         },
         {
@@ -299,11 +265,7 @@
             "en": "Quay VGA"
           },
           "length": 189,
-          "draft": [14.3],
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [14.3]
         }
       ]
     }

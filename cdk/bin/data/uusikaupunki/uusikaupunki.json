@@ -103,15 +103,17 @@
         "sv": "Maximilängden på fartyg som anlöper hamnen är begränsad till 225 m.",
         "en": "Maximum length of inbound vessels restricted to 225 m."
       },
+      "cargo": [
+        {
+          "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
+          "sv": "2 st 8 t kranar, 2 st lastare.",
+          "en": "2 eight-ton cranes, 2 loaders."
+        }
+      ],
       "quays": [
         {
           "length": 330,
-          "draft": [12.5],
-          "cargo": {
-            "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
-            "sv": "2 st 8 t kranar, 2 st lastare.",
-            "en": "2 eight-ton cranes, 2 loaders."
-          }
+          "draft": [12.5]
         }
       ]
     }

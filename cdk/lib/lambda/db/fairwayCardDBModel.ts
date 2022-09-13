@@ -58,6 +58,7 @@ export type Harbor = {
   internet?: string;
   extraInfo?: Text;
   harborBasin?: Text;
+  cargo?: Text[];
 };
 
 export type Quay = {
@@ -65,7 +66,6 @@ export type Quay = {
   length?: number;
   draft?: number[];
   extraInfo?: Text;
-  cargo?: Text;
   geometry?: GeometryPoint;
 };
 
@@ -99,8 +99,6 @@ class FairwayCardDBModel {
   trafficService?: TrafficService;
 
   harbors?: Harbor[];
-
-  cargo?: Text[];
 
   fairways: FairwayDBModel[];
 

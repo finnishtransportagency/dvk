@@ -38,38 +38,63 @@ function getGeoTiffMap(arrayOfFiles: string[]) {
   return geoTiffMap;
 }
 
+function isDbOnly(): boolean {
+  return process.argv.includes('--dbonly');
+}
+
+function processGeoTiff(filepath: string, id: number, s3Outputs: Promise<PutObjectCommandOutput>[]): string {
+  const i = filepath.lastIndexOf('/');
+  const filename = filepath.substring(i + 1);
+  const command = new PutObjectCommand({
+    Key: `${id}/${filename}`,
+    Bucket: `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`,
+    Body: fs.readFileSync(filepath),
+  });
+  if (!isDbOnly()) {
+    const s3Response = s3Client.send(command);
+    s3Outputs.push(s3Response);
+  }
+  return filename;
+}
+
+async function processCard(file: string, geoTiffMap: Map<number, string[]>): Promise<FairwayCardDBModel> {
+  const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
+  const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
+  console.log(`Fairway card: ${fairwayCard.name?.fi}`);
+  for (const fairway of fairwayCard.fairways) {
+    console.log(`Fairway: ${fairway.id}`);
+    if (geoTiffMap.get(fairway.id)) {
+      fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
+        return processGeoTiff(f, fairway.id, s3Outputs);
+      });
+    }
+  }
+  if (!isDbOnly()) {
+    await Promise.all(s3Outputs);
+    console.log(`${s3Outputs.length || 0} image(s) uploaded`);
+  }
+  return fairwayCard;
+}
+
+function getRootDirectory(): string {
+  if (process.argv.length < 3 || process.argv[2].startsWith('--')) {
+    return path.join(__dirname, 'data');
+  } else {
+    return path.join(__dirname, 'data', process.argv[2]);
+  }
+}
+
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
   const tableName = `FairwayCard-${Config.getEnvironment()}`;
   if (response.TableNames?.includes(tableName)) {
-    const directoryPath = process.argv.length < 3 ? path.join(__dirname, 'data') : path.join(__dirname, 'data', process.argv[2]);
+    const directoryPath = getRootDirectory();
     console.log(`Scanning directory: ${directoryPath}`);
     const arrayOfFiles = getAllFiles(directoryPath, []);
     const geoTiffMap = getGeoTiffMap(arrayOfFiles);
     for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
-      const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
-      const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
-      console.log(`Fairway card: ${fairwayCard.name?.fi}`);
-      for (const fairway of fairwayCard.fairways) {
-        console.log(`Fairway: ${fairway.id}`);
-        if (geoTiffMap.get(fairway.id)) {
-          fairway.geotiffImages = geoTiffMap.get(fairway.id)?.map((f) => {
-            const i = f.lastIndexOf('/');
-            const filename = f.substring(i + 1);
-            const command = new PutObjectCommand({
-              Key: `${fairway.id}/${filename}`,
-              Bucket: `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`,
-              Body: fs.readFileSync(f),
-            });
-            const s3Response = s3Client.send(command);
-            s3Outputs.push(s3Response);
-            return filename;
-          });
-          await Promise.all(s3Outputs);
-          console.log(`${fairway.geotiffImages?.length || 0} image(s) uploaded`);
-        }
-      }
+      const fairwayCard = await processCard(file, geoTiffMap);
       await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
     }
     console.log(`FairwayCard table ${tableName} updated`);

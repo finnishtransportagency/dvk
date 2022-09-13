@@ -109,6 +109,18 @@
         "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
         "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay."
       },
+      "cargo": [
+        {
+          "fi": "Öljylaituri: Autonosturi 6-100 t",
+          "sv": "Oljekajen: Mobilkranar  6-100 t",
+          "en": "Oil terminal: Mobile crane 6-100 t"
+        },
+        {
+          "fi": "Laiturit I-IV: Autonosturi 6-100 t, peräporttipaikka",
+          "sv": "Kajerna I-IV: Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+          "en": "Quays I-IV: Mobile crane 6-100 t, ro-ro berth"
+        }
+      ],
       "quays": [
         {
           "name": {
@@ -116,16 +128,7 @@
             "sv": "Oljekajen",
             "en": "Oil terminal"
           },
-          "draft": [11.2],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t",
-            "sv": "Mobilkranar  6-100 t",
-            "en": "Mobile crane 6-100 t"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [11.2]
         },
         {
           "name": {
@@ -134,16 +137,7 @@
             "en": "Quay I, berths 1-2"
           },
           "length": 160,
-          "draft": [10.6],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t, peräporttipaikka",
-            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-            "en": "Mobile crane 6-100 t, ro-ro berth"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [10.6]
         },
         {
           "name": {
@@ -152,16 +146,7 @@
             "en": "Quay I, berths 3-4"
           },
           "length": 179,
-          "draft": [9.2],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t, peräporttipaikka",
-            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-            "en": "Mobile crane 6-100 t, ro-ro berth"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [9.2]
         },
         {
           "name": {
@@ -170,16 +155,7 @@
             "en": "Quay II, berths 5-7"
           },
           "length": 292,
-          "draft": [9.2],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t, peräporttipaikka",
-            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-            "en": "Mobile crane 6-100 t, ro-ro berth"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [9.2]
         },
         {
           "name": {
@@ -188,16 +164,7 @@
             "en": "Quay III, berths 8-9"
           },
           "length": 178,
-          "draft": [11.2],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t, peräporttipaikka",
-            "sv": "Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
-            "en": "Mobile crane 6-100 t, ro-ro berth"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [11.2]
         },
         {
           "name": {
@@ -206,16 +173,7 @@
             "en": "Quay IV, berths 10-11"
           },
           "length": 178,
-          "draft": [11.2],
-          "cargo": {
-            "fi": "Autonosturi 6-100 t, peräporttipaikka",
-            "sv": "Mobilkranar  6-100t, kajplatser för ro-ro-fartyg",
-            "en": "Mobile crane 6-100 t, ro-ro berth"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "draft": [11.2]
         }
       ]
     }

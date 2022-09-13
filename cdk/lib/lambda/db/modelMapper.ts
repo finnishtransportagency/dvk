@@ -24,7 +24,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
     speedLimit: dbModel.speedLimit,
     vesselRecommendation: dbModel.vesselRecommendation,
     trafficService: dbModel.trafficService,
-    harbor: dbModel.harbor,
+    harbors: dbModel.harbors,
   };
   for (const fairway of dbModel?.fairways || []) {
     card.fairways.push(fairwayService.mapDBModelToFairway(fairway));
