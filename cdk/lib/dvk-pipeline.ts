@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { CfnOutput, SecretValue, Stack } from 'aws-cdk-lib';
+import { Arn, CfnOutput, SecretValue, Stack } from 'aws-cdk-lib';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -157,6 +157,54 @@ export class DvkPipeline extends Construct {
 
     const importedBucketValue = cdk.Fn.importValue('DVKBucket' + props.env);
 
+    // Create the build project that will delete files from s3 before deploy
+    const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          build: {
+            commands: [
+              // eslint-disable-next-line no-template-curly-in-string
+              'aws s3 rm s3://${TARGET_BUCKET} --recursive',
+            ],
+          },
+        },
+      }),
+      environmentVariables: {
+        TARGET_BUCKET: { value: importedBucketValue },
+      },
+    });
+    const s3RootArn = Arn.format({
+      region: '',
+      service: 's3',
+      resource: importedBucketValue,
+      account: '',
+      partition: 'aws',
+    });
+    const s3FilesArn = Arn.format({
+      region: '',
+      service: 's3',
+      resource: importedBucketValue,
+      resourceName: '*',
+      account: '',
+      partition: 'aws',
+    });
+
+    emptyS3BuildProject.addToRolePolicy(
+      new iam.PolicyStatement({
+        resources: [s3RootArn],
+        actions: ['s3:ListBucket', 's3:GetBucketLocation'],
+        effect: Effect.ALLOW,
+      })
+    );
+    emptyS3BuildProject.addToRolePolicy(
+      new iam.PolicyStatement({
+        resources: [s3FilesArn],
+        actions: ['s3:GetObject', 's3:GetObjectAcl', 's3:DeleteObject'],
+        effect: Effect.ALLOW,
+      })
+    );
+
     pipeline.addStage({
       stageName: 'Deploy',
       actions: [
@@ -164,18 +212,25 @@ export class DvkPipeline extends Construct {
           actionName: 'CdkDeploy',
           project: dvkCdkProject,
           input: sourceOutput,
+          runOrder: 1,
+        }),
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'DeleteFiles',
+          project: emptyS3BuildProject,
+          input: buildOutput,
+          runOrder: 1,
         }),
         new cdk.aws_codepipeline_actions.S3DeployAction({
           actionName: 'S3Deploy',
           bucket: s3.Bucket.fromBucketName(this, 'Bucket', importedBucketValue.toString()),
           input: buildOutput,
-          runOrder: 1,
+          runOrder: 2,
         }),
         new cdk.aws_codepipeline_actions.CodeBuildAction({
           actionName: 'InvalidateCache',
           project: invalidateBuildProject,
           input: buildOutput,
-          runOrder: 2,
+          runOrder: 3,
         }),
       ],
     });
