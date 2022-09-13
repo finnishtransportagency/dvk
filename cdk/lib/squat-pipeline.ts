@@ -8,6 +8,7 @@ import { Construct } from 'constructs';
 import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { Effect } from 'aws-cdk-lib/aws-iam';
 interface SquatPipelineProps {
   env: string;
 }
@@ -109,20 +110,52 @@ export class SquatPipeline extends Construct {
 
     const importedBucketValue = cdk.Fn.importValue('SquatBucket' + props.env);
 
+    // Create the build project that will delete files from s3 before deploy
+    const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
+      buildSpec: codebuild.BuildSpec.fromObject({
+        version: '0.2',
+        phases: {
+          build: {
+            commands: [
+              // eslint-disable-next-line no-template-curly-in-string
+              'aws s3 rm s3://${TARGET_BUCKET}/squat --recursive',
+            ],
+          },
+        },
+      }),
+      environmentVariables: {
+        TARGET_BUCKET: { value: importedBucketValue },
+      },
+    });
+    const s3Arn = `arn::aws:s3:::${importedBucketValue}/*`;
+    emptyS3BuildProject.addToRolePolicy(
+      new iam.PolicyStatement({
+        resources: [s3Arn],
+        actions: ['s3:ListObjectsV2'],
+        effect: Effect.ALLOW,
+      })
+    );
+
     pipeline.addStage({
       stageName: 'Deploy',
       actions: [
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'DeleteFiles',
+          project: emptyS3BuildProject,
+          input: buildOutput,
+          runOrder: 1,
+        }),
         new cdk.aws_codepipeline_actions.S3DeployAction({
           actionName: 'S3Deploy',
           bucket: s3.Bucket.fromBucketName(this, 'Bucket', importedBucketValue.toString()),
           input: buildOutput,
-          runOrder: 1,
+          runOrder: 2,
         }),
         new cdk.aws_codepipeline_actions.CodeBuildAction({
           actionName: 'InvalidateCache',
           project: invalidateBuildProject,
           input: buildOutput,
-          runOrder: 2,
+          runOrder: 3,
         }),
       ],
     });
