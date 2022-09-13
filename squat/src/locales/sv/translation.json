@@ -135,7 +135,7 @@
   },
   "common": {
     "tonnes": "[sv] tonnes",
-    "required": "[sv] Required",
+    "required": "[sv] Required value missing",
     "value-invalid": "[sv] Virheellinen arvo",
     "value-cannot-be-over": "[sv] Arvo ei voi olla yli {{value}}",
     "value-cannot-be-less-than": "[sv] Arvo ei voi olla alle {{value}}",

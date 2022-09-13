@@ -138,7 +138,7 @@
   },
   "common": {
     "tonnes": "tonnia",
-    "required": "Pakollinen",
+    "required": "Pakollinen tieto puuttuu",
     "value-invalid": "Virheellinen arvo",
     "value-cannot-be-over": "Arvo ei voi olla yli {{value}}",
     "value-cannot-be-less-than": "Arvo ei voi olla alle {{value}}",

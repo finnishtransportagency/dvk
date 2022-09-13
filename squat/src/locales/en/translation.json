@@ -135,7 +135,7 @@
   },
   "common": {
     "tonnes": "tonnes",
-    "required": "Required",
+    "required": "Required value missing",
     "value-invalid": "Invalid value",
     "value-cannot-be-over": "Value cannot exceed {{value}}",
     "value-cannot-be-less-than": "Value cannot be less than {{value}}",
