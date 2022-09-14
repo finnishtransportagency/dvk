@@ -137,6 +137,7 @@
     "tonnes": "tonnes",
     "required": "Required value missing",
     "value-invalid": "Invalid value",
+    "value-out-of-range": "Invalid value",
     "value-cannot-be-over": "Value cannot exceed {{value}}",
     "value-cannot-be-less-than": "Value cannot be less than {{value}}",
     "unit": {

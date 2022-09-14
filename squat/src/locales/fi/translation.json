@@ -140,6 +140,7 @@
     "tonnes": "tonnia",
     "required": "Pakollinen tieto puuttuu",
     "value-invalid": "Virheellinen arvo",
+    "value-out-of-range": "Virheellinen arvo",
     "value-cannot-be-over": "Arvo ei voi olla yli {{value}}",
     "value-cannot-be-less-than": "Arvo ei voi olla alle {{value}}",
     "unit": {
