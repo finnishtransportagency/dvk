@@ -5,6 +5,42 @@
     "nimiSV": "Nordsjöleden",
     "kulkuSyvyys1": 13,
     "pituus": 32.8,
+    "selosteAlkaa": "Suomenlahti, avomeri",
+    "selostePaattyy": "Vuosaaren satamaan",
+    "mitoitusAlukset": [
+      {
+        "id": 254214,
+        "tyyppi": 3,
+        "pituus": 280,
+        "leveys": 33,
+        "syvays": 13
+      }
+    ],
+    "mitoitukset": [
+      {
+        "id": 134832,
+        "tyyppi": 3,
+        "pituus": 280,
+        "leveys": 33,
+        "syvays": 13,
+        "normaaliKaantosade": 2,
+        "minimiKaantosade": 1.4,
+        "normaaliLeveys": 250,
+        "minimiLeveys": 200,
+        "varavesi": "2,0 - 2,5",
+        "lisatieto": "Huom. 2. mitoitusalus= Bulk-alus, Pituus (l) 210m, Leveys (b) 33,5m, Syväys13m",
+        "mareografi": "string"
+      }
+    ]
+  },
+  "vuosaari2": {
+    "jnro": 4921,
+    "nimiFI": "Vuosaaren sataman väylä",
+    "nimiSV": "[sv] Vuosaaren sataman väylä",
+    "kulkuSyvyys1": 13,
+    "pituus": 32.8,
+    "selosteAlkaa": "Vuosaaren väylältä",
+    "selostePaattyy": "Vuosaaren satama",
     "mitoitusAlukset": [
       {
         "id": 254214,

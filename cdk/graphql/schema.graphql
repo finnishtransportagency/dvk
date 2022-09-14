@@ -12,6 +12,69 @@ type FairwayCard {
   id: ID!
   name: Text!
   fairways: [Fairway!]!
+  lineText: Text
+  anchorage: [Text]
+  navigationCondition: Text
+  iceCondition: Text
+  attention: Text
+  speedLimit: [Text]
+  visibility: Text
+  windGauge: Text
+  vesselRecommendation: Text
+  seaLevel: Text
+  windRecommendation: Text
+  trafficService: TrafficService
+  harbors: [Harbor]
+}
+
+type TrafficService {
+  pilot: Pilot
+  vts: VTS
+  tugs: [Tug]
+}
+
+type Tug {
+  name: Text
+  phoneNumber: [String]
+  fax: String
+  email: String
+}
+
+type VTS {
+  name: Text
+  phoneNumber: String
+  email: [String]
+  vhf: Int
+}
+
+type Pilot {
+  email: String
+  phoneNumber: String
+  fax: String
+  internet: String
+  geometry: GeometryPoint
+  pilotJourney: Float
+  extraInfo: Text
+}
+
+type Harbor {
+  quays: [Quay]
+  name: Text
+  phoneNumber: String
+  fax: String
+  email: String
+  internet: String
+  extraInfo: Text
+  harborBasin: Text
+  cargo: [Text]
+}
+
+type Quay {
+  name: Text
+  length: Float
+  draft: [Float]
+  extraInfo: Text
+  geometry: GeometryPoint
 }
 
 type Fairway {
@@ -21,10 +84,25 @@ type Fairway {
   draft1: Float
   draft2: Float
   draft3: Float
+  statementStart: Text
+  statementEnd: Text
+  lighting: Boolean
   sizings: [Sizing!]
   sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
+  areas: [Area!]
   geotiffImages: [String]
+}
+
+type Area {
+  id: Int!
+  geometry: Geometry
+  sizingSpeed: Float
+  sizingSpeed2: Float
+  depth: Float
+  draft: Float
+  qualityClass: Int
+  type: Int
 }
 
 type SizingVessel {
@@ -53,8 +131,11 @@ type NavigationLine {
   id: Int!
   fairwayId: Int!
   length: Float
+  depth: Float
   draft: Float
-  draft2: Float
+  type: Int
+  qualityClass: Int
+  direction: Float
   geometry: Geometry
 }
 
@@ -64,8 +145,14 @@ type Geometry {
   coordinates: [[Float]]
 }
 
+type GeometryPoint {
+  type: String
+  bbox: [Float]
+  coordinates: [Float]
+}
+
 type Text {
-  fi: String!
+  fi: String
   sv: String
   en: String
 }

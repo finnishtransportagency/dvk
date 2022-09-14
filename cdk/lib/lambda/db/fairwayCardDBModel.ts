@@ -1,11 +1,12 @@
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GeometryPoint } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
 const fairwayCardTable = process.env.FAIRWAY_CARD_TABLE;
 
-type Text = {
-  fi: string;
+export type Text = {
+  fi?: string;
   sv?: string;
   en?: string;
 };
@@ -13,7 +14,59 @@ type Text = {
 export type FairwayDBModel = {
   id: number;
   name?: string;
+  statementStart?: Text;
+  statementEnd?: Text;
   geotiffImages?: string[];
+};
+
+export type TrafficService = {
+  pilot?: Pilot;
+  vts?: VTS;
+  tugs?: Tug[];
+};
+
+export type Tug = {
+  name?: Text;
+  phoneNumber?: string[];
+  fax?: string;
+  email?: string;
+};
+
+export type VTS = {
+  name?: Text;
+  phoneNumber?: string;
+  email?: string[];
+  vhf?: number;
+};
+
+export type Pilot = {
+  email?: string;
+  phoneNumber?: string;
+  fax?: string;
+  internet?: string;
+  geometry?: GeometryPoint;
+  pilotJourney?: number;
+  extraInfo?: Text;
+};
+
+export type Harbor = {
+  quays?: Quay[];
+  name?: Text;
+  phoneNumber?: string;
+  fax?: string;
+  email?: string;
+  internet?: string;
+  extraInfo?: Text;
+  harborBasin?: Text;
+  cargo?: Text[];
+};
+
+export type Quay = {
+  name?: Text;
+  length?: number;
+  draft?: number[];
+  extraInfo?: Text;
+  geometry?: GeometryPoint;
 };
 
 class FairwayCardDBModel {
@@ -21,12 +74,38 @@ class FairwayCardDBModel {
 
   name?: Text;
 
+  lineText?: Text;
+
+  anchorage?: Text[];
+
+  navigationCondition?: Text;
+
+  iceCondition?: Text;
+
+  attention?: Text;
+
+  speedLimit?: Text[];
+
+  visibility?: Text;
+
+  windGauge?: Text;
+
+  vesselRecommendation?: Text;
+
+  seaLevel?: Text;
+
+  windRecommendation?: Text;
+
+  trafficService?: TrafficService;
+
+  harbors?: Harbor[];
+
   fairways: FairwayDBModel[];
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
-    log.debug('Fairway card name: %s', fairwayCard?.name);
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
 

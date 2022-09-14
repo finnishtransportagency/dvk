@@ -11,8 +11,8 @@ export const handler = async (): Promise<NavigationLine[]> => {
     const line: NavigationLine = {
       id: apiLine.id,
       fairwayId: apiLine.jnro,
-      draft: apiLine.syvyys,
-      draft2: apiLine.harausSyvyys,
+      depth: apiLine.syvyys,
+      draft: apiLine.harausSyvyys,
       length: apiLine.pituus,
       geometry: apiLine.geometry,
     };

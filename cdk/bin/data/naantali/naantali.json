@@ -1,0 +1,270 @@
+{
+  "id": "naantali",
+  "name": {
+    "fi": "Naantalin väylä",
+    "sv": "Farleden Nådendal",
+    "en": "Naantali channel"
+  },
+  "lineText": {
+    "fi": "Linjoja 19 kpl.",
+    "sv": "19 linjer.",
+    "en": "19 lines."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylällä on haraussyvyyteen varmistettuja levennysalueita seuraavissa kohteissa: Snökobbenin kohdalla, Berghamnin itäpuolella, Vattkastin kohdalla, Väärämaan eteläpuolella, Airistolla ja Ruissalon kohdalla. Kohteet on rajattu Snökobbenin kohdetta lukuun ottamatta kardinaali-merkeillä ja alueita voi käyttää ankkurointiin ja ohituksiin.",
+      "sv": "Farleden har breddade områden där det ramade djupet har kontrollerats på följande ställen: vid Snökobben, O om Berghamn, vid Vattkast, S om Väärämaa, områdena i Erstan och Runsala. Alla områden utom det vid Snökobben har avgränsats med kardinalmärken och områdena kan användas för ankring och för att passera.",
+      "en": "The minimum depth has been confirmed in the following areas where the channel is widened: at Snökobben, E of Berghamn, at Vattkast, S of Väärämaa, at Airisto and Ruissalo. The areas are market with cardinal marks, with the exception of Snökobben, and the areas can be used for anchorage and passing."
+    },
+    {
+      "fi": "Lisäksi Keitsorstenin kohdalla on vesisyvyyteen -13,5 m ja Naantalin satamassa vesisyvyyteen -10,0 m varmistetut alueet, joita voidaan käyttää mm. odotuspaikkoina.",
+      "sv": "Därtill finns det ställen med kontrollerade djup, som kan användas t.ex. som väntplatser, vid Keitsorsten -13,5 m och i Nådendals hamn -10,0 m.",
+      "en": "There are also areas where the depth has been confirmed and that can be used for example as waiting places, in Keitsorsten -13.5 m and in the Naantali harbour area -10.0 m."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osa välillä Utö - Kalkskärskobb on harvaa saaristoa, jossa tutkanavigointi ja ohjailu kovan merenkäynnin aikana on vaikeaa. Kalkskärskobbista Smörgrundiin väylä on selkeä ja helppokulkuinen, ja edelleen Smörgrundista satamaan suojainen ja hyvin merkitty. Smörgrundin ja Lövskärin kapeikot sekä Riskholmenin railolossipaikka vaativat erityistä tarkkaavaisuutta ja varovaisuutta.",
+    "sv": "I farledens yttre del, mellan Utö och Kalkskärskobb där skärgården är gles försvåras radarnavigeringen och navigeringen vid kraftig sjögång. Från Kalkskärskobb till Smörgrund är farleden klar och lättframkomlig, och vidare från Smörgrund till hamnen är den skyddad och väl utmärkt. Sunden vid Smörgrund och Lövskär samt vid Riskholmens isfärjeplats kräver särskild uppmärksamhet och försiktighet.",
+    "en": "The outer section of the channel between Utö and Kalkskärskobb is poorly sheltered, which can hamper radar navigation and navigation in rough seas. From Kalkskärskobb to Smörgrund the channel is clear and navigation easy; from Smörgrund to the harbour it is sheltered and well marked. But navigation in the narrow passages at Smörgrund and Lövskär as well as near the seat of the ice ferry at Riskholmen require special attention and caution."
+  },
+  "iceCondition": {
+    "fi": "Väylän ulko-osalla Utöstä Smörgrundiin jääolosuhteet ovat vaihtelevia: joskus jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla. Väylän sisäosalla Smörgrundista satamaan muodostuu yleensä 10 - 60 cm paksuinen kiintojää, joka vilkkaan lauttaliikenteen takia pysyy helppokulkuisena koko talven.",
+    "sv": "I farledens yttre del från Utö till Smörgrund är isförhållandena varierande: ibland bildas ingen is och ibland rör sig isarna och bojarna kan vara under isen. I farledens inre del från Smörgrund till hamnen bildas i allmänhet ca 10–60 cm tjock fast is, som pga. den livliga färjetrafiken hålls lättframkomlig hela vintern.",
+    "en": "In the outer section of the channel between Utö and Smörgrund ice conditions vary: sometimes there is hardly any ice formation and at other times the ice moves and the buoys can be under the ice. In the inner section of the channel between Smörgrund and the harbour there is usually 10 – 60 cm thick fast ice, which, owing to the busy ferry traffic, remains quite passable during the winter season."
+  },
+  "speedLimit": [
+    {
+      "fi": "Välillä Smörgrund - Finnön pohjoispuoli on nopeusrajoitus 28 km/h ja välillä Finnön pohjoispuoli Lilla Björnholm 32 km/h. Välillä Rajakari - Ajonpää nopeusrajoitus on 22 km/h. Myös Riskholmenin railolossipaikalla on nopeusrajoitus railolossin ollessa käytössä.",
+      "sv": "Mellan Smörgrund och Finnö är hastighetsbegränsningen 28 km/h och mellan Finnö - Lilla Björnholm 32 km/h. Mellan Rajakari och Ajonpää är hastighetsbegränsningen 22 km/h. Vid Riskholmens isfärjeplats råder en hastighetsbegränsning då isfärjan är i användning.",
+      "en": "Between Smörgrund and Finnö there is a speed limit of 28 km/h and between Finnö - Lilla Björnholm speed limit is 32 km/h. Between Rajakari and Ajonpää a speed limit is 22 km/h. There is also a speed limit at the ice ferry seat at Riskholmen when the ferry is in operation."
+    }
+  ],
+  "vesselRecommendation": {
+    "fi": "Maksimisyvyydessä kulkevien alusten on nopeudessaan otettava huomioon matalikot ja nopeuspainuman vaikutus seuraavissa paikoissa: Svartbådanin kaakkoispuolella, Utön länsipuolella, Torvskärissä, välillä Länggaddin eteläpuoli - Gråskär, välillä Berghamn - Smörgrund - Kyrkfjärden, Lövskärissä sekä Airistolla kolmen 16,8 m matalan kohdalla.",
+    "sv": "Fartyg med maximalt djupgående ska med avseende på hastigheten beakta grunden och fartens inverkan på följande platser: SO om Svartbådan, V om Utö, vid Torvskär, mellan S Länggadd och Gråskär, mellan Berghamn och Smörgrund och Kyrkfjärden, vid Lövskär samt i Erstan vid de tre grunden på 16,8 m.",
+    "en": "Vessels with a draught close to the max. authorised draught are requested to beware of shoals and the causing of squat in the following areas: SE of Svartbådan, W of Utö, at Torvskär, between the southern part of Länggadd and Gråskär, between Berghamn and Smörgrund and Kyrkfjärden, at Lövskär and in Airisto at the three 16,8 m shoals."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotorder.fi",
+      "pilotJourney": 65,
+      "extraInfo": {
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen. Luotsia seuraa yleensä avustava luotsi turvallisuussyistä.",
+        "sv": "Obs. Vintertid och vid dåligt väder ska platsen där lots möter särskilt överenskommas. En annan lots bistår i allmänheten lotsen av säkerhetsskäl.",
+        "en": "Note: During the winter season and by bad weather the pilot boarding position must be agreed on separately. Generally there is also, for safety reasons, another pilot assisting."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [59.445, 21.209]
+      }
+    },
+    "vts": {
+      "name": {
+        "fi": "Archipelago VTS",
+        "sv": "Archipelago VTS",
+        "en": "Archipelago VTS"
+      },
+      "phoneNumber": "+358204486521",
+      "email": [
+        "archipelago.vts@fintraffic.fi"
+      ],
+      "vhf": 71
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Alfons Håkans Oy:n hinaajat Turussa",
+          "sv": "Alfons Håkans Oy Ab:s bogserbåtar i Åbo",
+          "en": "Alfons Håkans Ltd, tug boats in Turku"
+        },
+        "phoneNumber": [
+          "+3582515500"
+        ],
+        "fax": "+35822515873"
+      },
+      {
+        "name": {
+          "fi": "Neste Oyj:n hinaaja",
+          "sv": "Neste Oyj bogserbåt",
+          "en": "Neste Oyj tugboat"
+        },
+        "phoneNumber": [
+          "+358104586180"
+        ]
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "name": {
+        "fi": "Naantalin Satama Oy",
+        "sv": "Nådendals hamn",
+        "en": "Port of Naantali"
+      },
+      "phoneNumber": "+358447334550",
+      "email": "satama@portofnaantali.fi",
+      "cargo": [
+        {
+          "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+          "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål",
+          "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
+        }
+      ],
+      "quays": [
+        {
+          "name": {
+            "fi": "laituri 15-17, hiili- ja viljalaituri",
+            "sv": "kaj 15-17, stenkols- och spannmålskaj",
+            "en": "quay 15-17, coal and grain"
+          },
+          "length": 370,
+          "draft": [13]
+        },
+        {
+          "name": {
+            "fi": "laituri 20, lauttalaituri/Finnlink",
+            "sv": "kaj 20, färjekaj/Finnlink",
+            "en": "quay 20, ferry/Finnlink"
+          },
+          "length": 200,
+          "draft": [7.2]
+        },
+        {
+          "name": {
+            "fi": "laituri 22, pienaluskäytössä",
+            "sv": "kaj 22, i småbåtsbruk",
+            "en": "quay 22, small craft use"
+          }
+        },
+        {
+          "name": {
+            "fi": "laituri 23-24, kivilaituri",
+            "sv": "kaj 23-24, stenkaj",
+            "en": "quay 23-24, rockmaterial"
+          },
+          "length": 170,
+          "draft": [7.9]
+        },
+        {
+          "name": {
+            "fi": "laituri 25, sokerilaituri",
+            "sv": "kaj 25, sockerkaj",
+            "en": "quay 25, sugar"
+          },
+          "length": 50,
+          "draft": [4.5]
+        },
+        {
+          "name": {
+            "fi": "laituri 26",
+            "sv": "kaj 26",
+            "en": "quay 26"
+          },
+          "length": 150,
+          "draft": [8]
+        },
+        {
+          "name": {
+            "fi": "laituri 27",
+            "sv": "kaj 27",
+            "en": "quay 27"
+          },
+          "length": 180,
+          "draft": [8]
+        },
+        {
+          "name": {
+            "fi": "laituri 30, luonnonmaa",
+            "sv": "kaj 30, luonnonmaa",
+            "en": "quay 30, luonnonmaa"
+          },
+          "length": 130,
+          "draft": [7.7]
+        },
+        {
+          "name": {
+            "fi": "laituri 31, luonnonmaa",
+            "sv": "kaj 31, luonnonmaa",
+            "en": "quay 31, luonnonmaa"
+          },
+          "length": 60,
+          "draft": [7.7]
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Neste Oyj:n satama, Naantali",
+        "sv": "Neste Oyj:s hamn, Nådendal",
+        "en": "Neste Oyj’s harbour in Naantali"
+      },
+      "phoneNumber": "+358504586487",
+      "email": "naantali.harbour@neste.com",
+      "cargo": [
+        {
+          "fi": "Fortum: nostureita yksityisillä yrittäjillä",
+          "sv": "Fortum: privata företags kranar",
+          "en": "Cranes available from private companies"
+        }
+      ],
+      "quays": [
+        {
+          "name": {
+            "fi": "laituri 1",
+            "sv": "kaj 1",
+            "en": "quay 1"
+          },
+          "length": 170,
+          "draft": [8]
+        },
+        {
+          "name": {
+            "fi": "laituri 2",
+            "sv": "kaj 2",
+            "en": "quay 2"
+          },
+          "length": 200,
+          "draft": [10]
+        },
+        {
+          "name": {
+            "fi": "laituri 3",
+            "sv": "kaj 3",
+            "en": "quay 3"
+          },
+          "length": 300,
+          "draft": [15.3]
+        }
+      ]
+    }
+  ],
+  "fairways": [
+    {
+      "id": 3255,
+      "name": "[en] Naantalin väylä",
+      "statementStart": {
+        "sv": "[sv] Avomeri, Lillharunin LO-puoli",
+        "en": "[en] Avomeri, Lillharunin LO-puoli"
+      },
+      "statementEnd": {
+        "sv": "[sv] Naantalin satama",
+        "en": "[en] Naantalin satama"
+      }
+    },
+    {
+      "id": 3260,
+      "name": "[en] Naantalin laituriväylät",
+      "statementStart": {
+        "sv": "[sv] Ajopään pohjoispuoli",
+        "en": "[en] Ajopään pohjoispuoli"
+      },
+      "statementEnd": {
+        "sv": "[sv] Raumakarin itäpuoli",
+        "en": "[en] Raumakarin itäpuoli"
+      }
+    }
+  ]
+}
