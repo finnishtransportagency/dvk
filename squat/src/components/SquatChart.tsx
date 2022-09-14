@@ -164,6 +164,14 @@ const SquatChart: React.FC = () => {
           .attr('height', attr.height)
           .attr('fill', attr.fillColor);
         layer
+          .append('line')
+          .attr('stroke', '#000000')
+          .attr('stroke-width', '.5')
+          .attr('x1', 0)
+          .attr('y1', attr.height)
+          .attr('x2', width - marginLeft - marginRight)
+          .attr('y2', attr.height);
+        layer
           .append('text')
           .text(attr.label)
           .attr('text-anchor', 'middle')
@@ -229,13 +237,12 @@ const SquatChart: React.FC = () => {
       }
 
       /* Add axis */
-
       xAxisGenerator.tickFormat(d3.format('.1f'));
       xAxisGenerator.tickSize(0 - (height - marginTop - marginBottom));
       const xAxis = container.append('g').call(xAxisGenerator);
       xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`);
       xAxis.select('.domain').remove();
-      xAxis.selectAll('.tick line').attr('stroke-width', '.2');
+      xAxis.selectAll('.tick line').attr('stroke-width', '.5');
       xAxis
         .selectAll('.tick')
         // eslint-disable-next-line
