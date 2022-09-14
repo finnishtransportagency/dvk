@@ -149,6 +149,10 @@
             "fi": "",
             "sv": "",
             "en": ""
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
           }
         }
       ]

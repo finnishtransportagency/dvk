@@ -14,7 +14,7 @@
     "deploy:image": "cdk --profile=$AWS_PROFILE deploy DvkBuildImageStack --require-approval never",
     "deploy:lambda": "cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaStack --require-approval never",
     "deploy:backend": "cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never",
-    "deploy:backend:hostswap": "cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never --hotswap",
+    "deploy:backend:hotswap": "cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never --hotswap",
     "deploy:frontend": "cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
     "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack --require-approval never",
     "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack --require-approval never",

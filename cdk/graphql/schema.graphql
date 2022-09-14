@@ -16,6 +16,7 @@ type FairwayCard {
   anchorage: [Text]
   navigationCondition: Text
   iceCondition: Text
+  attention: Text
   speedLimit: [Text]
   visibility: Text
   windGauge: Text
