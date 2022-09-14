@@ -9,6 +9,9 @@
         "zoom": {
           "zoomInTipLabel": "[sv] Lähennä",
           "zoomOutTipLabel": "[sv] Loitonna"
+        },
+        "ownLocation": {
+          "tipLabel": "[sv] Keskitä omaan sijaintiin"
         }
       }
     }

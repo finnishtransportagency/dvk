@@ -9,6 +9,9 @@
         "zoom": {
           "zoomInTipLabel": "Zoom in",
           "zoomOutTipLabel": "Zoom out"
+        },
+        "ownLocation": {
+          "tipLabel": "Center to own location"
         }
       }
     }

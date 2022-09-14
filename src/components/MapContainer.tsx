@@ -16,6 +16,7 @@ import './MapContainer.css';
 import bgMapStyles from './taustakartta.json';
 import { MAP } from '../utils/constants';
 import 'ol/ol.css';
+import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -83,6 +84,13 @@ const MapContainer: React.FC = () => {
 
     map.addControl(zoomControl);
 
+    let centerToOwnLocationControl = new CenterToOwnLocationControl({
+      label: '',
+      tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
+    });
+
+    map.addControl(centerToOwnLocationControl);
+
     i18n.on('languageChanged', () => {
       map.removeControl(zoomControl);
       zoomControl = new Zoom({
@@ -92,6 +100,13 @@ const MapContainer: React.FC = () => {
         zoomOutTipLabel: t('homePage.map.controls.zoom.zoomOutTipLabel'),
       });
       map.addControl(zoomControl);
+
+      map.removeControl(centerToOwnLocationControl);
+      centerToOwnLocationControl = new CenterToOwnLocationControl({
+        label: '',
+        tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
+      });
+      map.addControl(centerToOwnLocationControl);
     });
 
     // override with tileURL
