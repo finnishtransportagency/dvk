@@ -69,10 +69,17 @@ export type Quay = {
   geometry?: GeometryPoint;
 };
 
+type FairwayCardByFairwayIdIndex = {
+  id: string;
+  fairwayIds: string;
+};
+
 class FairwayCardDBModel {
   id: string;
 
   name?: Text;
+
+  fairwayIds?: string;
 
   lineText?: Text;
 
@@ -111,13 +118,34 @@ class FairwayCardDBModel {
 
   static async getAll(): Promise<FairwayCardDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: fairwayCardTable }));
-    const fairways = response.Items as FairwayCardDBModel[] | undefined;
-    if (fairways) {
-      log.debug('%d fairway card(s) found', fairways.length);
-      return fairways;
+    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    if (fairwayCards) {
+      log.debug('%d fairway card(s) found', fairwayCards.length);
+      return fairwayCards;
     }
     log.debug('No fairway cards found');
     return [];
+  }
+
+  static async findByFairwayId(id: number): Promise<FairwayCardDBModel[]> {
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: fairwayCardTable,
+        IndexName: 'FairwayCardByFairwayIdIndex',
+        FilterExpression: 'contains (fairwayIds, :vId)',
+        ExpressionAttributeValues: { ':vId': `#${id}#` },
+      })
+    );
+    const items = response.Items as FairwayCardByFairwayIdIndex[] | [];
+    log.debug('%d fairway card(s) found', items.length);
+    const fairwayCards: FairwayCardDBModel[] = [];
+    for (const entry of items) {
+      const card = await FairwayCardDBModel.get(entry.id);
+      if (card) {
+        fairwayCards.push(card);
+      }
+    }
+    return fairwayCards;
   }
 }
 

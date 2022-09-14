@@ -7,7 +7,7 @@ import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
-import { Table, AttributeType, BillingMode } from 'aws-cdk-lib/aws-dynamodb';
+import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { Peer, Port, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
@@ -83,7 +83,7 @@ export class DvkBackendStack extends Stack {
   }
 
   private createFairwayCardTable(env: string): Table {
-    return new Table(this, 'FairwayCardTable', {
+    const table = new Table(this, 'FairwayCardTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
       tableName: `FairwayCard-${env}`,
       partitionKey: {
@@ -93,6 +93,13 @@ export class DvkBackendStack extends Stack {
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
     });
+    table.addGlobalSecondaryIndex({
+      indexName: 'FairwayCardByFairwayIdIndex',
+      partitionKey: { name: 'id', type: AttributeType.STRING },
+      projectionType: ProjectionType.KEYS_ONLY,
+      sortKey: { name: 'fairwayIds', type: AttributeType.STRING },
+    });
+    return table;
   }
 
   private createApiKeyExpiration() {

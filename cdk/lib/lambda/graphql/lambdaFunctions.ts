@@ -32,6 +32,11 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'FairwayCard',
     fieldName: 'fairways',
   },
+  {
+    entry: path.join(__dirname, 'query/fairwayCardsByFairwayId-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'fairwayCardsByFairwayId',
+  },
 ];
 
 export default lambdaFunctions;

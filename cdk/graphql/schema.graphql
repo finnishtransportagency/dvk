@@ -5,12 +5,14 @@ schema {
 type Query {
   fairwayCards: [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
+  fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   navigationLines: [NavigationLine!]!
 }
 
 type FairwayCard {
   id: ID!
   name: Text!
+  fairwayIds: String
   fairways: [Fairway!]!
   lineText: Text
   anchorage: [Text]
