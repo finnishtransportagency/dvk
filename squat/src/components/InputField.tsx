@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Label from './Label';
+import i18n from '../i18n';
+import { countDecimals } from '../utils/helpers';
 
 interface InputProps {
   title: string;
@@ -16,6 +18,7 @@ interface InputProps {
   max?: number;
   step?: string;
   unit?: string | ReactElement;
+  unitId?: string;
   helper?: string | ReactElement;
   fieldClass?: string;
   actionType: Action['type'];
@@ -64,6 +67,59 @@ const InputField: React.FC<InputProps> = (props) => {
     });
   };
 
+  const getHelperText = () => {
+    let helper;
+    if (props.min !== undefined)
+      helper =
+        Number(props.min).toLocaleString(i18n.language, {
+          minimumFractionDigits: countDecimals(Number(props.step)),
+          maximumFractionDigits: countDecimals(Number(props.step)),
+        }) + ' – ';
+    if (props.max !== undefined)
+      helper += Number(props.max).toLocaleString(i18n.language, {
+        minimumFractionDigits: countDecimals(Number(props.step)),
+        maximumFractionDigits: countDecimals(Number(props.step)),
+      });
+    if (props.unit)
+      helper = (
+        <>
+          {helper}
+          <span
+            aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
+              count: Number((value || 0).toLocaleString(i18n.language)),
+            })}
+          >
+            &nbsp;{props.unit}
+          </span>
+        </>
+      );
+    return helper;
+  };
+  const getErrorText = () => {
+    if (value) {
+      if (props.min !== undefined && value < props.min) {
+        const unit = <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })}>{props.unit}</span>;
+        return (
+          <span>
+            {t('common.value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
+          </span>
+        );
+      } else if (props.max !== undefined && value > props.max) {
+        const unit = <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })}>{props.unit}</span>;
+        return (
+          <span>
+            {t('common.value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) })}&nbsp;{unit}
+          </span>
+        );
+      } else if (countDecimals(Number(value)) > countDecimals(Number(props.step))) {
+        return t('common.maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
+      } else {
+        return t('common.value-invalid');
+      }
+    }
+    return t('common.required');
+  };
+
   return (
     <>
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
@@ -80,20 +136,26 @@ const InputField: React.FC<InputProps> = (props) => {
           placeholder={props.placeholder}
           onIonChange={(e) => innerUpdateAction(e, props.actionType)}
           onIonBlur={(e) => updateAction(e, props.actionType)}
-          debounce={50}
+          debounce={250}
           inputmode="decimal"
         />
         {props.unit && (
           <IonLabel slot="end" color="medium">
-            {props.unit}
+            <span
+              aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
+                count: Number((value || 0).toLocaleString(i18n.language)),
+              })}
+            >
+              {props.unit}
+            </span>
           </IonLabel>
         )}
         <IonNote slot="helper" className="input-helper">
-          {props.helper}
+          {props.helper ? props.helper : getHelperText()}
         </IonNote>
         <IonNote slot="error" className="input-error">
-          <IonIcon icon={alertCircleOutline} color="danger" />
-          {value ? t('common.value-out-of-range') : t('common.required')}
+          <IonIcon icon={alertCircleOutline} color="danger" aria-label={t('common.error')} />
+          {getErrorText()}
         </IonNote>
       </IonItem>
     </>

@@ -131,11 +131,10 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.lengthBPP.min}
                 max={fieldParams.lengthBPP.max}
-                step="0.01"
+                step={fieldParams.lengthBPP.step}
                 unit={fieldParams.lengthBPP.unit}
                 fieldClass={setFieldClass('lengthBPP')}
                 actionType="vessel-general"
-                helper="0 – 350 m"
               />
             </IonCol>
             <IonCol size="6">
@@ -147,11 +146,10 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.breadth.min}
                 max={fieldParams.breadth.max}
-                step="0.01"
+                step={fieldParams.breadth.step}
                 unit={fieldParams.breadth.unit}
                 fieldClass={setFieldClass('breadth')}
                 actionType="vessel-general"
-                helper="0 – 50 m"
               />
             </IonCol>
           </IonRow>
@@ -165,11 +163,10 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.draught.min}
                 max={fieldParams.draught.max}
-                step="0.01"
+                step={fieldParams.draught.step}
                 unit={fieldParams.draught.unit}
                 fieldClass={setFieldClass('draught')}
                 actionType="vessel-general"
-                helper="0 – 20 m"
               />
             </IonCol>
             <IonCol size="6">
@@ -181,25 +178,9 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={state.status.showBarrass ? fieldParams.blockCoefficient.min : 0.6}
                 max={state.status.showBarrass ? fieldParams.blockCoefficient.max : 0.8}
-                step="0.01"
+                step={fieldParams.blockCoefficient.step}
                 fieldClass={setFieldClass('blockCoefficient')}
                 actionType="vessel-general"
-                helper={
-                  <>
-                    {(state.status.showBarrass ? fieldParams.blockCoefficient.min : 0.6).toLocaleString(i18n.language, {
-                      minimumFractionDigits: 1,
-                      maximumFractionDigits: 1,
-                    })}{' '}
-                    –{' '}
-                    {(state.status.showBarrass && fieldParams.blockCoefficient.max ? fieldParams.blockCoefficient.max : 0.8).toLocaleString(
-                      i18n.language,
-                      {
-                        minimumFractionDigits: 1,
-                        maximumFractionDigits: 1,
-                      }
-                    )}
-                  </>
-                }
               />
             </IonCol>
           </IonRow>
@@ -216,7 +197,6 @@ const Vessel: React.FC = () => {
                 unit={fieldParams.displacement.unit}
                 fieldClass={setFieldClass('displacement')}
                 actionType="vessel-general"
-                helper="0 – 250 000 mt"
               />
             </IonCol>
             <IonCol size="6"></IonCol>
@@ -238,9 +218,9 @@ const Vessel: React.FC = () => {
                 min={fieldParams.windSurface.min}
                 max={fieldParams.windSurface.max}
                 unit={fieldParams.windSurface.unit}
+                unitId={fieldParams.windSurface.unitId}
                 fieldClass={setFieldClass('windSurface')}
                 actionType="vessel-detailed"
-                helper={<>0 – 25 000 {fieldParams.windSurface.unit}</>}
               />
             </IonCol>
             <IonCol size="6">
@@ -252,9 +232,9 @@ const Vessel: React.FC = () => {
                 min={fieldParams.deckCargo.min}
                 max={fieldParams.deckCargo.max}
                 unit={fieldParams.deckCargo.unit}
+                unitId={fieldParams.deckCargo.unitId}
                 fieldClass={setFieldClass('deckCargo')}
                 actionType="vessel-detailed"
-                helper={<>0 – 20 000 {fieldParams.deckCargo.unit}</>}
               />
             </IonCol>
           </IonRow>
@@ -270,7 +250,6 @@ const Vessel: React.FC = () => {
                 unit={fieldParams.bowThruster.unit}
                 fieldClass={setFieldClass('bowThruster')}
                 actionType="vessel-detailed"
-                helper="0 – 5500 kW"
               />
             </IonCol>
             <IonCol size="6">
@@ -284,7 +263,6 @@ const Vessel: React.FC = () => {
                 unit={fieldParams.bowThrusterEfficiency.unit}
                 fieldClass={setFieldClass('bowThrusterEfficiency')}
                 actionType="vessel-detailed"
-                helper="0 – 100 %"
               />
             </IonCol>
           </IonRow>
@@ -314,15 +292,9 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KG.min}
                 max={fieldParams.KG.max}
-                step="0.01"
+                step={fieldParams.KG.step}
                 fieldClass={setFieldClass('KG')}
                 actionType="vessel-stability"
-                helper={
-                  <>
-                    {Number('0').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('20').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                  </>
-                }
               />
             </IonCol>
             <IonCol size="6">
@@ -333,15 +305,9 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.GM.min}
                 max={fieldParams.GM.max}
-                step="0.01"
+                step={fieldParams.GM.step}
                 fieldClass={setFieldClass('GM')}
                 actionType="vessel-stability"
-                helper={
-                  <>
-                    {Number('0.15').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 2 })} –{' '}
-                    {Number('5').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                  </>
-                }
               />
             </IonCol>
           </IonRow>
@@ -354,15 +320,9 @@ const Vessel: React.FC = () => {
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 min={fieldParams.KB.min}
                 max={fieldParams.KB.max}
-                step="0.01"
+                step={fieldParams.KB.step}
                 fieldClass={setFieldClass('KB')}
                 actionType="vessel-stability"
-                helper={
-                  <>
-                    {Number('0').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })} –{' '}
-                    {Number('15').toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
-                  </>
-                }
               />
             </IonCol>
           </IonRow>
