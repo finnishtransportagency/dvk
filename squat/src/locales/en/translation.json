@@ -136,6 +136,7 @@
   "common": {
     "tonnes": "tonnes",
     "required": "Required value missing",
+    "error": "Error",
     "value-invalid": "Invalid value",
     "value-out-of-range": "Invalid value",
     "value-cannot-be-over": "Value cannot exceed {{value}}",
@@ -166,6 +167,9 @@
       "kg/m3_one": "kilogram per cubic metre",
       "kg/m3_other": "kilograms per cubic metre"
     },
+    "maximum-precision-is-X-decimals_zero": "Use only integers",
+    "maximum-precision-is-X-decimals_one": "Use smaller precision",
+    "maximum-precision-is-X-decimals_other": "Use smaller precision",
     "close": "Close",
     "more-info": "More info"
   }

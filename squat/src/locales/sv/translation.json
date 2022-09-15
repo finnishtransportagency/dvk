@@ -136,6 +136,7 @@
   "common": {
     "tonnes": "[sv] tonnes",
     "required": "[sv] Required value missing",
+    "error": "[sv] Error",
     "value-invalid": "[sv] Virheellinen arvo",
     "value-out-of-range": "[sv] Virheellinen arvo",
     "value-cannot-be-over": "[sv] Arvo ei voi olla yli {{value}}",
@@ -166,6 +167,9 @@
       "kg/m3_one": "[sv] kilogramma kuutiometriä kohden",
       "kg/m3_other": "[sv] kilogrammaa kuutiometriä kohden"
     },
+    "maximum-precision-is-X-decimals_zero": "[sv] Käytä kokonaislukuja",
+    "maximum-precision-is-X-decimals_one": "[sv] Käytä pienempää tarkkuutta",
+    "maximum-precision-is-X-decimals_other": "[sv] Käytä pienempää tarkkuutta",
     "close": "[sv] Close",
     "more-info": "[sv] More info"
   }
