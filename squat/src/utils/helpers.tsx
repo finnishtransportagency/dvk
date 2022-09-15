@@ -1,6 +1,14 @@
 import { fieldParams, State } from '../hooks/squatReducer';
 
 // Helper functions
+export const countDecimals = (val: number) => {
+  if (!val || isNaN(val)) return 0;
+  if (Math.floor(val.valueOf()) === val.valueOf()) return 0;
+  const valStr = val.toString();
+  if (valStr.indexOf('e-') > -1) return Number(valStr.split('e-')[1]);
+  return valStr.split('.')[1].length;
+};
+
 const getQuerystringForField = (fieldName: string, value: number) => {
   const defaultValue = fieldParams[fieldName].default;
   if (value !== defaultValue) {
