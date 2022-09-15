@@ -137,7 +137,7 @@ it('counts decimals correctly for values', () => {
   expect(countDecimals(getFieldValue('channelWidth'))).toEqual(1);
   expect(countDecimals(Number(fieldParams.channelWidth.step))).toEqual(0);
   expect(countDecimals(1.123456789)).toBe(9);
-  expect(countDecimals(0.000000000000270)).toBe(13);
+  expect(countDecimals(0.00000000000027)).toBe(13);
   expect(countDecimals(NaN)).toBe(0);
 });
 
