@@ -18,13 +18,15 @@ import { MAP } from '../utils/constants';
 import 'ol/ol.css';
 import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
+import LayerPopupControl from './LayerPopupControl';
+import LayerModal from './LayerModal';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
   const mapElement = useRef<HTMLDivElement>(null);
 
   const [mapInitialized, initializeMap] = useState(false);
-
+  const [isOpen, setIsOpen] = useState(false);
   useLayoutEffect(() => {
     if (mapInitialized) {
       return;
@@ -95,8 +97,15 @@ const MapContainer: React.FC = () => {
       tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
     });
 
+    let layerControl = new LayerPopupControl({
+      label: '',
+      tipLabel: t('homePage.map.controls.layer.tipLabel'),
+      setIsOpen: setIsOpen,
+    });
+    
     map.addControl(centerToOwnLocationControl);
     map.addControl(openSidebarMenuControl);
+    map.addControl(layerControl);
 
     i18n.on('languageChanged', () => {
       map.removeControl(zoomControl);
@@ -121,6 +130,14 @@ const MapContainer: React.FC = () => {
         tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
       });
       map.addControl(openSidebarMenuControl);
+
+      map.removeControl(layerControl);
+      layerControl = new LayerPopupControl({
+        label: '',
+        tipLabel: t('homePage.map.controls.layer.tipLabel'),
+        setIsOpen: setIsOpen,
+      });
+      map.addControl(layerControl);
     });
 
     // override with tileURL
@@ -172,8 +189,12 @@ const MapContainer: React.FC = () => {
       map.updateSize();
     }, 0);
   }, [mapInitialized, t, i18n]);
-
-  return <div id="mapContainer" ref={mapElement}></div>;
+  return (
+    <>
+      <div id="mapContainer" ref={mapElement}></div>
+      <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
+  );
 };
 
 export default MapContainer;

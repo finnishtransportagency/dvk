@@ -15,6 +15,16 @@
         },
         "openMenu": {
           "tipLabel": "Open menu"
+        },
+        "layer": {
+          "tipLabel": "Layers",
+          "header": "Map layers",
+          "fairways": "Fairways",
+          "fairwayAreas": "[en] Väyläalueet",
+          "safetyEquipments": "[en] Turvalaitteet",
+          "speedLimits": "Speed limits",
+          "specialAreas": "[en] Erityisalueet",
+          "pilotPlaces": "[en] Luotsipaikat"
         }
       }
     }
