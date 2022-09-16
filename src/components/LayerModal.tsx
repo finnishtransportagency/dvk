@@ -13,7 +13,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
   return (
     <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
       <div className="wrapper">
-        <h1>{t('homePage.map.controls.layer.header')}</h1>
+        <b>{t('homePage.map.controls.layer.header')}</b>
         <IonList lines="none">
           <IonItem>
             <IonLabel>{t('homePage.map.controls.layer.fairways')}</IonLabel>
