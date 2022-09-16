@@ -2,8 +2,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import { SquatReducer, initialState, Action, getFieldValue } from './hooks/squatReducer';
-import { copyToClipboard, createShareableLink } from './utils/helpers';
+import { SquatReducer, initialState, Action, getFieldValue, fieldParams } from './hooks/squatReducer';
+import { copyToClipboard, countDecimals, createShareableLink } from './utils/helpers';
 
 const baseURL = 'http://localhost:8080/';
 
@@ -16,7 +16,7 @@ beforeAll(() => {
 
   const location = {
     ...window.location,
-    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10&showHeader=true',
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10.1&showHeader=true',
   };
   Object.defineProperty(window, 'location', {
     writable: true,
@@ -130,7 +130,15 @@ test('setting default value under minimum or above maximum is swallowed when for
   expect(getFieldValue('profileSelected', true)).toEqual(3);
   expect(getFieldValue('fairwayForm', true)).toEqual(0);
   expect(getFieldValue('GM')).toEqual(0);
-  expect(getFieldValue('channelWidth')).toEqual(10);
+  expect(getFieldValue('channelWidth')).toEqual(10.1);
+});
+
+it('counts decimals correctly for values', () => {
+  expect(countDecimals(getFieldValue('channelWidth'))).toEqual(1);
+  expect(countDecimals(Number(fieldParams.channelWidth.step))).toEqual(0);
+  expect(countDecimals(1.123456789)).toBe(9);
+  expect(countDecimals(0.00000000000027)).toBe(13);
+  expect(countDecimals(NaN)).toBe(0);
 });
 
 it('should call clipboard.writeText', () => {

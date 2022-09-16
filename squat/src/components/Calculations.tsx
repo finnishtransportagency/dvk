@@ -408,7 +408,8 @@ const Calculations: React.FC = () => {
                 value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
-                unit="deg"
+                unit="°"
+                unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -419,7 +420,8 @@ const Calculations: React.FC = () => {
                     ? ''
                     : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
                 }
-                unit="deg"
+                unit="°"
+                unitId="deg"
               />
             </IonCol>
 
@@ -530,7 +532,8 @@ const Calculations: React.FC = () => {
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
-                unit="deg"
+                unit="°"
+                unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -547,7 +550,7 @@ const Calculations: React.FC = () => {
                 value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
                   maximumFractionDigits: 1,
                 })}
-                unit={t('common.tonnes')}
+                unit="mt"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -556,7 +559,7 @@ const Calculations: React.FC = () => {
                 value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
                   maximumFractionDigits: 1,
                 })}
-                unit={t('common.tonnes')}
+                unit="mt"
               />
             </IonCol>
 
@@ -564,7 +567,7 @@ const Calculations: React.FC = () => {
               <LabelField
                 title={t('homePage.squat.calculations.bow-thruster-force')}
                 value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
-                unit={t('common.tonnes')}
+                unit="mt"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -608,7 +611,8 @@ const Calculations: React.FC = () => {
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
-                unit="deg"
+                unit="°"
+                unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -626,7 +630,8 @@ const Calculations: React.FC = () => {
                   ? toDeg(state.calculations.forces.estimatedDriftAngle)
                   : ''
                 ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                unit="deg"
+                unit="°"
+                unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">

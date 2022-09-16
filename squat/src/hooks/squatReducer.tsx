@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { createShareableLink } from '../utils/helpers';
+import { countDecimals, createShareableLink } from '../utils/helpers';
 
 // Common types
 
@@ -26,8 +26,10 @@ type FairwayForm = {
 type FieldParam = {
   default: number;
   min: number;
-  max?: number;
+  max: number;
   unit?: string | ReactElement;
+  unitId?: string;
+  step?: string;
 };
 
 // Initialize data
@@ -163,38 +165,38 @@ const kgPerCubicM = (
 
 // Declare field parameters
 export const fieldParams: Record<string, FieldParam> = {
-  lengthBPP: { default: 0, min: 0, max: 350, unit: 'm' },
-  breadth: { default: 0, min: 0, max: 50, unit: 'm' },
-  draught: { default: 0, min: 0, max: 20, unit: 'm' },
-  blockCoefficient: { default: 0.75, min: 0.4, max: 1 },
+  lengthBPP: { default: 0, min: 0, max: 350, unit: 'm', step: '0.01' },
+  breadth: { default: 0, min: 0, max: 50, unit: 'm', step: '0.01' },
+  draught: { default: 0, min: 0, max: 20, unit: 'm', step: '0.01' },
+  blockCoefficient: { default: 0.75, min: 0.4, max: 1, step: '0.01' },
   displacement: { default: 0, min: 0, max: 250000, unit: 'mt' },
-  windSurface: { default: 0, min: 0, max: 25000, unit: mSquared },
-  deckCargo: { default: 0, min: 0, max: 20000, unit: mSquared },
+  windSurface: { default: 0, min: 0, max: 25000, unit: mSquared, unitId: 'm2' },
+  deckCargo: { default: 0, min: 0, max: 20000, unit: mSquared, unitId: 'm2' },
   bowThruster: { default: 0, min: 0, max: 5500, unit: 'kW' },
   bowThrusterEfficiency: { default: 100, min: 0, max: 100, unit: '%' },
   profileSelected: { default: 0, min: 0, max: 3 },
-  KG: { default: 0, min: 0, max: 20 },
-  GM: { default: 0.15, min: 0.15, max: 5 },
-  KB: { default: 0, min: 0, max: 15 },
+  KG: { default: 0, min: 0, max: 20, step: '0.01' },
+  GM: { default: 0.15, min: 0.15, max: 5, step: '0.01' },
+  KB: { default: 0, min: 0, max: 15, step: '0.01' },
   windSpeed: { default: 0, min: 0, max: 35, unit: 'm/s' },
-  windDirection: { default: 90, min: 0, max: 359, unit: 'deg' },
-  waveHeight: { default: 0, min: 0, max: 15, unit: 'm' },
-  wavePeriod: { default: 0, min: 0, max: 20, unit: 's' },
-  sweptDepth: { default: 0, min: 0, max: 20, unit: 'm' },
+  windDirection: { default: 90, min: 0, max: 359, unit: '°', unitId: 'deg' },
+  waveHeight: { default: 0, min: 0, max: 15, unit: 'm', step: '0.1' },
+  wavePeriod: { default: 0, min: 0, max: 20, unit: 's', step: '0.1' },
+  sweptDepth: { default: 0, min: 0, max: 20, unit: 'm', step: '0.1' },
   waterLevel: { default: 0, min: -150, max: 150, unit: 'cm' },
-  waterDepth: { default: 0, min: 0, max: 30, unit: 'm' },
+  waterDepth: { default: 0, min: 0, max: 30, unit: 'm', step: '0.1' },
   fairwayForm: { default: 0, min: 0, max: 2 },
-  channelWidth: { default: 0, min: 0, unit: 'm' },
-  slopeScale: { default: 0, min: 0 },
-  slopeHeight: { default: 0, min: 0, unit: 'm' },
-  vesselCourse: { default: 0, min: 0, max: 359, unit: 'deg' },
+  channelWidth: { default: 0, min: 0, max: 300, unit: 'm' },
+  slopeScale: { default: 0.1, min: 1 / 10, max: 10 / 1, step: '0.1' },
+  slopeHeight: { default: 0, min: 0, max: 20, unit: 'm', step: '0.1' },
+  vesselCourse: { default: 0, min: 0, max: 359, unit: '°', unitId: 'deg' },
   vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
-  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm' },
-  airDensity: { default: 1.3, min: 1, max: 1.5, unit: kgPerCubicM },
-  waterDensity: { default: 1005, min: 1000, max: 1025, unit: kgPerCubicM },
-  requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm' },
-  safetyMarginWindForce: { default: 25, min: 0, max: 25, unit: '%' },
-  motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm' },
+  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm', step: '0.01' },
+  airDensity: { default: 1.3, min: 1, max: 1.5, unit: kgPerCubicM, unitId: 'kg/m3', step: '0.1' },
+  waterDensity: { default: 1005, min: 1000, max: 1025, unit: kgPerCubicM, unitId: 'kg/m3' },
+  requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm', step: '0.01' },
+  safetyMarginWindForce: { default: 25, min: 0, max: 25, unit: '%', step: '0.01' },
+  motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm', step: '0.01' },
 };
 
 // Set initially valid fields
@@ -230,6 +232,7 @@ export const getFieldValue = (fieldName: string, force?: boolean) => {
   const defaultValue = fieldParams[fieldName].default;
   const min = fieldParams[fieldName].min;
   const max = fieldParams[fieldName].max;
+  const step = fieldParams[fieldName].step;
   let currentValue = queryParams.get(fieldName) ? Number(queryParams.get(fieldName)?.replace(',', '.')) : defaultValue;
 
   if (force) {
@@ -243,7 +246,7 @@ export const getFieldValue = (fieldName: string, force?: boolean) => {
   if (currentValue !== defaultValue) {
     validatedFields = {
       ...validatedFields,
-      [fieldName]: currentValue >= min && (max ? currentValue <= max : true),
+      [fieldName]: currentValue >= min && currentValue <= max && countDecimals(currentValue) <= countDecimals(Number(step)),
     };
   }
   return currentValue;

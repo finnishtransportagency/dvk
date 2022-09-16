@@ -139,6 +139,7 @@
   "common": {
     "tonnes": "tonnia",
     "required": "Pakollinen tieto puuttuu",
+    "error": "Virhe",
     "value-invalid": "Virheellinen arvo",
     "value-out-of-range": "Virheellinen arvo",
     "value-cannot-be-over": "Arvo ei voi olla yli {{value}}",
@@ -169,6 +170,9 @@
       "kg/m3_one": "kilogramma kuutiometriä kohden",
       "kg/m3_other": "kilogrammaa kuutiometriä kohden"
     },
+    "maximum-precision-is-X-decimals_zero": "Käytä kokonaislukuja",
+    "maximum-precision-is-X-decimals_one": "Käytä pienempää tarkkuutta",
+    "maximum-precision-is-X-decimals_other": "Käytä pienempää tarkkuutta",
     "close": "Sulje",
     "more-info": "Lisätietoja"
   }
