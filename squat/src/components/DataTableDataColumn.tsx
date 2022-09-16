@@ -6,8 +6,8 @@ interface Props {
   color?: DATACOLORS;
 }
 export enum DATACOLORS {
-  WARN = 'mistyrose',
-  PASS = 'palegreen',
+  WARN = '#fdf6f6',
+  PASS = '#f5ffef',
   NEUTRAL = 'white',
 }
 const DataTableDataColumn: React.FC<Props> = (props) => {
