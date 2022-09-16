@@ -1,6 +1,6 @@
 {
   "homePage": {
-    "header": {
+    "sidebarMenu": {
       "title": "Digitaalinen väyläkortti"
     },
     "map": {
@@ -12,6 +12,9 @@
         },
         "ownLocation": {
           "tipLabel": "Keskitä omaan sijaintiin"
+        },
+        "openMenu": {
+          "tipLabel": "Avaa valikko"
         }
       }
     }

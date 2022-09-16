@@ -9,6 +9,7 @@
     "@capacitor/haptics": "4.0.1",
     "@capacitor/keyboard": "4.0.1",
     "@capacitor/status-bar": "4.0.1",
+    "@ionic/core": "^6.2.7",
     "@ionic/react": "^6.2.4",
     "@ionic/react-router": "^6.2.4",
     "@testing-library/jest-dom": "^5.16.5",

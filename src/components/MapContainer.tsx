@@ -17,6 +17,7 @@ import bgMapStyles from './taustakartta.json';
 import { MAP } from '../utils/constants';
 import 'ol/ol.css';
 import CenterToOwnLocationControl from './CenterToOwnLocationControl';
+import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -89,7 +90,13 @@ const MapContainer: React.FC = () => {
       tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
     });
 
+    let openSidebarMenuControl = new OpenSidebarMenuControl({
+      label: '',
+      tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
+    });
+
     map.addControl(centerToOwnLocationControl);
+    map.addControl(openSidebarMenuControl);
 
     i18n.on('languageChanged', () => {
       map.removeControl(zoomControl);
@@ -107,6 +114,13 @@ const MapContainer: React.FC = () => {
         tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
       });
       map.addControl(centerToOwnLocationControl);
+
+      map.removeControl(openSidebarMenuControl);
+      openSidebarMenuControl = new OpenSidebarMenuControl({
+        label: '',
+        tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
+      });
+      map.addControl(openSidebarMenuControl);
     });
 
     // override with tileURL
