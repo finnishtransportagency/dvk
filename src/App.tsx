@@ -24,6 +24,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import SidebarMenu from './components/SidebarMenu';
 
 setupIonicReact();
 
@@ -44,7 +45,8 @@ const client = new ApolloClient({
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
+      <SidebarMenu />
+      <IonRouterOutlet id="MainContent">
         <Route exact path="/">
           <ApolloProvider client={client}>
             <Home />

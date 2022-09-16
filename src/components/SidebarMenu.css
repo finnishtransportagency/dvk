@@ -1,0 +1,25 @@
+.sidebarMenu .header {
+  border-bottom: 1px solid #cccccc;
+}
+
+.sidebarMenu .header .logo {
+  width: 234px;
+}
+
+.sidebarMenu .header .closeButton {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+}
+
+.sidebarMenu .title {
+  padding: 10px 10px 10px 22px;
+  font-weight: bold;
+  border-bottom: 1px solid #cccccc;
+}
+
+.sidebarMenu .languageSelection {
+  padding: 10px 10px 10px 22px;
+  font-weight: bold;
+  border-bottom: 1px solid #cccccc;
+}
