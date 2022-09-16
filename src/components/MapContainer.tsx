@@ -102,7 +102,7 @@ const MapContainer: React.FC = () => {
       tipLabel: t('homePage.map.controls.layer.tipLabel'),
       setIsOpen: setIsOpen,
     });
-    
+
     map.addControl(centerToOwnLocationControl);
     map.addControl(openSidebarMenuControl);
     map.addControl(layerControl);
