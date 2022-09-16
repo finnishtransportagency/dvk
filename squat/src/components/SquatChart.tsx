@@ -11,12 +11,16 @@ import {
   calculateSquatBarrass,
 } from '../utils/calculations';
 import './SquatChart.css';
+import SquatDataTable from './SquatDataTable';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation();
   const ref = useRef<SVGSVGElement>(null);
   const { state } = useSquatContext();
   const [width, setWidth] = useState(1000);
+  const [huuskaGuliev20, setHuuskaGuliev20] = useState(Array<[number, number]>);
+  const [huuskaGuliev24, setHuuskaGuliev24] = useState(Array<[number, number]>);
+  const [barrass, setBarrass] = useState(Array<[number, number]>);
 
   useEffect(() => {
     const handleResize = () => {
@@ -367,12 +371,13 @@ const SquatChart: React.FC = () => {
           .attr('stroke', color)
           .attr('stroke-width', '2px')
           .attr('fill', 'none');
+        return data;
       };
 
       if (state.status.showBarrass) {
         addBarrassLegend();
         if (paramsValid) {
-          addSquatLine(calculateBarrassSquat, squatBarrassColor);
+          setBarrass(addSquatLine(calculateBarrassSquat, squatBarrassColor));
         }
       } else {
         addHGLegend();
@@ -383,8 +388,8 @@ const SquatChart: React.FC = () => {
             };
           };
 
-          addSquatLine(getHGSquatFunc(2.0), squatHG20Color);
-          addSquatLine(getHGSquatFunc(2.4), squatHG24Color);
+          setHuuskaGuliev20(addSquatLine(getHGSquatFunc(2.0), squatHG20Color));
+          setHuuskaGuliev24(addSquatLine(getHGSquatFunc(2.4), squatHG24Color));
         }
       }
     };
@@ -399,6 +404,9 @@ const SquatChart: React.FC = () => {
           <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
           <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
         </IonCol>
+      </IonRow>
+      <IonRow>
+        <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
       </IonRow>
     </IonGrid>
   );
