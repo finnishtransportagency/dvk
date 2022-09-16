@@ -19,7 +19,15 @@
   background: transparent;
 }
 
-#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl {
+#mapContainer .openSidebarMenuControlContainer {
+  top: auto;
+  left: auto;
+  left: 48px;
+  top: 48px;
+  background: transparent;
+}
+
+#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl{
   width: 40px;
   height: 40px;
   background-size: 80%;
@@ -40,4 +48,8 @@
 
 #mapContainer .centerToOwnLocationControl {
   background-image: url('../theme/img/ownLocation.svg');
+}
+
+#mapContainer .openSidebarMenuControl {
+  background-image: url('../theme/img/menu.svg');
 }
