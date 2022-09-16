@@ -1,5 +1,6 @@
 import React from 'react';
-import './Squat.css';
+import '../theme/squat.css';
+import '../theme/print.css';
 import { IonGrid, IonRow, IonCol } from '@ionic/react';
 
 import Calculations from './Calculations';
@@ -12,7 +13,7 @@ const Squat: React.FC = () => {
     <>
       <TitleBar />
 
-      <IonGrid>
+      <IonGrid className="content">
         <IonRow>
           <IonCol size="12" sizeSm="6" sizeLg="4">
             <Vessel />

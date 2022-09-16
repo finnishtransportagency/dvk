@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './Squat.css';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonItem, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
 
@@ -306,6 +305,7 @@ const Calculations: React.FC = () => {
 
   return (
     <>
+      <div className="pagebreak"></div>
       <IonText color="dark" className="equal-margin-top">
         <h2>
           <strong>{t('homePage.squat.calculations.title')}</strong>
@@ -401,7 +401,7 @@ const Calculations: React.FC = () => {
 
         <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.heel-due-wind')}
@@ -522,12 +522,16 @@ const Calculations: React.FC = () => {
                 helper={printSquatHelper()}
               />
             </IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
           </IonRow>
         </IonGrid>
 
         <SectionTitle title={t('homePage.squat.calculations.wind-force')} hideValidity />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
@@ -601,12 +605,17 @@ const Calculations: React.FC = () => {
                 }
               />
             </IonCol>
+            <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
           </IonRow>
         </IonGrid>
 
         <SectionTitle title={t('homePage.squat.calculations.drift')} hideValidity />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('homePage.squat.calculations.relative-wind-direction')}
@@ -641,6 +650,8 @@ const Calculations: React.FC = () => {
                 unit="m"
               />
             </IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
           </IonRow>
         </IonGrid>
       </>

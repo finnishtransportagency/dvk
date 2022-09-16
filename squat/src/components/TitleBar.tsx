@@ -18,7 +18,7 @@ const TitleBar: React.FC = () => {
   };
 
   return (
-    <IonGrid>
+    <IonGrid className="titlebar">
       <IonRow>
         <IonCol>
           <IonText color="dark" className="equal-margin-top">

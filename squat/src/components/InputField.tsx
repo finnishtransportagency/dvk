@@ -124,7 +124,7 @@ const InputField: React.FC<InputProps> = (props) => {
     <>
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
-      <IonItem fill="outline" className={props.fieldClass}>
+      <IonItem fill="outline" className={props.fieldClass + ' input-item'}>
         <IonInput
           type="number"
           min={props.min}
@@ -140,7 +140,7 @@ const InputField: React.FC<InputProps> = (props) => {
           inputmode="decimal"
         />
         {props.unit && (
-          <IonLabel slot="end" color="medium">
+          <IonLabel slot="end" color="medium" className="unit">
             <span
               aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((value || 0).toLocaleString(i18n.language)),

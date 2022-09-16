@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './Squat.css';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react';
 
@@ -124,7 +123,7 @@ const Environment: React.FC = () => {
           valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.set-wind-speed')}
@@ -152,8 +151,6 @@ const Environment: React.FC = () => {
                 actionType="environment-weather"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.set-wave-height')}
@@ -182,8 +179,6 @@ const Environment: React.FC = () => {
                 actionType="environment-weather"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <LabelField
                 title={t('homePage.squat.environment.wave-length')}
@@ -198,6 +193,8 @@ const Environment: React.FC = () => {
                 unit="m"
               />
             </IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
           </IonRow>
         </IonGrid>
 
@@ -211,7 +208,7 @@ const Environment: React.FC = () => {
           }
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.swept-depth')}
@@ -240,8 +237,6 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.estimated-water-depth')}
@@ -256,8 +251,6 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol>
               <RadioSelectField
                 title={t('homePage.squat.environment.form-of-fairway')}
@@ -301,10 +294,14 @@ const Environment: React.FC = () => {
                 }
               />
             </IonCol>
-          </IonRow>
-          {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
-            <IonRow className="ion-justify-content-between ion-align-items-center">
-              <IonCol>
+            {state.environment.fairway.fairwayForm === fairwayForms[0] && ( // form == Open Water
+              <>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+              </>
+            )}
+            {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
+              <IonCol size="12">
                 <InputField
                   title={t('homePage.squat.environment.channel-width')}
                   name="channelWidth"
@@ -317,39 +314,52 @@ const Environment: React.FC = () => {
                   actionType="environment-fairway"
                 />
               </IonCol>
-            </IonRow>
-          )}
-          {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
-            <IonRow>
-              <IonCol size="6">
-                <InputField
-                  title={t('homePage.squat.environment.scale-of-slope')}
-                  name="slopeScale"
-                  value={state.environment.fairway.slopeScale}
-                  placeholder="0"
-                  min={fieldParams.slopeScale.min}
-                  max={fieldParams.slopeScale.max}
-                  step={fieldParams.slopeScale.step}
-                  fieldClass={setFieldClass('slopeScale')}
-                  actionType="environment-fairway"
-                />
-              </IonCol>
-              <IonCol size="6">
-                <InputField
-                  title={t('homePage.squat.environment.height-of-slope')}
-                  name="slopeHeight"
-                  value={state.environment.fairway.slopeHeight}
-                  placeholder="0"
-                  min={fieldParams.slopeHeight.min}
-                  max={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : fieldParams.slopeHeight.max}
-                  step={fieldParams.slopeHeight.step}
-                  unit={fieldParams.slopeHeight.unit}
-                  fieldClass={setFieldClass('slopeHeight')}
-                  actionType="environment-fairway"
-                />
-              </IonCol>
-            </IonRow>
-          )}
+            )}
+            {state.environment.fairway.fairwayForm === fairwayForms[1] && ( // form == Channel
+              <>
+                <IonCol size="6" className="hide-landscape"></IonCol>
+                <IonCol size="6" className="hide-landscape"></IonCol>
+              </>
+            )}
+            {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
+              <>
+                <IonCol size="6">
+                  <InputField
+                    title={t('homePage.squat.environment.scale-of-slope')}
+                    name="slopeScale"
+                    value={state.environment.fairway.slopeScale}
+                    placeholder="0"
+                    min={fieldParams.slopeScale.min}
+                    max={fieldParams.slopeScale.max}
+                    step={fieldParams.slopeScale.step}
+                    fieldClass={setFieldClass('slopeScale')}
+                    actionType="environment-fairway"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('homePage.squat.environment.height-of-slope')}
+                    name="slopeHeight"
+                    value={state.environment.fairway.slopeHeight}
+                    placeholder="0"
+                    min={fieldParams.slopeHeight.min}
+                    max={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : fieldParams.slopeHeight.max}
+                    step={fieldParams.slopeHeight.step}
+                    unit={fieldParams.slopeHeight.unit}
+                    fieldClass={setFieldClass('slopeHeight')}
+                    actionType="environment-fairway"
+                  />
+                </IonCol>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+                <IonCol size="6" className="hide-portrait"></IonCol>
+              </>
+            )}
+            {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
+              <IonCol size="6"></IonCol>
+            )}
+          </IonRow>
         </IonGrid>
 
         <SectionTitle
@@ -357,7 +367,7 @@ const Environment: React.FC = () => {
           valid={isFieldValid('vesselCourse') && isFieldValid('vesselSpeed') && isFieldValid('turningRadius')}
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.set-vessel-course')}
@@ -385,8 +395,6 @@ const Environment: React.FC = () => {
                 actionType="environment-vessel"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.set-turning-radius')}
@@ -401,6 +409,9 @@ const Environment: React.FC = () => {
                 actionType="environment-vessel"
               />
             </IonCol>
+            <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
           </IonRow>
         </IonGrid>
 
@@ -409,7 +420,7 @@ const Environment: React.FC = () => {
           valid={isFieldValid('airDensity') && isFieldValid('waterDensity') && isFieldValid('requiredUKC') && isFieldValid('motionClearance')}
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.set-density-of-air')}
@@ -439,8 +450,6 @@ const Environment: React.FC = () => {
                 actionType="environment-attribute"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.required-UKC')}
@@ -469,8 +478,6 @@ const Environment: React.FC = () => {
                 actionType="environment-attribute"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.environment.safety-margin-wind-force')}
@@ -484,6 +491,9 @@ const Environment: React.FC = () => {
                 actionType="environment-attribute"
               />
             </IonCol>
+            <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
           </IonRow>
         </IonGrid>
       </>
