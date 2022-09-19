@@ -227,6 +227,10 @@ let validatedFields = {
 };
 
 // Initialize field values from url parameter if set and check validity
+export const getBooleanFieldValue = (fieldName: string, defaultValue: boolean) => {
+  const queryParams = new URLSearchParams(window.location.search);
+  return queryParams.get(fieldName) ? queryParams.get(fieldName)?.toLowerCase() === 'true' : defaultValue;
+};
 export const getFieldValue = (fieldName: string, force?: boolean) => {
   const queryParams = new URLSearchParams(window.location.search);
   const defaultValue = fieldParams[fieldName].default;
@@ -336,8 +340,8 @@ export const initialState: State = {
     },
   },
   status: {
-    showDeepWaterValues: false,
-    showBarrass: false,
+    showDeepWaterValues: getBooleanFieldValue('showDeepWaterValues', false),
+    showBarrass: getBooleanFieldValue('showBarrass', false),
   },
   validations: validatedFields,
 };

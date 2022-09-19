@@ -9,8 +9,8 @@ export const countDecimals = (val: number) => {
   return valStr.split('.')[1].length;
 };
 
-const getQuerystringForField = (fieldName: string, value: number) => {
-  const defaultValue = fieldParams[fieldName].default;
+const getQuerystringForField = (fieldName: string, value: number | boolean, explicitDefault?: boolean) => {
+  const defaultValue = explicitDefault !== undefined ? explicitDefault : fieldParams[fieldName].default;
   if (value !== defaultValue) {
     return fieldName + '=' + value;
   }
@@ -64,6 +64,9 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
   parametres.push(getQuerystringForField('requiredUKC', currentState.environment.attribute.requiredUKC));
   parametres.push(getQuerystringForField('safetyMarginWindForce', currentState.environment.attribute.safetyMarginWindForce));
   parametres.push(getQuerystringForField('motionClearance', currentState.environment.attribute.motionClearance));
+
+  parametres.push(getQuerystringForField('showDeepWaterValues', currentState.status.showDeepWaterValues, false));
+  parametres.push(getQuerystringForField('showBarrass', currentState.status.showBarrass, false));
 
   parametres = parametres.filter((param) => {
     return param && param?.length > 0 ? true : false;
