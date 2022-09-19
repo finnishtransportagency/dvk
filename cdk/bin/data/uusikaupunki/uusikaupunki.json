@@ -5,6 +5,7 @@
     "sv": "[sv] Uudenkaupungin väylä",
     "en": "Uusikaupunki channel"
   },
+  "group": "1",
   "lineText": {
     "fi": "Linjoja on 12 kpl, linjat on merkitty linjatauluin ja sektoriloistoin",
     "sv": "12 farledslinjer utmärkta med enstavlor och sektorfyrar.",
@@ -121,15 +122,7 @@
   "fairways": [
     {
       "id": 2345,
-      "name": "Uusikaupunki channel",
-      "statementStart": {
-        "sv": "[sv] Avomeri Isokarin luoteispuoli",
-        "en": "[en] Avomeri Isokarin luoteispuoli"
-      },
-      "statementEnd": {
-        "sv": "[sv] Yara",
-        "en": "[en] Yara"
-      }
+      "primary": true
     }
   ]
 }

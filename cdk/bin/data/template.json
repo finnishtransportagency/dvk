@@ -5,6 +5,7 @@
     "sv": "",
     "en": ""
   },
+  "group": "",
   "lineText": {
     "fi": "",
     "sv": "",
@@ -161,15 +162,7 @@
   "fairways": [
     {
       "id": 0,
-      "name": "",
-      "statementStart": {
-        "sv": "[sv]",
-        "en": "[en]"
-      },
-      "statementEnd": {
-        "sv": "[sv]",
-        "en": "[en]"
-      }
+      "primary": true
     }
   ]
 }

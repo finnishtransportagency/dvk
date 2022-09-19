@@ -5,12 +5,16 @@ schema {
 type Query {
   fairwayCards: [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
+  fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   navigationLines: [NavigationLine!]!
 }
 
 type FairwayCard {
   id: ID!
   name: Text!
+  group: String
+  modificationTimestamp: Int
+  fairwayIds: String
   fairways: [Fairway!]!
   lineText: Text
   anchorage: [Text]
@@ -79,13 +83,14 @@ type Quay {
 
 type Fairway {
   id: Int!
-  name: Text!
+  name: Text
+  primary: Boolean
   length: Float
   draft1: Float
   draft2: Float
   draft3: Float
-  statementStart: Text
-  statementEnd: Text
+  startText: String
+  endText: String
   lighting: Boolean
   sizings: [Sizing!]
   sizingVessels: [SizingVessel!]

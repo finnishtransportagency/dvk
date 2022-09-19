@@ -4,6 +4,10 @@ import FairwayCardDBModel from './fairwayCardDBModel';
 
 const fairwayService = new FairwayService();
 
+export function mapFairwayIds(dbModel: FairwayCardDBModel) {
+  return `#${dbModel.fairways?.map((f) => f.id).join('#')}#`;
+}
+
 export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) {
   const card: FairwayCard = {
     id: dbModel.id,
@@ -12,6 +16,8 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
       sv: dbModel.name?.sv,
       en: dbModel.name?.en,
     },
+    group: dbModel.group,
+    modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],
     anchorage: dbModel.anchorage,
     iceCondition: dbModel.iceCondition,
@@ -26,8 +32,9 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
     vesselRecommendation: dbModel.vesselRecommendation,
     trafficService: dbModel.trafficService,
     harbors: dbModel.harbors,
+    fairwayIds: mapFairwayIds(dbModel),
   };
-  for (const fairway of dbModel?.fairways || []) {
+  for (const fairway of dbModel.fairways || []) {
     card.fairways.push(fairwayService.mapDBModelToFairway(fairway));
   }
   return card;

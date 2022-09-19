@@ -7,6 +7,7 @@ import fs from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
+import { mapFairwayIds } from '../lib/lambda/db/modelMapper';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -59,6 +60,8 @@ function processGeoTiff(filepath: string, id: number, s3Outputs: Promise<PutObje
 
 async function processCard(file: string, geoTiffMap: Map<number, string[]>): Promise<FairwayCardDBModel> {
   const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
+  fairwayCard.fairwayIds = mapFairwayIds(fairwayCard);
+  fairwayCard.modificationTimestamp = Math.round(Date.now() / 1000);
   const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
   console.log(`Fairway card: ${fairwayCard.name?.fi}`);
   for (const fairway of fairwayCard.fairways) {
