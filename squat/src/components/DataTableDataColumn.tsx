@@ -3,9 +3,9 @@ import React from 'react';
 
 interface Props {
   value: string | undefined;
-  color?: DATACOLORS;
+  color?: DATACOLOR;
 }
-export enum DATACOLORS {
+export enum DATACOLOR {
   WARN = '#fdf6f6',
   PASS = '#f5ffef',
   NEUTRAL = 'white',
