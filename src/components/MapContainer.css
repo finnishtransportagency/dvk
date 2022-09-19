@@ -27,7 +27,15 @@
   background: transparent;
 }
 
-#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl{
+#mapContainer .layerControlContainer {
+  top: auto;
+  left: auto;
+  right: 48px;
+  bottom: 216px;
+  background: transparent;
+}
+
+#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl,#mapContainer .layerControl{
   width: 40px;
   height: 40px;
   background-size: 80%;
@@ -52,4 +60,8 @@
 
 #mapContainer .openSidebarMenuControl {
   background-image: url('../theme/img/menu.svg');
+}
+
+#mapContainer .layerControl {
+  background-image: url('../theme/img/layers.svg');
 }

@@ -15,6 +15,17 @@
         },
         "openMenu": {
           "tipLabel": "Avaa valikko"
+        },
+        "layer": {
+          "tipLabel": "Tasot",
+          "header": "Kartan tasot",
+          "fairways": "Väylät",
+          "fairwayAreas": "Väyläalueet",
+          "depths": "Syvyydet",
+          "safetyEquipments": "Turvalaitteet",
+          "speedLimits": "Nopeusrajoitukset",
+          "specialAreas": "Erityisalueet",
+          "pilotPlaces": "Luotsipaikat"
         }
       }
     }
