@@ -61,9 +61,9 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
       <IonGrid className="no-padding">
         <IonRow>
           {props.options.map((option) => (
-            <IonCol key={option.id}>
+            <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '}>
               <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'}>
-                <IonLabel className="ion-text-wrap">
+                <IonLabel className="ion-text-wrap radio">
                   {option.img && <IonImg src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
                   <IonRadio value={option} className={props.value === option ? 'radio-checked' : 'radio-unchecked'} />

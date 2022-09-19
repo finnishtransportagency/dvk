@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './Squat.css';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 
@@ -121,7 +120,7 @@ const Vessel: React.FC = () => {
           }
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.length-BPP')}
@@ -152,8 +151,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.draught')}
@@ -183,8 +180,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.displacement')}
@@ -200,6 +195,8 @@ const Vessel: React.FC = () => {
               />
             </IonCol>
             <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
           </IonRow>
         </IonGrid>
 
@@ -208,7 +205,7 @@ const Vessel: React.FC = () => {
           valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
         />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.total-lateral-wind-surface')}
@@ -237,8 +234,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-detailed"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.bow-thruster')}
@@ -265,8 +260,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-detailed"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="12">
               <SelectField
                 title={t('homePage.squat.vessel.select-vessel-profile')}
@@ -278,12 +271,15 @@ const Vessel: React.FC = () => {
                 translateOptions
               />
             </IonCol>
+            <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
+            <IonCol size="6" className="hide-landscape"></IonCol>
           </IonRow>
         </IonGrid>
 
         <SectionTitle title={t('homePage.squat.vessel.stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
         <IonGrid className="no-padding">
-          <IonRow>
+          <IonRow class="input-row">
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.KG')}
@@ -310,8 +306,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-stability"
               />
             </IonCol>
-          </IonRow>
-          <IonRow>
             <IonCol size="6">
               <InputField
                 title={t('homePage.squat.vessel.KB')}
@@ -325,6 +319,9 @@ const Vessel: React.FC = () => {
                 actionType="vessel-stability"
               />
             </IonCol>
+            <IonCol size="6"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
+            <IonCol size="6" className="hide-portrait"></IonCol>
           </IonRow>
         </IonGrid>
       </>

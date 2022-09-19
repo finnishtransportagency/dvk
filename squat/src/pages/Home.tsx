@@ -3,7 +3,6 @@ import { IonContent, IonFooter, IonHeader, IonPage, IonSelect, IonSelectOption, 
 import { useTranslation } from 'react-i18next';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
-import './Home.css';
 
 const Home: React.FC = () => {
   const { t, i18n } = useTranslation();
