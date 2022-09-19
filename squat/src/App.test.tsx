@@ -2,7 +2,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
-import { SquatReducer, initialState, Action, getFieldValue, fieldParams } from './hooks/squatReducer';
+import { SquatReducer, initialState, Action, getFieldValue, fieldParams, getBooleanFieldValue } from './hooks/squatReducer';
 import { copyToClipboard, countDecimals, createShareableLink } from './utils/helpers';
 
 const baseURL = 'http://localhost:8080/';
@@ -16,7 +16,7 @@ beforeAll(() => {
 
   const location = {
     ...window.location,
-    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10.1&showHeader=true',
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10.1&showBarrass=true&showHeader=true',
   };
   Object.defineProperty(window, 'location', {
     writable: true,
@@ -131,6 +131,7 @@ test('setting default value under minimum or above maximum is swallowed when for
   expect(getFieldValue('fairwayForm', true)).toEqual(0);
   expect(getFieldValue('GM')).toEqual(0);
   expect(getFieldValue('channelWidth')).toEqual(10.1);
+  expect(getBooleanFieldValue('showBarrass', false)).toEqual(true);
 });
 
 it('counts decimals correctly for values', () => {
