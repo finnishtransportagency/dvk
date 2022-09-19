@@ -72,7 +72,13 @@ const TitleBar: React.FC = () => {
                 <IonIcon icon={downloadOutline} color="medium" size="large" className="flipped" />
                 </IonCol>*/}
               <IonCol>
-                <IonButton fill="clear" className="icon-only" onClick={() => window.print()} title={t('homePage.header.print')}>
+                <IonButton
+                  fill="clear"
+                  className="icon-only"
+                  onClick={() => window.print()}
+                  title={t('homePage.header.print')}
+                  aria-label={t('homePage.header.print')}
+                >
                   <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
                 </IonButton>
               </IonCol>
