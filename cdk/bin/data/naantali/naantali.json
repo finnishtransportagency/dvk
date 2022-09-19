@@ -5,6 +5,7 @@
     "sv": "Farleden Nådendal",
     "en": "Naantali channel"
   },
+  "group": "1",
   "lineText": {
     "fi": "Linjoja 19 kpl.",
     "sv": "19 linjer.",
@@ -244,27 +245,10 @@
   "fairways": [
     {
       "id": 3255,
-      "name": "[en] Naantalin väylä",
-      "statementStart": {
-        "sv": "[sv] Avomeri, Lillharunin LO-puoli",
-        "en": "[en] Avomeri, Lillharunin LO-puoli"
-      },
-      "statementEnd": {
-        "sv": "[sv] Naantalin satama",
-        "en": "[en] Naantalin satama"
-      }
+      "primay": true
     },
     {
-      "id": 3260,
-      "name": "[en] Naantalin laituriväylät",
-      "statementStart": {
-        "sv": "[sv] Ajopään pohjoispuoli",
-        "en": "[en] Ajopään pohjoispuoli"
-      },
-      "statementEnd": {
-        "sv": "[sv] Raumakarin itäpuoli",
-        "en": "[en] Raumakarin itäpuoli"
-      }
+      "id": 3260
     }
   ]
 }

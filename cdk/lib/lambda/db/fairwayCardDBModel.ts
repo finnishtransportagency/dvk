@@ -13,9 +13,7 @@ export type Text = {
 
 export type FairwayDBModel = {
   id: number;
-  name?: string;
-  statementStart?: Text;
-  statementEnd?: Text;
+  primary?: boolean;
   geotiffImages?: string[];
 };
 
@@ -78,6 +76,10 @@ class FairwayCardDBModel {
   id: string;
 
   name?: Text;
+
+  modificationTimestamp?: number;
+
+  group?: string;
 
   fairwayIds?: string;
 

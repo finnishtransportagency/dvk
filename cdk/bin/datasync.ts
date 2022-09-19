@@ -61,6 +61,7 @@ function processGeoTiff(filepath: string, id: number, s3Outputs: Promise<PutObje
 async function processCard(file: string, geoTiffMap: Map<number, string[]>): Promise<FairwayCardDBModel> {
   const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
   fairwayCard.fairwayIds = mapFairwayIds(fairwayCard);
+  fairwayCard.modificationTimestamp = Math.round(Date.now() / 1000);
   const s3Outputs: Promise<PutObjectCommandOutput>[] = [];
   console.log(`Fairway card: ${fairwayCard.name?.fi}`);
   for (const fairway of fairwayCard.fairways) {

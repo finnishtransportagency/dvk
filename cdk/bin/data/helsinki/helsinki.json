@@ -5,6 +5,7 @@
     "sv": "Helsingforsleden",
     "en": ""
   },
+  "group": "2",
   "lineText": {
     "fi": "Linjoja 2 kpl, merkitty linjatauluin.",
     "sv": "Två linjer, utmärkta med enstavlor.",
@@ -159,39 +160,13 @@
   "fairways": [
     {
       "id": 4745,
-      "name": "[en] Kruunuvuorenselkä-Katajanokka",
-      "statementStart": {
-        "sv": "[sv] Vasikkasaari-Eteläsatama väylältä Katajanokan E-puolelta",
-        "en": "[en] Vasikkasaari-Eteläsatama väylältä Katajanokan E-puolelta"
-      },
-      "statementEnd": {
-        "sv": "[sv] Yhtyy Kustaanmiekka-Sörnäinen väylään",
-        "en": "[en] Yhtyy Kustaanmiekka-Sörnäinen väylään"
-      }
+      "primary": true
     },
     {
-      "id": 4805,
-      "name": "[en] Kustaanmiekka-Sörnäinen",
-      "statementStart": {
-        "sv": "[sv] Reimarisaaren länsipuolelta, (Kustaanmiekansalmen E-puolelta)",
-        "en": "[en] Reimarisaaren länsipuolelta, (Kustaanmiekansalmen E-puolelta)"
-      },
-      "statementEnd": {
-        "sv": "[sv] Sörnäisen satama-altaaseen",
-        "en": "[en] Sörnäisen satama-altaaseen"
-      }
+      "id": 4805
     },
     {
-      "id": 4800,
-      "name": "[en] Olympialaiturin 6,9 m väylä",
-      "statementStart": {
-        "sv": "[sv] Särkän saaren pohjoispuolelta, Särkän 9,6/7,9m väylältä",
-        "en": "[en] Särkän saaren pohjoispuolelta, Särkän 9,6/7,9m väylältä"
-      },
-      "statementEnd": {
-        "sv": "[sv] Eteläsataman Olympialaituriin",
-        "en": "[en] Eteläsataman Olympialaituriin"
-      }
+      "id": 4800
     }
   ]
 }

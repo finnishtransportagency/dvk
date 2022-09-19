@@ -65,17 +65,7 @@ export class FairwayService {
   public mapDBModelToFairway(dbModel: FairwayDBModel): Fairway {
     const fairway: Fairway = {
       id: dbModel.id,
-      name: {
-        en: dbModel.name,
-      },
-      statementStart: {
-        sv: dbModel.statementStart?.sv,
-        en: dbModel.statementStart?.en,
-      },
-      statementEnd: {
-        sv: dbModel.statementEnd?.sv,
-        en: dbModel.statementEnd?.en,
-      },
+      primary: dbModel.primary ?? false,
     };
     fairway.geotiffImages = dbModel.geotiffImages;
     return fairway;
@@ -92,6 +82,8 @@ export class FairwayService {
       draft2: apiModel.kulkuSyvyys2,
       draft3: apiModel.kulkuSyvyys3,
       length: apiModel.pituus,
+      startText: apiModel.selosteAlkaa,
+      endText: apiModel.selostePaattyy,
     };
     const vessels = apiModel.mitoitusAlukset?.map((vesselModel) => {
       const vessel: SizingVessel = {

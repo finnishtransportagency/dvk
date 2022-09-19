@@ -16,6 +16,8 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
       sv: dbModel.name?.sv,
       en: dbModel.name?.en,
     },
+    group: dbModel.group,
+    modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],
     anchorage: dbModel.anchorage,
     iceCondition: dbModel.iceCondition,

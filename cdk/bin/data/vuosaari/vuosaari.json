@@ -5,6 +5,7 @@
     "sv": "Nordsjöleden",
     "en": "Vuosaari channel"
   },
+  "group": "2",
   "lineText": {
     "fi": "Linjoja 3, merkitty linjatauluin.",
     "sv": "Tre linjer, utmärkta med enstavlor.",
@@ -273,27 +274,10 @@
   "fairways": [
     {
       "id": 4927,
-      "name": "Vuosaari channel",
-      "statementStart": {
-        "sv": "[sv] Suomenlahti, avomeri",
-        "en": "[en] Suomenlahti, avomeri"
-      },
-      "statementEnd": {
-        "sv": "[sv] Vuosaaren satamaan",
-        "en": "[en] Vuosaaren satamaan"
-      }
+      "primary": true
     },
     {
-      "id": 4921,
-      "name": "[en] Vuosaaren sataman väylä",
-      "statementStart": {
-        "sv": "[sv] Vuosaaren väylältä",
-        "en": "[en] Vuosaaren väylältä"
-      },
-      "statementEnd": {
-        "sv": "[sv] Vuosaaren satama",
-        "en": "[en] Vuosaaren satama"
-      }
+      "id": 4921
     }
   ]
 }

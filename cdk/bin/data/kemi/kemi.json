@@ -5,6 +5,7 @@
     "sv": "[sv] Kemin väylä",
     "en": "Kemi Ajos fairway"
   },
+  "group": "3",
   "lineText": {
     "fi": "Linjoja on kolme, joista sisin on merkitty linjatauluin",
     "sv": "Tre linjer, varav den innersta utmärkt med enstavlor.",
@@ -181,15 +182,7 @@
   "fairways": [
     {
       "id": 10,
-      "name": "Kemi Ajos fairway",
-      "statementStart": {
-        "sv": "[sv] Kemi 1 E-puolella.",
-        "en": "[en] Kemi 1 E-puolella."
-      },
-      "statementEnd": {
-        "sv": "[sv] Ajoksen satama.",
-        "en": "[en] Ajoksen satama."
-      }
+      "primary": true
     }
   ]
 }
