@@ -20,8 +20,8 @@ const SquatDataTable: React.FC<Props> = (props) => {
   const stepFactor = 10;
   const [speeds, setSpeeds] = useState(Array<number>);
 
-  const getColor = (squat: number | undefined) => {
-    if (!squat) return DATACOLOR.WARN;
+  const getColor = (squat: number) => {
+    if (squat < 0) return DATACOLOR.WARN;
     const safe = isSquatWithinSafetyLevels(
       squat,
       state.environment.fairway.sweptDepth,
@@ -33,14 +33,14 @@ const SquatDataTable: React.FC<Props> = (props) => {
   };
 
   const getPaddedHuuskaGuliev24Data = useCallback(() => {
-    const paddedArray: Array<number | undefined> = [];
+    const paddedArray: Array<number> = [];
     props.huuskaGuliev24?.forEach((values) => {
       if (speeds.includes(values[0])) {
         paddedArray.push(values[1]);
       }
     });
     for (let i = paddedArray.length; i < speeds.length; i++) {
-      paddedArray.push(undefined);
+      paddedArray.push(-1);
     }
     return paddedArray;
   }, [speeds, props]);
@@ -99,7 +99,7 @@ const SquatDataTable: React.FC<Props> = (props) => {
           <IonRow className="dataTableRow">
             <DataTableTitleColumn value={t('squat-max', { kerroin: '2,4' })} />
             {getPaddedHuuskaGuliev24Data().map((value, i) => {
-              return <DataTableDataColumn key={'col' + i} value={value ? value.toFixed(2) : '-'} color={getColor(value)} />;
+              return <DataTableDataColumn key={'col' + i} value={value >= 0 ? value.toFixed(2) : '-'} color={getColor(value)} />;
             })}
           </IonRow>
         </>
