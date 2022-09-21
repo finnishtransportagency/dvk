@@ -62,9 +62,14 @@ export type Harbor = {
 export type Quay = {
   name?: Text;
   length?: number;
-  draft?: number[];
+  sections?: [Section];
   extraInfo?: Text;
   geometry?: GeometryPoint;
+};
+
+export type Section = {
+  name?: Text;
+  draft?: number;
 };
 
 type FairwayCardByFairwayIdIndex = {

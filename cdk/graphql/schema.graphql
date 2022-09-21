@@ -76,9 +76,14 @@ type Harbor {
 type Quay {
   name: Text
   length: Float
-  draft: [Float]
+  sections: [Section]
   extraInfo: Text
   geometry: GeometryPoint
+}
+
+type Section {
+  name: Text
+  draft: Float
 }
 
 type Fairway {

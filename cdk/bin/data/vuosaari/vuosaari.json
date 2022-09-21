@@ -126,7 +126,11 @@
             "en": "Quay A"
           },
           "length": 180,
-          "draft": [12.5],
+          "sections": [
+            {
+              "draft": 12.5
+            }
+          ],
           "extraInfo": {
             "fi": "säädettävä ramppi",
             "sv": "justerbar ramp",
@@ -140,7 +144,14 @@
             "en": "Quay AP (pier)"
           },
           "length": 215,
-          "draft": [10.5, 12.5],
+          "sections": [
+            {
+              "draft": 10.5
+            },
+            {
+              "draft": 12.5
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
@@ -154,7 +165,11 @@
             "en": "Quay BP (pier)"
           },
           "length": 250,
-          "draft": [12.5],
+          "sections": [
+            {
+              "draft": 12.5
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
@@ -168,7 +183,11 @@
             "en": "Quay CP (pier)"
           },
           "length": 250,
-          "draft": [10.5],
+          "sections": [
+            {
+              "draft": 10.5
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl säädettävää tuplaramppia",
             "sv": "2 justerbara dubbelramper",
@@ -182,7 +201,14 @@
             "en": "Quay D"
           },
           "length": 750,
-          "draft": [12.5, 14.3],
+          "sections": [
+            {
+              "draft": 12.5
+            },
+            {
+              "draft": 14.3
+            }
+          ],
           "extraInfo": {
             "fi": "konttialuksille, 1 kiinteä ramppi",
             "sv": "containerfartyg, fast ramp",
@@ -196,7 +222,14 @@
             "en": "Quay E"
           },
           "length": 750,
-          "draft": [12.5, 14.3],
+          "sections": [
+            {
+              "draft": 12.5
+            },
+            {
+              "draft": 14.3
+            }
+          ],
           "extraInfo": {
             "fi": "konttialuksille, 1 kiinteä ramppi",
             "sv": "containerfartyg, fast ramp",
@@ -210,7 +243,14 @@
             "en": "Quay F"
           },
           "length": 497,
-          "draft": [10.5, 14.3],
+          "sections": [
+            {
+              "draft": 10.5
+            },
+            {
+              "draft": 14.3
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
@@ -224,7 +264,11 @@
             "en": "Quay VG9"
           },
           "length": 162,
-          "draft": [12.5],
+          "sections": [
+            {
+              "draft": 12.5
+            }
+          ],
           "extraInfo": {
             "fi": "1 kiinteä ramppi",
             "sv": "fast ramp",
@@ -238,7 +282,11 @@
             "en": "Quay GP 1 (pier)"
           },
           "length": 204,
-          "draft": [12.5],
+          "sections": [
+            {
+              "draft": 12.5
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
@@ -252,7 +300,14 @@
             "en": "Quay GP 2 (pier)"
           },
           "length": 204,
-          "draft": [12.5, 14.3],
+          "sections": [
+            {
+              "draft": 12.5
+            },
+            {
+              "draft": 14.3
+            }
+          ],
           "extraInfo": {
             "fi": "2 kpl kiinteää ramppia",
             "sv": "2 fasta ramper",
@@ -266,7 +321,11 @@
             "en": "Quay VGA"
           },
           "length": 189,
-          "draft": [14.3]
+          "sections": [
+            {
+              "draft": 14.3
+            }
+          ]
         }
       ]
     }

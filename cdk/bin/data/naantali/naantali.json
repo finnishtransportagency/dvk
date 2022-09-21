@@ -122,7 +122,11 @@
             "en": "quay 15-17, coal and grain"
           },
           "length": 370,
-          "draft": [13]
+          "sections": [
+            {
+              "draft": 13
+            }
+          ]
         },
         {
           "name": {
@@ -131,7 +135,11 @@
             "en": "quay 20, ferry/Finnlink"
           },
           "length": 200,
-          "draft": [7.2]
+          "sections": [
+            {
+              "draft": 7.2
+            }
+          ]
         },
         {
           "name": {
@@ -147,7 +155,11 @@
             "en": "quay 23-24, rockmaterial"
           },
           "length": 170,
-          "draft": [7.9]
+          "sections": [
+            {
+              "draft": 7.9
+            }
+          ]
         },
         {
           "name": {
@@ -156,7 +168,11 @@
             "en": "quay 25, sugar"
           },
           "length": 50,
-          "draft": [4.5]
+          "sections": [
+            {
+              "draft": 4.5
+            }
+          ]
         },
         {
           "name": {
@@ -165,7 +181,11 @@
             "en": "quay 26"
           },
           "length": 150,
-          "draft": [8]
+          "sections": [
+            {
+              "draft": 8
+            }
+          ]
         },
         {
           "name": {
@@ -174,7 +194,11 @@
             "en": "quay 27"
           },
           "length": 180,
-          "draft": [8]
+          "sections": [
+            {
+              "draft": 8
+            }
+          ]
         },
         {
           "name": {
@@ -183,7 +207,11 @@
             "en": "quay 30, luonnonmaa"
           },
           "length": 130,
-          "draft": [7.7]
+          "sections": [
+            {
+              "draft": 7.7
+            }
+          ]
         },
         {
           "name": {
@@ -192,7 +220,11 @@
             "en": "quay 31, luonnonmaa"
           },
           "length": 60,
-          "draft": [7.7]
+          "sections": [
+            {
+              "draft": 7.7
+            }
+          ]
         }
       ]
     },
@@ -219,7 +251,11 @@
             "en": "quay 1"
           },
           "length": 170,
-          "draft": [8]
+          "sections": [
+            {
+              "draft": 8
+            }
+          ]
         },
         {
           "name": {
@@ -228,7 +264,11 @@
             "en": "quay 2"
           },
           "length": 200,
-          "draft": [10]
+          "sections": [
+            {
+              "draft": 10
+            }
+          ]
         },
         {
           "name": {
@@ -237,7 +277,11 @@
             "en": "quay 3"
           },
           "length": 300,
-          "draft": [15.3]
+          "sections": [
+            {
+              "draft": 15.3
+            }
+          ]
         }
       ]
     }
