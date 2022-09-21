@@ -145,7 +145,16 @@
             "en": ""
           },
           "length": 0,
-          "draft": [],
+          "sections": [
+            {
+              "name": {
+                "fi": "",
+                "sv": "",
+                "en": ""
+              },
+              "draft": 0
+            }
+          ],
           "extraInfo": {
             "fi": "",
             "sv": "",

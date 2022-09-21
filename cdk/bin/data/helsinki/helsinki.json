@@ -107,7 +107,20 @@
             "en": "Olympia quay"
           },
           "length": 370,
-          "draft": [7.5, 8.8]
+          "sections": [
+            {
+              "name": {
+                "fi": "EO1"
+              },
+              "draft": 7.5
+            },
+            {
+              "name": {
+                "fi": "EO2"
+              },
+              "draft": 8.8
+            }
+          ]
         },
         {
           "name": {
@@ -116,7 +129,17 @@
             "en": "Makasiini quay"
           },
           "length": 240,
-          "draft": [7.3, 7.5, 7.8]
+          "sections": [
+            {
+              "draft": 7.3
+            },
+            {
+            "draft": 7.5
+            },
+            {
+            "draft": 7.8
+            }
+          ]
         },
         {
           "name": {
@@ -125,7 +148,11 @@
             "en": "Pakkahuone quay EPL"
           },
           "length": 130,
-          "draft": [6]
+          "sections": [
+            {
+              "draft": 6
+            }
+          ]
         },
         {
           "name": {
@@ -134,7 +161,26 @@
             "en": "Katajanokka quays"
           },
           "length": 740,
-          "draft": [8.8]
+          "sections": [
+            {
+              "name": {
+                "fi": "EKL"
+              },
+              "draft": 8.8
+            },
+            {
+              "name": {
+                "fi": "EK6"
+              },
+              "draft": 8.8
+            },
+            {
+              "name": {
+                "fi": "EK7"
+              },
+              "draft": 8.8
+            }
+          ]
         },
         {
           "name": {
@@ -143,7 +189,20 @@
             "en": "Cruise ship quays"
           },
           "length": 350,
-          "draft": [10.3, 10]
+          "sections": [
+            {
+              "name": {
+                "fi": "ERA"
+              },
+              "draft": 10.3
+            },
+            {
+              "name": {
+                "fi": "ERB"
+              },
+              "draft": 10
+            }
+          ]
         },
         {
           "name": {
@@ -152,7 +211,20 @@
             "en": "Hanasaari quay"
           },
           "length": 330,
-          "draft": [9.35]
+          "sections": [
+            {
+              "name": {
+                "fi": "SHA"
+              },
+              "draft": 9.35
+            },
+            {
+              "name": {
+                "fi": "SHB"
+              },
+              "draft": 9.35
+            }
+          ]
         }
       ]
     }

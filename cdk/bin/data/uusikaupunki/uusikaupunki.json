@@ -114,7 +114,11 @@
       "quays": [
         {
           "length": 330,
-          "draft": [12.5]
+          "sections": [
+            {
+              "draft": 12.5
+            }
+          ]
         }
       ]
     }

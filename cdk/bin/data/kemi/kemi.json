@@ -129,7 +129,11 @@
             "sv": "Oljekajen",
             "en": "Oil terminal"
           },
-          "draft": [11.2]
+          "sections": [
+            {
+              "draft": 11.2
+            }
+          ]
         },
         {
           "name": {
@@ -138,7 +142,11 @@
             "en": "Quay I, berths 1-2"
           },
           "length": 160,
-          "draft": [10.6]
+          "sections": [
+            {
+              "draft": 10.6
+            }
+          ]
         },
         {
           "name": {
@@ -147,7 +155,11 @@
             "en": "Quay I, berths 3-4"
           },
           "length": 179,
-          "draft": [9.2]
+          "sections": [
+            {
+              "draft": 9.2
+            }
+          ]
         },
         {
           "name": {
@@ -156,7 +168,11 @@
             "en": "Quay II, berths 5-7"
           },
           "length": 292,
-          "draft": [9.2]
+          "sections": [
+            {
+              "draft": 9.2
+            }
+          ]
         },
         {
           "name": {
@@ -165,7 +181,11 @@
             "en": "Quay III, berths 8-9"
           },
           "length": 178,
-          "draft": [11.2]
+          "sections": [
+            {
+              "draft": 11.2
+            }
+          ]
         },
         {
           "name": {
@@ -174,7 +194,11 @@
             "en": "Quay IV, berths 10-11"
           },
           "length": 178,
-          "draft": [11.2]
+          "sections": [
+            {
+              "draft": 11.2
+            }
+          ]
         }
       ]
     }
