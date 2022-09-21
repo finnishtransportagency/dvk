@@ -2,16 +2,25 @@ import React from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
+import LayerPopupControl from './LayerPopupControl';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  layerPopupControl: LayerPopupControl;
 }
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl }) => {
   const { t } = useTranslation();
   return (
-    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => setIsOpen(false)}>
+    <IonModal
+      id="layerModalContainer"
+      isOpen={isOpen}
+      onDidDismiss={() => {
+        setIsOpen(false);
+        layerPopupControl.modalClosed();
+      }}
+    >
       <div className="wrapper">
         <b>{t('homePage.map.controls.layer.header')}</b>
         <IonList lines="none">

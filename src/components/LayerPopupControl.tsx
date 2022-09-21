@@ -7,6 +7,8 @@ type LayerPopupControlOptions = {
 };
 
 class LayerPopupControl extends Control {
+  button: HTMLButtonElement;
+
   constructor(options: LayerPopupControlOptions) {
     const button = document.createElement('button');
     button.className = 'layerControl';
@@ -20,10 +22,15 @@ class LayerPopupControl extends Control {
     super({
       element: element,
     });
-
+    this.button = button;
     button.addEventListener('click', () => {
       options.setIsOpen(true);
+      button.className = 'layerControlOpen';
     });
+  }
+
+  modalClosed() {
+    this.button.className = 'layerControl';
   }
 }
 

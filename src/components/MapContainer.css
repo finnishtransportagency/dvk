@@ -35,7 +35,7 @@
   background: transparent;
 }
 
-#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl,#mapContainer .layerControl{
+#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl,#mapContainer .layerControl,#mapContainer .layerControlOpen{
   width: 40px;
   height: 40px;
   background-size: 80%;
@@ -64,4 +64,9 @@
 
 #mapContainer .layerControl {
   background-image: url('../theme/img/layers.svg');
+}
+
+#mapContainer .layerControlOpen {
+  background-color: #0064AF;
+  background-image: url('../theme/img/layersOpen.svg');
 }

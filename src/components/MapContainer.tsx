@@ -27,6 +27,12 @@ const MapContainer: React.FC = () => {
 
   const [mapInitialized, initializeMap] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const layerControl = new LayerPopupControl({
+    label: '',
+    tipLabel: t('homePage.map.controls.layer.tipLabel'),
+    setIsOpen: setIsOpen,
+  });
+  const layerControlRef = useRef<LayerPopupControl>(layerControl);
   useLayoutEffect(() => {
     if (mapInitialized) {
       return;
@@ -97,15 +103,9 @@ const MapContainer: React.FC = () => {
       tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
     });
 
-    let layerControl = new LayerPopupControl({
-      label: '',
-      tipLabel: t('homePage.map.controls.layer.tipLabel'),
-      setIsOpen: setIsOpen,
-    });
-
     map.addControl(centerToOwnLocationControl);
     map.addControl(openSidebarMenuControl);
-    map.addControl(layerControl);
+    map.addControl(layerControlRef.current);
 
     i18n.on('languageChanged', () => {
       map.removeControl(zoomControl);
@@ -131,13 +131,13 @@ const MapContainer: React.FC = () => {
       });
       map.addControl(openSidebarMenuControl);
 
-      map.removeControl(layerControl);
-      layerControl = new LayerPopupControl({
+      map.removeControl(layerControlRef.current);
+      layerControlRef.current = new LayerPopupControl({
         label: '',
         tipLabel: t('homePage.map.controls.layer.tipLabel'),
         setIsOpen: setIsOpen,
       });
-      map.addControl(layerControl);
+      map.addControl(layerControlRef.current);
     });
 
     // override with tileURL
@@ -192,7 +192,7 @@ const MapContainer: React.FC = () => {
   return (
     <>
       <div id="mapContainer" ref={mapElement}></div>
-      <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} layerPopupControl={layerControlRef.current} />
     </>
   );
 };
