@@ -141,6 +141,8 @@
     "value-out-of-range": "Invalid value",
     "value-cannot-be-over": "Value cannot exceed {{value}}",
     "value-cannot-be-less-than": "Value cannot be less than {{value}}",
+    "minimum-value": "Minimum value",
+    "maximum-value": "Maximum value",
     "unit": {
       "m_one": "metre",
       "m_other": "metres",

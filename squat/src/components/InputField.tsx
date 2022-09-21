@@ -70,16 +70,29 @@ const InputField: React.FC<InputProps> = (props) => {
   const getHelperText = () => {
     let helper;
     if (props.min !== undefined)
-      helper =
-        Number(props.min).toLocaleString(i18n.language, {
-          minimumFractionDigits: countDecimals(Number(props.step)),
-          maximumFractionDigits: countDecimals(Number(props.step)),
-        }) + ' – ';
+      helper = (
+        <>
+          <span aria-label={t('common.minimum-value')}>
+            {Number(props.min).toLocaleString(i18n.language, {
+              minimumFractionDigits: countDecimals(Number(props.step)),
+              maximumFractionDigits: countDecimals(Number(props.step)),
+            })}
+          </span>
+          {' – '}
+        </>
+      );
     if (props.max !== undefined)
-      helper += Number(props.max).toLocaleString(i18n.language, {
-        minimumFractionDigits: countDecimals(Number(props.step)),
-        maximumFractionDigits: countDecimals(Number(props.step)),
-      });
+      helper = (
+        <>
+          {helper}
+          <span aria-label={t('common.maximum-value')}>
+            {Number(props.max).toLocaleString(i18n.language, {
+              minimumFractionDigits: countDecimals(Number(props.step)),
+              maximumFractionDigits: countDecimals(Number(props.step)),
+            })}
+          </span>
+        </>
+      );
     if (props.unit)
       helper = (
         <>

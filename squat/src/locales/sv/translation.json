@@ -141,6 +141,8 @@
     "value-out-of-range": "[sv] Virheellinen arvo",
     "value-cannot-be-over": "[sv] Arvo ei voi olla yli {{value}}",
     "value-cannot-be-less-than": "[sv] Arvo ei voi olla alle {{value}}",
+    "minimum-value": "[sv] Minimum value",
+    "maximum-value": "[sv] Maximum value",
     "unit": {
       "m_one": "[sv] metri",
       "m_other": "[sv] metriä",
