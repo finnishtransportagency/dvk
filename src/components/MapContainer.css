@@ -68,4 +68,5 @@
 
 #mapContainer .layerControlOpen {
   background-color: #0064AF;
+  background-image: url('../theme/img/layersOpen.svg');
 }
