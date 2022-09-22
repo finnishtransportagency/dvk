@@ -38,7 +38,6 @@
 #mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl,#mapContainer .layerControl,#mapContainer .layerControlOpen{
   width: 40px;
   height: 40px;
-  background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
   background-color: #ffffff;
@@ -49,24 +48,30 @@
 
 #mapContainer .ol-zoom-in {
   background-image: url('../theme/img/zoomIn.svg');
+  background-size: 18px 18px;
 }
 #mapContainer .ol-zoom-out {
   background-image: url('../theme/img/zoomOut.svg');
+  background-size: 18px 4px;
 }
 
 #mapContainer .centerToOwnLocationControl {
   background-image: url('../theme/img/ownLocation.svg');
+  background-size: 26px 26px;
 }
 
 #mapContainer .openSidebarMenuControl {
   background-image: url('../theme/img/menu.svg');
+  background-size: 22px 15px;
 }
 
 #mapContainer .layerControl {
   background-image: url('../theme/img/layers.svg');
+  background-size: 22px 22px;
 }
 
 #mapContainer .layerControlOpen {
   background-color: #0064AF;
   background-image: url('../theme/img/layersOpen.svg');
+  background-size: 22px 22px;
 }
