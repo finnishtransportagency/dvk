@@ -130,7 +130,6 @@ export class DvkBackendStack extends Stack {
       defaultAction: ListenerAction.fixedResponse(404),
       open: Config.isPermanentEnvironment(),
     });
-    let index = 1;
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
       functionName: `cors-${env}`.toLocaleLowerCase(),
@@ -144,7 +143,7 @@ export class DvkBackendStack extends Stack {
     });
     httpListener.addTargets('HTTPListenerTarget-CORS', {
       targets: [new LambdaTarget(corsLambda)],
-      priority: index++,
+      priority: 1,
       conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
     });
     for (const lambdaFunc of apiLambdaFunctions) {
@@ -156,12 +155,13 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+          ENVIRONMENT: Config.getEnvironment(),
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
       httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
         targets: [new LambdaTarget(backendLambda)],
-        priority: index++,
+        priority: lambdaFunc.priority,
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
     }

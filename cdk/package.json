@@ -53,6 +53,7 @@
     "@aws-sdk/client-ssm": "^3.154.0",
     "@aws-sdk/lib-dynamodb": "^3.154.0",
     "@types/aws-lambda": "^8.10.102",
+    "@types/geojson": "^7946.0.10",
     "aws-cdk-lib": "2.38.1",
     "axios": "^0.27.2",
     "constructs": "^10.1.84",
