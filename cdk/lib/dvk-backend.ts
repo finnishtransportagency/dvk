@@ -67,7 +67,7 @@ export class DvkBackendStack extends Stack {
       }
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env);
+    const alb = this.createALB(env, fairwayCardTable);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
       exportName: 'LoadBalancerDnsName' + env,
@@ -107,7 +107,7 @@ export class DvkBackendStack extends Stack {
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
-  private createALB(env: string): ApplicationLoadBalancer {
+  private createALB(env: string, fairwayCardTable: Table): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     let securityGroup: SecurityGroup | undefined = undefined;
     if (!Config.isPermanentEnvironment()) {
@@ -156,6 +156,7 @@ export class DvkBackendStack extends Stack {
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
+          FAIRWAY_CARD_TABLE: `FairwayCard-${env}`,
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -164,6 +165,7 @@ export class DvkBackendStack extends Stack {
         priority: lambdaFunc.priority,
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
+      fairwayCardTable.grantReadData(backendLambda);
     }
     return alb;
   }
