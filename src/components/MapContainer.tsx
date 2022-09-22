@@ -25,6 +25,8 @@ import VectorLayer from 'ol/layer/Vector';
 import Style from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import GeoJSON from 'ol/format/GeoJSON';
+// eslint-disable-next-line import/named
+import { FeatureLike } from 'ol/Feature';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -193,13 +195,13 @@ const MapContainer: React.FC = () => {
 
     const vectorSource = new VectorSource({
       url: process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader',
-      format: new GeoJSON({ dataProjection: 'EPSG:4258', featureProjection: 'EPSG:4258' }),
+      format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
     });
 
-    const styleFunction = function () {
+    const styleFunction = function (feature: FeatureLike) {
       return new Style({
         stroke: new Stroke({
-          color: 'black',
+          color: feature.getGeometry()?.getType() === 'LineString' ? 'blue' : 'red',
           width: 1,
         }),
       });
