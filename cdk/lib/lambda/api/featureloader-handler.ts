@@ -1,19 +1,18 @@
 import { ALBEvent, ALBResult } from 'aws-lambda';
 import { getHeaders } from '../environment';
 import { log } from '../logger';
-import { NavigationLinesService } from './vatuService';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import { vuosaari } from './sample/areas.json';
-const linesService = new NavigationLinesService();
+import { vuosaariarea } from './sample/areas.json';
+import { vuosaari } from './sample/navigationLines.json';
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const features: Feature<Geometry, GeoJsonProperties>[] = [];
-  for (const line of linesService.getNavigationLines()) {
-    features.push({ type: 'Feature', geometry: line.geometry, properties: { id: line.id, draft: line.harausSyvyys } });
+  for (const line of vuosaari) {
+    features.push({ type: 'Feature', geometry: line.geometry as Geometry, properties: { id: line.id, draft: line.harausSyvyys } });
   }
-  for (const area of vuosaari) {
-    features.push({ type: 'Feature', geometry: area.geometry, properties: { id: area.id, fairwayId: area.jnro } });
+  for (const area of vuosaariarea) {
+    features.push({ type: 'Feature', geometry: area.geometry as Geometry, properties: { id: area.id, fairwayId: area.jnro } });
   }
   const collection: FeatureCollection = {
     type: 'FeatureCollection',
