@@ -17,15 +17,14 @@ export function isProductionEnvironment() {
   return 'prod' === getEnvironment();
 }
 
-export function getHeaders() {
+export function getHeaders(): Record<string, string> {
   if (isPermanentEnvironment()) {
-    return undefined;
-  } else {
-    return {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:3000',
-      'Access-Control-Allow-Methods': '*',
-      'Access-Control-Allow-Headers': '*',
-    };
+    return { 'Content-Type': 'application/json' };
   }
+  return {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Methods': '*',
+    'Access-Control-Allow-Headers': '*',
+  };
 }

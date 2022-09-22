@@ -20,6 +20,11 @@ import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
+import VectorSource from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
+import Style from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke';
+import GeoJSON from 'ol/format/GeoJSON';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -185,6 +190,27 @@ const MapContainer: React.FC = () => {
     layers.forEach((layer) => {
       map.addLayer(layer);
     });
+
+    const vectorSource = new VectorSource({
+      url: process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader',
+      format: new GeoJSON({ dataProjection: 'EPSG:4258', featureProjection: 'EPSG:4258' }),
+    });
+
+    const styleFunction = function () {
+      return new Style({
+        stroke: new Stroke({
+          color: 'black',
+          width: 1,
+        }),
+      });
+    };
+
+    const vectorLayer = new VectorLayer({
+      source: vectorSource,
+      style: styleFunction,
+    });
+    map.addLayer(vectorLayer);
+
     setTimeout(() => {
       map.updateSize();
     }, 0);
