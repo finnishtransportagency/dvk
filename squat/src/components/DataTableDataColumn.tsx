@@ -12,7 +12,7 @@ export enum DATACOLOR {
 }
 const DataTableDataColumn: React.FC<Props> = (props) => {
   return (
-    <IonCol sizeXs="0.9" className="dataCol" style={{ backgroundColor: props.color }}>
+    <IonCol sizeSm="0.9" sizeXs="1" className="dataCol" style={{ backgroundColor: props.color }}>
       {props.value?.replace('.', ',')}
     </IonCol>
   );
