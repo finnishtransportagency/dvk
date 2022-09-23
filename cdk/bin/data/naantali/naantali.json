@@ -59,7 +59,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [59.741667, 21.348333]
+        "coordinates": [21.348333, 59.741667]
       }
     },
     "vts": {

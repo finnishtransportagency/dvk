@@ -52,7 +52,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [60.735, 20.905]
+        "coordinates": [20.905, 60.735]
       }
     },
     "vts": {

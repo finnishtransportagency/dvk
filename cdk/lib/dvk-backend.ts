@@ -40,7 +40,7 @@ export class DvkBackendStack extends Stack {
     if (Config.isPermanentEnvironment()) {
       new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
     }
-    const fairwayCardTable = this.createFairwayCardTable(env);
+    const fairwayCardTable = this.createFairwayCardTable();
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -50,7 +50,7 @@ export class DvkBackendStack extends Stack {
         entry: lambdaFunc.entry,
         handler: 'handler',
         environment: {
-          FAIRWAY_CARD_TABLE: fairwayCardTable.tableName,
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -82,10 +82,10 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createFairwayCardTable(env: string): Table {
+  private createFairwayCardTable(): Table {
     const table = new Table(this, 'FairwayCardTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
-      tableName: `FairwayCard-${env}`,
+      tableName: Config.getFairwayCardTableName(),
       partitionKey: {
         name: 'id',
         type: AttributeType.STRING,
@@ -156,7 +156,7 @@ export class DvkBackendStack extends Stack {
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
-          FAIRWAY_CARD_TABLE: `FairwayCard-${env}`,
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
