@@ -177,5 +177,12 @@
     "maximum-precision-is-X-decimals_other": "Käytä pienempää tarkkuutta",
     "close": "Sulje",
     "more-info": "Lisätietoja"
+  },
+  "appUpdateAlert": {
+    "title": "Päivitys saatavilla",
+    "content": "Jatkaaksesi sovelluksen käyttämistä, se tulee päivittää.",
+    "updateButton": {
+      "label": "Päivitä"
+    }
   }
 }

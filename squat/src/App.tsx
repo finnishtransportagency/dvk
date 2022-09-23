@@ -1,6 +1,7 @@
-import React from 'react';
-import { IonApp, setupIonicReact } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { IonApp, setupIonicReact, useIonAlert } from '@ionic/react';
 import { SquatReducer, initialState } from './hooks/squatReducer';
+import { useTranslation } from 'react-i18next';
 import SquatContext from './hooks/squatContext';
 import Home from './pages/Home';
 
@@ -26,12 +27,39 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
+  const { t } = useTranslation();
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
+  const [showUpdateAlert] = useIonAlert();
+  const [updating, setUpdating] = useState(false);
 
   const providerState = {
     state,
     dispatch,
   };
+
+  useEffect(() => {
+    if (!updating) {
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!updating) {
+          showUpdateAlert({
+            backdropDismiss: false,
+            header: t('appUpdateAlert.title'),
+            message: t('appUpdateAlert.content'),
+            buttons: [
+              {
+                text: t('appUpdateAlert.updateButton.label'),
+                handler: () => {
+                  window.location.reload();
+                  return true;
+                },
+              },
+            ],
+          });
+          setUpdating(true);
+        }
+      });
+    }
+  }, [showUpdateAlert, updating, t]);
 
   return (
     <SquatContext.Provider value={providerState}>

@@ -174,5 +174,12 @@
     "maximum-precision-is-X-decimals_other": "Use smaller precision",
     "close": "Close",
     "more-info": "More info"
+  },
+  "appUpdateAlert": {
+    "title": "Update available",
+    "content": "To continue using app you must update it.",
+    "updateButton": {
+      "label": "Update"
+    }
   }
 }
