@@ -174,5 +174,12 @@
     "maximum-precision-is-X-decimals_other": "[sv] Käytä pienempää tarkkuutta",
     "close": "[sv] Close",
     "more-info": "[sv] More info"
+  },
+  "appUpdateAlert": {
+    "title": "[sv] Päivitys saatavilla",
+    "content": "[sv] Jatkaaksesi sovelluksen käyttämistä, se tulee päivittää.",
+    "updateButton": {
+      "label": "[sv] Päivitä"
+    }
   }
 }
