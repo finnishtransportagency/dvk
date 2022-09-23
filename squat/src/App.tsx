@@ -39,7 +39,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if (!updating) {
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
+      navigator.serviceWorker?.addEventListener('controllerchange', () => {
         if (!updating) {
           showUpdateAlert({
             backdropDismiss: false,
