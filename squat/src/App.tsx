@@ -31,6 +31,7 @@ const App: React.FC = () => {
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
+  const originalSW = navigator.serviceWorker?.controller;
 
   const providerState = {
     state,
@@ -40,7 +41,7 @@ const App: React.FC = () => {
   useEffect(() => {
     if (!updating) {
       navigator.serviceWorker?.addEventListener('controllerchange', () => {
-        if (!updating) {
+        if (!updating && originalSW) {
           showUpdateAlert({
             backdropDismiss: false,
             header: t('appUpdateAlert.title'),
@@ -59,7 +60,7 @@ const App: React.FC = () => {
         }
       });
     }
-  }, [showUpdateAlert, updating, t]);
+  }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
     <SquatContext.Provider value={providerState}>
