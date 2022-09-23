@@ -81,6 +81,7 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
+          REACT_APP_CI: { value: true },
         },
       },
       grantReportGroupPermissions: true,
