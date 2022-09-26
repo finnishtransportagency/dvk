@@ -316,7 +316,7 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
 
-        <div className="printable top-padding">
+        <div className="in-print top-padding">
           <span className="printable segment-label">{t('homePage.squat.calculations.selected-water-values')}:</span>
           <IonSegment
             onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
