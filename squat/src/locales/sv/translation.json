@@ -85,6 +85,8 @@
         "description": "[sv] Results of automatic calculations",
         "info-title": "[sv] Options for Calculations",
         "info-content": "[sv] Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska-Guliev (oletus) tai Barrass -kaavoja",
+        "selected-water-values": "[sv] Käytetty veden syvyysarvo",
+        "selected-calculation-method": "[sv] Valittu laskentamenetelmä",
         "wind-force": "[sv] Wind Force",
         "relative-wind-direction": "[sv] Relative Wind Direction",
         "relative-wind-speed": "[sv] Relative Wind Speed",

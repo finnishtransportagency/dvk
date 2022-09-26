@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         onClick={() => setIsOpen(true)}
         title={props.triggerTitle || t('common.more-info')}
         aria-label={props.triggerTitle || t('common.more-info')}
+        role="button"
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
