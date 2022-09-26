@@ -154,6 +154,7 @@
     display: inline-flex;
     width: auto;
     margin-right: 30px;
+    padding: 0 !important;
   }
   .segment-label {
     font-size: 14px;
@@ -193,7 +194,7 @@
   }
 
   .printable {
-    display: inherit;
+    display: block;
   }
 
   @media (orientation: portrait) {

@@ -316,35 +316,37 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
 
-        <span className="printable segment-label">{t('homePage.squat.calculations.selected-water-values')}:</span>
-        <IonSegment
-          onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
-          value={state.status.showDeepWaterValues ? 'true' : 'false'}
-          disabled={!state.environment.weather.waveLength[0]}
-          selectOnFocus
-        >
-          <IonSegmentButton value="false">
-            <IonLabel>{t('homePage.squat.calculations.shallow-water-values')}</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="true">
-            <IonLabel>{t('homePage.squat.calculations.deep-water-values')}</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-        <span className="printable segment-label">{t('homePage.squat.calculations.selected-calculation-method')}:</span>
-        <IonSegment
-          onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
-          value={state.status.showBarrass ? 'true' : 'false'}
-          className="top-padding"
-          disabled={getSquatValue() === ''}
-          selectOnFocus
-        >
-          <IonSegmentButton value="false">
-            <IonLabel>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="true">
-            <IonLabel>{t('homePage.squat.calculations.squat-barrass')}</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
+        <div className="printable top-padding">
+          <span className="printable segment-label">{t('homePage.squat.calculations.selected-water-values')}:</span>
+          <IonSegment
+            onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
+            value={state.status.showDeepWaterValues ? 'true' : 'false'}
+            disabled={!state.environment.weather.waveLength[0]}
+            selectOnFocus
+          >
+            <IonSegmentButton value="false">
+              <IonLabel>{t('homePage.squat.calculations.shallow-water-values')}</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="true">
+              <IonLabel>{t('homePage.squat.calculations.deep-water-values')}</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+          <span className="printable segment-label">{t('homePage.squat.calculations.selected-calculation-method')}:</span>
+          <IonSegment
+            onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
+            value={state.status.showBarrass ? 'true' : 'false'}
+            className="top-padding"
+            disabled={getSquatValue() === ''}
+            selectOnFocus
+          >
+            <IonSegmentButton value="false">
+              <IonLabel>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="true">
+              <IonLabel>{t('homePage.squat.calculations.squat-barrass')}</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+        </div>
 
         {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
         {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
