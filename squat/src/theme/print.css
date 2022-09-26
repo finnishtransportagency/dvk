@@ -40,6 +40,10 @@
     margin-top: 8px;
   }
 
+  ion-grid.danger {
+    display: none;
+  }
+
   ion-icon.section-validation {
     display: none;
   }
