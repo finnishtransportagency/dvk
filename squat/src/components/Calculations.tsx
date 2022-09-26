@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonText, IonItem, IonGrid, IonRow, IonCol, IonToggle, IonLabel } from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import {
@@ -273,10 +273,10 @@ const Calculations: React.FC = () => {
   ]);
 
   // Update status to state
-  const setStateStatus = (key: string, value: boolean) => {
+  const setStateStatus = (key: string, value: string | undefined) => {
     dispatch({
       type: 'status',
-      payload: { key: key, value: value, elType: 'boolean' },
+      payload: { key: key, value: value === 'true', elType: 'boolean' },
     });
   };
 
@@ -316,74 +316,35 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
 
-        <IonItem lines="none" className="only-label">
-          <IonGrid className="no-padding">
-            <IonRow className="ion-align-items-center">
-              <IonCol size="5">
-                <IonLabel color={state.status.showDeepWaterValues ? 'dark' : 'primary'} title={t('homePage.squat.calculations.shallow-water-values')}>
-                  {state.status.showDeepWaterValues ? (
-                    t('homePage.squat.calculations.shallow-water-values')
-                  ) : (
-                    <strong>{t('homePage.squat.calculations.shallow-water-values')}</strong>
-                  )}
-                </IonLabel>
-              </IonCol>
-              <IonCol size="2" className="ion-justify-content-center use-flex">
-                <IonToggle
-                  checked={state.status.showDeepWaterValues}
-                  onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.checked)}
-                  className="squat-toggle"
-                  disabled={!state.environment.weather.waveLength[0]}
-                />
-              </IonCol>
-              <IonCol size="5">
-                <IonLabel
-                  color={state.status.showDeepWaterValues ? 'primary' : 'dark'}
-                  className="align-right"
-                  title={t('homePage.squat.calculations.deep-water-values')}
-                >
-                  {state.status.showDeepWaterValues ? (
-                    <strong>{t('homePage.squat.calculations.deep-water-values')}</strong>
-                  ) : (
-                    t('homePage.squat.calculations.deep-water-values')
-                  )}
-                </IonLabel>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
-        <IonItem lines="none" className="only-label">
-          <IonGrid className="no-padding">
-            <IonRow className="ion-align-items-center">
-              <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'dark' : 'primary'}>
-                  {state.status.showBarrass ? (
-                    t('homePage.squat.calculations.squat-HG')
-                  ) : (
-                    <strong>{t('homePage.squat.calculations.squat-HG')}</strong>
-                  )}
-                </IonLabel>
-              </IonCol>
-              <IonCol size="2" className="ion-justify-content-center use-flex">
-                <IonToggle
-                  checked={state.status.showBarrass}
-                  onIonChange={(e) => setStateStatus('showBarrass', e.detail.checked)}
-                  className="squat-toggle"
-                  disabled={getSquatValue() === ''}
-                />
-              </IonCol>
-              <IonCol size="5">
-                <IonLabel color={state.status.showBarrass ? 'primary' : 'dark'} className="align-right">
-                  {state.status.showBarrass ? (
-                    <strong>{t('homePage.squat.calculations.squat-barrass')}</strong>
-                  ) : (
-                    t('homePage.squat.calculations.squat-barrass')
-                  )}
-                </IonLabel>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonItem>
+        <span className="printable segment-label">{t('homePage.squat.calculations.selected-water-values')}:</span>
+        <IonSegment
+          onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
+          value={state.status.showDeepWaterValues ? 'true' : 'false'}
+          disabled={!state.environment.weather.waveLength[0]}
+          selectOnFocus
+        >
+          <IonSegmentButton value="false">
+            <IonLabel>{t('homePage.squat.calculations.shallow-water-values')}</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="true">
+            <IonLabel>{t('homePage.squat.calculations.deep-water-values')}</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
+        <span className="printable segment-label">{t('homePage.squat.calculations.selected-calculation-method')}:</span>
+        <IonSegment
+          onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
+          value={state.status.showBarrass ? 'true' : 'false'}
+          className="top-padding"
+          disabled={getSquatValue() === ''}
+          selectOnFocus
+        >
+          <IonSegmentButton value="false">
+            <IonLabel>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="true">
+            <IonLabel>{t('homePage.squat.calculations.squat-barrass')}</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
 
         {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
         {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
