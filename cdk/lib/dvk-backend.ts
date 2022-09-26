@@ -173,6 +173,8 @@ export class DvkBackendStack extends Stack {
       return 'DvkDev-VPC';
     } else if (env === 'test') {
       return 'DvkTest-VPC';
+    } else if (env === 'prod') {
+      return 'DVKProd-VPC';
     } else {
       return 'Default-VPC';
     }
