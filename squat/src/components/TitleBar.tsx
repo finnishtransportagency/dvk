@@ -78,6 +78,7 @@ const TitleBar: React.FC = () => {
                   onClick={() => window.print()}
                   title={t('homePage.header.print')}
                   aria-label={t('homePage.header.print')}
+                  role="button"
                 >
                   <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
                 </IonButton>

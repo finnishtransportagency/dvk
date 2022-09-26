@@ -34,6 +34,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
               aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((props.value || 0).toLocaleString(i18n.language)),
               })}
+              role="definition"
             >
               &nbsp;{props.unit}
             </span>

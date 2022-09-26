@@ -72,7 +72,7 @@ const InputField: React.FC<InputProps> = (props) => {
     if (props.min !== undefined)
       helper = (
         <>
-          <span aria-label={t('common.minimum-value')}>
+          <span aria-label={t('common.minimum-value')} role="definition">
             {Number(props.min).toLocaleString(i18n.language, {
               minimumFractionDigits: countDecimals(Number(props.step)),
               maximumFractionDigits: countDecimals(Number(props.step)),
@@ -85,7 +85,7 @@ const InputField: React.FC<InputProps> = (props) => {
       helper = (
         <>
           {helper}
-          <span aria-label={t('common.maximum-value')}>
+          <span aria-label={t('common.maximum-value')} role="definition">
             {Number(props.max).toLocaleString(i18n.language, {
               minimumFractionDigits: countDecimals(Number(props.step)),
               maximumFractionDigits: countDecimals(Number(props.step)),
@@ -101,6 +101,7 @@ const InputField: React.FC<InputProps> = (props) => {
             aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
               count: Number((value || 0).toLocaleString(i18n.language)),
             })}
+            role="definition"
           >
             &nbsp;{props.unit}
           </span>
@@ -111,14 +112,22 @@ const InputField: React.FC<InputProps> = (props) => {
   const getErrorText = () => {
     if (value) {
       if (props.min !== undefined && value < props.min) {
-        const unit = <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })}>{props.unit}</span>;
+        const unit = (
+          <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })} role="definition">
+            {props.unit}
+          </span>
+        );
         return (
           <span>
             {t('common.value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
           </span>
         );
       } else if (props.max !== undefined && value > props.max) {
-        const unit = <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })}>{props.unit}</span>;
+        const unit = (
+          <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })} role="definition">
+            {props.unit}
+          </span>
+        );
         return (
           <span>
             {t('common.value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) })}&nbsp;{unit}
@@ -158,6 +167,7 @@ const InputField: React.FC<InputProps> = (props) => {
               aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((value || 0).toLocaleString(i18n.language)),
               })}
+              role="definition"
             >
               {props.unit}
             </span>
