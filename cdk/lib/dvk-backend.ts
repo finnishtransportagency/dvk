@@ -40,7 +40,7 @@ export class DvkBackendStack extends Stack {
     if (Config.isPermanentEnvironment()) {
       new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
     }
-    const fairwayCardTable = this.createFairwayCardTable(env);
+    const fairwayCardTable = this.createFairwayCardTable();
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -50,7 +50,7 @@ export class DvkBackendStack extends Stack {
         entry: lambdaFunc.entry,
         handler: 'handler',
         environment: {
-          FAIRWAY_CARD_TABLE: fairwayCardTable.tableName,
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -67,7 +67,7 @@ export class DvkBackendStack extends Stack {
       }
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env);
+    const alb = this.createALB(env, fairwayCardTable);
     new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
       value: alb.loadBalancerDnsName || '',
       exportName: 'LoadBalancerDnsName' + env,
@@ -82,10 +82,10 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createFairwayCardTable(env: string): Table {
+  private createFairwayCardTable(): Table {
     const table = new Table(this, 'FairwayCardTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
-      tableName: `FairwayCard-${env}`,
+      tableName: Config.getFairwayCardTableName(),
       partitionKey: {
         name: 'id',
         type: AttributeType.STRING,
@@ -107,7 +107,7 @@ export class DvkBackendStack extends Stack {
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
-  private createALB(env: string): ApplicationLoadBalancer {
+  private createALB(env: string, fairwayCardTable: Table): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     let securityGroup: SecurityGroup | undefined = undefined;
     if (!Config.isPermanentEnvironment()) {
@@ -130,7 +130,6 @@ export class DvkBackendStack extends Stack {
       defaultAction: ListenerAction.fixedResponse(404),
       open: Config.isPermanentEnvironment(),
     });
-    let index = 1;
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
       functionName: `cors-${env}`.toLocaleLowerCase(),
@@ -144,7 +143,7 @@ export class DvkBackendStack extends Stack {
     });
     httpListener.addTargets('HTTPListenerTarget-CORS', {
       targets: [new LambdaTarget(corsLambda)],
-      priority: index++,
+      priority: 1,
       conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
     });
     for (const lambdaFunc of apiLambdaFunctions) {
@@ -156,14 +155,17 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+          ENVIRONMENT: Config.getEnvironment(),
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
       httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
         targets: [new LambdaTarget(backendLambda)],
-        priority: index++,
+        priority: lambdaFunc.priority,
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
+      fairwayCardTable.grantReadData(backendLambda);
     }
     return alb;
   }

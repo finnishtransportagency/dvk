@@ -20,6 +20,7 @@ import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
+import { addAPILayers } from './layers';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -185,6 +186,9 @@ const MapContainer: React.FC = () => {
     layers.forEach((layer) => {
       map.addLayer(layer);
     });
+
+    addAPILayers(map);
+
     setTimeout(() => {
       map.updateSize();
     }, 0);

@@ -25,6 +25,10 @@ class Config {
     throw new Error(Config.errorMessage('ENVIRONMENT'));
   }
 
+  static getFairwayCardTableName(): string {
+    return `FairwayCard-${Config.getEnvironment()}`;
+  }
+
   private static errorMessage(variable: string): string {
     return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
   }
