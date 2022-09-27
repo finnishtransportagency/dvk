@@ -98,14 +98,14 @@ export const isReliabilityAnIssue = (
   if (froudeNumber > 0.7) {
     return (
       <>
-        {t('homePage.squat.environment.reliability-issue-froude-number')} &gt;{' '}
+        {t('homePage.squat.environment.reliability-issue-froude-number')} F<sub>nh</sub> &gt;{' '}
         {(0.7).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
       </>
     );
   } else if (blockCoefficient < (showBarrass ? 0.4 : 0.6)) {
     return (
       <>
-        {t('homePage.squat.environment.reliability-issue-block-coefficient')} &lt;{' '}
+        {t('homePage.squat.environment.reliability-issue-block-coefficient')} C<sub>b</sub> &lt;{' '}
         {(showBarrass ? 0.4 : 0.6).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
         {!showBarrass && (
           <>
@@ -118,7 +118,7 @@ export const isReliabilityAnIssue = (
   } else if (blockCoefficient > (showBarrass ? 1 : 0.8)) {
     return (
       <>
-        {t('homePage.squat.environment.reliability-issue-block-coefficient')} &gt;{' '}
+        {t('homePage.squat.environment.reliability-issue-block-coefficient')} C<sub>b</sub> &gt;{' '}
         {(showBarrass ? 1 : 0.8).toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
         {!showBarrass && (
           <>
