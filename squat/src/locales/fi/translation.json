@@ -1,7 +1,7 @@
 {
   "homePage": {
     "header": {
-      "title": "Squat-laskenta",
+      "title": "Painumalaskenta (Squat)",
       "shareable-link-title": "Luo jaettava linkki",
       "shareable-link-body": "Alla näkyvää linkkiä voi käyttää laskentatulosten (ja/tai nykyisten arvojen) jakamiseen kenelle tahansa.",
       "copy-to-clipboard": "Kopioi leikepöydälle",
@@ -9,7 +9,7 @@
       "print": "Tulosta sivu"
     },
     "squat": {
-      "content": "Squat-laskenta",
+      "content": "Painumalaskenta (Squat)",
       "vessel": {
         "title": "Aluksen tiedot",
         "description": "Aluksen valinta ja lähtötiedot",
@@ -33,9 +33,12 @@
         "ferry": "Lautta-alus",
         "LNG-tanker": "LNG-säiliöalus",
         "stability": "Vakavuus",
-        "KG": "Aluksen painopisteen korkeus mallatun köliviivan yläpuolella",
-        "GM": "Aluksen vapailla nestepinnoilla korjattu vaihtokeskuskorkeus",
-        "KB": "Aluksen uppouman painopisteen korkeus kölistä",
+        "KG": "KG",
+        "KG-description": "Aluksen painopisteen korkeus mallatun köliviivan yläpuolella",
+        "GM": "GM",
+        "GM-description": "Aluksen vapailla nestepinnoilla korjattu vaihtokeskuskorkeus",
+        "KB": "KB",
+        "KB-description": "Aluksen uppouman painopisteen korkeus kölistä",
         "lengthBPP-breadth-ratio": "Pituus-leveyssuhde",
         "breadth-draught-ratio": "Leveys-syväyssuhde",
         "tug-use-recommended": "Hinaajan käyttö suositeltavaa",
@@ -77,14 +80,14 @@
         "required-UKC": "Kölivara",
         "safety-margin-wind-force": "Tuulien voimalaskennan varmuuskerroin",
         "clearance-for-other-motions": "Muu liikevara",
-        "reliability-issue-block-coefficient": "Aluksen muotokertoimen raja-arvo ylityy",
-        "reliability-issue-froude-number": "Frouden luvun raja-arvo ylittyy"
+        "reliability-issue-block-coefficient": "Aluksen muotokertoimen raja-arvo ylittyy;",
+        "reliability-issue-froude-number": "Frouden luvun raja-arvo ylittyy;"
       },
       "calculations": {
         "title": "Laskenta",
         "description": "Automaattisen laskennan tulokset",
         "info-title": "Laskentaan liittyvät valinnat",
-        "info-content": "Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska-Guliev (oletus) tai Barrass -kaavoja",
+        "info-content": "Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö painumalaskennassa Huuska/Guliev (oletus) vai Barrass -menetelmää",
         "selected-water-values": "Käytetty veden syvyysarvo",
         "selected-calculation-method": "Valittu laskentamenetelmä",
         "wind-force": "Tuulen voima",
@@ -94,10 +97,10 @@
         "bow-thruster-force": "Keulapotkurin suorituskyky",
         "remaining-safety-margin": "Käytettävissä oleva turvamarginaali",
         "minimum-external-force-required": "Vähimmäisvaatimus tarvittavalle ulkoiselle työntövoimalle",
-        "squat": "[fi] Squat",
-        "squat-HG": "Squat Huuska-Gulliev-laskenta",
-        "squat-barrass": "Squat Barrass-laskenta",
-        "show-barrass-value": "Näytä squat Barrass-laskennalla",
+        "squat": "Painuma (Squat)",
+        "squat-HG": "Huuska/Guliev",
+        "squat-barrass": "Barrass",
+        "show-barrass-value": "Näytä painuma Barrass-laskennalla",
         "heel-due-wind": "Tuulen aiheuttama kallistuma",
         "constant-heel-during-turn": "Käännöksen aiheuttama kallistuma",
         "corrected-draught": "Aluksen todellinen syväys",
@@ -110,26 +113,26 @@
         "vessel-motions-assumption-2": "Ainoastaan myötä ja vasta-aallokon vaikutukset on huomioitu laskennassa",
         "vessel-motions-assumption-3": "Aluksen syväyden ja vesisyvyyden suhde on noin 1,2",
         "UKC-straight-course": "Kölivara suoralla kurssilla",
-        "UKC-during-turn": "Kölivara kaarteessa",
-        "UKC-under-required-minimum": "Kölivara alittaa minumivaatimuksen",
-        "drift": "[fi] Drift",
+        "UKC-during-turn": "Kölivara käännöksessä",
+        "UKC-under-required-minimum": "Kölivara alittaa minimivaatimuksen",
+        "drift": "Sorto",
         "estimated-drift-angle": "Arvioitu sortokulma",
         "estimated-vessel-breadth-due-drift": "Aluksen arvioitu leveys sorto huomioiden",
         "insufficient-safety-margin": "Riittämätön turvamarginaali",
-        "external-force-required": "Ulkoinen työntövoima tarvitaan",
-        "HG-out-of-bounds-switch-to-barrass": "[fi] Huuska-Guliev-rajoituksen ylitys. Laskenta on kuitenkin mahdollista suorittaa Barrass-metodilla."
+        "external-force-required": "Ulkoista työntövoimaa tarvitaan",
+        "HG-out-of-bounds-switch-to-barrass": "Huuska/Guliev-rajoituksen ylitys. Laskenta on kuitenkin mahdollista suorittaa Barrass-menetelmällä."
       }
     },
     "squatChart": {
-      "heading": "Aluksen squat nopeuden funktiona",
-      "xAxisLabel": "Nopeus (kn)",
-      "yAxisLabel": "Squat (m)",
+      "heading": "Aluksen painuma nopeuden funktiona",
+      "xAxisLabel": "Nopeus (kts)",
+      "yAxisLabel": "Painuma (m)",
       "levels": {
         "bottom": "Pohja",
-        "underSweptDepth": "Haraustason alapuoleinen vesi",
+        "underSweptDepth": "Haraustason alapuolinen vesi",
         "netUKC": "Kölivara",
         "otherMovement": "Muu liikevara",
-        "squat": "Painaumavara"
+        "squat": "Painumavara"
       },
       "legends": {
         "squatHG20": "Huuska/Guliev C0 = 2,0: squat smax",
@@ -138,9 +141,9 @@
       }
     },
     "squatDataTable": {
-      "aluksen-nopeus-kn": "Aluksen nopeus v (kn)",
+      "aluksen-nopeus-kn": "Aluksen nopeus v (kts)",
       "aluksen-nopeus-ms": "Aluksen nopeus v (m/s)",
-      "froude-syvyysluku": "Froude syvyysluku F nh",
+      "froude-syvyysluku": "Frouden syvyysluku F nh",
       "squat-max": "{{kerroin}} Squat smax (m)"
     }
   },
@@ -188,7 +191,7 @@
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
-    "content": "Jatkaaksesi sovelluksen käyttämistä, se tulee päivittää.",
+    "content": "Jatkaaksesi sovelluksen käyttämistä se tulee päivittää.",
     "updateButton": {
       "label": "Päivitä"
     }
