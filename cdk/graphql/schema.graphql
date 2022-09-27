@@ -90,18 +90,23 @@ type Fairway {
   id: Int!
   name: Text
   primary: Boolean
-  length: Float
-  draft1: Float
-  draft2: Float
-  draft3: Float
   startText: String
   endText: String
-  lighting: Boolean
-  sizings: [Sizing!]
+  lighting: Text
+  type: Text
+  owner: String
+  area: Text
+  sizing: Sizing
+  classifications: [Classification!]
   sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
   areas: [Area!]
   geotiffImages: [String]
+}
+
+type Classification {
+  type: String
+  fairwayClass: String
 }
 
 type Area {
@@ -116,18 +121,15 @@ type Area {
 }
 
 type SizingVessel {
-  id: Int!
-  type: Int
+  type: String
   length: Float
   width: Float
   draft: Float
+  size: Float
+  bodyFactor: Float
 }
 
 type Sizing {
-  id: Int!
-  length: Float
-  width: Float
-  draft: Float
   normalTurningCircle: Float
   minimumTurningCircle: Float
   normalWidth: Float

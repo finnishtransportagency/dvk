@@ -1,11 +1,17 @@
-import { FairwayCard } from '../../../graphql/generated';
-import { FairwayService } from '../api/fairwayService';
-import FairwayCardDBModel from './fairwayCardDBModel';
-
-const fairwayService = new FairwayService();
+import { Fairway, FairwayCard } from '../../../graphql/generated';
+import FairwayCardDBModel, { FairwayDBModel } from './fairwayCardDBModel';
 
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return `#${dbModel.fairways?.map((f) => f.id).join('#')}#`;
+}
+
+function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
+  const fairway: Fairway = {
+    id: dbModel.id,
+    primary: dbModel.primary ?? false,
+  };
+  fairway.geotiffImages = dbModel.geotiffImages;
+  return fairway;
 }
 
 export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) {
@@ -35,7 +41,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
     fairwayIds: mapFairwayIds(dbModel),
   };
   for (const fairway of dbModel.fairways || []) {
-    card.fairways.push(fairwayService.mapDBModelToFairway(fairway));
+    card.fairways.push(mapFairwayDBModelToFairway(fairway));
   }
   return card;
 }
