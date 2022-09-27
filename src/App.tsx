@@ -45,14 +45,14 @@ const client = new ApolloClient({
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <SidebarMenu />
-      <IonRouterOutlet id="MainContent">
-        <Route exact path="/">
-          <ApolloProvider client={client}>
+      <ApolloProvider client={client}>
+        <SidebarMenu />
+        <IonRouterOutlet id="MainContent">
+          <Route exact path="/">
             <Home />
-          </ApolloProvider>
-        </Route>
-      </IonRouterOutlet>
+          </Route>
+        </IonRouterOutlet>
+      </ApolloProvider>
     </IonReactRouter>
   </IonApp>
 );
