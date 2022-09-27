@@ -17,11 +17,11 @@ ${SV_LANGUAGE_SELECTED_LABEL}    //ion-select[@value = "sv"]
 ${EN_LANGUAGE_SELECTED_LABEL}    //ion-select[@value = "en"]
 
 #Squat-calculator locators in Finnish language
-${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Squat-laskenta"]
+${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
 ${ALUKSEN_TIEDOT_HEADER}    //h2/strong[text() = "Aluksen tiedot"]
 ${YMPARISTO_HEADER}    //h2/strong[text() = "Ympäristö"]
 ${LASKENTA_HEADER}    //h2/strong[text() = "Laskenta"]
-${ALUKSEN_SQUAT_HEADER}    //h4[text() = "Aluksen squat nopeuden funktiona"]
+${ALUKSEN_SQUAT_HEADER}    //h4[text() = "Aluksen painuma nopeuden funktiona"]
 
 #General
 ${LENGTHBPP_INPUT}    //input[@name = "lengthBPP"]
@@ -113,13 +113,13 @@ Change Squat Calculator Language To
 	Page Should Contain Element    ${${language}_LANGUAGE_SELECTED_LABEL}
 
 Open Squat Calculator And Check Labels In Finnish
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Squat-laskenta
+	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
 	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Aluksen tiedot
 	Element Should Contain    ${YMPARISTO_HEADER}    Ympäristö
 	Scroll Element Into View    ${LASKENTA_HEADER}
 	Element Should Contain    ${LASKENTA_HEADER}    Laskenta
 	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen squat nopeuden funktiona
+	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
