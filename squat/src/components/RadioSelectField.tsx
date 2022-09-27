@@ -67,7 +67,12 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                 <IonLabel className="ion-text-wrap radio">
                   {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
-                  <IonRadio value={option} className={props.value === option ? 'radio-checked' : 'radio-unchecked'} />
+                  <IonRadio
+                    id={t(option.name, { lng: 'en' })}
+                    name={t(option.name, { lng: 'en' })}
+                    value={option}
+                    className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                  />
                 </IonLabel>
               </IonItem>
             </IonCol>

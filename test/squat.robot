@@ -41,7 +41,10 @@ ${WINDSURFACE_INPUT}    //input[@name = "windSurface"]
 ${DECKCARGO_INPUT}    //input[@name = "deckCargo"]
 ${BOWTHRUSTER_INPUT}    //input[@name = "bowThruster"]
 ${BOWTHRUSTEREFFICIENCY_INPUT}    //input[@name = "bowThrusterEfficiency"]
-${PROFILESELECTED_INPUT}    //input[@name = "profileSelected"]
+${BULKER_RADIO}    //ion-radio[@id="Bulker / Tanker"]
+${CONTAINER_RADIO}    //ion-radio[@id="Container"]
+${FERRY_RADIO}    //ion-radio[@id="Ferry"]
+${LNG_RADIO}    //ion-radio[@id="LNG Tanker"]
 
 #Fairway
 ${SWEPTDEPTH_INPUT}    //input[@name = "sweptDepth"]
@@ -139,7 +142,10 @@ Check Input Fields In Detailed Section
 	Page Should Contain Element    ${WINDSURFACE_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTER_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTEREFFICIENCY_INPUT}
-	Page Should Contain Element    ${PROFILESELECTED_INPUT}
+	Page Should Contain Element    ${BULKER_RADIO}
+	Page Should Contain Element    ${CONTAINER_RADIO}
+	Page Should Contain Element    ${FERRY_RADIO}
+	Page Should Contain Element    ${LNG_RADIO}
 
 Check Input Fields In Fairway Section
 	Page Should Contain Element    ${SWEPTDEPTH_INPUT}
