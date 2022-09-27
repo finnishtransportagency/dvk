@@ -43,12 +43,20 @@ function isDbOnly(): boolean {
   return process.argv.includes('--dbonly');
 }
 
+function getBucketName() {
+  if (Config.isProductionEnvironment()) {
+    return `geotiff.dvk.vaylapilvi.fi`;
+  } else {
+    return `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`;
+  }
+}
+
 function processGeoTiff(filepath: string, id: number, s3Outputs: Promise<PutObjectCommandOutput>[]): string {
   const i = filepath.lastIndexOf('/');
   const filename = filepath.substring(i + 1);
   const command = new PutObjectCommand({
     Key: `${id}/${filename}`,
-    Bucket: `geotiff.dvk${Config.getEnvironment()}.testivaylapilvi.fi`,
+    Bucket: getBucketName(),
     Body: fs.readFileSync(filepath),
   });
   if (!isDbOnly()) {
