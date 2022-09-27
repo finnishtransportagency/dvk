@@ -178,3 +178,10 @@ export const isUKCDuringTurnUnderRequired = (requiredUKC: number, UKCDuringTurn:
   // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), 5, 0)
   return UKCDuringTurn[showBarrass ? 0 : 1] < requiredUKC;
 };
+
+export const isSquatWithinSafetyLevels = (squat: number, sweptDepth: number, draught: number, waterDepth = 0, waterLevel = 0) => {
+  const effectiveSweptDepth = sweptDepth + waterLevel / 100 - draught;
+  const effectiveWaterDepth = waterDepth - draught;
+  const safeSquatDepth = effectiveSweptDepth > effectiveWaterDepth ? effectiveSweptDepth : effectiveWaterDepth;
+  return squat < safeSquatDepth;
+};

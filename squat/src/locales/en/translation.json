@@ -133,6 +133,12 @@
         "squatHG24": "[en] Huuska/Guliev C0 = 2,4: squat smax",
         "squatBarrass": "[en] Barrass: squat smax"
       }
+    },
+    "squatDataTable": {
+      "aluksen-nopeus-kn": "[en] Aluksen nopeus v (kn)",
+      "aluksen-nopeus-ms": "[en] Aluksen nopeus v (m/s)",
+      "froude-syvyysluku": "[en] Froude syvyysluku F nh",
+      "squat-max": "[en] {{kerroin}} Squat smax (m)"
     }
   },
   "common": {

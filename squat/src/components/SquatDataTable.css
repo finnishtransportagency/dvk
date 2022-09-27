@@ -1,0 +1,31 @@
+.dataTableGrid {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.dataTableRow {
+  flex-wrap: nowrap;
+}
+
+@media (min-width: 768px) {
+  .titleCol {
+    border-bottom: 1px solid lightgrey;
+  }
+  .dataCol {
+    border-left: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+  }
+}
+
+@media (max-width: 768px) {
+  .titleCol {
+    font-size: 10px;
+    border-bottom: 1px solid lightgrey;
+  }
+  .dataCol {
+    font-size: 10px;
+    border-left: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+  }
+}

@@ -126,7 +126,7 @@
       "yAxisLabel": "Squat (m)",
       "levels": {
         "bottom": "Pohja",
-        "underSweptDepth": "Haraustason alapuoleinen vesi"  ,
+        "underSweptDepth": "Haraustason alapuoleinen vesi",
         "netUKC": "Kölivara",
         "otherMovement": "Muu liikevara",
         "squat": "Painaumavara"
@@ -136,6 +136,12 @@
         "squatHG24": "Huuska/Guliev C0 = 2,4: squat smax",
         "squatBarrass": "Barrass: squat smax"
       }
+    },
+    "squatDataTable": {
+      "aluksen-nopeus-kn": "Aluksen nopeus v (kn)",
+      "aluksen-nopeus-ms": "Aluksen nopeus v (m/s)",
+      "froude-syvyysluku": "Froude syvyysluku F nh",
+      "squat-max": "{{kerroin}} Squat smax (m)"
     }
   },
   "common": {
