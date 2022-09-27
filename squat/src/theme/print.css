@@ -1,4 +1,4 @@
-@media print {
+@media print,screen {
   html {
     height: auto !important;
   }
@@ -9,7 +9,7 @@
     height: auto !important;
     max-height: none !important;
   }
-  
+
   ion-header, .titlebar {
     display: none;
   }
@@ -24,13 +24,34 @@
   ion-content::part(scroll) {
     position: static !important;
   }
+  ion-footer {
+    margin-top: 5px;
+  }
+  ion-footer::before {
+    display: none;
+  }
+  ion-footer.small ion-toolbar {
+    --min-height: 20px;
+  }
 
   ion-text {
     position: static !important;
   }
-  h2 {
+  ion-text h2 {
     margin: 0 !important;
-    font-size: 20px !important;
+    font-size: 16px;
+    line-height: 1;
+  }
+  ion-text h3 {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  ion-grid {
+    padding: 0;
+  }
+  ion-grid.divider {
+    min-height: 16px;
   }
 
   ion-grid.content > ion-row {
@@ -54,7 +75,10 @@
     max-width: calc(calc(3 / var(--ion-grid-columns, 12)) * 100%) !important;
     border: 1px solid var(--ion-color-light);
     border-width: 0 1px 1px 0;
-    padding-top: 1px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 52px;
   }
   ion-row.input-row > ion-col:nth-child(4n) {
     border-right-width: 0;
@@ -72,6 +96,16 @@
       border-right-width: 0;
     }
   }
+  ion-col ion-radio-group {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  ion-col ion-radio-group > ion-grid {
+    margin: 0;
+    display: flex;
+    align-items: flex-end;
+  }
 
   ion-item.item.only-label {
     --min-height: 20px;
@@ -79,7 +113,7 @@
   }
   ion-item.item.only-label ion-label {
     white-space: normal;
-    font-size: 14px;
+    font-size: 12px;
   }
   ion-item.item-interactive::part(native) {
     border: none !important;
@@ -96,13 +130,14 @@
     --padding-top: 0;
     --padding-bottom: 2px;
     display: grid;
+    font-size: 14px;
   }
   ion-note.input-helper, ion-note.input-error {
     display: none !important;
   }
   ion-label.unit {
     margin: 0;
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
 
   .native-input {
@@ -112,6 +147,7 @@
   ion-item.item-static {
     --min-height: 20px;
     --padding-bottom: 2px;
+    font-size: 14px;
   }
   ion-item.item-static::part(native) {
     --padding-start: 0;
@@ -142,7 +178,7 @@
   }
   ion-label.radio p {
     margin: 0 !important;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--ion-color-dark);
   }
 
@@ -158,7 +194,7 @@
     vertical-align: text-bottom;
   }
   .segment-label {
-    font-size: 14px;
+    font-size: 12px;
     display: inline-block !important;
     vertical-align: text-bottom;
     padding-right: 4px;
@@ -177,7 +213,7 @@
     display: none;
   }
   ion-segment-button ion-label {
-    font-size: 14px;
+    font-size: 12px;
   }
   ion-segment-button::part(native) {
     padding: 0;
@@ -198,11 +234,21 @@
     display: block;
   }
 
+  .squatChartTitle {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .dataTableRow {
+    font-size: 12px;
+  }
+
+  .pagebreak { page-break-after: always; break-after: always; }
+
   @media (orientation: portrait) {
-    .hide-portrait {display: none;}
-    .pagebreak { page-break-after: always; break-after: always; }
+    .hide-portrait {display: none !important;}
   }
   @media (orientation: landscape) {
-    .hide-landscape {display: none;}
+    .hide-landscape {display: none !important;}
   }
 }

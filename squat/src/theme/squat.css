@@ -236,6 +236,8 @@ ion-icon.medium {
 /* Segment buttons */
 ion-segment {
   background: none;
+  padding-bottom: 1px;
+  padding-right: 1px;
 }
 ion-segment-button {
   height: 34px;
