@@ -1,16 +1,16 @@
-import React, { ReactElement, useCallback } from 'react';
+import React, { ReactElement } from 'react';
 import { IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRadio, IonRadioGroup, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Modal from './Modal';
 
-type OptionType = {
+export type OptionType = {
   id: number;
   name: string;
   img?: string;
-  img2?: string;
   desc?: string;
+  opaque?: boolean;
 };
 
 interface RadioSelectProps {
@@ -40,23 +40,6 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
     });
   };
 
-  const getImageSrc = useCallback(
-    (option: OptionType) => {
-      if (props.value === option && option.img) {
-        return option.img;
-      }
-
-      if (props.value !== option && option.img2) {
-        return option.img2;
-      }
-
-      if (props.value !== option && option.img) {
-        return option.img;
-      }
-    },
-    [props]
-  );
-
   return (
     <IonRadioGroup value={props.value} name={props.name} onIonChange={(e) => updateAction(e, props.actionType)}>
       <IonItem lines="none" className="only-label">
@@ -82,7 +65,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
             <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '}>
               <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'}>
                 <IonLabel className="ion-text-wrap radio">
-                  {getImageSrc(option) && <IonImg src={getImageSrc(option)} />}
+                  {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
                   <IonRadio value={option} className={props.value === option ? 'radio-checked' : 'radio-unchecked'} />
                 </IonLabel>

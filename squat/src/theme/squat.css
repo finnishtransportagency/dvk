@@ -172,17 +172,20 @@ ion-note.input-helper {
   min-height: 19px;
 }
 
-ion-item.item-interactive.ion-invalid ion-note.input-error, ion-text.input-error {
+ion-item.item-interactive.ion-invalid ion-note.input-error,
+ion-text.input-error {
   display: flex;
   align-items: center;
 }
 
-ion-note.input-error ion-icon, ion-text.input-error ion-icon {
+ion-note.input-error ion-icon,
+ion-text.input-error ion-icon {
   padding-right: 4px;
   font-size: 14px;
 }
 
-.item-input.sc-ion-label-md-h, .item-input .sc-ion-label-md-h {
+.item-input.sc-ion-label-md-h,
+.item-input .sc-ion-label-md-h {
   max-width: none;
   margin-left: 0;
   overflow: visible;
@@ -201,13 +204,17 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-input[type=number] {
+input[type='number'] {
   -moz-appearance: textfield;
   appearance: none;
 }
 
-ion-item.item-radio-unchecked {
+ion-item.item-radio-unchecked > ion-label > ion-img {
   filter: grayscale(1);
+}
+
+ion-item.item-radio-unchecked > ion-label > ion-img.opaque {
+  filter: opacity(30%);
 }
 
 ion-radio.radio-checked.radio-unchecked::part(container) {
