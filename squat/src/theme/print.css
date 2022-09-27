@@ -155,11 +155,12 @@
     width: auto;
     margin-right: 30px;
     padding: 0 !important;
+    vertical-align: text-bottom;
   }
   .segment-label {
     font-size: 14px;
     display: inline-block !important;
-    vertical-align: text-top;
+    vertical-align: text-bottom;
     padding-right: 4px;
     line-height: 16px;
   }
