@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import { useTranslation } from 'react-i18next';
 import Home from './pages/Home';
 
 /* Core CSS required for Ionic components to work properly */
@@ -42,19 +43,50 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <ApolloProvider client={client}>
-        <SidebarMenu />
-        <IonRouterOutlet id="MainContent">
-          <Route exact path="/">
-            <Home />
-          </Route>
-        </IonRouterOutlet>
-      </ApolloProvider>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  const { t } = useTranslation();
+  const [showUpdateAlert] = useIonAlert();
+  const [updating, setUpdating] = useState(false);
+  const originalSW = navigator.serviceWorker?.controller;
+
+  useEffect(() => {
+    if (!updating) {
+      navigator.serviceWorker?.addEventListener('controllerchange', () => {
+        if (!updating && originalSW) {
+          showUpdateAlert({
+            backdropDismiss: false,
+            header: t('appUpdateAlert.title'),
+            message: t('appUpdateAlert.content'),
+            buttons: [
+              {
+                text: t('appUpdateAlert.updateButton.label'),
+                handler: () => {
+                  window.location.reload();
+                  return true;
+                },
+              },
+            ],
+          });
+          setUpdating(true);
+        }
+      });
+    }
+  }, [showUpdateAlert, updating, t, originalSW]);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <ApolloProvider client={client}>
+          <SidebarMenu />
+          <IonRouterOutlet id="MainContent">
+            <Route exact path="/">
+              <Home />
+            </Route>
+          </IonRouterOutlet>
+        </ApolloProvider>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
 
 export default App;

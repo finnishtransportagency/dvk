@@ -29,5 +29,12 @@
         }
       }
     }
+  },
+  "appUpdateAlert": {
+    "title": "[sv] Päivitys saatavilla",
+    "content": "[sv] Jatkaaksesi sovelluksen käyttämistä, se tulee päivittää.",
+    "updateButton": {
+      "label": "[sv] Päivitä"
+    }
   }
 }
