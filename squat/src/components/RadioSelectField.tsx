@@ -23,6 +23,7 @@ interface RadioSelectProps {
   translateOptions?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
+  infoContentSize?: 'medium' | 'large';
 }
 
 const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
@@ -55,7 +56,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
         </IonItem>
         {props.infoContent && props.infoContentTitle && (
           <IonLabel slot="end">
-            <Modal title={props.infoContentTitle} content={props.infoContent} />
+            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
           </IonLabel>
         )}
       </IonItem>
