@@ -4,6 +4,7 @@ import Modal from './Modal';
 
 interface LabelProps {
   title: string;
+  description?: string;
   required?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
@@ -13,7 +14,7 @@ const Label: React.FC<LabelProps> = (props) => {
   return (
     <IonItem lines="none" className="only-label">
       <IonItem lines="none" className="only-label no-padding">
-        <IonLabel color="dark" title={props.title}>
+        <IonLabel color="dark" title={props.description ? props.description : props.title}>
           {props.title}
         </IonLabel>
         {props.required && (
