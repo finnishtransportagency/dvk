@@ -27,7 +27,7 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'appUpdateAlert' });
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
@@ -44,11 +44,11 @@ const App: React.FC = () => {
         if (!updating && originalSW) {
           showUpdateAlert({
             backdropDismiss: false,
-            header: t('appUpdateAlert.title'),
-            message: t('appUpdateAlert.content'),
+            header: t('title'),
+            message: t('content'),
             buttons: [
               {
-                text: t('appUpdateAlert.updateButton.label'),
+                text: t('updateButton.label'),
                 handler: () => {
                   window.location.reload();
                   return true;

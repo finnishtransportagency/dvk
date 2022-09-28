@@ -17,7 +17,7 @@ interface LabelProps {
 }
 
 const LabelField: React.FC<LabelProps> = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'common' });
 
   return (
     <>
@@ -31,7 +31,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
         {props.unit && (
           <IonLabel color="medium" className="unit">
             <span
-              aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
+              aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((props.value || 0).toLocaleString(i18n.language)),
               })}
               role="definition"

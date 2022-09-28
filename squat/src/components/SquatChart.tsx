@@ -14,7 +14,7 @@ import './SquatChart.css';
 import SquatDataTable from './SquatDataTable';
 
 const SquatChart: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
   const ref = useRef<SVGSVGElement>(null);
   const { state } = useSquatContext();
   const [width, setWidth] = useState(1000);
@@ -191,7 +191,7 @@ const SquatChart: React.FC = () => {
           y: marginTop + yScale(yDomainWaterDepth),
           height: 20,
           fillColor: '#000000',
-          label: t('homePage.squatChart.levels.bottom'),
+          label: t('levels.bottom'),
           labelColor: '#ffffff',
         });
       }
@@ -201,7 +201,7 @@ const SquatChart: React.FC = () => {
           y: marginTop + yScale(yDomainSweptDepth),
           height: yScale(yDomainWaterDepth - yDomainSweptDepth),
           fillColor: '#ffcccc',
-          label: t('homePage.squatChart.levels.underSweptDepth'),
+          label: t('levels.underSweptDepth'),
           labelColor: '#000000',
         });
       }
@@ -213,7 +213,7 @@ const SquatChart: React.FC = () => {
           y: marginTop + yScale(yDomainUKCy),
           height: yScale(yDomainUKCh),
           fillColor: '#99ccff',
-          label: t('homePage.squatChart.levels.netUKC'),
+          label: t('levels.netUKC'),
           labelColor: '#000000',
         });
       }
@@ -225,7 +225,7 @@ const SquatChart: React.FC = () => {
           y: marginTop + yScale(yDomainOMy),
           height: yScale(yDomainOMh),
           fillColor: '#cc99ff',
-          label: t('homePage.squatChart.levels.otherMovement'),
+          label: t('levels.otherMovement'),
           labelColor: '#000000',
         });
       }
@@ -235,7 +235,7 @@ const SquatChart: React.FC = () => {
           y: marginTop,
           height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
           fillColor: '#ccffff',
-          label: t('homePage.squatChart.levels.squat'),
+          label: t('levels.squat'),
           labelColor: '#000000',
         });
       }
@@ -261,7 +261,7 @@ const SquatChart: React.FC = () => {
         .attr('text-anchor', 'middle')
         .attr('x', marginLeft + (width - marginLeft - marginRight) / 2)
         .attr('y', height - 20)
-        .text(`${t('homePage.squatChart.xAxisLabel')}`);
+        .text(`${t('xAxisLabel')}`);
 
       yAxisGenerator.tickFormat(d3.format('.1f'));
       const yAxis = container.append('g').call(yAxisGenerator);
@@ -273,7 +273,7 @@ const SquatChart: React.FC = () => {
         .attr('transform', 'rotate(-90)')
         .attr('x', -(marginTop + (height - marginTop - marginBottom) / 2))
         .attr('y', 20)
-        .text(`${t('homePage.squatChart.yAxisLabel')}`);
+        .text(`${t('yAxisLabel')}`);
 
       /* Add legends */
 
@@ -282,7 +282,7 @@ const SquatChart: React.FC = () => {
         legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG20Color);
         legend20
           .append('text')
-          .text(t('homePage.squatChart.legends.squatHG20'))
+          .text(t('legends.squatHG20'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
@@ -297,7 +297,7 @@ const SquatChart: React.FC = () => {
         legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG24Color);
         legend24
           .append('text')
-          .text(t('homePage.squatChart.legends.squatHG24'))
+          .text(t('legends.squatHG24'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
@@ -311,7 +311,7 @@ const SquatChart: React.FC = () => {
         legend.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatBarrassColor);
         legend
           .append('text')
-          .text(t('homePage.squatChart.legends.squatBarrass'))
+          .text(t('legends.squatBarrass'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
@@ -401,7 +401,7 @@ const SquatChart: React.FC = () => {
     <IonGrid>
       <IonRow>
         <IonCol>
-          <h4 className="squatChartTitle">{t('homePage.squatChart.heading')}</h4>
+          <h4 className="squatChartTitle">{t('heading')}</h4>
           <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
         </IonCol>
       </IonRow>

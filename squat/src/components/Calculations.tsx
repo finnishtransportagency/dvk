@@ -41,7 +41,7 @@ import {
 import Modal from './Modal';
 
 const Calculations: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
 
   // Validations
@@ -298,8 +298,7 @@ const Calculations: React.FC = () => {
     return isNaN(currentValue) ? '' : currentValue;
   };
   const printSquatHelper = () => {
-    if (getSquatValue() !== '')
-      return '(' + (state.status.showBarrass ? t('homePage.squat.calculations.squat-barrass') : t('homePage.squat.calculations.squat-HG')) + ')';
+    if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
     return '';
   };
 
@@ -308,16 +307,16 @@ const Calculations: React.FC = () => {
       <div className="pagebreak"></div>
       <IonText color="dark" className="equal-margin-top">
         <h2>
-          <strong>{t('homePage.squat.calculations.title')}</strong>
-          <Modal title={t('homePage.squat.calculations.info-title')} content={<p>{t('homePage.squat.calculations.info-content')}</p>} />
+          <strong>{t('title')}</strong>
+          <Modal title={t('info-title')} content={<p>{t('info-content')}</p>} />
         </h2>
       </IonText>
 
       <>
-        {checkIsUKCUnderMinimum() && <Alert title={t('homePage.squat.calculations.UKC-under-required-minimum')} />}
+        {checkIsUKCUnderMinimum() && <Alert title={t('UKC-under-required-minimum')} />}
 
         <div className="in-print top-padding">
-          <span className="printable segment-label">{t('homePage.squat.calculations.selected-water-values')}:</span>
+          <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
             onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
@@ -325,13 +324,13 @@ const Calculations: React.FC = () => {
             selectOnFocus
           >
             <IonSegmentButton value="false">
-              <IonLabel>{t('homePage.squat.calculations.shallow-water-values')}</IonLabel>
+              <IonLabel>{t('shallow-water-values')}</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="true">
-              <IonLabel>{t('homePage.squat.calculations.deep-water-values')}</IonLabel>
+              <IonLabel>{t('deep-water-values')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-          <span className="printable segment-label">{t('homePage.squat.calculations.selected-calculation-method')}:</span>
+          <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
             onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
             value={state.status.showBarrass ? 'true' : 'false'}
@@ -340,10 +339,10 @@ const Calculations: React.FC = () => {
             selectOnFocus
           >
             <IonSegmentButton value="false">
-              <IonLabel>{t('homePage.squat.calculations.squat-HG')}</IonLabel>
+              <IonLabel>{t('squat-HG')}</IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="true">
-              <IonLabel>{t('homePage.squat.calculations.squat-barrass')}</IonLabel>
+              <IonLabel>{t('squat-barrass')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
         </div>
@@ -362,12 +361,12 @@ const Calculations: React.FC = () => {
           />
         )}
 
-        <SectionTitle title={t('homePage.squat.calculations.squat')} hideValidity />
+        <SectionTitle title={t('squat')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.heel-due-wind')}
+                title={t('heel-due-wind')}
                 value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
@@ -377,7 +376,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.constant-heel-during-turn')}
+                title={t('constant-heel-during-turn')}
                 value={
                   isNaN(state.calculations.squat.constantHeelDuringTurn)
                     ? ''
@@ -390,7 +389,7 @@ const Calculations: React.FC = () => {
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.corrected-draught')}
+                title={t('corrected-draught')}
                 value={
                   isNaN(state.calculations.squat.correctedDraught)
                     ? ''
@@ -401,7 +400,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.corrected-draught-during-turn')}
+                title={t('corrected-draught-during-turn')}
                 value={
                   isNaN(state.calculations.squat.correctedDraughtDuringTurn)
                     ? ''
@@ -413,7 +412,7 @@ const Calculations: React.FC = () => {
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.UKC-vessel-motions')}
+                title={t('UKC-vessel-motions')}
                 value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
                 unit="m"
                 error={
@@ -422,17 +421,17 @@ const Calculations: React.FC = () => {
                     state.calculations.squat.UKCVesselMotions,
                     state.status.showBarrass
                   )
-                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    ? t('UKC-under-required-minimum')
                     : ''
                 }
-                infoContentTitle={t('homePage.squat.calculations.vessel-motions-assumptions')}
+                infoContentTitle={t('vessel-motions-assumptions')}
                 infoContent={
                   <>
-                    <p>{t('homePage.squat.calculations.vessel-motions-assumptions')}:</p>
+                    <p>{t('vessel-motions-assumptions')}:</p>
                     <ul>
-                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-1')}</li>
-                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-2')}</li>
-                      <li>{t('homePage.squat.calculations.vessel-motions-assumption-3')}</li>
+                      <li>{t('vessel-motions-assumption-1')}</li>
+                      <li>{t('vessel-motions-assumption-2')}</li>
+                      <li>{t('vessel-motions-assumption-3')}</li>
                     </ul>
                   </>
                 }
@@ -440,7 +439,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.UKC-straight-course')}
+                title={t('UKC-straight-course')}
                 value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
@@ -451,7 +450,7 @@ const Calculations: React.FC = () => {
                     state.calculations.squat.UKCStraightCourse,
                     state.status.showBarrass
                   )
-                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    ? t('UKC-under-required-minimum')
                     : ''
                 }
               />
@@ -459,7 +458,7 @@ const Calculations: React.FC = () => {
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.UKC-during-turn')}
+                title={t('UKC-during-turn')}
                 value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
@@ -470,14 +469,14 @@ const Calculations: React.FC = () => {
                     state.calculations.squat.UKCDuringTurn,
                     state.status.showBarrass
                   )
-                    ? t('homePage.squat.calculations.UKC-under-required-minimum')
+                    ? t('UKC-under-required-minimum')
                     : ''
                 }
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.squat') + ', ' + t(state.environment.fairway.fairwayForm?.name)}
+                title={t('squat') + ', ' + t(state.environment.fairway.fairwayForm?.name)}
                 value={getSquatValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
@@ -492,28 +491,24 @@ const Calculations: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <SectionTitle title={t('homePage.squat.calculations.wind-force')} hideValidity />
+        <SectionTitle title={t('wind-force')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.relative-wind-direction')}
+                title={t('relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="°"
                 unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('homePage.squat.calculations.relative-wind-speed')}
-                value={Math.round(state.calculations.forces.relativeWindSpeed)}
-                unit="m/s"
-              />
+              <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
             </IonCol>
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.wind-force')}
+                title={t('wind-force')}
                 value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
                   maximumFractionDigits: 1,
                 })}
@@ -522,7 +517,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.wave-force')}
+                title={t('wave-force')}
                 value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
                   maximumFractionDigits: 1,
                 })}
@@ -532,14 +527,14 @@ const Calculations: React.FC = () => {
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.bow-thruster-force')}
+                title={t('bow-thruster-force')}
                 value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
                 unit="mt"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.remaining-safety-margin')}
+                title={t('remaining-safety-margin')}
                 value={(isNaN(state.calculations.forces.remainingSafetyMargin)
                   ? ''
                   : state.calculations.forces.remainingSafetyMargin * 100
@@ -547,7 +542,7 @@ const Calculations: React.FC = () => {
                 unit="%"
                 error={
                   isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin)
-                    ? t('homePage.squat.calculations.insufficient-safety-margin')
+                    ? t('insufficient-safety-margin')
                     : ''
                 }
               />
@@ -555,17 +550,13 @@ const Calculations: React.FC = () => {
 
             <IonCol size="12" sizeSm="6" sizeLg="12">
               <LabelField
-                title={t('homePage.squat.calculations.minimum-external-force-required')}
+                title={t('minimum-external-force-required')}
                 value={
                   state.calculations.forces.externalForceRequired > 0
                     ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
                     : '-'
                 }
-                error={
-                  isExternalForceRequired(state.calculations.forces.externalForceRequired)
-                    ? t('homePage.squat.calculations.external-force-required')
-                    : ''
-                }
+                error={isExternalForceRequired(state.calculations.forces.externalForceRequired) ? t('external-force-required') : ''}
               />
             </IonCol>
             <IonCol size="6"></IonCol>
@@ -576,28 +567,24 @@ const Calculations: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <SectionTitle title={t('homePage.squat.calculations.drift')} hideValidity />
+        <SectionTitle title={t('drift')} hideValidity />
         <IonGrid className="no-padding">
           <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.relative-wind-direction')}
+                title={t('relative-wind-direction')}
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="°"
                 unitId="deg"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('homePage.squat.calculations.relative-wind-speed')}
-                value={Math.round(state.calculations.forces.relativeWindSpeed)}
-                unit="m/s"
-              />
+              <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
             </IonCol>
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.estimated-drift-angle')}
+                title={t('estimated-drift-angle')}
                 value={(isFinite(state.calculations.forces.estimatedDriftAngle)
                   ? toDeg(state.calculations.forces.estimatedDriftAngle)
                   : ''
@@ -608,7 +595,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('homePage.squat.calculations.estimated-vessel-breadth-due-drift')}
+                title={t('estimated-vessel-breadth-due-drift')}
                 value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
                 unit="m"
               />
