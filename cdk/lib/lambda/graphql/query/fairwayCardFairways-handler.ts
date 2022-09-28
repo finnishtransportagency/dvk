@@ -2,7 +2,7 @@ import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Fairway, FairwayCard, QueryFairwayCardArgs } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import axios from 'axios';
-import { getVatuPassword, getVatuUrl, getVatuUsername } from '../../environment';
+import { getVatuHeaders, getVatuUrl } from '../../environment';
 
 type MitoitusAlusAPIModel = {
   alustyyppi: string;
@@ -104,10 +104,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   const fairwayIds = event.source.fairways.map((f) => f.id);
   log.debug(`fairwayIds: ${fairwayIds}`);
   const response = await axios.get(`${await getVatuUrl()}/vaylat?jnro=${fairwayIds.join(',')}`, {
-    headers: {
-      Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),
-      'Content-type': 'application/json',
-    },
+    headers: await getVatuHeaders(),
   });
   const fairways = response.data as VaylaAPIModel[];
   return fairways.map((apiFairway) => {
