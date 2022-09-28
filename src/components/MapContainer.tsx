@@ -23,14 +23,14 @@ import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
 
 const MapContainer: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
 
   const [mapInitialized, initializeMap] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const layerControl = new LayerPopupControl({
     label: '',
-    tipLabel: t('homePage.map.controls.layer.tipLabel'),
+    tipLabel: t('layer.tipLabel'),
     setIsOpen: setIsOpen,
   });
   const layerControlRef = useRef<LayerPopupControl>(layerControl);
@@ -88,20 +88,20 @@ const MapContainer: React.FC = () => {
     let zoomControl = new Zoom({
       zoomInLabel: '',
       zoomOutLabel: '',
-      zoomInTipLabel: t('homePage.map.controls.zoom.zoomInTipLabel'),
-      zoomOutTipLabel: t('homePage.map.controls.zoom.zoomOutTipLabel'),
+      zoomInTipLabel: t('zoom.zoomInTipLabel'),
+      zoomOutTipLabel: t('zoom.zoomOutTipLabel'),
     });
 
     map.addControl(zoomControl);
 
     let centerToOwnLocationControl = new CenterToOwnLocationControl({
       label: '',
-      tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
+      tipLabel: t('ownLocation.tipLabel'),
     });
 
     let openSidebarMenuControl = new OpenSidebarMenuControl({
       label: '',
-      tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
+      tipLabel: t('openMenu.tipLabel'),
     });
 
     map.addControl(centerToOwnLocationControl);
@@ -113,29 +113,29 @@ const MapContainer: React.FC = () => {
       zoomControl = new Zoom({
         zoomInLabel: '',
         zoomOutLabel: '',
-        zoomInTipLabel: t('homePage.map.controls.zoom.zoomInTipLabel'),
-        zoomOutTipLabel: t('homePage.map.controls.zoom.zoomOutTipLabel'),
+        zoomInTipLabel: t('zoom.zoomInTipLabel'),
+        zoomOutTipLabel: t('zoom.zoomOutTipLabel'),
       });
       map.addControl(zoomControl);
 
       map.removeControl(centerToOwnLocationControl);
       centerToOwnLocationControl = new CenterToOwnLocationControl({
         label: '',
-        tipLabel: t('homePage.map.controls.ownLocation.tipLabel'),
+        tipLabel: t('ownLocation.tipLabel'),
       });
       map.addControl(centerToOwnLocationControl);
 
       map.removeControl(openSidebarMenuControl);
       openSidebarMenuControl = new OpenSidebarMenuControl({
         label: '',
-        tipLabel: t('homePage.map.controls.openMenu.tipLabel'),
+        tipLabel: t('openMenu.tipLabel'),
       });
       map.addControl(openSidebarMenuControl);
 
       map.removeControl(layerControlRef.current);
       layerControlRef.current = new LayerPopupControl({
         label: '',
-        tipLabel: t('homePage.map.controls.layer.tipLabel'),
+        tipLabel: t('layer.tipLabel'),
         setIsOpen: setIsOpen,
       });
       map.addControl(layerControlRef.current);
