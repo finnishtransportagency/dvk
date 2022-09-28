@@ -261,6 +261,7 @@ const Environment: React.FC = () => {
                 required
                 translateOptions
                 infoContentTitle={t('homePage.squat.environment.form-of-fairway-info-title')}
+                infoContentSize="large"
                 infoContent={
                   <>
                     <p>{t('homePage.squat.environment.form-of-fairway-info-content')}</p>

@@ -52,6 +52,9 @@ ion-row.input-row > ion-col {
 .top-padding.in-print {
   padding-top: 0;
 }
+.bottom-padding {
+  padding-bottom: 10px;
+}
 
 .small-text {
   font-size: 14px;
@@ -251,10 +254,12 @@ ion-segment-button {
   min-height: auto;
   flex-basis: 50%;
 }
-ion-segment-button:first-child, ion-segment-button:first-child::part(native) {
+ion-segment-button:first-child,
+ion-segment-button:first-child::part(native) {
   border-radius: 20px 0 0 20px;
 }
-ion-segment-button:last-child, ion-segment-button:last-child::part(native) {
+ion-segment-button:last-child,
+ion-segment-button:last-child::part(native) {
   border-radius: 0 20px 20px 0;
 }
 ion-segment-button ion-label {
@@ -303,7 +308,6 @@ ion-segment-button:focus::part(indicator-background) {
   border: 2px solid var(--ion-color-tertiary);
 }
 
-
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;
@@ -315,7 +319,56 @@ ion-footer.small ion-toolbar {
   background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
 }
 
+ion-modal ion-content {
+  --padding-start: 28px;
+  --padding-end: 28px;
+}
+
+@media (min-width: 768px) {
+  ion-modal.medium {
+    --height: 350px;
+    --width: 600px;
+  }
+  ion-modal.large {
+    --max-height: 600px;
+    --min-height: 350px;
+    --width: 768px;
+  }
+}
+@media (max-width: 768px) {
+  ion-modal {
+    --height: 100%;
+    --width: 100%;
+  }
+}
+
+ion-modal ion-header.header-md::after {
+  content: none;
+}
+
+ion-modal ion-footer.footer-md::before {
+  content: none;
+}
+
 ion-modal ion-header ion-title {
   font-size: 24px;
   font-weight: bold;
+  padding-inline: 28px;
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+ion-modal ion-content {
+  height: fit-content;
+}
+
+ion-modal ion-footer ion-toolbar.buttonBar {
+  --min-height: 60px;
+}
+
+ion-modal ion-footer ion-toolbar.buttonBar ion-button {
+  height: 48px;
+  width: 175px;
+  margin-right: 28px;
+  margin-bottom: 28px;
 }
