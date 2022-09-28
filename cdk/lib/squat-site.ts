@@ -163,12 +163,6 @@ export class SquatSite extends Construct {
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      functionAssociations: [
-        {
-          function: authFunction,
-          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-        },
-      ],
     };
 
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
