@@ -10,6 +10,7 @@ import { countDecimals } from '../utils/helpers';
 
 interface InputProps {
   title: string;
+  description?: string;
   name: string;
   value: number | string | null;
   required?: boolean;
@@ -144,7 +145,13 @@ const InputField: React.FC<InputProps> = (props) => {
 
   return (
     <>
-      <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
+      <Label
+        title={props.title}
+        description={props.description}
+        required={props.required}
+        infoContentTitle={props.infoContentTitle}
+        infoContent={props.infoContent}
+      />
 
       <IonItem fill="outline" className={props.fieldClass + ' input-item'}>
         <IonInput
