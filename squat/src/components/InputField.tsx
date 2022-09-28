@@ -28,7 +28,7 @@ interface InputProps {
 }
 
 const InputField: React.FC<InputProps> = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'common' });
   const { dispatch } = useSquatContext();
   const [value, setValue] = useState<string | number | null>(props.value);
 
@@ -73,7 +73,7 @@ const InputField: React.FC<InputProps> = (props) => {
     if (props.min !== undefined)
       helper = (
         <>
-          <span aria-label={t('common.minimum-value')} role="definition">
+          <span aria-label={t('minimum-value')} role="definition">
             {Number(props.min).toLocaleString(i18n.language, {
               minimumFractionDigits: countDecimals(Number(props.step)),
               maximumFractionDigits: countDecimals(Number(props.step)),
@@ -86,7 +86,7 @@ const InputField: React.FC<InputProps> = (props) => {
       helper = (
         <>
           {helper}
-          <span aria-label={t('common.maximum-value')} role="definition">
+          <span aria-label={t('maximum-value')} role="definition">
             {Number(props.max).toLocaleString(i18n.language, {
               minimumFractionDigits: countDecimals(Number(props.step)),
               maximumFractionDigits: countDecimals(Number(props.step)),
@@ -99,7 +99,7 @@ const InputField: React.FC<InputProps> = (props) => {
         <>
           {helper}
           <span
-            aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
+            aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
               count: Number((value || 0).toLocaleString(i18n.language)),
             })}
             role="definition"
@@ -114,33 +114,33 @@ const InputField: React.FC<InputProps> = (props) => {
     if (value) {
       if (props.min !== undefined && value < props.min) {
         const unit = (
-          <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })} role="definition">
+          <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })} role="definition">
             {props.unit}
           </span>
         );
         return (
           <span>
-            {t('common.value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
+            {t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
           </span>
         );
       } else if (props.max !== undefined && value > props.max) {
         const unit = (
-          <span aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })} role="definition">
+          <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })} role="definition">
             {props.unit}
           </span>
         );
         return (
           <span>
-            {t('common.value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) })}&nbsp;{unit}
+            {t('value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) })}&nbsp;{unit}
           </span>
         );
       } else if (countDecimals(Number(value)) > countDecimals(Number(props.step))) {
-        return t('common.maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
+        return t('maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
       } else {
-        return t('common.value-invalid');
+        return t('value-invalid');
       }
     }
-    return t('common.required');
+    return t('required');
   };
 
   return (
@@ -171,7 +171,7 @@ const InputField: React.FC<InputProps> = (props) => {
         {props.unit && (
           <IonLabel slot="end" color="medium" className="unit">
             <span
-              aria-label={t('common.unit.' + (props.unitId ? props.unitId : props.unit), {
+              aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((value || 0).toLocaleString(i18n.language)),
               })}
               role="definition"
@@ -184,7 +184,7 @@ const InputField: React.FC<InputProps> = (props) => {
           {props.helper ? props.helper : getHelperText()}
         </IonNote>
         <IonNote slot="error" className="input-error">
-          <IonIcon icon={alertCircleOutline} color="danger" aria-label={t('common.error')} />
+          <IonIcon icon={alertCircleOutline} color="danger" aria-label={t('error')} />
           {getErrorText()}
         </IonNote>
       </IonItem>

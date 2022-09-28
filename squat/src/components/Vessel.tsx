@@ -14,7 +14,7 @@ import RadioSelectField from './RadioSelectField';
 const zero = 0;
 
 const Vessel: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.vessel' });
   const { state, dispatch } = useSquatContext();
 
   useEffect(() => {
@@ -76,13 +76,13 @@ const Vessel: React.FC = () => {
     <>
       <IonText color="dark" className="equal-margin-top">
         <h2>
-          <strong>{t('homePage.squat.vessel.title')}</strong>
+          <strong>{t('title')}</strong>
         </h2>
       </IonText>
 
       <>
         {isTugUseRecommended(state.calculations.forces.bowThrusterForce, state.calculations.forces.externalForceRequired) && (
-          <Alert title={t('homePage.squat.vessel.tug-use-recommended')} />
+          <Alert title={t('tug-use-recommended')} />
         )}
         {isThrusterUnableToLiftBow(
           state.vessel.general.lengthBPP,
@@ -90,15 +90,15 @@ const Vessel: React.FC = () => {
           state.calculations.forces.bowThrusterForce,
           state.calculations.forces.windForce,
           state.calculations.forces.waveForce
-        ) && <Alert title={t('homePage.squat.vessel.thruster-unable-to-lift-bow')} />}
+        ) && <Alert title={t('thruster-unable-to-lift-bow')} />}
 
         {/*
-          <SectionTitle title={t('homePage.squat.vessel.select-vessel')} hideValidity />
+          <SectionTitle title={t('select-vessel')} hideValidity />
           <IonGrid className="no-padding">
             <IonRow>
               <IonCol size="12">
                 <SelectField
-                  title={t('homePage.squat.vessel.select-ship-name')}
+                  title={t('select-ship-name')}
                   name="vesselSelected"
                   value={state.vessel.vesselSelected}
                   options={vessels}
@@ -110,7 +110,7 @@ const Vessel: React.FC = () => {
         */}
 
         <SectionTitle
-          title={t('homePage.squat.vessel.general')}
+          title={t('general')}
           valid={
             isFieldValid('lengthBPP') &&
             isFieldValid('breadth') &&
@@ -123,7 +123,7 @@ const Vessel: React.FC = () => {
           <IonRow class="input-row">
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.length-BPP')}
+                title={t('length-BPP')}
                 name="lengthBPP"
                 value={state.vessel.general.lengthBPP ? state.vessel.general.lengthBPP : null}
                 required
@@ -138,7 +138,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.breadth')}
+                title={t('breadth')}
                 name="breadth"
                 value={state.vessel.general.breadth ? state.vessel.general.breadth : null}
                 required
@@ -153,7 +153,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.draught')}
+                title={t('draught')}
                 name="draught"
                 value={state.vessel.general.draught ? state.vessel.general.draught : null}
                 required
@@ -168,7 +168,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.block-coefficient')}
+                title={t('block-coefficient')}
                 name="blockCoefficient"
                 value={state.vessel.general.blockCoefficient}
                 required
@@ -182,7 +182,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.displacement')}
+                title={t('displacement')}
                 name="displacement"
                 value={state.vessel.general.displacement}
                 required
@@ -201,14 +201,14 @@ const Vessel: React.FC = () => {
         </IonGrid>
 
         <SectionTitle
-          title={t('homePage.squat.vessel.detailed')}
+          title={t('detailed')}
           valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
         />
         <IonGrid className="no-padding">
           <IonRow class="input-row">
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.total-lateral-wind-surface')}
+                title={t('total-lateral-wind-surface')}
                 name="windSurface"
                 value={state.vessel.detailed.windSurface ? state.vessel.detailed.windSurface : null}
                 placeholder="0"
@@ -222,7 +222,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.estimated-deck-cargo')}
+                title={t('estimated-deck-cargo')}
                 name="deckCargo"
                 value={state.vessel.detailed.deckCargo ? state.vessel.detailed.deckCargo : null}
                 placeholder="0"
@@ -236,7 +236,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.bow-thruster')}
+                title={t('bow-thruster')}
                 name="bowThruster"
                 value={state.vessel.detailed.bowThruster ? state.vessel.detailed.bowThruster : null}
                 placeholder="0"
@@ -249,7 +249,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.bow-thruster-efficiency')}
+                title={t('bow-thruster-efficiency')}
                 name="bowThrusterEfficiency"
                 value={state.vessel.detailed.bowThrusterEfficiency ? state.vessel.detailed.bowThrusterEfficiency : null}
                 placeholder="0"
@@ -262,7 +262,7 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="12">
               <RadioSelectField
-                title={t('homePage.squat.vessel.select-vessel-profile')}
+                title={t('select-vessel-profile')}
                 name="profileSelected"
                 value={state.vessel.detailed.profileSelected}
                 options={vesselProfiles}
@@ -277,12 +277,13 @@ const Vessel: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <SectionTitle title={t('homePage.squat.vessel.stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
+        <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
         <IonGrid className="no-padding">
           <IonRow class="input-row">
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.KG')}
+                title={t('KG')}
+                description={t('KG-description')}
                 name="KG"
                 value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -295,7 +296,8 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.GM')}
+                title={t('GM')}
+                description={t('GM-description')}
                 name="GM"
                 value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -308,7 +310,8 @@ const Vessel: React.FC = () => {
             </IonCol>
             <IonCol size="6">
               <InputField
-                title={t('homePage.squat.vessel.KB')}
+                title={t('KB')}
+                description={t('KB-description')}
                 name="KB"
                 value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}

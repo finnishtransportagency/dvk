@@ -12,7 +12,7 @@ interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'common' });
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -21,8 +21,8 @@ const Modal: React.FC<ModalProps> = (props) => {
         fill="clear"
         className="icon-only"
         onClick={() => setIsOpen(true)}
-        title={props.triggerTitle || t('common.more-info')}
-        aria-label={props.triggerTitle || t('common.more-info')}
+        title={props.triggerTitle || t('more-info')}
+        aria-label={props.triggerTitle || t('more-info')}
         role="button"
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
@@ -43,7 +43,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         <IonFooter>
           <IonToolbar className="buttonBar">
             <IonButton slot="end" size="large" onClick={() => setIsOpen(false)} shape="round">
-              {t('common.close')}
+              {t('close')}
             </IonButton>
           </IonToolbar>
         </IonFooter>

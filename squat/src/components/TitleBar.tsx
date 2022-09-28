@@ -7,7 +7,7 @@ import { copyToClipboard, createShareableLink } from '../utils/helpers';
 import { useSquatContext } from '../hooks/squatContext';
 
 const TitleBar: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('', { keyPrefix: 'homePage' });
   const { state } = useSquatContext();
 
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const TitleBar: React.FC = () => {
         <IonCol>
           <IonText color="dark" className="equal-margin-top">
             <h1>
-              <strong>{t('homePage.squat.content')}</strong>
+              <strong>{t('squat.content')}</strong>
             </h1>
           </IonText>
         </IonCol>
@@ -32,10 +32,10 @@ const TitleBar: React.FC = () => {
             <IonRow>
               <IonCol>
                 <Modal
-                  title={t('homePage.header.shareable-link-title')}
+                  title={t('header.shareable-link-title')}
                   content={
                     <>
-                      <p>{t('homePage.header.shareable-link-body')}</p>
+                      <p>{t('header.shareable-link-body')}</p>
                       <IonItem lines="none">
                         <IonItem fill="outline">
                           <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
@@ -45,7 +45,7 @@ const TitleBar: React.FC = () => {
                           className="icon-only"
                           onClick={() => handleCopyClick()}
                           id="hover-trigger_"
-                          title={t('homePage.header.copy-to-clipboard')}
+                          title={t('header.copy-to-clipboard')}
                           slot="end"
                         >
                           <IonIcon color="primary" slot="icon-only" icon={clipboardOutline} />
@@ -54,7 +54,7 @@ const TitleBar: React.FC = () => {
                       <IonToast
                         isOpen={showCopyToast}
                         onDidDismiss={() => setShowCopyToast(false)}
-                        message={t('homePage.header.copied-to-clipboard')}
+                        message={t('header.copied-to-clipboard')}
                         duration={2000}
                         position="middle"
                         icon={checkmarkCircleOutline}
@@ -62,7 +62,7 @@ const TitleBar: React.FC = () => {
                     </>
                   }
                   trigger={<IonIcon icon={shareSocialOutline} size="large" />}
-                  triggerTitle={t('homePage.header.shareable-link-title')}
+                  triggerTitle={t('header.shareable-link-title')}
                 />
               </IonCol>
               {/*<IonCol>
@@ -76,8 +76,8 @@ const TitleBar: React.FC = () => {
                   fill="clear"
                   className="icon-only"
                   onClick={() => window.print()}
-                  title={t('homePage.header.print')}
-                  aria-label={t('homePage.header.print')}
+                  title={t('header.print')}
+                  aria-label={t('header.print')}
                   role="button"
                 >
                   <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
