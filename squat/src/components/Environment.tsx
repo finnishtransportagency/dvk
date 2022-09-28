@@ -251,7 +251,7 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
               />
             </IonCol>
-            <IonCol>
+            <IonCol size="12">
               <RadioSelectField
                 title={t('homePage.squat.environment.form-of-fairway')}
                 name="fairwayForm"

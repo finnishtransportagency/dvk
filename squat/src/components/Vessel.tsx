@@ -8,8 +8,8 @@ import { calculateDisplacement, calculateKB } from '../utils/calculations';
 import SectionTitle from './SectionTitle';
 import InputField from './InputField';
 import Alert from './Alert';
-import SelectField from './SelectField';
 import { isThrusterUnableToLiftBow, isTugUseRecommended } from '../utils/validations';
+import RadioSelectField from './RadioSelectField';
 
 const zero = 0;
 
@@ -261,7 +261,7 @@ const Vessel: React.FC = () => {
               />
             </IonCol>
             <IonCol size="12">
-              <SelectField
+              <RadioSelectField
                 title={t('homePage.squat.vessel.select-vessel-profile')}
                 name="profileSelected"
                 value={state.vessel.detailed.profileSelected}

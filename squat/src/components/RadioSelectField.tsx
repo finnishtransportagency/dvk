@@ -5,11 +5,12 @@ import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Modal from './Modal';
 
-type OptionType = {
+export type OptionType = {
   id: number;
   name: string;
   img?: string;
   desc?: string;
+  opaque?: boolean;
 };
 
 interface RadioSelectProps {
@@ -64,9 +65,14 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
             <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '}>
               <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'}>
                 <IonLabel className="ion-text-wrap radio">
-                  {option.img && <IonImg src={option.img} />}
+                  {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
-                  <IonRadio value={option} className={props.value === option ? 'radio-checked' : 'radio-unchecked'} />
+                  <IonRadio
+                    id={t(option.name, { lng: 'en' })}
+                    name={t(option.name, { lng: 'en' })}
+                    value={option}
+                    className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                  />
                 </IonLabel>
               </IonItem>
             </IonCol>

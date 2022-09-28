@@ -43,10 +43,10 @@ export const vessels = [
   { id: 4, name: 'Row boat', lengthBPP: 4, breadth: 4, depth: 4 },
 ];
 export const vesselProfiles = [
-  { id: 1, name: 'homePage.squat.vessel.bulker' },
-  { id: 2, name: 'homePage.squat.vessel.container' },
-  { id: 3, name: 'homePage.squat.vessel.ferry' },
-  { id: 4, name: 'homePage.squat.vessel.LNG-tanker' },
+  { id: 1, name: 'homePage.squat.vessel.bulker', img: 'assets/tanker.svg', opaque: true },
+  { id: 2, name: 'homePage.squat.vessel.container', img: 'assets/container_ship.svg', opaque: true },
+  { id: 3, name: 'homePage.squat.vessel.ferry', img: 'assets/ferry.svg', opaque: true },
+  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: 'assets/lng_tanker.svg', opaque: true },
 ];
 export const fairwayForms = [
   {
