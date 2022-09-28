@@ -29,5 +29,12 @@
         }
       }
     }
+  },
+  "appUpdateAlert": {
+    "title": "Update available",
+    "content": "To continue using app you must update it.",
+    "updateButton": {
+      "label": "Update"
+    }
   }
 }
