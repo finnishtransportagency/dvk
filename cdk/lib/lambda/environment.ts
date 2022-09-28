@@ -42,7 +42,7 @@ function getSSMClient(): SSMClient {
   return euWestSSMClient;
 }
 
-async function readParametersByPath(path: string): Promise<Record<string, string>> {
+export async function readParametersByPath(path: string): Promise<Record<string, string>> {
   const variables: Record<string, string> = {};
   let nextToken;
   do {

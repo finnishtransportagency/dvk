@@ -2,14 +2,12 @@
 // eslint-disable-next-line import/named
 import { CloudFormationClient, DescribeStacksCommand, DescribeStacksCommandOutput } from '@aws-sdk/client-cloudformation';
 // eslint-disable-next-line import/named
-import { GetParametersByPathCommand, GetParametersByPathCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
-// eslint-disable-next-line import/named
 import { GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandOutput, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import * as fs from 'fs';
 import Config from '../lib/config';
+import { readParametersByPath } from '../lib/lambda/environment';
 
 const euWestCFClient = new CloudFormationClient({ region: 'eu-west-1' });
-const euWestSSMClient = new SSMClient({ region: 'eu-west-1' });
 const euWestSecretClient = new SecretsManagerClient({ region: 'eu-west-1' });
 
 type BackendStackOutputs = {
@@ -41,23 +39,6 @@ async function readBackendStackOutputs(): Promise<BackendStackOutputs> {
 
 async function readFrontendStackOutputs(): Promise<FrontendStackOutputs> {
   return (await readStackOutputsForRawStackName('SquatSiteStack-' + Config.getEnvironment())) as FrontendStackOutputs;
-}
-
-async function readParametersByPath(path: string): Promise<Record<string, string>> {
-  const variables: Record<string, string> = {};
-  let nextToken;
-  do {
-    const output: GetParametersByPathCommandOutput = await euWestSSMClient.send(
-      new GetParametersByPathCommand({ Path: path, WithDecryption: true, NextToken: nextToken })
-    );
-    output.Parameters?.forEach((param) => {
-      if (param.Name && param.Value) {
-        variables[param.Name.replace(path, '')] = param.Value;
-      }
-    });
-    nextToken = output.NextToken;
-  } while (nextToken);
-  return variables;
 }
 
 async function readSecrets(path: string, global = false): Promise<Record<string, string>> {

@@ -103,19 +103,16 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   });
   const fairwayIds = event.source.fairways.map((f) => f.id);
   log.debug(`fairwayIds: ${fairwayIds}`);
-  const response = await axios.get(`${getVatuUrl()}/vaylat?jnro=${fairwayIds.join(',')}`, {
+  const response = await axios.get(`${await getVatuUrl()}/vaylat?jnro=${fairwayIds.join(',')}`, {
     headers: {
-      Authorization: 'Basic ' + Buffer.from(`${getVatuUsername()}:${getVatuPassword()}`).toString('base64'),
+      Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),
       'Content-type': 'application/json',
     },
   });
-  for (const model of response.data as VaylaAPIModel[]) {
-    log.debug('Fairway: %o', model);
-  }
   const fairways = response.data as VaylaAPIModel[];
   return fairways.map((apiFairway) => {
     const fairway = fairwayMap.get(apiFairway.jnro);
-    log.debug('fairway: %o', fairway);
+    log.debug('Fairway %d: %o', apiFairway.jnro, apiFairway);
     return {
       ...mapAPIModelToFairway(apiFairway),
       ...fairway,
