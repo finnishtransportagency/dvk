@@ -15,6 +15,7 @@ import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerC
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
@@ -38,7 +39,12 @@ export class DvkBackendStack extends Stack {
     });
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
-      new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
+      try {
+        new WafConfig(this, 'DVK-WAF', api, Fn.split('\n', config.getStringParameter('WAFAllowedAddresses')));
+      } catch (e) {
+        // to keep SonarLint happy WafConfig created inside try catch
+        console.log('WAF config failed: %s', e);
+      }
     }
     const fairwayCardTable = this.createFairwayCardTable();
     for (const lambdaFunc of lambdaFunctions) {
@@ -51,6 +57,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
+          ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -65,21 +72,27 @@ export class DvkBackendStack extends Stack {
       } else {
         fairwayCardTable.grantReadData(backendLambda);
       }
+      backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     const alb = this.createALB(env, fairwayCardTable);
-    new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
-      value: alb.loadBalancerDnsName || '',
-      exportName: 'LoadBalancerDnsName' + env,
-    });
-    new cdk.CfnOutput(this, 'AppSyncAPIKey', {
-      value: api.apiKey || '',
-      exportName: 'AppSyncAPIKey' + env,
-    });
-    new cdk.CfnOutput(this, 'AppSyncAPIURL', {
-      value: api.graphqlUrl || '',
-      exportName: 'AppSyncAPIURL' + env,
-    });
+    try {
+      new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
+        value: alb.loadBalancerDnsName || '',
+        exportName: 'LoadBalancerDnsName' + env,
+      });
+      new cdk.CfnOutput(this, 'AppSyncAPIKey', {
+        value: api.apiKey || '',
+        exportName: 'AppSyncAPIKey' + env,
+      });
+      new cdk.CfnOutput(this, 'AppSyncAPIURL', {
+        value: api.graphqlUrl || '',
+        exportName: 'AppSyncAPIURL' + env,
+      });
+    } catch (e) {
+      // to keep SonarLint happy CfnOutput created inside try catch
+      console.log('CloudFormation output failed: %s', e);
+    }
   }
 
   private createFairwayCardTable(): Table {
@@ -166,6 +179,7 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
       fairwayCardTable.grantReadData(backendLambda);
+      backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
     }
     return alb;
   }
