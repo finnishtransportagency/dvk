@@ -34,8 +34,11 @@
         "LNG-tanker": "LNG Tanker",
         "stability": "Stability",
         "KG": "KG",
+        "KG-description": "Vertical distance (along the ship's centerline) between the keel and the centre of gravity",
         "GM": "GM",
+        "GM-description": "[en] Aluksen vapailla nestepinnoilla korjattu vaihtokeskuskorkeus",
         "KB": "KB",
+        "KB-description": "[en] Aluksen uppouman painopisteen korkeus kölistä",
         "lengthBPP-breadth-ratio": "Length-Breadth Ratio",
         "breadth-draught-ratio": "Breadth-Draught Ratio",
         "tug-use-recommended": "Tug Use Is Recommended",
@@ -84,7 +87,7 @@
         "title": "Calculations",
         "description": "Results of automatic calculations",
         "info-title": "Options for Calculations",
-        "info-content": "[en] Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska-Guliev (oletus) tai Barrass -kaavoja",
+        "info-content": "[en] Voit valita näytettäväksi matalan (oletus) tai syvän veden arvot. Voit valita myös käytetäänkö syväyslaskennassa Huuska/Guliev (oletus) tai Barrass -kaavoja",
         "selected-water-values": "Selected water values",
         "selected-calculation-method": "Selected calculation method",
         "wind-force": "Wind Force",
@@ -95,7 +98,7 @@
         "remaining-safety-margin": "Remaining Safety Margin",
         "minimum-external-force-required": "Minimum External Force Required",
         "squat": "Squat",
-        "squat-HG": "Huuska-Guliev",
+        "squat-HG": "Huuska/Guliev",
         "squat-barrass": "Barrass",
         "show-barrass-value": "Show Barrass Value",
         "heel-due-wind": "Heel Due Wind",
@@ -114,13 +117,13 @@
         "estimated-vessel-breadth-due-drift": "Estimated Vessel Breadth Due Drift",
         "insufficient-safety-margin": "Insufficient Safety Margin",
         "external-force-required": "External Force Required",
-        "HG-out-of-bounds-switch-to-barrass": "Huuska-Guliev Constraint Out of Bounds, Switch to Barrass"
+        "HG-out-of-bounds-switch-to-barrass": "Huuska/Guliev Constraint Out of Bounds, Switch to Barrass"
       }
     },
     "squatChart": {
       "heading": "[en] Aluksen squat nopeuden funktiona",
-      "xAxisLabel": "[en] Nopeus (kn)",
-      "yAxisLabel": "[en] Squat (m)",
+      "xAxisLabel": "Speed (kts)",
+      "yAxisLabel": "Squat (m)",
       "levels": {
         "bottom": "[en] Pohja",
         "underSweptDepth": "[en] Haraustason alapuoleinen vesi"  ,
@@ -129,16 +132,16 @@
         "squat": "[en] Painaumavara"
       },
       "legends": {
-        "squatHG20": "[en] Huuska/Guliev C0 = 2,0: squat smax",
-        "squatHG24": "[en] Huuska/Guliev C0 = 2,4: squat smax",
-        "squatBarrass": "[en] Barrass: squat smax"
+        "squatHG20": "Huuska/Guliev C0 = 2,0: squat smax",
+        "squatHG24": "Huuska/Guliev C0 = 2,4: squat smax",
+        "squatBarrass": "Barrass: squat smax"
       }
     },
     "squatDataTable": {
-      "aluksen-nopeus-kn": "[en] Aluksen nopeus v (kn)",
-      "aluksen-nopeus-ms": "[en] Aluksen nopeus v (m/s)",
-      "froude-syvyysluku": "[en] Froude syvyysluku F nh",
-      "squat-max": "[en] {{kerroin}} Squat smax (m)"
+      "aluksen-nopeus-kn": "Vessel speed v (kts)",
+      "aluksen-nopeus-ms": "Vessel speed v (m/s)",
+      "froude-syvyysluku": "Froude number F nh",
+      "squat-max": "{{kerroin}} Squat smax (m)"
     }
   },
   "common": {

@@ -34,8 +34,11 @@
         "LNG-tanker": "[sv] LNG Tanker",
         "stability": "[sv] Stability",
         "KG": "[sv] KG",
+        "KG-description": "[sv] Aluksen painopisteen korkeus mallatun köliviivan yläpuolella",
         "GM": "[sv] GM",
+        "GM-description": "[sv] Aluksen vapailla nestepinnoilla korjattu vaihtokeskuskorkeus",
         "KB": "[sv] KB",
+        "KB-description": "[sv] Aluksen uppouman painopisteen korkeus kölistä",
         "lengthBPP-breadth-ratio": "[sv] Pituus-leveyssuhde",
         "breadth-draught-ratio": "[sv] Leveys-syväyssuhde",
         "tug-use-recommended": "[sv] Tug Use Is Recommended",
@@ -119,7 +122,7 @@
     },
     "squatChart": {
       "heading": "[sv] Aluksen squat nopeuden funktiona",
-      "xAxisLabel": "[sv] Nopeus (kn)",
+      "xAxisLabel": "[sv] Nopeus (kts)",
       "yAxisLabel": "[sv] Squat (m)",
       "levels": {
         "bottom": "[sv] Pohja",
@@ -135,7 +138,7 @@
       }
     },
     "squatDataTable": {
-      "aluksen-nopeus-kn": "[sv] Aluksen nopeus v (kn)",
+      "aluksen-nopeus-kn": "[sv] Aluksen nopeus v (kts)",
       "aluksen-nopeus-ms": "[sv] Aluksen nopeus v (m/s)",
       "froude-syvyysluku": "[sv] Froude syvyysluku F nh",
       "squat-max": "[sv] {{kerroin}} Squat smax (m)"

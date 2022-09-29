@@ -74,7 +74,7 @@
         "set-vessel-course": "Aluksen kurssi",
         "set-vessel-speed": "Aluksen nopeus",
         "set-turning-radius": "Kääntösäde",
-        "attribute": "[fi] Attribute",
+        "attribute": "Määritteet",
         "set-density-of-air": "Ilman tiheys",
         "set-density-of-water": "Veden tiheys",
         "required-UKC": "Kölivara",
