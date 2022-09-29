@@ -19,7 +19,7 @@ import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, { stackName: 'DvkFeaturePipelineStack' });
+    super(scope, id, { stackName: 'DvkFeaturePipelineStackTest' });
     const featureBucket = new Bucket(this, 'FeatureBucket', {
       bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
       publicReadAccess: false,
@@ -27,15 +27,21 @@ export class DvkFeaturePipelineStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       lifecycleRules: [{ expiration: Duration.days(30) }],
     });
-    const sourceProps: GitHubSourceProps = {
+    /*const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
       webhookFilters: [FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED)],
+    };*/
+    const sourceProps: GitHubSourceProps = {
+      owner: 'finnishtransportagency',
+      repo: 'dvk',
+      branchOrRef: 'DVK-196',
     };
     const gitHubSource = Source.gitHub(sourceProps);
     new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
+      concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
@@ -43,19 +49,29 @@ export class DvkFeaturePipelineStack extends Stack {
             commands: [
               'npm ci',
               'npm run generate',
-              'cd cdk && npm ci && npm run generate && cd ..',
+              'cd cdk && npm ci && npm run generate',
+              'npm run cdk deploy DvkBackendStack SquatSiteStack -- --require-approval never',
+              'npm run datasync',
+              'npm run setup && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
-              'cd squat && npm ci',
+              'npm run build',
+              'npx serve -s build &',
+              'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
+              'cd test',
+              'pip3 install --user --no-cache-dir -r requirements.txt',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml dvk',
+              'kill %1',
+              'cd ../squat && npm ci',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
               'npx serve -s build &',
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
-              'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml .',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml squat.robot',
             ],
+            finally: ['npm run cdk destroy DvkBackendStack SquatSiteStack -- --require-approval never'],
           },
         },
         cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
@@ -81,7 +97,7 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
-          REACT_APP_CI: { value: true },
+          ENVIRONMENT: { value: 'feature' },
         },
       },
       grantReportGroupPermissions: true,
@@ -94,8 +110,8 @@ export class DvkFeaturePipelineStack extends Stack {
     }).addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['s3:*'],
-        resources: [featureBucket.bucketArn],
+        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:*', 's3:*', 'sts:*', 'dynamodb:*'],
+        resources: ['*'],
       })
     );
   }
