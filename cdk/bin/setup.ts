@@ -79,10 +79,14 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
   fs.writeFileSync(fileName, envFile);
 }
 
+function isBackendOnly(): boolean {
+  return process.argv.includes('--backend');
+}
+
 async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
-  const frontendStackOutputs = await readFrontendStackOutputs();
   const envParameters = await readParametersForEnv(Config.getEnvironment());
+  const frontendStackOutputs = isBackendOnly() ? { CloudFrontDomainName: envParameters.BGMapApiUrl } : await readFrontendStackOutputs();
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
