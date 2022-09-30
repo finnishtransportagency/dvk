@@ -69,7 +69,7 @@ export class DvkFeaturePipelineStackTest extends Stack {
               'cd test',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/dvk --xunit xunit.xml dvk',
             ],
-            finally: ['npm run cdk destroy DvkBackendStack -- --force'],
+            finally: ['cd cdk && npm run cdk destroy DvkBackendStack -- --force'],
           },
         },
         cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
