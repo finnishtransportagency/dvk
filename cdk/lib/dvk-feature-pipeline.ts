@@ -56,15 +56,14 @@ export class DvkFeaturePipelineStackTest extends Stack {
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
               'npx serve -s build &',
-              'export PID=$!',
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
               'pip3 install --user --no-cache-dir -r requirements.txt',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
               'cd ../cdk && npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync -- --dbonly',
-              'npm run setup',
-              'cd .. && npm run build && npx serve -p 3001 -s build &',
+              'npm run setup && cd ..',
+              'npm run build && npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
@@ -78,7 +77,8 @@ export class DvkFeaturePipelineStackTest extends Stack {
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'squat-tests': { files: 'squat/junit.xml' },
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
-          'robot-tests': { files: 'test/report/xunit.xml' },
+          'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
+          'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
         },
         artifacts: {
           'base-directory': 'test/report',
@@ -115,7 +115,14 @@ export class DvkFeaturePipelineStackTest extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['cloudformation:*', 'ssm:GetParametersByPath', 'secretsmanager:ListSecrets', 'secretsmanager:GetSecretValue', 'sts:*'],
+        actions: [
+          'cloudformation:*',
+          'sts:*',
+          'ssm:GetParametersByPath',
+          'secretsmanager:ListSecrets',
+          'secretsmanager:GetSecretValue',
+          'dynamodb:ListTables',
+        ],
         resources: ['*'],
       })
     );
@@ -123,15 +130,8 @@ export class DvkFeaturePipelineStackTest extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['dynamodb:PutObject'],
+        actions: ['dynamodb:PutItem'],
         resources: [table.tableArn],
-      })
-    );
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:ListTables'],
-        resources: ['*'],
       })
     );
   }
