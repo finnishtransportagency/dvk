@@ -127,5 +127,12 @@ export class DvkFeaturePipelineStackTest extends Stack {
         resources: [table.tableArn],
       })
     );
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:ListTables'],
+        resources: ['*'],
+      })
+    );
   }
 }
