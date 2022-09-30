@@ -3,8 +3,6 @@ import {
   BuildSpec,
   Cache,
   ComputeType,
-  EventAction,
-  FilterGroup,
   GitHubSourceProps,
   LinuxBuildImage,
   LocalCacheMode,
@@ -19,11 +17,11 @@ import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import Config from './config';
 
-export class DvkFeaturePipelineStack extends Stack {
+export class DvkFeaturePipelineStackTest extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id, { stackName: 'DvkFeaturePipelineStackTest' });
     const featureBucket = new Bucket(this, 'FeatureBucket', {
-      bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
+      bucketName: 'dvkfeaturetest2.testivaylapilvi.fi',
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
@@ -41,37 +39,35 @@ export class DvkFeaturePipelineStack extends Stack {
       branchOrRef: 'DVK-196',
     };
     const gitHubSource = Source.gitHub(sourceProps);
-    const project = new Project(this, 'DvkTest', {
-      projectName: 'DvkFeatureTest',
+    const project = new Project(this, 'DvkTest2', {
+      projectName: 'DvkFeatureTest2',
       concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
           build: {
             commands: [
-              'npm ci',
-              'npm run generate',
-              'cd cdk && npm ci && npm run generate',
-              'npm run cdk deploy DvkBackendStack -- --require-approval never',
-              'npm run datasync -- --dbonly',
-              'npm run setup && cd ..',
+              'npm ci && npm run generate',
+              'cd cdk && npm ci && npm run generate && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
-              'npm run build',
-              'npx serve -s build &',
-              'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
-              'cd test',
-              'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/dvk --xunit xunit.xml dvk',
-              'kill %1',
-              'cd ../squat && npm ci',
+              'cd squat && npm ci',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
               'npx serve -s build &',
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
+              'pip3 install --user --no-cache-dir -r requirements.txt',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
+              'kill %1',
+              'cd ../cdk && npm run cdk deploy DvkBackendStack -- --require-approval never',
+              'npm run datasync -- --dbonly',
+              'npm run setup',
+              'cd .. && npm run build && npx serve -s build &',
+              'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
+              'cd test',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/dvk --xunit xunit.xml dvk',
             ],
             finally: ['npm run cdk destroy DvkBackendStack -- --force'],
           },
