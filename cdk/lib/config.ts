@@ -15,7 +15,7 @@ class Config {
   }
 
   static isPublicLoadBalancer() {
-    return ['dev', 'test', 'prod', 'feature'].indexOf(Config.getEnvironment()) < 0;
+    return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) < 0;
   }
 
   static isProductionEnvironment() {
