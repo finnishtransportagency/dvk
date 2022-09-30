@@ -124,14 +124,14 @@ export class DvkFeaturePipelineStackTest extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['cloudformation:*', 'sts:*'],
-        resources: [`arn:aws:cloudformation:*:*:DvkBackendStack-${Config.getEnvironment()}`],
+        actions: ['cloudformation:*'],
+        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}/*`],
       })
     );
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['dynamodb:ListTables'],
+        actions: ['dynamodb:ListTables', 'sts:*'],
         resources: ['*'],
       })
     );
