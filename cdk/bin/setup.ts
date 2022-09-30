@@ -84,10 +84,14 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
   fs.writeFileSync(fileName, envFile);
 }
 
+function isStackOnly(): boolean {
+  return process.argv.includes('--stack');
+}
+
 async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
   const frontendStackOutputs = await readFrontendStackOutputs();
-  const envParameters = await readParametersForEnv(Config.getEnvironment());
+  const envParameters = isStackOnly() ? {} : await readParametersForEnv(Config.getEnvironment());
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,

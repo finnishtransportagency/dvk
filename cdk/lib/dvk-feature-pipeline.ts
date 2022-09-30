@@ -1,5 +1,6 @@
 import {
   Artifacts,
+  BuildEnvironmentVariableType,
   BuildSpec,
   Cache,
   ComputeType,
@@ -62,7 +63,7 @@ export class DvkFeaturePipelineStackTest extends Stack {
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
               'cd ../cdk && npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync -- --dbonly',
-              'npm run setup && cd ..',
+              'npm run setup -- --stack && cd ..',
               'npm run build && npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
@@ -95,6 +96,14 @@ export class DvkFeaturePipelineStackTest extends Stack {
         environmentVariables: {
           CI: { value: true },
           ENVIRONMENT: { value: 'feature' },
+          REACT_APP_BG_MAP_API_KEY: {
+            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+            value: 'BGMapApiKey',
+          },
+          REACT_APP_BG_MAP_API_URL: {
+            type: BuildEnvironmentVariableType.PARAMETER_STORE,
+            value: 'BGMapApiUrl',
+          },
         },
       },
       grantReportGroupPermissions: true,
@@ -115,14 +124,14 @@ export class DvkFeaturePipelineStackTest extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: [
-          'cloudformation:*',
-          'sts:*',
-          'ssm:GetParametersByPath',
-          'secretsmanager:ListSecrets',
-          'secretsmanager:GetSecretValue',
-          'dynamodb:ListTables',
-        ],
+        actions: ['cloudformation:*', 'sts:*'],
+        resources: [`arn:aws:cloudformation:*:*:DvkBackendStack-${Config.getEnvironment()}`],
+      })
+    );
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:ListTables'],
         resources: ['*'],
       })
     );
