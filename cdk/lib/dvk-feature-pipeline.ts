@@ -16,6 +16,8 @@ import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Table } from 'aws-cdk-lib/aws-dynamodb';
+import Config from './config';
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -39,7 +41,7 @@ export class DvkFeaturePipelineStack extends Stack {
       branchOrRef: 'DVK-196',
     };
     const gitHubSource = Source.gitHub(sourceProps);
-    new Project(this, 'DvkTest', {
+    const project = new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
       concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
@@ -51,8 +53,8 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm run generate',
               'cd cdk && npm ci && npm run generate',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
-              'npm run datasync',
-              'npm run setup -- --backend && cd ..',
+              'npm run datasync -- --dbonly',
+              'npm run setup && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
               'npm run build',
@@ -60,7 +62,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd test',
               'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml dvk',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/dvk --xunit xunit.xml dvk',
               'kill %1',
               'cd ../squat && npm ci',
               'npm run lint',
@@ -69,7 +71,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'npx serve -s build &',
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml squat.robot',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
             ],
             finally: ['npm run cdk destroy DvkBackendStack -- --force'],
           },
@@ -85,7 +87,6 @@ export class DvkFeaturePipelineStack extends Stack {
         artifacts: {
           'base-directory': 'test/report',
           files: '**/*',
-          'discard-paths': 'yes',
           name: '$CODEBUILD_BUILD_NUMBER',
         },
       }),
@@ -107,11 +108,27 @@ export class DvkFeaturePipelineStack extends Stack {
         includeBuildId: false,
         packageZip: false,
       }),
-    }).addToRolePolicy(
+    });
+    project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['cloudformation:*', 'ssm:*', 'secretsmanager:*', 's3:*', 'sts:*', 'dynamodb:*'],
+        actions: ['s3:*'],
+        resources: [featureBucket.bucketArn],
+      })
+    );
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['cloudformation:*', 'ssm:GetParametersByPath', 'secretsmanager:ListSecrets', 'secretsmanager:GetSecretValue', 'sts:*'],
         resources: ['*'],
+      })
+    );
+    const table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutObject'],
+        resources: [table.tableArn],
       })
     );
   }
