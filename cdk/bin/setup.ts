@@ -63,14 +63,19 @@ async function readSecrets(path: string, global = false): Promise<Record<string,
   return variables;
 }
 
-async function readParametersForEnv<T extends Record<string, string>>(environment: string): Promise<T> {
-  const results: Record<string, string> = {
-    ...(await readParametersByPath('/')), // Read global parameters from root
-    ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
-    ...(await readSecrets(environment + '/', true)),
-    ...(await readSecrets(environment + '/')),
-  };
-  return results as T;
+async function readParametersForEnv(environment: string): Promise<Record<string, string>> {
+  try {
+    const results: Record<string, string> = {
+      ...(await readParametersByPath('/')), // Read global parameters from root
+      ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
+      ...(await readSecrets(environment + '/', true)),
+      ...(await readSecrets(environment + '/')),
+    };
+    return results;
+  } catch (e) {
+    console.log('Reading variables failed');
+    return {};
+  }
 }
 
 function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
@@ -84,14 +89,10 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
   fs.writeFileSync(fileName, envFile);
 }
 
-function isStackOnly(): boolean {
-  return process.argv.includes('--stack');
-}
-
 async function main() {
   const backendStackOutputs = await readBackendStackOutputs();
   const frontendStackOutputs = await readFrontendStackOutputs();
-  const envParameters = isStackOnly() ? {} : await readParametersForEnv(Config.getEnvironment());
+  const envParameters = await readParametersForEnv(Config.getEnvironment());
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,

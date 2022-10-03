@@ -65,7 +65,7 @@ export class DvkFeaturePipelineStackTest extends Stack {
               'export PUBLIC_IP=`npm run -s ip`',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync -- --dbonly',
-              'npm run setup -- --stack && cd ..',
+              'npm run setup && cd ..',
               'npm run build && npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
