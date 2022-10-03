@@ -4,6 +4,8 @@ import {
   BuildSpec,
   Cache,
   ComputeType,
+  EventAction,
+  FilterGroup,
   GitHubSourceProps,
   LinuxBuildImage,
   LocalCacheMode,
@@ -18,30 +20,29 @@ import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3'
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import Config from './config';
 
-export class DvkFeaturePipelineStackTest extends Stack {
+export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, { stackName: 'DvkFeaturePipelineStackTest' });
+    super(scope, id, { stackName: 'DvkFeaturePipelineStack' });
     const featureBucket = new Bucket(this, 'FeatureBucket', {
-      bucketName: 'dvkfeaturetest2.testivaylapilvi.fi',
+      bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       lifecycleRules: [{ expiration: Duration.days(30) }],
     });
-    /*const sourceProps: GitHubSourceProps = {
-      owner: 'finnishtransportagency',
-      repo: 'dvk',
-      reportBuildStatus: true,
-      webhookFilters: [FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED)],
-    };*/
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
-      branchOrRef: 'DVK-196',
+      reportBuildStatus: true,
+      webhookFilters: [
+        FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED).andActorAccountIs(
+          'hakalap|kettunju|hiisilaa|makinenr|karvoju|JuusoVirtaCGI'
+        ),
+      ],
     };
     const gitHubSource = Source.gitHub(sourceProps);
-    const project = new Project(this, 'DvkTest2', {
-      projectName: 'DvkFeatureTest2',
+    const project = new Project(this, 'DvkTest', {
+      projectName: 'DvkFeatureTest',
       concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',

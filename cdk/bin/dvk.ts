@@ -7,7 +7,7 @@ import { PipelineLambda } from '../lib/pipeline-lambda';
 import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
 import { DvkBackendStack } from '../lib/dvk-backend';
-import { DvkFeaturePipelineStackTest } from '../lib/dvk-feature-pipeline';
+import { DvkFeaturePipelineStack } from '../lib/dvk-feature-pipeline';
 import { DvkSonarPipelineStack } from '../lib/dvk-sonar-pipeline';
 import { PipelineMessaging } from '../lib/pipeline-messaging';
 import { SquatSite } from '../lib/squat-site';
@@ -115,7 +115,7 @@ new DvkBackendStack(
   appEnv
 );
 
-new DvkFeaturePipelineStackTest(app, 'DvkFeaturePipelineStackTest');
+new DvkFeaturePipelineStack(app, 'DvkFeaturePipelineStack');
 
 new DvkSonarPipelineStack(app, 'DvkSonarPipelineStack');
 new DvkPipelineMessagingStack(app, 'DvkPipelineMessagingStack', {
