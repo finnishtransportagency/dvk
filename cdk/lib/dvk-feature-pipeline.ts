@@ -49,7 +49,8 @@ export class DvkFeaturePipelineStack extends Stack {
         phases: {
           build: {
             commands: [
-              'npm ci && npm run generate',
+              'npm ci',
+              'npm run generate',
               'cd cdk && npm ci && npm run generate && cd ..',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
