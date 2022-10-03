@@ -64,7 +64,7 @@ async function readSecrets(path: string, global = false): Promise<Record<string,
 }
 
 async function readParametersForEnv(environment: string): Promise<Record<string, string>> {
-  try {
+  if (!Config.isFeatureEnvironment()) {
     const results: Record<string, string> = {
       ...(await readParametersByPath('/')), // Read global parameters from root
       ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
@@ -72,10 +72,9 @@ async function readParametersForEnv(environment: string): Promise<Record<string,
       ...(await readSecrets(environment + '/')),
     };
     return results;
-  } catch (e) {
-    console.log('Reading variables failed');
-    return {};
   }
+  // feature pipeline has environment variables already in place
+  return {};
 }
 
 function writeEnvFile(fileName: string, variables: { [p: string]: string }) {

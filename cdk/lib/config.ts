@@ -22,6 +22,10 @@ class Config {
     return 'prod' === Config.getEnvironment();
   }
 
+  static isFeatureEnvironment() {
+    return 'feature' === Config.getEnvironment();
+  }
+
   static getEnvironment(): string {
     if (process.env.ENVIRONMENT) {
       return process.env.ENVIRONMENT;
