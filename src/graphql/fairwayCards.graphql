@@ -6,5 +6,6 @@ query findAllFairwayCards {
       sv
       en
     }
+    modificationTimestamp
   }
 }

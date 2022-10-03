@@ -30,6 +30,15 @@
       }
     }
   },
+  "fairwayCards": {
+    "title": "Väyläkortit",
+    "search": "Hae väylän nimellä",
+    "home": "Digitaalinen väyläkortti",
+    "name": "Väyläkortin nimi",
+    "modified": "Päivitetty",
+    "modifiedDate": "{{val, short}}",
+    "saaristomeri": "SAARISTOMERI"
+  },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
     "content": "Jatkaaksesi sovelluksen käyttämistä se tulee päivittää.",

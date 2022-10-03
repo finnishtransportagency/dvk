@@ -26,6 +26,7 @@ import './theme/variables.css';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import SidebarMenu from './components/SidebarMenu';
+import FairwayCards from './components/FairwayCards';
 
 setupIonicReact();
 
@@ -81,6 +82,9 @@ const App: React.FC = () => {
           <IonRouterOutlet id="MainContent">
             <Route exact path="/">
               <Home />
+            </Route>
+            <Route exact path="/vaylakortit">
+              <FairwayCards />
             </Route>
           </IonRouterOutlet>
         </ApolloProvider>

@@ -1,0 +1,41 @@
+.fairwayCards .title {
+  padding: 10px 10px 10px 10px;
+  font-weight: bold;
+}
+
+.fairwayCards .header {
+  font-weight: bold;
+}
+
+#fairwayCardsContainer .openSidebarMenuControlContainer {
+  top: auto;
+  left: auto;
+  left: 48px;
+  top: 48px;
+  background: transparent;
+}
+
+#fairwayCardsContainer .openSidebarMenuControl {
+  width: 40px;
+  height: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 21px;
+  margin-bottom: 16px;
+}
+
+#fairwayCardsContainer .openSidebarMenuControl {
+  background-image: url('../theme/img/menu.svg');
+  background-size: 22px 15px;
+}
+
+#fairwayCardsContainer .searchBar {
+  box-sizing: border-box;
+  height: 45px;
+  width: 271px;
+  border: 1px solid #333333;
+  border-radius: 1px;
+  background-color: #FFFFFF;
+}
