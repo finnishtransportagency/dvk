@@ -123,7 +123,7 @@ export class DvkBackendStack extends Stack {
   private createALB(env: string, fairwayCardTable: Table): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     let securityGroup: SecurityGroup | undefined = undefined;
-    if (!Config.isPermanentEnvironment()) {
+    if (Config.isPublicLoadBalancer()) {
       securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
       securityGroup.addIngressRule(
         Peer.ipv4(`${Config.getPublicIP() + (Config.getPublicIP().indexOf('/') === -1 ? '/32' : '')}`),
@@ -133,7 +133,7 @@ export class DvkBackendStack extends Stack {
     }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
-      internetFacing: !Config.isPermanentEnvironment(),
+      internetFacing: Config.isPublicLoadBalancer(),
       loadBalancerName: `DvkALB-${env}`,
       securityGroup,
     });
@@ -141,7 +141,7 @@ export class DvkBackendStack extends Stack {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
-      open: Config.isPermanentEnvironment(),
+      open: !Config.isPublicLoadBalancer(),
     });
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {

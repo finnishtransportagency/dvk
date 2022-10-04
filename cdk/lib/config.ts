@@ -14,8 +14,16 @@ class Config {
     return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) >= 0;
   }
 
+  static isPublicLoadBalancer() {
+    return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) < 0;
+  }
+
   static isProductionEnvironment() {
     return 'prod' === Config.getEnvironment();
+  }
+
+  static isFeatureEnvironment() {
+    return 'feature' === Config.getEnvironment();
   }
 
   static getEnvironment(): string {
