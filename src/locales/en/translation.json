@@ -30,6 +30,17 @@
       }
     }
   },
+  "fairwayCards": {
+    "title": "Fairway cards",
+    "search": "[en] Hae väylän nimellä",
+    "home": "[en] Digitaalinen väyläkortti",
+    "name": "[en] Väyläkortin nimi",
+    "modified": "Modified",
+    "modifiedDate": "{{val, datetime}}",
+    "archipelagoSea": "Archipelago sea",
+    "gulfOfFinland": "Gulf of Finland",
+    "gulfOfBothnia": "Gulf of Bothnia"
+  },
   "appUpdateAlert": {
     "title": "Update available",
     "content": "To continue using app you must update it.",
