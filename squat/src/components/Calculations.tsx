@@ -43,6 +43,7 @@ import Modal from './Modal';
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
+  const tRoot = i18n.getFixedT(i18n.language);
 
   // Validations
   const checkIsReliabilityAnIssue = () => {
@@ -476,7 +477,7 @@ const Calculations: React.FC = () => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('squat') + ', ' + t(state.environment.fairway.fairwayForm?.name)}
+                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name)}
                 value={getSquatValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
