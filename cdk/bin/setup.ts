@@ -17,7 +17,7 @@ type BackendStackOutputs = {
 };
 
 type FrontendStackOutputs = {
-  CloudFrontDomainName: string;
+  CloudFrontDomainName?: string;
 };
 
 async function readStackOutputsForRawStackName(stackName: string): Promise<Record<string, string>> {
@@ -38,7 +38,12 @@ async function readBackendStackOutputs(): Promise<BackendStackOutputs> {
 }
 
 async function readFrontendStackOutputs(): Promise<FrontendStackOutputs> {
-  return (await readStackOutputsForRawStackName('SquatSiteStack-' + Config.getEnvironment())) as FrontendStackOutputs;
+  try {
+    return (await readStackOutputsForRawStackName('SquatSiteStack-' + Config.getEnvironment())) as FrontendStackOutputs;
+  } catch (e) {
+    // Frontend stack is not mandatory for local development
+    return { CloudFrontDomainName: undefined };
+  }
 }
 
 async function readSecrets(path: string, global = false): Promise<Record<string, string>> {
@@ -58,14 +63,18 @@ async function readSecrets(path: string, global = false): Promise<Record<string,
   return variables;
 }
 
-async function readParametersForEnv<T extends Record<string, string>>(environment: string): Promise<T> {
-  const results: Record<string, string> = {
-    ...(await readParametersByPath('/')), // Read global parameters from root
-    ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
-    ...(await readSecrets(environment + '/', true)),
-    ...(await readSecrets(environment + '/')),
-  };
-  return results as T;
+async function readParametersForEnv(environment: string): Promise<Record<string, string>> {
+  if (!Config.isFeatureEnvironment()) {
+    const results: Record<string, string> = {
+      ...(await readParametersByPath('/')), // Read global parameters from root
+      ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
+      ...(await readSecrets(environment + '/', true)),
+      ...(await readSecrets(environment + '/')),
+    };
+    return results;
+  }
+  // feature pipeline has environment variables already in place
+  return {};
 }
 
 function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
@@ -87,7 +96,8 @@ async function main() {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
     REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
-    REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName,
+    REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName || 'install frontend stack please',
+    REACT_APP_BG_MAP_API_URL: frontendStackOutputs.CloudFrontDomainName ? frontendStackOutputs.CloudFrontDomainName : envParameters.BGMapApiUrl,
     REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
   });
 }

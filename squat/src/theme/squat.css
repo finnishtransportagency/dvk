@@ -372,3 +372,8 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   margin-right: 28px;
   margin-bottom: 28px;
 }
+
+.wrappable-title {
+  overflow: visible;
+  white-space: normal;
+}

@@ -47,9 +47,9 @@ const MapContainer: React.FC = () => {
 
   useLayoutEffect(() => {
     const apiKey = process.env.REACT_APP_BG_MAP_API_KEY;
-    const tileUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME
+    const tileUrl = process.env.REACT_APP_BG_MAP_API_URL
       ? 'https://' +
-        process.env.REACT_APP_FRONTEND_DOMAIN_NAME +
+        process.env.REACT_APP_BG_MAP_API_URL +
         `/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`
       : `/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`;
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
