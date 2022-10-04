@@ -28,7 +28,7 @@ export class DvkFeaturePipelineStack extends Stack {
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
-      lifecycleRules: [{ expiration: Duration.days(30) }],
+      lifecycleRules: [{ expiration: Duration.days(14) }],
     });
     const config = new Config(this);
     const sourceProps: GitHubSourceProps = {
