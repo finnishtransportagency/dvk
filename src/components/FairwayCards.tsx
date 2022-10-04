@@ -28,7 +28,9 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title }) => {
               <IonLabel>{fairwayCard.name[lang]}</IonLabel>
             </IonCol>
             <IonCol>
-              <IonLabel>{t('modifiedDate', { val: new Date() })}</IonLabel>
+              <IonLabel>
+                {t('modifiedDate', { val: fairwayCard.modificationTimestamp ? new Date(fairwayCard.modificationTimestamp * 1000) : '-' })}
+              </IonLabel>
             </IonCol>
           </IonRow>
         );

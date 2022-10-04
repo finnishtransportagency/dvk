@@ -36,7 +36,7 @@
     "home": "Digitaalinen väyläkortti",
     "name": "Väyläkortin nimi",
     "modified": "Päivitetty",
-    "modifiedDate": "{{val, short}}",
+    "modifiedDate": "{{val, datetime}}",
     "archipelagoSea": "Saaristomeri",
     "gulfOfFinland": "Suomenlahti",
     "gulfOfBothnia": "Pohjanlahden alue"
