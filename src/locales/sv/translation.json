@@ -26,6 +26,10 @@
           "speedLimits": "[sv] Nopeusrajoitukset",
           "specialAreas": "[sv] Erityisalueet",
           "pilotPlaces": "[sv] Luotsipaikat"
+        },
+        "searchbar": {
+          "placeholder": "[sv] Hae väylän nimellä",
+          "no-search-results": "[sv] Haulla '{{query}}' ei löydy yhtään väylää"
         }
       }
     }

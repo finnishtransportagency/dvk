@@ -26,6 +26,10 @@
           "speedLimits": "Speed limits",
           "specialAreas": "[en] Erityisalueet",
           "pilotPlaces": "[en] Luotsipaikat"
+        },
+        "searchbar": {
+          "placeholder": "Search fairway by name",
+          "no-search-results": "Search '{{query}}' did not match any fairway"
         }
       }
     }
