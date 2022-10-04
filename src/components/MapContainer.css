@@ -27,6 +27,35 @@
   background: transparent;
 }
 
+#mapContainer .searchbarControlContainer {
+  top: auto;
+  left: auto;
+  left: 112px;
+  top: 45px;
+  background: var(--ion-color-dark);
+  padding: 1px;
+  border-radius: 0;
+}
+#mapContainer .searchbarControlContainer:has(input:focus-visible) {
+  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  padding: 2px;
+}
+#mapContainer .searchbarControlContainer input {
+  width: 333px;
+  height: 43px;
+  border: none;
+  padding: 0 40px 0 14px;
+  background: var(--ion-color-lightest) url('../theme/img/search.svg') no-repeat right 12px center;
+  background-size: 24px 24px;
+  outline: none;
+}
+#mapContainer .searchbarControlContainer input:focus-visible {
+  background-position: right 11px center;
+  width: 331px;
+  height: 41px;
+  padding-left: 13px;
+}
+
 #mapContainer .layerControlContainer {
   top: auto;
   left: auto;
