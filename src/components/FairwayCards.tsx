@@ -2,21 +2,10 @@ import { IonContent, IonGrid, IonRow, IonCol, IonLabel, IonInput, IonBreadcrumbs
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
-import { useFindAllFairwayCardsQuery } from '../graphql/generated';
-
-type Text = {
-  fi?: string;
-  sv?: string;
-  en?: string;
-};
-
-type FairwayCard = {
-  name: Text;
-  modificationTimestamp?: number;
-};
+import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
 
 type FairwayCardGroupProps = {
-  data: FairwayCard[];
+  data: FairwayCardPartsFragment[];
   title: string;
 };
 
@@ -51,18 +40,6 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title }) => {
 const FairwayCards: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data } = useFindAllFairwayCardsQuery();
-  const cards: FairwayCard[] =
-    data?.fairwayCards.map((card) => {
-      return {
-        id: card.id,
-        name: {
-          fi: card.name.fi || '',
-          sv: card.name.sv || '',
-          en: card.name.en || '',
-        },
-        modificationTimestamp: card.modificationTimestamp || undefined,
-      };
-    }) || [];
   return (
     <IonContent id="fairwayCardsContainer" className="fairwayCards">
       <IonGrid>
@@ -93,7 +70,17 @@ const FairwayCards: React.FC = () => {
         </IonRow>
         <IonRow>
           <IonCol>
-            <FairwayCardGroup title={t('saaristomeri')} data={cards} />
+            <FairwayCardGroup title={t('archipelagoSea')} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <FairwayCardGroup title={t('gulfOfFinland')} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <FairwayCardGroup title={t('gulfOfBothnia')} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
           </IonCol>
         </IonRow>
       </IonGrid>

@@ -1,11 +1,16 @@
+fragment FairwayCardParts on FairwayCard {
+  id
+  name {
+    fi
+    sv
+    en
+  }
+  modificationTimestamp
+  group
+}
+
 query findAllFairwayCards {
   fairwayCards {
-    id
-    name {
-      fi
-      sv
-      en
-    }
-    modificationTimestamp
+    ...FairwayCardParts
   }
 }

@@ -37,7 +37,9 @@
     "name": "Väyläkortin nimi",
     "modified": "Päivitetty",
     "modifiedDate": "{{val, short}}",
-    "saaristomeri": "SAARISTOMERI"
+    "archipelagoSea": "Saaristomeri",
+    "gulfOfFinland": "Suomenlahti",
+    "gulfOfBothnia": "Pohjanlahden alue"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
