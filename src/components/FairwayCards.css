@@ -1,15 +1,60 @@
-.fairwayCards .title {
-  padding: 10px 10px 10px 10px;
+#fairwayCardsContainer .title {
+  padding: 0px 0px 0px 10px;
+  height: 32px;
+  width: 150px;
+  color: #242222;
+  font-size: 24px;
   font-weight: bold;
+  letter-spacing: 0;
+  line-height: 32px;
 }
 
-.fairwayCards .header {
+#fairwayCardsContainer .header {
+  height: 24px;
+  width: 86px;
+  color: #242222;
+  font-size: 12px;
   font-weight: bold;
+  letter-spacing: 0;
+  line-height: 24px;
+  text-transform: uppercase;
+  padding-bottom: 30px;
+}
+
+#fairwayCardsContainer .tableHeader {
+  height: 20px;
+  color: #242222;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 20px;
+}
+
+#fairwayCardsContainer .fairwayCards {
+  height: 20px;
+  color: #242222;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 20px;
+  border-bottom: 1px solid lightgrey;
+}
+
+#fairwayCardsContainer .firstColumn {
+  border-right: 1px solid lightgrey;
+  padding-top: 0px;
+}
+
+#fairwayCardsContainer .secondColumn {
+  padding-top: 0px;
+}
+
+#fairwayCardsContainer {
+  width: 495px;
+  background-color: #F8F8F8;
+  box-shadow: 2px 0 8px 2px rgba(0,0,0,0.2);
 }
 
 #fairwayCardsContainer .openSidebarMenuControlContainer {
-  top: auto;
-  left: auto;
   left: 48px;
   top: 48px;
   background: transparent;
