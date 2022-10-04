@@ -28,7 +28,7 @@ export class DvkBuildImageStack extends Stack {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'main',
+      branch: 'feature/DVK-206-cicd-nopeutus',
       trigger: GitHubTrigger.NONE,
     });
 
@@ -37,7 +37,7 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = this.buildProject(account, imageRepoName, '1.0.1', '.', 'ImageBuild');
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.2', '.', 'ImageBuild');
     const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.0', 'test', 'RobotImageBuild');
     pipeline.addStage({
       stageName: 'Build',

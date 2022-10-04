@@ -5,7 +5,7 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect } from 'aws-cdk-lib/aws-iam';
@@ -82,6 +82,10 @@ export class SquatPipeline extends Construct {
 
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, 'InvalidateProject', {
+      environment: {
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.2'),
+        computeType: ComputeType.SMALL,
+      },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
@@ -112,6 +116,10 @@ export class SquatPipeline extends Construct {
 
     // Create the build project that will delete files from s3 before deploy
     const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
+      environment: {
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.2'),
+        computeType: ComputeType.SMALL,
+      },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
