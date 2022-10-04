@@ -28,7 +28,7 @@ export class DvkBuildImageStack extends Stack {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'feature/DVK-206-cicd-nopeutus',
+      branch: 'main',
       trigger: GitHubTrigger.NONE,
     });
 
