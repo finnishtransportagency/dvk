@@ -30,13 +30,14 @@ export class DvkFeaturePipelineStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       lifecycleRules: [{ expiration: Duration.days(30) }],
     });
+    const config = new Config(this);
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
       webhookFilters: [
         FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED).andActorAccountIs(
-          'hakalap|kettunju|hiisilaa|makinenr|karvoju|JuusoVirtaCGI'
+          config.getGlobalStringParameter('FeaturePipelineActorPattern')
         ),
       ],
     };
