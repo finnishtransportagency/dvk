@@ -21,6 +21,8 @@ import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
+import SearchbarControl from './SearchbarControl';
+import SearchbarDropdown from './searchbarDropdown';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
@@ -28,12 +30,23 @@ const MapContainer: React.FC = () => {
 
   const [mapInitialized, initializeMap] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const searchbarControl = new SearchbarControl({
+    placeholder: t('searchbar.placeholder'),
+    setIsOpen: setIsSearchbarOpen,
+    setSearchQuery: setSearchQuery,
+  });
+  const searchbarControlRef = useRef<SearchbarControl>(searchbarControl);
+
   const layerControl = new LayerPopupControl({
     label: '',
     tipLabel: t('layer.tipLabel'),
     setIsOpen: setIsOpen,
   });
   const layerControlRef = useRef<LayerPopupControl>(layerControl);
+
   useLayoutEffect(() => {
     if (mapInitialized) {
       return;
@@ -106,6 +119,7 @@ const MapContainer: React.FC = () => {
 
     map.addControl(centerToOwnLocationControl);
     map.addControl(openSidebarMenuControl);
+    map.addControl(searchbarControlRef.current);
     map.addControl(layerControlRef.current);
 
     i18n.on('languageChanged', () => {
@@ -131,6 +145,14 @@ const MapContainer: React.FC = () => {
         tipLabel: t('openMenu.tipLabel'),
       });
       map.addControl(openSidebarMenuControl);
+
+      map.removeControl(searchbarControlRef.current);
+      searchbarControlRef.current = new SearchbarControl({
+        placeholder: t('searchbar.placeholder'),
+        setIsOpen: setIsSearchbarOpen,
+        setSearchQuery: setSearchQuery,
+      });
+      map.addControl(searchbarControlRef.current);
 
       map.removeControl(layerControlRef.current);
       layerControlRef.current = new LayerPopupControl({
@@ -196,6 +218,7 @@ const MapContainer: React.FC = () => {
   return (
     <>
       <div id="mapContainer" ref={mapElement}></div>
+      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />
       <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} layerPopupControl={layerControlRef.current} />
     </>
   );
