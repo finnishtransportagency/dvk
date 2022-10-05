@@ -41,5 +41,14 @@
     "updateButton": {
       "label": "Päivitä"
     }
+  },
+  "popup": {
+    "pilotPlace": {
+      "email": "Email",
+      "fax": "Fax",
+      "phoneNumber": "Puhelin",
+      "internet": "Internet",
+      "extra": "Lisätieto"
+    }
   }
 }

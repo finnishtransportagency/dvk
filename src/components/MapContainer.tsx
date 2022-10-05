@@ -19,10 +19,11 @@ import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
-import { addAPILayers, addPopup, PilotProperties } from './layers';
+import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
-import { IonContent, IonGrid, IonPopover, IonRow, IonCol } from '@ionic/react';
+import { IonPopover } from '@ionic/react';
+import PilotPopupContent, { addPopup, PilotProperties } from './popup/PilotPopupContent';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
@@ -33,7 +34,6 @@ const MapContainer: React.FC = () => {
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const openPopover = (e: any, place: PilotProperties) => {
     if (popover.current) {
@@ -245,32 +245,7 @@ const MapContainer: React.FC = () => {
         setBgMapType={setBackgroundMapType}
       />
       <IonPopover reference="event" showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-        <IonContent class="ion-padding">
-          <IonGrid>
-            <IonRow>
-              <IonCol>Email</IonCol>
-              <IonCol>{pilotPlace?.email}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>Puhelin</IonCol>
-              <IonCol>{pilotPlace?.phoneNumber}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>Fax</IonCol>
-              <IonCol>{pilotPlace?.fax}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>Internet</IonCol>
-              <IonCol>{pilotPlace?.internet}</IonCol>
-            </IonRow>
-            {pilotPlace?.extraInfo[lang] && (
-              <IonRow>
-                <IonCol>Lisätieto</IonCol>
-                <IonCol>{pilotPlace?.extraInfo[lang]}</IonCol>
-              </IonRow>
-            )}
-          </IonGrid>
-        </IonContent>
+        <PilotPopupContent pilotPlace={pilotPlace} />
       </IonPopover>
     </>
   );
