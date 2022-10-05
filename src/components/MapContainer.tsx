@@ -156,6 +156,7 @@ const MapContainer: React.FC = () => {
         }),
       };
 
+      // eslint-disable-next-line
       const setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string) => {
         map
           .getLayers()
@@ -171,6 +172,7 @@ const MapContainer: React.FC = () => {
         const buckets: Array<{ source: string; layers: Array<string> }> = [];
 
         let currentSource: string;
+        // eslint-disable-next-line
         styleJson.layers.forEach((layer: any) => {
           if (!layer.source) {
             return;
