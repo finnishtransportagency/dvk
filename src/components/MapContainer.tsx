@@ -19,17 +19,27 @@ import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
-import { addAPILayers } from './layers';
+import { addAPILayers, addPopup } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
+import { IonContent, IonPopover } from '@ionic/react';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
-
+  const popover = useRef<HTMLIonPopoverElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const openPopover = (e: any) => {
+    if (popover.current) {
+      popover.current.event = e;
+      setPopoverOpen(true);
+    }
+  };
 
   const layerControl = new LayerPopupControl({
     label: '',
@@ -143,6 +153,7 @@ const MapContainer: React.FC = () => {
         olMap.addControl(layerControlRef.current);
       });
       addAPILayers(olMap);
+      addPopup(olMap, openPopover);
       setMap(olMap);
     } else {
       // override with tileURL
@@ -231,6 +242,9 @@ const MapContainer: React.FC = () => {
         bgMapType={backgroundMapType}
         setBgMapType={setBackgroundMapType}
       />
+      <IonPopover showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+        <IonContent class="ion-padding">Hello World!</IonContent>
+      </IonPopover>
     </>
   );
 };
