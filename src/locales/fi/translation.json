@@ -25,7 +25,12 @@
           "safetyEquipments": "Turvalaitteet",
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
-          "pilotPlaces": "Luotsipaikat"
+          "pilotPlaces": "Luotsipaikat",
+          "mapStyle": {
+            "header": "Kartan tyyli",
+            "landButtonLabel": "Maa",
+            "seaButtonLabel": "Meri"
+          }
         }
       }
     }
