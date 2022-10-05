@@ -19,24 +19,26 @@ import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
-import { addAPILayers, addPopup } from './layers';
+import { addAPILayers, addPopup, PilotProperties } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
-import { IonContent, IonPopover } from '@ionic/react';
+import { IonContent, IonGrid, IonPopover, IonRow, IonCol } from '@ionic/react';
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const [pilotPlace, setPilotPlace] = useState<PilotProperties>();
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
-
+  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const openPopover = (e: any) => {
+  const openPopover = (e: any, place: PilotProperties) => {
     if (popover.current) {
       popover.current.event = e;
+      setPilotPlace(place);
       setPopoverOpen(true);
     }
   };
@@ -242,8 +244,33 @@ const MapContainer: React.FC = () => {
         bgMapType={backgroundMapType}
         setBgMapType={setBackgroundMapType}
       />
-      <IonPopover showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-        <IonContent class="ion-padding">Hello World!</IonContent>
+      <IonPopover reference="event" showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+        <IonContent class="ion-padding">
+          <IonGrid>
+            <IonRow>
+              <IonCol>Email</IonCol>
+              <IonCol>{pilotPlace?.email}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>Puhelin</IonCol>
+              <IonCol>{pilotPlace?.phoneNumber}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>Fax</IonCol>
+              <IonCol>{pilotPlace?.fax}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>Internet</IonCol>
+              <IonCol>{pilotPlace?.internet}</IonCol>
+            </IonRow>
+            {pilotPlace?.extraInfo[lang] && (
+              <IonRow>
+                <IonCol>Lisätieto</IonCol>
+                <IonCol>{pilotPlace?.extraInfo[lang]}</IonCol>
+              </IonRow>
+            )}
+          </IonGrid>
+        </IonContent>
       </IonPopover>
     </>
   );

@@ -9,6 +9,7 @@ import { FeatureLike } from 'ol/Feature';
 import Map from 'ol/Map';
 import Overlay from 'ol/Overlay';
 import pilot_logo from '../theme/img/pilotPlace.svg';
+import { Text } from '../graphql/generated';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
@@ -57,8 +58,16 @@ export function addAPILayers(map: Map) {
   addPilotLayer(map);
 }
 
+export type PilotProperties = {
+  email?: string;
+  phoneNumber?: string;
+  fax?: string;
+  internet?: string;
+  extraInfo: Text;
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function addPopup(map: Map, openPopover: (event: any) => void) {
+export function addPopup(map: Map, openPopover: (event: any, place: PilotProperties) => void) {
   const element = document.getElementById('popup') as HTMLElement;
   const popup = new Overlay({
     element: element,
@@ -73,9 +82,21 @@ export function addPopup(map: Map, openPopover: (event: any) => void) {
     if (!feature) {
       return;
     }
-    console.log('Feature:');
-    console.dir(feature.getProperties());
-    popup.setPosition(evt.coordinate);
-    openPopover(evt.originalEvent);
+    if (feature.getProperties().type === 'pilot') {
+      console.log('Feature:');
+      console.dir(feature.getProperties());
+      popup.setPosition(evt.coordinate);
+      openPopover(evt.originalEvent, {
+        email: feature.getProperties().email,
+        phoneNumber: feature.getProperties().phoneNumber,
+        fax: feature.getProperties().fax,
+        internet: feature.getProperties().internet,
+        extraInfo: {
+          fi: feature.getProperties().extraInfoFI,
+          sv: feature.getProperties().extraInfoSV,
+          en: feature.getProperties().extraInfoEN,
+        },
+      });
+    }
   });
 }
