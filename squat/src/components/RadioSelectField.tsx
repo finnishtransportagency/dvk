@@ -24,6 +24,7 @@ interface RadioSelectProps {
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
   infoContentSize?: 'medium' | 'large';
+  columnSize?: string;
 }
 
 const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
@@ -63,8 +64,8 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
       <IonGrid className="no-padding">
         <IonRow>
           {props.options.map((option) => (
-            <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '}>
-              <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'}>
+            <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '} size={props.columnSize}>
+              <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'} mode="md">
                 <IonLabel className="ion-text-wrap radio">
                   {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
@@ -73,6 +74,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                     name={t(option.name, { lng: 'en' })}
                     value={option}
                     className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                    mode="md"
                   />
                 </IonLabel>
               </IonItem>

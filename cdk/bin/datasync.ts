@@ -98,7 +98,7 @@ function getRootDirectory(): string {
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
-  const tableName = `FairwayCard-${Config.getEnvironment()}`;
+  const tableName = Config.getFairwayCardTableName();
   if (response.TableNames?.includes(tableName)) {
     const directoryPath = getRootDirectory();
     console.log(`Scanning directory: ${directoryPath}`);

@@ -25,7 +25,12 @@
           "safetyEquipments": "[en] Turvalaitteet",
           "speedLimits": "Speed limits",
           "specialAreas": "[en] Erityisalueet",
-          "pilotPlaces": "[en] Luotsipaikat"
+          "pilotPlaces": "[en] Luotsipaikat",
+          "mapStyle": {
+            "header": "Map style",
+            "landButtonLabel": "Land",
+            "seaButtonLabel": "Sea"
+          }
         }
       }
     }

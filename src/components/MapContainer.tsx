@@ -13,7 +13,6 @@ import Zoom from 'ol/control/Zoom';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import './MapContainer.css';
-import bgMapStyles from './taustakartta.json';
 import { MAP } from '../utils/constants';
 import 'ol/ol.css';
 import CenterToOwnLocationControl from './CenterToOwnLocationControl';
@@ -21,6 +20,8 @@ import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
+import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
+import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 
 interface MapProps {
   hideMenu?: boolean;
@@ -30,27 +31,33 @@ const MapContainer: React.FC<MapProps> = (props) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
 
-  const [mapInitialized, initializeMap] = useState(false);
+  const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
+
   const layerControl = new LayerPopupControl({
     label: '',
     tipLabel: t('layer.tipLabel'),
     setIsOpen: setIsOpen,
   });
   const layerControlRef = useRef<LayerPopupControl>(layerControl);
+
+  // Font replacement so we do not need to load web fonts in the worker
+  const getFonts = (fonts: Array<string>) => {
+    return fonts.map(() => {
+      return 'Exo2';
+    });
+  };
+
   useLayoutEffect(() => {
-    if (mapInitialized) {
-      return;
-    }
-    initializeMap(true);
     const apiKey = process.env.REACT_APP_BG_MAP_API_KEY;
-    const tileUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME
+    const tileUrl = process.env.REACT_APP_BG_MAP_API_URL
       ? 'https://' +
-        process.env.REACT_APP_FRONTEND_DOMAIN_NAME +
+        process.env.REACT_APP_BG_MAP_API_URL +
         `/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`
       : `/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf?api-key=${apiKey}`;
-    const extent = [-548576, 6291456, 1548576, 8388608];
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
+    const extent = [-548576, 6291456, 1548576, 8388608];
     const tileGrid = new TileGrid({
       extent: extent,
       resolutions: resolutions,
@@ -70,139 +77,166 @@ const MapContainer: React.FC<MapProps> = (props) => {
       });
     }
 
-    // Font replacement so we do not need to load web fonts in the worker
-    const getFonts = (fonts: Array<string>) => {
-      return fonts.map(() => {
-        return 'Exo2';
+    if (!map) {
+      const olMap = new Map({
+        target: mapElement.current as HTMLElement,
+        view: new View({
+          projection: projection,
+          resolutions: MAP.RESOLUTIONS,
+          center: MAP.INIT_CENTER,
+          resolution: MAP.INIT_RESOLUTION,
+          extent: MAP.EXTENT,
+          constrainOnlyCenter: true,
+        }),
+        controls: [],
       });
-    };
 
-    const map = new Map({
-      target: mapElement.current as HTMLElement,
-      view: new View({
-        projection: projection,
-        resolutions: MAP.RESOLUTIONS,
-        center: MAP.INIT_CENTER,
-        resolution: MAP.INIT_RESOLUTION,
-        extent: MAP.EXTENT,
-        constrainOnlyCenter: true,
-      }),
-    });
-
-    let zoomControl = new Zoom({
-      zoomInLabel: '',
-      zoomOutLabel: '',
-      zoomInTipLabel: t('zoom.zoomInTipLabel'),
-      zoomOutTipLabel: t('zoom.zoomOutTipLabel'),
-    });
-
-    map.addControl(zoomControl);
-
-    let centerToOwnLocationControl = new CenterToOwnLocationControl({
-      label: '',
-      tipLabel: t('ownLocation.tipLabel'),
-    });
-
-    let openSidebarMenuControl = new OpenSidebarMenuControl({
-      label: '',
-      tipLabel: t('openMenu.tipLabel'),
-    });
-
-    map.addControl(centerToOwnLocationControl);
-    if (props.hideMenu !== true) map.addControl(openSidebarMenuControl);
-    map.addControl(layerControlRef.current);
-
-    i18n.on('languageChanged', () => {
-      map.removeControl(zoomControl);
-      zoomControl = new Zoom({
+      let zoomControl = new Zoom({
         zoomInLabel: '',
         zoomOutLabel: '',
         zoomInTipLabel: t('zoom.zoomInTipLabel'),
         zoomOutTipLabel: t('zoom.zoomOutTipLabel'),
       });
-      map.addControl(zoomControl);
 
-      map.removeControl(centerToOwnLocationControl);
-      centerToOwnLocationControl = new CenterToOwnLocationControl({
+      olMap.addControl(zoomControl);
+
+      let centerToOwnLocationControl = new CenterToOwnLocationControl({
         label: '',
         tipLabel: t('ownLocation.tipLabel'),
       });
-      map.addControl(centerToOwnLocationControl);
 
-      if (props.hideMenu !== true) {
-        map.removeControl(openSidebarMenuControl);
-        openSidebarMenuControl = new OpenSidebarMenuControl({
-          label: '',
-          tipLabel: t('openMenu.tipLabel'),
-        });
-        map.addControl(openSidebarMenuControl);
-      }
-
-      map.removeControl(layerControlRef.current);
-      layerControlRef.current = new LayerPopupControl({
+      let openSidebarMenuControl = new OpenSidebarMenuControl({
         label: '',
-        tipLabel: t('layer.tipLabel'),
-        setIsOpen: setIsOpen,
+        tipLabel: t('openMenu.tipLabel'),
       });
-      map.addControl(layerControlRef.current);
-    });
 
-    // override with tileURL
-    // styleJSON has tileJSON url which does not work without further dev
-    const sources: { taustakartta: VectorTileSource } = {
-      taustakartta: new VectorTileSource({
-        projection: projection,
-        tileGrid: tileGrid,
-        format: new MVT(),
-        url: tileUrl,
-      }),
-    };
+      olMap.addControl(centerToOwnLocationControl);
+      if (props.hideMenu !== true) olMap.addControl(openSidebarMenuControl);
+      olMap.addControl(layerControlRef.current);
 
-    const layers: Array<VectorTileLayer> = [];
-    const buckets: Array<{ source: string; layers: Array<string> }> = [];
-
-    let currentSource: string;
-    bgMapStyles.layers.forEach((layer) => {
-      if (!layer.source) {
-        return;
-      }
-      if (currentSource !== layer.source) {
-        currentSource = layer.source;
-        buckets.push({
-          source: layer.source,
-          layers: [],
+      i18n.on('languageChanged', () => {
+        olMap.removeControl(zoomControl);
+        zoomControl = new Zoom({
+          zoomInLabel: '',
+          zoomOutLabel: '',
+          zoomInTipLabel: t('zoom.zoomInTipLabel'),
+          zoomOutTipLabel: t('zoom.zoomOutTipLabel'),
         });
-      }
-      buckets[buckets.length - 1].layers.push(layer.id);
-    });
+        olMap.addControl(zoomControl);
 
-    buckets.forEach((bucket: { source: string; layers: Array<string> }) => {
-      const source = sources.taustakartta;
-      if (!source) {
-        return;
-      }
-      const layer = new VectorTileLayer({
-        declutter: true,
-        source,
+        olMap.removeControl(centerToOwnLocationControl);
+        centerToOwnLocationControl = new CenterToOwnLocationControl({
+          label: '',
+          tipLabel: t('ownLocation.tipLabel'),
+        });
+        olMap.addControl(centerToOwnLocationControl);
+
+        if (props.hideMenu !== true) {
+          olMap.removeControl(openSidebarMenuControl);
+          openSidebarMenuControl = new OpenSidebarMenuControl({
+            label: '',
+            tipLabel: t('openMenu.tipLabel'),
+          });
+          olMap.addControl(openSidebarMenuControl);
+        }
+
+        olMap.removeControl(layerControlRef.current);
+        layerControlRef.current = new LayerPopupControl({
+          label: '',
+          tipLabel: t('layer.tipLabel'),
+          setIsOpen: setIsOpen,
+        });
+        olMap.addControl(layerControlRef.current);
       });
-      stylefunction(layer, bgMapStyles, bucket.layers, resolutions, null, undefined, getFonts);
-      layers.push(layer);
-    });
+      addAPILayers(olMap);
+      setMap(olMap);
+    } else {
+      // override with tileURL
+      // styleJSON has tileJSON url which does not work without further dev
+      const sources: { taustakartta: VectorTileSource } = {
+        taustakartta: new VectorTileSource({
+          projection: projection,
+          tileGrid: tileGrid,
+          format: new MVT(),
+          url: tileUrl,
+        }),
+      };
 
-    layers.forEach((layer) => {
-      map.addLayer(layer);
-    });
+      // eslint-disable-next-line
+      const setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string) => {
+        map
+          .getLayers()
+          .getArray()
+          .forEach((layer) => {
+            if (layer.get('type') === 'background') {
+              map.removeLayer(layer);
+            }
+          });
 
-    addAPILayers(map);
+        const backLayers: Array<VectorTileLayer> = [];
 
-    setTimeout(() => {
-      map.updateSize();
-    }, 0);
-  }, [mapInitialized, t, i18n, props.hideMenu]);
+        const buckets: Array<{ source: string; layers: Array<string> }> = [];
+
+        let currentSource: string;
+        // eslint-disable-next-line
+        styleJson.layers.forEach((layer: any) => {
+          if (!layer.source) {
+            return;
+          }
+          if (currentSource !== layer.source) {
+            currentSource = layer.source;
+            buckets.push({
+              source: layer.source,
+              layers: [],
+            });
+          }
+          buckets[buckets.length - 1].layers.push(layer.id);
+        });
+
+        buckets.forEach((bucket: { source: string; layers: Array<string> }) => {
+          const source = sources.taustakartta;
+          if (!source) {
+            return;
+          }
+          const layer = new VectorTileLayer({
+            declutter: true,
+            source,
+            background: bgColor,
+          });
+          stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
+          layer.set('type', 'background');
+          backLayers.push(layer);
+        });
+
+        const mapLayers = map.getLayers();
+
+        backLayers.forEach((layer, index) => {
+          mapLayers.insertAt(index, layer);
+        });
+      };
+
+      if (backgroundMapType === 'sea') {
+        setBackgroundLayers(map, bgSeaMapStyles, '#feefcf');
+      } else if (backgroundMapType === 'land') {
+        setBackgroundLayers(map, bgLandMapStyles, '#ffffff');
+      }
+
+      setTimeout(() => {
+        map.updateSize();
+      }, 100);
+    }
+  }, [t, i18n, map, backgroundMapType, props.hideMenu]);
+
   return (
     <>
       <div id="mapContainer" ref={mapElement}></div>
-      <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} layerPopupControl={layerControlRef.current} />
+      <LayerModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        layerPopupControl={layerControlRef.current}
+        bgMapType={backgroundMapType}
+        setBgMapType={setBackgroundMapType}
+      />
     </>
   );
 };

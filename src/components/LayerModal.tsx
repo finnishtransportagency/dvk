@@ -1,5 +1,5 @@
-import React from 'react';
-import { IonCheckbox, IonItem, IonLabel, IonList, IonModal } from '@ionic/react';
+import React, { useState } from 'react';
+import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonLabel, IonList, IonModal, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
 import LayerPopupControl from './LayerPopupControl';
@@ -8,10 +8,19 @@ interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   layerPopupControl: LayerPopupControl;
+  bgMapType: 'land' | 'sea';
+  setBgMapType: (bgMapType: 'land' | 'sea') => void;
 }
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl, bgMapType, setBgMapType }) => {
   const { t } = useTranslation();
+  const [bgMap, setBgMap] = useState<'land' | 'sea'>(bgMapType);
+
+  const setBackgroundMap = (type: 'land' | 'sea') => {
+    setBgMapType(type);
+    setBgMap(type);
+  };
+
   return (
     <IonModal
       id="layerModalContainer"
@@ -53,6 +62,39 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl
             <IonCheckbox slot="start" />
           </IonItem>
         </IonList>
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText>
+                <h6>{t('homePage.map.controls.layer.mapStyle.header')}</h6>
+              </IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <button
+                color="none"
+                className="ion-button ion-float-right bgMapButtonLand"
+                disabled={bgMap === 'land'}
+                onClick={() => setBackgroundMap('land')}
+              >
+                <div className="mapImage"></div>
+                {t('homePage.map.controls.layer.mapStyle.landButtonLabel')}
+              </button>
+            </IonCol>
+            <IonCol>
+              <button
+                color="none"
+                className="ion-button ion-float-left bgMapButtonSea"
+                disabled={bgMap === 'sea'}
+                onClick={() => setBackgroundMap('sea')}
+              >
+                <div className="mapImage"></div>
+                {t('homePage.map.controls.layer.mapStyle.seaButtonLabel')}
+              </button>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </div>
     </IonModal>
   );

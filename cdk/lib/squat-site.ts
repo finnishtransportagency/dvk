@@ -199,7 +199,7 @@ export class SquatSite extends Construct {
     };
 
     const vectorMapBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.HttpOrigin('avoin-karttakuva.maanmittauslaitos.fi'),
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapApiUrl')),
       originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,

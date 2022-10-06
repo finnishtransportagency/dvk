@@ -27,11 +27,13 @@ const Modal: React.FC<ModalProps> = (props) => {
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
-      <IonModal isOpen={isOpen} className={props.size ? props.size : 'medium'}>
+      <IonModal isOpen={isOpen} className={props.size ? props.size : 'medium'} onDidDismiss={() => setIsOpen(false)} mode="md">
         <IonHeader>
           <div className="gradient-top" />
           <IonToolbar>
-            <IonTitle>{props.title}</IonTitle>
+            <IonTitle>
+              <div className="wrappable-title">{props.title}</div>
+            </IonTitle>
             <IonButtons slot="end" style={{ 'margin-right': '16px' }}>
               <IonButton onClick={() => setIsOpen(false)} className="icon-only">
                 <IonIcon slot="icon-only" icon={closeOutline} />
