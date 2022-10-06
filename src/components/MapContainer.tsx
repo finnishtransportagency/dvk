@@ -22,7 +22,11 @@ import LayerPopupControl from './LayerPopupControl';
 import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
 
-const MapContainer: React.FC = () => {
+interface MapProps {
+  hideMenu?: boolean;
+}
+
+const MapContainer: React.FC<MapProps> = (props) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
 
@@ -105,7 +109,7 @@ const MapContainer: React.FC = () => {
     });
 
     map.addControl(centerToOwnLocationControl);
-    map.addControl(openSidebarMenuControl);
+    if (props.hideMenu !== true) map.addControl(openSidebarMenuControl);
     map.addControl(layerControlRef.current);
 
     i18n.on('languageChanged', () => {
@@ -125,12 +129,14 @@ const MapContainer: React.FC = () => {
       });
       map.addControl(centerToOwnLocationControl);
 
-      map.removeControl(openSidebarMenuControl);
-      openSidebarMenuControl = new OpenSidebarMenuControl({
-        label: '',
-        tipLabel: t('openMenu.tipLabel'),
-      });
-      map.addControl(openSidebarMenuControl);
+      if (props.hideMenu !== true) {
+        map.removeControl(openSidebarMenuControl);
+        openSidebarMenuControl = new OpenSidebarMenuControl({
+          label: '',
+          tipLabel: t('openMenu.tipLabel'),
+        });
+        map.addControl(openSidebarMenuControl);
+      }
 
       map.removeControl(layerControlRef.current);
       layerControlRef.current = new LayerPopupControl({
@@ -192,7 +198,7 @@ const MapContainer: React.FC = () => {
     setTimeout(() => {
       map.updateSize();
     }, 0);
-  }, [mapInitialized, t, i18n]);
+  }, [mapInitialized, t, i18n, props.hideMenu]);
   return (
     <>
       <div id="mapContainer" ref={mapElement}></div>
