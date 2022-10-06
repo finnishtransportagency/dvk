@@ -11,8 +11,6 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
       return;
     }
     if (feature.getProperties().type === 'pilot') {
-      console.log('Feature:');
-      console.dir(feature.getProperties());
       openPopover(evt.originalEvent, {
         pilot: {
           email: feature.getProperties().email,
