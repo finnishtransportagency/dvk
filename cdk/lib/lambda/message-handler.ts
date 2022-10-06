@@ -24,7 +24,7 @@ const handler = async function (event: SNSEvent, context: any, callback: any) {
   console.log(event.Records[0].Sns);
   const message = event.Records[0].Sns.Message;
   const details = JSON.parse(message).detail;
-  const codebuildURL = `https://eu-west-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/${details.pipeline}/view?region=eu-west-1`;
+  const codebuildURL = `https://eu-west-1.console.aws.amazon.com/codesuite/codepipeline/pipelines/${details.pipeline}/executions/${details['execution-id']}/timeline?region=eu-west-1`;
 
   const url = 'https://rocketchat.vaylapilvi.fi/api/v1/chat.postMessage';
   const data = {
