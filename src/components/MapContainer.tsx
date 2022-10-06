@@ -123,8 +123,10 @@ const MapContainer: React.FC<MapProps> = (props) => {
       });
 
       olMap.addControl(centerToOwnLocationControl);
-      if (props.hideMenu !== true) olMap.addControl(openSidebarMenuControl);
-      olMap.addControl(searchbarControlRef.current);
+      if (props.hideMenu !== true) {
+        olMap.addControl(openSidebarMenuControl);
+        olMap.addControl(searchbarControlRef.current);
+      }
       olMap.addControl(layerControlRef.current);
 
       i18n.on('languageChanged', () => {
@@ -151,15 +153,15 @@ const MapContainer: React.FC<MapProps> = (props) => {
             tipLabel: t('openMenu.tipLabel'),
           });
           olMap.addControl(openSidebarMenuControl);
-        }
 
-        olMap.removeControl(searchbarControlRef.current);
-        searchbarControlRef.current = new SearchbarControl({
-          placeholder: t('searchbar.placeholder'),
-          setIsOpen: setIsSearchbarOpen,
-          setSearchQuery: setSearchQuery,
-        });
-        olMap.addControl(searchbarControlRef.current);
+          olMap.removeControl(searchbarControlRef.current);
+          searchbarControlRef.current = new SearchbarControl({
+            placeholder: t('searchbar.placeholder'),
+            setIsOpen: setIsSearchbarOpen,
+            setSearchQuery: setSearchQuery,
+          });
+          olMap.addControl(searchbarControlRef.current);
+        }
 
         olMap.removeControl(layerControlRef.current);
         layerControlRef.current = new LayerPopupControl({
