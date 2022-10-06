@@ -93,3 +93,8 @@ ion-icon.medium {
   font-size: 22px;
   --ionicon-stroke-width: 32px;
 }
+
+/* Footer */
+ion-footer.small ion-toolbar {
+  --min-height: 30px;
+}

@@ -93,6 +93,7 @@ async function main() {
   const frontendStackOutputs = await readFrontendStackOutputs();
   const envParameters = await readParametersForEnv(Config.getEnvironment());
   writeEnvFile('../.env.local', {
+    REACT_APP_VERSION: '$npm_package_version',
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
     REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
