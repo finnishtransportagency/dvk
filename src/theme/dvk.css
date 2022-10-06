@@ -1,3 +1,6 @@
+ion-text * {
+  color: var(--ion-color-dark);
+}
 ion-text h1 {
   font-size: 2.2rem;
 }
