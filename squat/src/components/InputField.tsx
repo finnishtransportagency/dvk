@@ -153,7 +153,7 @@ const InputField: React.FC<InputProps> = (props) => {
         infoContent={props.infoContent}
       />
 
-      <IonItem fill="outline" className={props.fieldClass + ' input-item'}>
+      <IonItem fill="outline" className={props.fieldClass + ' input-item'} mode="md">
         <IonInput
           type="number"
           min={props.min}
@@ -167,6 +167,7 @@ const InputField: React.FC<InputProps> = (props) => {
           onIonBlur={(e) => updateAction(e, props.actionType)}
           debounce={250}
           inputmode="decimal"
+          mode="md"
         />
         {props.unit && (
           <IonLabel slot="end" color="medium" className="unit">
