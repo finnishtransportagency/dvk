@@ -5,9 +5,9 @@ import * as notifications from 'aws-cdk-lib/aws-codestarnotifications';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as nodejsfunction from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as ssm from 'aws-cdk-lib/aws-ssm';
 import * as subscription from 'aws-cdk-lib/aws-sns-subscriptions';
 import { CfnOutput } from 'aws-cdk-lib';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 export class PipelineMessaging extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
@@ -16,11 +16,9 @@ export class PipelineMessaging extends Construct {
       runtime: lambda.Runtime.NODEJS_16_X,
       entry: 'lib/lambda/message-handler.ts',
       handler: 'handler',
-      environment: {
-        ROCKETCHAT_USER: ssm.StringParameter.valueForStringParameter(this, 'RocketchatUser'),
-        ROCKETCHAT_PASSWORD: ssm.StringParameter.valueForStringParameter(this, 'RocketchatPassword'),
-      },
     });
+
+    messageHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
 
     const importedSquatPipelineArnDev = cdk.Fn.importValue('SquatPipeline-ARN-dev');
     const importedSquatPipelineArnTest = cdk.Fn.importValue('SquatPipeline-ARN-test');

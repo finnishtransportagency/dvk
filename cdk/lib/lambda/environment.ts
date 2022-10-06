@@ -90,3 +90,9 @@ export async function getVatuHeaders(): Promise<Record<string, string>> {
     'Content-type': 'application/json',
   };
 }
+
+export async function getRocketChatCredentials() {
+  const parameters = { ...(await readParametersByPath('/')) };
+  const { RocketchatUser, RocketchatPassword } = parameters;
+  return { RocketchatUser, RocketchatPassword };
+}
