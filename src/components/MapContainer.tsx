@@ -23,22 +23,29 @@ import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 import { IonPopover } from '@ionic/react';
-import PilotPopupContent, { addPopup, PilotProperties } from './popup/PilotPopupContent';
+import PilotPopupContent, { PilotProperties } from './popup/PilotPopupContent';
+import { addPopup } from './popup/popup';
+
+export type PopupProperties = {
+  pilot?: PilotProperties;
+};
 
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
   const popover = useRef<HTMLIonPopoverElement>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const [pilotPlace, setPilotPlace] = useState<PilotProperties>();
+  const [popupProps, setPopupProperties] = useState<PopupProperties>();
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const openPopover = (e: any, place: PilotProperties) => {
+  const openPopover = (e: any, properties: PopupProperties) => {
     if (popover.current) {
       popover.current.event = e;
-      setPilotPlace(place);
+      if (properties.pilot) {
+        setPopupProperties({ pilot: properties.pilot });
+      }
       setPopoverOpen(true);
     }
   };
@@ -245,7 +252,7 @@ const MapContainer: React.FC = () => {
         setBgMapType={setBackgroundMapType}
       />
       <IonPopover reference="event" showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
-        <PilotPopupContent pilotPlace={pilotPlace} />
+        {popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}
       </IonPopover>
     </>
   );
