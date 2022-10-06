@@ -1,5 +1,6 @@
 import {
   Artifacts,
+  BuildEnvironmentVariableType,
   BuildSpec,
   Cache,
   ComputeType,
@@ -16,6 +17,8 @@ import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Table } from 'aws-cdk-lib/aws-dynamodb';
+import Config from './config';
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -25,17 +28,23 @@ export class DvkFeaturePipelineStack extends Stack {
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
-      lifecycleRules: [{ expiration: Duration.days(30) }],
+      lifecycleRules: [{ expiration: Duration.days(14) }],
     });
+    const config = new Config(this);
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       reportBuildStatus: true,
-      webhookFilters: [FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED)],
+      webhookFilters: [
+        FilterGroup.inEventOf(EventAction.PULL_REQUEST_CREATED, EventAction.PULL_REQUEST_UPDATED).andActorAccountIs(
+          config.getGlobalStringParameter('FeaturePipelineActorPattern')
+        ),
+      ],
     };
     const gitHubSource = Source.gitHub(sourceProps);
-    new Project(this, 'DvkTest', {
+    const project = new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
+      concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
@@ -43,8 +52,9 @@ export class DvkFeaturePipelineStack extends Stack {
             commands: [
               'npm ci',
               'npm run generate',
-              'cd cdk && npm ci && npm run generate && cd ..',
-              'npm run lint',
+              'cd cdk && npm ci && npm run generate',
+              'export PUBLIC_IP=`npm run -s ip`',
+              'cd .. && npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
               'cd squat && npm ci',
               'npm run lint',
@@ -54,8 +64,17 @@ export class DvkFeaturePipelineStack extends Stack {
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
               'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report --xunit xunit.xml .',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
+              'cd ../cdk',
+              'npm run cdk deploy DvkBackendStack -- --require-approval never',
+              'npm run datasync -- --dbonly',
+              'npm run setup && cd ..',
+              'npm run build && npx serve -p 3001 -s build &',
+              'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
+              'cd test',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
             ],
+            finally: ['cd $CODEBUILD_SRC_DIR/cdk && npm run cdk destroy DvkBackendStack -- --force'],
           },
         },
         cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
@@ -64,12 +83,12 @@ export class DvkFeaturePipelineStack extends Stack {
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'squat-tests': { files: 'squat/junit.xml' },
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
-          'robot-tests': { files: 'test/report/xunit.xml' },
+          'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
+          'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
         },
         artifacts: {
           'base-directory': 'test/report',
           files: '**/*',
-          'discard-paths': 'yes',
           name: '$CODEBUILD_BUILD_NUMBER',
         },
       }),
@@ -81,7 +100,15 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
-          REACT_APP_CI: { value: true },
+          ENVIRONMENT: { value: 'feature' },
+          REACT_APP_BG_MAP_API_KEY: {
+            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
+            value: 'BGMapApiKey',
+          },
+          REACT_APP_BG_MAP_API_URL: {
+            type: BuildEnvironmentVariableType.PARAMETER_STORE,
+            value: 'BGMapApiUrl',
+          },
         },
       },
       grantReportGroupPermissions: true,
@@ -91,11 +118,34 @@ export class DvkFeaturePipelineStack extends Stack {
         includeBuildId: false,
         packageZip: false,
       }),
-    }).addToRolePolicy(
+    });
+    project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['s3:*'],
         resources: [featureBucket.bucketArn],
+      })
+    );
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['cloudformation:*'],
+        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}/*`],
+      })
+    );
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:ListTables', 'sts:*'],
+        resources: ['*'],
+      })
+    );
+    const table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutItem'],
+        resources: [table.tableArn],
       })
     );
   }

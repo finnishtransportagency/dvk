@@ -20,3 +20,43 @@ ion-modal#layerModalContainer::part(content) {
   bottom: 48px;
   position: absolute;
 }
+
+#layerModalContainer h6 {
+  font-weight: bold;
+}
+
+#layerModalContainer .bgMapButtonSea, #layerModalContainer .bgMapButtonLand {
+  background-color: #ffffff;
+  font-weight: normal;
+  font-size: 16px;
+  color: #000000;
+}
+
+#layerModalContainer .bgMapButtonSea:disabled, #layerModalContainer .bgMapButtonLand:disabled {
+  font-weight: bold;
+}
+
+#layerModalContainer .bgMapButtonSea .mapImage, #layerModalContainer .bgMapButtonLand .mapImage {
+  width: 64px;
+  height: 64px;
+  background-color: #ffffff;
+  background-size: 64px 64px;
+  border: 1px solid #e5e5e5;
+  margin-bottom: 4px;
+}
+
+#layerModalContainer .bgMapButtonSea .mapImage {
+  background-image: url('../theme/img/bg_map_buttons/seaUnselected.png');
+}
+
+#layerModalContainer .bgMapButtonSea:disabled .mapImage {
+  background-image: url('../theme/img/bg_map_buttons/seaSelected.png');
+}
+
+#layerModalContainer .bgMapButtonLand .mapImage {
+  background-image: url('../theme/img/bg_map_buttons/landUnselected.png');
+}
+
+#layerModalContainer .bgMapButtonLand:disabled .mapImage {
+  background-image: url('../theme/img/bg_map_buttons/landSelected.png');
+}

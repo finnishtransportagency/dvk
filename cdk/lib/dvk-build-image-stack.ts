@@ -37,7 +37,7 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = this.buildProject(account, imageRepoName, '1.0.1', '.', 'ImageBuild');
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.2', '.', 'ImageBuild');
     const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.0', 'test', 'RobotImageBuild');
     pipeline.addStage({
       stageName: 'Build',

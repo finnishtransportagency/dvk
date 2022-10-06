@@ -31,7 +31,7 @@ src/graphql/generated.ts
 test/log.html
 test/output.xml
 test/report.html
-test/*.png
+selenium-*.png
 log.html
 output.xml
 interactive_console_output.xml
