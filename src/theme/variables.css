@@ -123,6 +123,14 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #bebebe;
   --ion-color-light-tint: #dcdcdc;
 
+  /** lighter (not a cigarette etc. lighter obviously) **/
+  --ion-color-lighter: #f0f0f0;
+	--ion-color-lighter-rgb: 240,240,240;
+	--ion-color-lighter-contrast: #000000;
+	--ion-color-lighter-contrast-rgb: 0,0,0;
+	--ion-color-lighter-shade: #d3d3d3;
+	--ion-color-lighter-tint: #f2f2f2;
+
   /** lightest **/
   --ion-color-lightest: #f8f8f8;
   --ion-color-lightest-rgb: 248,248,248;
@@ -144,7 +152,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-primary-rgb: 0, 100, 175;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255, 255, 255;
-    --ion-color-primary-shade: #00589a;
+    --ion-color-primary-shade: #00509b;
     --ion-color-primary-tint: #1a74b7;
 
     /** secondary (Vayla blue) **/
@@ -234,6 +242,14 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-light-contrast-rgb: 0,0,0;
     --ion-color-light-shade: #bebebe;
     --ion-color-light-tint: #dcdcdc;
+
+    /** lighter (not a cigarette etc. lighter obviously) **/
+    --ion-color-lighter: #f0f0f0;
+    --ion-color-lighter-rgb: 240,240,240;
+    --ion-color-lighter-contrast: #000000;
+    --ion-color-lighter-contrast-rgb: 0,0,0;
+    --ion-color-lighter-shade: #d3d3d3;
+    --ion-color-lighter-tint: #f2f2f2;
 
     /** lightest **/
     --ion-color-lightest: #f8f8f8;
@@ -356,6 +372,14 @@ http://ionicframework.com/docs/theming/ */
 	--ion-color-contrast-rgb: var(--ion-color-dangerbg-contrast-rgb);
 	--ion-color-shade: var(--ion-color-dangerbg-shade);
 	--ion-color-tint: var(--ion-color-dangerbg-tint);
+}
+.ion-color-lighter {
+  --ion-color-base: var(--ion-color-lighter);
+  --ion-color-base-rgb: var(--ion-color-lighter-rgb);
+  --ion-color-contrast: var(--ion-color-lighter-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-lighter-contrast-rgb);
+  --ion-color-shade: var(--ion-color-lighter-shade);
+  --ion-color-tint: var(--ion-color-lighter-tint);
 }
 .ion-color-lightest {
   --ion-color-base: var(--ion-color-lightest);

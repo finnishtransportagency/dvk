@@ -23,7 +23,11 @@ import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 
-const MapContainer: React.FC = () => {
+interface MapProps {
+  hideMenu?: boolean;
+}
+
+const MapContainer: React.FC<MapProps> = (props) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
 
@@ -107,7 +111,7 @@ const MapContainer: React.FC = () => {
       });
 
       olMap.addControl(centerToOwnLocationControl);
-      olMap.addControl(openSidebarMenuControl);
+      if (props.hideMenu !== true) olMap.addControl(openSidebarMenuControl);
       olMap.addControl(layerControlRef.current);
 
       i18n.on('languageChanged', () => {
@@ -127,12 +131,14 @@ const MapContainer: React.FC = () => {
         });
         olMap.addControl(centerToOwnLocationControl);
 
-        olMap.removeControl(openSidebarMenuControl);
-        openSidebarMenuControl = new OpenSidebarMenuControl({
-          label: '',
-          tipLabel: t('openMenu.tipLabel'),
-        });
-        olMap.addControl(openSidebarMenuControl);
+        if (props.hideMenu !== true) {
+          olMap.removeControl(openSidebarMenuControl);
+          openSidebarMenuControl = new OpenSidebarMenuControl({
+            label: '',
+            tipLabel: t('openMenu.tipLabel'),
+          });
+          olMap.addControl(openSidebarMenuControl);
+        }
 
         olMap.removeControl(layerControlRef.current);
         layerControlRef.current = new LayerPopupControl({
@@ -219,7 +225,7 @@ const MapContainer: React.FC = () => {
         map.updateSize();
       }, 100);
     }
-  }, [t, i18n, map, backgroundMapType]);
+  }, [t, i18n, map, backgroundMapType, props.hideMenu]);
 
   return (
     <>

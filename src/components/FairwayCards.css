@@ -1,0 +1,140 @@
+/* Split pane */
+#splitPane {
+  --side-width: 495px;
+  --side-max-width: 98%;
+  z-index: 999;
+}
+#splitPane.wide {
+  --side-width: 814px;
+}
+#fairwayPane {
+  display: flex !important;
+  flex-shrink: 0 !important;
+  transition: width 150ms;
+}
+
+/* Buttons */
+button.icon {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ion-color-primary);
+  background-color: var(--ion-color-lightest);
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+button.icon.invert {
+  color: var(--ion-color-primary-contrast);
+  background-color: var(--ion-color-primary);
+}
+button.icon.flip {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+button.icon:hover {
+  background-color: var(--ion-color-lighter);
+}
+button.icon.invert:hover {
+  background-color: var(--ion-color-primary-shade);
+}
+button.icon:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary-contrast);
+}
+button.icon:focus-visible:hover {
+  outline: 2px solid var(--ion-color-primary-shade);
+}
+
+/* Content */
+#fairwayCardsContainer {
+  --padding-top: 48px;
+  --padding-start: 43px;
+  --padding-end: 28px;
+  --padding-bottom: 43px;
+  --background: var(--ion-color-lightest);
+}
+#fairwayCardsContainer::part(scroll) {
+  scrollbar-gutter: stable;
+}
+#fairwayCardsContainer ion-input.searchBar {
+  box-sizing: border-box;
+  height: 45px;
+  max-width: 271px;
+  background-color: var(--ion-color-dark);
+  padding: 1px !important;
+  margin: 0 14px;
+  transition: max-width 150ms;
+}
+.wide #fairwayCardsContainer ion-input.searchBar {
+  max-width: 335px;
+}
+@media screen and (max-width: 575px) {
+  #fairwayCardsContainer ion-input.searchBar {
+    max-width: unset;
+    margin: 0;
+  }
+}
+#fairwayCardsContainer ion-input.searchBar input {
+  height: 100%;
+  padding: 0 40px 0 12px;
+  background-color: var(--ion-color-primary-contrast);
+}
+#fairwayCardsContainer ion-input.searchBar.has-focus {
+  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  padding: 2px !important;
+}
+#fairwayCardsContainer ion-input.searchBar.has-focus input {
+  padding: 0 39px 0 11px;
+}
+
+#fairwayCardsContainer ion-text > * {
+  margin-left: 5px;
+}
+
+#fairwayCardsContainer ion-text p {
+  font-size: 12px;
+  line-height: 18px;
+}
+
+#fairwayCardsContainer ion-text h4 {
+  font-size: 12px;
+  text-transform: uppercase;
+  margin-top: 24px;
+}
+
+/* Grid table */
+ion-grid.table {
+  color: var(--ion-color-dark);
+}
+ion-grid.table ion-row {
+  font-size: 12px;
+  line-height: 12px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+ion-grid.table ion-row:last-child {
+  border-bottom: none;
+}
+ion-grid.table ion-row.header {
+  font-weight: bold;
+}
+ion-grid.table ion-row > ion-col {
+  border-right: 1px solid var(--ion-color-light);
+}
+ion-grid.table ion-row > ion-col:last-child {
+  border-right: none;
+}
+
+/* Breadcrumb */
+ion-breadcrumbs {
+  padding: 20px 5px 5px;
+}
+ion-breadcrumb::part(native) {
+  padding: 0;
+  color: var(--ion-color-dark);
+}
+ion-breadcrumb.ion-focusable::part(native) {
+  text-decoration: underline;
+}
