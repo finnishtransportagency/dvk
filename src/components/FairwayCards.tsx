@@ -1,9 +1,12 @@
-import { IonContent, IonGrid, IonRow, IonCol, IonLabel, IonInput, IonBreadcrumbs, IonBreadcrumb } from '@ionic/react';
-import React from 'react';
+import { IonContent, IonGrid, IonRow, IonCol, IonLabel, IonInput, IonBreadcrumbs, IonBreadcrumb, IonSplitPane, IonMenu, IonText } from '@ionic/react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
 import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
 import { menuController } from '@ionic/core/components';
+import MapContainer from './MapContainer';
+import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
+import { ReactComponent as MenuIcon } from '../theme/img/menu.svg';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -13,81 +16,112 @@ type FairwayCardGroupProps = {
 const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol className="header">{title}</IonCol>
-      </IonRow>
-      <IonRow className="tableHeader">
-        <IonCol className="firstColumn">{t('name')}</IonCol>
-        <IonCol className="secondColumn">{t('modified')}</IonCol>
-      </IonRow>
-      {data.map((fairwayCard, idx) => {
-        return (
-          <IonRow key={idx} className="fairwayCards">
-            <IonCol className="firstColumn">
-              <IonLabel>{fairwayCard.name[lang]}</IonLabel>
-            </IonCol>
-            <IonCol className="secondColumn">
-              <IonLabel>
-                {t('modifiedDate', { val: fairwayCard.modificationTimestamp ? new Date(fairwayCard.modificationTimestamp * 1000) : '-' })}
-              </IonLabel>
-            </IonCol>
-          </IonRow>
-        );
-      })}
-    </IonGrid>
+    <>
+      <IonText>
+        <h4>
+          <strong>{title}</strong>
+        </h4>
+      </IonText>
+      <IonGrid className="table">
+        <IonRow className="header">
+          <IonCol>{t('name')}</IonCol>
+          <IonCol>{t('modified')}</IonCol>
+        </IonRow>
+        {data.map((fairwayCard, idx) => {
+          return (
+            <IonRow key={idx} className="fairwayCards">
+              <IonCol>
+                <IonLabel>{fairwayCard.name[lang]}</IonLabel>
+              </IonCol>
+              <IonCol>
+                <IonLabel>
+                  {t('modifiedDate', { val: fairwayCard.modificationTimestamp ? new Date(fairwayCard.modificationTimestamp * 1000) : '-' })}
+                </IonLabel>
+              </IonCol>
+            </IonRow>
+          );
+        })}
+      </IonGrid>
+    </>
   );
 };
 
 const FairwayCards: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data } = useFindAllFairwayCardsQuery();
+  const [widePane, setWidePane] = useState(false);
+
+  const togglePane = () => {
+    setWidePane(!widePane);
+  };
+
   return (
-    <IonContent id="fairwayCardsContainer">
-      <IonGrid>
-        <IonRow>
-          <IonCol>
-            <button className="openSidebarMenuControl" onClick={() => menuController.open()}>
-              <div className="openSidebarMenuControlContainer"></div>
-            </button>
-          </IonCol>
-          <IonCol>
-            <IonInput className="searchBar" placeholder={t('search')} />
-          </IonCol>
-          <IonCol></IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <IonBreadcrumbs>
-              <IonBreadcrumb>
-                {t('home')}
-                <IonLabel slot="separator">&gt;</IonLabel>
-              </IonBreadcrumb>
-              <IonBreadcrumb>{t('title')}</IonBreadcrumb>
-            </IonBreadcrumbs>
-          </IonCol>
-        </IonRow>
-        <IonRow className="title">
-          <IonCol>{t('title')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <FairwayCardGroup title={t('archipelagoSea')} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <FairwayCardGroup title={t('gulfOfFinland')} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>
-            <FairwayCardGroup title={t('gulfOfBothnia')} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </IonContent>
+    <IonSplitPane when={true} contentId="mapPane" id="splitPane" className={widePane ? 'wide' : ''}>
+      <IonMenu id="fairwayPane" className="menu-enabled" contentId="mapPane">
+        <IonContent id="fairwayCardsContainer">
+          <IonGrid className="no-padding">
+            <IonRow>
+              <IonCol size="auto">
+                <button className="icon" onClick={() => menuController.open()}>
+                  <MenuIcon />
+                </button>
+              </IonCol>
+              <IonCol>
+                <IonInput className="searchBar" placeholder={t('search')} />
+              </IonCol>
+              <IonCol size="auto">
+                {/*<IonButton
+                  fill="clear"
+                  className="icon-only"
+                  onClick={() => togglePane()}
+                  title={t('enlarge')}
+                  aria-label={t('enlarge')}
+                  role="button"
+                >
+                  <IonIcon color="primary" slot="icon-only" icon={chevronForwardOutline} />
+                </IonButton>*/}
+                <button className={'icon ' + (widePane ? 'flip invert' : '')} onClick={() => togglePane()}>
+                  <ChevronIcon />
+                </button>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+
+          <IonBreadcrumbs>
+            <IonBreadcrumb routerLink="/">
+              {t('home')}
+              <IonLabel slot="separator">&gt;</IonLabel>
+            </IonBreadcrumb>
+            <IonBreadcrumb>
+              <strong>{t('title')}</strong>
+            </IonBreadcrumb>
+          </IonBreadcrumbs>
+
+          <IonText>
+            <h2>
+              <strong>{t('title')}</strong>
+            </h2>
+          </IonText>
+          <IonText>
+            <p>
+              <strong>{t('description')}</strong>
+            </p>
+          </IonText>
+
+          <FairwayCardGroup title={t('archipelagoSea')} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
+          <FairwayCardGroup title={t('gulfOfFinland')} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+          <FairwayCardGroup title={t('gulfOfBothnia')} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+        </IonContent>
+      </IonMenu>
+
+      <div className="ion-page" id="mapPane">
+        <IonContent>
+          <MapContainer hideMenu />
+        </IonContent>
+      </div>
+    </IonSplitPane>
   );
 };
 
