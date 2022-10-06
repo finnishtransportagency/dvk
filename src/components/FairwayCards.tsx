@@ -61,14 +61,14 @@ const FairwayCards: React.FC = () => {
     <IonSplitPane when={true} contentId="mapPane" id="splitPane" className={widePane ? 'wide' : ''}>
       <IonMenu id="fairwayPane" className="menu-enabled" contentId="mapPane">
         <IonContent id="fairwayCardsContainer">
-          <IonGrid className="no-padding">
-            <IonRow>
+          <IonGrid className="ion-no-padding">
+            <IonRow className="ion-align-items-center">
               <IonCol size="auto">
                 <button className="icon" onClick={() => menuController.open()}>
                   <MenuIcon />
                 </button>
               </IonCol>
-              <IonCol>
+              <IonCol className="ion-margin-start">
                 <IonInput className="searchBar" placeholder={t('search')} />
               </IonCol>
               <IonCol size="auto">
