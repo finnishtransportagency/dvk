@@ -13,6 +13,7 @@ export type PilotProperties = {
   phoneNumber?: string;
   fax?: string;
   internet?: string;
+  journey?: number;
   extraInfo: Text;
 };
 
@@ -22,6 +23,9 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
   return (
     <IonContent id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
+        <IonRow>
+          <IonCol className="header">{t('header')}</IonCol>
+        </IonRow>
         {pilotPlace?.email && (
           <>
             <IonRow>
@@ -59,6 +63,16 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
             </IonRow>
             <IonRow>
               <IonCol>{pilotPlace?.internet}</IonCol>
+            </IonRow>
+          </>
+        )}
+        {pilotPlace?.journey && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('journey')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{pilotPlace?.journey} mpk</IonCol>
             </IonRow>
           </>
         )}

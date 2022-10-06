@@ -251,7 +251,16 @@ const MapContainer: React.FC = () => {
         bgMapType={backgroundMapType}
         setBgMapType={setBackgroundMapType}
       />
-      <IonPopover reference="event" showBackdrop={false} ref={popover} isOpen={popoverOpen} onDidDismiss={() => setPopoverOpen(false)}>
+      <IonPopover
+        id="mapPopup"
+        reference="event"
+        mode="md"
+        showBackdrop={false}
+        ref={popover}
+        isOpen={popoverOpen}
+        dismissOnSelect={true}
+        onDidDismiss={() => setPopoverOpen(false)}
+      >
         {popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}
       </IonPopover>
     </>

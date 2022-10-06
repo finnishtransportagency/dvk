@@ -47,6 +47,7 @@ export function addPilotLayer(map: Map) {
   const pilotLayer = new VectorLayer({
     source: pilotSource,
     style: pilotStyleFunction,
+    properties: { id: 'pilot' },
   });
   map.addLayer(pilotLayer);
 }

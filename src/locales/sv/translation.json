@@ -41,5 +41,16 @@
     "updateButton": {
       "label": "[sv] Päivitä"
     }
+  },
+  "popup": {
+    "pilotPlace": {
+      "header": "[sv] Luotsipaikka",
+      "email": "[sv] Email",
+      "fax": "[sv] Fax",
+      "phoneNumber": "[sv] Puhelin",
+      "internet": "[sv] Internet",
+      "journey": "[sv] Luotsausmatka",
+      "extra": "[sv] Lisätieto"
+    }
   }
 }

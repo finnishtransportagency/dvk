@@ -41,5 +41,16 @@
     "updateButton": {
       "label": "Update"
     }
+  },
+  "popup": {
+    "pilotPlace": {
+      "header": "[en] Luotsipaikka",
+      "email": "Email",
+      "fax": "Fax",
+      "phoneNumber": "Phone number",
+      "internet": "Internet",
+      "journey": "[en] Luotsausmatka",
+      "extra": "Additional information"
+    }
   }
 }

@@ -19,6 +19,7 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
           phoneNumber: feature.getProperties().phoneNumber,
           fax: feature.getProperties().fax,
           internet: feature.getProperties().internet,
+          journey: feature.getProperties().journey,
           extraInfo: {
             fi: feature.getProperties().extraInfoFI,
             sv: feature.getProperties().extraInfoSV,
@@ -27,5 +28,15 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
         },
       });
     }
+  });
+  map.on('pointermove', function (e) {
+    const pixel = map.getEventPixel(e.originalEvent);
+    const hit = map.hasFeatureAtPixel(pixel, {
+      layerFilter: (layer) => {
+        return layer.getProperties().id === 'pilot';
+      },
+    });
+    const target = map.getTarget() as HTMLElement;
+    target.style.cursor = hit ? 'pointer' : '';
   });
 }

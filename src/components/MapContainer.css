@@ -75,3 +75,8 @@
   background-image: url('../theme/img/layersOpen.svg');
   background-size: 22px 22px;
 }
+
+#mapPopup {
+  --offset-x: 20px;
+  --offset-y: -20px;
+}
