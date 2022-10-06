@@ -20,6 +20,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
           geometry: pilot.geometry as Geometry,
           properties: {
             type: 'pilot',
+            name: pilot.name,
             email: pilot.email,
             phoneNumber: pilot.phoneNumber,
             fax: pilot.fax,

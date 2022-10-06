@@ -13,6 +13,7 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
     if (feature.getProperties().type === 'pilot') {
       openPopover(evt.originalEvent, {
         pilot: {
+          name: feature.getProperties().name,
           email: feature.getProperties().email,
           phoneNumber: feature.getProperties().phoneNumber,
           fax: feature.getProperties().fax,

@@ -67,6 +67,7 @@
   },
   "trafficService": {
     "pilot": {
+      "name": "",
       "email": "",
       "phoneNumber": "",
       "fax": "",

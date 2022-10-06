@@ -9,6 +9,7 @@ type PilotPopupContentProps = {
 };
 
 export type PilotProperties = {
+  name: string;
   email?: string;
   phoneNumber?: string;
   fax?: string;
@@ -24,7 +25,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
     <IonContent id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
-          <IonCol className="header">{t('header')}</IonCol>
+          <IonCol className="header">{t('header', { val: pilotPlace?.name })}</IonCol>
         </IonRow>
         {pilotPlace?.email && (
           <>

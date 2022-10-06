@@ -44,7 +44,7 @@
   },
   "popup": {
     "pilotPlace": {
-      "header": "[en] Luotsipaikka",
+      "header": "[en] Luotsauspiste {{val}}",
       "email": "Email",
       "fax": "Fax",
       "phoneNumber": "Phone number",
