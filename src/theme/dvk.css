@@ -15,15 +15,8 @@ ion-text.no-margin > * {
 }
 
 /* Grid */
-ion-grid.no-padding {
-  padding: 0;
-}
 ion-grid.margin-top {
   margin-top: 30px;
-}
-ion-grid.no-padding ion-col {
-  padding-top: 0;
-  padding-bottom: 0;
 }
 ion-grid.divider {
   border-bottom: 1px solid var(--ion-color-light);
@@ -92,4 +85,9 @@ ion-button.icon-only ion-icon {
 ion-icon.medium {
   font-size: 22px;
   --ionicon-stroke-width: 32px;
+}
+
+/* Footer */
+ion-footer.small ion-toolbar {
+  --min-height: 30px;
 }
