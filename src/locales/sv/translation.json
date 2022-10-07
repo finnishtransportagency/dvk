@@ -31,6 +31,10 @@
             "landButtonLabel": "[sv] Maa",
             "seaButtonLabel": "[sv] Meri"
           }
+        },
+        "mapDetails": {
+          "copyrightLabel": "[sv] Maanmittauslaitos &copy;2022",
+          "mousePositionLabel": "[sv] Hiiren koordinaatti:"
         }
       }
     }

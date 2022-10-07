@@ -31,6 +31,10 @@
             "landButtonLabel": "Maa",
             "seaButtonLabel": "Meri"
           }
+        },
+        "mapDetails": {
+          "copyrightLabel": "Maanmittauslaitos &copy;2022",
+          "mousePositionLabel": "Hiiren koordinaatti:"
         }
       }
     }

@@ -9,7 +9,7 @@ import { get as getProjection } from 'ol/proj';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
-import Zoom from 'ol/control/Zoom';
+import { Zoom, ScaleLine, MousePosition } from 'ol/control';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import './MapContainer.css';
@@ -18,10 +18,12 @@ import 'ol/ol.css';
 import CenterToOwnLocationControl from './CenterToOwnLocationControl';
 import OpenSidebarMenuControl from './OpenSidebarMenuControl';
 import LayerPopupControl from './LayerPopupControl';
+import MapDetailsControl from './MapDetailsControl';
 import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
+import { createStringXY } from 'ol/coordinate';
 
 interface MapProps {
   hideMenu?: boolean;
@@ -114,6 +116,28 @@ const MapContainer: React.FC<MapProps> = (props) => {
       if (props.hideMenu !== true) olMap.addControl(openSidebarMenuControl);
       olMap.addControl(layerControlRef.current);
 
+      const mapDetailsControl = new MapDetailsControl({
+        copyrightLabel: t('mapDetails.copyrightLabel'),
+        mousePositionLabel: t('mapDetails.mousePositionLabel'),
+      });
+
+      olMap.addControl(mapDetailsControl);
+
+      olMap.addControl(
+        new ScaleLine({
+          units: 'metric',
+          target: mapDetailsControl.getScaleLineElement(),
+        })
+      );
+
+      olMap.addControl(
+        new MousePosition({
+          coordinateFormat: createStringXY(5),
+          projection: 'EPSG:4326',
+          target: mapDetailsControl.getMousePositionElement(),
+        })
+      );
+
       i18n.on('languageChanged', () => {
         olMap.removeControl(zoomControl);
         zoomControl = new Zoom({
@@ -147,7 +171,11 @@ const MapContainer: React.FC<MapProps> = (props) => {
           setIsOpen: setIsOpen,
         });
         olMap.addControl(layerControlRef.current);
+
+        mapDetailsControl.setCopyrightLabel(t('mapDetails.copyrightLabel'));
+        mapDetailsControl.setMousePositionLabel(t('mapDetails.mousePositionLabel'));
       });
+
       addAPILayers(olMap);
       setMap(olMap);
     } else {

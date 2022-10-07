@@ -1,0 +1,61 @@
+import Control from 'ol/control/Control';
+
+class MapDetailsControl extends Control {
+  private copyrightElement = document.createElement('div');
+
+  private mousePositionLabelElement: HTMLDivElement = document.createElement('div');
+
+  private mousePositionElement: HTMLDivElement = document.createElement('div');
+
+  private scaleLineElement: HTMLDivElement = document.createElement('div');
+
+  constructor(opt_options: { copyrightLabel: string; mousePositionLabel: string }) {
+    const options = opt_options || {};
+
+    const element = document.createElement('div');
+    element.style.display = 'table';
+    element.className = 'mapDetailsControl ol-unselectable ol-control';
+
+    const rowElem = document.createElement('div');
+    rowElem.style.display = 'table-row';
+    element.appendChild(rowElem);
+
+    super({
+      element: element,
+    });
+
+    this.copyrightElement.style.display = 'table-cell';
+    this.copyrightElement.className = 'copyrightElem';
+    this.copyrightElement.innerHTML = options.copyrightLabel || '';
+    rowElem.appendChild(this.copyrightElement);
+
+    this.mousePositionLabelElement.style.display = 'table-cell';
+    this.mousePositionLabelElement.className = 'mousePositionLabelElem';
+    this.mousePositionLabelElement.innerHTML = options.mousePositionLabel || '';
+    rowElem.appendChild(this.mousePositionLabelElement);
+
+    this.mousePositionElement.style.display = 'table-cell';
+    rowElem.appendChild(this.mousePositionElement);
+
+    this.scaleLineElement.style.display = 'table-cell';
+    rowElem.appendChild(this.scaleLineElement);
+  }
+
+  public getScaleLineElement() {
+    return this.scaleLineElement;
+  }
+
+  public getMousePositionElement() {
+    return this.mousePositionElement;
+  }
+
+  public setCopyrightLabel(label: string) {
+    this.copyrightElement.innerHTML = label;
+  }
+
+  public setMousePositionLabel(label: string) {
+    this.mousePositionLabelElement.innerHTML = label;
+  }
+}
+
+export default MapDetailsControl;
