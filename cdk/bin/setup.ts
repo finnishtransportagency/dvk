@@ -95,7 +95,7 @@ async function main() {
   writeEnvFile('../.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_REST_API_URL: `http://${backendStackOutputs.LoadBalancerDnsName}/api`,
+    REACT_APP_REST_API_URL: `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api`,
     REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName || 'install frontend stack please',
     REACT_APP_BG_MAP_API_URL: frontendStackOutputs.CloudFrontDomainName ? frontendStackOutputs.CloudFrontDomainName : envParameters.BGMapApiUrl,
     REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
