@@ -1,9 +1,20 @@
 import Map from 'ol/Map';
+import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function addPopup(map: Map, openPopover: (event: any, properties: PopupProperties) => void) {
-  map.on('click', function (evt) {
+export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
+  const container = document.getElementById('popup') as HTMLElement;
+  const content = document.getElementById('popup-content') as HTMLElement;
+  const overlay = new Overlay({
+    element: container,
+    autoPan: {
+      animation: {
+        duration: 250,
+      },
+    },
+  });
+  map.on('singleclick', function (evt) {
+    const coordinate = evt.coordinate;
     const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
       return f;
     });
@@ -11,7 +22,11 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
       return;
     }
     if (feature.getProperties().type === 'pilot') {
-      openPopover(evt.originalEvent, {
+      content.onclick = () => {
+        overlay.setPosition(undefined);
+        return false;
+      };
+      setPopupProperties({
         pilot: {
           name: feature.getProperties().name,
           email: feature.getProperties().email,
@@ -26,8 +41,10 @@ export function addPopup(map: Map, openPopover: (event: any, properties: PopupPr
           },
         },
       });
+      overlay.setPosition(coordinate);
     }
   });
+  map.addOverlay(overlay);
   map.on('pointermove', function (e) {
     const pixel = map.getEventPixel(e.originalEvent);
     const hit = map.hasFeatureAtPixel(pixel, {

@@ -22,7 +22,6 @@ import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
-import { IonPopover } from '@ionic/react';
 import PilotPopupContent, { PilotProperties } from './popup/PilotPopupContent';
 import { addPopup } from './popup/popup';
 
@@ -33,23 +32,10 @@ export type PopupProperties = {
 const MapContainer: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
-  const popover = useRef<HTMLIonPopoverElement>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const openPopover = (e: any, properties: PopupProperties) => {
-    if (popover.current) {
-      popover.current.event = e;
-      if (properties.pilot) {
-        setPopupProperties({ pilot: properties.pilot });
-      }
-      setPopoverOpen(true);
-    }
-  };
-
   const layerControl = new LayerPopupControl({
     label: '',
     tipLabel: t('layer.tipLabel'),
@@ -162,7 +148,7 @@ const MapContainer: React.FC = () => {
         olMap.addControl(layerControlRef.current);
       });
       addAPILayers(olMap);
-      addPopup(olMap, openPopover);
+      addPopup(olMap, setPopupProperties);
       setMap(olMap);
     } else {
       // override with tileURL
@@ -243,7 +229,11 @@ const MapContainer: React.FC = () => {
 
   return (
     <>
-      <div id="mapContainer" ref={mapElement}></div>
+      <div id="mapContainer" ref={mapElement}>
+        <div id="popup" className="ol-popup">
+          <div id="popup-content">{popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}</div>
+        </div>
+      </div>
       <LayerModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}
@@ -251,18 +241,6 @@ const MapContainer: React.FC = () => {
         bgMapType={backgroundMapType}
         setBgMapType={setBackgroundMapType}
       />
-      <IonPopover
-        id="mapPopup"
-        reference="event"
-        mode="md"
-        showBackdrop={false}
-        ref={popover}
-        isOpen={popoverOpen}
-        dismissOnSelect={true}
-        onDidDismiss={() => setPopoverOpen(false)}
-      >
-        {popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}
-      </IonPopover>
     </>
   );
 };
