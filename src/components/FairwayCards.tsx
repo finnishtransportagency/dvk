@@ -68,6 +68,7 @@ interface RouterProps {
   id: string;
 }
 
+// eslint-disable-next-line
 interface FairwayCardsProps extends RouteComponentProps<RouterProps> {}
 
 const FairwayCards: React.FC<FairwayCardsProps> = ({ match }) => {
