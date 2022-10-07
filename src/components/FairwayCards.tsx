@@ -1,4 +1,17 @@
-import { IonContent, IonGrid, IonRow, IonCol, IonLabel, IonInput, IonBreadcrumbs, IonBreadcrumb, IonSplitPane, IonMenu, IonText } from '@ionic/react';
+import {
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonLabel,
+  IonInput,
+  IonBreadcrumbs,
+  IonBreadcrumb,
+  IonSplitPane,
+  IonMenu,
+  IonText,
+  IonRouterLink,
+} from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
@@ -7,6 +20,7 @@ import { menuController } from '@ionic/core/components';
 import MapContainer from './MapContainer';
 import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../theme/img/menu.svg';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -33,7 +47,9 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title }) => {
           return (
             <IonRow key={idx} className="fairwayCards">
               <IonCol>
-                <IonLabel>{fairwayCard.name[lang]}</IonLabel>
+                <IonLabel>
+                  <IonRouterLink routerLink={'/vaylakortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</IonRouterLink>
+                </IonLabel>
               </IonCol>
               <IonCol>
                 <IonLabel>
@@ -48,7 +64,14 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title }) => {
   );
 };
 
-const FairwayCards: React.FC = () => {
+interface RouterProps {
+  id: string;
+}
+
+// eslint-disable-next-line
+interface FairwayCardsProps extends RouteComponentProps<RouterProps> {}
+
+const FairwayCards: React.FC<FairwayCardsProps> = ({ match }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data } = useFindAllFairwayCardsQuery();
   const [widePane, setWidePane] = useState(false);
@@ -61,14 +84,14 @@ const FairwayCards: React.FC = () => {
     <IonSplitPane when={true} contentId="mapPane" id="splitPane" className={widePane ? 'wide' : ''}>
       <IonMenu id="fairwayPane" className="menu-enabled" contentId="mapPane">
         <IonContent id="fairwayCardsContainer">
-          <IonGrid className="no-padding">
-            <IonRow>
+          <IonGrid className="ion-no-padding">
+            <IonRow className="ion-align-items-center">
               <IonCol size="auto">
                 <button className="icon" onClick={() => menuController.open()}>
                   <MenuIcon />
                 </button>
               </IonCol>
-              <IonCol>
+              <IonCol className="ion-margin-start">
                 <IonInput className="searchBar" placeholder={t('search')} />
               </IonCol>
               <IonCol size="auto">
@@ -94,25 +117,50 @@ const FairwayCards: React.FC = () => {
               {t('home')}
               <IonLabel slot="separator">&gt;</IonLabel>
             </IonBreadcrumb>
+            {match.params.id && (
+              <>
+                <IonBreadcrumb routerLink="/vaylakortit/">
+                  {t('title', { count: 0 })}
+                  <IonLabel slot="separator">&gt;</IonLabel>
+                </IonBreadcrumb>
+                <IonBreadcrumb routerLink={'/vaylakortit/' + match.params.id}>
+                  {match.params.id}
+                  <IonLabel slot="separator">&gt;</IonLabel>
+                </IonBreadcrumb>
+              </>
+            )}
             <IonBreadcrumb>
-              <strong>{t('title')}</strong>
+              <strong>{t('title', { count: match.params.id ? 1 : 0 })}</strong>
             </IonBreadcrumb>
           </IonBreadcrumbs>
 
-          <IonText>
-            <h2>
-              <strong>{t('title')}</strong>
-            </h2>
-          </IonText>
-          <IonText>
-            <p>
-              <strong>{t('description')}</strong>
-            </p>
-          </IonText>
+          {match.params.id && (
+            <>
+              <IonText>
+                <h2>
+                  <strong>{match.params.id}</strong>
+                </h2>
+              </IonText>
+            </>
+          )}
+          {!match.params.id && (
+            <>
+              <IonText>
+                <h2>
+                  <strong>{t('title', { count: 0 })}</strong>
+                </h2>
+              </IonText>
+              <IonText>
+                <p>
+                  <strong>{t('description')}</strong>
+                </p>
+              </IonText>
 
-          <FairwayCardGroup title={t('archipelagoSea')} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
-          <FairwayCardGroup title={t('gulfOfFinland')} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-          <FairwayCardGroup title={t('gulfOfBothnia')} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+              <FairwayCardGroup title={t('archipelagoSea')} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
+              <FairwayCardGroup title={t('gulfOfFinland')} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+              <FairwayCardGroup title={t('gulfOfBothnia')} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+            </>
+          )}
         </IonContent>
       </IonMenu>
 
@@ -125,4 +173,4 @@ const FairwayCards: React.FC = () => {
   );
 };
 
-export default FairwayCards;
+export default withRouter(FairwayCards);

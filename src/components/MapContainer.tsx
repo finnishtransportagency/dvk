@@ -24,6 +24,8 @@ import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 import { createStringXY } from 'ol/coordinate';
+import SearchbarControl from './SearchbarControl';
+import SearchbarDropdown from './searchbarDropdown';
 
 interface MapProps {
   hideMenu?: boolean;
@@ -36,6 +38,16 @@ const MapContainer: React.FC<MapProps> = (props) => {
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
+
+  const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const searchbarControl = new SearchbarControl({
+    placeholder: t('searchbar.placeholder'),
+    setIsOpen: setIsSearchbarOpen,
+    setSearchQuery: setSearchQuery,
+  });
+  const searchbarControlRef = useRef<SearchbarControl>(searchbarControl);
 
   const layerControl = new LayerPopupControl({
     label: '',
@@ -113,7 +125,10 @@ const MapContainer: React.FC<MapProps> = (props) => {
       });
 
       olMap.addControl(centerToOwnLocationControl);
-      if (props.hideMenu !== true) olMap.addControl(openSidebarMenuControl);
+      if (props.hideMenu !== true) {
+        olMap.addControl(openSidebarMenuControl);
+        olMap.addControl(searchbarControlRef.current);
+      }
       olMap.addControl(layerControlRef.current);
 
       const mapDetailsControl = new MapDetailsControl({
@@ -162,6 +177,14 @@ const MapContainer: React.FC<MapProps> = (props) => {
             tipLabel: t('openMenu.tipLabel'),
           });
           olMap.addControl(openSidebarMenuControl);
+
+          olMap.removeControl(searchbarControlRef.current);
+          searchbarControlRef.current = new SearchbarControl({
+            placeholder: t('searchbar.placeholder'),
+            setIsOpen: setIsSearchbarOpen,
+            setSearchQuery: setSearchQuery,
+          });
+          olMap.addControl(searchbarControlRef.current);
         }
 
         olMap.removeControl(layerControlRef.current);
@@ -258,6 +281,7 @@ const MapContainer: React.FC<MapProps> = (props) => {
   return (
     <>
       <div id="mapContainer" ref={mapElement}></div>
+      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />
       <LayerModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

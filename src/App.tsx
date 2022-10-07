@@ -84,9 +84,8 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route exact path="/vaylakortit">
-              <FairwayCards />
-            </Route>
+            <Route path="/vaylakortit/:id" component={FairwayCards} />
+            <Route exact path="/vaylakortit" component={FairwayCards} />
           </IonRouterOutlet>
         </ApolloProvider>
       </IonReactRouter>
