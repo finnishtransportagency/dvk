@@ -53,7 +53,6 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm ci',
               'npm run generate',
               'cd cdk && npm ci && npm run generate',
-              'export PUBLIC_IP=`npm run -s ip`',
               'cd .. && npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
               'cd squat && npm ci',

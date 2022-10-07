@@ -130,7 +130,6 @@ export class DvkPipeline extends Construct {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           ENVIRONMENT: { value: props.env },
-          PUBLIC_IP: { value: '0.0.0.0/0' },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
