@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonContent, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
-import './PilotPopupContent.css';
+import './popup.css';
 
 type PilotPopupContentProps = {
   pilotPlace?: PilotProperties;
