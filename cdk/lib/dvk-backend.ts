@@ -10,7 +10,6 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
-import { Peer, Port, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
