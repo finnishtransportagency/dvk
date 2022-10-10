@@ -1,6 +1,8 @@
+import { SimpleGeometry } from 'ol/geom';
 import Map from 'ol/Map';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
+import { MAP } from '../../utils/constants';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -26,8 +28,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         overlay.setPosition(undefined);
         return false;
       };
+      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
       setPopupProperties({
         pilot: {
+          coordinates: geom.getCoordinates() as number[],
           name: feature.getProperties().name,
           email: feature.getProperties().email,
           phoneNumber: feature.getProperties().phoneNumber,

@@ -62,12 +62,14 @@
   "popup": {
     "pilotPlace": {
       "header": "[en] Luotsauspiste {{val}}",
-      "email": "Email",
-      "fax": "Fax",
-      "phoneNumber": "Phone number",
-      "internet": "Internet",
+      "coordinates": "[en] Koordinaatit",
+      "contactDetails": "[en] Yhteystiedot",
+      "email": "[en] Email: {{val}}",
+      "fax": "[en] Fax: {{val}}",
+      "phoneNumber": "[en] Puhelin: {{val}}",
+      "internet": "[en] Internet: {{val}}",
       "journey": "[en] Luotsausmatka",
-      "extra": "Additional information"
+      "extra": "[en] Lisätieto"
     }
   }
 }

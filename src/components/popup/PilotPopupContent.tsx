@@ -3,12 +3,14 @@ import { IonCol, IonContent, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import './popup.css';
+import { toStringHDMS } from 'ol/coordinate';
 
 type PilotPopupContentProps = {
   pilotPlace?: PilotProperties;
 };
 
 export type PilotProperties = {
+  coordinates: number[];
   name: string;
   email?: string;
   phoneNumber?: string;
@@ -27,45 +29,36 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
         <IonRow>
           <IonCol className="header">{t('header', { val: pilotPlace?.name })}</IonCol>
         </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('coordinates')}</IonCol>
+        </IonRow>
+        {pilotPlace?.coordinates && (
+          <IonRow>
+            <IonCol>{toStringHDMS(pilotPlace.coordinates)}</IonCol>
+          </IonRow>
+        )}
+        <IonRow>
+          <IonCol className="header">{t('contactDetails')}</IonCol>
+        </IonRow>
         {pilotPlace?.email && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('email')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.email}</IonCol>
-            </IonRow>
-          </>
+          <IonRow>
+            <IonCol>{t('email', { val: pilotPlace?.email })}</IonCol>
+          </IonRow>
         )}
         {pilotPlace?.phoneNumber && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('phoneNumber')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.phoneNumber}</IonCol>
-            </IonRow>
-          </>
+          <IonRow>
+            <IonCol>{t('phoneNumber', { val: pilotPlace?.phoneNumber })}</IonCol>
+          </IonRow>
         )}
         {pilotPlace?.fax && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('fax')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.fax}</IonCol>
-            </IonRow>
-          </>
+          <IonRow>
+            <IonCol>{t('fax', { val: pilotPlace?.fax })}</IonCol>
+          </IonRow>
         )}
         {pilotPlace?.internet && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('internet')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.internet}</IonCol>
-            </IonRow>
-          </>
+          <IonRow>
+            <IonCol>{t('internet', { val: pilotPlace?.internet })}</IonCol>
+          </IonRow>
         )}
         {pilotPlace?.journey && (
           <>
