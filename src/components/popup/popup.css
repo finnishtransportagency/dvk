@@ -1,11 +1,4 @@
-#pilotPopupContent {
-  color: #333333;
-  font-size: 12px;
-  letter-spacing: 0;
-  line-height: 18px;
-}
-
-#pilotPopupContent .header {
+.ol-popup .header {
   font-weight: bold;
   letter-spacing: 0;
   line-height: 24px;
@@ -19,4 +12,8 @@
   top: -10px;
   left: 20px;
   min-width: 200px;
+  color: #333333;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
 }
