@@ -24,7 +24,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.pilotPlace' });
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
-    <IonContent id="pilotPopupContent" class="ion-padding">
+    <IonGrid id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">{t('header', { val: pilotPlace?.name })}</IonCol>
@@ -81,7 +81,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
           </>
         )}
       </IonGrid>
-    </IonContent>
+    </IonGrid>
   );
 };
 
