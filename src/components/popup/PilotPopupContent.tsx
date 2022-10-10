@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonContent, IonGrid, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import './popup.css';
