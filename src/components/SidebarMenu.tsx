@@ -1,4 +1,18 @@
-import { IonButtons, IonButton, IonContent, IonIcon, IonImg, IonMenu, IonGrid, IonRow, IonCol, IonLabel } from '@ionic/react';
+import {
+  IonButtons,
+  IonButton,
+  IonContent,
+  IonIcon,
+  IonImg,
+  IonMenu,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonLabel,
+  IonFooter,
+  IonToolbar,
+  IonTitle,
+} from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
@@ -49,6 +63,14 @@ const SidebarMenu: React.FC = () => {
           })}
         </IonGrid>
       </IonContent>
+
+      <IonFooter collapse="fade" className="small">
+        <IonToolbar>
+          <IonTitle size="small" slot="end">
+            <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+          </IonTitle>
+        </IonToolbar>
+      </IonFooter>
     </IonMenu>
   );
 };

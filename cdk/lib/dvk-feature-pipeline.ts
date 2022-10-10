@@ -19,10 +19,17 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import Config from './config';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, { stackName: 'DvkFeaturePipelineStack' });
+    super(scope, id, {
+      stackName: 'DvkFeaturePipelineStack',
+      env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: 'eu-west-1',
+      },
+    });
     const featureBucket = new Bucket(this, 'FeatureBucket', {
       bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
       publicReadAccess: false,
@@ -41,9 +48,11 @@ export class DvkFeaturePipelineStack extends Stack {
         ),
       ],
     };
+    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: 'DvkDev-VPC' });
     const gitHubSource = Source.gitHub(sourceProps);
     const project = new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
+      vpc,
       concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
@@ -53,7 +62,6 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm ci',
               'npm run generate',
               'cd cdk && npm ci && npm run generate',
-              'export PUBLIC_IP=`npm run -s ip`',
               'cd .. && npm run lint',
               'npm run test -- --coverage --reporters=jest-junit --passWithNoTests',
               'cd squat && npm ci',

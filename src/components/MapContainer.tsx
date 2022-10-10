@@ -24,18 +24,35 @@ import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 import PilotPopupContent, { PilotProperties } from './popup/PilotPopupContent';
 import { addPopup } from './popup/popup';
+import SearchbarControl from './SearchbarControl';
+import SearchbarDropdown from './searchbarDropdown';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
 };
 
-const MapContainer: React.FC = () => {
+interface MapProps {
+  hideMenu?: boolean;
+}
+
+const MapContainer: React.FC<MapProps> = (props) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
+
+  const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const searchbarControl = new SearchbarControl({
+    placeholder: t('searchbar.placeholder'),
+    setIsOpen: setIsSearchbarOpen,
+    setSearchQuery: setSearchQuery,
+  });
+  const searchbarControlRef = useRef<SearchbarControl>(searchbarControl);
+
   const layerControl = new LayerPopupControl({
     label: '',
     tipLabel: t('layer.tipLabel'),
@@ -112,7 +129,10 @@ const MapContainer: React.FC = () => {
       });
 
       olMap.addControl(centerToOwnLocationControl);
-      olMap.addControl(openSidebarMenuControl);
+      if (props.hideMenu !== true) {
+        olMap.addControl(openSidebarMenuControl);
+        olMap.addControl(searchbarControlRef.current);
+      }
       olMap.addControl(layerControlRef.current);
 
       i18n.on('languageChanged', () => {
@@ -132,12 +152,22 @@ const MapContainer: React.FC = () => {
         });
         olMap.addControl(centerToOwnLocationControl);
 
-        olMap.removeControl(openSidebarMenuControl);
-        openSidebarMenuControl = new OpenSidebarMenuControl({
-          label: '',
-          tipLabel: t('openMenu.tipLabel'),
-        });
-        olMap.addControl(openSidebarMenuControl);
+        if (props.hideMenu !== true) {
+          olMap.removeControl(openSidebarMenuControl);
+          openSidebarMenuControl = new OpenSidebarMenuControl({
+            label: '',
+            tipLabel: t('openMenu.tipLabel'),
+          });
+          olMap.addControl(openSidebarMenuControl);
+
+          olMap.removeControl(searchbarControlRef.current);
+          searchbarControlRef.current = new SearchbarControl({
+            placeholder: t('searchbar.placeholder'),
+            setIsOpen: setIsSearchbarOpen,
+            setSearchQuery: setSearchQuery,
+          });
+          olMap.addControl(searchbarControlRef.current);
+        }
 
         olMap.removeControl(layerControlRef.current);
         layerControlRef.current = new LayerPopupControl({
@@ -225,7 +255,7 @@ const MapContainer: React.FC = () => {
         map.updateSize();
       }, 100);
     }
-  }, [t, i18n, map, backgroundMapType]);
+  }, [t, i18n, map, backgroundMapType, props.hideMenu]);
 
   return (
     <>
@@ -234,6 +264,7 @@ const MapContainer: React.FC = () => {
           <div id="popup-content">{popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}</div>
         </div>
       </div>
+      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />
       <LayerModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

@@ -27,8 +27,7 @@
     "log:backend": "aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
     "datasync": "ts-node bin/datasync.ts -- --dbonly",
     "datas3sync": "ts-node bin/datasync.ts",
-    "setup": "ts-node bin/setup.ts",
-    "ip": "public-ip"
+    "setup": "ts-node bin/setup.ts"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.1",
@@ -63,7 +62,6 @@
     "constructs": "^10.1.115",
     "graphql": "^16.6.0",
     "pino": "^8.6.1",
-    "public-ip-cli": "^3.0.0",
     "source-map-support": "^0.5.21"
   }
 }

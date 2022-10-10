@@ -4,6 +4,10 @@ import { IonApp, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/re
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
 import Home from './pages/Home';
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import SidebarMenu from './components/SidebarMenu';
+import FairwayCards from './components/FairwayCards';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -23,9 +27,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import SidebarMenu from './components/SidebarMenu';
+import './theme/dvk.css';
 
 setupIonicReact();
 
@@ -82,6 +84,8 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Home />
             </Route>
+            <Route path="/vaylakortit/:id" component={FairwayCards} />
+            <Route exact path="/vaylakortit" component={FairwayCards} />
           </IonRouterOutlet>
         </ApolloProvider>
       </IonReactRouter>
