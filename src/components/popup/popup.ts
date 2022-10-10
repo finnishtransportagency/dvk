@@ -1,8 +1,10 @@
 import { SimpleGeometry } from 'ol/geom';
 import Map from 'ol/Map';
+import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
+import { pointerMove } from 'ol/events/condition';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -48,14 +50,11 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       overlay.setPosition(evt.coordinate);
     }
   });
-  map.on('pointermove', function (e) {
-    const pixel = map.getEventPixel(e.originalEvent);
-    const hit = map.hasFeatureAtPixel(pixel, {
-      layerFilter: (layer) => {
-        return layer.getProperties().id === 'pilot';
-      },
-    });
+  const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
+  pointerMoveSelect.on('select', (e) => {
+    const hit = e.selected.filter((f) => f.getProperties().type === 'pilot').length > 0;
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = hit ? 'pointer' : '';
   });
+  map.addInteraction(pointerMoveSelect);
 }
