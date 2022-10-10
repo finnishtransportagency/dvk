@@ -19,8 +19,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     overlay.setPosition(undefined);
     return false;
   };
+  map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
-    const coordinate = evt.coordinate;
     const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
       return f;
     });
@@ -45,10 +45,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           },
         },
       });
-      overlay.setPosition(coordinate);
+      overlay.setPosition(evt.coordinate);
     }
   });
-  map.addOverlay(overlay);
   map.on('pointermove', function (e) {
     const pixel = map.getEventPixel(e.originalEvent);
     const hit = map.hasFeatureAtPixel(pixel, {
