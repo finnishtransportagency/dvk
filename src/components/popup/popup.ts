@@ -15,6 +15,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       },
     },
   });
+  content.onclick = () => {
+    overlay.setPosition(undefined);
+    return false;
+  };
   map.on('singleclick', function (evt) {
     const coordinate = evt.coordinate;
     const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
@@ -24,10 +28,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return;
     }
     if (feature.getProperties().type === 'pilot') {
-      content.onclick = () => {
-        overlay.setPosition(undefined);
-        return false;
-      };
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
       setPopupProperties({
         pilot: {
