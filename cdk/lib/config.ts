@@ -14,16 +14,16 @@ class Config {
     return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) >= 0;
   }
 
-  static isPublicLoadBalancer() {
-    return ['dev', 'test', 'prod'].indexOf(Config.getEnvironment()) < 0;
-  }
-
   static isProductionEnvironment() {
     return 'prod' === Config.getEnvironment();
   }
 
   static isFeatureEnvironment() {
     return 'feature' === Config.getEnvironment();
+  }
+
+  static isDeveloperEnvironment() {
+    return ['dev', 'test', 'prod', 'feature'].indexOf(Config.getEnvironment()) < 0;
   }
 
   static getEnvironment(): string {
@@ -39,13 +39,6 @@ class Config {
 
   private static errorMessage(variable: string): string {
     return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
-  }
-
-  static getPublicIP(): string {
-    if (process.env.PUBLIC_IP) {
-      return process.env.PUBLIC_IP;
-    }
-    throw new Error(Config.errorMessage('PUBLIC_IP'));
   }
 
   public getStringParameter(parameterName: string): string {

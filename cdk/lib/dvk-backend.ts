@@ -10,7 +10,7 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
-import { Peer, Port, SecurityGroup, Vpc } from 'aws-cdk-lib/aws-ec2';
+import { Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
@@ -122,26 +122,16 @@ export class DvkBackendStack extends Stack {
 
   private createALB(env: string, fairwayCardTable: Table): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
-    let securityGroup: SecurityGroup | undefined = undefined;
-    if (Config.isPublicLoadBalancer()) {
-      securityGroup = new SecurityGroup(this, `DVKALBSecurityGroup-${env}`, { vpc });
-      securityGroup.addIngressRule(
-        Peer.ipv4(`${Config.getPublicIP() + (Config.getPublicIP().indexOf('/') === -1 ? '/32' : '')}`),
-        Port.tcp(80),
-        `Developer ip for ${env}`
-      );
-    }
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
-      internetFacing: Config.isPublicLoadBalancer(),
+      internetFacing: false,
       loadBalancerName: `DvkALB-${env}`,
-      securityGroup,
     });
     const httpListener = alb.addListener('HTTPListener', {
       port: 80,
       protocol: ApplicationProtocol.HTTP,
       defaultAction: ListenerAction.fixedResponse(404),
-      open: !Config.isPublicLoadBalancer(),
+      open: true,
     });
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
@@ -192,7 +182,7 @@ export class DvkBackendStack extends Stack {
     } else if (env === 'prod') {
       return 'DVKProd-VPC';
     } else {
-      return 'Default-VPC';
+      return 'DvkDev-VPC';
     }
   }
 }
