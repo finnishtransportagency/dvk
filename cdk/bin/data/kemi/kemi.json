@@ -55,6 +55,7 @@
   },
   "trafficService": {
     "pilot": {
+      "name": "Kemi S",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
       "fax": "+358295253012",

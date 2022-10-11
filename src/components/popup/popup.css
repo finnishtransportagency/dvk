@@ -1,0 +1,19 @@
+.ol-popup .header {
+  font-weight: bold;
+  letter-spacing: 0;
+  line-height: 24px;
+}
+
+.ol-popup {
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  min-width: 200px;
+  color: #333333;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: 18px;
+}

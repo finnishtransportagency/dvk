@@ -38,6 +38,7 @@ export type VTS = {
 };
 
 export type Pilot = {
+  name?: string;
   email?: string;
   phoneNumber?: string;
   fax?: string;

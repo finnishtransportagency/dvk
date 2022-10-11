@@ -23,9 +23,15 @@ import LayerModal from './LayerModal';
 import { addAPILayers } from './layers';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
+import PilotPopupContent, { PilotProperties } from './popup/PilotPopupContent';
+import { addPopup } from './popup/popup';
 import { createStringXY } from 'ol/coordinate';
 import SearchbarControl from './SearchbarControl';
 import SearchbarDropdown from './searchbarDropdown';
+
+export type PopupProperties = {
+  pilot?: PilotProperties;
+};
 
 interface MapProps {
   hideMenu?: boolean;
@@ -34,7 +40,7 @@ interface MapProps {
 const MapContainer: React.FC<MapProps> = (props) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
   const mapElement = useRef<HTMLDivElement>(null);
-
+  const [popupProps, setPopupProperties] = useState<PopupProperties>();
   const [map, setMap] = useState<Map | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<'land' | 'sea'>('sea');
@@ -200,6 +206,7 @@ const MapContainer: React.FC<MapProps> = (props) => {
       });
 
       addAPILayers(olMap);
+      addPopup(olMap, setPopupProperties);
       setMap(olMap);
     } else {
       // override with tileURL
@@ -280,7 +287,11 @@ const MapContainer: React.FC<MapProps> = (props) => {
 
   return (
     <>
-      <div id="mapContainer" ref={mapElement}></div>
+      <div id="mapContainer" ref={mapElement}>
+        <div id="popup" className="ol-popup">
+          <div id="popup-content">{popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}</div>
+        </div>
+      </div>
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />
       <LayerModal
         isOpen={isOpen}

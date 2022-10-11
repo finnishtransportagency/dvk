@@ -52,6 +52,7 @@ type VTS {
 }
 
 type Pilot {
+  name: String
   email: String
   phoneNumber: String
   fax: String

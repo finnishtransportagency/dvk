@@ -2,11 +2,12 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Style from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import { Circle as CircleStyle } from 'ol/style';
+import { Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
 import Map from 'ol/Map';
+import pilot_logo from '../theme/img/pilotPlace.svg';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
@@ -31,10 +32,8 @@ export function addVatuLayer(map: Map) {
 }
 
 export function addPilotLayer(map: Map) {
-  const image = new CircleStyle({
-    radius: 5,
-    fill: undefined,
-    stroke: new Stroke({ color: 'green', width: 1 }),
+  const image = new Icon({
+    src: pilot_logo,
   });
   const pilotStyleFunction = function () {
     return new Style({
@@ -48,6 +47,7 @@ export function addPilotLayer(map: Map) {
   const pilotLayer = new VectorLayer({
     source: pilotSource,
     style: pilotStyleFunction,
+    properties: { id: 'pilot' },
   });
   map.addLayer(pilotLayer);
 }
