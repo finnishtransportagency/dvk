@@ -32,6 +32,10 @@
             "seaButtonLabel": "Sea"
           }
         },
+        "mapDetails": {
+          "copyrightLabel": "National Land Survey of Finland &copy;2022",
+          "mousePositionLabel": "Mouse coordinates:"
+        },
         "searchbar": {
           "placeholder": "Search fairway by name",
           "no-search-results": "Search '{{query}}' did not match any fairway"

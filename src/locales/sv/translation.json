@@ -32,6 +32,10 @@
             "seaButtonLabel": "[sv] Meri"
           }
         },
+        "mapDetails": {
+          "copyrightLabel": "[sv] Maanmittauslaitos &copy;2022",
+          "mousePositionLabel": "[sv] Hiiren koordinaatti:"
+        },
         "searchbar": {
           "placeholder": "[sv] Hae väylän nimellä",
           "no-search-results": "[sv] Haulla '{{query}}' ei löydy yhtään väylää"
