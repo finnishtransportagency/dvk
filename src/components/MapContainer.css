@@ -133,6 +133,7 @@
   padding-left: 5px;
   padding-right: 10px;
   background: none;
+  min-width: 12em;
 }
 
 #mapContainer .mapDetailsControl .ol-scale-line {
