@@ -1,4 +1,5 @@
 import { ALBResult } from 'aws-lambda';
+import { getAllowOrigin } from '../environment';
 import { log } from '../logger';
 
 export const handler = async (): Promise<ALBResult> => {
@@ -7,7 +8,7 @@ export const handler = async (): Promise<ALBResult> => {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:3000',
+      'Access-Control-Allow-Origin': getAllowOrigin(),
       'Access-Control-Allow-Methods': '*',
       'Access-Control-Allow-Headers': '*',
     },
