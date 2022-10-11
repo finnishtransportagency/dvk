@@ -20,13 +20,21 @@ export function isProductionEnvironment() {
   return 'prod' === getEnvironment();
 }
 
+export function isFeatureEnvironment() {
+  return 'feature' === getEnvironment();
+}
+
+export function getAllowOrigin() {
+  return `http://localhost:${isFeatureEnvironment() ? '3001' : '3000'}`;
+}
+
 export function getHeaders(): Record<string, string> {
   if (isPermanentEnvironment()) {
     return { 'Content-Type': 'application/json' };
   }
   return {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Origin': getAllowOrigin(),
     'Access-Control-Allow-Methods': '*',
     'Access-Control-Allow-Headers': '*',
   };
