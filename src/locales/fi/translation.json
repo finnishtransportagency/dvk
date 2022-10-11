@@ -32,6 +32,10 @@
             "seaButtonLabel": "Meri"
           }
         },
+        "mapDetails": {
+          "copyrightLabel": "Maanmittauslaitos &copy;2022",
+          "mousePositionLabel": "Hiiren koordinaatti:"
+        },
         "searchbar": {
           "placeholder": "Hae väylän nimellä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"

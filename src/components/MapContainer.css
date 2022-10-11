@@ -104,3 +104,45 @@
   background-image: url('../theme/img/layersOpen.svg');
   background-size: 22px 22px;
 }
+
+#mapContainer .mapDetailsControl {
+  top: auto;
+  left: auto;
+  right: 0px;
+  bottom: 0px;
+  font-size: 10px;
+  color: #333333;
+}
+
+#mapContainer .mapDetailsControl .copyrightElem {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+#mapContainer .mapDetailsControl .mousePositionLabelElem {
+  padding-left: 5px;
+  padding-right: 0px;
+}
+
+#mapContainer .mapDetailsControl .ol-mouse-position {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: 0px;
+  padding-left: 5px;
+  padding-right: 10px;
+  background: none;
+  min-width: 12em;
+}
+
+#mapContainer .mapDetailsControl .ol-scale-line {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background: none;
+}
