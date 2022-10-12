@@ -1,21 +1,17 @@
 import React from 'react';
-import { IonContent, IonFooter, IonHeader, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonFooter, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
 
+export const showHeader = (): boolean => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const sh = urlParams.get('showHeader');
+  return sh && sh === 'false' ? false : true;
+};
+
 const Home: React.FC = () => {
-  const { t, i18n } = useTranslation();
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
-
-  const showHeader = (): boolean => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const sh = urlParams.get('showHeader');
-    return sh && sh === 'false' ? false : true;
-  };
+  const { t } = useTranslation();
 
   return (
     <IonPage>
@@ -23,11 +19,6 @@ const Home: React.FC = () => {
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>{t('homePage.header.title')}</IonTitle>
-            <IonSelect slot="end" value={i18n.language} className="ion-padding" onIonChange={(e) => changeLanguage(e.detail.value)}>
-              <IonSelectOption value="fi">fi</IonSelectOption>
-              <IonSelectOption value="sv">sv</IonSelectOption>
-              <IonSelectOption value="en">en</IonSelectOption>
-            </IonSelect>
           </IonToolbar>
         </IonHeader>
       )}
