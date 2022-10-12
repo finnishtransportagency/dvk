@@ -44,9 +44,10 @@
     }
   },
   "fairwayCards": {
-    "title_one": "[sv] Väyläkortti",
-    "title_other": "[sv] Väyläkortit",
-    "description": "[sv] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "title_one": "Farledskort",
+    "title_other": "Farledskort",
+    "description": "Farledskorten innehåller information för farledsanvändarna om farlederna och de hamnar de leder till. De kompletterar de farledsdata som sjökorten och andra publikationer innehåller. Farledskort har utarbetats över de farleder som leder till vinterhamnarna, m.a.o. största delen av huvudlederna för handelssjöfarten.",
+    "additionalDescription": "Ett farledskort består av ett kort med fakta om farledens dimensionering, navigerbarhet och navigeringsförhållanden, eventuella trafikrekommendationer och –begränsningar, isförhållanden samt trafikservice. I helheten ingår också ritningar över farleden och hamnen. Ritningarna får inte användas för navigation. De visar farledsdragningen och utmärkningen i stora drag, farledsområdet, de ramade djupen på de olika farledsavsnitten, kajplatserna och överlag de platser som det finns hänvisningar till i texten.",
     "search": "[sv] Hae väylän nimellä",
     "home": "[sv] Digitaalinen väyläkortti",
     "name": "[sv] Väyläkortin nimi",
@@ -54,7 +55,9 @@
     "modifiedDate": "{{val, datetime}}",
     "archipelagoSea": "[sv] Saaristomeri",
     "gulfOfFinland": "[sv] Suomenlahti",
-    "gulfOfBothnia": "[sv] Pohjanlahden alue"
+    "gulfOfBothnia": "[sv] Pohjanlahden alue",
+    "harboursTitle": "[sv] Väylän satamat",
+    "areasTitle": "[sv] Väylän alueet"
   },
   "appUpdateAlert": {
     "title": "[sv] Päivitys saatavilla",
