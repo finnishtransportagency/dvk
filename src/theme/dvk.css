@@ -51,6 +51,9 @@ ion-row.input-row > ion-col {
 .bottom-padding {
   padding-bottom: 10px;
 }
+.no-margin-bottom {
+  margin-bottom: 0;
+}
 
 .small-text {
   font-size: 14px;

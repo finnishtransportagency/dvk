@@ -1,16 +1,20 @@
-/* Split pane */
-#splitPane {
-  --side-width: 495px;
-  --side-max-width: 98%;
-  z-index: 999;
+/* Split pane by IonGrid */
+#fairwayContent {
+  width: 495px;
+  max-width: 495px;
+  flex: 0 0 495px;
+  transition: all 150ms;
 }
-#splitPane.wide {
-  --side-width: 814px;
+#fairwayContent.wide {
+  width: 814px;
+  max-width: 814px;
+  flex: 0 0 814px;
 }
 #fairwayPane {
-  display: flex !important;
-  flex-shrink: 0 !important;
   transition: width 150ms;
+}
+#splitPane > ion-row {
+  height: 100vh;
 }
 
 /* Buttons */
@@ -101,6 +105,9 @@ button.icon:focus-visible:hover {
   text-transform: uppercase;
   margin-top: 24px;
 }
+#fairwayCardsContainer ion-text h4 span {
+  text-transform: none;
+}
 
 /* Grid table */
 ion-grid.table {
@@ -118,6 +125,7 @@ ion-grid.table ion-row.header {
   font-weight: bold;
 }
 ion-grid.table ion-row > ion-col {
+  padding: 5px;
   border-right: 1px solid var(--ion-color-light);
 }
 ion-grid.table ion-row > ion-col:last-child {
@@ -134,4 +142,29 @@ ion-breadcrumb::part(native) {
 }
 ion-breadcrumb.ion-focusable::part(native) {
   text-decoration: underline;
+}
+
+/* Tabs */
+ion-segment.tabs {
+  border: 1px solid var(--ion-color-light);
+  border-width: 1px 0;
+  margin-top: 20px;
+}
+ion-segment.tabs ion-segment-button::part(native) {
+  font-size: 12px;
+  letter-spacing: normal;
+  color: var(--ion-color-dark);
+}
+ion-segment.tabs ion-segment-button::part(indicator) {
+  left: calc(50% - 20px);
+  width: 40px;
+  right: unset;
+  bottom: 8px;
+}
+ion-segment.tabs ion-segment-button.segment-button-checked::part(native) {
+  font-weight: bold;
+}
+ion-segment.tabs ion-label {
+  padding: 0;
+  margin: 0;
 }
