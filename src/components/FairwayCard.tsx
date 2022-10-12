@@ -29,10 +29,10 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
 };
 
 type Text = {
+  __typename?: 'Text';
   fi?: string | null;
   sv?: string | null;
   en?: string | null;
-  __typename?: string;
 };
 
 type ParagraphProps = {
