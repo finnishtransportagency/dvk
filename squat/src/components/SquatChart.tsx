@@ -23,23 +23,13 @@ const SquatChart: React.FC = () => {
   const [barrass, setBarrass] = useState(Array<[number, number]>);
 
   useEffect(() => {
-    const handleResize = () => {
-      let resize = true;
-      return () => {
-        if (resize) {
-          resize = false;
-          setTimeout(() => {
-            resize = true;
-            if (ref != null && ref.current != null) {
-              setWidth(ref.current.clientWidth);
-            }
-          }, 500);
-        }
-      };
-    };
-    window.addEventListener('resize', handleResize());
     if (ref != null && ref.current != null) {
       setWidth(ref.current.clientWidth);
+      new ResizeObserver(() => {
+        if (ref != null && ref.current != null) {
+          setWidth(ref.current.clientWidth);
+        }
+      }).observe(ref.current);
     }
   }, []);
 
@@ -393,8 +383,9 @@ const SquatChart: React.FC = () => {
         }
       }
     };
-
-    buildGraph();
+    if (width > 300) {
+      buildGraph();
+    }
   }, [state, width, t]);
 
   return (
