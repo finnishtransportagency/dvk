@@ -117,7 +117,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   const fairways = response.data as VaylaAPIModel[];
   return fairways.map((apiFairway) => {
     const fairway = fairwayMap.get(apiFairway.jnro);
-    log.debug('Fairway %d: %o', apiFairway.jnro, apiFairway);
+    log.debug('Fairway: %o', apiFairway);
     return {
       ...mapAPIModelToFairway(apiFairway),
       ...fairway,

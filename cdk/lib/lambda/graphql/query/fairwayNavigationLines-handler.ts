@@ -38,6 +38,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLin
     headers: await getVatuHeaders(),
   });
   const lines = response.data as NavigointiLinjaAPIModel[];
+  log.debug('lines: %d', lines.length);
   return lines.map((apiLine) => {
     const line: NavigationLine = {
       id: apiLine.id,
