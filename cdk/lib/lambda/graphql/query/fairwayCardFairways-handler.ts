@@ -5,6 +5,7 @@ import axios from 'axios';
 import { getVatuHeaders, getVatuUrl } from '../../environment';
 
 type MitoitusAlusAPIModel = {
+  alustyyppiKoodi: string;
   alustyyppi: string;
   pituus: number;
   leveys: number;
@@ -15,6 +16,7 @@ type MitoitusAlusAPIModel = {
 
 type LuokitusAPIModel = {
   luokitusTyyppi: string;
+  vaylaluokkaKoodi: string;
   vaylaluokka: string;
 };
 
@@ -22,8 +24,10 @@ type VaylaAPIModel = {
   jnro: number;
   nimiFI: string;
   nimiSV?: string;
+  vaylalajiKoodi?: string;
   vaylaLajiFI?: string;
   vaylaLajiSV?: string;
+  valaistusKoodi?: string;
   valaistusFI?: string;
   valaistusSV?: string;
   omistaja?: string;
@@ -58,6 +62,7 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
       normalWidth: apiModel.normaaliLeveys,
       reserveWater: apiModel.varavesi,
     },
+    typeCode: apiModel.vaylalajiKoodi,
     type: {
       fi: apiModel.vaylaLajiFI,
       sv: apiModel.vaylaLajiSV,
@@ -66,6 +71,7 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
       fi: apiModel.merialueFI,
       sv: apiModel.merialueSV,
     },
+    lightingCode: apiModel.valaistusKoodi,
     lighting: {
       fi: apiModel.valaistusFI,
       sv: apiModel.valaistusSV,
@@ -76,6 +82,7 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   };
   fairway.sizingVessels = apiModel.mitoitusalus?.map((vesselModel) => {
     return {
+      typeCode: vesselModel.alustyyppiKoodi,
       type: vesselModel.alustyyppi,
       draft: vesselModel.syvays,
       length: vesselModel.pituus,
@@ -87,6 +94,7 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   fairway.classifications = apiModel.luokitus?.map((classificationModel) => {
     return {
       type: classificationModel.luokitusTyyppi,
+      fairwayClassCode: classificationModel.vaylaluokkaKoodi,
       fairwayClass: classificationModel.vaylaluokka,
     };
   });
