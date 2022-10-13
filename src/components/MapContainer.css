@@ -112,6 +112,7 @@
   bottom: 0px;
   font-size: 10px;
   color: #333333;
+  background-color: rgba(255, 255, 255, 0.75);
 }
 
 #mapContainer .mapDetailsControl .copyrightElem {
@@ -133,7 +134,7 @@
   padding-left: 5px;
   padding-right: 10px;
   background: none;
-  min-width: 12em;
+  min-width: 13em;
 }
 
 #mapContainer .mapDetailsControl .ol-scale-line {
