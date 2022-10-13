@@ -13,6 +13,19 @@ query findFairwayCardById($id: String!) {
         sv
         en
       }
+      primary
+      startText
+      endText
+      lighting {
+        fi
+        sv
+        en
+      }
+      sizing {
+        minimumTurningCircle
+        minimumWidth
+        additionalInformation
+      }
       sizingVessels {
         type
         length

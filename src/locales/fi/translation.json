@@ -60,7 +60,11 @@
     "areasTitle": "Väylän alueet",
     "information": "Väylätiedot",
     "liningAndMarking": "Linjaus ja merkintä",
-    "dimensioningVessel": "Väylän mitoitusalus",
+    "starts": "Alkaa",
+    "ends": "päättyy",
+    "length": "Pituus",
+    "fairway": "Väylä",
+    "dimensioning": "Väylän mitoitusalus",
     "attention": "Huom.",
     "dimensioningInfo": "Väylän mitoitustiedot",
     "anchorage": "Ankkurointi- ym. erityisalueet",
@@ -83,15 +87,21 @@
     "fax": "faksi",
     "pilotPlace": "Luotsipaikka",
     "pilotageDistance": "Luotsausmatka",
-    "unitNm": "mpk",
-    "unitNmDescription_one": "meripeninkulma",
-    "unitNmDescription_other": "meripeninkulmaa",
     "tugs": "Hinaajat",
     "vts": "VTS",
     "vhf": "VHF-kanava",
     "and": " ja ",
     "harbours": "Satamat",
-    "commonInformation": "Väylän yleiset tiedot"
+    "commonInformation": "Väylän yleiset tiedot",
+    "unit": {
+      "nm": "mpk",
+      "nmDesc_one": "meripeninkulma",
+      "nmDesc_other": "meripeninkulmaa",
+      "mDesc_one": "metri",
+      "mDesc_other": "metriä",
+      "kmDesc_one": "kilometri",
+      "kmDesc_other": "kilometriä"
+    }
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",

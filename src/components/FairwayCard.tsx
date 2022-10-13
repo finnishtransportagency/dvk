@@ -68,6 +68,95 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) 
   );
 };
 
+type SizingVessel = {
+  __typename?: 'SizingVessel';
+  type?: string | null;
+  length?: number | null;
+  width?: number | null;
+  draft?: number | null;
+  size?: number | null;
+  bodyFactor?: number | null;
+};
+
+type FairwayProps = {
+  data?:
+    | ({
+        __typename?: 'Fairway';
+        name?: Text | null;
+        primary?: boolean | null;
+        startText?: string | null;
+        endText?: string | null;
+        lighting?: Text | null;
+        sizingVessels?: (SizingVessel | null)[] | null;
+      } | null)[]
+    | null;
+  lineText?: Text | null;
+};
+
+const LiningInfo: React.FC<FairwayProps> = ({ data, lineText }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  return (
+    <>
+      {data && (
+        <IonText>
+          <p>
+            <strong>{t('liningAndMarking')}: </strong>
+            {data.map((fairway, idx) => {
+              if (!fairway?.primary) return null;
+              return (
+                <span key={idx}>
+                  {t('starts')}: {fairway.startText}, {t('ends')}: {fairway.endText}. {lineText && lineText[lang]} {t('length')}: XX{' '}
+                  <span aria-label={t('unit.kmDesc', { count: 3 })}>km</span> / YY,y{' '}
+                  <span aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</span>. {t('fairway')}{' '}
+                  {fairway.lighting && fairway.lighting[lang]?.toLocaleLowerCase()}. &lt;Lateraalimerkintä/Kardinaalimerkintä&gt;
+                </span>
+              );
+            })}
+          </p>
+        </IonText>
+      )}
+    </>
+  );
+};
+
+const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+
+  return (
+    <>
+      {data && (
+        <IonText>
+          <p>
+            <strong>{t('dimensioning')}: </strong>
+            {data.map((fairway, idx) => {
+              if (!fairway?.primary) return null;
+              return (
+                <span key={idx}>
+                  {fairway &&
+                    fairway.sizingVessels?.map((vessel, jdx) => {
+                      return (
+                        <span key={jdx}>
+                          {vessel && (
+                            <>
+                              {vessel.type}: l = {vessel.length} <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b ={' '}
+                              {vessel.width} m, t = {vessel.draft} m{fairway.sizingVessels && fairway.sizingVessels?.length > jdx + 1 ? '; ' : '.'}
+                            </>
+                          )}
+                        </span>
+                      );
+                    })}
+                </span>
+              );
+            })}
+          </p>
+        </IonText>
+      )}
+    </>
+  );
+};
+
 type PilotInfoProps = {
   data?: {
     __typename?: 'Pilot';
@@ -111,8 +200,8 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             {data.pilotJourney && (
               <>
                 {t('pilotageDistance')}: {data.pilotJourney.toLocaleString()}{' '}
-                <span aria-label={t('unitNmDescription', { count: data.pilotJourney })} role="definition">
-                  {t('unitNm')}
+                <span aria-label={t('unit.nmDesc', { count: data.pilotJourney })} role="definition">
+                  {t('unit.nm')}
                 </span>
                 .
               </>
@@ -306,7 +395,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id }) => {
                   <strong>{t('information')}</strong>
                 </h4>
               </IonText>
-              <Paragraph title={t('liningAndMarking')} bodyText={data?.fairwayCard?.lineText || undefined} />
+              <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
+              <DimensionInfo data={data?.fairwayCard?.fairways} />
               <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
               <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
 
