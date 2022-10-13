@@ -25,11 +25,13 @@ const SquatChart: React.FC = () => {
   useEffect(() => {
     if (ref != null && ref.current != null) {
       setWidth(ref.current.clientWidth);
-      new ResizeObserver(() => {
-        if (ref != null && ref.current != null) {
-          setWidth(ref.current.clientWidth);
-        }
-      }).observe(ref.current);
+      if (window.ResizeObserver) {
+        new ResizeObserver(() => {
+          if (ref != null && ref.current != null) {
+            setWidth(ref.current.clientWidth);
+          }
+        }).observe(ref.current);
+      }
     }
   }, []);
 
