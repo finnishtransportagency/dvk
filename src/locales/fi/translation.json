@@ -67,6 +67,12 @@
     "fairwayDesignVessel_one": "Väylän mitoitusalus",
     "fairwayDesignVessel_other": "Väylän mitoitusalukset",
     "designVessel": "Mitoitusalus",
+    "fairwayDimensions": "Väylän mitoitustiedot",
+    "designDraft": "Mitoitussyväys",
+    "sweptDepths": "Haraussyvyydet",
+    "minimumWidth": "Minimileveys",
+    "minimumTurningCircle": "minimikaarresäde",
+    "designSpeed": "Mitoitusnopeus",
     "attention": "Huom.",
     "dimensioningInfo": "Väylän mitoitustiedot",
     "anchorage": "Ankkurointi- ym. erityisalueet",
@@ -102,7 +108,9 @@
       "mDesc_one": "metri",
       "mDesc_other": "metriä",
       "kmDesc_one": "kilometri",
-      "kmDesc_other": "kilometriä"
+      "kmDesc_other": "kilometriä",
+      "ktsDesc_one": "solmu",
+      "ktsDesc_other": "solmua"
     }
   },
   "appUpdateAlert": {

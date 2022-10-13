@@ -31,8 +31,6 @@ query findFairwayCardById($id: String!) {
         length
         width
         draft
-        size
-        bodyFactor
       }
     }
     lineText {

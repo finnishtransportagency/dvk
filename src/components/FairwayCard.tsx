@@ -68,14 +68,19 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) 
   );
 };
 
+type Sizing = {
+  __typename?: 'Sizing';
+  minimumTurningCircle?: number | null;
+  minimumWidth?: number | null;
+  additionalInformation?: string | null;
+};
+
 type SizingVessel = {
   __typename?: 'SizingVessel';
   type?: string | null;
   length?: number | null;
   width?: number | null;
   draft?: number | null;
-  size?: number | null;
-  bodyFactor?: number | null;
 };
 
 type FairwayProps = {
@@ -87,6 +92,7 @@ type FairwayProps = {
         startText?: string | null;
         endText?: string | null;
         lighting?: Text | null;
+        sizing?: Sizing | null;
         sizingVessels?: (SizingVessel | null)[] | null;
       } | null)[]
     | null;
@@ -108,7 +114,7 @@ const LiningInfo: React.FC<FairwayProps> = ({ data, lineText }) => {
               return (
                 <span key={idx}>
                   {t('starts')}: {fairway.startText}, {t('ends')}: {fairway.endText}. {lineText && lineText[lang]} {t('length')}: XX{' '}
-                  <span aria-label={t('unit.kmDesc', { count: 3 })}>km</span> / YY,y{' '}
+                  <span aria-label={t('unit.kmDesc', { count: 3 })}>km</span> / YY,Y{' '}
                   <span aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</span>. {t('fairway')}{' '}
                   {fairway.lighting && fairway.lighting[lang]?.toLocaleLowerCase()}. &lt;Lateraalimerkintä/Kardinaalimerkintä&gt;
                 </span>
@@ -131,23 +137,44 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
           {data.map((fairway, idx) => {
             if (!fairway?.primary || !fairway.sizingVessels) return null;
             return (
-              <p key={idx}>
-                <strong>{t('fairwayDesignVessel', { count: fairway.sizingVessels?.length || 1 })}: </strong>
-                {fairway &&
-                  fairway.sizingVessels?.map((vessel, jdx) => {
-                    return (
-                      <span key={jdx}>
-                        {vessel && (
-                          <>
-                            <br />
-                            {t('designVessel')} {jdx + 1}: {vessel.type} l = {vessel.length}{' '}
-                            <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b = {vessel.width} m, t = {vessel.draft} m.
-                          </>
-                        )}
-                      </span>
-                    );
-                  })}
-              </p>
+              <div key={idx}>
+                <p>
+                  <strong>{t('fairwayDesignVessel', { count: fairway.sizingVessels?.length || 1 })}: </strong>
+                  {fairway &&
+                    fairway.sizingVessels?.map((vessel, jdx) => {
+                      return (
+                        <span key={jdx}>
+                          {vessel && (
+                            <>
+                              <br />
+                              {t('designVessel')} {jdx + 1}: {vessel.type} l = {vessel.length}{' '}
+                              <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b = {vessel.width}{' '}
+                              <span aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</span>, t = {vessel.draft}{' '}
+                              <span aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</span>.
+                            </>
+                          )}
+                        </span>
+                      );
+                    })}
+                </p>
+                <p>
+                  <strong>{t('fairwayDimensions')}: </strong>
+                  {fairway && fairway.sizing && (
+                    <>
+                      {fairway.sizing.minimumWidth && t('designDraft')}: X <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>.{' '}
+                      {fairway.sizing.minimumWidth && t('sweptDepths')}: Y <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>.{' '}
+                      {fairway.sizing.minimumWidth && t('minimumWidth')}: {fairway.sizing.minimumWidth}{' '}
+                      <span aria-label={t('unit.mDesc', { count: Number(fairway.sizing.minimumWidth) })}>m</span>
+                      {t('and')}
+                      {t('minimumTurningCircle')}: {fairway.sizing.minimumTurningCircle}{' '}
+                      <span aria-label={t('unit.mDesc', { count: Number(fairway.sizing.minimumTurningCircle) })}>m</span>.{' '}
+                      {fairway.sizing.minimumTurningCircle && t('designSpeed')}: Z <span aria-label={t('unit.ktsDesc', { count: 0 })}>kts</span>.
+                      <br />
+                      {fairway.sizing.additionalInformation}
+                    </>
+                  )}
+                </p>
+              </div>
             );
           })}
         </IonText>
@@ -414,6 +441,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id }) => {
                   </strong>
                 </h4>
               </IonText>
+              {/* TODO: VATU:sta nopeusrajoitustiedot */}
               <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
               <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
               <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
