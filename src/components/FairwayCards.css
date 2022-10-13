@@ -4,6 +4,8 @@
   max-width: 495px;
   flex: 0 0 495px;
   transition: all 150ms;
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 #fairwayContent.wide {
   width: 814px;
