@@ -1,4 +1,4 @@
-import { Fn, Stack, StackProps, Tags } from 'aws-cdk-lib';
+import { Duration, Fn, Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -156,6 +156,7 @@ export class DvkBackendStack extends Stack {
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
+        timeout: Duration.seconds(30),
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),

@@ -6,7 +6,6 @@ type Query {
   fairwayCards: [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
-  navigationLines: [NavigationLine!]!
 }
 
 type FairwayCard {
@@ -158,7 +157,7 @@ type NavigationLine {
   type: String
   typeCode: String
   geometry: GeometryLine!
-  fairways: [NavigationLineFairway!]!
+  fairways: [NavigationLineFairway!]
 }
 
 type NavigationLineFairway {

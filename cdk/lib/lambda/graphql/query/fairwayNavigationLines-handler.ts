@@ -20,8 +20,8 @@ export type NavigointiLinjaAPIModel = {
   lisatieto?: string;
   tyyppiKoodi?: string;
   tyyppi?: string;
-  geometry: object;
-  vaylat: NavigointiLinjaVaylaAPIModel[];
+  geometria: object;
+  vayla: NavigointiLinjaVaylaAPIModel[];
 };
 
 type NavigointiLinjaVaylaAPIModel = {
@@ -52,10 +52,10 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLin
       additionalInformation: apiLine.lisatieto,
       type: apiLine.tyyppi,
       typeCode: apiLine.tyyppiKoodi,
-      geometry: apiLine.geometry,
+      geometry: apiLine.geometria,
       fairways: [],
     };
-    line.fairways = apiLine.vaylat.map((apiFairway) => {
+    line.fairways = apiLine.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
         status: apiFairway.status,

@@ -23,11 +23,6 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'navigationLines',
   },
   {
-    entry: path.join(__dirname, 'query/navigationLines-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'navigationLines',
-  },
-  {
     entry: path.join(__dirname, 'query/fairwayCardFairways-handler.ts'),
     typeName: 'FairwayCard',
     fieldName: 'fairways',

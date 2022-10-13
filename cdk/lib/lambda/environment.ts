@@ -30,13 +30,14 @@ export function getAllowOrigin() {
 
 export function getHeaders(): Record<string, string> {
   if (isPermanentEnvironment()) {
-    return { 'Content-Type': 'application/json' };
+    return { 'Content-Type': 'application/json', 'Content-Encoding': 'gzip' };
   }
   return {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': getAllowOrigin(),
     'Access-Control-Allow-Methods': '*',
     'Access-Control-Allow-Headers': '*',
+    'Content-Encoding': 'gzip',
   };
 }
 
