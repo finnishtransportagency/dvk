@@ -128,29 +128,28 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
     <>
       {data && (
         <IonText>
-          <p>
-            <strong>{t('dimensioning')}: </strong>
-            {data.map((fairway, idx) => {
-              if (!fairway?.primary) return null;
-              return (
-                <span key={idx}>
-                  {fairway &&
-                    fairway.sizingVessels?.map((vessel, jdx) => {
-                      return (
-                        <span key={jdx}>
-                          {vessel && (
-                            <>
-                              {vessel.type}: l = {vessel.length} <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b ={' '}
-                              {vessel.width} m, t = {vessel.draft} m{fairway.sizingVessels && fairway.sizingVessels?.length > jdx + 1 ? '; ' : '.'}
-                            </>
-                          )}
-                        </span>
-                      );
-                    })}
-                </span>
-              );
-            })}
-          </p>
+          {data.map((fairway, idx) => {
+            if (!fairway?.primary || !fairway.sizingVessels) return null;
+            return (
+              <p key={idx}>
+                <strong>{t('fairwayDesignVessel', { count: fairway.sizingVessels?.length || 1 })}: </strong>
+                {fairway &&
+                  fairway.sizingVessels?.map((vessel, jdx) => {
+                    return (
+                      <span key={jdx}>
+                        {vessel && (
+                          <>
+                            <br />
+                            {t('designVessel')} {jdx + 1}: {vessel.type} l = {vessel.length}{' '}
+                            <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b = {vessel.width} m, t = {vessel.draft} m.
+                          </>
+                        )}
+                      </span>
+                    );
+                  })}
+              </p>
+            );
+          })}
         </IonText>
       )}
     </>
