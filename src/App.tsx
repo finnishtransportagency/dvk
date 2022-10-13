@@ -44,10 +44,12 @@ const client = new ApolloClient({
 });
 
 const App: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
+
+  document.documentElement.lang = i18n.language;
 
   useEffect(() => {
     if (!updating) {
