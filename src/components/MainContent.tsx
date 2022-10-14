@@ -58,8 +58,8 @@ const MainContent: React.FC<MainContentProps> = ({ match, splitPane }) => {
                       </IonRow>
                     </IonGrid>
 
-                    {fairwayId && <FairwayCard id={fairwayId} />}
-                    {!fairwayId && <FairwayCards />}
+                    {fairwayId && <FairwayCard widePane={widePane} id={fairwayId} />}
+                    {!fairwayId && <FairwayCards widePane={widePane} />}
                   </IonContent>
                 </IonCol>
               )}

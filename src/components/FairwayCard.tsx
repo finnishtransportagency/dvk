@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { IonBreadcrumb, IonBreadcrumbs, IonLabel, IonSegment, IonSegmentButton, IonSkeletonText, IonText } from '@ionic/react';
+import {
+  IonBreadcrumb,
+  IonBreadcrumbs,
+  IonCol,
+  IonGrid,
+  IonLabel,
+  IonRow,
+  IonSegment,
+  IonSegmentButton,
+  IonSkeletonText,
+  IonText,
+} from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
 import { useFindFairwayCardByIdQuery } from '../graphql/generated';
@@ -338,9 +349,10 @@ const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
 
 type FairwayCardProps = {
   id: string;
+  widePane?: boolean;
 };
 
-const FairwayCard: React.FC<FairwayCardProps> = ({ id }) => {
+const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const [tab, setTab] = useState<string>('1');
   const lang = i18n.resolvedLanguage as Lang;
@@ -415,49 +427,55 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id }) => {
           </IonSegment>
 
           {tab === '1' && (
-            <>
-              <IonText>
-                <h4>
-                  <strong>{t('information')}</strong>
-                </h4>
-              </IonText>
-              <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
-              <DimensionInfo data={data?.fairwayCard?.fairways} />
-              <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
-              <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
+            <IonGrid className="ion-no-padding">
+              <IonRow>
+                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+                  <IonText>
+                    <h4>
+                      <strong>{t('information')}</strong>
+                    </h4>
+                  </IonText>
+                  <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
+                  <DimensionInfo data={data?.fairwayCard?.fairways} />
+                  <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
+                  <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
 
-              <IonText>
-                <h4>
-                  <strong>{t('navigation')}</strong>
-                </h4>
-              </IonText>
-              <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} />
-              <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} />
+                  <IonText>
+                    <h4>
+                      <strong>{t('navigation')}</strong>
+                    </h4>
+                  </IonText>
+                  <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} />
+                  <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} />
+                </IonCol>
 
-              <IonText>
-                <h4>
-                  <strong>
-                    {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
-                  </strong>
-                </h4>
-              </IonText>
-              {/* TODO: VATU:sta nopeusrajoitustiedot */}
-              <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
-              <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
-              <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
-              <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} />
-              <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} />
-              <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} />
+                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+                  <IonText>
+                    <h4>
+                      <strong>
+                        {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
+                      </strong>
+                    </h4>
+                  </IonText>
+                  {/* TODO: VATU:sta nopeusrajoitustiedot */}
+                  <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
+                  <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
+                  <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
+                  <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} />
+                  <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} />
+                  <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} />
 
-              <IonText>
-                <h4>
-                  <strong>{t('trafficServices')}</strong>
-                </h4>
-              </IonText>
-              <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
-              <VTSInfo data={data?.fairwayCard?.trafficService?.vts} />
-              <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
-            </>
+                  <IonText>
+                    <h4>
+                      <strong>{t('trafficServices')}</strong>
+                    </h4>
+                  </IonText>
+                  <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
+                  <VTSInfo data={data?.fairwayCard?.trafficService?.vts} />
+                  <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           )}
 
           {tab === '2' && (

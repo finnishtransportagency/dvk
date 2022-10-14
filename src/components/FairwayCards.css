@@ -68,6 +68,12 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-col.ion-margin-start {
   margin-inline-start: 22px;
 }
+#fairwayCardsContainer ion-col.wide:first-child {
+  padding-right: 24px;
+}
+#fairwayCardsContainer ion-col.wide:last-child {
+  padding-left: 24px;
+}
 #fairwayCardsContainer ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;
@@ -100,8 +106,8 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-text p {
   font-size: 12px;
   line-height: 18px;
+  margin-bottom: 0;
 }
-
 #fairwayCardsContainer ion-text h4 {
   font-size: 12px;
   text-transform: uppercase;

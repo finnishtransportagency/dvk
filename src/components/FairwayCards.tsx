@@ -48,7 +48,11 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
   );
 };
 
-const FairwayCards: React.FC = () => {
+type FairwayCardsProps = {
+  widePane?: boolean;
+};
+
+const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data, loading } = useFindAllFairwayCardsQuery();
 
@@ -69,16 +73,24 @@ const FairwayCards: React.FC = () => {
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
       </IonText>
-      <IonText>
-        <p>
-          <strong>{t('description')}</strong>
-        </p>
-        <p>{t('additionalDescription')}</p>
-      </IonText>
 
-      <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
-      <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-      <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+      <IonGrid className="ion-no-padding">
+        <IonRow>
+          <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+            <IonText>
+              <p>
+                <strong>{t('description')}</strong>
+              </p>
+              <p>{t('additionalDescription')}</p>
+            </IonText>
+            <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
+          </IonCol>
+          <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+            <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+            <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </>
   );
 };
