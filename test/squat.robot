@@ -106,6 +106,7 @@ ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}    //ion-label[@title = "Aluksen arvio
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
+	Change Squat Calculator Language To    SV	# Finnish selected and disabled by default, test it by changing to sv first
 	Change Squat Calculator Language To    FI
 	Check Labels In Finnish
 	Check Input Fields In General Section
