@@ -1,16 +1,22 @@
-/* Split pane */
-#splitPane {
-  --side-width: 495px;
-  --side-max-width: 98%;
-  z-index: 999;
+/* Split pane by IonGrid */
+#fairwayContent {
+  width: 495px;
+  max-width: 495px;
+  flex: 0 0 495px;
+  transition: all 150ms;
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
-#splitPane.wide {
-  --side-width: 814px;
+#fairwayContent.wide {
+  width: 814px;
+  max-width: 814px;
+  flex: 0 0 814px;
 }
 #fairwayPane {
-  display: flex !important;
-  flex-shrink: 0 !important;
   transition: width 150ms;
+}
+#splitPane > ion-row {
+  height: 100vh;
 }
 
 /* Buttons */
@@ -62,6 +68,12 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-col.ion-margin-start {
   margin-inline-start: 22px;
 }
+#fairwayCardsContainer ion-col.wide:first-child {
+  padding-right: 24px;
+}
+#fairwayCardsContainer ion-col.wide:last-child {
+  padding-left: 24px;
+}
 #fairwayCardsContainer ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;
@@ -94,12 +106,15 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-text p {
   font-size: 12px;
   line-height: 18px;
+  margin-bottom: 0;
 }
-
 #fairwayCardsContainer ion-text h4 {
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
+}
+#fairwayCardsContainer ion-text h4 span {
+  text-transform: none;
 }
 
 /* Grid table */
@@ -118,6 +133,7 @@ ion-grid.table ion-row.header {
   font-weight: bold;
 }
 ion-grid.table ion-row > ion-col {
+  padding: 5px;
   border-right: 1px solid var(--ion-color-light);
 }
 ion-grid.table ion-row > ion-col:last-child {
@@ -134,4 +150,29 @@ ion-breadcrumb::part(native) {
 }
 ion-breadcrumb.ion-focusable::part(native) {
   text-decoration: underline;
+}
+
+/* Tabs */
+ion-segment.tabs {
+  border: 1px solid var(--ion-color-light);
+  border-width: 1px 0;
+  margin-top: 20px;
+}
+ion-segment.tabs ion-segment-button::part(native) {
+  font-size: 12px;
+  letter-spacing: normal;
+  color: var(--ion-color-dark);
+}
+ion-segment.tabs ion-segment-button::part(indicator) {
+  left: calc(50% - 20px);
+  width: 40px;
+  right: unset;
+  bottom: 8px;
+}
+ion-segment.tabs ion-segment-button.segment-button-checked::part(native) {
+  font-weight: bold;
+}
+ion-segment.tabs ion-label {
+  padding: 0;
+  margin: 0;
 }

@@ -1,0 +1,158 @@
+query findFairwayCardById($id: String!) {
+  fairwayCard(id: $id) {
+    name {
+      fi
+      sv
+      en
+    }
+    group
+    modificationTimestamp
+    fairways {
+      name {
+        fi
+        sv
+        en
+      }
+      primary
+      startText
+      endText
+      lighting {
+        fi
+        sv
+        en
+      }
+      sizing {
+        minimumTurningCircle
+        minimumWidth
+        additionalInformation
+      }
+      sizingVessels {
+        type
+        length
+        width
+        draft
+      }
+    }
+    lineText {
+      fi
+      sv
+      en
+    }
+    anchorage {
+      fi
+      sv
+      en
+    }
+    navigationCondition {
+      fi
+      sv
+      en
+    }
+    iceCondition {
+      fi
+      sv
+      en
+    }
+    attention {
+      fi
+      sv
+      en
+    }
+    speedLimit {
+      fi
+      sv
+      en
+    }
+    visibility {
+      fi
+      sv
+      en
+    }
+    windGauge {
+      fi
+      sv
+      en
+    }
+    vesselRecommendation {
+      fi
+      sv
+      en
+    }
+    seaLevel {
+      fi
+      sv
+      en
+    }
+    windRecommendation {
+      fi
+      sv
+      en
+    }
+    trafficService {
+      pilot {
+        email
+        pilotJourney
+        extraInfo {
+          fi
+          sv
+          en
+        }
+        phoneNumber
+        fax
+        internet
+        geometry {
+          coordinates
+        }
+      }
+      vts {
+        name {
+          fi
+          sv
+          en
+        }
+        vhf
+        phoneNumber
+        email
+      }
+      tugs {
+        name {
+          fi
+          sv
+          en
+        }
+        email
+        phoneNumber
+        fax
+      }
+    }
+    harbors {
+      quays {
+        name {
+          fi
+          sv
+          en
+        }
+      }
+      name {
+        fi
+        sv
+        en
+      }
+      extraInfo {
+        fi
+        sv
+        en
+      }
+      harborBasin {
+        fi
+        sv
+        en
+      }
+      cargo {
+        fi
+        sv
+        en
+      }
+    }
+  }
+}

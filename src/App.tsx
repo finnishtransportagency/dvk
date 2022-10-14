@@ -3,11 +3,9 @@ import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
-import Home from './pages/Home';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import SidebarMenu from './components/SidebarMenu';
-import FairwayCards from './components/FairwayCards';
+import MainContent from './components/MainContent';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -46,10 +44,12 @@ const client = new ApolloClient({
 });
 
 const App: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
+
+  document.documentElement.lang = i18n.language;
 
   useEffect(() => {
     if (!updating) {
@@ -79,13 +79,10 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <ApolloProvider client={client}>
-          <SidebarMenu />
-          <IonRouterOutlet id="MainContent">
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route path="/vaylakortit/:id" component={FairwayCards} />
-            <Route exact path="/vaylakortit" component={FairwayCards} />
+          <IonRouterOutlet>
+            <Route exact path="/" component={MainContent} />
+            <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+            <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
           </IonRouterOutlet>
         </ApolloProvider>
       </IonReactRouter>
