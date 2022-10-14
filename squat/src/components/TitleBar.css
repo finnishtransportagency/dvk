@@ -1,0 +1,12 @@
+.logo {
+  width: 110px;
+}
+ion-button.languageSelection {
+  font-size: 16px;
+  text-transform: none;
+  --background-hover: unset;
+}
+ion-button.button-disabled {
+  opacity: 1;
+  color: var(--ion-color-base);
+}

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText, IonTextarea, IonToast } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonImg, IonItem, IonRow, IonText, IonTextarea, IonToast } from '@ionic/react';
 import { checkmarkCircleOutline, clipboardOutline, printOutline, shareSocialOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import Modal from './Modal';
 import { copyToClipboard, createShareableLink } from '../utils/helpers';
 import { useSquatContext } from '../hooks/squatContext';
+import './TitleBar.css';
+import LanguageBar from './LanguageBar';
+import { showHeader } from '../pages/Home';
 
 const TitleBar: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
@@ -20,17 +23,22 @@ const TitleBar: React.FC = () => {
   return (
     <IonGrid className="titlebar">
       <IonRow>
-        <IonCol>
+        <IonCol class="ion-align-self-center">
           <IonText color="dark" className="equal-margin-top">
             <h1>
               <strong>{t('squat.content')}</strong>
             </h1>
           </IonText>
         </IonCol>
+        {showHeader() && (
+          <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }}>
+            <LanguageBar />
+          </IonCol>
+        )}
         <IonCol size="auto" className="ion-align-self-center">
           <IonGrid>
             <IonRow>
-              <IonCol>
+              <IonCol class="ion-align-self-center">
                 <Modal
                   title={t('header.shareable-link-title')}
                   content={
@@ -65,13 +73,7 @@ const TitleBar: React.FC = () => {
                   triggerTitle={t('header.shareable-link-title')}
                 />
               </IonCol>
-              {/*<IonCol>
-                <IonIcon icon={downloadOutline} color="medium" size="large" />
-              </IonCol>
-              <IonCol>
-                <IonIcon icon={downloadOutline} color="medium" size="large" className="flipped" />
-                </IonCol>*/}
-              <IonCol>
+              <IonCol class="ion-align-self-center">
                 <IonButton
                   fill="clear"
                   className="icon-only"
@@ -82,6 +84,9 @@ const TitleBar: React.FC = () => {
                 >
                   <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
                 </IonButton>
+              </IonCol>
+              <IonCol class="ion-align-self-center">
+                <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
               </IonCol>
             </IonRow>
           </IonGrid>
