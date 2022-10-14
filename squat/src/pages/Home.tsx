@@ -15,13 +15,6 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
-      {showHeader() && (
-        <IonHeader>
-          <IonToolbar color="primary">
-            <IonTitle>{t('homePage.header.title')}</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-      )}
       <IonContent>
         <Squat />
         <SquatChart />
