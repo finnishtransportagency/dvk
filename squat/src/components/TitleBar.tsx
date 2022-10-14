@@ -7,7 +7,7 @@ import { copyToClipboard, createShareableLink } from '../utils/helpers';
 import { useSquatContext } from '../hooks/squatContext';
 import './TitleBar.css';
 import LanguageBar from './LanguageBar';
-import { showHeader } from '../pages/Home';
+import { showLanguages } from '../pages/Home';
 
 const TitleBar: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
@@ -30,7 +30,7 @@ const TitleBar: React.FC = () => {
             </h1>
           </IonText>
         </IonCol>
-        {showHeader() && (
+        {showLanguages() && (
           <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }}>
             <LanguageBar />
           </IonCol>

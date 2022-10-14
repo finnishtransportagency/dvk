@@ -21,7 +21,7 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
   // Get current base url (use given if available)
   const urlParams = new URLSearchParams(window.location.search);
   const baseURL = urlParams.get('baseURL');
-  const showHeader = urlParams.get('showHeader');
+  const showLanguages = urlParams.get('showLanguages');
   const currentURL = useBaseURL && baseURL ? baseURL : window.location.href.split('?')[0];
 
   // Build query string based on current state
@@ -72,7 +72,7 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
     return param && param?.length > 0 ? true : false;
   });
 
-  if (showHeader && !useBaseURL) parametres.push('showHeader=' + showHeader);
+  if (showLanguages && !useBaseURL) parametres.push('showLanguages=' + showLanguages);
   if (baseURL && !useBaseURL) parametres.push('baseURL=' + baseURL);
   return currentURL + (parametres.length ? '?' + parametres.join('&') : '');
 };
