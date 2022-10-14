@@ -13,6 +13,7 @@ const LanguageBar: React.FC = () => {
       <IonRow>
         <IonCol>
           <IonButton
+            id="language_fi"
             className="languageSelection"
             fill="clear"
             onClick={(e) => {
@@ -24,6 +25,7 @@ const LanguageBar: React.FC = () => {
             Suomi
           </IonButton>
           <IonButton
+            id="language_sv"
             className="languageSelection"
             fill="clear"
             onClick={(e) => {
@@ -35,6 +37,7 @@ const LanguageBar: React.FC = () => {
             Svenska
           </IonButton>
           <IonButton
+            id="language_en"
             className="languageSelection"
             fill="clear"
             onClick={(e) => {

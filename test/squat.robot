@@ -9,12 +9,9 @@ ${BROWSER}    headlesschrome
 #Language selection locators
 ${LANGUAGE_SELECT_BUTTON}    //ion-select[@class = "ion-padding md"]
 ${OK_BUTTON}    //span[text() = "OK"]
-${FI_RADIO_BUTTON}    //div[text() = "fi"]/preceding-sibling::div
-${SV_RADIO_BUTTON}    //div[text() = "sv"]/preceding-sibling::div
-${EN_RADIO_BUTTON}    //div[text() = "en"]/preceding-sibling::div
-${FI_LANGUAGE_SELECTED_LABEL}    //ion-select[@value = "fi"]
-${SV_LANGUAGE_SELECTED_LABEL}    //ion-select[@value = "sv"]
-${EN_LANGUAGE_SELECTED_LABEL}    //ion-select[@value = "en"]
+${FI_BUTTON}	//ion-button[@id="language_fi"]
+${SV_BUTTON}	//ion-button[@id="language_sv"]
+${EN_BUTTON}	//ion-button[@id="language_en"]
 
 #Squat-calculator locators in Finnish language
 ${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
@@ -158,13 +155,7 @@ Calculate Squat
 *** Keywords ***
 Change Squat Calculator Language To
 	[Arguments]    ${language}
-	Click Element    ${LANGUAGE_SELECT_BUTTON}
-	Wait Until Page Contains Element    ${${language}_RADIO_BUTTON}
-	Click Element    ${${language}_RADIO_BUTTON}
-	Sleep    2 seconds
-	Click Element    ${OK_BUTTON}
-	Wait Until Page Contains Element    ${${language}_LANGUAGE_SELECTED_LABEL}
-	Page Should Contain Element    ${${language}_LANGUAGE_SELECTED_LABEL}
+	Click Element    ${${language}_BUTTON}
 
 Check Labels In Finnish
 	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
@@ -174,6 +165,24 @@ Check Labels In Finnish
 	Element Should Contain    ${LASKENTA_HEADER}    Laskenta
 	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
 	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
+
+Check Labels In Swedish
+	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Squat beräkning
+	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Fartygets basuppgifter
+	Element Should Contain    ${YMPARISTO_HEADER}    Omgivning
+	Scroll Element Into View    ${LASKENTA_HEADER}
+	Element Should Contain    ${LASKENTA_HEADER}    Beräkning
+	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
+	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Fartygets Squat i samband med fart
+
+Check Labels In English
+	# Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
+	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Vessel
+	Element Should Contain    ${YMPARISTO_HEADER}    Environment
+	Scroll Element Into View    ${LASKENTA_HEADER}
+	Element Should Contain    ${LASKENTA_HEADER}    Calculations
+	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
+	# Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
