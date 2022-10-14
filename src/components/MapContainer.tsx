@@ -25,9 +25,9 @@ import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 import PilotPopupContent, { PilotProperties } from './popup/PilotPopupContent';
 import { addPopup } from './popup/popup';
-import { createStringXY } from 'ol/coordinate';
 import SearchbarControl from './SearchbarControl';
 import SearchbarDropdown from './searchbarDropdown';
+import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -153,7 +153,7 @@ const MapContainer: React.FC<MapProps> = (props) => {
 
       olMap.addControl(
         new MousePosition({
-          coordinateFormat: createStringXY(5),
+          coordinateFormat: coordinatesToStringHDM,
           projection: 'EPSG:4326',
           target: mapDetailsControl.getMousePositionElement(),
         })
