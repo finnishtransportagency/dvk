@@ -12,9 +12,9 @@ import CircleStyle from 'ol/style/Circle';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export function addVatuLayer(map: Map) {
+export function addVatuLayer(map: Map, queryString: string, id: string) {
   const vatuSource = new VectorSource({
-    url: url + '?type=line,area',
+    url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
   });
   const styleFunction = function (feature: FeatureLike) {
@@ -28,6 +28,7 @@ export function addVatuLayer(map: Map) {
   const vatuLayer = new VectorLayer({
     source: vatuSource,
     style: styleFunction,
+    properties: { id },
   });
   map.addLayer(vatuLayer);
 }
@@ -62,6 +63,10 @@ export function addPilotLayer(map: Map) {
 }
 
 export function addAPILayers(map: Map) {
-  addVatuLayer(map);
+  addVatuLayer(map, '?type=area', 'area');
+  addVatuLayer(map, '?type=line&vaylaluokka=1', 'line1');
+  addVatuLayer(map, '?type=line&vaylaluokka=2', 'line2');
+  addVatuLayer(map, '?type=line&vaylaluokka=3', 'line3');
+  addVatuLayer(map, '?type=line&vaylaluokka=4', 'line4');
   addPilotLayer(map);
 }

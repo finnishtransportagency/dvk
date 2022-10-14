@@ -6,7 +6,6 @@ type Query {
   fairwayCards: [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
-  navigationLines: [NavigationLine!]!
 }
 
 type FairwayCard {
@@ -93,7 +92,9 @@ type Fairway {
   primary: Boolean
   startText: String
   endText: String
+  lightingCode: String
   lighting: Text
+  typeCode: String
   type: Text
   owner: String
   area: Text
@@ -107,6 +108,7 @@ type Fairway {
 
 type Classification {
   type: String
+  fairwayClassCode: String
   fairwayClass: String
 }
 
@@ -122,6 +124,7 @@ type Area {
 }
 
 type SizingVessel {
+  typeCode: String
   type: String
   length: Float
   width: Float
@@ -142,14 +145,28 @@ type Sizing {
 
 type NavigationLine {
   id: Int!
-  fairwayId: Int!
-  length: Float
   depth: Float
   draft: Float
-  type: Int
-  qualityClass: Int
+  referenceLevel: String
+  n2000depth: Float
+  n2000draft: Float
+  n2000ReferenceLevel: String
   direction: Float
-  geometry: Geometry
+  length: Float
+  owner: String
+  verificationDate: String
+  journalNumber: String
+  additionalInformation: String
+  type: String
+  typeCode: String
+  geometry: GeometryLine!
+  fairways: [NavigationLineFairway!]
+}
+
+type NavigationLineFairway {
+  fairwayId: Int!
+  status: Int
+  line: Int
 }
 
 type Geometry {
@@ -158,9 +175,13 @@ type Geometry {
   coordinates: [[Float]]
 }
 
+type GeometryLine {
+  type: String
+  coordinates: [[Float]]
+}
+
 type GeometryPoint {
   type: String
-  bbox: [Float]
   coordinates: [Float]
 }
 
