@@ -16,7 +16,7 @@ beforeAll(() => {
 
   const location = {
     ...window.location,
-    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10.1&showBarrass=true&showHeader=true',
+    search: '?baseURL=' + baseURL + '&profileSelected=9&GM=0&fairwayForm=-2&channelWidth=10.1&showBarrass=true&showLanguages=true',
   };
   Object.defineProperty(window, 'location', {
     writable: true,
