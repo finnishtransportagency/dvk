@@ -269,7 +269,6 @@ const Vessel: React.FC = () => {
                 actionType="vessel-detailed"
                 required
                 translateOptions
-                columnSize="3"
               />
             </IonCol>
             <IonCol size="6"></IonCol>
