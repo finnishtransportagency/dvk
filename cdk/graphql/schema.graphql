@@ -153,6 +153,9 @@ type NavigationLine {
   n2000ReferenceLevel: String
   direction: Float
   length: Float
+  owner: String
+  verificationDate: String
+  journalNumber: String
   additionalInformation: String
   type: String
   typeCode: String
