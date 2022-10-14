@@ -147,10 +147,10 @@ type NavigationLine {
   id: Int!
   depth: Float
   draft: Float
-  qualityClass: String
+  referenceLevel: String
   n2000depth: Float
   n2000draft: Float
-  n2000QualityClass: String
+  n2000ReferenceLevel: String
   direction: Float
   length: Float
   additionalInformation: String
