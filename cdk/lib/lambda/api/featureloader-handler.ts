@@ -50,13 +50,18 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   }
   if (types.includes('area')) {
     const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
-    const url = `${await getVatuUrl()}/vaylaalueet?bbox=18,55,32,70&vaylaluokka=${fairwayClass}`;
+    const url = `${await getVatuUrl()}/vaylaalueet`;
     log.debug('url: %s', url);
     const response = await axios.get(url, {
       headers: await getVatuHeaders(),
+      params: {
+        bbox: '20,59,21,60',
+        vaylaluokka: fairwayClass,
+      },
     });
     const areas = response.data as AlueAPIModel[];
     log.debug('areas: %d', areas.length);
+    log.debug('area: %o', areas[0]);
     for (const area of areas) {
       features.push({
         type: 'Feature',
