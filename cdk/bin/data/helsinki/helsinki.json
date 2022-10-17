@@ -57,6 +57,7 @@
   },
   "trafficService": {
     "pilot": {
+      "id": 27,
       "name": "Helsinki N",
       "email": "pilotorder.south@finnpilot.fi",
       "phoneNumber": "+358400907977",

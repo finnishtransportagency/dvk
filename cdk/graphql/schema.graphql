@@ -16,6 +16,7 @@ type FairwayCard {
   fairwayIds: String
   fairways: [Fairway!]!
   lineText: Text
+  generalInfo: Text
   anchorage: [Text]
   navigationCondition: Text
   iceCondition: Text

@@ -18,6 +18,11 @@
       "en": ""
     }
   ],
+  "generalInfo": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
   "navigationCondition": {
     "fi": "",
     "sv": "",
@@ -67,6 +72,7 @@
   },
   "trafficService": {
     "pilot": {
+      "id": 0,
       "name": "",
       "email": "",
       "phoneNumber": "",

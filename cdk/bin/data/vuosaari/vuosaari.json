@@ -57,6 +57,7 @@
   },
   "trafficService": {
     "pilot": {
+      "id": 28,
       "name": "Vuosaari",
       "email": "pilotorder.south@finnpilot.fi",
       "phoneNumber": "+358207546151",

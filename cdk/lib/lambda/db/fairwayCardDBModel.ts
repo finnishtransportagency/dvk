@@ -38,6 +38,7 @@ export type VTS = {
 };
 
 export type Pilot = {
+  id: number;
   name?: string;
   email?: string;
   phoneNumber?: string;
@@ -46,6 +47,7 @@ export type Pilot = {
   geometry?: GeometryPoint;
   pilotJourney?: number;
   extraInfo?: Text;
+  fairwayCardIds?: string[];
 };
 
 export type Harbor = {
@@ -90,6 +92,8 @@ class FairwayCardDBModel {
   fairwayIds?: string;
 
   lineText?: Text;
+
+  generalInfo?: Text;
 
   anchorage?: Text[];
 

@@ -47,6 +47,7 @@
   },
   "trafficService": {
     "pilot": {
+      "id": 20,
       "name": "Utö",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",

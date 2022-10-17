@@ -40,6 +40,7 @@
   },
   "trafficService": {
     "pilot": {
+      "id": 16,
       "name": "Isokari NW",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
