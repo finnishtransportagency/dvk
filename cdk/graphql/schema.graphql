@@ -112,15 +112,40 @@ type Classification {
   fairwayClass: String
 }
 
-type Area {
-  id: Int!
-  geometry: Geometry
+type AreaFairway {
+  fairwayId: Int!
+  status: Int
+  line: Int
   sizingSpeed: Float
   sizingSpeed2: Float
+}
+
+type Area {
+  id: Int!
+  name: String
   depth: Float
   draft: Float
-  qualityClass: Int
-  type: Int
+  referenceLevel: String
+  n2000depth: Float
+  n2000draft: Float
+  n2000ReferenceLevel: String
+  direction: Float
+  journalNumber: String
+  verificationDate: String
+  owner: String
+  additionalInformation: String
+  typeCode: String
+  type: String
+  notationCode: Float
+  notation: String
+  operationStatusCode: Float
+  operationStatus: String
+  operationTypeCode: Float
+  operationType: String
+  operationDirectionCode: Float
+  operationDirection: String
+  fairways: [AreaFairway!]
+  geometry: GeometryPolygon
 }
 
 type SizingVessel {
@@ -169,10 +194,9 @@ type NavigationLineFairway {
   line: Int
 }
 
-type Geometry {
+type GeometryPolygon {
   type: String
-  bbox: [Float]
-  coordinates: [[Float]]
+  coordinates: [[[Float]]]
 }
 
 type GeometryLine {

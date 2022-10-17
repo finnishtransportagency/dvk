@@ -2,11 +2,11 @@ import { ALBEvent, ALBResult } from 'aws-lambda';
 import { getHeaders, getVatuHeaders, getVatuUrl } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import { vuosaariarea } from './sample/areas.json';
 import FairwayCardDBModel from '../db/fairwayCardDBModel';
 import axios from 'axios';
 import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
 import { gzip } from 'zlib';
+import { AlueAPIModel } from '../graphql/query/fairwayAreas-handler';
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -49,8 +49,36 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     });
   }
   if (types.includes('area')) {
-    for (const area of vuosaariarea) {
-      features.push({ type: 'Feature', geometry: area.geometry as Geometry, properties: { id: area.id, fairwayId: area.jnro } });
+    const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+    const url = `${await getVatuUrl()}/vaylaalueet?bbox=18,55,32,70&vaylaluokka=${fairwayClass}`;
+    log.debug('url: %s', url);
+    const response = await axios.get(url, {
+      headers: await getVatuHeaders(),
+    });
+    const areas = response.data as AlueAPIModel[];
+    log.debug('areas: %d', areas.length);
+    for (const area of areas) {
+      features.push({
+        type: 'Feature',
+        geometry: area.geometria as Geometry,
+        properties: {
+          id: area.id,
+          name: area.nimi,
+          draft: area.harausSyvyys,
+          depth: area.mitoitusSyvays,
+          n2000depth: area.n2000MitoitusSyvays,
+          n2000draft: area.n2000HarausSyvyys,
+          fairways: area.vayla?.map((v) => {
+            return {
+              fairwayId: v.jnro,
+              status: v.status,
+              line: v.linjaus,
+              sizingSpeed: v.mitoitusNopeus,
+              sizingSpeed2: v.mitoitusNopeus2,
+            };
+          }),
+        },
+      });
     }
   }
   if (types.includes('line')) {

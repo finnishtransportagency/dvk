@@ -104,7 +104,7 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], FairwayCard> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard>
 ): Promise<Fairway[]> => {
-  log.info(`fairwayCard(${event.source.id})`);
+  log.info(`fairwayCardFairways(${event.source.id})`);
   const fairwayMap = new Map<number, Fairway>();
   event.source.fairways.forEach((f) => {
     fairwayMap.set(f.id, f);
