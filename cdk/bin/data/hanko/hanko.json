@@ -11,11 +11,13 @@
     "sv": "2 farledslinjer, utmärkta med enstavlor.",
     "en": "2 navigation lines, marked by boards."
   },
-  "anchorage": {
-    "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
-    "sv": "NO om Gustavsvärns sektorfyr i närheten av farleden.",
-    "en": "NW of the Gustavsvärn sector light in the vicinity of the fairway."
-  },
+  "anchorage": [
+    {
+      "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
+      "sv": "NO om Gustavsvärns sektorfyr i närheten av farleden.",
+      "en": "NW of the Gustavsvärn sector light in the vicinity of the fairway."
+    }
+  ],
   "iceCondition": {
     "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite.",
     "sv": " Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke.",
