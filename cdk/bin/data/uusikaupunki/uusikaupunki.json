@@ -40,22 +40,26 @@
   },
   "trafficService": {
     "pilot": {
-      "id": 16,
-      "name": "Isokari NW",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
       "fax": "+358295353012",
       "internet": "https://www.pilotorder.fi",
-      "pilotJourney": 23,
       "extraInfo": {
         "fi": "Huom. kovilla lännenpuoleisilla tuulilla luotsipaikka on sovittava erikseen.",
         "sv": "Anm. Vid hård V vind bör man komma överens om platsen där lots möter.",
         "en": "NB. Pilot boarding position to be agreed upon in strong W winds."
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [20.905, 60.735]
-      }
+      "places": [
+        {
+          "id": 16,
+          "name": "Isokari NW",
+          "pilotJourney": 23,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [20.905, 60.735]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {

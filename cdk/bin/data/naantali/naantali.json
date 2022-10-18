@@ -47,22 +47,26 @@
   },
   "trafficService": {
     "pilot": {
-      "id": 20,
-      "name": "Utö",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
       "fax": "+358295253012",
       "internet": "https://www.pilotorder.fi",
-      "pilotJourney": 65,
       "extraInfo": {
         "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen. Luotsia seuraa yleensä avustava luotsi turvallisuussyistä.",
         "sv": "Obs. Vintertid och vid dåligt väder ska platsen där lots möter särskilt överenskommas. En annan lots bistår i allmänheten lotsen av säkerhetsskäl.",
         "en": "Note: During the winter season and by bad weather the pilot boarding position must be agreed on separately. Generally there is also, for safety reasons, another pilot assisting."
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [21.348333, 59.741667]
-      }
+      "places": [
+        {
+          "id": 20,
+          "name": "Utö",
+          "pilotJourney": 65,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [21.348333, 59.741667]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {

@@ -72,22 +72,26 @@
   },
   "trafficService": {
     "pilot": {
-      "id": 0,
-      "name": "",
       "email": "",
       "phoneNumber": "",
       "fax": "",
       "internet": "",
-      "pilotJourney": 0,
       "extraInfo": {
         "fi": "",
         "sv": "",
         "en": ""
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": []
-      }
+      "places": [
+        {
+          "id": 0,
+          "name": "",
+          "pilotJourney": 0,
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        }
+      ]
     },
     "vts": {
       "name": {

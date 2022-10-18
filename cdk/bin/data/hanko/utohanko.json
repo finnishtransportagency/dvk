@@ -40,8 +40,6 @@
   },
   "trafficService": {
     "pilot": {
-      "id": 20,
-      "name": "Utö",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358207546153",
       "fax": "+358207546163",
@@ -51,10 +49,16 @@
         "sv": "Anm. Vintertid eller vid dåligt väder bör platsen där lots möter överenskommas.",
         "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions."
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [21.348333, 59.741667]
-      }
+      "places": [
+        {
+          "id": 20,
+          "name": "Utö",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [21.348333, 59.741667]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {

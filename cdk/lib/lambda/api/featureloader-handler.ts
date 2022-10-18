@@ -3,7 +3,7 @@ import { getHeaders, getVatuHeaders, getVatuUrl } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { vuosaariarea } from './sample/areas.json';
-import FairwayCardDBModel, { Pilot } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
 import axios from 'axios';
 import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
 import { gzip } from 'zlib';
@@ -22,33 +22,28 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const pilotMap = new Map<number, Pilot>();
+  const placeMap = new Map<number, PilotPlace>();
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
     const pilot = card.trafficService?.pilot;
     if (pilot) {
-      if (!pilotMap.has(pilot.id)) {
-        pilotMap.set(pilot.id, pilot);
-        pilot.fairwayCardIds = [];
+      for (const place of pilot.places) {
+        if (!placeMap.has(place.id)) {
+          placeMap.set(place.id, place);
+          place.fairwayCards = [];
+        }
+        placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
       }
-      pilotMap.get(pilot.id)?.fairwayCardIds?.push(card.id);
     }
   }
-  for (const pilot of pilotMap.values()) {
+  for (const place of placeMap.values()) {
     features.push({
       type: 'Feature',
-      geometry: pilot.geometry as Geometry,
+      geometry: place.geometry as Geometry,
       properties: {
         type: 'pilot',
-        name: pilot.name,
-        email: pilot.email,
-        phoneNumber: pilot.phoneNumber,
-        fax: pilot.fax,
-        internet: pilot.internet,
-        extraInfoFI: pilot.extraInfo?.fi,
-        extraInfoSV: pilot.extraInfo?.sv,
-        extraInfoEN: pilot.extraInfo?.en,
-        fairwayCardIds: pilot.fairwayCardIds,
+        name: place.name,
+        fairwayCards: place.fairwayCards,
       },
     });
   }

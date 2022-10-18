@@ -38,16 +38,25 @@ export type VTS = {
 };
 
 export type Pilot = {
-  id: number;
-  name?: string;
   email?: string;
   phoneNumber?: string;
   fax?: string;
   internet?: string;
-  geometry?: GeometryPoint;
-  pilotJourney?: number;
   extraInfo?: Text;
-  fairwayCardIds?: string[];
+  places: PilotPlace[];
+};
+
+export type PilotPlace = {
+  id: number;
+  name: string;
+  pilotJourney?: number;
+  geometry: GeometryPoint;
+  fairwayCards?: PilotFairwayCard[];
+};
+
+export type PilotFairwayCard = {
+  id: string;
+  name?: Text;
 };
 
 export type Harbor = {

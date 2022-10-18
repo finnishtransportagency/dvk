@@ -3,21 +3,25 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import './popup.css';
-import { toStringHDMS } from 'ol/coordinate';
+import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 
 type PilotPopupContentProps = {
   pilotPlace?: PilotProperties;
 };
 
+type Card = {
+  id: string;
+  name: Text;
+};
+
+export type PilotFeatureProperties = {
+  name: string;
+  fairwayCards: Card[];
+};
+
 export type PilotProperties = {
   coordinates: number[];
-  name: string;
-  email?: string;
-  phoneNumber?: string;
-  fax?: string;
-  internet?: string;
-  journey?: number;
-  extraInfo: Text;
+  properties: PilotFeatureProperties;
 };
 
 const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => {
@@ -27,59 +31,28 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => 
     <IonGrid id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
-          <IonCol className="header">{t('header', { val: pilotPlace?.name })}</IonCol>
+          <IonCol className="header">{t('header', { val: pilotPlace?.properties.name })}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('coordinates')}</IonCol>
         </IonRow>
         {pilotPlace?.coordinates && (
           <IonRow>
-            <IonCol>{toStringHDMS(pilotPlace.coordinates)}</IonCol>
+            <IonCol>{coordinatesToStringHDM(pilotPlace.coordinates)}</IonCol>
           </IonRow>
         )}
         <IonRow>
-          <IonCol className="header">{t('contactDetails')}</IonCol>
+          <IonCol className="header">{t('fairways')}</IonCol>
         </IonRow>
-        {pilotPlace?.email && (
-          <IonRow>
-            <IonCol>{t('email', { val: pilotPlace?.email })}</IonCol>
-          </IonRow>
-        )}
-        {pilotPlace?.phoneNumber && (
-          <IonRow>
-            <IonCol>{t('phoneNumber', { val: pilotPlace?.phoneNumber })}</IonCol>
-          </IonRow>
-        )}
-        {pilotPlace?.fax && (
-          <IonRow>
-            <IonCol>{t('fax', { val: pilotPlace?.fax })}</IonCol>
-          </IonRow>
-        )}
-        {pilotPlace?.internet && (
-          <IonRow>
-            <IonCol>{t('internet', { val: pilotPlace?.internet })}</IonCol>
-          </IonRow>
-        )}
-        {pilotPlace?.journey && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('journey')}</IonCol>
+        {pilotPlace?.properties.fairwayCards.map((card, index) => {
+          return (
+            <IonRow key={index}>
+              <IonCol>
+                <a href={`/vaylakortit/${card.id}`}>{card.name[lang]}</a>
+              </IonCol>
             </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.journey} mpk</IonCol>
-            </IonRow>
-          </>
-        )}
-        {pilotPlace?.extraInfo[lang] && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('extra')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{pilotPlace?.extraInfo[lang]}</IonCol>
-            </IonRow>
-          </>
-        )}
+          );
+        })}
       </IonGrid>
     </IonGrid>
   );

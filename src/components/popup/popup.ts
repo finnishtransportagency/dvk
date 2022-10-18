@@ -5,6 +5,7 @@ import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
+import { PilotFeatureProperties } from './PilotPopupContent';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -19,7 +20,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   });
   content.onclick = () => {
     overlay.setPosition(undefined);
-    return false;
+    return true;
   };
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
@@ -34,17 +35,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       setPopupProperties({
         pilot: {
           coordinates: geom.getCoordinates() as number[],
-          name: feature.getProperties().name,
-          email: feature.getProperties().email,
-          phoneNumber: feature.getProperties().phoneNumber,
-          fax: feature.getProperties().fax,
-          internet: feature.getProperties().internet,
-          journey: feature.getProperties().journey,
-          extraInfo: {
-            fi: feature.getProperties().extraInfoFI,
-            sv: feature.getProperties().extraInfoSV,
-            en: feature.getProperties().extraInfoEN,
-          },
+          properties: feature.getProperties() as PilotFeatureProperties,
         },
       });
       overlay.setPosition(evt.coordinate);

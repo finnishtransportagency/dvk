@@ -91,7 +91,6 @@ query findFairwayCardById($id: String!) {
     trafficService {
       pilot {
         email
-        pilotJourney
         extraInfo {
           fi
           sv
@@ -100,8 +99,11 @@ query findFairwayCardById($id: String!) {
         phoneNumber
         fax
         internet
-        geometry {
-          coordinates
+        places {
+          pilotJourney
+          geometry {
+            coordinates
+          }
         }
       }
       vts {

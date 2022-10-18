@@ -52,14 +52,19 @@ type VTS {
 }
 
 type Pilot {
-  name: String
   email: String
   phoneNumber: String
   fax: String
   internet: String
-  geometry: GeometryPoint
-  pilotJourney: Float
   extraInfo: Text
+  places: [PilotPlace!]
+}
+
+type PilotPlace {
+  id: Float!
+  name: String!
+  pilotJourney: Float
+  geometry: GeometryPoint!
 }
 
 type Harbor {
