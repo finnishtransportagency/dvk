@@ -62,7 +62,7 @@ export type PilotFairwayCard = {
 export type Harbor = {
   quays?: Quay[];
   name?: Text;
-  phoneNumber?: string;
+  phoneNumber?: string[];
   fax?: string;
   email?: string;
   internet?: string;

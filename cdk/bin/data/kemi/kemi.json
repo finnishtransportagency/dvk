@@ -110,7 +110,9 @@
         "sv": "Kemi hamn Ab",
         "en": "Kemi Port Ltd"
       },
-      "phoneNumber": "+35816258100",
+      "phoneNumber": [
+        "+35816258100"
+      ],
       "harborBasin": {
         "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
         "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",

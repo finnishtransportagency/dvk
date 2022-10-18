@@ -127,7 +127,9 @@
         "sv": "",
         "en": ""
       },
-      "phoneNumber": "",
+      "phoneNumber": [
+        ""
+      ],
       "fax": "",
       "email": "",
       "internet": "",

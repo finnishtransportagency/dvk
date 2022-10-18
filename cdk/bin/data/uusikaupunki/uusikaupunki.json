@@ -103,7 +103,9 @@
         "sv": "Yara Suomi Oy",
         "en": "Yara Suomi Oy"
       },
-      "phoneNumber": "+358505240072",
+      "phoneNumber": [
+        "+358505240072"
+      ],
       "fax": "+358102153000",
       "extraInfo": {
         "fi": "Satamaan saapuvien alusten maksimipituus on rajoitettu 225 metriin.",

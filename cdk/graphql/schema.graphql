@@ -70,7 +70,7 @@ type PilotPlace {
 type Harbor {
   quays: [Quay]
   name: Text
-  phoneNumber: String
+  phoneNumber: [String]
   fax: String
   email: String
   internet: String

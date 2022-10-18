@@ -103,7 +103,9 @@
         "sv": "Helsingfors Hamn, Helsingfors",
         "en": "Port of Helsinki, Helsinki"
       },
-      "phoneNumber": "+35893101621",
+      "phoneNumber": [
+        "+35893101621"
+      ],
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
       "internet": "https://www.portofhelsinki.fi/",

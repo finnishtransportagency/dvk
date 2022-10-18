@@ -111,7 +111,9 @@
         "sv": "Nådendals hamn",
         "en": "Port of Naantali"
       },
-      "phoneNumber": "+358447334550",
+      "phoneNumber": [
+        "+358447334550"
+      ],
       "email": "satama@portofnaantali.fi",
       "cargo": [
         {
@@ -240,7 +242,9 @@
         "sv": "Neste Oyj:s hamn, Nådendal",
         "en": "Neste Oyj’s harbour in Naantali"
       },
-      "phoneNumber": "+358504586487",
+      "phoneNumber": [
+        "+358504586487"
+      ],
       "email": "naantali.harbour@neste.com",
       "cargo": [
         {

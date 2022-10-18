@@ -102,7 +102,9 @@
         "sv": "Oy Helsingfors hamn Ab, Helsingfors",
         "en": "Port of Helsinki Ltd, Helsinki"
       },
-      "phoneNumber": "+35893101621",
+      "phoneNumber": [
+        "+35893101621"
+      ],
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
       "quays": [
