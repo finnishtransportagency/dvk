@@ -24,21 +24,24 @@ const TitleBar: React.FC = () => {
     <IonGrid className="titlebar">
       <IonRow>
         <IonCol class="ion-align-self-center">
-          <IonText color="dark" className="equal-margin-top">
+          <IonText color="dark" className="equal-margin-top main-title">
             <h1>
               <strong>{t('squat.content')}</strong>
             </h1>
           </IonText>
         </IonCol>
+        <IonCol class="ion-align-self-center mobile-logo">
+          <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
+        </IonCol>
         {showLanguages() && (
-          <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }}>
+          <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }} size="auto">
             <LanguageBar />
           </IonCol>
         )}
         <IonCol size="auto" className="ion-align-self-center">
           <IonGrid>
             <IonRow>
-              <IonCol class="ion-align-self-center">
+              <IonCol class="ion-align-self-center" size="auto">
                 <Modal
                   title={t('header.shareable-link-title')}
                   content={
@@ -85,7 +88,7 @@ const TitleBar: React.FC = () => {
                   <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
                 </IonButton>
               </IonCol>
-              <IonCol class="ion-align-self-center">
+              <IonCol class="ion-align-self-center desktop-logo">
                 <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
               </IonCol>
             </IonRow>
