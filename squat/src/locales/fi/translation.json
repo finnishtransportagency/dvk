@@ -195,5 +195,9 @@
     "updateButton": {
       "label": "Päivitä"
     }
+  },
+  "info": {
+    "description": "Painumalaskuri on kehitetty erilaisten luonnonilmiöiden aiheuttamien alukseen kohdistuvien voimien arviointiin. Sen antamat laskentatulokset aluksen liikkeistä ovat <strong>ARVIOITA</strong>, joten niitä tulee tulkita suuntaa antaviksi päätöksen tekoa tukeviksi arvoiksi.",
+    "thanks": "Kiitokset professori Jerzy Matusiakille, joka on ohjannut laskentamallien kehittämistä ja verifioinut tulosten luotettavuuden."
   }
 }
