@@ -123,7 +123,7 @@
     "pilotPlace": {
       "header": "[en] Luotsipaikka {{val}}",
       "coordinates": "[en] Koordinaatit",
-      "fairways": "Luotsipaikalta alkavat väylät"
+      "fairways": "[en] Luotsipaikalta alkavat väylät"
     }
   }
 }
