@@ -1,11 +1,11 @@
 import React from 'react';
-import { IonAccordion, IonAccordionGroup, IonCol, IonGrid, IonIcon, IonItem, IonLabel, IonRow } from '@ionic/react';
+import { IonAccordion, IonAccordionGroup, IonCol, IonGrid, IonItem, IonLabel, IonRow } from '@ionic/react';
 import './InfoAccordion.css';
 import { caretDownSharp } from 'ionicons/icons';
 import { Trans, useTranslation } from 'react-i18next';
 
 const InfoAccordion: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <IonGrid>
@@ -16,7 +16,7 @@ const InfoAccordion: React.FC = () => {
               <IonItem slot="header" className="divider">
                 <IonLabel>
                   <h3>
-                    <strong>Yleistä</strong>
+                    <strong>{t('info.title')}</strong>
                   </h3>
                 </IonLabel>
               </IonItem>

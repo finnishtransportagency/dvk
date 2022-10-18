@@ -81,13 +81,19 @@
         "safety-margin-wind-force": "Säkerhetsmarginal för beräkning av vindpåverkan",
         "clearance-for-other-motions": "Annan rörelsemarginal",
         "reliability-issue-block-coefficient": "Fartygets blockkoefficient gränsvärde överskrids",
-        "reliability-issue-froude-number": "Gränsvärdet för Froude-numret överskrids"
+        "reliability-issue-froude-number": "Gränsvärdet för Froude-numret överskrids",
+        "wave-amplitude-info-title": "[sv] Aallokon aiheuttaman alusliikkeet",
+        "wave-amplitude-info": "[sv] Amplitudi = Aluksen vaste-amplitudioperaattori × aaltoluku × aallonkorkeus × aluksen pituus BPP ÷ 4",
+        "swept-depth-info-title": "[sv] Haraussyvyys ja vallitseva vedenkorkeus",
+        "swept-depth-info": "[sv] Haraussyvyys ja vallitseva vedenkorkeus tulee syöttää järjestelmään samassa formaatissa. Joko N2000 tai teoreettinen keskivesi."
       },
       "calculations": {
         "title": "Beräkning",
         "description": "Resultat av automatisk beräkning",
-        "info-title": "Valda beräkningsparametrar",
-        "info-content": "Man kan välja grunda (standard) eller djupa vattnets värden. Man kan också välja Huuska/Guliev (standard) eller Barras formeln för Squat beräkningen.",
+        "info-title": "Beräkning",
+        "info-content-hg": "[sv] <p><strong>Squat-laskenta (Huuska-Gulliev)</strong></p> <p>Squat = 2,4 × (aluksen uppouman täyteläisyys × leveys × syväys × Frouden luku) ÷ (aluksen pituus BPP × √(1 - Frouden luku²) × väylän poikkileikkauksen korjauskerroin)<p>",
+        "info-content-barrass": "[sv] <p><strong>Squat-laskenta (Barrass)</strong></p><p>Squat = 1/100 × aluksen nopeus² × (syväys ÷ vesisyvyys) × aluksen uppouman täyteläisyys</p>",
+        "info-content-assumptions": "[sv] <p><strong>Sisäänrakennetut oletukset</strong></p><p>1 kW = 1,34 hv - 100 hv = 1 tonni</p><p>Ilman tiheys 1,3 kg/m³ - voidaan muuttaa</p><p>Ei vaikutusta aluksen liikkeisiin - aallonpituus ÷ aluksen pituus BPP < 0,65</p>",
         "selected-water-values": "[sv] Käytetty veden syvyysarvo",
         "selected-calculation-method": "[sv] Valittu laskentamenetelmä",
         "wind-force": "Vindpåverkan",
@@ -117,7 +123,15 @@
         "estimated-vessel-breadth-due-drift": "Fartygets estimerad bredd observerad med drift",
         "insufficient-safety-margin": "Otillräcklig säkerhetsmarginal",
         "external-force-required": "Yttre dragkraft behövs",
-        "HG-out-of-bounds-switch-to-barrass": "Huuska/Guliev begränsning överskrids. Det är dock möjligt att beräkna med Barrass-metod"
+        "HG-out-of-bounds-switch-to-barrass": "Huuska/Guliev begränsning överskrids. Det är dock möjligt att beräkna med Barrass-metod",
+        "constant-heel-during-turn-info-title": "[sv] Käännöksen aiheuttama kallistuminen",
+        "constant-heel-during-turn-info": "[sv] Kallistuma = (aluksen nopeus² × BG) ÷ (G × käännössäde × GM)",
+        "wind-force-info-title": "[sv] Tuulivoiman laskentakaava",
+        "wind-force-info": "[sv] F = ½ × ilman tiheys × tuulennopeus² × aluksen tuulipinta-ala × ilmanvastuskerroin",
+        "wave-force-info-title": "[sv] Aaltovoiman laskentakaava",
+        "wave-force-info": "[sv] F = 0,35 × meriveden tiheys × aluksen pituus BPP × aallon amplitudi²",
+        "drift-info-title": "Drift",
+        "drift-info": "[sv] Sortokulma = (ilman tiheys ÷ meriveden tiheys) × (tuulen suhteellinen nopeus ÷ aluksen nopeus) ² × (Aluksen tuulipinta-ala÷ (syväys) ² × aerodynaamisen vääntömomentin kerroin ÷ (ℼ(0,5 + 2,4 × aluksen syväys ÷ pituus BPP)))"
       }
     },
     "squatChart": {
@@ -194,6 +208,7 @@
     }
   },
   "info": {
+    "title": "[sv] Yleistä",
     "description": "[sv] Painumalaskuri on kehitetty erilaisten luonnonilmiöiden aiheuttamien alukseen kohdistuvien voimien arviointiin. Sen antamat laskentatulokset aluksen liikkeistä ovat <strong>ARVIOITA</strong>, joten niitä tulee tulkita suuntaa antaviksi päätöksen tekoa tukeviksi arvoiksi.",
     "thanks": "[sv] Kiitokset professori Jerzy Matusiakille, joka on ohjannut laskentamallien kehittämistä ja verifioinut tulosten luotettavuuden."
   }

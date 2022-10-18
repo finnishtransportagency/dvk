@@ -192,6 +192,8 @@ const Environment: React.FC = () => {
                 title={t('wave-amplitude')}
                 value={getWaveAmplitude().toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 unit="m"
+                infoContentTitle={t('wave-amplitude-info-title')}
+                infoContent={t('wave-amplitude-info')}
               />
             </IonCol>
             <IonCol size="6" className="hide-landscape"></IonCol>
@@ -223,6 +225,8 @@ const Environment: React.FC = () => {
                 required
                 fieldClass={setFieldClass('sweptDepth')}
                 actionType="environment-fairway"
+                infoContentTitle={t('swept-depth-info-title')}
+                infoContent={t('swept-depth-info')}
               />
             </IonCol>
             <IonCol size="6">
@@ -236,6 +240,8 @@ const Environment: React.FC = () => {
                 unit={fieldParams.waterLevel.unit}
                 fieldClass={setFieldClass('waterLevel')}
                 actionType="environment-fairway"
+                infoContentTitle={t('swept-depth-info-title')}
+                infoContent={t('swept-depth-info')}
               />
             </IonCol>
             <IonCol size="6">

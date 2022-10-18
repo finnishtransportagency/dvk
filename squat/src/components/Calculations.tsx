@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
@@ -309,7 +309,23 @@ const Calculations: React.FC = () => {
       <IonText color="dark" className="equal-margin-top">
         <h2>
           <strong>{t('title')}</strong>
-          <Modal title={t('info-title')} content={<p>{t('info-content')}</p>} />
+          <Modal
+            size="large"
+            title={t('info-title')}
+            content={
+              <>
+                <div>
+                  <Trans t={t} i18nKey="info-content-hg"></Trans>
+                </div>
+                <div>
+                  <Trans t={t} i18nKey="info-content-barrass"></Trans>
+                </div>
+                <div>
+                  <Trans t={t} i18nKey="info-content-assumptions"></Trans>
+                </div>
+              </>
+            }
+          />
         </h2>
       </IonText>
 
@@ -385,6 +401,8 @@ const Calculations: React.FC = () => {
                 }
                 unit="°"
                 unitId="deg"
+                infoContentTitle={t('constant-heel-during-turn-info-title')}
+                infoContent={<p>{t('constant-heel-during-turn-info')}</p>}
               />
             </IonCol>
 
@@ -514,6 +532,8 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 1,
                 })}
                 unit="mt"
+                infoContentTitle={t('wind-force-info-title')}
+                infoContent={<p>{t('wind-force-info')}</p>}
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -523,6 +543,8 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 1,
                 })}
                 unit="mt"
+                infoContentTitle={t('wave-force-info-title')}
+                infoContent={<p>{t('wave-force-info')}</p>}
               />
             </IonCol>
 
@@ -568,7 +590,7 @@ const Calculations: React.FC = () => {
           </IonRow>
         </IonGrid>
 
-        <SectionTitle title={t('drift')} hideValidity />
+        <SectionTitle title={t('drift')} hideValidity infoContentTitle={t('drift-info-title')} infoContent={<p>{t('drift-info')}</p>} />
         <IonGrid className="no-padding">
           <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
