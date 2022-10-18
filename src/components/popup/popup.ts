@@ -38,7 +38,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           properties: feature.getProperties() as PilotFeatureProperties,
         },
       });
-      overlay.setPosition(evt.coordinate);
+      overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
     }
   });
   const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
