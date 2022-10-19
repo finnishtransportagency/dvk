@@ -1,100 +1,72 @@
-import React, { useState } from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonImg, IonItem, IonRow, IonText, IonTextarea, IonToast } from '@ionic/react';
-import { checkmarkCircleOutline, clipboardOutline, printOutline, shareSocialOutline } from 'ionicons/icons';
+import React from 'react';
+import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import Modal from './Modal';
-import { copyToClipboard, createShareableLink } from '../utils/helpers';
-import { useSquatContext } from '../hooks/squatContext';
 import './TitleBar.css';
 import LanguageBar from './LanguageBar';
 import { showLanguages } from '../pages/Home';
+import { useWindowWidth } from '@react-hook/window-size';
+import PrintBar from './PrintBar';
 
 const TitleBar: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
-  const { state } = useSquatContext();
-
-  const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
-
-  const handleCopyClick = () => {
-    copyToClipboard(createShareableLink(state, true));
-    setShowCopyToast(true);
-  };
+  const windowWidth = useWindowWidth();
 
   return (
     <IonGrid className="titlebar">
-      <IonRow>
-        <IonCol class="ion-align-self-center">
-          <IonText color="dark" className="equal-margin-top main-title">
-            <h1>
-              <strong>{t('squat.content')}</strong>
-            </h1>
-          </IonText>
-        </IonCol>
-        <IonCol class="ion-align-self-center mobile-logo">
-          <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
-        </IonCol>
-        {showLanguages() && (
-          <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }} size="auto">
-            <LanguageBar />
+      {windowWidth > 800 && (
+        <IonRow>
+          <IonCol class="ion-align-self-center">
+            <IonText color="dark" className="equal-margin-top main-title">
+              <h1>
+                <strong>{t('squat.content')}</strong>
+              </h1>
+            </IonText>
           </IonCol>
-        )}
-        <IonCol size="auto" className="ion-align-self-center">
-          <IonGrid>
-            <IonRow>
-              <IonCol class="ion-align-self-center" size="auto">
-                <Modal
-                  title={t('header.shareable-link-title')}
-                  content={
-                    <>
-                      <p>{t('header.shareable-link-body')}</p>
-                      <IonItem lines="none">
-                        <IonItem fill="outline">
-                          <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
-                        </IonItem>
-                        <IonButton
-                          fill="clear"
-                          className="icon-only"
-                          onClick={() => handleCopyClick()}
-                          id="hover-trigger_"
-                          title={t('header.copy-to-clipboard')}
-                          slot="end"
-                        >
-                          <IonIcon color="primary" slot="icon-only" icon={clipboardOutline} />
-                        </IonButton>
-                      </IonItem>
-                      <IonToast
-                        isOpen={showCopyToast}
-                        onDidDismiss={() => setShowCopyToast(false)}
-                        message={t('header.copied-to-clipboard')}
-                        duration={2000}
-                        position="middle"
-                        icon={checkmarkCircleOutline}
-                      />
-                    </>
-                  }
-                  trigger={<IonIcon icon={shareSocialOutline} size="large" />}
-                  triggerTitle={t('header.shareable-link-title')}
-                />
-              </IonCol>
-              <IonCol class="ion-align-self-center">
-                <IonButton
-                  fill="clear"
-                  className="icon-only"
-                  onClick={() => window.print()}
-                  title={t('header.print')}
-                  aria-label={t('header.print')}
-                  role="button"
-                >
-                  <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
-                </IonButton>
-              </IonCol>
-              <IonCol class="ion-align-self-center desktop-logo">
-                <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-        </IonCol>
-      </IonRow>
+          {showLanguages() && (
+            <IonCol class="ion-align-self-center" style={{ textAlign: 'end' }} size="auto">
+              <LanguageBar />
+            </IonCol>
+          )}
+          <IonCol size="auto" className="ion-align-self-center">
+            <IonGrid>
+              <IonRow>
+                <PrintBar />
+                <IonCol class="ion-align-self-center">
+                  <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+          </IonCol>
+        </IonRow>
+      )}
+      {windowWidth <= 800 && (
+        <>
+          <IonRow>
+            <IonCol class="ion-align-self-center">
+              <IonText color="dark" className="equal-margin-top main-title">
+                <h1>
+                  <strong>{t('squat.content')}</strong>
+                </h1>
+              </IonText>
+            </IonCol>
+            <IonCol class="ion-align-self-center">
+              <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            {showLanguages() && (
+              <>
+                <IonCol class="ion-align-self-center" style={{ textAlign: 'end', whiteSpace: 'nowrap' }}>
+                  <LanguageBar />
+                </IonCol>
+                <IonCol class="ion-align-self-center" size="auto">
+                  <PrintBar />
+                </IonCol>
+              </>
+            )}
+          </IonRow>
+        </>
+      )}
     </IonGrid>
   );
 };
