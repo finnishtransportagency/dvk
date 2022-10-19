@@ -34,7 +34,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             <IonTitle>
               <div className="wrappable-title">{props.title}</div>
             </IonTitle>
-            <IonButtons slot="end" style={{ 'margin-right': '16px' }}>
+            <IonButtons slot="end" style={{ marginRight: '16px' }}>
               <IonButton onClick={() => setIsOpen(false)} className="icon-only">
                 <IonIcon slot="icon-only" icon={closeOutline} />
               </IonButton>

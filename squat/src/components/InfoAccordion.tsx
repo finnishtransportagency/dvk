@@ -20,7 +20,6 @@ const InfoAccordion: React.FC = () => {
                   </h3>
                 </IonLabel>
               </IonItem>
-              <IonItem>hei</IonItem>
               <div slot="content">
                 <p>
                   <Trans i18nKey="info.description"></Trans>

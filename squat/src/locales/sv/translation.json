@@ -91,7 +91,7 @@
         "title": "Beräkning",
         "description": "Resultat av automatisk beräkning",
         "info-title": "Beräkning",
-        "info-content-hg": "[sv] <p><strong>Squat-laskenta (Huuska-Gulliev)</strong></p> <p>Squat = 2,4 × (aluksen uppouman täyteläisyys × leveys × syväys × Frouden luku) ÷ (aluksen pituus BPP × √(1 - Frouden luku²) × väylän poikkileikkauksen korjauskerroin)<p>",
+        "info-content-hg": "[sv] <p><strong>Squat-laskenta (Huuska/Guliev)</strong></p> <p>Squat = 2,4 × (aluksen uppouman täyteläisyys × leveys × syväys × Frouden luku) ÷ (aluksen pituus BPP × √(1 - Frouden luku²) × väylän poikkileikkauksen korjauskerroin)</p>",
         "info-content-barrass": "[sv] <p><strong>Squat-laskenta (Barrass)</strong></p><p>Squat = 1/100 × aluksen nopeus² × (syväys ÷ vesisyvyys) × aluksen uppouman täyteläisyys</p>",
         "info-content-assumptions": "[sv] <p><strong>Sisäänrakennetut oletukset</strong></p><p>1 kW = 1,34 hv - 100 hv = 1 tonni</p><p>Ilman tiheys 1,3 kg/m³ - voidaan muuttaa</p><p>Ei vaikutusta aluksen liikkeisiin - aallonpituus ÷ aluksen pituus BPP < 0,65</p>",
         "selected-water-values": "[sv] Käytetty veden syvyysarvo",
