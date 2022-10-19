@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   IonBreadcrumb,
   IonBreadcrumbs,
+  IonButton,
   IonCol,
   IonGrid,
   IonLabel,
@@ -14,6 +15,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
 import { useFindFairwayCardByIdQuery } from '../graphql/generated';
+import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -400,19 +402,37 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonBreadcrumb>
           </IonBreadcrumbs>
 
-          <IonText>
-            <h2 className="no-margin-bottom">
-              <strong>{data?.fairwayCard?.name[lang]}</strong>
-            </h2>
-            <small>
-              <em>
-                {t('modified')}{' '}
-                {t('modifiedDate', {
-                  val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
-                })}
-              </em>
-            </small>
-          </IonText>
+          <IonGrid className="ion-no-padding">
+            <IonRow>
+              <IonCol>
+                <IonText>
+                  <h2 className="no-margin-bottom">
+                    <strong>{data?.fairwayCard?.name[lang]}</strong>
+                  </h2>
+                  <small>
+                    <em>
+                      {t('modified')}{' '}
+                      {t('modifiedDate', {
+                        val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
+                      })}
+                    </em>
+                  </small>
+                </IonText>
+              </IonCol>
+              <IonCol size="auto" className="ion-align-self-center">
+                <IonButton
+                  fill="clear"
+                  className="icon-only small"
+                  onClick={() => window.print()}
+                  title={t('print')}
+                  aria-label={t('print')}
+                  role="button"
+                >
+                  <PrintIcon />
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
 
           <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} mode="md">
             <IonSegmentButton value="1">
