@@ -1,4 +1,4 @@
-ion-text * {
+ion-text > * {
   color: var(--ion-color-dark);
 }
 ion-text h1 {
@@ -75,9 +75,24 @@ ion-button.icon-only {
   vertical-align: top;
   border-radius: 20px;
 }
-
+ion-button.icon-only.small {
+  --box-shadow: none;
+  height: 30px;
+  width: 30px;
+  vertical-align: top;
+}
 ion-button.icon-only:hover {
-  border: 1px solid var(--ion-color-medium);
+  --background-hover: none;
+  --color: var(--ion-color-primary-shade);
+}
+ion-button.icon-only.ion-focused {
+  --background-focused: none;
+  outline: 2px solid var(--ion-color-primary);
+  border: 1px solid var(--ion-color-primary-contrast);
+}
+ion-button.icon-only.ion-focused:hover {
+  --background: var(--ion-color-primary-contrast);
+  outline: 2px solid var(--ion-color-primary-shade);
 }
 
 ion-button.icon-only ion-icon {
