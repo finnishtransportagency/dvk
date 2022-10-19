@@ -51,6 +51,7 @@
     "search": "Hae väylän nimellä",
     "home": "Digitaalinen väyläkortti",
     "name": "Väyläkortin nimi",
+    "print": "Tulosta väyläkortti",
     "modified": "Päivitetty",
     "modifiedDate": "{{val, datetime}}",
     "archipelagoSea": "Saaristomeri",
