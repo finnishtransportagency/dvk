@@ -2,7 +2,6 @@ import { ALBEvent, ALBResult } from 'aws-lambda';
 import { getHeaders, getVatuHeaders, getVatuUrl } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import { vuosaariarea } from './sample/areas.json';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
 import axios from 'axios';
 import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
@@ -50,47 +49,41 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 }
 
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka;
-  if (!fairwayClass) {
-    for (const area of vuosaariarea) {
-      features.push({ type: 'Feature', geometry: area.geometry as Geometry, properties: { id: area.id, fairwayId: area.jnro } });
-    }
-  } else {
-    const url = `${await getVatuUrl()}/vaylaalueet`;
-    log.debug('url: %s', url);
-    const response = await axios.get(url, {
-      headers: await getVatuHeaders(),
-      params: {
-        bbox: '20,59,21,60',
-        vaylaluokka: fairwayClass,
+  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+  const url = `${await getVatuUrl()}/vaylaalueet`;
+  log.debug('url: %s', url);
+  const response = await axios.get(url, {
+    headers: await getVatuHeaders(),
+    params: {
+      bbox: '15,50,40,80',
+      vaylaluokka: fairwayClass,
+    },
+  });
+  const areas = response.data as AlueAPIModel[];
+  log.debug('areas: %d', areas.length);
+  log.debug('area: %o', areas[0]);
+  for (const area of areas) {
+    features.push({
+      type: 'Feature',
+      geometry: area.geometria as Geometry,
+      properties: {
+        id: area.id,
+        name: area.nimi,
+        draft: area.harausSyvyys,
+        depth: area.mitoitusSyvays,
+        n2000depth: area.n2000MitoitusSyvays,
+        n2000draft: area.n2000HarausSyvyys,
+        fairways: area.vayla?.map((v) => {
+          return {
+            fairwayId: v.jnro,
+            status: v.status,
+            line: v.linjaus,
+            sizingSpeed: v.mitoitusNopeus,
+            sizingSpeed2: v.mitoitusNopeus2,
+          };
+        }),
       },
     });
-    const areas = response.data as AlueAPIModel[];
-    log.debug('areas: %d', areas.length);
-    log.debug('area: %o', areas[0]);
-    for (const area of areas) {
-      features.push({
-        type: 'Feature',
-        geometry: area.geometria as Geometry,
-        properties: {
-          id: area.id,
-          name: area.nimi,
-          draft: area.harausSyvyys,
-          depth: area.mitoitusSyvays,
-          n2000depth: area.n2000MitoitusSyvays,
-          n2000draft: area.n2000HarausSyvyys,
-          fairways: area.vayla?.map((v) => {
-            return {
-              fairwayId: v.jnro,
-              status: v.status,
-              line: v.linjaus,
-              sizingSpeed: v.mitoitusNopeus,
-              sizingSpeed2: v.mitoitusNopeus2,
-            };
-          }),
-        },
-      });
-    }
   }
 }
 

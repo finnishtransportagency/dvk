@@ -12,7 +12,7 @@ import CircleStyle from 'ol/style/Circle';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export function addVatuLayer(map: Map, queryString: string, id: string) {
+export function addVatuLayer(map: Map, queryString: string, id: string, maxResolution: number | undefined = undefined) {
   const vatuSource = new VectorSource({
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
@@ -29,6 +29,7 @@ export function addVatuLayer(map: Map, queryString: string, id: string) {
     source: vatuSource,
     style: styleFunction,
     properties: { id },
+    maxResolution,
   });
   map.addLayer(vatuLayer);
 }
@@ -63,10 +64,12 @@ export function addPilotLayer(map: Map) {
 }
 
 export function addAPILayers(map: Map) {
-  addVatuLayer(map, '?type=area', 'area');
-  addVatuLayer(map, '?type=line&vaylaluokka=1', 'line1');
-  addVatuLayer(map, '?type=line&vaylaluokka=2', 'line2');
-  addVatuLayer(map, '?type=line&vaylaluokka=3', 'line3');
-  addVatuLayer(map, '?type=line&vaylaluokka=4', 'line4');
+  // kauppamerenkulku
+  addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 100);
+  // muu vesiliikenne
+  addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 20);
+  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 500);
+  // TODO: also 5,6 once api fixed
+  addVatuLayer(map, '?type=line&vaylaluokka=3,4', 'line34', 50);
   addPilotLayer(map);
 }
