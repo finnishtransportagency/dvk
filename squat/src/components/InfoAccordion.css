@@ -1,0 +1,16 @@
+ion-accordion ion-item {
+  --padding-start: 0;
+  --background-hover: unset;
+}
+
+ion-label h3 strong {
+  font-size: 1rem;
+}
+
+ion-item.divider {
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+ion-accordion ion-icon {
+  color: unset;
+}
