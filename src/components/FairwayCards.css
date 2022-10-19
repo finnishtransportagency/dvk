@@ -176,3 +176,8 @@ ion-segment.tabs ion-label {
   padding: 0;
   margin: 0;
 }
+ion-segment.tabs ion-label h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: inherit;
+}
