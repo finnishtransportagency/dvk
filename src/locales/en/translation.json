@@ -121,15 +121,9 @@
   },
   "popup": {
     "pilotPlace": {
-      "header": "[en] Luotsauspiste {{val}}",
+      "header": "[en] Luotsipaikka {{val}}",
       "coordinates": "[en] Koordinaatit",
-      "contactDetails": "[en] Yhteystiedot",
-      "email": "[en] Email: {{val}}",
-      "fax": "[en] Fax: {{val}}",
-      "phoneNumber": "[en] Puhelin: {{val}}",
-      "internet": "[en] Internet: {{val}}",
-      "journey": "[en] Luotsausmatka",
-      "extra": "[en] Lisätieto"
+      "fairways": "[en] Luotsipaikalta alkavat väylät"
     }
   }
 }

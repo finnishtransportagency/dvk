@@ -121,15 +121,9 @@
   },
   "popup": {
     "pilotPlace": {
-      "header": "Luotsauspiste {{val}}",
+      "header": "Luotsipaikka {{val}}",
       "coordinates": "Koordinaatit",
-      "contactDetails": "Yhteystiedot",
-      "email": "Email: {{val}}",
-      "fax": "Fax: {{val}}",
-      "phoneNumber": "Puhelin: {{val}}",
-      "internet": "Internet: {{val}}",
-      "journey": "Luotsausmatka",
-      "extra": "Lisätieto"
+      "fairways": "Luotsipaikalta alkavat väylät"
     }
   }
 }

@@ -16,6 +16,7 @@ type FairwayCard {
   fairwayIds: String
   fairways: [Fairway!]!
   lineText: Text
+  generalInfo: Text
   anchorage: [Text]
   navigationCondition: Text
   iceCondition: Text
@@ -51,20 +52,25 @@ type VTS {
 }
 
 type Pilot {
-  name: String
   email: String
   phoneNumber: String
   fax: String
   internet: String
-  geometry: GeometryPoint
-  pilotJourney: Float
   extraInfo: Text
+  places: [PilotPlace!]
+}
+
+type PilotPlace {
+  id: Float!
+  name: String!
+  pilotJourney: Float
+  geometry: GeometryPoint!
 }
 
 type Harbor {
   quays: [Quay]
   name: Text
-  phoneNumber: String
+  phoneNumber: [String]
   fax: String
   email: String
   internet: String
@@ -112,15 +118,40 @@ type Classification {
   fairwayClass: String
 }
 
-type Area {
-  id: Int!
-  geometry: Geometry
+type AreaFairway {
+  fairwayId: Int!
+  status: Int
+  line: Int
   sizingSpeed: Float
   sizingSpeed2: Float
+}
+
+type Area {
+  id: Int!
+  name: String
   depth: Float
   draft: Float
-  qualityClass: Int
-  type: Int
+  referenceLevel: String
+  n2000depth: Float
+  n2000draft: Float
+  n2000ReferenceLevel: String
+  direction: Float
+  journalNumber: String
+  verificationDate: String
+  owner: String
+  additionalInformation: String
+  typeCode: String
+  type: String
+  notationCode: Float
+  notation: String
+  operationStatusCode: Float
+  operationStatus: String
+  operationTypeCode: Float
+  operationType: String
+  operationDirectionCode: Float
+  operationDirection: String
+  fairways: [AreaFairway!]
+  geometry: GeometryPolygon
 }
 
 type SizingVessel {
@@ -169,10 +200,9 @@ type NavigationLineFairway {
   line: Int
 }
 
-type Geometry {
+type GeometryPolygon {
   type: String
-  bbox: [Float]
-  coordinates: [[Float]]
+  coordinates: [[[Float]]]
 }
 
 type GeometryLine {

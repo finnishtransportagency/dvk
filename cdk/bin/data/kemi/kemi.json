@@ -55,21 +55,26 @@
   },
   "trafficService": {
     "pilot": {
-      "name": "Kemi S",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
       "fax": "+358295253012",
       "internet": "https://www.pilotonline.fi",
-      "pilotJourney": 10.8,
       "extraInfo": {
         "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
         "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat.",
         "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed."
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [24.317, 65.488]
-      }
+      "places": [
+        {
+          "id": 2,
+          "name": "Kemi S",
+          "pilotJourney": 10.8,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.317, 65.488]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {
@@ -105,7 +110,9 @@
         "sv": "Kemi hamn Ab",
         "en": "Kemi Port Ltd"
       },
-      "phoneNumber": "+35816258100",
+      "phoneNumber": [
+        "+35816258100"
+      ],
       "harborBasin": {
         "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
         "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
