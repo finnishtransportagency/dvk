@@ -109,7 +109,6 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
-            fairwayClass: Number(fairwayClass),
             status: v.status,
             line: v.linjaus,
           };
