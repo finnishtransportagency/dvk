@@ -27,7 +27,8 @@
     "log:backend": "aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
     "datasync": "ts-node bin/datasync.ts -- --dbonly",
     "datas3sync": "ts-node bin/datasync.ts",
-    "setup": "ts-node bin/setup.ts"
+    "setup": "ts-node bin/setup.ts",
+    "vatu": "ts-node bin/vatu.ts"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.1",
