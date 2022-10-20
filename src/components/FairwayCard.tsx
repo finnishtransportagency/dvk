@@ -278,7 +278,9 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
               www.pilotonline.fi
             </a>
             <br />
-            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />, <Phonenumber title={t('fax')} showEmpty number={data.fax} />
+            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />
+            <br />
+            <Phonenumber title={t('fax')} showEmpty number={data.fax} />
             {data.places?.map((place, idx) => {
               return (
                 <span key={idx}>
@@ -479,7 +481,8 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
           })}
           {data.fax && (
             <>
-              , {t('fax')}: <Phonenumber number={data.fax} />
+              <br />
+              {t('fax')}: <Phonenumber number={data.fax} />
             </>
           )}
           <br />
