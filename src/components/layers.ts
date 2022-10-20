@@ -30,6 +30,7 @@ export function addVatuLayer(map: Map, queryString: string, id: string, maxResol
     style: styleFunction,
     properties: { id },
     maxResolution,
+    renderBuffer: 2000,
   });
   map.addLayer(vatuLayer);
 }
@@ -59,6 +60,7 @@ export function addPilotLayer(map: Map) {
     source: pilotSource,
     style,
     properties: { id: 'pilot' },
+    renderBuffer: 2000,
   });
   map.addLayer(pilotLayer);
 }
