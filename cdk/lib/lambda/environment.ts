@@ -97,6 +97,7 @@ export async function getVatuHeaders(): Promise<Record<string, string>> {
   return {
     Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),
     'Content-type': 'application/json',
+    'Accept-Encoding': 'gzip',
   };
 }
 
