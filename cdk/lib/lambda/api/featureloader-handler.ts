@@ -61,7 +61,13 @@ async function fetchVATU<T>(api: string, event: ALBEvent) {
       },
     })
     .catch(function (error) {
-      log.fatal(error.toJSON(), `VATU /${api}?fairwayClass=${fairwayClass} fetch failed`);
+      const errorObj = error.toJSON();
+      log.fatal(
+        `VATU /${api}?fairwayClass=${fairwayClass} fetch failed: status=%d code=%s message=%s`,
+        errorObj.status,
+        errorObj.code,
+        errorObj.message
+      );
     });
   log.debug(`/${api}?fairwayClass=${fairwayClass} response time: ${Date.now() - start} ms`);
   return response ? (response.data as T[]) : [];
