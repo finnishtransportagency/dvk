@@ -1,8 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import axios from 'axios';
 import { Fairway, NavigationLine, QueryFairwayCardArgs } from '../../../../graphql/generated';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
+import { fetchVATUByFairwayId } from './vatu';
 
 export type NavigointiLinjaAPIModel = {
   id: number;
@@ -28,16 +27,15 @@ type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
   status?: number;
   linjaus?: number;
+  nimiFi?: string;
+  nimiSv?: string;
 };
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
 ): Promise<NavigationLine[]> => {
   log.info(`navigationLines(${event.source.id})`);
-  const response = await axios.get(`${await getVatuUrl()}/navigointilinjat?jnro=${event.source.id}`, {
-    headers: await getVatuHeaders(),
-  });
-  const lines = response.data as NavigointiLinjaAPIModel[];
+  const lines = await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(event.source.id, 'navigointilinjat');
   log.debug('lines: %d', lines.length);
   return lines.map((apiLine) => {
     const line: NavigationLine = {

@@ -37,6 +37,11 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Fairway',
     fieldName: 'areas',
   },
+  {
+    entry: path.join(__dirname, 'query/fairwayRestrictionAreas-handler.ts'),
+    typeName: 'Fairway',
+    fieldName: 'restrictionAreas',
+  },
 ];
 
 export default lambdaFunctions;

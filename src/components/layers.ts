@@ -4,24 +4,22 @@ import Style from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
-// eslint-disable-next-line import/named
-import { FeatureLike } from 'ol/Feature';
 import Map from 'ol/Map';
 import pilot_logo from '../theme/img/pilotPlace.svg';
 import CircleStyle from 'ol/style/Circle';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export function addVatuLayer(map: Map, queryString: string, id: string, maxResolution: number | undefined = undefined) {
+export function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const vatuSource = new VectorSource({
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
   });
-  const styleFunction = function (feature: FeatureLike) {
+  const styleFunction = function () {
     return new Style({
       stroke: new Stroke({
-        color: feature.getGeometry()?.getType() === 'LineString' ? 'blue' : 'red',
-        width: 1,
+        color,
+        width,
       }),
     });
   };
@@ -66,12 +64,16 @@ export function addPilotLayer(map: Map) {
 }
 
 export function addAPILayers(map: Map) {
-  // kauppamerenkulku
-  addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 100);
-  // muu vesiliikenne
-  addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 20);
-  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 500);
-  // TODO: also 5,6 once api fixed
-  addVatuLayer(map, '?type=line&vaylaluokka=3,4', 'line34', 50);
+  // kauppamerenkulku, Navigointialue, Satama-allas
+  addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 'red', 100);
+  // muu vesiliikenne, Navigointialue, Satama-allas
+  addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 'green', 20);
+  // navigointilinjat
+  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 'blue', 500);
+  addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', 'yellow', 50);
+  // Nopeusrajoitus, Aallokon aiheuttamisen kielto, Vesiskootterilla ajo kielletty, Ankkurin käyttökielto
+  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
+  // Ankkurointialue, Erikoisalue, Kääntöallas, Ohitus- ja kohtaamisalue, STS-alue, Varmistettu lisäalue
+  addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 10, 2);
   addPilotLayer(map);
 }
