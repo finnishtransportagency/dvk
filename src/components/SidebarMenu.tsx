@@ -33,12 +33,10 @@ const SidebarMenu: React.FC = () => {
             <IonCol>
               <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
             </IonCol>
-            <IonCol size="12">
-              <IonRouterLink routerLink="/vaylakortit/">
-                <IonButton fill="clear" color="#000000" className="closeButton" onClick={async () => menuController.close()}>
-                  <IonIcon className="otherIconLarge" icon={close} />
-                </IonButton>
-              </IonRouterLink>
+            <IonCol size="2">
+              <IonButton fill="clear" color="#000000" className="closeButton" onClick={async () => menuController.close()}>
+                <IonIcon className="otherIconLarge" icon={close} />
+              </IonButton>
             </IonCol>
           </IonRow>
           <IonRow className="title">
@@ -56,7 +54,7 @@ const SidebarMenu: React.FC = () => {
                 }}
               >
                 <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
-                Väyläkortit
+                {t('homePage.sidebarMenu.fairway-cards')}
               </IonButton>
             </IonCol>
             <IonCol size="12">
@@ -69,7 +67,7 @@ const SidebarMenu: React.FC = () => {
                 }}
               >
                 <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
-                Squat-laskuri
+                {t('homePage.sidebarMenu.squat')}
                 <IonIcon slot="end" src="/assets/icon/ext_link.svg" style={{ width: '10px' }} />
               </IonButton>
             </IonCol>
