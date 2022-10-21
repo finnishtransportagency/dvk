@@ -15,15 +15,31 @@
 .sidebarMenu .title {
   padding: 10px 10px 10px 22px;
   font-weight: bold;
-  border-bottom: 1px solid #cccccc;
 }
 
 .sidebarMenu .languageSelection {
   padding: 10px 10px 10px 22px;
   font-weight: bold;
+}
+
+.sidebarMenu .sidebarButton {
+  text-transform: none;
+}
+
+.sidebarMenu ion-row {
+  padding: 1rem;
   border-bottom: 1px solid #cccccc;
 }
 
-.sidebarMenu .fairwayCards {
-  padding: 10px 10px 10px 22px;
+.sideBar {
+  --width: 320px;
+}
+
+.sidebarMenu ion-button.button-clear {
+  color: var(--ion-color-primary);
+}
+
+.sidebarMenu ion-button.button-disabled {
+  opacity: 1;
+  color: var(--ion-color-base);
 }
