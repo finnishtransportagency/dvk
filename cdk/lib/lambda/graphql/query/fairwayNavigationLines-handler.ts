@@ -28,6 +28,8 @@ type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
   status?: number;
   linjaus?: number;
+  nimiFi?: string;
+  nimiSv?: string;
 };
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (

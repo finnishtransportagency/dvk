@@ -49,20 +49,27 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+async function fetchVATU<T>(api: string, event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
-  const url = `${await getVatuUrl()}/vaylaalueet`;
-  const response = await axios.get(url, {
-    headers: await getVatuHeaders(),
-    params: {
-      vaylaluokka: fairwayClass,
-    },
-  });
-  const areas = response.data as AlueAPIModel[];
+  const url = `${await getVatuUrl()}/${api}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getVatuHeaders(),
+      params: {
+        vaylaluokka: fairwayClass,
+      },
+    })
+    .catch(function (error) {
+      log.fatal(error.toJSON(), `VATU /${api}?fairwayClass=${fairwayClass} fetch failed`);
+    });
+  log.debug(`/${api}?fairwayClass=${fairwayClass} response time: ${Date.now() - start} ms`);
+  return response ? (response.data as T[]) : [];
+}
+
+async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+  const areas = await fetchVATU<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  if (areas.length > 0) {
-    log.debug('area: %o', areas[0]);
-  }
   for (const area of areas.filter((a) =>
     navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4
   )) {
@@ -81,6 +88,10 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFI,
+              sv: v.nimiSV,
+            },
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,
@@ -93,19 +104,8 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
 }
 
 async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
-  const url = `${await getVatuUrl()}/rajoitusalueet`;
-  const response = await axios.get(url, {
-    headers: await getVatuHeaders(),
-    params: {
-      vaylaluokka: fairwayClass,
-    },
-  });
-  const areas = response.data as RajoitusAlueAPIModel[];
+  const areas = await fetchVATU<RajoitusAlueAPIModel>('rajoitusalueet', event);
   log.debug('areas: %d', areas.length);
-  if (areas.length > 0) {
-    log.debug('area: %o', areas[0]);
-  }
   for (const area of areas) {
     const feature: Feature<Geometry, GeoJsonProperties> = {
       type: 'Feature',
@@ -121,6 +121,10 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFI,
+              sv: v.nimiSV,
+            },
           };
         }),
       },
@@ -133,13 +137,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
 }
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
-  const url = `${await getVatuUrl()}/navigointilinjat?vaylaluokka=${fairwayClass}`;
-  log.debug('url: %s', url);
-  const response = await axios.get(url, {
-    headers: await getVatuHeaders(),
-  });
-  const lines = response.data as NavigointiLinjaAPIModel[];
+  const lines = await fetchVATU<NavigointiLinjaAPIModel>('navigointilinjat', event);
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -154,6 +152,10 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFi,
+              sv: v.nimiSv,
+            },
             status: v.status,
             line: v.linjaus,
           };

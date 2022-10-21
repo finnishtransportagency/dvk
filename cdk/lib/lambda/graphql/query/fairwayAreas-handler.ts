@@ -10,6 +10,8 @@ export type AlueVaylaAPIModel = {
   linjaus: number;
   mitoitusNopeus?: number;
   mitoitusNopeus2?: number;
+  nimiFI?: string;
+  nimiSV?: string;
 };
 export type AlueAPIModel = {
   id: number;

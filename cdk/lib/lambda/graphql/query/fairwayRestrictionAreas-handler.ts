@@ -31,6 +31,8 @@ export type RajoitustyyppiAPIModel = {
 
 export type RajoitusVaylaAPIModel = {
   jnro: number;
+  nimiFI?: string;
+  nimiSV?: string;
 };
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, RestrictionArea[], Fairway> = async (
