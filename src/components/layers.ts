@@ -71,7 +71,8 @@ export function addAPILayers(map: Map) {
   // muu vesiliikenne
   addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 20);
   addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 500);
-  // TODO: also 5,6 once api fixed
-  addVatuLayer(map, '?type=line&vaylaluokka=3,4', 'line34', 50);
+  addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', 50);
+  // TODO: layer by restriction type (nopeusrajoitukset vs muut = erityisalueet ui:ssa???)
+  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 20);
   addPilotLayer(map);
 }

@@ -7,6 +7,7 @@ import axios from 'axios';
 import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
 import { gzip } from 'zlib';
 import { AlueAPIModel } from '../graphql/query/fairwayAreas-handler';
+import { RajoitusAlueAPIModel } from '../graphql/query/fairwayRestrictionAreas-handler';
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -51,17 +52,17 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
   const url = `${await getVatuUrl()}/vaylaalueet`;
-  log.debug('url: %s', url);
   const response = await axios.get(url, {
     headers: await getVatuHeaders(),
     params: {
-      bbox: '15,50,40,80',
       vaylaluokka: fairwayClass,
     },
   });
   const areas = response.data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
-  log.debug('area: %o', areas[0]);
+  if (areas.length > 0) {
+    log.debug('area: %o', areas[0]);
+  }
   for (const area of areas) {
     features.push({
       type: 'Feature',
@@ -84,6 +85,47 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         }),
       },
     });
+  }
+}
+
+async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+  const url = `${await getVatuUrl()}/rajoitusalueet`;
+  const response = await axios.get(url, {
+    headers: await getVatuHeaders(),
+    params: {
+      bbox: '15,50,40,80',
+      vaylaluokka: fairwayClass,
+    },
+  });
+  const areas = response.data as RajoitusAlueAPIModel[];
+  log.debug('areas: %d', areas.length);
+  if (areas.length > 0) {
+    log.debug('area: %o', areas[0]);
+  }
+  for (const area of areas) {
+    const feature: Feature<Geometry, GeoJsonProperties> = {
+      type: 'Feature',
+      geometry: area.geometria as Geometry,
+      properties: {
+        id: area.id,
+        value: area.suuruus,
+        types:
+          area.rajoitustyypit?.map((t) => {
+            return { code: t.koodi, text: t.rajoitustyyppi };
+          }) || [],
+        exception: area.poikkeus,
+        fairways: area.vayla?.map((v) => {
+          return {
+            fairwayId: v.jnro,
+          };
+        }),
+      },
+    };
+    if (area.rajoitustyyppi) {
+      feature.properties?.types.push({ text: area.rajoitustyyppi });
+    }
+    features.push(feature);
   }
 }
 
@@ -127,6 +169,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   }
   if (types.includes('area')) {
     await addAreaFeatures(features, event);
+  }
+  if (types.includes('restrictionarea')) {
+    await addRestrictionAreaFeatures(features, event);
   }
   if (types.includes('line')) {
     await addLineFeatures(features, event);

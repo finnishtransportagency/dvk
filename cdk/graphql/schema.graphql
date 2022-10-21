@@ -109,6 +109,7 @@ type Fairway {
   sizingVessels: [SizingVessel!]
   navigationLines: [NavigationLine!]
   areas: [Area!]
+  restrictionAreas: [RestrictionArea!]
   geotiffImages: [String]
 }
 
@@ -152,6 +153,34 @@ type Area {
   operationDirection: String
   fairways: [AreaFairway!]
   geometry: GeometryPolygon
+}
+
+type RestrictionArea {
+  id: Int!
+  types: [RestrictionType!]
+  value: Float
+  presenter: String
+  journalNumber: String
+  verificationDate: String
+  modificationDate: String
+  startDate: String
+  endDate: String
+  status: String
+  source: String
+  location: String
+  municipality: String
+  exception: String
+  geometry: GeometryPolygon
+  fairways: [RestrictionFairway!]
+}
+
+type RestrictionType {
+  code: String
+  text: String
+}
+
+type RestrictionFairway {
+  fairwayId: Int!
 }
 
 type SizingVessel {
