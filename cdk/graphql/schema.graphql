@@ -141,7 +141,7 @@ type Area {
   verificationDate: String
   owner: String
   additionalInformation: String
-  typeCode: String
+  typeCode: Int
   type: String
   notationCode: Float
   notation: String

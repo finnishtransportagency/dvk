@@ -49,7 +49,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
   const url = `${await getVatuUrl()}/vaylaalueet`;
   const response = await axios.get(url, {
@@ -63,7 +63,9 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   if (areas.length > 0) {
     log.debug('area: %o', areas[0]);
   }
-  for (const area of areas) {
+  for (const area of areas.filter((a) =>
+    navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4
+  )) {
     features.push({
       type: 'Feature',
       geometry: area.geometria as Geometry,
@@ -71,6 +73,8 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         id: area.id,
         name: area.nimi,
         draft: area.harausSyvyys,
+        typeCode: area.tyyppiKoodi,
+        type: area.tyyppi,
         depth: area.mitoitusSyvays,
         n2000depth: area.n2000MitoitusSyvays,
         n2000draft: area.n2000HarausSyvyys,
@@ -94,7 +98,6 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   const response = await axios.get(url, {
     headers: await getVatuHeaders(),
     params: {
-      bbox: '15,50,40,80',
       vaylaluokka: fairwayClass,
     },
   });
@@ -168,7 +171,10 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     await addPilotFeatures(features);
   }
   if (types.includes('area')) {
-    await addAreaFeatures(features, event);
+    await addAreaFeatures(features, true, event);
+  }
+  if (types.includes('specialarea')) {
+    await addAreaFeatures(features, false, event);
   }
   if (types.includes('restrictionarea')) {
     await addRestrictionAreaFeatures(features, event);

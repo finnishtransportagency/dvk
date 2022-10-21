@@ -26,7 +26,7 @@ export type AlueAPIModel = {
   omistaja?: string;
   lisatieto?: string;
   vayla?: AlueVaylaAPIModel[];
-  tyyppiKoodi?: string;
+  tyyppiKoodi?: number;
   tyyppi?: string;
   merkintalajiKoodi?: number;
   merkintalaji?: string;

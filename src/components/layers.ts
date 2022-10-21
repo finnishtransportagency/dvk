@@ -64,13 +64,16 @@ export function addPilotLayer(map: Map) {
 }
 
 export function addAPILayers(map: Map) {
-  // kauppamerenkulku
+  // kauppamerenkulku, Navigointialue, Satama-allas
   addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 'red', 100);
-  // muu vesiliikenne
+  // muu vesiliikenne, Navigointialue, Satama-allas
   addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 'green', 20);
+  // navigointilinjat
   addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 'blue', 500);
   addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', 'yellow', 50);
-  // TODO: layer by restriction type (nopeusrajoitukset vs muut = erityisalueet ui:ssa???)
-  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 20, 3);
+  // Nopeusrajoitus, Aallokon aiheuttamisen kielto, Vesiskootterilla ajo kielletty, Ankkurin käyttökielto
+  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
+  // Ankkurointialue, Erikoisalue, Kääntöallas, Ohitus- ja kohtaamisalue, STS-alue, Varmistettu lisäalue
+  addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 10, 2);
   addPilotLayer(map);
 }
