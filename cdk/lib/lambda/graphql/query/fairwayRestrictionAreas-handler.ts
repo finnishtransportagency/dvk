@@ -1,8 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import axios from 'axios';
 import { Fairway, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
+import { fetchVATUByFairwayId } from './vatu';
 
 export type RajoitusAlueAPIModel = {
   id: number;
@@ -39,10 +38,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, RestrictionAr
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
 ): Promise<RestrictionArea[]> => {
   log.info(`restrictionAreas(${event.source.id})`);
-  const response = await axios.get(`${await getVatuUrl()}/rajoitusalueet?jnro=${event.source.id}`, {
-    headers: await getVatuHeaders(),
-  });
-  const areas = response.data as RajoitusAlueAPIModel[];
+  const areas = await fetchVATUByFairwayId<RajoitusAlueAPIModel>(event.source.id, 'rajoitusalueet');
   log.debug('areas: %d', areas.length);
   return areas.map((apiArea) => {
     const area: RestrictionArea = {

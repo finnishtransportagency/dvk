@@ -1,13 +1,13 @@
 import { ALBEvent, ALBResult } from 'aws-lambda';
-import { getHeaders, getVatuHeaders, getVatuUrl } from '../environment';
+import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
-import axios from 'axios';
 import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
 import { gzip } from 'zlib';
 import { AlueAPIModel } from '../graphql/query/fairwayAreas-handler';
 import { RajoitusAlueAPIModel } from '../graphql/query/fairwayRestrictionAreas-handler';
+import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -49,32 +49,8 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function fetchVATU<T>(api: string, event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
-  const url = `${await getVatuUrl()}/${api}`;
-  const start = Date.now();
-  const response = await axios
-    .get(url, {
-      headers: await getVatuHeaders(),
-      params: {
-        vaylaluokka: fairwayClass,
-      },
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(
-        `VATU /${api}?fairwayClass=${fairwayClass} fetch failed: status=%d code=%s message=%s`,
-        errorObj.status,
-        errorObj.code,
-        errorObj.message
-      );
-    });
-  log.debug(`/${api}?fairwayClass=${fairwayClass} response time: ${Date.now() - start} ms`);
-  return response ? (response.data as T[]) : [];
-}
-
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
-  const areas = await fetchVATU<AlueAPIModel>('vaylaalueet', event);
+  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter((a) =>
     navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4
@@ -110,7 +86,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
 }
 
 async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const areas = await fetchVATU<RajoitusAlueAPIModel>('rajoitusalueet', event);
+  const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas) {
     const feature: Feature<Geometry, GeoJsonProperties> = {
@@ -143,7 +119,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
 }
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const lines = await fetchVATU<NavigointiLinjaAPIModel>('navigointilinjat', event);
+  const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.push({

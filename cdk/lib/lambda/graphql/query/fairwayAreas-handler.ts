@@ -1,8 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import axios from 'axios';
 import { Area, Fairway, QueryFairwayCardArgs } from '../../../../graphql/generated';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
+import { fetchVATUByFairwayId } from './vatu';
 
 export type AlueVaylaAPIModel = {
   jnro: number;
@@ -45,10 +44,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Area[], Fairw
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
 ): Promise<Area[]> => {
   log.info(`areas(${event.source.id})`);
-  const response = await axios.get(`${await getVatuUrl()}/vaylaalueet?jnro=${event.source.id}`, {
-    headers: await getVatuHeaders(),
-  });
-  const areas = response.data as AlueAPIModel[];
+  const areas = await fetchVATUByFairwayId<AlueAPIModel>(event.source.id, 'vaylaalueet');
   log.debug('areas: %d', areas.length);
   return areas.map((apiArea) => {
     const area: Area = {
