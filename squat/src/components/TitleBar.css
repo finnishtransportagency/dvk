@@ -10,14 +10,20 @@ ion-button.button-disabled {
   opacity: 1;
   color: var(--ion-color-base);
 }
-@media (min-width: 800px) {
+@media (min-width: 769px) {
   ion-text h1 {
     white-space: nowrap;
   }
+  .mobile-logo {
+    display: none;
+  }
 }
-@media (max-width: 800px) {
+@media (max-width: 768px) {
   ion-text h1 {
     white-space: nowrap;
     font-size: 1.8rem;
+  }
+  .desktop-logo {
+    display: none;
   }
 }
