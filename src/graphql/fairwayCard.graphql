@@ -37,8 +37,28 @@ query findFairwayCardById($id: String!) {
         id
         length
         typeCode
+        referenceLevel
+        n2000depth
+        n2000draft
+        n2000ReferenceLevel
         geometry {
           coordinates
+        }
+      }
+      areas {
+        id
+        name
+        depth
+        draft
+        referenceLevel
+        n2000depth
+        n2000draft
+        n2000ReferenceLevel
+        additionalInformation
+        fairways {
+          fairwayId
+          sizingSpeed
+          sizingSpeed2
         }
       }
     }
