@@ -54,7 +54,9 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter((a) =>
-    navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4
+    navigationArea
+      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 3
+      : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4 && a.tyyppiKoodi !== 3
   )) {
     features.push({
       type: 'Feature',
@@ -89,7 +91,9 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
 async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
   log.debug('areas: %d', areas.length);
-  for (const area of areas) {
+  for (const area of areas.filter(
+    (a) => a.rajoitustyyppi === 'Nopeusrajoitus' || (a.rajoitustyypit?.filter((b) => b.rajoitustyyppi === 'Nopeusrajoitus')?.length || 0) > 0
+  )) {
     const feature: Feature<Geometry, GeoJsonProperties> = {
       type: 'Feature',
       geometry: area.geometria as Geometry,
