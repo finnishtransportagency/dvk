@@ -133,6 +133,7 @@ export class DvkBackendStack extends Stack {
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       ...s3DeletePolicy,
+      lifecycleRules: [{ expiration: Duration.days(1) }],
     });
   }
 

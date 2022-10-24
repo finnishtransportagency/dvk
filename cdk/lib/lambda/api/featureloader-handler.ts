@@ -164,7 +164,7 @@ function getKey(queryString: ALBEventQueryStringParameters | undefined) {
 
 async function cacheResponse(key: string, response: string) {
   const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  expires.setTime(expires.getTime() + 24 * 60 * 60 * 1000);
   const command = new PutObjectCommand({
     Key: key,
     Bucket: getCacheBucketName(),
