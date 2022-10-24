@@ -5,7 +5,7 @@ function errorMessage(variable: string): string {
   return `Environment variable ${variable} missing`;
 }
 
-function getEnvironment(): string {
+export function getEnvironment(): string {
   if (process.env.ENVIRONMENT) {
     return process.env.ENVIRONMENT;
   }

@@ -1,10 +1,14 @@
-import { ALBEvent, ALBResult } from 'aws-lambda';
-import { getHeaders } from '../environment';
+import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
+import { getEnvironment, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel } from '../graphql/query/vatu';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { Readable } from 'stream';
+
+const s3Client = new S3Client({ region: 'eu-west-1' });
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -144,41 +148,100 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   }
 }
 
+function getCacheBucketName() {
+  return `featurecache-${getEnvironment()}`;
+}
+
+function getKey(queryString: ALBEventQueryStringParameters | undefined) {
+  if (queryString) {
+    const key = (queryString.type || '') + (queryString.vaylaluokka ? queryString.vaylaluokka : '');
+    if (key !== '') {
+      return key;
+    }
+  }
+  return 'noquerystring';
+}
+
+async function cacheResponse(key: string, response: string) {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  const command = new PutObjectCommand({
+    Key: key,
+    Bucket: getCacheBucketName(),
+    Expires: expires,
+    Body: response,
+  });
+  await s3Client.send(command);
+}
+
+async function getFromCache(key: string): Promise<string | undefined> {
+  try {
+    const data = await s3Client.send(
+      new GetObjectCommand({
+        Key: key,
+        Bucket: getCacheBucketName(),
+      })
+    );
+    if (data.Body) {
+      const streamToString = (stream: Readable): Promise<string> =>
+        new Promise((resolve, reject) => {
+          const chunks: Uint8Array[] = [];
+          stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
+          stream.on('error', reject);
+          stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
+        });
+      return await streamToString(data.Body as Readable);
+    }
+  } catch (e) {
+    // not found
+    return undefined;
+  }
+  return undefined;
+}
+
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
-  const features: Feature<Geometry, GeoJsonProperties>[] = [];
-  const types = event.queryStringParameters?.type?.split(',') || [];
-  if (types.includes('pilot')) {
-    await addPilotFeatures(features);
+  const key = getKey(event.queryStringParameters);
+  let base64Response: string;
+  const response = await getFromCache(key);
+  if (response) {
+    base64Response = response;
+  } else {
+    const features: Feature<Geometry, GeoJsonProperties>[] = [];
+    const types = event.queryStringParameters?.type?.split(',') || [];
+    if (types.includes('pilot')) {
+      await addPilotFeatures(features);
+    }
+    if (types.includes('area')) {
+      await addAreaFeatures(features, true, event);
+    }
+    if (types.includes('specialarea')) {
+      await addAreaFeatures(features, false, event);
+    }
+    if (types.includes('restrictionarea')) {
+      await addRestrictionAreaFeatures(features, event);
+    }
+    if (types.includes('line')) {
+      await addLineFeatures(features, event);
+    }
+    const collection: FeatureCollection = {
+      type: 'FeatureCollection',
+      features,
+    };
+    let start = Date.now();
+    const body = JSON.stringify(collection);
+    log.debug('stringify duration: %d ms', Date.now() - start);
+    start = Date.now();
+    const gzippedResponse = await gzipString(body);
+    log.debug('gzip duration: %d ms', Date.now() - start);
+    start = Date.now();
+    base64Response = gzippedResponse.toString('base64');
+    log.debug('base64 duration: %d ms', Date.now() - start);
+    await cacheResponse(key, base64Response);
   }
-  if (types.includes('area')) {
-    await addAreaFeatures(features, true, event);
-  }
-  if (types.includes('specialarea')) {
-    await addAreaFeatures(features, false, event);
-  }
-  if (types.includes('restrictionarea')) {
-    await addRestrictionAreaFeatures(features, event);
-  }
-  if (types.includes('line')) {
-    await addLineFeatures(features, event);
-  }
-  const collection: FeatureCollection = {
-    type: 'FeatureCollection',
-    features,
-  };
-  let start = Date.now();
-  const body = JSON.stringify(collection);
-  log.debug('stringify duration: %d ms', Date.now() - start);
-  start = Date.now();
-  const gzippedResponse = await gzipString(body);
-  log.debug('gzip duration: %d ms', Date.now() - start);
-  start = Date.now();
-  const response = gzippedResponse.toString('base64');
-  log.debug('base64 duration: %d ms', Date.now() - start);
   return {
     statusCode: 200,
-    body: response,
+    body: base64Response,
     isBase64Encoded: true,
     headers: { ...getHeaders(), 'Content-Type': 'application/geo+json' },
   };
