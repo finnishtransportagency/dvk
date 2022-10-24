@@ -3,11 +3,8 @@ import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
-import { NavigointiLinjaAPIModel } from '../graphql/query/fairwayNavigationLines-handler';
 import { gzip } from 'zlib';
-import { AlueAPIModel } from '../graphql/query/fairwayAreas-handler';
-import { RajoitusAlueAPIModel } from '../graphql/query/fairwayRestrictionAreas-handler';
-import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
+import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel } from '../graphql/query/vatu';
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -170,11 +167,18 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     type: 'FeatureCollection',
     features,
   };
+  let start = Date.now();
   const body = JSON.stringify(collection);
+  log.debug('stringify duration: %d ms', Date.now() - start);
+  start = Date.now();
   const gzippedResponse = await gzipString(body);
+  log.debug('gzip duration: %d ms', Date.now() - start);
+  start = Date.now();
+  const response = gzippedResponse.toString('base64');
+  log.debug('base64 duration: %d ms', Date.now() - start);
   return {
     statusCode: 200,
-    body: gzippedResponse.toString('base64'),
+    body: response,
     isBase64Encoded: true,
     headers: { ...getHeaders(), 'Content-Type': 'application/geo+json' },
   };

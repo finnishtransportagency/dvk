@@ -1,38 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Fairway, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { fetchVATUByFairwayId } from './vatu';
-
-export type RajoitusAlueAPIModel = {
-  id: number;
-  rajoitustyyppi?: string;
-  rajoitustyypit?: RajoitustyyppiAPIModel[];
-  suuruus?: number;
-  esittaja?: string;
-  diaariNumero?: string;
-  vahvistusPaivamaara?: string;
-  muutosPaivamaara?: string;
-  alkuPaivamaara?: string;
-  loppuPaivamaara?: string;
-  paatosTila?: string;
-  tietolahde?: string;
-  sijainti?: string;
-  kunta?: string;
-  poikkeus?: string;
-  geometria: object;
-  vayla?: RajoitusVaylaAPIModel[];
-};
-
-export type RajoitustyyppiAPIModel = {
-  koodi?: string;
-  rajoitustyyppi?: string;
-};
-
-export type RajoitusVaylaAPIModel = {
-  jnro: number;
-  nimiFI?: string;
-  nimiSV?: string;
-};
+import { fetchVATUByFairwayId, RajoitusAlueAPIModel } from './vatu';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, RestrictionArea[], Fairway> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
