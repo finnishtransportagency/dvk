@@ -48,7 +48,7 @@ button.icon.invert:hover {
 }
 button.icon:focus-visible {
   outline: 2px solid var(--ion-color-primary);
-  border: 1px solid var(--ion-color-primary-contrast);
+  outline-offset: 1px;
 }
 button.icon:focus-visible:hover {
   outline: 2px solid var(--ion-color-primary-shade);
@@ -105,31 +105,61 @@ button.icon:focus-visible:hover {
 
 #fairwayCardsContainer ion-text p {
   font-size: 12px;
-  line-height: 18px;
-  margin-bottom: 0;
-}
-#fairwayCardsContainer ion-text.condensed p:first-of-type {
+  line-height: 1.125rem;
   margin-top: 0;
+  break-inside: avoid;
 }
 #fairwayCardsContainer ion-text h4 {
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
+  line-height: 1.125rem;
+  break-after: avoid;
 }
 #fairwayCardsContainer ion-text h4 span {
   text-transform: none;
 }
 #fairwayCardsContainer ion-text h5 {
   font-size: 12px;
-  margin: 12px 0 0;
+  margin: 12px 0 6px;
   font-weight: bold;
-  line-height: 24px;
+  line-height: 1.125rem;
+  break-after: avoid;
 }
 #fairwayCardsContainer ion-text .info svg {
   color: var(--ion-color-primary);
   width: 16px;
   height: 16px;
   margin-right: 8px;
+}
+
+ion-accordion::part(header) {
+  min-height: 24px;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+ion-accordion::part(content) {
+  background: var(--ion-color-lightest);
+}
+ion-accordion .tabContent {
+  margin-top: 10px;
+}
+.accItem {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  --padding-start: 0;
+  --inner-padding-start: 2px;
+  --inner-padding-end: 5px;
+  --min-height: 24px;
+}
+.accItem ion-label {
+  margin: 0;
+  color: var(--ion-color-dark) !important;
+}
+.accItem ion-icon {
+  width: 14px;
+  height: 14px;
+  margin: 0;
 }
 
 /* Grid table */
@@ -173,6 +203,7 @@ ion-breadcrumb.ion-focusable::part(native):hover {
 }
 ion-breadcrumb.ion-focused::part(native) {
   outline: 1px solid var(--ion-color-dark);
+  outline-offset: 1px;
 }
 
 /* Tabs */
@@ -204,22 +235,34 @@ ion-segment.tabs ion-label h3 {
   font-size: 12px;
   font-weight: inherit;
 }
+.tabContent {
+  margin-top: 24px;
+}
+.tabContent.wide {
+  column-count: 2;
+  column-gap: 48px;
+}
+.group {
+  break-inside: avoid;
+}
 
 /* Links */
-ion-text a {
+.tabContent a {
   color: var(--ion-color-dark);
+  text-decoration: underline;
 }
-ion-text a[target="_blank"] {
+.tabContent a[target="_blank"] {
   color: var(--ion-color-primary);
   padding-right: 14px;
   background: url('../theme/img/externalLink.svg') no-repeat right center;
 }
-ion-text a:hover {
+.tabContent a:hover {
   background-color: var(--ion-color-light);
 }
-ion-text a:focus-visible {
+.tabContent a:focus-visible {
   outline: 1px solid var(--ion-color-dark);
+  outline-offset: 1px;
 }
-ion-text a[target="_blank"]:focus-visible {
+.tabContent a[target="_blank"]:focus-visible {
   outline: 1px solid var(--ion-color-primary);
 }
