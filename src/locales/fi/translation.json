@@ -46,6 +46,7 @@
   "fairwayCards": {
     "title_one": "Väyläkortti",
     "title_other": "Väyläkortit",
+    "general": "Yleistä",
     "description": "Väyläkortti sisältää väylänkäyttäjälle tarkoitettua informaatiota väylästä ja siihen liittyvästä satamasta. Se täydentää osaltaan merikartoilta ja muista julkaisuista saatavia väylätietoja. Väyläkortteja on laadittu talvisatamiin johtavista meriväylistä, ja ne kattavat suurimman osan nk. kauppamerenkulun pääväylistä.",
     "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
@@ -109,6 +110,8 @@
     "harbourBasin": "Satama-allas",
     "contactDetails": "Yhteystiedot",
     "commonInformation": "Väylän yleiset tiedot",
+    "fairwayAreas": "Väyläalueet",
+    "area": "Alue",
     "noData": "Tietoa ei ole saatavilla.",
     "noRestrictions": "Ei voimassaolevia rajoituksia.",
     "unit": {
@@ -120,7 +123,9 @@
       "kmDesc_one": "kilometri",
       "kmDesc_other": "kilometriä",
       "ktsDesc_one": "solmu",
-      "ktsDesc_other": "solmua"
+      "ktsDesc_other": "solmua",
+      "kmhDesc_one": "kilometri tunnissa",
+      "kmhDesc_other": "kilometriä tunnissa"
     }
   },
   "appUpdateAlert": {

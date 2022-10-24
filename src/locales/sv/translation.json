@@ -46,6 +46,7 @@
   "fairwayCards": {
     "title_one": "Farledskort",
     "title_other": "Farledskort",
+    "general": "[sv] Yleistä",
     "description": "Farledskorten innehåller information för farledsanvändarna om farlederna och de hamnar de leder till. De kompletterar de farledsdata som sjökorten och andra publikationer innehåller. Farledskort har utarbetats över de farleder som leder till vinterhamnarna, m.a.o. största delen av huvudlederna för handelssjöfarten.",
     "additionalDescription": "Ett farledskort består av ett kort med fakta om farledens dimensionering, navigerbarhet och navigeringsförhållanden, eventuella trafikrekommendationer och –begränsningar, isförhållanden samt trafikservice. I helheten ingår också ritningar över farleden och hamnen. Ritningarna får inte användas för navigation. De visar farledsdragningen och utmärkningen i stora drag, farledsområdet, de ramade djupen på de olika farledsavsnitten, kajplatserna och överlag de platser som det finns hänvisningar till i texten.",
     "notification": "OBS! Övergången till det nya höjdsystemet N2000 har inletts i sjökortspublikationerna. Farledskorten uppdateras till detta höjdsystem i takt med att de nya kustkorten publiceras.  Användarna ska försäkra sig om att de använder ett farledskort som har höjdsystemet som följer kustkartan. Ett farledskort som uppdaterats i höjdsystemet N2000 känner du igen på anteckningen N2000 (BSCD2000) i kortets övre kant.",
@@ -108,6 +109,8 @@
     "harbourBasin": "Hamnbassäng",
     "contactDetails": "Kontaktinformation",
     "commonInformation": "[sv] Väylän yleiset tiedot",
+    "fairwayAreas": "[sv] Väyläalueet",
+    "area": "[sv] Alue",
     "noData": "[sv] Tietoa ei ole saatavilla.",
     "noRestrictions": "[sv] Ei voimassaolevia rajoituksia.",
     "unit": {
@@ -119,7 +122,9 @@
       "kmDesc_one": "[sv] kilometri",
       "kmDesc_other": "[sv] kilometriä",
       "ktsDesc_one": "[sv] solmu",
-      "ktsDesc_other": "[sv] solmua"
+      "ktsDesc_other": "[sv] solmua",
+      "kmhDesc_one": "[sv] kilometri tunnissa",
+      "kmhDesc_other": "[sv] kilometriä tunnissa"
     }
   },
   "appUpdateAlert": {
