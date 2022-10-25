@@ -93,6 +93,11 @@ export async function getVatuUrl() {
   return parameters.VatuUrl;
 }
 
+export async function getFeatureCacheDurationHours() {
+  const parameters = await readParametersForEnv(getEnvironment());
+  return parameters.FeatureCacheDurationHours ? Number.parseInt(parameters.FeatureCacheDurationHours, 10) : 0;
+}
+
 export async function getVatuHeaders(): Promise<Record<string, string>> {
   return {
     Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),

@@ -65,7 +65,7 @@ export function addPilotLayer(map: Map) {
 
 export function addAPILayers(map: Map) {
   // kauppamerenkulku
-  // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue
+  // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue, Kääntöallas
   addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 'red', 100);
   // muu vesiliikenne
   addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 'green', 20);
@@ -74,7 +74,7 @@ export function addAPILayers(map: Map) {
   addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', 'yellow', 50);
   // Nopeusrajoitus
   addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
-  // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
+  // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
   addPilotLayer(map);
 }

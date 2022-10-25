@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getEnvironment, getHeaders } from '../environment';
+import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
@@ -53,10 +53,12 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas
+  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas
   // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
   for (const area of areas.filter((a) =>
-    navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
+    navigationArea
+      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5
+      : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
   )) {
     features.push({
       type: 'Feature',
@@ -166,9 +168,9 @@ function getKey(queryString: ALBEventQueryStringParameters | undefined) {
   return 'noquerystring';
 }
 
-async function cacheResponse(key: string, response: string) {
+async function cacheResponse(key: string, response: string, cacheDurationHours: number) {
   const expires = new Date();
-  expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000);
+  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
   const command = new PutObjectCommand({
     Key: key,
     Bucket: getCacheBucketName(),
@@ -208,7 +210,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.queryStringParameters);
   let base64Response: string;
-  const response = await getFromCache(key);
+  const cacheDurationHours = await getFeatureCacheDurationHours();
+  log.debug('cacheDurationHours: %d', cacheDurationHours);
+  const response = cacheDurationHours > 0 ? await getFromCache(key) : undefined;
   if (response) {
     base64Response = response;
   } else {
@@ -242,7 +246,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     start = Date.now();
     base64Response = gzippedResponse.toString('base64');
     log.debug('base64 duration: %d ms', Date.now() - start);
-    await cacheResponse(key, base64Response);
+    if (cacheDurationHours > 0) {
+      await cacheResponse(key, base64Response, cacheDurationHours);
+    }
   }
   return {
     statusCode: 200,
