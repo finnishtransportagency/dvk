@@ -90,6 +90,7 @@ type Quay {
 type Section {
   name: Text
   draft: Float
+  geometry: GeometryPoint
 }
 
 type Fairway {

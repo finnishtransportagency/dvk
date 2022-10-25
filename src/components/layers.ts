@@ -6,6 +6,7 @@ import { Fill, Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import pilot_logo from '../theme/img/pilotPlace.svg';
+import quayIcon from '../theme/img/dock_icon.svg';
 import CircleStyle from 'ol/style/Circle';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
@@ -63,6 +64,40 @@ export function addPilotLayer(map: Map) {
   map.addLayer(pilotLayer);
 }
 
+export function addHarborLayer(map: Map) {
+  const image = new Icon({
+    src: quayIcon,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const style = [
+    new Style({
+      image,
+    }),
+    new Style({
+      image: new CircleStyle({
+        radius: 10,
+        fill: new Fill({
+          color: 'rgba(0,0,0,0)',
+        }),
+      }),
+    }),
+  ];
+  const harborSource = new VectorSource({
+    url: url + '?type=harbor',
+    format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
+  });
+  const pilotLayer = new VectorLayer({
+    source: harborSource,
+    style,
+    properties: { id: 'harbor' },
+    maxResolution: 3,
+    renderBuffer: 2000,
+  });
+  map.addLayer(pilotLayer);
+}
+
 export function addAPILayers(map: Map) {
   // kauppamerenkulku
   // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue, Kääntöallas
@@ -77,4 +112,5 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
   addPilotLayer(map);
+  addHarborLayer(map);
 }

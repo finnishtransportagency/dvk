@@ -2,7 +2,7 @@ import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { Harbor, PilotPlace, Quay } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel } from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
@@ -21,6 +21,58 @@ const gzipString = async (input: string): Promise<Buffer> => {
     })
   );
 };
+
+function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJsonProperties>[]) {
+  if (quay.geometry) {
+    features.push({
+      type: 'Feature',
+      geometry: quay.geometry as Geometry,
+      properties: {
+        type: 'quay',
+        quay: quay.name,
+        extraInfo: quay.extraInfo,
+        length: quay.length,
+        draft: quay.sections?.map((s) => s.draft),
+        email: harbor.email,
+        phoneNumber: harbor.phoneNumber,
+        fax: harbor.fax,
+        internet: harbor.internet,
+      },
+    });
+  } else {
+    for (const section of quay.sections || []) {
+      if (section.geometry) {
+        features.push({
+          type: 'Feature',
+          geometry: section.geometry as Geometry,
+          properties: {
+            type: 'section',
+            quay: quay.name,
+            extraInfo: quay.extraInfo,
+            length: quay.length,
+            name: section.name,
+            draft: section.draft,
+            email: harbor.email,
+            phoneNumber: harbor.phoneNumber,
+            fax: harbor.fax,
+            internet: harbor.internet,
+          },
+        });
+      }
+    }
+  }
+}
+
+async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    for (const harbor of card.harbors || []) {
+      for (const quay of harbor.quays || []) {
+        addQuay(harbor, quay, features);
+      }
+    }
+  }
+}
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const placeMap = new Map<number, PilotPlace>();
@@ -220,6 +272,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     const types = event.queryStringParameters?.type?.split(',') || [];
     if (types.includes('pilot')) {
       await addPilotFeatures(features);
+    }
+    if (types.includes('harbor')) {
+      await addHarborFeatures(features);
     }
     if (types.includes('area')) {
       await addAreaFeatures(features, true, event);

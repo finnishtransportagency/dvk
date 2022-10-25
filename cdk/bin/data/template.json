@@ -165,6 +165,10 @@
                 "sv": "",
                 "en": ""
               },
+              "geometry": {
+                "type": "Point",
+                "coordinates": []
+              },
               "draft": 0
             }
           ],

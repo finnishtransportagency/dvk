@@ -82,6 +82,7 @@ export type Quay = {
 export type Section = {
   name?: Text;
   draft?: number;
+  geometry?: GeometryPoint;
 };
 
 type FairwayCardByFairwayIdIndex = {
