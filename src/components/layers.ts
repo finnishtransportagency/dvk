@@ -8,6 +8,10 @@ import Map from 'ol/Map';
 import pilot_logo from '../theme/img/pilotPlace.svg';
 import quayIcon from '../theme/img/dock_icon.svg';
 import CircleStyle from 'ol/style/Circle';
+import Text from 'ol/style/Text';
+// eslint-disable-next-line import/named
+import { FeatureLike } from 'ol/Feature';
+import { HarborFeatureProperties } from './popup/popup';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
@@ -71,19 +75,39 @@ export function addHarborLayer(map: Map) {
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const style = [
-    new Style({
-      image,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 10,
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
+  const style = function (feature: FeatureLike) {
+    const props = feature.getProperties() as HarborFeatureProperties | undefined;
+    let text;
+    if (props?.type === 'section') {
+      text = `${props.name?.fi} ${props.draft?.join('/')} m`;
+    } else if (props?.type === 'quay') {
+      text = `${props.quay?.fi} ${props.draft?.join('/')} m`;
+    } else {
+      text = '';
+    }
+    return [
+      new Style({
+        image,
+        text: new Text({
+          font: '18px "Exo 2"',
+          placement: 'line',
+          offsetY: -50,
+          text,
+          fill: new Fill({
+            color: '#000000',
+          }),
         }),
       }),
-    }),
-  ];
+      new Style({
+        image: new CircleStyle({
+          radius: 10,
+          fill: new Fill({
+            color: 'rgba(0,0,0,0)',
+          }),
+        }),
+      }),
+    ];
+  };
   const harborSource = new VectorSource({
     url: url + '?type=harbor',
     format: new GeoJSON({ featureProjection: 'EPSG:4326' }),

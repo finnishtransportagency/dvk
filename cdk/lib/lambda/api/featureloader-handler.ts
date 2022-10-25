@@ -51,7 +51,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
             extraInfo: quay.extraInfo,
             length: quay.length,
             name: section.name,
-            draft: section.draft,
+            draft: [section.draft],
             email: harbor.email,
             phoneNumber: harbor.phoneNumber,
             fax: harbor.fax,

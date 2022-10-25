@@ -6,6 +6,20 @@ import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 import { PilotFeatureProperties } from './PilotPopupContent';
+import { Text } from '../../graphql/generated';
+
+export type HarborFeatureProperties = {
+  type: string;
+  quay?: Text;
+  extraInfo?: Text;
+  length?: number;
+  name?: Text;
+  draft?: number[];
+  email?: string;
+  phoneNumber?: string[];
+  fax?: string;
+  internet?: string;
+};
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
