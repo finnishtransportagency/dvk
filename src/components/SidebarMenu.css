@@ -1,45 +1,34 @@
-.sidebarMenu .header {
-  border-bottom: 1px solid #cccccc;
-}
-
-.sidebarMenu .header .logo {
-  width: 234px;
-}
-
-.sidebarMenu .header .closeButton {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-}
-
-.sidebarMenu .title {
-  padding: 10px 10px 10px 22px;
-  font-weight: bold;
-}
-
-.sidebarMenu .languageSelection {
-  padding: 10px 10px 10px 22px;
-  font-weight: bold;
-}
-
-.sidebarMenu .sidebarButton {
-  text-transform: none;
-}
-
-.sidebarMenu ion-row {
-  padding: 1rem;
-  border-bottom: 1px solid #cccccc;
-}
-
 .sideBar {
   --width: 320px;
 }
 
+.sidebarMenu ion-row {
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--ion-color-lighter);
+}
+
+.sidebarMenu .header {
+  border-bottom: 1px solid var(--ion-color-lighter);
+  padding: 0;
+}
+.sidebarMenu .header .logo {
+  width: 234px;
+}
+
+.sidebarMenu h1 {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+}
+
+.sidebarMenu ion-button {
+  text-transform: none;
+}
 .sidebarMenu ion-button.button-clear {
   color: var(--ion-color-primary);
 }
-
 .sidebarMenu ion-button.button-disabled {
   opacity: 1;
-  color: var(--ion-color-base);
+  color: var(--ion-color-dark);
 }

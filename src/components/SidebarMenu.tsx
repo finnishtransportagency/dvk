@@ -11,8 +11,8 @@ import {
   IonFooter,
   IonToolbar,
   IonTitle,
-  IonRouterLink,
   useIonRouter,
+  IonText,
 } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -29,18 +29,22 @@ const SidebarMenu: React.FC = () => {
     <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
       <IonContent className="sidebarMenu">
         <IonGrid className="ion-no-padding">
-          <IonRow className="header">
+          <IonRow className="header ion-align-items-end">
             <IonCol>
               <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
             </IonCol>
-            <IonCol size="2">
+            <IonCol size="auto">
               <IonButton fill="clear" color="#000000" className="closeButton" onClick={async () => menuController.close()}>
                 <IonIcon className="otherIconLarge" icon={close} />
               </IonButton>
             </IonCol>
           </IonRow>
           <IonRow className="title">
-            <IonCol>{t('homePage.sidebarMenu.title')}</IonCol>
+            <IonCol>
+              <IonText>
+                <h1>{t('homePage.sidebarMenu.title')}</h1>
+              </IonText>
+            </IonCol>
           </IonRow>
           <IonRow>
             <IonCol size="12">
@@ -74,7 +78,7 @@ const SidebarMenu: React.FC = () => {
           </IonRow>
           <IonRow className="languageSelection">
             <IonCol size="12">
-              <IonButtons>
+              <IonButtons className="ion-justify-content-around">
                 <IonButton
                   className="sidebarButton"
                   onClick={(e) => {
@@ -93,7 +97,7 @@ const SidebarMenu: React.FC = () => {
                   }}
                   disabled={i18n.language === 'sv'}
                 >
-                  På Svenska
+                  På svenska
                 </IonButton>
                 <IonButton
                   className="sidebarButton"
