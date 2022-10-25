@@ -53,10 +53,10 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
+  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas
+  // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
   for (const area of areas.filter((a) =>
-    navigationArea
-      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 3
-      : a.tyyppiKoodi !== 1 && a.tyyppiKoodi !== 4 && a.tyyppiKoodi !== 3
+    navigationArea ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
   )) {
     features.push({
       type: 'Feature',
@@ -168,7 +168,7 @@ function getKey(queryString: ALBEventQueryStringParameters | undefined) {
 
 async function cacheResponse(key: string, response: string) {
   const expires = new Date();
-  expires.setTime(expires.getTime() + 24 * 60 * 60 * 1000);
+  expires.setTime(expires.getTime() + 2 * 60 * 60 * 1000);
   const command = new PutObjectCommand({
     Key: key,
     Bucket: getCacheBucketName(),
@@ -186,7 +186,8 @@ async function getFromCache(key: string): Promise<string | undefined> {
         Bucket: getCacheBucketName(),
       })
     );
-    if (data.Body) {
+    if (data.Body && data.Expires && data.Expires.getTime() > Date.now()) {
+      log.debug(`returning ${key} from cache`);
       const streamToString = (stream: Readable): Promise<string> =>
         new Promise((resolve, reject) => {
           const chunks: Uint8Array[] = [];
