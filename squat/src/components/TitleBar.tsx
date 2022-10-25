@@ -10,10 +10,10 @@ const TitleBar: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
   return (
-    <IonGrid className="titlebar">
-      <IonRow class="ion-justify-content-end">
-        <IonCol class="ion-align-self-center">
-          <IonText color="dark" className="equal-margin-top main-title">
+    <IonGrid className="titlebar ion-no-padding">
+      <IonRow className="ion-align-items-center">
+        <IonCol className="mainTitle">
+          <IonText color="dark" className="equal-margin-top">
             <h1>
               <strong>{t('squat.content')}</strong>
             </h1>
@@ -22,18 +22,16 @@ const TitleBar: React.FC = () => {
         <IonCol class="ion-align-self-center mobile-logo" size="auto">
           <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
         </IonCol>
-        <IonCol class="ion-align-self-center" size="auto">
+        <IonCol className="langbar" style={{ textAlign: 'end' }}>
+          {showLanguages() && <LanguageBar />}
+        </IonCol>
+        <IonCol size="auto">
           <IonGrid>
             <IonRow>
-              {showLanguages() && (
-                <IonCol class="ion-align-self-center" size="auto">
-                  <LanguageBar />
-                </IonCol>
-              )}
-              <IonCol class="ion-align-self-center" size="auto">
+              <IonCol className="ion-align-self-center">
                 <PrintBar />
               </IonCol>
-              <IonCol class="ion-align-self-center desktop-logo" size="auto">
+              <IonCol className="ion-align-self-center desktop-logo" size="auto">
                 <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
               </IonCol>
             </IonRow>
