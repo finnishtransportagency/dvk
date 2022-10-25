@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
   IonBreadcrumb,
   IonBreadcrumbs,
+  IonButton,
   IonCol,
   IonGrid,
   IonLabel,
@@ -13,7 +14,11 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
-import { useFindFairwayCardByIdQuery } from '../graphql/generated';
+import { Fairway, Harbor, Pilot, Quay, Text, Tug, useFindFairwayCardByIdQuery, Vts } from '../graphql/generated';
+import { metresToNauticalMiles } from '../utils/conversions';
+import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
+import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
+import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -37,13 +42,6 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
       {!number && showEmpty && '-'}
     </>
   );
-};
-
-type Text = {
-  __typename?: 'Text';
-  fi?: string | null;
-  sv?: string | null;
-  en?: string | null;
 };
 
 type ParagraphProps = {
@@ -79,34 +77,23 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) 
   );
 };
 
-type Sizing = {
-  __typename?: 'Sizing';
-  minimumTurningCircle?: number | null;
-  minimumWidth?: number | null;
-  additionalInformation?: string | null;
+type InfoParagraphProps = {
+  title?: string;
 };
 
-type SizingVessel = {
-  __typename?: 'SizingVessel';
-  type?: string | null;
-  length?: number | null;
-  width?: number | null;
-  draft?: number | null;
+const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+
+  return (
+    <p className="info use-flex ion-align-items-center">
+      <InfoIcon />
+      {title || t('noData')}
+    </p>
+  );
 };
 
 type FairwayProps = {
-  data?:
-    | ({
-        __typename?: 'Fairway';
-        name?: Text | null;
-        primary?: boolean | null;
-        startText?: string | null;
-        endText?: string | null;
-        lighting?: Text | null;
-        sizing?: Sizing | null;
-        sizingVessels?: (SizingVessel | null)[] | null;
-      } | null)[]
-    | null;
+  data?: Fairway | null;
   lineText?: Text | null;
 };
 
@@ -114,23 +101,32 @@ const LiningInfo: React.FC<FairwayProps> = ({ data, lineText }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
+  // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
+  const extractNavigationLinesLength = () => {
+    const totalLength =
+      data?.navigationLines &&
+      data?.navigationLines.reduce((acc, line) => {
+        return acc + ((line.typeCode !== '4' && line.length) || 0);
+      }, 0);
+    return totalLength;
+  };
+
   return (
     <>
       {data && (
         <IonText>
           <p>
             <strong>{t('liningAndMarking')}: </strong>
-            {data.map((fairway, idx) => {
-              if (!fairway?.primary) return null;
-              return (
-                <span key={idx}>
-                  {t('starts')}: {fairway.startText}, {t('ends')}: {fairway.endText}. {lineText && lineText[lang]} {t('length')}: XX{' '}
-                  <span aria-label={t('unit.kmDesc', { count: 3 })}>km</span> / YY,Y{' '}
-                  <span aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</span>. {t('fairway')}{' '}
-                  {fairway.lighting && fairway.lighting[lang]?.toLocaleLowerCase()}. &lt;Lateraalimerkintä/Kardinaalimerkintä&gt;
-                </span>
-              );
-            })}
+            {t('starts')}: {data.startText}, {t('ends')}: {data.endText}. {lineText && lineText[lang]} {t('length')}:{' '}
+            {((extractNavigationLinesLength() || 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+            <span aria-label={t('unit.kmDesc', { count: 3 })} role="definition">
+              km
+            </span>{' '}
+            / {metresToNauticalMiles(extractNavigationLinesLength()).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+            <span aria-label={t('unit.nmDesc', { count: 2 })} role="definition">
+              {t('unit.nm')}
+            </span>
+            . {t('fairway')} {data.lighting && data.lighting[lang]?.toLocaleLowerCase()}. &lt;Lateraalimerkintä/Kardinaalimerkintä&gt;
           </p>
         </IonText>
       )}
@@ -145,49 +141,116 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
     <>
       {data && (
         <IonText>
-          {data.map((fairway, idx) => {
-            if (!fairway?.primary || !fairway.sizingVessels) return null;
-            return (
-              <div key={idx}>
-                <p>
-                  <strong>{t('fairwayDesignVessel', { count: fairway.sizingVessels?.length || 1 })}: </strong>
-                  {fairway &&
-                    fairway.sizingVessels?.map((vessel, jdx) => {
-                      return (
-                        <span key={jdx}>
-                          {vessel && (
-                            <>
-                              <br />
-                              {t('designVessel')} {jdx + 1}: {vessel.type} l = {vessel.length}{' '}
-                              <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b = {vessel.width}{' '}
-                              <span aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</span>, t = {vessel.draft}{' '}
-                              <span aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</span>.
-                            </>
-                          )}
+          <p>
+            <strong>{t('fairwayDesignVessel', { count: data.sizingVessels?.length || 1 })}: </strong>
+            {data &&
+              data.sizingVessels?.map((vessel, idx) => {
+                return (
+                  <span key={idx}>
+                    {vessel && (
+                      <>
+                        <br />
+                        {t('designVessel')} {idx + 1}: {vessel.type} l = {vessel.length}&nbsp;
+                        <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })} role="definition">
+                          m
                         </span>
-                      );
-                    })}
-                </p>
-                <p>
-                  <strong>{t('fairwayDimensions')}: </strong>
-                  {fairway && fairway.sizing && (
-                    <>
-                      {fairway.sizing.minimumWidth && t('designDraft')}: X <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>.{' '}
-                      {fairway.sizing.minimumWidth && t('sweptDepths')}: Y <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>.{' '}
-                      {fairway.sizing.minimumWidth && t('minimumWidth')}: {fairway.sizing.minimumWidth}{' '}
-                      <span aria-label={t('unit.mDesc', { count: Number(fairway.sizing.minimumWidth) })}>m</span>
-                      {t('and')}
-                      {t('minimumTurningCircle')}: {fairway.sizing.minimumTurningCircle}{' '}
-                      <span aria-label={t('unit.mDesc', { count: Number(fairway.sizing.minimumTurningCircle) })}>m</span>.{' '}
-                      {fairway.sizing.minimumTurningCircle && t('designSpeed')}: Z <span aria-label={t('unit.ktsDesc', { count: 0 })}>kts</span>.
-                      <br />
-                      {fairway.sizing.additionalInformation}
-                    </>
-                  )}
-                </p>
-              </div>
-            );
-          })}
+                        , b = {vessel.width}&nbsp;
+                        <span aria-label={t('unit.mDesc', { count: Number(vessel.width) })} role="definition">
+                          m
+                        </span>
+                        , t = {vessel.draft}&nbsp;
+                        <span aria-label={t('unit.mDesc', { count: Number(vessel.draft) })} role="definition">
+                          m
+                        </span>
+                        .
+                      </>
+                    )}
+                  </span>
+                );
+              })}
+          </p>
+          <p>
+            <strong>{t('fairwayDimensions')}: </strong>
+            {data && data.sizing && (
+              <>
+                {data.sizing.minimumWidth && (
+                  <>
+                    {t('designDraft')}: X&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
+                      m
+                    </span>
+                    .{' '}
+                  </>
+                )}
+                {data.sizing.minimumWidth && (
+                  <>
+                    {t('sweptDepths')}: Y&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
+                      m
+                    </span>
+                    .{' '}
+                  </>
+                )}
+                {data.sizing.minimumWidth && (
+                  <>
+                    {t('minimumWidth')}: {data.sizing.minimumWidth}&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumWidth) })} role="definition">
+                      m
+                    </span>
+                  </>
+                )}
+                {data.sizing.minimumTurningCircle && (
+                  <>
+                    {t('and')}
+                    {t('minimumTurningCircle')}: {data.sizing.minimumTurningCircle}&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumTurningCircle) })} role="definition">
+                      m
+                    </span>
+                    .{' '}
+                  </>
+                )}
+                {data.sizing.minimumTurningCircle && (
+                  <>
+                    {t('designSpeed')}: Z&nbsp;
+                    <span aria-label={t('unit.ktsDesc', { count: 0 })} role="definition">
+                      kts
+                    </span>
+                    .
+                  </>
+                )}
+                <br />
+                {data.sizing.additionalInformation}
+              </>
+            )}
+          </p>
+        </IonText>
+      )}
+    </>
+  );
+};
+
+const GeneralInfo: React.FC<FairwayProps> = ({ data }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+
+  return (
+    <>
+      {data && (
+        <IonText>
+          <p>
+            {data.sizing && (
+              <>
+                {t('minimumWidth')}: {data.sizing.minimumWidth || '-'}&nbsp;
+                <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumWidth) })} role="definition">
+                  m
+                </span>
+                <br />
+                {t('designSpeed')}: {data.sizing.normalWidth || '-'}&nbsp;
+                <span aria-label={t('unit.ktsDesc', { count: 0 })} role="definition">
+                  kts
+                </span>
+              </>
+            )}
+          </p>
         </IonText>
       )}
     </>
@@ -195,19 +258,7 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
 };
 
 type PilotInfoProps = {
-  data?: {
-    __typename?: 'Pilot';
-    email?: string | null;
-    pilotJourney?: number | null;
-    phoneNumber?: string | null;
-    fax?: string | null;
-    internet?: string | null;
-    extraInfo?: Text | null;
-    geometry?: {
-      __typename?: 'GeometryPoint';
-      coordinates?: (number | null)[] | null;
-    } | null;
-  } | null;
+  data?: Pilot | null;
 };
 
 const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
@@ -227,22 +278,36 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
               www.pilotonline.fi
             </a>
             <br />
-            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />, <Phonenumber title={t('fax')} showEmpty number={data.fax} />
+            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />
             <br />
-            {data.geometry?.coordinates && (
-              <>
-                {t('pilotPlace')}: {data.geometry?.coordinates[1]} / {data.geometry?.coordinates[0]}.{' '}
-              </>
-            )}
-            {data.pilotJourney && (
-              <>
-                {t('pilotageDistance')}: {data.pilotJourney.toLocaleString()}{' '}
-                <span aria-label={t('unit.nmDesc', { count: data.pilotJourney })} role="definition">
-                  {t('unit.nm')}
+            <Phonenumber title={t('fax')} showEmpty number={data.fax} />
+            {data.places?.map((place, idx) => {
+              return (
+                <span key={idx}>
+                  {place.geometry?.coordinates && (
+                    <>
+                      <br />
+                      {t('pilotPlace')}
+                      {' ' + place.name}:{' '}
+                      {place.geometry?.coordinates[0] &&
+                        place.geometry?.coordinates[1] &&
+                        coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]])}
+                      .
+                      {place.pilotJourney && (
+                        <>
+                          {' '}
+                          {t('pilotageDistance')}: {place.pilotJourney.toLocaleString()}&nbsp;
+                          <span aria-label={t('unit.nmDesc', { count: place.pilotJourney })} role="definition">
+                            {t('unit.nm')}
+                          </span>
+                          .
+                        </>
+                      )}
+                    </>
+                  )}
                 </span>
-                .
-              </>
-            )}
+              );
+            })}
             {data.extraInfo && (
               <>
                 <br />
@@ -257,13 +322,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
 };
 
 type VTSInfoProps = {
-  data?: {
-    __typename?: 'VTS';
-    vhf?: number | null;
-    phoneNumber?: string | null;
-    email?: (string | null)[] | null;
-    name?: Text | null;
-  } | null;
+  data?: Vts | null;
 };
 
 const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
@@ -296,15 +355,7 @@ const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
 };
 
 type TugInfoProps = {
-  data?:
-    | ({
-        __typename?: 'Tug';
-        email?: string | null;
-        phoneNumber?: (string | null)[] | null;
-        fax?: string | null;
-        name?: Text | null;
-      } | null)[]
-    | null;
+  data?: (Tug | null)[] | null;
 };
 
 const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
@@ -347,6 +398,146 @@ const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
   );
 };
 
+type QuayInfoProps = {
+  data?: (Quay | null)[] | null;
+};
+
+const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  return (
+    <>
+      {data &&
+        data.map((quay, jdx) => {
+          return (
+            <p key={jdx}>
+              {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
+              {quay?.name && quay.name[lang]?.slice(1)}
+              {!quay?.name && t('quay')}
+              {quay?.length && (
+                <>
+                  {' - '}
+                  <em>
+                    {t('length')} {quay?.length?.toLocaleString()}&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: Number(quay?.length) })} role="definition">
+                      m
+                    </span>
+                  </em>
+                </>
+              )}
+              {quay?.sections?.map((section, kdx) => {
+                return (
+                  <span key={kdx}>
+                    <br />
+                    {section?.name && section.name[lang] + ': '} {t('sweptDepth')} {section?.draft?.toLocaleString()}&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: Number(section?.draft) })} role="definition">
+                      m
+                    </span>
+                  </span>
+                );
+              })}
+              {quay?.extraInfo && (
+                <>
+                  <br />
+                  {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
+                  {quay.extraInfo[lang]?.slice(1)}.
+                </>
+              )}
+            </p>
+          );
+        })}
+    </>
+  );
+};
+
+type ContactInfoProps = {
+  data?: Harbor | null;
+};
+
+const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+
+  return (
+    <>
+      {data && (
+        <p>
+          {data.internet && (
+            <>
+              <a href={data.internet} target="_blank" rel="noreferrer">
+                {data.internet}
+              </a>
+              <br />
+            </>
+          )}
+          {t('phone')}:
+          {data.phoneNumber?.map((phone, idx) => {
+            return (
+              <span key={idx}>
+                <Phonenumber number={phone} />
+                {Number(data.phoneNumber?.length) > idx + 1 ? t('and') : ''}
+              </span>
+            );
+          })}
+          {data.fax && (
+            <>
+              <br />
+              {t('fax')}: <Phonenumber number={data.fax} />
+            </>
+          )}
+          <br />
+          {t('email')}: {data.email ? <a href={'mailto:' + data.email}>{data.email}</a> : '-'}
+        </p>
+      )}
+    </>
+  );
+};
+
+type HarbourInfoProps = {
+  data?: Harbor | null;
+};
+
+const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  return (
+    <>
+      {data && (
+        <>
+          <IonText>
+            <h4>
+              <strong>{data.name && data.name[lang]}</strong>
+            </h4>
+          </IonText>
+          <IonText className="condensed">
+            <h5>{t('restrictions')}</h5>
+            {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
+          </IonText>
+          <IonText className="condensed">
+            <h5>{t('quays')}</h5>
+            {(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}
+          </IonText>
+          <IonText className="condensed">
+            <h5>{t('cargo')}</h5>
+            {data.cargo?.map((cargo, jdx) => {
+              return <p key={jdx}>{cargo && cargo[lang]}</p>;
+            }) || <InfoParagraph />}
+          </IonText>
+          <IonText className="condensed">
+            <h5>{t('harbourBasin')}</h5>
+            {(data.harborBasin && <p>{data.harborBasin[lang]}</p>) || <InfoParagraph />}
+          </IonText>
+          <IonText className="condensed">
+            <h5>{t('contactDetails')}</h5>
+            <ContactInfo data={data} />
+          </IonText>
+        </>
+      )}
+    </>
+  );
+};
+
 type FairwayCardProps = {
   id: string;
   widePane?: boolean;
@@ -361,6 +552,10 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
       id: id,
     },
   });
+
+  const extractPrimaryFairway = () => {
+    return data?.fairwayCard?.fairways.find((fairway) => fairway.primary);
+  };
 
   return (
     <>
@@ -400,29 +595,53 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonBreadcrumb>
           </IonBreadcrumbs>
 
-          <IonText>
-            <h2 className="no-margin-bottom">
-              <strong>{data?.fairwayCard?.name[lang]}</strong>
-            </h2>
-            <small>
-              <em>
-                {t('modified')}{' '}
-                {t('modifiedDate', {
-                  val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
-                })}
-              </em>
-            </small>
-          </IonText>
+          <IonGrid className="ion-no-padding">
+            <IonRow>
+              <IonCol>
+                <IonText>
+                  <h2 className="no-margin-bottom">
+                    <strong>{data?.fairwayCard?.name[lang]}</strong>
+                  </h2>
+                  <small>
+                    <em>
+                      {t('modified')}{' '}
+                      {t('modifiedDate', {
+                        val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
+                      })}
+                    </em>
+                  </small>
+                </IonText>
+              </IonCol>
+              <IonCol size="auto" className="ion-align-self-center">
+                <IonButton
+                  fill="clear"
+                  className="icon-only small"
+                  onClick={() => window.print()}
+                  title={t('print')}
+                  aria-label={t('print')}
+                  role="button"
+                >
+                  <PrintIcon />
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
 
           <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} mode="md">
             <IonSegmentButton value="1">
-              <IonLabel>{t('title', { count: 0 })}</IonLabel>
+              <IonLabel>
+                <h3>{t('title', { count: 0 })}</h3>
+              </IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="2">
-              <IonLabel>{t('harboursTitle')}</IonLabel>
+              <IonLabel>
+                <h3>{t('harboursTitle')}</h3>
+              </IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="3">
-              <IonLabel>{t('areasTitle')}</IonLabel>
+              <IonLabel>
+                <h3>{t('areasTitle')}</h3>
+              </IonLabel>
             </IonSegmentButton>
           </IonSegment>
 
@@ -435,8 +654,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                       <strong>{t('information')}</strong>
                     </h4>
                   </IonText>
-                  <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
-                  <DimensionInfo data={data?.fairwayCard?.fairways} />
+                  <LiningInfo data={extractPrimaryFairway()} lineText={data?.fairwayCard?.lineText} />
+                  <DimensionInfo data={extractPrimaryFairway()} />
                   <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
                   <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
 
@@ -479,13 +698,25 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           )}
 
           {tab === '2' && (
-            <>
-              <IonText>
-                <h4>
-                  <strong>{t('harbours')}</strong>
-                </h4>
-              </IonText>
-            </>
+            <IonGrid className="ion-no-padding">
+              <IonRow>
+                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+                  {data?.fairwayCard?.harbors?.slice(0, Math.ceil(data.fairwayCard.harbors.length / 2)).map((harbour, idx) => {
+                    return <HarbourInfo data={harbour} key={idx} />;
+                  })}
+                  {!data?.fairwayCard?.harbors && (
+                    <IonText>
+                      <InfoParagraph />
+                    </IonText>
+                  )}
+                </IonCol>
+                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+                  {data?.fairwayCard?.harbors?.slice(Math.ceil(data.fairwayCard.harbors.length / 2)).map((harbour, idx) => {
+                    return <HarbourInfo data={harbour} key={idx} />;
+                  })}
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           )}
 
           {tab === '3' && (
@@ -495,6 +726,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   <strong>{t('commonInformation')}</strong>
                 </h4>
               </IonText>
+              <GeneralInfo data={extractPrimaryFairway()} />
             </>
           )}
         </>

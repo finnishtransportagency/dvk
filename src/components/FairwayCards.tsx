@@ -82,6 +82,9 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
                 <strong>{t('description')}</strong>
               </p>
               <p>{t('additionalDescription')}</p>
+              <p>
+                <em>{t('notification')}</em>
+              </p>
             </IonText>
             <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
           </IonCol>

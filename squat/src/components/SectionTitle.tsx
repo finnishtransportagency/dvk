@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { checkmarkCircle, radioButtonOff } from 'ionicons/icons';
+import Modal from './Modal';
 
 interface SectionProps {
   title: string;
   valid?: boolean;
   hideValidity?: boolean;
+  infoContentTitle?: string;
+  infoContent?: string | ReactElement;
 }
 
 const SectionTitle: React.FC<SectionProps> = (props) => {
@@ -15,7 +18,8 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
         <IonCol>
           <IonText color="dark" className="no-margin">
             <h3>
-              <strong>{props.title}</strong>
+              <strong style={{ verticalAlign: 'middle' }}>{props.title}</strong>
+              {props.infoContent && props.infoContentTitle && <Modal title={props.infoContentTitle} content={props.infoContent} />}
             </h3>
           </IonText>
         </IonCol>

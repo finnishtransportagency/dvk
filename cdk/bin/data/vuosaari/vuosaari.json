@@ -57,16 +57,21 @@
   },
   "trafficService": {
     "pilot": {
-      "name": "Vuosaari",
       "email": "pilotorder.south@finnpilot.fi",
       "phoneNumber": "+358207546151",
       "fax": "+358207546161",
       "internet": "https://www.pilotonline.fi",
-      "pilotJourney": 9,
-      "geometry": {
-        "type": "Point",
-        "coordinates": [25.163167, 60.082667]
-      }
+      "places": [
+        {
+          "id": 28,
+          "name": "Vuosaari",
+          "pilotJourney": 9,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.163167, 60.082667]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {
@@ -98,7 +103,9 @@
         "sv": "Helsingfors Hamn, Helsingfors",
         "en": "Port of Helsinki, Helsinki"
       },
-      "phoneNumber": "+35893101621",
+      "phoneNumber": [
+        "+35893101621"
+      ],
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
       "internet": "https://www.portofhelsinki.fi/",

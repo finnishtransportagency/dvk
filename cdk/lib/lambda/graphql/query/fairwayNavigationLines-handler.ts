@@ -1,43 +1,13 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import axios from 'axios';
 import { Fairway, NavigationLine, QueryFairwayCardArgs } from '../../../../graphql/generated';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
-
-export type NavigointiLinjaAPIModel = {
-  id: number;
-  mitoitusSyvays?: number;
-  harausSyvyys?: number;
-  vertaustaso?: string;
-  n2000MitoitusSyvays?: number;
-  n2000HarausSyvyys?: number;
-  n2000Vertaustaso?: string;
-  tosisuunta?: number;
-  pituus?: number;
-  diaariNumero?: string;
-  vahvistusPaivamaara?: string;
-  omistaja?: string;
-  lisatieto?: string;
-  tyyppiKoodi?: string;
-  tyyppi?: string;
-  geometria: object;
-  vayla: NavigointiLinjaVaylaAPIModel[];
-};
-
-type NavigointiLinjaVaylaAPIModel = {
-  jnro: number;
-  status?: number;
-  linjaus?: number;
-};
+import { fetchVATUByFairwayId, NavigointiLinjaAPIModel } from './vatu';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
 ): Promise<NavigationLine[]> => {
   log.info(`navigationLines(${event.source.id})`);
-  const response = await axios.get(`${await getVatuUrl()}/navigointilinjat?jnro=${event.source.id}`, {
-    headers: await getVatuHeaders(),
-  });
-  const lines = response.data as NavigointiLinjaAPIModel[];
+  const lines = await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(event.source.id, 'navigointilinjat');
   log.debug('lines: %d', lines.length);
   return lines.map((apiLine) => {
     const line: NavigationLine = {

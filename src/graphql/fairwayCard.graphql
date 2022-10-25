@@ -8,6 +8,7 @@ query findFairwayCardById($id: String!) {
     group
     modificationTimestamp
     fairways {
+      id
       name {
         fi
         sv
@@ -31,6 +32,14 @@ query findFairwayCardById($id: String!) {
         length
         width
         draft
+      }
+      navigationLines {
+        id
+        length
+        typeCode
+        geometry {
+          coordinates
+        }
       }
     }
     lineText {
@@ -91,7 +100,6 @@ query findFairwayCardById($id: String!) {
     trafficService {
       pilot {
         email
-        pilotJourney
         extraInfo {
           fi
           sv
@@ -100,8 +108,13 @@ query findFairwayCardById($id: String!) {
         phoneNumber
         fax
         internet
-        geometry {
-          coordinates
+        places {
+          id
+          name
+          pilotJourney
+          geometry {
+            coordinates
+          }
         }
       }
       vts {
@@ -132,12 +145,34 @@ query findFairwayCardById($id: String!) {
           sv
           en
         }
+        length
+        sections {
+          name {
+            fi
+            sv
+            en
+          }
+          draft
+        }
+        extraInfo {
+          fi
+          sv
+          en
+        }
+        geometry {
+          type
+          coordinates
+        }
       }
       name {
         fi
         sv
         en
       }
+      phoneNumber
+      fax
+      email
+      internet
       extraInfo {
         fi
         sv

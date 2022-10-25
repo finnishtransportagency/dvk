@@ -18,6 +18,11 @@
       "en": ""
     }
   ],
+  "generalInfo": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
   "navigationCondition": {
     "fi": "",
     "sv": "",
@@ -67,21 +72,26 @@
   },
   "trafficService": {
     "pilot": {
-      "name": "",
       "email": "",
       "phoneNumber": "",
       "fax": "",
       "internet": "",
-      "pilotJourney": 0,
       "extraInfo": {
         "fi": "",
         "sv": "",
         "en": ""
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": []
-      }
+      "places": [
+        {
+          "id": 0,
+          "name": "",
+          "pilotJourney": 0,
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          }
+        }
+      ]
     },
     "vts": {
       "name": {
@@ -117,7 +127,9 @@
         "sv": "",
         "en": ""
       },
-      "phoneNumber": "",
+      "phoneNumber": [
+        ""
+      ],
       "fax": "",
       "email": "",
       "internet": "",

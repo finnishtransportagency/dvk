@@ -47,21 +47,26 @@
   },
   "trafficService": {
     "pilot": {
-      "name": "Utö",
       "email": "pilotorder.west@finnpilot.fi",
       "phoneNumber": "+358400907979",
       "fax": "+358295253012",
       "internet": "https://www.pilotorder.fi",
-      "pilotJourney": 65,
       "extraInfo": {
         "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen. Luotsia seuraa yleensä avustava luotsi turvallisuussyistä.",
         "sv": "Obs. Vintertid och vid dåligt väder ska platsen där lots möter särskilt överenskommas. En annan lots bistår i allmänheten lotsen av säkerhetsskäl.",
         "en": "Note: During the winter season and by bad weather the pilot boarding position must be agreed on separately. Generally there is also, for safety reasons, another pilot assisting."
       },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [21.348333, 59.741667]
-      }
+      "places": [
+        {
+          "id": 20,
+          "name": "Utö",
+          "pilotJourney": 65,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [21.348333, 59.741667]
+          }
+        }
+      ]
     },
     "vts": {
       "name": {
@@ -106,7 +111,9 @@
         "sv": "Nådendals hamn",
         "en": "Port of Naantali"
       },
-      "phoneNumber": "+358447334550",
+      "phoneNumber": [
+        "+358447334550"
+      ],
       "email": "satama@portofnaantali.fi",
       "cargo": [
         {
@@ -235,7 +242,9 @@
         "sv": "Neste Oyj:s hamn, Nådendal",
         "en": "Neste Oyj’s harbour in Naantali"
       },
-      "phoneNumber": "+358504586487",
+      "phoneNumber": [
+        "+358504586487"
+      ],
       "email": "naantali.harbour@neste.com",
       "cargo": [
         {
@@ -290,7 +299,7 @@
   "fairways": [
     {
       "id": 3255,
-      "primay": true
+      "primary": true
     },
     {
       "id": 3260

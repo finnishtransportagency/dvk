@@ -28,7 +28,7 @@ button.icon {
   align-items: center;
   justify-content: center;
   color: var(--ion-color-primary);
-  background-color: var(--ion-color-lightest);
+  background-color: var(--ion-color-primary-contrast);
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
   border-radius: 20px;
 }
@@ -108,6 +108,9 @@ button.icon:focus-visible:hover {
   line-height: 18px;
   margin-bottom: 0;
 }
+#fairwayCardsContainer ion-text.condensed p:first-of-type {
+  margin-top: 0;
+}
 #fairwayCardsContainer ion-text h4 {
   font-size: 12px;
   text-transform: uppercase;
@@ -115,6 +118,18 @@ button.icon:focus-visible:hover {
 }
 #fairwayCardsContainer ion-text h4 span {
   text-transform: none;
+}
+#fairwayCardsContainer ion-text h5 {
+  font-size: 12px;
+  margin: 12px 0 0;
+  font-weight: bold;
+  line-height: 24px;
+}
+#fairwayCardsContainer ion-text .info svg {
+  color: var(--ion-color-primary);
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
 }
 
 /* Grid table */
@@ -150,6 +165,14 @@ ion-breadcrumb::part(native) {
 }
 ion-breadcrumb.ion-focusable::part(native) {
   text-decoration: underline;
+  border-radius: 0;
+  box-shadow: none;
+}
+ion-breadcrumb.ion-focusable::part(native):hover {
+  background-color: var(--ion-color-light);
+}
+ion-breadcrumb.ion-focused::part(native) {
+  outline: 1px solid var(--ion-color-dark);
 }
 
 /* Tabs */
@@ -175,4 +198,28 @@ ion-segment.tabs ion-segment-button.segment-button-checked::part(native) {
 ion-segment.tabs ion-label {
   padding: 0;
   margin: 0;
+}
+ion-segment.tabs ion-label h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: inherit;
+}
+
+/* Links */
+ion-text a {
+  color: var(--ion-color-dark);
+}
+ion-text a[target="_blank"] {
+  color: var(--ion-color-primary);
+  padding-right: 14px;
+  background: url('../theme/img/externalLink.svg') no-repeat right center;
+}
+ion-text a:hover {
+  background-color: var(--ion-color-light);
+}
+ion-text a:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
+}
+ion-text a[target="_blank"]:focus-visible {
+  outline: 1px solid var(--ion-color-primary);
 }

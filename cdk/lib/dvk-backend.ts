@@ -16,6 +16,7 @@ import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
 export class DvkBackendStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
@@ -75,7 +76,8 @@ export class DvkBackendStack extends Stack {
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardTable);
+    const bucket = this.createCacheBucket(env);
+    const alb = this.createALB(env, fairwayCardTable, bucket);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -120,7 +122,22 @@ export class DvkBackendStack extends Stack {
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
-  private createALB(env: string, fairwayCardTable: Table): ApplicationLoadBalancer {
+  private createCacheBucket(env: string): Bucket {
+    const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
+    };
+    return new Bucket(this, 'FeatureBucket', {
+      bucketName: `featurecache-${env}`,
+      publicReadAccess: false,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
+      lifecycleRules: [{ expiration: Duration.days(1) }],
+    });
+  }
+
+  private createALB(env: string, fairwayCardTable: Table, cacheBucket: Bucket): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
@@ -170,6 +187,8 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
       fairwayCardTable.grantReadData(backendLambda);
+      cacheBucket.grantPut(backendLambda);
+      cacheBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
     }
     return alb;
