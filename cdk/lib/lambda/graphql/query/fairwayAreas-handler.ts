@@ -1,44 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Area, Fairway, QueryFairwayCardArgs } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { fetchVATUByFairwayId } from './vatu';
-
-export type AlueVaylaAPIModel = {
-  jnro: number;
-  status: number;
-  linjaus: number;
-  mitoitusNopeus?: number;
-  mitoitusNopeus2?: number;
-  nimiFI?: string;
-  nimiSV?: string;
-};
-export type AlueAPIModel = {
-  id: number;
-  nimi?: string;
-  mitoitusSyvays?: number;
-  harausSyvyys?: number;
-  vertaustaso?: string;
-  n2000MitoitusSyvays?: number;
-  n2000HarausSyvyys?: number;
-  n2000Vertaustaso?: string;
-  suunta?: number;
-  diaariNumero?: string;
-  vahvistusPaivamaara?: string;
-  omistaja?: string;
-  lisatieto?: string;
-  vayla?: AlueVaylaAPIModel[];
-  tyyppiKoodi?: number;
-  tyyppi?: string;
-  merkintalajiKoodi?: number;
-  merkintalaji?: string;
-  liikennointiStatusKoodi?: number;
-  liikennointiStatus?: string;
-  liikennointiTyyppiKoodi?: number;
-  liikenteenTyyppi?: string;
-  liikennointiSuuntaKoodi?: number;
-  liikennointiSuunta?: string;
-  geometria: object;
-};
+import { AlueAPIModel, fetchVATUByFairwayId } from './vatu';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Area[], Fairway> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>

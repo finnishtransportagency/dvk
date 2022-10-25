@@ -3,17 +3,151 @@ import axios from 'axios';
 import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
 
-export async function fetchVATUByFairwayId<T>(fairwayId: number, api: string) {
+export type AlueVaylaAPIModel = {
+  jnro: number;
+  status: number;
+  linjaus: number;
+  mitoitusNopeus?: number;
+  mitoitusNopeus2?: number;
+  nimiFI?: string;
+  nimiSV?: string;
+};
+export type AlueAPIModel = {
+  id: number;
+  nimi?: string;
+  mitoitusSyvays?: number;
+  harausSyvyys?: number;
+  vertaustaso?: string;
+  n2000MitoitusSyvays?: number;
+  n2000HarausSyvyys?: number;
+  n2000Vertaustaso?: string;
+  suunta?: number;
+  diaariNumero?: string;
+  vahvistusPaivamaara?: string;
+  omistaja?: string;
+  lisatieto?: string;
+  vayla?: AlueVaylaAPIModel[];
+  tyyppiKoodi?: number;
+  tyyppi?: string;
+  merkintalajiKoodi?: number;
+  merkintalaji?: string;
+  liikennointiStatusKoodi?: number;
+  liikennointiStatus?: string;
+  liikennointiTyyppiKoodi?: number;
+  liikenteenTyyppi?: string;
+  liikennointiSuuntaKoodi?: number;
+  liikennointiSuunta?: string;
+  geometria: object;
+};
+
+export type NavigointiLinjaAPIModel = {
+  id: number;
+  mitoitusSyvays?: number;
+  harausSyvyys?: number;
+  vertaustaso?: string;
+  n2000MitoitusSyvays?: number;
+  n2000HarausSyvyys?: number;
+  n2000Vertaustaso?: string;
+  tosisuunta?: number;
+  pituus?: number;
+  diaariNumero?: string;
+  vahvistusPaivamaara?: string;
+  omistaja?: string;
+  lisatieto?: string;
+  tyyppiKoodi?: string;
+  tyyppi?: string;
+  geometria: object;
+  vayla: NavigointiLinjaVaylaAPIModel[];
+};
+type NavigointiLinjaVaylaAPIModel = {
+  jnro: number;
+  status?: number;
+  linjaus?: number;
+  nimiFi?: string;
+  nimiSv?: string;
+};
+
+export type RajoitusAlueAPIModel = {
+  id: number;
+  rajoitustyyppi?: string;
+  rajoitustyypit?: RajoitustyyppiAPIModel[];
+  suuruus?: number;
+  esittaja?: string;
+  diaariNumero?: string;
+  vahvistusPaivamaara?: string;
+  muutosPaivamaara?: string;
+  alkuPaivamaara?: string;
+  loppuPaivamaara?: string;
+  paatosTila?: string;
+  tietolahde?: string;
+  sijainti?: string;
+  kunta?: string;
+  poikkeus?: string;
+  geometria: object;
+  vayla?: RajoitusVaylaAPIModel[];
+};
+export type RajoitustyyppiAPIModel = {
+  koodi?: string;
+  rajoitustyyppi?: string;
+};
+export type RajoitusVaylaAPIModel = {
+  jnro: number;
+  nimiFI?: string;
+  nimiSV?: string;
+};
+
+export type MitoitusAlusAPIModel = {
+  alustyyppiKoodi: string;
+  alustyyppi: string;
+  pituus: number;
+  leveys: number;
+  syvays: number;
+  koko?: number;
+  runkoTaytelaisyysKerroin?: number;
+};
+export type LuokitusAPIModel = {
+  luokitusTyyppi: string;
+  vaylaluokkaKoodi: string;
+  vaylaluokka: string;
+};
+export type VaylaAPIModel = {
+  jnro: number;
+  nimiFI: string;
+  nimiSV?: string;
+  vaylalajiKoodi?: string;
+  vaylaLajiFI?: string;
+  vaylaLajiSV?: string;
+  valaistusKoodi?: string;
+  valaistusFI?: string;
+  valaistusSV?: string;
+  omistaja?: string;
+  merialueFI?: string;
+  merialueSV?: string;
+  alunSeloste?: string;
+  paatepisteenSeloste?: string;
+  normaaliKaantosade?: number;
+  minimiKaantosade?: number;
+  normaaliLeveys?: number;
+  minimiLeveys?: number;
+  varavesi?: string;
+  lisatieto?: string;
+  mareografi?: string;
+  mitoitusalus?: MitoitusAlusAPIModel[];
+  luokitus?: LuokitusAPIModel[];
+};
+
+export async function fetchVATUByFairwayId<T>(fairwayId: number | number[], api: string) {
   const start = Date.now();
+  const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();
   const response = await axios
-    .get(`${await getVatuUrl()}/${api}?jnro=${fairwayId}`, {
+    .get(`${await getVatuUrl()}/${api}?jnro=${ids}`, {
       headers: await getVatuHeaders(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`VATU /${api}?jnro=${fairwayId} fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`VATU /${api}?jnro=${ids} fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
     });
-  log.debug(`/${api}?jnro=${fairwayId} response time: ${Date.now() - start} ms`);
+  log.debug(`/${api}?jnro=${ids} response time: ${Date.now() - start} ms`);
   return response ? (response.data as T[]) : [];
 }
 

@@ -1,35 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Fairway, NavigationLine, QueryFairwayCardArgs } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { fetchVATUByFairwayId } from './vatu';
-
-export type NavigointiLinjaAPIModel = {
-  id: number;
-  mitoitusSyvays?: number;
-  harausSyvyys?: number;
-  vertaustaso?: string;
-  n2000MitoitusSyvays?: number;
-  n2000HarausSyvyys?: number;
-  n2000Vertaustaso?: string;
-  tosisuunta?: number;
-  pituus?: number;
-  diaariNumero?: string;
-  vahvistusPaivamaara?: string;
-  omistaja?: string;
-  lisatieto?: string;
-  tyyppiKoodi?: string;
-  tyyppi?: string;
-  geometria: object;
-  vayla: NavigointiLinjaVaylaAPIModel[];
-};
-
-type NavigointiLinjaVaylaAPIModel = {
-  jnro: number;
-  status?: number;
-  linjaus?: number;
-  nimiFi?: string;
-  nimiSv?: string;
-};
+import { fetchVATUByFairwayId, NavigointiLinjaAPIModel } from './vatu';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLine[], Fairway> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, Fairway>
