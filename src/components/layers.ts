@@ -11,7 +11,7 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { HarborFeatureProperties } from './popup/popup';
+import { HarborFeatureProperties } from './popup/HarborPopupContent';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
@@ -76,20 +76,18 @@ export function addHarborLayer(map: Map) {
     anchorYUnits: 'pixels',
   });
   const style = function (feature: FeatureLike) {
-    const props = feature.getProperties() as HarborFeatureProperties | undefined;
+    const props = feature.getProperties() as HarborFeatureProperties;
     let text;
-    if (props?.type === 'section') {
-      text = `${props.name?.fi} ${props.draft?.join('/')} m`;
-    } else if (props?.type === 'quay') {
-      text = `${props.quay?.fi} ${props.draft?.join('/')} m`;
+    if (props.name) {
+      text = `${props.name.fi} ${props.draft?.join(' m / ')} m`;
     } else {
-      text = '';
+      text = `${props.draft?.join(' m / ')} m`;
     }
     return [
       new Style({
         image,
         text: new Text({
-          font: '18px "Exo 2"',
+          font: 'bold 18px "Exo 2"',
           placement: 'line',
           offsetY: -50,
           text,
@@ -100,7 +98,8 @@ export function addHarborLayer(map: Map) {
       }),
       new Style({
         image: new CircleStyle({
-          radius: 10,
+          radius: 20,
+          displacement: [0, 20],
           fill: new Fill({
             color: 'rgba(0,0,0,0)',
           }),

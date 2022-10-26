@@ -30,6 +30,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
     iceCondition: dbModel.iceCondition,
     attention: dbModel.attention,
     lineText: dbModel.lineText,
+    designSpeed: dbModel.designSpeed,
     navigationCondition: dbModel.navigationCondition,
     windRecommendation: dbModel.windRecommendation,
     windGauge: dbModel.windGauge,

@@ -103,6 +103,8 @@ class FairwayCardDBModel {
 
   lineText?: Text;
 
+  designSpeed?: Text;
+
   generalInfo?: Text;
 
   anchorage?: Text[];

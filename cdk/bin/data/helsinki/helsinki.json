@@ -11,6 +11,11 @@
     "sv": "Två linjer, utmärkta med enstavlor.",
     "en": "Two lines, marked with boards."
   },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus nopeuspainumalle (squat) väylällä 19 solmua ja Kustaanmiekan salmessa 13,5 solmua.",
+    "sv": "Dimensionerande fart för squat är 19 knop i farleden och 13,5 knop i Gustavssvärds sund",
+    "en": "Design speed for squat is 19 knots in the channel and 13.5 knots in Kustaanmiekka strait."
+  },
   "anchorage":[
     {
       "fi": "Ankkuroida voi sataman edustalla olevalle Kruunuvuorenselälle.",
@@ -163,17 +168,20 @@
         },
         {
           "name": {
-            "fi": "Pakkahuoneenlaituri EPL",
-            "sv": "Packhuskajen EPL",
-            "en": "Pakkahuone quay EPL"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [24.954071530026948, 60.165666111439805]
+            "fi": "Pakkahuoneenlaituri",
+            "sv": "Packhuskajen",
+            "en": "Pakkahuone quay"
           },
           "length": 130,
           "sections": [
             {
+              "name": {
+                "fi": "EPL"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.954071530026948, 60.165666111439805]
+              },
               "draft": 6
             }
           ]

@@ -28,7 +28,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
       type: 'Feature',
       geometry: quay.geometry as Geometry,
       properties: {
-        type: 'quay',
+        type: 'harbor',
         quay: quay.name,
         extraInfo: quay.extraInfo,
         length: quay.length,
@@ -46,7 +46,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
           type: 'Feature',
           geometry: section.geometry as Geometry,
           properties: {
-            type: 'section',
+            type: 'harbor',
             quay: quay.name,
             extraInfo: quay.extraInfo,
             length: quay.length,

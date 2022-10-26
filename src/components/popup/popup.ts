@@ -5,21 +5,6 @@ import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
-import { PilotFeatureProperties } from './PilotPopupContent';
-import { Text } from '../../graphql/generated';
-
-export type HarborFeatureProperties = {
-  type: string;
-  quay?: Text;
-  extraInfo?: Text;
-  length?: number;
-  name?: Text;
-  draft?: number[];
-  email?: string;
-  phoneNumber?: string[];
-  fax?: string;
-  internet?: string;
-};
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -32,6 +17,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       },
     },
   });
+  const types = ['pilot', 'harbor'];
   content.onclick = () => {
     overlay.setPosition(undefined);
     return true;
@@ -44,12 +30,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (!feature) {
       return;
     }
-    if (feature.getProperties().type === 'pilot') {
+    if (types.includes(feature.getProperties().type)) {
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
       setPopupProperties({
-        pilot: {
+        [feature.getProperties().type]: {
           coordinates: geom.getCoordinates() as number[],
-          properties: feature.getProperties() as PilotFeatureProperties,
+          properties: feature.getProperties(),
         },
       });
       overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
@@ -57,7 +43,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   });
   const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
   pointerMoveSelect.on('select', (e) => {
-    const hit = e.selected.filter((f) => f.getProperties().type === 'pilot').length > 0;
+    const hit = e.selected.filter((f) => types.includes(f.getProperties().type)).length > 0;
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = hit ? 'pointer' : '';
   });
