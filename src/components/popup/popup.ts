@@ -35,6 +35,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return f;
     });
     if (!feature) {
+      overlay.setPosition(undefined);
+      setPopupProperties({});
       return;
     }
     if (types.includes(feature.getProperties().type)) {

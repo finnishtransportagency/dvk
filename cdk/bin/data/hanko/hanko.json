@@ -113,6 +113,10 @@
             "sv": "Ro/ro-kaj Nr 1",
             "en": "Ro/Ro berth No 1"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.947759770177115, 59.82251464791953]
+          },
           "length": 245,
           "sections": [
             {
@@ -125,6 +129,10 @@
             "fi": "Ro-ro-laituri No: 2",
             "sv": "Ro/ro-kaj Nr 2",
             "en": "Ro/Ro berth No 2"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.95218046790736, 59.82201044551636]
           },
           "length": 230,
           "sections": [
@@ -139,6 +147,10 @@
             "sv": "Ro/ro-kaj Nr 3",
             "en": "Ro/Ro berth No 3"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.95394611030392, 59.82106259081638]
+          },
           "length": 245,
           "sections": [
             {
@@ -152,6 +164,10 @@
             "sv": "Ro/ro-kaj Nr 4",
             "en": "Ro/Ro berth No 4"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.948429783761792, 59.82163574058275]
+          },
           "length": 160,
           "sections": [
             {
@@ -164,6 +180,10 @@
             "fi": "Ro-ro-laituri No: 5",
             "sv": "Ro/ro-kaj Nr 5",
             "en": "Ro/Ro berth No 5"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.948804850325494, 59.820068173100246]
           },
           "length": 210,
           "sections": [
