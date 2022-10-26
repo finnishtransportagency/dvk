@@ -78,7 +78,7 @@ export function addHarborLayer(map: Map) {
   const style = function (feature: FeatureLike) {
     const props = feature.getProperties() as HarborFeatureProperties;
     let text;
-    // TODO: use correct language
+    // TODO: use correct language for formatting number and section name
     if (props.name) {
       text = `${props.name.fi} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
     } else {

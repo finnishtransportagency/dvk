@@ -17,6 +17,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         duration: 250,
       },
     },
+    positioning: 'center-left',
   });
   const types = ['pilot', 'harbor'];
   content.onclick = () => {

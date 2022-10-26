@@ -35,7 +35,8 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">
-            {harbor.properties.quay && harbor.properties.quay[lang]} {harbor.properties.name && harbor.properties.name[lang]}
+            {harbor.properties.quay && harbor.properties.quay[lang]}{' '}
+            {harbor.properties.name && (harbor.properties.name[lang] || harbor.properties.name.fi)}
           </IonCol>
         </IonRow>
         <IonRow>
