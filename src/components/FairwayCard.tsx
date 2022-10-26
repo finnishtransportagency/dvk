@@ -19,6 +19,7 @@ import { metresToNauticalMiles } from '../utils/conversions';
 import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
+import { getCurrentDecimalSeparator } from '../utils/common';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -200,7 +201,7 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
                 {data.sizing.minimumTurningCircle && (
                   <>
                     {t('and')}
-                    {t('minimumTurningCircle')}: {data.sizing.minimumTurningCircle}&nbsp;
+                    {t('minimumTurningCircle').toLocaleLowerCase()}: {data.sizing.minimumTurningCircle}&nbsp;
                     <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumTurningCircle) })} role="definition">
                       m
                     </span>
@@ -241,9 +242,14 @@ const GeneralInfo: React.FC<FairwayProps> = ({ data }) => {
                 m
               </span>
               <br />
-              {t('designSpeed')}: {data.sizing.normalWidth || '-'}&nbsp;
-              <span aria-label={t('unit.ktsDesc', { count: 0 })} role="definition">
-                kts
+              {t('minimumTurningCircle')}: {data.sizing.minimumTurningCircle || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumTurningCircle) })} role="definition">
+                m
+              </span>
+              <br />
+              {t('reserveWater')}: {data.sizing.reserveWater?.replaceAll('.', getCurrentDecimalSeparator()).trim() || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(data.sizing.reserveWater) })} role="definition">
+                m
               </span>
             </>
           )}
@@ -276,22 +282,12 @@ const AreaInfo: React.FC<FairwayProps> = ({ data }) => {
                 )}
               </em>
               <br />
-              {t('designDraft')}: {area.n2000depth?.toLocaleString() || area.depth?.toLocaleString()}&nbsp;
+              {t('designDraft')}: {area.n2000depth?.toLocaleString() || area.depth?.toLocaleString() || '-'}&nbsp;
               <span aria-label={t('unit.mDesc', { count: Number(area.depth) })} role="definition">
                 m
               </span>
               <br />
-              {t('sweptDepth')}: {area.n2000draft?.toLocaleString() || area.draft?.toLocaleString()}&nbsp;
-              <span aria-label={t('unit.mDesc', { count: Number(area.draft) })} role="definition">
-                m
-              </span>
-              <br />
-              {t('speedLimit')}: X&nbsp;
-              <span aria-label={t('unit.kmhDesc', { count: Number(area.draft) })} role="definition">
-                km/h
-              </span>
-              <br />
-              {t('minimumWidth')}: Y&nbsp;
+              {t('sweptDepth')}: {area.n2000draft?.toLocaleString() || area.draft?.toLocaleString() || '-'}&nbsp;
               <span aria-label={t('unit.mDesc', { count: Number(area.draft) })} role="definition">
                 m
               </span>

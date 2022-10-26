@@ -26,6 +26,7 @@ query findFairwayCardById($id: String!) {
         minimumTurningCircle
         minimumWidth
         additionalInformation
+        reserveWater
       }
       sizingVessels {
         type
