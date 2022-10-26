@@ -22,6 +22,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const types = ['pilot', 'harbor'];
   content.onclick = () => {
     overlay.setPosition(undefined);
+    setPopupProperties({});
     return true;
   };
   map.addOverlay(overlay);
@@ -38,13 +39,21 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     }
     if (types.includes(feature.getProperties().type)) {
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-      setPopupProperties({
-        [feature.getProperties().type]: {
-          coordinates: geom.getCoordinates() as number[],
-          properties: feature.getProperties(),
-        },
-      });
-      overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
+      if (overlay.getPosition()) {
+        overlay.setPosition(undefined);
+        setPopupProperties({});
+      } else {
+        setPopupProperties({
+          [feature.getProperties().type]: {
+            coordinates: geom.getCoordinates() as number[],
+            properties: feature.getProperties(),
+          },
+        });
+        overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
+      }
+    } else {
+      overlay.setPosition(undefined);
+      setPopupProperties({});
     }
   });
   const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
