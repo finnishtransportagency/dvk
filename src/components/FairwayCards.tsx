@@ -1,22 +1,37 @@
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonRouterLink, IonBreadcrumbs, IonBreadcrumb, IonSkeletonText } from '@ionic/react';
+import {
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonLabel,
+  IonText,
+  IonBreadcrumbs,
+  IonBreadcrumb,
+  IonSkeletonText,
+  IonAccordionGroup,
+  IonAccordion,
+  IonItem,
+} from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
 import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
+import { caretDownSharp } from 'ionicons/icons';
+import { Link } from 'react-router-dom';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
   title: string;
   loading?: boolean;
+  first?: boolean;
 };
 
-const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loading }) => {
+const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loading, first }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
 
   return (
-    <>
-      <IonText>
+    <div className="group">
+      <IonText className={first ? 'no-margin-top' : ''}>
         <h4>
           <strong>{title}</strong>
         </h4>
@@ -32,7 +47,7 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
             <IonRow key={idx} className="fairwayCards">
               <IonCol>
                 <IonLabel>
-                  <IonRouterLink routerLink={'/vaylakortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</IonRouterLink>
+                  <Link to={'/vaylakortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</Link>
                 </IonLabel>
               </IonCol>
               <IonCol>
@@ -44,7 +59,7 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
           );
         })}
       </IonGrid>
-    </>
+    </div>
   );
 };
 
@@ -73,10 +88,12 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
       </IonText>
-
-      <IonGrid className="ion-no-padding">
-        <IonRow>
-          <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
+      <IonAccordionGroup>
+        <IonAccordion value="first" toggleIcon={caretDownSharp} color="lightest">
+          <IonItem slot="header" color="lightest" className="accItem">
+            <IonLabel>{t('general')}</IonLabel>
+          </IonItem>
+          <div className={'tabContent' + (widePane ? ' wide' : '')} slot="content">
             <IonText>
               <p>
                 <strong>{t('description')}</strong>
@@ -86,14 +103,15 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
                 <em>{t('notification')}</em>
               </p>
             </IonText>
-            <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} />
-          </IonCol>
-          <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
-            <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-            <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
-          </IonCol>
-        </IonRow>
-      </IonGrid>
+          </div>
+        </IonAccordion>
+      </IonAccordionGroup>
+
+      <div className={'tabContent' + (widePane ? ' wide' : '')}>
+        <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} first />
+        <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+        <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+      </div>
     </>
   );
 };
