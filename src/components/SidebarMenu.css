@@ -36,7 +36,7 @@
 }
 
 .sidebarMenu ion-button.languageSelection {
-  color: var(--ion-color-primary);
+  color: var(--ion-color-dark);
   font-size: 12px;
   text-transform: none;
   letter-spacing: normal;
@@ -48,7 +48,6 @@
 }
 
 .sidebarMenu ion-button.languageSelection:hover {
-  color: var(--ion-color-primary-shade);
   text-decoration: none;
 }
 
