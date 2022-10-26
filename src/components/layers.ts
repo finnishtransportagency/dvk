@@ -78,10 +78,11 @@ export function addHarborLayer(map: Map) {
   const style = function (feature: FeatureLike) {
     const props = feature.getProperties() as HarborFeatureProperties;
     let text;
+    // TODO: use correct language
     if (props.name) {
-      text = `${props.name.fi} ${props.draft?.join(' m / ')} m`;
+      text = `${props.name.fi} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
     } else {
-      text = `${props.draft?.join(' m / ')} m`;
+      text = `${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
     }
     return [
       new Style({

@@ -134,6 +134,18 @@
       "header": "[en] Luotsipaikka {{val}}",
       "coordinates": "[en] Koordinaatit",
       "fairways": "[en] Luotsipaikalta alkavat väylät"
+    },
+    "harbor": {
+      "coordinates": "[en] Koordinaatit",
+      "length": "[en] Laiturin pituus",
+      "depth": "[en] Vesisyvyys",
+      "number": "{{val, number}}",
+      "contactDetails": "[en] Yhteystiedot",
+      "email": "[en] Sähköposti",
+      "fax": "[en] Fax",
+      "phoneNumber": "[en] Puhelin",
+      "internet": "[en] Internet",
+      "extra": "[en] Lisätieto"
     }
   }
 }

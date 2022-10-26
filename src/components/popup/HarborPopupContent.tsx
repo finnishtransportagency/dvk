@@ -35,7 +35,7 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">
-            `${harbor.properties.quay && harbor.properties.quay[lang]} ${harbor.properties.name && harbor.properties.name[lang]}`
+            {harbor.properties.quay && harbor.properties.quay[lang]} {harbor.properties.name && harbor.properties.name[lang]}
           </IonCol>
         </IonRow>
         <IonRow>
@@ -51,7 +51,7 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
         </IonRow>
         {harbor.properties.draft && (
           <IonRow>
-            <IonCol>{harbor.properties.draft?.map((d) => t('number', { val: d })).join('/')} m</IonCol>
+            <IonCol>{harbor.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
           </IonRow>
         )}
         <IonRow>
@@ -67,22 +67,33 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
         </IonRow>
         {harbor.properties.email && (
           <IonRow>
-            <IonCol>{t('email', { val: harbor.properties.email })}</IonCol>
+            <IonCol>
+              {t('email')}: <a href={'mailto:' + harbor.properties.email}>{harbor.properties.email}</a>
+            </IonCol>
           </IonRow>
         )}
         {harbor.properties.phoneNumber && (
           <IonRow>
-            <IonCol>{t('phoneNumber', { val: harbor.properties.phoneNumber })}</IonCol>
+            <IonCol>
+              {t('phoneNumber')}: <a href={'tel:' + harbor.properties.phoneNumber[0]}>{harbor.properties.phoneNumber[0]}</a>
+            </IonCol>
           </IonRow>
         )}
         {harbor.properties.fax && (
           <IonRow>
-            <IonCol>{t('fax', { val: harbor.properties.fax })}</IonCol>
+            <IonCol>
+              {t('fax')}: <a href={'tel:' + harbor.properties.fax}>{harbor.properties.fax}</a>
+            </IonCol>
           </IonRow>
         )}
         {harbor.properties.internet && (
           <IonRow>
-            <IonCol>{t('internet', { val: harbor.properties.internet })}</IonCol>
+            <IonCol>
+              {t('internet')}:{' '}
+              <a href={harbor.properties.internet} target="_blank" rel="noreferrer">
+                {harbor.properties.internet}
+              </a>
+            </IonCol>
           </IonRow>
         )}
         {harbor.properties.extraInfo && harbor.properties.extraInfo[lang] && (

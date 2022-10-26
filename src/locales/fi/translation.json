@@ -141,12 +141,12 @@
       "length": "Laiturin pituus",
       "depth": "Vesisyvyys",
       "number": "{{val, number}}",
-      "contactDetails": "[sv] Yhteystiedot",
-      "email": "[sv] Email: {{val}}",
-      "fax": "[sv] Fax: {{val}}",
-      "phoneNumber": "[sv] Puhelin: {{val}}",
-      "internet": "[sv] Internet: {{val}}",
-      "extra": "[sv] Lisätieto"
+      "contactDetails": "Yhteystiedot",
+      "email": "Sähköposti",
+      "fax": "Fax",
+      "phoneNumber": "Puhelin",
+      "internet": "Internet",
+      "extra": "Lisätieto"
     }
   }
 }

@@ -5,6 +5,7 @@ import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
+import { get as getTransform } from 'ol/proj/transforms';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -24,6 +25,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   };
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
+    const fn = getTransform(MAP.EPSG, 'EPSG:4326');
+    if (fn) {
+      console.log('coordinates: ' + fn.call(map, evt.coordinate, undefined, undefined));
+    }
     const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
       return f;
     });
