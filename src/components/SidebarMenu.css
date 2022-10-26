@@ -7,12 +7,25 @@
   border-bottom: 1px solid var(--ion-color-lighter);
 }
 
+.sidebarMenu ion-row.ion-no-padding {
+  padding: 0;
+  border-bottom: unset;
+}
+
 .sidebarMenu .header {
   border-bottom: 1px solid var(--ion-color-lighter);
   padding: 0;
 }
 .sidebarMenu .header .logo {
   width: 234px;
+}
+
+.sidebarMenu .closeButton {
+  --color: #000000;
+}
+.sidebarMenu .closeButton ion-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .sidebarMenu h1 {
@@ -22,13 +35,80 @@
   margin: 0;
 }
 
-.sidebarMenu ion-button {
-  text-transform: none;
-}
-.sidebarMenu ion-button.button-clear {
+.sidebarMenu ion-button.languageSelection {
   color: var(--ion-color-primary);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 2px;
+  --background-hover: unset;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  text-decoration: underline;
 }
+
+.sidebarMenu ion-button.languageSelection:hover {
+  color: var(--ion-color-primary-shade);
+  text-decoration: none;
+}
+
 .sidebarMenu ion-button.button-disabled {
   opacity: 1;
   color: var(--ion-color-dark);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.sidebarMenu ion-icon {
+  width: 21px;
+  height: 21px;
+}
+
+.sidebarMenu ion-button.icon-only {
+  margin: 0 10px;
+}
+
+.sidebarMenu .navLinkCol {
+  padding-left: 22px;
+}
+
+.sidebarMenu ion-router-link {
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 2px;
+  text-decoration: underline;
+}
+
+.sidebarMenu ion-router-link:focus {
+  outline: 1px solid var(--ion-color-primary);
+}
+
+.sidebarMenu ion-router-link.internal {
+  color: #333;
+}
+
+.sidebarMenu ion-router-link.internal:focus {
+  outline: 1px solid #333;
+}
+
+.sidebarMenu ion-router-link.internalDisabled {
+  font-weight: bold;
+  pointer-events: none;
+  color: #333;
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 2px;
+  text-decoration: none;
+}
+
+.sidebarMenu ion-router-link.internalDisabled:focus {
+  outline: 1px solid #333;
+}
+
+.sidebarMenu ion-router-link:hover {
+  /* color: var(--ion-color-primary-shade); */
+  text-decoration: none;
 }
