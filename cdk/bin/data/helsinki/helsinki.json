@@ -246,18 +246,14 @@
             "sv": "Hanaholmens kaj",
             "en": "Hanasaari quay"
           },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [24.96900370143037, 60.18087406040237]
-          },
           "length": 330,
           "sections": [
             {
-              "name": "SHA",
-              "draft": 9.35
-            },
-            {
-              "name": "SHB",
+              "name": "SHA/SHB",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.96900370143037, 60.18087406040237]
+              },
               "draft": 9.35
             }
           ]

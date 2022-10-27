@@ -79,10 +79,12 @@ export function addHarborLayer(map: Map) {
     const props = feature.getProperties() as HarborFeatureProperties;
     let text;
     // TODO: use correct language for formatting number
-    if (props.name) {
+    if (props.name && props.draft) {
       text = `${props.name} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
-    } else {
+    } else if (props.draft) {
       text = `${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+    } else {
+      text = '';
     }
     return [
       new Style({

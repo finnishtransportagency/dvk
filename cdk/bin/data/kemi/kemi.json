@@ -137,6 +137,10 @@
             "sv": "Oljekajen",
             "en": "Oil terminal"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.514831248879485, 65.65967922617939]
+          },
           "sections": [
             {
               "draft": 11.2
@@ -148,6 +152,10 @@
             "fi": "Laituri I, paikat 1-2",
             "sv": "Kaj I, platserna 1-2",
             "en": "Quay I, berths 1-2"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.519962294663394, 65.6634276730848]
           },
           "length": 160,
           "sections": [
@@ -162,6 +170,10 @@
             "sv": "Kaj I, platserna 3-4",
             "en": "Quay I, berths 3-4"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.5187731688107, 65.66448745094786]
+          },
           "length": 179,
           "sections": [
             {
@@ -174,6 +186,10 @@
             "fi": "Laituri II, paikat 5-7",
             "sv": "Kaj II, platserna 5-7",
             "en": "Quay II, berths 5-7"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.517202566973943, 65.66493198205238]
           },
           "length": 292,
           "sections": [
@@ -188,6 +204,10 @@
             "sv": "Kaj III, platserna 8-9",
             "en": "Quay III, berths 8-9"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.515699152426542, 65.66629646880082]
+          },
           "length": 178,
           "sections": [
             {
@@ -200,6 +220,10 @@
             "fi": "Laituri IV, paikat 10-11",
             "sv": "Kaj IV, platserna 10-11",
             "en": "Quay IV, berths 10-11"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.515497139361216, 65.66786381014046]
           },
           "length": 178,
           "sections": [

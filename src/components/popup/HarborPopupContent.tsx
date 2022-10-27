@@ -46,21 +46,25 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
             <IonCol>{coordinatesToStringHDM(harbor.coordinates)}</IonCol>
           </IonRow>
         )}
-        <IonRow>
-          <IonCol className="header">{t('depth')}</IonCol>
-        </IonRow>
         {harbor.properties.draft && (
-          <IonRow>
-            <IonCol>{harbor.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
-          </IonRow>
+          <>
+            <IonRow>
+              <IonCol className="header">{t('depth')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{harbor.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
+            </IonRow>
+          </>
         )}
-        <IonRow>
-          <IonCol className="header">{t('length')}</IonCol>
-        </IonRow>
         {harbor.properties.length && (
-          <IonRow>
-            <IonCol>{t('number', { val: harbor.properties.length })} m</IonCol>
-          </IonRow>
+          <>
+            <IonRow>
+              <IonCol className="header">{t('length')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{t('number', { val: harbor.properties.length })} m</IonCol>
+            </IonRow>
+          </>
         )}
         <IonRow>
           <IonCol className="header">{t('contactDetails')}</IonCol>

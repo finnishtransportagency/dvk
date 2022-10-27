@@ -129,6 +129,10 @@
             "sv": "kaj 15-17, stenkols- och spannmålskaj",
             "en": "quay 15-17, coal and grain"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.049396230713068,60.45713319403657]
+          },
           "length": 370,
           "sections": [
             {
@@ -142,6 +146,10 @@
             "sv": "kaj 20, färjekaj/Finnlink",
             "en": "quay 20, ferry/Finnlink"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.04413824454278, 60.45736725868343]
+          },
           "length": 200,
           "sections": [
             {
@@ -154,6 +162,10 @@
             "fi": "laituri 22, pienaluskäytössä",
             "sv": "kaj 22, i småbåtsbruk",
             "en": "quay 22, small craft use"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.042803713941662, 60.457609481364706]
           }
         },
         {
@@ -161,6 +173,10 @@
             "fi": "laituri 23-24, kivilaituri",
             "sv": "kaj 23-24, stenkaj",
             "en": "quay 23-24, rockmaterial"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.039237212491265, 60.45809186249343]
           },
           "length": 170,
           "sections": [
@@ -175,6 +191,10 @@
             "sv": "kaj 25, sockerkaj",
             "en": "quay 25, sugar"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.03782392353523, 60.458250987543416]
+          },
           "length": 50,
           "sections": [
             {
@@ -188,6 +208,10 @@
             "sv": "kaj 26",
             "en": "quay 26"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.03736300840052, 60.45765879739641]
+          },
           "length": 150,
           "sections": [
             {
@@ -200,6 +224,10 @@
             "fi": "laituri 27",
             "sv": "kaj 27",
             "en": "quay 27"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.036488883979295, 60.45789854824226]
           },
           "length": 180,
           "sections": [
@@ -260,6 +288,10 @@
             "sv": "kaj 1",
             "en": "quay 1"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.06304986857789, 60.45600560602047]
+          },
           "length": 170,
           "sections": [
             {
@@ -273,6 +305,10 @@
             "sv": "kaj 2",
             "en": "quay 2"
           },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.06502175470271, 60.45450414814352]
+          },
           "length": 200,
           "sections": [
             {
@@ -285,6 +321,10 @@
             "fi": "laituri 3",
             "sv": "kaj 3",
             "en": "quay 3"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.068459561944337, 60.45318824515586]
           },
           "length": 300,
           "sections": [
