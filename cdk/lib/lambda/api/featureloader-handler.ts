@@ -194,8 +194,8 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
           return {
             fairwayId: v.jnro,
             name: {
-              fi: v.nimiFi,
-              sv: v.nimiSv,
+              fi: v.nimiFI,
+              sv: v.nimiSV,
             },
             status: v.status,
             line: v.linjaus,

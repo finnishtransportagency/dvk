@@ -63,8 +63,8 @@ type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
   status?: number;
   linjaus?: number;
-  nimiFi?: string;
-  nimiSv?: string;
+  nimiFI?: string;
+  nimiSV?: string;
 };
 
 export type RajoitusAlueAPIModel = {
@@ -108,7 +108,8 @@ export type MitoitusAlusAPIModel = {
 export type LuokitusAPIModel = {
   luokitusTyyppi: string;
   vaylaluokkaKoodi: string;
-  vaylaluokka: string;
+  vaylaluokkaFI?: string;
+  vaylaluokkaSV?: string;
 };
 export type VaylaAPIModel = {
   jnro: number;

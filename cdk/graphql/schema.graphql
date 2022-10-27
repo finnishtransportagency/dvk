@@ -118,7 +118,7 @@ type Fairway {
 type Classification {
   type: String
   fairwayClassCode: String
-  fairwayClass: String
+  fairwayClass: Text
 }
 
 type AreaFairway {

@@ -52,7 +52,10 @@ function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
     return {
       type: classificationModel.luokitusTyyppi,
       fairwayClassCode: classificationModel.vaylaluokkaKoodi,
-      fairwayClass: classificationModel.vaylaluokka,
+      fairwayClass: {
+        fi: classificationModel.vaylaluokkaFI,
+        sv: classificationModel.vaylaluokkaSV,
+      },
     };
   });
   return fairway;
