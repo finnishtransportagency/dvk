@@ -147,7 +147,6 @@ Calculate Squat
 	Set Input Values To Fairway Section
 	Set Input Values To Stability Section
 	Set Input Values To Vessel Section
-	#Set Input Values To Attribute Section
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
@@ -177,13 +176,11 @@ Check Labels In Swedish
 	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Fartygets Squat i samband med fart
 
 Check Labels In English
-	# Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
 	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Vessel
 	Element Should Contain    ${YMPARISTO_HEADER}    Environment
 	Scroll Element Into View    ${LASKENTA_HEADER}
 	Element Should Contain    ${LASKENTA_HEADER}    Calculations
 	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	# Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
@@ -237,15 +234,11 @@ Set Input Values To General Section
 	Press Keys    ${BREADTH_INPUT}    31
 	Press Keys    ${DRAUGHT_INPUT}    RETURN
 	Press Keys    ${DRAUGHT_INPUT}    8
-	#Press Keys    ${BLOCKCOEFFICIENT_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${BLOCKCOEFFICIENT_INPUT}    0.60
 	Capture Page Screenshot
 
 Set Input Values To Weather Section
 	Press Keys    ${WINDSPEED_INPUT}    RETURN
 	Press Keys    ${WINDSPEED_INPUT}    5
-	#Press Keys    ${WINDDIRECTION_INPUT}    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${WINDDIRECTION_INPUT}    45
 	Press Keys    ${WAVEHEIGHT_INPUT}    RETURN
 	Press Keys    ${WAVEHEIGHT_INPUT}    1.5
 	Press Keys    ${WAVEPERIOD_INPUT}    RETURN
@@ -260,8 +253,6 @@ Set Input Values To Detailed Section
 	Press Keys    ${DECKCARGO_INPUT}    5000
 	Press Keys    ${BOWTHRUSTER_INPUT}    RETURN
 	Press Keys    ${BOWTHRUSTER_INPUT}    1000
-	#Press Keys    ${BOWTHRUSTEREFFICIENCY_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${BOWTHRUSTEREFFICIENCY_INPUT}    95
 	Click Element    ${FERRY_RADIO}
 	Capture Page Screenshot
 
@@ -277,8 +268,6 @@ Set Input Values To Fairway Section
 	Scroll Element Into View    ${SLOPESCALE_INPUT}
 	Press Keys    ${CHANNELWIDTH_INPUT}    RETURN
 	Press Keys    ${CHANNELWIDTH_INPUT}    200
-	#Press Keys    ${SLOPESCALE_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${SLOPESCALE_INPUT}    0.8
 	Press Keys    ${SLOPEHEIGHT_INPUT}    RETURN
 	Press Keys    ${SLOPEHEIGHT_INPUT}    12
 	Capture Page Screenshot
@@ -286,11 +275,6 @@ Set Input Values To Fairway Section
 Set Input Values To Stability Section
 	Press Keys    ${KG_INPUT}    RETURN
 	Press Keys    ${KG_INPUT}    8
-	#Press Keys    ${GM_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${GM_INPUT}    2
-	Scroll Element Into View    ${KB_INPUT}
-	#Press Keys    ${KB_INPUT}    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${KB_INPUT}    4
 	Capture Page Screenshot
 
 Set Input Values To Vessel Section
@@ -299,18 +283,7 @@ Set Input Values To Vessel Section
 	Press Keys    ${VESSEL_COURSE_INPUT}    10
 	Press Keys    ${VESSEL_SPEED_INPUT}    RETURN
 	Press Keys    ${VESSEL_SPEED_INPUT}    17
-	#Press Keys    ${TURNING_RADIUS_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
-	#Press Keys    ${TURNING_RADIUS_INPUT}    1
 	Capture Page Screenshot
-
-#Set Input Values To Attribute Section
-#	Scroll Element Into View    ${SAFETYMARGINWINDFORCE_INPUT}
-#	Input Text    ${AIRDENSITY_INPUT}    1.0    clear=True
-#	Input Text    ${WATERDENSITY_INPUT}    1010    clear=True
-#	Input Text    ${REQUIREDUKC_INPUT}    0.5    clear=True
-#	Input Text    ${MOTIONCLEARANCE_INPUT}    2.5    clear=True
-#	Input Text    ${SAFETYMARGINWINDFORCE_INPUT}    20    clear=True
-#	Capture Page Screenshot
 
 Get Squat Calculation Values
 	${KALLISTUMA_TUULI}=    Get Text    ${KALLISTUMA_TUULI_VALUE}
@@ -374,5 +347,4 @@ Check The Squat Calculation Values
 	Should Be Equal    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}    18,2
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_2}    80
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_2}    5
-	#Should Be Equal    ${ARVIOITU_SORTOKULMA}
 	Should Be Equal    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}    31
