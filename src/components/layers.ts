@@ -16,7 +16,7 @@ import { HarborFeatureProperties } from './popup/HarborPopupContent';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
+function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const vatuSource = new VectorSource({
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
@@ -58,7 +58,7 @@ export function getPilotStyle() {
   ];
 }
 
-export function addPilotLayer(map: Map) {
+function addPilotLayer(map: Map) {
   const pilotSource = new VectorSource({
     url: url + '?type=pilot',
     format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
@@ -120,7 +120,7 @@ export function getHarborStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-export function addHarborLayer(map: Map) {
+function addHarborLayer(map: Map) {
   const style = function (feature: FeatureLike) {
     return getHarborStyle(feature, false);
   };

@@ -6,7 +6,7 @@ import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 
 type PilotPopupContentProps = {
-  pilotPlace?: PilotProperties;
+  pilot?: PilotProperties;
 };
 
 type Card = {
@@ -24,27 +24,27 @@ export type PilotProperties = {
   properties: PilotFeatureProperties;
 };
 
-const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilotPlace }) => {
+const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.pilotPlace' });
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
     <IonGrid id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
-          <IonCol className="header">{t('header', { val: pilotPlace?.properties.name })}</IonCol>
+          <IonCol className="header">{t('header', { val: pilot?.properties.name })}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('coordinates')}</IonCol>
         </IonRow>
-        {pilotPlace?.coordinates && (
+        {pilot?.coordinates && (
           <IonRow>
-            <IonCol>{coordinatesToStringHDM(pilotPlace.coordinates)}</IonCol>
+            <IonCol>{coordinatesToStringHDM(pilot.coordinates)}</IonCol>
           </IonRow>
         )}
         <IonRow>
           <IonCol className="header">{t('fairways')}</IonCol>
         </IonRow>
-        {pilotPlace?.properties.fairwayCards.map((card, index) => {
+        {pilot?.properties.fairwayCards.map((card, index) => {
           return (
             <IonRow key={index}>
               <IonCol>

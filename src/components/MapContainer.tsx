@@ -292,7 +292,7 @@ const MapContainer: React.FC<MapProps> = (props) => {
       <div id="mapContainer" ref={mapElement}>
         <div id="popup" className="ol-popup">
           <div id="popup-content">
-            {popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}
+            {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} />}
             {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} />}
           </div>
         </div>
