@@ -14,11 +14,12 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
-import { Fairway, Harbor, Pilot, Quay, Text, Tug, useFindFairwayCardByIdQuery, Vts } from '../graphql/generated';
+import { AreaFairway, Fairway, Harbor, Pilot, Quay, Text, Tug, useFindFairwayCardByIdQuery, Vts } from '../graphql/generated';
 import { metresToNauticalMiles } from '../utils/conversions';
 import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
+import { getCurrentDecimalSeparator } from '../utils/common';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -45,7 +46,7 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
 };
 
 type ParagraphProps = {
-  title: string;
+  title?: string;
   bodyText?: Text;
   bodyTextList?: (Text | null)[] | null;
 };
@@ -56,23 +57,21 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) 
 
   return (
     <>
-      <IonText>
-        {bodyTextList &&
-          bodyTextList.map((text, idx) => {
-            return (
-              <p key={idx}>
-                {idx === 0 && <strong>{title}: </strong>}
-                {text && text[lang]}
-              </p>
-            );
-          })}
-        {bodyText && (
-          <p>
-            <strong>{title}: </strong>
-            {bodyText[lang]}
-          </p>
-        )}
-      </IonText>
+      {bodyTextList &&
+        bodyTextList.map((text, idx) => {
+          return (
+            <p key={idx}>
+              {idx === 0 && title && <strong>{title}: </strong>}
+              {text && text[lang]}
+            </p>
+          );
+        })}
+      {bodyText && (
+        <p>
+          {title && <strong>{title}: </strong>}
+          {bodyText[lang]}
+        </p>
+      )}
     </>
   );
 };
@@ -202,7 +201,7 @@ const DimensionInfo: React.FC<FairwayProps> = ({ data }) => {
                 {data.sizing.minimumTurningCircle && (
                   <>
                     {t('and')}
-                    {t('minimumTurningCircle')}: {data.sizing.minimumTurningCircle}&nbsp;
+                    {t('minimumTurningCircle').toLocaleLowerCase()}: {data.sizing.minimumTurningCircle}&nbsp;
                     <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumTurningCircle) })} role="definition">
                       m
                     </span>
@@ -235,24 +234,76 @@ const GeneralInfo: React.FC<FairwayProps> = ({ data }) => {
   return (
     <>
       {data && (
-        <IonText>
-          <p>
-            {data.sizing && (
-              <>
-                {t('minimumWidth')}: {data.sizing.minimumWidth || '-'}&nbsp;
-                <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumWidth) })} role="definition">
-                  m
-                </span>
-                <br />
-                {t('designSpeed')}: {data.sizing.normalWidth || '-'}&nbsp;
-                <span aria-label={t('unit.ktsDesc', { count: 0 })} role="definition">
-                  kts
-                </span>
-              </>
-            )}
-          </p>
-        </IonText>
+        <p>
+          {data.sizing && (
+            <>
+              {t('minimumWidth')}: {data.sizing.minimumWidth || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumWidth) })} role="definition">
+                m
+              </span>
+              <br />
+              {t('minimumTurningCircle')}: {data.sizing.minimumTurningCircle || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(data.sizing.minimumTurningCircle) })} role="definition">
+                m
+              </span>
+              <br />
+              {t('reserveWater')}: {data.sizing.reserveWater?.replaceAll('.', getCurrentDecimalSeparator()).trim() || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(data.sizing.reserveWater) })} role="definition">
+                m
+              </span>
+            </>
+          )}
+        </p>
       )}
+    </>
+  );
+};
+
+const AreaInfo: React.FC<FairwayProps> = ({ data }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+
+  const getSizingSpeed = (areaFairways?: AreaFairway[] | null) => {
+    const filtered = areaFairways?.filter((fairway) => fairway.sizingSpeed || fairway.sizingSpeed2);
+    return filtered && filtered.length > 0 ? filtered[0] : null;
+  };
+
+  return (
+    <>
+      {data &&
+        data.areas?.map((area, idx) => {
+          const sizingData = getSizingSpeed(area.fairways);
+          return (
+            <p key={idx}>
+              <em>
+                {area.name || (
+                  <>
+                    {t('area')} {idx + 1}
+                  </>
+                )}
+              </em>
+              <br />
+              {t('designDraft')}: {area.n2000depth?.toLocaleString() || area.depth?.toLocaleString() || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(area.depth) })} role="definition">
+                m
+              </span>
+              <br />
+              {t('sweptDepth')}: {area.n2000draft?.toLocaleString() || area.draft?.toLocaleString() || '-'}&nbsp;
+              <span aria-label={t('unit.mDesc', { count: Number(area.draft) })} role="definition">
+                m
+              </span>
+              {sizingData && (
+                <>
+                  <br />
+                  {t('designSpeed')}: {sizingData.sizingSpeed?.toLocaleString()}
+                  {sizingData.sizingSpeed2 ? <>&nbsp;/&nbsp;{sizingData.sizingSpeed2}</> : ''}&nbsp;
+                  <span aria-label={t('unit.ktsDesc', { count: Number(area.draft) })} role="definition">
+                    kts
+                  </span>
+                </>
+              )}
+            </p>
+          );
+        })}
     </>
   );
 };
@@ -470,7 +521,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
               <br />
             </>
           )}
-          {t('phone')}:
+          {t('phone')}:{' '}
           {data.phoneNumber?.map((phone, idx) => {
             return (
               <span key={idx}>
@@ -505,30 +556,30 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
     <>
       {data && (
         <>
-          <IonText>
+          <IonText className="no-margin-top">
             <h4>
               <strong>{data.name && data.name[lang]}</strong>
             </h4>
           </IonText>
-          <IonText className="condensed">
+          <IonText>
             <h5>{t('restrictions')}</h5>
             {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
           </IonText>
-          <IonText className="condensed">
+          <IonText>
             <h5>{t('quays')}</h5>
             {(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}
           </IonText>
-          <IonText className="condensed">
+          <IonText>
             <h5>{t('cargo')}</h5>
             {data.cargo?.map((cargo, jdx) => {
               return <p key={jdx}>{cargo && cargo[lang]}</p>;
             }) || <InfoParagraph />}
           </IonText>
-          <IonText className="condensed">
+          <IonText>
             <h5>{t('harbourBasin')}</h5>
             {(data.harborBasin && <p>{data.harborBasin[lang]}</p>) || <InfoParagraph />}
           </IonText>
-          <IonText className="condensed">
+          <IonText>
             <h5>{t('contactDetails')}</h5>
             <ContactInfo data={data} />
           </IonText>
@@ -557,18 +608,24 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     return data?.fairwayCard?.fairways.find((fairway) => fairway.primary);
   };
 
+  const isN2000HeightSystem = () => {
+    const primaryFairway = extractPrimaryFairway();
+    const n2000Line = primaryFairway?.navigationLines?.find((line) => line.n2000ReferenceLevel === 'N2000');
+    return n2000Line;
+  };
+
   return (
     <>
       {loading && (
         <>
           <IonBreadcrumbs>
-            <IonSkeletonText animated={true} style={{ width: '100%', height: '20px' }}></IonSkeletonText>
+            <IonSkeletonText animated={true} style={{ width: '100%', height: widePane ? '24px' : '48px', margin: '0' }}></IonSkeletonText>
           </IonBreadcrumbs>
           <IonText>
-            <h2>
+            <h2 className="no-margin-bottom">
               <IonSkeletonText animated={true} style={{ width: '100%', height: '30px' }}></IonSkeletonText>
             </h2>
-            <IonSkeletonText animated={true} style={{ width: '110px', height: '14px' }}></IonSkeletonText>
+            <IonSkeletonText animated={true} style={{ width: '150px', height: '14px', margin: '0' }}></IonSkeletonText>
           </IonText>
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50px', marginTop: '20px' }}></IonSkeletonText>
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50vh', marginTop: '20px' }}></IonSkeletonText>
@@ -608,6 +665,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                       {t('modifiedDate', {
                         val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
                       })}
+                      {isN2000HeightSystem() ? ' - N2000 (BSCD2000)' : ' - MW'}
                     </em>
                   </small>
                 </IonText>
@@ -646,88 +704,81 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           </IonSegment>
 
           {tab === '1' && (
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
-                  <IonText>
-                    <h4>
-                      <strong>{t('information')}</strong>
-                    </h4>
-                  </IonText>
-                  <LiningInfo data={extractPrimaryFairway()} lineText={data?.fairwayCard?.lineText} />
-                  <DimensionInfo data={extractPrimaryFairway()} />
-                  <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
-                  <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
+            <div className={'tabContent' + (widePane ? ' wide' : '')}>
+              <IonText className="no-margin-top">
+                <h4>
+                  <strong>{t('information')}</strong>
+                </h4>
+              </IonText>
+              <LiningInfo data={extractPrimaryFairway()} lineText={data?.fairwayCard?.lineText} />
+              <DimensionInfo data={extractPrimaryFairway()} />
+              <IonText>
+                <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
+                <Paragraph title={t('anchorage')} bodyTextList={data?.fairwayCard?.anchorage} />
+              </IonText>
 
-                  <IonText>
-                    <h4>
-                      <strong>{t('navigation')}</strong>
-                    </h4>
-                  </IonText>
-                  <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} />
-                  <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} />
-                </IonCol>
+              <IonText>
+                <h4>
+                  <strong>{t('navigation')}</strong>
+                </h4>
+                <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} />
+                <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} />
+              </IonText>
 
-                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
-                  <IonText>
-                    <h4>
-                      <strong>
-                        {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
-                      </strong>
-                    </h4>
-                  </IonText>
-                  {/* TODO: VATU:sta nopeusrajoitustiedot */}
-                  <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
-                  <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
-                  <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
-                  <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} />
-                  <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} />
-                  <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} />
+              <IonText>
+                <h4>
+                  <strong>
+                    {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
+                  </strong>
+                </h4>
+                {/* TODO: VATU:sta nopeusrajoitustiedot */}
+                <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
+                <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
+                <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
+                <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} />
+                <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} />
+                <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} />
+              </IonText>
 
-                  <IonText>
-                    <h4>
-                      <strong>{t('trafficServices')}</strong>
-                    </h4>
-                  </IonText>
-                  <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
-                  <VTSInfo data={data?.fairwayCard?.trafficService?.vts} />
-                  <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+              <IonText>
+                <h4>
+                  <strong>{t('trafficServices')}</strong>
+                </h4>
+              </IonText>
+              <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
+              <VTSInfo data={data?.fairwayCard?.trafficService?.vts} />
+              <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
+            </div>
           )}
 
           {tab === '2' && (
-            <IonGrid className="ion-no-padding">
-              <IonRow>
-                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
-                  {data?.fairwayCard?.harbors?.slice(0, Math.ceil(data.fairwayCard.harbors.length / 2)).map((harbour, idx) => {
-                    return <HarbourInfo data={harbour} key={idx} />;
-                  })}
-                  {!data?.fairwayCard?.harbors && (
-                    <IonText>
-                      <InfoParagraph />
-                    </IonText>
-                  )}
-                </IonCol>
-                <IonCol size={widePane ? '6' : '12'} className={widePane ? 'wide' : ''}>
-                  {data?.fairwayCard?.harbors?.slice(Math.ceil(data.fairwayCard.harbors.length / 2)).map((harbour, idx) => {
-                    return <HarbourInfo data={harbour} key={idx} />;
-                  })}
-                </IonCol>
-              </IonRow>
-            </IonGrid>
+            <div className={'tabContent' + (widePane ? ' wide' : '')}>
+              {data?.fairwayCard?.harbors?.map((harbour, idx) => {
+                return <HarbourInfo data={harbour} key={idx} />;
+              })}
+              {!data?.fairwayCard?.harbors && (
+                <IonText>
+                  <InfoParagraph />
+                </IonText>
+              )}
+            </div>
           )}
 
           {tab === '3' && (
-            <>
-              <IonText>
-                <h4>
-                  <strong>{t('commonInformation')}</strong>
-                </h4>
+            <div className={'tabContent' + (widePane ? ' wide' : '')}>
+              <IonText className="no-margin-top">
+                <h5>{t('commonInformation')}</h5>
+                <GeneralInfo data={extractPrimaryFairway()} />
               </IonText>
-              <GeneralInfo data={extractPrimaryFairway()} />
-            </>
+              <IonText>
+                <h5>{t('anchorage')}</h5>
+                <Paragraph bodyTextList={data?.fairwayCard?.anchorage} />
+              </IonText>
+              <IonText>
+                <h5>{t('fairwayAreas')}</h5>
+                <AreaInfo data={extractPrimaryFairway()} />
+              </IonText>
+            </div>
           )}
         </>
       )}

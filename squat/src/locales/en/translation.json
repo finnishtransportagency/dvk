@@ -1,7 +1,7 @@
 {
   "homePage": {
     "header": {
-      "title": "[en] Squat-laskenta",
+      "title": "Squat Calculation",
       "shareable-link-title": "Create a shareable link",
       "shareable-link-body": "Below is a a link that you can use to share you're calculations' current status to anyone.",
       "copy-to-clipboard": "Copy to clipboard",
@@ -9,7 +9,7 @@
       "print": "Print page"
     },
     "squat": {
-      "content": "[en] Squat-laskenta",
+      "content": "Squat Calculation",
       "vessel": {
         "title": "Vessel",
         "description": "Vessel selection and information",

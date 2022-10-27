@@ -13,6 +13,9 @@ ion-text.equal-margin-top > * {
 ion-text.no-margin > * {
   margin: 0;
 }
+ion-text.no-margin-top > *:first-child {
+  margin-top: 0 !important;
+}
 
 /* Grid */
 ion-grid.margin-top {

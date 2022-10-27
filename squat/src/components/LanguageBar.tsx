@@ -22,7 +22,7 @@ const LanguageBar: React.FC = () => {
             }}
             disabled={i18n.language === 'fi'}
           >
-            Suomi
+            Suomeksi
           </IonButton>
           <IonButton
             id="language_sv"
@@ -34,7 +34,7 @@ const LanguageBar: React.FC = () => {
             }}
             disabled={i18n.language === 'sv'}
           >
-            Svenska
+            På svenska
           </IonButton>
           <IonButton
             id="language_en"
@@ -46,7 +46,7 @@ const LanguageBar: React.FC = () => {
             }}
             disabled={i18n.language === 'en'}
           >
-            English
+            In English
           </IonButton>
         </IonCol>
       </IonRow>
