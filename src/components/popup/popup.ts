@@ -6,6 +6,9 @@ import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
+// eslint-disable-next-line import/named
+import { FeatureLike } from 'ol/Feature';
+import { getHarborStyle, getPilotStyle } from '../layers';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -58,9 +61,16 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       setPopupProperties({});
     }
   });
-  const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
+  const style = function (feature: FeatureLike) {
+    if (feature.getProperties().type === 'harbor') {
+      return getHarborStyle(feature, true);
+    }
+    return getPilotStyle();
+  };
+
+  const pointerMoveSelect = new Select({ condition: pointerMove, style, filter: (feature) => types.includes(feature.getProperties().type) });
   pointerMoveSelect.on('select', (e) => {
-    const hit = e.selected.filter((f) => types.includes(f.getProperties().type)).length > 0;
+    const hit = e.selected.length > 0;
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = hit ? 'pointer' : '';
   });
