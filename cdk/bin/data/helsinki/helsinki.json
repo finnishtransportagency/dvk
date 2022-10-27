@@ -11,6 +11,11 @@
     "sv": "Två linjer, utmärkta med enstavlor.",
     "en": "Two lines, marked with boards."
   },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus nopeuspainumalle (squat) väylällä 19 solmua ja Kustaanmiekan salmessa 13,5 solmua.",
+    "sv": "Dimensionerande fart för squat är 19 knop i farleden och 13,5 knop i Gustavssvärds sund",
+    "en": "Design speed for squat is 19 knots in the channel and 13.5 knots in Kustaanmiekka strait."
+  },
   "anchorage":[
     {
       "fi": "Ankkuroida voi sataman edustalla olevalle Kruunuvuorenselälle.",
@@ -117,14 +122,18 @@
           "length": 370,
           "sections": [
             {
-              "name": {
-                "fi": "EO1"
+              "name": "EO1",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.95982323138278, 60.16080391357215]
               },
               "draft": 7.5
             },
             {
-              "name": {
-                "fi": "EO2"
+              "name":"EO2",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.957867393406815, 60.162172462169046]
               },
               "draft": 8.8
             }
@@ -135,6 +144,10 @@
             "fi": "Makasiinilaituri",
             "sv": "Magasinkajen",
             "en": "Makasiini quay"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.9558804804978, 60.16379951951082]
           },
           "length": 240,
           "sections": [
@@ -151,13 +164,18 @@
         },
         {
           "name": {
-            "fi": "Pakkahuoneenlaituri EPL",
-            "sv": "Packhuskajen EPL",
-            "en": "Pakkahuone quay EPL"
+            "fi": "Pakkahuoneenlaituri",
+            "sv": "Packhuskajen",
+            "en": "Pakkahuone quay"
           },
           "length": 130,
           "sections": [
             {
+              "name": "EPL",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.954071530026948, 60.165666111439805]
+              },
               "draft": 6
             }
           ]
@@ -171,20 +189,26 @@
           "length": 740,
           "sections": [
             {
-              "name": {
-                "fi": "EKL"
+              "name": "EKL",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.960080457384183, 60.16609300451217]
               },
               "draft": 8.8
             },
             {
-              "name": {
-                "fi": "EK6"
+              "name": "EK6",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.965329089920694, 60.164343039388825]
               },
               "draft": 8.8
             },
             {
-              "name": {
-                "fi": "EK7"
+              "name": "EK7",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.968660014187158, 60.16345006967473]
               },
               "draft": 8.8
             }
@@ -199,14 +223,18 @@
           "length": 350,
           "sections": [
             {
-              "name": {
-                "fi": "ERA"
+              "name": "ERA",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.970615818569915, 60.16335940073721]
               },
               "draft": 10.3
             },
             {
-              "name": {
-                "fi": "ERB"
+              "name": "ERB",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.973177062888116, 60.16424651293902]
               },
               "draft": 10
             }
@@ -221,14 +249,10 @@
           "length": 330,
           "sections": [
             {
-              "name": {
-                "fi": "SHA"
-              },
-              "draft": 9.35
-            },
-            {
-              "name": {
-                "fi": "SHB"
+              "name": "SHA/SHB",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.96900370143037, 60.18087406040237]
               },
               "draft": 9.35
             }

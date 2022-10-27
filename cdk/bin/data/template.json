@@ -11,6 +11,11 @@
     "sv": "",
     "en": ""
   },
+  "designSpeed": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
   "anchorage":[
     {
       "fi": "",
@@ -160,10 +165,10 @@
           "length": 0,
           "sections": [
             {
-              "name": {
-                "fi": "",
-                "sv": "",
-                "en": ""
+              "name": "",
+              "geometry": {
+                "type": "Point",
+                "coordinates": []
               },
               "draft": 0
             }

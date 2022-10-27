@@ -481,7 +481,7 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
                 return (
                   <span key={kdx}>
                     <br />
-                    {section?.name && section.name[lang] + ': '} {t('sweptDepth')} {section?.draft?.toLocaleString()}&nbsp;
+                    {section?.name && section.name + ': '} {t('sweptDepth')} {section?.draft?.toLocaleString()}&nbsp;
                     <span aria-label={t('unit.mDesc', { count: Number(section?.draft) })} role="definition">
                       m
                     </span>

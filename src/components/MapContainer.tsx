@@ -28,9 +28,11 @@ import { addPopup } from './popup/popup';
 import SearchbarControl from './SearchbarControl';
 import SearchbarDropdown from './searchbarDropdown';
 import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
+import HarborPopupContent, { HarborProperties } from './popup/HarborPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
+  harbor?: HarborProperties;
 };
 
 interface MapProps {
@@ -289,7 +291,10 @@ const MapContainer: React.FC<MapProps> = (props) => {
     <>
       <div id="mapContainer" ref={mapElement}>
         <div id="popup" className="ol-popup">
-          <div id="popup-content">{popupProps?.pilot && <PilotPopupContent pilotPlace={popupProps.pilot} />}</div>
+          <div id="popup-content">
+            {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} />}
+            {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} />}
+          </div>
         </div>
       </div>
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />

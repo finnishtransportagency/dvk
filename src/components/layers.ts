@@ -6,11 +6,17 @@ import { Fill, Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import pilot_logo from '../theme/img/pilotPlace.svg';
+import quayIcon from '../theme/img/dock_icon.svg';
+import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
+import Text from 'ol/style/Text';
+// eslint-disable-next-line import/named
+import { FeatureLike } from 'ol/Feature';
+import { HarborFeatureProperties } from './popup/HarborPopupContent';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
+function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const vatuSource = new VectorSource({
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
@@ -33,11 +39,11 @@ export function addVatuLayer(map: Map, queryString: string, id: string, color: s
   map.addLayer(vatuLayer);
 }
 
-export function addPilotLayer(map: Map) {
+export function getPilotStyle() {
   const image = new Icon({
     src: pilot_logo,
   });
-  const style = [
+  return [
     new Style({
       image,
     }),
@@ -50,14 +56,83 @@ export function addPilotLayer(map: Map) {
       }),
     }),
   ];
+}
+
+function addPilotLayer(map: Map) {
   const pilotSource = new VectorSource({
     url: url + '?type=pilot',
     format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
   });
   const pilotLayer = new VectorLayer({
     source: pilotSource,
-    style,
+    style: getPilotStyle(),
     properties: { id: 'pilot' },
+    renderBuffer: 2000,
+  });
+  map.addLayer(pilotLayer);
+}
+
+export function getHarborStyle(feature: FeatureLike, selected: boolean) {
+  const image = new Icon({
+    src: quayIcon,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const activeImage = new Icon({
+    src: quayIconActive,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const props = feature.getProperties() as HarborFeatureProperties;
+  let text;
+  // TODO: use correct language for formatting number
+  if (props.name && props.draft) {
+    text = `${props.name} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+  } else if (props.draft) {
+    text = `${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+  } else {
+    text = '';
+  }
+  return [
+    new Style({
+      image: selected ? activeImage : image,
+      text: new Text({
+        font: 'bold 18px "Exo 2"',
+        placement: 'line',
+        offsetY: -50,
+        text,
+        fill: new Fill({
+          color: selected ? '#0064AF' : '#000000',
+        }),
+      }),
+    }),
+    new Style({
+      image: new CircleStyle({
+        radius: 20,
+        displacement: [0, 20],
+        fill: new Fill({
+          color: 'rgba(0,0,0,0)',
+        }),
+      }),
+    }),
+  ];
+}
+
+function addHarborLayer(map: Map) {
+  const style = function (feature: FeatureLike) {
+    return getHarborStyle(feature, false);
+  };
+  const harborSource = new VectorSource({
+    url: url + '?type=harbor',
+    format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
+  });
+  const pilotLayer = new VectorLayer({
+    source: harborSource,
+    style,
+    properties: { id: 'harbor' },
+    maxResolution: 3,
     renderBuffer: 2000,
   });
   map.addLayer(pilotLayer);
@@ -77,4 +152,5 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
   addPilotLayer(map);
+  addHarborLayer(map);
 }

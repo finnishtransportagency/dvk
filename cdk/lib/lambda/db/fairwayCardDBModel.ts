@@ -80,8 +80,9 @@ export type Quay = {
 };
 
 export type Section = {
-  name?: Text;
+  name?: string;
   draft?: number;
+  geometry?: GeometryPoint;
 };
 
 type FairwayCardByFairwayIdIndex = {
@@ -101,6 +102,8 @@ class FairwayCardDBModel {
   fairwayIds?: string;
 
   lineText?: Text;
+
+  designSpeed?: Text;
 
   generalInfo?: Text;
 

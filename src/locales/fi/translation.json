@@ -141,6 +141,18 @@
       "header": "Luotsipaikka {{val}}",
       "coordinates": "Koordinaatit",
       "fairways": "Luotsipaikalta alkavat väylät"
+    },
+    "harbor": {
+      "coordinates": "Koordinaatit",
+      "length": "Laiturin pituus",
+      "depth": "Vesisyvyys",
+      "number": "{{val, number}}",
+      "contactDetails": "Yhteystiedot",
+      "email": "Sähköposti",
+      "fax": "Fax",
+      "phoneNumber": "Puhelin",
+      "internet": "Verkkosivu",
+      "extra": "Lisätieto"
     }
   }
 }

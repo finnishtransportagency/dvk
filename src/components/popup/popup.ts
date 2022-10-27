@@ -5,7 +5,10 @@ import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../MapContainer';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
-import { PilotFeatureProperties } from './PilotPopupContent';
+import { get as getTransform } from 'ol/proj/transforms';
+// eslint-disable-next-line import/named
+import { FeatureLike } from 'ol/Feature';
+import { getHarborStyle, getPilotStyle } from '../layers';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -17,33 +20,57 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         duration: 250,
       },
     },
+    positioning: 'center-left',
   });
+  const types = ['pilot', 'harbor'];
   content.onclick = () => {
     overlay.setPosition(undefined);
+    setPopupProperties({});
     return true;
   };
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
+    const fn = getTransform(MAP.EPSG, 'EPSG:4326');
+    if (fn) {
+      console.log('coordinates: ' + fn.call(map, evt.coordinate, undefined, undefined));
+    }
     const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
       return f;
     });
     if (!feature) {
+      overlay.setPosition(undefined);
+      setPopupProperties({});
       return;
     }
-    if (feature.getProperties().type === 'pilot') {
+    if (types.includes(feature.getProperties().type)) {
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-      setPopupProperties({
-        pilot: {
-          coordinates: geom.getCoordinates() as number[],
-          properties: feature.getProperties() as PilotFeatureProperties,
-        },
-      });
-      overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
+      if (overlay.getPosition()) {
+        overlay.setPosition(undefined);
+        setPopupProperties({});
+      } else {
+        setPopupProperties({
+          [feature.getProperties().type]: {
+            coordinates: geom.getCoordinates() as number[],
+            properties: feature.getProperties(),
+          },
+        });
+        overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
+      }
+    } else {
+      overlay.setPosition(undefined);
+      setPopupProperties({});
     }
   });
-  const pointerMoveSelect = new Select({ condition: pointerMove, style: null });
+  const style = function (feature: FeatureLike) {
+    if (feature.getProperties().type === 'harbor') {
+      return getHarborStyle(feature, true);
+    }
+    return getPilotStyle();
+  };
+
+  const pointerMoveSelect = new Select({ condition: pointerMove, style, filter: (feature) => types.includes(feature.getProperties().type) });
   pointerMoveSelect.on('select', (e) => {
-    const hit = e.selected.filter((f) => f.getProperties().type === 'pilot').length > 0;
+    const hit = e.selected.length > 0;
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = hit ? 'pointer' : '';
   });

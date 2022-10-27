@@ -28,7 +28,8 @@
     "datasync": "ts-node bin/datasync.ts -- --dbonly",
     "datas3sync": "ts-node bin/datasync.ts",
     "setup": "ts-node bin/setup.ts",
-    "vatu": "ts-node bin/vatu.ts"
+    "vatu": "ts-node bin/vatu.ts",
+    "cleancache": "aws s3 rm s3://featurecache-$ENVIRONMENT --recursive"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.1",

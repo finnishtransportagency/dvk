@@ -121,6 +121,15 @@
       ],
       "quays": [
         {
+          "name": {
+            "fi": "Yaran laituri",
+            "sv": "Yara kajen",
+            "en": "Quay Yara"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [21.339483010757984, 60.794364767251494]
+          },
           "length": 330,
           "sections": [
             {
