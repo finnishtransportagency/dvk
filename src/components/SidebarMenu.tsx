@@ -26,7 +26,7 @@ const SidebarMenu: React.FC = () => {
   const { data } = useFindAllFairwayCardsQuery();
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
-    <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="mainContent">
+    <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent">
       <IonContent className="sidebarMenu">
         <IonGrid className="ion-no-padding">
           <IonRow className="header">
