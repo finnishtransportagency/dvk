@@ -147,11 +147,11 @@ Calculate Squat
 	Set Input Values To Fairway Section
 	Set Input Values To Stability Section
 	Set Input Values To Vessel Section
-	Set Input Values To Attribute Section
+	#Set Input Values To Attribute Section
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-
+	Check The Squat Calculation Values
 
 *** Keywords ***
 Change Squat Calculator Language To
@@ -231,62 +231,86 @@ Check Input Fields Attribute Section
 	Page Should Contain Element    ${SAFETYMARGINWINDFORCE_INPUT}
 
 Set Input Values To General Section
-	Input Text    ${LENGTHBPP_INPUT}    212
-    Input Text    ${BREADTH_INPUT}    31
-    Input Text    ${DRAUGHT_INPUT}    8
-    Input Text    ${BLOCKCOEFFICIENT_INPUT}    0.60    clear=True
-    Capture Page Screenshot
+	Press Keys    ${LENGTHBPP_INPUT}    RETURN
+	Press Keys    ${LENGTHBPP_INPUT}    212
+	Press Keys    ${BREADTH_INPUT}    RETURN
+	Press Keys    ${BREADTH_INPUT}    31
+	Press Keys    ${DRAUGHT_INPUT}    RETURN
+	Press Keys    ${DRAUGHT_INPUT}    8
+	#Press Keys    ${BLOCKCOEFFICIENT_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${BLOCKCOEFFICIENT_INPUT}    0.60
+	Capture Page Screenshot
 
 Set Input Values To Weather Section
-	Input Text    ${WINDSPEED_INPUT}    5
-    Input Text    ${WINDDIRECTION_INPUT}    45    clear=True
-    Input Text    ${WAVEHEIGHT_INPUT}    1.5
-    Input Text    ${WAVEPERIOD_INPUT}    5
+	Press Keys    ${WINDSPEED_INPUT}    RETURN
+	Press Keys    ${WINDSPEED_INPUT}    5
+	#Press Keys    ${WINDDIRECTION_INPUT}    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${WINDDIRECTION_INPUT}    45
+	Press Keys    ${WAVEHEIGHT_INPUT}    RETURN
+	Press Keys    ${WAVEHEIGHT_INPUT}    1.5
+	Press Keys    ${WAVEPERIOD_INPUT}    RETURN
+	Press Keys    ${WAVEPERIOD_INPUT}    5
 	Capture Page Screenshot
 
 Set Input Values To Detailed Section
 	Scroll Element Into View    ${KG_INPUT}
-	Input Text    ${WINDSURFACE_INPUT}    2000
-    Input Text    ${DECKCARGO_INPUT}    5000
-    Input Text    ${BOWTHRUSTER_INPUT}    1000
-    Input Text    ${BOWTHRUSTEREFFICIENCY_INPUT}    95    clear=True
-    Click Element    ${FERRY_RADIO}
+	Press Keys    ${WINDSURFACE_INPUT}    RETURN
+	Press Keys    ${WINDSURFACE_INPUT}    2000
+	Press Keys    ${DECKCARGO_INPUT}    RETURN
+	Press Keys    ${DECKCARGO_INPUT}    5000
+	Press Keys    ${BOWTHRUSTER_INPUT}    RETURN
+	Press Keys    ${BOWTHRUSTER_INPUT}    1000
+	#Press Keys    ${BOWTHRUSTEREFFICIENCY_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${BOWTHRUSTEREFFICIENCY_INPUT}    95
+	Click Element    ${FERRY_RADIO}
 	Capture Page Screenshot
 
 Set Input Values To Fairway Section
-	Input Text    ${SWEPTDEPTH_INPUT}    12.5
-    Input Text    ${WATERLEVEL_INPUT}    10
-    Input Text    ${WATERDEPTH_INPUT}    23
+	Press Keys    ${SWEPTDEPTH_INPUT}    RETURN
+	Press Keys    ${SWEPTDEPTH_INPUT}    12.5
+	Press Keys    ${WATERLEVEL_INPUT}    RETURN
+	Press Keys    ${WATERLEVEL_INPUT}    10
+	Press Keys    ${WATERDEPTH_INPUT}    RETURN
+	Press Keys    ${WATERDEPTH_INPUT}    23
 	Click Element    ${LUISKA_RADIOBUTTON}
 	Sleep    2 seconds
 	Scroll Element Into View    ${SLOPESCALE_INPUT}
-	Input Text    ${CHANNELWIDTH_INPUT}    50    clear=True
-	Input Text    ${SLOPESCALE_INPUT}    0.8    clear=True
-    Input Text    ${SLOPEHEIGHT_INPUT}    15    clear=True
+	Press Keys    ${CHANNELWIDTH_INPUT}    RETURN
+	Press Keys    ${CHANNELWIDTH_INPUT}    200
+	#Press Keys    ${SLOPESCALE_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${SLOPESCALE_INPUT}    0.8
+	Press Keys    ${SLOPEHEIGHT_INPUT}    RETURN
+	Press Keys    ${SLOPEHEIGHT_INPUT}    12
 	Capture Page Screenshot
 
 Set Input Values To Stability Section
-	Input Text    ${KG_INPUT}    8
-	Input Text    ${GM_INPUT}    2    clear=True
+	Press Keys    ${KG_INPUT}    RETURN
+	Press Keys    ${KG_INPUT}    8
+	#Press Keys    ${GM_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${GM_INPUT}    2
 	Scroll Element Into View    ${KB_INPUT}
-    Input Text    ${KB_INPUT}    4
-    Capture Page Screenshot
+	#Press Keys    ${KB_INPUT}    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${KB_INPUT}    4
+	Capture Page Screenshot
 
 Set Input Values To Vessel Section
 	Scroll Element Into View    ${TURNING_RADIUS_INPUT}
-	Input Text    ${VESSEL_COURSE_INPUT}    10
-    Input Text    ${VESSEL_SPEED_INPUT}    17
-    Input Text    ${TURNING_RADIUS_INPUT}    1    clear=True
+	Press Keys    ${VESSEL_COURSE_INPUT}    RETURN
+	Press Keys    ${VESSEL_COURSE_INPUT}    10
+	Press Keys    ${VESSEL_SPEED_INPUT}    RETURN
+	Press Keys    ${VESSEL_SPEED_INPUT}    17
+	#Press Keys    ${TURNING_RADIUS_INPUT}    BACKSPACE    BACKSPACE    BACKSPACE    BACKSPACE    RETURN
+	#Press Keys    ${TURNING_RADIUS_INPUT}    1
 	Capture Page Screenshot
 
-Set Input Values To Attribute Section
-	Scroll Element Into View    ${SAFETYMARGINWINDFORCE_INPUT}
-	Input Text    ${AIRDENSITY_INPUT}    1.0    clear=True
-    Input Text    ${WATERDENSITY_INPUT}    1010    clear=True
-    Input Text    ${REQUIREDUKC_INPUT}    0.5    clear=True
-    Input Text    ${MOTIONCLEARANCE_INPUT}    2.5    clear=True
-    Input Text    ${SAFETYMARGINWINDFORCE_INPUT}    20    clear=True
-	Capture Page Screenshot
+#Set Input Values To Attribute Section
+#	Scroll Element Into View    ${SAFETYMARGINWINDFORCE_INPUT}
+#	Input Text    ${AIRDENSITY_INPUT}    1.0    clear=True
+#	Input Text    ${WATERDENSITY_INPUT}    1010    clear=True
+#	Input Text    ${REQUIREDUKC_INPUT}    0.5    clear=True
+#	Input Text    ${MOTIONCLEARANCE_INPUT}    2.5    clear=True
+#	Input Text    ${SAFETYMARGINWINDFORCE_INPUT}    20    clear=True
+#	Capture Page Screenshot
 
 Get Squat Calculation Values
 	${KALLISTUMA_TUULI}=    Get Text    ${KALLISTUMA_TUULI_VALUE}
@@ -294,21 +318,61 @@ Get Squat Calculation Values
 	${ALUKSEN_TODELLINEN_SYVAYS}=    Get Text    ${ALUKSEN_TODELLINEN_SYVAYS_VALUE}
 	${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}=    Get Text    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}
 	${KOLIVARA_JA_ALUKSEN_LIIKKEET}=    Get Text    ${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}
-    ${KOLIVARA_SUORALLA_KURSSILLA}=    Get Text    ${KOLIVARA_SUORALLA_KURSSILLA_VALUE}
-    ${KOLIVARA_KAANNOKSESSA}=    Get Text    ${KOLIVARA_KAANNOKSESSA_VALUE}
-    ${PAINUMA_LUISKA}=    Get Text    ${PAINUMA_LUISKA_VALUE}
+	${KOLIVARA_SUORALLA_KURSSILLA}=    Get Text    ${KOLIVARA_SUORALLA_KURSSILLA_VALUE}
+	${KOLIVARA_KAANNOKSESSA}=    Get Text    ${KOLIVARA_KAANNOKSESSA_VALUE}
+	${PAINUMA_LUISKA}=    Get Text    ${PAINUMA_LUISKA_VALUE}
+	Set Test Variable    ${KALLISTUMA_TUULI}
+	Set Test Variable    ${KALLISTUMA_KAANNOS}
+	Set Test Variable    ${ALUKSEN_TODELLINEN_SYVAYS}
+	Set Test Variable    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}
+	Set Test Variable    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}
+	Set Test Variable    ${KOLIVARA_SUORALLA_KURSSILLA}
+	Set Test Variable    ${KOLIVARA_KAANNOKSESSA}
+	Set Test Variable    ${PAINUMA_LUISKA}
 
 Get Tuulen Voima Calculation Values
 	${SUHTEELLINEN_TUULEN_SUUNTA_1}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}
-    ${SUHTEELLINEN_TUULEN_NOPEUS_1}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}
-    ${TUULEN_VOIMA}=    Get Text    ${TUULEN_VOIMA_VALUE}
-    ${AALLOKON_VOIMA}=    Get Text    ${AALLOKON_VOIMA_VALUE}
-    ${KEULAPOTKURIN_SUORITUSKYKY}=    Get Text    ${KEULAPOTKURIN_SUORITUSKYKY_VALUE}
-    ${TURVAMARGINAALI}=    Get Text    ${TURVAMARGINAALI_VALUE}
-    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}=    Get Text    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_VALUE}
+	${SUHTEELLINEN_TUULEN_NOPEUS_1}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}
+	${TUULEN_VOIMA}=    Get Text    ${TUULEN_VOIMA_VALUE}
+	${AALLOKON_VOIMA}=    Get Text    ${AALLOKON_VOIMA_VALUE}
+	${KEULAPOTKURIN_SUORITUSKYKY}=    Get Text    ${KEULAPOTKURIN_SUORITUSKYKY_VALUE}
+	${TURVAMARGINAALI}=    Get Text    ${TURVAMARGINAALI_VALUE}
+	${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}=    Get Text    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_VALUE}
+	Set Test Variable    ${SUHTEELLINEN_TUULEN_SUUNTA_1}
+	Set Test Variable    ${SUHTEELLINEN_TUULEN_NOPEUS_1}
+	Set Test Variable    ${TUULEN_VOIMA}
+	Set Test Variable    ${AALLOKON_VOIMA}
+	Set Test Variable    ${KEULAPOTKURIN_SUORITUSKYKY}
+	Set Test Variable    ${TURVAMARGINAALI}
+	Set Test Variable    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}
 
 Get Sorto Calculation Values
 	${SUHTEELLINEN_TUULEN_SUUNTA_2}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}
-    ${SUHTEELLINEN_TUULEN_NOPEUS_2}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}
-    ${ARVIOITU_SORTOKULMA}=    Get Text    ${ARVIOITU_SORTOKULMA_VALUE}
-    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}=    Get Text    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}
+	${SUHTEELLINEN_TUULEN_NOPEUS_2}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}
+	${ARVIOITU_SORTOKULMA}=    Get Text    ${ARVIOITU_SORTOKULMA_VALUE}
+	${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}=    Get Text    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}
+	Set Test Variable    ${SUHTEELLINEN_TUULEN_SUUNTA_2}
+	Set Test Variable    ${SUHTEELLINEN_TUULEN_NOPEUS_2}
+	Set Test Variable    ${ARVIOITU_SORTOKULMA}
+	Set Test Variable    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}
+
+Check The Squat Calculation Values
+	Should Be Equal    ${KALLISTUMA_TUULI}    0,69
+	Should Be Equal    ${KALLISTUMA_KAANNOS}    0
+	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    8,19
+	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}    8
+	Should Be Equal    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}    4,41
+	Should Be Equal    ${KOLIVARA_SUORALLA_KURSSILLA}    4,41
+	Should Be Equal    ${KOLIVARA_KAANNOKSESSA}    4,6
+	Should Be Equal    ${PAINUMA_LUISKA}    0
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_1}    80
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_1}    5
+	Should Be Equal    ${TUULEN_VOIMA}    3,7
+	Should Be Equal    ${AALLOKON_VOIMA}    41,3
+	Should Be Equal    ${KEULAPOTKURIN_SUORITUSKYKY}    13,4
+	Should Be Equal    ${TURVAMARGINAALI}    −136
+	Should Be Equal    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}    18,2
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_2}    80
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_2}    5
+	#Should Be Equal    ${ARVIOITU_SORTOKULMA}
+	Should Be Equal    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}    31
