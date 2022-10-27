@@ -89,7 +89,7 @@ type Quay {
 }
 
 type Section {
-  name: Text
+  name: String
   draft: Float
   geometry: GeometryPoint
 }

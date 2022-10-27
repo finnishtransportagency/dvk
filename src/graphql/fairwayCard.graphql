@@ -147,11 +147,7 @@ query findFairwayCardById($id: String!) {
         }
         length
         sections {
-          name {
-            fi
-            sv
-            en
-          }
+          name
           draft
         }
         extraInfo {

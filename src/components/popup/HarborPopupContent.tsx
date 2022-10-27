@@ -14,7 +14,7 @@ export type HarborFeatureProperties = {
   quay?: Text;
   extraInfo?: Text;
   length?: number;
-  name?: Text;
+  name?: string;
   draft?: number[];
   email?: string;
   phoneNumber?: string[];
@@ -35,8 +35,7 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">
-            {harbor.properties.quay && harbor.properties.quay[lang]}{' '}
-            {harbor.properties.name && (harbor.properties.name[lang] || harbor.properties.name.fi)}
+            {harbor.properties.quay && harbor.properties.quay[lang]} {harbor.properties.name ? harbor.properties.name : ''}
           </IonCol>
         </IonRow>
         <IonRow>
@@ -76,7 +75,15 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
         {harbor.properties.phoneNumber && (
           <IonRow>
             <IonCol>
-              {t('phoneNumber')}: <a href={'tel:' + harbor.properties.phoneNumber[0]}>{harbor.properties.phoneNumber[0]}</a>
+              {t('phoneNumber')}:{' '}
+              {harbor.properties.phoneNumber.map((p, i) => {
+                return (
+                  <span key={i}>
+                    <a href={'tel:' + p}>{p}</a>
+                    <br />
+                  </span>
+                );
+              })}
             </IonCol>
           </IonRow>
         )}

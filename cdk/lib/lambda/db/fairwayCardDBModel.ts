@@ -80,7 +80,7 @@ export type Quay = {
 };
 
 export type Section = {
-  name?: Text;
+  name?: string;
   draft?: number;
   geometry?: GeometryPoint;
 };

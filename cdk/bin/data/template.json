@@ -165,11 +165,7 @@
           "length": 0,
           "sections": [
             {
-              "name": {
-                "fi": "",
-                "sv": "",
-                "en": ""
-              },
+              "name": "",
               "geometry": {
                 "type": "Point",
                 "coordinates": []

@@ -122,9 +122,7 @@
           "length": 370,
           "sections": [
             {
-              "name": {
-                "fi": "EO1"
-              },
+              "name": "EO1",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.95982323138278, 60.16080391357215]
@@ -132,9 +130,7 @@
               "draft": 7.5
             },
             {
-              "name": {
-                "fi": "EO2"
-              },
+              "name":"EO2",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.957867393406815, 60.162172462169046]
@@ -175,9 +171,7 @@
           "length": 130,
           "sections": [
             {
-              "name": {
-                "fi": "EPL"
-              },
+              "name": "EPL",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.954071530026948, 60.165666111439805]
@@ -195,9 +189,7 @@
           "length": 740,
           "sections": [
             {
-              "name": {
-                "fi": "EKL"
-              },
+              "name": "EKL",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.960080457384183, 60.16609300451217]
@@ -205,9 +197,7 @@
               "draft": 8.8
             },
             {
-              "name": {
-                "fi": "EK6"
-              },
+              "name": "EK6",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.965329089920694, 60.164343039388825]
@@ -215,9 +205,7 @@
               "draft": 8.8
             },
             {
-              "name": {
-                "fi": "EK7"
-              },
+              "name": "EK7",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.968660014187158, 60.16345006967473]
@@ -235,9 +223,7 @@
           "length": 350,
           "sections": [
             {
-              "name": {
-                "fi": "ERA"
-              },
+              "name": "ERA",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.970615818569915, 60.16335940073721]
@@ -245,9 +231,7 @@
               "draft": 10.3
             },
             {
-              "name": {
-                "fi": "ERB"
-              },
+              "name": "ERB",
               "geometry": {
                 "type": "Point",
                 "coordinates": [24.973177062888116, 60.16424651293902]
@@ -269,15 +253,11 @@
           "length": 330,
           "sections": [
             {
-              "name": {
-                "fi": "SHA"
-              },
+              "name": "SHA",
               "draft": 9.35
             },
             {
-              "name": {
-                "fi": "SHB"
-              },
+              "name": "SHB",
               "draft": 9.35
             }
           ]
