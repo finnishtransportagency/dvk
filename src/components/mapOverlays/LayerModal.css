@@ -18,11 +18,13 @@ ion-modal#layerModalContainer::part(content) {
 
 #layerModalContainer ion-item {
   --padding-start: 0;
+  --min-height: 30px
 }
 
 #layerModalContainer ion-checkbox {
   --size: 20px;
   --border-width: 1px;
+  margin: 5px;
 }
 
 #layerModalContainer h6 {
