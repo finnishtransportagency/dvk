@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
-import './Home.css';
 
 const Home = (): JSX.Element => {
   const mapElement = useRef<HTMLDivElement | null>(null);
@@ -17,7 +16,7 @@ const Home = (): JSX.Element => {
   return (
     <IonPage>
       <IonContent className="ion-no-padding">
-        <div className="homePageMapContainer" ref={mapElement}></div>
+        <div ref={mapElement}></div>
       </IonContent>
     </IonPage>
   );

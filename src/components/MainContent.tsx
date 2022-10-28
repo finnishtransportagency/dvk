@@ -71,7 +71,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, splitPane }) => {
             )}
             <IonCol id="mapPane">
               <IonContent className="ion-no-padding">
-                <div className="homePageMapContainer" ref={mapElement}></div>
+                <div ref={mapElement}></div>
               </IonContent>
             </IonCol>
           </IonRow>

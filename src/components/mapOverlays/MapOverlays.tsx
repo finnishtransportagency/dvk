@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LayerModal from './LayerModal';
-import SearchbarDropdown from './searchbarDropdown';
+import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
