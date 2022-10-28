@@ -6,7 +6,7 @@ ion-modal#layerModalContainer {
   --box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
 }
 
-ion-modal#layerModalContainer .header {
+ion-modal#layerModalContainer .borderBottom {
   border-bottom: 1px solid var(--ion-color-light);
 }
 
@@ -20,6 +20,10 @@ ion-modal#layerModalContainer::part(content) {
   --padding-start: 0;
 }
 
+#layerModalContainer ion-checkbox {
+  --size: 20px;
+  --border-width: 1px;
+}
 
 #layerModalContainer h6 {
   font-weight: bold;

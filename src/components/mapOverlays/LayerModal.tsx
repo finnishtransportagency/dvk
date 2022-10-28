@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonLabel, IonList, IonModal, IonText } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonLabel, IonList, IonModal, IonText, IonListHeader } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, useMap } from '../DvkMap';
 import './LayerModal.css';
@@ -13,12 +13,13 @@ interface ModalProps {
 
 interface CheckBoxProps {
   id: string;
+  title: string;
 }
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>([]);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
@@ -32,21 +33,24 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       }
     });
   }, [layers, dvkMap]);
-  const CheckBox: React.FC<CheckBoxProps> = ({ id }) => {
+  const LayerItem: React.FC<CheckBoxProps> = ({ id, title }) => {
     return (
-      <IonCheckbox
-        value={id}
-        checked={layers.includes(id)}
-        slot="start"
-        onClick={() =>
-          setLayers((prev) => {
-            if (prev.includes(id)) {
-              return [...prev.filter((p) => p !== id)];
-            }
-            return [...prev, id];
-          })
-        }
-      />
+      <IonItem mode="md">
+        <IonText>{title}</IonText>
+        <IonCheckbox
+          value={id}
+          checked={layers.includes(id)}
+          slot="start"
+          onClick={() =>
+            setLayers((prev) => {
+              if (prev.includes(id)) {
+                return [...prev.filter((p) => p !== id)];
+              }
+              return [...prev, id];
+            })
+          }
+        />
+      </IonItem>
     );
   };
 
@@ -68,69 +72,42 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol className="header">
+            <IonCol className="borderBottom">
               <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
               <IonList lines="none" className="ion-no-padding">
-                <IonItem>
-                  <IonText>{t('homePage.map.controls.layer.fairwayAreas')}</IonText>
-                  <CheckBox id="area12" />
-                </IonItem>
-                <IonItem>
-                  <IonText>{t('homePage.map.controls.layer.lines')}</IonText>
-                  <CheckBox id="line12" />
-                </IonItem>
+                <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
+                <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
               </IonList>
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol className="header">
-              <IonLabel>{t('homePage.map.controls.layer.class2')}</IonLabel>
+            <IonCol className="borderBottom">
+              <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
               <IonList lines="none" className="ion-no-padding">
-                <IonItem>
-                  <IonText>{t('homePage.map.controls.layer.fairwayAreas')}</IonText>
-                  <CheckBox id="area3456" />
-                </IonItem>
-                <IonItem>
-                  <IonText>{t('homePage.map.controls.layer.lines')}</IonText>
-                  <CheckBox id="line3456" />
-                </IonItem>
+                <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} />
+                <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} />
               </IonList>
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol className="header" />
+            <IonCol className="borderBottom" />
           </IonRow>
           <IonRow>
             <IonCol>
               <IonList lines="none" className="ion-no-padding">
-                <IonItem>
-                  <IonLabel>{t('homePage.map.controls.layer.depths')}</IonLabel>
-                  <CheckBox id="depth" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel>{t('homePage.map.controls.layer.safetyEquipments')}</IonLabel>
-                  <CheckBox id="safety" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel>{t('homePage.map.controls.layer.speedLimits')}</IonLabel>
-                  <CheckBox id="restrictionarea" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel>{t('homePage.map.controls.layer.specialAreas')}</IonLabel>
-                  <CheckBox id="specialarea" />
-                </IonItem>
-                <IonItem>
-                  <IonLabel>{t('homePage.map.controls.layer.pilotPlaces')}</IonLabel>
-                  <CheckBox id="pilot" />
-                </IonItem>
+                <LayerItem id="depth" title={t('homePage.map.controls.layer.depths')} />
+                <LayerItem id="safety" title={t('homePage.map.controls.layer.safetyEquipments')} />
+                <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
+                <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
+                <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
               </IonList>
             </IonCol>
           </IonRow>
