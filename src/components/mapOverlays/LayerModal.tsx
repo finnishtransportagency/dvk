@@ -19,7 +19,7 @@ interface CheckBoxProps {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
@@ -62,88 +62,86 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         setIsOpen(false);
       }}
     >
-      <>
-        <IonGrid>
-          <IonRow>
-            <IonCol>
-              <IonText>
-                <h6>{t('homePage.map.controls.layer.header')}</h6>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol className="borderBottom">
-              <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonList lines="none" className="ion-no-padding">
-                <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
-                <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
-              </IonList>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol className="borderBottom">
-              <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonList lines="none" className="ion-no-padding">
-                <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} />
-                <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} />
-              </IonList>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol className="borderBottom" />
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonList lines="none" className="ion-no-padding">
-                <LayerItem id="depth" title={t('homePage.map.controls.layer.depths')} />
-                <LayerItem id="safety" title={t('homePage.map.controls.layer.safetyEquipments')} />
-                <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
-                <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
-                <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
-              </IonList>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <IonText>
-                <h6>{t('homePage.map.controls.layer.mapStyle.header')}</h6>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <button
-                color="none"
-                className="ion-button ion-float-right bgMapButtonLand"
-                disabled={bgMap === 'land'}
-                onClick={() => setBackgroundMap('land')}
-              >
-                <div className="mapImage"></div>
-                {t('homePage.map.controls.layer.mapStyle.landButtonLabel')}
-              </button>
-            </IonCol>
-            <IonCol>
-              <button
-                color="none"
-                className="ion-button ion-float-left bgMapButtonSea"
-                disabled={bgMap === 'sea'}
-                onClick={() => setBackgroundMap('sea')}
-              >
-                <div className="mapImage"></div>
-                {t('homePage.map.controls.layer.mapStyle.seaButtonLabel')}
-              </button>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </>
+      <IonGrid>
+        <IonRow>
+          <IonCol>
+            <IonText>
+              <h6>{t('homePage.map.controls.layer.header')}</h6>
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="borderBottom">
+            <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonList lines="none" className="ion-no-padding">
+              <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
+              <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
+            </IonList>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="borderBottom">
+            <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonList lines="none" className="ion-no-padding">
+              <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} />
+              <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} />
+            </IonList>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="borderBottom" />
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonList lines="none" className="ion-no-padding">
+              <LayerItem id="depth" title={t('homePage.map.controls.layer.depths')} />
+              <LayerItem id="safety" title={t('homePage.map.controls.layer.safetyEquipments')} />
+              <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
+              <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
+              <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
+            </IonList>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonText>
+              <h6>{t('homePage.map.controls.layer.mapStyle.header')}</h6>
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <button
+              color="none"
+              className="ion-button ion-float-right bgMapButtonLand"
+              disabled={bgMap === 'land'}
+              onClick={() => setBackgroundMap('land')}
+            >
+              <div className="mapImage"></div>
+              {t('homePage.map.controls.layer.mapStyle.landButtonLabel')}
+            </button>
+          </IonCol>
+          <IonCol>
+            <button
+              color="none"
+              className="ion-button ion-float-left bgMapButtonSea"
+              disabled={bgMap === 'sea'}
+              onClick={() => setBackgroundMap('sea')}
+            >
+              <div className="mapImage"></div>
+              {t('homePage.map.controls.layer.mapStyle.seaButtonLabel')}
+            </button>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </IonModal>
   );
 };
