@@ -24,12 +24,12 @@
     "deploy:site:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
     "deploy:featurepipeline": "cross-env ENVIRONMENT=feature cdk --profile=$AWS_PROFILE deploy DvkFeaturePipelineStack",
     "generate": "graphql-codegen",
-    "log:backend": "aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
+    "log:backend": "cross-env-shell aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
     "datasync": "ts-node bin/datasync.ts -- --dbonly",
     "datas3sync": "ts-node bin/datasync.ts",
     "setup": "ts-node bin/setup.ts",
     "vatu": "ts-node bin/vatu.ts",
-    "cleancache": "aws s3 rm s3://featurecache-$ENVIRONMENT --recursive"
+    "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^2.13.1",
