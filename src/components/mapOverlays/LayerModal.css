@@ -46,17 +46,17 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer .bgMapButtonSea .mapImage {
-  background-image: url('../theme/img/bg_map_buttons/seaUnselected.png');
+  background-image: url('../../theme/img/bg_map_buttons/seaUnselected.png');
 }
 
 #layerModalContainer .bgMapButtonSea:disabled .mapImage {
-  background-image: url('../theme/img/bg_map_buttons/seaSelected.png');
+  background-image: url('../../theme/img/bg_map_buttons/seaSelected.png');
 }
 
 #layerModalContainer .bgMapButtonLand .mapImage {
-  background-image: url('../theme/img/bg_map_buttons/landUnselected.png');
+  background-image: url('../../theme/img/bg_map_buttons/landUnselected.png');
 }
 
 #layerModalContainer .bgMapButtonLand:disabled .mapImage {
-  background-image: url('../theme/img/bg_map_buttons/landSelected.png');
+  background-image: url('../../theme/img/bg_map_buttons/landSelected.png');
 }

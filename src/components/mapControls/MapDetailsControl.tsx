@@ -9,9 +9,7 @@ class MapDetailsControl extends Control {
 
   private scaleLineElement: HTMLDivElement = document.createElement('div');
 
-  constructor(opt_options: { copyrightLabel: string; mousePositionLabel: string }) {
-    const options = opt_options || {};
-
+  constructor() {
     const element = document.createElement('div');
     element.style.display = 'table';
     element.className = 'mapDetailsControl ol-unselectable ol-control';
@@ -26,12 +24,10 @@ class MapDetailsControl extends Control {
 
     this.copyrightElement.style.display = 'table-cell';
     this.copyrightElement.className = 'copyrightElem';
-    this.copyrightElement.innerHTML = options.copyrightLabel || '';
     rowElem.appendChild(this.copyrightElement);
 
     this.mousePositionLabelElement.style.display = 'table-cell';
     this.mousePositionLabelElement.className = 'mousePositionLabelElem';
-    this.mousePositionLabelElement.innerHTML = options.mousePositionLabel || '';
     rowElem.appendChild(this.mousePositionLabelElement);
 
     this.mousePositionElement.style.display = 'table-cell';

@@ -3,6 +3,8 @@ import Control from 'ol/control/Control';
 import Coordinate from 'ol/coordinate';
 
 class CenterToOwnLocationControl extends Control {
+  private buttonElement = document.createElement('button');
+
   geolocation = new Geolocation({
     trackingOptions: {
       enableHighAccuracy: true,
@@ -11,25 +13,24 @@ class CenterToOwnLocationControl extends Control {
 
   position: Coordinate.Coordinate | undefined = undefined;
 
-  constructor(opt_options: { label: string; tipLabel: string }) {
-    const options = opt_options || {};
-
-    const button = document.createElement('button');
-    button.className = 'centerToOwnLocationControl';
-    button.innerHTML = options.label || '';
-    button.title = options.tipLabel || '';
-
+  constructor() {
     const element = document.createElement('div');
     element.className = 'centerToOwnLocationControlContainer ol-unselectable ol-control';
-    element.appendChild(button);
 
     super({
       element: element,
     });
 
-    button.addEventListener('click', () => {
+    this.buttonElement.className = 'centerToOwnLocationControl';
+    element.appendChild(this.buttonElement);
+
+    this.buttonElement.addEventListener('click', () => {
       this.centerToOwnLocation();
     });
+  }
+
+  public setTipLabel(label: string) {
+    this.buttonElement.title = label;
   }
 
   centerToOwnLocation = () => {

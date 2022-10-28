@@ -2,25 +2,26 @@ import Control from 'ol/control/Control';
 import { menuController } from '@ionic/core/components';
 
 class OpenSidebarMenuControl extends Control {
-  constructor(opt_options: { label: string; tipLabel: string }) {
-    const options = opt_options || {};
+  private buttonElement = document.createElement('button');
 
-    const button = document.createElement('button');
-    button.className = 'openSidebarMenuControl';
-    button.innerHTML = options.label || '';
-    button.title = options.tipLabel || '';
-
+  constructor() {
     const element = document.createElement('div');
     element.className = 'openSidebarMenuControlContainer ol-unselectable ol-control';
-    element.appendChild(button);
 
     super({
       element: element,
     });
 
-    button.addEventListener('click', () => {
+    this.buttonElement.className = 'openSidebarMenuControl';
+    element.appendChild(this.buttonElement);
+
+    this.buttonElement.addEventListener('click', () => {
       menuController.open();
     });
+  }
+
+  public setTipLabel(label: string) {
+    this.buttonElement.title = label;
   }
 }
 

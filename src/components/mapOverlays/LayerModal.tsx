@@ -1,22 +1,21 @@
 import React, { useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonLabel, IonList, IonModal, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
-import LayerPopupControl from './LayerPopupControl';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  layerPopupControl: LayerPopupControl;
-  bgMapType: 'land' | 'sea';
-  setBgMapType: (bgMapType: 'land' | 'sea') => void;
+  bgMapType: BackgroundMapType;
+  setBgMapType: (bgMapType: BackgroundMapType) => void;
 }
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl, bgMapType, setBgMapType }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
   const { t } = useTranslation();
-  const [bgMap, setBgMap] = useState<'land' | 'sea'>(bgMapType);
+  const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
 
-  const setBackgroundMap = (type: 'land' | 'sea') => {
+  const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
   };
@@ -27,7 +26,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layerPopupControl
       isOpen={isOpen}
       onDidDismiss={() => {
         setIsOpen(false);
-        layerPopupControl.modalClosed();
       }}
     >
       <div className="wrapper">

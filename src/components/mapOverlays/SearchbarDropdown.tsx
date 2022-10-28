@@ -2,7 +2,7 @@ import React from 'react';
 import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './SearchbarDropdown.css';
-import { useFindAllFairwayCardsQuery } from '../graphql/generated';
+import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 
 const MINIMUM_QUERYLENGTH = 3;
 const MAX_HITS = 20;

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
+import { InitDvkMap } from './components/DvkMap';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,6 +27,9 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/dvk.css';
+import Home from './pages/Home';
+import SidebarMenu from './components/SidebarMenu';
+import MapOverlays from './components/mapOverlays/MapOverlays';
 
 setupIonicReact();
 
@@ -50,6 +54,8 @@ const App: React.FC = () => {
   const originalSW = navigator.serviceWorker?.controller;
 
   document.documentElement.lang = i18n.language;
+
+  InitDvkMap();
 
   useEffect(() => {
     if (!updating) {
@@ -79,11 +85,17 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <ApolloProvider client={client}>
-          <IonRouterOutlet>
-            <Route exact path="/" component={MainContent} />
-            <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-            <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-          </IonRouterOutlet>
+          <SidebarMenu />
+          <IonContent id="MainContent">
+            <IonRouterOutlet>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+              <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+            </IonRouterOutlet>
+          </IonContent>
+          <MapOverlays />
         </ApolloProvider>
       </IonReactRouter>
     </IonApp>

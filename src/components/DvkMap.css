@@ -1,9 +1,9 @@
-#mapContainer {
+.dvkMap {
   width: 100%;
   height: 100%;
 }
 
-#mapContainer .ol-zoom {
+.dvkMap .ol-zoom {
   top: auto;
   left: auto;
   right: 48px;
@@ -11,7 +11,7 @@
   background: transparent;
 }
 
-#mapContainer .centerToOwnLocationControlContainer {
+.dvkMap .centerToOwnLocationControlContainer {
   top: auto;
   left: auto;
   right: 48px;
@@ -19,7 +19,7 @@
   background: transparent;
 }
 
-#mapContainer .openSidebarMenuControlContainer {
+.dvkMap .openSidebarMenuControlContainer {
   top: auto;
   left: auto;
   left: 48px;
@@ -27,7 +27,7 @@
   background: transparent;
 }
 
-#mapContainer .searchbarControlContainer {
+.dvkMap .searchbarControlContainer {
   top: auto;
   left: auto;
   left: 112px;
@@ -36,11 +36,11 @@
   padding: 1px;
   border-radius: 0;
 }
-#mapContainer .searchbarControlContainer:has(input:focus-visible) {
+.dvkMap .searchbarControlContainer:has(input:focus-visible) {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   padding: 2px;
 }
-#mapContainer .searchbarControlContainer input {
+.dvkMap .searchbarControlContainer input {
   width: 333px;
   height: 43px;
   border: none;
@@ -49,14 +49,14 @@
   background-size: 24px 24px;
   outline: none;
 }
-#mapContainer .searchbarControlContainer input:focus-visible {
+.dvkMap .searchbarControlContainer input:focus-visible {
   background-position: right 11px center;
   width: 331px;
   height: 41px;
   padding-left: 13px;
 }
 
-#mapContainer .layerControlContainer {
+.dvkMap .layerControlContainer {
   top: auto;
   left: auto;
   right: 48px;
@@ -64,7 +64,7 @@
   background: transparent;
 }
 
-#mapContainer .ol-zoom-in,#mapContainer .ol-zoom-out,#mapContainer .centerToOwnLocationControl,#mapContainer .openSidebarMenuControl,#mapContainer .layerControl,#mapContainer .layerControlOpen{
+.dvkMap .ol-zoom-in,.dvkMap .ol-zoom-out,.dvkMap .centerToOwnLocationControl,.dvkMap .openSidebarMenuControl,.dvkMap .layerControl,.dvkMap .layerControlOpen{
   width: 40px;
   height: 40px;
   background-repeat: no-repeat;
@@ -75,37 +75,37 @@
   margin-bottom: 16px;
 }
 
-#mapContainer .ol-zoom-in {
+.dvkMap .ol-zoom-in {
   background-image: url('../theme/img/zoomIn.svg');
   background-size: 18px 18px;
 }
-#mapContainer .ol-zoom-out {
+.dvkMap .ol-zoom-out {
   background-image: url('../theme/img/zoomOut.svg');
   background-size: 18px 4px;
 }
 
-#mapContainer .centerToOwnLocationControl {
+.dvkMap .centerToOwnLocationControl {
   background-image: url('../theme/img/ownLocation.svg');
   background-size: 26px 26px;
 }
 
-#mapContainer .openSidebarMenuControl {
+.dvkMap .openSidebarMenuControl {
   background-image: url('../theme/img/menu.svg');
   background-size: 22px 15px;
 }
 
-#mapContainer .layerControl {
+.dvkMap .layerControl {
   background-image: url('../theme/img/layers.svg');
   background-size: 22px 22px;
 }
 
-#mapContainer .layerControlOpen {
+.dvkMap .layerControlOpen {
   background-color: #0064AF;
   background-image: url('../theme/img/layersOpen.svg');
   background-size: 22px 22px;
 }
 
-#mapContainer .mapDetailsControl {
+.dvkMap .mapDetailsControl {
   top: auto;
   left: auto;
   right: 0px;
@@ -115,17 +115,17 @@
   background-color: rgba(255, 255, 255, 0.75);
 }
 
-#mapContainer .mapDetailsControl .copyrightElem {
+.dvkMap .mapDetailsControl .copyrightElem {
   padding-left: 5px;
   padding-right: 10px;
 }
 
-#mapContainer .mapDetailsControl .mousePositionLabelElem {
+.dvkMap .mapDetailsControl .mousePositionLabelElem {
   padding-left: 5px;
   padding-right: 0px;
 }
 
-#mapContainer .mapDetailsControl .ol-mouse-position {
+.dvkMap .mapDetailsControl .ol-mouse-position {
   position: relative;
   top: auto;
   bottom: auto;
@@ -137,7 +137,7 @@
   min-width: 13em;
 }
 
-#mapContainer .mapDetailsControl .ol-scale-line {
+.dvkMap .mapDetailsControl .ol-scale-line {
   position: relative;
   top: auto;
   bottom: auto;

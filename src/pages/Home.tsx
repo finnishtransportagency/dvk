@@ -1,13 +1,22 @@
-import React from 'react';
-import { IonContent, IonPage } from '@ionic/react';
-import MapContainer from '../components/MapContainer';
-import './Home.css';
+import React, { useRef } from 'react';
+import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
+import dvkMap from '../components/DvkMap';
 
-const Home: React.FC = () => {
+const Home = (): JSX.Element => {
+  const mapElement = useRef<HTMLDivElement | null>(null);
+
+  useIonViewWillEnter(() => {
+    if (mapElement?.current) {
+      dvkMap.addShowSidebarMenuControl();
+      dvkMap.addSearchbarControl();
+      dvkMap.setTarget(mapElement.current);
+    }
+  });
+
   return (
     <IonPage>
       <IonContent className="ion-no-padding">
-        <MapContainer />
+        <div ref={mapElement}></div>
       </IonContent>
     </IonPage>
   );

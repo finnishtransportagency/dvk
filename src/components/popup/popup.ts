@@ -2,7 +2,7 @@ import { SimpleGeometry } from 'ol/geom';
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
-import { PopupProperties } from '../MapContainer';
+import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
