@@ -49,7 +49,13 @@ const SidebarMenu: React.FC = () => {
           <IonRow>
             <IonCol size="auto" className="navLinkCol">
               {router.routeInfo.pathname !== '/vaylakortit/' && (
-                <IonItem routerLink="/vaylakortit/" detail={false} className="ion-no-padding internal" onClick={async () => menuController.close()}>
+                <IonItem
+                  routerLink="/vaylakortit/"
+                  detail={false}
+                  lines="none"
+                  className="ion-no-padding internal"
+                  onClick={async () => menuController.close()}
+                >
                   <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
                   {t('homePage.sidebarMenu.fairway-cards')}
                 </IonItem>
@@ -58,6 +64,7 @@ const SidebarMenu: React.FC = () => {
                 <IonItem
                   routerLink="/vaylakortit/"
                   detail={false}
+                  lines="none"
                   className="ion-no-padding internalDisabled"
                   onClick={async () => menuController.close()}
                 >
@@ -72,6 +79,7 @@ const SidebarMenu: React.FC = () => {
                 rel="external"
                 target="_blank"
                 detail={false}
+                lines="none"
                 className="ion-no-padding external"
                 onClick={async () => menuController.close()}
               >
