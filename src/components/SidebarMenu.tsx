@@ -12,8 +12,8 @@ import {
   IonToolbar,
   IonTitle,
   IonText,
-  IonRouterLink,
   useIonRouter,
+  IonItem,
 } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -47,55 +47,38 @@ const SidebarMenu: React.FC = () => {
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol size="12">
-              <IonGrid className="ion-no-padding">
-                <IonRow className="ion-no-padding" style={{ paddingBottom: '12px' }}>
-                  <IonCol size="auto">
-                    <IonIcon src="/assets/icon/fairways_icon.svg" />
-                  </IonCol>
-                  <IonCol className="navLinkCol">
-                    {router.routeInfo.pathname !== '/vaylakortit/' && (
-                      <IonRouterLink className="internal" routerLink="/vaylakortit/">
-                        {t('homePage.sidebarMenu.fairway-cards')}
-                      </IonRouterLink>
-                    )}
-                    {router.routeInfo.pathname === '/vaylakortit/' && (
-                      <IonRouterLink className="internalDisabled">{t('homePage.sidebarMenu.fairway-cards')}</IonRouterLink>
-                    )}
-                    {/* {router.routeInfo.pathname === '/vaylakortit/' && <span>{t('homePage.sidebarMenu.fairway-cards')}</span>} */}
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
+            <IonCol size="auto" className="navLinkCol">
+              {router.routeInfo.pathname !== '/vaylakortit/' && (
+                <IonItem routerLink="/vaylakortit/" detail={false} className="ion-no-padding internal" onClick={async () => menuController.close()}>
+                  <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
+                  {t('homePage.sidebarMenu.fairway-cards')}
+                </IonItem>
+              )}
+              {router.routeInfo.pathname === '/vaylakortit/' && (
+                <IonItem
+                  routerLink="/vaylakortit/"
+                  detail={false}
+                  className="ion-no-padding internalDisabled"
+                  onClick={async () => menuController.close()}
+                >
+                  <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
+                  {t('homePage.sidebarMenu.fairway-cards')}
+                </IonItem>
+              )}
             </IonCol>
-            <IonCol size="12">
-              <IonGrid className="ion-no-padding">
-                <IonRow className="ion-no-padding">
-                  <IonCol size="auto">
-                    <IonIcon src="/assets/icon/squat_icon.svg" />
-                  </IonCol>
-                  <IonCol className="navLinkCol" size="auto">
-                    <IonRouterLink href="/squat/" rel="external" target="_blank">
-                      {t('homePage.sidebarMenu.squat')}
-                    </IonRouterLink>
-                  </IonCol>
-                  <IonCol>
-                    <IonIcon src="/assets/icon/ext_link.svg" style={{ width: '10px' }} />
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-
-              {/* <IonButton
-                fill="clear"
-                className="sidebarButton"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open('/squat/', '_blank');
-                }}
+            <IonCol size="auto" className="navLinkCol">
+              <IonItem
+                href="/squat/"
+                rel="external"
+                target="_blank"
+                detail={false}
+                className="ion-no-padding external"
+                onClick={async () => menuController.close()}
               >
                 <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
                 {t('homePage.sidebarMenu.squat')}
-                <IonIcon slot="end" src="/assets/icon/ext_link.svg" style={{ width: '10px' }} />
-              </IonButton> */}
+                <IonIcon src="/assets/icon/ext_link.svg" style={{ width: '10px' }} />
+              </IonItem>
             </IonCol>
           </IonRow>
           <IonRow className="languageSelection">

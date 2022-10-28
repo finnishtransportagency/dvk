@@ -68,31 +68,33 @@
 }
 
 .sidebarMenu .navLinkCol {
-  padding-left: 22px;
+  margin: 0 0 2px 0;
 }
 
-.sidebarMenu ion-router-link {
+.sidebarMenu ion-item {
   color: var(--ion-color-primary);
   font-size: 12px;
   text-transform: none;
   letter-spacing: normal;
-  margin: 0 2px;
   text-decoration: underline;
+  --inner-border-width: 0 0 0 0;
+  --background-hover: unset;
+  --background-focused: unset;
 }
 
-.sidebarMenu ion-router-link:focus {
+.sidebarMenu ion-item:focus {
   outline: 1px solid var(--ion-color-primary);
 }
 
-.sidebarMenu ion-router-link.internal {
+.sidebarMenu ion-item.internal {
   color: #333;
 }
 
-.sidebarMenu ion-router-link.internal:focus {
+.sidebarMenu ion-item.internal:focus {
   outline: 1px solid #333;
 }
 
-.sidebarMenu ion-router-link.internalDisabled {
+.sidebarMenu ion-item.internalDisabled {
   font-weight: bold;
   pointer-events: none;
   color: #333;
@@ -103,11 +105,10 @@
   text-decoration: none;
 }
 
-.sidebarMenu ion-router-link.internalDisabled:focus {
+.sidebarMenu ion-item.internalDisabled:focus {
   outline: 1px solid #333;
 }
 
-.sidebarMenu ion-router-link:hover {
-  /* color: var(--ion-color-primary-shade); */
+.sidebarMenu ion-item:hover {
   text-decoration: none;
 }
