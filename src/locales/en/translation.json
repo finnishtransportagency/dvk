@@ -19,7 +19,9 @@
         "layer": {
           "tipLabel": "Layers",
           "header": "Map layers",
-          "fairways": "Fairways",
+          "class1": "[en] Kauppamerenkulku",
+          "class2": "[en] Muu vesiliikenne",
+          "lines": "[en] Navigointilinjat",
           "fairwayAreas": "[en] Väyläalueet",
           "depths": "Depths",
           "safetyEquipments": "[en] Turvalaitteet",

@@ -276,5 +276,9 @@ function InitDvkMap() {
   }
 }
 
+export function useMap() {
+  return dvkMap;
+}
+
 export { InitDvkMap };
 export default dvkMap;

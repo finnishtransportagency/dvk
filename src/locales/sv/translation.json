@@ -19,7 +19,9 @@
         "layer": {
           "tipLabel": "[sv] Tasot",
           "header": "[sv] Kartan tasot",
-          "fairways": "[sv] Väylät",
+          "class1": "[sv] Kauppamerenkulku",
+          "class2": "[sv] Muu vesiliikenne",
+          "lines": "[sv] Navigointilinjat",
           "fairwayAreas": "[sv] Väyläalueet",
           "depths": "[sv] Syvyydet",
           "safetyEquipments": "[sv] Turvalaitteet",
