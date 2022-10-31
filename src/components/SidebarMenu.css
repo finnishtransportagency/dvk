@@ -25,6 +25,16 @@
 
 .sidebarMenu .closeButton {
   --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lightest);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 30px;
+  margin: 0 12px 12px 0;
+}
+.sidebarMenu .closeButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
 }
 .sidebarMenu .closeButton ion-icon {
   width: 24px;
