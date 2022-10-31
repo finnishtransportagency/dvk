@@ -1,11 +1,20 @@
 import Control from 'ol/control/Control';
+import { FairwayCardPartsFragment } from '../../graphql/generated';
 
 class SearchbarControl extends Control {
   private inputElement = document.createElement('input');
 
   private setIsOpen: (isOpen: boolean) => void = () => {};
 
+  private isOpen = false;
+
   private setSearchQuery: (searchQuery: string) => void = () => {};
+
+  private setActiveSelection: (activeSelection: number) => void = () => {};
+
+  private activeSelection = 0;
+
+  private filteredData: FairwayCardPartsFragment[] = [];
 
   constructor() {
     const element = document.createElement('div');
@@ -20,19 +29,45 @@ class SearchbarControl extends Control {
 
     const closeDropdown = () => {
       this.setIsOpen(false);
-      this.setSearchQuery('');
-      this.inputElement.value = '';
+      //this.setSearchQuery('');
+      //this.inputElement.value = '';
     };
 
     this.inputElement.addEventListener('focus', () => {
       this.setIsOpen(true);
       this.setSearchQuery(this.inputElement.value.toLowerCase());
+      this.setActiveSelection(0);
     });
     this.inputElement.addEventListener('input', () => {
       this.setSearchQuery(this.inputElement.value.toLowerCase());
+      this.setActiveSelection(0);
     });
     this.inputElement.addEventListener('blur', () => {
       setTimeout(closeDropdown, 200);
+    });
+
+    this.inputElement.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeDropdown();
+      if (event.key === 'Tab' && this.isOpen) {
+        event.preventDefault();
+        this.setIsOpen(false);
+      }
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (!this.isOpen) {
+          this.setIsOpen(true);
+        } else if (this.filteredData.length > 0) {
+          this.setActiveSelection(this.activeSelection >= this.filteredData.length ? 1 : this.activeSelection + 1);
+        }
+      }
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        this.setActiveSelection(this.activeSelection < 2 ? this.filteredData.length : this.activeSelection - 1);
+      }
+      if (event.key === 'Enter' && this.isOpen && this.activeSelection) {
+        closeDropdown();
+        window.location.assign('/vaylakortit/' + this.filteredData[this.activeSelection - 1].id);
+      }
     });
   }
 
@@ -41,12 +76,28 @@ class SearchbarControl extends Control {
     this.inputElement.title = placeholder;
   }
 
+  public setIsSearchbarOpen(isOpen: boolean) {
+    this.isOpen = isOpen;
+  }
+
   public onSetIsOpen(setIsOpen: (isOpen: boolean) => void) {
     this.setIsOpen = setIsOpen;
   }
 
   public onSetSearchQuery(setSearchQuery: (searchQuery: string) => void) {
     this.setSearchQuery = setSearchQuery;
+  }
+
+  public setCurrentActiveSelection(activeSelection: number) {
+    this.activeSelection = activeSelection;
+  }
+
+  public onSetActiveSelection(setActiveSelection: (activeSelection: number) => void) {
+    this.setActiveSelection = setActiveSelection;
+  }
+
+  public setFilteredData(filteredData: FairwayCardPartsFragment[]) {
+    this.filteredData = filteredData;
   }
 }
 

@@ -5,6 +5,10 @@ import dvkMap, { BackgroundMapType } from '../DvkMap';
 import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
+import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
+import { useTranslation } from 'react-i18next';
+
+const MAX_HITS = 20;
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -12,11 +16,19 @@ export type PopupProperties = {
 };
 
 const MapOverlays: React.FC = () => {
+  const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<BackgroundMapType>(dvkMap.getBackgroundMapType());
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeSelection, setActiveSelection] = useState(0);
+  const { data } = useFindAllFairwayCardsQuery();
+
+  const filterFairways = () => {
+    return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
+  };
 
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
 
@@ -43,6 +55,10 @@ const MapOverlays: React.FC = () => {
   const sc = dvkMap.getSearchbarControl();
   sc?.onSetIsOpen(setIsSearchbarOpen);
   sc?.onSetSearchQuery(setSearchQuery);
+  sc?.onSetActiveSelection(setActiveSelection);
+  sc?.setIsSearchbarOpen(isSearchbarOpen);
+  sc?.setCurrentActiveSelection(activeSelection);
+  sc?.setFilteredData(filterFairways());
 
   return (
     <>
@@ -53,7 +69,7 @@ const MapOverlays: React.FC = () => {
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />
-      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} />
+      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filterFairways()} selected={activeSelection} />
     </>
   );
 };

@@ -9,22 +9,72 @@ import { RouteComponentProps } from 'react-router-dom';
 import FairwayCards from './FairwayCards';
 import FairwayCard from './FairwayCard';
 import dvkMap from '../components/DvkMap';
+import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
+import { useFindAllFairwayCardsQuery } from '../graphql/generated';
+
+const MAX_HITS = 20;
 
 interface RouterProps {
   fairwayId?: string;
 }
 
-// eslint-disable-next-line
 interface MainContentProps extends RouteComponentProps<RouterProps> {
   splitPane?: boolean;
 }
 
-const MainContent: React.FC<MainContentProps> = ({ match, splitPane }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const { data } = useFindAllFairwayCardsQuery();
+
+  const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeSelection, setActiveSelection] = useState(0);
   const [widePane, setWidePane] = useState(false);
   const mapElement = useRef<HTMLDivElement>(null);
 
   const fairwayId = match.params.fairwayId;
+
+  const filterFairways = () => {
+    return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
+  };
+
+  const closeDropdown = () => {
+    setIsSearchbarOpen(false);
+    //setSearchQuery('');
+  };
+  const openDropdown = (val?: string | number | null) => {
+    setIsSearchbarOpen(true);
+    setSearchQuery(String(val)?.toLowerCase());
+    setActiveSelection(0);
+  };
+  const blurAction = () => {
+    setTimeout(closeDropdown, 200);
+  };
+
+  const keyDownAction = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
+    if (event.key === 'Escape') closeDropdown();
+    if (event.key === 'Tab' && isSearchbarOpen) {
+      event.preventDefault();
+      setIsSearchbarOpen(false);
+    }
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (!isSearchbarOpen) {
+        setIsSearchbarOpen(true);
+      } else if (filterFairways().length > 0) {
+        setActiveSelection(activeSelection >= filterFairways().length ? 1 : activeSelection + 1);
+      }
+    }
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveSelection(activeSelection < 2 ? filterFairways().length : activeSelection - 1);
+    }
+    if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
+      history.push('/vaylakortit/' + filterFairways()[activeSelection - 1].id);
+      closeDropdown();
+    }
+  };
 
   const togglePane = () => {
     setWidePane(!widePane);
@@ -53,8 +103,23 @@ const MainContent: React.FC<MainContentProps> = ({ match, splitPane }) => {
                           <MenuIcon />
                         </button>
                       </IonCol>
-                      <IonCol className="ion-margin-start">
-                        <IonInput className="searchBar" placeholder={t('search')} />
+                      <IonCol className="ion-margin-start ion-margin-end">
+                        <div className="dropdownWrapper">
+                          <IonInput
+                            className="searchBar"
+                            placeholder={t('search')}
+                            onIonFocus={(e) => openDropdown(e.target.value)}
+                            onIonChange={(e) => openDropdown(e.detail.value)}
+                            onIonBlur={blurAction}
+                            onKeyDown={(e) => keyDownAction(e)}
+                          />
+                          <SearchbarDropdown
+                            isOpen={isSearchbarOpen}
+                            searchQuery={searchQuery}
+                            fairwayCards={filterFairways()}
+                            selected={activeSelection}
+                          />
+                        </div>
                       </IonCol>
                       <IonCol size="auto">
                         <button className={'icon ' + (widePane ? 'flip invert' : '')} onClick={() => togglePane()}>
