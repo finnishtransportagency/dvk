@@ -1,7 +1,9 @@
 {
   "homePage": {
     "sidebarMenu": {
-      "title": "Digitaalinen väyläkortti"
+      "title": "Digitaalinen väyläkortti",
+      "squat": "Squat-laskuri",
+      "fairway-cards": "Väyläkortit"
     },
     "map": {
       "content": "TODO: Kartta",
