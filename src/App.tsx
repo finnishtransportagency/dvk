@@ -88,9 +88,7 @@ const App: React.FC = () => {
           <SidebarMenu />
           <IonContent id="MainContent">
             <IonRouterOutlet>
-              <Route exact path="/">
-                <Home />
-              </Route>
+              <Route exact path="/" render={(props) => <Home {...props} />} />
               <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
               <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
             </IonRouterOutlet>
