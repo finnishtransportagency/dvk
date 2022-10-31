@@ -28,7 +28,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
       type: 'Feature',
       geometry: quay.geometry as Geometry,
       properties: {
-        type: 'harbor',
+        featureType: 'harbor',
         quay: quay.name,
         extraInfo: quay.extraInfo,
         length: quay.length,
@@ -46,7 +46,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
           type: 'Feature',
           geometry: section.geometry as Geometry,
           properties: {
-            type: 'harbor',
+            featureType: 'harbor',
             quay: quay.name,
             extraInfo: quay.extraInfo,
             length: quay.length,
@@ -94,7 +94,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
       type: 'Feature',
       geometry: place.geometry as Geometry,
       properties: {
-        type: 'pilot',
+        featureType: 'pilot',
         name: place.name,
         fairwayCards: place.fairwayCards,
       },
@@ -117,6 +117,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
+        featureType: navigationArea ? 'area' : 'specialarea',
         name: area.nimi,
         draft: area.harausSyvyys,
         typeCode: area.tyyppiKoodi,
@@ -153,6 +154,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
+        featureType: 'restrictionarea',
         value: area.suuruus,
         types:
           area.rajoitustyypit?.map((t) => {
@@ -186,6 +188,7 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       geometry: line.geometria as Geometry,
       properties: {
         id: line.id,
+        featureType: 'line',
         draft: line.harausSyvyys,
         depth: line.mitoitusSyvays,
         type: line.tyyppi,
