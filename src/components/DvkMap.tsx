@@ -23,6 +23,7 @@ import 'ol/ol.css';
 import './DvkMap.css';
 import SearchbarControl from './mapControls/SearchbarControl';
 import { addAPILayers } from './layers';
+import { RouteComponentProps } from 'react-router-dom';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -249,6 +250,10 @@ class DvkMap {
         this.olMap?.updateSize();
       }, 100);
     }
+  };
+
+  public setHistory = (history: RouteComponentProps['history']) => {
+    this.searchbarControl.setHistory(history);
   };
 
   public getBackgroundMapType = () => {

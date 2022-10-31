@@ -1,4 +1,5 @@
 import Control from 'ol/control/Control';
+import { RouteComponentProps } from 'react-router-dom';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
 
 class SearchbarControl extends Control {
@@ -15,6 +16,8 @@ class SearchbarControl extends Control {
   private activeSelection = 0;
 
   private filteredData: FairwayCardPartsFragment[] = [];
+
+  private history!: RouteComponentProps['history'];
 
   constructor() {
     const element = document.createElement('div');
@@ -66,7 +69,7 @@ class SearchbarControl extends Control {
       }
       if (event.key === 'Enter' && this.isOpen && this.activeSelection) {
         closeDropdown();
-        window.location.assign('/vaylakortit/' + this.filteredData[this.activeSelection - 1].id);
+        this.history.push('/vaylakortit/' + this.filteredData[this.activeSelection - 1].id);
       }
     });
   }
@@ -98,6 +101,10 @@ class SearchbarControl extends Control {
 
   public setFilteredData(filteredData: FairwayCardPartsFragment[]) {
     this.filteredData = filteredData;
+  }
+
+  public setHistory(history: RouteComponentProps['history']) {
+    this.history = history;
   }
 }
 
