@@ -27,11 +27,13 @@ import './theme/variables.css';
 setupIonicReact();
 
 const App: React.FC = () => {
-  const { t } = useTranslation('', { keyPrefix: 'appUpdateAlert' });
+  const { t, i18n } = useTranslation('', { keyPrefix: 'appUpdateAlert' });
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
+
+  document.documentElement.lang = i18n.language;
 
   const providerState = {
     state,
