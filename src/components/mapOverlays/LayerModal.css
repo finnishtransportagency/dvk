@@ -24,7 +24,7 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-checkbox {
   --size: 20px;
   --border-width: 1px;
-  margin: 5px;
+  margin: 5px 5px 5px 0;
 }
 
 #layerModalContainer ion-col {
