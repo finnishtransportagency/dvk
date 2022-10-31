@@ -11,6 +11,9 @@
   padding: 0;
   border-bottom: unset;
 }
+.sidebarMenu ion-row.ion-direction-column {
+  flex-direction: column;
+}
 
 .sidebarMenu .header {
   border-bottom: 1px solid var(--ion-color-lighter);
@@ -21,7 +24,7 @@
 }
 
 .sidebarMenu .closeButton {
-  --color: #000000;
+  --color: var(--ion-color-dark);
 }
 .sidebarMenu .closeButton ion-icon {
   width: 24px;
@@ -41,14 +44,19 @@
   text-transform: none;
   letter-spacing: normal;
   margin: 0 2px;
+  text-decoration: underline;
   --background-hover: unset;
   --padding-start: 14px;
   --padding-end: 14px;
-  text-decoration: underline;
+  --background-hover: unset;
+  --background-focused: unset;
 }
 
 .sidebarMenu ion-button.languageSelection:hover {
   text-decoration: none;
+}
+.sidebarMenu ion-button.languageSelection.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
 }
 
 .sidebarMenu ion-button.button-disabled {
@@ -58,17 +66,8 @@
   text-decoration: none;
 }
 
-.sidebarMenu ion-icon {
-  width: 21px;
-  height: 21px;
-}
-
 .sidebarMenu ion-button.icon-only {
   margin: 0 10px;
-}
-
-.sidebarMenu .navLinkCol {
-  margin: 0 0 2px 0;
 }
 
 .sidebarMenu ion-item {
@@ -77,38 +76,55 @@
   text-transform: none;
   letter-spacing: normal;
   text-decoration: underline;
+  display: inline-block;
   --inner-border-width: 0 0 0 0;
   --background-hover: unset;
   --background-focused: unset;
+  --min-height: 40px;
 }
 
-.sidebarMenu ion-item:focus {
-  outline: 1px solid var(--ion-color-primary);
+.sidebarMenu ion-item.item-disabled {
+  opacity: 1;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .sidebarMenu ion-item.internal {
-  color: #333;
+  color: var(--ion-color-dark);
 }
 
-.sidebarMenu ion-item.internal:focus {
-  outline: 1px solid #333;
+.sidebarMenu ion-item.ion-focused {
+  outline: 1px solid var(--ion-color-primary);
 }
-
-.sidebarMenu ion-item.internalDisabled {
-  font-weight: bold;
-  pointer-events: none;
-  color: #333;
-  font-size: 12px;
-  text-transform: none;
-  letter-spacing: normal;
-  margin: 0 2px;
-  text-decoration: none;
+.sidebarMenu ion-item.ion-focused::part(native) {
+  color: var(--ion-color-primary);
 }
-
-.sidebarMenu ion-item.internalDisabled:focus {
-  outline: 1px solid #333;
+.sidebarMenu ion-item.internal.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+.sidebarMenu ion-item.internal.ion-focused::part(native) {
+  color: var(--ion-color-dark);
 }
 
 .sidebarMenu ion-item:hover {
   text-decoration: none;
+}
+.sidebarMenu ion-item:hover::part(native) {
+  color: var(--ion-color-primary);
+}
+.sidebarMenu ion-item.internal:hover::part(native) {
+  color: var(--ion-color-dark);
+}
+
+.sidebarMenu ion-item ion-icon[slot="start"] {
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  margin-inline-end: 24px;
+}
+.sidebarMenu ion-item ion-icon[slot="end"] {
+  width: 10px;
+  height: 10px;
+  margin: 0;
+  margin-inline-start: 4px;
 }

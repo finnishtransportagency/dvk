@@ -46,34 +46,21 @@ const SidebarMenu: React.FC = () => {
               </IonText>
             </IonCol>
           </IonRow>
-          <IonRow>
-            <IonCol size="auto" className="navLinkCol">
-              {router.routeInfo.pathname !== '/vaylakortit/' && (
-                <IonItem
-                  routerLink="/vaylakortit/"
-                  detail={false}
-                  lines="none"
-                  className="ion-no-padding internal"
-                  onClick={async () => menuController.close()}
-                >
-                  <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
-                  {t('homePage.sidebarMenu.fairway-cards')}
-                </IonItem>
-              )}
-              {router.routeInfo.pathname === '/vaylakortit/' && (
-                <IonItem
-                  routerLink="/vaylakortit/"
-                  detail={false}
-                  lines="none"
-                  className="ion-no-padding internalDisabled"
-                  onClick={async () => menuController.close()}
-                >
-                  <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
-                  {t('homePage.sidebarMenu.fairway-cards')}
-                </IonItem>
-              )}
+          <IonRow className="ion-direction-column">
+            <IonCol size="auto">
+              <IonItem
+                routerLink="/vaylakortit/"
+                detail={false}
+                lines="none"
+                className="ion-no-padding internal"
+                onClick={async () => menuController.close()}
+                disabled={router.routeInfo.pathname === '/vaylakortit/'}
+              >
+                <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
+                {t('homePage.sidebarMenu.fairway-cards')}
+              </IonItem>
             </IonCol>
-            <IonCol size="auto" className="navLinkCol">
+            <IonCol size="auto">
               <IonItem
                 href="/squat/"
                 rel="external"
@@ -85,7 +72,7 @@ const SidebarMenu: React.FC = () => {
               >
                 <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
                 {t('homePage.sidebarMenu.squat')}
-                <IonIcon src="/assets/icon/ext_link.svg" style={{ width: '10px' }} />
+                <IonIcon slot="end" src="/assets/icon/ext_link.svg" />
               </IonItem>
             </IonCol>
           </IonRow>
