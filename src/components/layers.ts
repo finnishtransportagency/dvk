@@ -145,8 +145,8 @@ export function addAPILayers(map: Map) {
   // muu vesiliikenne
   addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 'green', 20);
   // navigointilinjat
-  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', 'blue', 500);
-  addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', 'yellow', 50);
+  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', '#0000FF', 500);
+  addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', '#0000FF', 50);
   // Nopeusrajoitus
   addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue

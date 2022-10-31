@@ -238,9 +238,9 @@
         },
         {
           "name": {
-            "fi": "laituri 30, luonnonmaa",
-            "sv": "kaj 30, luonnonmaa",
-            "en": "quay 30, luonnonmaa"
+            "fi": "laituri 30, Luonnonmaa",
+            "sv": "kaj 30, Luonnonmaa",
+            "en": "quay 30, Luonnonmaa"
           },
           "length": 130,
           "sections": [
@@ -251,9 +251,9 @@
         },
         {
           "name": {
-            "fi": "laituri 31, luonnonmaa",
-            "sv": "kaj 31, luonnonmaa",
-            "en": "quay 31, luonnonmaa"
+            "fi": "laituri 31, Luonnonmaa",
+            "sv": "kaj 31, Luonnonmaa",
+            "en": "quay 31, Luonnonmaa"
           },
           "length": 60,
           "sections": [
