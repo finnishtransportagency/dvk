@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonBreadcrumb,
   IonBreadcrumbs,
@@ -20,6 +20,13 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
+import { useMap } from './DvkMap';
+import Select from 'ol/interaction/Select';
+import Style from 'ol/style/Style';
+import Stroke from 'ol/style/Stroke';
+import Feature from 'ol/Feature';
+import Geometry from 'ol/geom/Geometry';
+import VectorSource from 'ol/source/Vector';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -613,6 +620,34 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     const n2000Line = primaryFairway?.navigationLines?.find((line) => line.n2000ReferenceLevel === 'N2000');
     return n2000Line;
   };
+
+  const dvkMap = useMap();
+  useEffect(() => {
+    if (data) {
+      const style = new Style({
+        stroke: new Stroke({
+          color: '#0000FF',
+          width: 2,
+        }),
+      });
+      const features: Feature<Geometry>[] = [];
+      const lineLayer = dvkMap.olMap?.getAllLayers().find((layer) => layer.getProperties().id === 'line12');
+      const source = lineLayer?.getSource() as VectorSource;
+      for (const fairway of data?.fairwayCard?.fairways || []) {
+        for (const line of fairway.navigationLines || []) {
+          features.push(source.getFeatureById(line.id) as Feature<Geometry>);
+        }
+      }
+      console.log('features: ' + features.length);
+      const selectFairwayFeatures = new Select({
+        style,
+      });
+      dvkMap.olMap?.addInteraction(selectFairwayFeatures);
+      for (const feature of features) {
+        selectFairwayFeatures.getFeatures().push(feature);
+      }
+    }
+  }, [dvkMap, data]);
 
   return (
     <>

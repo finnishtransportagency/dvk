@@ -114,6 +114,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   )) {
     features.push({
       type: 'Feature',
+      id: area.id,
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
@@ -151,6 +152,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   )) {
     const feature: Feature<Geometry, GeoJsonProperties> = {
       type: 'Feature',
+      id: area.id,
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
@@ -185,6 +187,7 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   for (const line of lines) {
     features.push({
       type: 'Feature',
+      id: line.id,
       geometry: line.geometria as Geometry,
       properties: {
         id: line.id,
