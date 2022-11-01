@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { Link } from 'react-router-dom';
 
 type PilotPopupContentProps = {
   pilot?: PilotProperties;
@@ -48,7 +49,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot }) => {
           return (
             <IonRow key={index}>
               <IonCol>
-                <a href={`/vaylakortit/${card.id}`}>{card.name[lang]}</a>
+                <Link to={`/vaylakortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>
             </IonRow>
           );

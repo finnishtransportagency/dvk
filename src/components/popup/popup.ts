@@ -25,7 +25,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const types = ['pilot', 'harbor'];
   content.onclick = () => {
     overlay.setPosition(undefined);
-    setPopupProperties({});
     return true;
   };
   map.addOverlay(overlay);
