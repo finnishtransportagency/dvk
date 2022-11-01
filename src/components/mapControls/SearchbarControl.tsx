@@ -19,6 +19,8 @@ class SearchbarControl extends Control {
 
   private history!: RouteComponentProps['history'];
 
+  private curPath = '';
+
   constructor() {
     const element = document.createElement('div');
     element.className = 'searchbarControlContainer ol-unselectable ol-control';
@@ -32,6 +34,11 @@ class SearchbarControl extends Control {
 
     const closeDropdown = () => {
       this.setIsOpen(false);
+      const pathAfterClosing = this.history.location.pathname;
+      if (this.curPath !== pathAfterClosing) {
+        this.setSearchQuery('');
+        this.inputElement.value = '';
+      }
       //this.setSearchQuery('');
       //this.inputElement.value = '';
     };
@@ -105,6 +112,7 @@ class SearchbarControl extends Control {
 
   public setHistory(history: RouteComponentProps['history']) {
     this.history = history;
+    this.curPath = history.location.pathname;
   }
 }
 

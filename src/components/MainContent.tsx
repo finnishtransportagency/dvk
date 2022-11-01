@@ -34,6 +34,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   const mapElement = useRef<HTMLDivElement>(null);
 
   const fairwayId = match.params.fairwayId;
+  const curPath = history.location.pathname;
 
   const filterFairways = () => {
     return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
@@ -41,7 +42,8 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
-    //setSearchQuery('');
+    const pathAfterClosing = history.location.pathname;
+    if (curPath !== pathAfterClosing) setSearchQuery('');
   };
   const openDropdown = (val?: string | number | null) => {
     setIsSearchbarOpen(true);
@@ -71,8 +73,9 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
       setActiveSelection(activeSelection < 2 ? filterFairways().length : activeSelection - 1);
     }
     if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
-      history.push('/vaylakortit/' + filterFairways()[activeSelection - 1].id);
       closeDropdown();
+      const targetPath = '/vaylakortit/' + filterFairways()[activeSelection - 1].id;
+      if (curPath !== targetPath) history.push('/vaylakortit/' + filterFairways()[activeSelection - 1].id);
     }
   };
 
@@ -108,6 +111,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                           <IonInput
                             className="searchBar"
                             placeholder={t('search')}
+                            value={searchQuery}
                             onIonFocus={(e) => openDropdown(e.target.value)}
                             onIonChange={(e) => openDropdown(e.detail.value)}
                             onIonBlur={blurAction}
