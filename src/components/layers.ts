@@ -16,6 +16,47 @@ import { HarborFeatureProperties } from './popup/HarborPopupContent';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
+function addFairwayAreaLayer(
+  map: Map,
+  queryString: string,
+  id: string,
+  color: string,
+  fillColor: string,
+  maxResolution: number | undefined = undefined,
+  width = 1
+) {
+  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Stama-allas, 5 = Kääntöallas
+  const validTypeCodes = [1, 3, 4, 5];
+
+  const vatuSource = new VectorSource({
+    url: url + queryString,
+    format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
+  });
+  const styleFunction = (feature: FeatureLike) => {
+    if (validTypeCodes.includes(feature.getProperties().typeCode)) {
+      return new Style({
+        stroke: new Stroke({
+          color,
+          width,
+        }),
+        fill: new Fill({
+          color: fillColor,
+        }),
+      });
+    } else {
+      return undefined;
+    }
+  };
+  const vatuLayer = new VectorLayer({
+    source: vatuSource,
+    style: styleFunction,
+    properties: { id },
+    maxResolution,
+    renderBuffer: 2000,
+  });
+  map.addLayer(vatuLayer);
+}
+
 function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const vatuSource = new VectorSource({
     url: url + queryString,
@@ -141,9 +182,9 @@ function addHarborLayer(map: Map) {
 export function addAPILayers(map: Map) {
   // kauppamerenkulku
   // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue, Kääntöallas
-  addVatuLayer(map, '?type=area&vaylaluokka=1,2', 'area12', 'red', 100);
+  addFairwayAreaLayer(map, '?type=area&vaylaluokka=1,2', 'area12', '#EC0E0E', 'rgba(236, 14, 14, 0.1)', 100);
   // muu vesiliikenne
-  addVatuLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', 'green', 20);
+  addFairwayAreaLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', '#207A43', 'rgba(32, 122, 67, 0.1)', 20);
   // navigointilinjat
   addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', '#0000FF', 500);
   addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', '#0000FF', 50);
