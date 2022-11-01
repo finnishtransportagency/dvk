@@ -11,8 +11,7 @@ import FairwayCard from './FairwayCard';
 import dvkMap from '../components/DvkMap';
 import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
 import { useFindAllFairwayCardsQuery } from '../graphql/generated';
-
-const MAX_HITS = 20;
+import { MAX_HITS, MINIMUM_QUERYLENGTH } from '../utils/constants';
 
 interface RouterProps {
   fairwayId?: string;
@@ -56,7 +55,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
 
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
     if (event.key === 'Escape') closeDropdown();
-    if (event.key === 'Tab' && isSearchbarOpen) {
+    if (event.key === 'Tab' && isSearchbarOpen && searchQuery.length >= MINIMUM_QUERYLENGTH) {
       event.preventDefault();
       setIsSearchbarOpen(false);
     }

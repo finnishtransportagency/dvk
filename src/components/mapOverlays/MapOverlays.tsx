@@ -7,8 +7,7 @@ import { addPopup } from '../popup/popup';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-
-const MAX_HITS = 20;
+import { MAX_HITS } from '../../utils/constants';
 
 export type PopupProperties = {
   pilot?: PilotProperties;

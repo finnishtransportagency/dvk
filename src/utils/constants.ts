@@ -5,3 +5,6 @@ export const MAP = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
 };
+
+export const MINIMUM_QUERYLENGTH = 3;
+export const MAX_HITS = 20;

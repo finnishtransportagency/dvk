@@ -1,6 +1,7 @@
 import Control from 'ol/control/Control';
 import { RouteComponentProps } from 'react-router-dom';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
+import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
 
 class SearchbarControl extends Control {
   private inputElement = document.createElement('input');
@@ -39,8 +40,6 @@ class SearchbarControl extends Control {
         this.setSearchQuery('');
         this.inputElement.value = '';
       }
-      //this.setSearchQuery('');
-      //this.inputElement.value = '';
     };
 
     this.inputElement.addEventListener('focus', () => {
@@ -58,7 +57,7 @@ class SearchbarControl extends Control {
 
     this.inputElement.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeDropdown();
-      if (event.key === 'Tab' && this.isOpen) {
+      if (event.key === 'Tab' && this.isOpen && this.inputElement.value.length >= MINIMUM_QUERYLENGTH) {
         event.preventDefault();
         this.setIsOpen(false);
       }

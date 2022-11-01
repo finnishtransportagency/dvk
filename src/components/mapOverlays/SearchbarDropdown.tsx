@@ -3,8 +3,7 @@ import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './SearchbarDropdown.css';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
-
-const MINIMUM_QUERYLENGTH = 3;
+import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
 
 interface DropdownProps {
   isOpen: boolean;
