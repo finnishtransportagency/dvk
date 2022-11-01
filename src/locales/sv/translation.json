@@ -143,12 +143,12 @@
     "pilotPlace": {
       "header": "[sv] Luotsipaikka {{val}}",
       "coordinates": "[sv] Koordinaatit",
-      "fairways": "[sv] Luotsipaikalta alkavat väylät"
+      "fairways": "[sv] Luotsipaikkaan liittyvät väylät"
     },
     "harbor": {
       "coordinates": "[sv] Koordinaatit",
       "length": "[sv] Laiturin pituus",
-      "depth": "[sv] Vesisyvyys",
+      "depth": "[sv] Haraussyvyys",
       "number": "{{val, number}}",
       "contactDetails": "[sv] Yhteystiedot",
       "email": "[sv] Sähköposti",
