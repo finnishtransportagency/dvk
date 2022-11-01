@@ -2,47 +2,36 @@ import React from 'react';
 import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './SearchbarDropdown.css';
-import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
-
-const MINIMUM_QUERYLENGTH = 3;
-const MAX_HITS = 20;
+import { FairwayCardPartsFragment } from '../../graphql/generated';
+import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
 
 interface DropdownProps {
   isOpen: boolean;
   searchQuery: string;
+  fairwayCards: FairwayCardPartsFragment[];
+  selected?: number;
 }
 
-const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery }) => {
+const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairwayCards, selected }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls.searchbar' });
-  const { data } = useFindAllFairwayCardsQuery();
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
 
-  const selectFairway = (fairway: string) => {
-    // TODO: Set fairway to state?
-    console.info(data?.fairwayCards.filter((card) => card.id === fairway));
-  };
-
-  const filterFairways = () => {
-    return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
+  const checkSelected = (idx: number) => {
+    return selected === idx ? ' ion-focused' : '';
   };
 
   return (
     <>
       {isOpen && searchQuery.length >= MINIMUM_QUERYLENGTH && (
-        <IonList lines="none" id="searchbarDropdownContainer">
-          {filterFairways().map((fairwayCard) => {
+        <IonList lines="none" className="searchbarDropdownContainer">
+          {fairwayCards.map((fairwayCard, idx) => {
             return (
-              <IonItem
-                key={fairwayCard.id}
-                className="fairwayCards"
-                routerLink={'./vaylakortit/' + fairwayCard.id}
-                onClick={() => selectFairway(fairwayCard.id)}
-              >
+              <IonItem key={fairwayCard.id} className={'fairwayCards' + checkSelected(idx + 1)} routerLink={'/vaylakortit/' + fairwayCard.id}>
                 <IonLabel>{fairwayCard.name[lang]}</IonLabel>
               </IonItem>
             );
           })}
-          {filterFairways().length < 1 && (
+          {(!fairwayCards || (fairwayCards && fairwayCards.length < 1)) && (
             <IonItem className="fairwayCards">
               <IonLabel>{t('no-search-results', { query: searchQuery })}</IonLabel>
             </IonItem>

@@ -1,7 +1,14 @@
-ion-list#searchbarDropdownContainer {
+ion-list.searchbarDropdownContainer {
   box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
   position: absolute;
   left: 112px;
   top: 93px;
   width: 335px;
+  transition: all 150ms;
+}
+#fairwayCardsContainer ion-list.searchbarDropdownContainer {
+  top: 45px;
+  left: 0;
+  max-width: 100%;
+  z-index: 1;
 }

@@ -44,8 +44,8 @@
   width: 333px;
   height: 43px;
   border: none;
-  padding: 0 40px 0 14px;
-  background: var(--ion-color-lightest) url('../theme/img/search.svg') no-repeat right 12px center;
+  padding: 0 40px 0 12px;
+  background: var(--ion-color-primary-contrast) url('../theme/img/search.svg') no-repeat right 12px center;
   background-size: 24px 24px;
   outline: none;
 }
@@ -53,7 +53,7 @@
   background-position: right 11px center;
   width: 331px;
   height: 41px;
-  padding-left: 13px;
+  padding-left: 11px;
 }
 
 .dvkMap .layerControlContainer {

@@ -1,7 +1,7 @@
 /* Split pane by IonGrid */
 #fairwayContent {
   width: 495px;
-  max-width: 495px;
+  max-width: 95%;
   flex: 0 0 495px;
   transition: all 150ms;
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
@@ -9,7 +9,6 @@
 }
 #fairwayContent.wide {
   width: 814px;
-  max-width: 814px;
   flex: 0 0 814px;
 }
 #fairwayPane {
@@ -68,6 +67,9 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-col.ion-margin-start {
   margin-inline-start: 22px;
 }
+#fairwayCardsContainer ion-col.ion-margin-end {
+  margin-inline-end: 22px;
+}
 #fairwayCardsContainer ion-col.wide:first-child {
   padding-right: 24px;
 }
@@ -77,7 +79,7 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;
-  max-width: 272px;
+  max-width: 273px;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
   transition: max-width 150ms;
@@ -85,15 +87,11 @@ button.icon:focus-visible:hover {
 .wide #fairwayCardsContainer ion-input.searchBar {
   max-width: 335px;
 }
-@media screen and (max-width: 575px) {
-  #fairwayCardsContainer ion-input.searchBar {
-    max-width: calc(100% - 22px);
-  }
-}
 #fairwayCardsContainer ion-input.searchBar input {
   height: 100%;
   padding: 0 40px 0 12px;
-  background-color: var(--ion-color-primary-contrast);
+  background: var(--ion-color-primary-contrast) url('../theme/img/search.svg') no-repeat right 12px center;
+  background-size: 24px 24px;
 }
 #fairwayCardsContainer ion-input.searchBar.has-focus {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
@@ -101,6 +99,7 @@ button.icon:focus-visible:hover {
 }
 #fairwayCardsContainer ion-input.searchBar.has-focus input {
   padding: 0 39px 0 11px;
+  background-position: right 11px center;
 }
 
 #fairwayCardsContainer ion-text p {
