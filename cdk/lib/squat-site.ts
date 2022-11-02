@@ -136,14 +136,9 @@ export class SquatSite extends Construct {
     });
 
     // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
-    // Nyt myos auth koodi upotettuna
     const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('utf-8');
-    const routerFunctionCode = cdk.Fn.sub(routerSourceCode, {
-      AUTH_STRING: authString,
-    });
-
     const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromInline(routerFunctionCode),
+      code: cloudfront.FunctionCode.fromInline(routerSourceCode),
     });
 
     const squatBehavior: BehaviorOptions = {
@@ -158,11 +153,23 @@ export class SquatSite extends Construct {
         },
       ],
     };
+
+    const dvkRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`).toString('utf-8');
+    const dvkCfFunction = new cloudfront.Function(this, 'DvkRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(dvkRouterSourceCode),
+    });
+
     const dvkBehavior = {
       origin: new cloudfront_origins.S3Origin(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: dvkCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
     };
 
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
