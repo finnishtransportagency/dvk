@@ -11,8 +11,12 @@ import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 // eslint-disable-next-line import/named
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import { HarborFeatureProperties } from './popup/HarborPopupContent';
+import { useMap } from './DvkMap';
+import { useEffect, useState } from 'react';
+import Geometry from 'ol/geom/Geometry';
+import { FindFairwayCardByIdQuery } from '../graphql/generated';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
@@ -194,4 +198,50 @@ export function addAPILayers(map: Map) {
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
   addPilotLayer(map);
   addHarborLayer(map);
+}
+
+export function useSelectedFairway(data: FindFairwayCardByIdQuery | undefined) {
+  const dvkMap = useMap();
+  const [features, setFeatures] = useState<Feature<Geometry>[]>([]);
+  useEffect(() => {
+    return () => {
+      for (const feature of features) {
+        feature.setStyle(
+          new Style({
+            stroke: new Stroke({
+              color: '#0000FF',
+              width: 1,
+            }),
+          })
+        );
+      }
+    };
+  }, [features]);
+  useEffect(() => {
+    if (data) {
+      const source = dvkMap.getVectorSource('line12');
+      if (source) {
+        const style = new Style({
+          stroke: new Stroke({
+            color: '#0000FF',
+            width: 2,
+          }),
+        });
+        const selected: Feature<Geometry>[] = [];
+        for (const fairway of data?.fairwayCard?.fairways || []) {
+          for (const line of fairway.navigationLines || []) {
+            const feature = source.getFeatureById(line.id);
+            feature?.setStyle(style);
+            if (feature) {
+              selected.push(feature);
+            }
+          }
+        }
+        console.log('features: ' + selected.length);
+        setFeatures(selected);
+      }
+    } else {
+      setFeatures([]);
+    }
+  }, [setFeatures, data, dvkMap]);
 }
