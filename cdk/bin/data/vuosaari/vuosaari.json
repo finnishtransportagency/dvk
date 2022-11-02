@@ -11,7 +11,7 @@
     "sv": "Tre linjer, utmärkta med enstavlor.",
     "en": "Three lines marked with boards."
   },
-  "anchorage": [
+  "anchorage":[
     {
       "fi": "Väylän ulko-osalla ankkurointialue on Helsingin majakan luoteispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Eestiluodon eteläpuolella ja Musta Hevosen länsipuolella on väylän levennysalueita.",
       "sv": "Ankringsområdet i angöringen ligger NV om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Farleden har breddade områden Söder om Estlotan och väster om Svarta Hästen.",
@@ -80,7 +80,10 @@
         "en": "Helsinki VTS"
       },
       "phoneNumber": "+358204485391",
-      "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
       "vhf": 71
     },
     "tugs": [
@@ -94,13 +97,15 @@
     ]
   },
   "harbors": [
-    {
+      {
       "name": {
         "fi": "Helsingin Satama Oy, Helsinki",
         "sv": "Helsingfors Hamn, Helsingfors",
         "en": "Port of Helsinki, Helsinki"
       },
-      "phoneNumber": ["+35893101621"],
+      "phoneNumber": [
+        "+35893101621"
+      ],
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
       "internet": "https://www.portofhelsinki.fi/",
@@ -121,165 +126,6 @@
           "en": "Quay F: container crane, lifting capacity 40/50 t, outreach 34 m"
         }
       ],
-      "area": {
-        "type": "FeatureCollection",
-        "features": [
-          {
-            "id": 1,
-            "type": "Feature",
-            "properties": {
-              "fid": 1,
-              "comment": "C laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.19837510891478, 60.22135456439021],
-                [25.19826034734341, 60.221222239286927],
-                [25.19734131152113, 60.220691357713558],
-                [25.19740000180437, 60.22047732468873],
-                [25.196997251090435, 60.220289711993448],
-                [25.198050693470454, 60.21982532800185],
-                [25.200087587453728, 60.21897266264987],
-                [25.200138070011879, 60.218907964469597],
-                [25.200108693718396, 60.21884450880186],
-                [25.19999295849861, 60.21881492592224],
-                [25.199870267177955, 60.21882727161026],
-                [25.199347002875915, 60.219039661090189],
-                [25.19670491003171, 60.22014329601589],
-                [25.196340843372619, 60.21993518210967],
-                [25.19617714478371, 60.22001002394825],
-                [25.195849321796819, 60.21982576165032],
-                [25.195078283659677, 60.21950702800467]
-              ]
-            }
-          },
-          {
-            "id": 2,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "F laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.195078283659677, 60.21950702800467],
-                [25.200118205648719, 60.21653054860027],
-                [25.200860046322324, 60.21609694148049]
-              ]
-            }
-          },
-          {
-            "id": 3,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "G laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.20160249385358, 60.21567298440903],
-                [25.203646816226958, 60.2144460986587],
-                [25.2036601318127, 60.214202681366717],
-                [25.2013057193826, 60.21555581488245],
-                [25.200138803457177, 60.21506541778855],
-                [25.202496726177775, 60.21364542926885],
-                [25.202360446419449, 60.213596439877509],
-                [25.199959899343776, 60.214987556718],
-                [25.198812651085214, 60.21448484076718],
-                [25.200627644956737, 60.213406368040029],
-                [25.197985541875327, 60.21229249873017]
-              ]
-            }
-          },
-          {
-            "id": 4,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "E laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.197985541875327, 60.21229249873017],
-                [25.19230086497031, 60.21562820447946],
-                [25.189253218507987, 60.21740316892668]
-              ]
-            }
-          },
-          {
-            "id": 5,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "B laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.189253218507987, 60.21740316892668],
-                [25.187734442276658, 60.21676643020065],
-                [25.188552352781245, 60.216252757300349],
-                [25.1904650685068, 60.21512860305583],
-                [25.190530601303068, 60.21508549803297],
-                [25.190539856066679, 60.21503219491876],
-                [25.190447951225609, 60.214980655130748],
-                [25.190283681856234, 60.2149815572961],
-                [25.189937733625674, 60.215184258241539],
-                [25.18745068101189, 60.21664312025634],
-                [25.18591952259782, 60.21600304738867]
-              ]
-            }
-          },
-          {
-            "id": 6,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "D laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.18591952259782, 60.21600304738867],
-                [25.18902801292078, 60.21415671749361],
-                [25.193100446270305, 60.21177345196857],
-                [25.19420938897516, 60.21113172233693]
-              ]
-            }
-          },
-          {
-            "id": 7,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "A laituri"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.195035508051054, 60.211039252906598],
-                [25.192159676640114, 60.20981837606319],
-                [25.192539342041355, 60.20957526471891],
-                [25.192278796536735, 60.209490002187717],
-                [25.19263488145137, 60.20908073061436],
-                [25.192905765539803, 60.2087694231065]
-              ]
-            }
-          },
-          {
-            "id": 8,
-            "type": "Feature",
-            "properties": {
-              "Laituri": "AP"
-            },
-            "geometry": {
-              "type": "LineString",
-              "coordinates": [
-                [25.19263488145137, 60.20908073061436],
-                [25.19617797620432, 60.2098207759994]
-              ]
-            }
-          }
-        ]
-      },
       "quays": [
         {
           "name": {
