@@ -6,6 +6,8 @@ import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
 class SearchbarControl extends Control {
   private inputElement = document.createElement('input');
 
+  private clearBtn = document.createElement('button');
+
   private setIsOpen: (isOpen: boolean) => void = () => {};
 
   private isOpen = false;
@@ -30,8 +32,11 @@ class SearchbarControl extends Control {
       element: element,
     });
 
-    this.inputElement.className = 'searchbarControl';
+    this.clearBtn.type = 'button';
+    this.clearBtn.className = 'clear';
+
     element.appendChild(this.inputElement);
+    element.appendChild(this.clearBtn);
 
     const closeDropdown = () => {
       this.setIsOpen(false);
@@ -39,17 +44,25 @@ class SearchbarControl extends Control {
       if (this.curPath !== pathAfterClosing) {
         this.setSearchQuery('');
         this.inputElement.value = '';
+        this.clearBtn.className = 'clear';
       }
     };
 
     this.inputElement.addEventListener('focus', () => {
       this.setIsOpen(true);
-      this.setSearchQuery(this.inputElement.value.toLowerCase());
+      this.setSearchQuery(this.inputElement.value.trim().toLowerCase());
       this.setActiveSelection(0);
     });
     this.inputElement.addEventListener('input', () => {
-      this.setSearchQuery(this.inputElement.value.toLowerCase());
+      this.setSearchQuery(this.inputElement.value.trim().toLowerCase());
       this.setActiveSelection(0);
+      if (this.inputElement.value.length > 0) {
+        this.inputElement.className = 'has-value';
+        this.clearBtn.className = 'clear show';
+      } else {
+        this.inputElement.className = '';
+        this.clearBtn.className = 'clear';
+      }
     });
     this.inputElement.addEventListener('blur', () => {
       setTimeout(closeDropdown, 200);
@@ -57,7 +70,7 @@ class SearchbarControl extends Control {
 
     this.inputElement.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeDropdown();
-      if (event.key === 'Tab' && this.isOpen && this.inputElement.value.length >= MINIMUM_QUERYLENGTH) {
+      if (event.key === 'Tab' && this.isOpen && this.inputElement.value.trim().length >= MINIMUM_QUERYLENGTH) {
         event.preventDefault();
         this.setIsOpen(false);
       }
@@ -78,11 +91,28 @@ class SearchbarControl extends Control {
         this.history.push('/vaylakortit/' + this.filteredData[this.activeSelection - 1].id);
       }
     });
+
+    this.clearBtn.addEventListener('click', () => {
+      this.inputElement.focus();
+      this.setSearchQuery('');
+      this.inputElement.value = '';
+      this.inputElement.className = '';
+      this.clearBtn.className = 'clear';
+    });
   }
 
   public setPlaceholder(placeholder: string) {
     this.inputElement.placeholder = placeholder;
-    this.inputElement.title = placeholder;
+  }
+
+  public setTitle(title: string) {
+    this.inputElement.title = title;
+    this.inputElement.ariaLabel = title;
+  }
+
+  public setClearTitle(title: string) {
+    this.clearBtn.title = title;
+    this.clearBtn.ariaLabel = title;
   }
 
   public setIsSearchbarOpen(isOpen: boolean) {

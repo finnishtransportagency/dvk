@@ -42,6 +42,8 @@
         },
         "searchbar": {
           "placeholder": "Search fairway by name",
+          "title": "Fairway search",
+          "clearTitle": "Clear",
           "no-search-results": "Search '{{query}}' did not match any fairway"
         }
       }
@@ -54,8 +56,10 @@
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "A fairway card contains facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
-    "search": "[en] Hae väylän nimellä",
-    "home": "[en] Digitaalinen väyläkortti",
+    "search": "Search by fairway name",
+    "searchTitle": "Fairway search",
+    "clearTitle": "Clear",
+    "home": "Digital Fairway Card",
     "name": "Fairway card name",
     "modified": "Modified",
     "modifiedDate": "{{val, datetime}}",
@@ -63,7 +67,7 @@
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
     "harboursTitle": "Fairway harbours",
-    "areasTitle": "[en] Väylän alueet",
+    "areasTitle": "Fairway areas",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
     "starts": "Starts",

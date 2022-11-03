@@ -89,7 +89,7 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
         </h2>
       </IonText>
       <IonAccordionGroup>
-        <IonAccordion value="first" toggleIcon={caretDownSharp} color="lightest">
+        <IonAccordion toggleIcon={caretDownSharp} color="lightest">
           <IonItem slot="header" color="lightest" className="accItem">
             <IonLabel>{t('general')}</IonLabel>
           </IonItem>

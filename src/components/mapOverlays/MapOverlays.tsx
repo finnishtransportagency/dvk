@@ -26,7 +26,9 @@ const MapOverlays: React.FC = () => {
   const { data } = useFindAllFairwayCardsQuery();
 
   const filterFairways = () => {
-    return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
+    return (
+      data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) || []
+    );
   };
 
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
