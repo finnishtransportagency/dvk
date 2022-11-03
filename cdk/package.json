@@ -23,6 +23,7 @@
     "deploy:site:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
     "deploy:site:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
     "deploy:featurepipeline": "cross-env ENVIRONMENT=feature cdk --profile=$AWS_PROFILE deploy DvkFeaturePipelineStack",
+    "deploy:sonarpipeline": "cdk --profile=$AWS_PROFILE deploy DvkSonarPipelineStack",
     "generate": "graphql-codegen",
     "log:backend": "cross-env-shell aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
     "datasync": "ts-node bin/datasync.ts -- --dbonly",
