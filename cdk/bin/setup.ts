@@ -97,7 +97,7 @@ async function main() {
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
     REACT_APP_REST_API_URL: `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api`,
     REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName || '',
-    REACT_APP_BG_MAP_API_URL: frontendStackOutputs.CloudFrontDomainName ? frontendStackOutputs.CloudFrontDomainName : envParameters.BGMapApiUrl,
+    REACT_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
     REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
   });
 }
