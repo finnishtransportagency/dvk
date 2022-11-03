@@ -157,15 +157,27 @@ button.icon:focus-visible:hover {
   margin-right: 8px;
 }
 
+ion-accordion {
+  background-color: var(--ion-color-lightest);
+  border-bottom: 1px solid var(--ion-color-light);
+}
+ion-accordion.accordion-collapsed {
+  border-bottom: 1px solid var(--ion-color-light);
+}
+ion-accordion:not(.accordion-collapsed) {
+  border-bottom-color: var(--ion-color-lightest);
+}
 ion-accordion::part(header) {
   min-height: 24px;
-  border-bottom: 1px solid var(--ion-color-light);
+  width: max-content;
 }
 ion-accordion::part(content) {
   background: var(--ion-color-lightest);
 }
 ion-accordion .tabContent {
-  margin-top: 10px;
+  padding-top: 10px;
+  margin: 0;
+  border-top: 1px solid var(--ion-color-light);
 }
 .accItem {
   font-size: 16px;
@@ -183,7 +195,7 @@ ion-accordion .tabContent {
 .accItem ion-icon {
   width: 14px;
   height: 14px;
-  margin: 0;
+  margin: 0 0 0 12px;
 }
 
 /* Grid table */
