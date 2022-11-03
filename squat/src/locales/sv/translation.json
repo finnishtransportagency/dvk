@@ -156,7 +156,8 @@
       "aluksen-nopeus-ms": "[sv] Aluksen nopeus v (m/s)",
       "froude-syvyysluku": "[sv] Froude syvyysluku F nh",
       "squat-max": "[sv] {{kerroin}} Squat smax (m)"
-    }
+    },
+    "vaylavirasto-logo": "Trafikledsverket logotyp"
   },
   "common": {
     "tonnes": "ton",

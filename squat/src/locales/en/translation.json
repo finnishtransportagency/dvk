@@ -156,7 +156,8 @@
       "aluksen-nopeus-ms": "Vessel speed v (m/s)",
       "froude-syvyysluku": "Froude number F nh",
       "squat-max": "{{kerroin}} Squat smax (m)"
-    }
+    },
+    "vaylavirasto-logo": "Finnish Transport Infrastructure Agency logo"
   },
   "common": {
     "tonnes": "tonnes",

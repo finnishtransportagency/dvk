@@ -20,7 +20,7 @@ const TitleBar: React.FC = () => {
           </IonText>
         </IonCol>
         <IonCol class="ion-align-self-center mobile-logo" size="auto">
-          <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
+          <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
         </IonCol>
         <IonCol className="langbar" style={{ textAlign: 'end' }}>
           {showLanguages() && <LanguageBar />}
@@ -32,7 +32,7 @@ const TitleBar: React.FC = () => {
                 <PrintBar />
               </IonCol>
               <IonCol className="ion-align-self-center desktop-logo" size="auto">
-                <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt="Väylävirasto" />
+                <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
               </IonCol>
             </IonRow>
           </IonGrid>
