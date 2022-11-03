@@ -5,7 +5,7 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { BuildEnvironmentVariableType, ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -45,10 +45,6 @@ export class DvkPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.1'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
-          REACT_APP_BG_MAP_API_KEY: {
-            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-            value: 'BGMapApiKey',
-          },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -67,14 +63,6 @@ export class DvkPipeline extends Construct {
         },
       }),
     });
-
-    dvkBuildProject.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['secretsmanager:GetSecretValue'],
-        resources: ['arn:aws:secretsmanager:eu-west-1:012525309247:secret:BGMapApiKey-AiplDl'],
-      })
-    );
 
     const buildOutput = new codepipeline.Artifact();
 

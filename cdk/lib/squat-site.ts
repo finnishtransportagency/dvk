@@ -206,8 +206,11 @@ export class SquatSite extends Construct {
     };
 
     const vectorMapBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapApiUrl')),
-      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapSOAApiUrl'), {
+        customHeaders: { 'x-api-key': config.getGlobalStringParameter('BGMapSOAApiKey') },
+      }),
+      originRequestPolicy: Config.isPermanentEnvironment() ? OriginRequestPolicy.ALL_VIEWER : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: true,
@@ -226,7 +229,7 @@ export class SquatSite extends Construct {
       'geotiff/*': geoTiffBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
-      'vectortiles/*': vectorMapBehavior,
+      'mml/*': vectorMapBehavior,
     };
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
