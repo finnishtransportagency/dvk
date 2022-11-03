@@ -159,7 +159,8 @@
       "aluksen-nopeus-ms": "Aluksen nopeus v (m/s)",
       "froude-syvyysluku": "Frouden syvyysluku F nh",
       "squat-max": "{{kerroin}} Squat smax (m)"
-    }
+    },
+    "vaylavirasto-logo": "Väylävirasto logo"
   },
   "common": {
     "tonnes": "tonnia",
