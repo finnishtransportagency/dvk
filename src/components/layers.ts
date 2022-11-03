@@ -265,6 +265,7 @@ export function useSelectedFairway(data: FindFairwayCardByIdQuery | undefined) {
           setFeatureStyle(source3, source4, area.id, style2, style3, selected);
         }
       }
+      console.log('selected: ' + selected.length);
       setFeatures(selected);
     }
   }, [setFeatures, data, dvkMap]);
