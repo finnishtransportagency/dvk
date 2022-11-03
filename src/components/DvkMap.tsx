@@ -22,8 +22,10 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import 'ol/ol.css';
 import './DvkMap.css';
 import SearchbarControl from './mapControls/SearchbarControl';
-import { addAPILayers } from './layers';
+import { addAPILayers, LayerId } from './layers';
 import { RouteComponentProps } from 'react-router-dom';
+import VectorSource from 'ol/source/Vector';
+import Layer from 'ol/layer/Layer';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -267,6 +269,11 @@ class DvkMap {
   public getSearchbarControl = () => {
     return this.searchbarControl;
   };
+
+  public getVectorSource(layerId: LayerId) {
+    const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
+    return layer.getSource() as VectorSource;
+  }
 }
 
 const dvkMap = new DvkMap();

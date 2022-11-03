@@ -20,6 +20,7 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
+import { useSelectedFairway } from './layers';
 
 type Lang = 'fi' | 'sv' | 'en';
 
@@ -614,6 +615,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     return n2000Line;
   };
 
+  useSelectedFairway(data);
   return (
     <>
       {loading && (
