@@ -209,8 +209,8 @@ export class SquatSite extends Construct {
       origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapSOAApiUrl'), {
         customHeaders: { 'x-api-key': config.getGlobalStringParameter('BGMapSOAApiKey') },
       }),
-      originRequestPolicy: Config.isPermanentEnvironment() ? OriginRequestPolicy.ALL_VIEWER : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
+      originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: corsResponsePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: true,
