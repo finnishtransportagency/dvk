@@ -5,10 +5,10 @@
   "sources": {
     "taustakartta": {
       "type": "vector",
-      "url": "https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/tilejson/taustakartta/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/tilejson.json?api-key=06403654-9392-4ead-9e1b-d833188c2516"
+      "url": "https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/tilejson/taustakartta/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/tilejson.json?api-key=xxx"
     }
   },
-  "glyphs": "https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/glyphs/{fontstack}/{range}.pbf?api-key=06403654-9392-4ead-9e1b-d833188c2516",
+  "glyphs": "https://avoin-karttakuva.maanmittauslaitos.fi/vectortiles/glyphs/{fontstack}/{range}.pbf?api-key=xxx",
   "layers": [
     {
       "id": "background",

@@ -15,7 +15,6 @@ import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import Config from './config';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 
 export class DvkSonarPipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -69,12 +68,6 @@ export class DvkSonarPipelineStack extends Stack {
       },
       grantReportGroupPermissions: true,
       badge: true,
-    }).addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['secretsmanager:GetSecretValue'],
-        resources: ['arn:aws:secretsmanager:eu-west-1:012525309247:secret:SonarQubeAccessToken-06Xsnx'],
-      })
-    );
+    });
   }
 }
