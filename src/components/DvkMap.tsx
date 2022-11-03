@@ -223,6 +223,8 @@ class DvkMap {
     this.mapDetailsControl.setMousePositionLabel(this.t('mapDetails.mousePositionLabel'));
     this.layerPopupControl.setTipLabel(this.t('layer.tipLabel'));
     this.searchbarControl?.setPlaceholder(this.t('searchbar.placeholder'));
+    this.searchbarControl?.setTitle(this.t('searchbar.title'));
+    this.searchbarControl?.setClearTitle(this.t('searchbar.clearTitle'));
   };
 
   public addShowSidebarMenuControl = () => {
