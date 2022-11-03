@@ -1,6 +1,7 @@
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
-import Style from 'ol/style/Style';
+// eslint-disable-next-line import/named
+import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
 import GeoJSON from 'ol/format/GeoJSON';
@@ -20,10 +21,33 @@ import { FindFairwayCardByIdQuery } from '../graphql/generated';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
+export type LayerId = 'line12' | 'line3456' | 'area12' | 'area3456' | 'specialarea' | 'restrictionarea';
+
+function getAreaStyle(color: string, width: number, fillColor: string) {
+  return new Style({
+    stroke: new Stroke({
+      color,
+      width,
+    }),
+    fill: new Fill({
+      color: fillColor,
+    }),
+  });
+}
+
+function getLineStyle(color: string, width: number) {
+  return new Style({
+    stroke: new Stroke({
+      color,
+      width,
+    }),
+  });
+}
+
 function addFairwayAreaLayer(
   map: Map,
   queryString: string,
-  id: string,
+  id: LayerId,
   color: string,
   fillColor: string,
   maxResolution: number | undefined = undefined,
@@ -38,15 +62,7 @@ function addFairwayAreaLayer(
   });
   const styleFunction = (feature: FeatureLike) => {
     if (validTypeCodes.includes(feature.getProperties().typeCode)) {
-      return new Style({
-        stroke: new Stroke({
-          color,
-          width,
-        }),
-        fill: new Fill({
-          color: fillColor,
-        }),
-      });
+      return getAreaStyle(color, width, fillColor);
     } else {
       return undefined;
     }
@@ -61,18 +77,13 @@ function addFairwayAreaLayer(
   map.addLayer(vatuLayer);
 }
 
-function addVatuLayer(map: Map, queryString: string, id: string, color: string, maxResolution: number | undefined = undefined, width = 1) {
+function addVatuLayer(map: Map, queryString: string, id: LayerId, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const vatuSource = new VectorSource({
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
   });
   const styleFunction = function () {
-    return new Style({
-      stroke: new Stroke({
-        color,
-        width,
-      }),
-    });
+    return getLineStyle(color, width);
   };
   const vatuLayer = new VectorLayer({
     source: vatuSource,
@@ -200,46 +211,61 @@ export function addAPILayers(map: Map) {
   addHarborLayer(map);
 }
 
+function setFeatureStyle(
+  source: VectorSource<Geometry>,
+  source2: VectorSource<Geometry>,
+  id: number,
+  style: Style,
+  style2: Style,
+  selected: FeatureAndStyle[]
+) {
+  let feature = source.getFeatureById(id);
+  if (feature) {
+    selected.push({ feature, style: feature.getStyle() });
+    feature.setStyle(style);
+  } else {
+    feature = source2.getFeatureById(id);
+    if (feature) {
+      selected.push({ feature, style: feature.getStyle() });
+      feature.setStyle(style2);
+    }
+  }
+}
+
+type FeatureAndStyle = {
+  feature: Feature<Geometry>;
+  style: StyleLike | undefined;
+};
+
 export function useSelectedFairway(data: FindFairwayCardByIdQuery | undefined) {
   const dvkMap = useMap();
-  const [features, setFeatures] = useState<Feature<Geometry>[]>([]);
+  const [features, setFeatures] = useState<FeatureAndStyle[]>([]);
   useEffect(() => {
     return () => {
-      for (const feature of features) {
-        feature.setStyle(
-          new Style({
-            stroke: new Stroke({
-              color: '#0000FF',
-              width: 1,
-            }),
-          })
-        );
+      for (const f of features) {
+        f.feature.setStyle(f.style);
       }
     };
   }, [features]);
   useEffect(() => {
     if (data) {
       const source = dvkMap.getVectorSource('line12');
-      if (source) {
-        const style = new Style({
-          stroke: new Stroke({
-            color: '#0000FF',
-            width: 2,
-          }),
-        });
-        const selected: Feature<Geometry>[] = [];
-        for (const fairway of data?.fairwayCard?.fairways || []) {
-          for (const line of fairway.navigationLines || []) {
-            const feature = source.getFeatureById(line.id);
-            feature?.setStyle(style);
-            if (feature) {
-              selected.push(feature);
-            }
-          }
+      const source2 = dvkMap.getVectorSource('line3456');
+      const source3 = dvkMap.getVectorSource('area12');
+      const source4 = dvkMap.getVectorSource('area3456');
+      const style = getLineStyle('#0000FF', 2);
+      const style2 = getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+      const style3 = getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+      const selected: FeatureAndStyle[] = [];
+      for (const fairway of data?.fairwayCard?.fairways || []) {
+        for (const line of fairway.navigationLines || []) {
+          setFeatureStyle(source, source2, line.id, style, style, selected);
         }
-        console.log('features: ' + selected.length);
-        setFeatures(selected);
+        for (const area of fairway.areas || []) {
+          setFeatureStyle(source3, source4, area.id, style2, style3, selected);
+        }
       }
+      setFeatures(selected);
     } else {
       setFeatures([]);
     }
