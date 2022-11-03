@@ -96,6 +96,8 @@ class SearchbarControl extends Control {
       this.inputElement.focus();
       this.setSearchQuery('');
       this.inputElement.value = '';
+      this.inputElement.className = '';
+      this.clearBtn.className = 'clear';
     });
   }
 
