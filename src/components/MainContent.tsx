@@ -31,12 +31,15 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   const [activeSelection, setActiveSelection] = useState(0);
   const [widePane, setWidePane] = useState(false);
   const mapElement = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLIonInputElement>(null);
 
   const fairwayId = match.params.fairwayId;
   const curPath = history.location.pathname;
 
   const filterFairways = () => {
-    return data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery) > -1).slice(0, MAX_HITS) || [];
+    return (
+      data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) || []
+    );
   };
 
   const closeDropdown = () => {
@@ -55,15 +58,15 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
 
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
     if (event.key === 'Escape') closeDropdown();
-    if (event.key === 'Tab' && isSearchbarOpen && searchQuery.length >= MINIMUM_QUERYLENGTH) {
+    if (event.key === 'Tab' && isSearchbarOpen && searchQuery.trim().length >= MINIMUM_QUERYLENGTH) {
       event.preventDefault();
       setIsSearchbarOpen(false);
     }
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      if (!isSearchbarOpen) {
+      if (!isSearchbarOpen && (event.target as HTMLInputElement).type !== 'button') {
         setIsSearchbarOpen(true);
-      } else if (filterFairways().length > 0) {
+      } else if (isSearchbarOpen && filterFairways().length > 0) {
         setActiveSelection(activeSelection >= filterFairways().length ? 1 : activeSelection + 1);
       }
     }
@@ -76,6 +79,11 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
       const targetPath = '/vaylakortit/' + filterFairways()[activeSelection - 1].id;
       if (curPath !== targetPath) history.push('/vaylakortit/' + filterFairways()[activeSelection - 1].id);
     }
+  };
+
+  const clearInput = () => {
+    setSearchQuery('');
+    inputRef.current?.setFocus();
   };
 
   const togglePane = () => {
@@ -110,15 +118,23 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                           <IonInput
                             className="searchBar"
                             placeholder={t('search')}
+                            title={t('searchTitle')}
                             value={searchQuery}
-                            onIonFocus={(e) => openDropdown(e.target.value)}
                             onIonChange={(e) => openDropdown(e.detail.value)}
                             onIonBlur={blurAction}
                             onKeyDown={(e) => keyDownAction(e)}
+                            ref={inputRef}
                           />
+                          <button
+                            type="button"
+                            className="input-clear-icon"
+                            title={t('clearTitle')}
+                            aria-label={t('clearTitle')}
+                            onClick={clearInput}
+                          ></button>
                           <SearchbarDropdown
                             isOpen={isSearchbarOpen}
-                            searchQuery={searchQuery}
+                            searchQuery={searchQuery.trim()}
                             fairwayCards={filterFairways()}
                             selected={activeSelection}
                           />
