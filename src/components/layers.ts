@@ -4,7 +4,6 @@ import VectorLayer from 'ol/layer/Vector';
 import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
-import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import pilot_logo from '../theme/img/pilotPlace.svg';
 import quayIcon from '../theme/img/dock_icon.svg';
@@ -18,10 +17,7 @@ import { useMap } from './DvkMap';
 import { useEffect, useState } from 'react';
 import Geometry from 'ol/geom/Geometry';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
-
-const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
-
-export type LayerId = 'line12' | 'line3456' | 'area12' | 'area3456' | 'specialarea' | 'restrictionarea';
+import { FeatureLayerIdType } from '../utils/constants';
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -46,20 +42,15 @@ function getLineStyle(color: string, width: number) {
 
 function addFairwayAreaLayer(
   map: Map,
-  queryString: string,
-  id: LayerId,
+  id: FeatureLayerIdType,
   color: string,
   fillColor: string,
   maxResolution: number | undefined = undefined,
   width = 1
 ) {
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Stama-allas, 5 = Kääntöallas
+  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas
   const validTypeCodes = [1, 3, 4, 5];
 
-  const vatuSource = new VectorSource({
-    url: url + queryString,
-    format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
-  });
   const styleFunction = (feature: FeatureLike) => {
     if (validTypeCodes.includes(feature.getProperties().typeCode)) {
       return getAreaStyle(color, width, fillColor);
@@ -68,7 +59,7 @@ function addFairwayAreaLayer(
     }
   };
   const vatuLayer = new VectorLayer({
-    source: vatuSource,
+    source: new VectorSource(),
     style: styleFunction,
     properties: { id },
     maxResolution,
@@ -77,16 +68,12 @@ function addFairwayAreaLayer(
   map.addLayer(vatuLayer);
 }
 
-function addVatuLayer(map: Map, queryString: string, id: LayerId, color: string, maxResolution: number | undefined = undefined, width = 1) {
-  const vatuSource = new VectorSource({
-    url: url + queryString,
-    format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
-  });
+function addVatuLayer(map: Map, id: FeatureLayerIdType, color: string, maxResolution: number | undefined = undefined, width = 1) {
   const styleFunction = function () {
     return getLineStyle(color, width);
   };
   const vatuLayer = new VectorLayer({
-    source: vatuSource,
+    source: new VectorSource(),
     style: styleFunction,
     properties: { id },
     maxResolution,
@@ -114,15 +101,11 @@ export function getPilotStyle() {
   ];
 }
 
-function addPilotLayer(map: Map) {
-  const pilotSource = new VectorSource({
-    url: url + '?type=pilot',
-    format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
-  });
+function addPilotLayer(map: Map, id: FeatureLayerIdType) {
   const pilotLayer = new VectorLayer({
-    source: pilotSource,
+    source: new VectorSource(),
     style: getPilotStyle(),
-    properties: { id: 'pilot' },
+    properties: { id },
     renderBuffer: 2000,
   });
   map.addLayer(pilotLayer);
@@ -176,18 +159,15 @@ export function getHarborStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-function addHarborLayer(map: Map) {
+function addHarborLayer(map: Map, id: FeatureLayerIdType) {
   const style = function (feature: FeatureLike) {
     return getHarborStyle(feature, false);
   };
-  const harborSource = new VectorSource({
-    url: url + '?type=harbor',
-    format: new GeoJSON({ featureProjection: 'EPSG:4326' }),
-  });
+
   const pilotLayer = new VectorLayer({
-    source: harborSource,
+    source: new VectorSource(),
     style,
-    properties: { id: 'harbor' },
+    properties: { id },
     maxResolution: 3,
     renderBuffer: 2000,
   });
@@ -197,18 +177,18 @@ function addHarborLayer(map: Map) {
 export function addAPILayers(map: Map) {
   // kauppamerenkulku
   // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue, Kääntöallas
-  addFairwayAreaLayer(map, '?type=area&vaylaluokka=1,2', 'area12', '#EC0E0E', 'rgba(236, 14, 14, 0.1)', 100);
+  addFairwayAreaLayer(map, 'area12', '#EC0E0E', 'rgba(236, 14, 14, 0.1)', 100);
   // muu vesiliikenne
-  addFairwayAreaLayer(map, '?type=area&vaylaluokka=3,4,5,6', 'area3456', '#207A43', 'rgba(32, 122, 67, 0.1)', 20);
+  addFairwayAreaLayer(map, 'area3456', '#207A43', 'rgba(32, 122, 67, 0.1)', 20);
   // navigointilinjat
-  addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', '#0000FF', 500);
-  addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', '#0000FF', 50);
+  addVatuLayer(map, 'line12', '#0000FF', 500);
+  addVatuLayer(map, 'line3456', '#0000FF', 50);
   // Nopeusrajoitus
-  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
+  addVatuLayer(map, 'restrictionarea', 'purple', 10, 3);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
-  addPilotLayer(map);
-  addHarborLayer(map);
+  addVatuLayer(map, 'specialarea', 'pink', 100, 2);
+  addPilotLayer(map, 'pilot');
+  addHarborLayer(map, 'harbor');
 }
 
 function setFeatureStyle(
