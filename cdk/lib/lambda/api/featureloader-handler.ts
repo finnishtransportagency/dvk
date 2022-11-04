@@ -4,7 +4,7 @@ import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { Harbor, PilotPlace, Quay } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
-import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel } from '../graphql/query/vatu';
+import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TurvalaiteAPIModel } from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
@@ -212,6 +212,33 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   }
 }
 
+async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
+  log.debug('equipments: %d', equipments.length);
+  for (const equipment of equipments) {
+    features.push({
+      type: 'Feature',
+      id: equipment.turvalaitenumero,
+      geometry: equipment.geometria as Geometry,
+      properties: {
+        id: equipment.turvalaitenumero,
+        featureType: 'safetyequipment',
+        subType: equipment.alityyppi,
+        navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
+        navigationCode: equipment.navigointilajiKoodi,
+        name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
+        symbol: equipment.symboli,
+        typeCode: equipment.turvalaitetyyppiKoodi,
+        typeName: { fi: equipment.turvalaitetyyppiFI, sv: equipment.turvalaitetyyppiSV },
+        lightning: equipment.valaistu === 'K',
+        fairways: equipment.vayla?.map((v) => {
+          return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
+        }),
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -293,6 +320,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     }
     if (types.includes('line')) {
       await addLineFeatures(features, event);
+    }
+    if (types.includes('safetyequipment')) {
+      await addSafetyEquipmentFeatures(features, event);
     }
     const collection: FeatureCollection = {
       type: 'FeatureCollection',
