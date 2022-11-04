@@ -47,10 +47,13 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
     const pathAfterClosing = history.location.pathname;
     if (curPath !== pathAfterClosing) setSearchQuery('');
   };
-  const openDropdown = (val?: string | number | null) => {
+  const openDropdown = () => {
     setIsSearchbarOpen(true);
-    setSearchQuery(String(val)?.toLowerCase());
     setActiveSelection(0);
+  };
+  const changeAction = (val?: string | number | null) => {
+    openDropdown();
+    setSearchQuery(String(val)?.toLowerCase());
   };
   const blurAction = () => {
     setTimeout(closeDropdown, 200);
@@ -120,7 +123,8 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             placeholder={t('search')}
                             title={t('searchTitle')}
                             value={searchQuery}
-                            onIonChange={(e) => openDropdown(e.detail.value)}
+                            onIonFocus={openDropdown}
+                            onIonChange={(e) => changeAction(e.detail.value)}
                             onIonBlur={blurAction}
                             onKeyDown={(e) => keyDownAction(e)}
                             ref={inputRef}

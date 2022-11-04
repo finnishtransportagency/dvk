@@ -76,16 +76,20 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-col.wide:last-child {
   padding-left: 24px;
 }
+#fairwayCardsContainer .dropdownWrapper {
+  max-width: 273px;
+  position: relative;
+  transition: max-width 150ms;
+}
+.wide #fairwayCardsContainer .dropdownWrapper {
+  max-width: 335px;
+}
 #fairwayCardsContainer ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;
-  max-width: 273px;
+  max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
-  transition: max-width 150ms;
-}
-.wide #fairwayCardsContainer ion-input.searchBar {
-  max-width: 335px;
 }
 #fairwayCardsContainer ion-input.searchBar input {
   height: 100%;
