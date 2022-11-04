@@ -140,7 +140,7 @@
       "yAxisLabel": "Squat (m)",
       "levels": {
         "bottom": "[en] Pohja",
-        "underSweptDepth": "[en] Haraustason alapuoleinen vesi"  ,
+        "underSweptDepth": "[en] Haraustason alapuoleinen vesi",
         "netUKC": "[en] Kölivara",
         "otherMovement": "[en] Muu liikevara",
         "squat": "[en] Painaumavara"
@@ -199,7 +199,10 @@
     "maximum-precision-is-X-decimals_one": "Use smaller precision",
     "maximum-precision-is-X-decimals_other": "Use smaller precision",
     "close": "Close",
-    "more-info": "More info"
+    "more-info": "More info",
+    "section-valid": "Valid",
+    "section-invalid": "Not valid",
+    "close-dialog": "Close dialog"
   },
   "appUpdateAlert": {
     "title": "Update available",
