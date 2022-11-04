@@ -199,7 +199,10 @@
     "maximum-precision-is-X-decimals_one": "Använd mindre noggranhet",
     "maximum-precision-is-X-decimals_other": "Använd mindre noggranhet",
     "close": "Stäng",
-    "more-info": "Mera info"
+    "more-info": "Mera info",
+    "section-valid": "Giltig",
+    "section-invalid": "Ogiltig",
+    "close-dialog": "Stäng dialogrutan"
   },
   "appUpdateAlert": {
     "title": "En uppdatering är tillgänglig",

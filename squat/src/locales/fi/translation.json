@@ -202,7 +202,10 @@
     "maximum-precision-is-X-decimals_one": "Käytä pienempää tarkkuutta",
     "maximum-precision-is-X-decimals_other": "Käytä pienempää tarkkuutta",
     "close": "Sulje",
-    "more-info": "Lisätietoja"
+    "more-info": "Lisätietoja",
+    "section-valid": "Arvot ok",
+    "section-invalid": "Arvoja puuttuu",
+    "close-dialog": "Sulje ilmoitus"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",

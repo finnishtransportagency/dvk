@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { checkmarkCircle, radioButtonOff } from 'ionicons/icons';
 import Modal from './Modal';
+import { useTranslation } from 'react-i18next';
 
 interface SectionProps {
   title: string;
@@ -12,6 +13,7 @@ interface SectionProps {
 }
 
 const SectionTitle: React.FC<SectionProps> = (props) => {
+  const { t } = useTranslation('', { keyPrefix: 'common' });
   return (
     <IonGrid className="no-padding divider margin-top">
       <IonRow>
@@ -24,11 +26,12 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
           </IonText>
         </IonCol>
         {!props.hideValidity && (
-          <IonCol size="auto" className="ion-align-self-center">
+          <IonCol size="auto" className="ion-align-self-center" title={props.valid ? t('section-valid') : t('section-invalid')}>
             <IonIcon
               icon={props.valid ? checkmarkCircle : radioButtonOff}
               color={props.valid ? 'success' : 'medium'}
               className="medium section-validation"
+              aria-label={props.valid ? t('section-valid') : t('section-invalid')}
             />
           </IonCol>
         )}
