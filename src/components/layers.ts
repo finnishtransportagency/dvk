@@ -221,7 +221,7 @@ export function addAPILayers(map: Map) {
   addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2', 'restrictionarea', 'purple', 10, 3);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
-  addVatuLayer(map, '?type=safetyequipment&vaylaluokka=1,2,99', 'safetyequipment', 'black', 50, 2);
+  addVatuLayer(map, '?type=safetyequipment&vaylaluokka=1,2,99', 'safetyequipment', 'black', 30);
   addPilotLayer(map);
   addHarborLayer(map);
 }
