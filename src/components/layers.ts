@@ -21,7 +21,7 @@ import { FindFairwayCardByIdQuery } from '../graphql/generated';
 
 const url = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export type LayerId = 'line12' | 'line3456' | 'area12' | 'area3456' | 'specialarea' | 'restrictionarea';
+export type LayerId = 'line12' | 'line3456' | 'area12' | 'area3456' | 'specialarea' | 'restrictionarea' | 'safetyequipment';
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -82,8 +82,22 @@ function addVatuLayer(map: Map, queryString: string, id: LayerId, color: string,
     url: url + queryString,
     format: new GeoJSON({ featureProjection: 'EPSG:4258' }),
   });
-  const styleFunction = function () {
-    return getLineStyle(color, width);
+  const styleFunction = function (feature: FeatureLike) {
+    if (feature.getProperties().featureType === 'safetyequipment') {
+      return new Style({
+        image: new CircleStyle({
+          radius: 8,
+          stroke: new Stroke({
+            color,
+          }),
+          fill: new Fill({
+            color: 'rgba(0,0,0,0)',
+          }),
+        }),
+      });
+    } else {
+      return getLineStyle(color, width);
+    }
   };
   const vatuLayer = new VectorLayer({
     source: vatuSource,
@@ -204,9 +218,10 @@ export function addAPILayers(map: Map) {
   addVatuLayer(map, '?type=line&vaylaluokka=1,2', 'line12', '#0000FF', 500);
   addVatuLayer(map, '?type=line&vaylaluokka=3,4,5,6', 'line3456', '#0000FF', 50);
   // Nopeusrajoitus
-  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6', 'restrictionarea', 'purple', 10, 3);
+  addVatuLayer(map, '?type=restrictionarea&vaylaluokka=1,2', 'restrictionarea', 'purple', 10, 3);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, '?type=specialarea&vaylaluokka=1,2,3,4,5,6', 'specialarea', 'pink', 100, 2);
+  addVatuLayer(map, '?type=safetyequipment&vaylaluokka=1,2,99', 'safetyequipment', 'black', 30);
   addPilotLayer(map);
   addHarborLayer(map);
 }
