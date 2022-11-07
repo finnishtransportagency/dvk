@@ -29,3 +29,7 @@
     border-bottom: 1px solid lightgrey;
   }
 }
+
+.titleCol ion-label {
+  font-weight: bold;
+}

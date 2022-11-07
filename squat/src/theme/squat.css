@@ -377,3 +377,7 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   overflow: visible;
   white-space: normal;
 }
+
+.version-title {
+  font-size: 12px;
+}
