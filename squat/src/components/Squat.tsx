@@ -6,13 +6,11 @@ import { IonGrid, IonRow, IonCol } from '@ionic/react';
 import Calculations from './Calculations';
 import Vessel from './Vessel';
 import Environment from './Environment';
-import TitleBar from './TitleBar';
 import InfoAccordion from './InfoAccordion';
 
 const Squat: React.FC = () => {
   return (
     <>
-      <TitleBar />
       <InfoAccordion />
       <IonGrid className="content">
         <IonRow>
