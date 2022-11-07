@@ -1,16 +1,43 @@
-ion-accordion ion-item {
-  --padding-start: 0;
-  --background-hover: unset;
-}
-
-ion-label h3 strong {
-  font-size: 1rem;
-}
-
-ion-item.divider {
+ion-accordion {
+  background-color: #fff;
   border-bottom: 1px solid var(--ion-color-light);
 }
-
-ion-accordion ion-icon {
-  color: unset;
+ion-accordion.accordion-collapsed {
+  border-bottom: 1px solid var(--ion-color-light);
+}
+ion-accordion:not(.accordion-collapsed) {
+  border-bottom-color: #fff;
+}
+ion-accordion::part(header) {
+  min-height: 24px;
+  border-bottom: 1px solid #fff;
+  width: max-content;
+}
+ion-accordion::part(content) {
+  background: #fff;
+}
+ion-accordion .tabContent {
+  margin-top: 10px;
+  padding-top: 10px;
+  margin: 0;
+  border-top: 1px solid var(--ion-color-light);
+}
+.accItem {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  --padding-start: 0;
+  --inner-padding-start: 2px;
+  --inner-padding-end: 5px;
+  --min-height: 24px;
+}
+.accItem ion-label {
+  margin: 0;
+  color: var(--ion-color-dark) !important;
+}
+.accItem ion-icon {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  margin: 0 0 0 12px;
 }
