@@ -77,7 +77,7 @@
           "name": "Oulu W",
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [24.055, 65.0835]
           }
         }
       ]
@@ -141,7 +141,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.39572444959251, 65.0060794991025]
           }
         },
         {
@@ -161,7 +161,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.399138115151256, 65.00495971287064]
           }
         },
         {
@@ -181,7 +181,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.39752215337134, 65.00455691930827]
           }
         },
         {
@@ -203,7 +203,7 @@
           },
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.413226436375187, 64.99844977635564]
           }
         },
         {
@@ -225,7 +225,7 @@
           },
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.418265832598742, 64.99846194886058]
           }
         },
         {
@@ -242,7 +242,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.41944213837732, 65.00221699852422]
           }
         },
         {
@@ -259,7 +259,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.420633266769993, 65.00077108529226]
           }
         },
         {
@@ -276,7 +276,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.40239095507212, 65.00020558057471]
           }
         },
         {
@@ -293,7 +293,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.42592220678699, 65.00498146223326]
           }
         },
         {
@@ -310,7 +310,7 @@
           ],
           "geometry": {
             "type": "Point",
-            "coordinates": []
+            "coordinates": [25.42342728482431, 65.00410461791442]
           }
         }
       ]
@@ -318,8 +318,11 @@
   ],
   "fairways": [
     {
-      "id": 0,
+      "id": 220,
       "primary": true
+    },
+    {
+      "id": 218
     }
   ]
 }
