@@ -1,4 +1,6 @@
-const featureLoaderUrl = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
+const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
+  ? process.env.REACT_APP_REST_API_URL + '/featureloader'
+  : window.location.origin + '/api/featureloader';
 
 export type FeatureLayerIdType =
   | 'area12'
