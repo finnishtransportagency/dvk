@@ -1,8 +1,7 @@
 import React from 'react';
-import { IonContent, IonFooter, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonFooter, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
-import TitleBar from '../components/TitleBar';
 
 export const showLanguages = (): boolean => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -13,9 +12,6 @@ export const showLanguages = (): boolean => {
 const Home: React.FC = () => {
   return (
     <IonPage>
-      <IonHeader className="ion-no-border" collapse="fade">
-        <TitleBar />
-      </IonHeader>
       <IonContent>
         <Squat />
         <SquatChart />
