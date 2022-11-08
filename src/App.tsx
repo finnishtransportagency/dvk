@@ -7,6 +7,7 @@ import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@ap
 import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
+import { InitFeatures } from './components/FeatureLoader';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -56,6 +57,7 @@ const App: React.FC = () => {
   document.documentElement.lang = i18n.language;
 
   InitDvkMap();
+  InitFeatures();
 
   useEffect(() => {
     if (!updating) {
