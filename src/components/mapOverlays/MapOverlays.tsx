@@ -4,7 +4,7 @@ import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
-import QuayPopupContent, { QuayProperties } from '../popup/HarborPopupContent';
+import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { MAX_HITS } from '../../utils/constants';
