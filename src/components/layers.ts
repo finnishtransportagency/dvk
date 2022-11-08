@@ -40,61 +40,19 @@ function getLineStyle(color: string, width: number) {
   });
 }
 
-function addFairwayAreaLayer(
-  map: Map,
-  id: FeatureLayerIdType,
-  color: string,
-  fillColor: string,
-  maxResolution: number | undefined = undefined,
-  width = 1
-) {
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas
-  const validTypeCodes = [1, 3, 4, 5];
-
-  const styleFunction = (feature: FeatureLike) => {
-    if (validTypeCodes.includes(feature.getProperties().typeCode)) {
-      return getAreaStyle(color, width, fillColor);
-    } else {
-      return undefined;
-    }
-  };
-  const vatuLayer = new VectorLayer({
-    source: new VectorSource(),
-    style: styleFunction,
-    properties: { id },
-    maxResolution,
-    renderBuffer: 2000,
+const getSafetyEquipmentStyle = () => {
+  return new Style({
+    image: new CircleStyle({
+      radius: 8,
+      stroke: new Stroke({
+        color: 'black',
+      }),
+      fill: new Fill({
+        color: 'rgba(0,0,0,0)',
+      }),
+    }),
   });
-  map.addLayer(vatuLayer);
-}
-
-function addVatuLayer(map: Map, id: FeatureLayerIdType, color: string, maxResolution: number | undefined = undefined, width = 1) {
-  const styleFunction = function (feature: FeatureLike) {
-    if (feature.getProperties().featureType === 'safetyequipment') {
-      return new Style({
-        image: new CircleStyle({
-          radius: 8,
-          stroke: new Stroke({
-            color,
-          }),
-          fill: new Fill({
-            color: 'rgba(0,0,0,0)',
-          }),
-        }),
-      });
-    } else {
-      return getLineStyle(color, width);
-    }
-  };
-  const vatuLayer = new VectorLayer({
-    source: new VectorSource(),
-    style: styleFunction,
-    properties: { id },
-    maxResolution,
-    renderBuffer: 2000,
-  });
-  map.addLayer(vatuLayer);
-}
+};
 
 export function getPilotStyle() {
   const image = new Icon({
@@ -113,16 +71,6 @@ export function getPilotStyle() {
       }),
     }),
   ];
-}
-
-function addPilotLayer(map: Map, id: FeatureLayerIdType) {
-  const pilotLayer = new VectorLayer({
-    source: new VectorSource(),
-    style: getPilotStyle(),
-    properties: { id },
-    renderBuffer: 2000,
-  });
-  map.addLayer(pilotLayer);
 }
 
 export function getHarborStyle(feature: FeatureLike, selected: boolean) {
@@ -173,37 +121,38 @@ export function getHarborStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-function addHarborLayer(map: Map, id: FeatureLayerIdType) {
-  const style = function (feature: FeatureLike) {
-    return getHarborStyle(feature, false);
-  };
-
-  const pilotLayer = new VectorLayer({
-    source: new VectorSource(),
-    style,
-    properties: { id },
-    maxResolution: 3,
-    renderBuffer: 2000,
-  });
-  map.addLayer(pilotLayer);
+function addFeatureLayer(map: Map, id: FeatureLayerIdType, maxResolution: number | undefined, renderBuffer: number, style: StyleLike) {
+  map.addLayer(
+    new VectorLayer({
+      source: new VectorSource(),
+      style,
+      properties: { id },
+      maxResolution,
+      renderBuffer,
+    })
+  );
 }
 
 export function addAPILayers(map: Map) {
-  // kauppamerenkulku
-  // area = Navigointialue, Satama-allas, Ohitus- ja kohtaamisalue, Kääntöallas
-  addFairwayAreaLayer(map, 'area12', '#EC0E0E', 'rgba(236, 14, 14, 0.1)', 100);
-  // muu vesiliikenne
-  addFairwayAreaLayer(map, 'area3456', '#207A43', 'rgba(32, 122, 67, 0.1)', 20);
-  // navigointilinjat
-  addVatuLayer(map, 'line12', '#0000FF', 500);
-  addVatuLayer(map, 'line3456', '#0000FF', 50);
+  // Kauppamerenkulku
+  addFeatureLayer(map, 'line12', 500, 1, getLineStyle('#0000FF', 1));
+  addFeatureLayer(map, 'area12', 100, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
+  // Muu vesiliikenne
+  addFeatureLayer(map, 'line3456', 50, 1, getLineStyle('#0000FF', 1));
+  addFeatureLayer(map, 'area3456', 20, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
+
   // Nopeusrajoitus
-  addVatuLayer(map, 'restrictionarea', 'purple', 10, 3);
+  addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addVatuLayer(map, 'specialarea', 'pink', 100, 2);
-  addVatuLayer(map, 'safetyequipment', 'black', 30);
-  addPilotLayer(map, 'pilot');
-  addHarborLayer(map, 'harbor');
+  addFeatureLayer(map, 'specialarea', 100, 2, getLineStyle('pink', 2));
+  // Turvalaitteet
+  addFeatureLayer(map, 'safetyequipment', undefined, 100, getSafetyEquipmentStyle());
+  // Luotsipaikat
+  addFeatureLayer(map, 'pilot', undefined, 100, getPilotStyle());
+  // Laiturit
+  addFeatureLayer(map, 'harbor', 3, 100, (feature: FeatureLike) => {
+    return getHarborStyle(feature, false);
+  });
 }
 
 function setFeatureStyle(
