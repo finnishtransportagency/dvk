@@ -78,19 +78,21 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
     for (const harbor of card.harbors || []) {
-      features.push({
-        type: 'Feature',
-        geometry: harbor.geometry as Geometry,
-        properties: {
-          featureType: 'harbor',
-          id: harbor.id,
-          name: harbor.name,
-          email: harbor.email,
-          phoneNumber: harbor.phoneNumber,
-          fax: harbor.fax,
-          internet: harbor.internet,
-        },
-      });
+      if (harbor?.geometry?.coordinates?.length === 2) {
+        features.push({
+          type: 'Feature',
+          geometry: harbor.geometry as Geometry,
+          properties: {
+            featureType: 'harbor',
+            id: harbor.id,
+            name: harbor.mapName ?? harbor.name,
+            email: harbor.email,
+            phoneNumber: harbor.phoneNumber,
+            fax: harbor.fax,
+            internet: harbor.internet,
+          },
+        });
+      }
     }
   }
 }

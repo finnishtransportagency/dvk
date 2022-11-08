@@ -8,7 +8,7 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getHarborStyle, getPilotStyle } from '../layers';
+import { getQuayStyle, getPilotStyle } from '../layers';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -22,7 +22,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'harbor'];
+  const types = ['pilot', 'quay'];
   content.onclick = () => {
     overlay.setPosition(undefined);
     return true;
@@ -61,8 +61,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     }
   });
   const style = function (feature: FeatureLike) {
-    if (feature.getProperties().featureType === 'harbor') {
-      return getHarborStyle(feature, true);
+    if (feature.getProperties().featureType === 'quay') {
+      return getQuayStyle(feature, true);
     }
     return getPilotStyle();
   };

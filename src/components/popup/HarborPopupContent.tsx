@@ -1,86 +1,73 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Text } from '../../graphql/generated';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { QuayFeatureProperties } from '../features';
 
-type HarborPopupContentProps = {
-  harbor: HarborProperties;
+type QuayPopupContentProps = {
+  quay: QuayProperties;
 };
 
-export type HarborFeatureProperties = {
-  type: string;
-  quay?: Text;
-  extraInfo?: Text;
-  length?: number;
-  name?: string;
-  draft?: number[];
-  email?: string;
-  phoneNumber?: string[];
-  fax?: string;
-  internet?: string;
-};
-
-export type HarborProperties = {
+export type QuayProperties = {
   coordinates: number[];
-  properties: HarborFeatureProperties;
+  properties: QuayFeatureProperties;
 };
 
-const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
+const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.harbor' });
   const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
   return (
-    <IonGrid id="harborPopupContent" class="ion-padding">
+    <IonGrid id="quayPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">
-            {harbor.properties.quay && harbor.properties.quay[lang]} {harbor.properties.name ? harbor.properties.name : ''}
+            {quay.properties.quay && quay.properties.quay[lang]} {quay.properties.name ? quay.properties.name : ''}
           </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('coordinates')}</IonCol>
         </IonRow>
-        {harbor.coordinates && (
+        {quay.coordinates && (
           <IonRow>
-            <IonCol>{coordinatesToStringHDM(harbor.coordinates)}</IonCol>
+            <IonCol>{coordinatesToStringHDM(quay.coordinates)}</IonCol>
           </IonRow>
         )}
-        {harbor.properties.draft && (
+        {quay.properties.draft && (
           <>
             <IonRow>
               <IonCol className="header">{t('depth')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{harbor.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
+              <IonCol>{quay.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
             </IonRow>
           </>
         )}
-        {harbor.properties.length && (
+        {quay.properties.length && (
           <>
             <IonRow>
               <IonCol className="header">{t('length')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{t('number', { val: harbor.properties.length })} m</IonCol>
+              <IonCol>{t('number', { val: quay.properties.length })} m</IonCol>
             </IonRow>
           </>
         )}
         <IonRow>
           <IonCol className="header">{t('contactDetails')}</IonCol>
         </IonRow>
-        {harbor.properties.email && (
+        {quay.properties.email && (
           <IonRow>
             <IonCol>
-              {t('email')}: <a href={'mailto:' + harbor.properties.email}>{harbor.properties.email}</a>
+              {t('email')}: <a href={'mailto:' + quay.properties.email}>{quay.properties.email}</a>
             </IonCol>
           </IonRow>
         )}
-        {harbor.properties.phoneNumber && (
+        {quay.properties.phoneNumber && (
           <IonRow>
             <IonCol>
               {t('phoneNumber')}:{' '}
-              {harbor.properties.phoneNumber.map((p, i) => {
+              {quay.properties.phoneNumber.map((p, i) => {
                 return (
                   <span key={i}>
                     <a href={'tel:' + p}>{p}</a>
@@ -91,30 +78,30 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
             </IonCol>
           </IonRow>
         )}
-        {harbor.properties.fax && (
+        {quay.properties.fax && (
           <IonRow>
             <IonCol>
-              {t('fax')}: <a href={'tel:' + harbor.properties.fax}>{harbor.properties.fax}</a>
+              {t('fax')}: <a href={'tel:' + quay.properties.fax}>{quay.properties.fax}</a>
             </IonCol>
           </IonRow>
         )}
-        {harbor.properties.internet && (
+        {quay.properties.internet && (
           <IonRow>
             <IonCol>
               {t('internet')}:{' '}
-              <a href={harbor.properties.internet} target="_blank" rel="noreferrer">
-                {harbor.properties.internet}
+              <a href={quay.properties.internet} target="_blank" rel="noreferrer">
+                {quay.properties.internet}
               </a>
             </IonCol>
           </IonRow>
         )}
-        {harbor.properties.extraInfo && harbor.properties.extraInfo[lang] && (
+        {quay.properties.extraInfo && quay.properties.extraInfo[lang] && (
           <>
             <IonRow>
               <IonCol className="header">{t('extra')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{harbor.properties.extraInfo[lang]}</IonCol>
+              <IonCol>{quay.properties.extraInfo[lang]}</IonCol>
             </IonRow>
           </>
         )}
@@ -123,4 +110,4 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor }) => {
   );
 };
 
-export default HarborPopupContent;
+export default QuayPopupContent;

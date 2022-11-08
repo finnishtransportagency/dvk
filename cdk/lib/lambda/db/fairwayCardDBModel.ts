@@ -63,6 +63,7 @@ export type Harbor = {
   id: string;
   quays?: Quay[];
   name?: Text;
+  mapName?: Text;
   phoneNumber?: string[];
   fax?: string;
   email?: string;
