@@ -1,6 +1,15 @@
 const featureLoaderUrl = process.env.REACT_APP_REST_API_URL ? process.env.REACT_APP_REST_API_URL + '/featureloader' : '/api/featureloader';
 
-export type FeatureLayerIdType = 'area12' | 'area3456' | 'line12' | 'line3456' | 'restrictionarea' | 'specialarea' | 'pilot' | 'harbor';
+export type FeatureLayerIdType =
+  | 'area12'
+  | 'area3456'
+  | 'line12'
+  | 'line3456'
+  | 'restrictionarea'
+  | 'specialarea'
+  | 'pilot'
+  | 'harbor'
+  | 'safetyequipment';
 
 type MapType = {
   EPSG: string;
@@ -22,10 +31,11 @@ export const MAP: MapType = {
     { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
     { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
     { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
-    { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2,3,4,5,6') },
+    { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
     { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
     { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
+    { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
   ],
 };
 

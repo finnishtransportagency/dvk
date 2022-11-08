@@ -69,8 +69,22 @@ function addFairwayAreaLayer(
 }
 
 function addVatuLayer(map: Map, id: FeatureLayerIdType, color: string, maxResolution: number | undefined = undefined, width = 1) {
-  const styleFunction = function () {
-    return getLineStyle(color, width);
+  const styleFunction = function (feature: FeatureLike) {
+    if (feature.getProperties().featureType === 'safetyequipment') {
+      return new Style({
+        image: new CircleStyle({
+          radius: 8,
+          stroke: new Stroke({
+            color,
+          }),
+          fill: new Fill({
+            color: 'rgba(0,0,0,0)',
+          }),
+        }),
+      });
+    } else {
+      return getLineStyle(color, width);
+    }
   };
   const vatuLayer = new VectorLayer({
     source: new VectorSource(),
@@ -187,6 +201,7 @@ export function addAPILayers(map: Map) {
   addVatuLayer(map, 'restrictionarea', 'purple', 10, 3);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addVatuLayer(map, 'specialarea', 'pink', 100, 2);
+  addVatuLayer(map, 'safetyequipment', 'black', 30);
   addPilotLayer(map, 'pilot');
   addHarborLayer(map, 'harbor');
 }

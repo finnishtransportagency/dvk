@@ -80,6 +80,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonList lines="none" className="ion-no-padding">
               <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
               <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
+              <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} />
+              <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
             </IonList>
           </IonCol>
         </IonRow>
@@ -103,8 +105,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
           <IonCol>
             <IonList lines="none" className="ion-no-padding">
               <LayerItem id="depth" title={t('homePage.map.controls.layer.depths')} />
-              <LayerItem id="safety" title={t('homePage.map.controls.layer.safetyEquipments')} />
-              <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
               <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
               <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
             </IonList>

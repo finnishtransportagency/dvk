@@ -12,15 +12,11 @@ const InfoAccordion: React.FC = () => {
       <IonRow>
         <IonCol>
           <IonAccordionGroup>
-            <IonAccordion toggleIcon={caretDownSharp} toggleIconSlot="start">
-              <IonItem slot="header" className="divider">
-                <IonLabel>
-                  <h3>
-                    <strong>{t('info.title')}</strong>
-                  </h3>
-                </IonLabel>
+            <IonAccordion toggleIcon={caretDownSharp}>
+              <IonItem slot="header" className="accItem divider">
+                <IonLabel>{t('info.title')}</IonLabel>
               </IonItem>
-              <div slot="content">
+              <div className={'tabContent'} slot="content">
                 <p>
                   <Trans i18nKey="info.description"></Trans>
                 </p>

@@ -137,6 +137,38 @@ export type VaylaAPIModel = {
   luokitus?: LuokitusAPIModel[];
 };
 
+type TurvalaiteVaylaAPIModel = {
+  jnro: number;
+  paavayla?: string;
+};
+
+type TurvalaiteVikatiedotAPIModel = {
+  vika_id: number;
+  vikatyyppiCDE: number;
+  vikatyyppiFI?: string;
+  vikatyyppiSE?: string;
+};
+
+export type TurvalaiteAPIModel = {
+  turvalaitenumero: number;
+  nimiFI?: string;
+  nimiSV?: string;
+  alityyppi?: string;
+  turvalaitetyyppiKoodi?: number;
+  turvalaitetyyppiFI?: string;
+  turvalaitetyyppiSV?: string;
+  navigointilajiKoodi?: number;
+  navigointilajiFI?: string;
+  navigointilajiSV?: string;
+  valaistu?: string;
+  omistajaFI?: string;
+  omistajaSV?: string;
+  symboli?: string;
+  vayla?: TurvalaiteVaylaAPIModel[];
+  vikatiedot?: TurvalaiteVikatiedotAPIModel[];
+  geometria: object;
+};
+
 export async function fetchVATUByFairwayId<T>(fairwayId: number | number[], api: string) {
   const start = Date.now();
   const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();
@@ -156,12 +188,17 @@ export async function fetchVATUByFairwayClass<T>(api: string, event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
+  let params = undefined;
+  //TODO: remove once bbox not mandatory
+  if (api === 'turvalaitteet') {
+    params = { vaylaluokka: fairwayClass, bbox: '10,40,40,80' };
+  } else {
+    params = { vaylaluokka: fairwayClass };
+  }
   const response = await axios
     .get(url, {
       headers: await getVatuHeaders(),
-      params: {
-        vaylaluokka: fairwayClass,
-      },
+      params,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
