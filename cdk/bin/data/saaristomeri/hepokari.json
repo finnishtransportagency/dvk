@@ -92,6 +92,7 @@
   },
   "harbors": [
     {
+      "id": "uusikaupunki",
       "name": {
         "fi": "Uudenkaupungin Satama",
         "sv": "Nystads hamn",
@@ -113,6 +114,10 @@
           "en": "Multifunctional cranes and devices."
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

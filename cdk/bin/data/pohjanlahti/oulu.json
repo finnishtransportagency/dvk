@@ -110,6 +110,7 @@
   },
   "harbors": [
     {
+      "id": "oulu",
       "name": {
         "fi": "Oulun Satama Oy",
         "sv": "Uleåborg hamn Ab",
@@ -125,6 +126,10 @@
         "fi": "Vihreäsaaren satama: kääntöympyrän halkaisija 330 m. Oritkarin satama: kääntöympyrän halkaisija 330 m.",
         "sv": "Vihreäsaari hamn: svängcirkelns diameter 330 m. Oritkari hamn: svängcirkelns diameter 330 m.",
         "en": "Vihreäsaari harbour: diameter of turning circle 330 m. Oritkari harbour: diameter of turning circle 320 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
       },
       "quays": [
         {

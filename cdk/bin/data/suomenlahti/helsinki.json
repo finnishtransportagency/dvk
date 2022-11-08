@@ -101,7 +101,8 @@
     ]
   },
   "harbors": [
-      {
+    {
+      "id": "helsinki",
       "name": {
         "fi": "Helsingin Satama Oy, Helsinki",
         "sv": "Oy Helsingfors hamn Ab, Helsingfors",
@@ -112,6 +113,10 @@
       ],
       "fax": "+358931033802",
       "email": "port.helsinki@portofhelsinki.fi",
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

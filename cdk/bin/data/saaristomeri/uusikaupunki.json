@@ -97,7 +97,8 @@
     ]
   },
   "harbors": [
-      {
+    {
+      "id": "yara",
       "name": {
         "fi": "Yara Suomi Oy",
         "sv": "Yara Suomi Oy",
@@ -119,6 +120,10 @@
           "en": "2 eight-ton cranes, 2 loaders."
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

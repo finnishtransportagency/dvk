@@ -127,6 +127,7 @@
   },
   "harbors": [
     {
+      "id": "",
       "name": {
         "fi": "",
         "sv": "",
@@ -155,6 +156,10 @@
           "en": ""
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

@@ -97,7 +97,8 @@
     ]
   },
   "harbors": [
-      {
+    {
+      "id": "helsinki",
       "name": {
         "fi": "Helsingin Satama Oy, Helsinki",
         "sv": "Helsingfors Hamn, Helsingfors",
@@ -126,6 +127,10 @@
           "en": "Quay F: container crane, lifting capacity 40/50 t, outreach 34 m"
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

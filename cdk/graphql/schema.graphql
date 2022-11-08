@@ -69,6 +69,7 @@ type PilotPlace {
 }
 
 type Harbor {
+  id: String!
   quays: [Quay]
   name: Text
   phoneNumber: [String]
@@ -78,6 +79,7 @@ type Harbor {
   extraInfo: Text
   harborBasin: Text
   cargo: [Text]
+  geometry: GeometryPoint
 }
 
 type Quay {
