@@ -28,11 +28,6 @@
     "sv": "I början av vintern rörlig is i hela farledsområdet, bojarna och prickar kan då vara tryckta under isen. Svåra isvallar vanliga, mellan Kemi 1 och Kemi 2. Under midvintern finns 50-80 cm tjock fastis 10-20 km utanför Ajos.",
     "en": "In early winter the ice is in movement in the whole fairway and buoys and spar buoys may be pressed under ice (surface). Between Kemi 1 and Kemi 2 heavy ice ridges difficult to force. In midwinter 50-80 cm thick fast ice about 10-20 km off Ajos."
   },
-  "attention": {
-    "fi": "Tässä väyläkortissa esitettyjen syvyystietojen vertaustaso on N2000 (BSCD2000).",
-    "sv": "Referensnivå för djupuppgifter är N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
-    "en": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000)."
-  },
   "windGauge": {
     "fi": "Rannikkosääasemat, Kemi 1 majakalla.",
     "sv": "Vädret vid kuststationerna, fyren Kemi 1.",

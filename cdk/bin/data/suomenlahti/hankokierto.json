@@ -1,0 +1,92 @@
+{
+  "id": "hankokierto",
+  "name": {
+    "fi": "Hangon kiertoväylä",
+    "sv": "Hangö omfartsled",
+    "en": "Hanko bypass channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 6 kpl, jotka merkitty linjatauluin.",
+    "sv": "6 linjer, utmärkta med enstavlor.",
+    "en": "6 lines, marked with boards."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
+      "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
+      "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
+    },
+    {
+      "fi": "Hangon kiertoväylällä latitudien 59º49,3’ P ja 59º50,0’ P välillä on pysyvä kohtaamis- ja ohittamiskielto.",
+      "sv": "Permanent omkörningsförbud och mötesförbud mellan 59º49,3’ N och 59º50,0’ N latituder.",
+      "en": "There is a permanent prohibition regarding passing or meeting in the Hanko bypass channel between 59º49,3’ N and 59º50,0’ N latitudes."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Hangon läntisellä selällä ja Hankoniemen edustalla kova etelän-lännen puoleinen tuuli ja merenkäynti voivat vaikeuttaa navigointia. Väylä on suunniteltu pääosin kaksikaistaiseksi, mutta paikoin väyläalue kapenee yksikaistaiseksi.",
+    "sv": "På Hangö västra fjärd och utanför Hangö udd kan hård SV vind och sjögång försvåra navigationen. Farleden är i huvudsak planerad för två stråk, men ställvis smalnar farledsområdet till ett stråk.",
+    "en": "On Hanko läntinen selkä and off Hankoniemi navigation can be hampered by hard SW wind and heavy seas. The fairway is planned for two traffic lanes, but in some positions the fairway area narrows to one lane."
+  },
+  "iceCondition": {
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite. Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",
+    "sv": "Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke. Vid S vindar kan det tidvis förekomma isvallar.",
+    "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice. Southerly winds can at times cause ridges."
+  },
+  "windGauge": {
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation.",
+    "en": "Hanko pilot station."
+  },
+  "vesselRecommendation": {
+    "fi": "Väylän matalimmat kohdat sijaitsevat Smörstenin ja Lillklippingsgrundin välisessä kapeikossa sekä Västertristonin länsipuolella. Maksimisyvyydessä kulkevien alusten on huomioitava mahdollinen imuvaikutus aluksen ohjailuun.",
+    "sv": "Farledens smalaste och grundaste ställe är området mellan randmärkena Lillklippingsgrund och Smörsten. Fartyg med maximalt djupgående ska vid manövreringen beakta den eventuella sugeffekten.",
+    "en": "The narrowest and shallowest place is the area between the edge marks Lillklippingsgrund and Smörsten, width 120m. Vessels with a maximum draught should take the suction effect into consideration."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 23,
+          "name": "Hanko N",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.005167, 59.781167]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Hanko VTS",
+        "sv": "Hanko VTS",
+        "en": "Hanko VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": 67
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "fairways": [
+    {
+      "id": 4000,
+      "primary": true
+    }
+  ]
+}

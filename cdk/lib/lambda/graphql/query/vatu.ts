@@ -143,10 +143,10 @@ type TurvalaiteVaylaAPIModel = {
 };
 
 type TurvalaiteVikatiedotAPIModel = {
-  vika_id: number;
-  vikatyyppiCDE: number;
+  vikaId: number;
+  vikatyyppiKoodi: number;
   vikatyyppiFI?: string;
-  vikatyyppiSE?: string;
+  vikatyyppiSV?: string;
 };
 
 export type TurvalaiteAPIModel = {
@@ -188,17 +188,10 @@ export async function fetchVATUByFairwayClass<T>(api: string, event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
-  let params = undefined;
-  //TODO: remove once bbox not mandatory
-  if (api === 'turvalaitteet') {
-    params = { vaylaluokka: fairwayClass, bbox: '10,40,40,80' };
-  } else {
-    params = { vaylaluokka: fairwayClass };
-  }
   const response = await axios
     .get(url, {
       headers: await getVatuHeaders(),
-      params,
+      params: { vaylaluokka: fairwayClass },
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
