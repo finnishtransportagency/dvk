@@ -54,12 +54,12 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
               *
             </IonLabel>
           )}
+          {props.infoContent && props.infoContentTitle && (
+            <IonLabel slot="end">
+              <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
+            </IonLabel>
+          )}
         </IonItem>
-        {props.infoContent && props.infoContentTitle && (
-          <IonLabel slot="end">
-            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
-          </IonLabel>
-        )}
       </IonItem>
       <IonGrid className="no-padding">
         <IonRow>

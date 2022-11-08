@@ -234,7 +234,7 @@ ion-button.icon-only {
   --padding-start: 0;
   --padding-end: 0;
   height: auto;
-  margin: 0 0 0 5px;
+  margin: 0 0 0 8px;
   vertical-align: top;
 }
 
@@ -376,4 +376,8 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
 .wrappable-title {
   overflow: visible;
   white-space: normal;
+}
+
+.version-title {
+  font-size: 12px;
 }

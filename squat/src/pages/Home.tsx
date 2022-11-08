@@ -19,8 +19,8 @@ const Home: React.FC = () => {
       {/*-- Fade Footer --*/}
       <IonFooter collapse="fade" className="small">
         <IonToolbar>
-          <IonTitle size="small" slot="end">
-            <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+          <IonTitle size="small" slot="end" className="version-title">
+            v{`${process.env.REACT_APP_VERSION}`}
           </IonTitle>
         </IonToolbar>
       </IonFooter>

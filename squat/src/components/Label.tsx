@@ -22,12 +22,12 @@ const Label: React.FC<LabelProps> = (props) => {
             *
           </IonLabel>
         )}
+        {props.infoContent && props.infoContentTitle && (
+          <IonLabel slot="end">
+            <Modal title={props.infoContentTitle} content={props.infoContent} />
+          </IonLabel>
+        )}
       </IonItem>
-      {props.infoContent && props.infoContentTitle && (
-        <IonLabel slot="end">
-          <Modal title={props.infoContentTitle} content={props.infoContent} />
-        </IonLabel>
-      )}
     </IonItem>
   );
 };

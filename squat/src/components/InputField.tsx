@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 import { IonIcon, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { warningOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
@@ -185,7 +185,9 @@ const InputField: React.FC<InputProps> = (props) => {
           {props.helper ? props.helper : getHelperText()}
         </IonNote>
         <IonNote slot="error" className="input-error">
-          <IonIcon icon={alertCircleOutline} color="danger" aria-label={t('error')} />
+          <div title={t('error')}>
+            <IonIcon icon={warningOutline} color="danger" aria-label={t('error')} />
+          </div>
           {getErrorText()}
         </IonNote>
       </IonItem>
