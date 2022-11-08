@@ -21,3 +21,13 @@ export type QuayFeatureProperties = {
   fax?: string;
   internet?: string;
 };
+
+type Card = {
+  id: string;
+  name: Text;
+};
+
+export type PilotFeatureProperties = {
+  name: string;
+  fairwayCards: Card[];
+};

@@ -1,23 +1,13 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Text } from '../../graphql/generated';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { Link } from 'react-router-dom';
+import { PilotFeatureProperties } from '../features';
 
 type PilotPopupContentProps = {
   pilot?: PilotProperties;
-};
-
-type Card = {
-  id: string;
-  name: Text;
-};
-
-export type PilotFeatureProperties = {
-  name: string;
-  fairwayCards: Card[];
 };
 
 export type PilotProperties = {
