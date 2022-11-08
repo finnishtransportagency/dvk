@@ -1,0 +1,328 @@
+{
+  "id": "oulu",
+  "name": {
+    "fi": "Oulun väylä",
+    "sv": "Uleåborg farled",
+    "en": "Oulu fairway"
+  },
+  "group": "3",
+  "lineText": {
+    "fi": "Linjoja on 13 kpl, ja väylän merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "13 st. farledslinjer, utmärkningen med ensmärken, randmärken, bojar och prickar i en gemensam kombination.",
+    "en": "13 navigation lines. Marked with boards, edge marks, buoys, spar buoys in combined use."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylän ulko-osalla 13 solmua, väylän sisäosalla 11 solmua sekä sataman edustalla kanavamaisella väyläosuudella 8 solmua.",
+    "sv": "Dimensionerande fart på yttre delen av farleden 13 knop, på inredelen 11 knop, utanför hamn i den kanalliknande delen 8 knop.",
+    "en": "Design speed in the outer part 13 knots, in the inner part 11 knots, in the channel outside the port 8 knots."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs= -14.3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella",
+      "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd = -14,3 m, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari.",
+      "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth -14,3 m, mud seabed) and west of Kotakari is a wider area on right."
+    },
+    {
+      "fi": "Väylällä on yksi pysyvä kohtaamis- ja ohittamiskieltoalue, katso tarkemmin Bothnia VTS Master´s Guide https://tmfg.fi/fi/vts/masters-guide.",
+      "sv": "Leden har ett permanent område med mötes- och omkörningsförbud, se noggrannare Bothnia VTS Masters´Guide https://tmfg.fi/sv/vts/masters-guide.",
+      "en": "The channel has one permanent area of meeting and overtaking prohibitions, look closer to Bothnia VTS Masters´Guide https://tmfg.fi/en/vts/masters-guide"
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osa välillä Kemi 1 - Suurhiekka on avomerta; L -LO - LU tuulilla merenkäynti voi olla voimakasta. Kattilankallan sisäpuolella matalikot vaimentavat merenkäyntiä. Kattilankallasta väylä kulkee saariston ja karien osittain suojaamana Ouluun. Väylän loppuosa Kyrönkarin ankkurointipaikalta satamaan on noin 2,5 km matkalta ruopattua kaivantoa, jonka leveys on 116 m.",
+    "sv": "Öppen sjö i angöringen mellan Kemi 1 - Suurhiekka, vid SV - V - NV vind, kraftig sjögång. Mellan Kattilankalla och hamnen skyddas farleden till stor del av skärgård. Den sista sträckan från Kyrönkari ankringsplats in till hamnen består av en ca 2,5 km lång muddrad farled som är 116 m bred.",
+    "en": "The approach between Kemi 1 and Suurhiekka consists of open sea; W - SW to NW winds create heavy seas. Sea state is reduced by shallows from Kattilankalla onwards. Between Kattilankalla and port the fairway is sheltered by some small islands and skerries. The final, approximately 2,5 km long part, between Kyrönkari anchoring area and port is a dredged 116 m wide channel."
+  },
+  "iceCondition": {
+    "fi": "Alkutalvesta jää liikkuu koko väyläalueella. Kattilankallasta merelle päin on yleensä ahtautunutta jäätä. Poijut ja viitat saattavat olla jään alla mereltä aina Kattilankallaan asti. Sataman ja Kattilankallan välisellä väyläosuudella on tammikuusta huhtikuuhun n. 50-80 cm paksua kiintojäätä. Lauhdevedet helpottavat Oritkarin sataman jääoloja.",
+    "sv": "På förvintern är isen i rörelse i hela farledsområdet, vallar förekommer i regel ytter om Kattilankalla. Bojar och prickar kan då vara tryckta under isen ända fram till Kattilankalla. Området mellan hamnen och Kattilankalla är täckt med ca 50-80 cm tjock fastis från januari till april. Varmvattenutsläpp underlättar isförhållandena i Oritkari hamn.",
+    "en": "In early winter there is drifting ice along the entire fairway. Outside Kemi 1 and Suuhiekka the ice is usually also ridged. May cause buoys and spar buoys to be pressed under ice (surface) all the way to Kattilankalla. From January to April there is 50–80 cm thick fast ice between port and Kattilankalla. Warm water effluents alleviate ice conditions in Oritkari harbour."
+  },
+  "speedLimit": [
+    {
+      "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
+      "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/h fartbegränsning.",
+      "en": "Between Löyhänmutka – Kotakari a speed limit 22 km/h."
+    }
+  ],
+  "windGauge": {
+    "fi": "Rannikkoasemat, Hailuoto Marjaniemi, Oulu Vihreäsaari, Kemi 1 majakka.",
+    "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Uleåborg Vihreäsaari, fyren Kemi 1.",
+    "en": "Marine weather observations, Hailuoto Marjaniemi and Oulu Vihreäsaari and Kemi 1 lighthouse."
+  },
+  "vesselRecommendation": {
+    "fi": "Välillä Kyrönkari - Oulun satama aluksilla, jotka kulkevat mitoitussyväys 12,5 metrin, on huomioitava mahdollinen pohjaimun vaikutus.",
+    "sv": "Fartyg med ett dimensionerat djupgående på 12,5 m bör ta hänsyn till squat-effekten mellan Kyrönkari och hamnen.",
+    "en": "Ships with a design draught of 12,5 m should make allowance for that squat effect might affect the navigation of the vessel between Kyrönkari and the port."
+  },
+  "seaLevel": {
+    "fi": "Oulu mareografi Toppilansalmen suulla.",
+    "sv": "Kemi mareograf, Uleåborg mareograf, Uleåborg - Toppilasundet",
+    "en": "Kemi mareograph, Oulu mareograph outside of Oulu , Toppila harbour."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": " +358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "fi": "Luotsipaikka aluksille, joiden syväys on enintään 11,5 m Oulu W 65°05,01’ P, 024°03,30 I. Liitekartassa on kuvattu varmistettu alue (Hs -14,0 m, mitoitusnopeus 14 solmua) jota alukset voivat käyttää liikuttaessa luotsipaikalle ja luotsipaikalta. Varmistettua aluetta on merkitty virtuaaliturvalaitteilla, varmistetun alueen virtuaali AIS merkinnän lähetys käynnistetään tarvittaessa. Yli 11,5 m mitoitussyväydellä kulkeville aluksille luotsin otto- ja jättöpaikka sovitaan tapauskohtaisesti. Luotsi nousee/jättää aluksen luotsipaikalla, ja varsinainen luotsaus alkaa ja päättyy Oulun väylän ulkopäässä (65°20,8940’ P ja 023°58,2420’ I). Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Lotsplatsen för fartyg, med dimensionerat djupgående 11,5 m Oulu W: 65°05,01’ N, 024°03,30 O. Säkrat område (rd -14,0 m, dimensionerande fart 14 knop) som fartyg kan använda till och från lotsplatsen Oulu W är med i kartbilagan. Säkrat område har utmärkts med virtuella säkerhetsanordningar, sändning av virtuella AIS utmärkning för säkrat område startas vid behov. Fartyg över 11,5 m dimensionerat djupgående, bör platsen där lots möter överenskommas separat. Lotsen möter och lämnar fartyget på lotsplatsen men den egentliga lotsningen börjar/slutar på Uleåborg farled. (65°20,8940’ N ja 023°58,2420’ O). Anm. Vintertid och vid dålig sikt bör platsen där lots möter överenskommas separat.",
+        "en": "Pilot boarding positions for vessels using design draft 11.5 m Oulu W: 65° 05.01' N 024 ° 03.30 E. Safe clearance depth of the area (sc -14.0 m, designed speed 14.0 knots) which vessels can use to and from the pilot boarding position is displayed on the map. The area is marked with virtual AIS AtoNs, broadcasting of virtual AIS marks for secured area will be started if needed. Vessels with design draft over 11.5 m, pilot boarding and disembarking will be agreed separately. Pilot boards or disembarks the vessel at the pilot position, but the actual pilotage begins/ends at the Oulu fairway, 65° 20.8940' N, 023° 58.2420' E. NB. In winter and adverse weather conditions the pilot boarding position is agreed separately"
+      },
+      "places": [
+        {
+          "id": 43,
+          "name": "Oulu W",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.055, 65.0835]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Bothnia VTS",
+        "sv": "Bothnia VTS",
+        "en": "Bothnia VTS"
+      },
+      "phoneNumber": "+358204487356",
+      "email": [
+        "bothnia.vts@fintraffic.fi"
+      ],
+      "vhf": 67
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Hinaaja Tuura 3 x 883 kW. R-Towing Oy.",
+          "sv": "Tuura, 3 x 883 kW, R-Towing Ab.",
+          "en": "Tuura 3 x 883 kW, R-Towing Inc."
+        },
+        "phoneNumber": [
+          "+358400256517",
+          "+358400382652"
+        ]
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "name": {
+        "fi": "Oulun Satama Oy",
+        "sv": "Uleåborg hamn Ab",
+        "en": "Port of Oulu Ltd"
+      },
+      "phoneNumber": [
+        "+358447032753",
+        "+358447032750",
+        "+358447032751"
+      ],
+      "fax": "+35885572040",
+      "harborBasin": {
+        "fi": "Vihreäsaaren satama: kääntöympyrän halkaisija 330 m. Oritkarin satama: kääntöympyrän halkaisija 330 m.",
+        "sv": "Vihreäsaari hamn: svängcirkelns diameter 330 m. Oritkari hamn: svängcirkelns diameter 330 m.",
+        "en": "Vihreäsaari harbour: diameter of turning circle 330 m. Oritkari harbour: diameter of turning circle 320 m."
+      },
+      "quays": [
+        {
+          "name": {
+            "fi": "Öljylaituri 301",
+            "sv": "Oljekaj 301",
+            "en": "Oil terminal 301"
+          },
+          "length": 72,
+          "sections": [
+            {
+              "draft": 11.3
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.39572444959251, 65.0060794991025]
+          }
+        },
+        {
+          "name": {
+            "fi": "Bulklaituri 302",
+            "sv": "Bulkkaj 302",
+            "en": "Bulk terminal 302"
+          },
+          "length": 150,
+          "sections": [
+            {
+              "draft": 11.3
+            },
+            {
+              "draft": 6.9
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.399138115151256, 65.00495971287064]
+          }
+        },
+        {
+          "name": {
+            "fi": "Bulklaituri 303",
+            "sv": "Bulkkaj 303",
+            "en": "Bulk terminal 303"
+          },
+          "length": 150,
+          "sections": [
+            {
+              "draft": 11.3
+            },
+            {
+              "draft": 6.9
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.39752215337134, 65.00455691930827]
+          }
+        },
+        {
+          "name": {
+            "fi": "Päälaituri 103",
+            "sv": "Huvudkajen 103",
+            "en": "Main quay 103"
+          },
+          "length": 343,
+          "sections": [
+            {
+              "draft": 9.2
+            }
+          ],
+          "extraInfo": {
+            "fi": "peräporttipaikka 102",
+            "sv": "ro-ro-ramp 102",
+            "en": "Ro/Ro ramp 102"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.413226436375187, 64.99844977635564]
+          }
+        },
+        {
+          "name": {
+            "fi": "Pohjoislaituri 101",
+            "sv": "Norra kajen 101",
+            "en": "North Quay 101"
+          },
+          "length": 170,
+          "sections": [
+            {
+              "draft": 10.8
+            }
+          ],
+          "extraInfo": {
+            "fi": "peräporttipaikka",
+            "sv": "ro-ro-ramp",
+            "en": "Ro/Ro ramp"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.418265832598742, 64.99846194886058]
+          }
+        },
+        {
+          "name": {
+            "fi": "Kemikaalilaituri 203",
+            "sv": "Kemikaliekaj 203",
+            "en": "Chemical terminal 203"
+          },
+          "length": 70,
+          "sections": [
+            {
+              "draft": 10.8
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.41944213837732, 65.00221699852422]
+          }
+        },
+        {
+          "name": {
+            "fi": "Kemikaalilaituri 204",
+            "sv": "Kemikaliekaj 204",
+            "en": "Chemical terminal 204"
+          },
+          "length": 162,
+          "sections": [
+            {
+              "draft": 8
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.420633266769993, 65.00077108529226]
+          }
+        },
+        {
+          "name": {
+            "fi": "Länsilaituri 105",
+            "sv": "Västra kajen 105",
+            "en": "West Quay 105"
+          },
+          "length": 290,
+          "sections": [
+            {
+              "draft": 13.6
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.40239095507212, 65.00020558057471]
+          }
+        },
+        {
+          "name": {
+            "fi": "Nuottasaaren laituri 201",
+            "sv": "Nuottasaarikajen 201",
+            "en": "Nuottasaari Quay 201"
+          },
+          "length": 320,
+          "sections": [
+            {
+              "draft": 6.8
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.42592220678699, 65.00498146223326]
+          }
+        },
+        {
+          "name": {
+            "fi": "Nuottasaaren laituri 202",
+            "sv": "Nuottasaarikajen 202",
+            "en": "Nuottasaari Quay 202"
+          },
+          "length": 320,
+          "sections": [
+            {
+              "draft": 6.8
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.42342728482431, 65.00410461791442]
+          }
+        }
+      ]
+    }
+  ],
+  "fairways": [
+    {
+      "id": 220,
+      "primary": true
+    },
+    {
+      "id": 218
+    }
+  ]
+}
