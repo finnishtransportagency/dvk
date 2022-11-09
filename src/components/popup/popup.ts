@@ -9,6 +9,7 @@ import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
 import { getHarborStyle, getPilotStyle } from '../layers';
+import dvkMap from '../DvkMap';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -67,7 +68,11 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     return getPilotStyle();
   };
 
-  const pointerMoveSelect = new Select({ condition: pointerMove, style, filter: (feature) => types.includes(feature.getProperties().featureType) });
+  const pointerMoveSelect = new Select({
+    condition: pointerMove,
+    style,
+    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('harbor')],
+  });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;
     const target = map.getTarget() as HTMLElement;
