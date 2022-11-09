@@ -5,6 +5,7 @@ import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { Link } from 'react-router-dom';
 import { PilotFeatureProperties } from '../features';
+import { Lang } from '../../utils/constants';
 
 type PilotPopupContentProps = {
   pilot?: PilotProperties;
@@ -17,7 +18,7 @@ export type PilotProperties = {
 
 const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.pilotPlace' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
   return (
     <IonGrid id="pilotPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">

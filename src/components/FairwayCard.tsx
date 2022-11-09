@@ -20,9 +20,8 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
-import { useSelectedFairway } from './layers';
-
-type Lang = 'fi' | 'sv' | 'en';
+import { useHighlightFairway } from './layers';
+import { Lang } from '../utils/constants';
 
 type PhonenumberProps = {
   number?: string | null;
@@ -615,7 +614,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     return n2000Line;
   };
 
-  useSelectedFairway(data);
+  useHighlightFairway(data);
   return (
     <>
       {loading && (

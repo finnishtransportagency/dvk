@@ -12,7 +12,7 @@ import { getQuayStyle, getPilotStyle } from '../layers';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
-  const content = document.getElementById('popup-content') as HTMLElement;
+  const content = document.getElementById('popup-content') as HTMLElement | undefined;
   const overlay = new Overlay({
     element: container,
     autoPan: {
@@ -23,10 +23,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     positioning: 'center-left',
   });
   const types = ['pilot', 'quay'];
-  content.onclick = () => {
-    overlay.setPosition(undefined);
-    return true;
-  };
+  if (content) {
+    content.onclick = () => {
+      overlay.setPosition(undefined);
+      return true;
+    };
+  }
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
     const fn = getTransform(MAP.EPSG, 'EPSG:4326');

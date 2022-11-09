@@ -12,6 +12,8 @@ export type FeatureLayerIdType =
   | 'quay'
   | 'safetyequipment';
 
+export type Lang = 'fi' | 'sv' | 'en';
+
 type MapType = {
   EPSG: string;
   EXTENT: number[];

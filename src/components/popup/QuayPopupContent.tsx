@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { QuayFeatureProperties } from '../features';
+import { Lang } from '../../utils/constants';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -16,7 +17,7 @@ export type QuayProperties = {
 
 const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.harbor' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
   return (
     <IonGrid id="quayPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">

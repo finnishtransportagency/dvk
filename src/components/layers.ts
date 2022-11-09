@@ -12,11 +12,11 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 // eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
-import { useMap } from './DvkMap';
+import { getMap } from './DvkMap';
 import { useEffect, useState } from 'react';
 import Geometry from 'ol/geom/Geometry';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
-import { FeatureLayerIdType } from '../utils/constants';
+import { FeatureLayerIdType, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
@@ -88,11 +88,11 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   });
   const props = feature.getProperties() as QuayFeatureProperties;
   let text;
-  // TODO: use correct language for formatting number
+  const dvkMap = getMap();
   if (props.name && props.draft) {
-    text = `${props.name} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+    text = `${props.name} ${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else if (props.draft) {
-    text = `${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+    text = `${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else {
     text = '';
   }
@@ -130,9 +130,9 @@ export function getHarborStyle(feature: FeatureLike) {
   });
   const props = feature.getProperties() as HarborFeatureProperties;
   let text;
-  // TODO: use correct language
+  const dvkMap = getMap();
   if (props.name) {
-    text = `${props.name.fi}`;
+    text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
   } else {
     text = '';
   }
@@ -240,8 +240,8 @@ type FeatureAndStyle = {
   style: StyleLike | undefined;
 };
 
-export function useSelectedFairway(data: FindFairwayCardByIdQuery | undefined) {
-  const dvkMap = useMap();
+export function useHighlightFairway(data: FindFairwayCardByIdQuery | undefined) {
+  const dvkMap = getMap();
   const [features, setFeatures] = useState<FeatureAndStyle[]>([]);
   useEffect(() => {
     return () => {

@@ -104,6 +104,11 @@
         "sv": "Helsingfors Hamn, Helsingfors",
         "en": "Port of Helsinki, Helsinki"
       },
+      "mapName": {
+        "fi": "Vuosaaren satama",
+        "sv": "Nordsjöledens hamn",
+        "en": "Port of Vuosaari"
+      },
       "phoneNumber": [
         "+35893101621"
       ],
@@ -129,7 +134,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": []
+        "coordinates": [25.192532113229763, 60.21434769498357]
       },
       "quays": [
         {

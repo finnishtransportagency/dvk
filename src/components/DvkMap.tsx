@@ -54,18 +54,22 @@ class DvkMap {
   private source: VectorTileSource | null = null;
 
   // eslint-disable-next-line
-  private t: any;
+  public t: any;
+
+  // eslint-disable-next-line
+  public i18n: any;
 
   public initialized = false;
 
   // eslint-disable-next-line
-  init(t: any) {
+  init(t: any, i18n: any) {
     if (this.initialized) {
       return;
     }
     this.initialized = true;
 
     this.t = t;
+    this.i18n = i18n;
     const apiKey = process.env.REACT_APP_BG_MAP_API_KEY;
     const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
     const bgMapApiUrl = process.env.REACT_APP_BG_MAP_API_URL;
@@ -219,19 +223,19 @@ class DvkMap {
     this.zoomControl = new Zoom({
       zoomInLabel: '',
       zoomOutLabel: '',
-      zoomInTipLabel: this.t('zoom.zoomInTipLabel'),
-      zoomOutTipLabel: this.t('zoom.zoomOutTipLabel'),
+      zoomInTipLabel: this.t('homePage.map.controls.zoom.zoomInTipLabel'),
+      zoomOutTipLabel: this.t('homePage.map.controls.zoom.zoomOutTipLabel'),
     });
     this.olMap?.addControl(this.zoomControl);
 
-    this.centerToOwnLocationControl.setTipLabel(this.t('ownLocation.tipLabel'));
-    this.openSidebarMenuControl.setTipLabel(this.t('openMenu.tipLabel'));
-    this.mapDetailsControl.setCopyrightLabel(this.t('mapDetails.copyrightLabel'));
-    this.mapDetailsControl.setMousePositionLabel(this.t('mapDetails.mousePositionLabel'));
-    this.layerPopupControl.setTipLabel(this.t('layer.tipLabel'));
-    this.searchbarControl?.setPlaceholder(this.t('searchbar.placeholder'));
-    this.searchbarControl?.setTitle(this.t('searchbar.title'));
-    this.searchbarControl?.setClearTitle(this.t('searchbar.clearTitle'));
+    this.centerToOwnLocationControl.setTipLabel(this.t('homePage.map.controls.ownLocation.tipLabel'));
+    this.openSidebarMenuControl.setTipLabel(this.t('homePage.map.controls.openMenu.tipLabel'));
+    this.mapDetailsControl.setCopyrightLabel(this.t('homePage.map.controls.mapDetails.copyrightLabel'));
+    this.mapDetailsControl.setMousePositionLabel(this.t('homePage.map.controls.mapDetails.mousePositionLabel'));
+    this.layerPopupControl.setTipLabel(this.t('homePage.map.controls.layer.tipLabel'));
+    this.searchbarControl?.setPlaceholder(this.t('homePage.map.controls.searchbar.placeholder'));
+    this.searchbarControl?.setTitle(this.t('homePage.map.controls.searchbar.title'));
+    this.searchbarControl?.setClearTitle(this.t('homePage.map.controls.searchbar.clearTitle'));
   };
 
   public addShowSidebarMenuControl = () => {
@@ -286,16 +290,16 @@ class DvkMap {
 const dvkMap = new DvkMap();
 
 function InitDvkMap() {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls' });
+  const { t, i18n } = useTranslation();
   if (!dvkMap.initialized) {
-    dvkMap.init(t);
+    dvkMap.init(t, i18n);
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });
   }
 }
 
-export function useMap() {
+export function getMap() {
   return dvkMap;
 }
 

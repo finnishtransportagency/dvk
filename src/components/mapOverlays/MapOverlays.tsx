@@ -7,7 +7,7 @@ import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { MAX_HITS } from '../../utils/constants';
+import { Lang, MAX_HITS } from '../../utils/constants';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -16,7 +16,7 @@ export type PopupProperties = {
 
 const MapOverlays: React.FC = () => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<BackgroundMapType>(dvkMap.getBackgroundMapType());
 
