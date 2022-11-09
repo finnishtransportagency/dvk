@@ -99,7 +99,8 @@
     ]
   },
   "harbors": [
-      {
+    {
+      "id": "kemi",
       "name": {
         "fi": "Kemin Satama Oy",
         "sv": "Kemi hamn Ab",
@@ -125,6 +126,10 @@
           "en": "Quays I-IV: Mobile crane 6-100 t, ro-ro berth"
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.51529305714698, 65.6627988885]
+      },
       "quays": [
         {
           "name": {

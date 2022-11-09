@@ -4,19 +4,19 @@ import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
-import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
+import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { MAX_HITS } from '../../utils/constants';
+import { Lang, MAX_HITS } from '../../utils/constants';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
-  harbor?: HarborProperties;
+  quay?: QuayProperties;
 };
 
 const MapOverlays: React.FC = () => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
   const [isOpen, setIsOpen] = useState(false);
   const [backgroundMapType, setBackgroundMapType] = useState<BackgroundMapType>(dvkMap.getBackgroundMapType());
 
@@ -66,7 +66,7 @@ const MapOverlays: React.FC = () => {
       <div id="popup" className="ol-popup">
         <div id="popup-content">
           {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} />}
-          {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} />}
+          {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />

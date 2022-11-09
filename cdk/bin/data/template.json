@@ -127,7 +127,13 @@
   },
   "harbors": [
     {
+      "id": "",
       "name": {
+        "fi": "",
+        "sv": "",
+        "en": ""
+      },
+      "mapName": {
         "fi": "",
         "sv": "",
         "en": ""
@@ -155,6 +161,10 @@
           "en": ""
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      },
       "quays": [
         {
           "name": {

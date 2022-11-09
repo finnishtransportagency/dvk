@@ -17,6 +17,7 @@ import './FairwayCards.css';
 import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
 import { caretDownSharp } from 'ionicons/icons';
 import { Link } from 'react-router-dom';
+import { Lang } from '../utils/constants';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -27,7 +28,7 @@ type FairwayCardGroupProps = {
 
 const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loading, first }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
 
   return (
     <div className="group">

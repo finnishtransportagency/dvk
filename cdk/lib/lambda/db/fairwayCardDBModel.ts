@@ -60,8 +60,10 @@ export type PilotFairwayCard = {
 };
 
 export type Harbor = {
+  id: string;
   quays?: Quay[];
   name?: Text;
+  mapName?: Text;
   phoneNumber?: string[];
   fax?: string;
   email?: string;
@@ -69,6 +71,7 @@ export type Harbor = {
   extraInfo?: Text;
   harborBasin?: Text;
   cargo?: Text[];
+  geometry?: GeometryPoint;
 };
 
 export type Quay = {

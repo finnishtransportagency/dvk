@@ -12,12 +12,12 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 // eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
-import { HarborFeatureProperties } from './popup/HarborPopupContent';
-import { useMap } from './DvkMap';
+import { getMap } from './DvkMap';
 import { useEffect, useState } from 'react';
 import Geometry from 'ol/geom/Geometry';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
-import { FeatureLayerIdType } from '../utils/constants';
+import { FeatureLayerIdType, Lang } from '../utils/constants';
+import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -73,7 +73,7 @@ export function getPilotStyle() {
   ];
 }
 
-export function getHarborStyle(feature: FeatureLike, selected: boolean) {
+export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -86,13 +86,13 @@ export function getHarborStyle(feature: FeatureLike, selected: boolean) {
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const props = feature.getProperties() as HarborFeatureProperties;
+  const props = feature.getProperties() as QuayFeatureProperties;
   let text;
-  // TODO: use correct language for formatting number
+  const dvkMap = getMap();
   if (props.name && props.draft) {
-    text = `${props.name} ${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+    text = `${props.name} ${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else if (props.draft) {
-    text = `${props.draft?.map((d) => d.toString().replace('.', ',')).join(' m / ')} m`;
+    text = `${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else {
     text = '';
   }
@@ -121,13 +121,61 @@ export function getHarborStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-function addFeatureLayer(map: Map, id: FeatureLayerIdType, maxResolution: number | undefined, renderBuffer: number, style: StyleLike) {
+export function getHarborStyle(feature: FeatureLike) {
+  const image = new Icon({
+    src: quayIcon,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const props = feature.getProperties() as HarborFeatureProperties;
+  let text;
+  const dvkMap = getMap();
+  if (props.name) {
+    text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
+  } else {
+    text = '';
+  }
+  return [
+    new Style({
+      image,
+      text: new Text({
+        font: 'bold 18px "Exo 2"',
+        placement: 'line',
+        offsetY: -50,
+        text,
+        fill: new Fill({
+          color: '#000000',
+        }),
+      }),
+    }),
+    new Style({
+      image: new CircleStyle({
+        radius: 20,
+        displacement: [0, 20],
+        fill: new Fill({
+          color: 'rgba(0,0,0,0)',
+        }),
+      }),
+    }),
+  ];
+}
+
+function addFeatureLayer(
+  map: Map,
+  id: FeatureLayerIdType,
+  maxResolution: number | undefined,
+  renderBuffer: number,
+  style: StyleLike,
+  minResolution: number | undefined = undefined
+) {
   map.addLayer(
     new VectorLayer({
       source: new VectorSource(),
       style,
       properties: { id },
       maxResolution,
+      minResolution,
       renderBuffer,
     })
   );
@@ -150,9 +198,20 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 100, getPilotStyle());
   // Laiturit
-  addFeatureLayer(map, 'harbor', 3, 100, (feature: FeatureLike) => {
-    return getHarborStyle(feature, false);
+  addFeatureLayer(map, 'quay', 3, 100, (feature: FeatureLike) => {
+    return getQuayStyle(feature, false);
   });
+  // Satamat
+  addFeatureLayer(
+    map,
+    'harbor',
+    20,
+    1,
+    (feature: FeatureLike) => {
+      return getHarborStyle(feature);
+    },
+    3
+  );
 }
 
 function setFeatureStyle(
@@ -181,8 +240,8 @@ type FeatureAndStyle = {
   style: StyleLike | undefined;
 };
 
-export function useSelectedFairway(data: FindFairwayCardByIdQuery | undefined) {
-  const dvkMap = useMap();
+export function useHighlightFairway(data: FindFairwayCardByIdQuery | undefined) {
+  const dvkMap = getMap();
   const [features, setFeatures] = useState<FeatureAndStyle[]>([]);
   useEffect(() => {
     return () => {

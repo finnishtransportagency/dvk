@@ -11,7 +11,7 @@ import FairwayCard from './FairwayCard';
 import dvkMap from '../components/DvkMap';
 import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
 import { useFindAllFairwayCardsQuery } from '../graphql/generated';
-import { MAX_HITS, MINIMUM_QUERYLENGTH } from '../utils/constants';
+import { Lang, MAX_HITS, MINIMUM_QUERYLENGTH } from '../utils/constants';
 
 interface RouterProps {
   fairwayId?: string;
@@ -23,7 +23,7 @@ interface MainContentProps extends RouteComponentProps<RouterProps> {
 
 const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFindAllFairwayCardsQuery();
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
