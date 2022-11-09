@@ -130,8 +130,6 @@ class DvkMap {
       ],
     });
 
-    addAPILayers(this.olMap);
-
     // override with tileURL
     // styleJSON has tileJSON url which does not work without further dev
     this.source = new VectorTileSource({
@@ -281,6 +279,10 @@ class DvkMap {
     return this.searchbarControl;
   };
 
+  public getFeatureLayer(layerId: FeatureLayerIdType) {
+    return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
+  }
+
   public getVectorSource(layerId: FeatureLayerIdType) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
@@ -293,6 +295,9 @@ function InitDvkMap() {
   const { t, i18n } = useTranslation();
   if (!dvkMap.initialized) {
     dvkMap.init(t, i18n);
+    if (dvkMap.olMap) {
+      addAPILayers(dvkMap.olMap);
+    }
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });

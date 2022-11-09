@@ -177,6 +177,8 @@ function addFeatureLayer(
       maxResolution,
       minResolution,
       renderBuffer,
+      updateWhileInteracting: true,
+      updateWhileAnimating: true,
     })
   );
 }
@@ -194,11 +196,11 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 100, 2, getLineStyle('pink', 2));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', undefined, 100, getSafetyEquipmentStyle());
+  addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
   // Luotsipaikat
-  addFeatureLayer(map, 'pilot', undefined, 100, getPilotStyle());
+  addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Laiturit
-  addFeatureLayer(map, 'quay', 3, 100, (feature: FeatureLike) => {
+  addFeatureLayer(map, 'quay', 3, 50, (feature: FeatureLike) => {
     return getQuayStyle(feature, false);
   });
   // Satamat
