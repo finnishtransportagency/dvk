@@ -27,10 +27,15 @@ async function makeRequest(url: URL, id: FeatureLayerIdType) {
   });
 }
 
+let featuresInitialized = false;
+
 function InitFeatures() {
-  MAP.FEATURE_LAYERS.forEach((layer) => {
-    makeRequest(layer.url, layer.id);
-  });
+  if (!featuresInitialized) {
+    MAP.FEATURE_LAYERS.forEach((layer) => {
+      makeRequest(layer.url, layer.id);
+    });
+    featuresInitialized = true;
+  }
 }
 
 export { InitFeatures };
