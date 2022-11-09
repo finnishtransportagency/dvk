@@ -193,7 +193,8 @@ function addFeatureLayer(
   maxResolution: number | undefined,
   renderBuffer: number,
   style: StyleLike,
-  minResolution: number | undefined = undefined
+  minResolution: number | undefined = undefined,
+  opacity = 1
 ) {
   map.addLayer(
     new VectorLayer({
@@ -205,6 +206,7 @@ function addFeatureLayer(
       renderBuffer,
       updateWhileInteracting: true,
       updateWhileAnimating: true,
+      opacity,
     })
   );
 }
@@ -220,13 +222,21 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 100, 2, (feature: FeatureLike) => {
-    if (feature.getProperties().typeCode === 2) {
-      return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.5)', anchorage);
-    } else {
-      return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.25)', meet);
-    }
-  });
+  addFeatureLayer(
+    map,
+    'specialarea',
+    100,
+    2,
+    (feature: FeatureLike) => {
+      if (feature.getProperties().typeCode === 2) {
+        return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.5)', anchorage);
+      } else {
+        return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.5)', meet);
+      }
+    },
+    undefined,
+    0.75
+  );
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
   // Luotsipaikat
