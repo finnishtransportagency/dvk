@@ -18,6 +18,32 @@ import Geometry from 'ol/geom/Geometry';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
 import { FeatureLayerIdType, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import anchorage from '../theme/img/ankkurointialue.svg';
+import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
+import Polygon from 'ol/geom/Polygon';
+
+function getSpecialAreaStyle(color: string, width: number, fillColor: string, icon: string) {
+  return [
+    new Style({
+      image: new Icon({
+        src: icon,
+      }),
+      geometry: function (feature) {
+        const geometry = feature.getGeometry() as Polygon;
+        return geometry.getInteriorPoint();
+      },
+    }),
+    new Style({
+      stroke: new Stroke({
+        color,
+        width,
+      }),
+      fill: new Fill({
+        color: fillColor,
+      }),
+    }),
+  ];
+}
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -194,7 +220,13 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 100, 2, getLineStyle('pink', 2));
+  addFeatureLayer(map, 'specialarea', 100, 2, (feature: FeatureLike) => {
+    if (feature.getProperties().typeCode === 2) {
+      return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.5)', anchorage);
+    } else {
+      return getSpecialAreaStyle('#C57A11', 2, 'rgba(255,195,0,0.25)', meet);
+    }
+  });
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
   // Luotsipaikat
