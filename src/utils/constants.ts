@@ -11,7 +11,10 @@ export type FeatureLayerIdType =
   | 'specialarea'
   | 'pilot'
   | 'harbor'
+  | 'quay'
   | 'safetyequipment';
+
+export type Lang = 'fi' | 'sv' | 'en';
 
 type MapType = {
   EPSG: string;
@@ -37,6 +40,7 @@ export const MAP: MapType = {
     { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
     { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
+    { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
   ],
 };

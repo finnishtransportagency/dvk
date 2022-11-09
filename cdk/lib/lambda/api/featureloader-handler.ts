@@ -28,7 +28,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
       type: 'Feature',
       geometry: quay.geometry as Geometry,
       properties: {
-        featureType: 'harbor',
+        featureType: 'quay',
         quay: quay.name,
         extraInfo: quay.extraInfo,
         length: quay.length,
@@ -46,7 +46,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
           type: 'Feature',
           geometry: section.geometry as Geometry,
           properties: {
-            featureType: 'harbor',
+            featureType: 'quay',
             quay: quay.name,
             extraInfo: quay.extraInfo,
             length: quay.length,
@@ -63,12 +63,35 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
   }
 }
 
-async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addQuayFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
     for (const harbor of card.harbors || []) {
       for (const quay of harbor.quays || []) {
         addQuay(harbor, quay, features);
+      }
+    }
+  }
+}
+
+async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    for (const harbor of card.harbors || []) {
+      if (harbor?.geometry?.coordinates?.length === 2) {
+        features.push({
+          type: 'Feature',
+          geometry: harbor.geometry as Geometry,
+          properties: {
+            featureType: 'harbor',
+            id: harbor.id,
+            name: harbor.mapName ?? harbor.name,
+            email: harbor.email,
+            phoneNumber: harbor.phoneNumber,
+            fax: harbor.fax,
+            internet: harbor.internet,
+          },
+        });
       }
     }
   }
@@ -93,6 +116,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
     features.push({
       type: 'Feature',
       geometry: place.geometry as Geometry,
+      id: place.id,
       properties: {
         featureType: 'pilot',
         name: place.name,
@@ -309,6 +333,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     if (types.includes('harbor')) {
       await addHarborFeatures(features);
     }
+    if (types.includes('quay')) {
+      await addQuayFeatures(features);
+    }
     if (types.includes('area')) {
       await addAreaFeatures(features, true, event);
     }
@@ -337,7 +364,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     start = Date.now();
     base64Response = gzippedResponse.toString('base64');
     log.debug('base64 duration: %d ms', Date.now() - start);
-    if (cacheDurationHours > 0) {
+    if (cacheDurationHours > 0 && collection.features.length > 0) {
       await cacheResponse(key, base64Response, cacheDurationHours);
     }
   }

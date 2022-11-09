@@ -3,7 +3,7 @@ import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './SearchbarDropdown.css';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
-import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 
 interface DropdownProps {
   isOpen: boolean;
@@ -14,7 +14,7 @@ interface DropdownProps {
 
 const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairwayCards, selected }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls.searchbar' });
-  const lang = i18n.resolvedLanguage as 'fi' | 'sv' | 'en';
+  const lang = i18n.resolvedLanguage as Lang;
 
   const checkSelected = (idx: number) => {
     return selected === idx ? ' ion-focused' : '';

@@ -79,6 +79,7 @@
   },
   "harbors": [
     {
+      "id": "hanko",
       "name": {
         "fi": "Hangon satama - Hangö Hamn Oy Ab",
         "sv": "Hangon satama - Hangö Hamn Oy Ab",
@@ -106,6 +107,10 @@
           "en": "Outer Harbour: Berth OH1, Ro/Ro ramp, discharge of liquid bulk cargo; Berth OH2, Ro/Ro ramp."
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.95025584489915, 59.82109045912279]
+      },
       "quays": [
         {
           "name": {

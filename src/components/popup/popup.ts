@@ -8,12 +8,12 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getHarborStyle, getPilotStyle } from '../layers';
+import { getQuayStyle, getPilotStyle } from '../layers';
 import dvkMap from '../DvkMap';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
-  const content = document.getElementById('popup-content') as HTMLElement;
+  const content = document.getElementById('popup-content') as HTMLElement | undefined;
   const overlay = new Overlay({
     element: container,
     autoPan: {
@@ -23,11 +23,13 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'harbor'];
-  content.onclick = () => {
-    overlay.setPosition(undefined);
-    return true;
-  };
+  const types = ['pilot', 'quay'];
+  if (content) {
+    content.onclick = () => {
+      overlay.setPosition(undefined);
+      return true;
+    };
+  }
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
     const fn = getTransform(MAP.EPSG, 'EPSG:4326');
@@ -62,8 +64,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     }
   });
   const style = function (feature: FeatureLike) {
-    if (feature.getProperties().featureType === 'harbor') {
-      return getHarborStyle(feature, true);
+    if (feature.getProperties().featureType === 'quay') {
+      return getQuayStyle(feature, true);
     }
     return getPilotStyle();
   };
@@ -71,7 +73,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const pointerMoveSelect = new Select({
     condition: pointerMove,
     style,
-    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('harbor')],
+    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('quay')],
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;

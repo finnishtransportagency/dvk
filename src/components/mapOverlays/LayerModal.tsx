@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonList, IonModal, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { BackgroundMapType, useMap } from '../DvkMap';
+import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 
 interface ModalProps {
@@ -19,12 +19,12 @@ interface CheckBoxProps {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'quay']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
   };
-  const dvkMap = useMap();
+  const dvkMap = getMap();
   useEffect(() => {
     dvkMap.olMap?.getAllLayers().forEach((layer) => {
       const layerId = layer.getProperties().id;

@@ -106,6 +106,7 @@
   },
   "harbors": [
     {
+      "id": "naantali",
       "name": {
         "fi": "Naantalin Satama Oy",
         "sv": "Nådendals hamn",
@@ -122,6 +123,10 @@
           "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.04173594782463, 60.45883273029457]
+      },
       "quays": [
         {
           "name": {
@@ -265,6 +270,7 @@
       ]
     },
     {
+      "id": "neste",
       "name": {
         "fi": "Neste Oyj:n satama, Naantali",
         "sv": "Neste Oyj:s hamn, Nådendal",
@@ -281,6 +287,10 @@
           "en": "Cranes available from private companies"
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.06637349586276, 60.455440436640785]
+      },
       "quays": [
         {
           "name": {

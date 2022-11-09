@@ -97,11 +97,17 @@
     ]
   },
   "harbors": [
-      {
+    {
+      "id": "helsinki",
       "name": {
         "fi": "Helsingin Satama Oy, Helsinki",
         "sv": "Helsingfors Hamn, Helsingfors",
         "en": "Port of Helsinki, Helsinki"
+      },
+      "mapName": {
+        "fi": "Vuosaaren satama",
+        "sv": "Nordsjöledens hamn",
+        "en": "Port of Vuosaari"
       },
       "phoneNumber": [
         "+35893101621"
@@ -126,6 +132,10 @@
           "en": "Quay F: container crane, lifting capacity 40/50 t, outreach 34 m"
         }
       ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [25.19618672915246, 60.21587619828192]
+      },
       "quays": [
         {
           "name": {
