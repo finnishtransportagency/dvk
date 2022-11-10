@@ -1,3 +1,9 @@
 .squatChartTitle {
   border-bottom: 1px solid #d8d8d8;
 }
+
+@media (max-width: 576px) {
+  .squatChartGrid {
+    width: 540px;
+  }
+}

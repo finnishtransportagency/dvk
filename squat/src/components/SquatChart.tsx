@@ -391,7 +391,7 @@ const SquatChart: React.FC = () => {
   }, [state, width, t]);
 
   return (
-    <IonGrid aria-hidden="true">
+    <IonGrid className="squatChartGrid" aria-hidden="true">
       <IonRow>
         <IonCol>
           <h4 className="squatChartTitle">{t('heading')}</h4>
