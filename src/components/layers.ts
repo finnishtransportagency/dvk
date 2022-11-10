@@ -36,6 +36,7 @@ function getSpecialAreaStyle(color: string, width: number, icon: string) {
     new Style({
       image: new Icon({
         src: icon,
+        opacity: 1,
       }),
       zIndex: 100,
       geometry: function (feature) {
@@ -48,6 +49,7 @@ function getSpecialAreaStyle(color: string, width: number, icon: string) {
         color,
         width,
       }),
+      zIndex: 99,
       fill: new Fill({
         color: gradient,
       }),
