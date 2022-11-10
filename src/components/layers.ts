@@ -18,6 +18,7 @@ import Geometry from 'ol/geom/Geometry';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
 import { FeatureLayerIdType, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
@@ -325,4 +326,52 @@ export function useHighlightFairway(data: FindFairwayCardByIdQuery | undefined) 
       setFeatures(selected);
     }
   }, [setFeatures, data, dvkMap]);
+}
+
+export function useCenterToFairway(data: FindFairwayCardByIdQuery | undefined) {
+  const dvkMap = getMap();
+  useEffect(() => {
+    if (data) {
+      const line12Source = dvkMap.getVectorSource('line12');
+      const line3456Source = dvkMap.getVectorSource('line3456');
+      const area12Source = dvkMap.getVectorSource('area12');
+      const area3456Source = dvkMap.getVectorSource('area3456');
+
+      const fairwayFeatures: Feature[] = [];
+
+      for (const fairway of data?.fairwayCard?.fairways || []) {
+        for (const line of fairway.navigationLines || []) {
+          let feature = line12Source.getFeatureById(line.id);
+          if (!feature) {
+            feature = line3456Source.getFeatureById(line.id);
+          }
+          if (feature) {
+            fairwayFeatures.push(feature);
+          }
+        }
+        for (const area of fairway.areas || []) {
+          let feature = area12Source.getFeatureById(area.id);
+          if (!feature) {
+            feature = area3456Source.getFeatureById(area.id);
+          }
+          if (feature) {
+            fairwayFeatures.push(feature);
+          }
+        }
+      }
+
+      if (fairwayFeatures.length > 0) {
+        const extent = olExtent.createEmpty();
+        for (const feature of fairwayFeatures) {
+          const geom = feature.getGeometry();
+          if (geom) {
+            olExtent.extend(extent, geom.getExtent());
+          }
+        }
+        if (!olExtent.isEmpty(extent)) {
+          dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+        }
+      }
+    }
+  }, [data, dvkMap]);
 }
