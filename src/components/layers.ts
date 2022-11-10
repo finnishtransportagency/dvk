@@ -26,14 +26,14 @@ import { getSafetyEquipmentStyle } from './styles';
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
 
-function getSpecialAreaStyle(color: string, width: number, icon: string) {
+function getSpecialAreaStyle(color: string, width: number, type: number) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   const gradient = context.createPattern(specialAreaImage, 'repeat');
   return [
     new Style({
       image: new Icon({
-        src: icon,
+        src: type === 2 ? anchorage : meet,
         opacity: 1,
       }),
       zIndex: 100,
@@ -218,23 +218,9 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(
-    map,
-    'specialarea',
-    30,
-    2,
-    (feature: FeatureLike) => {
-      if (feature.getProperties().typeCode === 2) {
-        return getSpecialAreaStyle('#C57A11', 2, anchorage);
-      } else {
-        return getSpecialAreaStyle('#C57A11', 2, meet);
-      }
-    },
-    undefined,
-    1
-  );
+  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle('#C57A11', 2, feature.getProperties().typeCode), undefined, 1);
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', undefined, 50, (feature) => getSafetyEquipmentStyle(feature));
+  addFeatureLayer(map, 'safetyequipment', 8, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Laiturit

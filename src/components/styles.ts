@@ -1,7 +1,4 @@
-import { FeatureLike } from 'ol/Feature';
-import { Fill, Stroke } from 'ol/style';
-import CircleStyle from 'ol/style/Circle';
-import Style from 'ol/style/Style';
+import { Fill, Stroke, Style } from 'ol/style';
 import a from '../theme/img/safetyequipment/a.svg';
 import b from '../theme/img/safetyequipment/b.svg';
 import c from '../theme/img/safetyequipment/c.svg';
@@ -59,8 +56,80 @@ import U from '../theme/img/safetyequipment/big/U.svg';
 import V from '../theme/img/safetyequipment/big/V.svg';
 import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
+import CircleStyle from 'ol/style/Circle';
 
-export const getSafetyEquipmentStyle = (feature: FeatureLike) => {
+const symbol2Icon = {
+  a: { icon: a, center: false },
+  b: { icon: b, center: false },
+  c: { icon: c, center: false },
+  d: { icon: d, center: false },
+  e: { icon: e, center: false },
+  f: { icon: f, center: false },
+  g: { icon: g, center: false },
+  h: { icon: h, center: false },
+  i: { icon: i, center: false },
+  j: { icon: j, center: false },
+  k: { icon: k, center: false },
+  l: { icon: l, center: false },
+  m: { icon: m, center: false },
+  n: { icon: n, center: false },
+  o: { icon: o, center: false },
+  p: { icon: p, center: false },
+  q: { icon: q, center: false },
+  r: { icon: r, center: false },
+  s: { icon: s, center: false },
+  t: { icon: t, center: false },
+  u: { icon: u, center: false },
+  v: { icon: v, center: false },
+  A: { icon: A, center: false },
+  B: { icon: B, center: false },
+  C: { icon: C, center: false },
+  D: { icon: D, center: false },
+  E: { icon: E, center: false },
+  F: { icon: F, center: false },
+  G: { icon: G, center: false },
+  H: { icon: H, center: false },
+  I: { icon: I, center: false },
+  J: { icon: J, center: false },
+  K: { icon: K, center: false },
+  L: { icon: L, center: false },
+  M: { icon: M, center: false },
+  N: { icon: N, center: false },
+  O: { icon: O, center: false },
+  P: { icon: P, center: false },
+  Q: { icon: Q, center: false },
+  R: { icon: R, center: false },
+  S: { icon: S, center: false },
+  T: { icon: T, center: false },
+  U: { icon: U, center: false },
+  V: { icon: V, center: false },
+  W: { icon: W, center: false },
+  X: { icon: X, center: false },
+  '1': { icon: n1, center: false },
+  '2': { icon: n2, center: false },
+  '3': { icon: n3, center: false },
+  '4': { icon: n4, center: false },
+  '5': { icon: n5, center: false },
+  '6': { icon: n6, center: false },
+  '7': { icon: n7, center: false },
+  '8': { icon: n8, center: false },
+  '9': { icon: n9, center: false },
+  '0': { icon: n0, center: false },
+  '?': { icon: questionmark, center: false },
+};
+export const getSafetyEquipmentStyle = (symbol: string) => {
+  /*const icon = symbol2Icon[symbol as keyof typeof symbol2Icon]?.icon;
+  if (icon) {
+    const image = new Icon({
+      src: icon,
+      anchor: [0.5, 12],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+    });
+    return new Style({
+      image,
+    });
+  } else {*/
   return new Style({
     image: new CircleStyle({
       radius: 8,
