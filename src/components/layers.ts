@@ -1,6 +1,5 @@
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
-// eslint-disable-next-line import/named
 import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
@@ -10,7 +9,6 @@ import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
-// eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { useEffect, useState } from 'react';
@@ -19,6 +17,7 @@ import { FindFairwayCardByIdQuery } from '../graphql/generated';
 import { FeatureLayerIdType, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
+import { getSafetyEquipmentStyle } from './styles';
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -40,20 +39,6 @@ function getLineStyle(color: string, width: number) {
     }),
   });
 }
-
-const getSafetyEquipmentStyle = () => {
-  return new Style({
-    image: new CircleStyle({
-      radius: 8,
-      stroke: new Stroke({
-        color: 'black',
-      }),
-      fill: new Fill({
-        color: 'rgba(0,0,0,0)',
-      }),
-    }),
-  });
-};
 
 export function getPilotStyle() {
   const image = new Icon({
@@ -197,24 +182,13 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 100, 2, getLineStyle('pink', 2));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
+  addFeatureLayer(map, 'safetyequipment', undefined, 50, (feature) => getSafetyEquipmentStyle(feature));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Laiturit
-  addFeatureLayer(map, 'quay', 3, 50, (feature: FeatureLike) => {
-    return getQuayStyle(feature, false);
-  });
+  addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
-  addFeatureLayer(
-    map,
-    'harbor',
-    20,
-    1,
-    (feature: FeatureLike) => {
-      return getHarborStyle(feature);
-    },
-    3
-  );
+  addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
 }
 
 function setFeatureStyle(
