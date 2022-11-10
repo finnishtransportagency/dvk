@@ -389,3 +389,8 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
 .no-background-focused.ion-focused {
   outline: 1px solid var(--ion-color-dark);
 }
+
+.no-focus {
+  --background-focused: unset;
+  outline: none;
+}

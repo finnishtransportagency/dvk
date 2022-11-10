@@ -20,6 +20,7 @@ const Modal: React.FC<ModalProps> = (props) => {
       <IonButton
         fill="clear"
         className="icon-only no-background-focused"
+        style={{ marginTop: '1px', marginRight: '1px', marginBottom: '1px' }}
         onClick={() => setIsOpen(true)}
         title={props.triggerTitle || t('more-info')}
         aria-label={props.triggerTitle || t('more-info')}

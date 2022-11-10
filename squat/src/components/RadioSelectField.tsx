@@ -44,8 +44,8 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
 
   return (
     <IonRadioGroup value={props.value} name={props.name} onIonChange={(e) => updateAction(e, props.actionType)}>
-      <IonItem lines="none" className="only-label">
-        <IonItem lines="none" className="only-label no-padding">
+      <IonItem lines="none" className="only-label no-focus">
+        <IonItem lines="none" className="only-label no-padding no-focus">
           <IonLabel color="dark" title={props.title}>
             {props.title}
           </IonLabel>
