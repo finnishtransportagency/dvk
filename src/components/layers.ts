@@ -247,7 +247,7 @@ export function addAPILayers(map: Map) {
       }
     },
     undefined,
-    0.75
+    1
   );
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
