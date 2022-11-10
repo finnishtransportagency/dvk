@@ -17,7 +17,43 @@ import { FindFairwayCardByIdQuery } from '../graphql/generated';
 import { FeatureLayerIdType, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
+import anchorage from '../theme/img/ankkurointialue.svg';
+import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
+import specialarea from '../theme/img/erityisalue_tausta.svg';
+import Polygon from 'ol/geom/Polygon';
 import { getSafetyEquipmentStyle } from './styles';
+
+const specialAreaImage = new Image();
+specialAreaImage.src = specialarea;
+
+function getSpecialAreaStyle(color: string, width: number, icon: string) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  const gradient = context.createPattern(specialAreaImage, 'repeat');
+  return [
+    new Style({
+      image: new Icon({
+        src: icon,
+        opacity: 1,
+      }),
+      zIndex: 100,
+      geometry: function (feature) {
+        const geometry = feature.getGeometry() as Polygon;
+        return geometry.getInteriorPoint();
+      },
+    }),
+    new Style({
+      stroke: new Stroke({
+        color,
+        width,
+      }),
+      zIndex: 99,
+      fill: new Fill({
+        color: gradient,
+      }),
+    }),
+  ];
+}
 
 function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
@@ -153,7 +189,8 @@ function addFeatureLayer(
   maxResolution: number | undefined,
   renderBuffer: number,
   style: StyleLike,
-  minResolution: number | undefined = undefined
+  minResolution: number | undefined = undefined,
+  opacity = 1
 ) {
   map.addLayer(
     new VectorLayer({
@@ -165,6 +202,7 @@ function addFeatureLayer(
       renderBuffer,
       updateWhileInteracting: true,
       updateWhileAnimating: true,
+      opacity,
     })
   );
 }
@@ -175,12 +213,26 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'area12', 100, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   // Muu vesiliikenne
   addFeatureLayer(map, 'line3456', 50, 1, getLineStyle('#0000FF', 1));
-  addFeatureLayer(map, 'area3456', 20, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
+  addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
 
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 100, 2, getLineStyle('pink', 2));
+  addFeatureLayer(
+    map,
+    'specialarea',
+    30,
+    2,
+    (feature: FeatureLike) => {
+      if (feature.getProperties().typeCode === 2) {
+        return getSpecialAreaStyle('#C57A11', 2, anchorage);
+      } else {
+        return getSpecialAreaStyle('#C57A11', 2, meet);
+      }
+    },
+    undefined,
+    1
+  );
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', undefined, 50, (feature) => getSafetyEquipmentStyle(feature));
   // Luotsipaikat
