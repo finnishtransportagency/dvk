@@ -61,11 +61,15 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
           )}
         </IonItem>
       </IonItem>
-      <IonGrid className="no-padding">
+      <IonGrid className="no-padding" style={{ marginTop: '1px' }}>
         <IonRow>
           {props.options.map((option) => (
             <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '} size={props.columnSize}>
-              <IonItem lines="none" className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center'} mode="md">
+              <IonItem
+                lines="none"
+                className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center no-background-focused'}
+                mode="md"
+              >
                 <IonLabel className="ion-text-wrap radio">
                   {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
                   <p>{props.translateOptions ? t(option.name) : option.name}</p>
