@@ -115,6 +115,8 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
     text = `${props.name} ${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else if (props.draft) {
     text = `${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
+  } else if (props.name) {
+    text = props.name;
   } else {
     text = '';
   }

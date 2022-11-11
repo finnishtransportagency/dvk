@@ -24,6 +24,7 @@ const gzipString = async (input: string): Promise<Buffer> => {
 
 function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJsonProperties>[]) {
   if (quay.geometry) {
+    const draft = quay.sections?.map((s) => s.draft).filter((v) => v !== undefined && v > 0);
     features.push({
       type: 'Feature',
       geometry: quay.geometry as Geometry,
@@ -32,7 +33,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
         quay: quay.name,
         extraInfo: quay.extraInfo,
         length: quay.length,
-        draft: quay.sections?.map((s) => s.draft),
+        draft,
         email: harbor.email,
         phoneNumber: harbor.phoneNumber,
         fax: harbor.fax,
@@ -51,7 +52,7 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
             extraInfo: quay.extraInfo,
             length: quay.length,
             name: section.name,
-            draft: [section.draft],
+            draft: section.draft ? [section.draft] : undefined,
             email: harbor.email,
             phoneNumber: harbor.phoneNumber,
             fax: harbor.fax,
