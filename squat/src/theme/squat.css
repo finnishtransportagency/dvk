@@ -381,3 +381,16 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
 .version-title {
   font-size: 12px;
 }
+
+.no-background-focused {
+  --background-focused: unset;
+}
+
+.no-background-focused.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+
+.no-focus {
+  --background-focused: unset;
+  outline: none;
+}

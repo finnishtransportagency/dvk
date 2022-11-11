@@ -12,8 +12,8 @@ interface LabelProps {
 
 const Label: React.FC<LabelProps> = (props) => {
   return (
-    <IonItem lines="none" className="only-label">
-      <IonItem lines="none" className="only-label no-padding">
+    <IonItem lines="none" className="only-label no-focus">
+      <IonItem lines="none" className="only-label no-padding no-focus">
         <IonLabel color="dark" title={props.description ? props.description : props.title}>
           {props.title}
         </IonLabel>

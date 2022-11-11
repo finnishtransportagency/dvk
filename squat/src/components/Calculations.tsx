@@ -306,28 +306,36 @@ const Calculations: React.FC = () => {
   return (
     <>
       <div className="pagebreak"></div>
-      <IonText color="dark" className="equal-margin-top">
-        <h2>
-          <strong>{t('title')}</strong>
-          <Modal
-            size="large"
-            title={t('info-title')}
-            content={
-              <>
-                <div>
-                  <Trans t={t} i18nKey="info-content-hg"></Trans>
-                </div>
-                <div>
-                  <Trans t={t} i18nKey="info-content-barrass"></Trans>
-                </div>
-                <div>
-                  <Trans t={t} i18nKey="info-content-assumptions"></Trans>
-                </div>
-              </>
-            }
-          />
-        </h2>
-      </IonText>
+      <IonGrid className="ion-no-padding ion-no-margin">
+        <IonRow>
+          <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
+            <IonText color="dark" className="equal-margin-top">
+              <h2>
+                <strong>{t('title')}</strong>
+              </h2>
+            </IonText>
+          </IonCol>
+          <IonCol size="auto" className="ion-align-self-center" style={{ paddingLeft: 0, paddingRight: 0 }}>
+            <Modal
+              size="large"
+              title={t('info-title')}
+              content={
+                <>
+                  <div>
+                    <Trans t={t} i18nKey="info-content-hg"></Trans>
+                  </div>
+                  <div>
+                    <Trans t={t} i18nKey="info-content-barrass"></Trans>
+                  </div>
+                  <div>
+                    <Trans t={t} i18nKey="info-content-assumptions"></Trans>
+                  </div>
+                </>
+              }
+            />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
 
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('UKC-under-required-minimum')} />}
