@@ -11,7 +11,8 @@ import FairwayCard from './FairwayCard';
 import dvkMap from '../components/DvkMap';
 import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
 import { useFindAllFairwayCardsQuery } from '../graphql/generated';
-import { Lang, MAX_HITS, MINIMUM_QUERYLENGTH } from '../utils/constants';
+import { Lang, MINIMUM_QUERYLENGTH } from '../utils/constants';
+import { filterFairways } from '../utils/common';
 
 interface RouterProps {
   fairwayId?: string;
@@ -36,11 +37,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   const fairwayId = match.params.fairwayId;
   const curPath = history.location.pathname;
 
-  const filterFairways = () => {
-    return (
-      data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) || []
-    );
-  };
+  const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
@@ -69,18 +66,18 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
       event.preventDefault();
       if (!isSearchbarOpen && (event.target as HTMLInputElement).type !== 'button') {
         setIsSearchbarOpen(true);
-      } else if (isSearchbarOpen && filterFairways().length > 0) {
-        setActiveSelection(activeSelection >= filterFairways().length ? 1 : activeSelection + 1);
+      } else if (isSearchbarOpen && filteredFairways.length > 0) {
+        setActiveSelection(activeSelection >= filteredFairways.length ? 1 : activeSelection + 1);
       }
     }
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      setActiveSelection(activeSelection < 2 ? filterFairways().length : activeSelection - 1);
+      setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
     }
     if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
       closeDropdown();
-      const targetPath = '/vaylakortit/' + filterFairways()[activeSelection - 1].id;
-      if (curPath !== targetPath) history.push('/vaylakortit/' + filterFairways()[activeSelection - 1].id);
+      const targetPath = '/vaylakortit/' + filteredFairways[activeSelection - 1].id;
+      if (curPath !== targetPath) history.push('/vaylakortit/' + filteredFairways[activeSelection - 1].id);
     }
   };
 
@@ -102,17 +99,17 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   });
 
   return (
-    <IonPage id="mainContent">
+    <IonPage id="mainContent" data-testid={fairwayId ? 'fairwayCard' : 'fairwayList'}>
       <IonContent>
         <IonGrid className="ion-no-padding" id="splitPane">
           <IonRow>
             {splitPane && (
-              <IonCol id="fairwayContent" className={widePane ? 'wide' : ''}>
+              <IonCol id="fairwayContent" className={widePane ? 'wide' : ''} data-testid={fairwayId ? 'cardPane' : 'listPane'}>
                 <IonContent id="fairwayCardsContainer">
                   <IonGrid className="ion-no-padding">
                     <IonRow className="ion-align-items-center">
                       <IonCol size="auto">
-                        <button className="icon" onClick={() => menuController.open()}>
+                        <button className="icon" data-testid={fairwayId ? '' : 'menuController'} onClick={() => menuController.open()}>
                           <MenuIcon />
                         </button>
                       </IonCol>
@@ -128,6 +125,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             onIonBlur={blurAction}
                             onKeyDown={(e) => keyDownAction(e)}
                             ref={inputRef}
+                            data-testid={fairwayId ? '' : 'searchInput'}
                           />
                           <button
                             type="button"
@@ -135,17 +133,22 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             title={t('clearTitle')}
                             aria-label={t('clearTitle')}
                             onClick={clearInput}
+                            data-testid={fairwayId ? '' : 'clearInput'}
                           ></button>
                           <SearchbarDropdown
                             isOpen={isSearchbarOpen}
                             searchQuery={searchQuery.trim()}
-                            fairwayCards={filterFairways()}
+                            fairwayCards={filteredFairways}
                             selected={activeSelection}
                           />
                         </div>
                       </IonCol>
                       <IonCol size="auto">
-                        <button className={'icon ' + (widePane ? 'flip invert' : '')} onClick={() => togglePane()}>
+                        <button
+                          className={'icon ' + (widePane ? 'flip invert' : '')}
+                          data-testid={fairwayId ? '' : 'togglePane'}
+                          onClick={() => togglePane()}
+                        >
                           <ChevronIcon />
                         </button>
                       </IonCol>

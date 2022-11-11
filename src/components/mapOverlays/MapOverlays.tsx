@@ -7,7 +7,8 @@ import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { Lang, MAX_HITS } from '../../utils/constants';
+import { filterFairways } from '../../utils/common';
+import { Lang } from '../../utils/constants';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -25,11 +26,7 @@ const MapOverlays: React.FC = () => {
   const [activeSelection, setActiveSelection] = useState(0);
   const { data } = useFindAllFairwayCardsQuery();
 
-  const filterFairways = () => {
-    return (
-      data?.fairwayCards.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) || []
-    );
-  };
+  const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
 
@@ -59,7 +56,7 @@ const MapOverlays: React.FC = () => {
   sc?.onSetActiveSelection(setActiveSelection);
   sc?.setIsSearchbarOpen(isSearchbarOpen);
   sc?.setCurrentActiveSelection(activeSelection);
-  sc?.setFilteredData(filterFairways());
+  sc?.setFilteredData(filteredFairways);
 
   return (
     <>
@@ -70,7 +67,7 @@ const MapOverlays: React.FC = () => {
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />
-      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filterFairways()} selected={activeSelection} />
+      <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
     </>
   );
 };
