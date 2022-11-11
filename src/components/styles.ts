@@ -1,4 +1,4 @@
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, Icon, Style } from 'ol/style';
 import a from '../theme/img/safetyequipment/a.svg';
 import b from '../theme/img/safetyequipment/b.svg';
 import c from '../theme/img/safetyequipment/c.svg';
@@ -21,6 +21,7 @@ import s from '../theme/img/safetyequipment/s.svg';
 import t from '../theme/img/safetyequipment/t.svg';
 import u from '../theme/img/safetyequipment/u.svg';
 import v from '../theme/img/safetyequipment/v.svg';
+import w from '../theme/img/safetyequipment/w.svg';
 import n1 from '../theme/img/safetyequipment/1.svg';
 import n2 from '../theme/img/safetyequipment/2.svg';
 import n3 from '../theme/img/safetyequipment/3.svg';
@@ -78,9 +79,10 @@ const symbol2Icon = {
   q: { icon: q, center: false },
   r: { icon: r, center: false },
   s: { icon: s, center: false },
-  t: { icon: t, center: false },
+  t: { icon: t, center: true },
   u: { icon: u, center: false },
   v: { icon: v, center: false },
+  w: { icon: w, center: true },
   A: { icon: A, center: false },
   B: { icon: B, center: false },
   C: { icon: C, center: false },
@@ -105,7 +107,8 @@ const symbol2Icon = {
   V: { icon: V, center: false },
   W: { icon: W, center: false },
   X: { icon: X, center: false },
-  '1': { icon: n1, center: false },
+  Y: { icon: questionmark, center: true },
+  '1': { icon: n1, center: true },
   '2': { icon: n2, center: false },
   '3': { icon: n3, center: false },
   '4': { icon: n4, center: false },
@@ -115,30 +118,38 @@ const symbol2Icon = {
   '8': { icon: n8, center: false },
   '9': { icon: n9, center: false },
   '0': { icon: n0, center: false },
-  '?': { icon: questionmark, center: false },
+  '?': { icon: questionmark, center: true },
 };
+
 export const getSafetyEquipmentStyle = (symbol: string) => {
-  /*const icon = symbol2Icon[symbol as keyof typeof symbol2Icon]?.icon;
-  if (icon) {
-    const image = new Icon({
+  const key = symbol as keyof typeof symbol2Icon;
+  const opts = symbol2Icon[key];
+  const icon = opts?.icon || symbol2Icon['?'].icon;
+  const center = opts ? opts.center : true;
+  let image: Icon;
+  if (center) {
+    image = new Icon({
       src: icon,
-      anchor: [0.5, 12],
+    });
+  } else {
+    image = new Icon({
+      src: icon,
+      anchor: [0.5, 24],
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
     });
-    return new Style({
+  }
+  return [
+    new Style({
       image,
-    });
-  } else {*/
-  return new Style({
-    image: new CircleStyle({
-      radius: 8,
-      stroke: new Stroke({
-        color: 'black',
-      }),
-      fill: new Fill({
-        color: 'rgba(0,0,0,0)',
+    }),
+    new Style({
+      image: new CircleStyle({
+        radius: 10,
+        fill: new Fill({
+          color: 'rgba(0,0,0,0)',
+        }),
       }),
     }),
-  });
+  ];
 };

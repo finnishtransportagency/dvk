@@ -218,9 +218,9 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle('#C57A11', 2, feature.getProperties().typeCode), undefined, 1);
+  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle('#C57A11', 2, feature.getProperties().typeCode));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', 8, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
+  addFeatureLayer(map, 'safetyequipment', 10, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Laiturit
