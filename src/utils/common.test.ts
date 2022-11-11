@@ -1,4 +1,4 @@
-import { filterFairways, getCurrentDecimalSeparator } from './common';
+import { filterFairways } from './common';
 import { MINIMUM_QUERYLENGTH } from './constants';
 
 export const mockFairwayList = {
