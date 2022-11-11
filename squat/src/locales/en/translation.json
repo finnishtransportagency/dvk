@@ -154,7 +154,7 @@
     "squatDataTable": {
       "aluksen-nopeus-kn": "Vessel speed v (kts)",
       "aluksen-nopeus-ms": "Vessel speed v (m/s)",
-      "froude-syvyysluku": "Froude number F nh",
+      "froude-syvyysluku": "Froude number Fₙₕ",
       "squat-max": "{{kerroin}} Squat smax (m)"
     },
     "vaylavirasto-logo": "Finnish Transport Infrastructure Agency logo"

@@ -157,7 +157,7 @@
     "squatDataTable": {
       "aluksen-nopeus-kn": "Aluksen nopeus v (kts)",
       "aluksen-nopeus-ms": "Aluksen nopeus v (m/s)",
-      "froude-syvyysluku": "Frouden syvyysluku F nh",
+      "froude-syvyysluku": "Frouden syvyysluku Fₙₕ",
       "squat-max": "{{kerroin}} Squat smax (m)"
     },
     "vaylavirasto-logo": "Väylävirasto logo"
