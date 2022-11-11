@@ -57,6 +57,7 @@ import U from '../theme/img/safetyequipment/big/U.svg';
 import V from '../theme/img/safetyequipment/big/V.svg';
 import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
+import Y from '../theme/img/safetyequipment/big/Y.svg';
 import CircleStyle from 'ol/style/Circle';
 
 const symbol2Icon = {
@@ -107,7 +108,7 @@ const symbol2Icon = {
   V: { icon: V, center: false, anchorY: 24 },
   W: { icon: W, center: false, anchorY: 24 },
   X: { icon: X, center: false, anchorY: 24 },
-  Y: { icon: questionmark, center: true, anchorY: 0 },
+  Y: { icon: Y, center: false, anchorY: 24 },
   '1': { icon: n1, center: true, anchorY: 0 },
   '2': { icon: n2, center: false, anchorY: 23 },
   '3': { icon: n3, center: false, anchorY: 23 },
