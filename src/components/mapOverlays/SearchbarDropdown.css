@@ -5,6 +5,7 @@ ion-list.searchbarDropdownContainer {
   top: 93px;
   width: 335px;
   transition: all 150ms;
+  max-width: calc(100% - 160px);
 }
 #fairwayCardsContainer ion-list.searchbarDropdownContainer {
   top: 45px;
