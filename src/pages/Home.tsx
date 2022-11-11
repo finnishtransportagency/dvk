@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ history }) => {
   return (
     <IonPage>
       <IonContent className="ion-no-padding">
-        <div ref={mapElement}></div>
+        <div ref={mapElement} data-testid="homeMap"></div>
       </IonContent>
     </IonPage>
   );

@@ -26,7 +26,12 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
         <IonList lines="none" className="searchbarDropdownContainer">
           {fairwayCards.map((fairwayCard, idx) => {
             return (
-              <IonItem key={fairwayCard.id} className={'fairwayCards' + checkSelected(idx + 1)} routerLink={'/vaylakortit/' + fairwayCard.id}>
+              <IonItem
+                key={fairwayCard.id}
+                className={'fairwayCards' + checkSelected(idx + 1)}
+                routerLink={'/vaylakortit/' + fairwayCard.id}
+                data-testid="cardOption"
+              >
                 <IonLabel>{fairwayCard.name[lang]}</IonLabel>
               </IonItem>
             );
