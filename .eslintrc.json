@@ -47,7 +47,8 @@
             }
         },
         "import/ignore": [
-            "react-router-dom"
+            "react-router-dom",
+            "ol"
         ],
         "react": {
             "version": "detect"

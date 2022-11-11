@@ -1,6 +1,5 @@
 import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
-// eslint-disable-next-line import/named
 import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
@@ -10,7 +9,6 @@ import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
-// eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { useEffect, useState } from 'react';
@@ -22,20 +20,20 @@ import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
-
 import Polygon from 'ol/geom/Polygon';
+import { getSafetyEquipmentStyle } from './styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
 
-function getSpecialAreaStyle(color: string, width: number, icon: string) {
+function getSpecialAreaStyle(color: string, width: number, type: number) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   const gradient = context.createPattern(specialAreaImage, 'repeat');
   return [
     new Style({
       image: new Icon({
-        src: icon,
+        src: type === 2 ? anchorage : meet,
         opacity: 1,
       }),
       zIndex: 100,
@@ -77,20 +75,6 @@ function getLineStyle(color: string, width: number) {
     }),
   });
 }
-
-const getSafetyEquipmentStyle = () => {
-  return new Style({
-    image: new CircleStyle({
-      radius: 8,
-      stroke: new Stroke({
-        color: 'black',
-      }),
-      fill: new Fill({
-        color: 'rgba(0,0,0,0)',
-      }),
-    }),
-  });
-};
 
 export function getPilotStyle() {
   const image = new Icon({
@@ -234,40 +218,15 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(
-    map,
-    'specialarea',
-    30,
-    2,
-    (feature: FeatureLike) => {
-      if (feature.getProperties().typeCode === 2) {
-        return getSpecialAreaStyle('#C57A11', 2, anchorage);
-      } else {
-        return getSpecialAreaStyle('#C57A11', 2, meet);
-      }
-    },
-    undefined,
-    1
-  );
+  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle('#C57A11', 2, feature.getProperties().typeCode));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', undefined, 50, getSafetyEquipmentStyle());
+  addFeatureLayer(map, 'safetyequipment', 10, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Laiturit
-  addFeatureLayer(map, 'quay', 3, 50, (feature: FeatureLike) => {
-    return getQuayStyle(feature, false);
-  });
+  addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
-  addFeatureLayer(
-    map,
-    'harbor',
-    20,
-    1,
-    (feature: FeatureLike) => {
-      return getHarborStyle(feature);
-    },
-    3
-  );
+  addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
 }
 
 function setFeatureStyle(
