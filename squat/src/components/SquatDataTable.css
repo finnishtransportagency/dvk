@@ -33,3 +33,17 @@
 .titleCol ion-label {
   font-weight: bold;
 }
+
+div.froudeSquare {
+  border: solid 6px #f5ffef;
+  width: 0px;
+  height: 0px;
+  outline: solid 1px black;
+}
+
+div.squatSquare {
+  border: solid 6px #fdf6f6;
+  width: 0px;
+  height: 0px;
+  outline: solid 1px black;
+}
