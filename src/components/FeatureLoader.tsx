@@ -15,16 +15,14 @@ async function makeRequest(url: URL, id: FeatureLayerIdType) {
         source.addFeatures(features);
         resolve(xhr);
       } else {
-        console.log(id + ' FAILED');
-        reject();
+        reject(id + ' FAILED');
       }
     };
     xhr.onerror = () => {
-      console.log(id + ' ONERROR');
-      reject();
+      reject(id + ' ONERROR');
     };
     xhr.send();
-  });
+  }).catch((error) => console.error(error));
 }
 
 let featuresInitialized = false;
