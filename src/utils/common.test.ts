@@ -34,10 +34,6 @@ export const mockFairwayList = {
   ],
 };
 
-test('if current decimal separator is correct by default', () => {
-  expect(getCurrentDecimalSeparator()).toEqual(',' || '.');
-});
-
 test('if fairway filtering is correct', () => {
   expect(filterFairways(mockFairwayList.fairwayCards, 'fi', 'aan')).toHaveLength(2);
   expect(filterFairways(mockFairwayList.fairwayCards, 'fi', 'testi')).toHaveLength(0);
