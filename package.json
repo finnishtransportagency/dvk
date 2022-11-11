@@ -12,6 +12,7 @@
     "@ionic/core": "^6.3.3",
     "@ionic/react": "^6.3.3",
     "@ionic/react-router": "^6.3.3",
+    "@ionic/react-test-utils": "^0.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
@@ -54,7 +55,7 @@
     "prestart": "npm run generate",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!(@ionic/react|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/)'",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@ionic/core|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/\"",
     "eject": "react-scripts eject",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
     "generate": "graphql-codegen"
