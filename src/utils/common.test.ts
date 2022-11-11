@@ -35,7 +35,7 @@ export const mockFairwayList = {
 };
 
 test('if current decimal separator is correct by default', () => {
-  expect(getCurrentDecimalSeparator()).toEqual(',');
+  expect(getCurrentDecimalSeparator()).toEqual(',' || '.');
 });
 
 test('if fairway filtering is correct', () => {
