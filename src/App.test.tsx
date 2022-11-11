@@ -17,6 +17,10 @@ jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
 }));
 
+jest.mock('./components/FeatureLoader', () => ({
+  InitFeatures: () => {},
+}));
+
 it('renders home page without crashing', () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
