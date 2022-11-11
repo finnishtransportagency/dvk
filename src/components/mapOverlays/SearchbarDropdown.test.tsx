@@ -8,7 +8,9 @@ jest.mock('react-i18next', () => ({
 }));
 
 test('dropdown should contain all options', () => {
-  const { baseElement } = render(<SearchbarDropdown isOpen={true} searchQuery="väylä" fairwayCards={mockFairwayList.fairwayCards || []} selected={1} />);
+  const { baseElement } = render(
+    <SearchbarDropdown isOpen={true} searchQuery="väylä" fairwayCards={mockFairwayList.fairwayCards || []} selected={1} />
+  );
   expect(baseElement).toBeDefined();
 
   act(() => {
