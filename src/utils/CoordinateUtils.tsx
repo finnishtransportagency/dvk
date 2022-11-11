@@ -27,7 +27,7 @@ export const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fra
     '\u00b0 ' +
     padNumber(min, 2, dflPrecision).replace('.', ',') +
     '\u2032 ' +
-    (normalizedDegrees === 0 ? '' : ' ' + hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0))
+    (normalizedDegrees === 0 ? '' : hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0))
   );
 };
 
