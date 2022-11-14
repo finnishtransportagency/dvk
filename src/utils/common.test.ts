@@ -1,4 +1,4 @@
-import { mockFairwayList } from '../../__tests__/mockData'
+import { mockFairwayList } from '../../__tests__/mockData';
 import { filterFairways } from './common';
 import { MINIMUM_QUERYLENGTH } from './constants';
 

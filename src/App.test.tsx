@@ -38,7 +38,7 @@ jest.mock('./graphql/generated', () => {
       return {
         data: mockFairwayCard,
         loading: false,
-      }
+      };
     },
   };
 });
