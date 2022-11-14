@@ -1,4 +1,4 @@
-import { Fill, Icon, Style } from 'ol/style';
+import { Fill, Icon, Style, Text } from 'ol/style';
 import a from '../theme/img/safetyequipment/a.svg';
 import b from '../theme/img/safetyequipment/b.svg';
 import c from '../theme/img/safetyequipment/c.svg';
@@ -59,6 +59,11 @@ import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
 import Y from '../theme/img/safetyequipment/big/Y.svg';
 import CircleStyle from 'ol/style/Circle';
+import { FeatureLike } from 'ol/Feature';
+import { getMap } from './DvkMap';
+import depthIcon from '../theme/img/depth.svg';
+import { AreaFeatureProperties } from './features';
+import { Polygon } from 'ol/geom';
 
 const symbol2Icon = {
   a: { icon: a, center: false, anchorY: 24 },
@@ -155,3 +160,34 @@ export const getSafetyEquipmentStyle = (symbol: string) => {
     }),
   ];
 };
+
+export function getDepthStyle(feature: FeatureLike) {
+  const props = feature.getProperties() as AreaFeatureProperties;
+  let text;
+  const dvkMap = getMap();
+  if (props.n2000draft || props.draft) {
+    text = dvkMap.t('popup.harbor.number', { val: props.n2000draft || props.draft });
+  } else {
+    text = '-';
+  }
+  return [
+    new Style({
+      image: new Icon({
+        src: depthIcon,
+      }),
+      geometry: function (feat) {
+        const geometry = feat.getGeometry() as Polygon;
+        return geometry.getInteriorPoint();
+      },
+      text: new Text({
+        font: 'bold 10px "Exo 2"',
+        placement: 'line',
+        offsetY: 4,
+        text,
+        fill: new Fill({
+          color: '#FFFFFF',
+        }),
+      }),
+    }),
+  ];
+}

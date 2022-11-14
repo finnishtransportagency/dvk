@@ -21,7 +21,7 @@ import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getSafetyEquipmentStyle } from './styles';
+import { getDepthStyle, getSafetyEquipmentStyle } from './styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -229,6 +229,8 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
   addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
+  // Syvyydet
+  addFeatureLayer(map, 'depth', 20, 50, (feature) => getDepthStyle(feature));
 }
 
 function setFeatureStyle(

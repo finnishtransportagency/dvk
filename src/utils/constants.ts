@@ -12,7 +12,8 @@ export type FeatureLayerIdType =
   | 'pilot'
   | 'harbor'
   | 'quay'
-  | 'safetyequipment';
+  | 'safetyequipment'
+  | 'depth';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -42,6 +43,7 @@ export const MAP: MapType = {
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
     { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
+    { id: 'depth', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2,3,4,5,6') },
   ],
 };
 

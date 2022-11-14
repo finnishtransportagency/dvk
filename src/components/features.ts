@@ -31,3 +31,14 @@ export type PilotFeatureProperties = {
   name: string;
   fairwayCards: Card[];
 };
+
+export type AreaFeatureProperties = {
+  id: number;
+  typeCode: number;
+  type: string;
+  name?: string;
+  draft?: number;
+  depth?: number;
+  n2000depth?: number;
+  n2000draft?: number;
+};
