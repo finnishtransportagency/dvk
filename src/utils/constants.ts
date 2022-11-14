@@ -23,7 +23,7 @@ type MapType = {
   RESOLUTIONS: number[];
   INIT_CENTER: number[];
   INIT_RESOLUTION: number;
-  FEATURE_LAYERS: Array<{ id: FeatureLayerIdType; url: URL }>;
+  FEATURE_LAYERS: Array<{ id: FeatureLayerIdType; url?: URL; ids?: FeatureLayerIdType[] }>;
 };
 
 export const MAP: MapType = {
@@ -43,7 +43,7 @@ export const MAP: MapType = {
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
     { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
-    { id: 'depth', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2,3,4,5,6') },
+    { id: 'depth', ids: ['area12', 'area3456'] },
   ],
 };
 
