@@ -616,6 +616,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   useHighlightFairway(data);
   useCenterToFairway(data);
+
   return (
     <>
       {loading && (
@@ -680,6 +681,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   title={t('print')}
                   aria-label={t('print')}
                   role="button"
+                  data-testid="printButton"
                 >
                   <PrintIcon />
                 </IonButton>
@@ -687,7 +689,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonRow>
           </IonGrid>
 
-          <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} mode="md">
+          <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} mode="md" data-testid="tabChange">
             <IonSegmentButton value="1">
               <IonLabel>
                 <h3>{t('title', { count: 0 })}</h3>

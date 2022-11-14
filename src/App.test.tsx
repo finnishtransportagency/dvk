@@ -3,6 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
+import { mockFairwayCard, mockFairwayList } from '../__tests__/mockData';
 
 beforeAll(() => {
   Object.defineProperty(navigator, 'serviceWorker', {
@@ -11,6 +12,7 @@ beforeAll(() => {
       addEventListener: jest.fn().mockImplementation(() => Promise.resolve()),
     },
   });
+  jest.spyOn(window, 'print').mockImplementation(() => {});
 });
 
 jest.mock('react-i18next', () => ({
@@ -20,6 +22,26 @@ jest.mock('react-i18next', () => ({
 jest.mock('./components/FeatureLoader', () => ({
   InitFeatures: () => {},
 }));
+
+jest.mock('./graphql/generated', () => {
+  const originalModule = jest.requireActual('./graphql/generated');
+  return {
+    __esModule: true,
+    ...originalModule,
+    useFindAllFairwayCardsQuery: () => {
+      return {
+        data: mockFairwayList,
+        loading: false,
+      };
+    },
+    useFindFairwayCardByIdQuery: () => {
+      return {
+        data: mockFairwayCard,
+        loading: false,
+      }
+    },
+  };
+});
 
 it('renders home page without crashing', () => {
   const { baseElement } = render(<App />);
@@ -59,7 +81,7 @@ it('should render fairway card for "vuosaari" without crashing', () => {
   });
 });
 
-test('if sidePane elements are present and working', () => {
+test('if sidePane header elements are present and working', () => {
   const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/' } = {}) => {
     window.history.pushState({}, 'Väyläkortit', route);
     return render(ui, { wrapper: BrowserRouter });
@@ -101,5 +123,49 @@ test('if sidePane elements are present and working', () => {
     expect(listPane).toBeInTheDocument();
     fireEvent.click(togglePane);
     //expect(listPane.className).toBe('wide');
+  });
+});
+
+it('should find key places in fairway card for "vuosaari"', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/vuosaari/' } = {}) => {
+    window.history.pushState({}, 'Vuosaaren väylä', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // printButton
+    const printButton = screen.getByTestId('printButton');
+    expect(printButton).toBeInTheDocument();
+    fireEvent.click(printButton);
+
+    // toggleWide
+    const toggleWide = screen.getByTestId('toggleWide');
+    expect(toggleWide).toBeInTheDocument();
+    const cardPane = screen.getByTestId('cardPane');
+    expect(cardPane).toBeInTheDocument();
+    fireEvent.click(toggleWide);
+
+    // tabChange
+    const tabChange = screen.getByTestId('tabChange');
+    expect(tabChange).toBeInTheDocument();
+    fireEvent.ionChange(tabChange, '2');
+  });
+});
+
+it('should change to third tab successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/vuosaari/' } = {}) => {
+    window.history.pushState({}, 'Vuosaaren väylä', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // tabChange
+    const tabChange = screen.getByTestId('tabChange');
+    expect(tabChange).toBeInTheDocument();
+    fireEvent.ionChange(tabChange, '3');
   });
 });
