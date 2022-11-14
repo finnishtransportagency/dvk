@@ -170,10 +170,14 @@ export function getDepthStyle(feature: FeatureLike) {
   } else {
     text = '-';
   }
+  const specialFeature = feature.getProperties().featureType === 'specialarea';
   return [
     new Style({
       image: new Icon({
         src: depthIcon,
+        anchor: [0.5, specialFeature ? -15 : 0.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: specialFeature ? 'pixels' : 'fraction',
       }),
       geometry: function (feat) {
         const geometry = feat.getGeometry() as Polygon;
@@ -182,7 +186,7 @@ export function getDepthStyle(feature: FeatureLike) {
       text: new Text({
         font: 'bold 10px "Exo 2"',
         placement: 'line',
-        offsetY: 4,
+        offsetY: specialFeature ? 31 : 4,
         text,
         fill: new Fill({
           color: '#FFFFFF',
