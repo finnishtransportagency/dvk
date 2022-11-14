@@ -90,11 +90,6 @@ test('if sidePane header elements are present and working', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    // menuController
-    const toggleSidebar = screen.getByTestId('menuController');
-    expect(toggleSidebar).toBeInTheDocument();
-    fireEvent.click(toggleSidebar);
-
     // searchInput
     const searchInput = screen.getByTestId('searchInput');
     expect(searchInput).toBeInTheDocument();
@@ -126,7 +121,48 @@ test('if sidePane header elements are present and working', () => {
   });
 });
 
-it('should find key places in fairway card for "vuosaari"', () => {
+test('if sidebarMenu elements are present and working', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/' } = {}) => {
+    window.history.pushState({}, 'Väyläkortit', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // menuController
+    const toggleSidebar = screen.getByTestId('menuController');
+    expect(toggleSidebar).toBeInTheDocument();
+    fireEvent.click(toggleSidebar);
+
+    // Language changes
+    const langFi = screen.getByTestId('langFi');
+    expect(langFi).toBeInTheDocument();
+    fireEvent.click(langFi);
+    const langSv = screen.getByTestId('langSv');
+    expect(langSv).toBeInTheDocument();
+    fireEvent.click(langSv);
+    const langEn = screen.getByTestId('langEn');
+    expect(langEn).toBeInTheDocument();
+    fireEvent.click(langEn);
+
+    // fairwaysLink
+    const fairwaysLink = screen.getByTestId('fairwaysLink');
+    expect(fairwaysLink).toBeInTheDocument();
+    fireEvent.click(fairwaysLink);
+    // squatLink
+    const squatLink = screen.getByTestId('squatLink');
+    expect(squatLink).toBeInTheDocument();
+    fireEvent.click(squatLink);
+
+    // closeMenu
+    const closeMenu = screen.getByTestId('closeMenu');
+    expect(closeMenu).toBeInTheDocument();
+    fireEvent.click(closeMenu);
+  });
+});
+
+it('should find key elements in fairway card for "vuosaari"', () => {
   const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/vuosaari/' } = {}) => {
     window.history.pushState({}, 'Vuosaaren väylä', route);
     return render(ui, { wrapper: BrowserRouter });

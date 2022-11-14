@@ -34,7 +34,7 @@ const SidebarMenu: React.FC = () => {
               <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
             </IonCol>
             <IonCol size="auto">
-              <IonButton fill="clear" className="closeButton" onClick={async () => menuController.close()}>
+              <IonButton fill="clear" className="closeButton" onClick={async () => menuController.close()} data-testid="closeMenu">
                 <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
               </IonButton>
             </IonCol>
@@ -55,6 +55,7 @@ const SidebarMenu: React.FC = () => {
                 className="ion-no-padding internal"
                 onClick={async () => menuController.close()}
                 disabled={router.routeInfo.pathname === '/vaylakortit/'}
+                data-testid="fairwaysLink"
               >
                 <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
                 {t('homePage.sidebarMenu.fairway-cards')}
@@ -69,6 +70,7 @@ const SidebarMenu: React.FC = () => {
                 lines="none"
                 className="ion-no-padding external"
                 onClick={async () => menuController.close()}
+                data-testid="squatLink"
               >
                 <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
                 {t('homePage.sidebarMenu.squat')}
@@ -86,6 +88,7 @@ const SidebarMenu: React.FC = () => {
                     e.preventDefault();
                   }}
                   disabled={i18n.language === 'fi'}
+                  data-testid="langFi"
                 >
                   Suomeksi
                 </IonButton>
@@ -96,6 +99,7 @@ const SidebarMenu: React.FC = () => {
                     e.preventDefault();
                   }}
                   disabled={i18n.language === 'sv'}
+                  data-testid="langSv"
                 >
                   På svenska
                 </IonButton>
@@ -106,6 +110,7 @@ const SidebarMenu: React.FC = () => {
                     e.preventDefault();
                   }}
                   disabled={i18n.language === 'en'}
+                  data-testid="langEn"
                 >
                   In English
                 </IonButton>
