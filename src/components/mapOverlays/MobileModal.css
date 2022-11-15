@@ -27,7 +27,7 @@ ion-modal ion-grid {
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {
-  --min-height: 70px;
+  --min-height: 60px;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar ion-button {
@@ -54,8 +54,8 @@ ion-modal .wrappable-title {
 }
 
 ion-modal.small {
-  --height: 380px;
-  --width: 370px;
+  --height: 400px;
+  --width: 380px;
 }
 
 ion-modal ion-button.languageSelection {
