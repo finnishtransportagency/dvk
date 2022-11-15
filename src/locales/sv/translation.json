@@ -161,5 +161,9 @@
       "internet": "[sv] Verkkosivu",
       "extra": "[sv] Lisätieto"
     }
+  },
+  "common": {
+    "close": "Stäng",
+    "close-dialog": "Stäng dialogrutan"
   }
 }

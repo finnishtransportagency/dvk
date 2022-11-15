@@ -162,5 +162,13 @@
       "internet": "Verkkosivu",
       "extra": "Lisätieto"
     }
+  },
+  "common": {
+    "close": "Sulje",
+    "close-dialog": "Sulje ilmoitus"
+  },
+  "mobile": {
+    "title": "Digitaalisen väyläkortin mobiililaite käyttö",
+    "content": "Digitaalinen väyläkortti on tällä hetkellä vielä kehityksen alla. Ensimmäisessä vaiheessa palvelu ei tue virallisesti mobiililaite käyttöä, joten suosittelemme käyttämään palvelua työpöytä- tai tablettiselaimella."
   }
 }

@@ -161,5 +161,9 @@
       "internet": "[en] Verkkosivu",
       "extra": "[en] Lisätieto"
     }
+  },
+  "common": {
+    "close": "Close",
+    "close-dialog": "Close dialog"
   }
 }
