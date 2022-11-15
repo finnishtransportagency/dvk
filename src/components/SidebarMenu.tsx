@@ -21,7 +21,7 @@ import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import './SidebarMenu.css';
 
-export const LanguageBar = () => {
+export const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
   return (
     <IonButtons className="ion-justify-content-around">

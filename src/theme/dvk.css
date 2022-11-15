@@ -186,3 +186,10 @@ ion-modal ion-button.languageSelection {
   --background-hover: unset;
   --background-focused: unset;
 }
+
+ion-modal ion-button.button-disabled {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  opacity: 1;
+}
