@@ -12,11 +12,13 @@ ion-modal ion-footer.footer-md::before {
 }
 
 ion-modal ion-header ion-title {
+  font-family: "Exo 2";
   font-size: 24px;
   font-weight: bold;
   padding-inline: 28px;
   margin-top: 28px;
   margin-bottom: 28px;
+  letter-spacing: 0;
 }
 
 ion-modal ion-grid {
@@ -25,14 +27,14 @@ ion-modal ion-grid {
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {
-  --min-height: 60px;
+  --min-height: 70px;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   height: 48px;
   width: 175px;
   margin-right: 28px;
-  margin-bottom: 28px;
+  margin-bottom: 0px;
 }
 
 ion-modal ion-button.icon-only {
@@ -52,8 +54,8 @@ ion-modal .wrappable-title {
 }
 
 ion-modal.small {
-  --height: 350px;
-  --width: 410px;
+  --height: 380px;
+  --width: 370px;
 }
 
 ion-modal ion-button.languageSelection {
