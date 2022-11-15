@@ -1,0 +1,78 @@
+ion-modal .gradient-top {
+  height: 12px;
+  background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
+}
+
+ion-modal ion-header.header-md::after {
+  content: none;
+}
+
+ion-modal ion-footer.footer-md::before {
+  content: none;
+}
+
+ion-modal ion-header ion-title {
+  font-size: 24px;
+  font-weight: bold;
+  padding-inline: 28px;
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+ion-modal ion-grid {
+  margin: 0 24px 0 24px;
+  padding: 0 0 0 0;
+}
+
+ion-modal ion-footer ion-toolbar.buttonBar {
+  --min-height: 60px;
+}
+
+ion-modal ion-footer ion-toolbar.buttonBar ion-button {
+  height: 48px;
+  width: 175px;
+  margin-right: 28px;
+  margin-bottom: 28px;
+}
+
+ion-modal ion-button.icon-only {
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+  height: auto;
+  margin: 0 0 0 8px;
+  vertical-align: top;
+  --box-shadow: none;
+}
+
+ion-modal .wrappable-title {
+  overflow: visible;
+  white-space: normal;
+}
+
+ion-modal.small {
+  --height: 350px;
+  --width: 400px;
+}
+
+ion-modal ion-button.languageSelection {
+  color: var(--ion-color-dark);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 2px;
+  text-decoration: underline;
+  --background-hover: unset;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --background-hover: unset;
+  --background-focused: unset;
+}
+
+ion-modal ion-button.button-disabled {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  opacity: 1;
+}

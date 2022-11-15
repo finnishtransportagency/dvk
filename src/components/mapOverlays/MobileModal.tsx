@@ -16,6 +16,7 @@ import { closeOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
+import './MobileModal.css';
 
 function isMobile() {
   return isPlatform('iphone') || isPlatform('android');
