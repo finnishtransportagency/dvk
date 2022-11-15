@@ -74,6 +74,8 @@
     "starts": "Alkaa",
     "ends": "päättyy",
     "length": "Pituus",
+    "lateralMarking": "Lateraalimerkintä",
+    "cardinalMarking": "Kardinaalimerkintä",
     "fairway": "Väylä",
     "fairwayDesignVessel_one": "Väylän mitoitusalus",
     "fairwayDesignVessel_other": "Väylän mitoitusalukset",
@@ -124,7 +126,7 @@
     "noData": "Tietoa ei ole saatavilla.",
     "noRestrictions": "Ei voimassaolevia rajoituksia.",
     "unit": {
-      "nm": "mpk",
+      "nm": "M",
       "nmDesc_one": "meripeninkulma",
       "nmDesc_other": "meripeninkulmaa",
       "mDesc_one": "metri",

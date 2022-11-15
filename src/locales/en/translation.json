@@ -73,6 +73,8 @@
     "starts": "Starts",
     "ends": "ends",
     "length": "Length",
+    "lateralMarking": "Lateral marking",
+    "cardinalMarking": "Cardinal marking",
     "fairway": "Fairway",
     "fairwayDesignVessel_one": "Fairway design ship",
     "fairwayDesignVessel_other": "Fairway design ships",
@@ -123,7 +125,7 @@
     "noData": "Data is not available.",
     "noRestrictions": "No effective restrictions.",
     "unit": {
-      "nm": "nm",
+      "nm": "M",
       "nmDesc_one": "nautical mile",
       "nmDesc_other": "nautical miles",
       "mDesc_one": "metre",

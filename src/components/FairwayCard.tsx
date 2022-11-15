@@ -110,6 +110,16 @@ const LiningInfo: React.FC<FairwayProps> = ({ data, lineText }) => {
     return totalLength;
   };
 
+  // Extract notation information from fairway areas
+  const extractNotationInfo = () => {
+    const lateralCount = data?.areas?.filter((area) => area.notationCode === 1).length;
+    const cardinalCount = data?.areas?.filter((area) => area.notationCode === 2).length;
+
+    if (lateralCount) return t('lateralMarking') + (cardinalCount ? ' / ' + t('cardinalMarking') : '');
+    if (cardinalCount) return t('cardinalMarking');
+    return '';
+  };
+
   return (
     <>
       {data && (
@@ -125,7 +135,7 @@ const LiningInfo: React.FC<FairwayProps> = ({ data, lineText }) => {
             <span aria-label={t('unit.nmDesc', { count: 2 })} role="definition">
               {t('unit.nm')}
             </span>
-            . {t('fairway')} {data.lighting && data.lighting[lang]?.toLocaleLowerCase()}. &lt;Lateraalimerkintä/Kardinaalimerkintä&gt;
+            . {t('fairway')} {data.lighting && data.lighting[lang]?.toLocaleLowerCase()}. {extractNotationInfo()}.
           </p>
         </IonText>
       )}
