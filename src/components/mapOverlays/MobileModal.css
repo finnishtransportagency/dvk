@@ -53,7 +53,7 @@ ion-modal .wrappable-title {
 
 ion-modal.small {
   --height: 350px;
-  --width: 400px;
+  --width: 410px;
 }
 
 ion-modal ion-button.languageSelection {
