@@ -136,8 +136,9 @@ ion-modal ion-header ion-title {
   margin-bottom: 28px;
 }
 
-ion-modal ion-content {
-  --height: 100px;
+ion-modal ion-grid {
+  margin: 0 24px 0 24px;
+  padding: 0 0 0 0;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {
@@ -170,4 +171,18 @@ ion-modal .wrappable-title {
 ion-modal.small {
   --height: 350px;
   --width: 400px;
+}
+
+ion-modal ion-button.languageSelection {
+  color: var(--ion-color-dark);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 0 2px;
+  text-decoration: underline;
+  --background-hover: unset;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --background-hover: unset;
+  --background-focused: unset;
 }

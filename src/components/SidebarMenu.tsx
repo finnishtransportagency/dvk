@@ -21,8 +21,49 @@ import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import './SidebarMenu.css';
 
+export const LanguageBar = () => {
+  const { i18n } = useTranslation();
+  return (
+    <IonButtons className="ion-justify-content-around">
+      <IonButton
+        className="languageSelection"
+        onClick={(e) => {
+          i18n.changeLanguage('fi');
+          e.preventDefault();
+        }}
+        disabled={i18n.language === 'fi'}
+        data-testid="langFi"
+      >
+        Suomeksi
+      </IonButton>
+      <IonButton
+        className="languageSelection"
+        onClick={(e) => {
+          i18n.changeLanguage('sv');
+          e.preventDefault();
+        }}
+        disabled={i18n.language === 'sv'}
+        data-testid="langSv"
+      >
+        På svenska
+      </IonButton>
+      <IonButton
+        className="languageSelection"
+        onClick={(e) => {
+          i18n.changeLanguage('en');
+          e.preventDefault();
+        }}
+        disabled={i18n.language === 'en'}
+        data-testid="langEn"
+      >
+        In English
+      </IonButton>
+    </IonButtons>
+  );
+};
+
 const SidebarMenu: React.FC = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const router = useIonRouter();
 
   return (
@@ -80,41 +121,7 @@ const SidebarMenu: React.FC = () => {
           </IonRow>
           <IonRow className="languageSelection">
             <IonCol size="12">
-              <IonButtons className="ion-justify-content-around">
-                <IonButton
-                  className="languageSelection"
-                  onClick={(e) => {
-                    i18n.changeLanguage('fi');
-                    e.preventDefault();
-                  }}
-                  disabled={i18n.language === 'fi'}
-                  data-testid="langFi"
-                >
-                  Suomeksi
-                </IonButton>
-                <IonButton
-                  className="languageSelection"
-                  onClick={(e) => {
-                    i18n.changeLanguage('sv');
-                    e.preventDefault();
-                  }}
-                  disabled={i18n.language === 'sv'}
-                  data-testid="langSv"
-                >
-                  På svenska
-                </IonButton>
-                <IonButton
-                  className="languageSelection"
-                  onClick={(e) => {
-                    i18n.changeLanguage('en');
-                    e.preventDefault();
-                  }}
-                  disabled={i18n.language === 'en'}
-                  data-testid="langEn"
-                >
-                  In English
-                </IonButton>
-              </IonButtons>
+              <LanguageBar />
             </IonCol>
           </IonRow>
         </IonGrid>

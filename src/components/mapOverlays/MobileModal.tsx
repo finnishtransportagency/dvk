@@ -1,10 +1,28 @@
-import { IonButton, IonButtons, IonContent, IonFooter, IonHeader, IonIcon, IonModal, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
+import {
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonFooter,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonRow,
+  IonTitle,
+  IonToolbar,
+  isPlatform,
+} from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { LanguageBar } from '../SidebarMenu';
+
+function isMobile() {
+  return isPlatform('iphone') || isPlatform('android');
+}
 
 export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(isPlatform('mobileweb'));
+  const [isOpen, setIsOpen] = useState(isMobile());
   const { t } = useTranslation();
   return (
     <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)} mode="md">
@@ -21,9 +39,16 @@ export const MobileModal: React.FC = () => {
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <div className="wrappable-title">{t('mobile.content')}</div>
-      </IonContent>
+      <IonGrid>
+        <IonRow>
+          <IonCol>{t('mobile.content')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <LanguageBar />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
           <IonButton slot="end" size="large" onClick={() => setIsOpen(false)} shape="round">
