@@ -146,16 +146,16 @@
         "squat": "Squat-marginal"
       },
       "legends": {
-        "squatHG20": "Huuska/Guliev C0 = 2,0: squat smax",
-        "squatHG24": "Huuska/Guliev C0 = 2,4: squat smax",
-        "squatBarrass": "Barrass: Squat smax"
+        "squatHG20": "Huuska/Guliev C₀ = 2,0: squat Sₘₐₓ",
+        "squatHG24": "Huuska/Guliev C₀ = 2,4: squat Sₘₐₓ",
+        "squatBarrass": "Barrass: Squat Sₘₐₓ"
       }
     },
     "squatDataTable": {
       "aluksen-nopeus-kn": "Fartygets fart v (kn)",
       "aluksen-nopeus-ms": "Fartygets fart v (m/s)",
-      "froude-syvyysluku": "Froude numret F nh",
-      "squat-max": "{{kerroin}} Squat smax (m)"
+      "froude-syvyysluku": "Froude numret Fₙₕ",
+      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)"
     },
     "vaylavirasto-logo": "Trafikledsverket logotyp"
   },

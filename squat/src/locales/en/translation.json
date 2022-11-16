@@ -146,16 +146,16 @@
         "squat": "[en] Painaumavara"
       },
       "legends": {
-        "squatHG20": "Huuska/Guliev C0 = 2,0: squat smax",
-        "squatHG24": "Huuska/Guliev C0 = 2,4: squat smax",
-        "squatBarrass": "Barrass: squat smax"
+        "squatHG20": "Huuska/Guliev C₀ = 2,0: squat Sₘₐₓ",
+        "squatHG24": "Huuska/Guliev C₀ = 2,4: squat Sₘₐₓ",
+        "squatBarrass": "Barrass: squat Sₘₐₓ"
       }
     },
     "squatDataTable": {
       "aluksen-nopeus-kn": "Vessel speed v (kts)",
       "aluksen-nopeus-ms": "Vessel speed v (m/s)",
-      "froude-syvyysluku": "Froude number F nh",
-      "squat-max": "{{kerroin}} Squat smax (m)"
+      "froude-syvyysluku": "Froude number Fₙₕ",
+      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)"
     },
     "vaylavirasto-logo": "Finnish Transport Infrastructure Agency logo"
   },
