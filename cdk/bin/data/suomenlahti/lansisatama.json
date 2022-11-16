@@ -1,0 +1,346 @@
+{
+  "id": "lansisatama",
+  "name": {
+    "fi": "Helsingin Länsisataman väylä",
+    "sv": "Farleden till Västra hamnen i Helsingfors",
+    "en": "Helsinki West Harbour channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 6, joista 4 on merkitty linjatauluin tai sektori- ja suuntaloistoin.",
+    "sv": "Sex linjer varav fyra är utmärkta med enstavlor och sektor- och riktfyrar.",
+    "en": "There are 6 lines, 4 of which are marked by boards, sector lights and direction lights."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylän ankkurointialue sijaitsee Helsingin majakan pohjoispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Melkin itäpuolella sijaitsee väylänosaa matalampi levitysalue, jonka haraussyvyys on 10,2 m.",
+      "sv": "Farledens ankringsområde ligger norr om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Öster om Melkö finns ett breddat område som är grundare än farledsavsnittet i övrigt. Det ramade djupet (Rd) på det breddade området är 10,2 m.",
+      "en": "The anchorage area of the channel is situated north of Helsinki Lighthouse. Anchoring is permitted only according to pilot or VTS instructions. There is a widened fairway area where the safe clearance depth is less than in the rest of the channel. The safe clearance depth (Sc) in the widened fairway area is 10.2 m."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Katajaluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
+    "sv": "Farledens yttre del är öppen sjö och oskyddad för vindar från O-S-V. Från Stora Enskär löper farleden i skydd av holmar och skär.",
+    "en": "The approach is in the open sea and unsheltered from E-S-W winds. From Katajaluoto to the harbour, the channel is protected by islands and skerries."
+  },
+  "iceCondition": {
+    "fi": "Jääongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista välillä Hramtsow Gråskärsbådan.",
+    "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning mellan Hramtsow och Gråskärsbådan.",
+    "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasionally ice ridges between Hramtsow and Gråskärsbådan."
+  },
+  "speedLimit": [
+    {
+      "fi": "Leveyspiiriltä 60°06' P (Koirasaaren kohdalta) pohjoiseen nopeusrajoitus kaikille kauppa-aluksille 30 km/h. Hernesaaren länsipuolella satama-altaassa nopeusrajoitus 10 km/h.",
+      "sv": "Från latitud 60°06'N (Koirasaari) mot norr 30 km/h för alla handelsfartyg. Den västra sidan av Ärtholmen i hamnen 10 km/h.",
+      "en": "North of latitude 60°06'N (Koirasaari), the speed limit for all merchant vessels is 30 km/h. West of Hernesaari in the harbour area, the speed limit is 10 km/h."
+    }
+  ],
+  "visibility": {
+    "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä tulisi olla vähintään 1,0 mpk.",
+    "sv": "Alla fartyg bör ha en sikt på minst 300 m. Därtill bör ett fartyg som är över 200 m långt ha en sikt på minst 1,0 nm.",
+    "en": "All ships should have a visibility of at least 300 m. In addition, for ships of more than 200 m in length, visibility should be at least 1.0 nm."
+  },
+  "seaLevel": {
+    "fi": "Vertaustaso on teoreettinen keskivesi MSL (Mean Sea Level) / MW (Mean Water).",
+    "sv": "Som referensnivå för djupuppgifter är teoretisk medelvattenstånd MSL (Mean Sea Level) / MW (Mean Water).",
+    "en": "The reference level used in depth information is the theoretical mean sea level MSL / mean sea level MW."
+  },
+  "windRecommendation": {
+    "fi": "Yli 215 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.",
+    "sv": "Max. vindhastighet för fartyg med en längd av 215 m eller mera 15 m/s.",
+    "en": "Max. recommended wind speed for vessels of more than 215 m in length is 15 m/s."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 26,
+          "name": "Helsinki S",
+          "pilotJourney": 10,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.948333, 59.983333]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Suomenlahden meriliikennekeskus",
+        "sv": "Finska vikens sjötrafikcentral",
+        "en": ""
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": 71
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privata bogserbåtar vid behov.",
+          "en": ""
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "helsinki",
+      "name": {
+        "fi": "Helsingin Satama Oy, Helsinki",
+        "sv": "Helsingfors hamn, Helsingfors",
+        "en": ""
+      },
+      "mapName": {
+        "fi": "Länsisatama",
+        "sv": "Västra hamnbassängerna",
+        "en": ""
+      },
+      "phoneNumber": [
+        "+35893101621"
+      ],
+      "fax": "+358931033802",
+      "email": "port.helsinki@portofhelsinki.fi",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.913882373350514, 60.14907092284604]
+      },
+      "quays": [
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 150,
+          "sections": [
+            {
+              "name": "LJ3",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.923055773956474, 60.156270996205734]
+              },
+              "draft": 7.8
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 200,
+          "sections": [
+            {
+              "name": "LJ4",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.923003552264284, 60.1554308144813]
+              },
+              "draft": 8.8
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 195,
+          "sections": [
+            {
+              "name": "LJ5",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.920123502658925, 60.15271015023181]
+              },
+              "draft": 8.8
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 255,
+          "sections": [
+            {
+              "name": "LJ6",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.919266799225305, 60.15190401558368]
+              },
+              "draft": 9.8
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 237,
+          "sections": [
+            {
+              "name": "LJ7",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.915847387109896, 60.14937160957522]
+              },
+              "draft": 11.9
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Jätkäsaarenlaiturit",
+            "sv": "Busholmskajerna",
+            "en": ""
+          },
+          "length": 265,
+          "sections": [
+            {
+              "name": "LJ8",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.91328496985716, 60.150058330613874]
+              },
+              "draft": 11.9
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Munkkisaarenlaituri",
+            "sv": "Munkholmskajerna",
+            "en": ""
+          },
+          "length": 196,
+          "sections": [
+            {
+              "name": "LHA",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.925742715915337, 60.1540541339185]
+              }
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Munkkisaarenlaituri",
+            "sv": "Munkholmskajerna",
+            "en": ""
+          },
+          "length": 320,
+          "sections": [
+            {
+              "name": "LHB",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.924795856545522, 60.15324580766122]
+              },
+              "draft": 9.15
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Munkkisaarenlaituri",
+            "sv": "Munkholmskajerna",
+            "en": ""
+          },
+          "length": 355,
+          "sections": [
+            {
+              "name": "LHC",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.920916377536084, 60.1495964713914]
+              },
+              "draft": 9.8
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Hernesaarenlaituri",
+            "sv": "Ärtholmenkajen",
+            "en": ""
+          },
+          "length": 313,
+          "sections": [
+            {
+              "name": "LHD",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.921128952311605, 60.14698245471573]
+              },
+              "draft": 11.9
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Hietalahdenlaituri",
+            "sv": "Sandvikenkajen",
+            "en": ""
+          },
+          "length": 85,
+          "sections": [
+            {
+              "name": "LKL",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.928020403528958, 60.160393947025106]
+              }
+            }
+          ]
+        },
+        {
+          "name": {
+            "fi": "Öljy-/hiililaituri",
+            "sv": "Olje-/kolkajen",
+            "en": ""
+          },
+          "length": 137,
+          "sections": [
+            {
+              "name": "LEL",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [24.905752496651328, 60.16022427831901]
+              },
+              "draft": 9.2
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "fairways": [
+    {
+      "id": 4710,
+      "primary": true
+    },
+    {
+      "id": 4685
+    },
+    {
+      "id": 4720
+    }
+  ]
+}

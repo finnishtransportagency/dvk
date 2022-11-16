@@ -146,7 +146,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                       <IonCol size="auto">
                         <button
                           className={'icon ' + (widePane ? 'flip invert' : '')}
-                          data-testid={fairwayId ? '' : 'togglePane'}
+                          data-testid={fairwayId ? 'toggleWide' : 'togglePane'}
                           onClick={() => togglePane()}
                         >
                           <ChevronIcon />
