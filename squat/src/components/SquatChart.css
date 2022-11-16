@@ -4,6 +4,11 @@
 
 @media (max-width: 576px) {
   .squatChartGrid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .squatChartRow {
     width: 540px;
   }
 }
