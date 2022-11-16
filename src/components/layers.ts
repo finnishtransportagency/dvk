@@ -11,10 +11,9 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { useEffect, useState } from 'react';
-import Geometry from 'ol/geom/Geometry';
+import { useEffect } from 'react';
 import { FindFairwayCardByIdQuery } from '../graphql/generated';
-import { FeatureLayerIdType, Lang } from '../utils/constants';
+import { FeatureLayerId, Lang } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
@@ -183,9 +182,24 @@ export function getHarborStyle(feature: FeatureLike) {
   ];
 }
 
+function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
+  const ds = feature.getProperties().dataSource;
+  if (ds === 'line12') {
+    return getLineStyle('#0000FF', 2);
+  } else if (ds === 'line3456') {
+    return getLineStyle('#0000FF', 2);
+  } else if (ds === 'area12' && resolution <= 100) {
+    return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+  } else if (ds === 'area3456' && resolution <= 100) {
+    return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+  } else {
+    return undefined;
+  }
+}
+
 function addFeatureLayer(
   map: Map,
-  id: FeatureLayerIdType,
+  id: FeatureLayerId,
   maxResolution: number | undefined,
   renderBuffer: number,
   style: StyleLike,
@@ -227,69 +241,11 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
   addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
+  // Valitun väyläkortin navigointilinjat ja väyläalueet
+  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
 }
 
-function setFeatureStyle(
-  source: VectorSource<Geometry>,
-  source2: VectorSource<Geometry>,
-  id: number,
-  style: Style,
-  style2: Style,
-  selected: FeatureAndStyle[]
-) {
-  let feature = source.getFeatureById(id);
-  if (feature) {
-    selected.push({ feature, style: feature.getStyle() });
-    feature.setStyle(style);
-  } else {
-    feature = source2.getFeatureById(id);
-    if (feature) {
-      selected.push({ feature, style: feature.getStyle() });
-      feature.setStyle(style2);
-    }
-  }
-}
-
-type FeatureAndStyle = {
-  feature: Feature<Geometry>;
-  style: StyleLike | undefined;
-};
-
-export function useHighlightFairway(data: FindFairwayCardByIdQuery | undefined) {
-  const dvkMap = getMap();
-  const [features, setFeatures] = useState<FeatureAndStyle[]>([]);
-  useEffect(() => {
-    return () => {
-      for (const f of features) {
-        f.feature.setStyle(f.style);
-      }
-    };
-  }, [features]);
-  useEffect(() => {
-    if (data) {
-      const source = dvkMap.getVectorSource('line12');
-      const source2 = dvkMap.getVectorSource('line3456');
-      const source3 = dvkMap.getVectorSource('area12');
-      const source4 = dvkMap.getVectorSource('area3456');
-      const style = getLineStyle('#0000FF', 2);
-      const style2 = getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
-      const style3 = getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
-      const selected: FeatureAndStyle[] = [];
-      for (const fairway of data?.fairwayCard?.fairways || []) {
-        for (const line of fairway.navigationLines || []) {
-          setFeatureStyle(source, source2, line.id, style, style, selected);
-        }
-        for (const area of fairway.areas || []) {
-          setFeatureStyle(source3, source4, area.id, style2, style3, selected);
-        }
-      }
-      console.log('selected: ' + selected.length);
-      setFeatures(selected);
-    }
-  }, [setFeatures, data, dvkMap]);
-}
-
-export function useCenterToFairway(data: FindFairwayCardByIdQuery | undefined) {
+export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {
   const dvkMap = getMap();
   useEffect(() => {
     if (data) {
@@ -297,41 +253,73 @@ export function useCenterToFairway(data: FindFairwayCardByIdQuery | undefined) {
       const line3456Source = dvkMap.getVectorSource('line3456');
       const area12Source = dvkMap.getVectorSource('area12');
       const area3456Source = dvkMap.getVectorSource('area3456');
+      const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+      const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
+      for (const feature of oldSelectedFeatures) {
+        switch (feature.getProperties().dataSource) {
+          case 'line12':
+            line12Source.addFeature(feature);
+            break;
+          case 'line3456':
+            line3456Source.addFeature(feature);
+            break;
+          case 'area12':
+            area12Source.addFeature(feature);
+            break;
+          case 'area3456':
+            area3456Source.addFeature(feature);
+            break;
+        }
+      }
+      selectedFairwayCardSource.clear();
 
       const fairwayFeatures: Feature[] = [];
 
       for (const fairway of data?.fairwayCard?.fairways || []) {
         for (const line of fairway.navigationLines || []) {
           let feature = line12Source.getFeatureById(line.id);
-          if (!feature) {
-            feature = line3456Source.getFeatureById(line.id);
-          }
           if (feature) {
+            feature.setProperties({ dataSource: 'line12' });
+            line12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
+          } else {
+            feature = line3456Source.getFeatureById(line.id);
+            if (feature) {
+              feature.setProperties({ dataSource: 'line2345' });
+              line3456Source.removeFeature(feature);
+              fairwayFeatures.push(feature);
+            }
           }
         }
         for (const area of fairway.areas || []) {
           let feature = area12Source.getFeatureById(area.id);
-          if (!feature) {
-            feature = area3456Source.getFeatureById(area.id);
-          }
           if (feature) {
+            feature.setProperties({ dataSource: 'area12' });
+            area12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
+          } else {
+            feature = area3456Source.getFeatureById(area.id);
+            if (feature) {
+              feature.setProperties({ dataSource: 'area3456' });
+              area3456Source.removeFeature(feature);
+              fairwayFeatures.push(feature);
+            }
           }
         }
       }
 
-      if (fairwayFeatures.length > 0) {
-        const extent = olExtent.createEmpty();
-        for (const feature of fairwayFeatures) {
-          const geom = feature.getGeometry();
-          if (geom) {
-            olExtent.extend(extent, geom.getExtent());
-          }
+      selectedFairwayCardSource.addFeatures(fairwayFeatures);
+
+      const extent = olExtent.createEmpty();
+      for (const feature of fairwayFeatures) {
+        const geom = feature.getGeometry();
+        if (geom) {
+          olExtent.extend(extent, geom.getExtent());
         }
-        if (!olExtent.isEmpty(extent)) {
-          dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
-        }
+      }
+      if (!olExtent.isEmpty(extent)) {
+        dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
       }
     }
   }, [data, dvkMap]);

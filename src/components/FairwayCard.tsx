@@ -20,7 +20,7 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
-import { useHighlightFairway, useCenterToFairway } from './layers';
+import { useSetSelectedFairwayCard } from './layers';
 import { Lang } from '../utils/constants';
 
 type PhonenumberProps = {
@@ -614,8 +614,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     return n2000Line;
   };
 
-  useHighlightFairway(data);
-  useCenterToFairway(data);
+  useSetSelectedFairwayCard(data);
+
   return (
     <>
       {loading && (
