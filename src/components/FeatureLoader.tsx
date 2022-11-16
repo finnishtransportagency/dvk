@@ -29,20 +29,8 @@ let featuresInitialized = false;
 
 function InitFeatures() {
   if (!featuresInitialized) {
-    const responses: Promise<unknown>[] = [];
     MAP.FEATURE_DATA_LAYERS.forEach((layer) => {
-      if (layer.url) {
-        responses.push(makeRequest(layer.url, layer.id));
-      }
-    });
-    Promise.all(responses).then(() => {
-      MAP.FEATURE_DATA_LAYERS.forEach((layer) => {
-        if (layer.ids) {
-          for (const id of layer.ids) {
-            dvkMap.getVectorSource(layer.id).addFeatures(dvkMap.getVectorSource(id).getFeatures());
-          }
-        }
-      });
+      makeRequest(layer.url, layer.id);
     });
     featuresInitialized = true;
   }

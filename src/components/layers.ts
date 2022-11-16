@@ -240,6 +240,8 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'safetyequipment', 10, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
+  // Valitun väyläkortin navigointilinjat ja väyläalueet
+  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
@@ -247,8 +249,6 @@ export function addAPILayers(map: Map) {
   // Syvyydet
   addFeatureLayer(map, 'depth12', 100, 50, (feature) => getDepthStyle(feature));
   addFeatureLayer(map, 'depth3456', 30, 50, (feature) => getDepthStyle(feature));
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
 }
 
 export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {

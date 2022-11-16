@@ -22,13 +22,15 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
+type DataLayer = { id: FeatureDataLayerId; url: URL };
+
 type MapType = {
   EPSG: string;
   EXTENT: number[];
   RESOLUTIONS: number[];
   INIT_CENTER: number[];
   INIT_RESOLUTION: number;
-  FEATURE_DATA_LAYERS: Array<{ id: FeatureDataLayerId; url?: URL; ids?: FeatureDataLayerId[] }>;
+  FEATURE_DATA_LAYERS: Array<DataLayer>;
 };
 
 export const MAP: MapType = {
@@ -48,8 +50,8 @@ export const MAP: MapType = {
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
     { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
-    { id: 'depth12', ids: ['area12'] },
-    { id: 'depth3456', ids: ['area3456'] },
+    { id: 'depth12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
+    { id: 'depth3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
   ],
 };
 
