@@ -167,6 +167,8 @@ export function getDepthStyle(feature: FeatureLike) {
   const dvkMap = getMap();
   if (props.n2000draft || props.draft) {
     text = dvkMap.t('popup.harbor.number', { val: props.n2000draft || props.draft });
+  } else if (props.n2000depth || props.depth) {
+    text = dvkMap.t('popup.harbor.number', { val: props.n2000depth || props.depth });
   } else {
     text = '-';
   }
