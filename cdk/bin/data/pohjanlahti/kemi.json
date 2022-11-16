@@ -11,7 +11,12 @@
     "sv": "Tre linjer, varav den innersta utmärkt med enstavlor.",
     "en": "Three lines, the innermost marked by boards."
   },
-  "anchorage":[
+  "designSpeed": {
+    "fi": "Mitoitusnopeus ulko-osalla 12 solmua Kemi 1 – RM Hebe, haraussyvyyden muutoskohdasta satamaan 8 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 12 knop från Kemi 1 till RM Hebe, stället där det ramade djupet ändras ända in i hamn 8 knop.",
+    "en": "Design speed in the approach 12 knots, from Kemi 1 to RM Hebe, the position where the safe clearance depth alters 8 knots."
+  },
+  "anchorage": [
     {
       "fi": "Väylän ulko-osalla on tilaa ankkuroida ja ohittaa Kemi 1 ja Kemi 3 välillä. Sisäosalla on ankkurointi- ja ohituspaikka Inakarin kohdalla väylän länsipuolella n. 2 km ennen satamaa, syvyys 14 - 16 m, hiekkapohja, kardinaalimerkintä, suojaton merituulilla.",
       "sv": "I angöringen finns plats för ankring och passage mellan Kemi 1 och Kemi 3. I inloppet finns plats för ankring och passage vid Inakari, ca 2 km före hamn, djup 14 - 16 m, sandbotten, kardinalutmärkning, oskyddad vid havsvindar.",
