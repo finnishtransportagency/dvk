@@ -258,7 +258,7 @@ const Environment: React.FC = () => {
                 actionType="environment-fairway"
               />
             </IonCol>
-            <IonCol size="12" aria-label={t('form-of-fairway')}>
+            <IonCol size="12">
               <RadioSelectField
                 title={t('form-of-fairway')}
                 name="fairwayForm"

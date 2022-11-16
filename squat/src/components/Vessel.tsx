@@ -260,7 +260,7 @@ const Vessel: React.FC = () => {
                 actionType="vessel-detailed"
               />
             </IonCol>
-            <IonCol size="12" aria-label={t('select-vessel-profile')}>
+            <IonCol size="12">
               <RadioSelectField
                 title={t('select-vessel-profile')}
                 name="profileSelected"
