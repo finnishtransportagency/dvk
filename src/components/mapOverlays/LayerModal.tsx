@@ -3,6 +3,7 @@ import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonList, IonModal, IonTe
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
+import { MAP } from '../../utils/constants';
 
 interface ModalProps {
   isOpen: boolean;
@@ -26,11 +27,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   };
   const dvkMap = getMap();
   useEffect(() => {
-    dvkMap.olMap?.getAllLayers().forEach((layer) => {
-      const layerId = layer.getProperties().id;
-      if (layerId) {
-        layer.setVisible(layers.includes(layerId));
-      }
+    MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
+      const layer = dvkMap.getFeatureLayer(dataLayer.id);
+      layer.setVisible(layers.includes(dataLayer.id));
     });
   }, [layers, dvkMap]);
   const LayerItem: React.FC<CheckBoxProps> = ({ id, title }) => {

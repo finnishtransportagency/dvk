@@ -1,8 +1,8 @@
 import { GeoJSON } from 'ol/format';
-import { MAP, FeatureLayerIdType } from '../utils/constants';
+import { MAP, FeatureLayerId } from '../utils/constants';
 import dvkMap from './DvkMap';
 
-async function makeRequest(url: URL, id: FeatureLayerIdType) {
+async function makeRequest(url: URL, id: FeatureLayerId): Promise<unknown> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url);
@@ -30,13 +30,13 @@ let featuresInitialized = false;
 function InitFeatures() {
   if (!featuresInitialized) {
     const responses: Promise<unknown>[] = [];
-    MAP.FEATURE_LAYERS.forEach((layer) => {
+    MAP.FEATURE_DATA_LAYERS.forEach((layer) => {
       if (layer.url) {
         responses.push(makeRequest(layer.url, layer.id));
       }
     });
     Promise.all(responses).then(() => {
-      MAP.FEATURE_LAYERS.forEach((layer) => {
+      MAP.FEATURE_DATA_LAYERS.forEach((layer) => {
         if (layer.ids) {
           for (const id of layer.ids) {
             dvkMap.getVectorSource(layer.id).addFeatures(dvkMap.getVectorSource(id).getFeatures());

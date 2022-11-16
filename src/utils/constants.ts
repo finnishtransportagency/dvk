@@ -2,7 +2,7 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
-export type FeatureLayerIdType =
+export type FeatureDataLayerId =
   | 'area12'
   | 'area3456'
   | 'line12'
@@ -15,6 +15,10 @@ export type FeatureLayerIdType =
   | 'safetyequipment'
   | 'depth';
 
+export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
+
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
+
 export type Lang = 'fi' | 'sv' | 'en';
 
 type MapType = {
@@ -23,7 +27,7 @@ type MapType = {
   RESOLUTIONS: number[];
   INIT_CENTER: number[];
   INIT_RESOLUTION: number;
-  FEATURE_LAYERS: Array<{ id: FeatureLayerIdType; url?: URL; ids?: FeatureLayerIdType[] }>;
+  FEATURE_DATA_LAYERS: Array<{ id: FeatureDataLayerId; url?: URL; ids?: FeatureDataLayerId[] }>;
 };
 
 export const MAP: MapType = {
@@ -32,7 +36,7 @@ export const MAP: MapType = {
   RESOLUTIONS: [2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5],
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
-  FEATURE_LAYERS: [
+  FEATURE_DATA_LAYERS: [
     { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
     { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
     { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
