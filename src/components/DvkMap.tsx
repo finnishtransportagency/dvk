@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { FeatureLayerIdType, MAP } from '../utils/constants';
+import { FeatureLayerId, MAP } from '../utils/constants';
 import { MousePosition, ScaleLine, Zoom } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -279,11 +279,11 @@ class DvkMap {
     return this.searchbarControl;
   };
 
-  public getFeatureLayer(layerId: FeatureLayerIdType) {
+  public getFeatureLayer(layerId: FeatureLayerId) {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
 
-  public getVectorSource(layerId: FeatureLayerIdType) {
+  public getVectorSource(layerId: FeatureLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
   }
