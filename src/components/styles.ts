@@ -173,11 +173,13 @@ export function getDepthStyle(feature: FeatureLike) {
   const specialFeature = feature.getProperties().featureType === 'specialarea';
   return [
     new Style({
+      zIndex: 100,
       image: new Icon({
         src: depthIcon,
         anchor: [0.5, specialFeature ? -15 : 0.5],
         anchorXUnits: 'fraction',
         anchorYUnits: specialFeature ? 'pixels' : 'fraction',
+        opacity: 1,
       }),
       geometry: function (feat) {
         const geometry = feat.getGeometry() as Polygon;
