@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonText } from '@ionic/react';
-import { alertCircleOutline } from 'ionicons/icons';
+import { warningOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
 import Label from './Label';
 import i18n from '../i18n';
@@ -25,7 +25,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
 
       <IonItem lines="none" className="item-static">
         <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
-          {props.error && <IonIcon icon={alertCircleOutline} color="danger" />}
+          {props.error && <IonIcon icon={warningOutline} color="danger" />}
           {props.value}
         </IonText>
         {props.unit && (
