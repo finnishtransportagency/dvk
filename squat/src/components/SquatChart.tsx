@@ -391,14 +391,18 @@ const SquatChart: React.FC = () => {
   }, [state, width, t]);
 
   return (
-    <IonGrid aria-hidden="true">
-      <IonRow>
+    <IonGrid className="squatChartGrid" aria-hidden="true">
+      <IonRow className="squatChartRow">
         <IonCol>
           <h4 className="squatChartTitle">{t('heading')}</h4>
+        </IonCol>
+      </IonRow>
+      <IonRow className="squatChartRow">
+        <IonCol>
           <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
         </IonCol>
       </IonRow>
-      <IonRow>
+      <IonRow className="squatChartRow">
         <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
       </IonRow>
     </IonGrid>

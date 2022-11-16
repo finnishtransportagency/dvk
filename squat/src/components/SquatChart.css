@@ -1,3 +1,14 @@
 .squatChartTitle {
   border-bottom: 1px solid #d8d8d8;
 }
+
+@media (max-width: 576px) {
+  .squatChartGrid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .squatChartRow {
+    width: 540px;
+  }
+}
