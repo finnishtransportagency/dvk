@@ -9,6 +9,7 @@ import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { filterFairways } from '../../utils/common';
 import { Lang } from '../../utils/constants';
+import { MobileModal } from './MobileModal';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -68,6 +69,7 @@ const MapOverlays: React.FC = () => {
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
+      <MobileModal />
     </>
   );
 };

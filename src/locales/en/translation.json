@@ -163,5 +163,13 @@
       "internet": "[en] Verkkosivu",
       "extra": "[en] Lisätieto"
     }
+  },
+  "common": {
+    "close": "Close",
+    "close-dialog": "Close dialog"
+  },
+  "mobile": {
+    "title": "Use of digital fairway card in mobile devices",
+    "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
   }
 }

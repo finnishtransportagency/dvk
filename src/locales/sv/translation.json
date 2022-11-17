@@ -163,5 +163,13 @@
       "internet": "[sv] Verkkosivu",
       "extra": "[sv] Lisätieto"
     }
+  },
+  "common": {
+    "close": "Stäng",
+    "close-dialog": "Stäng dialogrutan"
+  },
+  "mobile": {
+    "title": "Användning av digitalt fairwaykort i mobila enheter",
+    "content": "Det digitala fairwaykortet är fortfarande under utveckling. I första skedet stöder den här tjänsten inte officiellt användningen av mobila enheter, och därför rekommenderar vi att du använder webbläsaren på skrivbordet eller surfplattan."
   }
 }
