@@ -13,7 +13,7 @@ ion-modal ion-footer.footer-md::before {
 
 ion-modal ion-header ion-title {
   font-family: "Exo 2";
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   padding-inline: 28px;
   margin-top: 28px;
@@ -24,6 +24,10 @@ ion-modal ion-header ion-title {
 ion-modal ion-grid {
   margin: 0 24px 0 24px;
   padding: 0 0 0 0;
+}
+
+ion-modal ion-header ion-toolbar.titleBar {
+  padding-left: 0;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {

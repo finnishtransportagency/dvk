@@ -29,7 +29,7 @@ export const MobileModal: React.FC = () => {
     <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)} mode="md">
       <IonHeader>
         <div className="gradient-top" />
-        <IonToolbar>
+        <IonToolbar className="titleBar">
           <IonTitle>
             <div className="wrappable-title">{t('mobile.title')}</div>
           </IonTitle>
