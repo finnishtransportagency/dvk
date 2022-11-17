@@ -41,7 +41,7 @@ export const MobileModal: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonGrid>
-        <IonRow>
+        <IonRow className="content">
           <IonCol>{t('mobile.content')}</IonCol>
         </IonRow>
         <IonRow>

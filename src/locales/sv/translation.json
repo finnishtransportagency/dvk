@@ -167,7 +167,7 @@
     "close-dialog": "Stäng dialogrutan"
   },
   "mobile": {
-    "title": "Användning av digitala farleden för mobil enhet",
-    "content": "[sv] Digitaalinen väyläkortti on tällä hetkellä vielä kehityksen alla. Ensimmäisessä vaiheessa palvelu ei tue virallisesti mobiililaite käyttöä, joten suosittelemme käyttämään palvelua työpöytä- tai tablettiselaimella."
+    "title": "Användning av digitalt fairwaykort i mobila enheter",
+    "content": "Det digitala fairwaykortet är fortfarande under utveckling. I första skedet stöder den här tjänsten inte officiellt användningen av mobila enheter, och därför rekommenderar vi att du använder webbläsaren på skrivbordet eller surfplattan."
   }
 }

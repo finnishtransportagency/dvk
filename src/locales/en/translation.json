@@ -167,7 +167,7 @@
     "close-dialog": "Close dialog"
   },
   "mobile": {
-    "title": "Digital fairway card mobile device use",
-    "content": "[en] Digitaalinen väyläkortti on tällä hetkellä vielä kehityksen alla. Ensimmäisessä vaiheessa palvelu ei tue virallisesti mobiililaite käyttöä, joten suosittelemme käyttämään palvelua työpöytä- tai tablettiselaimella."
+    "title": "Use of digital fairway card in mobile devices",
+    "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
   }
 }

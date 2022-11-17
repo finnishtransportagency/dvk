@@ -13,9 +13,9 @@ ion-modal ion-footer.footer-md::before {
 
 ion-modal ion-header ion-title {
   font-family: "Exo 2";
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
-  padding-inline: 28px;
+  padding-inline: 20px;
   margin-top: 28px;
   margin-bottom: 28px;
   letter-spacing: 0;
@@ -54,7 +54,7 @@ ion-modal .wrappable-title {
 }
 
 ion-modal.small {
-  --height: 400px;
+  --height: 390px;
   --width: 380px;
 }
 
@@ -77,4 +77,8 @@ ion-modal ion-button.button-disabled {
   font-weight: bold;
   color: var(--ion-color-dark);
   opacity: 1;
+}
+
+ion-modal .content {
+  height: 150px
 }
