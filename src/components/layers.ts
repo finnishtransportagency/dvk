@@ -20,24 +20,25 @@ import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getSafetyEquipmentStyle } from './styles';
+import { getDepthStyle, getSafetyEquipmentStyle } from './styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
 
-function getSpecialAreaStyle(color: string, width: number, type: number) {
+function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   const gradient = context.createPattern(specialAreaImage, 'repeat');
   return [
+    ...getDepthStyle(feature),
     new Style({
       image: new Icon({
-        src: type === 2 ? anchorage : meet,
+        src: feature.getProperties().typeCode === 2 ? anchorage : meet,
         opacity: 1,
       }),
       zIndex: 100,
-      geometry: function (feature) {
-        const geometry = feature.getGeometry() as Polygon;
+      geometry: function (feat) {
+        const geometry = feat.getGeometry() as Polygon;
         return geometry.getInteriorPoint();
       },
     }),
@@ -234,17 +235,20 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'restrictionarea', 10, 2, getLineStyle('purple', 2));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle('#C57A11', 2, feature.getProperties().typeCode));
+  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 10, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
+  // Valitun väyläkortin navigointilinjat ja väyläalueet
+  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
   addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
+  // Syvyydet
+  addFeatureLayer(map, 'depth12', 100, 50, (feature) => getDepthStyle(feature));
+  addFeatureLayer(map, 'depth3456', 30, 50, (feature) => getDepthStyle(feature));
 }
 
 export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {

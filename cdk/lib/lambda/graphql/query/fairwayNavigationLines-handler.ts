@@ -12,11 +12,11 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, NavigationLin
   return lines.map((apiLine) => {
     const line: NavigationLine = {
       id: apiLine.id,
-      depth: apiLine.mitoitusSyvays,
-      draft: apiLine.harausSyvyys,
+      draft: apiLine.mitoitusSyvays,
+      depth: apiLine.harausSyvyys,
       referenceLevel: apiLine.vertaustaso,
-      n2000depth: apiLine.n2000MitoitusSyvays,
-      n2000draft: apiLine.n2000HarausSyvyys,
+      n2000draft: apiLine.n2000MitoitusSyvays,
+      n2000depth: apiLine.n2000HarausSyvyys,
       n2000ReferenceLevel: apiLine.n2000Vertaustaso,
       direction: apiLine.tosisuunta,
       length: apiLine.pituus,
