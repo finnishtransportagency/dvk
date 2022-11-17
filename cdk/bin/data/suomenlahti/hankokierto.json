@@ -11,7 +11,12 @@
     "sv": "6 linjer, utmärkta med enstavlor.",
     "en": "6 lines, marked with boards."
   },
-  "anchorage":[
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylällä 11 solmua.",
+    "sv": "Dimensionerande fart 11 knop.",
+    "en": "Design speed 11 knots."
+  },
+  "anchorage": [
     {
       "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
       "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",

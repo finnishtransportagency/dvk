@@ -69,6 +69,11 @@ query findFairwayCardById($id: String!) {
       sv
       en
     }
+    designSpeed {
+      fi
+      sv
+      en
+    }
     anchorage {
       fi
       sv

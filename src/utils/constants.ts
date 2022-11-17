@@ -57,3 +57,9 @@ export const MAP: MapType = {
 
 export const MINIMUM_QUERYLENGTH = 3;
 export const MAX_HITS = 20;
+
+export const N2000URLS = {
+  fi: 'www.traficom.fi/fi/liikenne/merenkulku/n2000-vayla-ja-merikarttauudistus',
+  sv: 'www.traficom.fi/sv/transport/sjofart/farleds-och-sjokortsreformen-n2000',
+  en: 'www.traficom.fi/en/transport/maritime/n2000-fairway-and-nautical-chart-reform-improved',
+};

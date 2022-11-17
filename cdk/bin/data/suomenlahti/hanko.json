@@ -11,6 +11,11 @@
     "sv": "2 farledslinjer, utmärkta med enstavlor.",
     "en": "2 navigation lines, marked by boards."
   },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylällä 16 solmua.",
+    "sv": "Dimensionerande fart 16 knop.",
+    "en": "Design speed 16 knots."
+  },
   "anchorage": [
     {
       "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
@@ -61,10 +66,7 @@
         "en": "Hanko VTS"
       },
       "phoneNumber": "+358204485391",
-      "email": [
-        "helsinki.vts@fintraffic.fi",
-        "supervisors.hki@fintraffic.fi"
-      ],
+      "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
       "vhf": 67
     },
     "tugs": [
@@ -85,10 +87,7 @@
         "sv": "Hangon satama - Hangö Hamn Oy Ab",
         "en": "Hangon satama - Hangö Hamn Oy Ab"
       },
-      "phoneNumber": [
-        "+358102355013",
-        "+358405486534"
-      ],
+      "phoneNumber": ["+358102355013", "+358405486534"],
       "email": "traffic@portofhanko.fi",
       "harborBasin": {
         "fi": "Kääntöaltaan halkaisija 800 m, haraussyvyys -15,0 m.",

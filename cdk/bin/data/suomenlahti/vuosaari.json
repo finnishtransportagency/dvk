@@ -11,7 +11,12 @@
     "sv": "Tre linjer, utmärkta med enstavlor.",
     "en": "Three lines marked with boards."
   },
-  "anchorage":[
+  "designSpeed": {
+    "fi": "Mitoitusnopeus (ulko-osa / sisäosa): 15 / 14 solmua (konttialus), 12,5 / 11,5 solmua (bulk-alus).",
+    "sv": "Dimensionerande fart (i angöringen / i inloppet): 15 / 14 knop (container), 12,5 / 11,5 knop (bulk).",
+    "en": "Design speed (in the approach / in the entrance): 15 / 14 knots (container), 12.5 / 11.5 knots (bulk)."
+  },
+  "anchorage": [
     {
       "fi": "Väylän ulko-osalla ankkurointialue on Helsingin majakan luoteispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Eestiluodon eteläpuolella ja Musta Hevosen länsipuolella on väylän levennysalueita.",
       "sv": "Ankringsområdet i angöringen ligger NV om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Farleden har breddade områden Söder om Estlotan och väster om Svarta Hästen.",
