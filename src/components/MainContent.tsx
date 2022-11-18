@@ -13,6 +13,7 @@ import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
 import { useFindAllFairwayCardsQuery } from '../graphql/generated';
 import { Lang, MINIMUM_QUERYLENGTH } from '../utils/constants';
 import { filterFairways } from '../utils/common';
+import { unsetSelectedFairwayCard } from './layers';
 
 interface RouterProps {
   fairwayId?: string;
@@ -91,6 +92,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   };
 
   useIonViewWillEnter(() => {
+    unsetSelectedFairwayCard();
     if (mapElement?.current) {
       dvkMap?.removeShowSidebarMenuControl();
       dvkMap?.removeSearchbarControl();
