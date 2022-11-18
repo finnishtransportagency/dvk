@@ -69,7 +69,7 @@
       "extraInfo": {
         "fi": "Luotsipaikka aluksille, joiden syväys on enintään 11,5 m Oulu W 65°05,01’ P, 024°03,30 I. Liitekartassa on kuvattu varmistettu alue (Hs -14,0 m, mitoitusnopeus 14 solmua) jota alukset voivat käyttää liikuttaessa luotsipaikalle ja luotsipaikalta. Varmistettua aluetta on merkitty virtuaaliturvalaitteilla, varmistetun alueen virtuaali AIS merkinnän lähetys käynnistetään tarvittaessa. Yli 11,5 m mitoitussyväydellä kulkeville aluksille luotsin otto- ja jättöpaikka sovitaan tapauskohtaisesti. Luotsi nousee/jättää aluksen luotsipaikalla, ja varsinainen luotsaus alkaa ja päättyy Oulun väylän ulkopäässä (65°20,8940’ P ja 023°58,2420’ I). Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
         "sv": "Lotsplatsen för fartyg, med dimensionerat djupgående 11,5 m Oulu W: 65°05,01’ N, 024°03,30 O. Säkrat område (rd -14,0 m, dimensionerande fart 14 knop) som fartyg kan använda till och från lotsplatsen Oulu W är med i kartbilagan. Säkrat område har utmärkts med virtuella säkerhetsanordningar, sändning av virtuella AIS utmärkning för säkrat område startas vid behov. Fartyg över 11,5 m dimensionerat djupgående, bör platsen där lots möter överenskommas separat. Lotsen möter och lämnar fartyget på lotsplatsen men den egentliga lotsningen börjar/slutar på Uleåborg farled. (65°20,8940’ N ja 023°58,2420’ O). Anm. Vintertid och vid dålig sikt bör platsen där lots möter överenskommas separat.",
-        "en": "Pilot boarding positions for vessels using design draft 11.5 m Oulu W: 65° 05.01' N 024 ° 03.30 E. Safe clearance depth of the area (sc -14.0 m, designed speed 14.0 knots) which vessels can use to and from the pilot boarding position is displayed on the map. The area is marked with virtual AIS AtoNs, broadcasting of virtual AIS marks for secured area will be started if needed. Vessels with design draft over 11.5 m, pilot boarding and disembarking will be agreed separately. Pilot boards or disembarks the vessel at the pilot position, but the actual pilotage begins/ends at the Oulu fairway, 65° 20.8940' N, 023° 58.2420' E. NB. In winter and adverse weather conditions the pilot boarding position is agreed separately"
+        "en": "Pilot boarding positions for vessels using design depth 11.5 m Oulu W: 65° 05.01' N 024 ° 03.30 E. Safe clearance depth of the area (sc -14.0 m, designed speed 14.0 knots) which vessels can use to and from the pilot boarding position is displayed on the map. The area is marked with virtual AIS AtoNs, broadcasting of virtual AIS marks for secured area will be started if needed. Vessels with design depth over 11.5 m, pilot boarding and disembarking will be agreed separately. Pilot boards or disembarks the vessel at the pilot position, but the actual pilotage begins/ends at the Oulu fairway, 65° 20.8940' N, 023° 58.2420' E. NB. In winter and adverse weather conditions the pilot boarding position is agreed separately"
       },
       "places": [
         {
@@ -92,7 +92,11 @@
       "email": [
         "bothnia.vts@fintraffic.fi"
       ],
-      "vhf": 67
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
     },
     "tugs": [
       {
@@ -139,7 +143,7 @@
           "length": 72,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             }
           ],
           "geometry": {
@@ -156,10 +160,10 @@
           "length": 150,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             },
             {
-              "draft": 6.9
+              "depth": 6.9
             }
           ],
           "geometry": {
@@ -176,10 +180,10 @@
           "length": 150,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             },
             {
-              "draft": 6.9
+              "depth": 6.9
             }
           ],
           "geometry": {
@@ -196,7 +200,7 @@
           "length": 343,
           "sections": [
             {
-              "draft": 9.2
+              "depth": 9.2
             }
           ],
           "extraInfo": {
@@ -218,7 +222,7 @@
           "length": 170,
           "sections": [
             {
-              "draft": 10.8
+              "depth": 10.8
             }
           ],
           "extraInfo": {
@@ -240,7 +244,7 @@
           "length": 70,
           "sections": [
             {
-              "draft": 10.8
+              "depth": 10.8
             }
           ],
           "geometry": {
@@ -257,7 +261,7 @@
           "length": 162,
           "sections": [
             {
-              "draft": 8
+              "depth": 8
             }
           ],
           "geometry": {
@@ -274,7 +278,7 @@
           "length": 290,
           "sections": [
             {
-              "draft": 13.6
+              "depth": 13.6
             }
           ],
           "geometry": {
@@ -291,7 +295,7 @@
           "length": 320,
           "sections": [
             {
-              "draft": 6.8
+              "depth": 6.8
             }
           ],
           "geometry": {
@@ -308,7 +312,7 @@
           "length": 320,
           "sections": [
             {
-              "draft": 6.8
+              "depth": 6.8
             }
           ],
           "geometry": {

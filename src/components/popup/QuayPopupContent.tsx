@@ -34,13 +34,13 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay }) => {
             <IonCol>{coordinatesToStringHDM(quay.coordinates)}</IonCol>
           </IonRow>
         )}
-        {quay.properties.draft && (
+        {quay.properties.depth && (
           <>
             <IonRow>
               <IonCol className="header">{t('depth')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{quay.properties.draft?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
+              <IonCol>{quay.properties.depth?.map((d) => t('number', { val: d })).join(' / ')} m</IonCol>
             </IonRow>
           </>
         )}

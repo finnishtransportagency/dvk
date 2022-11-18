@@ -86,7 +86,11 @@
       "email": [
         "bothnia.vts@fintraffic.fi"
       ],
-      "vhf": 67
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
     },
     "tugs": [
       {
@@ -148,7 +152,7 @@
           },
           "sections": [
             {
-              "draft": 11.2
+              "depth": 11.2
             }
           ]
         },
@@ -165,7 +169,7 @@
           "length": 160,
           "sections": [
             {
-              "draft": 10.6
+              "depth": 10.6
             }
           ]
         },
@@ -182,7 +186,7 @@
           "length": 179,
           "sections": [
             {
-              "draft": 9.2
+              "depth": 9.2
             }
           ]
         },
@@ -199,7 +203,7 @@
           "length": 292,
           "sections": [
             {
-              "draft": 9.2
+              "depth": 9.2
             }
           ]
         },
@@ -216,7 +220,7 @@
           "length": 178,
           "sections": [
             {
-              "draft": 11.2
+              "depth": 11.2
             }
           ]
         },
@@ -233,7 +237,7 @@
           "length": 178,
           "sections": [
             {
-              "draft": 11.2
+              "depth": 11.2
             }
           ]
         }

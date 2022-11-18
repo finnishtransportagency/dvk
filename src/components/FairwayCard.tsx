@@ -440,7 +440,9 @@ const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
         <IonText>
           <p>
             <strong>{t('vts')}: </strong>
-            {data.name && data.name[lang]}, {t('vhf')} {data.vhf}. <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />,{' '}
+            {data.name && data.name[lang]}, {t('vhf')}{' '}
+            {data.vhf?.map((v) => (v?.name ? v.channel + ' (' + v?.name[lang] + ')' : v?.channel)).join(', ')}.{' '}
+            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />,{' '}
             {data.email &&
               data.email?.map((email, idx) => {
                 return (
@@ -535,8 +537,8 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
                 return (
                   <span key={kdx}>
                     <br />
-                    {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.draft?.toLocaleString()}&nbsp;
-                    <span aria-label={t('unit.mDesc', { count: Number(section?.draft) })} role="definition">
+                    {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
+                    <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })} role="definition">
                       m
                     </span>
                   </span>

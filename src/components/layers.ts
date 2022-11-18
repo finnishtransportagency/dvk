@@ -111,10 +111,10 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   const props = feature.getProperties() as QuayFeatureProperties;
   let text;
   const dvkMap = getMap();
-  if (props.name && props.draft) {
-    text = `${props.name} ${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
-  } else if (props.draft) {
-    text = `${props.draft?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
+  if (props.name && props.depth) {
+    text = `${props.name} ${props.depth?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
+  } else if (props.depth) {
+    text = `${props.depth?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
   } else if (props.name) {
     text = props.name;
   } else {

@@ -45,11 +45,15 @@ type Tug {
   email: String
 }
 
+type VHF {
+  name: Text
+  channel: Int
+}
 type VTS {
   name: Text
   phoneNumber: String
   email: [String]
-  vhf: Int
+  vhf: [VHF]
 }
 
 type Pilot {
@@ -93,7 +97,7 @@ type Quay {
 
 type Section {
   name: String
-  draft: Float
+  depth: Float
   geometry: GeometryPoint
 }
 

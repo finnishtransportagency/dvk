@@ -78,7 +78,24 @@
         "helsinki.vts@fintraffic.fi",
         "supervisors.hki@fintraffic.fi"
       ],
-      "vhf": 71
+      "vhf": [
+        {
+          "name": {
+            "fi": "Helsinki",
+            "sv": "Helsingfors",
+            "en": "Helsinki"
+          },
+          "channel": 71
+        },
+        {
+          "name": {
+            "fi": "Porkkala",
+            "sv": "Porkala",
+            "en": "Porkkala"
+          },
+          "channel": 9
+        }
+      ]
     },
     "tugs": [
       {
