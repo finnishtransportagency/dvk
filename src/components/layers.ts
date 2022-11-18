@@ -251,6 +251,34 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'depth3456', 30, 50, (feature) => getDepthStyle(feature));
 }
 
+export function unsetSelectedFairwayCard() {
+  const dvkMap = getMap();
+  const line12Source = dvkMap.getVectorSource('line12');
+  const line3456Source = dvkMap.getVectorSource('line3456');
+  const area12Source = dvkMap.getVectorSource('area12');
+  const area3456Source = dvkMap.getVectorSource('area3456');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
+  for (const feature of oldSelectedFeatures) {
+    switch (feature.getProperties().dataSource) {
+      case 'line12':
+        line12Source.addFeature(feature);
+        break;
+      case 'line3456':
+        line3456Source.addFeature(feature);
+        break;
+      case 'area12':
+        area12Source.addFeature(feature);
+        break;
+      case 'area3456':
+        area3456Source.addFeature(feature);
+        break;
+    }
+  }
+  selectedFairwayCardSource.clear();
+}
+
 export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {
   const dvkMap = getMap();
   useEffect(() => {
@@ -261,24 +289,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       const area3456Source = dvkMap.getVectorSource('area3456');
       const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
-      const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
-      for (const feature of oldSelectedFeatures) {
-        switch (feature.getProperties().dataSource) {
-          case 'line12':
-            line12Source.addFeature(feature);
-            break;
-          case 'line3456':
-            line3456Source.addFeature(feature);
-            break;
-          case 'area12':
-            area12Source.addFeature(feature);
-            break;
-          case 'area3456':
-            area3456Source.addFeature(feature);
-            break;
-        }
-      }
-      selectedFairwayCardSource.clear();
+      unsetSelectedFairwayCard();
 
       const fairwayFeatures: Feature[] = [];
 
