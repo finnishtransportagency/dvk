@@ -2763,13 +2763,12 @@
       "source-layer": "rakennelma",
       "filter": [
         "any",
-        ["==", "kohdeluokka", 45700],
+        ["==", "kohdeluokka", 44100],
         ["==", "kohdeluokka", 45111],
-        ["==", "kohdeluokka", 45112],
-        ["==", "kohdeluokka", 44500]
+        ["==", "kohdeluokka", 45112]
       ],
-      "layout": {"visibility": "none"},
-      "paint": {"line-color": "#918a8c", "line-width": 0.5}
+      "layout": {"visibility": "visible"},
+      "paint": {"line-color": "#918a8c", "line-width": 1}
     },
     {
       "id": "tienimet",
