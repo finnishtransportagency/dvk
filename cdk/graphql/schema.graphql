@@ -49,6 +49,7 @@ type VHF {
   name: Text
   channel: Int
 }
+
 type VTS {
   name: Text
   phoneNumber: String
