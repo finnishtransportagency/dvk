@@ -226,10 +226,10 @@ function addFeatureLayer(
 
 export function addAPILayers(map: Map) {
   // Kauppamerenkulku
-  addFeatureLayer(map, 'line12', 500, 1, getLineStyle('#0000FF', 1));
-  addFeatureLayer(map, 'area12', 100, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
+  addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
+  addFeatureLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   // Muu vesiliikenne
-  addFeatureLayer(map, 'line3456', 50, 1, getLineStyle('#0000FF', 1));
+  addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
 
   // Nopeusrajoitus
@@ -237,7 +237,7 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', 10, 50, (feature) => getSafetyEquipmentStyle(feature.getProperties().symbol));
+  addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature.getProperties().symbol, resolution));
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
   // Valitun väyläkortin navigointilinjat ja väyläalueet
@@ -245,10 +245,10 @@ export function addAPILayers(map: Map) {
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
   // Satamat
-  addFeatureLayer(map, 'harbor', 20, 1, (feature) => getHarborStyle(feature), 3);
+  addFeatureLayer(map, 'harbor', 30, 1, (feature) => getHarborStyle(feature), 3);
   // Syvyydet
-  addFeatureLayer(map, 'depth12', 100, 50, (feature) => getDepthStyle(feature));
-  addFeatureLayer(map, 'depth3456', 30, 50, (feature) => getDepthStyle(feature));
+  addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
+  addFeatureLayer(map, 'depth3456', 10, 50, (feature) => getDepthStyle(feature));
 }
 
 export function unsetSelectedFairwayCard() {
