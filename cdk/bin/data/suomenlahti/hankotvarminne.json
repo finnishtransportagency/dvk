@@ -1,0 +1,97 @@
+{
+  "id": "hankotvarminne",
+  "name": {
+    "fi": "Hanko-Tvärminne väylä",
+    "sv": "Farleden Hangö-Tvärminne",
+    "en": "Hanko-Tvärminne channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 3 kpl jotka merkitty linjatauluin.",
+    "sv": "Tre linjer, utmärkta med enstavlor.",
+    "en": "Three lines, marked by boards."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus 12,0 solmua.",
+    "sv": "Dimensionerande fart 12,0 knop.",
+    "en": "Design speed 12.0 knots."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
+      "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
+      "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
+    }
+  ],
+  "generalInfo": {
+    "fi": "Väylä tarjoaa ulompaan avomerireittiin nähden tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman rannikon suuntaisen reitin Hangon 13,0 m ja Lappohjan 12,0 m väylien välillä.",
+    "sv": "I förhållande till den yttre rutten i öppet hav erbjuder farleden en rutt, som är mera skyddad för vind och med bättre isförhållanden under svåra isvintrar då den går parallellt med kusten mellan Hangöleden (13,0 m) och Lappviksleden (12,0 m).",
+    "en": "In comparison with the open sea route, this channel offers a route which is more sheltered against winds and with better ice conditions during severe ice winters, as it goes parallel to the coast between the Hanko channel (13.0 m) and Lappohja channel (12.0 m)."
+  },
+  "navigationCondition": {
+    "fi": "Väylä on avoin etelänpuoleisille tuulille. Voimakas tuuli ja kova merenkäynti voivat vaikeuttaa navigointia.",
+    "sv": "Farleden är öppen för sydliga vindar. Navigationen kan försvåras av hård vind och kraftig sjögång.",
+    "en": "The channel is open to southerly winds. Navigation can be hampered by strong winds and heavy seas."
+  },
+  "iceCondition": {
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite. Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",
+    "sv": "Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke. Vid S vindar kan det tidvis förekomma isvallar.",
+    "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice. Southerly winds can at times cause ridges."
+  },
+  "windGauge": {
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation.",
+    "en": "Hanko pilot station."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 23,
+          "name": "Hanko N",
+          "pilotJourney": 9.5,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.005167, 59.781167]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Suomenlahden meriliikennekeskus",
+        "sv": "Helsinki VTS",
+        "en": "Helsinki VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "fairways": [
+    {
+      "id": 4070,
+      "primary": true
+    }
+  ]
+}

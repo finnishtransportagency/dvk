@@ -1,0 +1,113 @@
+{
+  "id": "helsinkiorrengrund",
+  "name": {
+    "fi": "Helsinki-Orrengrund",
+    "sv": "Helsingfors-Orrengrund",
+    "en": "Helsinki-Orrengrund"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Merkitty linjatauluin.",
+    "sv": "Farleden är utmärkt med enstavlor. ",
+    "en": "The fairway is marked by boards."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkuroida voi Tainion majakan lounaispuolella olevalle Orrengrundin - Kotkan 10,0 m väylän ankkurointialueelle.",
+      "sv": "Ankringsmöjlighet i Orrengrund-Kotkaledens ankringsområde, SV om fyren Tainio.",
+      "en": "Anchoring in the anchorage area of the Orrengrund–Kotka channel, SW of Tainio Lighthouse."
+    }
+  ],
+  "generalInfo": {
+    "fi": "Väylä tarjoaa ulompaan avomerireittiin nähden tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman rannikon suuntaisen reitin Suomenlahden satamiin.",
+    "sv": "Farleden är mer skyddad för vind än den yttre farleden och erbjuder under svåra isvintrar en mer lättforcerad rutt till hamnarna i Finska viken.",
+    "en": "The fairway is more sheltered against winds than the fairway farther out at sea and provides an easier route to the ports along the southern coast of Finland in difficult ice conditions."
+  },
+  "navigationCondition": {
+    "fi": "Väylän alkuosa Helsingin edustalta Emäsalon eteläpuolelle on hyvin suojaisa. Edelleen Emäsalosta harvojen saarien ja karien lomitse Orrengrundin koillispuolelle jatkuva väylä on melko avoin etelänpuoleisille tuulille.",
+    "sv": "Sträckan från Helsingfors inlopp till området S om Emsalö är mycket välskyddad. Resten av farleden går mellan ett fåtal holmar och skär och är rätt öppen för sydliga vindar.",
+    "en": " The section from Helsinki to S of Emäsalo is very well sheltered. The rest of the fairway is dotted by a few islands only and periodically fairly open to southerly winds."
+  },
+  "iceCondition": {
+    "fi": "Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",
+    "sv": "Vid sydlig vind kan vallbildning tidvis förekomma i farleden.",
+    "en": "Southerly winds may cause ridging in the fairway."
+  },
+  "windGauge": {
+    "fi": "Harmajalla (Ilmatieteenlaitoksen tuulimittarit).",
+    "sv": "På Gråhara (Meteorologiska institutets vindmätare).",
+    "en": "At Harmaja (wind gauges of the Finnish Meteorological Institute)."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": " +358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 27,
+          "name": "Helsinki N",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.961667, 60.071667]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Suomenlahden meriliikennekeskus",
+        "sv": "Finska vikens sjötrafikcentral",
+        "en": "Helsinki VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "kotka.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "name": {
+            "fi": "Helsinki VTS sektori 1",
+            "sv": "Helsinki VTS sektor 1",
+            "en": "Helsinki VTS sector 1"
+          },
+          "channel": 71
+        },
+        {
+          "name": {
+            "fi": "Helsinki VTS sektori 2",
+            "sv": "Helsinki VTS sektor 2",
+            "en": "Helsinki VTS sector 2"
+          },
+          "channel": 9
+        },
+        {
+          "name": {
+            "fi": "Kotka VTS",
+            "sv": "Kotka VTS",
+            "en": "Kotka VTS"
+          },
+          "channel": 67
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar.",
+          "en": "Privately owned tugs."
+        }
+      }
+    ]
+  },
+  "fairways": [
+    {
+      "id": 4865,
+      "primary": true
+    }
+  ]
+}
