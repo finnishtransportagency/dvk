@@ -30,11 +30,16 @@ export type Tug = {
   email?: string;
 };
 
+export type VHF = {
+  name?: Text;
+  channel?: number;
+};
+
 export type VTS = {
   name?: Text;
   phoneNumber?: string;
   email?: string[];
-  vhf?: number;
+  vhf?: VHF[];
 };
 
 export type Pilot = {
@@ -84,7 +89,7 @@ export type Quay = {
 
 export type Section = {
   name?: string;
-  draft?: number;
+  depth?: number;
   geometry?: GeometryPoint;
 };
 

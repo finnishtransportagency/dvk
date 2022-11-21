@@ -70,7 +70,11 @@
       "email": [
         "archipelago.vts@fintraffic.fi"
       ],
-      "vhf": 71
+      "vhf": [
+        {
+          "channel": 71
+        }
+      ]
     },
     "tugs": [
       {
@@ -133,7 +137,7 @@
           "length": 100,
           "sections": [
             {
-              "draft": 6
+              "depth": 6
             }
           ],
           "extraInfo": {
@@ -155,7 +159,7 @@
           "length": 100,
           "sections": [
             {
-              "draft": 7
+              "depth": 7
             }
           ],
           "extraInfo": {
@@ -177,7 +181,7 @@
           "length": 150,
           "sections": [
             {
-              "draft": 8.5
+              "depth": 8.5
             }
           ],
           "extraInfo": {
@@ -199,7 +203,7 @@
           "length": 160,
           "sections": [
             {
-              "draft": 8.5
+              "depth": 8.5
             }
           ],
           "extraInfo": {

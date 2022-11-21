@@ -89,7 +89,11 @@
         "helsinki.vts@fintraffic.fi",
         "supervisors.hki@fintraffic.fi"
       ],
-      "vhf": 71
+      "vhf": [
+        {
+          "channel": 71
+        }
+      ]
     },
     "tugs": [
       {
@@ -155,7 +159,7 @@
           "length": 180,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ],
           "extraInfo": {
@@ -177,10 +181,10 @@
           "length": 215,
           "sections": [
             {
-              "draft": 10.5
+              "depth": 10.5
             },
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ],
           "extraInfo": {
@@ -202,7 +206,7 @@
           "length": 250,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ],
           "extraInfo": {
@@ -224,7 +228,7 @@
           "length": 250,
           "sections": [
             {
-              "draft": 10.5
+              "depth": 10.5
             }
           ],
           "extraInfo": {
@@ -246,10 +250,10 @@
           "length": 750,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             },
             {
-              "draft": 14.3
+              "depth": 14.3
             }
           ],
           "extraInfo": {
@@ -271,10 +275,10 @@
           "length": 750,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             },
             {
-              "draft": 14.3
+              "depth": 14.3
             }
           ],
           "extraInfo": {
@@ -292,10 +296,10 @@
           "length": 497,
           "sections": [
             {
-              "draft": 10.5
+              "depth": 10.5
             },
             {
-              "draft": 14.3
+              "depth": 14.3
             }
           ],
           "geometry": {
@@ -321,7 +325,7 @@
           "length": 162,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ],
           "extraInfo": {
@@ -343,7 +347,7 @@
           "length": 204,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ],
           "extraInfo": {
@@ -365,10 +369,10 @@
           "length": 204,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             },
             {
-              "draft": 14.3
+              "depth": 14.3
             }
           ],
           "extraInfo": {
@@ -390,7 +394,7 @@
           "length": 189,
           "sections": [
             {
-              "draft": 14.3
+              "depth": 14.3
             }
           ]
         }

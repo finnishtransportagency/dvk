@@ -150,7 +150,14 @@ query findFairwayCardById($id: String!) {
           sv
           en
         }
-        vhf
+        vhf {
+          name {
+            fi
+            sv
+            en
+          }
+          channel
+        }
         phoneNumber
         email
       }
@@ -175,7 +182,7 @@ query findFairwayCardById($id: String!) {
         length
         sections {
           name
-          draft
+          depth
         }
         extraInfo {
           fi

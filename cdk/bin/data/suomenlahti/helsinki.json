@@ -88,7 +88,11 @@
         "helsinki.vts@fintraffic.fi",
         "supervisors.hki@fintraffic.fi"
       ],
-      "vhf": 71
+      "vhf": [
+        {
+          "channel": 71
+        }
+      ]
     },
     "tugs": [
       {
@@ -137,7 +141,7 @@
                 "type": "Point",
                 "coordinates": [24.95982323138278, 60.16080391357215]
               },
-              "draft": 7.5
+              "depth": 7.5
             },
             {
               "name":"EO2",
@@ -145,7 +149,7 @@
                 "type": "Point",
                 "coordinates": [24.957867393406815, 60.162172462169046]
               },
-              "draft": 8.8
+              "depth": 8.8
             }
           ]
         },
@@ -162,13 +166,13 @@
           "length": 240,
           "sections": [
             {
-              "draft": 7.3
+              "depth": 7.3
             },
             {
-            "draft": 7.5
+            "depth": 7.5
             },
             {
-            "draft": 7.8
+            "depth": 7.8
             }
           ]
         },
@@ -186,7 +190,7 @@
                 "type": "Point",
                 "coordinates": [24.954071530026948, 60.165666111439805]
               },
-              "draft": 6
+              "depth": 6
             }
           ]
         },
@@ -204,7 +208,7 @@
                 "type": "Point",
                 "coordinates": [24.960080457384183, 60.16609300451217]
               },
-              "draft": 8.8
+              "depth": 8.8
             },
             {
               "name": "EK6",
@@ -212,7 +216,7 @@
                 "type": "Point",
                 "coordinates": [24.965329089920694, 60.164343039388825]
               },
-              "draft": 8.8
+              "depth": 8.8
             },
             {
               "name": "EK7",
@@ -220,7 +224,7 @@
                 "type": "Point",
                 "coordinates": [24.968660014187158, 60.16345006967473]
               },
-              "draft": 8.8
+              "depth": 8.8
             }
           ]
         },
@@ -238,7 +242,7 @@
                 "type": "Point",
                 "coordinates": [24.970615818569915, 60.16335940073721]
               },
-              "draft": 10.3
+              "depth": 10.3
             },
             {
               "name": "ERB",
@@ -246,7 +250,7 @@
                 "type": "Point",
                 "coordinates": [24.973177062888116, 60.16424651293902]
               },
-              "draft": 10
+              "depth": 10
             }
           ]
         },
@@ -264,7 +268,7 @@
                 "type": "Point",
                 "coordinates": [24.96900370143037, 60.18087406040237]
               },
-              "draft": 9.35
+              "depth": 9.35
             }
           ]
         }

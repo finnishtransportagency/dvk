@@ -71,7 +71,11 @@
       "email": [
         "archipelago.vts@fintraffic.fi"
       ],
-      "vhf": 71
+      "vhf": [
+        {
+          "channel": 71
+        }
+      ]
     },
     "tugs": [
       {
@@ -138,7 +142,7 @@
           "length": 330,
           "sections": [
             {
-              "draft": 12.5
+              "depth": 12.5
             }
           ]
         }

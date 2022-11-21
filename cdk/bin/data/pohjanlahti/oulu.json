@@ -92,7 +92,11 @@
       "email": [
         "bothnia.vts@fintraffic.fi"
       ],
-      "vhf": 67
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
     },
     "tugs": [
       {
@@ -139,7 +143,7 @@
           "length": 72,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             }
           ],
           "geometry": {
@@ -156,10 +160,10 @@
           "length": 150,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             },
             {
-              "draft": 6.9
+              "depth": 6.9
             }
           ],
           "geometry": {
@@ -176,10 +180,10 @@
           "length": 150,
           "sections": [
             {
-              "draft": 11.3
+              "depth": 11.3
             },
             {
-              "draft": 6.9
+              "depth": 6.9
             }
           ],
           "geometry": {
@@ -196,7 +200,7 @@
           "length": 343,
           "sections": [
             {
-              "draft": 9.2
+              "depth": 9.2
             }
           ],
           "extraInfo": {
@@ -218,7 +222,7 @@
           "length": 170,
           "sections": [
             {
-              "draft": 10.8
+              "depth": 10.8
             }
           ],
           "extraInfo": {
@@ -240,7 +244,7 @@
           "length": 70,
           "sections": [
             {
-              "draft": 10.8
+              "depth": 10.8
             }
           ],
           "geometry": {
@@ -257,7 +261,7 @@
           "length": 162,
           "sections": [
             {
-              "draft": 8
+              "depth": 8
             }
           ],
           "geometry": {
@@ -274,7 +278,7 @@
           "length": 290,
           "sections": [
             {
-              "draft": 13.6
+              "depth": 13.6
             }
           ],
           "geometry": {
@@ -291,7 +295,7 @@
           "length": 320,
           "sections": [
             {
-              "draft": 6.8
+              "depth": 6.8
             }
           ],
           "geometry": {
@@ -308,7 +312,7 @@
           "length": 320,
           "sections": [
             {
-              "draft": 6.8
+              "depth": 6.8
             }
           ],
           "geometry": {

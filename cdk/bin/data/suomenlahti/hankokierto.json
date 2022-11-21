@@ -76,7 +76,11 @@
         "helsinki.vts@fintraffic.fi",
         "supervisors.hki@fintraffic.fi"
       ],
-      "vhf": 67
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
     },
     "tugs": [
       {

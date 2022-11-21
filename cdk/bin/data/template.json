@@ -108,7 +108,16 @@
       "email": [
         ""
       ],
-      "vhf": 0
+      "vhf": [
+        {
+          "name": {
+            "fi": "",
+            "sv": "",
+            "en": ""
+          },
+          "channel": 0
+        }
+      ]
     },
     "tugs": [
       {
@@ -180,7 +189,7 @@
                 "type": "Point",
                 "coordinates": []
               },
-              "draft": 0
+              "depth": 0
             }
           ],
           "extraInfo": {

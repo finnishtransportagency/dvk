@@ -873,7 +873,11 @@ export const mockFairwayCard = {
       },
       vts: {
         name: { fi: 'Suomenlahden meriliikennekeskus', sv: 'Finska vikens sjötrafikcentral', en: 'Helsinki VTS', __typename: 'Text' },
-        vhf: 71,
+        vhf: [
+          {
+            channel: 71,
+          },
+        ],
         phoneNumber: '+358204485391',
         email: ['helsinki.vts@fintraffic.fi', 'supervisors.hki@fintraffic.fi'],
         __typename: 'VTS',
@@ -900,7 +904,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'A laituri', sv: 'A kajen', en: 'Quay A', __typename: 'Text' },
             length: 180.0,
-            sections: [{ name: null, draft: 12.5, __typename: 'Section' }],
+            sections: [{ name: null, depth: 12.5, __typename: 'Section' }],
             extraInfo: { fi: 'säädettävä ramppi', sv: 'justerbar ramp', en: 'adjustable ramp', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.19323465568021, 60.21030442526192], __typename: 'GeometryPoint' },
             __typename: 'Quay',
@@ -909,8 +913,8 @@ export const mockFairwayCard = {
             name: { fi: 'AP pistolaituri', sv: 'AP kajen (pir)', en: 'Quay AP (pier)', __typename: 'Text' },
             length: 215.0,
             sections: [
-              { name: null, draft: 10.5, __typename: 'Section' },
-              { name: null, draft: 12.5, __typename: 'Section' },
+              { name: null, depth: 10.5, __typename: 'Section' },
+              { name: null, depth: 12.5, __typename: 'Section' },
             ],
             extraInfo: { fi: '2 kpl kiinteää ramppia', sv: '2 fasta ramper', en: '2 fixed ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.19473180480529, 60.20955125229692], __typename: 'GeometryPoint' },
@@ -919,7 +923,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'BP pistolaituri', sv: 'BP kajen (pir)', en: 'Quay BP (pier)', __typename: 'Text' },
             length: 250.0,
-            sections: [{ name: null, draft: 12.5, __typename: 'Section' }],
+            sections: [{ name: null, depth: 12.5, __typename: 'Section' }],
             extraInfo: { fi: '2 kpl kiinteää ramppia', sv: '2 fasta ramper', en: '2 fixed ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.189489375700667, 60.21558232946173], __typename: 'GeometryPoint' },
             __typename: 'Quay',
@@ -927,7 +931,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'CP pistolaituri', sv: 'CP kajen (pir)', en: 'Quay CP (pier)', __typename: 'Text' },
             length: 250.0,
-            sections: [{ name: null, draft: 10.5, __typename: 'Section' }],
+            sections: [{ name: null, depth: 10.5, __typename: 'Section' }],
             extraInfo: { fi: '2 kpl säädettävää tuplaramppia', sv: '2 justerbara dubbelramper', en: '2 adjustable ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.199991979381792, 60.218917742690294], __typename: 'GeometryPoint' },
             __typename: 'Quay',
@@ -936,8 +940,8 @@ export const mockFairwayCard = {
             name: { fi: 'D laituri', sv: 'D kajen', en: 'Quay D', __typename: 'Text' },
             length: 750.0,
             sections: [
-              { name: null, draft: 12.5, __typename: 'Section' },
-              { name: null, draft: 14.3, __typename: 'Section' },
+              { name: null, depth: 12.5, __typename: 'Section' },
+              { name: null, depth: 14.3, __typename: 'Section' },
             ],
             extraInfo: {
               fi: 'konttialuksille, 1 kiinteä ramppi',
@@ -952,8 +956,8 @@ export const mockFairwayCard = {
             name: { fi: 'E laituri', sv: 'E kajen', en: 'Quay E', __typename: 'Text' },
             length: 750.0,
             sections: [
-              { name: null, draft: 12.5, __typename: 'Section' },
-              { name: null, draft: 14.3, __typename: 'Section' },
+              { name: null, depth: 12.5, __typename: 'Section' },
+              { name: null, depth: 14.3, __typename: 'Section' },
             ],
             extraInfo: {
               fi: 'konttialuksille, 1 kiinteä ramppi',
@@ -968,8 +972,8 @@ export const mockFairwayCard = {
             name: { fi: 'F laituri', sv: 'F kajen', en: 'Quay F', __typename: 'Text' },
             length: 497.0,
             sections: [
-              { name: null, draft: 10.5, __typename: 'Section' },
-              { name: null, draft: 14.3, __typename: 'Section' },
+              { name: null, depth: 10.5, __typename: 'Section' },
+              { name: null, depth: 14.3, __typename: 'Section' },
             ],
             extraInfo: { fi: '2 kpl kiinteää ramppia', sv: '2 fasta ramper', en: '2 fixed ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.19826034595303, 60.217641803529204], __typename: 'GeometryPoint' },
@@ -978,7 +982,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'VG9 laituri', sv: 'VG9 kajen', en: 'Quay VG9', __typename: 'Text' },
             length: 162.0,
-            sections: [{ name: null, draft: 12.5, __typename: 'Section' }],
+            sections: [{ name: null, depth: 12.5, __typename: 'Section' }],
             extraInfo: { fi: '1 kiinteä ramppi', sv: 'fast ramp', en: 'fixed ramp', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.19961921791056, 60.21401347543198], __typename: 'GeometryPoint' },
             __typename: 'Quay',
@@ -986,7 +990,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'GP 1 pistolaituri', sv: 'GP 1 kajen (pir)', en: 'Quay GP 1 (pier)', __typename: 'Text' },
             length: 204.0,
-            sections: [{ name: null, draft: 12.5, __typename: 'Section' }],
+            sections: [{ name: null, depth: 12.5, __typename: 'Section' }],
             extraInfo: { fi: '2 kpl kiinteää ramppia', sv: '2 fasta ramper', en: '2 fixed ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.202402425482397, 60.21365830752661], __typename: 'GeometryPoint' },
             __typename: 'Quay',
@@ -995,8 +999,8 @@ export const mockFairwayCard = {
             name: { fi: 'GP 2 pistolaituri', sv: 'GP 2 kajen (pir)', en: 'Quay GP 2 (pier)', __typename: 'Text' },
             length: 204.0,
             sections: [
-              { name: null, draft: 12.5, __typename: 'Section' },
-              { name: null, draft: 14.3, __typename: 'Section' },
+              { name: null, depth: 12.5, __typename: 'Section' },
+              { name: null, depth: 14.3, __typename: 'Section' },
             ],
             extraInfo: { fi: '2 kpl kiinteää ramppia', sv: '2 fasta ramper', en: '2 fixed ramps', __typename: 'Text' },
             geometry: { type: 'Point', coordinates: [25.20380171410149, 60.2142420858206], __typename: 'GeometryPoint' },
@@ -1005,7 +1009,7 @@ export const mockFairwayCard = {
           {
             name: { fi: 'VGA laituri', sv: 'VGA kajen', en: 'Quay VGA', __typename: 'Text' },
             length: 189.0,
-            sections: [{ name: null, draft: 14.3, __typename: 'Section' }],
+            sections: [{ name: null, depth: 14.3, __typename: 'Section' }],
             extraInfo: null,
             geometry: { type: 'Point', coordinates: [25.199142678660635, 60.212803690896315], __typename: 'GeometryPoint' },
             __typename: 'Quay',

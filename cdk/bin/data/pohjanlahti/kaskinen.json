@@ -81,7 +81,11 @@
       "email": [
         "westcoast.vts@fintraffic.fi"
       ],
-      "vhf": 9
+      "vhf": [
+        {
+          "channel": 9
+        }
+      ]
     },
     "tugs": [
       {
@@ -128,7 +132,7 @@
           "length": 500,
           "sections": [
             {
-              "draft": 10.2
+              "depth": 10.2
             }
           ],
           "geometry": {
@@ -145,7 +149,7 @@
           "length": 160,
           "sections": [
             {
-              "draft": 8.8
+              "depth": 8.8
             }
           ],
           "extraInfo": {
@@ -167,7 +171,7 @@
           "length": 165,
           "sections": [
             {
-              "draft": 10.2
+              "depth": 10.2
             }
           ],
           "geometry": {
@@ -184,7 +188,7 @@
           "length": 125,
           "sections": [
             {
-              "draft": 10.2
+              "depth": 10.2
             }
           ],
           "extraInfo": {
@@ -206,7 +210,7 @@
           "length": 170,
           "sections": [
             {
-              "draft": 8
+              "depth": 8
             }
           ],
           "geometry": {
