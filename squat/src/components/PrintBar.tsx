@@ -1,5 +1,5 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonTextarea, IonToast } from '@ionic/react';
-import { checkmarkCircleOutline, clipboardOutline, printOutline, shareSocialOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, clipboardOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
