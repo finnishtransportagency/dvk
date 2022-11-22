@@ -127,38 +127,41 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 20 },
 };
 
-export const getSafetyEquipmentStyle = (symbol: string) => {
+export const getSafetyEquipmentStyle = (symbol: string, resolution: number) => {
   const key = symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
   let image: Icon;
-  if (center) {
-    image = new Icon({
-      src: icon,
-    });
-  } else {
-    image = new Icon({
-      src: icon,
-      anchor: [0.5, anchorY],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-    });
-  }
-  return [
-    new Style({
-      image,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 10,
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
+  if (symbol === '1' || resolution <= 7) {
+    if (center) {
+      image = new Icon({
+        src: icon,
+      });
+    } else {
+      image = new Icon({
+        src: icon,
+        anchor: [0.5, anchorY],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+      });
+    }
+    return [
+      new Style({
+        image,
+      }),
+      new Style({
+        image: new CircleStyle({
+          radius: 10,
+          fill: new Fill({
+            color: 'rgba(0,0,0,0)',
+          }),
         }),
       }),
-    }),
-  ];
+    ];
+  }
+  return undefined;
 };
 
 export function getDepthStyle(feature: FeatureLike) {
