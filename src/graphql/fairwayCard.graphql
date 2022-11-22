@@ -62,9 +62,15 @@ query findFairwayCardById($id: String!) {
           sizingSpeed2
         }
         notationCode
+        typeCode
       }
     }
     lineText {
+      fi
+      sv
+      en
+    }
+    generalInfo {
       fi
       sv
       en
