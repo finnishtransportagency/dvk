@@ -54,11 +54,11 @@ const SquatDataTable: React.FC<Props> = (props) => {
         <IonCol size="auto">
           <div className="squatSquare" />
         </IonCol>
-        <IonCol size="auto">Frouden luku yli 0,7</IonCol>
+        <IonCol size="auto">{t('froude-varoitus')}</IonCol>
         <IonCol size="auto">
           <div className="froudeSquare" />
         </IonCol>
-        <IonCol>Squat tulokset</IonCol>
+        <IonCol>{t('squat-tulokset')}</IonCol>
       </IonRow>
       <IonRow>
         <IonCol>
