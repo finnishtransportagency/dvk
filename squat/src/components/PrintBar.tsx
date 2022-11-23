@@ -51,7 +51,7 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src="/assets/share_icon.svg" size="large" />}
+              trigger={<IonIcon src="assets/share_icon.svg" size="large" />}
               triggerTitle={t('header.shareable-link-title')}
             />
           </IonCol>
@@ -64,7 +64,7 @@ const PrintBar: React.FC = () => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src="/assets/print_icon.svg" size="large" />
+              <IonIcon color="primary" slot="icon-only" src="assets/print_icon.svg" size="large" />
             </IonButton>
           </IonCol>
         </IonRow>
