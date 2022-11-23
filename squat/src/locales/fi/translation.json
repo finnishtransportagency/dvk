@@ -158,7 +158,9 @@
       "aluksen-nopeus-kn": "Aluksen nopeus v (kts)",
       "aluksen-nopeus-ms": "Aluksen nopeus v (m/s)",
       "froude-syvyysluku": "Frouden syvyysluku Fₙₕ",
-      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)"
+      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)",
+      "froude-varoitus": "Frouden luku yli 0,7",
+      "squat-tulokset": "Squat tulokset"
     },
     "vaylavirasto-logo": "Väylävirasto logo"
   },

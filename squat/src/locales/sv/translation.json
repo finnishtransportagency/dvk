@@ -155,7 +155,9 @@
       "aluksen-nopeus-kn": "Fartygets fart v (kn)",
       "aluksen-nopeus-ms": "Fartygets fart v (m/s)",
       "froude-syvyysluku": "Froude numret Fₙₕ",
-      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)"
+      "squat-max": "{{kerroin}} Squat Sₘₐₓ (m)",
+      "froude-varoitus": "Froude numret över 0,7",
+      "squat-tulokset": "Squat resultat"
     },
     "vaylavirasto-logo": "Trafikledsverket logotyp"
   },
