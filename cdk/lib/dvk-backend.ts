@@ -63,7 +63,7 @@ export class DvkBackendStack extends Stack {
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
-      const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource-${typeName}-${fieldName}`, backendLambda);
+      const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
       lambdaDataSource.createResolver({
         typeName: typeName,
         fieldName: fieldName,
