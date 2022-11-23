@@ -1,5 +1,5 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonTextarea, IonToast } from '@ionic/react';
-import { checkmarkCircleOutline, clipboardOutline, printOutline, shareSocialOutline } from 'ionicons/icons';
+import { checkmarkCircleOutline, clipboardOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
@@ -38,7 +38,7 @@ const PrintBar: React.FC = () => {
                       title={t('header.copy-to-clipboard')}
                       slot="end"
                     >
-                      <IonIcon color="primary" slot="icon-only" icon={clipboardOutline} />
+                      <IonIcon color="primary" slot="icon-only" src={clipboardOutline} />
                     </IonButton>
                   </IonItem>
                   <IonToast
@@ -51,7 +51,7 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon icon={shareSocialOutline} size="large" />}
+              trigger={<IonIcon src="/assets/share_icon.svg" size="large" />}
               triggerTitle={t('header.shareable-link-title')}
             />
           </IonCol>
@@ -64,7 +64,7 @@ const PrintBar: React.FC = () => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" icon={printOutline} size="large" />
+              <IonIcon color="primary" slot="icon-only" src="/assets/print_icon.svg" size="large" />
             </IonButton>
           </IonCol>
         </IonRow>
