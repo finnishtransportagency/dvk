@@ -54,6 +54,7 @@ class SearchbarControl extends Control {
       this.setActiveSelection(0);
     });
     this.inputElement.addEventListener('input', () => {
+      this.setIsOpen(true);
       this.setSearchQuery(this.inputElement.value.trim().toLowerCase());
       this.setActiveSelection(0);
       if (this.inputElement.value.length > 0) {
@@ -93,11 +94,11 @@ class SearchbarControl extends Control {
     });
 
     this.clearBtn.addEventListener('click', () => {
-      this.inputElement.focus();
       this.setSearchQuery('');
       this.inputElement.value = '';
       this.inputElement.className = '';
       this.clearBtn.className = 'clear';
+      this.inputElement.focus();
     });
   }
 
