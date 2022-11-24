@@ -101,10 +101,16 @@
         "sv": "Fredrikshamn-Kotka hamn",
         "en": "Port of HaminaKotka"
       },
+      "mapName": {
+        "fi": "Haminan satama",
+        "sv": "Hamnen i Fredrikshamn",
+        "en": "Port of Hamina"
+      },
       "phoneNumber": [
         "+358207908800",
         "+358207908840"
       ],
+      "fax": "+358207908891",
       "email": "office@haminakotka.fi",
       "harborBasin": {
         "fi": "Ankkurin käyttäminen satama-altaissa on kielletty.",

@@ -83,10 +83,16 @@
         "sv": "Fredrikshamn-Kotka hamn",
         "en": "Port of HaminaKotka Ltd"
       },
+      "mapName": {
+        "fi": "Mussalon satama",
+        "sv": "Mussalö hamn",
+        "en": "Mussalo harbour"
+      },
       "phoneNumber": [
         "+358207908800",
         "+358207908840"
       ],
+      "fax": "+358207908891",
       "email": "office@haminakotka.fi",
       "harborBasin": {
         "fi": "Satama-alueella on aluksen nopeus säädettävä siten, ettei siitä aiheudu vahinkoa, haittaa eikä vaaraa.",
@@ -213,6 +219,28 @@
           "geometry": {
             "type": "Point",
             "coordinates": [26.922232108922763, 60.4285358393808]
+          }
+        },
+        {
+          "name": {
+            "fi": "Jänskä",
+            "sv": "Jänskä",
+            "en": "Jänskä"
+          },
+          "length": 133,
+          "sections": [
+            {
+              "depth": 8.6
+            }
+          ],
+          "extraInfo": {
+            "fi": "laituripaikat 2 kpl",
+            "sv": "2 kajplatser, ramat djup",
+            "en": "2 berths"
+          },
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.919943340589022, 60.437714465953896]
           }
         }
       ]
