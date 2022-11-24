@@ -49,10 +49,11 @@ type ParagraphProps = {
   title?: string;
   bodyText?: Text;
   bodyTextList?: (Text | null)[] | null;
+  showNoData?: boolean;
 };
 
-const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) => {
-  const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList, showNoData }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
   return (
@@ -70,6 +71,11 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList }) 
         <p>
           {title && <strong>{title}: </strong>}
           {bodyText[lang]}
+        </p>
+      )}
+      {showNoData && !bodyText && !bodyTextList && (
+        <p>
+          {title && <strong>{title}: </strong>} {t('noData')}
         </p>
       )}
     </>
@@ -285,26 +291,31 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
 
   return (
     <>
-      {data && prohibitionAreas?.length > 0 && (
+      {data && (
         <>
           {!inlineLabel && <h5>{t('prohibitionAreas')}</h5>}
           <p>
             {inlineLabel && <strong>{t('prohibitionAreas')}: </strong>}
-            {t('prohibitionText', { count: prohibitionAreas?.length })}{' '}
-            <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer">
-              {MASTERSGUIDE_URLS[lang]}
-            </a>
-            .
-            {prohibitionAreas.map((area, i) => (
-              <span key={i}>
-                {area?.additionalInformation && (
-                  <>
-                    <br />
-                    {area?.additionalInformation}
-                  </>
-                )}
-              </span>
-            ))}
+            {prohibitionAreas?.length > 0 && (
+              <>
+                {t('prohibitionText', { count: prohibitionAreas?.length })}{' '}
+                <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer">
+                  {MASTERSGUIDE_URLS[lang]}
+                </a>
+                .
+                {prohibitionAreas.map((area, i) => (
+                  <span key={i}>
+                    {area?.additionalInformation && (
+                      <>
+                        <br />
+                        {area?.additionalInformation}
+                      </>
+                    )}
+                  </span>
+                ))}
+              </>
+            )}
+            {prohibitionAreas?.length < 1 && t('noData')}
           </p>
         </>
       )}
@@ -318,7 +329,7 @@ const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageTe
 
   return (
     <>
-      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyTextList={anchorageTexts} />
+      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyTextList={anchorageTexts} showNoData={anchorageAreas.length > 0} />
       <p>
         {anchorageAreas.map((area, i) => (
           <span key={i}>
@@ -826,9 +837,9 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               />
               <IonText>
                 <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
-                <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel={true} />
-                <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} />
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} inlineLabel={true} />
+                <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel />
+                <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
+                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} inlineLabel />
               </IonText>
 
               <IonText>
@@ -836,8 +847,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   <strong>{t('navigation')}</strong>
                 </h4>
                 <Paragraph bodyText={data?.fairwayCard?.generalInfo || undefined} />
-                <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} />
-                <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} />
+                <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} showNoData />
+                <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} showNoData />
               </IonText>
 
               <IonText>
@@ -846,11 +857,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                     {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
                   </strong>
                 </h4>
-                <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} />
-                <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} />
-                <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} />
-                <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} />
-                <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} />
+                <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} showNoData />
+                <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} showNoData />
+                <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} showNoData />
+                <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} showNoData />
+                <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} showNoData />
               </IonText>
 
               <IonText>
@@ -882,15 +893,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <IonText className="no-margin-top">
                 <h5>{t('commonInformation')}</h5>
                 <GeneralInfo data={data?.fairwayCard?.fairways} />
-              </IonText>
-              <IonText>
                 <ProhibitionInfo data={data?.fairwayCard?.fairways} />
-              </IonText>
-              <IonText>
+                <h5>{t('speedLimit')}</h5>
+                <Paragraph bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
                 <h5>{t('anchorage')}</h5>
                 <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} />
-              </IonText>
-              <IonText>
                 <h5>{t('fairwayAreas')}</h5>
                 <AreaInfo data={data?.fairwayCard?.fairways} />
               </IonText>

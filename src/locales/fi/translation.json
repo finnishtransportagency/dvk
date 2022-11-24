@@ -130,8 +130,8 @@
     "reserveWater": "Varavesi",
     "fairwayAreas": "Väyläalueet",
     "area": "Alue",
-    "noData": "Tietoa ei ole saatavilla.",
-    "noRestrictions": "Ei voimassaolevia rajoituksia.",
+    "noData": "Tietoa ei ole asetettu.",
+    "noRestrictions": "Ei voimassa olevia rajoituksia.",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",

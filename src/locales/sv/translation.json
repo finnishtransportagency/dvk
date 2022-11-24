@@ -130,8 +130,8 @@
     "reserveWater": "[sv] Varavesi",
     "fairwayAreas": "[sv] Väyläalueet",
     "area": "[sv] Alue",
-    "noData": "[sv] Tietoa ei ole saatavilla.",
-    "noRestrictions": "[sv] Ei voimassaolevia rajoituksia.",
+    "noData": "[sv] Tietoa ei ole asetettu.",
+    "noRestrictions": "[sv] Ei voimassa olevia rajoituksia.",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",
