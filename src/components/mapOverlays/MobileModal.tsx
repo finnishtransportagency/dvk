@@ -19,7 +19,7 @@ import { LanguageBar } from '../SidebarMenu';
 import './MobileModal.css';
 
 function isMobile() {
-  return (isPlatform('iphone') || isPlatform('android')) && !isPlatform('tablet');
+  return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
 }
 
 export const MobileModal: React.FC = () => {
