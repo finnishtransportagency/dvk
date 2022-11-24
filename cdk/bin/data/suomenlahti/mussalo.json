@@ -1,0 +1,227 @@
+{
+  "id": "mussalo",
+  "name": {
+    "fi": "Mussalon väylä",
+    "sv": "Mussalöleden",
+    "en": "Mussalo channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 4 kpl, merkitty linjatauluin, suunta- ja sektoriloistoin.",
+    "sv": "Fyra farledslinjer, utmärkta med enstavlor, riktnings- och sektorfyrar.",
+    "en": "4 navigation lines, marked by leading beacons, direction and sector lights."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkurointialue on Kaunissaaren koillispuolella väylien risteysalueella (haraussyvyys - 18,4 m, MW2005) sekä Kotkan majakan lounaispuolella (haraussyvyys -19 m, MW2005).",
+      "sv": "Ett ankringsområde finns NO om Fagerö, där farlederna korsar varandra (ramat djup -18,4 m, MW2005) och ett ankringsområde SV om Kotka fyr (ramat djup -19 m, MW2005).",
+      "en": "Anchorage NE of Kaunissaari, where the channels are crossing (safe clearance depth -18.4 m, MW2005) and anchorage SW of Kotka Lighthouse (safe clearance depth - 19 m, MW2005)."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osa Viikarinsaareen asti on avomerta ja suojaton E-S-SW tuulille. Kova tuuli ja merenkäynti voivat haitata navigointia",
+    "sv": "Öppet hav, oskyddat för vind från O-S-SV, i farledens yttre del fram till holmen Viikarinsaari. Hård vind och sjögång kan försvåra navigeringen.",
+    "en": "The approach as far as the island Viikarinsaari consists of open sea, unsheltered against E-S-W winds. Navigation may be hampered by strong winds and sea state."
+  },
+  "speedLimit": [
+    {
+      "fi": "Maksimikulkusyvyydessä olevien alusten tulee huomioida nopeuspainuma; mitoitusnopeus väylän ulko-osalla 16,5 solmua (Hs -18,4 m) ja satamassa 12,5 solmua (Hs -17,5 m).",
+      "sv": "Fartyg med maximalt djupgående bör ta hänsyn till squateffekten; dimensionerande fart i yttre delen av farleden 16,5 knop (Rd -18,4) och i hamnen 12,5 knop (Rd -17,5 m).",
+      "en": "Ships sailing at maximum draught should take the squat effect into account; design speed 16.5 knots (Sc -18.4) in the approach, 12.5 knots (Sc -17.5 m) in the harbour."
+    }
+  ],
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.east@finnpilot.fi",
+      "phoneNumber": "+358400907978",
+      "fax": "+358295253011",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 32,
+          "name": "Kotkan majakka",
+          "pilotJourney": 20,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.603333, 60.166667]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Kotka VTS",
+        "sv": "Kotka VTS",
+        "en": "Kotka VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "kotka.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Alfons Håkans Oy:n hinaajat. Luotsit avustavat tarvittaessa hinausavun tilaamisessa.",
+          "sv": "Alfons Håkans Oy Ab. Vid behov kan lotsen hjälpa till med att beställa bogserhjälp.",
+          "en": "Provided by Alfons Håkans Ltd. Pilots can assist in ordering the service, if required."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "hamina",
+      "name": {
+        "fi": "HaminaKotka Satama Oy",
+        "sv": "Fredrikshamn-Kotka hamn",
+        "en": "Port of HaminaKotka Ltd"
+      },
+      "phoneNumber": [
+        "+358207908800",
+        "+358207908840"
+      ],
+      "email": "office@haminakotka.fi",
+      "harborBasin": {
+        "fi": "Satama-alueella on aluksen nopeus säädettävä siten, ettei siitä aiheudu vahinkoa, haittaa eikä vaaraa.",
+        "sv": "Farten bör regleras så att risk för skada, olägenhet eller fara inte uppstår.",
+        "en": "Speed of vessel to be adjusted to ensure that no harm, damage or danger is caused."
+      },
+      "cargo": [
+        {
+          "fi": "A-laiturilla kolme 40 t nosturia, B-laiturilla yksi 40/50 t nosturi sekä mobiilinosturi, C-laiturilla viisi 40/50 t nosturia.",
+          "sv": "Kaj A - tre kranar (40 t), kaj B - en kran (40/50 t) samt en mobilkran, kaj C - fem kranar (40/50 t).",
+          "en": "A Quay - three cranes (40 t), B Quay - one crane (40/50 t) and a mobile crane, C Quay - five cranes (40/50 t)."
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.911596247251023, 60.42258026491166]
+      },
+      "quays": [
+        {
+          "name": {
+            "fi": "A-laituri",
+            "sv": "Kaj A",
+            "en": "Quay A"
+          },
+          "length": 609,
+          "sections": [
+            {
+              "depth": 14.5
+            },
+            {
+              "depth": 15.3
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.920067993915286, 60.426801706287435]
+          }
+        },
+        {
+          "name": {
+            "fi": "B-laituri",
+            "sv": "Kaj B",
+            "en": "Quay B"
+          },
+          "length": 856,
+          "sections": [
+            {
+              "depth": 11.5
+            },
+            {
+              "depth": 13.7
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.910860517499554, 60.42365899838859]
+          }
+        },
+        {
+          "name": {
+            "fi": "C-laituri",
+            "sv": "Kaj C",
+            "en": "Quay  C"
+          },
+          "length": 936,
+          "sections": [
+            {
+              "depth": 11.5
+            },
+            {
+              "depth": 13.7
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.908826947942593, 60.421566376902156]
+          }
+        },
+        {
+          "name": {
+            "fi": "D-laituri",
+            "sv": "Kaj D",
+            "en": "Quay D"
+          },
+          "sections": [
+            {
+              "depth": 17.5
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.902338478823633, 60.419209126946726]
+          }
+        },
+        {
+          "name": {
+            "fi": "Nestelaituri N 1",
+            "sv": "Kemikalieterminalen N 1",
+            "en": "Liquid Bulk Terminal, berth N 1"
+          },
+          "length": 69,
+          "sections": [
+            {
+              "depth": 15
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.921547987528765, 60.42809286829992]
+          }
+        },
+        {
+          "name": {
+            "fi": "Nestelaituri N 2",
+            "sv": "Kemikalieterminalen N 2",
+            "en": "Liquid Bulk Terminal, berth N 2"
+          },
+          "length": 60,
+          "sections": [
+            {
+              "depth": 11.5
+            }
+          ],
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.922232108922763, 60.4285358393808]
+          }
+        }
+      ]
+    }
+  ],
+  "fairways": [
+    {
+      "id": 5510,
+      "primary": true
+    }
+  ]
+}
