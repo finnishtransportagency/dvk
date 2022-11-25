@@ -8,6 +8,7 @@ import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, PutObjectCommandOutput, S3Client } from '@aws-sdk/client-s3';
 import { mapFairwayIds } from '../lib/lambda/db/modelMapper';
+import HarborDBModel from '../lib/lambda/db/harborDBModel';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -87,17 +88,23 @@ async function processCard(file: string, geoTiffMap: Map<number, string[]>): Pro
   return fairwayCard;
 }
 
+function processHarbor(file: string): HarborDBModel {
+  const harbor = JSON.parse(fs.readFileSync(file).toString()) as HarborDBModel;
+  console.log(`Harbor: ${harbor.name?.fi}`);
+  return harbor;
+}
+
 function getRootDirectory(dir: string): string {
   return path.join(__dirname, 'data', dir);
 }
 
-async function updateTable(tableName: string, directoryPath: string) {
+async function updateTable(tableName: string, directoryPath: string, card: boolean) {
   console.log(`Scanning directory: ${directoryPath}`);
   const arrayOfFiles = getAllFiles(directoryPath, []);
   const geoTiffMap = getGeoTiffMap(arrayOfFiles);
   for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
-    const fairwayCard = await processCard(file, geoTiffMap);
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
+    const item = card ? await processCard(file, geoTiffMap) : processHarbor(file);
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: item }));
   }
 }
 
@@ -106,12 +113,12 @@ async function main() {
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
   let tableName = Config.getFairwayCardTableName();
   if (response.TableNames?.includes(tableName)) {
-    await updateTable(tableName, getRootDirectory('cards'));
+    await updateTable(tableName, getRootDirectory('cards'), true);
     console.log(`FairwayCard table ${tableName} updated`);
   }
   tableName = Config.getHarborTableName();
   if (response.TableNames?.includes(tableName)) {
-    await updateTable(tableName, getRootDirectory('harbors'));
+    await updateTable(tableName, getRootDirectory('harbors'), false);
     console.log(`Harbor table ${tableName} updated`);
   }
 }

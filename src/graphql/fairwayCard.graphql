@@ -1,3 +1,56 @@
+fragment HarborParts on Harbor {
+  quays {
+    name {
+      fi
+      sv
+      en
+    }
+    length
+    sections {
+      name
+      depth
+    }
+    extraInfo {
+      fi
+      sv
+      en
+    }
+    geometry {
+      type
+      coordinates
+    }
+  }
+  name {
+    fi
+    sv
+    en
+  }
+  company {
+    fi
+    sv
+    en
+  }
+  phoneNumber
+  fax
+  email
+  internet
+  extraInfo {
+    fi
+    sv
+    en
+  }
+  harborBasin {
+    fi
+    sv
+    en
+  }
+  cargo {
+    fi
+    sv
+    en
+  }
+}
+
 query findFairwayCardById($id: String!) {
   fairwayCard(id: $id) {
     name {
@@ -179,51 +232,7 @@ query findFairwayCardById($id: String!) {
       }
     }
     harbors {
-      quays {
-        name {
-          fi
-          sv
-          en
-        }
-        length
-        sections {
-          name
-          depth
-        }
-        extraInfo {
-          fi
-          sv
-          en
-        }
-        geometry {
-          type
-          coordinates
-        }
-      }
-      name {
-        fi
-        sv
-        en
-      }
-      phoneNumber
-      fax
-      email
-      internet
-      extraInfo {
-        fi
-        sv
-        en
-      }
-      harborBasin {
-        fi
-        sv
-        en
-      }
-      cargo {
-        fi
-        sv
-        en
-      }
+      ...HarborParts
     }
   }
 }

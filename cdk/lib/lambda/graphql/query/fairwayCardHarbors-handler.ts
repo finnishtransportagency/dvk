@@ -7,13 +7,11 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Harbor[], Fai
   event: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard>
 ): Promise<Harbor[]> => {
   log.info(`fairwayCardHarbors(${event.source.id})`);
-  const harborIds = event.source.harbors?.map((h) => h?.id) as string[] | undefined;
+  const harborIds = event.source.harbors?.map((h) => h.id);
   log.debug(`harborIds: ${harborIds}`);
-  return (
-    harborIds?.map((id) => {
-      const harbor = HarborDBModel.get(id);
-      log.debug('Harbor: %o', harbor);
-      return harbor as Harbor;
-    }) || []
-  );
+  const harbors: Harbor[] = [];
+  for (const id of harborIds || []) {
+    harbors.push((await HarborDBModel.get(id)) as Harbor);
+  }
+  return harbors;
 };
