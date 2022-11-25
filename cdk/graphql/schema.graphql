@@ -77,7 +77,7 @@ type Harbor {
   id: String
   quays: [Quay]
   name: Text
-  mapName: Text
+  company: Text
   phoneNumber: [String]
   fax: String
   email: String

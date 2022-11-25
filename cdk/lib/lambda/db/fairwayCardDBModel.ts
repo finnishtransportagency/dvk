@@ -66,31 +66,6 @@ export type PilotFairwayCard = {
 
 export type Harbor = {
   id: string;
-  quays?: Quay[];
-  name?: Text;
-  mapName?: Text;
-  phoneNumber?: string[];
-  fax?: string;
-  email?: string;
-  internet?: string;
-  extraInfo?: Text;
-  harborBasin?: Text;
-  cargo?: Text[];
-  geometry?: GeometryPoint;
-};
-
-export type Quay = {
-  name?: Text;
-  length?: number;
-  sections?: [Section];
-  extraInfo?: Text;
-  geometry?: GeometryPoint;
-};
-
-export type Section = {
-  name?: string;
-  depth?: number;
-  geometry?: GeometryPoint;
 };
 
 type FairwayCardByFairwayIdIndex = {

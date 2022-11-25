@@ -87,28 +87,32 @@ async function processCard(file: string, geoTiffMap: Map<number, string[]>): Pro
   return fairwayCard;
 }
 
-function getRootDirectory(): string {
-  if (process.argv.length < 3 || process.argv[2].startsWith('--')) {
-    return path.join(__dirname, 'data');
-  } else {
-    return path.join(__dirname, 'data', process.argv[2]);
+function getRootDirectory(dir: string): string {
+  return path.join(__dirname, 'data', dir);
+}
+
+async function updateTable(tableName: string, directoryPath: string) {
+  console.log(`Scanning directory: ${directoryPath}`);
+  const arrayOfFiles = getAllFiles(directoryPath, []);
+  const geoTiffMap = getGeoTiffMap(arrayOfFiles);
+  for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
+    const fairwayCard = await processCard(file, geoTiffMap);
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
   }
 }
 
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
-  const tableName = Config.getFairwayCardTableName();
+  let tableName = Config.getFairwayCardTableName();
   if (response.TableNames?.includes(tableName)) {
-    const directoryPath = getRootDirectory();
-    console.log(`Scanning directory: ${directoryPath}`);
-    const arrayOfFiles = getAllFiles(directoryPath, []);
-    const geoTiffMap = getGeoTiffMap(arrayOfFiles);
-    for (const file of arrayOfFiles.filter((f) => f.endsWith('.json'))) {
-      const fairwayCard = await processCard(file, geoTiffMap);
-      await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: fairwayCard }));
-    }
+    await updateTable(tableName, getRootDirectory('cards'));
     console.log(`FairwayCard table ${tableName} updated`);
+  }
+  tableName = Config.getHarborTableName();
+  if (response.TableNames?.includes(tableName)) {
+    await updateTable(tableName, getRootDirectory('harbors'));
+    console.log(`Harbor table ${tableName} updated`);
   }
 }
 

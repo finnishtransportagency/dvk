@@ -2,11 +2,12 @@ import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { Harbor, PilotPlace, Quay } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TurvalaiteAPIModel } from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
+import HarborDBModel, { Quay } from '../db/harborDBModel';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -22,7 +23,7 @@ const gzipString = async (input: string): Promise<Buffer> => {
   );
 };
 
-function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJsonProperties>[]) {
+function addQuay(harbor: HarborDBModel, quay: Quay, features: Feature<Geometry, GeoJsonProperties>[]) {
   if (quay.geometry) {
     const depth = quay.sections?.map((s) => s.depth).filter((v) => v !== undefined && v > 0);
     features.push({
@@ -65,35 +66,31 @@ function addQuay(harbor: Harbor, quay: Quay, features: Feature<Geometry, GeoJson
 }
 
 async function addQuayFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const cards = await FairwayCardDBModel.getAll();
-  for (const card of cards) {
-    for (const harbor of card.harbors || []) {
-      for (const quay of harbor.quays || []) {
-        addQuay(harbor, quay, features);
-      }
+  const harbors = await HarborDBModel.getAll();
+  for (const harbor of harbors || []) {
+    for (const quay of harbor.quays || []) {
+      addQuay(harbor, quay, features);
     }
   }
 }
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const cards = await FairwayCardDBModel.getAll();
-  for (const card of cards) {
-    for (const harbor of card.harbors || []) {
-      if (harbor?.geometry?.coordinates?.length === 2) {
-        features.push({
-          type: 'Feature',
-          geometry: harbor.geometry as Geometry,
-          properties: {
-            featureType: 'harbor',
-            id: harbor.id,
-            name: harbor.mapName ?? harbor.name,
-            email: harbor.email,
-            phoneNumber: harbor.phoneNumber,
-            fax: harbor.fax,
-            internet: harbor.internet,
-          },
-        });
-      }
+  const harbors = await HarborDBModel.getAll();
+  for (const harbor of harbors || []) {
+    if (harbor?.geometry?.coordinates?.length === 2) {
+      features.push({
+        type: 'Feature',
+        geometry: harbor.geometry as Geometry,
+        properties: {
+          featureType: 'harbor',
+          id: harbor.id,
+          name: harbor.name ?? harbor.company,
+          email: harbor.email,
+          phoneNumber: harbor.phoneNumber,
+          fax: harbor.fax,
+          internet: harbor.internet,
+        },
+      });
     }
   }
 }
