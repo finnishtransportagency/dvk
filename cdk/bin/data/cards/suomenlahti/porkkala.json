@@ -67,36 +67,38 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Helsinki VTS",
-        "sv": "Helsingfors VTS",
-        "en": "Helsinki VTS"
-      },
-      "phoneNumber": "+358204485391",
-      "email": [
-        "helsinki.vts@fintraffic.fi",
-        "supervisors.hki@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "name": {
-            "fi": "Helsinki",
-            "sv": "Helsingfors",
-            "en": "Helsinki"
-          },
-          "channel": 71
+    "vts": [
+      {
+        "name": {
+          "fi": "Helsinki VTS",
+          "sv": "Helsingfors VTS",
+          "en": "Helsinki VTS"
         },
-        {
-          "name": {
-            "fi": "Porkkala",
-            "sv": "Porkala",
-            "en": "Porkkala"
+        "phoneNumber": "+358204485391",
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "name": {
+              "fi": "Helsinki",
+              "sv": "Helsingfors",
+              "en": "Helsinki"
+            },
+            "channel": 71
           },
-          "channel": 9
-        }
-      ]
-    },
+          {
+            "name": {
+              "fi": "Porkkala",
+              "sv": "Porkala",
+              "en": "Porkkala"
+            },
+            "channel": 9
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

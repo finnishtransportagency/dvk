@@ -34,7 +34,7 @@ type FairwayCard {
 
 type TrafficService {
   pilot: Pilot
-  vts: VTS
+  vts: [VTS]
   tugs: [Tug]
 }
 

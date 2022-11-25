@@ -55,45 +55,47 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Suomenlahden meriliikennekeskus",
-        "sv": "Finska vikens sjötrafikcentral",
-        "en": "Helsinki VTS"
-      },
-      "phoneNumber": "+358204485391",
-      "email": [
-        "helsinki.vts@fintraffic.fi",
-        "kotka.vts@fintraffic.fi",
-        "supervisors.hki@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "name": {
-            "fi": "Helsinki VTS sektori 1",
-            "sv": "Helsinki VTS sektor 1",
-            "en": "Helsinki VTS sector 1"
-          },
-          "channel": 71
+    "vts": [
+      {
+        "name": {
+          "fi": "Suomenlahden meriliikennekeskus",
+          "sv": "Finska vikens sjötrafikcentral",
+          "en": "Helsinki VTS"
         },
-        {
-          "name": {
-            "fi": "Helsinki VTS sektori 2",
-            "sv": "Helsinki VTS sektor 2",
-            "en": "Helsinki VTS sector 2"
+        "phoneNumber": "+358204485391",
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "name": {
+              "fi": "Helsinki VTS sektori 1",
+              "sv": "Helsinki VTS sektor 1",
+              "en": "Helsinki VTS sector 1"
+            },
+            "channel": 71
           },
-          "channel": 9
-        },
-        {
-          "name": {
-            "fi": "Kotka VTS",
-            "sv": "Kotka VTS",
-            "en": "Kotka VTS"
+          {
+            "name": {
+              "fi": "Helsinki VTS sektori 2",
+              "sv": "Helsinki VTS sektor 2",
+              "en": "Helsinki VTS sector 2"
+            },
+            "channel": 9
           },
-          "channel": 67
-        }
-      ]
-    },
+          {
+            "name": {
+              "fi": "Kotka VTS",
+              "sv": "Kotka VTS",
+              "en": "Kotka VTS"
+            },
+            "channel": 67
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

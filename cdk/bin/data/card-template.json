@@ -98,27 +98,29 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "",
-        "sv": "",
-        "en": ""
-      },
-      "phoneNumber": "",
-      "email": [
-        ""
-      ],
-      "vhf": [
-        {
-          "name": {
-            "fi": "",
-            "sv": "",
-            "en": ""
-          },
-          "channel": 0
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "",
+          "sv": "",
+          "en": ""
+        },
+        "phoneNumber": "",
+        "email": [
+          ""
+        ],
+        "vhf": [
+          {
+            "name": {
+              "fi": "",
+              "sv": "",
+              "en": ""
+            },
+            "channel": 0
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

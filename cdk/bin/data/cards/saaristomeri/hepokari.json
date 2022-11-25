@@ -60,22 +60,24 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Archipelago VTS",
-        "sv": "Archipelago VTS",
-        "en": "Archipelago VTS"
-      },
-      "phoneNumber": "+358204486521",
-      "email": [
-        "archipelago.vts@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "channel": 71
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS",
+          "en": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

@@ -51,23 +51,25 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Kotka VTS",
-        "sv": "Kotka VTS",
-        "en": "Kotka VTS"
-      },
-      "phoneNumber": "+358204485391",
-      "email": [
-        "kotka.vts@fintraffic.fi",
-        "supervisors.hki@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "channel": 67
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Kotka VTS",
+          "sv": "Kotka VTS",
+          "en": "Kotka VTS"
+        },
+        "phoneNumber": "+358204485391",
+        "email": [
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

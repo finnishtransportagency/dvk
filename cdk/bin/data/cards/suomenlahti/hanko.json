@@ -59,20 +59,22 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Hanko VTS",
-        "sv": "Hangö VTS",
-        "en": "Hanko VTS"
-      },
-      "phoneNumber": "+358204485391",
-      "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
-      "vhf": [
-        {
-          "channel": 67
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Hanko VTS",
+          "sv": "Hangö VTS",
+          "en": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485391",
+        "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

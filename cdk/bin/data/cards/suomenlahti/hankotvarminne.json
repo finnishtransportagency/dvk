@@ -61,23 +61,25 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Suomenlahden meriliikennekeskus",
-        "sv": "Helsinki VTS",
-        "en": "Helsinki VTS"
-      },
-      "phoneNumber": "+358204485391",
-      "email": [
-        "helsinki.vts@fintraffic.fi",
-        "supervisors.hki@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "channel": 67
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Suomenlahden meriliikennekeskus",
+          "sv": "Helsinki VTS",
+          "en": "Helsinki VTS"
+        },
+        "phoneNumber": "+358204485391",
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

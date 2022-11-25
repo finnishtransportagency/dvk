@@ -871,17 +871,19 @@ export const mockFairwayCard = {
         ],
         __typename: 'Pilot',
       },
-      vts: {
-        name: { fi: 'Suomenlahden meriliikennekeskus', sv: 'Finska vikens sjötrafikcentral', en: 'Helsinki VTS', __typename: 'Text' },
-        vhf: [
-          {
-            channel: 71,
-          },
-        ],
-        phoneNumber: '+358204485391',
-        email: ['helsinki.vts@fintraffic.fi', 'supervisors.hki@fintraffic.fi'],
-        __typename: 'VTS',
-      },
+      vts: [
+        {
+          name: { fi: 'Suomenlahden meriliikennekeskus', sv: 'Finska vikens sjötrafikcentral', en: 'Helsinki VTS', __typename: 'Text' },
+          vhf: [
+            {
+              channel: 71,
+            },
+          ],
+          phoneNumber: '+358204485391',
+          email: ['helsinki.vts@fintraffic.fi', 'supervisors.hki@fintraffic.fi'],
+          __typename: 'VTS',
+        },
+      ],
       tugs: [
         {
           name: {

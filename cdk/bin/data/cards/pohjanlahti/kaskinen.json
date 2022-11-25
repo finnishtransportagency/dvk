@@ -71,22 +71,24 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "West Coast VTS",
-        "sv": "West Coast VTS",
-        "en": "West Coast VTS"
-      },
-      "phoneNumber": "+358204486645",
-      "email": [
-        "westcoast.vts@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "channel": 9
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS",
+          "en": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 9
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {
