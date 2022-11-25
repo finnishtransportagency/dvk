@@ -77,22 +77,24 @@
         }
       ]
     },
-    "vts": {
-      "name": {
-        "fi": "Bothnia VTS",
-        "sv": "Bothnia VTS",
-        "en": "Bothnia VTS"
-      },
-      "phoneNumber": "+358204487356",
-      "email": [
-        "bothnia.vts@fintraffic.fi"
-      ],
-      "vhf": [
-        {
-          "channel": 67
-        }
-      ]
-    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS",
+          "en": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
     "tugs": [
       {
         "name": {

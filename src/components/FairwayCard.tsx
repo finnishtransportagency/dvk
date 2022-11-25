@@ -876,7 +876,9 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                 </h4>
               </IonText>
               <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
-              <VTSInfo data={data?.fairwayCard?.trafficService?.vts} />
+              {data?.fairwayCard?.trafficService?.vts?.map((vts, idx) => {
+                return <VTSInfo data={vts} key={idx} />;
+              })}
               <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
             </div>
           )}
