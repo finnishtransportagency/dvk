@@ -102,51 +102,7 @@
   },
   "harbors": [
     {
-      "id": "yara",
-      "name": {
-        "fi": "Yara Suomi Oy",
-        "sv": "Yara Suomi Oy",
-        "en": "Yara Suomi Oy"
-      },
-      "phoneNumber": [
-        "+358505240072"
-      ],
-      "fax": "+358102153000",
-      "extraInfo": {
-        "fi": "Satamaan saapuvien alusten maksimipituus on rajoitettu 225 metriin.",
-        "sv": "Maximilängden på fartyg som anlöper hamnen är begränsad till 225 m.",
-        "en": "Maximum length of inbound vessels restricted to 225 m."
-      },
-      "cargo": [
-        {
-          "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
-          "sv": "2 st 8 t kranar, 2 st lastare.",
-          "en": "2 eight-ton cranes, 2 loaders."
-        }
-      ],
-      "geometry": {
-        "type": "Point",
-        "coordinates": [21.33964461519255, 60.794289424205814]
-      },
-      "quays": [
-        {
-          "name": {
-            "fi": "Yaran laituri",
-            "sv": "Yara kajen",
-            "en": "Quay Yara"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [21.339483010757984, 60.794364767251494]
-          },
-          "length": 330,
-          "sections": [
-            {
-              "depth": 12.5
-            }
-          ]
-        }
-      ]
+      "id": "yara"
     }
   ],
   "fairways": [
