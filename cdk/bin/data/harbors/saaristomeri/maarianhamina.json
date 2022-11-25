@@ -1,0 +1,153 @@
+{
+  "id": "maarianhamina",
+  "name": {
+    "fi": "Maarianhaminan satama",
+    "sv": "Mariehamns hamn",
+    "en": "Port of Mariehamn"
+  },
+  "company": {
+    "fi": "Maarianhaminan satama ",
+    "sv": "Mariehamns hamn",
+    "en": "Port of Mariehamn"
+  },
+  "phoneNumber": [
+    "+358185310",
+    "+35818531476"
+  ],
+  "harborBasin": {
+    "fi": "Maksimi syväys -9,2 m, maksimi aluspituus n. 270 m riippuen navigoitavuudesta.",
+    "sv": "Max djupgående -9,2 m, max fartygslängd ca. 270 m beroende på navigerbarheten.",
+    "en": "Maximum draught -9,2 m, maximum vessel length approx. 270 m depending on navigability."
+  },
+  "cargo": [
+    {
+      "fi": "Laiturit 1-2, ainoastaan matkustajalaivoille. Laiturit 3-6, ainoastaan ro-ro aluksille. Öljyterminaali sijaitsee pohjoisempana lahdessa. Nostureita yksityisillä yrittäjillä.",
+      "sv": "Kaj 1-2 endast passagerartrafik över landgång, kaj 3-6 endast ro-ro. En oljeterminal längre norrut i viken. Privatägda krana.",
+      "en": "Quay 1-2 only for passanger ships. Quay 3-6 only for ro-ro ships. The oil terminal is located in the northern part of the bay. Privately owned cranes."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [19.928906922440266, 60.091816696671515]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Laituri 1 ja 2",
+        "sv": "Kajerna 1 och 2",
+        "en": "Quays 1 and 2"
+      },
+      "length": 250,
+      "sections": [
+        {
+          "depth": 8.2
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [19.92643523169584, 60.095526534241124]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 3",
+        "sv": "Kaj 3",
+        "en": "Quay 3"
+      },
+      "length": 205,
+      "sections": [
+        {
+          "depth": 8.3
+        }
+      ],
+      "extraInfo": {
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp",
+        "en": "ro-ro ramp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [19.92736854304192, 60.093543080045905]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 4",
+        "sv": "Kaj 4",
+        "en": "Quay 4"
+      },
+      "length": 156,
+      "sections": [
+        {
+          "depth": 8.4
+        }
+      ],
+      "extraInfo": {
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp",
+        "en": "ro-ro ramp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [19.928222016527158, 60.091716184097024]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 5",
+        "sv": "Kaj 5",
+        "en": "Quay 5"
+      },
+      "length": 140,
+      "sections": [
+        {
+          "depth": 8.2
+        }
+      ],
+      "extraInfo": {
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp",
+        "en": "ro-ro ramp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [19.928943114666453, 60.0908242887482]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 6",
+        "sv": "Kaj 6",
+        "en": "Quay 6"
+      },
+      "length": 150,
+      "sections": [
+        {
+          "depth": 9.2
+        }
+      ],
+      "extraInfo": {
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp",
+        "en": "ro-ro ramp"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [19.93005831048881, 60.08959738947045]
+      }
+    },
+    {
+      "name": {
+        "fi": "Klintkajen",
+        "sv": "Klintkajen",
+        "en": "Klintkajen"
+      },
+      "length": 30,
+      "sections": [
+        {
+          "depth": 5
+        }
+      ]
+    }
+  ]
+}

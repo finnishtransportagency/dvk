@@ -1,0 +1,95 @@
+{
+  "id": "kihti",
+  "name": {
+    "fi": "Kihti-Maarianhamina väylä",
+    "sv": "Farleden Skiftet-Mariehamn",
+    "en": "Kihti-Maarianhamina channel"
+  },
+  "group": "1",
+  "lineText": {
+    "fi": "Merkitty linjatauluin ja sektoriloistoin.",
+    "sv": "Utmärkta med enstavlor och fyrar.",
+    "en": "Marked with leading beacons and sector lights."
+  },
+  "navigationCondition": {
+    "fi": "Kihdin selältä väylä kulkee kapeana, mutkaisena ja vaikeasti navigoitavana läpi saariston Brändöhön. Brändöstä Ledskäriin väylä on saarien ja karien suojaamana selkeästi navigoitava. Ledskäristä Korsöhön väylä on suojaton, S-W tuulilla merenkäynti voi olla voimakasta. Väylän liikennöintiä helpottamaan ja nopeuttamaan on rakennettu rinnakkais- ja oikaisuväyliä (Askön-, Ledskärin-, Prästkärin- ja Apteekkarin väylät).",
+    "sv": "Från Skiftet Fjärden till Brandö går farleden genom en skärgård, när farleden är smal, krokig och svår att navigera. Från Brandö till Ledskär är farleden klart att navigera och skyddad av öar och klippar. Från Ledskär till Korsö är farleden oskyddad, vid S-W vindar kan sjögången vara kraftig. Parallell- och genvägsfarleder har byggts för att underlätta och påskynda trafik i farleden. (Askö-, Ledskär-, Prästkär- och Apotekarens farleder).",
+    "en": "From the Kihti open to Brändö the channel passes through an archipelago where the channel becomes narrow, has many turns and is difficult to navigate. From Brändö to Ledskär the channel is clearly navigable and sheltered by islands and reefs. From Ledskär to Korsö the channel is unsheltered, S-W winds can create heavy seas. Parallel and short-cut channels have been built to improve and expedite traffic flow on the channel (Askö-, Ledskär-, Prästkär- and Apteekkari channels)."
+  },
+  "iceCondition": {
+    "fi": "Väylän sisäosalle Kihdiltä Rödhamnsfjärdenille muodostuu normaalitalvina 10-60 cm paksuinen kiintojää, joka vilkkaan liikenteen takia yleensä pysyy helppokulkuisena koko talven. Väylän loppuosalla Rödhamnsfjärdeniltä Maarianhaminaan jääolosuhteet ovat vaihtelevia; toisinaan jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla.",
+    "sv": "I farledens inre del från Skiftet till Rödhamnsfjärden bildas under normala vintrar ca. 10-60cm tjock fast is, men pga. den livliga trafiken hålls farleden vanligtvis lättframkomlig hela vintern. I slutdelen av farleden från Rödhamnsfjärden till Mariehamn är isförhållande varierande; ibland bildas ingen is, ibland rör sig isarna och bojarna kan vara under isen.",
+    "en": "In normal winters, 10-60 cm thick fast ice forms on the inner channel from Kihti to Rödhamnsfjärden, but due to heavy traffic it usually remains easily passable throughout the winter. The channel's end section from Rödhamnsfjärden to Mariehamn has varying ice conditions; occasionally ice does not form at all, but sometimes the ice moves and buoys may be under the ice."
+  },
+  "speedLimit": [
+    {
+      "fi": "Maarianhaminan satamassa 17 km/h.",
+      "sv": "I Mariehamns hamn, 17 km/h.",
+      "en": "In Mariehamn harbour, the speed limit is 17 km/h."
+    }
+  ],
+  "windGauge": {
+    "fi": "Korsössä.",
+    "sv": "Korsö.",
+    "en": "Korsö."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 19,
+          "name": "Nyhamn",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [19.938333, 59.938333]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS",
+          "en": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "maarianhamina"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 2940,
+      "primary": true
+    },
+    {
+      "id": 2565
+    }
+  ]
+}
