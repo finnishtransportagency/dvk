@@ -12,8 +12,7 @@ ion-modal ion-footer.footer-md::before {
 }
 
 ion-modal ion-header ion-title {
-  font-family: "Exo 2";
-  font-size: 24x;
+  font-size: 24px;
   font-weight: bold;
   padding-inline: 28px;
   margin-top: 28px;
@@ -41,15 +40,22 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   margin-bottom: 0px;
 }
 
-ion-modal ion-button.icon-only {
-  --padding-top: 0;
-  --padding-bottom: 0;
-  --padding-start: 0;
-  --padding-end: 0;
-  height: auto;
-  margin: 0 0 0 8px;
-  vertical-align: top;
-  --box-shadow: none;
+ion-modal .closeButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lightest);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 30px;
+  margin: 0 12px 12px 0;
+}
+ion-modal .closeButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+ion-modal .closeButton ion-icon {
+  width: 24px;
+  height: 24px;
 }
 
 ion-modal .wrappable-title {
@@ -58,8 +64,14 @@ ion-modal .wrappable-title {
 }
 
 ion-modal.small {
-  --height: 390px;
+  --height: 440px;
+  --max-height: 90%;
   --width: 380px;
+  --max-width: 95%;
+}
+
+ion-modal.small::part(content) {
+  height: fit-content;
 }
 
 ion-modal ion-button.languageSelection {
@@ -76,6 +88,13 @@ ion-modal ion-button.languageSelection {
   --background-focused: unset;
 }
 
+ion-modal ion-button.languageSelection:hover {
+  text-decoration: none;
+}
+ion-modal ion-button.languageSelection.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+
 ion-modal ion-button.button-disabled {
   text-decoration: none;
   font-weight: bold;
@@ -83,6 +102,10 @@ ion-modal ion-button.button-disabled {
   opacity: 1;
 }
 
-ion-modal .content {
-  height: 150px
+ion-modal .languageBar {
+  padding-top: 28px;
+}
+
+ion-modal .buttonBar {
+  padding-bottom: 28px !important;
 }

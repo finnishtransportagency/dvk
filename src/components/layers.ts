@@ -124,12 +124,16 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
     new Style({
       image: selected ? activeImage : image,
       text: new Text({
-        font: 'bold 18px "Exo 2"',
+        font: 'bold 18px "Exo2"',
         placement: 'line',
-        offsetY: -50,
+        offsetY: -55,
         text,
         fill: new Fill({
           color: selected ? '#0064AF' : '#000000',
+        }),
+        stroke: new Stroke({
+          width: 3,
+          color: '#ffffff',
         }),
       }),
     }),
@@ -164,12 +168,16 @@ export function getHarborStyle(feature: FeatureLike) {
     new Style({
       image,
       text: new Text({
-        font: 'bold 18px "Exo 2"',
+        font: 'bold 18px "Exo2"',
         placement: 'line',
-        offsetY: -50,
+        offsetY: -55,
         text,
         fill: new Fill({
           color: '#000000',
+        }),
+        stroke: new Stroke({
+          width: 3,
+          color: '#ffffff',
         }),
       }),
     }),

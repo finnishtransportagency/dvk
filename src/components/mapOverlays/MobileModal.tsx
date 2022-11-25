@@ -12,7 +12,6 @@ import {
   IonToolbar,
   isPlatform,
 } from '@ionic/react';
-import { closeOutline } from 'ionicons/icons';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
@@ -33,9 +32,15 @@ export const MobileModal: React.FC = () => {
           <IonTitle>
             <div className="wrappable-title">{t('mobile.title')}</div>
           </IonTitle>
-          <IonButtons className="no-background-focused" slot="end" style={{ marginRight: '16px' }}>
-            <IonButton onClick={() => setIsOpen(false)} className="icon-only" title={t('common.close-dialog')} aria-label={t('common.close-dialog')}>
-              <IonIcon slot="icon-only" icon={closeOutline} />
+          <IonButtons slot="end" style={{ marginRight: '16px' }}>
+            <IonButton
+              onClick={() => setIsOpen(false)}
+              fill="clear"
+              className="closeButton"
+              title={t('common.close-dialog')}
+              aria-label={t('common.close-dialog')}
+            >
+              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
             </IonButton>
           </IonButtons>
         </IonToolbar>
@@ -44,7 +49,7 @@ export const MobileModal: React.FC = () => {
         <IonRow className="content">
           <IonCol>{t('mobile.content')}</IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="languageBar">
           <IonCol>
             <LanguageBar />
           </IonCol>

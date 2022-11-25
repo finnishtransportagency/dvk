@@ -191,7 +191,7 @@ export function getDepthStyle(feature: FeatureLike) {
         return geometry.getInteriorPoint();
       },
       text: new Text({
-        font: 'bold 10px "Exo 2"',
+        font: '10px "Exo2"',
         placement: 'line',
         offsetY: specialFeature ? 31 : 4,
         text,
