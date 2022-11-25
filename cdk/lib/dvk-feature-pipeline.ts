@@ -148,7 +148,15 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: ['*'],
       })
     );
-    const table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutItem'],
+        resources: [table.tableArn],
+      })
+    );
+    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName());
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

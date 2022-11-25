@@ -1,0 +1,169 @@
+{
+  "id": "mussalo",
+  "name": {
+    "fi": "Mussalon satama",
+    "sv": "Mussalö hamn",
+    "en": "Mussalo harbour"
+  },
+  "company": {
+    "fi": "HaminaKotka Satama Oy",
+    "sv": "Fredrikshamn-Kotka hamn",
+    "en": "Port of HaminaKotka Ltd"
+  },
+  "phoneNumber": [
+    "+358207908800",
+    "+358207908840"
+  ],
+  "fax": "+358207908891",
+  "email": "office@haminakotka.fi",
+  "harborBasin": {
+    "fi": "Satama-alueella on aluksen nopeus säädettävä siten, ettei siitä aiheudu vahinkoa, haittaa eikä vaaraa.",
+    "sv": "Farten bör regleras så att risk för skada, olägenhet eller fara inte uppstår.",
+    "en": "Speed of vessel to be adjusted to ensure that no harm, damage or danger is caused."
+  },
+  "cargo": [
+    {
+      "fi": "A-laiturilla kolme 40 t nosturia, B-laiturilla yksi 40/50 t nosturi sekä mobiilinosturi, C-laiturilla viisi 40/50 t nosturia.",
+      "sv": "Kaj A - tre kranar (40 t), kaj B - en kran (40/50 t) samt en mobilkran, kaj C - fem kranar (40/50 t).",
+      "en": "A Quay - three cranes (40 t), B Quay - one crane (40/50 t) and a mobile crane, C Quay - five cranes (40/50 t)."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [26.911596247251023, 60.42258026491166]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "A-laituri",
+        "sv": "Kaj A",
+        "en": "Quay A"
+      },
+      "length": 609,
+      "sections": [
+        {
+          "depth": 14.5
+        },
+        {
+          "depth": 15.3
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.920067993915286, 60.426801706287435]
+      }
+    },
+    {
+      "name": {
+        "fi": "B-laituri",
+        "sv": "Kaj B",
+        "en": "Quay B"
+      },
+      "length": 856,
+      "sections": [
+        {
+          "depth": 11.5
+        },
+        {
+          "depth": 13.7
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.910860517499554, 60.42365899838859]
+      }
+    },
+    {
+      "name": {
+        "fi": "C-laituri",
+        "sv": "Kaj C",
+        "en": "Quay  C"
+      },
+      "length": 936,
+      "sections": [
+        {
+          "depth": 11.5
+        },
+        {
+          "depth": 13.7
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.908826947942593, 60.421566376902156]
+      }
+    },
+    {
+      "name": {
+        "fi": "D-laituri",
+        "sv": "Kaj D",
+        "en": "Quay D"
+      },
+      "sections": [
+        {
+          "depth": 17.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.902338478823633, 60.419209126946726]
+      }
+    },
+    {
+      "name": {
+        "fi": "Nestelaituri N 1",
+        "sv": "Kemikalieterminalen N 1",
+        "en": "Liquid Bulk Terminal, berth N 1"
+      },
+      "length": 69,
+      "sections": [
+        {
+          "depth": 15
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.921547987528765, 60.42809286829992]
+      }
+    },
+    {
+      "name": {
+        "fi": "Nestelaituri N 2",
+        "sv": "Kemikalieterminalen N 2",
+        "en": "Liquid Bulk Terminal, berth N 2"
+      },
+      "length": 60,
+      "sections": [
+        {
+          "depth": 11.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.922232108922763, 60.4285358393808]
+      }
+    },
+    {
+      "name": {
+        "fi": "Jänskä",
+        "sv": "Jänskä",
+        "en": "Jänskä"
+      },
+      "length": 133,
+      "sections": [
+        {
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": {
+        "fi": "laituripaikat 2 kpl",
+        "sv": "2 kajplatser, ramat djup",
+        "en": "2 berths"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [26.919943340589022, 60.437714465953896]
+      }
+    }
+  ]
+}

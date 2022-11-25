@@ -29,7 +29,7 @@ type FairwayCard {
   seaLevel: Text
   windRecommendation: Text
   trafficService: TrafficService
-  harbors: [Harbor]
+  harbors: [Harbor!]
 }
 
 type TrafficService {
@@ -74,10 +74,10 @@ type PilotPlace {
 }
 
 type Harbor {
-  id: String
+  id: String!
   quays: [Quay]
   name: Text
-  mapName: Text
+  company: Text
   phoneNumber: [String]
   fax: String
   email: String

@@ -1,0 +1,104 @@
+{
+  "id": "inkoo",
+  "name": {
+    "fi": "Inkoon väylä",
+    "sv": "Ingåleden",
+    "en": "Inkoo fairway"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 6 kpl, merkitty linjatauluin.",
+    "sv": "6 farledslinjer, utmärkta med enstavlor.",
+    "en": "6 navigation lines, marked by boards."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylän ulko-osalla voi ankkuroida Hästenin sektoriloiston kaakkoispuolella olevalle ankkurointialueelle.",
+      "sv": "Ankring möjlig på ankringsområdet i farledens yttre del, SO om Häststen sektorfyr.",
+      "en": "Anchorage possible in the outer part of the fairway, in the anchorage area SE of the sector light Häststen."
+    }
+  ],
+  "iceCondition": {
+    "fi": "Väylä on avoin lähes koko talven.",
+    "sv": "Farleden är öppen så gott som hela vintern.",
+    "en": "The fairway is open almost throughout the year."
+  },
+  "speedLimit": [
+    {
+      "fi": "Varaveden takia suositeltavat nopeudet ruopatuilla alueilla ovat: Fagervikinlahdella alle 18,5 km/h ja Jakob Ramsjön saaren eteläkärjen kohdalla n. 15 km/h.",
+      "sv": "På grund av djupmarginalen rekommenderas följande hastigheter inom de muddrade områdena: Max. 18,5 km/h i Fagerviken och ca 15 km/h vid Jakob Ramsjös sydspets.",
+      "en": "To maintain a safe underkeel clearance, the recommended speeds in dredged areas are: Bay of Fagervik, max. 18.5 km/h, and at the south end of the isle Jakob Ramsjö approx. 15 km/h."
+    }
+  ],
+  "visibility": {
+    "fi": "Päivän valo ja näkyvyys vähintään 4 km.",
+    "sv": "Dagsljus och minst 4 km sikt.",
+    "en": "Daylight and minimum visibility of 4 km."
+  },
+  "windGauge": {
+    "fi": "Bågaskär ja Mäkiluoto (Ilmatieteenlaitoksen tuulimittarit).",
+    "sv": "Bågaskär och Makilo (Mäkiluoto) (Meteorologiska institutets vindmätare).",
+    "en": "Bågaskär and Mäkiluoto (wind gauges of the Finnish Meteorological Institute)."
+  },
+  "windRecommendation": {
+    "fi": "Maksimi tuulen nopeus 15 m/s.",
+    "sv": "Max. vindhastighet 15 m/s.",
+    "en": "Maximum wind speed 15 m/s."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": " +358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 25,
+          "name": "Porkkala S",
+          "pilotJourney": 12,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.194667, 59.893333]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Suomenlahden meriliikennekeskus",
+        "sv": "Finska vikens sjötrafikcentral",
+        "en": "Helsinki VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "channel": 9
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat. Tilataan agentin välityksellä ennakkotilaus 24/12/6 ja tilaus 3 tuntia ennen lähtöä/saapumista.",
+          "sv": "Privatägda bogserbåtar. Beställs genom agent. Förhandsbeställning 24/12/6 och beställning minst 3 timmar före avgång/ankomst.",
+          "en": "Privately owned tugs. To be booked through the shipping agent. Advance booking 24/12/6 hours, booking at least 3 hours prior to departure/arrival."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "inkoo"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 4350,
+      "primary": true
+    }
+  ]
+}

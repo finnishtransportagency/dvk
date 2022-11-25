@@ -1,0 +1,89 @@
+{
+  "id": "mussalo",
+  "name": {
+    "fi": "Mussalon väylä",
+    "sv": "Mussalöleden",
+    "en": "Mussalo channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 4 kpl, merkitty linjatauluin, suunta- ja sektoriloistoin.",
+    "sv": "Fyra farledslinjer, utmärkta med enstavlor, riktnings- och sektorfyrar.",
+    "en": "4 navigation lines, marked by leading beacons, direction and sector lights."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkurointialue on Kaunissaaren koillispuolella väylien risteysalueella (haraussyvyys - 18,4 m, MW2005) sekä Kotkan majakan lounaispuolella (haraussyvyys -19 m, MW2005).",
+      "sv": "Ett ankringsområde finns NO om Fagerö, där farlederna korsar varandra (ramat djup -18,4 m, MW2005) och ett ankringsområde SV om Kotka fyr (ramat djup -19 m, MW2005).",
+      "en": "Anchorage NE of Kaunissaari, where the channels are crossing (safe clearance depth -18.4 m, MW2005) and anchorage SW of Kotka Lighthouse (safe clearance depth - 19 m, MW2005)."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osa Viikarinsaareen asti on avomerta ja suojaton E-S-SW tuulille. Kova tuuli ja merenkäynti voivat haitata navigointia",
+    "sv": "Öppet hav, oskyddat för vind från O-S-SV, i farledens yttre del fram till holmen Viikarinsaari. Hård vind och sjögång kan försvåra navigeringen.",
+    "en": "The approach as far as the island Viikarinsaari consists of open sea, unsheltered against E-S-W winds. Navigation may be hampered by strong winds and sea state."
+  },
+  "speedLimit": [
+    {
+      "fi": "Maksimikulkusyvyydessä olevien alusten tulee huomioida nopeuspainuma; mitoitusnopeus väylän ulko-osalla 16,5 solmua (Hs -18,4 m) ja satamassa 12,5 solmua (Hs -17,5 m).",
+      "sv": "Fartyg med maximalt djupgående bör ta hänsyn till squateffekten; dimensionerande fart i yttre delen av farleden 16,5 knop (Rd -18,4) och i hamnen 12,5 knop (Rd -17,5 m).",
+      "en": "Ships sailing at maximum draught should take the squat effect into account; design speed 16.5 knots (Sc -18.4) in the approach, 12.5 knots (Sc -17.5 m) in the harbour."
+    }
+  ],
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.east@finnpilot.fi",
+      "phoneNumber": "+358400907978",
+      "fax": "+358295253011",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 32,
+          "name": "Kotkan majakka",
+          "pilotJourney": 20,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [26.603333, 60.166667]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Kotka VTS",
+        "sv": "Kotka VTS",
+        "en": "Kotka VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "kotka.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Alfons Håkans Oy:n hinaajat. Luotsit avustavat tarvittaessa hinausavun tilaamisessa.",
+          "sv": "Alfons Håkans Oy Ab. Vid behov kan lotsen hjälpa till med att beställa bogserhjälp.",
+          "en": "Provided by Alfons Håkans Ltd. Pilots can assist in ordering the service, if required."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "mussalo"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 5510,
+      "primary": true
+    }
+  ]
+}

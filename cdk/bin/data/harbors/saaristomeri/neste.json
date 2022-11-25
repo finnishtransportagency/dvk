@@ -1,0 +1,81 @@
+{
+  "id": "neste",
+  "name": {
+    "fi": "Neste oil, öljynjalostamo",
+    "sv": "Neste oil, oljeraffinaderi",
+    "en": "Neste Oyj, oil refinery"
+  },
+  "company": {
+    "fi": "Neste Oyj:n satama, Naantali",
+    "sv": "Neste Oyj:s hamn, Nådendal",
+    "en": "Neste Oyj’s harbour in Naantali"
+  },
+  "phoneNumber": [
+    "+358504586487"
+  ],
+  "email": "naantali.harbour@neste.com",
+  "cargo": [
+    {
+      "fi": "Fortum: nostureita yksityisillä yrittäjillä",
+      "sv": "Fortum: privata företags kranar",
+      "en": "Cranes available from private companies"
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [22.06637349586276, 60.455440436640785]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "laituri 1",
+        "sv": "kaj 1",
+        "en": "quay 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.06304986857789, 60.45600560602047]
+      },
+      "length": 170,
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "laituri 2",
+        "sv": "kaj 2",
+        "en": "quay 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.06502175470271, 60.45450414814352]
+      },
+      "length": 200,
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "laituri 3",
+        "sv": "kaj 3",
+        "en": "quay 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.068459561944337, 60.45318824515586]
+      },
+      "length": 300,
+      "sections": [
+        {
+          "depth": 15.3
+        }
+      ]
+    }
+  ]
+}

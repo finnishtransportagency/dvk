@@ -14,7 +14,7 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
-import { Fairway, Harbor, Pilot, Quay, Text, Tug, useFindFairwayCardByIdQuery, Vts } from '../graphql/generated';
+import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, useFindFairwayCardByIdQuery, Vts } from '../graphql/generated';
 import { metresToNauticalMiles } from '../utils/conversions';
 import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
@@ -626,16 +626,22 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
 };
 
 type ContactInfoProps = {
-  data?: Harbor | null;
+  data?: HarborPartsFragment | null;
 };
 
 const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
   return (
     <>
       {data && (
         <p>
+          {data.company && (
+            <>
+              <span>{data.company[lang]}</span>
+              <br />
+            </>
+          )}
           {data.internet && (
             <>
               <a href={data.internet} target="_blank" rel="noreferrer">
@@ -668,7 +674,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
 };
 
 type HarbourInfoProps = {
-  data?: Harbor | null;
+  data?: HarborPartsFragment | null;
 };
 
 const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
@@ -880,7 +886,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               {data?.fairwayCard?.harbors?.map((harbour, idx) => {
                 return <HarbourInfo data={harbour} key={idx} />;
               })}
-              {!data?.fairwayCard?.harbors && (
+              {(!data?.fairwayCard?.harbors || data?.fairwayCard?.harbors?.length === 0) && (
                 <IonText>
                   <InfoParagraph />
                 </IonText>

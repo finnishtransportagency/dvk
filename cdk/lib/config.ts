@@ -37,6 +37,10 @@ class Config {
     return `FairwayCard-${Config.getEnvironment()}`;
   }
 
+  static getHarborTableName(): string {
+    return `Harbor-${Config.getEnvironment()}`;
+  }
+
   private static errorMessage(variable: string): string {
     return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
   }

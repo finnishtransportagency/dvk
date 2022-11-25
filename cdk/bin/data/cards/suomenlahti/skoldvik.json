@@ -1,0 +1,110 @@
+{
+  "id": "skoldvik",
+  "name": {
+    "fi": "Sköldvikin väylä",
+    "sv": "Sköldviksleden",
+    "en": "Sköldvik channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 7, merkitty linjatauluin.",
+    "sv": "Sju linjer utmärkta med enstavlor.",
+    "en": "Seven lines marked with boards."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylän sisäosalla 12 solmua.",
+    "sv": "Dimensionerande fart i den inre delen av farleden 12 knop.",
+    "en": "Vessel speed 12 knots in the inner channel."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylän ulko-osalla on ankkurointialue Kalbådagrundin luoteispuolella. Sisäosalla on suojaisa ankkurointialue Kalvön saaren pohjoispuolella n. 4,5 km ennen satamaa. Myös satama-alueella on ankkurointialue. Öljysäiliöalusten välisiin öljylastin siirtoihin (STS-siirto) on nimetty Kalbådagrundin ankkurointialueen sisällä erillinen rajattu alue sekä Kalvön pohjoispuolen ankkurointialueen mukainen alue.",
+      "sv": "Ankringsområde i farledens yttre del, NV om Kalbådagrund. I den inre delen finns ett skyddat ankringsområde N om Kalvön, ca 4,5 km före hamn. Ett ankringsområde finns också i hamnområdet. För överföring av oljelast mellan oljetankfartyg (STS-operation) har utsetts ett separat avgränsat område inom Kalbådagrunds ankringsområde samt området som motsvarar ankringsområdet norr om Kalvön.",
+      "en": " In the outer channel there is an anchorage area NW of Kalbådagrund, in the inner channel a sheltered anchorage area N of Kalvön, approx. 4.5 km before arrival into port. Anchorage area also in the harbour. The following areas have been designated for ship-to-ship transfers of oil cargo between oil tankers (STS transfers): a separately defined area inside Kalbådagrund anchorage area and an area inside the anchorage area on the northern side of Kalvö."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylän ulko-osa luotsipaikalta Emäsalon eteläkärkeen on avomerta ja suojaton ES-W tuulille. Emäsalon eteläkärjestä väylä jatkuu mantereen ja saariston suojaamana Sköldvikin satamaan. Väylän kapein kohta, leveydeltään 270 m, sijaitsee Prästuddenin länsipuolella. Maksimikulkusyvyydellä kulkevien alusten on ohjailussa huomioitava mahdollinen imuvaikutus.",
+    "sv": "Farledens yttre del från lotsplatsen ända till Emsalö sydspets består av öppet hav och är oskyddat för O-S-V vindar. Avsnittet från sydspetsen av Emsalö till hamnen skyddas av fastlandet och skärgården. Det smalaste stället är 270 m brett och beläget V om Prästudden. Fartyg med maximalt djupgående bör beakta sugeffekten.",
+    "en": "The outer channel, from the pilot boarding position to the S edge of Emäsalo is unsheltered and open to E-S-W winds. Further on the channel is sheltered by isles and mainland. The narrowest passage, with a width of 270 m, is located W of Prästudden. Vessels with a draught close or equal to the maximum authorised draught are warned to beware of the impact of suction on the steering of the vessel"
+  },
+  "windGauge": {
+    "fi": "Emäsalon tukiasemalla.",
+    "sv": "Emsalö station.",
+    "en": "Emäsalo Pilot Station."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907977",
+      "fax": " +358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 29,
+          "name": "Emäsalo S",
+          "pilotJourney": 21,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [25.543667, 60.000167]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Suomenlahden meriliikennekeskus",
+        "sv": "Finska vikens sjötrafikcentral",
+        "en": "Helsinki VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": [
+        "helsinki.vts@fintraffic.fi",
+        "supervisors.hki@fintraffic.fi"
+      ],
+      "vhf": [
+        {
+          "channel": 9
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Satamassa hinaajan/hinaajien käyttöpakko voimassa olevan satamajärjestyksen mukaan. Kaikki yli 40 000 DWT tankkerit lasti päällä saattohinaus luotsipaikalta satamaan",
+          "sv": "Enligt gällande hamnordning är anlitande av bogserhjälp obligatoriskt. Alla över 40 000 DWT tankers m.fl. eskortbogseras från lotsplatsen till hamn.",
+          "en": "Mandatory use of tug(s) in port under current Port Ordinance. Tugboat escort to all over 40 0000 DWT tankers from pilot boarding position to port."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "skoldvik"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 5150,
+      "primary": true
+    },
+    {
+      "id": 5138
+    },
+    {
+      "id": 5137
+    },
+    {
+      "id": 5131
+    },
+    {
+      "id": 5128
+    },
+    {
+      "id": 5136
+    },
+    {
+      "id": 5125
+    }
+  ]
+}

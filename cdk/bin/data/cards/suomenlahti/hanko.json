@@ -1,0 +1,97 @@
+{
+  "id": "hanko",
+  "name": {
+    "fi": "Hangon meriväylä",
+    "sv": "Hangö havsfarled",
+    "en": "Hanko channel"
+  },
+  "group": "2",
+  "lineText": {
+    "fi": "Linjoja 2 kpl, merkitty linjatauluin.",
+    "sv": "2 farledslinjer, utmärkta med enstavlor.",
+    "en": "2 navigation lines, marked by boards."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylällä 16 solmua.",
+    "sv": "Dimensionerande fart 16 knop.",
+    "en": "Design speed 16 knots."
+  },
+  "anchorage": [
+    {
+      "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
+      "sv": "NO om Gustavsvärns sektorfyr i närheten av farleden.",
+      "en": "NW of the Gustavsvärn sector light in the vicinity of the fairway."
+    }
+  ],
+  "iceCondition": {
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite.",
+    "sv": " Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke.",
+    "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice."
+  },
+  "windGauge": {
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation.",
+    "en": "Hanko pilot station."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": "+358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 23,
+          "name": "Hanko N",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.005167, 59.781167]
+          }
+        },
+        {
+          "id": 24,
+          "name": "Hanko S",
+          "pilotJourney": 9,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.096667, 59.708333]
+          }
+        }
+      ]
+    },
+    "vts": {
+      "name": {
+        "fi": "Hanko VTS",
+        "sv": "Hangö VTS",
+        "en": "Hanko VTS"
+      },
+      "phoneNumber": "+358204485391",
+      "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
+      "vhf": [
+        {
+          "channel": 67
+        }
+      ]
+    },
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "hanko"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 4110,
+      "primary": true
+    }
+  ]
+}

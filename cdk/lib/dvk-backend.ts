@@ -48,6 +48,7 @@ export class DvkBackendStack extends Stack {
       }
     }
     const fairwayCardTable = this.createFairwayCardTable();
+    const harborTable = this.createHarborTable();
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -58,6 +59,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
+          HARBOR_TABLE: Config.getHarborTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         },
@@ -70,14 +72,17 @@ export class DvkBackendStack extends Stack {
       });
       if (typeName === 'Mutation') {
         fairwayCardTable.grantReadWriteData(backendLambda);
+        harborTable.grantReadWriteData(backendLambda);
       } else {
         fairwayCardTable.grantReadData(backendLambda);
+        harborTable.grantReadData(backendLambda);
       }
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
+    Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
     const bucket = this.createCacheBucket(env);
-    const alb = this.createALB(env, fairwayCardTable, bucket);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -117,6 +122,19 @@ export class DvkBackendStack extends Stack {
     return table;
   }
 
+  private createHarborTable(): Table {
+    return new Table(this, 'HarborTable', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: Config.getHarborTableName(),
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+    });
+  }
+
   private createApiKeyExpiration() {
     const now = new Date();
     return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
@@ -137,7 +155,7 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createALB(env: string, fairwayCardTable: Table, cacheBucket: Bucket): ApplicationLoadBalancer {
+  private createALB(env: string, fairwayCardTable: Table, harborTable: Table, cacheBucket: Bucket): ApplicationLoadBalancer {
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
@@ -178,6 +196,7 @@ export class DvkBackendStack extends Stack {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
+          HARBOR_TABLE: Config.getHarborTableName(),
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -187,6 +206,7 @@ export class DvkBackendStack extends Stack {
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
       fairwayCardTable.grantReadData(backendLambda);
+      harborTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
