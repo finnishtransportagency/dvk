@@ -1,0 +1,140 @@
+{
+  "id": "kemi",
+  "name": {
+    "fi": "Kemin Satama",
+    "sv": "Kemi hamn",
+    "en": "Port of Kemi"
+  },
+  "company": {
+    "fi": "Kemin Satama Oy",
+    "sv": "Kemi hamn Ab",
+    "en": "Kemi Port Ltd"
+  },
+  "phoneNumber": [
+    "+35816258100"
+  ],
+  "harborBasin": {
+    "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
+    "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.",
+    "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay."
+  },
+  "cargo": [
+    {
+      "fi": "Öljylaituri: Autonosturi 6-100 t",
+      "sv": "Oljekajen: Mobilkranar  6-100 t",
+      "en": "Oil terminal: Mobile crane 6-100 t"
+    },
+    {
+      "fi": "Laiturit I-IV: Autonosturi 6-100 t, peräporttipaikka",
+      "sv": "Kajerna I-IV: Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg",
+      "en": "Quays I-IV: Mobile crane 6-100 t, ro-ro berth"
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [24.51529305714698, 65.6627988885]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Öljylaituri",
+        "sv": "Oljekajen",
+        "en": "Oil terminal"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.514831248879485, 65.65967922617939]
+      },
+      "sections": [
+        {
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laituri I, paikat 1-2",
+        "sv": "Kaj I, platserna 1-2",
+        "en": "Quay I, berths 1-2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.519962294663394, 65.6634276730848]
+      },
+      "length": 160,
+      "sections": [
+        {
+          "depth": 10.6
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laituri I, paikat 3-4",
+        "sv": "Kaj I, platserna 3-4",
+        "en": "Quay I, berths 3-4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.5187731688107, 65.66448745094786]
+      },
+      "length": 179,
+      "sections": [
+        {
+          "depth": 9.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laituri II, paikat 5-7",
+        "sv": "Kaj II, platserna 5-7",
+        "en": "Quay II, berths 5-7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.517202566973943, 65.66493198205238]
+      },
+      "length": 292,
+      "sections": [
+        {
+          "depth": 9.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laituri III, paikat 8-9",
+        "sv": "Kaj III, platserna 8-9",
+        "en": "Quay III, berths 8-9"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.515699152426542, 65.66629646880082]
+      },
+      "length": 178,
+      "sections": [
+        {
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laituri IV, paikat 10-11",
+        "sv": "Kaj IV, platserna 10-11",
+        "en": "Quay IV, berths 10-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.515497139361216, 65.66786381014046]
+      },
+      "length": 178,
+      "sections": [
+        {
+          "depth": 11.2
+        }
+      ]
+    }
+  ]
+}

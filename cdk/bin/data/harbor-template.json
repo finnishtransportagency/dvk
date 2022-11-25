@@ -1,0 +1,69 @@
+{
+  "id": "",
+  "name": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
+  "company": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
+  "phoneNumber": [
+    ""
+  ],
+  "fax": "",
+  "email": "",
+  "internet": "",
+  "extraInfo": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
+  "harborBasin": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
+  "cargo": [
+    {
+      "fi": "",
+      "sv": "",
+      "en": ""
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": []
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "",
+        "sv": "",
+        "en": ""
+      },
+      "length": 0,
+      "sections": [
+        {
+          "name": "",
+          "geometry": {
+            "type": "Point",
+            "coordinates": []
+          },
+          "depth": 0
+        }
+      ],
+      "extraInfo": {
+        "fi": "",
+        "sv": "",
+        "en": ""
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": []
+      }
+    }
+  ]
+}
