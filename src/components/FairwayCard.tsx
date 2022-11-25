@@ -886,7 +886,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               {data?.fairwayCard?.harbors?.map((harbour, idx) => {
                 return <HarbourInfo data={harbour} key={idx} />;
               })}
-              {data?.fairwayCard?.harbors?.length === 0 && (
+              {(!data?.fairwayCard?.harbors || data?.fairwayCard?.harbors?.length === 0) && (
                 <IonText>
                   <InfoParagraph />
                 </IonText>
