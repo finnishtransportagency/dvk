@@ -34,7 +34,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   }, [layers, dvkMap]);
   const LayerItem: React.FC<CheckBoxProps> = ({ id, title }) => {
     return (
-      <IonItem mode="md">
+      <IonItem>
         <IonText>{title}</IonText>
         <IonCheckbox
           value={id}

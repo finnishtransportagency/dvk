@@ -33,7 +33,9 @@ import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
 import { isMobile } from './utils/common';
 
-setupIonicReact();
+setupIonicReact({
+  mode: 'md',
+});
 
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql' });
 const authLink = setContext((_, { headers }) => {
