@@ -1,0 +1,85 @@
+{
+  "id": "mantyluoto",
+  "name": {
+    "fi": "Mäntyluodon satama",
+    "sv": "Mäntyluoto hamn",
+    "en": "Mäntyluoto harbour"
+  },
+  "company": {
+    "fi": "Porin satama Oy, Pori",
+    "sv": "Björneborgs hamn Ab, Björneborg",
+    "en": "Port of Pori, Pori"
+  },
+  "phoneNumber": [
+    "+358447012623"
+  ],
+  "email": "info@portofpori.fi",
+  "harborBasin": {
+    "fi": "Kääntöaltaan halkaisija 343 m.",
+    "sv": "Svängbassängens diameter 343 m.",
+    "en": "Swinging area, diameter 343 m."
+  },
+  "cargo": [
+    {
+      "fi": "Laituri n:o 1; 2 x Liebherr 140 tn; Kallonlahti 20-25; nosturit 60 t, 50 t ja 2 kpl 40 t; laiturit 14-19: 2 kpl 40 t ja 1 kpl 200 t. Lisäksi 2 kpl materiaalinkäsittelykone Mantsinen 110 ja 200 9-25 tn.",
+      "sv": "Kajen nr 1; 2 x Liebherr 140 t kran, Kallonlahti 20-25; 60 t och 50 t kranar och två 40 t kranar; Kajen nr 14-19; två 40 t mobilkranar och en 200 t kran. Två stycket Mantsinen 110 och 200, 9-25 t.",
+      "en": "Quay no 1: 2 x Liebherr 140 t crane; Kallonlahti quay no 20-25: 60 t, 50 t cranes and two 40 t cranes; Quay no 14-19: two 40 t cranes and one 200 t crane."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.4772461507484, 61.59694430187025]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Laituri no 1",
+        "sv": "Kaj 1",
+        "en": "Quay 1"
+      },
+      "length": 250,
+      "sections": [
+        {
+          "depth": 13.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Kallonlahti: laiturit 20-25;",
+        "sv": "Kallonlahti: Kaj 20-25",
+        "en": "Kallonlahti: quay no 20-25"
+      },
+      "length": 650,
+      "sections": [
+        {
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laiturit 3-5",
+        "sv": "Kaj 3-5",
+        "en": "Quay no 3-5"
+      },
+      "sections": [
+        {
+          "depth": 7.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "fi": "Laiturit 7 ja 14-19",
+        "sv": "Kaj 7 och 14-19",
+        "en": "Quay 7 and 14-19"
+      },
+      "sections": [
+        {
+          "depth": 8.1
+        }
+      ]
+    }
+  ]
+}
