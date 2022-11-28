@@ -31,6 +31,7 @@ import './theme/dvk.css';
 import Home from './pages/Home';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
+import { isMobile } from './utils/common';
 
 setupIonicReact();
 
@@ -84,7 +85,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <IonApp>
+    <IonApp className={isMobile() ? 'mobile' : ''}>
       <IonReactRouter>
         <ApolloProvider client={client}>
           <SidebarMenu />

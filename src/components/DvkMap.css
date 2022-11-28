@@ -12,6 +12,9 @@
   max-height: calc(100vh - 96px);
   overflow: auto;
 }
+.mobile #ion-react-wrapper {
+  max-height: calc(90vh - 96px);
+}
 
 .dvkMap .ol-zoom {
   top: auto;

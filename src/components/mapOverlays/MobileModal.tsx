@@ -1,25 +1,9 @@
-import {
-  IonButton,
-  IonButtons,
-  IonCol,
-  IonFooter,
-  IonGrid,
-  IonHeader,
-  IonIcon,
-  IonModal,
-  IonRow,
-  IonTitle,
-  IonToolbar,
-  isPlatform,
-} from '@ionic/react';
+import { IonButton, IonButtons, IonCol, IonFooter, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { isMobile } from '../../utils/common';
 import { LanguageBar } from '../SidebarMenu';
 import './MobileModal.css';
-
-function isMobile() {
-  return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
-}
 
 export const MobileModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(isMobile());

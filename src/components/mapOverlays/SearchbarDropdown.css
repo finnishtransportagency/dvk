@@ -6,6 +6,11 @@ ion-list.searchbarDropdownContainer {
   width: 335px;
   transition: all 150ms;
   max-width: calc(100% - 160px);
+  max-height: min(calc(100vh - 93px - 48px), 496px);
+  overflow-y: auto;
+}
+.mobile ion-list.searchbarDropdownContainer {
+  max-height: min(calc(90vh - 93px - 48px), 496px);
 }
 #fairwayCardsContainer ion-list.searchbarDropdownContainer {
   top: 45px;

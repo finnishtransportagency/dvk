@@ -1,5 +1,10 @@
+import { isPlatform } from '@ionic/react';
 import { FairwayCardPartsFragment } from '../graphql/generated';
 import { MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+
+export const isMobile = () => {
+  return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
+};
 
 export const getCurrentDecimalSeparator = () => {
   const n = 1.1;
