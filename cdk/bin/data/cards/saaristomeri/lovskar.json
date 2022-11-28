@@ -1,0 +1,97 @@
+{
+  "id": "lovskar",
+  "name": {
+    "fi": "Lövskärin-Isokarin väylä",
+    "sv": "Farleden Lövskär-Enskär",
+    "en": "Lövskär-Isokari channel"
+  },
+  "group": "1",
+  "lineText": {
+    "fi": "Linjoja 22 kpl, jotka merkitty linjatauluin ja loistoin.",
+    "sv": "22 farledslinjer, utmärkta med enstavlor och fyrar.",
+    "en": "22 lines, marked with boards and lights."
+  },
+  "anchorage":[
+    {
+      "fi": "Ankkuroida voi Uudenkaupungin 10,0 m väylän ankkurointialueille: ulko-osalla Sandbäckin majakasta 5,5 km koilliseen (kartan ulkopuolella) sekä Isonkarin lounais- ja kaakkoispuolella.",
+      "sv": "Ankring på Nystadsledens (10,0 m) ankringsområden: i farledens yttre del 5,5 km NO om Sandbäcks fyr (utanför kartan) samt SV och SO om Enskär.",
+      "en": "Anchorage in the anchorage areas of the Uusikaupunki channel (10.0 m): in the outer channel 5.5 km NE of Sandbäck Lighthouse (off chart) and SW and SE of Isokari."
+    }
+  ],
+  "generalInfo": {
+    "fi": "Väylä tarjoaa avomerireittiin nähden lyhyemmän, tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman Saaristomeren poikki kulkevan reitin (Utö - Lövskär - Isokari).",
+    "sv": "Jämfört med rutten som går genom öppet hav så erbjuder denna farled en rutt som går genom Skärgårdshavet (Utö-Lövskär-Enskär) och som är kortare, mera skyddad för vind och som har lättare isförhållanden under svåra isvintrar.",
+    "en": "Instead of the route which goes in open sea, this fairway offers a route in the Archipelago Sea (Utö-Lövskär-Isokari), which is shorter, more sheltered against wind and with lighter ice conditions during difficult ice winters."
+  },
+  "navigationCondition": {
+    "fi": "Väylän alkuosa Lövskäristä Jurmoon kulkee suojaisena ja hyvin merkittynä läpi saariston. Jurmosta Isokariin väylä on avomerta, SW-N tuulilla merenkäynti voi olla voimakasta.",
+    "sv": "Från Lövskär till Jurmo går farleden skyddad och väl utprickad genom skärgården. Från Jurmo till Enskär består farleden av öppet hav, vid SV-N vind kan sjögången vara kraftig.",
+    "en": "From Lövskär to Jurmo the fairway is well marked and sheltered by the archipelago. From Jurmo to Enskär the fairway consists of open sea, SW and N winds can create heavy seas."
+  },
+  "iceCondition": {
+    "fi": "Väylän ulkopäässä jää liikkuu ja etenkin luoteistuulilla jää ahtautuu ajoittain Isokarin etelä- ja Jurmon pohjoispuolisille alueille. Jäiden liikkuessa poijut voivat olla jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",
+    "sv": "Rörlig is i den yttersta delen av farleden och särskilt vid NV vind kan vallbildning tidvis förekomma på områdena S om Enskär och N om Jurmo. Då isen rör sig kan bojarna vara tryckta under ytan och lysbojarnas lysanordningar kan ha skadats.",
+    "en": "Ice movement in the outer channel. Especially NW winds can temporarily cause ridges in the areas S of Isokari and N of Jurmo. Ice movement can cause buoys to be pressed beneath the surface and the lighting devices of the light buoys may be damaged."
+  },
+  "windGauge": {
+    "fi": "Isokarissa.",
+    "sv": "Enskär.",
+    "en": "Isokari."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358207546153",
+      "fax": "+358207546163",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "fi": "Huom. kovilla lännenpuoleisilla tuulilla luotsipaikka sovittava erikseen.",
+        "sv": "Anm. vid hård V vind bör platsen där lotsen möter överenskommas.",
+        "en": ""
+      },
+      "places": [
+        {
+          "id": 16,
+          "name": "Isokari NW",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [20.905, 60.735]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS",
+          "en": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "fairways": [
+    {
+      "id": 3010,
+      "primary": true
+    }
+  ]
+}
