@@ -1,0 +1,114 @@
+{
+  "id": "maarianhamina",
+  "name": {
+    "fi": "Maarianhaminan väylä",
+    "sv": "Mariehamnleden",
+    "en": "Mariehamn channel"
+  },
+  "group": "1",
+  "lineText": {
+    "fi": "Linjoja 7 kpl.",
+    "sv": "7 linjer.",
+    "en": "7 navigation lines."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus 13,0 solmua.",
+    "sv": "Dimensionerande fart 13,0 knop.",
+    "en": "Design speed 13.0 knots."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylän ulko-osalla voi ankkuroida ja ohittaa Skogsön koillispuolella.",
+      "sv": "Ankring och omkörning i farledens yttre del NO om Skogsö.",
+      "en": "Anchoring and overtaking in the outer channel NE of Skogsö."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylä on ulko-osaltaan suojaton S-W tuulille. Korsön länsipuolelta väylä jatkuu saariston ja mantereen suojaamana Maarianhaminan satamaan.",
+    "sv": "Farledens yttre del är oskyddad för S-V vindar. Farleden fortsätter V om Korsö i skydd av skärgården och fastland till Mariehamns hamn.",
+    "en": "The outer channel is unsheltered against S-W winds. The channel continues W of Korsö sheltered by the archipelago and mainland to the port of Mariehamn."
+  },
+  "iceCondition": {
+    "fi": "Väylä on usein auki koko talven tai siihen muodostuu vain ohut jääpeite.",
+    "sv": "Farleden är ofta öppen om vintrarna eller har endast av ett tunt istäcke.",
+    "en": "The fairway is often open in the winter or there can be formation of thin ice."
+  },
+  "speedLimit": [
+    {
+      "fi": "Korvikista alkaen 17 km/h. Koskee yli 24 metriä pitkiä aluksia. Aallonmuodostuskielto kaikilla aluksilla. Ns Stenkrossenista alkaen nopeusrajoitus on 17 km/h sekä aallonmuodostuskielto. Koskee kaikkia aluksia.",
+      "sv": "Från Korrvik 17 km/h, vilket gäller för farkoster över 24 m längd. Svallförbud för alla farkoster. Från den s.k. Stenkrossen 17 km/h och svallförbud för alla farkoster.",
+      "en": "In the inner harbour the speed limitation is 17 km/h."
+    }
+  ],
+  "windGauge": {
+    "fi": "Korsössä ja satama-alueella.",
+    "sv": "På Korsö och en annan i hamnområdet.",
+    "en": "On Korsö and another in the harbour area."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 18,
+          "name": "Marhällan",
+          "pilotJourney": 5.7,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [19.842, 60.016]
+          }
+        },
+        {
+          "id": 19,
+          "name": "Nyhamn",
+          "pilotJourney": 10,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [19.938333, 59.938333]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS",
+          "en": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs available."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "maarianhamina"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 2565,
+      "primary": true
+    }
+  ]
+}
