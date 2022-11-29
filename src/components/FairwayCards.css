@@ -160,6 +160,13 @@ button.icon:focus-visible:hover {
   height: 16px;
   margin-right: 8px;
 }
+#fairwayCardsContainer ion-text .hoverText {
+  display: block;
+}
+#fairwayCardsContainer ion-text .hoverText:hover {
+  background-color: var(--ion-color-light);
+  cursor: default;
+}
 
 ion-accordion {
   background-color: var(--ion-color-lightest);

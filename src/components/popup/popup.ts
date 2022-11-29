@@ -67,7 +67,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (feature.getProperties().featureType === 'quay') {
       return getQuayStyle(feature, true);
     }
-    return getPilotStyle();
+    return getPilotStyle(true);
   };
 
   const pointerMoveSelect = new Select({

@@ -20,7 +20,7 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
-import { useSetSelectedFairwayCard } from './layers';
+import { setSelectedPilotPlace, useSetSelectedFairwayCard } from './layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../utils/constants';
 
 type PhonenumberProps = {
@@ -437,6 +437,10 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
+  const highlightPilot = (id: string | number) => {
+    setSelectedPilotPlace(id);
+  };
+
   return (
     <>
       {data && (
@@ -453,14 +457,19 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />
             <br />
             <Phonenumber title={t('fax')} showEmpty number={data.fax} />
-            {data.places?.map((place, idx) => {
+            {data.places?.map((place) => {
               return (
-                <span key={idx}>
+                <span
+                  key={place.id}
+                  className="hoverText"
+                  onMouseOver={() => highlightPilot(place.id)}
+                  onFocus={() => highlightPilot(place.id)}
+                  onMouseOut={() => highlightPilot(0)}
+                  onBlur={() => highlightPilot(0)}
+                >
                   {place.geometry?.coordinates && (
                     <>
-                      <br />
-                      {t('pilotPlace')}
-                      {' ' + place.name}:{' '}
+                      {t('pilotPlace')} {place.name}:{' '}
                       {place.geometry?.coordinates[0] &&
                         place.geometry?.coordinates[1] &&
                         coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]])}
