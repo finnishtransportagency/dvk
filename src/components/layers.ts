@@ -4,7 +4,8 @@ import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
 import Map from 'ol/Map';
-import pilot_logo from '../theme/img/pilotPlace.svg';
+import pilotIcon from '../theme/img/pilotPlace.svg';
+import pilotIconActive from '../theme/img/pilotPlace_active.svg';
 import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
@@ -76,9 +77,11 @@ function getLineStyle(color: string, width: number) {
   });
 }
 
-export function getPilotStyle() {
+export function getPilotStyle(selected: boolean) {
   const image = new Icon({
-    src: pilot_logo,
+    src: selected ? pilotIconActive : pilotIcon,
+    scale: selected ? 1.2 : 1,
+    anchor: [0.5, 0.5],
   });
   return [
     new Style({
@@ -136,6 +139,7 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
           color: '#ffffff',
         }),
       }),
+      zIndex: selected ? 10 : 1,
     }),
     new Style({
       image: new CircleStyle({
@@ -145,6 +149,7 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
           color: 'rgba(0,0,0,0)',
         }),
       }),
+      zIndex: selected ? 11 : 2,
     }),
   ];
 }
@@ -247,7 +252,7 @@ export function addAPILayers(map: Map) {
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature.getProperties().symbol, resolution));
   // Luotsipaikat
-  addFeatureLayer(map, 'pilot', undefined, 50, getPilotStyle());
+  addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Laiturit
@@ -348,4 +353,19 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       }
     }
   }, [data, dvkMap]);
+}
+
+export function setSelectedPilotPlace(id?: number | string) {
+  const dvkMap = getMap();
+  const pilotSource = dvkMap.getVectorSource('pilot');
+  const pilotFeatures = pilotSource.getFeatures();
+  pilotSource.clear();
+
+  const fairwayFeatures: Feature[] = [];
+  for (const feature of pilotFeatures) {
+    feature.set('hoverStyle', id && feature.getId() === id);
+    fairwayFeatures.push(feature);
+  }
+
+  pilotSource.addFeatures(fairwayFeatures);
 }
