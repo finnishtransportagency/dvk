@@ -1,0 +1,107 @@
+{
+  "id": "kokkolakanta",
+  "name": {
+    "fi": "Kokkolan kantasatama",
+    "sv": "Karleby stamhamn",
+    "en": "Kokkola General Port"
+  },
+  "company": {
+    "fi": "Kokkolan satama, Kokkola",
+    "sv": "Karleby hamn, Karleby",
+    "en": "Port of Kokkola"
+  },
+  "phoneNumber": [
+    "+35868242400"
+  ],
+  "harborBasin": {
+    "fi": "Kääntöympyröiden halkaisijat: Kantasataman kemikaalilaiturin edustalla 400 m, laitureiden 1 ja 2 sekä AW-terminaalin edustalla 250 m.",
+    "sv": "Svängcirklarnas diametrar: vid kemikaliekajen i Stamhamnen 400 m, vid kaj 1 och 2 samt vid AW-terminalen 250 m.",
+    "en": "Diameter of turning circles: in General Port at the chemical terminal 400 m, at Quay 1 and 2 and the AWT 250 m."
+  },
+  "cargo": [
+    {
+      "fi": "Kantasatamassa 2 kpl 8 t nostureita. AW-terminaalissa 50 t siltanosturi. Lisäksi satamassa liikkuva 60 t nosturi.",
+      "sv": "I Stamhamnen 2 st. 8 t kranar. Vid AW-terminalen 50 t brokran. Därtill mobil 60 t kran.",
+      "en": "Two eight-ton cranes in the General Port. One 50-ton bridge crane at the AWT. One 60-ton crane in the port area."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [23.020087962965444, 63.84744064569387]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Laituri 1",
+        "sv": "Kaj 1",
+        "en": "Quay 1"
+      },
+      "length": 150,
+      "sections": [
+        {
+          "depth": 10.4
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.023159592765673, 63.84333589104997]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 2",
+        "sv": "Kaj 2",
+        "en": "Quay 2"
+      },
+      "length": 150,
+      "sections": [
+        {
+          "depth": 10.3
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.02013088371956, 63.84375467967233]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 5 (kemikaalilaituri)",
+        "sv": "Kaj 5 (kemikaliekaj)",
+        "en": "Quay 5 (chemical terminal)"
+      },
+      "length": 83,
+      "sections": [
+        {
+          "depth": 10
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.010605792342783, 63.85064576734121]
+      }
+    },
+    {
+      "name": {
+        "fi": "AW-terminaali",
+        "sv": "AW-terminalen",
+        "en": "AWT"
+      },
+      "length": 125,
+      "sections": [
+        {
+          "depth": 9.1
+        }
+      ],
+      "extraInfo": {
+        "fi": "Altaan koko 25 m x 125 m, max. korkeus 24 m.",
+        "sv": "Bassängyta 25 m x 125 m, max. höjd 24 m.",
+        "en": "Basin 25 m x 125 m, max. height 24 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.018491200182467, 63.84465292739646]
+      }
+    }
+  ]
+}
