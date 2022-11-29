@@ -9,7 +9,7 @@ export const MobileModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(isMobile());
   const { t } = useTranslation();
   return (
-    <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)} mode="md">
+    <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
