@@ -1,0 +1,68 @@
+{
+  "id": "kristiinankaupunki",
+  "name": {
+    "fi": "Karhusaaren satama",
+    "sv": "Björnö hamn",
+    "en": "Port of Karhusaari"
+  },
+  "company": {
+    "fi": "Karhusaaren satama, Kristiinankaupunki",
+    "sv": "Björnö hamn, Kristinestad",
+    "en": "Karhusaari Harbour, Kristiinankaupunki"
+  },
+  "phoneNumber": [
+    "+358503133441"
+  ],
+  "harborBasin": {
+    "fi": "Kääntöaltaan halkaisija 500 m, ankkurin käyttö sallittu.",
+    "sv": "Svängbassängens diameter 500 m, tillåtet att använda ankare.",
+    "en": "Swinging area, diameter 500 m, use of anchor permitted."
+  },
+  "cargo": [
+    {
+      "fi": "Mobiililaitteet.",
+      "sv": "Mobila enheter.",
+      "en": "Mobile devices."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.31824137486769, 62.259258724989664]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Syväsatama: Hiililaituri",
+        "sv": "Djuphamnen: kolkaj",
+        "en": "Deep harbour: coal pier"
+      },
+      "length": 160,
+      "sections": [
+        {
+          "depth": 13.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.317619226173406, 62.25978928004596]
+      }
+    },
+    {
+      "name": {
+        "fi": "Sisäsatama: öljylaituri",
+        "sv": "Innerhamnen: oljekaj",
+        "en": "Inner harbour: oil pier"
+      },
+      "length": 50,
+      "sections": [
+        {
+          "depth": 11.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.314683258489804, 62.257965678285146]
+      }
+    }
+  ]
+}
