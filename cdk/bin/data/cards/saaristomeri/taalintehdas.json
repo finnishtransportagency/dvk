@@ -1,0 +1,122 @@
+{
+  "id": "taalintehdas",
+  "name": {
+    "fi": "Taalintehtaan väylä",
+    "sv": "Dalsbruksleden",
+    "en": "Dalsbruk channel"
+  },
+  "group": "1",
+  "lineText": {
+    "fi": "Linjoja 6 kpl jotka merkitty linjatauluin.",
+    "sv": "Sex farledslinjer, utmärkta med enstavlor.",
+    "en": "Six lines marked with boards."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus puskuproomuyhdistelmällä 14,0 solmua ja maksimisyväyksisellä aluksella 8,0 solmua.",
+    "sv": "Dimensionerande fart för skjutbogserare 14,0 knop och för fartyg med maximalt djupgående 8,0 knop.",
+    "en": "Design speed for pusher barges 14.0 knots and for vessels with maximum draught 8.0 knots."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylällä on ankkurointi ja kääntöalue sataman edustalla Ytre Sirkholmenin ja Högholmenin saarten välissä. Aluetta voidaan käyttää myös odotuspaikkana. Lateraalimerkintä. Haraussyvyys 9,0 m, alueen keskikohta on noin 90 m päässä väylän keskilinjasta.",
+      "sv": "Ankring och manöverutrymme i hamninloppet mellan öarna Yttre Sirkholmen och Högholmen. Området kan även användas som vänteplats. Lateralutmärkning. Ramat djup 9,0 m, områdets mittpunkt är ca 90 m från farledens mittlinje.",
+      "en": "Anchorage and turning area at the port entrance between the islands Yttre Sirkholmen and Högholmen. The area can also be used as a waiting area. Lateral marking. Safe clearance depth 9.0 m, the centre is about 90 m from the fairway centre line."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylä on kokonaisuudessaan mantereen, saarien ja karien hyvin suojaama. Väylän kapein kohta on Märaströmmenin kapeikossa, leveys 90 m. Maksimisyvyydessä kulkevien alusten on huomioitava mahdollinen imuvaikutus aluksen ohjailuun.",
+    "sv": "Farleden är i sin helhet väl skyddad av fastland, holmar och skär. Farledens smalaste ställe är den trånga passagen vid Märaströmmen, bredd 90 m. Fartyg med maximalt djupgående ska vid manövreringen beakta den eventuella sugeffekten.",
+    "en": "The whole fairway is sheltered by mainland, islands and skerries. The narrowest part of the fairway is the narrow passage at Märaströmmen, width 90 m. Vessels with maximum draught should take the suction effect into consideration."
+  },
+  "iceCondition": {
+    "fi": "Väylällä esiintyy normaalitalvina kiintojäätä.",
+    "sv": "Under normala vintrar förekommer fast is i farleden.",
+    "en": "During normal winters there is fast ice in the fairway."
+  },
+  "windGauge": {
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation.",
+    "en": "Hanko pilot station."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.south@finnpilot.fi",
+      "phoneNumber": " +358400907977",
+      "fax": "+358295253010",
+      "internet": "https://www.pilotonline.fi",
+      "places": [
+        {
+          "id": 23,
+          "name": "Hanko N",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.005167, 59.781167]
+          }
+        },
+        {
+          "id": 24,
+          "name": "Hanko S",
+          "pilotJourney": 27.9,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [23.096667, 59.708333]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Hanko VTS",
+          "sv": "Hanko VTS",
+          "en": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "email": [
+          "hanko.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      },
+      {
+        "name": {
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS",
+          "en": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov.",
+          "en": "Privately owned tugs."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "taalintehdas"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 3705,
+      "primary": true
+    }
+  ]
+}
