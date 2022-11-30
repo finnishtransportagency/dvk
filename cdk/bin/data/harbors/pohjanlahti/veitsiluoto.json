@@ -1,0 +1,70 @@
+{
+  "id": "veitsiluoto",
+  "name": {
+    "fi": "Veitsiluodon satama",
+    "sv": "Veitsiluoto hamn",
+    "en": "Port of Veitsiluoto"
+  },
+  "company": {
+    "fi": "Kemin Satama Oy",
+    "sv": "Kemi Hamn Ab",
+    "en": "Kemi Port Ltd"
+  },
+  "phoneNumber": [
+    "+35816258100",
+    "+358162151628",
+    "+358405482065"
+  ],
+  "harborBasin": {
+    "fi": "Kääntöympyrän halkaisija 370 m, ankkurin käyttö sallittu.",
+    "sv": "Svängcirkelns diameter 370 m, tillåtet att använda ankare.",
+    "en": "Diameter of turning circle 370 m, use of anchor permitted."
+  },
+  "cargo": [
+    {
+      "fi": "Mobiilinostureita 7 / 6 - 12 t, 4 peräporttipaikkaa.",
+      "sv": "Mobila kranar 7 / 6 - 12 t, 4 st. ro-ro-ramper.",
+      "en": "Mobile cranes 7 / 6 - 12 t, 4 Ro-Ro ramps."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [24.622699562519507, 65.68785242116063]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Laituri 4",
+        "sv": "Kaj 4",
+        "en": "Quay 4"
+      },
+      "length": 230,
+      "sections": [
+        {
+          "depth": 7.79
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.618656880436745, 65.68778932482265]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 5",
+        "sv": "Kaj 5",
+        "en": "Quay 5"
+      },
+      "length": 230,
+      "sections": [
+        {
+          "depth": 7.79
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [24.613942418296496, 65.68938430864989]
+      }
+    }
+  ]
+}
