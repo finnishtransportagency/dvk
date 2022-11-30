@@ -1,0 +1,81 @@
+{
+  "id": "raaheoulukemi",
+  "name": {
+    "fi": "Raahe-Oulu-Kemi rannikkoväylä",
+    "sv": "Kustleden Brahestad-Uleåborg-Kemi",
+    "en": "Coastal fairway Raahe-Oulu-Kemi"
+  },
+  "group": "3",
+  "lineText": {
+    "fi": "Linjoja on 9 kpl.",
+    "sv": "9 navigationslinjer.",
+    "en": "9 navigation lines."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus väylällä 12 solmua.",
+    "sv": "Dimensionerande fart i farleden 12 knop.",
+    "en": "Design speed in the channel 12 knots."
+  },
+  "navigationCondition": {
+    "fi": "Väylä on avomerta ja suojaton kaikilla tuulen suunnilla, merenkäynti voi olla voimakasta. Väylä on kapeimmillaan 250 m leveä noin 3 km lounaaseen (LO) Oulu 1 majakalta.",
+    "sv": "Farleden går i öppen sjö och är oskyddad för vindar ur alla riktningar, sjögången kan vara stark. farledens smalaste ställe 250 m, är beläget ca 3 km SV från fyren Oulu 1.",
+    "en": "The fairway is open sea area and unsheltered against all winds. Heavy seas. The narrowest passage, only 250 m wide, is located approx. 3 km SW of Oulu 1 lighthouse."
+  },
+  "iceCondition": {
+    "fi": "Jäät liikkuvat alku- ja lopputalvesta koko väyläalueella, jolloin poijut voivat olla jään alla. Keskitalvella väylällä esiintyy yleensä ahtautunutta jäätä.",
+    "sv": "Drivis förekommer i hela farleden på för- och senvintern. Bojarna kan då vara nedtryckta under isen. Under midvintern vallbildning.",
+    "en": "Drift ice throughout the fairway in early and late winter. Buoys may be pressed under the ice surface. Ridging in mid-winter."
+  },
+  "windGauge": {
+    "fi": "Rannikkoasemat, Raahe Nahkiainen, Hailuoto Marjaniemi, Kemi 1 majakka.",
+    "sv": "Vädret vid kuststationerna, Brahestad Nahkiainen, Karlö Marjaniemi, fyren Kemi 1.",
+    "en": "Marine weather observations, Raahe Nahkiainen, Hailuoto Marjaniemi, Kemi 1 lighthouse."
+  },
+  "vesselRecommendation": {
+    "fi": "Oulun väylän risteyksestä n. 3 km lounaaseen Oulu 1 majakalta olevan kapeikon kohdalla on väylän mitoitussyväys olevien alusten nopeudessa huomioitava pohjaimun vaikutus.",
+    "sv": "I den trånga passagen ca 3 km SV från fyren Oulu 1 bör fartyg som går i dimensionerat djupgående ta hänsyn till squat-effekten.",
+    "en": "Vessels sailing at design draught should beware of the squat-effect in the narrow passage 3 km SW of the Oulu 1 lighthouse."
+  },
+  "seaLevel": {
+    "fi": "Raahe mareografi.",
+    "sv": "Brahestad mareograf.",
+    "en": "Raahe mareograph."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "fi": "Väylällä ei ole luotsin käyttövelvollisuutta.",
+        "sv": "Fartyg är inte skyldiga att anlita lots i farleden.",
+        "en": "Pilot assistance non-mandatory."
+      }
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS",
+          "en": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ]
+  },
+  "fairways": [
+    {
+      "id": 206,
+      "primary": true
+    }
+  ]
+}
