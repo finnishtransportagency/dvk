@@ -823,7 +823,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} data-testid="tabChange">
             <IonSegmentButton value="1">
               <IonLabel>
-                <h3>{t('title', { count: 0 })}</h3>
+                <h3>{t('title', { count: 1 })}</h3>
               </IonLabel>
             </IonSegmentButton>
             <IonSegmentButton value="2">
