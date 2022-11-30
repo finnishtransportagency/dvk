@@ -51,7 +51,8 @@
         "fi": "Väylällä ei ole luotsin käyttövelvollisuutta.",
         "sv": "Fartyg är inte skyldiga att anlita lots i farleden.",
         "en": "Pilot assistance non-mandatory."
-      }
+      },
+      "places": []
     },
     "vts": [
       {

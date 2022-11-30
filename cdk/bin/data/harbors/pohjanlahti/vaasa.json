@@ -1,0 +1,184 @@
+{
+  "id": "vaasa",
+  "name": {
+    "fi": "Vaasan satama",
+    "sv": "Vasa hamn",
+    "en": "Port of Vaasa"
+  },
+  "company": {
+    "fi": "Kvarken Ports Ltd",
+    "sv": "Kvarken Ports Ltd",
+    "en": "Kvarken Ports Ltd"
+  },
+  "phoneNumber": [
+    "+358400479163",
+    "+358405672975"
+  ],
+  "fax": "",
+  "email": "vaasaport@kvarkenports.com",
+  "internet": "https://www.kvarkenports.com",
+  "harborBasin": {
+    "fi": "Kääntöympyrän halkaisija 310 m, haraussyvyys -9,6 m ja 9,7 m. Ankkurin käyttö sallittu.",
+    "sv": "Svängcirkelns diameter 310 m, ramat djup -9,6 m och 9,7 m. Tillåtet att använda ankare.",
+    "en": "Diameter of turning circle 310 m, safe clearance depth -9,6 m and 9.7 m. Use of anchor allowed."
+  },
+  "cargo": [
+    {
+      "fi": "Siirrettävät nosturit kaikille laitureille.",
+      "sv": "Mobila kranar vid alla kajer.",
+      "en": "Mobile cranes for all quays."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [21.557042610995463, 63.0870965292807]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Hiililaituri",
+        "sv": "Kolkajen",
+        "en": "Coal quay"
+      },
+      "length": 145,
+      "sections": [
+        {
+          "depth": 9.7
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.54699608317402, 63.08816664229198]
+      }
+    },
+    {
+      "name": {
+        "fi": "Reininlaituri",
+        "sv": "Reinskakajen",
+        "en": "Rein's quay"
+      },
+      "length": 240,
+      "sections": [
+        {
+          "depth": 7.5
+        }
+      ],
+      "extraInfo": {
+        "fi": "Suurin sallittu aluksen pituus 165 m.",
+        "sv": "Största tillåtna fartygslängd 165 m.",
+        "en": "Maximum length of vessel 165 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.552780984172074, 63.08843209402617]
+      }
+    },
+    {
+      "name": {
+        "fi": "Matkustajalaituri: eteläpuoli",
+        "sv": "Passagerarkajen: södra sidan",
+        "en": "Passenger quay: southern side"
+      },
+      "length": 162,
+      "sections": [
+        {
+          "depth": 7.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.55233141775904,63.08726116438341]
+      }
+    },
+    {
+      "name": {
+        "fi": "Matkustajalaituri: pohjoispuoli",
+        "sv": "Passagerarkajen: norra sidan",
+        "en": "Passenger quay: northern side"
+      },
+      "length": 162,
+      "sections": [
+        {
+          "depth": 7.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.553463826660696, 63.0874836613912]
+      }
+    },
+    {
+      "name": {
+        "fi": "Pohjoispiiri: pohjoispuoli",
+        "sv": "Norrapiren: norra sidan",
+        "en": "Northern pier: Northern side"
+      },
+      "length": 160,
+      "sections": [
+        {
+          "depth": 7.9
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.553341986393534, 63.086538122343086]
+      }
+    },
+    {
+      "name": {
+        "fi": "Eteläpiiri: pohjoispuoli",
+        "sv": "Södrapiren: norra sidan",
+        "en": "Southern pier: Northern side"
+      },
+      "length": 180,
+      "sections": [
+        {
+          "depth": 7.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.554073024657136, 63.085930588490776]
+      }
+    },
+    {
+      "name": {
+        "fi": "Lassenlaituri",
+        "sv": "Lasseskaj",
+        "en": "Lasse's quay"
+      },
+      "length": 214,
+      "sections": [
+        {
+          "depth": 9.6
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.55724719302114, 63.0844593692617]
+      }
+    },
+    {
+      "name": {
+        "fi": "Öljylaituri",
+        "sv": "Oljekajen",
+        "en": "Oil quay"
+      },
+      "length": 105,
+      "sections": [
+        {
+          "depth": 9.6
+        }
+      ],
+      "extraInfo": {
+        "fi": "Suurin sallittu aluksen pituus 200 m.",
+        "sv": "Största tillåtna fartygslängd 200 m.",
+        "en": "Maximum length of vessel 200 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.561974804909102, 63.08314574551373]
+      }
+    }
+  ]
+}
