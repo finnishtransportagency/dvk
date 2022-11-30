@@ -1,0 +1,142 @@
+{
+  "id": "raahe",
+  "name": {
+    "fi": "Raahen väylä",
+    "sv": "Brahestad farled",
+    "en": "Raahe fairway"
+  },
+  "group": "3",
+  "lineText": {
+    "fi": "Linjoja on 4, merkintä perustuu majakan, linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "Fyra linjer utmärks i en kombination av en fyr, enstavlor, randmärken, bojar och prickar.",
+    "en": "4 lines, marking is based on the lighthouse, boards, edge marks, buoys and spar buoys in combined use."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 8 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 11 knop, i den inre delen 8 knop.",
+    "en": "Design speed in the approach 11 knots, in the entrance 8 knots."
+  },
+  "anchorage":[
+    {
+      "fi": "Väylällä on ankkurointialue Heikinkarin ja aallonmurtajan välillä, jota kiintojääkautena voidaan käyttää odotuspaikkana. Myös jäänmurtajat käyttävät aluetta käännös- ja odotuspaikkana. Kardinaalimerkintä. Haraussyvyys - 8,9 m, hiekka- ja kivipohja. Ankkurointialueen keskikohta on noin 200 m päässä väylän keskilinjasta.",
+      "sv": "Farleden har en ankringsplats mellan Heikinkari och vågbrytaren, som kan användas som en väntningsplats på fastisperioden. Isbrytarna använder också platsen till att vänta och vända. Kardinal utmärkning. Ramat djup -8,9 m, sand- och stenbotten. Mittpunkten av ankringsområdet ligger ungefär 200 m av farledens mittlinje.",
+      "en": "An area for anchoring is located between Heikinkari and the breakwater. During the fast ice period vessels can also use the area for waiting. Icebreakers use the area for waiting and turning. Cardinal marking. Safe clearance depth -8,9 m, seabed of sand and stone. The center of the anchorage area is approx. 200 m of the fairway's middle line."
+    }
+  ],
+  "navigationCondition": {
+    "fi": "Väylä on avomerta ja suojaton kaikilla merenpuolisilla tuulilla. Kova tuuli vaikuttaa aluksen ohjailuun koko väyläosuudella ja satamassa. Ulko-osalla Heikinkariin saakka voimakasta aallonmuodostusta. Väylän ulko-osalla reunamerkki Rm Jaakko saakka on usein voimakasta poikittaista virtausta erityisesti etelätuulilla. Ruopatulla väyläosuudella Länsipiekko reunamerkistä satamaan esiintyy pohjaimun vaikutusta.",
+    "sv": "Farleden går i öppen sjö och är oskyddad mot alla vindar. Hård vind påverkar navigeringen på hela farleden och i hamnen. Stark vågbildning i angöringen och ända fram till Heikinkari. I angöringen fram till Rm Jaakko kan förekomma kraftigt tvärgående ström speciellt vid sydliga vindar, squat-effekt förekommer i den muddrade delen av farleden från Rm Länsipiekko till hamnen.",
+    "en": "The fairway is open sea area and unsheltered against all winds. Strong wind affects the navigation on the entire fairway and in the harbour. Strong waves occur from the approach to Heikinkari. Strong transverse current may accrue between the approach and the edge mark Jaakko, especially in southern winds. Squat effect on the dredged part of the fairway, from the edge mark Länsipiekko to harbour."
+  },
+  "iceCondition": {
+    "fi": "Välillä ulko-osa - Heikinkari jää liikkuu lähes koko talven muodostaen jääahtaumia RM Jaakko:n ja RM Länsipiekko väliselle alueelle. Keväisin, syksyisin ja leutoina talvina jää liikkuu koko väyläalueella. Poijut ja viitat saattavat olla jään alla. Voimakkailla länsituulilla muodostuu paksu sohjojäävyöhyke Heikinkarin ja aallonmurtajan välille. Kiintojään paksuus on yleensä n. 10 - 80 cm. Satama on yleensä koko talven jäästä vapaa.",
+    "sv": "Isen är i rörelse mellan angöringen och Heikinkari nästan hela vintern och vallar bildas på området mellan Rm Jaakko och Rm Länsipiekko. Isen rör sig på hela farledsområdet på våren, hösten och under milda vintrar. Bojar och prickar kan då vara tryckta under isen. Starka västliga vindar skapar ett tjockt bälte av issörja i området mellan Heikinkari och vågbrytaren. Fastisen är oftast 10-80 cm tjock. Hamnen är normalt isfri hela vintern.",
+    "en": "Between the approach and Heikinkari the ice is in movement almost whole winter forming ice ridges on the area between edge marks Jaakko and Länsipiekko. Ice is mobile on the whole fairway in spring, fall and mild winters. Buoys and spar buoys may be pressed under ice (surface). A thick layer of sludge builds up in strong W winds between Heikinkari and the breakwater. Fast ice is usually approx. 10-80 cm thick. The port is normally ice-free the whole winter."
+  },
+  "windGauge": {
+    "fi": "Rannikkoasemat: Hailuoto Marjaniemi, Raahe Nahkiainen, Kalajoki Ulkokalla.",
+    "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Brahestad Nahkiainen, Kalajoki Ulkokalla.",
+    "en": "Marine weather observations: Raahe Nahkiainen, Hailuoto Marjaniemi, Kalajoki Ulkokalla."
+  },
+  "seaLevel": {
+    "fi": "Raahe mareografi.",
+    "sv": "Brahestad mareograf.",
+    "en": "Raahe mareograph."
+  },
+  "windRecommendation": {
+    "fi": "Kriittinen tuulen nopeus on mitoitusalukselle 15 m/s, suunta LU-KO; isommille aluksille avovesikautena 12 - 15 m/s, suunta LO-P; satama-alueella samat suositukset.",
+    "sv": "Kritisk vindhastighet för det dimensionerande fartyget är 15 m/s, riktning NV-NO; för större fartyg 12-15 m/s på öppet vatten, riktning SV-N. I hamnområdet sker samma rekommendationer.",
+    "en": "The critical wind speed for the design vessel is 15 m/s, direction NW-NE; for larger vessels the recommendation is 12-15 m/s, direction SW-N; same recommendations apply in the harbour area."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Obs. vintertid eller i dåligt väder bör platsen där lots möter överenskommas separat.",
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed."
+      },
+      "places": [
+        {
+          "id": 5,
+          "name": "Raahe",
+          "pilotJourney": 6,
+          "geometry": {
+            "type": "Point",
+            "coordinates": [24.205333, 64.646333]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS",
+          "en": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Aquila.",
+          "sv": "Aquila.",
+          "en": "Aquila."
+        },
+        "phoneNumber": [
+          "+358102190750"
+        ],
+        "email": "jani.hannula@yxpilahinaus.fi"
+      },
+      {
+        "name": {
+          "fi": "Charlie.",
+          "sv": "Charlie.",
+          "en": "Charlie."
+        },
+        "phoneNumber": [
+          "+358400588566"
+        ],
+        "email": "charlie@c-shipping.se"
+      },
+      {
+        "name": {
+          "fi": "SSAB Europe Oy.",
+          "sv": "SSAB Europe Ab.",
+          "en": "SSAB Europe Ltd."
+        },
+        "phoneNumber": [
+          "+358205923890"
+        ]
+      }
+
+    ]
+  },
+  "harbors": [
+    {
+      "id": "raahe"
+    },
+    {
+      "id": "ssab"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 322,
+      "primary": true
+    }
+  ]
+}
