@@ -459,13 +459,14 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             <Phonenumber title={t('fax')} showEmpty number={data.fax} />
             {data.places?.map((place) => {
               return (
-                <span
+                <IonLabel
                   key={place.id}
                   className="hoverText"
                   onMouseOver={() => highlightPilot(place.id)}
                   onFocus={() => highlightPilot(place.id)}
                   onMouseOut={() => highlightPilot(0)}
                   onBlur={() => highlightPilot(0)}
+                  tabIndex={0}
                 >
                   {place.geometry?.coordinates && (
                     <>
@@ -486,7 +487,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
                       )}
                     </>
                   )}
-                </span>
+                </IonLabel>
               );
             })}
             {data.extraInfo && (
