@@ -1,0 +1,87 @@
+{
+  "id": "kalajoki",
+  "name": {
+    "fi": "Kalajoen satama",
+    "sv": "Kalajoki hamn",
+    "en": "Port of Kalajoki"
+  },
+  "company": {
+    "fi": "Kalajoen Satama",
+    "sv": "Kalajoki Hamn",
+    "en": "Port of Kalajoki"
+  },
+  "phoneNumber": [
+    "+358400798698"
+  ],
+  "fax": "+3588465311",
+  "harborBasin": {
+    "fi": "Laiturin edustalla on kääntöympyrä noin 225 m silloin, kun laiturissa ei ole laivoja.",
+    "sv": "Framför kajen finns en svängplats med diametern ca 225 m, svängning förutsätter att inga fartyg ligger vid kaj.",
+    "en": "In front of quay is a turning circle with diameter of about 225 m, turning requires that no ships are at the quay."
+  },
+  "cargo": [
+    {
+      "fi": "Satamaoperaattorit: Blomberg Stevedoring ja Rahjan Huolinta.",
+      "sv": "Hamnoperatörerna Blomberg Stevedoring och Rahjan Huolinta.",
+      "en": "Blomberg Stevedoring and Rahjan Huolinta."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [23.708963261975708, 64.2229693221802]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Laituri 1",
+        "sv": "Kaj 1",
+        "en": "Quay 1"
+      },
+      "length": 154,
+      "sections": [
+        {
+          "depth": 6.3
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.71480098493697, 64.22150896682103]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 2",
+        "sv": "Kaj 2",
+        "en": "Quay 2"
+      },
+      "sections": [
+        {
+          "depth": 8.9
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.712138300967958, 64.22264782166384]
+      }
+    },
+    {
+      "name": {
+        "fi": "Laituri 3",
+        "sv": "Kaj 3",
+        "en": "Quay 3"
+      },
+      "sections": [
+        {
+          "depth": 8.9
+        },
+        {
+          "depth": 9.2
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [23.709875873778437, 64.2238349591467]
+      }
+    }
+  ]
+}
