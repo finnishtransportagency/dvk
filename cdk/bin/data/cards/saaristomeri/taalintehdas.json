@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart för skjutbogserare 14,0 knop och för fartyg med maximalt djupgående 8,0 knop.",
     "en": "Design speed for pusher barges 14.0 knots and for vessels with maximum draught 8.0 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylällä on ankkurointi ja kääntöalue sataman edustalla Ytre Sirkholmenin ja Högholmenin saarten välissä. Aluetta voidaan käyttää myös odotuspaikkana. Lateraalimerkintä. Haraussyvyys 9,0 m, alueen keskikohta on noin 90 m päässä väylän keskilinjasta.",
-      "sv": "Ankring och manöverutrymme i hamninloppet mellan öarna Yttre Sirkholmen och Högholmen. Området kan även användas som vänteplats. Lateralutmärkning. Ramat djup 9,0 m, områdets mittpunkt är ca 90 m från farledens mittlinje.",
-      "en": "Anchorage and turning area at the port entrance between the islands Yttre Sirkholmen and Högholmen. The area can also be used as a waiting area. Lateral marking. Safe clearance depth 9.0 m, the centre is about 90 m from the fairway centre line."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylällä on ankkurointi ja kääntöalue sataman edustalla Ytre Sirkholmenin ja Högholmenin saarten välissä. Aluetta voidaan käyttää myös odotuspaikkana. Lateraalimerkintä. Haraussyvyys 9,0 m, alueen keskikohta on noin 90 m päässä väylän keskilinjasta.",
+    "sv": "Ankring och manöverutrymme i hamninloppet mellan öarna Yttre Sirkholmen och Högholmen. Området kan även användas som vänteplats. Lateralutmärkning. Ramat djup 9,0 m, områdets mittpunkt är ca 90 m från farledens mittlinje.",
+    "en": "Anchorage and turning area at the port entrance between the islands Yttre Sirkholmen and Högholmen. The area can also be used as a waiting area. Lateral marking. Safe clearance depth 9.0 m, the centre is about 90 m from the fairway centre line."
+  },
   "navigationCondition": {
     "fi": "Väylä on kokonaisuudessaan mantereen, saarien ja karien hyvin suojaama. Väylän kapein kohta on Märaströmmenin kapeikossa, leveys 90 m. Maksimisyvyydessä kulkevien alusten on huomioitava mahdollinen imuvaikutus aluksen ohjailuun.",
     "sv": "Farleden är i sin helhet väl skyddad av fastland, holmar och skär. Farledens smalaste ställe är den trånga passagen vid Märaströmmen, bredd 90 m. Fartyg med maximalt djupgående ska vid manövreringen beakta den eventuella sugeffekten.",

@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart är 14 knop där farledens ramade djup är 11,5 m och 6 knop vid ramade djup på 10,2 m på Sjövikslinjen.",
     "en": "Vessel speed 14 knots in the channel with safe clearance depth of 11.5 and 6 knots in Sjövik channel with safe clearance depth of 10.2."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ankkurointialue sijaitsee Hästenin sektoriloiston kaakkoispuolella, haraussyvyys 15,5m. Väylä kulkee suoja-alueen läpi. Suoja-alueella ankkurointi karttoihin merkittyjen ankkurointipaikkojen ulkopuolelle on ilman lupaa kielletty. Väylä kulkee myös ampuma-alueen läpi. Ammunnoista saa tietoa puolustusvoimien ampumatiedotteista",
-      "sv": "Farledens ankringsområden är beläget sydost om Hästens sektorfyr, ramade djup 15,5 m. Farleden går genom ett skyddsområde. I skyddsområdet är ankring utanför de på kartor angivna ankringsplatserna förbjudet utan tillstånd. Farleden går även igen ett skjutområde. Information om skjutövningar finns i Försvarsmaktens meddelanden om skjutövningar.",
-      "en": "The anchorage area of the fairway is located SE of sector light Hästen, safe clearance depth 15.5 m. The fairway passes through a restricted area. In the restricted area, unauthorised anchoring outside the anchorage areas marked in the charts is prohibited. The fairway also passes through a firing area. More information on the firings can be found in the firings notices of the Finnish Defence Forces."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ankkurointialue sijaitsee Hästenin sektoriloiston kaakkoispuolella, haraussyvyys 15,5m. Väylä kulkee suoja-alueen läpi. Suoja-alueella ankkurointi karttoihin merkittyjen ankkurointipaikkojen ulkopuolelle on ilman lupaa kielletty. Väylä kulkee myös ampuma-alueen läpi. Ammunnoista saa tietoa puolustusvoimien ampumatiedotteista",
+    "sv": "Farledens ankringsområden är beläget sydost om Hästens sektorfyr, ramade djup 15,5 m. Farleden går genom ett skyddsområde. I skyddsområdet är ankring utanför de på kartor angivna ankringsplatserna förbjudet utan tillstånd. Farleden går även igen ett skjutområde. Information om skjutövningar finns i Försvarsmaktens meddelanden om skjutövningar.",
+    "en": "The anchorage area of the fairway is located SE of sector light Hästen, safe clearance depth 15.5 m. The fairway passes through a restricted area. In the restricted area, unauthorised anchoring outside the anchorage areas marked in the charts is prohibited. The fairway also passes through a firing area. More information on the firings can be found in the firings notices of the Finnish Defence Forces."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa luotsipaikalta Upinniemeen on suojaton etelänpuoleisilla tuulilla. Upinniemestä väylä jatkuu karien, saarien ja mantereen suojaamana Kantvikin satamaan.",
     "sv": "Den yttre delen av farleden från lotsplatsen till Obbnäs är oskyddad mot sydlig vind. Från Obbnäs fortsätter farleden till fastlandet under skydd från kobbar och holmar till Kantviks hamn.",

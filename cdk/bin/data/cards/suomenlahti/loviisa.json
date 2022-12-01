@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart 11 knop.",
     "en": "Design speed 11 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Varsinainen ankkurointialue sijaitsee Ratholmenin ja Lindholmenin saarten itäpuolisella selällä. Ankkuroida voi myös Tainion majakasta 4,5 km lounaaseen olevalla Orrengrud-Kotka väylän ankkurointialueella.",
-      "sv": "Det egentliga ankringsområdet är beläget på fjärden O om Ratholmen och Lindholmen. Ankringsmöjlighet finns även i Orrengrund-Kotkaledens ankringsområde, 4,5 m SV om fyren Tainio.",
-      "en": "Anchorage in the bay E of Ratholmen and Lindholmen. Anchoring possible also in the anchorage area of the Orrengrund-Kotka channel, 4.5 m SW of Tainio Lighthouse."
-    }
-  ],
+  "anchorage": {
+    "fi": "Varsinainen ankkurointialue sijaitsee Ratholmenin ja Lindholmenin saarten itäpuolisella selällä. Ankkuroida voi myös Tainion majakasta 4,5 km lounaaseen olevalla Orrengrud-Kotka väylän ankkurointialueella.",
+    "sv": "Det egentliga ankringsområdet är beläget på fjärden O om Ratholmen och Lindholmen. Ankringsmöjlighet finns även i Orrengrund-Kotkaledens ankringsområde, 4,5 m SV om fyren Tainio.",
+    "en": "Anchorage in the bay E of Ratholmen and Lindholmen. Anchoring possible also in the anchorage area of the Orrengrund-Kotka channel, 4.5 m SW of Tainio Lighthouse."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa on suojaton SE-S-SW tuulilla Lodgrundin tutkamerkille asti, josta väylä jatkuu saarien ja mantereen suojaamana Valkon satamaan. Hudön saaren itäpuolella on 120 m leveä kapeikko ja Trollholmenin saaren itäpuolella on 100 m leveä kapeikko. Ko. kapeikoissa saattaa esiintyä imuvaikutusta. Trollholmenin saaren itäpuoleisessa kapeikossa pieni varavesi (1,5 m) ja vesipoikkileikkausala voivat vaikuttaa väylän maksimikulkusyvyydessä kulkevien alusten ohjailtavuuteen. Erityisesti ylisuurten, vajaassa lastissa olevien alusten on otettava huomioon vallitsevat tuulensuunnat kapeikoissa ja tarpeen mukaan käytettävä hinaaja-avustusta. Väylän sisäosalla ja satamassa ei esiinny mainittavaa aallokkoa.",
     "sv": "Angöringen är oskyddad för SO-S-SV vindar ända till radarmärket Lodgrund. Därifrån är farleden skyddad av holmar och fastland ända till hamn. O om Hudö finns en 120 m bred passage och O om Trollholmen en 100 m bred passage, där risk för ökad sugeffekt kan förekomma. I passagen O om Trollholmen kan den ringa djupmarginalen (1,5 m) och tvärsektionen påverka navigerbarheten hos fartyg i max. djupgående. Särskilt överstora fartyg som är dellastade bör ta hänsyn till rådande vindriktningar i passagerna och anlita bogserbåtar vid behov. I inloppet och hamnen förekommer det ingen nämnvärd sjögång.",

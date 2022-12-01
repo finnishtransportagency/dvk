@@ -11,13 +11,11 @@
     "sv": "Tre linjer utmärkta med enstavlor.",
     "en": "Three lines marked with boards."
   },
-  "anchorage":[
-    {
-      "fi": "Tarvittaessa voi ankkuroida väylän ulko-osalle luotsipaikan läheisyyteen. Lisäksi satama-altaan luoteispuolella on vesisyvyyteen -11,2 m varmistettu alue, jota voidaan käyttää mm. odotuspaikkana.",
-      "sv": "Ankring utanför farleden i närheten av lotsplatsen. Därtill finns ett kontrollerat område med vattendjupet -11,2 m NV om hamnbassängen, som bl.a. kan användas som väntplats. ",
-      "en": "Anchorage outside the channel in the vicinity of the pilot boarding position. In addition there is a secured area with the water depth -11.2 m NW of the harbour basin which can be used e.g. as a waiting area."
-    }
-  ],
+  "anchorage": {
+    "fi": "Tarvittaessa voi ankkuroida väylän ulko-osalle luotsipaikan läheisyyteen. Lisäksi satama-altaan luoteispuolella on vesisyvyyteen -11,2 m varmistettu alue, jota voidaan käyttää mm. odotuspaikkana.",
+    "sv": "Ankring utanför farleden i närheten av lotsplatsen. Därtill finns ett kontrollerat område med vattendjupet -11,2 m NV om hamnbassängen, som bl.a. kan användas som väntplats. ",
+    "en": "Anchorage outside the channel in the vicinity of the pilot boarding position. In addition there is a secured area with the water depth -11.2 m NW of the harbour basin which can be used e.g. as a waiting area."
+  },
   "navigationCondition": {
     "fi": "Väylä on avomerta ja suojaton sataman edustalla oleviin aallonmurtajiin saakka, varsinkin S- W – NW tuulilla merenkäynti on voimakasta.",
     "sv": "Farleden består av öppet hav och är oskyddad ända till vågbrytarna vid hamninloppet. Särskilt vid hård S-V-NV vind är sjögången kraftig.",

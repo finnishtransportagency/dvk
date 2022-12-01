@@ -100,7 +100,7 @@ const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
 type FairwaysProps = {
   data?: Fairway[] | null;
   lineText?: Text | null;
-  anchorageTexts?: (Text | null)[] | null;
+  anchorageText?: Text | null;
   designSpeedText?: Text | null;
   isN2000HeightSystem?: boolean;
   inlineLabel?: boolean;
@@ -322,14 +322,14 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
     </>
   );
 };
-const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageTexts }) => {
+const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageText }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   const anchorageAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 2)) || [];
 
   return (
     <>
-      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyTextList={anchorageTexts} showNoData={anchorageAreas.length > 0} />
+      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyText={anchorageText || undefined} showNoData={anchorageAreas.length > 0} />
       <p>
         {anchorageAreas.map((area, i) => (
           <span key={i}>
@@ -854,8 +854,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <IonText>
                 <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
                 <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel />
-                <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} inlineLabel />
+                <Paragraph title={t('speedLimit')} bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
+                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} inlineLabel />
               </IonText>
 
               <IonText>
@@ -913,9 +913,9 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                 <GeneralInfo data={data?.fairwayCard?.fairways} />
                 <ProhibitionInfo data={data?.fairwayCard?.fairways} />
                 <h5>{t('speedLimit')}</h5>
-                <Paragraph bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
+                <Paragraph bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
                 <h5>{t('anchorage')}</h5>
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} />
+                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} />
                 <h5>{t('fairwayAreas')}</h5>
                 <AreaInfo data={data?.fairwayCard?.fairways} />
               </IonText>

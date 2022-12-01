@@ -26,13 +26,11 @@
     "sv": "Varierande isförhållanden i angöringen från Utö till Lohm: Ibland är den helt isfri, tidvis är isen rörlig och bojarna kan vara tryckta under ytan. I inloppet från Lohm till Lövskär bildas det vanligtvis 10-60 cm tjock fastis, som pga. den livliga trafiken för det mesta hålls lättframkomlig hela vintern.",
     "en": "In the approach, Utö-Lohm, the ice conditions vary: sometimes there is no formation of ice, at times there is moving ice and the buoys can be pressed beneath the surface. At the entrance, Lohm-Lövskär) there is normally 10 – 60 cm thick fast ice, which remains passable all winter due to the heavy traffic."
   },
-  "speedLimit": [
-    {
-      "fi": "Suurin sallittu nopeus Korppoon lautan läheisyydessä 16 km/h. Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeus painuma (mitoitusnopeus väylällä mitoitusalukselle haraussyvyydellä -12,0 m 13,5 solmua).",
-      "sv": "Den största tillåtna hastigheten i närheten av Korpo-färjan är 16 km/h. Fartyg i maximalt leddjupgående ska beakta squateffekten (dimensionerande fart i farleden 13,5 knop med ramat djup -12,0 m).",
-      "en": "The maximum permitted speed in the vicinity of the Korpo cable ferry is 16 km/h. Vessels with a draught equalling the maximum authorised draught are warned to beware of squat (design speed in the channel 13.5 knots with safe clearance depth -12.0 m)."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Suurin sallittu nopeus Korppoon lautan läheisyydessä 16 km/h. Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeus painuma (mitoitusnopeus väylällä mitoitusalukselle haraussyvyydellä -12,0 m 13,5 solmua).",
+    "sv": "Den största tillåtna hastigheten i närheten av Korpo-färjan är 16 km/h. Fartyg i maximalt leddjupgående ska beakta squateffekten (dimensionerande fart i farleden 13,5 knop med ramat djup -12,0 m).",
+    "en": "The maximum permitted speed in the vicinity of the Korpo cable ferry is 16 km/h. Vessels with a draught equalling the maximum authorised draught are warned to beware of squat (design speed in the channel 13.5 knots with safe clearance depth -12.0 m)."
+  },
   "windGauge": {
     "fi": "Utössä.",
     "sv": "På Utö.",

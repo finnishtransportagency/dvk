@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart på yttre delen av farleden 13 knop, på inredelen 11 knop, utanför hamn i den kanalliknande delen 8 knop.",
     "en": "Design speed in the outer part 13 knots, in the inner part 11 knots, in the channel outside the port 8 knots."
   },
-  "anchorage":[
-    {
+  "anchorage": {
       "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs= -14.3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella",
       "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd = -14,3 m, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari.",
       "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth -14,3 m, mud seabed) and west of Kotakari is a wider area on right."
-    }
-  ],
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa välillä Kemi 1 - Suurhiekka on avomerta; L -LO - LU tuulilla merenkäynti voi olla voimakasta. Kattilankallan sisäpuolella matalikot vaimentavat merenkäyntiä. Kattilankallasta väylä kulkee saariston ja karien osittain suojaamana Ouluun. Väylän loppuosa Kyrönkarin ankkurointipaikalta satamaan on noin 2,5 km matkalta ruopattua kaivantoa, jonka leveys on 116 m.",
     "sv": "Öppen sjö i angöringen mellan Kemi 1 - Suurhiekka, vid SV - V - NV vind, kraftig sjögång. Mellan Kattilankalla och hamnen skyddas farleden till stor del av skärgård. Den sista sträckan från Kyrönkari ankringsplats in till hamnen består av en ca 2,5 km lång muddrad farled som är 116 m bred.",
@@ -33,13 +31,11 @@
     "sv": "På förvintern är isen i rörelse i hela farledsområdet, vallar förekommer i regel ytter om Kattilankalla. Bojar och prickar kan då vara tryckta under isen ända fram till Kattilankalla. Området mellan hamnen och Kattilankalla är täckt med ca 50-80 cm tjock fastis från januari till april. Varmvattenutsläpp underlättar isförhållandena i Oritkari hamn.",
     "en": "In early winter there is drifting ice along the entire fairway. Outside Kemi 1 and Suuhiekka the ice is usually also ridged. May cause buoys and spar buoys to be pressed under ice (surface) all the way to Kattilankalla. From January to April there is 50–80 cm thick fast ice between port and Kattilankalla. Warm water effluents alleviate ice conditions in Oritkari harbour."
   },
-  "speedLimit": [
-    {
+  "speedLimit": {
       "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
       "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/h fartbegränsning.",
-      "en": "Between Löyhänmutka – Kotakari a speed limit 22 km/h."
-    }
-  ],
+      "en": "Between Löyhänmutka - Kotakari a speed limit 22 km/h."
+  },
   "windGauge": {
     "fi": "Rannikkoasemat, Hailuoto Marjaniemi, Oulu Vihreäsaari, Kemi 1 majakka.",
     "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Uleåborg Vihreäsaari, fyren Kemi 1.",

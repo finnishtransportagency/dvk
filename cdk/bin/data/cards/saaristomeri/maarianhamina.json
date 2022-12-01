@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart 13,0 knop.",
     "en": "Design speed 13.0 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla voi ankkuroida ja ohittaa Skogsön koillispuolella.",
-      "sv": "Ankring och omkörning i farledens yttre del NO om Skogsö.",
-      "en": "Anchoring and overtaking in the outer channel NE of Skogsö."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla voi ankkuroida ja ohittaa Skogsön koillispuolella.",
+    "sv": "Ankring och omkörning i farledens yttre del NO om Skogsö.",
+    "en": "Anchoring and overtaking in the outer channel NE of Skogsö."
+  },
   "navigationCondition": {
     "fi": "Väylä on ulko-osaltaan suojaton S-W tuulille. Korsön länsipuolelta väylä jatkuu saariston ja mantereen suojaamana Maarianhaminan satamaan.",
     "sv": "Farledens yttre del är oskyddad för S-V vindar. Farleden fortsätter V om Korsö i skydd av skärgården och fastland till Mariehamns hamn.",
@@ -33,13 +31,11 @@
     "sv": "Farleden är ofta öppen om vintrarna eller har endast av ett tunt istäcke.",
     "en": "The fairway is often open in the winter or there can be formation of thin ice."
   },
-  "speedLimit": [
-    {
-      "fi": "Korvikista alkaen 17 km/h. Koskee yli 24 metriä pitkiä aluksia. Aallonmuodostuskielto kaikilla aluksilla. Ns Stenkrossenista alkaen nopeusrajoitus on 17 km/h sekä aallonmuodostuskielto. Koskee kaikkia aluksia.",
-      "sv": "Från Korrvik 17 km/h, vilket gäller för farkoster över 24 m längd. Svallförbud för alla farkoster. Från den s.k. Stenkrossen 17 km/h och svallförbud för alla farkoster.",
-      "en": "In the inner harbour the speed limitation is 17 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Korvikista alkaen 17 km/h. Koskee yli 24 metriä pitkiä aluksia. Aallonmuodostuskielto kaikilla aluksilla. Ns Stenkrossenista alkaen nopeusrajoitus on 17 km/h sekä aallonmuodostuskielto. Koskee kaikkia aluksia.",
+    "sv": "Från Korrvik 17 km/h, vilket gäller för farkoster över 24 m längd. Svallförbud för alla farkoster. Från den s.k. Stenkrossen 17 km/h och svallförbud för alla farkoster.",
+    "en": "In the inner harbour the speed limitation is 17 km/h."
+  },
   "windGauge": {
     "fi": "Korsössä ja satama-alueella.",
     "sv": "På Korsö och en annan i hamnområdet.",

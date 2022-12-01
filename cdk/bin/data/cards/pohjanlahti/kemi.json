@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart i den yttre delen 12 knop från Kemi 1 till RM Hebe, stället där det ramade djupet ändras ända in i hamn 8 knop.",
     "en": "Design speed in the approach 12 knots, from Kemi 1 to RM Hebe, the position where the safe clearance depth alters 8 knots."
   },
-  "anchorage": [
-    {
-      "fi": "Väylän ulko-osalla on tilaa ankkuroida ja ohittaa Kemi 1 ja Kemi 3 välillä. Sisäosalla on ankkurointi- ja ohituspaikka Inakarin kohdalla väylän länsipuolella n. 2 km ennen satamaa, syvyys 14 - 16 m, hiekkapohja, kardinaalimerkintä, suojaton merituulilla.",
-      "sv": "I angöringen finns plats för ankring och passage mellan Kemi 1 och Kemi 3. I inloppet finns plats för ankring och passage vid Inakari, ca 2 km före hamn, djup 14 - 16 m, sandbotten, kardinalutmärkning, oskyddad vid havsvindar.",
-      "en": "There is an area for anchoring and overtaking in the approach, between Kemi 1 and Kemi 3. Another area for anchoring and overtaking is situated in the entrance at Inakari, on the W side of the channel, about 2 km before harbour, depth 14 - 16 m, sand seabed, cardinal marks, unsheltered from sea winds"
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla on tilaa ankkuroida ja ohittaa Kemi 1 ja Kemi 3 välillä. Sisäosalla on ankkurointi- ja ohituspaikka Inakarin kohdalla väylän länsipuolella n. 2 km ennen satamaa, syvyys 14 - 16 m, hiekkapohja, kardinaalimerkintä, suojaton merituulilla.",
+    "sv": "I angöringen finns plats för ankring och passage mellan Kemi 1 och Kemi 3. I inloppet finns plats för ankring och passage vid Inakari, ca 2 km före hamn, djup 14 - 16 m, sandbotten, kardinalutmärkning, oskyddad vid havsvindar.",
+    "en": "There is an area for anchoring and overtaking in the approach, between Kemi 1 and Kemi 3. Another area for anchoring and overtaking is situated in the entrance at Inakari, on the W side of the channel, about 2 km before harbour, depth 14 - 16 m, sand seabed, cardinal marks, unsheltered from sea winds"
+  },
   "navigationCondition": {
     "fi": "Väylä kapenee Heben jälkeen 200 metriin ja väylän loppuosa on ruopattua kaivantoa 1 mpk pituudelta, leveys 200 m. Kova tuuli ja merenkäynti voivat vaikeuttaa navigointia välillä Hebe – satama, merenkäynti pääsee satamaan asti.",
     "sv": "Farleden blir smalare efter Hebe till 200 m och den sista sjömilen består av en uppmuddrad 200 m bred farled. Hård vind och sjögång kan försvåra navigeringen mellan Hebe och hamnen; sjögång ända in i hamn.",

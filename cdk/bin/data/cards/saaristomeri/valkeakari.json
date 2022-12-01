@@ -11,13 +11,11 @@
     "sv": "Tre linjer, utmärkta med enstavlor.",
     "en": "Three lines marked with boards."
   },
-  "anchorage":[
-    {
-      "fi": "Luotsipaikan länsipuolella voi ankkuroida. Suokarin linjan jatkeella Pihluksen linjan itäpuolella on haraamalla varmistettu lisäalue.",
-      "sv": "Ankring V om lotsplatsen. Ett tilläggsområde har kontrollerats med ramning vid fortsättningen av Suokari-linjen O om Pihlus-linjen.",
-      "en": "Anchorage W of pilot boarding position. At the extension of the Suokari-line and E of the Pihlus-line a supplementary area has been secured by sweeping."
-    }
-  ],
+  "anchorage": {
+    "fi": "Luotsipaikan länsipuolella voi ankkuroida. Suokarin linjan jatkeella Pihluksen linjan itäpuolella on haraamalla varmistettu lisäalue.",
+    "sv": "Ankring V om lotsplatsen. Ett tilläggsområde har kontrollerats med ramning vid fortsättningen av Suokari-linjen O om Pihlus-linjen.",
+    "en": "Anchorage W of pilot boarding position. At the extension of the Suokari-line and E of the Pihlus-line a supplementary area has been secured by sweeping."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa on avomerta ja suojaton S-W-N tuulille. Pihluksesta väylä jatkuu karien ja saarien suojaamana harvalla reunamerkinnällä varustettuna Rauman satamaan. Väylän leveys on Suokarin linjalla kapeimmillaan 123 m, Pihluksen linjalla 120 m ja Valkeakarin linjalla 140 m. Väylä on suojaisempi kuin Rauman satamaan johtava 10,0 m väylä.",
     "sv": "Farledens yttre del består av öppet hav och är oskyddad för vind från S-V-N. Från Pihlus fortsätter farleden i skydd av skär och holmar med enstaka randmärken till Raumo hamn. Farledens minsta bredd är 123 m på Suokari-linjen, 120 m på Pihlus-linjen och 140 m på Valkeakari-linjen. En trång s-formad krök vid Valkeakari. Farleden är mera skyddad än 10,0 m-leden till Raumo hamn.",

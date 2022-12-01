@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart 6 knop mellan Koivuhauta och Veitsiluoto hamn.",
     "en": "Design speed 6 knots between Koivuhauta and port of Veitsiluoto."
   },
-  "anchorage":[
-    {
-      "fi": "Väylällä on levennys Fräkin kohdalla, jossa voi ankkuroida ja ohittaa. Koivuhaudan ankkurointipaikka sijaitsee väylän pohjoispuolella, halkaisija 350 m, hiekkapohja, sopii vain pienille aluksille. Molemmissa kardinaalimerkintä. Myös väylän ulko-osalla on tilaa ankkuroida ja ohittaa.",
-      "sv": "Farleden är breddad vid Fräki för ankring och passage. Ankringsplats vid Koivuhauta ligger N om farleden, diameter 350 m, sandbotten, passar endast för mindre fartygen. Båda har kardinalutmärkning. Också på farledens yttre del finns det utrymme för passage och ankring.",
-      "en": "The fairway has been broadened at Fräki for anchoring and passing. Another anchoring spot is located at Koivuhauta, in the northern part of the fairway, diameter 350 m and a seabed of sand. Only suitable for small vessels. Both anchoring spots have cardinal marking. Room for anchoring and passing can also be found at the approach."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylällä on levennys Fräkin kohdalla, jossa voi ankkuroida ja ohittaa. Koivuhaudan ankkurointipaikka sijaitsee väylän pohjoispuolella, halkaisija 350 m, hiekkapohja, sopii vain pienille aluksille. Molemmissa kardinaalimerkintä. Myös väylän ulko-osalla on tilaa ankkuroida ja ohittaa.",
+    "sv": "Farleden är breddad vid Fräki för ankring och passage. Ankringsplats vid Koivuhauta ligger N om farleden, diameter 350 m, sandbotten, passar endast för mindre fartygen. Båda har kardinalutmärkning. Också på farledens yttre del finns det utrymme för passage och ankring.",
+    "en": "The fairway has been broadened at Fräki for anchoring and passing. Another anchoring spot is located at Koivuhauta, in the northern part of the fairway, diameter 350 m and a seabed of sand. Only suitable for small vessels. Both anchoring spots have cardinal marking. Room for anchoring and passing can also be found at the approach."
+  },
   "navigationCondition": {
     "fi": "Ulko-osa avomerta ja suojaton Kraaselin Rm asti, jonka jälkeen suojana matalikot ja Ajoskrunnin saari. Pahimmat tuulen suunnat KA - E - L. Väylän sisäosan kapeus (80-110 m) ja mutkat vaikeuttavat aluksen ohjailua kovalla tuulella, jos aluksen ohjailuominaisuudet ovat tehottomia. Navigointi väylällä on vaativaa, nopeus sovitettava tilanteen mukaan, käännöksissä tarvittaessa käytettävä hinaajaa ohjailuapuna. Huomioitava sorto sekä jyrkät käännökset ja pohjaimun vaikutus aluksen ohjailuun.",
     "sv": "Yttre delen av farleden är öppen sjö och oskyddad fram till Kraaseli Rm, varefter grund och ön Ajoskrunni ger något skydd. De starkaste vindriktningar är SO-S-V. Inre delen är trång (80-100 m bred) och krokig vilket försvårar navigeringen i hård vind speciellt om fartygen har ineffektiva manöveregenskaper. Navigering på farleden är krävande, hastigheten bör anpassas efter omständigheterna, vid behov bör bogsering användas i svängarna för att underlätta navigeringen. Genom att leden är smal och svängarna tvära bör avdriften och squat-effekten uppmärksammas.",

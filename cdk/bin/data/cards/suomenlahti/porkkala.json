@@ -11,13 +11,11 @@
     "sv": "Farleden är utmärkt med enstavlor.",
     "en": "The fairway is marked by boards."
   },
-  "anchorage":[
-    {
-      "fi": "Ankkuroida voi Sommarön saaren lounaispuolella olevalle Inkoon 13,0 m väylän ankkurointialueelle. Kardinaalimerkintä.",
-      "sv": "Ankringsmöjlighet i sydväst om Sommarö i Ingås 13 m farleds ankringsområde. Kardinalutmärkning.",
-      "en": "Anchoring in the anchorage area of the Inkoo channel, SW of Sommarö. Cardinal marks."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi Sommarön saaren lounaispuolella olevalle Inkoon 13,0 m väylän ankkurointialueelle. Kardinaalimerkintä.",
+    "sv": "Ankringsmöjlighet i sydväst om Sommarö i Ingås 13 m farleds ankringsområde. Kardinalutmärkning.",
+    "en": "Anchoring in the anchorage area of the Inkoo channel, SW of Sommarö. Cardinal marks."
+  },
   "generalInfo": {
     "fi": "Väylä tarjoaa ulompaan avomerireittiin nähden tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman rannikon suuntaisen reitin Suomenlahden satamiin.",
     "sv": "Farleden är mer skyddad för vind än den yttre farleden och erbjuder under svåra isvintrar en mer lättforcerad rutt till hamnarna i Finska viken.",
@@ -33,13 +31,11 @@
     "sv": "Vid sydlig vind kan vallbildning tidvis förekomma i farleden.",
     "en": "Southerly winds may cause ridging in the fairway."
   },
-  "speedLimit": [
-    {
-      "fi": "Koiraluodon ja Harmajan välillä nopeusrajoitus kaikille kauppa-aluksille 30 km/h.",
-      "sv": "Fartbegränsningar 30 km/h för alla handelsfartyg mellan Koiraluoto och Gråhara.",
-      "en": "The speed limit for all merchant vessels is 30 km/h between Koiraluoto and Harmaja."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Koiraluodon ja Harmajan välillä nopeusrajoitus kaikille kauppa-aluksille 30 km/h.",
+    "sv": "Fartbegränsningar 30 km/h för alla handelsfartyg mellan Koiraluoto och Gråhara.",
+    "en": "The speed limit for all merchant vessels is 30 km/h between Koiraluoto and Harmaja."
+  },
   "windGauge": {
     "fi": "Harmajalla, Mäkiluodossa ja Bågaskärissä (Ilmatieteenlaitoksen tuulimittarit).",
     "sv": "Fartyg i maximalt leddjupgående och en fart över 11 knop skall beakta squateffekten vid grundet Äspskär.",

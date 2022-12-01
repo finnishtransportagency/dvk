@@ -16,13 +16,11 @@
     "sv": "Dimensionerande hastighet beräknad med sättning p.g.a. fart (squat) i farledens inre del 14 knop.",
     "en": "Design speed for squat in the inner section 14 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla on ankkurointialue Annabella reunamerkin koillispuolella, kardinaalimerkintä. Sisäosalla voi ankkuroida sataman edustalla Kissahaudassa (toimii myös sataman kääntöaltaana).",
-      "sv": "I den yttre delen av farleden finns en ankarplats nordost om randmärket Annabella. Kardinalutmärkning. I farledens inre del kan man ankra utanför hamnen i Kissahauta området (fungerar också som svängbassäng).",
-      "en": "Anchorage in the channel approach, NE of Annabella edge mark, cardinal marking. Anchorage in the inner section off the harbour in the Kissahauta area (which also serves as the harbour basin)."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla on ankkurointialue Annabella reunamerkin koillispuolella, kardinaalimerkintä. Sisäosalla voi ankkuroida sataman edustalla Kissahaudassa (toimii myös sataman kääntöaltaana).",
+    "sv": "I den yttre delen av farleden finns en ankarplats nordost om randmärket Annabella. Kardinalutmärkning. I farledens inre del kan man ankra utanför hamnen i Kissahauta området (fungerar också som svängbassäng).",
+    "en": "Anchorage in the channel approach, NE of Annabella edge mark, cardinal marking. Anchorage in the inner section off the harbour in the Kissahauta area (which also serves as the harbour basin)."
+  },
   "navigationCondition": {
     "fi": "Väylä on avomerta ja suojaton satamaan asti; varsinkin SW - N tuulilla merenkäynti on voimakasta. Varottava Porin majakan itä- ja eteläpuolella olevia matalia. Sataman edustalle on rakennettu väylän ruoppausmassoista nk. pohja-aallonmurtaja, jonka harjan syvyys vesipinnasta on n. 3 m.",
     "sv": "Farleden ligger i öppen sjö och är oskyddad ända fram till hamnen; i synnerhet vid vindar från SW - N kan sjögången vara kraftig. Varning för grunden öster och söder om Björneborgs fyr. Framför hamnen har byggts en s.k. bottenvågbrytare av muddermassa; vågbrytarens rygg höjer sig till ca 3 m under vattenytan.",

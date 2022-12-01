@@ -16,13 +16,11 @@
     "sv": "Dimensionerande fart 12,0 knop (Rd = 11,8 m).",
     "en": "Design speed 12.0 knots (Sc= -11.8 m)."
   },
-  "anchorage":[
-    {
+  "anchorage": {
       "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs=-14,3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella.",
       "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd= -14,3, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari.",
       "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth sc=-14.3 m, mud seabed) and west of Kotakari, is a wider area on right."
-    }
-  ],
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa Oulun portilta Kattilankallaan on avomerta; SW - NW tuulilla merenkäynti on voimakasta. Oulu 3 lähtien matalikot vaimentavat merenkäyntiä. Kattilankallasta väylä jatkuu harvan saariston ja karien osittain suojaamana Ouluun. Oulu 5 ja Hammasmatalan välillä on 1,4 km pitkä ja 170 m leveä kapeikko. Väylän loppuosa Kyrönkarin ankkurointipaikalta satamaan n. 2,5 km matkalta on ruopattua kaivantoa, leveys 116 m.",
     "sv": "Öppen sjö i angöringen mellan Oulun portti och Kattilankalla, vid SV - NV vind kraftig sjögång. Efter Oulu 3 dämpas sjögången av grund. Mellan Kattilankalla och hamnen skyddas farleden i viss mån av kobbar och skär. Mellan Oulu 5 och Hammasmatala finns en 1,4 km lång och 170 m bred passage. Den sista sträckan från Kyrönkari ankringsplats in till hamn består av en ca 2,5 km lång muddrad farled som är 116 m bred.",
@@ -33,13 +31,11 @@
     "sv": "På förvintern är isen i rörelse i hela farledsområdet, vallar förekommer i regel ytter om Oulu 3. Bojar och prickar kan då vara tryckta under isen ända fram till Kattilankalla. Anm. Området mellan hamnen och Oulu 3 är täckt med ca 50-80 cm tjock fastis från januari till april. Varmvattenutsläpp underlättar isförhållandena i Oritkari hamn. Isförhålladena gör att även farledslinjen för Brahestad-Uleåborg-Kemi, V om Karlö, S om Merikallat används för vintertrafik.",
     "en": "In early winter there is drifting ice along the entire fairway; outside Oulu 3 the ice is usually also ridged. May cause buoys and spar buoys to be pressed under ice (surface) all the way to Kattilankalla. From January to April there is 50–80 cm thick fast ice between port and Oulu 3. Warm water effluents alleviate ice conditions in Oritkari harbour. If ice conditions require, the alignment W of Hailuoto and S of Merikallat can be used for winter navigation."
   },
-  "speedLimit": [
-    {
-      "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
-      "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/n fartbegränsning.",
-      "en": "Between Löyhänmutka - Kotakari a speed limit 22 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
+    "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/n fartbegränsning.",
+    "en": "Between Löyhänmutka - Kotakari a speed limit 22 km/h."
+  },
   "windGauge": {
     "fi": "Rannikkoasemat, Hailuoto Marjaniemi, Oulu Vihreäsaari, Kemi 1 majakka.",
     "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Uleåborg Vihreäsaari, fyren Kemi 1.",

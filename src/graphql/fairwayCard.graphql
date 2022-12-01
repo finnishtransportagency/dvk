@@ -58,6 +58,7 @@ query findFairwayCardById($id: String!) {
       sv
       en
     }
+    n2000HeightSystem
     group
     modificationTimestamp
     fairways {
