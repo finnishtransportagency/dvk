@@ -5,6 +5,7 @@
     "sv": "Kasköleden",
     "en": "Kaskinen channel"
   },
+  "n2000HeightSystem": false,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4, jotka merkitty linjatauluin.",

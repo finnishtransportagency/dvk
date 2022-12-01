@@ -5,6 +5,7 @@
     "sv": "Farleden Förby",
     "en": "Fläckgrund-Förby channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 7 kpl jotka merkitty sektoriloistoin ja linjatauluin.",

@@ -5,6 +5,7 @@
     "sv": "Jakobstad farled",
     "en": "Pietarsaari fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Väylällä on kolme linjaa, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",

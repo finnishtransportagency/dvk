@@ -743,8 +743,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     },
   });
 
-  const primaryFairway = data?.fairwayCard?.fairways.find((fairway) => fairway.primary);
-  const isN2000HeightSystem = typeof primaryFairway?.navigationLines?.find((line) => line.n2000ReferenceLevel === 'N2000') == 'object';
+  const isN2000HeightSystem = !!data?.fairwayCard?.n2000HeightSystem;
 
   useSetSelectedFairwayCard(data);
 

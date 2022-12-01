@@ -5,6 +5,7 @@
     "sv": "Farleden Orrengrund-Kotka",
     "en": "Orrengrund-Kotka channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 5 kpl, jotka on merkitty linjatauluin tai sektoriloistoin.",

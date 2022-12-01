@@ -5,6 +5,7 @@
     "sv": "Karleby farled",
     "en": ""
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja 5 kpl, merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",

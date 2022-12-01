@@ -5,6 +5,7 @@
     "sv": "Ingåleden",
     "en": "Inkoo fairway"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 6 kpl, merkitty linjatauluin.",

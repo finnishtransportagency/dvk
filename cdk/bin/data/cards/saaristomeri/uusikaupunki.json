@@ -5,6 +5,7 @@
     "sv": "[sv] Uudenkaupungin väylä",
     "en": "Uusikaupunki channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja on 12 kpl, linjat on merkitty linjatauluin ja sektoriloistoin",

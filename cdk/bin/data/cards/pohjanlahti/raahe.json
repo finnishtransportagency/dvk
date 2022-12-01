@@ -5,6 +5,7 @@
     "sv": "Brahestad farled",
     "en": "Raahe fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4, merkintä perustuu majakan, linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",

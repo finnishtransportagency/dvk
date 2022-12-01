@@ -5,6 +5,7 @@
     "sv": "Farleden Utö-Lövskar",
     "en": "Utö-Lövskär channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 14 kpl. Merkitty linjatauluin ja loistoin.",

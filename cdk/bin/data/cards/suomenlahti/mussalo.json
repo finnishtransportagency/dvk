@@ -5,6 +5,7 @@
     "sv": "Mussalöleden",
     "en": "Mussalo channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 4 kpl, merkitty linjatauluin, suunta- ja sektoriloistoin.",

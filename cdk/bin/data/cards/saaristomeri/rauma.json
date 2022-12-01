@@ -5,6 +5,7 @@
     "sv": "Raumo farled",
     "en": "Rauma channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja on 4.",

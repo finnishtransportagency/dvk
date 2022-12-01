@@ -5,6 +5,7 @@
     "sv": "Kristinedstadsleden",
     "en": "Kristiinankaupunki channel"
   },
+  "n2000HeightSystem": false,
   "group": "3",
   "lineText": {
     "fi": "Väylä-linjoja on kaksi, jotka on merkitty linjatauluin.",

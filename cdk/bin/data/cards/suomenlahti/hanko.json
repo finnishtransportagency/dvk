@@ -5,6 +5,7 @@
     "sv": "Hangö havsfarled",
     "en": "Hanko channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 2 kpl, merkitty linjatauluin.",

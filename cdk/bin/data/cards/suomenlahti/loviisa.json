@@ -5,6 +5,7 @@
     "sv": "Loviisaleden",
     "en": "Loviisa channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 7 kpl, merkitty linjatauluin ja sektoriloistoin.",

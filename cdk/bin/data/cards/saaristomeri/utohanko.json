@@ -5,6 +5,7 @@
     "sv": "Farleden Utö-Hangö",
     "en": "Utö-Hanko channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Merkitty linjatauluin.",

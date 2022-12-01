@@ -5,6 +5,7 @@
     "sv": "Farleden Hangö-Tvärminne",
     "en": "Hanko-Tvärminne channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 3 kpl jotka merkitty linjatauluin.",

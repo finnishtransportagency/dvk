@@ -5,6 +5,7 @@
     "sv": "Veitsiluoto farled",
     "en": "Veitsiluoto fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja 6, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",

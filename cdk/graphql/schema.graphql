@@ -11,7 +11,7 @@ type Query {
 type FairwayCard {
   id: ID!
   name: Text!
-  n2000HeightSystem: Boolean
+  n2000HeightSystem: Boolean!
   group: String
   modificationTimestamp: Int
   fairwayIds: String

@@ -5,6 +5,7 @@
     "sv": "Hepokarileden i Nystad",
     "en": "Uusikaupunki Hepokari channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 3, joista kaksi ulointa merkitty linjatauluin.",

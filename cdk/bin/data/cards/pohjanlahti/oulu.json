@@ -5,6 +5,7 @@
     "sv": "Uleåborg farled",
     "en": "Oulu fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 13 kpl, ja väylän merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",

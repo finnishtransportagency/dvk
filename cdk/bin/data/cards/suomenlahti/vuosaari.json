@@ -5,6 +5,7 @@
     "sv": "Nordsjöleden",
     "en": "Vuosaari channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 3, merkitty linjatauluin.",

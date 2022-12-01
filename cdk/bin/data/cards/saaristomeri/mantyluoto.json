@@ -5,6 +5,7 @@
     "sv": "Farleden till Björneborg, Mäntyluoto",
     "en": "Pori, Mäntyluoto channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjatauluin merkittyjä linjoja 3 kpl.",

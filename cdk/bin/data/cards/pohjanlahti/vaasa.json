@@ -5,6 +5,7 @@
     "sv": "Vasa farled",
     "en": "Vaasa fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "9/8 linjaa, jotka merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",

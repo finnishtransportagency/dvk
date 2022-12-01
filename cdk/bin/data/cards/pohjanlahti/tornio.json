@@ -5,6 +5,7 @@
     "sv": "Torneå Röyttä farled",
     "en": "Tornio Röyttä fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4 kpl, merkitty linjatauluin.",

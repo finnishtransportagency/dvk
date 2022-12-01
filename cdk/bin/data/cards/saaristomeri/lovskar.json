@@ -5,6 +5,7 @@
     "sv": "Farleden Lövskär-Enskär",
     "en": "Lövskär-Isokari channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 22 kpl, jotka merkitty linjatauluin ja loistoin.",

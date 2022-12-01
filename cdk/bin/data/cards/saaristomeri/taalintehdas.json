@@ -5,6 +5,7 @@
     "sv": "Dalsbruksleden",
     "en": "Dalsbruk channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 6 kpl jotka merkitty linjatauluin.",

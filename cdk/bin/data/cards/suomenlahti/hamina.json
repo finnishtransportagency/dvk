@@ -5,6 +5,7 @@
     "sv": "Fredrikshamnsleden",
     "en": "Haminan channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 12 kpl. Linjat ovat väylän ulkopäätä, ns. Saukon oikaisua sekä suurinta osaa satamasta lukuun ottamatta, merkitty linjatauluin ja -loistoin.",

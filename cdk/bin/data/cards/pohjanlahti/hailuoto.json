@@ -5,6 +5,7 @@
     "sv": "Karlö Angöring - Oulu 1",
     "en": "Hailuoto approach - Oulu 1"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 10 kpl, joista kaksi uloimmaista merkitty sektoriloistoilla ja muut linjatauluilla.",

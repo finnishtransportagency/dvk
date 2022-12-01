@@ -5,6 +5,7 @@
     "sv": "Valkeakarileden till Raumo",
     "en": "Rauma, Valkeakari channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 3 kpl, jotka merkitty linjatauluin.",

@@ -5,6 +5,7 @@
     "sv": "Uleåborg-Kemi farled",
     "en": "Oulu-Kemi fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Väylällä on linjoja 12 kpl, jotka on merkitty sektoriloistoin tai linjatauluin.",

@@ -5,6 +5,7 @@
     "sv": "Mariehamnleden",
     "en": "Mariehamn channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 7 kpl.",
