@@ -1,0 +1,51 @@
+{
+  "id": "munsala",
+  "name": {
+    "fi": "Kanäsin öljysatama",
+    "sv": "Kanäs oljehamn",
+    "en": "Kanäs oil harbour"
+  },
+  "company": {
+    "fi": "Uudenkaarlepyyn kaupunki, Kanäsin öljysatama",
+    "sv": "Kanäs oljehamn",
+    "en": "Kanäsin öljysatama"
+  },
+  "phoneNumber": [
+    "+35867645261"
+  ],
+  "email": "johan.osterbacka@nykarleby.fi",
+  "harborBasin": {
+    "fi": "Kääntöympyrän halkaisija n. 450 m.",
+    "sv": "Svängcirkelns diameter ca 450 m.",
+    "en": "Diameter of turning circle 450 m."
+  },
+  "cargo": [
+    {
+      "fi": "Nosturi 5t/m.",
+      "sv": "Lyftkran 5t /m.",
+      "en": "Crane 5t/m."
+    }
+  ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [22.29733193586342, 63.392623035765965]
+  },
+  "quays": [
+    {
+      "name": {
+        "fi": "Öljylaituri",
+        "sv": "Oljekaj",
+        "en": "Oil terminal"
+      },
+      "sections": [
+        {
+          "depth": 7.8
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [22.295659146421972, 63.391886037219415]
+      }
+    }
+  ]
+}
