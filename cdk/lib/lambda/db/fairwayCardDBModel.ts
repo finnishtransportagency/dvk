@@ -48,7 +48,7 @@ export type Pilot = {
   fax?: string;
   internet?: string;
   extraInfo?: Text;
-  places: PilotPlace[];
+  places?: PilotPlace[];
 };
 
 export type PilotPlace = {

@@ -100,7 +100,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
     const pilot = card.trafficService?.pilot;
-    if (pilot) {
+    if (pilot && pilot.places) {
       for (const place of pilot.places) {
         if (!placeMap.has(place.id)) {
           placeMap.set(place.id, place);
