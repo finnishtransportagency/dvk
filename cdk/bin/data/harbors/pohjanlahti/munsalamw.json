@@ -26,10 +26,6 @@
       "en": "Crane 5t/m."
     }
   ],
-  "geometry": {
-    "type": "Point",
-    "coordinates": [22.29733193586342, 63.392623035765965]
-  },
   "quays": [
     {
       "name": {
@@ -41,11 +37,7 @@
         {
           "depth": 8
         }
-      ],
-      "geometry": {
-        "type": "Point",
-        "coordinates": [22.295659146421972, 63.391886037219415]
-      }
+      ]
     }
   ]
 }
