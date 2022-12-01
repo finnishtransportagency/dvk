@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { IonCol, IonContent, IonGrid, IonInput, IonPage, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../theme/img/menu.svg';
@@ -99,6 +99,20 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
       dvkMap?.setTarget(mapElement.current);
     }
   });
+
+  useLayoutEffect(() => {
+    /* Split panel uses css transition (currently 150ms), so map update size  must be delayed also.
+       Use 1000ms delay also to make sure map is eventually resized.
+       NOTE: This code may become unnecessary when next version of OpenLayers is released
+       see: https://github.com/openlayers/openlayers/pull/14305
+    */
+    setTimeout(() => {
+      dvkMap.olMap?.updateSize();
+    }, 300);
+    setTimeout(() => {
+      dvkMap.olMap?.updateSize();
+    }, 1000);
+  }, [widePane]);
 
   return (
     <IonPage id="mainContent" data-testid={fairwayId ? 'fairwayCard' : 'fairwayList'}>
