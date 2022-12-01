@@ -188,7 +188,9 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
   const sweptDepthValues = [
     ...Array.from(
       new Set(
-        data?.flatMap((fairway) => fairway.areas?.map((area) => (area.n2000depth || area.depth)?.toLocaleString())).filter((val) => val !== undefined)
+        data
+          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000depth : area.depth)?.toLocaleString()))
+          .filter((val) => val !== undefined)
       )
     ),
   ];
@@ -373,7 +375,7 @@ const GeneralInfo: React.FC<FairwaysProps> = ({ data }) => {
   );
 };
 
-const AreaInfo: React.FC<FairwaysProps> = ({ data }) => {
+const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   const fairwayAreas = data?.flatMap((fairway) => fairway.areas) || [];
@@ -406,8 +408,8 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data }) => {
               m
             </span>
             <br />
-            {t('sweptDepth', { count: 1 })}: {(area?.n2000depth || area?.depth)?.toLocaleString() || '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(area?.n2000depth || area?.depth) })} role="definition">
+            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() || '-'}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })} role="definition">
               m
             </span>
             {sizingSpeeds.length > 0 && (
@@ -916,7 +918,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                 <h5>{t('anchorage')}</h5>
                 <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} />
                 <h5>{t('fairwayAreas')}</h5>
-                <AreaInfo data={data?.fairwayCard?.fairways} />
+                <AreaInfo data={data?.fairwayCard?.fairways} isN2000HeightSystem />
               </IonText>
             </div>
           )}

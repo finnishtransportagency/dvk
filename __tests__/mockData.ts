@@ -34,6 +34,7 @@ export const mockFairwayList = {
 export const mockFairwayCard = {
   fairwayCard: {
     name: { fi: 'Vuosaaren väylä', sv: 'Nordsjöleden', en: 'Vuosaari channel', __typename: 'Text' },
+    n2000HeightSystem: false,
     group: '2',
     modificationTimestamp: 1668180623,
     fairways: [

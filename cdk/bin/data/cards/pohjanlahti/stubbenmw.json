@@ -1,0 +1,101 @@
+{
+  "id": "stubbenmunsalamw",
+  "name": {
+    "fi": "Stubben-Munsala väylä MW",
+    "sv": "Stubben-Munsala farled MW",
+    "en": "Stubben-Munsala fairway MW"
+  },
+  "n2000HeightSystem": false,
+  "group": "3",
+  "lineText": {
+    "fi": "Linjoja on 7, jotka on merkitty linjatauluin.",
+    "sv": "Sju linjer utmärkta med enstavlor.",
+    "en": "Seven lines marked with spar boys."
+  },
+  "designSpeed": {
+    "fi": "Mitoitusnopeus ulko-osalla 10 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 10 knop.",
+    "en": "Design speed in the outer fairway 10 knots."
+  },
+  "navigationCondition": {
+    "fi": "Väylä on suojaamaton Stubbenin majakalta Jöusaniin asti, kovilla L-P tuulilla merenkäynti on voimakasta.",
+    "sv": "Farleden går oskyddad från Stubben fyr ända fram till Jöusan. I synnerhet vid hård V-N vind är sjögången kraftig.",
+    "en": "The fairway is unsheltered from Stubben lighthouse to Jöusan, W-N winds create heavy seas."
+  },
+  "iceCondition": {
+    "fi": "Alkutalvella jääkentät liikkuvat Jöusan L-puolella, viitat saattavat olla jään alla. Kylminä talvina kiintojään alue ulottuu kauas avomerelle.",
+    "sv": "På förvintertid är isfälten i rörelse ytter om Jöusan. Prickarna kan då vara tryckta under isen. Under kalla vintrar sträcker sig den fasta isen långt ut till havs.",
+    "en": "In early winter, ice fields are in motion in the area W of Jöusan. Ice movement may cause spar buoys to be pressed under ice (surface). In cold winters, the fast ice edge extends far out to sea."
+  },
+  "windGauge": {
+    "fi": "Rannikkoasemat, Pietarsaari Kallan.",
+    "sv": "Vädret vid kuststationerna, Jakobstad Kallan.",
+    "en": "Marine weather observations, Pietarsaari Kallan."
+  },
+  "seaLevel": {
+    "fi": "Merivedenkorkeus: Pietarsaari Leppäluoto mareograf.",
+    "sv": "Jakobstad mareograf.",
+    "en": "Pietarsaari Leppäluoto mareograph."
+  },
+  "windRecommendation": {
+    "fi": "Aluskohtainen, yli 10 m/s tuulen nopeus vaikeuttaa navigointia.",
+    "sv": "Rekommendationerna fartygsspecifika, vindhastigheter som överstiger 10 m/s försvårar navigeringen.",
+    "en": "Ship-specific recommendations; wind speeds exceeding 10 m/s make navigation more difficult."
+  },
+  "trafficService": {
+    "pilot": {
+      "email": "pilotorder.west@finnpilot.fi",
+      "phoneNumber": "+358400907979",
+      "fax": "+358295253012",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat.",
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions."
+      },
+      "places": [
+        {
+          "id": 8,
+          "name": "Pietarsaari",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [22.474833, 63.741833]
+          }
+        }
+      ]
+    },
+    "vts": [
+      {
+        "name": {
+          "fi": "Väylä ei ole VTS-sektorissa. Bothnia VTS.",
+          "sv": "Farleden övervakas inte av VTS. Bothnia VTS.",
+          "en": "The fairway is not in VTS-sector. Bothnia VTS."
+        },
+        "phoneNumber": "+358204487356",
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "tugs": [
+      {
+        "name": {
+          "fi": "Yksityiset hinaajat, tilataan meklarin toimesta.",
+          "sv": "Privata bogserare, beställs av mäklaren.",
+          "en": "Privately operated tugboats, commissioned by the ship's agent."
+        }
+      }
+    ]
+  },
+  "harbors": [
+    {
+      "id": "munsalamw"
+    }
+  ],
+  "fairways": [
+    {
+      "id": 565,
+      "primary": true
+    }
+  ]
+}
