@@ -5,19 +5,18 @@
     "sv": "Farleden till Västra hamnen i Helsingfors",
     "en": "Helsinki West Harbour channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 6, joista 4 on merkitty linjatauluin tai sektori- ja suuntaloistoin.",
     "sv": "Sex linjer varav fyra är utmärkta med enstavlor och sektor- och riktfyrar.",
     "en": "There are 6 lines, 4 of which are marked by boards, sector lights and direction lights."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ankkurointialue sijaitsee Helsingin majakan pohjoispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Melkin itäpuolella sijaitsee väylänosaa matalampi levitysalue, jonka haraussyvyys on 10,2 m.",
-      "sv": "Farledens ankringsområde ligger norr om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Öster om Melkö finns ett breddat område som är grundare än farledsavsnittet i övrigt. Det ramade djupet (Rd) på det breddade området är 10,2 m.",
-      "en": "The anchorage area of the channel is situated north of Helsinki Lighthouse. Anchoring is permitted only according to pilot or VTS instructions. There is a widened fairway area where the safe clearance depth is less than in the rest of the channel. The safe clearance depth (Sc) in the widened fairway area is 10.2 m."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ankkurointialue sijaitsee Helsingin majakan pohjoispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Melkin itäpuolella sijaitsee väylänosaa matalampi levitysalue, jonka haraussyvyys on 10,2 m.",
+    "sv": "Farledens ankringsområde ligger norr om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Öster om Melkö finns ett breddat område som är grundare än farledsavsnittet i övrigt. Det ramade djupet (Rd) på det breddade området är 10,2 m.",
+    "en": "The anchorage area of the channel is situated north of Helsinki Lighthouse. Anchoring is permitted only according to pilot or VTS instructions. There is a widened fairway area where the safe clearance depth is less than in the rest of the channel. The safe clearance depth (Sc) in the widened fairway area is 10.2 m."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Katajaluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
     "sv": "Farledens yttre del är öppen sjö och oskyddad för vindar från O-S-V. Från Stora Enskär löper farleden i skydd av holmar och skär.",
@@ -28,13 +27,11 @@
     "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning mellan Hramtsow och Gråskärsbådan.",
     "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasionally ice ridges between Hramtsow and Gråskärsbådan."
   },
-  "speedLimit": [
-    {
-      "fi": "Leveyspiiriltä 60°06' P (Koirasaaren kohdalta) pohjoiseen nopeusrajoitus kaikille kauppa-aluksille 30 km/h. Hernesaaren länsipuolella satama-altaassa nopeusrajoitus 10 km/h.",
-      "sv": "Från latitud 60°06'N (Koirasaari) mot norr 30 km/h för alla handelsfartyg. Den västra sidan av Ärtholmen i hamnen 10 km/h.",
-      "en": "North of latitude 60°06'N (Koirasaari), the speed limit for all merchant vessels is 30 km/h. West of Hernesaari in the harbour area, the speed limit is 10 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Leveyspiiriltä 60°06' P (Koirasaaren kohdalta) pohjoiseen nopeusrajoitus kaikille kauppa-aluksille 30 km/h. Hernesaaren länsipuolella satama-altaassa nopeusrajoitus 10 km/h.",
+    "sv": "Från latitud 60°06'N (Koirasaari) mot norr 30 km/h för alla handelsfartyg. Den västra sidan av Ärtholmen i hamnen 10 km/h.",
+    "en": "North of latitude 60°06'N (Koirasaari), the speed limit for all merchant vessels is 30 km/h. West of Hernesaari in the harbour area, the speed limit is 10 km/h."
+  },
   "visibility": {
     "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä tulisi olla vähintään 1,0 mpk.",
     "sv": "Alla fartyg bör ha en sikt på minst 300 m. Därtill bör ett fartyg som är över 200 m långt ha en sikt på minst 1,0 nm.",

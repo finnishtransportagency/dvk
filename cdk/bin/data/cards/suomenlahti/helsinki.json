@@ -5,6 +5,7 @@
     "sv": "Helsingforsleden",
     "en": "Helsinki channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 2 kpl, merkitty linjatauluin.",
@@ -16,18 +17,11 @@
     "sv": "Dimensionerande fart för squat är 19 knop i farleden och 13,5 knop i Gustavssvärds sund",
     "en": "Design speed for squat is 19 knots in the channel and 13.5 knots in Kustaanmiekka strait."
   },
-  "anchorage":[
-    {
-      "fi": "Ankkuroida voi sataman edustalla olevalle Kruunuvuorenselälle.",
-      "sv": "Fartyg kan ankra vid hamninloppet i Kronobergsfjärden.",
-      "en": "Anchoring is possible at the harbour entrance in Kruunuvuorenselkä."
-    },
-    {
-      "fi": "Kustaanmiekassa latitudien 60º 08,1´ N 60º 08,6´ N välillä on pysyvä kohtaamis- ja ohittamiskieltoalue.",
-      "sv": "I Gustavssvärd råder ett permanent förbud att möta och passera mellan latituderna 60º 08,1´N och 60º 08,6´N.",
-      "en": "There is a permanent prohibition against meeting and overtaking in the Kustaanmiekka strait between the latitudes 60º 08.1´N and 60º 08.6´N."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi sataman edustalla olevalle Kruunuvuorenselälle.",
+    "sv": "Fartyg kan ankra vid hamninloppet i Kronobergsfjärden.",
+    "en": "Anchoring is possible at the harbour entrance in Kruunuvuorenselkä."
+  },
   "navigationCondition": {
     "fi": "Väylällä on kriittinen kapeikko Kustaanmiekan salmessa, jossa reunaimun vaikutus suurimmille aluksille voi olla erittäin voimakas.",
     "sv": "Gustavssvärds sund är ett kritiskt trångt ställe i farleden. Bankeffekten kan vara mycket kraftig för större fartyg.",
@@ -38,13 +32,11 @@
     "sv": "Isproblem förekommer i allmänhet bara i hamnbassängerna, där issörja kan försvåra manövreringen av fartygen. Mellan Hramtsow och Gråskärsbådan förekommer tidvis packis.",
     "en": "Ice usually only causes problems in the harbour basins where ice slush may make ship-handling difficult. Occasionally packed ice between Hramtsow and Gråskärsbådan."
   },
-  "speedLimit": [
-    {
-      "fi": "Leveyspiiriltä 60° 08' N pohjoiseen nopeusrajoitus kaikille aluksille 30 km/h. Leveyspiirien 60° 06' N ja 60° 08' N välillä nopeusrajoitus 30 km/h kaikille aluksille paitsi huvialuksille ja virka- tai pelastustehtävissä oleville aluksille. Lisäksi Katajanokan edustalla nopeusrajoitus 10 km/h",
-      "sv": "Från breddgraden 60° 08' N mot norr är farten begränsad till 30 km/h för alla fartyg. Mellan breddgraderna 60° 06' N och 60° 08' N gäller en fartbegränsning på 30 km/h för alla fartyg utom fritidsbåtar och fartyg med tjänste- eller räddningsuppdrag. Utanför Skatudden gäller dessutom en fartbegränsning på 10 km/h.",
-      "en": "North of latitude 60° 08' N the speed limit for all vessels is 30 km/h. Between latitudes 60°06'N and 60° 08' N the speed limit is 30 km/h for all vessels except for leisure craft and vessels performing official duties or rescue operations. In addition, the speed limit off Katajanokka is 10 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Leveyspiiriltä 60° 08' N pohjoiseen nopeusrajoitus kaikille aluksille 30 km/h. Leveyspiirien 60° 06' N ja 60° 08' N välillä nopeusrajoitus 30 km/h kaikille aluksille paitsi huvialuksille ja virka- tai pelastustehtävissä oleville aluksille. Lisäksi Katajanokan edustalla nopeusrajoitus 10 km/h",
+    "sv": "Från breddgraden 60° 08' N mot norr är farten begränsad till 30 km/h för alla fartyg. Mellan breddgraderna 60° 06' N och 60° 08' N gäller en fartbegränsning på 30 km/h för alla fartyg utom fritidsbåtar och fartyg med tjänste- eller räddningsuppdrag. Utanför Skatudden gäller dessutom en fartbegränsning på 10 km/h.",
+    "en": "North of latitude 60° 08' N the speed limit for all vessels is 30 km/h. Between latitudes 60°06'N and 60° 08' N the speed limit is 30 km/h for all vessels except for leisure craft and vessels performing official duties or rescue operations. In addition, the speed limit off Katajanokka is 10 km/h."
+  },
   "visibility": {
     "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituisilla aluksilla näkyvyyden tulisi olla vähintään 1,0 M (n.2 km).",
     "sv": "Sikten bör vara minst 300 m för alla fartyg. Dessutom bör sikten vara minst 1,0 sjömil (ca 2 km) för fartyg vars längd är över 200 m.",

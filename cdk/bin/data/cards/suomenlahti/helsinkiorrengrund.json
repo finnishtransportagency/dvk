@@ -5,19 +5,18 @@
     "sv": "Helsingfors-Orrengrund",
     "en": "Helsinki-Orrengrund"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Merkitty linjatauluin.",
     "sv": "Farleden är utmärkt med enstavlor. ",
     "en": "The fairway is marked by boards."
   },
-  "anchorage":[
-    {
-      "fi": "Ankkuroida voi Tainion majakan lounaispuolella olevalle Orrengrundin - Kotkan 10,0 m väylän ankkurointialueelle.",
-      "sv": "Ankringsmöjlighet i Orrengrund-Kotkaledens ankringsområde, SV om fyren Tainio.",
-      "en": "Anchoring in the anchorage area of the Orrengrund–Kotka channel, SW of Tainio Lighthouse."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi Tainion majakan lounaispuolella olevalle Orrengrundin - Kotkan 10,0 m väylän ankkurointialueelle.",
+    "sv": "Ankringsmöjlighet i Orrengrund-Kotkaledens ankringsområde, SV om fyren Tainio.",
+    "en": "Anchoring in the anchorage area of the Orrengrund-Kotka channel, SW of Tainio Lighthouse."
+  },
   "generalInfo": {
     "fi": "Väylä tarjoaa ulompaan avomerireittiin nähden tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman rannikon suuntaisen reitin Suomenlahden satamiin.",
     "sv": "Farleden är mer skyddad för vind än den yttre farleden och erbjuder under svåra isvintrar en mer lättforcerad rutt till hamnarna i Finska viken.",

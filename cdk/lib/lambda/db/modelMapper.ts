@@ -22,6 +22,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel) 
       sv: dbModel.name?.sv,
       en: dbModel.name?.en,
     },
+    n2000HeightSystem: !!dbModel.n2000HeightSystem,
     group: dbModel.group,
     modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],

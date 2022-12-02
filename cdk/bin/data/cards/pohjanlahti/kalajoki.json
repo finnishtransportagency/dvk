@@ -5,6 +5,7 @@
     "sv": "Kalajoki Rahja farled",
     "en": "Kalajoki Rahja fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 5, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",

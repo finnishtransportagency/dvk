@@ -5,6 +5,7 @@
     "sv": "Hepokarileden i Nystad",
     "en": "Uusikaupunki Hepokari channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja 3, joista kaksi ulointa merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart 9 knop.",
     "en": "Design speed 9 knots."
   },
-  "anchorage": [
-    {
-      "fi": "Uudenkaupungin 12,5 m väylän ankkurointialueet: väylän ulko-osalla Sandbäckin majakasta 5,5 km koilliseen (kartan ulkopuolella) sekä Isonkarin lounais- ja kaakkoispuolella. Sisäosalla ankkurointipaikka on Ruuhikarin pohjoispuolella. Aluetta käytetään myös Kemiran sataman kääntöaltaana.",
-      "sv": "Ankringsområden i Nystadsleden (12,5 m): I farledens yttre del från Sandbäcks fyr 5,5 km mot NO (utanför kartan) och SV och SO om Enskär. I den inre delen finns ett ankringsområde N om Ruuhikari. Området används också som Yara hamns svängbassäng.",
-      "en": "Anchorage in Uusikaupunki Channel (12.5 m): in the outer channel, 5.5 km NE of Sandbäck Lighthouse (off chart) and SW and SE of Isokari. In the inner channel anchorage N of Ruuhikari. The area is also used as the swinging area of Yara's industrial harbour."
-    }
-  ],
+  "anchorage": {
+    "fi": "Uudenkaupungin 12,5 m väylän ankkurointialueet: väylän ulko-osalla Sandbäckin majakasta 5,5 km koilliseen (kartan ulkopuolella) sekä Isonkarin lounais- ja kaakkoispuolella. Sisäosalla ankkurointipaikka on Ruuhikarin pohjoispuolella. Aluetta käytetään myös Kemiran sataman kääntöaltaana.",
+    "sv": "Ankringsområden i Nystadsleden (12,5 m): I farledens yttre del från Sandbäcks fyr 5,5 km mot NO (utanför kartan) och SV och SO om Enskär. I den inre delen finns ett ankringsområde N om Ruuhikari. Området används också som Yara hamns svängbassäng.",
+    "en": "Anchorage in Uusikaupunki Channel (12.5 m): in the outer channel, 5.5 km NE of Sandbäck Lighthouse (off chart) and SW and SE of Isokari. In the inner channel anchorage N of Ruuhikari. The area is also used as the swinging area of Yara's industrial harbour."
+  },
   "navigationCondition": {
     "fi": "Väylä on suojainen, mutta kovilla pohjoistuulilla vaikeasti navigoitava. Hinaajien käyttöä on harkittava tilanteen mukaan.",
     "sv": "Farleden är skyddad men svårnavigerad vid hård nordlig vind. Anlitande av bogserhjälp bör övervägas från fall till fall.",

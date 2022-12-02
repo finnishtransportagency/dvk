@@ -34,6 +34,7 @@ export const mockFairwayList = {
 export const mockFairwayCard = {
   fairwayCard: {
     name: { fi: 'Vuosaaren väylä', sv: 'Nordsjöleden', en: 'Vuosaari channel', __typename: 'Text' },
+    n2000HeightSystem: false,
     group: '2',
     modificationTimestamp: 1668180623,
     fairways: [
@@ -789,26 +790,18 @@ export const mockFairwayCard = {
       en: 'Three lines marked with boards.',
       __typename: 'Text',
     },
-    anchorage: [
-      {
-        fi: 'Väylän ulko-osalla ankkurointialue on Helsingin majakan luoteispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Eestiluodon eteläpuolella ja Musta Hevosen länsipuolella on väylän levennysalueita.',
-        sv: 'Ankringsområdet i angöringen ligger NV om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Farleden har breddade områden Söder om Estlotan och väster om Svarta Hästen.',
-        en: 'In the approach there is an anchorage area NW of Helsinki Lighthouse. When anchoring the instructions given by the pilot or the VTS centre must be followed. Areas where the channel has been widened South of Eestiluoto and west of Musta Hevonen.',
-        __typename: 'Text',
-      },
-      {
-        fi: 'Vuosaaren väylän pohjoisosassa latitudien 60º11,1`P ja 60º12,5`P välillä väylällä on pysyvä kohtaamis- ja ohittamiskielto. Tämä kielto ei koske kohtaamisia ja ohittamisia, joissa ainakin toisena osapuolena on hinaaja.',
-        sv: "I den norra delen av Nordsjöleden råder permanent mötes- och passerförbud i området mellan latituderna 60º11,1'N och 60º12,5'N. Detta förbud gäller inte möten och passage där åtminstone den ena parten är en bogserbåt.",
-        en: 'There is a permanent meeting and overtaking prohibition in the northern part of the Vuosaari channel, between latitudes 60º11.1’N and 60º12.5’N. This prohibition does not apply to meeting and overtaking situations in which one of the vessels is a tug.',
-        __typename: 'Text',
-      },
-      {
-        fi: 'Alusliikenteen järjestelemiseksi Vuosaaren satamasta lähteville aluksille on käytössä lähtölupamenettely.',
-        sv: 'Regleringen av fartygstrafiken innebär ett förfarande med avgångstillstånd för fartyg som avgår från Nordsjö hamn.',
-        en: 'The organization of vessel traffic departing from Vuosaari Harbour includes a procedure for issuing clearance for departure.',
-        __typename: 'Text',
-      },
-    ],
+    anchorage: {
+      fi: 'Väylän ulko-osalla ankkurointialue on Helsingin majakan luoteispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Eestiluodon eteläpuolella ja Musta Hevosen länsipuolella on väylän levennysalueita.',
+      sv: 'Ankringsområdet i angöringen ligger NV om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Farleden har breddade områden Söder om Estlotan och väster om Svarta Hästen.',
+      en: 'In the approach there is an anchorage area NW of Helsinki Lighthouse. When anchoring the instructions given by the pilot or the VTS centre must be followed. Areas where the channel has been widened South of Eestiluoto and west of Musta Hevonen.',
+      __typename: 'Text',
+    },
+    generalInfo: {
+      fi: 'Alusliikenteen järjestelemiseksi Vuosaaren satamasta lähteville aluksille on käytössä lähtölupamenettely.',
+      sv: 'Regleringen av fartygstrafiken innebär ett förfarande med avgångstillstånd för fartyg som avgår från Nordsjö hamn.',
+      en: 'The organization of vessel traffic departing from Vuosaari Harbour includes a procedure for issuing clearance for departure.',
+      __typename: 'Text',
+    },
     navigationCondition: {
       fi: 'Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Eestiluodosta väylä jatkuu saarien ja karien suojaamana satamaan.',
       sv: 'Farledens yttre del är öppen sjö och oskyddad för O-S-V vind. Från Estlotan till hamnen löper farleden i skydd av holmar och skär.',
@@ -822,14 +815,12 @@ export const mockFairwayCard = {
       __typename: 'Text',
     },
     attention: null,
-    speedLimit: [
-      {
-        fi: 'Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.',
-        sv: 'Under vintersäsongen (1.11 - 31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn.',
-        en: 'During the winter season (1 November - 31 March) a speed limit of 24/h will be in force (in the channel) between Krokholmshället and Vuosaari Harbour.',
-        __typename: 'Text',
-      },
-    ],
+    speedLimit: {
+      fi: 'Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.',
+      sv: 'Under vintersäsongen (1.11 - 31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn.',
+      en: 'During the winter season (1 November - 31 March) a speed limit of 24/h will be in force (in the channel) between Krokholmshället and Vuosaari Harbour.',
+      __typename: 'Text',
+    },
     visibility: {
       fi: 'Näkyvyyden tulee olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä oltava vähintään 1,0 M.',
       sv: 'Bör vara minst 300 m för alla fartyg. Dessutom krävs minst 1,0 M sikt för fartyg med en längd över 200 m.',

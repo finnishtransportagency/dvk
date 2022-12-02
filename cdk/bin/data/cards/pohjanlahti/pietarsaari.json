@@ -5,6 +5,7 @@
     "sv": "Jakobstad farled",
     "en": "Pietarsaari fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Väylällä on kolme linjaa, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",
@@ -16,13 +17,11 @@
     "sv": "Rekommenderad fart i den yttre delen 11 knop, i den inre delen 9 knop, i hamnen 6 knop.",
     "en": "Design speed in the outer fairway 11 knots, in the inner fairway 9 knots, in the harbour area 6 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla on isoille aluksille sopiva ankkurointipaikka 2,8 km Pietarsaari reunamerkistä länteen, syvyys n. 20 m.",
-      "sv": "I ledens yttre del, 2,8 km V om randmärket Jakobstad finns en ankringsplats (djup ca 20 m) lämplig för stora fartyg.",
-      "en": "There is an anchorage area (depth approx. 20 m) suitable for larger vessels in the outer channel, 2,8 km W of Pietarsaari edge mark."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla on isoille aluksille sopiva ankkurointipaikka 2,8 km Pietarsaari reunamerkistä länteen, syvyys n. 20 m.",
+    "sv": "I ledens yttre del, 2,8 km V om randmärket Jakobstad finns en ankringsplats (djup ca 20 m) lämplig för stora fartyg.",
+    "en": "There is an anchorage area (depth approx. 20 m) suitable for larger vessels in the outer channel, 2,8 km W of Pietarsaari edge mark."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa Kallanista Mässkäriin on avointa ja suojatonta P - L - I tuulille. Väylä on sisäosaltaan ruopattu 120 m kanavamaiseksi väyläksi noin 3 kilometrin matkalta ennen satamaa. Sisäosalla ei aallokkoa pääse syntymään, mutta väylän kapeuden vuoksi tuuli ja squat-effekt imuvaikutus saattavat vaikeuttaa aluksen ohjailua.",
     "sv": "Den yttre delen av leden från Kallan till Mässkär är öppen och oskyddad för N - V - O vindar. Den inre delen av farleden, 3 km lång, är muddrad så att den påminner om en 120 m bred kanal. Sjögång förekommer inte i denna del men genom att farleden är smal kan vinden och squateffekten försvåra fartygets navigering.",

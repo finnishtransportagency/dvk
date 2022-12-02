@@ -5,6 +5,7 @@
     "sv": "Brahestad farled",
     "en": "Raahe fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4, merkintä perustuu majakan, linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart i den yttre delen 11 knop, i den inre delen 8 knop.",
     "en": "Design speed in the approach 11 knots, in the entrance 8 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylällä on ankkurointialue Heikinkarin ja aallonmurtajan välillä, jota kiintojääkautena voidaan käyttää odotuspaikkana. Myös jäänmurtajat käyttävät aluetta käännös- ja odotuspaikkana. Kardinaalimerkintä. Haraussyvyys - 8,9 m, hiekka- ja kivipohja. Ankkurointialueen keskikohta on noin 200 m päässä väylän keskilinjasta.",
-      "sv": "Farleden har en ankringsplats mellan Heikinkari och vågbrytaren, som kan användas som en väntningsplats på fastisperioden. Isbrytarna använder också platsen till att vänta och vända. Kardinal utmärkning. Ramat djup -8,9 m, sand- och stenbotten. Mittpunkten av ankringsområdet ligger ungefär 200 m av farledens mittlinje.",
-      "en": "An area for anchoring is located between Heikinkari and the breakwater. During the fast ice period vessels can also use the area for waiting. Icebreakers use the area for waiting and turning. Cardinal marking. Safe clearance depth -8,9 m, seabed of sand and stone. The center of the anchorage area is approx. 200 m of the fairway's middle line."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylällä on ankkurointialue Heikinkarin ja aallonmurtajan välillä, jota kiintojääkautena voidaan käyttää odotuspaikkana. Myös jäänmurtajat käyttävät aluetta käännös- ja odotuspaikkana. Kardinaalimerkintä. Haraussyvyys - 8,9 m, hiekka- ja kivipohja. Ankkurointialueen keskikohta on noin 200 m päässä väylän keskilinjasta.",
+    "sv": "Farleden har en ankringsplats mellan Heikinkari och vågbrytaren, som kan användas som en väntningsplats på fastisperioden. Isbrytarna använder också platsen till att vänta och vända. Kardinal utmärkning. Ramat djup -8,9 m, sand- och stenbotten. Mittpunkten av ankringsområdet ligger ungefär 200 m av farledens mittlinje.",
+    "en": "An area for anchoring is located between Heikinkari and the breakwater. During the fast ice period vessels can also use the area for waiting. Icebreakers use the area for waiting and turning. Cardinal marking. Safe clearance depth -8,9 m, seabed of sand and stone. The center of the anchorage area is approx. 200 m of the fairway's middle line."
+  },
   "navigationCondition": {
     "fi": "Väylä on avomerta ja suojaton kaikilla merenpuolisilla tuulilla. Kova tuuli vaikuttaa aluksen ohjailuun koko väyläosuudella ja satamassa. Ulko-osalla Heikinkariin saakka voimakasta aallonmuodostusta. Väylän ulko-osalla reunamerkki Rm Jaakko saakka on usein voimakasta poikittaista virtausta erityisesti etelätuulilla. Ruopatulla väyläosuudella Länsipiekko reunamerkistä satamaan esiintyy pohjaimun vaikutusta.",
     "sv": "Farleden går i öppen sjö och är oskyddad mot alla vindar. Hård vind påverkar navigeringen på hela farleden och i hamnen. Stark vågbildning i angöringen och ända fram till Heikinkari. I angöringen fram till Rm Jaakko kan förekomma kraftigt tvärgående ström speciellt vid sydliga vindar, squat-effekt förekommer i den muddrade delen av farleden från Rm Länsipiekko till hamnen.",

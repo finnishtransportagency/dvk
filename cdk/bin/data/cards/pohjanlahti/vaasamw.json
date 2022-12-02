@@ -1,11 +1,11 @@
 {
-  "id": "vaasa",
+  "id": "vaasamw",
   "name": {
-    "fi": "Vaasan väylä",
-    "sv": "Vasa farled",
-    "en": "Vaasa fairway"
+    "fi": "Vaasan väylä MW",
+    "sv": "Vasa farled MW",
+    "en": "Vaasa fairway MW"
   },
-  "n2000HeightSystem": true,
+  "n2000HeightSystem": false,
   "group": "3",
   "lineText": {
     "fi": "9/8 linjaa, jotka merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
@@ -119,7 +119,7 @@
   },
   "harbors": [
     {
-      "id": "vaasa"
+      "id": "vaasamw"
     }
   ],
   "fairways": [

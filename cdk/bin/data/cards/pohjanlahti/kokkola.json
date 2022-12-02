@@ -5,6 +5,7 @@
     "sv": "Karleby farled",
     "en": ""
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja 5 kpl, merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart i den yttre delen 13 knop, i den inre delen 10 knop.",
     "en": "Design speed in the approach 13 knots, in the entrance 10 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylällä on suojainen kardinaalipoijuin merkitty ankkurointipaikka Ykspihlajan linjan eteläpäässä, syvyys 14,8 m, pehmeä silttipohja, kääntöympyrän halkaisija 900 m. Ankkurointialueen kohdalla väylän itäpuolella on kapea ankkurointikieltoalue.",
-      "sv": "I södra delen av Yxpilalinjen finns en skyddad ankarplats som är utmärkt med kardinalbojar. Djup 14,8 m, slambotten, svängcirkelns diameter 900 m. Utanför Djuphamn, öster om farleden, finns ett område där ankring är förbjuden.",
-      "en": "There is a sheltered anchorage area, marked by cardinal marks, in the southern part of the Ykspihlaja line. Depth 14,8 m, silt bottom, diameter of turning circle is 900 m. Adjacent to the anchorage area, east of the fairway, there is an area where anchoring is prohibited."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylällä on suojainen kardinaalipoijuin merkitty ankkurointipaikka Ykspihlajan linjan eteläpäässä, syvyys 14,8 m, pehmeä silttipohja, kääntöympyrän halkaisija 900 m. Ankkurointialueen kohdalla väylän itäpuolella on kapea ankkurointikieltoalue.",
+    "sv": "I södra delen av Yxpilalinjen finns en skyddad ankarplats som är utmärkt med kardinalbojar. Djup 14,8 m, slambotten, svängcirkelns diameter 900 m. Utanför Djuphamn, öster om farleden, finns ett område där ankring är förbjuden.",
+    "en": "There is a sheltered anchorage area, marked by cardinal marks, in the southern part of the Ykspihlaja line. Depth 14,8 m, silt bottom, diameter of turning circle is 900 m. Adjacent to the anchorage area, east of the fairway, there is an area where anchoring is prohibited."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa Kokkolan majakalta Bergbådaniin on avomerta ja suojaton L ja KO tuulille. Bergbådanista väylä jatkuu lähes kauttaaltaan ruopattuna matalikkojen välitse Kokkolan satamaan.",
     "sv": "Öppen sjö från fyren Kokkola till Bergbådan, oskyddad för vind från V och NO. Därefter går farleden mellan grund men är nästan helt och hållet muddrad.",

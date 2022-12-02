@@ -1,11 +1,11 @@
 {
-  "id": "stubbenmunsala",
+  "id": "stubbenmunsalamw",
   "name": {
-    "fi": "Stubben-Munsala väylä",
-    "sv": "Stubben-Munsala farled",
-    "en": "Stubben-Munsala fairway"
+    "fi": "Stubben-Munsala väylä MW",
+    "sv": "Stubben-Munsala farled MW",
+    "en": "Stubben-Munsala fairway MW"
   },
-  "n2000HeightSystem": true,
+  "n2000HeightSystem": false,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 7, jotka on merkitty linjatauluin.",
@@ -89,7 +89,7 @@
   },
   "harbors": [
     {
-      "id": "munsala"
+      "id": "munsalamw"
     }
   ],
   "fairways": [

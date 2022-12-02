@@ -5,6 +5,7 @@
     "sv": "Farleden Utö-Hangö",
     "en": "Utö-Hanko channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Farleden är planerad som alternativ farled för svåra isförhållanden Farleden erbjuder, i jämförelse med den yttre farleden, en mera vindskyddad rutt genom skärgården till Finska vikens hamnar och lättare isförhållanden under svåra isvintrar. Under normala förhållanden har farleden lite trafik, bara den delen som ligger på Hangösidan trafikeras regelbundet.",
     "en": "This fairway has been planned as an alternative fairway when ice conditions are severe. Compared to the route which goes in open sea, this fairway offers a more sheltered route to the ports in the Gulf of Finland through the archipelago, with lighter ice conditions during difficult ice winters. Under normal conditions the traffic in the channel is light, only the part which is on the Hanko side is used in regular traffic."
   },
-  "anchorage":[
-    {
-      "fi": "Ankkuroida voi Bokullankiven lounaispuolella olevalle ankkurointialueelle.",
-      "sv": "Ankring på ankringsområdet SV om Bokullasten.",
-      "en": "Anchorage in the anchorage area SW of Bokullankivi."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi Bokullankiven lounaispuolella olevalle ankkurointialueelle.",
+    "sv": "Ankring på ankringsområdet SV om Bokullasten.",
+    "en": "Anchorage in the anchorage area SW of Bokullankivi."
+  },
   "navigationCondition": {
     "fi": "Väylän alkuosa Bokullankiven sektoriloistosta Borstöön on melko avoin etelänpuoleisille tuulille. Borstöstä väylä jatkuu saarien ja karien hyvin suojaamana Hiittisten saariston lomitse Hangon läntiselle selälle. Hangon läntisellä selällä ja Hankoniemen edustalla kova etelän-lännen puoleinen tuuli ja merenkäynti voivat vaikeuttaa navigointia. Väylä on suunniteltu pääosin kaksikaistaiseksi, mutta paikoin väyläalue kapenee yksikaistaiseksi. Väylä kapein kohta on Idskärin apuloiston kohdalla Hiittisten pohjoispuolella (120 m).",
     "sv": "På det första farledsavsnittet från Bokullasten sektorfyr till Borstö är farleden rätt så öppen för sydliga vindar. Från Borstö går farleden väl skyddad av holmar och skär genom Hitis skärgård till Hangö västra fjärd. På Hangö västra fjärd och utanför Hangö udd kan en hård sydlig-västlig vind och hård sjögång försvåra navigeringen. Farleden är huvudsakligen planerad för två stråk men avsmalnar ställvis till ett stråk. Farledens smalaste ställe är vid Idskär hjälpfyr N om Hitis (120 m).",

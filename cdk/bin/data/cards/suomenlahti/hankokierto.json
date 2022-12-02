@@ -5,6 +5,7 @@
     "sv": "Hangö omfartsled",
     "en": "Hanko bypass channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 6 kpl, jotka merkitty linjatauluin.",
@@ -16,18 +17,11 @@
     "sv": "Dimensionerande fart 11 knop.",
     "en": "Design speed 11 knots."
   },
-  "anchorage": [
-    {
-      "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
-      "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
-      "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
-    },
-    {
-      "fi": "Hangon kiertoväylällä latitudien 59º49,3’ P ja 59º50,0’ P välillä on pysyvä kohtaamis- ja ohittamiskielto.",
-      "sv": "Permanent omkörningsförbud och mötesförbud mellan 59º49,3’ N och 59º50,0’ N latituder.",
-      "en": "There is a permanent prohibition regarding passing or meeting in the Hanko bypass channel between 59º49,3’ N and 59º50,0’ N latitudes."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
+    "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
+    "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
+  },
   "navigationCondition": {
     "fi": "Hangon läntisellä selällä ja Hankoniemen edustalla kova etelän-lännen puoleinen tuuli ja merenkäynti voivat vaikeuttaa navigointia. Väylä on suunniteltu pääosin kaksikaistaiseksi, mutta paikoin väyläalue kapenee yksikaistaiseksi.",
     "sv": "På Hangö västra fjärd och utanför Hangö udd kan hård SV vind och sjögång försvåra navigationen. Farleden är i huvudsak planerad för två stråk, men ställvis smalnar farledsområdet till ett stråk.",
