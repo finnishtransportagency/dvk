@@ -181,7 +181,9 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
   const designDraftValues = [
     ...Array.from(
       new Set(
-        data?.flatMap((fairway) => fairway.areas?.map((area) => (area.n2000draft || area.draft)?.toLocaleString())).filter((val) => val !== undefined)
+        data
+          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString()))
+          .filter((val) => val !== undefined)
       )
     ),
   ];
@@ -403,8 +405,8 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
               )}
             </em>
             <br />
-            {t('designDraft', { count: 1 })}: {(area?.n2000draft || area?.draft)?.toLocaleString() || '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(area?.n2000draft || area?.draft) })} role="definition">
+            {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() || '-'}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
               m
             </span>
             <br />
