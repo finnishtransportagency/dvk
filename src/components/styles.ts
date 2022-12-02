@@ -198,7 +198,7 @@ export function getDepthStyle(feature: FeatureLike) {
       text: new Text({
         font: 'bold 12px "Exo2"',
         placement: 'line',
-        offsetY: specialFeature ? 31 : 2,
+        offsetY: specialFeature ? 28 : 1,
         text,
         fill: new Fill({
           color: '#FF00FF',
