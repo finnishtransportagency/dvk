@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>71507B29-ADAA-4D83-8003-C27F01FEF6B1</title>
+    <defs>
+        <path d="M2.025,15.5 L2.025,20.5 M2.025,20.5 L21.975,20.5 M21.975,15.5 L21.975,20.5" id="path-1"></path>
+        <filter x="-1.1%" y="-12.5%" width="104.5%" height="116.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0.5" dy="0.5" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0.5" dy="0.5" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <!--text id="text-3" font-family="Exo2Roman-Bold, Exo 2" font-size="12" font-weight="bold" fill="#FF00FF">
+            <tspan x="3.525" y="17">9,2</tspan>
+        </text-->
+        <filter x="-1.5%" y="-1.8%" width="105.9%" height="107.1%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0.5" dy="0.5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="colors_and_typography" transform="translate(-1346.000000, -1154.000000)">
+            <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
+                <g id="syvyys_mw" transform="translate(624.000000, 240.000000)">
+                    <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                    <g id="Combined-Shape" stroke-linecap="square">
+                        <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                        <use stroke="#FF00FF" stroke-width="1" xlink:href="#path-1"></use>
+                    </g>
+                    <g id="9,2" fill="#FF00FF" fill-opacity="1">
+                        <use filter="url(#filter-4)" xlink:href="#text-3"></use>
+                        <use xlink:href="#text-3"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
