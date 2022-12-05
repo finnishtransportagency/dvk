@@ -205,7 +205,7 @@ export function getDepthStyle(feature: FeatureLike) {
         }),
         stroke: new Stroke({
           width: 1,
-          color: '#000000',
+          color: 'rgba(0,0,0,0.75)',
         }),
       }),
     }),
