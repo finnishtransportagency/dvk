@@ -13,7 +13,15 @@ import { PipelineMessaging } from '../lib/pipeline-messaging';
 import { SquatSite } from '../lib/squat-site';
 import { SquatPipeline } from '../lib/squat-pipeline';
 import { BackupServices } from '../lib/dvk-backup-services';
+import { MonitoringServices } from '../lib/dvk-monitoring';
 
+class DvkMonitoringServicesStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps) {
+    super(parent, id, props);
+
+    new MonitoringServices(this, 'DvkMonitoringServices');
+  }
+}
 class DvkBackupServicesStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
     super(parent, id, props);
@@ -161,5 +169,14 @@ new DvkBackupServicesStack(app, 'DvkBackupServicesStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkBackupServicesStack-' + appEnv,
+  tags: Config.tags,
+});
+
+new DvkMonitoringServicesStack(app, 'DvkMonitoringStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+  stackName: 'DvkMonitoringServicesStack-' + appEnv,
   tags: Config.tags,
 });
