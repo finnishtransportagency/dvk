@@ -2,6 +2,7 @@ import { Construct } from 'constructs';
 import { FilterPattern, LogGroup, MetricFilter } from 'aws-cdk-lib/aws-logs';
 import { Alarm, ComparisonOperator, GraphWidget, Metric, TreatMissingData } from 'aws-cdk-lib/aws-cloudwatch';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
+import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { Duration, aws_cloudwatch as cloudwatch } from 'aws-cdk-lib';
 import { Subscription, SubscriptionProtocol, Topic } from 'aws-cdk-lib/aws-sns';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
@@ -25,9 +26,16 @@ export class MonitoringServices extends Construct {
     });
     const action = new SnsAction(topic);
 
-    // create log group filters for lambda logs and create alarms for filters
+    // create log group filters for (graphql) lambda logs and create alarms for filters
     for (const lambdaFunc of lambdaFunctions) {
       const functionName = this.getLambdaName(lambdaFunc.typeName, lambdaFunc.fieldName, env);
+      const metricFilter = this.createLogGroupMetricFilter(functionName, env);
+      const logAlarm = this.createAlarmForMetric(metricFilter.metric(), env);
+      logAlarm.addAlarmAction(action);
+    }
+    // ... and api functions
+    for (const lambdaFunc of apiLambdaFunctions) {
+      const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
       const metricFilter = this.createLogGroupMetricFilter(functionName, env);
       const logAlarm = this.createAlarmForMetric(metricFilter.metric(), env);
       logAlarm.addAlarmAction(action);
@@ -44,7 +52,7 @@ export class MonitoringServices extends Construct {
     // cloudFrontAlarm.addAlarmAction(action);
 
     // ... and appsync
-    const appSyncAlarm = this.createAlarmForMetric(this.createAppSyncMetric(env, '5xxErrorRate', 'Max'), env);
+    const appSyncAlarm = this.createAlarmForMetric(this.createAppSyncMetric(env, '5XXError', 'Max'), env);
     appSyncAlarm.addAlarmAction(action);
 
     // dashboard
@@ -66,6 +74,7 @@ export class MonitoringServices extends Construct {
 
     // create error log widget
     const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
+    apiLambdaFunctions.map((lambda) => logGroupNames.push(`${lambda.functionName}-${env}`.toLocaleLowerCase()));
 
     dashboard.addWidgets(
       new cloudwatch.LogQueryWidget({
@@ -93,9 +102,9 @@ export class MonitoringServices extends Construct {
 
     // create appsync widgets
     const appsyncMetrics: DvkMetric[] = [
-      // { name: 'Requests', statistics: 'Sample count' }, // throws error, which might be a cdk bug: "dataPath": "/widgets/8/properties/metrics/0", "message": "Should NOT have more than 4 items"
-      { name: '4xxErrorRate', statistics: 'Sum' },
-      { name: '5xxErrorRate', statistics: 'Sum' },
+      // { name: 'Requests', statistics: 'Sample count' }, // TODO: throws error, which might be a cdk bug: "dataPath": "/widgets/8/properties/metrics/0", "message": "Should NOT have more than 4 items"
+      { name: '4XXError', statistics: 'Sum' },
+      { name: '5XXError', statistics: 'Sum' },
     ];
     const appsyncWidgets = appsyncMetrics.map((metric) => this.createAppSyncWidget(env, metric.name, metric.statistics));
     dashboard.addWidgets(...appsyncWidgets);
@@ -178,24 +187,25 @@ export class MonitoringServices extends Construct {
     });
   }
 
-  createAppSyncMetric(env: string, metricName: string, statistic: string) {
+  createAppSyncMetric(env: string, metricName: string, statistic?: string) {
     const metric = new Metric({
       namespace: 'AWS/AppSync',
       metricName: metricName,
       dimensionsMap: { GraphQLAPIId: 'dw2qzecu7jglvhofutllu7hal4' }, //TODO get id from stack outputs or smth
-      statistic: statistic,
       period: Duration.seconds(300),
+      statistic,
     });
 
     return metric;
   }
 
   createAppSyncWidget(env: string, metricName: string, statistic: string) {
-    const metric = this.createAppSyncMetric(env, metricName, statistic);
+    const metric = this.createAppSyncMetric(env, metricName);
 
     return new GraphWidget({
       title: `AppSync ${metricName} ${env}`,
       left: [metric],
+      statistic,
     });
   }
 }
