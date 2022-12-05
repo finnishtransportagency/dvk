@@ -41,7 +41,11 @@
         {
           "depth": 9
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.54699608317402, 63.08816664229198]
+      }
     },
     {
       "name": {
@@ -59,6 +63,10 @@
         "fi": "Suurin sallittu aluksen pituus 165 m.",
         "sv": "Största tillåtna fartygslängd 165 m.",
         "en": "Maximum length of vessel 165 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.552780984172074, 63.08843209402617]
       }
     },
     {
@@ -72,7 +80,11 @@
         {
           "depth": 6.9
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.55233141775904,63.08726116438341]
+      }
     },
     {
       "name": {
@@ -85,7 +97,11 @@
         {
           "depth": 6.9
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.553463826660696, 63.0874836613912]
+      }
     },
     {
       "name": {
@@ -98,7 +114,11 @@
         {
           "depth": 7.3
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.553341986393534, 63.086538122343086]
+      }
     },
     {
       "name": {
@@ -111,7 +131,11 @@
         {
           "depth": 6.9
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.554073024657136, 63.085930588490776]
+      }
     },
     {
       "name": {
@@ -124,7 +148,11 @@
         {
           "depth": 9
         }
-      ]
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.55724719302114, 63.0844593692617]
+      }
     },
     {
       "name": {
@@ -142,6 +170,10 @@
         "fi": "Suurin sallittu aluksen pituus 200 m.",
         "sv": "Största tillåtna fartygslängd 200 m.",
         "en": "Maximum length of vessel 200 m."
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [21.561974804909102, 63.08314574551373]
       }
     }
   ]

@@ -198,7 +198,7 @@ export function getHarborStyle(feature: FeatureLike) {
   ];
 }
 
-function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
+export function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource;
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
@@ -208,6 +208,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+  } else if (ds === 'quay' && resolution <= 3) {
+    return getQuayStyle(feature, false);
   } else {
     return undefined;
   }
@@ -272,6 +274,7 @@ export function unsetSelectedFairwayCard() {
   const line3456Source = dvkMap.getVectorSource('line3456');
   const area12Source = dvkMap.getVectorSource('area12');
   const area3456Source = dvkMap.getVectorSource('area3456');
+  const quaySource = dvkMap.getVectorSource('quay');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
@@ -289,6 +292,9 @@ export function unsetSelectedFairwayCard() {
       case 'area3456':
         area3456Source.addFeature(feature);
         break;
+      case 'quay':
+        quaySource.addFeature(feature);
+        break;
     }
   }
   selectedFairwayCardSource.clear();
@@ -302,6 +308,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       const line3456Source = dvkMap.getVectorSource('line3456');
       const area12Source = dvkMap.getVectorSource('area12');
       const area3456Source = dvkMap.getVectorSource('area3456');
+      const quaySource = dvkMap.getVectorSource('quay');
       const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
       unsetSelectedFairwayCard();
@@ -338,6 +345,14 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
               fairwayFeatures.push(feature);
             }
           }
+        }
+      }
+      const harborIds = data.fairwayCard?.harbors?.map((h) => h.id);
+      for (const feature of quaySource.getFeatures()) {
+        if (harborIds?.includes(feature.getProperties().harbor)) {
+          feature.setProperties({ dataSource: 'quay' });
+          quaySource.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
 

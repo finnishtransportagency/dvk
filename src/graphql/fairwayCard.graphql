@@ -1,4 +1,5 @@
 fragment HarborParts on Harbor {
+  id
   quays {
     name {
       fi
