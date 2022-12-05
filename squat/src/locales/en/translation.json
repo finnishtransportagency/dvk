@@ -217,5 +217,7 @@
     "title": "General",
     "description": "[en] Painumalaskuri on kehitetty erilaisten luonnonilmiöiden aiheuttamien alukseen kohdistuvien voimien arviointiin. Sen antamat laskentatulokset aluksen liikkeistä ovat <strong>ARVIOITA</strong>, joten niitä tulee tulkita suuntaa antaviksi päätöksen tekoa tukeviksi arvoiksi.",
     "thanks": "[en] Kiitokset professori Jerzy Matusiakille, joka on ohjannut laskentamallien kehittämistä ja verifioinut tulosten luotettavuuden."
-  }
+  },
+  "vaylavirasto": "Finnish Transport Infrastructure Agency",
+  "meta-description": "Finnish Transport Infrastructure Agency - Squat Calculation"
 }
