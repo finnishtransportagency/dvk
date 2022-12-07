@@ -74,7 +74,7 @@ export class MonitoringServices extends Construct {
 
     // create error log widget
     const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
-    apiLambdaFunctions.map((lambda) => logGroupNames.push(`${lambda.functionName}-${env}`.toLocaleLowerCase()));
+    apiLambdaFunctions.map((lambda) => logGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()));
 
     dashboard.addWidgets(
       new cloudwatch.LogQueryWidget({
@@ -89,7 +89,7 @@ export class MonitoringServices extends Construct {
       }),
       // Feature loader all lines
       new cloudwatch.LogQueryWidget({
-        logGroupNames: apiLambdaFunctions.map((lambda) => `${lambda.functionName}-${env}`.toLocaleLowerCase()),
+        logGroupNames: apiLambdaFunctions.map((lambda) => `/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()),
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: ['fields @timestamp, @message', 'filter tag = "DVK_BACKEND"', 'sort @timestamp desc', 'limit 50'],
       })
