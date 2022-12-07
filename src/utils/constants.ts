@@ -13,8 +13,7 @@ export type FeatureDataLayerId =
   | 'harbor'
   | 'quay'
   | 'safetyequipment'
-  | 'depth12'
-  | 'depth3456';
+  | 'depth12';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -51,7 +50,6 @@ export const MAP: MapType = {
     { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
     { id: 'depth12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
-    { id: 'depth3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
   ],
 };
 

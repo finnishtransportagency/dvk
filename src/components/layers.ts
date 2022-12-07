@@ -251,9 +251,8 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
-  // Syvyydet
+  // Haraussyvyydet
   addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
-  addFeatureLayer(map, 'depth3456', 10, 50, (feature) => getDepthStyle(feature));
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature.getProperties().symbol, resolution));
 
