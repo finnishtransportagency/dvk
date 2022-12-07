@@ -220,11 +220,13 @@ function addFeatureLayer(
   renderBuffer: number,
   style: StyleLike,
   minResolution: number | undefined = undefined,
-  opacity = 1
+  opacity = 1,
+  className = 'bg-layer'
 ) {
   map.addLayer(
     new VectorLayer({
       source: new VectorSource(),
+      className,
       style,
       properties: { id },
       maxResolution,
@@ -261,9 +263,9 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Laiturit
-  addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false));
+  addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false), undefined, 1, 'ol-layer');
   // Satamat
-  addFeatureLayer(map, 'harbor', 30, 1, (feature) => getHarborStyle(feature), 3);
+  addFeatureLayer(map, 'harbor', 30, 1, (feature) => getHarborStyle(feature), 3, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {
