@@ -66,8 +66,8 @@ export class MonitoringServices extends Construct {
     const cwMetrics: DvkMetric[] = [
       { name: 'Requests', statistics: 'Sum' },
       { name: 'BytesDownloaded', statistics: 'Sum' },
-      { name: '4xxErrorRate', statistics: 'Sum' },
-      { name: '5xxErrorRate', statistics: 'Sum' },
+      { name: '4xxErrorRate', statistics: 'Average' },
+      { name: '5xxErrorRate', statistics: 'Average' },
     ];
     const cwWidgets = cwMetrics.map((metric) => this.createCloudFrontWidget(env, metric.name, metric.statistics));
     dashboard.addWidgets(...cwWidgets);
@@ -80,13 +80,18 @@ export class MonitoringServices extends Construct {
       new cloudwatch.LogQueryWidget({
         logGroupNames: logGroupNames,
         view: cloudwatch.LogQueryVisualizationType.TABLE,
-        // The lines will be automatically combined using '\n|'.
         queryLines: [
           'fields @timestamp, @message',
           'filter @message like /ERROR/ or level like /error/ or level like /fatal/',
           'sort @timestamp desc',
           'limit 50',
         ],
+      }),
+      // Feature loader all lines
+      new cloudwatch.LogQueryWidget({
+        logGroupNames: apiLambdaFunctions.map((lambda) => `${lambda.functionName}-${env}`.toLocaleLowerCase()),
+        view: cloudwatch.LogQueryVisualizationType.TABLE,
+        queryLines: ['fields @timestamp, @message', 'filter tag = "DVK_BACKEND"', 'sort @timestamp desc', 'limit 50'],
       })
     );
 
