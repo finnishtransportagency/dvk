@@ -132,6 +132,11 @@
     border-right: none;
   }
 
+  .tabContent a {
+    color: var(--ion-color-dark) !important;
+    text-decoration: none;
+  }
+
   .mapWrapper {
     position: static;
     display: flex;
