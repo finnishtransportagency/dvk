@@ -193,6 +193,7 @@ class DvkMap {
       }
       const layer = new VectorTileLayer({
         declutter: true,
+        className: 'bg-layer',
         source,
         background: bgColor,
       });
