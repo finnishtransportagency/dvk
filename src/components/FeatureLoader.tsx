@@ -93,9 +93,9 @@ async function InitFeatures() {
     }
 
     featuresInitialized = true;
-    Promise.resolve();
+    return Promise.resolve();
   } else {
-    Promise.resolve();
+    return Promise.resolve();
   }
 }
 
