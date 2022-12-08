@@ -292,9 +292,6 @@ export function unsetSelectedFairwayCard() {
       case 'area3456':
         area3456Source.addFeature(feature);
         break;
-      case 'quay':
-        quaySource.addFeature(feature);
-        break;
     }
   }
   selectedFairwayCardSource.clear();
