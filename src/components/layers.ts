@@ -199,7 +199,7 @@ export function getHarborStyle(feature: FeatureLike) {
   ];
 }
 
-export function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
+function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource;
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
