@@ -14,6 +14,7 @@ import { useFindAllFairwayCardsQuery } from '../graphql/generated';
 import { Lang, MINIMUM_QUERYLENGTH } from '../utils/constants';
 import { filterFairways } from '../utils/common';
 import { unsetSelectedFairwayCard } from './layers';
+import vayla_logo from '../theme/img/vayla_logo.png';
 
 interface RouterProps {
   fairwayId?: string;
@@ -39,6 +40,8 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   const curPath = history.location.pathname;
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
+
+  document.title = t('documentTitle');
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
@@ -122,7 +125,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
             {splitPane && (
               <IonCol id="fairwayContent" className={widePane ? 'wide' : ''} data-testid={fairwayId ? 'cardPane' : 'listPane'}>
                 <IonContent id="fairwayCardsContainer">
-                  <IonGrid className="ion-no-padding">
+                  <IonGrid className="ion-no-padding no-print">
                     <IonRow className="ion-align-items-center">
                       <IonCol size="auto">
                         <button className="icon" data-testid={fairwayId ? '' : 'menuController'} onClick={() => menuController.open()}>
@@ -170,6 +173,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                       </IonCol>
                     </IonRow>
                   </IonGrid>
+                  <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
 
                   {fairwayId && <FairwayCard widePane={widePane} id={fairwayId} />}
                   {!fairwayId && <FairwayCards widePane={widePane} />}
