@@ -9,7 +9,7 @@
       "content": "[sv] TODO: Kartta",
       "controls": {
         "zoom": {
-          "zoomInTipLabel": "[sv] Lähennä",
+          "zoomInTipLabel": "[sv] Lähennä",
           "zoomOutTipLabel": "[sv] Loitonna"
         },
         "ownLocation": {
@@ -50,6 +50,7 @@
     }
   },
   "fairwayCards": {
+    "documentTitle": "[sv] Digitaalinen väyläkortti",
     "title_one": "Farledskort",
     "title_other": "Farledskort",
     "general": "Allmänt",
@@ -132,6 +133,7 @@
     "area": "[sv] Alue",
     "noData": "[sv] Tietoa ei ole asetettu.",
     "noRestrictions": "[sv] Ei voimassa olevia rajoituksia.",
+    "notForNavigation": "Ej för navigation",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",

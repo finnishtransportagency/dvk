@@ -52,6 +52,7 @@ class SearchbarControl extends Control {
       this.setIsOpen(true);
       this.setSearchQuery(this.inputElement.value.trim().toLowerCase());
       this.setActiveSelection(0);
+      this.element.classList.add('focused');
     });
     this.inputElement.addEventListener('input', () => {
       this.setIsOpen(true);
@@ -66,6 +67,7 @@ class SearchbarControl extends Control {
       }
     });
     this.inputElement.addEventListener('blur', () => {
+      this.element.classList.remove('focused');
       setTimeout(closeDropdown, 200);
     });
 

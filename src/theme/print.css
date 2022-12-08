@@ -1,0 +1,231 @@
+@media print {
+  html {
+    height: auto !important;
+  }
+  body {
+    overflow: auto !important;
+    transform: none !important;
+    position: static !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  .mainMapWrapper {
+    display: none;
+  }
+
+  #splitPane > ion-row {
+    flex-direction: column;
+    flex: none;
+    height: auto;
+  }
+
+  #fairwayContent {
+    width: auto !important;
+    max-width: unset !important;
+    flex: none !important;
+    position: static !important;
+    box-shadow: none !important;
+  }
+  #mapPane {
+    display: none;
+    box-sizing: content-box;
+    break-before: always;
+    break-inside: avoid;
+  }
+  ion-content::part(background) {
+    display: none;
+  }
+  .dvkMap,
+  .dvkMap .ol-viewport {
+    min-height: 100vh !important;
+  }
+  .dvkMap .ol-viewport canvas {
+    max-width: calc(100% - 2px) !important;
+    min-height: calc(100vh - 2px) !important;
+    border: 1px solid var(--ion-color-dark);
+  }
+
+  ion-header,
+  .titlebar,
+  ion-modal,
+  ion-menu {
+    display: none;
+  }
+  .ion-page, ion-router-outlet {
+    position: static !important;
+    contain: unset !important;
+    overflow: visible !important;
+  }
+  ion-content {
+    contain: unset !important;
+  }
+  ion-content::part(scroll) {
+    position: static !important;
+    overflow: visible !important;
+  }
+
+  /* Content */
+  .logo {
+    height: 65px;
+  }
+  .logo::part(image) {
+    width: auto;
+  }
+  #fairwayCardsContainer {
+    --padding-top: 0;
+    --padding-start: 0;
+    --padding-end: 0;
+    --padding-bottom: 0;
+  }
+  #fairwayCardsContainer::part(scroll) {
+    scrollbar-gutter: unset !important;
+  }
+  ion-breadcrumbs {
+    display: none;
+  }
+  #fairwayCardsContainer .fairwayTitle h2 {
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.5rem;
+  }
+  #fairwayCardsContainer .fairwayTitle h3 {
+    font-size: 12px;
+    margin: 0;
+    line-height: 1rem;
+    text-transform: uppercase;
+  }
+  ion-segment.tabs {
+    display: none;
+  }
+
+  .tabContent {
+    column-count: auto !important;
+    display: none !important;
+  }
+  .tabContent.tab1 {
+    display: block !important;
+    break-before: avoid;
+  }
+  .tabContent.tab2 {
+    display: block !important;
+  }
+
+  #fairwayCardsContainer ion-text h4 {
+    border-bottom: 1px solid var(--ion-color-light);
+  }
+
+  .printGrid {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--ion-color-light);
+  }
+  .printGrid > p {
+    flex: 1 0 33%;
+    margin: 0;
+    padding: 4px 8px;
+    border: 1px solid var(--ion-color-light);
+    border-width: 0 1px 1px 0;
+  }
+  .printGrid > p:nth-of-type(3n),
+  .printGrid > p:last-of-type {
+    border-right: none;
+  }
+
+  .tabContent a {
+    color: var(--ion-color-dark) !important;
+    text-decoration: none;
+  }
+
+  .mapWrapper {
+    position: static;
+    display: flex;
+    justify-content: center;
+    visibility: visible;
+  }
+  .mapWrapper .mapContent {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--ion-color-dark);
+  }
+  #mapExport img {
+    vertical-align: middle;
+  }
+  @media (orientation: portrait) {
+    #mapExport img {max-height: 27.5cm !important;}
+  }
+  @media (orientation: landscape) {
+    #mapExport img {max-height: 18.8cm !important;}
+  }
+
+  .mapLegend {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+  }
+  .mapLegend .bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--ion-color-primary-contrast);
+    opacity: 0.25;
+  }
+  .mapLegend #compassInfo {
+    padding: 4px;
+    width: auto;
+  }
+  .mapLegend .cardInfo {
+    padding: 4px 8px;
+  }
+  .mapLegend .cardInfo h3 {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5rem;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  }
+  .mapLegend .cardInfo em {
+    font-size: 12px;
+    line-height: 1rem;
+    display: block;
+    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  }
+  .mapLegend .cardInfo em.danger {
+    color: var(--ion-color-danger);
+  }
+  #mapScale {
+    border: 1px solid var(--ion-color-dark);
+    border-top: none;
+    color: var(--ion-color-dark);
+    font-size: 10px;
+    line-height: 1rem;
+    text-align: center;
+    margin: 6px auto 0 0;
+    transition: all 0.25s;
+  }
+
+  .printable,
+  .show-print {
+    display: block !important;
+  }
+  .printable.mapWrapper {
+    display: flex !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+
+  .pagebreak { page-break-after: always; break-after: always; }
+
+  @media (orientation: portrait) {
+    .hide-portrait {display: none !important;}
+  }
+  @media (orientation: landscape) {
+    .hide-landscape {display: none !important;}
+
+    .tabContent {
+      column-count: 2 !important;
+      column-gap: 48px !important;
+    }
+  }
+}

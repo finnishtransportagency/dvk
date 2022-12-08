@@ -50,7 +50,7 @@
   border-radius: 0;
   max-width: calc(100% - 160px);
 }
-.dvkMap .searchbarControlContainer:has(input:focus-visible) {
+.dvkMap .searchbarControlContainer.focused {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   padding: 2px;
 }

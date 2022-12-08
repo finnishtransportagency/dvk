@@ -1,6 +1,6 @@
 {
   "name": "dvk",
-  "version": "0.4.5",
+  "version": "0.5.0",
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.7.1",
@@ -28,6 +28,7 @@
     "graphql": "^16.6.0",
     "i18next": "^22.0.6",
     "ionicons": "^6.0.4",
+    "lodash": "^4.17.21",
     "ol": "^7.1.0",
     "ol-mapbox-style": "^9.2.1",
     "proj4": "^2.8.0",
@@ -85,6 +86,7 @@
     "@graphql-codegen/typescript": "^2.8.2",
     "@graphql-codegen/typescript-operations": "^2.5.7",
     "@graphql-codegen/typescript-react-apollo": "^3.3.6",
+    "@types/lodash": "^4.14.191",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "eslint": "^8.27.0",

@@ -3,12 +3,16 @@ import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { RouteComponentProps } from 'react-router-dom';
 import { unsetSelectedFairwayCard } from '../components/layers';
+import { useTranslation } from 'react-i18next';
 
 // eslint-disable-next-line
 interface HomeProps extends RouteComponentProps {}
 
 const Home: React.FC<HomeProps> = ({ history }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const mapElement = useRef<HTMLDivElement | null>(null);
+
+  document.title = t('documentTitle');
 
   useIonViewWillEnter(() => {
     unsetSelectedFairwayCard();
@@ -23,7 +27,7 @@ const Home: React.FC<HomeProps> = ({ history }) => {
   return (
     <IonPage>
       <IonContent className="ion-no-padding">
-        <div ref={mapElement} data-testid="homeMap"></div>
+        <div className="mainMapWrapper" ref={mapElement} data-testid="homeMap"></div>
       </IonContent>
     </IonPage>
   );
