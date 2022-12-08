@@ -13,6 +13,12 @@ ${MAIN_CONTENT_ELEMENT}    //ion-content[@id = "MainContent"]
 ${CENTER_TO_OWN_LOCATION_BUTTON}    //button[@class = "centerToOwnLocationControl"]
 ${ZOOM_IN_BUTTON}    //button[@class = "ol-zoom-in"]
 ${ZOOM_OUT_BUTTON}    //button[@class = "ol-zoom-out"]
+${MENU_BUTTON}    //ion-col[@data-testid = "cardPane"]/descendant::button[@class = "icon"]
+${IN_FINNISH_BUTTON}    //ion-button[@data-testid = "langFi"]
+${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
+${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
+${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
+${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
 
 *** Test Cases ***
 Open DVK
