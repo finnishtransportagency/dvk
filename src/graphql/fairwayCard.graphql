@@ -10,6 +10,10 @@ fragment HarborParts on Harbor {
     sections {
       name
       depth
+      geometry {
+        type
+        coordinates
+      }
     }
     extraInfo {
       fi

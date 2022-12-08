@@ -48,7 +48,6 @@ export const MAP: MapType = {
     { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
     { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
-    { id: 'quay', url: new URL(featureLoaderUrl + '?type=quay') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
     { id: 'depth12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
   ],

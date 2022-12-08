@@ -73,8 +73,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const pointerMoveSelect = new Select({
     condition: pointerMove,
     style,
-    filter: (feature) => feature.getProperties().featureType === 'pilot' || feature.getProperties().featureType === 'quay',
-    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('selectedfairwaycard')],
+    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('quay')],
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;
