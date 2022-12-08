@@ -54,14 +54,27 @@ const client = new ApolloClient({
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const [loading, setLoading] = useState(true);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
 
   document.documentElement.lang = i18n.language;
 
+  async function loadFeatures() {
+    try {
+      InitFeatures();
+      setLoading(false);
+    } catch (e) {
+      console.log('### LOADING FAILED ###');
+    }
+  }
+
   InitDvkMap();
-  InitFeatures();
+
+  useEffect(() => {
+    loadFeatures();
+  }, []);
 
   useEffect(() => {
     if (!updating) {
@@ -89,19 +102,22 @@ const App: React.FC = () => {
 
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
-      <IonReactRouter>
-        <ApolloProvider client={client}>
-          <SidebarMenu />
-          <IonContent id="MainContent">
-            <IonRouterOutlet>
-              <Route exact path="/" render={(props) => <Home {...props} />} />
-              <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-              <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-            </IonRouterOutlet>
-          </IonContent>
-          <MapOverlays />
-        </ApolloProvider>
-      </IonReactRouter>
+      {loading && <div>LOADING...</div>}
+      {!loading && (
+        <IonReactRouter>
+          <ApolloProvider client={client}>
+            <SidebarMenu />
+            <IonContent id="MainContent">
+              <IonRouterOutlet>
+                <Route exact path="/" render={(props) => <Home {...props} />} />
+                <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+                <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+              </IonRouterOutlet>
+            </IonContent>
+            <MapOverlays />
+          </ApolloProvider>
+        </IonReactRouter>
+      )}
     </IonApp>
   );
 };

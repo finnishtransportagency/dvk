@@ -29,9 +29,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const dvkMap = getMap();
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      layer.setVisible(layers.includes(dataLayer.id));
+      if (dataLayer.id !== 'restrictionarea') {
+        const layer = dvkMap.getFeatureLayer(dataLayer.id);
+        layer.setVisible(layers.includes(dataLayer.id));
+      }
     });
+    const layer = dvkMap.getFeatureLayer('speedlimit');
+    layer.setVisible(layers.includes('speedlimit'));
     setTimeout(refreshPrintableMap, 100);
   }, [layers, dvkMap]);
 
@@ -83,7 +87,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
               <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
               <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} />
-              <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
+              <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} />
               <LayerItem id="depth12" title={t('homePage.map.controls.layer.depths')} />
             </IonList>
           </IonCol>
