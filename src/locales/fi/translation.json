@@ -50,6 +50,7 @@
     }
   },
   "fairwayCards": {
+    "documentTitle": "Digitaalinen väyläkortti",
     "title_one": "Väyläkortti",
     "title_other": "Väyläkortit",
     "general": "Yleistä",
@@ -132,6 +133,7 @@
     "area": "Alue",
     "noData": "Tietoa ei ole asetettu.",
     "noRestrictions": "Ei voimassa olevia rajoituksia.",
+    "notForNavigation": "Ei navigointikäyttöön",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",

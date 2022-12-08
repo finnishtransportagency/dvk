@@ -50,6 +50,7 @@
     }
   },
   "fairwayCards": {
+    "documentTitle": "Digital Fairway Card",
     "title_one": "Fairway card",
     "title_other": "Fairway cards",
     "general": "General",
@@ -132,6 +133,7 @@
     "area": "Area",
     "noData": "Data is not available.",
     "noRestrictions": "No effective restrictions.",
+    "notForNavigation": "Not for navigational use",
     "unit": {
       "nm": "M",
       "nmDesc_one": "nautical mile",
