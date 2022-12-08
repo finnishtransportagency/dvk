@@ -931,6 +931,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonText>
           </div>
 
+          <div className="pagebreak" />
           <PrintMap
             name={data?.fairwayCard?.name || undefined}
             modified={data?.fairwayCard?.modificationTimestamp || undefined}

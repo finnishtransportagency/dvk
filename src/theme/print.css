@@ -22,10 +22,10 @@
 
   #fairwayContent {
     width: auto !important;
-    max-width: 100%;
+    max-width: unset !important;
     flex: none !important;
     position: static !important;
-    box-shadow: none;
+    box-shadow: none !important;
   }
   #mapPane {
     display: none;

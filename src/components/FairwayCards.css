@@ -310,6 +310,7 @@ ion-segment.tabs ion-label h3 {
 
 .mapWrapper {
   position: absolute;
+  bottom: 0;
   left: -9999px;
   visibility: hidden;
 }
