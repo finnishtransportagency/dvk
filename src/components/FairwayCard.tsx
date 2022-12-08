@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonBreadcrumb,
   IonBreadcrumbs,
@@ -40,7 +40,12 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
           </a>
         </>
       )}
-      {!number && showEmpty && '-'}
+      {!number && showEmpty && (
+        <>
+          {title && title + ': '}
+          {'-'}
+        </>
+      )}
     </>
   );
 };
@@ -90,7 +95,7 @@ const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   return (
-    <p className="info use-flex ion-align-items-center">
+    <p className="info use-flex ion-align-items-center no-print">
       <InfoIcon />
       {title || t('noData')}
     </p>
@@ -703,14 +708,12 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
             <h4>
               <strong>{data.name && data.name[lang]}</strong>
             </h4>
-          </IonText>
-          <IonText>
             <h5>{t('restrictions')}</h5>
             {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
           </IonText>
           <IonText>
             <h5>{t('quays')}</h5>
-            {(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}
+            <div className="printGrid">{(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}</div>
           </IonText>
           <IonText>
             <h5>{t('cargo')}</h5>
@@ -748,6 +751,10 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   });
 
   const isN2000HeightSystem = !!data?.fairwayCard?.n2000HeightSystem;
+
+  useEffect(() => {
+    document.title = t('documentTitle') + ' — ' + data?.fairwayCard?.name[lang];
+  }, [t, data, lang]);
 
   useSetSelectedFairwayCard(data);
 
@@ -792,22 +799,20 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonGrid className="ion-no-padding">
             <IonRow>
               <IonCol>
-                <IonText>
+                <IonText className="fairwayTitle">
                   <h2 className="no-margin-bottom">
                     <strong>{data?.fairwayCard?.name[lang]}</strong>
                   </h2>
-                  <small>
-                    <em>
-                      {t('modified')}{' '}
-                      {t('modifiedDate', {
-                        val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
-                      })}
-                      {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
-                    </em>
-                  </small>
+                  <em>
+                    {t('modified')}{' '}
+                    {t('modifiedDate', {
+                      val: data?.fairwayCard?.modificationTimestamp ? new Date(data?.fairwayCard?.modificationTimestamp * 1000) : '-',
+                    })}
+                    {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                  </em>
                 </IonText>
               </IonCol>
-              <IonCol size="auto" className="ion-align-self-center">
+              <IonCol size="auto" className="ion-align-self-center no-print">
                 <IonButton
                   fill="clear"
                   className="icon-only small"
@@ -819,6 +824,12 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                 >
                   <PrintIcon />
                 </IonButton>
+              </IonCol>
+              <IonCol size="auto" className="ion-align-self-end ion-text-end printable">
+                <IonText className="fairwayTitle">
+                  <h3 className="no-margin-bottom">{t('title', { count: 1 })}</h3>
+                  <em>{t('notForNavigation')}</em>
+                </IonText>
               </IonCol>
             </IonRow>
           </IonGrid>
@@ -841,89 +852,83 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonSegmentButton>
           </IonSegment>
 
-          {tab === '1' && (
-            <div className={'tabContent' + (widePane ? ' wide' : '')}>
-              <IonText className="no-margin-top">
-                <h4>
-                  <strong>{t('information')}</strong>
-                </h4>
-              </IonText>
-              <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
-              <DimensionInfo
-                data={data?.fairwayCard?.fairways}
-                designSpeedText={data?.fairwayCard?.designSpeed}
-                isN2000HeightSystem={isN2000HeightSystem}
-              />
+          <div className={'tabContent tab1' + (widePane ? ' wide' : '') + (tab === '1' ? ' active' : '')}>
+            <IonText className="no-margin-top">
+              <h4>
+                <strong>{t('information')}</strong>
+              </h4>
+            </IonText>
+            <LiningInfo data={data?.fairwayCard?.fairways} lineText={data?.fairwayCard?.lineText} />
+            <DimensionInfo
+              data={data?.fairwayCard?.fairways}
+              designSpeedText={data?.fairwayCard?.designSpeed}
+              isN2000HeightSystem={isN2000HeightSystem}
+            />
+            <IonText>
+              <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
+              <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel />
+              <Paragraph title={t('speedLimit')} bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
+              <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} inlineLabel />
+            </IonText>
+
+            <IonText>
+              <h4>
+                <strong>{t('navigation')}</strong>
+              </h4>
+              <Paragraph bodyText={data?.fairwayCard?.generalInfo || undefined} />
+              <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} showNoData />
+              <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} showNoData />
+            </IonText>
+
+            <IonText>
+              <h4>
+                <strong>
+                  {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
+                </strong>
+              </h4>
+              <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} showNoData />
+              <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} showNoData />
+              <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} showNoData />
+              <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} showNoData />
+              <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} showNoData />
+            </IonText>
+
+            <IonText>
+              <h4>
+                <strong>{t('trafficServices')}</strong>
+              </h4>
+            </IonText>
+            <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
+            {data?.fairwayCard?.trafficService?.vts?.map((vts, idx) => {
+              return <VTSInfo data={vts} key={idx} />;
+            })}
+            <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
+          </div>
+
+          <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === '2' ? ' active' : '')}>
+            {data?.fairwayCard?.harbors?.map((harbour, idx) => {
+              return <HarbourInfo data={harbour} key={idx} />;
+            })}
+            {(!data?.fairwayCard?.harbors || data?.fairwayCard?.harbors?.length === 0) && (
               <IonText>
-                <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
-                <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel />
-                <Paragraph title={t('speedLimit')} bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} inlineLabel />
+                <InfoParagraph />
               </IonText>
+            )}
+          </div>
 
-              <IonText>
-                <h4>
-                  <strong>{t('navigation')}</strong>
-                </h4>
-                <Paragraph bodyText={data?.fairwayCard?.generalInfo || undefined} />
-                <Paragraph title={t('navigationCondition')} bodyText={data?.fairwayCard?.navigationCondition || undefined} showNoData />
-                <Paragraph title={t('iceCondition')} bodyText={data?.fairwayCard?.iceCondition || undefined} showNoData />
-              </IonText>
-
-              <IonText>
-                <h4>
-                  <strong>
-                    {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
-                  </strong>
-                </h4>
-                <Paragraph title={t('windRecommendation')} bodyText={data?.fairwayCard?.windRecommendation || undefined} showNoData />
-                <Paragraph title={t('vesselRecommendation')} bodyText={data?.fairwayCard?.vesselRecommendation || undefined} showNoData />
-                <Paragraph title={t('visibilityRecommendation')} bodyText={data?.fairwayCard?.visibility || undefined} showNoData />
-                <Paragraph title={t('windGauge')} bodyText={data?.fairwayCard?.windGauge || undefined} showNoData />
-                <Paragraph title={t('seaLevel')} bodyText={data?.fairwayCard?.seaLevel || undefined} showNoData />
-              </IonText>
-
-              <IonText>
-                <h4>
-                  <strong>{t('trafficServices')}</strong>
-                </h4>
-              </IonText>
-              <PilotInfo data={data?.fairwayCard?.trafficService?.pilot} />
-              {data?.fairwayCard?.trafficService?.vts?.map((vts, idx) => {
-                return <VTSInfo data={vts} key={idx} />;
-              })}
-              <TugInfo data={data?.fairwayCard?.trafficService?.tugs} />
-            </div>
-          )}
-
-          {tab === '2' && (
-            <div className={'tabContent' + (widePane ? ' wide' : '')}>
-              {data?.fairwayCard?.harbors?.map((harbour, idx) => {
-                return <HarbourInfo data={harbour} key={idx} />;
-              })}
-              {(!data?.fairwayCard?.harbors || data?.fairwayCard?.harbors?.length === 0) && (
-                <IonText>
-                  <InfoParagraph />
-                </IonText>
-              )}
-            </div>
-          )}
-
-          {tab === '3' && (
-            <div className={'tabContent' + (widePane ? ' wide' : '')}>
-              <IonText className="no-margin-top">
-                <h5>{t('commonInformation')}</h5>
-                <GeneralInfo data={data?.fairwayCard?.fairways} />
-                <ProhibitionInfo data={data?.fairwayCard?.fairways} />
-                <h5>{t('speedLimit')}</h5>
-                <Paragraph bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
-                <h5>{t('anchorage')}</h5>
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} />
-                <h5>{t('fairwayAreas')}</h5>
-                <AreaInfo data={data?.fairwayCard?.fairways} isN2000HeightSystem />
-              </IonText>
-            </div>
-          )}
+          <div className={'tabContent tab3' + (widePane ? ' wide' : '') + (tab === '3' ? ' active' : '')}>
+            <IonText className="no-margin-top">
+              <h5>{t('commonInformation')}</h5>
+              <GeneralInfo data={data?.fairwayCard?.fairways} />
+              <ProhibitionInfo data={data?.fairwayCard?.fairways} />
+              <h5>{t('speedLimit')}</h5>
+              <Paragraph bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
+              <h5>{t('anchorage')}</h5>
+              <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} />
+              <h5>{t('fairwayAreas')}</h5>
+              <AreaInfo data={data?.fairwayCard?.fairways} />
+            </IonText>
+          </div>
         </>
       )}
     </>
