@@ -254,7 +254,7 @@ export function addAPILayers(map: Map) {
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
+  addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, 'ol-layer');
   // Haraussyvyydet
   addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
   // Turvalaitteet
