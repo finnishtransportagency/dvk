@@ -29,7 +29,11 @@ type FairwayCardGroupProps = {
 const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loading, first }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
-
+  const sorted = [...data].sort((a, b) => {
+    const nameA = a.name[lang] || '';
+    const nameB = b.name[lang] || '';
+    return nameA.localeCompare(nameB);
+  });
   return (
     <div className="group">
       <IonText className={first ? 'no-margin-top' : ''}>
@@ -43,7 +47,7 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
           <IonCol>{t('modified')}</IonCol>
         </IonRow>
         {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
-        {data.map((fairwayCard, idx) => {
+        {sorted.map((fairwayCard, idx) => {
           return (
             <IonRow key={idx} className="fairwayCards">
               <IonCol>

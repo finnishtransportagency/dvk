@@ -2,7 +2,7 @@
   "id": "kemi",
   "name": {
     "fi": "Kemin väylä",
-    "sv": "[sv] Kemin väylä",
+    "sv": "Kemi Ajos farled",
     "en": "Kemi Ajos fairway"
   },
   "n2000HeightSystem": true,
@@ -13,7 +13,7 @@
     "en": "Three lines, the innermost marked by boards."
   },
   "designSpeed": {
-    "fi": "Mitoitusnopeus ulko-osalla 12 solmua Kemi 1 – RM Hebe, haraussyvyyden muutoskohdasta satamaan 8 solmua.",
+    "fi": "Mitoitusnopeus ulko-osalla 12 solmua Kemi 1 - RM Hebe, haraussyvyyden muutoskohdasta satamaan 8 solmua.",
     "sv": "Dimensionerande fart i den yttre delen 12 knop från Kemi 1 till RM Hebe, stället där det ramade djupet ändras ända in i hamn 8 knop.",
     "en": "Design speed in the approach 12 knots, from Kemi 1 to RM Hebe, the position where the safe clearance depth alters 8 knots."
   },

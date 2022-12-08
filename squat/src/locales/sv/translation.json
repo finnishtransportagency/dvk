@@ -217,5 +217,7 @@
     "title": "Allmänt",
     "description": "Squat-kalkylator har utvecklats för att kunna värdera de krafter som olika fenomener påverkar fartyget. Squat-beräkningsresultaten ger <strong>UPPSKATTNINGAR</strong> av fartygets rörelser, vilka skall tolkas som riktgivande värden som kan stöda beslutsfattandet.",
     "thanks": "Ett tack till professor Jerzy Matusiak, för ledandet av beräkningsmodellernas utveckling och verifiering av resultaternas trovärdighet."
-  }
+  },
+  "vaylavirasto": "Trafikledsverket",
+  "meta-description": "Trafikledsverket - Squat beräkning"
 }

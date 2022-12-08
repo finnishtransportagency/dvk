@@ -28,9 +28,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const dvkMap = getMap();
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      layer.setVisible(layers.includes(dataLayer.id));
+      if (dataLayer.id !== 'restrictionarea') {
+        const layer = dvkMap.getFeatureLayer(dataLayer.id);
+        layer.setVisible(layers.includes(dataLayer.id));
+      }
     });
+    const layer = dvkMap.getFeatureLayer('speedlimit');
+    layer.setVisible(layers.includes('speedlimit'));
   }, [layers, dvkMap]);
   const LayerItem: React.FC<CheckBoxProps> = ({ id, title }) => {
     return (
@@ -80,7 +84,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
               <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
               <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} />
-              <LayerItem id="restrictionarea" title={t('homePage.map.controls.layer.speedLimits')} />
+              <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} />
               <LayerItem id="depth12" title={t('homePage.map.controls.layer.depths')} />
             </IonList>
           </IonCol>
@@ -95,7 +99,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonList lines="none" className="ion-no-padding">
               <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} />
               <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} />
-              <LayerItem id="depth3456" title={t('homePage.map.controls.layer.depths')} />
             </IonList>
           </IonCol>
         </IonRow>

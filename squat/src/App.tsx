@@ -28,12 +28,15 @@ setupIonicReact();
 
 const App: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'appUpdateAlert' });
+  const tRoot = i18n.getFixedT(i18n.language);
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
 
   document.documentElement.lang = i18n.language;
+  document.title = tRoot('homePage.header.title');
+  document.querySelector('meta[name="description"]')?.setAttribute('content', tRoot('meta-description'));
 
   const providerState = {
     state,

@@ -66,27 +66,32 @@ export class MonitoringServices extends Construct {
     const cwMetrics: DvkMetric[] = [
       { name: 'Requests', statistics: 'Sum' },
       { name: 'BytesDownloaded', statistics: 'Sum' },
-      { name: '4xxErrorRate', statistics: 'Sum' },
-      { name: '5xxErrorRate', statistics: 'Sum' },
+      { name: '4xxErrorRate', statistics: 'Average' },
+      { name: '5xxErrorRate', statistics: 'Average' },
     ];
     const cwWidgets = cwMetrics.map((metric) => this.createCloudFrontWidget(env, metric.name, metric.statistics));
     dashboard.addWidgets(...cwWidgets);
 
     // create error log widget
     const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
-    apiLambdaFunctions.map((lambda) => logGroupNames.push(`${lambda.functionName}-${env}`.toLocaleLowerCase()));
+    apiLambdaFunctions.map((lambda) => logGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()));
 
     dashboard.addWidgets(
       new cloudwatch.LogQueryWidget({
         logGroupNames: logGroupNames,
         view: cloudwatch.LogQueryVisualizationType.TABLE,
-        // The lines will be automatically combined using '\n|'.
         queryLines: [
           'fields @timestamp, @message',
           'filter @message like /ERROR/ or level like /error/ or level like /fatal/',
           'sort @timestamp desc',
           'limit 50',
         ],
+      }),
+      // Feature loader all lines
+      new cloudwatch.LogQueryWidget({
+        logGroupNames: apiLambdaFunctions.map((lambda) => `/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()),
+        view: cloudwatch.LogQueryVisualizationType.TABLE,
+        queryLines: ['fields @timestamp, @message', 'filter tag = "DVK_BACKEND"', 'sort @timestamp desc', 'limit 50'],
       })
     );
 
