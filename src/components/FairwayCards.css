@@ -131,17 +131,22 @@ button.icon:focus-visible:hover {
   display: none;
 }
 
+#fairwayCardsContainer .fairwayTitle h2 {
+  line-height: 2rem;
+}
+#fairwayCardsContainer .fairwayTitle em {
+  font-size: 12px;
+}
 #fairwayCardsContainer ion-text p {
   font-size: 12px;
   line-height: 1.125rem;
   margin-top: 0;
-  break-inside: avoid;
 }
 #fairwayCardsContainer ion-text h4 {
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
-  line-height: 1.125rem;
+  line-height: 1.5rem;
   break-after: avoid;
 }
 #fairwayCardsContainer ion-text h4 span {
@@ -167,7 +172,7 @@ button.icon:focus-visible:hover {
   background-color: var(--ion-color-light);
   cursor: default;
 }
-#fairwayCardsContainer ion-text .hoverText:focus {
+#fairwayCardsContainer ion-text .hoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
@@ -286,14 +291,27 @@ ion-segment.tabs ion-label h3 {
   font-weight: inherit;
 }
 .tabContent {
-  margin-top: 24px;
+  margin-top: 16px;
+  display: none;
 }
 .tabContent.wide {
   column-count: 2;
   column-gap: 48px;
 }
+.tabContent.active {
+  display: block;
+}
+.tabContent ion-text {
+  break-inside: avoid;
+}
 .group {
   break-inside: avoid;
+}
+
+.mapWrapper {
+  position: absolute;
+  left: -9999px;
+  visibility: hidden;
 }
 
 /* Links */
