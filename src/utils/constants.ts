@@ -17,8 +17,9 @@ export type FeatureDataLayerId =
   | 'depth3456';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
+export type SpeedLimitLayerId = 'speedlimit';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | SpeedLimitLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 

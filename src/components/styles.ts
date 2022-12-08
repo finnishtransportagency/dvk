@@ -62,6 +62,7 @@ import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import depthIcon from '../theme/img/depth.svg';
+import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import { AreaFeatureProperties } from './features';
 import { Polygon } from 'ol/geom';
 
@@ -197,6 +198,51 @@ export function getDepthStyle(feature: FeatureLike) {
         text,
         fill: new Fill({
           color: '#FFFFFF',
+        }),
+      }),
+    }),
+  ];
+}
+
+export function getSpeedLimitStyle(feature: FeatureLike) {
+  const label: string = '' + feature.getProperties().speedLimit;
+  return [
+    // To see speed limit polygons on the map uncomment following style
+    /*
+    new Style({
+      stroke: new Stroke({
+        color: 'black',
+        width: 1,
+      }),
+      fill: new Fill({
+        color: 'orange',
+      }),
+    }),
+    */
+    new Style({
+      zIndex: 100,
+      image: new Icon({
+        src: speedLimitIcon,
+        anchor: [0.5, 39],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        opacity: 1,
+      }),
+      geometry: function (feat) {
+        const geometry = feat.getGeometry() as Polygon;
+        if (geometry.getInteriorPoint) {
+          return geometry.getInteriorPoint();
+        } else {
+          return undefined;
+        }
+      },
+      text: new Text({
+        font: 'bold 12px "Exo2"',
+        placement: 'point',
+        offsetY: -27,
+        text: label,
+        fill: new Fill({
+          color: '#000000',
         }),
       }),
     }),

@@ -21,7 +21,7 @@ import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getSafetyEquipmentStyle } from './styles';
+import { getDepthStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -246,7 +246,7 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
 
   // Nopeusrajoitus
-  addFeatureLayer(map, 'restrictionarea', 15, 2, getLineStyle('purple', 2));
+  addFeatureLayer(map, 'speedlimit', 15, 2, (feature) => getSpeedLimitStyle(feature));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
