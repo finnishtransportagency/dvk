@@ -18,6 +18,6 @@ Check Fairway Card
 	Input Text    ${INPUT_FAIRWAY}   vuo
 	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaaren väylä
 	Capture Page Screenshot
