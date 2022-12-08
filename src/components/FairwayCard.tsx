@@ -22,6 +22,7 @@ import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
 import { setSelectedPilotPlace, useSetSelectedFairwayCard } from './layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../utils/constants';
+import PrintMap from './PrintMap';
 
 type PhonenumberProps = {
   number?: string | null;
@@ -929,6 +930,12 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <AreaInfo data={data?.fairwayCard?.fairways} />
             </IonText>
           </div>
+
+          <PrintMap
+            name={data?.fairwayCard?.name || undefined}
+            modified={data?.fairwayCard?.modificationTimestamp || undefined}
+            isN2000={isN2000HeightSystem}
+          />
         </>
       )}
     </>
