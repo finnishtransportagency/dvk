@@ -5,6 +5,7 @@
     "sv": "Raumo farled",
     "en": "Rauma channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Linjoja on 4.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart 12 knop i farledens yttre del (rd=14,1 m) och 10 knop i farledens inre del (rd=13,6 m).",
     "en": "Design speed in the outer channel (safe clearance depth=14.1 m) 12 knots and in the inner channel 10 knots (safe clearance depth 13.6 m)."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla voi ankkuroida Rauman majakan lounaispuolella; varottava majakan eteläpuolella olevaa kaapelia.",
-      "sv": "I farledens yttre del ankringsmöjlighet V om Raumo fyr; se upp för kabeln S om fyren.",
-      "en": "Anchorage SW of Rauma Lighthouse in the outer channel; take caution to avoid the cable situated S of the lighthouse."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla voi ankkuroida Rauman majakan lounaispuolella; varottava majakan eteläpuolella olevaa kaapelia.",
+    "sv": "I farledens yttre del ankringsmöjlighet V om Raumo fyr; se upp för kabeln S om fyren.",
+    "en": "Anchorage SW of Rauma Lighthouse in the outer channel; take caution to avoid the cable situated S of the lighthouse."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa Rihtniemeen asti on avomerta ja suojaton S-W-N tuulille. Rihtniemestä väylä jatkuu karien, saarien ja mantereen suojaamana kapeana ja tiheästi reunamerkittynä väylänä Rauma satamaan. Urmluodon linjalla Kovankivien kapeikossa saattaa esiintyä suurten alusten ohjailua vaikeuttavia poikittaisvirtauksia. Voimakkaat sivutuulet lisäävät myös sortoa.",
     "sv": "Ytter om Rihtniemi består farleden av öppet hav och är oskyddad för S-V-N vindar. Efter Rihtniemi fortsätter den smala och tätt randmärkta farleden skyddad av grund, holmar och fastlandet ända till Raumo hamn. På Urmluotolinjen i passagen vid Kovankivet kan det förekomma tvärströmning, som försvårar manövreringen av stora fartyg. Kraftiga sidovindar ökar också avdriften.",

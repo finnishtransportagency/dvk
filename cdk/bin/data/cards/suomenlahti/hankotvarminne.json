@@ -5,6 +5,7 @@
     "sv": "Farleden Hangö-Tvärminne",
     "en": "Hanko-Tvärminne channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 3 kpl jotka merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart 12,0 knop.",
     "en": "Design speed 12.0 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
-      "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
-      "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
-    }
-  ],
+  "anchorage": {
+    "fi": "Ankkuroida voi Gustavsvärnin sektoriloiston luoteispuolella olevalle Hangon 13,0 m väylän ankkurointialueelle.",
+    "sv": "Ankring på området vid Hangöleden (13,0 m) NV om Gustavsvärns sektorfyr.",
+    "en": "NW of the Gustavsvärn sector light in the anchorage area at the Hanko channel (13.0 m)."
+  },
   "generalInfo": {
     "fi": "Väylä tarjoaa ulompaan avomerireittiin nähden tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman rannikon suuntaisen reitin Hangon 13,0 m ja Lappohjan 12,0 m väylien välillä.",
     "sv": "I förhållande till den yttre rutten i öppet hav erbjuder farleden en rutt, som är mera skyddad för vind och med bättre isförhållanden under svåra isvintrar då den går parallellt med kusten mellan Hangöleden (13,0 m) och Lappviksleden (12,0 m).",

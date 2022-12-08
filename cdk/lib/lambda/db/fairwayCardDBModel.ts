@@ -78,6 +78,8 @@ class FairwayCardDBModel {
 
   name?: Text;
 
+  n2000HeightSystem?: boolean;
+
   modificationTimestamp?: number;
 
   group?: string;
@@ -90,7 +92,7 @@ class FairwayCardDBModel {
 
   generalInfo?: Text;
 
-  anchorage?: Text[];
+  anchorage?: Text;
 
   navigationCondition?: Text;
 
@@ -98,7 +100,7 @@ class FairwayCardDBModel {
 
   attention?: Text;
 
-  speedLimit?: Text[];
+  speedLimit?: Text;
 
   visibility?: Text;
 

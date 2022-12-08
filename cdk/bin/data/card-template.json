@@ -16,13 +16,11 @@
     "sv": "",
     "en": ""
   },
-  "anchorage":[
-    {
+  "anchorage": {
       "fi": "",
       "sv": "",
       "en": ""
-    }
-  ],
+  },
   "generalInfo": {
     "fi": "",
     "sv": "",
@@ -43,13 +41,11 @@
     "sv": "",
     "en": ""
   },
-  "speedLimit": [
-    {
-      "fi": "",
-      "sv": "",
-      "en": ""
-    }
-  ],
+  "speedLimit": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
   "visibility": {
     "fi": "",
     "sv": "",

@@ -11,6 +11,7 @@ type Query {
 type FairwayCard {
   id: ID!
   name: Text!
+  n2000HeightSystem: Boolean!
   group: String
   modificationTimestamp: Int
   fairwayIds: String
@@ -18,11 +19,11 @@ type FairwayCard {
   lineText: Text
   designSpeed: Text
   generalInfo: Text
-  anchorage: [Text]
+  anchorage: Text
   navigationCondition: Text
   iceCondition: Text
   attention: Text
-  speedLimit: [Text]
+  speedLimit: Text
   visibility: Text
   windGauge: Text
   vesselRecommendation: Text

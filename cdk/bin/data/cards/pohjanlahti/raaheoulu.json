@@ -5,6 +5,7 @@
     "sv": "Kustleden Brahestad-Uleåborg-Kemi",
     "en": "Coastal fairway Raahe-Oulu-Kemi"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 9 kpl.",

@@ -5,6 +5,7 @@
     "sv": "Sköldviksleden",
     "en": "Sköldvik channel"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 7, merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart i den inre delen av farleden 12 knop.",
     "en": "Vessel speed 12 knots in the inner channel."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla on ankkurointialue Kalbådagrundin luoteispuolella. Sisäosalla on suojaisa ankkurointialue Kalvön saaren pohjoispuolella n. 4,5 km ennen satamaa. Myös satama-alueella on ankkurointialue. Öljysäiliöalusten välisiin öljylastin siirtoihin (STS-siirto) on nimetty Kalbådagrundin ankkurointialueen sisällä erillinen rajattu alue sekä Kalvön pohjoispuolen ankkurointialueen mukainen alue.",
-      "sv": "Ankringsområde i farledens yttre del, NV om Kalbådagrund. I den inre delen finns ett skyddat ankringsområde N om Kalvön, ca 4,5 km före hamn. Ett ankringsområde finns också i hamnområdet. För överföring av oljelast mellan oljetankfartyg (STS-operation) har utsetts ett separat avgränsat område inom Kalbådagrunds ankringsområde samt området som motsvarar ankringsområdet norr om Kalvön.",
-      "en": " In the outer channel there is an anchorage area NW of Kalbådagrund, in the inner channel a sheltered anchorage area N of Kalvön, approx. 4.5 km before arrival into port. Anchorage area also in the harbour. The following areas have been designated for ship-to-ship transfers of oil cargo between oil tankers (STS transfers): a separately defined area inside Kalbådagrund anchorage area and an area inside the anchorage area on the northern side of Kalvö."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla on ankkurointialue Kalbådagrundin luoteispuolella. Sisäosalla on suojaisa ankkurointialue Kalvön saaren pohjoispuolella n. 4,5 km ennen satamaa. Myös satama-alueella on ankkurointialue. Öljysäiliöalusten välisiin öljylastin siirtoihin (STS-siirto) on nimetty Kalbådagrundin ankkurointialueen sisällä erillinen rajattu alue sekä Kalvön pohjoispuolen ankkurointialueen mukainen alue.",
+    "sv": "Ankringsområde i farledens yttre del, NV om Kalbådagrund. I den inre delen finns ett skyddat ankringsområde N om Kalvön, ca 4,5 km före hamn. Ett ankringsområde finns också i hamnområdet. För överföring av oljelast mellan oljetankfartyg (STS-operation) har utsetts ett separat avgränsat område inom Kalbådagrunds ankringsområde samt området som motsvarar ankringsområdet norr om Kalvön.",
+    "en": " In the outer channel there is an anchorage area NW of Kalbådagrund, in the inner channel a sheltered anchorage area N of Kalvön, approx. 4.5 km before arrival into port. Anchorage area also in the harbour. The following areas have been designated for ship-to-ship transfers of oil cargo between oil tankers (STS transfers): a separately defined area inside Kalbådagrund anchorage area and an area inside the anchorage area on the northern side of Kalvö."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa luotsipaikalta Emäsalon eteläkärkeen on avomerta ja suojaton ES-W tuulille. Emäsalon eteläkärjestä väylä jatkuu mantereen ja saariston suojaamana Sköldvikin satamaan. Väylän kapein kohta, leveydeltään 270 m, sijaitsee Prästuddenin länsipuolella. Maksimikulkusyvyydellä kulkevien alusten on ohjailussa huomioitava mahdollinen imuvaikutus.",
     "sv": "Farledens yttre del från lotsplatsen ända till Emsalö sydspets består av öppet hav och är oskyddat för O-S-V vindar. Avsnittet från sydspetsen av Emsalö till hamnen skyddas av fastlandet och skärgården. Det smalaste stället är 270 m brett och beläget V om Prästudden. Fartyg med maximalt djupgående bör beakta sugeffekten.",

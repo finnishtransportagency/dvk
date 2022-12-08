@@ -100,7 +100,7 @@ const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
 type FairwaysProps = {
   data?: Fairway[] | null;
   lineText?: Text | null;
-  anchorageTexts?: (Text | null)[] | null;
+  anchorageText?: Text | null;
   designSpeedText?: Text | null;
   isN2000HeightSystem?: boolean;
   inlineLabel?: boolean;
@@ -181,14 +181,18 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
   const designDraftValues = [
     ...Array.from(
       new Set(
-        data?.flatMap((fairway) => fairway.areas?.map((area) => (area.n2000draft || area.draft)?.toLocaleString())).filter((val) => val !== undefined)
+        data
+          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString()))
+          .filter((val) => val !== undefined)
       )
     ),
   ];
   const sweptDepthValues = [
     ...Array.from(
       new Set(
-        data?.flatMap((fairway) => fairway.areas?.map((area) => (area.n2000depth || area.depth)?.toLocaleString())).filter((val) => val !== undefined)
+        data
+          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000depth : area.depth)?.toLocaleString()))
+          .filter((val) => val !== undefined)
       )
     ),
   ];
@@ -322,14 +326,14 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
     </>
   );
 };
-const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageTexts }) => {
+const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageText }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   const anchorageAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 2)) || [];
 
   return (
     <>
-      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyTextList={anchorageTexts} showNoData={anchorageAreas.length > 0} />
+      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyText={anchorageText || undefined} showNoData={anchorageAreas.length > 0} />
       <p>
         {anchorageAreas.map((area, i) => (
           <span key={i}>
@@ -373,7 +377,7 @@ const GeneralInfo: React.FC<FairwaysProps> = ({ data }) => {
   );
 };
 
-const AreaInfo: React.FC<FairwaysProps> = ({ data }) => {
+const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   const fairwayAreas = data?.flatMap((fairway) => fairway.areas) || [];
@@ -401,13 +405,13 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data }) => {
               )}
             </em>
             <br />
-            {t('designDraft', { count: 1 })}: {(area?.n2000draft || area?.draft)?.toLocaleString() || '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(area?.n2000draft || area?.draft) })} role="definition">
+            {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() || '-'}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
               m
             </span>
             <br />
-            {t('sweptDepth', { count: 1 })}: {(area?.n2000depth || area?.depth)?.toLocaleString() || '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(area?.n2000depth || area?.depth) })} role="definition">
+            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() || '-'}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })} role="definition">
               m
             </span>
             {sizingSpeeds.length > 0 && (
@@ -743,8 +747,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     },
   });
 
-  const primaryFairway = data?.fairwayCard?.fairways.find((fairway) => fairway.primary);
-  const isN2000HeightSystem = typeof primaryFairway?.navigationLines?.find((line) => line.n2000ReferenceLevel === 'N2000') == 'object';
+  const isN2000HeightSystem = !!data?.fairwayCard?.n2000HeightSystem;
 
   useSetSelectedFairwayCard(data);
 
@@ -854,8 +857,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <IonText>
                 <Paragraph title={t('attention')} bodyText={data?.fairwayCard?.attention || undefined} />
                 <ProhibitionInfo data={data?.fairwayCard?.fairways} inlineLabel />
-                <Paragraph title={t('speedLimit')} bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} inlineLabel />
+                <Paragraph title={t('speedLimit')} bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
+                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} inlineLabel />
               </IonText>
 
               <IonText>
@@ -913,11 +916,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                 <GeneralInfo data={data?.fairwayCard?.fairways} />
                 <ProhibitionInfo data={data?.fairwayCard?.fairways} />
                 <h5>{t('speedLimit')}</h5>
-                <Paragraph bodyTextList={data?.fairwayCard?.speedLimit} showNoData />
+                <Paragraph bodyText={data?.fairwayCard?.speedLimit || undefined} showNoData />
                 <h5>{t('anchorage')}</h5>
-                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageTexts={data?.fairwayCard?.anchorage} />
+                <AnchorageInfo data={data?.fairwayCard?.fairways} anchorageText={data?.fairwayCard?.anchorage} />
                 <h5>{t('fairwayAreas')}</h5>
-                <AreaInfo data={data?.fairwayCard?.fairways} />
+                <AreaInfo data={data?.fairwayCard?.fairways} isN2000HeightSystem />
               </IonText>
             </div>
           )}

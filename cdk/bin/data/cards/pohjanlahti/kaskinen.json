@@ -5,6 +5,7 @@
     "sv": "Kasköleden",
     "en": "Kaskinen channel"
   },
+  "n2000HeightSystem": false,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4, jotka merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart vid grunden i yttre delen 12 knop, på hamnlinjen i inre delen 9 knop.",
     "en": "Vessel speed when passing shoals in the outer part 12 knots, on the harbour line in the inner part 9 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla voi ankkuroida Västra Mössbådanin valopoijusta 0,5 mpk länteen olevalla alueella. Väylän sisäosalla Sälgrundin itäpuolella sataman linjan alkupäässä voi ohittaa ja ankkuroida lyhytaikaisesti.",
-      "sv": "I yttre delen ett område ca 0,5 M V om lysbojen Västra Mössbådan, i inre delen ett område O om Sälgrund i början av hamnlinjen (för passage och kortvarig ankring).",
-      "en": "Anchorage in the outher part in an area approx. 0.5 nautical miles W of the light-buoy Västra Mössbådan, in the inner part in an area E of Sälgrund at the beginning of the harbour line (for passage and short-term anchorage)."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla voi ankkuroida Västra Mössbådanin valopoijusta 0,5 mpk länteen olevalla alueella. Väylän sisäosalla Sälgrundin itäpuolella sataman linjan alkupäässä voi ohittaa ja ankkuroida lyhytaikaisesti.",
+    "sv": "I yttre delen ett område ca 0,5 M V om lysbojen Västra Mössbådan, i inre delen ett område O om Sälgrund i början av hamnlinjen (för passage och kortvarig ankring).",
+    "en": "Anchorage in the outher part in an area approx. 0.5 nautical miles W of the light-buoy Västra Mössbådan, in the inner part in an area E of Sälgrund at the beginning of the harbour line (for passage and short-term anchorage)."
+  },
   "navigationCondition": {
     "fi": "Väylän ulko-osa luotsipaikalta Sälgrundin eteläkärkeen on avomerta ja suojaton E - L - P tuulilla, erityisesti voimakkaat etelä- ja länsituulet vaikeuttavat navigointia. Sälgrundista väylä jatkuu karien, saarien ja mantereen suojaamana satamaan.",
     "sv": "Ledens yttre del, från lotsplatsen till Sälgrunds sydspets, är öppen sjö och känslig för vindar från syd, väst och nord. I synnerhet kraftiga sydliga och västliga vindar kan försvåra navigeringen. Från Sälgrund fortsätter leden in till djuphamnen i skydd av grund, holmar och fastland.",

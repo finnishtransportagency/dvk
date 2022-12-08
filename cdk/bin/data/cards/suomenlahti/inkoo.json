@@ -5,31 +5,28 @@
     "sv": "Ingåleden",
     "en": "Inkoo fairway"
   },
+  "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
     "fi": "Linjoja 6 kpl, merkitty linjatauluin.",
     "sv": "6 farledslinjer, utmärkta med enstavlor.",
     "en": "6 navigation lines, marked by boards."
   },
-  "anchorage":[
-    {
-      "fi": "Väylän ulko-osalla voi ankkuroida Hästenin sektoriloiston kaakkoispuolella olevalle ankkurointialueelle.",
-      "sv": "Ankring möjlig på ankringsområdet i farledens yttre del, SO om Häststen sektorfyr.",
-      "en": "Anchorage possible in the outer part of the fairway, in the anchorage area SE of the sector light Häststen."
-    }
-  ],
+  "anchorage": {
+    "fi": "Väylän ulko-osalla voi ankkuroida Hästenin sektoriloiston kaakkoispuolella olevalle ankkurointialueelle.",
+    "sv": "Ankring möjlig på ankringsområdet i farledens yttre del, SO om Häststen sektorfyr.",
+    "en": "Anchorage possible in the outer part of the fairway, in the anchorage area SE of the sector light Häststen."
+  },
   "iceCondition": {
     "fi": "Väylä on avoin lähes koko talven.",
     "sv": "Farleden är öppen så gott som hela vintern.",
     "en": "The fairway is open almost throughout the year."
   },
-  "speedLimit": [
-    {
-      "fi": "Varaveden takia suositeltavat nopeudet ruopatuilla alueilla ovat: Fagervikinlahdella alle 18,5 km/h ja Jakob Ramsjön saaren eteläkärjen kohdalla n. 15 km/h.",
-      "sv": "På grund av djupmarginalen rekommenderas följande hastigheter inom de muddrade områdena: Max. 18,5 km/h i Fagerviken och ca 15 km/h vid Jakob Ramsjös sydspets.",
-      "en": "To maintain a safe underkeel clearance, the recommended speeds in dredged areas are: Bay of Fagervik, max. 18.5 km/h, and at the south end of the isle Jakob Ramsjö approx. 15 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Varaveden takia suositeltavat nopeudet ruopatuilla alueilla ovat: Fagervikinlahdella alle 18,5 km/h ja Jakob Ramsjön saaren eteläkärjen kohdalla n. 15 km/h.",
+    "sv": "På grund av djupmarginalen rekommenderas följande hastigheter inom de muddrade områdena: Max. 18,5 km/h i Fagerviken och ca 15 km/h vid Jakob Ramsjös sydspets.",
+    "en": "To maintain a safe underkeel clearance, the recommended speeds in dredged areas are: Bay of Fagervik, max. 18.5 km/h, and at the south end of the isle Jakob Ramsjö approx. 15 km/h."
+  },
   "visibility": {
     "fi": "Päivän valo ja näkyvyys vähintään 4 km.",
     "sv": "Dagsljus och minst 4 km sikt.",

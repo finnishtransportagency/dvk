@@ -5,6 +5,7 @@
     "sv": "Farleden Skiftet-Mariehamn",
     "en": "Kihti-Maarianhamina channel"
   },
+  "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
     "fi": "Merkitty linjatauluin ja sektoriloistoin.",
@@ -21,13 +22,11 @@
     "sv": "I farledens inre del från Skiftet till Rödhamnsfjärden bildas under normala vintrar ca. 10-60cm tjock fast is, men pga. den livliga trafiken hålls farleden vanligtvis lättframkomlig hela vintern. I slutdelen av farleden från Rödhamnsfjärden till Mariehamn är isförhållande varierande; ibland bildas ingen is, ibland rör sig isarna och bojarna kan vara under isen.",
     "en": "In normal winters, 10-60 cm thick fast ice forms on the inner channel from Kihti to Rödhamnsfjärden, but due to heavy traffic it usually remains easily passable throughout the winter. The channel's end section from Rödhamnsfjärden to Mariehamn has varying ice conditions; occasionally ice does not form at all, but sometimes the ice moves and buoys may be under the ice."
   },
-  "speedLimit": [
-    {
-      "fi": "Maarianhaminan satamassa 17 km/h.",
-      "sv": "I Mariehamns hamn, 17 km/h.",
-      "en": "In Mariehamn harbour, the speed limit is 17 km/h."
-    }
-  ],
+  "speedLimit": {
+    "fi": "Maarianhaminan satamassa 17 km/h.",
+    "sv": "I Mariehamns hamn, 17 km/h.",
+    "en": "In Mariehamn harbour, the speed limit is 17 km/h."
+  },
   "windGauge": {
     "fi": "Korsössä.",
     "sv": "Korsö.",

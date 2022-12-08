@@ -5,6 +5,7 @@
     "sv": "Torneå Röyttä farled",
     "en": "Tornio Röyttä fairway"
   },
+  "n2000HeightSystem": true,
   "group": "3",
   "lineText": {
     "fi": "Linjoja on 4 kpl, merkitty linjatauluin.",
@@ -16,13 +17,11 @@
     "sv": "Dimensionerande fart i angöringen 11 knop och i inloppet 6 knop).",
     "en": "Design speed in the approach 11 knots and in the entrance 6 knots."
   },
-  "anchorage":[
-    {
-      "fi": "Pohjoiskraaselin kohdalla on levennys ankkurointia ja ohittamista varten, syvyys -18 m mutapohja. Väylällä on kääntö- ja ohittamispaikka Lehtikari saaren kohdalla, halkaisija 550 m, syvyys -11,6 m, mutapohja.",
-      "sv": "Vid Pohjoiskraaseli är farleden breddad för ankring och passage, djup -18 m, gyttjebotten. I leden vid ön Lehtikari finns utrymme för att svänga och passera, diameter 550 m, djup -11,6 m, gyttjebotten.",
-      "en": "At Pohjoiskraaseli the fairway has been broadened for anchoring and passing, depth -18 m mud seabed. At Lehtikari island there is room for turning and passing, diameter 550 m, depth -11,6 mud seabed."
-    }
-  ],
+  "anchorage": {
+    "fi": "Pohjoiskraaselin kohdalla on levennys ankkurointia ja ohittamista varten, syvyys -18 m mutapohja. Väylällä on kääntö- ja ohittamispaikka Lehtikari saaren kohdalla, halkaisija 550 m, syvyys -11,6 m, mutapohja.",
+    "sv": "Vid Pohjoiskraaseli är farleden breddad för ankring och passage, djup -18 m, gyttjebotten. I leden vid ön Lehtikari finns utrymme för att svänga och passera, diameter 550 m, djup -11,6 m, gyttjebotten.",
+    "en": "At Pohjoiskraaseli the fairway has been broadened for anchoring and passing, depth -18 m mud seabed. At Lehtikari island there is room for turning and passing, diameter 550 m, depth -11,6 mud seabed."
+  },
   "navigationCondition": {
     "fi": "Väylä on yksikaistainen, jossa on levennykset Pohjoiskraaselin ja Lehtikarin kohdalla ankkurointia, ohittamista ja kohtaamista varten. Väli Kemi 2 (karttaliitteen ulkopuolella) - RM Pohjantähti on avomerta ja suojaton etelänpuoleisille tuulille. Keilakrunnissa on 158 m leveä kapeikko. Väylän loppuosa on ruopattua kaivantoa 2 mpk pituudelta ennen satama-allasta, leveys 120 m. Sisäosalla ja satamassa ei pääse syntymään mainittavaa aallokkoa, mutta kova tuuli ja Tornionjoen virtaukset voivat vaikuttaa alusten ohjailuun.",
     "sv": "Farleden har ett trafikstråk, men är breddad för ankring, passage och mötande trafik vid Pohjoiskraaseli och Lehtikari. Avsnittet Kemi 2 (utanför kartbilagan) - RM Pohjantähti är öppen sjö och oskyddad för S vind. Vid Keilakrunni finns en trång passage, 158 m. Ett avsnitt på 2 M av farledens innersta del före hamnbassängen är muddrat, bredd 120 m. I inloppet och i hamnen uppstår det ingen nämnvärd sjögång, men hård vind och strömmen från Torne älv kan inverka på manövreringen av fartygen.",
