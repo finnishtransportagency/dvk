@@ -94,7 +94,7 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
           <IonItem slot="header" color="lightest" className="accItem">
             <IonLabel>{t('general')}</IonLabel>
           </IonItem>
-          <div className={'tabContent' + (widePane ? ' wide' : '')} slot="content">
+          <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} slot="content">
             <IonText>
               <p>
                 <strong>{t('description')}</strong>
@@ -108,7 +108,7 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
         </IonAccordion>
       </IonAccordionGroup>
 
-      <div className={'tabContent' + (widePane ? ' wide' : '')}>
+      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
         <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} first />
         <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
         <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
