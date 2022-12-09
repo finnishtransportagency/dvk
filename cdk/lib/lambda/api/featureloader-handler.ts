@@ -7,7 +7,7 @@ import { gzip } from 'zlib';
 import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TurvalaiteAPIModel } from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
-import HarborDBModel, { Quay } from '../db/harborDBModel';
+import HarborDBModel from '../db/harborDBModel';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -22,57 +22,6 @@ const gzipString = async (input: string): Promise<Buffer> => {
     })
   );
 };
-
-function addQuay(harbor: HarborDBModel, quay: Quay, features: Feature<Geometry, GeoJsonProperties>[]) {
-  if (quay.geometry) {
-    const depth = quay.sections?.map((s) => s.depth).filter((v) => v !== undefined && v > 0);
-    features.push({
-      type: 'Feature',
-      geometry: quay.geometry as Geometry,
-      properties: {
-        featureType: 'quay',
-        quay: quay.name,
-        extraInfo: quay.extraInfo,
-        length: quay.length,
-        depth,
-        email: harbor.email,
-        phoneNumber: harbor.phoneNumber,
-        fax: harbor.fax,
-        internet: harbor.internet,
-      },
-    });
-  } else {
-    for (const section of quay.sections || []) {
-      if (section.geometry) {
-        features.push({
-          type: 'Feature',
-          geometry: section.geometry as Geometry,
-          properties: {
-            featureType: 'quay',
-            quay: quay.name,
-            extraInfo: quay.extraInfo,
-            length: quay.length,
-            name: section.name,
-            depth: section.depth ? [section.depth] : undefined,
-            email: harbor.email,
-            phoneNumber: harbor.phoneNumber,
-            fax: harbor.fax,
-            internet: harbor.internet,
-          },
-        });
-      }
-    }
-  }
-}
-
-async function addQuayFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const harbors = await HarborDBModel.getAll();
-  for (const harbor of harbors || []) {
-    for (const quay of harbor.quays || []) {
-      addQuay(harbor, quay, features);
-    }
-  }
-}
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAll();
@@ -332,9 +281,6 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     }
     if (types.includes('harbor')) {
       await addHarborFeatures(features);
-    }
-    if (types.includes('quay')) {
-      await addQuayFeatures(features);
     }
     if (types.includes('area')) {
       await addAreaFeatures(features, true, event);

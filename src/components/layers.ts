@@ -13,8 +13,8 @@ import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { useEffect } from 'react';
-import { FindFairwayCardByIdQuery } from '../graphql/generated';
-import { FeatureLayerId, Lang } from '../utils/constants';
+import { FindFairwayCardByIdQuery, HarborPartsFragment, Quay, Section } from '../graphql/generated';
+import { FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
@@ -22,6 +22,7 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getDepthStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
+import { GeoJSON } from 'ol/format';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -273,6 +274,7 @@ export function unsetSelectedFairwayCard() {
   const line3456Source = dvkMap.getVectorSource('line3456');
   const area12Source = dvkMap.getVectorSource('area12');
   const area3456Source = dvkMap.getVectorSource('area3456');
+  const quaySource = dvkMap.getVectorSource('quay');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
@@ -293,6 +295,58 @@ export function unsetSelectedFairwayCard() {
     }
   }
   selectedFairwayCardSource.clear();
+  quaySource.clear();
+}
+
+function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
+  const depth = quay.sections?.map((s) => s?.depth || 0).filter((v) => v !== undefined && v > 0);
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setProperties({
+    featureType: 'quay',
+    harbor: harbor.id,
+    quay: quay.name,
+    extraInfo: quay.extraInfo,
+    length: quay.length,
+    depth,
+    email: harbor.email,
+    phoneNumber: harbor.phoneNumber,
+    fax: harbor.fax,
+    internet: harbor.internet,
+  });
+  features.addFeature(feature);
+}
+
+function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setProperties({
+    featureType: 'quay',
+    harbor: harbor.id,
+    quay: quay.name,
+    extraInfo: quay.extraInfo,
+    length: quay.length,
+    name: section.name,
+    depth: section.depth ? [section.depth] : undefined,
+    email: harbor.email,
+    phoneNumber: harbor.phoneNumber,
+    fax: harbor.fax,
+    internet: harbor.internet,
+  });
+  features.addFeature(feature);
+}
+
+function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
+  const format = new GeoJSON();
+  for (const quay of harbor.quays || []) {
+    if (quay && quay.geometry) {
+      addQuayFeature(harbor, quay, features, format);
+    } else {
+      for (const section of quay?.sections || []) {
+        if (quay && section && section.geometry) {
+          addSectionFeature(harbor, quay, section, features, format);
+        }
+      }
+    }
+  }
 }
 
 export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {
@@ -303,6 +357,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       const line3456Source = dvkMap.getVectorSource('line3456');
       const area12Source = dvkMap.getVectorSource('area12');
       const area3456Source = dvkMap.getVectorSource('area3456');
+      const quaySource = dvkMap.getVectorSource('quay');
       const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
       unsetSelectedFairwayCard();
@@ -340,6 +395,10 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
             }
           }
         }
+      }
+
+      for (const harbor of data?.fairwayCard?.harbors || []) {
+        addQuay(harbor, quaySource);
       }
 
       selectedFairwayCardSource.addFeatures(fairwayFeatures);
