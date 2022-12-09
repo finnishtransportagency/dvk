@@ -26,6 +26,12 @@ import { addAPILayers } from './layers';
 import { RouteComponentProps } from 'react-router-dom';
 import VectorSource from 'ol/source/Vector';
 import Layer from 'ol/layer/Layer';
+import finlandGeojson from '../geodata//finland.json';
+import balticseaGeojson from '../geodata//balticsea.json';
+import VectorLayer from 'ol/layer/Vector';
+import { GeoJSON } from 'ol/format';
+import Style from 'ol/style/Style';
+import Fill from 'ol/style/Fill';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -148,7 +154,7 @@ class DvkMap {
   }
 
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string) => {
+  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
@@ -156,15 +162,6 @@ class DvkMap {
         return 'Exo2';
       });
     };
-
-    olMap
-      .getLayers()
-      .getArray()
-      .forEach((layer) => {
-        if (layer.get('type') === 'background') {
-          olMap.removeLayer(layer);
-        }
-      });
 
     const backLayers: Array<VectorTileLayer> = [];
 
@@ -195,7 +192,6 @@ class DvkMap {
         declutter: true,
         className: 'bg-layer',
         source,
-        background: bgColor,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'background');
@@ -204,16 +200,44 @@ class DvkMap {
 
     const mapLayers = olMap.getLayers();
 
+    const finlandLayer = new VectorLayer({
+      source: new VectorSource({
+        features: new GeoJSON().readFeatures(finlandGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }),
+      }),
+      background: '#cccccc',
+      style: new Style({
+        fill: new Fill({
+          color: bgColor,
+        }),
+      }),
+    });
+    finlandLayer.set('type', 'background');
+    mapLayers.setAt(0, finlandLayer);
+
+    const balticseaLayer = new VectorLayer({
+      source: new VectorSource({
+        features: new GeoJSON().readFeatures(balticseaGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }),
+      }),
+      style: new Style({
+        fill: new Fill({
+          color: waterColor,
+        }),
+      }),
+    });
+    finlandLayer.set('type', 'background');
+    mapLayers.setAt(1, balticseaLayer);
+
     backLayers.forEach((layer, index) => {
-      mapLayers.insertAt(index, layer);
+      // Finland and baltic sea layers mus be behind this so "index + 2"
+      mapLayers.setAt(index + 2, layer);
     });
   };
 
   public setBackGroundMapType = (bgMapType: BackgroundMapType) => {
     if (this.olMap && bgMapType === 'sea') {
-      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf');
+      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
     } else if (this.olMap && bgMapType === 'land') {
-      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff');
+      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)');
     }
   };
 

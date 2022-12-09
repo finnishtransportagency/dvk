@@ -2942,6 +2942,18 @@
       }
     },
     {
+      "id": "valtakunnan_raja",
+      "type": "line",
+      "source": "taustakartta",
+      "source-layer": "hallintoalue",
+      "filter": ["==", "kohdeluokka", 651],
+      "layout": {"visibility": "visible"},
+      "paint": {
+        "line-color": "#000",
+        "line-width": 2
+      }
+    },
+    {
       "id": "nimisto_kunnat",
       "type": "symbol",
       "source": "taustakartta",
