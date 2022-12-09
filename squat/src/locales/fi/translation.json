@@ -82,7 +82,7 @@
         "clearance-for-other-motions": "Muu liikevara",
         "reliability-issue-block-coefficient": "Aluksen muotokertoimen raja-arvo ylittyy;",
         "reliability-issue-froude-number": "Frouden luvun raja-arvo ylittyy;",
-        "wave-amplitude-info-title": "Aallokon aiheuttaman alusliikkeet",
+        "wave-amplitude-info-title": "Aallokon aiheuttamat alusliikkeet",
         "wave-amplitude-info": "Amplitudi = Aluksen vaste-amplitudioperaattori × aaltoluku × aallonkorkeus × aluksen pituus BPP ÷ 4",
         "swept-depth-info-title": "Haraussyvyys ja vallitseva vedenkorkeus",
         "swept-depth-info": "Haraussyvyys ja vallitseva vedenkorkeus tulee syöttää järjestelmään samassa formaatissa. Joko N2000 tai teoreettinen keskivesi."
