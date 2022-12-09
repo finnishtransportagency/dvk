@@ -3,7 +3,7 @@
     "header": {
       "title": "Squat Calculation",
       "shareable-link-title": "Create a shareable link",
-      "shareable-link-body": "Below is a a link that you can use to share you're calculations' current status to anyone.",
+      "shareable-link-body": "Below is a link that you can use to share your calculations' current status.",
       "copy-to-clipboard": "Copy to clipboard",
       "copied-to-clipboard": "Copied to clipboard!",
       "print": "Print page"
@@ -115,6 +115,9 @@
         "shallow-water-values": "Shallow Water",
         "UKC-vessel-motions": "UKC Vessel Motions",
         "vessel-motions-assumptions": "Vessel Motions Assumptions",
+        "vessel-motions-assumption-1": "The highest motion is due to pitch in head and folloving long crested waves",
+        "vessel-motions-assumption-2": "Head and following waves are considered only",
+        "vessel-motions-assumption-3": "Water depth to draft ration is approximately 1,2",
         "UKC-straight-course": "UKC Straight Course",
         "UKC-during-turn": "UKC During Turn",
         "UKC-under-required-minimum": "UKC Under Required Minimum",
@@ -139,11 +142,11 @@
       "xAxisLabel": "Speed (kts)",
       "yAxisLabel": "Squat (m)",
       "levels": {
-        "bottom": "Bottom",
-        "underSweptDepth": "Water under Swept Depth",
-        "netUKC": "UKC",
-        "otherMovement": "Other movement spare",
-        "squat": "Squat"
+        "bottom": "Bottom/channel bed level",
+        "underSweptDepth": "Water under safe clearance level",
+        "netUKC": "Net underkeel clearance",
+        "otherMovement": "Clearance for other motions",
+        "squat": "Clearance for squat"
       },
       "legends": {
         "squatHG20": "Huuska/Guliev C₀ = 2,0: squat Sₘₐₓ",
