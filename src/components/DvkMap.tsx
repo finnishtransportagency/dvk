@@ -253,6 +253,18 @@ class DvkMap {
     this.searchbarControl?.setMap(null);
   };
 
+  public addLayerPopupControl = () => {
+    this.layerPopupControl?.setMap(this.olMap);
+  };
+
+  public addCenterToOwnLocationControl = () => {
+    this.centerToOwnLocationControl?.setMap(this.olMap);
+  };
+
+  public addZoomControl = () => {
+    this.zoomControl?.setMap(this.olMap);
+  };
+
   public setTarget = (target: HTMLElement | string | undefined) => {
     this.olMap?.setTarget(target);
     if (target !== undefined) {
