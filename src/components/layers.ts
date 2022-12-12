@@ -57,7 +57,7 @@ function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number)
   ];
 }
 
-function getAreaStyle(color: string, width: number, fillColor: string) {
+export function getAreaStyle(color: string, width: number, fillColor: string) {
   return new Style({
     stroke: new Stroke({
       color,

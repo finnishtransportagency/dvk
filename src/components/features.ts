@@ -41,4 +41,13 @@ export type AreaFeatureProperties = {
   depth?: number;
   n2000depth?: number;
   n2000draft?: number;
+  fairways?: AreaFairway[];
+};
+
+type AreaFairway = {
+  id: number;
+  name: Text;
+  sizingSpeed?: number;
+  sizingSpeed2?: number;
+  fairwayCards?: Card[];
 };

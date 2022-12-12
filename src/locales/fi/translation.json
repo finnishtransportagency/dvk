@@ -172,6 +172,10 @@
       "phoneNumber": "Puhelin",
       "internet": "Verkkosivu",
       "extra": "Lisätieto"
+    },
+    "area": {
+      "header": "{{val}}",
+      "fairways": "Väyläalue on osa väylää"
     }
   },
   "common": {

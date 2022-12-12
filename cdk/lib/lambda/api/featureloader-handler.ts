@@ -2,7 +2,7 @@ import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayCardIdName, PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TurvalaiteAPIModel } from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
@@ -74,6 +74,16 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 }
 
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+  const cardMap = new Map<number, FairwayCardIdName[]>();
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    for (const id of card.fairways.map((f) => f.id)) {
+      if (!cardMap.has(id)) {
+        cardMap.set(id, []);
+      }
+      cardMap.get(id)?.push({ id: card.id, name: card.name });
+    }
+  }
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
@@ -104,6 +114,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
+            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,

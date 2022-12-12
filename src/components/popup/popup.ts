@@ -8,7 +8,7 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle } from '../layers';
+import { getQuayStyle, getPilotStyle, getAreaStyle } from '../layers';
 import dvkMap from '../DvkMap';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -23,7 +23,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay'];
+  const types = ['pilot', 'quay', 'area'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -56,7 +56,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
             properties: feature.getProperties(),
           },
         });
-        overlay.setPosition((feature.getGeometry() as SimpleGeometry).getCoordinates() as number[]);
+        overlay.setPosition(evt.coordinate);
       }
     } else {
       overlay.setPosition(undefined);
@@ -64,16 +64,22 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     }
   });
   const style = function (feature: FeatureLike) {
-    if (feature.getProperties().featureType === 'quay') {
+    const type = feature.getProperties().featureType;
+    if (type === 'quay') {
       return getQuayStyle(feature, true);
+    } else if (type === 'pilot') {
+      return getPilotStyle(true);
+    } else if (type === 'area') {
+      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+    } else {
+      return undefined;
     }
-    return getPilotStyle(true);
   };
 
   const pointerMoveSelect = new Select({
     condition: pointerMove,
     style,
-    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('quay')],
+    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('quay'), dvkMap.getFeatureLayer('area12')],
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;

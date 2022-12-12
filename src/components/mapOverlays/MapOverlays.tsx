@@ -10,10 +10,12 @@ import { useTranslation } from 'react-i18next';
 import { filterFairways } from '../../utils/common';
 import { Lang } from '../../utils/constants';
 import { MobileModal } from './MobileModal';
+import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
   quay?: QuayProperties;
+  area?: AreaProperties;
 };
 
 const MapOverlays: React.FC = () => {
@@ -65,6 +67,7 @@ const MapOverlays: React.FC = () => {
         <div id="popup-content">
           {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} />}
           {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} />}
+          {popupProps?.area && <AreaPopupContent area={popupProps.area} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />

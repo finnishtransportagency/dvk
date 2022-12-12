@@ -56,10 +56,10 @@ export type PilotPlace = {
   name: string;
   pilotJourney?: number;
   geometry: GeometryPoint;
-  fairwayCards?: PilotFairwayCard[];
+  fairwayCards?: FairwayCardIdName[];
 };
 
-export type PilotFairwayCard = {
+export type FairwayCardIdName = {
   id: string;
   name?: Text;
 };
