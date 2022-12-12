@@ -19,6 +19,7 @@ ${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
 ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
 ${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
+${FAIRWAY_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
 
 *** Test Cases ***
 Open DVK
@@ -33,6 +34,7 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaaren väylä
 	Capture Page Screenshot
+	Check That Toggle Wide Button Works Correctly
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
@@ -46,3 +48,33 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${CENTER_TO_OWN_LOCATION_BUTTON}
 	Element Should Be Visible    ${ZOOM_IN_BUTTON}
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
+
+Check Fairway Card In Swedish
+	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}
+	Sleep    2s
+	Element Should Contain    ${FAIRWAY_HEADING}    Nordsjöleden
+	Capture Page Screenshot
+	Check That Toggle Wide Button Works Correctly
+
+Check Fairway Card In English
+	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
+	Sleep    2s
+	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaari channel
+	Capture Page Screenshot
+	Check That Toggle Wide Button Works Correctly
+
+*** Keywords ***
+Change Fairway Card Language To
+	[Arguments]    ${language}
+	Click Element    ${MENU_BUTTON}
+	Wait Until Element Is Visible    ${language}
+	Click Element    ${language}
+	Click Element    ${CLOSE_MENU_BUTTON}
+
+Check That Toggle Wide Button Works Correctly
+	Element Should Not Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
+	Capture Page Screenshot
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Not Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
