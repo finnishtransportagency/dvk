@@ -122,18 +122,21 @@ export class SquatSite extends Construct {
     }
 
     // Cloudfront function suorittamaan basic autentikaatiota
-    const basicUserName = config.getStringParameter('BasicUsername');
-    const basicPassword = config.getStringParameter('BasicPassword');
-    const authString = cdk.Fn.base64(basicUserName + ':' + basicPassword);
+    let authFunction;
+    if (!Config.isProductionEnvironment()) {
+      const basicUserName = config.getStringParameter('BasicUsername');
+      const basicPassword = config.getStringParameter('BasicPassword');
+      const authString = cdk.Fn.base64(basicUserName + ':' + basicPassword);
 
-    const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('utf-8');
-    const authFunctionCode = cdk.Fn.sub(authSourceCode, {
-      AUTH_STRING: authString,
-    });
+      const authSourceCode = fs.readFileSync(`${__dirname}/lambda/auth/authFunction.js`).toString('utf-8');
+      const authFunctionCode = cdk.Fn.sub(authSourceCode, {
+        AUTH_STRING: authString,
+      });
 
-    const authFunction = new cloudfront.Function(this, 'DvkAuthFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromInline(authFunctionCode),
-    });
+      authFunction = new cloudfront.Function(this, 'DvkAuthFunction' + props.env, {
+        code: cloudfront.FunctionCode.fromInline(authFunctionCode),
+      });
+    }
 
     // Cloudfront function reitittamaan squat pyyntoja sovelluksen juureen
     const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('utf-8');
@@ -260,7 +263,7 @@ export class SquatSite extends Construct {
 
   private createProxyBehavior(
     domainName: string,
-    authFunction: cloudfront.Function,
+    authFunction: cloudfront.Function | undefined,
     useSSL = true,
     corsResponsePolicy: ResponseHeadersPolicy | undefined = undefined,
     customHeaders: Record<string, string> | undefined = undefined
@@ -277,12 +280,14 @@ export class SquatSite extends Construct {
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       responseHeadersPolicy: corsResponsePolicy,
-      functionAssociations: [
-        {
-          function: authFunction,
-          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-        },
-      ],
+      functionAssociations: authFunction
+        ? [
+            {
+              function: authFunction,
+              eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+            },
+          ]
+        : undefined,
     };
     return dmzBehavior;
   }
