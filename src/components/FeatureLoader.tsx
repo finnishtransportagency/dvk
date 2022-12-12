@@ -75,6 +75,7 @@ async function InitFeatures() {
 
         if (fp.layerId !== 'restrictionarea') {
           const source = dvkMap.getVectorSource(fp.layerId);
+          features.forEach((f) => f.set('dataSource', fp.layerId, true));
           source.addFeatures(features);
         }
       }

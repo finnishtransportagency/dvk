@@ -8,7 +8,7 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle, getAreaStyle } from '../layers';
+import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle } from '../layers';
 import dvkMap from '../DvkMap';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -23,7 +23,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'area'];
+  const types = ['pilot', 'quay', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -65,12 +65,17 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   });
   const style = function (feature: FeatureLike) {
     const type = feature.getProperties().featureType;
+    const dataSource = feature.getProperties().dataSource;
     if (type === 'quay') {
       return getQuayStyle(feature, true);
     } else if (type === 'pilot') {
       return getPilotStyle(true);
-    } else if (type === 'area') {
+    } else if (type === 'area' && dataSource === 'area12') {
       return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+    } else if (type === 'area' && dataSource === 'area3456') {
+      return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+    } else if (type === 'specialarea') {
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true);
     } else {
       return undefined;
     }
@@ -79,7 +84,13 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const pointerMoveSelect = new Select({
     condition: pointerMove,
     style,
-    layers: [dvkMap.getFeatureLayer('pilot'), dvkMap.getFeatureLayer('quay'), dvkMap.getFeatureLayer('area12')],
+    layers: [
+      dvkMap.getFeatureLayer('pilot'),
+      dvkMap.getFeatureLayer('quay'),
+      dvkMap.getFeatureLayer('area12'),
+      dvkMap.getFeatureLayer('area3456'),
+      dvkMap.getFeatureLayer('specialarea'),
+    ],
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;

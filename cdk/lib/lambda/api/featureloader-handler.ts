@@ -105,8 +105,11 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         typeCode: area.tyyppiKoodi,
         type: area.tyyppi,
         draft: area.mitoitusSyvays,
+        referenceLevel: area.vertaustaso,
         n2000draft: area.n2000MitoitusSyvays,
         n2000depth: area.n2000HarausSyvyys,
+        n2000ReferenceLevel: area.n2000Vertaustaso,
+        extra: area.lisatieto,
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,

@@ -175,7 +175,12 @@
     },
     "area": {
       "header": "{{val}}",
-      "fairways": "Väyläalue on osa väylää"
+      "info": "Väyläalueen tiedot",
+      "depth": "Haraussyvyys {{val, number}}m",
+      "draft": "Mitoitussyväys {{val, number}}m",
+      "speed": "Mitoitusnopeus",
+      "fairways": "Väyläalue on osa väylää",
+      "extra": "Lisätieto"
     }
   },
   "common": {

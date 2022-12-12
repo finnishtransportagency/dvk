@@ -20,17 +20,20 @@ import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
+import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getDepthStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
 import { GeoJSON } from 'ol/format';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
+const specialAreaSelectedImage = new Image();
+specialAreaSelectedImage.src = specialareaSelected;
 
-function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number) {
+export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  const gradient = context.createPattern(specialAreaImage, 'repeat');
+  const gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
   return [
     ...getDepthStyle(feature),
     new Style({
@@ -251,7 +254,7 @@ export function addAPILayers(map: Map) {
   // Nopeusrajoitus
   addFeatureLayer(map, 'speedlimit', 15, 2, (feature) => getSpeedLimitStyle(feature));
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2));
+  addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Haraussyvyydet
@@ -368,13 +371,11 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
         for (const line of fairway.navigationLines || []) {
           let feature = line12Source.getFeatureById(line.id);
           if (feature) {
-            feature.setProperties({ dataSource: 'line12' });
             line12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
           } else {
             feature = line3456Source.getFeatureById(line.id);
             if (feature) {
-              feature.setProperties({ dataSource: 'line2345' });
               line3456Source.removeFeature(feature);
               fairwayFeatures.push(feature);
             }
@@ -383,13 +384,11 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
         for (const area of fairway.areas || []) {
           let feature = area12Source.getFeatureById(area.id);
           if (feature) {
-            feature.setProperties({ dataSource: 'area12' });
             area12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
           } else {
             feature = area3456Source.getFeatureById(area.id);
             if (feature) {
-              feature.setProperties({ dataSource: 'area3456' });
               area3456Source.removeFeature(feature);
               fairwayFeatures.push(feature);
             }
