@@ -76,11 +76,11 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas
+  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
   // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
   for (const area of areas.filter((a) =>
     navigationArea
-      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5
+      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11
       : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
   )) {
     features.push({

@@ -192,6 +192,8 @@ class DvkMap {
         declutter: true,
         className: 'bg-layer',
         source,
+        updateWhileAnimating: true,
+        updateWhileInteracting: true,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'background');
@@ -210,6 +212,8 @@ class DvkMap {
           color: bgColor,
         }),
       }),
+      updateWhileAnimating: true,
+      updateWhileInteracting: true,
     });
     finlandLayer.set('type', 'background');
     mapLayers.setAt(0, finlandLayer);
@@ -223,6 +227,8 @@ class DvkMap {
           color: waterColor,
         }),
       }),
+      updateWhileAnimating: true,
+      updateWhileInteracting: true,
     });
     finlandLayer.set('type', 'background');
     mapLayers.setAt(1, balticseaLayer);
