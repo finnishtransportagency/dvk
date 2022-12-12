@@ -19,6 +19,9 @@ const Home: React.FC<HomeProps> = ({ history }) => {
     if (mapElement?.current) {
       dvkMap.addShowSidebarMenuControl();
       dvkMap.addSearchbarControl();
+      dvkMap.addLayerPopupControl();
+      dvkMap.addCenterToOwnLocationControl();
+      dvkMap.addZoomControl();
       dvkMap.setTarget(mapElement.current);
       dvkMap.setHistory(history);
     }
