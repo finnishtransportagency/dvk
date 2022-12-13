@@ -49,6 +49,7 @@ Check Fairway Card
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
+	Wait Until Element Is Visible    ${LAYER_CONTROL_HEADING}    30s
 	${LAYER_CONTROL}=    Get Text    ${LAYER_CONTROL_HEADING}
 	Capture Page Screenshot
 	Click Element At Coordinates    ${LAYER_CONTROL_HEADING}    -500    0
