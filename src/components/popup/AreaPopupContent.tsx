@@ -57,15 +57,24 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
             <IonCol>{area.properties.referenceLevel}</IonCol>
           </IonRow>
         )}
+        {area.properties.typeCode === 15 && (
+          <IonRow>
+            <IonCol>{t('popup.area.overtake')}</IonCol>
+          </IonRow>
+        )}
         <IonRow>
           <IonCol className="header">{t('popup.area.info')}</IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol>{t('popup.area.depth', { val: area.properties.n2000depth || area.properties.depth })}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>{t('popup.area.draft', { val: area.properties.n2000draft || area.properties.draft })}</IonCol>
-        </IonRow>
+        {(area.properties.n2000depth || area.properties.depth) && (
+          <IonRow>
+            <IonCol>{t('popup.area.depth', { val: area.properties.n2000depth || area.properties.depth })}</IonCol>
+          </IonRow>
+        )}
+        {(area.properties.n2000draft || area.properties.draft) && (
+          <IonRow>
+            <IonCol>{t('popup.area.draft', { val: area.properties.n2000draft || area.properties.draft })}</IonCol>
+          </IonRow>
+        )}
         {sizingSpeeds.length > 0 && (
           <IonRow>
             <IonCol>

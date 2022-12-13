@@ -136,6 +136,7 @@ type AreaFairway {
   line: Int
   sizingSpeed: Float
   sizingSpeed2: Float
+  sequenceNumber: Int
 }
 
 type Area {

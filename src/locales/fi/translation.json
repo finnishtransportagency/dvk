@@ -176,6 +176,7 @@
     "area": {
       "header": "{{val}}",
       "info": "Väyläalueen tiedot",
+      "overtake": "Väyläalueella jatkuva ohituskielto.",
       "depth": "Haraussyvyys {{val, number}}m",
       "draft": "Mitoitussyväys {{val, number}}m",
       "speed": "Mitoitusnopeus",
