@@ -103,6 +103,9 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
     if (mapElement?.current) {
       dvkMap?.removeShowSidebarMenuControl();
       dvkMap?.removeSearchbarControl();
+      dvkMap.addLayerPopupControl();
+      dvkMap.addCenterToOwnLocationControl();
+      dvkMap.addZoomControl();
       dvkMap?.setTarget(mapElement.current);
     }
   });
