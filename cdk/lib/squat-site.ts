@@ -21,6 +21,7 @@ import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import Config from './config';
 import * as fs from 'fs';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { SSMParameterReader } from './ssm-parameter-reader';
 
 interface SquatSiteProps {
   domainName: string;
@@ -234,6 +235,13 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
     };
+
+    // CloudFront webacl reader and id
+    const customSSMParameterReader = new SSMParameterReader(this, 'DVKWebAclReader', {
+      parameterName: 'WebAclId' + Config.getEnvironment(),
+      region: 'us-east-1',
+    });
+    const webAclId = customSSMParameterReader.getParameterValue();
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       certificate,
@@ -243,6 +251,7 @@ export class SquatSite extends Construct {
       additionalBehaviors,
       defaultBehavior: dvkBehavior,
       priceClass: PriceClass.PRICE_CLASS_100,
+      webAclId,
     });
 
     new CfnOutput(parent, 'DistributionId', {

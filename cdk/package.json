@@ -15,7 +15,7 @@
     "deploy:lambda": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaStack --require-approval never",
     "deploy:backend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never",
     "deploy:backend:hotswap": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never --hotswap",
-    "deploy:frontend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
+    "deploy:frontend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkUsEastStack SquatSiteStack --require-approval never",
     "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack --require-approval never",
     "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack --require-approval never",
     "deploy:pipeline:prod": "cross-env ENVIRONMENT=prod cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack --require-approval never",

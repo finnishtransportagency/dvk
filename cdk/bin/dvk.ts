@@ -14,7 +14,15 @@ import { SquatSite } from '../lib/squat-site';
 import { SquatPipeline } from '../lib/squat-pipeline';
 import { BackupServices } from '../lib/dvk-backup-services';
 import { MonitoringServices } from '../lib/dvk-monitoring';
+import { DvkUsEast } from '../lib/dvk-us-east';
 
+class DvkUsEastStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps) {
+    super(parent, id, props);
+
+    new DvkUsEast(this, 'DvkUsEastResources');
+  }
+}
 class DvkMonitoringServicesStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
     super(parent, id, props);
@@ -179,4 +187,11 @@ new DvkMonitoringServicesStack(app, 'DvkMonitoringStack', {
   },
   stackName: 'DvkMonitoringServicesStack-' + appEnv,
   tags: Config.tags,
+});
+
+new DvkUsEastStack(app, 'DvkUsEastStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: 'us-east-1',
+  },
 });
