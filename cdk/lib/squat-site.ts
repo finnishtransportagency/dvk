@@ -237,7 +237,7 @@ export class SquatSite extends Construct {
     };
 
     // CloudFront webacl reader and id
-    const customSSMParameterReader = new SSMParameterReader(this, 'DVKWebAclReader', {
+    const customSSMParameterReader = new SSMParameterReader(this, 'DVKWebAclReader' + Config.getEnvironment(), {
       parameterName: 'WebAclId' + Config.getEnvironment(),
       region: 'us-east-1',
     });
