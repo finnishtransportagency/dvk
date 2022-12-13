@@ -5,11 +5,16 @@
   flex: 0 0 495px;
   transition: all 150ms;
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 2;
 }
 #fairwayContent.wide {
   width: 814px;
-  flex: 0 0 814px;
+  flex-basis: 814px;
+}
+#fairwayContent.hidden {
+  width: 0;
+  flex: 0 0 0px;
+  overflow: hidden;
 }
 #fairwayPane {
   transition: width 150ms;
@@ -129,6 +134,53 @@ button.icon:focus-visible:hover {
 }
 #fairwayCardsContainer ion-input.searchBar:not(.has-value) + button.input-clear-icon {
   display: none;
+}
+
+#fairwayCardsContainer .closeButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lighter);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 30px;
+  margin: 0 0 0 12px;
+}
+#fairwayCardsContainer .closeButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+#fairwayCardsContainer .closeButton ion-icon {
+  width: 24px;
+  height: 24px;
+}
+
+#splitPane .togglePane {
+  --background: var(--ion-color-primary-contrast);
+  --background-hover: var(--ion-color-lighter);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 8px;
+  --padding-start: 3px;
+  --border-radius: 0 20px 20px 0;
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  height: 40px;
+  margin: 0;
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 20px);
+}
+#splitPane .togglePane.flip {
+  --padding-end: 3px;
+  --padding-start: 8px;
+  --border-radius: 20px 0 0 20px;
+}
+#splitPane .togglePane.ion-focused::part(native) {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 1px;
+}
+#splitPane .togglePane.flip::part(native) {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
 }
 
 #fairwayCardsContainer .fairwayTitle h2 {
@@ -293,10 +345,15 @@ ion-segment.tabs ion-label h3 {
 .tabContent {
   margin-top: 16px;
   display: none;
+  transition: column-count 150ms 50ms;
 }
 .tabContent.wide {
   column-count: 2;
   column-gap: 48px;
+}
+.hidden .tabContent.wide {
+  column-count: 1;
+  transition: column-count 0s;
 }
 .tabContent.active {
   display: block;

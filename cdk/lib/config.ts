@@ -52,6 +52,15 @@ class Config {
   public getGlobalStringParameter(parameterName: string): string {
     return ssm.StringParameter.valueForStringParameter(this.scope, `/${parameterName}`);
   }
+
+  public saveStringParameter(parameterName: string, stringValue: string): string {
+    const param = new ssm.StringParameter(this.scope, 'DVKStringParameter', {
+      parameterName,
+      stringValue,
+    });
+
+    return param.parameterArn;
+  }
 }
 
 export default Config;
