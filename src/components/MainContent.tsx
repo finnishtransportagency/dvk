@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
-import { IonCol, IonContent, IonGrid, IonInput, IonPage, IonRow, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonPage, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../theme/img/menu.svg';
 import { menuController } from '@ionic/core/components';
@@ -33,6 +33,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const [widePane, setWidePane] = useState(false);
+  const [showPane, setShowPane] = useState(true);
   const mapElement = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
 
@@ -90,8 +91,11 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
     inputRef.current?.setFocus();
   };
 
-  const togglePane = () => {
+  const toggleWide = () => {
     setWidePane(!widePane);
+  };
+  const togglePane = () => {
+    setShowPane(!showPane);
   };
 
   useIonViewWillEnter(() => {
@@ -115,7 +119,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
     setTimeout(() => {
       dvkMap.olMap?.updateSize();
     }, 1000);
-  }, [widePane]);
+  }, [widePane, showPane]);
 
   return (
     <IonPage id="mainContent" data-testid={fairwayId ? 'fairwayCard' : 'fairwayList'}>
@@ -123,62 +127,78 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
         <IonGrid className="ion-no-padding" id="splitPane">
           <IonRow>
             {splitPane && (
-              <IonCol id="fairwayContent" className={widePane ? 'wide' : ''} data-testid={fairwayId ? 'cardPane' : 'listPane'}>
-                <IonContent id="fairwayCardsContainer">
-                  <IonGrid className="ion-no-padding no-print">
-                    <IonRow className="ion-align-items-center">
-                      <IonCol size="auto">
-                        <button className="icon" data-testid={fairwayId ? '' : 'menuController'} onClick={() => menuController.open()}>
-                          <MenuIcon />
-                        </button>
-                      </IonCol>
-                      <IonCol className="ion-margin-start ion-margin-end">
-                        <div className="dropdownWrapper">
-                          <IonInput
-                            className="searchBar"
-                            placeholder={t('search')}
-                            title={t('searchTitle')}
-                            value={searchQuery}
-                            onIonFocus={openDropdown}
-                            onIonChange={(e) => changeAction(e.detail.value)}
-                            onIonBlur={blurAction}
-                            onKeyDown={(e) => keyDownAction(e)}
-                            ref={inputRef}
-                            data-testid={fairwayId ? '' : 'searchInput'}
-                          />
+              <>
+                <IonCol
+                  id="fairwayContent"
+                  className={(widePane ? 'wide' : '') + (showPane ? '' : ' hidden')}
+                  data-testid={fairwayId ? 'cardPane' : 'listPane'}
+                >
+                  <IonContent id="fairwayCardsContainer">
+                    <IonGrid className="ion-no-padding no-print">
+                      <IonRow className="ion-align-items-center">
+                        <IonCol size="auto">
+                          <button className="icon" data-testid={fairwayId ? '' : 'menuController'} onClick={() => menuController.open()}>
+                            <MenuIcon />
+                          </button>
+                        </IonCol>
+                        <IonCol className="ion-margin-start ion-margin-end">
+                          <div className="dropdownWrapper">
+                            <IonInput
+                              className="searchBar"
+                              placeholder={t('search')}
+                              title={t('searchTitle')}
+                              value={searchQuery}
+                              onIonFocus={openDropdown}
+                              onIonChange={(e) => changeAction(e.detail.value)}
+                              onIonBlur={blurAction}
+                              onKeyDown={(e) => keyDownAction(e)}
+                              ref={inputRef}
+                              data-testid={fairwayId ? '' : 'searchInput'}
+                            />
+                            <button
+                              type="button"
+                              className="input-clear-icon"
+                              title={t('clearTitle')}
+                              aria-label={t('clearTitle')}
+                              onClick={clearInput}
+                              data-testid={fairwayId ? '' : 'clearInput'}
+                            ></button>
+                            <SearchbarDropdown
+                              isOpen={isSearchbarOpen}
+                              searchQuery={searchQuery.trim()}
+                              fairwayCards={filteredFairways}
+                              selected={activeSelection}
+                            />
+                          </div>
+                        </IonCol>
+                        <IonCol size="auto">
                           <button
-                            type="button"
-                            className="input-clear-icon"
-                            title={t('clearTitle')}
-                            aria-label={t('clearTitle')}
-                            onClick={clearInput}
-                            data-testid={fairwayId ? '' : 'clearInput'}
-                          ></button>
-                          <SearchbarDropdown
-                            isOpen={isSearchbarOpen}
-                            searchQuery={searchQuery.trim()}
-                            fairwayCards={filteredFairways}
-                            selected={activeSelection}
-                          />
-                        </div>
-                      </IonCol>
-                      <IonCol size="auto">
-                        <button
-                          className={'icon ' + (widePane ? 'flip invert' : '')}
-                          data-testid={fairwayId ? 'toggleWide' : 'togglePane'}
-                          onClick={() => togglePane()}
-                        >
-                          <ChevronIcon />
-                        </button>
-                      </IonCol>
-                    </IonRow>
-                  </IonGrid>
-                  <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
+                            className={'icon ' + (widePane ? 'flip invert' : '')}
+                            data-testid={fairwayId ? 'toggleWide' : 'togglePane'}
+                            onClick={() => toggleWide()}
+                          >
+                            <ChevronIcon />
+                          </button>
+                        </IonCol>
+                        <IonCol size="auto">
+                          <IonButton fill="clear" className="closeButton" routerLink="/" data-testid="backToHome">
+                            <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                          </IonButton>
+                        </IonCol>
+                      </IonRow>
+                    </IonGrid>
+                    <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
 
-                  {fairwayId && <FairwayCard widePane={widePane} id={fairwayId} />}
-                  {!fairwayId && <FairwayCards widePane={widePane} />}
-                </IonContent>
-              </IonCol>
+                    {fairwayId && <FairwayCard widePane={widePane} id={fairwayId} />}
+                    {!fairwayId && <FairwayCards widePane={widePane} />}
+                  </IonContent>
+                </IonCol>
+                <IonCol size="auto">
+                  <IonButton fill="clear" className={'togglePane' + (showPane ? ' flip' : '')} onClick={() => togglePane()}>
+                    <ChevronIcon />
+                  </IonButton>
+                </IonCol>
+              </>
             )}
             <IonCol id="mapPane">
               <IonContent className="ion-no-padding">
