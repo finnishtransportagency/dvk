@@ -22,6 +22,7 @@ class OpenSidebarMenuControl extends Control {
 
   public setTipLabel(label: string) {
     this.buttonElement.title = label;
+    this.buttonElement.ariaLabel = label;
   }
 }
 

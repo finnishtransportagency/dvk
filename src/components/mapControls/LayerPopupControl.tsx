@@ -26,6 +26,7 @@ class LayerPopupControl extends Control {
 
   public setTipLabel(label: string) {
     this.buttonElement.title = label;
+    this.buttonElement.ariaLabel = label;
   }
 
   public modalClosed() {

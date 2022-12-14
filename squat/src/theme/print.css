@@ -243,7 +243,7 @@
     font-size: 12px;
   }
 
-  .pagebreak { page-break-after: always; break-after: always; }
+  .pagebreak { page-break-after: always; break-after: page; }
 
   @media (orientation: portrait) {
     .hide-portrait {display: none !important;}

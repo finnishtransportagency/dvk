@@ -264,9 +264,7 @@ ion-accordion .tabContent {
   color: var(--ion-color-dark) !important;
 }
 .accItem ion-icon {
-  width: 14px;
-  height: 14px;
-  margin: 0 0 0 12px;
+  margin: 0 0 0 6px;
 }
 
 /* Grid table */
