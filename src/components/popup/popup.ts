@@ -8,7 +8,7 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle } from '../layers';
+import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -76,6 +76,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
     } else if (type === 'specialarea') {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true);
+    } else if (type === 'line') {
+      return getLineStyle('#0000FF', 2);
     } else {
       return undefined;
     }
@@ -90,6 +92,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('area12'),
       dvkMap.getFeatureLayer('area3456'),
       dvkMap.getFeatureLayer('specialarea'),
+      dvkMap.getFeatureLayer('selectedfairwaycard'),
     ],
   });
   pointerMoveSelect.on('select', (e) => {

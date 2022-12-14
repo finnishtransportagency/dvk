@@ -72,7 +72,7 @@ export function getAreaStyle(color: string, width: number, fillColor: string) {
   });
 }
 
-function getLineStyle(color: string, width: number) {
+export function getLineStyle(color: string, width: number) {
   return new Style({
     stroke: new Stroke({
       color,

@@ -50,7 +50,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
         )}
         {area.properties.n2000depth && (
           <IonRow>
-            <IonCol>{area.properties.n2000ReferenceLevel}</IonCol>
+            <IonCol>{area.properties.n2000ReferenceLevel} (BSCD)</IonCol>
           </IonRow>
         )}
         {!area.properties.n2000depth && area.properties.depth && (
