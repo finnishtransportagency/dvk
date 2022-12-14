@@ -11,6 +11,7 @@
   position: relative;
   left: 20px;
   min-width: 200px;
+  max-width: 350px;
   color: #333333;
   font-size: 12px;
   letter-spacing: 0;
