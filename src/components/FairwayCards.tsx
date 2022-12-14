@@ -11,11 +11,11 @@ import {
   IonAccordion,
   IonItem,
 } from '@ionic/react';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
 import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
-import { caretDownSharp } from 'ionicons/icons';
+import arrow_down from '../theme/img/arrow_down.svg';
 import { Link } from 'react-router-dom';
 import { Lang } from '../utils/constants';
 
@@ -75,6 +75,7 @@ type FairwayCardsProps = {
 const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data, loading } = useFindAllFairwayCardsQuery();
+  const [showDescription, setShowDescription] = useState();
 
   return (
     <>
@@ -93,9 +94,15 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
       </IonText>
-      <IonAccordionGroup>
-        <IonAccordion toggleIcon={caretDownSharp} color="lightest">
-          <IonItem slot="header" color="lightest" className="accItem">
+      <IonAccordionGroup onIonChange={(e) => setShowDescription(e.detail.value)}>
+        <IonAccordion toggleIcon={arrow_down} color="lightest" value="1">
+          <IonItem
+            slot="header"
+            color="lightest"
+            className="accItem"
+            title={showDescription ? t('closeDescription') : t('openDescription')}
+            aria-label={showDescription ? t('closeDescription') : t('openDescription')}
+          >
             <IonLabel>{t('general')}</IonLabel>
           </IonItem>
           <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} slot="content">
