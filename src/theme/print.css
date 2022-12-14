@@ -26,6 +26,7 @@
     flex: none !important;
     position: static !important;
     box-shadow: none !important;
+    overflow: visible !important;
   }
   #mapPane {
     display: none;
@@ -216,7 +217,7 @@
     display: none !important;
   }
 
-  .pagebreak { page-break-after: always; break-after: always; }
+  .pagebreak { page-break-after: always; break-after: page; }
 
   @media (orientation: portrait) {
     .hide-portrait {display: none !important;}
