@@ -137,7 +137,7 @@ const SidebarMenu: React.FC = () => {
       <IonFooter collapse="fade" className="small">
         <IonToolbar>
           <IonTitle size="small" slot="end">
-            <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+            <small>Beta-versio v{`${process.env.REACT_APP_VERSION}`}</small>
           </IonTitle>
         </IonToolbar>
       </IonFooter>
