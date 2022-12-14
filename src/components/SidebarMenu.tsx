@@ -63,7 +63,7 @@ export const LanguageBar: React.FC = () => {
 };
 
 const SidebarMenu: React.FC = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
 
   return (
@@ -75,7 +75,14 @@ const SidebarMenu: React.FC = () => {
               <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
             </IonCol>
             <IonCol size="auto">
-              <IonButton fill="clear" className="closeButton" onClick={async () => menuController.close()} data-testid="closeMenu">
+              <IonButton
+                fill="clear"
+                className="closeButton"
+                onClick={async () => menuController.close()}
+                data-testid="closeMenu"
+                title={t('closeMenu')}
+                aria-label={t('closeMenu')}
+              >
                 <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
               </IonButton>
             </IonCol>
@@ -83,7 +90,7 @@ const SidebarMenu: React.FC = () => {
           <IonRow className="title">
             <IonCol>
               <IonText>
-                <h1>{t('homePage.sidebarMenu.title')}</h1>
+                <h1>{t('title')}</h1>
               </IonText>
             </IonCol>
           </IonRow>
@@ -99,7 +106,7 @@ const SidebarMenu: React.FC = () => {
                 data-testid="fairwaysLink"
               >
                 <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
-                {t('homePage.sidebarMenu.fairway-cards')}
+                {t('fairway-cards')}
               </IonItem>
             </IonCol>
             <IonCol size="auto">
@@ -114,7 +121,7 @@ const SidebarMenu: React.FC = () => {
                 data-testid="squatLink"
               >
                 <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
-                {t('homePage.sidebarMenu.squat')}
+                {t('squat')}
                 <IonIcon slot="end" src="/assets/icon/ext_link.svg" />
               </IonItem>
             </IonCol>

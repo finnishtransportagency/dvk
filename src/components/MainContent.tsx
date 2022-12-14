@@ -140,7 +140,13 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                     <IonGrid className="ion-no-padding no-print">
                       <IonRow className="ion-align-items-center">
                         <IonCol size="auto">
-                          <button className="icon" data-testid={fairwayId ? '' : 'menuController'} onClick={() => menuController.open()}>
+                          <button
+                            className="icon"
+                            data-testid={fairwayId ? '' : 'menuController'}
+                            onClick={() => menuController.open()}
+                            title={t('openMenu')}
+                            aria-label={t('openMenu')}
+                          >
                             <MenuIcon />
                           </button>
                         </IonCol>
@@ -179,12 +185,21 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             className={'icon ' + (widePane ? 'flip invert' : '')}
                             data-testid={fairwayId ? 'toggleWide' : 'togglePane'}
                             onClick={() => toggleWide()}
+                            title={widePane ? t('revertPane') : t('expandPane')}
+                            aria-label={widePane ? t('revertPane') : t('expandPane')}
                           >
                             <ChevronIcon />
                           </button>
                         </IonCol>
                         <IonCol size="auto">
-                          <IonButton fill="clear" className="closeButton" routerLink="/" data-testid="backToHome">
+                          <IonButton
+                            fill="clear"
+                            className="closeButton"
+                            routerLink="/"
+                            data-testid="backToHome"
+                            title={t('closePane')}
+                            aria-label={t('closePane')}
+                          >
                             <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
                           </IonButton>
                         </IonCol>
@@ -197,7 +212,13 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                   </IonContent>
                 </IonCol>
                 <IonCol size="auto">
-                  <IonButton fill="clear" className={'togglePane' + (showPane ? ' flip' : '')} onClick={() => togglePane()}>
+                  <IonButton
+                    fill="clear"
+                    className={'togglePane' + (showPane ? ' flip' : '')}
+                    onClick={() => togglePane()}
+                    title={showPane ? t('hidePane') : t('showPane')}
+                    aria-label={showPane ? t('hidePane') : t('showPane')}
+                  >
                     <ChevronIcon />
                   </IonButton>
                 </IonCol>
