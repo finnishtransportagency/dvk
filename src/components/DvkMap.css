@@ -88,6 +88,7 @@
   border-radius: 0;
   margin: 0;
   display: none;
+  box-shadow: none;
 }
 .dvkMap .searchbarControlContainer button.clear.show {
   display: block;
