@@ -5,7 +5,7 @@ import { LanguageBar } from '../SidebarMenu';
 import './MobileModal.css';
 
 export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
   const { t } = useTranslation();
   return (
     <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)}>
