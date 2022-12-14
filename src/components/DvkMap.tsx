@@ -265,6 +265,12 @@ class DvkMap {
     this.searchbarControl?.setPlaceholder(this.t('homePage.map.controls.searchbar.placeholder'));
     this.searchbarControl?.setTitle(this.t('homePage.map.controls.searchbar.title'));
     this.searchbarControl?.setClearTitle(this.t('homePage.map.controls.searchbar.clearTitle'));
+
+    // Workaround to add aria-labels for Zoom control (no support OOTB)
+    const zoomInButton = this.olMap?.getViewport().querySelector('.ol-zoom-in') as HTMLButtonElement;
+    zoomInButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomInTipLabel');
+    const zoomOutButton = this.olMap?.getViewport().querySelector('.ol-zoom-out') as HTMLButtonElement;
+    zoomOutButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomOutTipLabel');
   };
 
   public addShowSidebarMenuControl = () => {

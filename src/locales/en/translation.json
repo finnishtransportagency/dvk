@@ -20,7 +20,7 @@
           "tipLabel": "Open menu"
         },
         "layer": {
-          "tipLabel": "Layers",
+          "tipLabel": "Select layers",
           "header": "Map layers",
           "class1": "[en] Kauppamerenkulku",
           "class2": "[en] Muu vesiliikenne",

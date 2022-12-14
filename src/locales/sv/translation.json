@@ -20,7 +20,7 @@
           "tipLabel": "[sv| Avaa valikko"
         },
         "layer": {
-          "tipLabel": "[sv] Tasot",
+          "tipLabel": "[sv] Valitse tasot",
           "header": "[sv] Kartan tasot",
           "class1": "[sv] Kauppamerenkulku",
           "class2": "[sv] Muu vesiliikenne",
