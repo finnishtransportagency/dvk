@@ -194,4 +194,6 @@ new DvkUsEastStack(app, 'DvkUsEastStack', {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: 'us-east-1',
   },
+  stackName: 'DvkUsEastStack-' + appEnv,
+  tags: Config.tags,
 });
