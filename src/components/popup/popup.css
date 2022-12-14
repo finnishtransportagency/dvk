@@ -16,3 +16,10 @@
   letter-spacing: 0;
   line-height: 18px;
 }
+
+.ol-popup .info svg {
+  color: var(--ion-color-primary);
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+}

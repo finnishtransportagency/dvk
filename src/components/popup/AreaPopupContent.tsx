@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
+import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -59,7 +60,12 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
         )}
         {area.properties.typeCode === 15 && (
           <IonRow>
-            <IonCol>{t('popup.area.overtake')}</IonCol>
+            <IonCol>
+              <p className="info use-flex ion-align-items-center">
+                <InfoIcon />
+                {t('popup.area.overtake')}
+              </p>
+            </IonCol>
           </IonRow>
         )}
         <IonRow>
