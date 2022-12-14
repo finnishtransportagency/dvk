@@ -19,7 +19,18 @@ ${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
 ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
 ${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
-${FAIRWAY_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
+${FAIRWAY_CARD_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
+${FAIRWAY_CARD_TAB}    //ion-segment-button[@value = "1"]
+${FAIRWAY_CARD_TAB_IS_SELECTED}    //ion-segment-button[@value = "1" and @aria-selected = "true"]
+${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab1 active"]
+${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab2 wide active"]
+${FAIRWAY_HARBOURS_TAB}    //ion-segment-button[@value = "2"]
+${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    //ion-segment-button[@value = "2" and @aria-selected = "true"]
+${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab2 active"]
+${FAIRWAY_AREAS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab3 wide active"]
+${FAIRWAY_AREAS_TAB}    //ion-segment-button[@value = "3"]
+${FAIRWAY_AREAS_TAB_IS_SELECTED}    //ion-segment-button[@value = "3" and @aria-selected = "true"]
+${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab3 active"]
 
 *** Test Cases ***
 Open DVK
@@ -34,10 +45,11 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaaren väylä
 	Capture Page Screenshot
-	Check That Toggle Wide Button Works Correctly
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
+	Wait Until Element Is Visible    ${LAYER_CONTROL_HEADING}    30s
 	${LAYER_CONTROL}=    Get Text    ${LAYER_CONTROL_HEADING}
 	Capture Page Screenshot
 	Click Element At Coordinates    ${LAYER_CONTROL_HEADING}    -500    0
@@ -54,14 +66,14 @@ Check Fairway Card In Swedish
 	Sleep    2s
 	Element Should Contain    ${FAIRWAY_HEADING}    Nordsjöleden
 	Capture Page Screenshot
-	Check That Toggle Wide Button Works Correctly
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
 	Sleep    2s
 	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaari channel
 	Capture Page Screenshot
-	Check That Toggle Wide Button Works Correctly
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 *** Keywords ***
 Change Fairway Card Language To
@@ -71,10 +83,40 @@ Change Fairway Card Language To
 	Click Element    ${language}
 	Click Element    ${CLOSE_MENU_BUTTON}
 
-Check That Toggle Wide Button Works Correctly
-	Element Should Not Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
+Check That Toggle Wide Button Works Correctly For Fairway Card Tab
+	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
-	Element Should Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
+	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
 	Click Element    ${TOGGLE_WIDE_BUTTON}
-	Element Should Not Be Visible    ${FAIRWAY_TAB_CONTENT_WIDE}
+	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
+
+Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
+	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+	Capture Page Screenshot
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+
+Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
+	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+	Capture Page Screenshot
+	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+
+Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Click Element    ${FAIRWAY_HARBOURS_TAB}
+	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}
+	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
+	Click Element    ${FAIRWAY_AREAS_TAB}
+	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_IS_SELECTED}
+	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
+	Click Element    ${FAIRWAY_CARD_TAB}
+	Element Should Be Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}
+	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Card Tab

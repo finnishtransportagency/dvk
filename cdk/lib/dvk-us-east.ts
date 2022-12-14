@@ -23,7 +23,7 @@ export class DvkUsEast extends Construct {
         sampledRequestsEnabled: true,
         metricName: `DVK-${Config.getEnvironment()}`,
       },
-      name: `DVK-ACL-${Config.getEnvironment()}`,
+      name: `DVK-CF-ACL-${Config.getEnvironment()}`,
       rules: [
         {
           name: 'RuleWithAWSManagedRules',
