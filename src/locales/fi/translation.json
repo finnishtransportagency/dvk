@@ -188,7 +188,7 @@
     "close-dialog": "Sulje ilmoitus"
   },
   "mobile": {
-    "title": "Digitaalisen väyläkortin käyttö mobiililaitteissa",
-    "content": "Digitaalinen väyläkortti on vielä kehitteillä. Tämä palvelu ei alkuvaiheessa tue virallisesti mobiililaitteiden käyttöä, joten suosittelemme pöytäkoneen tai tabletin selaimen käyttöä."
+    "title": "Digitaalisen väyläkortin käyttö",
+    "content": "Digitaalinen väyläkortti on vielä kehitteillä. Tämä palvelu ei alkuvaiheessa tue virallisesti esim. mobiililaitteiden käyttöä, joten suosittelemme pöytäkoneen tai tabletin selaimen käyttöä."
   }
 }
