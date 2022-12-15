@@ -43,6 +43,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Area[], Fairw
         status: apiFairway.status,
         sizingSpeed: apiFairway.mitoitusNopeus,
         sizingSpeed2: apiFairway.mitoitusNopeus2,
+        sequenceNumber: apiFairway.vaylaalueenJarjestysNro,
       };
     });
     return area;
