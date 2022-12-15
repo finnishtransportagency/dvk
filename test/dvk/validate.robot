@@ -38,6 +38,7 @@ Open DVK
 	Sleep    5s
 	Capture Page Screenshot
 	Press Keys    None    ESC
+	Sleep    5s
 
 Check Fairway Card
 	Input Text    ${INPUT_FAIRWAY}   vuo
