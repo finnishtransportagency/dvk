@@ -316,7 +316,7 @@ async function isCacheEnabled(type: string): Promise<boolean> {
   return cacheEnabled;
 }
 
-async function addFeatures(type: string | undefined, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   if (type === 'pilot') {
     await addPilotFeatures(features);
   } else if (type === 'harbor') {
