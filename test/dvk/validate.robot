@@ -37,6 +37,7 @@ Open DVK
 	Open Browser    http://localhost:${PORT}    ${BROWSER}
 	Sleep    5s
 	Capture Page Screenshot
+	Press Keys    None    ESC
 
 Check Fairway Card
 	Input Text    ${INPUT_FAIRWAY}   vuo
@@ -63,14 +64,14 @@ Check Center And Zoom Buttons
 
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}
-	Sleep    2s
+	Sleep    5s
 	Element Should Contain    ${FAIRWAY_HEADING}    Nordsjöleden
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
-	Sleep    2s
+	Sleep    5s
 	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaari channel
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
