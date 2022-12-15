@@ -306,10 +306,12 @@ async function getFromCache(key: string): Promise<string | undefined> {
   return undefined;
 }
 
-async function isCacheEnabled(type: string | undefined): Promise<boolean> {
+const noCache = ['safetyequipmentfault'];
+
+async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
   log.debug('cacheDurationHours: %d', cacheDurationHours);
-  const cacheEnabled = cacheDurationHours > 0 && type !== 'safetyequipmentfault';
+  const cacheEnabled = cacheDurationHours > 0 && !noCache.includes(type);
   log.debug('cacheEnabled: %s', cacheEnabled);
   return cacheEnabled;
 }
@@ -337,7 +339,7 @@ async function addFeatures(type: string | undefined, features: Feature<Geometry,
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.queryStringParameters);
-  const type = event.queryStringParameters?.type;
+  const type = event.queryStringParameters?.type || '';
   let base64Response: string;
   const cacheEnabled = await isCacheEnabled(type);
   const response = cacheEnabled ? await getFromCache(key) : undefined;

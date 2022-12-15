@@ -183,7 +183,7 @@ export async function fetchVATUByApi<T>(api: string, params: Record<string, stri
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`VATU /${api} fetch failed: params=%s status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
   return response ? (response.data as T[]) : [];
