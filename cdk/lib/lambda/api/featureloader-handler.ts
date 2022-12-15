@@ -4,7 +4,15 @@ import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
-import { AlueAPIModel, fetchVATUByFairwayClass, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TurvalaiteAPIModel } from '../graphql/query/vatu';
+import {
+  AlueAPIModel,
+  fetchVATUByApi,
+  fetchVATUByFairwayClass,
+  NavigointiLinjaAPIModel,
+  RajoitusAlueAPIModel,
+  TurvalaiteAPIModel,
+  TurvalaiteVikatiedotAPIModel,
+} from '../graphql/query/vatu';
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
@@ -212,6 +220,25 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
+async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+  log.debug('faults: %d', faults.length);
+  for (const fault of faults) {
+    features.push({
+      type: 'Feature',
+      id: fault.vikaId,
+      geometry: fault.geometria as Geometry,
+      properties: {
+        equipmentId: fault.turvalaiteNumero,
+        featureType: 'safetyequipmentfault',
+        name: { fi: fault.turvalaiteNimiFI, sv: fault.turvalaiteNimiSV },
+        type: { fi: fault.vikatyyppiFI, sv: fault.vikatyyppiSV },
+        typeCode: fault.vikatyyppiKoodi,
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -226,7 +253,8 @@ function getKey(queryString: ALBEventQueryStringParameters | undefined) {
   return 'noquerystring';
 }
 
-async function cacheResponse(key: string, response: string, cacheDurationHours: number) {
+async function cacheResponse(key: string, response: string) {
+  const cacheDurationHours = await getFeatureCacheDurationHours();
   const expires = new Date();
   expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
   const command = new PutObjectCommand({
@@ -264,39 +292,46 @@ async function getFromCache(key: string): Promise<string | undefined> {
   return undefined;
 }
 
+async function isCacheEnabled(type: string | undefined): Promise<boolean> {
+  const cacheDurationHours = await getFeatureCacheDurationHours();
+  log.debug('cacheDurationHours: %d', cacheDurationHours);
+  const cacheEnabled = cacheDurationHours > 0 && type !== 'safetyequipmentfault';
+  log.debug('cacheEnabled: %s', cacheEnabled);
+  return cacheEnabled;
+}
+
+async function addFeatures(type: string | undefined, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  if (type === 'pilot') {
+    await addPilotFeatures(features);
+  } else if (type === 'harbor') {
+    await addHarborFeatures(features);
+  } else if (type === 'area') {
+    await addAreaFeatures(features, true, event);
+  } else if (type === 'specialarea') {
+    await addAreaFeatures(features, false, event);
+  } else if (type === 'restrictionarea') {
+    await addRestrictionAreaFeatures(features, event);
+  } else if (type === 'line') {
+    await addLineFeatures(features, event);
+  } else if (type === 'safetyequipment') {
+    await addSafetyEquipmentFeatures(features, event);
+  } else if (type === 'safetyequipmentfault') {
+    await addSafetyEquipmentFaultFeatures(features);
+  }
+}
+
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.queryStringParameters);
+  const type = event.queryStringParameters?.type;
   let base64Response: string;
-  const cacheDurationHours = await getFeatureCacheDurationHours();
-  log.debug('cacheDurationHours: %d', cacheDurationHours);
-  const response = cacheDurationHours > 0 ? await getFromCache(key) : undefined;
+  const cacheEnabled = await isCacheEnabled(type);
+  const response = cacheEnabled ? await getFromCache(key) : undefined;
   if (response) {
     base64Response = response;
   } else {
     const features: Feature<Geometry, GeoJsonProperties>[] = [];
-    const types = event.queryStringParameters?.type?.split(',') || [];
-    if (types.includes('pilot')) {
-      await addPilotFeatures(features);
-    }
-    if (types.includes('harbor')) {
-      await addHarborFeatures(features);
-    }
-    if (types.includes('area')) {
-      await addAreaFeatures(features, true, event);
-    }
-    if (types.includes('specialarea')) {
-      await addAreaFeatures(features, false, event);
-    }
-    if (types.includes('restrictionarea')) {
-      await addRestrictionAreaFeatures(features, event);
-    }
-    if (types.includes('line')) {
-      await addLineFeatures(features, event);
-    }
-    if (types.includes('safetyequipment')) {
-      await addSafetyEquipmentFeatures(features, event);
-    }
+    await addFeatures(type, features, event);
     const collection: FeatureCollection = {
       type: 'FeatureCollection',
       features,
@@ -310,8 +345,8 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     start = Date.now();
     base64Response = gzippedResponse.toString('base64');
     log.debug('base64 duration: %d ms', Date.now() - start);
-    if (cacheDurationHours > 0 && collection.features.length > 0) {
-      await cacheResponse(key, base64Response, cacheDurationHours);
+    if (cacheEnabled && collection.features.length > 0) {
+      await cacheResponse(key, base64Response);
     }
   }
   return {
