@@ -2,7 +2,7 @@ import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { PilotPlace } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayCardIdName, PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import {
   AlueAPIModel,
@@ -82,6 +82,16 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 }
 
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+  const cardMap = new Map<number, FairwayCardIdName[]>();
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    for (const id of card.fairways.map((f) => f.id)) {
+      if (!cardMap.has(id)) {
+        cardMap.set(id, []);
+      }
+      cardMap.get(id)?.push({ id: card.id, name: card.name });
+    }
+  }
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
@@ -99,12 +109,15 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         id: area.id,
         featureType: navigationArea ? 'area' : 'specialarea',
         name: area.nimi,
-        depth: area.harausSyvyys,
+        depth: area.harausSyvyys && area.harausSyvyys > 0 ? area.harausSyvyys : undefined,
         typeCode: area.tyyppiKoodi,
         type: area.tyyppi,
-        draft: area.mitoitusSyvays,
-        n2000draft: area.n2000MitoitusSyvays,
-        n2000depth: area.n2000HarausSyvyys,
+        draft: area.mitoitusSyvays && area.mitoitusSyvays > 0 ? area.mitoitusSyvays : undefined,
+        referenceLevel: area.vertaustaso,
+        n2000draft: area.n2000MitoitusSyvays && area.n2000MitoitusSyvays > 0 ? area.n2000MitoitusSyvays : undefined,
+        n2000depth: area.n2000HarausSyvyys && area.n2000HarausSyvyys > 0 ? area.n2000HarausSyvyys : undefined,
+        n2000ReferenceLevel: area.n2000Vertaustaso,
+        extra: area.lisatieto,
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -112,6 +125,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
+            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,

@@ -181,6 +181,15 @@
       "phoneNumber": "[sv] Puhelin",
       "internet": "[sv] Verkkosivu",
       "extra": "[sv] Lisätieto"
+    },
+    "area": {
+      "info": "[sv] Väyläalueen tiedot",
+      "overtake": "[sv] Väyläalueella jatkuva ohituskielto.",
+      "depth": "[sv] Haraussyvyys {{val, number}}m",
+      "draft": "[sv] Mitoitussyväys {{val, number}}m",
+      "speed": "[sv] Mitoitusnopeus",
+      "fairways": "[sv] Väyläalue on osa väylää",
+      "extra": "[sv] Lisätieto"
     }
   },
   "common": {
