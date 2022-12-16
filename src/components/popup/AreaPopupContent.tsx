@@ -41,6 +41,10 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
       )
     ),
   ];
+  const speedLimits = Array.from(
+    new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit || 0]).filter((val) => val > 0))
+  ).sort((a, b) => a - b);
+
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
@@ -74,9 +78,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
             <IonCol>{t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}</IonCol>
           </IonRow>
         )}
-        {area.properties.speedLimit && (
+        {speedLimits.length > 0 && (
           <IonRow>
-            <IonCol>{t('popup.area.speedLimit', { val: area.properties.speedLimit })}</IonCol>
+            <IonCol>{t('popup.area.speedLimit', { val: speedLimits.join(' / ') })}</IonCol>
           </IonRow>
         )}
         {sizingSpeeds.length > 0 && (

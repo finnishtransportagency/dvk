@@ -60,7 +60,12 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
             featureProjection: MAP.EPSG,
           });
           // update area as well so we can show speed limit in popup
-          faf.setProperties({ speedLimit: speedLimit });
+          const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
+          if (oldSpeedLimit) {
+            oldSpeedLimit.push(speedLimit);
+          } else {
+            faf.setProperties({ speedLimit: [speedLimit] });
+          }
           feat.setProperties({ speedLimit: speedLimit });
           speedLimitFeatures.push(feat);
         }
