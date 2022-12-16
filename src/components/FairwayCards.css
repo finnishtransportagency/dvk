@@ -390,3 +390,15 @@ ion-segment.tabs ion-label h3 {
 .tabContent a[target="_blank"]:focus-visible {
   outline: 1px solid var(--ion-color-primary);
 }
+
+/* Lists */
+ol {
+  margin: 0;
+  padding: 0;
+}
+ol li {
+  font-size: 12px;
+  line-height: 1.125rem;
+  margin-bottom: 1em;
+  list-style-position: inside;
+}

@@ -389,7 +389,7 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   const fairwayAreas = data?.flatMap((fairway) => fairway.areas) || [];
 
   return (
-    <>
+    <ol>
       {fairwayAreas.map((area, idx) => {
         const sizingSpeeds = [
           ...Array.from(
@@ -403,14 +403,8 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
         const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) || 0) > 0;
 
         return (
-          <p key={idx}>
-            <em>
-              {area?.name || (
-                <>
-                  {t('areaType' + area?.typeCode)} {idx + 1}
-                </>
-              )}
-            </em>
+          <li key={idx}>
+            <em>{area?.name || <>{t('areaType' + area?.typeCode)}</>}</em>
             {isDraftAvailable && (
               <>
                 <br />
@@ -437,10 +431,10 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
             <br />
             {area?.notationCode === 1 ? t('lateralMarking') : ''}
             {area?.notationCode === 2 ? t('cardinalMarking') : ''}
-          </p>
+          </li>
         );
       })}
-    </>
+    </ol>
   );
 };
 
