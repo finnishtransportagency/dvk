@@ -8,6 +8,7 @@ import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
 import { InitFeatures } from './components/FeatureLoader';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,6 +39,8 @@ setupIonicReact({
   mode: 'md',
 });
 
+const queryClient = new QueryClient();
+
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql' });
 const authLink = setContext((_, { headers }) => {
   return {
@@ -52,29 +55,37 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const DvkIonApp: React.FC = () => {
+  InitFeatures();
+
+  return (
+    <IonApp className={isMobile() ? 'mobile' : ''}>
+      <IonReactRouter>
+        <ApolloProvider client={client}>
+          <SidebarMenu />
+          <IonContent id="MainContent">
+            <IonRouterOutlet>
+              <Route exact path="/" render={(props) => <Home {...props} />} />
+              <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+              <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+            </IonRouterOutlet>
+          </IonContent>
+          <MapOverlays />
+        </ApolloProvider>
+      </IonReactRouter>
+    </IonApp>
+  );
+};
+
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [loading, setLoading] = useState(true);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
 
   document.documentElement.lang = i18n.language;
 
-  async function loadFeatures() {
-    try {
-      InitFeatures();
-      setLoading(false);
-    } catch (e) {
-      console.log('### LOADING FAILED ###');
-    }
-  }
-
   InitDvkMap();
-
-  useEffect(() => {
-    loadFeatures();
-  }, []);
 
   useEffect(() => {
     if (!updating) {
@@ -101,24 +112,9 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <IonApp className={isMobile() ? 'mobile' : ''}>
-      {loading && <div>LOADING...</div>}
-      {!loading && (
-        <IonReactRouter>
-          <ApolloProvider client={client}>
-            <SidebarMenu />
-            <IonContent id="MainContent">
-              <IonRouterOutlet>
-                <Route exact path="/" render={(props) => <Home {...props} />} />
-                <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-                <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-              </IonRouterOutlet>
-            </IonContent>
-            <MapOverlays />
-          </ApolloProvider>
-        </IonReactRouter>
-      )}
-    </IonApp>
+    <QueryClientProvider client={queryClient}>
+      <DvkIonApp />
+    </QueryClientProvider>
   );
 };
 

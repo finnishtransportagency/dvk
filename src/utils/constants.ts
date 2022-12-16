@@ -2,6 +2,31 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
+export type FeatureDataId =
+  | 'area12'
+  | 'area3456'
+  | 'line12'
+  | 'line3456'
+  | 'restrictionarea'
+  | 'specialarea'
+  | 'pilot'
+  | 'harbor'
+  | 'safetyequipment';
+
+export type FeatureDataSource = { id: FeatureDataId; url: URL };
+
+export const FeatureDataSources: Array<FeatureDataSource> = [
+  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
+  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
+  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
+  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
+  { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
+  { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
+  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
+  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
+  { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
+];
+
 export type FeatureDataLayerId =
   | 'area12'
   | 'area3456'
