@@ -17,8 +17,11 @@ ${ZOOM_IN_BUTTON}    //button[@class = "ol-zoom-in"]
 ${ZOOM_OUT_BUTTON}    //button[@class = "ol-zoom-out"]
 ${MENU_BUTTON}    //ion-col[@data-testid = "cardPane"]/descendant::button[@class = "icon"]
 ${IN_FINNISH_BUTTON}    //ion-button[@data-testid = "langFi"]
+${IN_FINNISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langFi" and @aria-disabled = "true"]
 ${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
+${IN_SWEDISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langSv" and @aria-disabled = "true"]
 ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
+${IN_ENGLISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langEn" and @aria-disabled = "true"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
 ${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
 ${FAIRWAY_CARD_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
@@ -80,23 +83,25 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
 
 Check Fairway Card In Swedish
-	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}
+	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}
 	Wait Until Element Contains    ${FAIRWAY_HEADING}    Nordsjöleden    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Fairway Card In English
-	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
+	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}
 	Wait Until Element Contains    ${FAIRWAY_HEADING}    Vuosaari channel    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 *** Keywords ***
 Change Fairway Card Language To
-	[Arguments]    ${language}
+	[Arguments]    ${language}    ${language_button_disabled}
 	Click Element    ${MENU_BUTTON}
 	Wait Until Element Is Visible    ${language}
 	Click Element    ${language}
+	Wait Until Element Is Visible    ${language_button_disabled}    30s
+	Capture Page Screenshot
 	Click Element    ${CLOSE_MENU_BUTTON}
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
