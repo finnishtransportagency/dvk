@@ -81,15 +81,13 @@ Check Center And Zoom Buttons
 
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}
-	Sleep    5s
-	Element Should Contain    ${FAIRWAY_HEADING}    Nordsjöleden
+	Wait Until Element Contains    ${FAIRWAY_HEADING}    Nordsjöleden    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
-	Sleep    5s
-	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaari channel
+	Wait Until Element Contains    ${FAIRWAY_HEADING}    Vuosaari channel    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
