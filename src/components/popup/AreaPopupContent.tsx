@@ -43,21 +43,12 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        {area.properties.name && (
-          <IonRow>
-            <IonCol className="header">{area.properties.name}</IonCol>
-          </IonRow>
-        )}
-        {area.properties.n2000depth && (
-          <IonRow>
-            <IonCol>{area.properties.n2000ReferenceLevel} (BSCD)</IonCol>
-          </IonRow>
-        )}
-        {!area.properties.n2000depth && area.properties.depth && (
-          <IonRow>
-            <IonCol>{area.properties.referenceLevel}</IonCol>
-          </IonRow>
-        )}
+        <IonRow>
+          <IonCol className="header">{area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{area.properties.n2000depth && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+        </IonRow>
         {area.properties.typeCode === 15 && (
           <IonRow>
             <IonCol>
