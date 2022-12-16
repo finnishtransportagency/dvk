@@ -189,7 +189,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
       new Set(
         data
           ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString()))
-          .filter((val) => val !== undefined)
+          .filter((val) => val !== undefined && val !== '0')
       )
     ),
   ];
@@ -400,21 +400,26 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
             )
           ),
         ];
+        const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) || 0) > 0;
 
         return (
           <p key={idx}>
             <em>
               {area?.name || (
                 <>
-                  {t('area')} {idx + 1}
+                  {t('areaType' + area?.typeCode)} {idx + 1}
                 </>
               )}
             </em>
-            <br />
-            {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() || '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
-              m
-            </span>
+            {isDraftAvailable && (
+              <>
+                <br />
+                {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() || '-'}&nbsp;
+                <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
+                  m
+                </span>
+              </>
+            )}
             <br />
             {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() || '-'}&nbsp;
             <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })} role="definition">
