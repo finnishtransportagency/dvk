@@ -7,6 +7,7 @@ import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import { isShowN2000HeightSystem } from '../styles';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -40,6 +41,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
       )
     ),
   ];
+  const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
@@ -47,7 +49,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
           <IonCol className="header">{area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{area.properties.n2000depth && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+          <IonCol>{showN2000HeightSystem && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
         </IonRow>
         {area.properties.typeCode === 15 && (
           <IonRow>
@@ -64,12 +66,17 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
         </IonRow>
         {(area.properties.n2000depth || area.properties.depth) && (
           <IonRow>
-            <IonCol>{t('popup.area.depth', { val: area.properties.n2000depth || area.properties.depth })}</IonCol>
+            <IonCol>{t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}</IonCol>
           </IonRow>
         )}
         {(area.properties.n2000draft || area.properties.draft) && (
           <IonRow>
-            <IonCol>{t('popup.area.draft', { val: area.properties.n2000draft || area.properties.draft })}</IonCol>
+            <IonCol>{t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}</IonCol>
+          </IonRow>
+        )}
+        {area.properties.speedLimit && (
+          <IonRow>
+            <IonCol>{t('popup.area.speedLimit', { val: area.properties.speedLimit })}</IonCol>
           </IonRow>
         )}
         {sizingSpeeds.length > 0 && (
