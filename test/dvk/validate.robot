@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    String
+Library    DateTime
 
 *** Variables ***
 ${BROWSER}    headlesschrome
@@ -31,6 +33,9 @@ ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab3 wide active
 ${FAIRWAY_AREAS_TAB}    //ion-segment-button[@value = "3"]
 ${FAIRWAY_AREAS_TAB_IS_SELECTED}    //ion-segment-button[@value = "3" and @aria-selected = "true"]
 ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab3 active"]
+${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
+${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
+${REGEX_SCALE}    \\d+\\s(m|km)
 
 *** Test Cases ***
 Open DVK
@@ -39,6 +44,17 @@ Open DVK
 	Capture Page Screenshot
 	Press Keys    None    ESC
 	Sleep    5s
+
+Check Copyright And Scale
+	${COPYRIGHT_STRING}=    Get Text    ${COPYRIGHT_ELEMENT}
+	${COPYRIGHT_TEXT}=    Fetch From Left    ${COPYRIGHT_STRING}    ${SPACE}
+	${COPYRIGHT_YEAR}=    Fetch From Right    ${COPYRIGHT_STRING}    ©
+	${COPYRIGHT_YEAR_INT}=    Convert To Integer    ${COPYRIGHT_YEAR}
+	${date}=    Get Current Date    result_format=datetime
+	Should Be Equal    ${COPYRIGHT_TEXT}    Maanmittauslaitos
+	Should Be Equal    ${COPYRIGHT_YEAR_INT}    ${date.year}
+	${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
+	Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
 
 Check Fairway Card
 	Input Text    ${INPUT_FAIRWAY}   vuo
