@@ -1,5 +1,7 @@
 *** Settings ***
 Library    SeleniumLibrary
+Library    String
+Library    DateTime
 
 *** Variables ***
 ${BROWSER}    headlesschrome
@@ -15,8 +17,12 @@ ${ZOOM_IN_BUTTON}    //button[@class = "ol-zoom-in"]
 ${ZOOM_OUT_BUTTON}    //button[@class = "ol-zoom-out"]
 ${MENU_BUTTON}    //ion-col[@data-testid = "cardPane"]/descendant::button[@class = "icon"]
 ${IN_FINNISH_BUTTON}    //ion-button[@data-testid = "langFi"]
+${IN_FINNISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langFi" and @aria-disabled = "true"]
 ${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
+${IN_SWEDISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langSv" and @aria-disabled = "true"]
 ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
+${IN_ENGLISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langEn" and @aria-disabled = "true"]
+${FAIRWAYS_LINK}    //ion-item[@data-testid = "fairwaysLink"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
 ${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
 ${FAIRWAY_CARD_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
@@ -31,6 +37,9 @@ ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab3 wide active
 ${FAIRWAY_AREAS_TAB}    //ion-segment-button[@value = "3"]
 ${FAIRWAY_AREAS_TAB_IS_SELECTED}    //ion-segment-button[@value = "3" and @aria-selected = "true"]
 ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab3 active"]
+${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
+${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
+${REGEX_SCALE}    \\d+\\s(m|km)
 
 *** Test Cases ***
 Open DVK
@@ -39,6 +48,17 @@ Open DVK
 	Capture Page Screenshot
 	Press Keys    None    ESC
 	Sleep    5s
+
+Check Copyright And Scale
+	${COPYRIGHT_STRING}=    Get Text    ${COPYRIGHT_ELEMENT}
+	${COPYRIGHT_TEXT}=    Fetch From Left    ${COPYRIGHT_STRING}    ${SPACE}
+	${COPYRIGHT_YEAR}=    Fetch From Right    ${COPYRIGHT_STRING}    ©
+	${COPYRIGHT_YEAR_INT}=    Convert To Integer    ${COPYRIGHT_YEAR}
+	${date}=    Get Current Date    result_format=datetime
+	Should Be Equal    ${COPYRIGHT_TEXT}    Maanmittauslaitos
+	Should Be Equal    ${COPYRIGHT_YEAR_INT}    ${date.year}
+	${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
+	Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
 
 Check Fairway Card
 	Input Text    ${INPUT_FAIRWAY}   vuo
@@ -64,25 +84,26 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
 
 Check Fairway Card In Swedish
-	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}
-	Sleep    5s
-	Element Should Contain    ${FAIRWAY_HEADING}    Nordsjöleden
+	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
+	Wait Until Element Contains    ${FAIRWAY_HEADING}    Nordsjöleden    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 Check Fairway Card In English
-	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}
-	Sleep    5s
-	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaari channel
+	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
+	Wait Until Element Contains    ${FAIRWAY_HEADING}    Vuosaari channel    30s
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
 *** Keywords ***
 Change Fairway Card Language To
-	[Arguments]    ${language}
+	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${MENU_BUTTON}
 	Wait Until Element Is Visible    ${language}
 	Click Element    ${language}
+	Wait Until Element Is Visible    ${language_button_disabled}    30s
+	Wait Until Element Contains    ${FAIRWAYS_LINK}    ${fairways_text}    30s
+	Capture Page Screenshot
 	Click Element    ${CLOSE_MENU_BUTTON}
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
