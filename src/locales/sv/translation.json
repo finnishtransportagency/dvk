@@ -199,6 +199,7 @@
       "overtake": "[sv] Väyläalueella jatkuva ohituskielto.",
       "depth": "[sv] Haraussyvyys {{val, number}}m",
       "draft": "[sv] Mitoitussyväys {{val, number}}m",
+      "speedLimit": "[sv] Nopeusrajoitus {{val, number}}km/h",
       "speed": "[sv] Mitoitusnopeus",
       "fairways": "[sv] Väyläalue on osa väylää",
       "extra": "[sv] Lisätieto"

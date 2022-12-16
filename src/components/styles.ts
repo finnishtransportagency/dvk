@@ -166,20 +166,43 @@ export const getSafetyEquipmentStyle = (symbol: string, resolution: number) => {
   return undefined;
 };
 
+export function isShowN2000HeightSystem(props: AreaFeatureProperties): boolean | undefined {
+  const n2000HeightSystem = props.n2000HeightSystem;
+  if (n2000HeightSystem !== undefined) {
+    if (n2000HeightSystem && props.n2000depth) {
+      return true;
+    } else if (!n2000HeightSystem && props.depth) {
+      return false;
+    } else {
+      return undefined;
+    }
+  } else {
+    if (props.n2000depth) {
+      return true;
+    } else if (props.depth) {
+      return false;
+    } else {
+      return undefined;
+    }
+  }
+}
+
 export function getDepthStyle(feature: FeatureLike) {
   const props = feature.getProperties() as AreaFeatureProperties;
   let text;
   const dvkMap = getMap();
-  if (props.n2000depth) {
+  const n2000HeightSystem = isShowN2000HeightSystem(feature.getProperties() as AreaFeatureProperties);
+  if (n2000HeightSystem === true) {
     text = dvkMap.t('popup.harbor.number', { val: props.n2000depth }) + 'm';
-  } else if (props.depth) {
+  } else if (n2000HeightSystem === false) {
     text = dvkMap.t('popup.harbor.number', { val: props.depth });
   } else {
     text = '-';
   }
+
   const specialFeature = feature.getProperties().featureType === 'specialarea';
   let image;
-  if (!props.n2000depth) {
+  if (!n2000HeightSystem) {
     image = new Icon({
       src: props.depth || 0 > 10 ? depthIconMWbig : depthIconMWsmall,
       anchor: [0.5, specialFeature ? -15 : 0.5],

@@ -279,6 +279,7 @@ export function unsetSelectedFairwayCard() {
   const area3456Source = dvkMap.getVectorSource('area3456');
   const quaySource = dvkMap.getVectorSource('quay');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const depthSource = dvkMap.getVectorSource('depth12');
 
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
   for (const feature of oldSelectedFeatures) {
@@ -291,6 +292,8 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'area12':
         area12Source.addFeature(feature);
+        feature.unset('n2000HeightSystem');
+        depthSource.getFeatureById(feature.getId() as number)?.unset('n2000HeightSystem');
         break;
       case 'area3456':
         area3456Source.addFeature(feature);
@@ -362,6 +365,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       const area3456Source = dvkMap.getVectorSource('area3456');
       const quaySource = dvkMap.getVectorSource('quay');
       const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+      const depthSource = dvkMap.getVectorSource('depth12');
 
       unsetSelectedFairwayCard();
 
@@ -386,6 +390,9 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
           if (feature) {
             area12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
+            feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
+            feature = depthSource.getFeatureById(area.id);
+            feature?.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
           } else {
             feature = area3456Source.getFeatureById(area.id);
             if (feature) {
