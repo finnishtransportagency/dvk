@@ -4,6 +4,7 @@ import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
 import { MAP, FeatureLayerId, FeatureDataLayerId } from '../utils/constants';
 import dvkMap from './DvkMap';
+import { intersects } from 'ol/extent';
 
 async function makeRequest(url: URL, id: FeatureLayerId): Promise<Feature<Geometry>[]> {
   return new Promise<Feature<Geometry>[]>((resolve, reject) => {
@@ -30,27 +31,36 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
   const speedLimitFeatures: Feature<Geometry>[] = [];
   const format = new GeoJSON();
   for (const raf of rafs) {
-    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
     const speedLimit = raf.getProperties().value;
     // Only analyse restriction areas with speed limit value
-    if (speedLimit !== null) {
-      for (const faf of fafs) {
-        const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        // Check if fairway area polygone is inside restriction area polygone
-        if (turf.booleanContains(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
-          faf.setProperties({ speedLimit: speedLimit });
-          speedLimitFeatures.push(faf);
-        } else {
-          // Find intersection of fairway area and restriction area polygons
-          const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
-          if (intersection) {
-            const feat = format.readFeature(intersection.geometry, {
-              dataProjection: 'EPSG:4326',
-              featureProjection: MAP.EPSG,
-            });
-            feat.setProperties({ speedLimit: speedLimit });
-            speedLimitFeatures.push(feat);
-          }
+    if (speedLimit === null) {
+      continue;
+    }
+    const rafExtent = raf.getGeometry()?.getExtent();
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+
+    for (const faf of fafs) {
+      const fafExtent = faf.getGeometry()?.getExtent();
+      // No need to analyze more if bounding boxes do not intersect
+      if (!rafExtent || !fafExtent || !intersects(rafExtent, fafExtent)) {
+        continue;
+      }
+
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      // Check if fairway area polygone is inside restriction area polygone
+      if (turf.booleanContains(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
+        faf.setProperties({ speedLimit: speedLimit });
+        speedLimitFeatures.push(faf);
+      } else {
+        // Find intersection of fairway area and restriction area polygons
+        const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
+        if (intersection) {
+          const feat = format.readFeature(intersection.geometry, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: MAP.EPSG,
+          });
+          feat.setProperties({ speedLimit: speedLimit });
+          speedLimitFeatures.push(feat);
         }
       }
     }
