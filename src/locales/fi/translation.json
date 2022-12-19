@@ -31,6 +31,7 @@
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
+          "marineWarnings": "Merivaroitukset",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
