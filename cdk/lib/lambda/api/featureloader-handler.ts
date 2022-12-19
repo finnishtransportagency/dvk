@@ -16,6 +16,7 @@ import {
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
+import { fetchMarineWarnings } from './pooki';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -253,6 +254,27 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
   }
 }
 
+async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const resp = await fetchMarineWarnings();
+  for (const feature of resp.data?.features || []) {
+    features.push({
+      type: feature.type,
+      id: feature.properties?.id,
+      geometry: feature.geometry,
+      properties: {
+        number: feature.properties?.NUMERO,
+        area: { fi: feature.properties?.ALUEET_FI, sv: feature.properties?.ALUEET_SV, en: feature.properties?.ALUEET_EN },
+        type: { fi: feature.properties?.TYYPPI_FI, sv: feature.properties?.TYYPPI_SV, en: feature.properties?.TYYPPI_EN },
+        location: { fi: feature.properties?.SIJAINTI_FI, sv: feature.properties?.SIJAINTI_SV, en: feature.properties?.SIJAINTI_EN },
+        description: { fi: feature.properties?.SISALTO_FI, sv: feature.properties?.SISALTO_SV, en: feature.properties?.SISALTO_EN },
+        startDateTime: feature.properties?.VOIMASSA_ALKAA,
+        endDateTime: feature.properties?.VOIMASSA_PAATTYY,
+        notifier: feature.properties?.TIEDOKSIANTAJA,
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -306,7 +328,7 @@ async function getFromCache(key: string): Promise<string | undefined> {
   return undefined;
 }
 
-const noCache = ['safetyequipmentfault'];
+const noCache = ['safetyequipmentfault', 'marinewarning'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
@@ -333,6 +355,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFeatures(features, event);
   } else if (type === 'safetyequipmentfault') {
     await addSafetyEquipmentFaultFeatures(features);
+  } else if (type === 'marinewarning') {
+    await addMarineWarnings(features);
   }
 }
 
