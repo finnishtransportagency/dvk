@@ -50,7 +50,7 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
       // Check if fairway area polygone is inside restriction area polygone
       if (turf.booleanContains(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
         faf.setProperties({ speedLimit: speedLimit });
-        speedLimitFeatures.push(faf);
+        speedLimitFeatures.push(faf.clone());
       } else {
         // Find intersection of fairway area and restriction area polygons
         const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
@@ -59,6 +59,13 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
             dataProjection: 'EPSG:4326',
             featureProjection: MAP.EPSG,
           });
+          // update area as well so we can show speed limit in popup
+          const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
+          if (oldSpeedLimit) {
+            oldSpeedLimit.push(speedLimit);
+          } else {
+            faf.setProperties({ speedLimit: [speedLimit] });
+          }
           feat.setProperties({ speedLimit: speedLimit });
           speedLimitFeatures.push(feat);
         }

@@ -43,6 +43,8 @@ export type AreaFeatureProperties = {
   n2000ReferenceLevel: string;
   n2000depth?: number;
   n2000draft?: number;
+  n2000HeightSystem?: boolean;
+  speedLimit?: number | number[];
   extra?: string;
   fairways?: AreaFairway[];
 };

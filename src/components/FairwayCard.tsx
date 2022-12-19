@@ -748,6 +748,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     variables: {
       id: id,
     },
+    fetchPolicy: 'no-cache',
   });
 
   const isN2000HeightSystem = !!data?.fairwayCard?.n2000HeightSystem;
