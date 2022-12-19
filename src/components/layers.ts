@@ -212,6 +212,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+  } else if (ds === 'specialarea') {
+    return getSpecialAreaStyle(feature, '#C57A11', 2, true);
   } else {
     return undefined;
   }
@@ -280,6 +282,7 @@ export function unsetSelectedFairwayCard() {
   const quaySource = dvkMap.getVectorSource('quay');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const depthSource = dvkMap.getVectorSource('depth12');
+  const specialAreaSource = dvkMap.getVectorSource('specialarea');
 
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
   for (const feature of oldSelectedFeatures) {
@@ -297,6 +300,10 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'area3456':
         area3456Source.addFeature(feature);
+        break;
+      case 'specialarea':
+        specialAreaSource.addFeature(feature);
+        feature.unset('n2000HeightSystem');
         break;
     }
   }
@@ -366,6 +373,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
       const quaySource = dvkMap.getVectorSource('quay');
       const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
       const depthSource = dvkMap.getVectorSource('depth12');
+      const specialAreaSource = dvkMap.getVectorSource('specialarea');
 
       unsetSelectedFairwayCard();
 
@@ -398,6 +406,14 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
             if (feature) {
               area3456Source.removeFeature(feature);
               fairwayFeatures.push(feature);
+            }
+          }
+          if (!feature) {
+            feature = specialAreaSource.getFeatureById(area.id);
+            if (feature) {
+              specialAreaSource.removeFeature(feature);
+              fairwayFeatures.push(feature);
+              feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
             }
           }
         }
