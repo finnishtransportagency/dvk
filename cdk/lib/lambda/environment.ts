@@ -95,7 +95,7 @@ export async function getVatuUrl() {
 
 export async function getFeatureCacheDurationHours() {
   const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.FeatureCacheDurationHours ? Number.parseInt(parameters.FeatureCacheDurationHours, 10) : 0;
+  return parameters.FeatureCacheDurationHours ? Number.parseFloat(parameters.FeatureCacheDurationHours) : 0;
 }
 
 export async function getVatuHeaders(): Promise<Record<string, string>> {
