@@ -111,3 +111,26 @@ export async function getRocketChatCredentials() {
   const { RocketchatUser, RocketchatPassword } = parameters;
   return { RocketchatUser, RocketchatPassword };
 }
+
+async function getPookiUsername() {
+  const parameters = await readParametersForEnv(getEnvironment());
+  return parameters.PookiUsername;
+}
+
+async function getPookiPassword() {
+  const parameters = await readParametersForEnv(getEnvironment());
+  return parameters.PookiPassword;
+}
+
+export async function getPookiUrl() {
+  const parameters = await readParametersForEnv(getEnvironment());
+  return parameters.PookiUrl;
+}
+
+export async function getPookiHeaders(): Promise<Record<string, string>> {
+  return {
+    Authorization: 'Basic ' + Buffer.from(`${await getPookiUsername()}:${await getPookiPassword()}`).toString('base64'),
+    'Content-type': 'application/json',
+    'Accept-Encoding': 'gzip',
+  };
+}
