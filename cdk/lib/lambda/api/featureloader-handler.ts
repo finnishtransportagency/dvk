@@ -270,6 +270,8 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
         startDateTime: feature.properties?.VOIMASSA_ALKAA,
         endDateTime: feature.properties?.VOIMASSA_PAATTYY,
         notifier: feature.properties?.TIEDOKSIANTAJA,
+        equipmentText: feature.properties?.TURVALAITE_TXT,
+        equipmentId: Number(feature.properties?.TURVALAITE_TXT?.match(/\d.*/)[0]),
       },
     });
   }
