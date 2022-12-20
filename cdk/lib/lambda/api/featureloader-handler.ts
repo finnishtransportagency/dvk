@@ -1,7 +1,7 @@
 import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
-import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
+import { Feature, FeatureCollection, Geometry, GeoJsonProperties, LineString, Position } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName, PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import {
@@ -174,34 +174,55 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
+type FairwayLineProperties = {
+  coordinates: Position[][];
+  length: number;
+  depth: number[];
+  draft: number[];
+  n2000depth: number[];
+  n2000draft: number[];
+};
+
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   log.debug('lines: %d', lines.length);
+  const fairwayLineMap = new Map<number, FairwayLineProperties>();
   for (const line of lines) {
+    for (const fairway of line.vayla) {
+      if (!fairwayLineMap.has(fairway.jnro)) {
+        fairwayLineMap.set(fairway.jnro, { coordinates: [], length: 0, depth: [], draft: [], n2000depth: [], n2000draft: [] });
+      }
+      const props = fairwayLineMap.get(fairway.jnro) as FairwayLineProperties;
+      props.coordinates.push((line.geometria as LineString).coordinates);
+      if (line.tyyppiKoodi && line.tyyppiKoodi !== '4') {
+        props.length = props.length + (line.pituus || 0);
+      }
+      if (line.harausSyvyys && line.harausSyvyys > 0 && !props.depth.includes(line.harausSyvyys)) {
+        props.depth.push(line.harausSyvyys);
+      }
+      if (line.n2000HarausSyvyys && line.n2000HarausSyvyys > 0 && !props.n2000depth.includes(line.n2000HarausSyvyys)) {
+        props.n2000depth.push(line.n2000HarausSyvyys);
+      }
+      if (line.mitoitusSyvays && line.mitoitusSyvays > 0 && !props.draft.includes(line.mitoitusSyvays)) {
+        props.draft.push(line.mitoitusSyvays);
+      }
+      if (line.n2000MitoitusSyvays && line.n2000MitoitusSyvays > 0 && !props.n2000draft.includes(line.n2000MitoitusSyvays)) {
+        props.n2000draft.push(line.n2000MitoitusSyvays);
+      }
+    }
+  }
+  for (const [fairwayId, props] of fairwayLineMap.entries()) {
     features.push({
       type: 'Feature',
-      id: line.id,
-      geometry: line.geometria as Geometry,
+      id: fairwayId,
+      geometry: { type: 'MultiLineString', coordinates: props.coordinates },
       properties: {
-        id: line.id,
         featureType: 'line',
-        depth: line.harausSyvyys,
-        draft: line.mitoitusSyvays,
-        n2000depth: line.n2000HarausSyvyys,
-        n2000draft: line.n2000MitoitusSyvays,
-        type: line.tyyppi,
-        typeCode: line.tyyppiKoodi,
-        fairways: line.vayla?.map((v) => {
-          return {
-            fairwayId: v.jnro,
-            name: {
-              fi: v.nimiFI,
-              sv: v.nimiSV,
-            },
-            status: v.status,
-            line: v.linjaus,
-          };
-        }),
+        length: props.length,
+        depth: props.depth,
+        draft: props.draft,
+        n2000depth: props.n2000depth,
+        n2000draft: props.n2000draft,
       },
     });
   }

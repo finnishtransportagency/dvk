@@ -23,7 +23,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'area', 'specialarea', 'line'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -93,6 +93,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('area3456'),
       dvkMap.getFeatureLayer('specialarea'),
       dvkMap.getFeatureLayer('selectedfairwaycard'),
+      dvkMap.getFeatureLayer('line12'),
     ],
   });
   pointerMoveSelect.on('select', (e) => {
