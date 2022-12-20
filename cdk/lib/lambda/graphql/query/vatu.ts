@@ -143,11 +143,15 @@ type TurvalaiteVaylaAPIModel = {
   paavayla?: string;
 };
 
-type TurvalaiteVikatiedotAPIModel = {
+export type TurvalaiteVikatiedotAPIModel = {
   vikaId: number;
+  turvalaiteNumero: number;
+  turvalaiteNimiFI: string;
+  turvalaiteNimiSV?: string;
   vikatyyppiKoodi: number;
-  vikatyyppiFI?: string;
+  vikatyyppiFI: string;
   vikatyyppiSV?: string;
+  geometria: object;
 };
 
 export type TurvalaiteAPIModel = {
@@ -166,43 +170,31 @@ export type TurvalaiteAPIModel = {
   omistajaSV?: string;
   symboli?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
-  vikatiedot?: TurvalaiteVikatiedotAPIModel[];
   geometria: object;
 };
 
-export async function fetchVATUByFairwayId<T>(fairwayId: number | number[], api: string) {
-  const start = Date.now();
-  const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();
-  const response = await axios
-    .get(`${await getVatuUrl()}/${api}?jnro=${ids}`, {
-      headers: await getVatuHeaders(),
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`VATU /${api}?jnro=${ids} fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-    });
-  log.debug(`/${api}?jnro=${ids} response time: ${Date.now() - start} ms`);
-  return response ? (response.data as T[]) : [];
-}
-
-export async function fetchVATUByFairwayClass<T>(api: string, event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+export async function fetchVATUByApi<T>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
       headers: await getVatuHeaders(),
-      params: { vaylaluokka: fairwayClass },
+      params,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(
-        `VATU /${api}?fairwayClass=${fairwayClass} fetch failed: status=%d code=%s message=%s`,
-        errorObj.status,
-        errorObj.code,
-        errorObj.message
-      );
+      log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
     });
-  log.debug(`/${api}?fairwayClass=${fairwayClass} response time: ${Date.now() - start} ms`);
+  log.debug(`/${api} response time: ${Date.now() - start} ms`);
   return response ? (response.data as T[]) : [];
+}
+
+export async function fetchVATUByFairwayId<T>(fairwayId: number | number[], api: string) {
+  const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();
+  return fetchVATUByApi<T>(api, { jnro: ids });
+}
+
+export async function fetchVATUByFairwayClass<T>(api: string, event: ALBEvent) {
+  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+  return fetchVATUByApi<T>(api, { vaylaluokka: fairwayClass });
 }

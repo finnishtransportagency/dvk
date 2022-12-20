@@ -113,6 +113,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonList lines="none" className="ion-no-padding">
               <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
               <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
+              <LayerItem id="marinewarning" title={t('homePage.map.controls.layer.marineWarnings')} />
             </IonList>
           </IonCol>
         </IonRow>
