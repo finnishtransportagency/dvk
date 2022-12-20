@@ -167,6 +167,6 @@ Select Fairway
 	${fairway_cards_list_count}=    Get Length    ${fairway_cards_list}
 	Should Be Equal    ${fairway_cards_count}    ${fairway_cards_list_count}
 	${SELECTED_FAIRWAY_CARD}=    Get From List    ${fairway_cards_list}    ${selected_number_minus_one}
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Set Test Variable    ${SELECTED_FAIRWAY_CARD}
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
