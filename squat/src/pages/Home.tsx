@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonContent, IonFooter, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCol, IonContent, IonFooter, IonGrid, IonItem, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
 
@@ -20,7 +20,25 @@ const Home: React.FC = () => {
       <IonFooter collapse="fade" className="small">
         <IonToolbar>
           <IonTitle size="small" slot="end" className="version-title">
-            v{`${process.env.REACT_APP_VERSION}`}
+            <IonGrid className="ion-no-padding">
+              <IonRow>
+                <IonCol class="ion-align-self-center">
+                  <IonItem
+                    href="https://vayla.fi/tietoa-meista/yhteystiedot/saavutettavuus"
+                    rel="external"
+                    target="_blank"
+                    detail={false}
+                    lines="none"
+                    className="ion-no-padding external-link"
+                  >
+                    Saavutettavuusseloste
+                  </IonItem>
+                </IonCol>
+                <IonCol size="auto" class="ion-align-self-center">
+                  v{`${process.env.REACT_APP_VERSION}`}
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonTitle>
         </IonToolbar>
       </IonFooter>

@@ -20,7 +20,7 @@ const PrintBar: React.FC = () => {
     <>
       <IonGrid>
         <IonRow>
-          <IonCol class="ion-align-self-center" size="auto">
+          <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
             <Modal
               title={t('header.shareable-link-title')}
               content={
@@ -51,7 +51,7 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src="assets/share_icon.svg" size="large" />}
+              trigger={<IonIcon src="assets/share_icon.svg" size="medium" />}
               triggerTitle={t('header.shareable-link-title')}
             />
           </IonCol>
@@ -64,7 +64,7 @@ const PrintBar: React.FC = () => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src="assets/print_icon.svg" size="large" />
+              <IonIcon color="primary" slot="icon-only" src="assets/print_icon.svg" size="medium" />
             </IonButton>
           </IonCol>
         </IonRow>
