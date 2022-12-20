@@ -74,6 +74,8 @@ Check Fairway Card
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Click Element    ${BACK_TO_HOME_BUTTON}
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
@@ -91,26 +93,43 @@ Check Center And Zoom Buttons
 
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
-	Wait Until Element Contains    ${FAIRWAY_HEADING}    Nordsjöleden    30s
+	Select Fairway
+	Capture Page Screenshot
+	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
+	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
+	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
+	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Click Element    ${BACK_TO_HOME_BUTTON}
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
-	Wait Until Element Contains    ${FAIRWAY_HEADING}    Vuosaari channel    30s
+	Select Fairway
+	Capture Page Screenshot
+	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
+	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
+	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
+	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Click Element    ${BACK_TO_HOME_BUTTON}
 
 *** Keywords ***
 Change Fairway Card Language To
 	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
-	Click Element    ${MENU_BUTTON}
+	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${language}
 	Click Element    ${language}
 	Wait Until Element Is Visible    ${language_button_disabled}    30s
 	Wait Until Element Contains    ${FAIRWAYS_LINK}    ${fairways_text}    30s
 	Capture Page Screenshot
 	Click Element    ${CLOSE_MENU_BUTTON}
+	Wait Until Element Is Not Visible    ${CLOSE_MENU_BUTTON}    30s
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
@@ -153,8 +172,10 @@ Check That Tabs Can Be Selected And Tab Contents Are Activated
 Select Fairway
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
+	Capture Page Screenshot
 	Click Element    ${FAIRWAYS_LINK}
 	Sleep    5s
+	Capture Page Screenshot
 	@{fairway_cards_list}=    Create List
 	${fairway_cards_count}=    Get Element Count    ${FAIRWAY_CARDS}
 	${selected_number}=    Evaluate    random.randint(1, ${fairway_cards_count})
@@ -169,4 +190,6 @@ Select Fairway
 	${SELECTED_FAIRWAY_CARD}=    Get From List    ${fairway_cards_list}    ${selected_number_minus_one}
 	Set Test Variable    ${SELECTED_FAIRWAY_CARD}
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Capture Page Screenshot
 	Click Element    ${BACK_TO_HOME_BUTTON}
+	Sleep    5s
