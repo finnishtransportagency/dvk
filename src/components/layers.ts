@@ -78,7 +78,6 @@ export function getLineStyle(color: string, width: number) {
       color,
       width,
     }),
-    zIndex: 10,
   });
 }
 
