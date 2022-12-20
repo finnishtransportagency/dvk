@@ -2,6 +2,7 @@
 Library    SeleniumLibrary
 Library    String
 Library    DateTime
+Library    Collections
 
 *** Variables ***
 ${BROWSER}    headlesschrome
@@ -40,6 +41,10 @@ ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab3 active
 ${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
 ${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
 ${REGEX_SCALE}    \\d+\\s(m|km)
+${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
+${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
+${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
+${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 
 *** Test Cases ***
 Open DVK
@@ -61,6 +66,7 @@ Check Copyright And Scale
 	Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
 
 Check Fairway Card
+	Select Fairway
 	Input Text    ${INPUT_FAIRWAY}   vuo
 	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
@@ -143,3 +149,24 @@ Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
 	Check That Toggle Wide Button Works Correctly For Fairway Card Tab
+
+Select Fairway
+	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
+	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
+	Click Element    ${FAIRWAYS_LINK}
+	Sleep    5s
+	@{fairway_cards_list}=    Create List
+	${fairway_cards_count}=    Get Element Count    ${FAIRWAY_CARDS}
+	${selected_number}=    Evaluate    random.randint(1, ${fairway_cards_count})
+	${selected_number_minus_one}=    Evaluate    ${selected_number} - 1
+	${all_elements}=    Get WebElements    ${FAIRWAY_CARDS}
+	FOR    ${item}    IN    @{all_elements}
+		Scroll Element Into View    ${item}
+		Append To List    ${fairway_cards_list}    ${item.text}
+	END
+	${fairway_cards_list_count}=    Get Length    ${fairway_cards_list}
+	Should Be Equal    ${fairway_cards_count}    ${fairway_cards_list_count}
+	${SELECTED_FAIRWAY_CARD}=    Get From List    ${fairway_cards_list}    ${selected_number_minus_one}
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Set Test Variable    ${SELECTED_FAIRWAY_CARD}
+	Click Element    ${BACK_TO_HOME_BUTTON}
