@@ -37,11 +37,12 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
       <IonGrid class="ion-no-padding">
         <IonRow>
           <IonCol className="header">
-            {line.properties.fairways && (line.properties.fairways[0].name[lang] || line.properties.fairways[0].name.fi)}
+            {line.properties.fairways && (line.properties.fairways[0].name[lang] || line.properties.fairways[0].name.fi)}{' '}
+            {line.properties.fairways && line.properties.fairways[0].fairwayId}
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{showN2000HeightSystem && line.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+          <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.line.info')}</IonCol>

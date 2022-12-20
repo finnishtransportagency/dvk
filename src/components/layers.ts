@@ -290,6 +290,7 @@ export function unsetSelectedFairwayCard() {
     switch (feature.getProperties().dataSource) {
       case 'line12':
         line12Source.addFeature(feature);
+        feature.unset('n2000HeightSystem');
         break;
       case 'line3456':
         line3456Source.addFeature(feature);
@@ -386,6 +387,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
           if (feature) {
             line12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
+            feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
           } else {
             feature = line3456Source.getFeatureById(line.id);
             if (feature) {
