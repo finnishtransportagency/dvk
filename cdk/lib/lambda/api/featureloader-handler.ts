@@ -1,7 +1,7 @@
 import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
-import { Feature, FeatureCollection, Geometry, GeoJsonProperties, LineString, Position } from 'geojson';
+import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName, PilotPlace } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import {
@@ -81,7 +81,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+async function getCardMap() {
   const cardMap = new Map<number, FairwayCardIdName[]>();
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
@@ -92,6 +92,11 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       cardMap.get(id)?.push({ id: card.id, name: card.name });
     }
   }
+  return cardMap;
+}
+
+async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+  const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
@@ -174,55 +179,41 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
-type FairwayLineProperties = {
-  coordinates: Position[][];
-  length: number;
-  depth: number[];
-  draft: number[];
-  n2000depth: number[];
-  n2000draft: number[];
-};
-
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
+  const cardMap = await getCardMap();
   log.debug('lines: %d', lines.length);
-  const fairwayLineMap = new Map<number, FairwayLineProperties>();
   for (const line of lines) {
-    for (const fairway of line.vayla) {
-      if (!fairwayLineMap.has(fairway.jnro)) {
-        fairwayLineMap.set(fairway.jnro, { coordinates: [], length: 0, depth: [], draft: [], n2000depth: [], n2000draft: [] });
-      }
-      const props = fairwayLineMap.get(fairway.jnro) as FairwayLineProperties;
-      props.coordinates.push((line.geometria as LineString).coordinates);
-      if (line.tyyppiKoodi && line.tyyppiKoodi !== '4') {
-        props.length = props.length + (line.pituus || 0);
-      }
-      if (line.harausSyvyys && line.harausSyvyys > 0 && !props.depth.includes(line.harausSyvyys)) {
-        props.depth.push(line.harausSyvyys);
-      }
-      if (line.n2000HarausSyvyys && line.n2000HarausSyvyys > 0 && !props.n2000depth.includes(line.n2000HarausSyvyys)) {
-        props.n2000depth.push(line.n2000HarausSyvyys);
-      }
-      if (line.mitoitusSyvays && line.mitoitusSyvays > 0 && !props.draft.includes(line.mitoitusSyvays)) {
-        props.draft.push(line.mitoitusSyvays);
-      }
-      if (line.n2000MitoitusSyvays && line.n2000MitoitusSyvays > 0 && !props.n2000draft.includes(line.n2000MitoitusSyvays)) {
-        props.n2000draft.push(line.n2000MitoitusSyvays);
-      }
-    }
-  }
-  for (const [fairwayId, props] of fairwayLineMap.entries()) {
     features.push({
       type: 'Feature',
-      id: fairwayId,
-      geometry: { type: 'MultiLineString', coordinates: props.coordinates },
+      id: line.id,
+      geometry: line.geometria as Geometry,
       properties: {
+        id: line.id,
         featureType: 'line',
-        length: props.length,
-        depth: props.depth,
-        draft: props.draft,
-        n2000depth: props.n2000depth,
-        n2000draft: props.n2000draft,
+        depth: line.harausSyvyys && line.harausSyvyys > 0 ? line.harausSyvyys : undefined,
+        draft: line.mitoitusSyvays && line.mitoitusSyvays > 0 ? line.mitoitusSyvays : undefined,
+        length: line.pituus && line.pituus > 0 ? line.pituus : undefined,
+        referenceLevel: line.vertaustaso,
+        n2000depth: line.n2000HarausSyvyys && line.n2000HarausSyvyys > 0 ? line.n2000HarausSyvyys : undefined,
+        n2000draft: line.n2000MitoitusSyvays && line.n2000MitoitusSyvays > 0 ? line.n2000MitoitusSyvays : undefined,
+        n2000ReferenceLevel: line.n2000Vertaustaso,
+        type: line.tyyppi,
+        typeCode: line.tyyppiKoodi,
+        direction: line.tosisuunta,
+        extra: line.lisatieto,
+        fairways: line.vayla?.map((v) => {
+          return {
+            fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFI,
+              sv: v.nimiSV,
+            },
+            fairwayCards: cardMap.get(v.jnro),
+            status: v.status,
+            line: v.linjaus,
+          };
+        }),
       },
     });
   }
