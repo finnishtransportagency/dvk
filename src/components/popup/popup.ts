@@ -94,6 +94,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('specialarea'),
       dvkMap.getFeatureLayer('selectedfairwaycard'),
       dvkMap.getFeatureLayer('line12'),
+      dvkMap.getFeatureLayer('line3456'),
     ],
   });
   pointerMoveSelect.on('select', (e) => {
