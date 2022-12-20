@@ -36,32 +36,39 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
     <IonGrid id="linePopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
-          <IonCol className="header">{line.properties.fairways && line.properties.fairways[0].name[lang]}</IonCol>
+          <IonCol className="header">
+            {line.properties.fairways && (line.properties.fairways[0].name[lang] || line.properties.fairways[0].name.fi)}
+          </IonCol>
         </IonRow>
         <IonRow>
           <IonCol>{showN2000HeightSystem && line.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol className="header">{t('popup.area.info')}</IonCol>
+          <IonCol className="header">{t('popup.line.info')}</IonCol>
         </IonRow>
-        {(line.properties.n2000depth || line.properties.depth) && (
-          <IonRow>
-            <IonCol>{t('popup.area.depth', { val: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}</IonCol>
-          </IonRow>
-        )}
         {(line.properties.n2000draft || line.properties.draft) && (
           <IonRow>
-            <IonCol>{t('popup.area.draft', { val: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}</IonCol>
+            <IonCol>{t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}</IonCol>
+          </IonRow>
+        )}
+        {(line.properties.n2000depth || line.properties.depth) && (
+          <IonRow>
+            <IonCol>{t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}</IonCol>
           </IonRow>
         )}
         {line.properties.length && (
           <IonRow>
-            <IonCol>{t('popup.area.draft', { val: line.properties.length })}</IonCol>
+            <IonCol>{t('popup.line.length', { val: line.properties.length })}</IonCol>
+          </IonRow>
+        )}
+        {line.properties.direction && (
+          <IonRow>
+            <IonCol>{t('popup.line.direction', { val: line.properties.direction })}</IonCol>
           </IonRow>
         )}
         {fairwayCards.length > 0 && (
           <IonRow>
-            <IonCol className="header">{t('popup.area.fairways')}</IonCol>
+            <IonCol className="header">{t('popup.line.fairways')}</IonCol>
           </IonRow>
         )}
         {fairwayCards?.map((card, index) => {
@@ -76,7 +83,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
         {line.properties.extra && (
           <>
             <IonRow>
-              <IonCol className="header">{t('popup.area.extra')}</IonCol>
+              <IonCol className="header">{t('popup.line.extra')}</IonCol>
             </IonRow>
             <IonRow>
               <IonCol>{line.properties.extra}</IonCol>
