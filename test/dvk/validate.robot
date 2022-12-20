@@ -67,11 +67,11 @@ Check Copyright And Scale
 
 Check Fairway Card
 	Select Fairway
-	Input Text    ${INPUT_FAIRWAY}   vuo
+	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
 	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    Vuosaaren väylä
+	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 
