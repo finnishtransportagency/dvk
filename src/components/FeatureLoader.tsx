@@ -2,11 +2,47 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { MAP } from '../utils/constants';
+import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/featureData';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId) {
+  const [ready, setReady] = useState(false);
+  const { data } = useFeatureData(featureDataId);
+  useEffect(() => {
+    if (data) {
+      const format = new GeoJSON();
+      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const source = dvkMap.getVectorSource(featureLayerId);
+      features.forEach((f) => f.set('dataSource', featureLayerId, true));
+      source.addFeatures(features);
+      setReady(true);
+    }
+  }, [featureLayerId, data]);
+  return ready;
+}
+
+export function useLine12Layer() {
+  return useDataLayer('line12', 'line12');
+}
+
+export function useLine3456Layer() {
+  return useDataLayer('line3456', 'line3456');
+}
+
+export function useArea12Layer() {
+  return useDataLayer('area12', 'area12');
+}
+
+export function useArea3456Layer() {
+  return useDataLayer('area3456', 'area3456');
+}
+
+export function useDepth12Layer() {
+  return useDataLayer('area12', 'depth12');
+}
 
 function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]) {
   const speedLimitFeatures: Feature<Geometry>[] = [];
@@ -56,76 +92,8 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
   return speedLimitFeatures;
 }
 
-async function InitLine12() {
-  const { data } = useFeatureData('line12');
-
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('line12');
-      features.forEach((f) => f.set('dataSource', 'line12', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
-}
-
-async function InitLine3456() {
-  const { data } = useFeatureData('line3456');
-
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('line3456');
-      features.forEach((f) => f.set('dataSource', 'line3456', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
-}
-
-async function InitArea12() {
-  const { data } = useFeatureData('area12');
-
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('area12');
-      features.forEach((f) => f.set('dataSource', 'area12', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
-}
-
-async function InitArea3456() {
-  const { data } = useFeatureData('area3456');
-
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('area3456');
-      features.forEach((f) => f.set('dataSource', 'area3456', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
-}
-
-async function InitDepth12() {
-  const { data } = useFeatureData('area12');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('depth12');
-      features.forEach((f) => f.set('dataSource', 'depth12', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
-}
-
-function InitSpeedlimit() {
+export function useSpeedLimitLayer() {
+  const [ready, setReady] = useState(false);
   const aQuery = useFeatureData('area12');
   const raQuery = useFeatureData('restrictionarea');
 
@@ -140,73 +108,24 @@ function InitSpeedlimit() {
       const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
       const source = dvkMap.getVectorSource('speedlimit');
       source.addFeatures(speedLimitFeatures);
+      setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
+  return ready;
 }
 
-async function InitSpecialarea() {
-  const { data } = useFeatureData('specialarea');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('specialarea');
-      features.forEach((f) => f.set('dataSource', 'specialarea', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
+export function useSpecialAreaLayer() {
+  return useDataLayer('specialarea', 'specialarea');
 }
 
-async function InitPilot() {
-  const { data } = useFeatureData('pilot');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('pilot');
-      features.forEach((f) => f.set('dataSource', 'pilot', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
+export function usePilotLayer() {
+  return useDataLayer('pilot', 'pilot');
 }
 
-async function InitHarbor() {
-  const { data } = useFeatureData('harbor');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('harbor');
-      features.forEach((f) => f.set('dataSource', 'harbor', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
+export function useHarborLayer() {
+  return useDataLayer('harbor', 'harbor');
 }
 
-async function InitSafetyequipment() {
-  const { data } = useFeatureData('safetyequipment');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('safetyequipment');
-      features.forEach((f) => f.set('dataSource', 'safetyequipment', true));
-      source.addFeatures(features);
-    }
-  }, [data]);
+export function useSafetyEquipmentLayer() {
+  return useDataLayer('safetyequipment', 'safetyequipment');
 }
-
-async function InitFeatures() {
-  InitLine12();
-  InitLine3456();
-  InitArea12();
-  InitArea3456();
-  InitDepth12();
-  InitSpeedlimit();
-  InitSpecialarea();
-  InitPilot();
-  InitHarbor();
-  InitSafetyequipment();
-}
-
-export { InitFeatures };

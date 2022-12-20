@@ -177,6 +177,10 @@
       "label": "[sv] Päivitä"
     }
   },
+  "appInitAlert": {
+    "title": "[sv] Sovellusta alustetaan",
+    "content": "[sv] Ole hyvä ja odota hetki"
+  },
   "popup": {
     "pilotPlace": {
       "header": "[sv] Luotsipaikka {{val}}",

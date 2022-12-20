@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
-import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
-import { InitFeatures } from './components/FeatureLoader';
+import {
+  useLine12Layer,
+  useLine3456Layer,
+  useArea12Layer,
+  useArea3456Layer,
+  useDepth12Layer,
+  useSpeedLimitLayer,
+  useSpecialAreaLayer,
+  usePilotLayer,
+  useHarborLayer,
+  useSafetyEquipmentLayer,
+} from './components/FeatureLoader';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Core CSS required for Ionic components to work properly */
@@ -56,7 +67,47 @@ const client = new ApolloClient({
 });
 
 const DvkIonApp: React.FC = () => {
-  InitFeatures();
+  const { t } = useTranslation();
+  const line12Layer = useLine12Layer();
+  const line3456Layer = useLine3456Layer();
+  const area12Layer = useArea12Layer();
+  const area3456Layer = useArea3456Layer();
+  const depth12Layer = useDepth12Layer();
+  const speedLimitLayer = useSpeedLimitLayer();
+  const specialAreaLayer = useSpecialAreaLayer();
+  const pilotLayer = usePilotLayer();
+  const harborLayer = useHarborLayer();
+  const safetyEquipmentLayer = useSafetyEquipmentLayer();
+
+  const [initDone, setInitDone] = useState(false);
+
+  useEffect(() => {
+    if (
+      line12Layer &&
+      line3456Layer &&
+      area12Layer &&
+      area3456Layer &&
+      depth12Layer &&
+      speedLimitLayer &&
+      specialAreaLayer &&
+      pilotLayer &&
+      harborLayer &&
+      safetyEquipmentLayer
+    ) {
+      setInitDone(true);
+    }
+  }, [
+    line12Layer,
+    line3456Layer,
+    area12Layer,
+    area3456Layer,
+    depth12Layer,
+    speedLimitLayer,
+    specialAreaLayer,
+    pilotLayer,
+    harborLayer,
+    safetyEquipmentLayer,
+  ]);
 
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
@@ -73,6 +124,7 @@ const DvkIonApp: React.FC = () => {
           <MapOverlays />
         </ApolloProvider>
       </IonReactRouter>
+      <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
     </IonApp>
   );
 };
