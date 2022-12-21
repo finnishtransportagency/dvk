@@ -1,13 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { Route } from 'react-router-dom';
-import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, useIonAlert } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
+/* React query offline cache */
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { Drivers, Storage } from '@ionic/storage';
+import IonicAsyncStorage from './utils/IonicAsyncStorage';
+import { OFFLINE_STORAGE } from './utils/constants';
+/* Apollo */
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
-import { InitFeatures } from './components/FeatureLoader';
+import {
+  useLine12Layer,
+  useLine3456Layer,
+  useArea12Layer,
+  useArea3456Layer,
+  useDepth12Layer,
+  useSpeedLimitLayer,
+  useSpecialAreaLayer,
+  usePilotLayer,
+  useHarborLayer,
+  useSafetyEquipmentLayer,
+} from './components/FeatureLoader';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -38,6 +57,24 @@ setupIonicReact({
   mode: 'md',
 });
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: OFFLINE_STORAGE.staleTime,
+      cacheTime: OFFLINE_STORAGE.cacheTime,
+    },
+  },
+});
+
+const store = new Storage({
+  name: OFFLINE_STORAGE.name,
+  storeName: OFFLINE_STORAGE.storeName,
+  driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+});
+store.create();
+
+const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
+
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql' });
 const authLink = setContext((_, { headers }) => {
   return {
@@ -52,29 +89,78 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const DvkIonApp: React.FC = () => {
+  const { t } = useTranslation();
+  const line12Layer = useLine12Layer();
+  const line3456Layer = useLine3456Layer();
+  const area12Layer = useArea12Layer();
+  const area3456Layer = useArea3456Layer();
+  const depth12Layer = useDepth12Layer();
+  const speedLimitLayer = useSpeedLimitLayer();
+  const specialAreaLayer = useSpecialAreaLayer();
+  const pilotLayer = usePilotLayer();
+  const harborLayer = useHarborLayer();
+  const safetyEquipmentLayer = useSafetyEquipmentLayer();
+
+  const [initDone, setInitDone] = useState(false);
+
+  useEffect(() => {
+    if (
+      line12Layer &&
+      line3456Layer &&
+      area12Layer &&
+      area3456Layer &&
+      depth12Layer &&
+      speedLimitLayer &&
+      specialAreaLayer &&
+      pilotLayer &&
+      harborLayer &&
+      safetyEquipmentLayer
+    ) {
+      setInitDone(true);
+    }
+  }, [
+    line12Layer,
+    line3456Layer,
+    area12Layer,
+    area3456Layer,
+    depth12Layer,
+    speedLimitLayer,
+    specialAreaLayer,
+    pilotLayer,
+    harborLayer,
+    safetyEquipmentLayer,
+  ]);
+
+  return (
+    <IonApp className={isMobile() ? 'mobile' : ''}>
+      <IonReactRouter>
+        <ApolloProvider client={client}>
+          <SidebarMenu />
+          <IonContent id="MainContent">
+            <IonRouterOutlet>
+              <Route exact path="/" render={(props) => <Home {...props} />} />
+              <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+              <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+            </IonRouterOutlet>
+          </IonContent>
+          <MapOverlays />
+        </ApolloProvider>
+      </IonReactRouter>
+      <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
+    </IonApp>
+  );
+};
+
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [loading, setLoading] = useState(true);
   const [showUpdateAlert] = useIonAlert();
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
 
   document.documentElement.lang = i18n.language;
 
-  async function loadFeatures() {
-    try {
-      InitFeatures();
-      setLoading(false);
-    } catch (e) {
-      console.log('### LOADING FAILED ###');
-    }
-  }
-
   InitDvkMap();
-
-  useEffect(() => {
-    loadFeatures();
-  }, []);
 
   useEffect(() => {
     if (!updating) {
@@ -101,24 +187,9 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <IonApp className={isMobile() ? 'mobile' : ''}>
-      {loading && <div>LOADING...</div>}
-      {!loading && (
-        <IonReactRouter>
-          <ApolloProvider client={client}>
-            <SidebarMenu />
-            <IonContent id="MainContent">
-              <IonRouterOutlet>
-                <Route exact path="/" render={(props) => <Home {...props} />} />
-                <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-                <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-              </IonRouterOutlet>
-            </IonContent>
-            <MapOverlays />
-          </ApolloProvider>
-        </IonReactRouter>
-      )}
-    </IonApp>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
+      <DvkIonApp />
+    </PersistQueryClientProvider>
   );
 };
 

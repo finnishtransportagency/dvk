@@ -2,29 +2,96 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { MAP, FeatureLayerId, FeatureDataLayerId } from '../utils/constants';
+import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
+import { useFeatureData } from '../utils/featureData';
+import { useEffect, useState } from 'react';
 
-async function makeRequest(url: URL, id: FeatureLayerId): Promise<Feature<Geometry>[]> {
-  return new Promise<Feature<Geometry>[]>((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url);
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(xhr.responseText, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        console.log(id + ' succesfully loaded features: ' + features.length);
-        resolve(features);
-      } else {
-        reject(id + ' FAILED');
+function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId) {
+  const [ready, setReady] = useState(false);
+  const { data } = useFeatureData(featureDataId);
+  useEffect(() => {
+    if (data) {
+      const format = new GeoJSON();
+      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const source = dvkMap.getVectorSource(featureLayerId);
+      features.forEach((f) => f.set('dataSource', featureLayerId, true));
+      source.addFeatures(features);
+      setReady(true);
+    }
+  }, [featureLayerId, data]);
+  return ready;
+}
+
+export function useLine12Layer() {
+  return useDataLayer('line12', 'line12');
+}
+
+export function useLine3456Layer() {
+  return useDataLayer('line3456', 'line3456');
+}
+
+function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
+  const format = new GeoJSON();
+  for (const raf of rafs) {
+    const speedLimit = raf.getProperties().value;
+    // Only analyse restriction areas with speed limit value
+    if (speedLimit === null) {
+      continue;
+    }
+    const rafExtent = raf.getGeometry()?.getExtent();
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+
+    for (const faf of fafs) {
+      const fafExtent = faf.getGeometry()?.getExtent();
+      // No need to analyze more if bounding boxes do not intersect
+      if (!rafExtent || !fafExtent || !intersects(rafExtent, fafExtent)) {
+        continue;
       }
-    };
-    xhr.onerror = () => {
-      reject(id + ' ONERROR');
-    };
-    xhr.send();
-  });
+
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      // Check if fairway area polygone intersects restriction area polygone
+      if (!turf.booleanDisjoint(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
+        const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
+        if (oldSpeedLimit) {
+          oldSpeedLimit.push(speedLimit);
+        } else {
+          faf.setProperties({ speedLimit: [speedLimit] });
+        }
+      }
+    }
+  }
+}
+
+export function useArea12Layer() {
+  const [ready, setReady] = useState(false);
+  const aQuery = useFeatureData('area12');
+  const raQuery = useFeatureData('restrictionarea');
+
+  useEffect(() => {
+    const aData = aQuery.data;
+    const raData = raQuery.data;
+    if (aData && raData) {
+      const format = new GeoJSON();
+      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      addSpeedLimits(afs, rafs);
+      afs.forEach((f) => f.set('dataSource', 'area12', true));
+      const source = dvkMap.getVectorSource('area12');
+      source.addFeatures(afs);
+      setReady(true);
+    }
+  }, [aQuery.data, raQuery.data]);
+  return ready;
+}
+
+export function useArea3456Layer() {
+  return useDataLayer('area3456', 'area3456');
+}
+
+export function useDepth12Layer() {
+  return useDataLayer('area12', 'depth12');
 }
 
 function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]) {
@@ -47,74 +114,54 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
       }
 
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      // Check if fairway area polygone is inside restriction area polygone
-      if (turf.booleanContains(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
-        faf.setProperties({ speedLimit: speedLimit });
-        speedLimitFeatures.push(faf.clone());
-      } else {
-        // Find intersection of fairway area and restriction area polygons
-        const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
-        if (intersection) {
-          const feat = format.readFeature(intersection.geometry, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: MAP.EPSG,
-          });
-          // update area as well so we can show speed limit in popup
-          const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
-          if (oldSpeedLimit) {
-            oldSpeedLimit.push(speedLimit);
-          } else {
-            faf.setProperties({ speedLimit: [speedLimit] });
-          }
-          feat.setProperties({ speedLimit: speedLimit });
-          speedLimitFeatures.push(feat);
-        }
+      const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
+      if (intersection) {
+        const feat = format.readFeature(intersection.geometry, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: MAP.EPSG,
+        });
+        feat.setProperties({ speedLimit: speedLimit });
+        speedLimitFeatures.push(feat);
       }
     }
   }
   return speedLimitFeatures;
 }
 
-let featuresInitialized = false;
+export function useSpeedLimitLayer() {
+  const [ready, setReady] = useState(false);
+  const aQuery = useFeatureData('area12');
+  const raQuery = useFeatureData('restrictionarea');
 
-async function InitFeatures() {
-  const featurePromises: { layerId: FeatureDataLayerId; promise: Promise<Feature<Geometry>[]> }[] = [];
-  const layerFeatures: { layerId: FeatureDataLayerId; features: Feature<Geometry>[] }[] = [];
-  if (!featuresInitialized) {
-    try {
-      MAP.FEATURE_DATA_LAYERS.forEach((layer) => {
-        featurePromises.push({ layerId: layer.id, promise: makeRequest(layer.url, layer.id) });
-      });
+  useEffect(() => {
+    const aData = aQuery.data;
+    const raData = raQuery.data;
+    if (aData && raData) {
+      const format = new GeoJSON();
+      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
 
-      for (const fp of featurePromises) {
-        const features = await fp.promise;
-        layerFeatures.push({ layerId: fp.layerId, features: features });
-
-        if (fp.layerId !== 'restrictionarea') {
-          const source = dvkMap.getVectorSource(fp.layerId);
-          features.forEach((f) => f.set('dataSource', fp.layerId, true));
-          source.addFeatures(features);
-        }
-      }
-
-      const ralf = layerFeatures.find((lf) => lf.layerId === 'restrictionarea');
-      const alf = layerFeatures.find((lf) => lf.layerId === 'area12');
-
-      if (ralf && alf) {
-        const speedLimitFeatures = getSpeedLimitFeatures(ralf.features, alf.features);
-        const source = dvkMap.getVectorSource('speedlimit');
-        source.addFeatures(speedLimitFeatures);
-      }
-    } catch (e) {
-      console.log(e);
-      return Promise.reject();
+      const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
+      const source = dvkMap.getVectorSource('speedlimit');
+      source.addFeatures(speedLimitFeatures);
+      setReady(true);
     }
-
-    featuresInitialized = true;
-    return Promise.resolve();
-  } else {
-    return Promise.resolve();
-  }
+  }, [aQuery.data, raQuery.data]);
+  return ready;
 }
 
-export { InitFeatures };
+export function useSpecialAreaLayer() {
+  return useDataLayer('specialarea', 'specialarea');
+}
+
+export function usePilotLayer() {
+  return useDataLayer('pilot', 'pilot');
+}
+
+export function useHarborLayer() {
+  return useDataLayer('harbor', 'harbor');
+}
+
+export function useSafetyEquipmentLayer() {
+  return useDataLayer('safetyequipment', 'safetyequipment');
+}

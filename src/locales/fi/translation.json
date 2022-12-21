@@ -179,6 +179,10 @@
       "label": "Päivitä"
     }
   },
+  "appInitAlert": {
+    "title": "Sovellusta alustetaan",
+    "content": "Ole hyvä ja odota hetki"
+  },
   "popup": {
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",

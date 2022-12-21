@@ -179,6 +179,10 @@
       "label": "Update"
     }
   },
+  "appInitAlert": {
+    "title": "Initializing app",
+    "content": "Please wait"
+  },
   "popup": {
     "pilotPlace": {
       "header": "[en] Luotsipaikka {{val}}",
