@@ -24,7 +24,16 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('./components/FeatureLoader', () => ({
-  InitFeatures: () => {},
+  useLine12Layer: () => {},
+  useLine3456Layer: () => {},
+  useArea12Layer: () => {},
+  useArea3456Layer: () => {},
+  useDepth12Layer: () => {},
+  usePilotLayer: () => {},
+  useSpecialAreaLayer: () => {},
+  useSpeedLimitLayer: () => {},
+  useHarborLayer: () => {},
+  useSafetyEquipmentLayer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {
