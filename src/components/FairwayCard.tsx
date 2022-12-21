@@ -387,7 +387,16 @@ const GeneralInfo: React.FC<FairwaysProps> = ({ data }) => {
 const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
-  const fairwayAreas = data?.flatMap((fairway) => fairway.areas) || [];
+  const fairwayAreas =
+    data?.flatMap((fairway) =>
+      fairway.areas?.sort((a, b) => {
+        const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
+        const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
+        const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
+        const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
+        return sequenceNumberA - sequenceNumberB;
+      })
+    ) || [];
 
   return (
     <ol>
