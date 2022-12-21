@@ -32,8 +32,58 @@ export function useLine3456Layer() {
   return useDataLayer('line3456', 'line3456');
 }
 
+function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
+  const format = new GeoJSON();
+  for (const raf of rafs) {
+    const speedLimit = raf.getProperties().value;
+    // Only analyse restriction areas with speed limit value
+    if (speedLimit === null) {
+      continue;
+    }
+    const rafExtent = raf.getGeometry()?.getExtent();
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+
+    for (const faf of fafs) {
+      const fafExtent = faf.getGeometry()?.getExtent();
+      // No need to analyze more if bounding boxes do not intersect
+      if (!rafExtent || !fafExtent || !intersects(rafExtent, fafExtent)) {
+        continue;
+      }
+
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      // Check if fairway area polygone intersects restriction area polygone
+      if (!turf.booleanDisjoint(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
+        const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
+        if (oldSpeedLimit) {
+          oldSpeedLimit.push(speedLimit);
+        } else {
+          faf.setProperties({ speedLimit: [speedLimit] });
+        }
+      }
+    }
+  }
+}
+
 export function useArea12Layer() {
-  return useDataLayer('area12', 'area12');
+  const [ready, setReady] = useState(false);
+  const aQuery = useFeatureData('area12');
+  const raQuery = useFeatureData('restrictionarea');
+
+  useEffect(() => {
+    const aData = aQuery.data;
+    const raData = raQuery.data;
+    if (aData && raData) {
+      const format = new GeoJSON();
+      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      addSpeedLimits(afs, rafs);
+      afs.forEach((f) => f.set('dataSource', 'area12', true));
+      const source = dvkMap.getVectorSource('area12');
+      source.addFeatures(afs);
+      setReady(true);
+    }
+  }, [aQuery.data, raQuery.data]);
+  return ready;
 }
 
 export function useArea3456Layer() {
@@ -64,28 +114,14 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
       }
 
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      // Check if fairway area polygone is inside restriction area polygone
-      if (turf.booleanContains(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
-        faf.setProperties({ speedLimit: speedLimit });
-        speedLimitFeatures.push(faf.clone());
-      } else {
-        // Find intersection of fairway area and restriction area polygons
-        const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
-        if (intersection) {
-          const feat = format.readFeature(intersection.geometry, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: MAP.EPSG,
-          });
-          // update area as well so we can show speed limit in popup
-          const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
-          if (oldSpeedLimit) {
-            oldSpeedLimit.push(speedLimit);
-          } else {
-            faf.setProperties({ speedLimit: [speedLimit] });
-          }
-          feat.setProperties({ speedLimit: speedLimit });
-          speedLimitFeatures.push(feat);
-        }
+      const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
+      if (intersection) {
+        const feat = format.readFeature(intersection.geometry, {
+          dataProjection: 'EPSG:4326',
+          featureProjection: MAP.EPSG,
+        });
+        feat.setProperties({ speedLimit: speedLimit });
+        speedLimitFeatures.push(feat);
       }
     }
   }
