@@ -76,6 +76,7 @@ query findFairwayCardById($id: String!) {
       primary
       startText
       endText
+      lightingCode
       lighting {
         fi
         sv
