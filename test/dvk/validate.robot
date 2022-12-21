@@ -125,6 +125,7 @@ Open DVK
 Change Fairway Card Language To
 	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
+	Sleep    2s
 	Wait Until Element Is Visible    ${language}
 	Click Element    ${language}
 	Wait Until Element Is Visible    ${language_button_disabled}    30s
