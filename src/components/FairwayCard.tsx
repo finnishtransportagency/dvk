@@ -133,6 +133,17 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
     return totalLength;
   };
 
+  const extractLightingInfo = () => {
+    switch (primaryFairway?.lightingCode) {
+      case '1':
+        return t('fairwayLit');
+      case '2':
+        return t('fairwayUnlit');
+      default:
+        return t('lightingUnknown');
+    }
+  };
+
   // Extract notation information from fairway areas
   const extractNotationInfo = () => {
     const lateralMarking = data?.find((fairway) => fairway.areas?.some((area) => area.notationCode === 1));
@@ -164,7 +175,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
             <span aria-label={t('unit.nmDesc', { count: 2 })} role="definition">
               {t('unit.nm')}
             </span>
-            . {t('fairway')} {primaryFairway?.lighting && primaryFairway?.lighting[lang]?.toLocaleLowerCase()}. {extractNotationInfo()}.
+            . {extractLightingInfo()}. {extractNotationInfo()}.
           </p>
         </IonText>
       )}
