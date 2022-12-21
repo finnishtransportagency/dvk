@@ -3,6 +3,14 @@ import { Route } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
+/* React query offline cache */
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { Drivers, Storage } from '@ionic/storage';
+import IonicAsyncStorage from './utils/IonicAsyncStorage';
+import { OFFLINE_STORAGE } from './utils/constants';
+/* Apollo */
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
@@ -19,7 +27,6 @@ import {
   useHarborLayer,
   useSafetyEquipmentLayer,
 } from './components/FeatureLoader';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -50,7 +57,23 @@ setupIonicReact({
   mode: 'md',
 });
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: OFFLINE_STORAGE.staleTime,
+      cacheTime: OFFLINE_STORAGE.cacheTime,
+    },
+  },
+});
+
+const store = new Storage({
+  name: OFFLINE_STORAGE.name,
+  storeName: OFFLINE_STORAGE.storeName,
+  driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
+});
+store.create();
+
+const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
 
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql' });
 const authLink = setContext((_, { headers }) => {
@@ -164,9 +187,9 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
       <DvkIonApp />
-    </QueryClientProvider>
+    </PersistQueryClientProvider>
   );
 };
 

@@ -93,3 +93,10 @@ export const MASTERSGUIDE_URLS = {
 };
 
 export const PILOTORDER_URL = 'www.pilotonline.fi';
+
+export const OFFLINE_STORAGE = {
+  name: 'DVK',
+  storeName: 'react-query-data',
+  staleTime: 2 * 60 * 60 * 1000, // 2 hours
+  cacheTime: 5 * 60 * 60 * 1000, // 5 hours
+};
