@@ -3,6 +3,8 @@ Library    SeleniumLibrary
 Library    String
 Library    DateTime
 Library    Collections
+Test Setup    Open DVK
+Test Teardown    Close All Browsers
 
 *** Variables ***
 ${BROWSER}    headlesschrome
@@ -47,13 +49,6 @@ ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 
 *** Test Cases ***
-Open DVK
-	Open Browser    http://localhost:${PORT}    ${BROWSER}
-	Sleep    5s
-	Capture Page Screenshot
-	Press Keys    None    ESC
-	Sleep    5s
-
 Check Copyright And Scale
 	${COPYRIGHT_STRING}=    Get Text    ${COPYRIGHT_ELEMENT}
 	${COPYRIGHT_TEXT}=    Fetch From Left    ${COPYRIGHT_STRING}    ${SPACE}
@@ -73,7 +68,7 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	#Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
@@ -101,7 +96,7 @@ Check Fairway Card In Swedish
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	#Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
@@ -115,14 +110,22 @@ Check Fairway Card In English
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	#Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
 *** Keywords ***
+Open DVK
+	Open Browser    http://localhost:${PORT}    ${BROWSER}
+	Sleep    5s
+	Capture Page Screenshot
+	Press Keys    None    ESC
+	Sleep    5s
+
 Change Fairway Card Language To
 	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
+	Sleep    2s
 	Wait Until Element Is Visible    ${language}
 	Click Element    ${language}
 	Wait Until Element Is Visible    ${language_button_disabled}    30s
@@ -133,6 +136,7 @@ Change Fairway Card Language To
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
+	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
@@ -141,6 +145,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 
 Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
@@ -149,6 +154,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 
 Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
