@@ -54,32 +54,22 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
 type ParagraphProps = {
   title?: string;
   bodyText?: Text;
-  bodyTextList?: (Text | null)[] | null;
   showNoData?: boolean;
 };
 
-const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, bodyTextList, showNoData }) => {
+const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, showNoData }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
   return (
     <>
-      {bodyTextList &&
-        bodyTextList.map((text, idx) => {
-          return (
-            <p key={idx}>
-              {idx === 0 && title && <strong>{title}: </strong>}
-              {text && text[lang]}
-            </p>
-          );
-        })}
       {bodyText && (
         <p>
           {title && <strong>{title}: </strong>}
           {bodyText[lang]}
         </p>
       )}
-      {showNoData && !bodyText && !bodyTextList && (
+      {showNoData && !bodyText && (
         <p>
           {title && <strong>{title}: </strong>} {t('noData')}
         </p>
@@ -477,7 +467,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />
             <br />
             <Phonenumber title={t('fax')} showEmpty number={data.fax} />
-            {data.places?.map((place) => {
+            {data.places?.map((place, idx) => {
               return (
                 <IonLabel
                   key={place.id}
@@ -487,6 +477,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
                   onMouseOut={() => highlightPilot(0)}
                   onBlur={() => highlightPilot(0)}
                   tabIndex={0}
+                  data-testid={idx < 1 ? 'pilotPlaceHover' : ''}
                 >
                   {place.geometry?.coordinates && (
                     <>

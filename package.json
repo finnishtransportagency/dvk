@@ -94,6 +94,7 @@
     "@types/lodash": "^4.14.191",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
+    "canvas": "^2.10.2",
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
