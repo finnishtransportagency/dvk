@@ -3,6 +3,8 @@ Library    SeleniumLibrary
 Library    String
 Library    DateTime
 Library    Collections
+Test Setup    Open DVK
+Test Teardown    Close All Browsers
 
 *** Variables ***
 ${BROWSER}    headlesschrome
@@ -47,13 +49,6 @@ ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 
 *** Test Cases ***
-Open DVK
-	Open Browser    http://localhost:${PORT}    ${BROWSER}
-	Sleep    5s
-	Capture Page Screenshot
-	Press Keys    None    ESC
-	Sleep    5s
-
 Check Copyright And Scale
 	${COPYRIGHT_STRING}=    Get Text    ${COPYRIGHT_ELEMENT}
 	${COPYRIGHT_TEXT}=    Fetch From Left    ${COPYRIGHT_STRING}    ${SPACE}
@@ -120,6 +115,13 @@ Check Fairway Card In English
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
 *** Keywords ***
+Open DVK
+	Open Browser    http://localhost:${PORT}    ${BROWSER}
+	Sleep    5s
+	Capture Page Screenshot
+	Press Keys    None    ESC
+	Sleep    5s
+
 Change Fairway Card Language To
 	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
