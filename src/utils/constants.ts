@@ -32,7 +32,7 @@ export type FeatureDataLayerId =
   | 'area3456'
   | 'line12'
   | 'line3456'
-  | 'restrictionarea'
+  | 'speedlimit'
   | 'specialarea'
   | 'pilot'
   | 'harbor'
@@ -41,13 +41,12 @@ export type FeatureDataLayerId =
   | 'depth12';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
-export type SpeedLimitLayerId = 'speedlimit';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | SpeedLimitLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId; url: URL };
+type DataLayer = { id: FeatureDataLayerId };
 
 type MapType = {
   EPSG: string;
@@ -65,16 +64,16 @@ export const MAP: MapType = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
   FEATURE_DATA_LAYERS: [
-    { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
-    { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
-    { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
-    { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
-    { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
-    { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
-    { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
-    { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
-    { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
-    { id: 'depth12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
+    { id: 'area12' },
+    { id: 'area3456' },
+    { id: 'line12' },
+    { id: 'line3456' },
+    { id: 'speedlimit' },
+    { id: 'specialarea' },
+    { id: 'pilot' },
+    { id: 'harbor' },
+    { id: 'safetyequipment' },
+    { id: 'depth12' },
   ],
 };
 

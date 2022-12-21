@@ -29,13 +29,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const dvkMap = getMap();
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      if (dataLayer.id !== 'restrictionarea') {
-        const layer = dvkMap.getFeatureLayer(dataLayer.id);
-        layer.setVisible(layers.includes(dataLayer.id));
-      }
+      const layer = dvkMap.getFeatureLayer(dataLayer.id);
+      layer.setVisible(layers.includes(dataLayer.id));
     });
-    const layer = dvkMap.getFeatureLayer('speedlimit');
-    layer.setVisible(layers.includes('speedlimit'));
     setTimeout(refreshPrintableMap, 100);
   }, [layers, dvkMap]);
 
