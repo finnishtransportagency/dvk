@@ -157,15 +157,15 @@ Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 
 Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Click Element    ${FAIRWAY_HARBOURS_TAB}
-	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}
+	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
 	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}
 	Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Click Element    ${FAIRWAY_AREAS_TAB}
-	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_IS_SELECTED}
+	Wait Until Element Is Visible    ${FAIRWAY_AREAS_TAB_IS_SELECTED}    30s
 	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}
 	Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Click Element    ${FAIRWAY_CARD_TAB}
-	Element Should Be Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}
+	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
 	Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 
