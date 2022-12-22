@@ -169,7 +169,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                         <IonCol size="auto">
                           <button
                             className={'icon ' + (widePane ? 'flip invert' : '')}
-                            data-testid={fairwayId ? 'toggleWide' : 'toggleWideList'}
+                            data-testid={fairwayId ? '' : 'toggleWide'}
                             onClick={() => toggleWide()}
                             title={widePane ? t('revertPane') : t('expandPane')}
                             aria-label={widePane ? t('revertPane') : t('expandPane')}
@@ -182,7 +182,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             fill="clear"
                             className="closeButton"
                             routerLink="/"
-                            data-testid={fairwayId ? 'backToHome' : 'backToHomeList'}
+                            data-testid={fairwayId ? '' : 'backToHome'}
                             title={t('closePane')}
                             aria-label={t('closePane')}
                           >
@@ -201,7 +201,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                   <IonButton
                     fill="clear"
                     className={'togglePane' + (showPane ? ' flip' : '')}
-                    data-testid={fairwayId ? 'togglePane' : 'togglePaneList'}
+                    data-testid={fairwayId ? '' : 'togglePane'}
                     onClick={() => togglePane()}
                     title={showPane ? t('hidePane') : t('showPane')}
                     aria-label={showPane ? t('hidePane') : t('showPane')}
