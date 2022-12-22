@@ -247,11 +247,11 @@ function addFeatureLayer(
 
 export function addAPILayers(map: Map) {
   // Kauppamerenkulku
-  addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
   addFeatureLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
+  addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
   // Muu vesiliikenne
-  addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
+  addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
 
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
@@ -289,6 +289,7 @@ export function unsetSelectedFairwayCard() {
     switch (feature.getProperties().dataSource) {
       case 'line12':
         line12Source.addFeature(feature);
+        feature.unset('n2000HeightSystem');
         break;
       case 'line3456':
         line3456Source.addFeature(feature);
@@ -385,6 +386,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
           if (feature) {
             line12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
+            feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
           } else {
             feature = line3456Source.getFeatureById(line.id);
             if (feature) {

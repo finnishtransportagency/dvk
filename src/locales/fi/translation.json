@@ -210,6 +210,15 @@
       "speed": "Mitoitusnopeus",
       "fairways": "Väyläalue on osa väylää",
       "extra": "Lisätieto"
+    },
+    "line": {
+      "info": "Navigointilinjan tiedot",
+      "depth": "Haraussyvyys {{val, number}}m",
+      "draft": "Mitoitussyväys {{val, number}}m",
+      "length": "Pituus {{val}}m",
+      "direction": "Tosisuunta {{val}}°",
+      "fairways": "Navigointilinja on osa väylää",
+      "extra": "Lisätieto"
     }
   },
   "common": {

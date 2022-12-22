@@ -56,3 +56,23 @@ type AreaFairway = {
   sizingSpeed2?: number;
   fairwayCards?: Card[];
 };
+
+type LineFairway = {
+  fairwayId: number;
+  name: Text;
+  fairwayCards?: Card[];
+};
+
+export type LineFeatureProperties = {
+  id: number;
+  featureType: string;
+  draft?: number;
+  depth?: number;
+  length?: number;
+  n2000depth?: number;
+  n2000draft?: number;
+  n2000HeightSystem?: boolean;
+  direction?: number;
+  extra?: string;
+  fairways?: LineFairway[];
+};

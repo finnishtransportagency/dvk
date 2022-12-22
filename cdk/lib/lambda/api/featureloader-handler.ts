@@ -82,7 +82,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+async function getCardMap() {
   const cardMap = new Map<number, FairwayCardIdName[]>();
   const cards = await FairwayCardDBModel.getAll();
   for (const card of cards) {
@@ -93,6 +93,11 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       cardMap.get(id)?.push({ id: card.id, name: card.name });
     }
   }
+  return cardMap;
+}
+
+async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+  const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
@@ -177,6 +182,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
+  const cardMap = await getCardMap();
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -186,12 +192,13 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       properties: {
         id: line.id,
         featureType: 'line',
-        depth: line.harausSyvyys,
-        draft: line.mitoitusSyvays,
-        n2000depth: line.n2000HarausSyvyys,
-        n2000draft: line.n2000MitoitusSyvays,
-        type: line.tyyppi,
-        typeCode: line.tyyppiKoodi,
+        depth: line.harausSyvyys && line.harausSyvyys > 0 ? line.harausSyvyys : undefined,
+        draft: line.mitoitusSyvays && line.mitoitusSyvays > 0 ? line.mitoitusSyvays : undefined,
+        length: line.pituus && line.pituus > 0 ? line.pituus : undefined,
+        n2000depth: line.n2000HarausSyvyys && line.n2000HarausSyvyys > 0 ? line.n2000HarausSyvyys : undefined,
+        n2000draft: line.n2000MitoitusSyvays && line.n2000MitoitusSyvays > 0 ? line.n2000MitoitusSyvays : undefined,
+        direction: line.tosisuunta,
+        extra: line.lisatieto,
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -199,6 +206,7 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
+            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
           };

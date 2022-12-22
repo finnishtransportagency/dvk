@@ -64,7 +64,7 @@ import { getMap } from './DvkMap';
 import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
-import { AreaFeatureProperties } from './features';
+import { AreaFeatureProperties, LineFeatureProperties } from './features';
 import { Polygon } from 'ol/geom';
 
 const symbol2Icon = {
@@ -166,7 +166,7 @@ export const getSafetyEquipmentStyle = (symbol: string, resolution: number) => {
   return undefined;
 };
 
-export function isShowN2000HeightSystem(props: AreaFeatureProperties): boolean | undefined {
+export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatureProperties): boolean | undefined {
   const n2000HeightSystem = props.n2000HeightSystem;
   if (n2000HeightSystem !== undefined) {
     if (n2000HeightSystem && props.n2000depth) {
