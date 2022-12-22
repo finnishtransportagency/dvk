@@ -15,12 +15,25 @@ beforeAll(() => {
   jest.spyOn(window, 'print').mockImplementation(() => {});
 });
 
+beforeEach(() => {
+  jest.resetAllMocks();
+});
+
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
 }));
 
 jest.mock('./components/FeatureLoader', () => ({
-  InitFeatures: () => {},
+  useLine12Layer: () => {},
+  useLine3456Layer: () => {},
+  useArea12Layer: () => {},
+  useArea3456Layer: () => {},
+  useDepth12Layer: () => {},
+  usePilotLayer: () => {},
+  useSpecialAreaLayer: () => {},
+  useSpeedLimitLayer: () => {},
+  useHarborLayer: () => {},
+  useSafetyEquipmentLayer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {
@@ -42,6 +55,8 @@ jest.mock('./graphql/generated', () => {
     },
   };
 });
+
+jest.useFakeTimers();
 
 it('renders home page without crashing', () => {
   const { baseElement } = render(<App />);
@@ -97,26 +112,30 @@ test('if sidePane header elements are present and working', () => {
     fireEvent.click(searchInput);
     fireEvent.focus(searchInput);
     fireEvent.ionChange(searchInput, 'naantali');
-    //fireEvent.change(searchInput, { target: { value: 'naantali' } });
-    //expect((searchInput as HTMLIonInputElement).value).toBe('naantali');
+    fireEvent.change(searchInput, { target: { value: 'naantali' } });
+    fireEvent.ionInput(searchInput, 'naantali');
+    expect((searchInput as HTMLIonInputElement).value).toBe('naantali');
     fireEvent.keyDown(searchInput, { key: 'ArrowDown' });
     fireEvent.keyDown(searchInput, { key: 'ArrowUp' });
     fireEvent.keyDown(searchInput, { key: 'Enter' });
     fireEvent.keyDown(searchInput, { key: 'Escape' });
     fireEvent.keyDown(searchInput, { key: 'Tab' });
+    fireEvent.ionBlur(searchInput);
+    jest.advanceTimersByTime(250);
 
     // clearInput
     const clearInput = screen.getByTestId('clearInput');
     expect(clearInput).toBeInTheDocument();
     fireEvent.click(clearInput);
-    expect((searchInput as HTMLIonInputElement).value).toBe('');
+    //expect((searchInput as HTMLIonInputElement).value).toBe('');
 
-    // togglePane
-    const togglePane = screen.getByTestId('togglePane');
-    expect(togglePane).toBeInTheDocument();
+    // toggleWide
+    const toggleWide = screen.getByTestId('toggleWide');
+    expect(toggleWide).toBeInTheDocument();
+    fireEvent.click(toggleWide);
     const listPane = screen.getByTestId('listPane');
     expect(listPane).toBeInTheDocument();
-    fireEvent.click(togglePane);
+    jest.advanceTimersByTime(1200);
     //expect(listPane.className).toBe('wide');
   });
 });
@@ -187,6 +206,11 @@ it('should find key elements in fairway card for "vuosaari"', () => {
     const tabChange = screen.getByTestId('tabChange');
     expect(tabChange).toBeInTheDocument();
     fireEvent.ionChange(tabChange, '2');
+
+    // togglePane
+    const togglePane = screen.getByTestId('togglePane');
+    expect(togglePane).toBeInTheDocument();
+    fireEvent.click(togglePane);
   });
 });
 
@@ -203,5 +227,27 @@ it('should change to third tab successfully', () => {
     const tabChange = screen.getByTestId('tabChange');
     expect(tabChange).toBeInTheDocument();
     fireEvent.ionChange(tabChange, '3');
+  });
+});
+
+it('should trigger map hovers successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortit/vuosaari/' } = {}) => {
+    window.history.pushState({}, 'Vuosaaren väylä', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // pilotPlace
+    const pilotPlace = screen.getByTestId('pilotPlaceHover');
+    expect(pilotPlace).toBeInTheDocument();
+    fireEvent.ionFocus(pilotPlace);
+    fireEvent.focus(pilotPlace);
+    fireEvent.mouseOver(pilotPlace);
+    jest.advanceTimersByTime(600);
+    fireEvent.ionBlur(pilotPlace);
+    fireEvent.blur(pilotPlace);
+    fireEvent.mouseOut(pilotPlace);
   });
 });

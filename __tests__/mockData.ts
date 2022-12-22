@@ -44,6 +44,7 @@ export const mockFairwayCard = {
         primary: false,
         startText: 'Vuosaaren väylältä',
         endText: 'Vuosaaren satama',
+        lightingCode: '1',
         lighting: { fi: 'Valaistu', sv: 'Samma på svenska', en: null, __typename: 'Text' },
         sizing: { minimumTurningCircle: null, minimumWidth: null, additionalInformation: null, reserveWater: '1,3', __typename: 'Sizing' },
         sizingVessels: [{ type: 'Konttialus', length: 280.0, width: 33.0, draft: 13.0, __typename: 'SizingVessel' }],
@@ -95,6 +96,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -108,6 +110,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -124,6 +127,7 @@ export const mockFairwayCard = {
               { fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' },
               { fairwayId: 4915, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' },
             ],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -137,6 +141,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -150,6 +155,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -163,6 +169,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -176,6 +183,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 1,
             __typename: 'Area',
           },
           {
@@ -189,6 +197,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 2,
             __typename: 'Area',
           },
           {
@@ -202,6 +211,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 2,
             __typename: 'Area',
           },
           {
@@ -215,6 +225,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 11,
             __typename: 'Area',
           },
           {
@@ -228,6 +239,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 4,
             __typename: 'Area',
           },
           {
@@ -241,6 +253,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 5,
             __typename: 'Area',
           },
           {
@@ -254,6 +267,7 @@ export const mockFairwayCard = {
             n2000ReferenceLevel: null,
             additionalInformation: null,
             fairways: [{ fairwayId: 4921, sizingSpeed: null, sizingSpeed2: null, __typename: 'AreaFairway' }],
+            typeCode: 15,
             __typename: 'Area',
           },
         ],
@@ -265,6 +279,7 @@ export const mockFairwayCard = {
         primary: true,
         startText: 'Suomenlahti, avomeri',
         endText: 'Vuosaaren satamaan',
+        lightingCode: '1',
         lighting: { fi: 'Valaistu', sv: 'Samma på svenska', en: null, __typename: 'Text' },
         sizing: {
           minimumTurningCircle: 1400.0,

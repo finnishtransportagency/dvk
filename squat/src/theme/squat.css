@@ -394,3 +394,25 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   --background-focused: unset;
   outline: none;
 }
+
+ion-item.external-link {
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  text-decoration: underline;
+  display: inline-block;
+  --inner-border-width: 0 0 0 0;
+  --background-hover: unset;
+  --background-focused: unset;
+  --min-height: 40px;
+  --inner-padding-end: 32px;
+}
+
+ion-item.external-link:hover {
+  text-decoration: none;
+}
+
+ion-item.external-link:hover::part(native) {
+  color: var(--ion-color-primary);
+}

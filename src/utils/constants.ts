@@ -2,7 +2,7 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
-export type FeatureDataLayerId =
+export type FeatureDataId =
   | 'area12'
   | 'area3456'
   | 'line12'
@@ -11,18 +11,42 @@ export type FeatureDataLayerId =
   | 'specialarea'
   | 'pilot'
   | 'harbor'
+  | 'safetyequipment';
+
+export type FeatureDataSource = { id: FeatureDataId; url: URL };
+
+export const FeatureDataSources: Array<FeatureDataSource> = [
+  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
+  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
+  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
+  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
+  { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
+  { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
+  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
+  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
+  { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
+];
+
+export type FeatureDataLayerId =
+  | 'area12'
+  | 'area3456'
+  | 'line12'
+  | 'line3456'
+  | 'speedlimit'
+  | 'specialarea'
+  | 'pilot'
+  | 'harbor'
   | 'quay'
   | 'safetyequipment'
   | 'depth12';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
-export type SpeedLimitLayerId = 'speedlimit';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | SpeedLimitLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId; url: URL };
+type DataLayer = { id: FeatureDataLayerId };
 
 type MapType = {
   EPSG: string;
@@ -40,16 +64,16 @@ export const MAP: MapType = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
   FEATURE_DATA_LAYERS: [
-    { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
-    { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
-    { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
-    { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
-    { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
-    { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
-    { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
-    { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
-    { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
-    { id: 'depth12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
+    { id: 'area12' },
+    { id: 'area3456' },
+    { id: 'line12' },
+    { id: 'line3456' },
+    { id: 'speedlimit' },
+    { id: 'specialarea' },
+    { id: 'pilot' },
+    { id: 'harbor' },
+    { id: 'safetyequipment' },
+    { id: 'depth12' },
   ],
 };
 
@@ -69,3 +93,10 @@ export const MASTERSGUIDE_URLS = {
 };
 
 export const PILOTORDER_URL = 'www.pilotonline.fi';
+
+export const OFFLINE_STORAGE = {
+  name: 'DVK',
+  storeName: 'react-query-data',
+  staleTime: 2 * 60 * 60 * 1000, // 2 hours
+  cacheTime: 5 * 60 * 60 * 1000, // 5 hours
+};

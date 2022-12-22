@@ -120,6 +120,7 @@ query findFairwayCardById($id: String!) {
           fairwayId
           sizingSpeed
           sizingSpeed2
+          sequenceNumber
         }
         notationCode
         typeCode
