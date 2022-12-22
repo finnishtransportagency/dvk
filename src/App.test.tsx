@@ -5,6 +5,21 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList } from '../__tests__/mockData';
 
+class ResizeObserver {
+  observe() {
+    // do nothing
+  }
+
+  unobserve() {
+    // do nothing
+  }
+
+  disconnect() {
+    // do nothing
+  }
+}
+global.ResizeObserver = ResizeObserver;
+
 beforeAll(() => {
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
