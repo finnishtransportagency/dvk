@@ -44,9 +44,11 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
             </IonRow>
           );
         })}
-        <IonRow>
-          <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
-        </IonRow>
+        {showN2000HeightSystem !== undefined && (
+          <IonRow>
+            <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+          </IonRow>
+        )}
         <IonRow>
           <IonCol className="header">{t('popup.line.info')}</IonCol>
         </IonRow>

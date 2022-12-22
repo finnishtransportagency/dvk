@@ -52,9 +52,11 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
         <IonRow>
           <IonCol className="header">{area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol>{showN2000HeightSystem && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
-        </IonRow>
+        {showN2000HeightSystem !== undefined && (
+          <IonRow>
+            <IonCol>{showN2000HeightSystem && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+          </IonRow>
+        )}
         {area.properties.typeCode === 15 && (
           <IonRow>
             <IonCol>
