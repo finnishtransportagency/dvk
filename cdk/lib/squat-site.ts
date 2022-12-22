@@ -10,6 +10,7 @@ import {
   AllowedMethods,
   BehaviorOptions,
   CachePolicy,
+  GeoRestriction,
   OriginProtocolPolicy,
   OriginRequestPolicy,
   OriginSslPolicy,
@@ -242,6 +243,7 @@ export class SquatSite extends Construct {
       region: 'us-east-1',
     });
     const webAclId = customSSMParameterReader.getParameterValue();
+    const geoRestriction = Config.isDeveloperEnvironment() ? GeoRestriction.allowlist('FI') : GeoRestriction.denylist('BY', 'RU');
     // CloudFront distribution
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       certificate,
@@ -252,6 +254,7 @@ export class SquatSite extends Construct {
       defaultBehavior: dvkBehavior,
       priceClass: PriceClass.PRICE_CLASS_100,
       webAclId,
+      geoRestriction,
     });
 
     new CfnOutput(parent, 'DistributionId', {
