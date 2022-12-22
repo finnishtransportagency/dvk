@@ -145,7 +145,7 @@ test('if sidePane header elements are present and working', () => {
     //expect((searchInput as HTMLIonInputElement).value).toBe('');
 
     // toggleWide
-    const toggleWide = screen.getByTestId('toggleWide');
+    const toggleWide = screen.getByTestId('toggleWideList');
     expect(toggleWide).toBeInTheDocument();
     fireEvent.click(toggleWide);
     const listPane = screen.getByTestId('listPane');
