@@ -200,7 +200,7 @@ export function getDepthStyle(feature: FeatureLike) {
     text = '-';
   }
 
-  const specialFeature = feature.getProperties().featureType === 'specialarea';
+  const specialFeature = feature.getProperties().areaType === 2 || feature.getProperties().areaType === 15;
   let image;
   if (!n2000HeightSystem) {
     image = new Icon({

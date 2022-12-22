@@ -23,7 +23,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'area', 'specialarea', 'line'];
+  const types = ['pilot', 'quay', 'line', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -36,31 +36,35 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (fn) {
       console.log('coordinates: ' + fn.call(map, evt.coordinate, undefined, undefined));
     }
-    const feature = map.forEachFeatureAtPixel(evt.pixel, function (f) {
-      return f;
-    });
+    const features: FeatureLike[] = [];
+    map.forEachFeatureAtPixel(
+      evt.pixel,
+      function (f) {
+        if (types.includes(f.getProperties().featureType)) {
+          features.push(f);
+        }
+      },
+      { hitTolerance: 3 }
+    );
+    features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
+    const feature = features[0];
     if (!feature) {
       overlay.setPosition(undefined);
       setPopupProperties({});
       return;
     }
-    if (types.includes(feature.getProperties().featureType)) {
-      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-      if (overlay.getPosition()) {
-        overlay.setPosition(undefined);
-        setPopupProperties({});
-      } else {
-        setPopupProperties({
-          [feature.getProperties().featureType]: {
-            coordinates: geom.getCoordinates() as number[],
-            properties: feature.getProperties(),
-          },
-        });
-        overlay.setPosition(evt.coordinate);
-      }
-    } else {
+    const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+    if (overlay.getPosition()) {
       overlay.setPosition(undefined);
       setPopupProperties({});
+    } else {
+      setPopupProperties({
+        [feature.getProperties().featureType]: {
+          coordinates: geom.getCoordinates() as number[],
+          properties: feature.getProperties(),
+        },
+      });
+      overlay.setPosition(evt.coordinate);
     }
   });
   const style = function (feature: FeatureLike) {
@@ -96,6 +100,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
     ],
+    hitTolerance: 3,
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;

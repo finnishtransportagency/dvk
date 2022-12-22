@@ -91,7 +91,7 @@ export function useArea3456Layer() {
 }
 
 export function useDepth12Layer() {
-  return useDataLayer('area12', 'depth12');
+  return useDataLayer('depth12', 'depth12');
 }
 
 function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]) {

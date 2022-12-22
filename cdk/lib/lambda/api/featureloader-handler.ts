@@ -96,6 +96,29 @@ async function getCardMap() {
   return cardMap;
 }
 
+async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
+  log.debug('areas: %d', areas.length);
+  for (const area of areas) {
+    features.push({
+      type: 'Feature',
+      id: area.id,
+      geometry: area.geometria as Geometry,
+      properties: {
+        id: area.id,
+        featureType: 'depth',
+        areaType: area.tyyppiKoodi,
+        depth: area.harausSyvyys && area.harausSyvyys > 0 ? area.harausSyvyys : undefined,
+        draft: area.mitoitusSyvays && area.mitoitusSyvays > 0 ? area.mitoitusSyvays : undefined,
+        referenceLevel: area.vertaustaso,
+        n2000draft: area.n2000MitoitusSyvays && area.n2000MitoitusSyvays > 0 ? area.n2000MitoitusSyvays : undefined,
+        n2000depth: area.n2000HarausSyvyys && area.n2000HarausSyvyys > 0 ? area.n2000HarausSyvyys : undefined,
+        n2000ReferenceLevel: area.n2000Vertaustaso,
+      },
+    });
+  }
+}
+
 async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
   const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
@@ -367,6 +390,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFaultFeatures(features);
   } else if (type === 'marinewarning') {
     await addMarineWarnings(features);
+  } else if (type === 'depth') {
+    await addDepthFeatures(features, event);
   }
 }
 
