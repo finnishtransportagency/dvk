@@ -147,10 +147,6 @@ class DvkMap {
 
     this.setBackGroundMapType(this.backgroundMapType);
     this.translate();
-
-    setTimeout(() => {
-      this.olMap?.updateSize();
-    }, 100);
   }
 
   // eslint-disable-next-line
@@ -306,9 +302,6 @@ class DvkMap {
     if (target !== undefined) {
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.add('dvkMap');
-      setTimeout(() => {
-        this.olMap?.updateSize();
-      }, 100);
     }
   };
 
