@@ -99,7 +99,16 @@ async function getCardMap() {
 async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  for (const area of areas) {
+  for (const area of areas.filter(
+    (a) =>
+      a.tyyppiKoodi === 1 ||
+      a.tyyppiKoodi === 3 ||
+      a.tyyppiKoodi === 4 ||
+      a.tyyppiKoodi === 5 ||
+      a.tyyppiKoodi === 11 ||
+      a.tyyppiKoodi === 2 ||
+      a.tyyppiKoodi === 15
+  )) {
     features.push({
       type: 'Feature',
       id: area.id,
