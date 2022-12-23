@@ -69,7 +69,7 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
@@ -97,7 +97,7 @@ Check Fairway Card In Swedish
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
@@ -111,7 +111,7 @@ Check Fairway Card In English
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
 	Click Element    ${BACK_TO_HOME_BUTTON}
 
