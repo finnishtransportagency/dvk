@@ -27,7 +27,8 @@ ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
 ${IN_ENGLISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langEn" and @aria-disabled = "true"]
 ${FAIRWAYS_LINK}    //ion-item[@data-testid = "fairwaysLink"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
-${TOGGLE_WIDE_BUTTON}    //button[@data-testid = "toggleWide"]
+${EXPAND_WIDE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::button[@class = "icon "]
+${REVERT_WIDE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::button[@class = "icon flip invert"]
 ${FAIRWAY_CARD_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
 ${FAIRWAY_CARD_TAB}    //ion-segment-button[@value = "1"]
 ${FAIRWAY_CARD_TAB_IS_SELECTED}    //ion-segment-button[@value = "1" and @aria-selected = "true"]
@@ -47,6 +48,7 @@ ${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
 ${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
 ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
+${CLOSE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[contains(@class, "closeButton")]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
 
 *** Test Cases ***
@@ -69,9 +71,9 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
@@ -97,9 +99,9 @@ Check Fairway Card In Swedish
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
@@ -111,9 +113,9 @@ Check Fairway Card In English
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
-	#Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 *** Keywords ***
 Open DVK
@@ -138,29 +140,29 @@ Change Fairway Card Language To
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
+	Click Element    ${EXPAND_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 
 Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
+	Click Element    ${EXPAND_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
 
 Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
+	Click Element    ${EXPAND_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
-	Click Element    ${TOGGLE_WIDE_BUTTON}
+	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 
 Check That Tabs Can Be Selected And Tab Contents Are Activated

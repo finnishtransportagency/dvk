@@ -152,6 +152,11 @@ test('if sidePane header elements are present and working', () => {
     expect(listPane).toBeInTheDocument();
     jest.advanceTimersByTime(1200);
     //expect(listPane.className).toBe('wide');
+
+    // togglePane
+    const togglePane = screen.getByTestId('togglePane');
+    expect(togglePane).toBeInTheDocument();
+    fireEvent.click(togglePane);
   });
 });
 
@@ -210,22 +215,14 @@ it('should find key elements in fairway card for "vuosaari"', () => {
     expect(printButton).toBeInTheDocument();
     fireEvent.click(printButton);
 
-    // toggleWide
-    const toggleWide = screen.getByTestId('toggleWide');
-    expect(toggleWide).toBeInTheDocument();
+    // cardPane
     const cardPane = screen.getByTestId('cardPane');
     expect(cardPane).toBeInTheDocument();
-    fireEvent.click(toggleWide);
 
     // tabChange
     const tabChange = screen.getByTestId('tabChange');
     expect(tabChange).toBeInTheDocument();
     fireEvent.ionChange(tabChange, '2');
-
-    // togglePane
-    const togglePane = screen.getByTestId('togglePane');
-    expect(togglePane).toBeInTheDocument();
-    fireEvent.click(togglePane);
   });
 });
 
