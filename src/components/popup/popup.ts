@@ -101,6 +101,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line3456'),
     ],
     hitTolerance: 3,
+    multi: true,
   });
   pointerMoveSelect.on('select', (e) => {
     const hit = e.selected.length > 0;
