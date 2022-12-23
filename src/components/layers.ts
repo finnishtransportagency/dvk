@@ -35,7 +35,6 @@ export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: 
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   const gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
   return [
-    ...getDepthStyle(feature),
     new Style({
       image: new Icon({
         src: feature.getProperties().typeCode === 2 ? anchorage : meet,
