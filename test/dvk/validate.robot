@@ -48,6 +48,7 @@ ${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
 ${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
 ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
+${CLOSE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[contains(@class, "closeButton")]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
 
 *** Test Cases ***
@@ -71,8 +72,8 @@ Check Fairway Card
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
@@ -99,8 +100,8 @@ Check Fairway Card In Swedish
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
@@ -113,8 +114,8 @@ Check Fairway Card In English
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
-	Click Element    ${BACK_TO_HOME_BUTTON}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 *** Keywords ***
 Open DVK
