@@ -138,7 +138,7 @@ Change Fairway Card Language To
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
@@ -147,7 +147,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 
 Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
@@ -156,7 +156,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 
 Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
-	Scroll Element Into View    ${TOGGLE_WIDE_BUTTON}
+	Element Should Be Visible    ${TOGGLE_WIDE_BUTTON}
 	Click Element    ${TOGGLE_WIDE_BUTTON}
 	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 	Capture Page Screenshot
