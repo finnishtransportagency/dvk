@@ -223,7 +223,8 @@
     "equipment": {
       "yes": "Kyllä",
       "no": "Ei",
-      "fault": "Turvalaitevika - {{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "fault": "Turvalaitevika -",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Koordinaatit",
       "type": "Tyyppi",
       "lightning": "Valaistu",
