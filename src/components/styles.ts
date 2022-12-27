@@ -140,10 +140,12 @@ export const getSafetyEquipmentStyle = (symbol: string, resolution: number) => {
     if (center) {
       image = new Icon({
         src: icon,
+        color: 'black',
       });
     } else {
       image = new Icon({
         src: icon,
+        color: 'black',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',

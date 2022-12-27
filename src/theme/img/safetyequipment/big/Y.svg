@@ -5,7 +5,7 @@
         <g id="colors_and_typography" transform="translate(-1298.000000, -1058.000000)">
             <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
                 <g id="majakka" transform="translate(576.000000, 144.000000)">
-                    <polygon id="Shape" fill="#231F20" fill-rule="nonzero" points="11.9871429 13.72 13.4742857 21.4342857 20.9014286 18.8628571 14.9571429 24.0057143 9.04714286 24.0057143 3.09857143 18.8628571 10.5257143 21.4342857"></polygon>
+                    <polygon style="fill: red;" id="Shape" points="11.9871429 13.72 13.4742857 21.4342857 20.9014286 18.8628571 14.9571429 24.0057143 9.04714286 24.0057143 3.09857143 18.8628571 10.5257143 21.4342857"></polygon>
                     <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
                 </g>
             </g>
