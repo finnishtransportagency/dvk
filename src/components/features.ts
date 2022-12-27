@@ -76,3 +76,26 @@ export type LineFeatureProperties = {
   extra?: string;
   fairways?: LineFairway[];
 };
+
+type EquipmentFairway = {
+  fairwayId: number;
+  primary: boolean;
+  fairwayCards?: Card[];
+};
+
+export type EquipmentFeatureProperties = {
+  id: number;
+  featureType: string;
+  subType?: string;
+  navigation?: Text;
+  navigationCode?: string;
+  name?: Text;
+  symbol?: string;
+  typeCode?: string;
+  typeName?: Text;
+  lightning: boolean;
+  fairways?: EquipmentFairway[];
+  faultType?: Text;
+  faultTypeCode?: string;
+  recordTime?: number;
+};

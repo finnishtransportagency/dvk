@@ -10,6 +10,7 @@ import { get as getTransform } from 'ol/proj/transforms';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
+import { getSafetyEquipmentStyle } from '../styles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -23,7 +24,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'line', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'line', 'safetyequipment', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -67,7 +68,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       overlay.setPosition(evt.coordinate);
     }
   });
-  const style = function (feature: FeatureLike) {
+  const style = function (feature: FeatureLike, resolution: number) {
     const type = feature.getProperties().featureType;
     const dataSource = feature.getProperties().dataSource;
     if (type === 'quay') {
@@ -82,6 +83,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getSpecialAreaStyle(feature, '#C57A11', 2, true);
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
+    } else if (type === 'safetyequipment') {
+      return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faultTypeCode, resolution);
     } else {
       return undefined;
     }
@@ -99,6 +102,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('selectedfairwaycard'),
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
+      dvkMap.getFeatureLayer('safetyequipment'),
     ],
     hitTolerance: 3,
     multi: true,
