@@ -289,6 +289,7 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
         name: { fi: fault.turvalaiteNimiFI, sv: fault.turvalaiteNimiSV },
         type: { fi: fault.vikatyyppiFI, sv: fault.vikatyyppiSV },
         typeCode: fault.vikatyyppiKoodi,
+        recordTime: Date.parse(fault.kirjausAika),
       },
     });
   }

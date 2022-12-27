@@ -157,12 +157,12 @@ export const getSafetyEquipmentStyle = (symbol: string, faultTypeCode: string | 
     if (center) {
       image = new Icon({
         src: icon,
-        color: faultTypeCode ? 'red' : 'black',
+        color: faultTypeCode ? '#EC0E0E' : '#231F20',
       });
     } else {
       image = new Icon({
         src: icon,
-        color: faultTypeCode ? 'red' : 'black',
+        color: faultTypeCode ? '#EC0E0E' : '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',

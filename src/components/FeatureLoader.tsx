@@ -179,6 +179,7 @@ export function useSafetyEquipmentLayer() {
         const feature = source.getFeatureById(ff.getProperties().equipmentId);
         feature?.set('faultType', ff.getProperties().type, true);
         feature?.set('faultTypeCode', ff.getProperties().typeCode, true);
+        feature?.set('recordTime', ff.getProperties().recordTime, true);
       }
       setReady(true);
     }
