@@ -177,6 +177,7 @@ export function useSafetyEquipmentLayer() {
       source.addFeatures(efs);
       for (const ff of ffs) {
         const feature = source.getFeatureById(ff.getProperties().equipmentId);
+        feature?.set('faultId', ff.getId(), true);
         feature?.set('faultType', ff.getProperties().type, true);
         feature?.set('faultTypeCode', ff.getProperties().typeCode, true);
         feature?.set('recordTime', ff.getProperties().recordTime, true);
