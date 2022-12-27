@@ -79,6 +79,7 @@ Check Fairway Card
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -107,6 +108,7 @@ Check Fairway Card In Swedish
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -121,6 +123,7 @@ Check Fairway Card In English
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -212,3 +215,13 @@ Select Fairway
 	Capture Page Screenshot
 	Click Element    ${BACK_TO_HOME_BUTTON}
 	Sleep    5s
+
+Check Fairway Navigability Headings
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}
+	Scroll Element Into View    ${heading1_locator}
+	Element Should Be Visible    ${heading1_locator}
+	Scroll Element Into View    ${heading2_locator}
+	Element Should Be Visible    ${heading2_locator}
+	Scroll Element Into View    ${heading3_locator}
+	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${CLOSE_BUTTON}
