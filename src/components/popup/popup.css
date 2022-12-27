@@ -25,3 +25,8 @@
   height: 12px;
   margin-right: 8px;
 }
+
+.ol-popup .faultGrid {
+  border: 1px solid #EC0E0E;
+  background-color: #FDF6F6;
+}

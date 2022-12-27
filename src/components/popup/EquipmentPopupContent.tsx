@@ -34,15 +34,28 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
   return (
     <IonGrid id="equipmentPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        {equipment.properties.name && equipment.properties.typeName && (
+        {equipment.properties.name && (
           <IonRow>
             <IonCol className="header">
-              {equipment.properties.name[lang] || equipment.properties.name.fi}{' '}
-              {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
+              {equipment.properties.name[lang] || equipment.properties.name.fi}
               {' - '}
               {equipment.properties.id}
             </IonCol>
           </IonRow>
+        )}
+        {equipment.properties.faultType && equipment.properties.recordTime && (
+          <IonGrid class="faultGrid">
+            <IonRow>
+              <IonCol>
+                {t('popup.equipment.fault', {
+                  val: equipment.properties.recordTime,
+                })}
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{equipment.properties.faultType[lang] || equipment.properties.faultType.fi}</IonCol>
+            </IonRow>
+          </IonGrid>
         )}
         <IonRow>
           <IonCol className="header">{t('popup.equipment.coordinates')}</IonCol>
