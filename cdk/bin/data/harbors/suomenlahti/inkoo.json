@@ -21,19 +21,19 @@
   },
   "cargo": [
     {
-      "fi": "Fortum laiturit 1 ja 2, 25 t pukkinosturi ja 3 kpl 10 t nivelpuominostureita.",
-      "sv": "Fortums kajer 1 och 2: en 25 t och 3 st. 10 t kranar.",
-      "en": "Quays No. 1 and 2: 25 t and 3 x 10 t cranes"
+      "fi": "Fortum laituri 1: 2 kpl 10 t nivelpuominostureita.",
+      "sv": "Fortum kaj 1: 2 st. 10 t vikarmskranar.",
+      "en": "Fortum quay No. 1: Two 10 t cranes."
     },
     {
-      "fi": "Inkoo Shipping laituri 3 10 t nivelpuominosturi, sivurampillisten proomujen purkaus/lastausramppi.",
-      "sv": "Inkoo Shippings kaj 3: en 10 t kran, lossnings- och lastningskaj för pråmar med sidoramp",
-      "en": "Quay No. 3: 10 t crane on rail, quay for loading and unloading barges using side ramp"
+      "fi": "Inkoo Shipping laituri 3: 1 kpl 10 t nivelpuominosturi, sivurampillisten proomujen purkaus/lastausramppi.",
+      "sv": "Ingå Shipping kaj 3: 1 st. 10 t vikarmskran, lossning av pråmar med sidoramper/lastningsramp.",
+      "en": "Inkoo Shipping quay 3: 10 t crane on rail, quay for loading and unloading barges using side ramp"
     },
     {
-      "fi": "Laituri 4 peräporttipaikka, 2 kpl täsmänostureita.",
-      "sv": "Kaj 4: ro-ro-kaj, 2 mobilkranar.",
-      "en": "Quay No. 4: bow/stern ramp, 2 mobile multipurpose cranes."
+      "fi": "Laituri 4: peräporttipaikka, 3 kpl täsmänostureita.",
+      "sv": "Kaj 4: akterportplats, 3 st. precisionskranar.",
+      "en": "Quay No. 4: bow/stern ramp, 3 mobile multipurpose cranes."
     }
   ],
   "geometry": {
@@ -54,7 +54,7 @@
             "type": "Point",
             "coordinates": [23.915850197540415, 60.015466611250986]
           },
-          "depth": 10.97
+          "depth": 10.9
         }
       ]
     },

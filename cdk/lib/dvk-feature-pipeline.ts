@@ -75,7 +75,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
               'cd ../cdk',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
-              'npm run datasync -- --dbonly',
+              'npm run datasync',
               'npm run setup && cd ..',
               'npm run build && npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
