@@ -50,6 +50,15 @@ ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 ${CLOSE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[contains(@class, "closeButton")]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
+${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Väylän navigoitavuus"]
+${NAVIGATION_CONDITIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigointiolosuhteet"]
+${ICE_CONDITIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Jääolosuhteet"]
+${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Navigerbarhet"]
+${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigationsförhållanden"]
+${ICE_CONDITIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Isförhållanden"]
+${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Fairway navigability"]
+${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigation conditions"]
+${ICE_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Ice conditions"]
 
 *** Test Cases ***
 Check Copyright And Scale
