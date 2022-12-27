@@ -261,7 +261,9 @@ export function addAPILayers(map: Map) {
   // Haraussyvyydet
   addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature.getProperties().symbol, resolution));
+  addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) =>
+    getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faultTypeCode, resolution)
+  );
 
   // POI:t
   // Luotsipaikat

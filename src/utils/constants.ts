@@ -12,7 +12,8 @@ export type FeatureDataId =
   | 'pilot'
   | 'harbor'
   | 'safetyequipment'
-  | 'depth12';
+  | 'depth12'
+  | 'safetyequipmentfault';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -27,6 +28,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
   { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
   { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2') },
+  { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
 ];
 
 export type FeatureDataLayerId =

@@ -163,5 +163,25 @@ export function useHarborLayer() {
 }
 
 export function useSafetyEquipmentLayer() {
-  return useDataLayer('safetyequipment', 'safetyequipment');
+  const [ready, setReady] = useState(false);
+  const eQuery = useFeatureData('safetyequipment');
+  const fQuery = useFeatureData('safetyequipmentfault');
+  useEffect(() => {
+    const eData = eQuery.data;
+    const fData = fQuery.data;
+    if (eData && fData) {
+      const format = new GeoJSON();
+      const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const source = dvkMap.getVectorSource('safetyequipment');
+      source.addFeatures(efs);
+      for (const ff of ffs) {
+        const feature = source.getFeatureById(ff.getProperties().equipmentId);
+        feature?.set('faultType', ff.getProperties().type, true);
+        feature?.set('faultTypeCode', ff.getProperties().typeCode, true);
+      }
+      setReady(true);
+    }
+  }, [eQuery.data, fQuery.data]);
+  return ready;
 }
