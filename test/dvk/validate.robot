@@ -50,6 +50,15 @@ ${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 ${CLOSE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[contains(@class, "closeButton")]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
+${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Väylän navigoitavuus"]
+${NAVIGATION_CONDITIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigointiolosuhteet"]
+${ICE_CONDITIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Jääolosuhteet"]
+${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Navigerbarhet"]
+${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigationsförhållanden"]
+${ICE_CONDITIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Isförhållanden"]
+${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Fairway navigability"]
+${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigation conditions"]
+${ICE_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Ice conditions"]
 
 *** Test Cases ***
 Check Copyright And Scale
@@ -62,18 +71,6 @@ Check Copyright And Scale
 	Should Be Equal    ${COPYRIGHT_YEAR_INT}    ${date.year}
 	${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
 	Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
-
-Check Fairway Card
-	Select Fairway
-	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
-	Capture Page Screenshot
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${CLOSE_BUTTON}
-	Click Element    ${CLOSE_BUTTON}
 
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
@@ -89,6 +86,19 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${ZOOM_IN_BUTTON}
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
 
+Check Fairway Card
+	Select Fairway
+	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
+	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
+	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
+	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
+	Capture Page Screenshot
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
+
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
 	Select Fairway
@@ -98,6 +108,7 @@ Check Fairway Card In Swedish
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -112,6 +123,7 @@ Check Fairway Card In English
 	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -203,3 +215,13 @@ Select Fairway
 	Capture Page Screenshot
 	Click Element    ${BACK_TO_HOME_BUTTON}
 	Sleep    5s
+
+Check Fairway Navigability Headings
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}
+	Scroll Element Into View    ${heading1_locator}
+	Element Should Be Visible    ${heading1_locator}
+	Scroll Element Into View    ${heading2_locator}
+	Element Should Be Visible    ${heading2_locator}
+	Scroll Element Into View    ${heading3_locator}
+	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${CLOSE_BUTTON}
