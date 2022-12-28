@@ -1,38 +1,6 @@
-export const mockFairwayList = {
-  fairwayCards: [
-    { id: 'hanko', name: { fi: 'Hangon meriväylä', sv: 'Hangö havsfarled', en: 'Hanko channel' }, modificationTimestamp: 1667808284, group: '1' },
-    {
-      id: 'uusikaupunki',
-      name: { fi: 'Uudenkaupungin väylä', sv: '[sv] Uudenkaupungin väylä', en: 'Uusikaupunki channel' },
-      modificationTimestamp: 1667808285,
-      group: '1',
-    },
-    { id: 'saimaa', name: { fi: 'Saimaan väylä', sv: 'Saimaan väylä', en: 'Saimaan väylä' }, modificationTimestamp: 1667808285, group: null },
-    {
-      id: 'helsinki',
-      name: { fi: 'Helsingin väylä', sv: 'Helsingforsleden', en: 'Helsinki channel' },
-      modificationTimestamp: 1667808284,
-      group: '2',
-    },
-    {
-      id: 'utohanko',
-      name: { fi: 'Utö-Hanko väylä', sv: 'Farleden Utö-Hangö', en: 'Utö-Hanko channel' },
-      modificationTimestamp: 1667808284,
-      group: '1',
-    },
-    { id: 'kemi', name: { fi: 'Kemin väylä', sv: '[sv] Kemin väylä', en: 'Kemi Ajos fairway' }, modificationTimestamp: 1667808284, group: '3' },
-    {
-      id: 'naantali',
-      name: { fi: 'Naantalin väylä', sv: 'Farleden Nådendal', en: 'Naantali channel' },
-      modificationTimestamp: 1667808285,
-      group: '1',
-    },
-    { id: 'vuosaari', name: { fi: '', sv: 'Nordsjöleden', en: 'Vuosaari channel' }, modificationTimestamp: null, group: '2' },
-  ],
-};
-
 export const mockFairwayCard = {
   fairwayCard: {
+    id: 'vuosaari',
     name: { fi: 'Vuosaaren väylä', sv: 'Nordsjöleden', en: 'Vuosaari channel', __typename: 'Text' },
     n2000HeightSystem: false,
     group: '2',
@@ -1059,4 +1027,66 @@ export const mockFairwayCard = {
     ],
     __typename: 'FairwayCard',
   },
+};
+
+export const mockFairwayList = {
+  fairwayCards: [
+    {
+      id: 'hanko',
+      name: { fi: 'Hangon meriväylä', sv: 'Hangö havsfarled', en: 'Hanko channel' },
+      modificationTimestamp: 1667808284,
+      group: '1',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    {
+      id: 'uusikaupunki',
+      name: { fi: 'Uudenkaupungin väylä', sv: '[sv] Uudenkaupungin väylä', en: 'Uusikaupunki channel' },
+      modificationTimestamp: 1667808285,
+      group: '1',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    {
+      id: 'saimaa',
+      name: { fi: 'Saimaan väylä', sv: 'Saimaan väylä', en: 'Saimaan väylä' },
+      modificationTimestamp: 1667808285,
+      group: '3',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    {
+      id: 'helsinki',
+      name: { fi: 'Helsingin väylä', sv: 'Helsingforsleden', en: 'Helsinki channel' },
+      modificationTimestamp: 1667808284,
+      group: '2',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    {
+      id: 'utohanko',
+      name: { fi: 'Utö-Hanko väylä', sv: 'Farleden Utö-Hangö', en: 'Utö-Hanko channel' },
+      modificationTimestamp: 1667808284,
+      group: '1',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    {
+      id: 'kemi',
+      name: { fi: '', sv: '[sv] Kemin väylä', en: 'Kemi Ajos fairway' },
+      modificationTimestamp: 1667808284,
+      group: '3',
+      n2000HeightSystem: true,
+      fairways: [],
+    },
+    {
+      id: 'naantali',
+      name: { fi: 'Naantalin väylä', sv: 'Farleden Nådendal', en: 'Naantali channel' },
+      modificationTimestamp: 1667808285,
+      group: '1',
+      n2000HeightSystem: false,
+      fairways: [],
+    },
+    mockFairwayCard.fairwayCard,
+  ],
 };
