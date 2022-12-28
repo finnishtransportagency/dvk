@@ -10,9 +10,6 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { Drivers, Storage } from '@ionic/storage';
 import IonicAsyncStorage from './utils/IonicAsyncStorage';
 import { OFFLINE_STORAGE } from './utils/constants';
-/* Apollo */
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
 import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
 import {
@@ -27,6 +24,7 @@ import {
   useHarborLayer,
   useSafetyEquipmentLayer,
 } from './components/FeatureLoader';
+import { useFairwayCardList } from './components/FairwayDataLoader';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -75,20 +73,6 @@ store.create();
 
 const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
 
-const httpLink = createHttpLink({ uri: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql' });
-const authLink = setContext((_, { headers }) => {
-  return {
-    headers: {
-      ...headers,
-      'x-api-key': process.env.REACT_APP_API_KEY || 'key missing',
-    },
-  };
-});
-const client = new ApolloClient({
-  link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
-});
-
 const DvkIonApp: React.FC = () => {
   const { t } = useTranslation();
   const line12Layer = useLine12Layer();
@@ -101,6 +85,7 @@ const DvkIonApp: React.FC = () => {
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const safetyEquipmentLayer = useSafetyEquipmentLayer();
+  const fairwayCardList = useFairwayCardList();
 
   const [initDone, setInitDone] = useState(false);
 
@@ -115,7 +100,8 @@ const DvkIonApp: React.FC = () => {
       specialAreaLayer &&
       pilotLayer &&
       harborLayer &&
-      safetyEquipmentLayer
+      safetyEquipmentLayer &&
+      fairwayCardList
     ) {
       setInitDone(true);
     }
@@ -130,22 +116,21 @@ const DvkIonApp: React.FC = () => {
     pilotLayer,
     harborLayer,
     safetyEquipmentLayer,
+    fairwayCardList,
   ]);
 
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
       <IonReactRouter>
-        <ApolloProvider client={client}>
-          <SidebarMenu />
-          <IonContent id="MainContent">
-            <IonRouterOutlet>
-              <Route exact path="/" render={(props) => <Home {...props} />} />
-              <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-              <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-            </IonRouterOutlet>
-          </IonContent>
-          <MapOverlays />
-        </ApolloProvider>
+        <SidebarMenu />
+        <IonContent id="MainContent">
+          <IonRouterOutlet>
+            <Route exact path="/" render={(props) => <Home {...props} />} />
+            <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
+            <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+          </IonRouterOutlet>
+        </IonContent>
+        <MapOverlays />
       </IonReactRouter>
       <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
     </IonApp>
