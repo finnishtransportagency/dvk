@@ -1,9 +1,8 @@
 {
   "name": "dvk",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.7.3",
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "4.6.1",
     "@capacitor/haptics": "4.1.0",
@@ -31,6 +30,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.2.1",
     "graphql": "^16.6.0",
+    "graphql-request": "^5.1.0",
     "i18next": "^22.4.6",
     "ionicons": "^6.0.4",
     "lodash": "^4.17.21",
@@ -90,7 +90,7 @@
     "@graphql-codegen/cli": "^2.16.1",
     "@graphql-codegen/typescript": "^2.8.5",
     "@graphql-codegen/typescript-operations": "^2.5.10",
-    "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-codegen/typescript-react-query": "^4.0.6",
     "@types/lodash": "^4.14.191",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
