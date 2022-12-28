@@ -62,6 +62,7 @@ export class DvkBackendStack extends Stack {
           HARBOR_TABLE: Config.getHarborTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+          TZ: 'Europe/Helsinki',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -197,6 +198,7 @@ export class DvkBackendStack extends Stack {
           ENVIRONMENT: Config.getEnvironment(),
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
+          TZ: 'Europe/Helsinki',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
