@@ -1,3 +1,4 @@
+import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
