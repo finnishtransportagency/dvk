@@ -130,7 +130,7 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 20 },
 };
 
-export const getSafetyEquipmentStyle = (symbol: string, faultTypeCode: string | undefined, resolution: number, selected: boolean) => {
+export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolution: number, selected: boolean) => {
   const key = symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
@@ -139,7 +139,7 @@ export const getSafetyEquipmentStyle = (symbol: string, faultTypeCode: string | 
   let image: Icon;
   let errorImageRight: Icon | undefined = undefined;
   let errorImageLeft: Icon | undefined = undefined;
-  if (faultTypeCode) {
+  if (faults) {
     errorImageRight = new Icon({
       src: errorIcon,
       anchor: [-0.75, 0.5],
@@ -159,13 +159,13 @@ export const getSafetyEquipmentStyle = (symbol: string, faultTypeCode: string | 
     if (center) {
       image = new Icon({
         src: icon,
-        color: faultTypeCode ? '#EC0E0E' : '#231F20',
+        color: faults ? '#EC0E0E' : '#231F20',
         scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
-        color: faultTypeCode ? '#EC0E0E' : '#231F20',
+        color: faults ? '#EC0E0E' : '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',

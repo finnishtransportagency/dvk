@@ -84,7 +84,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
-      return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faultTypeCode, resolution, true);
+      return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, true);
     } else {
       return undefined;
     }

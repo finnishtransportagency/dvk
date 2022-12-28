@@ -262,7 +262,7 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) =>
-    getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faultTypeCode, resolution, false)
+    getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, false)
   );
 
   // POI:t

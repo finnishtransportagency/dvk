@@ -43,20 +43,26 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             </IonCol>
           </IonRow>
         )}
-        {equipment.properties.faultType && equipment.properties.recordTime && (
+        {equipment.properties.faults && (
           <IonGrid class="faultGrid">
-            <IonRow>
-              <IonCol>
-                <strong>{t('popup.equipment.fault')}</strong>
-                &nbsp;
-                {t('popup.equipment.datetime', {
-                  val: equipment.properties.recordTime,
-                })}
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{equipment.properties.faultType[lang] || equipment.properties.faultType.fi}</IonCol>
-            </IonRow>
+            {equipment.properties.faults.map((fault, index) => {
+              return (
+                <div key={index}>
+                  <IonRow>
+                    <IonCol>
+                      <strong>{t('popup.equipment.fault')}</strong>
+                      &nbsp;
+                      {t('popup.equipment.datetime', {
+                        val: fault.recordTime,
+                      })}
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>{fault.faultType[lang] || fault.faultType.fi}</IonCol>
+                  </IonRow>
+                </div>
+              );
+            })}
           </IonGrid>
         )}
         <IonRow>
@@ -72,7 +78,8 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             </IonRow>
             <IonRow>
               <IonCol>
-                {equipment.properties.typeName[lang] || equipment.properties.typeName.fi} {equipment.properties.subType}
+                {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
+                {equipment.properties.subType ? `${', ' + equipment.properties.subType.toLowerCase()}` : ''}
               </IonCol>
             </IonRow>
           </>

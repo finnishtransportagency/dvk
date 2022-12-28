@@ -1,4 +1,5 @@
 import { Text } from '../graphql/generated';
+import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
   type: string;
@@ -95,7 +96,5 @@ export type EquipmentFeatureProperties = {
   typeName?: Text;
   lightning: boolean;
   fairways?: EquipmentFairway[];
-  faultType?: Text;
-  faultTypeCode?: string;
-  recordTime?: number;
+  faults?: EquipmentFault[];
 };
