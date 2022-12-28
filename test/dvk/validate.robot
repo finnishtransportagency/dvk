@@ -72,19 +72,6 @@ Check Copyright And Scale
 	${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
 	Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
 
-Check Fairway Card
-	Select Fairway
-	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
-	Capture Page Screenshot
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Scroll Element Into View    ${CLOSE_BUTTON}
-	Click Element    ${CLOSE_BUTTON}
-
 Check Layer Control
 	Click Element    ${LAYER_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${LAYER_CONTROL_HEADING}    30s
@@ -98,6 +85,19 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${CENTER_TO_OWN_LOCATION_BUTTON}
 	Element Should Be Visible    ${ZOOM_IN_BUTTON}
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
+
+Check Fairway Card
+	Select Fairway
+	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
+	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
+	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
+	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
+	Capture Page Screenshot
+	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Scroll Element Into View    ${CLOSE_BUTTON}
+	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
