@@ -5,7 +5,7 @@
         <g id="colors_and_typography" transform="translate(-1202.000000, -962.000000)">
             <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
                 <g id="Asset-61" transform="translate(480.000000, 48.000000)">
-                    <path style="fill: red;" d="M6.86,23.14 L17.14,23.14 L17.14,24 L6.86,24 L6.86,23.14 Z M9.92,19.57 L14,19.57 L15.2,23.14 L8.8,23.14 L9.91,19.57 L9.92,19.57 Z" id="Shape"></path>
+                    <path d="M6.86,23.14 L17.14,23.14 L17.14,24 L6.86,24 L6.86,23.14 Z M9.92,19.57 L14,19.57 L15.2,23.14 L8.8,23.14 L9.91,19.57 L9.92,19.57 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
                     <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
                 </g>
             </g>
