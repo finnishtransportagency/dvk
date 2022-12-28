@@ -10,11 +10,11 @@ import FairwayCards from './FairwayCards';
 import FairwayCard from './FairwayCard';
 import dvkMap from '../components/DvkMap';
 import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
-import { useFindAllFairwayCardsQuery } from '../graphql/generated';
 import { Lang, MINIMUM_QUERYLENGTH } from '../utils/constants';
 import { filterFairways } from '../utils/common';
 import { unsetSelectedFairwayCard } from './layers';
 import vayla_logo from '../theme/img/vayla_logo.png';
+import { useFairwayCardListData } from '../utils/dataLoader';
 
 interface RouterProps {
   fairwayId?: string;
@@ -27,7 +27,7 @@ interface MainContentProps extends RouteComponentProps<RouterProps> {
 const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
-  const { data } = useFindAllFairwayCardsQuery();
+  const { data } = useFairwayCardListData();
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
