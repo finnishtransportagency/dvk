@@ -3,7 +3,6 @@
   "version": "0.5.1",
   "private": true,
   "dependencies": {
-    "@apollo/client": "^3.7.3",
     "@capacitor/app": "4.1.1",
     "@capacitor/core": "4.6.1",
     "@capacitor/haptics": "4.1.0",
