@@ -99,7 +99,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   };
 
   useIonViewWillEnter(() => {
-    unsetSelectedFairwayCard();
+    if (!fairwayId) unsetSelectedFairwayCard();
     if (mapElement?.current) {
       dvkMap?.removeShowSidebarMenuControl();
       dvkMap?.removeSearchbarControl();
