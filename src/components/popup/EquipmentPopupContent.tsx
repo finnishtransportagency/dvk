@@ -53,7 +53,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
                       <strong>{t('popup.equipment.fault')}</strong>
                       &nbsp;
                       {t('popup.equipment.datetime', {
-                        val: fault.recordTime,
+                        val: new Date(fault.recordTimeString),
                       })}
                     </IonCol>
                   </IonRow>

@@ -167,7 +167,7 @@ export type EquipmentFault = {
   faultId: number;
   faultType: Text;
   faultTypeCode: string;
-  recordTime: number;
+  recordTimeString: string;
 };
 
 export function useSafetyEquipmentLayer() {
@@ -192,7 +192,7 @@ export function useSafetyEquipmentLayer() {
             faultId: ff.getId() as number,
             faultType: ff.getProperties().type,
             faultTypeCode: ff.getProperties().typeCode,
-            recordTime: ff.getProperties().recordTime,
+            recordTimeString: ff.getProperties().recordTimeString,
           };
           if (!faultMap.has(id)) {
             faultMap.set(id, []);
