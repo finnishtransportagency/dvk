@@ -9,19 +9,19 @@ import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 
-function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId) {
+function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId, dataProjection = 'EPSG:4326') {
   const [ready, setReady] = useState(false);
   const { data } = useFeatureData(featureDataId);
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
       const source = dvkMap.getVectorSource(featureLayerId);
       features.forEach((f) => f.set('dataSource', featureLayerId, true));
       source.addFeatures(features);
       setReady(true);
     }
-  }, [featureLayerId, data]);
+  }, [featureLayerId, data, dataProjection]);
   return ready;
 }
 
@@ -164,7 +164,19 @@ export function useHarborLayer() {
 }
 
 export function useMarineWarningLayer() {
-  return useDataLayer('marinewarning', 'marinewarning');
+  const [ready, setReady] = useState(false);
+  const { data } = useFeatureData('marinewarning');
+  useEffect(() => {
+    if (data) {
+      const format = new GeoJSON();
+      const features = format.readFeatures(data, { dataProjection: 'EPSG:3395', featureProjection: MAP.EPSG });
+      const source = dvkMap.getVectorSource('marinewarning');
+      features.forEach((f) => f.set('dataSource', 'marinewarning', true));
+      source.addFeatures(features);
+      setReady(true);
+    }
+  }, [data]);
+  return ready;
 }
 
 export type EquipmentFault = {

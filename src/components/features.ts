@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { Text } from '../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 

@@ -192,7 +192,7 @@ export class DvkBackendStack extends Stack {
         runtime: lambda.Runtime.NODEJS_16_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
-        timeout: Duration.seconds(30),
+        timeout: Duration.seconds(60),
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),

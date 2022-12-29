@@ -67,8 +67,7 @@ import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
 import { Polygon } from 'ol/geom';
-import specialarea from '../theme/img/erityisalue_tausta.svg';
-import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
+import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
 
 const symbol2Icon = {
@@ -219,15 +218,13 @@ export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatu
   }
 }
 
-const specialAreaImage = new Image();
-specialAreaImage.src = specialarea;
-const specialAreaSelectedImage = new Image();
-specialAreaSelectedImage.src = specialareaSelected;
+const marineAreaImage = new Image();
+marineAreaImage.src = marinearea;
 
-export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
+export function getMarineWarningStyle() {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  const gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
+  const gradient = context.createPattern(marineAreaImage, 'repeat');
   return [
     new Style({
       image: new Icon({
@@ -242,7 +239,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
     }),
     new Style({
       stroke: new Stroke({
-        color: '',
+        color: '#EC0E0E',
         width: 2,
       }),
       zIndex: 99,

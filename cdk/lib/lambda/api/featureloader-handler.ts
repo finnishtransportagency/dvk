@@ -301,7 +301,7 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   for (const feature of resp.data?.features || []) {
     features.push({
       type: feature.type,
-      id: feature.properties?.id,
+      id: feature.properties?.ID,
       geometry: feature.geometry,
       properties: {
         number: feature.properties?.NUMERO,
