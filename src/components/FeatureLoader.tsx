@@ -163,6 +163,10 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
 
+export function useMarineWarningLayer() {
+  return useDataLayer('marinewarning', 'marinewarning');
+}
+
 export type EquipmentFault = {
   faultId: number;
   faultType: Text;

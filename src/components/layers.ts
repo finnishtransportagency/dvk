@@ -22,7 +22,7 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
+import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
 import { GeoJSON } from 'ol/format';
 
 const specialAreaImage = new Image();
@@ -264,6 +264,7 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) =>
     getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, false)
   );
+  addFeatureLayer(map, 'marinewarning', 75, 2, (feature) => getMarineWarningStyle(feature, false));
 
   // POI:t
   // Luotsipaikat

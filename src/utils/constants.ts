@@ -13,7 +13,8 @@ export type FeatureDataId =
   | 'harbor'
   | 'safetyequipment'
   | 'depth12'
-  | 'safetyequipmentfault';
+  | 'safetyequipmentfault'
+  | 'marinewarning';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -29,6 +30,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
   { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2') },
   { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
+  { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
 ];
 
 export type FeatureDataLayerId =
@@ -42,7 +44,8 @@ export type FeatureDataLayerId =
   | 'harbor'
   | 'quay'
   | 'safetyequipment'
-  | 'depth12';
+  | 'depth12'
+  | 'marinewarning';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -78,6 +81,7 @@ export const MAP: MapType = {
     { id: 'harbor' },
     { id: 'safetyequipment' },
     { id: 'depth12' },
+    { id: 'marinewarning' },
   ],
 };
 

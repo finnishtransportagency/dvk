@@ -10,7 +10,7 @@ import { get as getTransform } from 'ol/proj/transforms';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getSafetyEquipmentStyle } from '../styles';
+import { getMarineWarningStyle, getSafetyEquipmentStyle } from '../styles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -24,7 +24,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'line', 'safetyequipment', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'line', 'safetyequipment', 'marinewarning', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -85,6 +85,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
       return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, true);
+    } else if (type === 'marinewarning') {
+      return getMarineWarningStyle(feature, true);
     } else {
       return undefined;
     }
@@ -103,6 +105,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
+      dvkMap.getFeatureLayer('marinewarning'),
     ],
     hitTolerance: 3,
     multi: true,

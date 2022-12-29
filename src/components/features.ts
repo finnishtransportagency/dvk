@@ -1,3 +1,4 @@
+import { type } from 'os';
 import { Text } from '../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 
@@ -97,4 +98,18 @@ export type EquipmentFeatureProperties = {
   lightning: boolean;
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
+};
+
+export type MarineWarningFeatureProperties = {
+  number?: number;
+  area?: Text;
+  type?: Text;
+  location?: Text;
+  description?: Text;
+  startDateTime?: number;
+  endDateTime?: number;
+  dateTime?: number;
+  notifier?: string;
+  equipmentText?: string;
+  equipmentId?: number;
 };
