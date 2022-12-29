@@ -13,7 +13,7 @@ import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { useEffect } from 'react';
-import { FindFairwayCardByIdQuery, HarborPartsFragment, Quay, Section } from '../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, Quay, Section } from '../graphql/generated';
 import { FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
@@ -364,10 +364,10 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   }
 }
 
-export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undefined) {
+export function useSetSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
   const dvkMap = getMap();
   useEffect(() => {
-    if (data) {
+    if (fairwayCard) {
       const line12Source = dvkMap.getVectorSource('line12');
       const line3456Source = dvkMap.getVectorSource('line3456');
       const area12Source = dvkMap.getVectorSource('area12');
@@ -381,13 +381,13 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
 
       const fairwayFeatures: Feature[] = [];
 
-      for (const fairway of data?.fairwayCard?.fairways || []) {
+      for (const fairway of fairwayCard?.fairways || []) {
         for (const line of fairway.navigationLines || []) {
           let feature = line12Source.getFeatureById(line.id);
           if (feature) {
             line12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
+            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           } else {
             feature = line3456Source.getFeatureById(line.id);
             if (feature) {
@@ -401,9 +401,9 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
           if (feature) {
             area12Source.removeFeature(feature);
             fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
+            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
             feature = depthSource.getFeatureById(area.id);
-            feature?.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
+            feature?.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           } else {
             feature = area3456Source.getFeatureById(area.id);
             if (feature) {
@@ -416,13 +416,13 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
             if (feature) {
               specialAreaSource.removeFeature(feature);
               fairwayFeatures.push(feature);
-              feature.set('n2000HeightSystem', data.fairwayCard?.n2000HeightSystem || false);
+              feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
             }
           }
         }
       }
 
-      for (const harbor of data?.fairwayCard?.harbors || []) {
+      for (const harbor of fairwayCard?.harbors || []) {
         addQuay(harbor, quaySource);
       }
 
@@ -439,7 +439,7 @@ export function useSetSelectedFairwayCard(data: FindFairwayCardByIdQuery | undef
         dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
       }
     }
-  }, [data, dvkMap]);
+  }, [fairwayCard, dvkMap]);
 }
 
 export function setSelectedPilotPlace(id?: number | string) {

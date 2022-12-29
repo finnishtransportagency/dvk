@@ -5,7 +5,6 @@ import dvkMap, { BackgroundMapType } from '../DvkMap';
 import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
-import { useFindAllFairwayCardsQuery } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { filterFairways } from '../../utils/common';
 import { Lang } from '../../utils/constants';
@@ -13,6 +12,7 @@ import { MobileModal } from './MobileModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
+import { useFairwayCardListData } from '../../utils/dataLoader';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -32,7 +32,7 @@ const MapOverlays: React.FC = () => {
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
-  const { data } = useFindAllFairwayCardsQuery();
+  const { data } = useFairwayCardListData();
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 

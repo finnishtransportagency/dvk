@@ -5,7 +5,7 @@ import * as turf from '@turf/turf';
 import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData } from '../utils/featureData';
+import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 

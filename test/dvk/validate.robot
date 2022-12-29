@@ -59,6 +59,24 @@ ${ICE_CONDITIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/io
 ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Fairway navigability"]
 ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Navigation conditions"]
 ${ICE_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Ice conditions"]
+${FAIRWAY_DATA_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Väylätiedot"]
+${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Linjaus ja merkintä"]
+${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Väylän mitoitusalus"]
+${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Väylän mitoitustiedot"]
+${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Kohtaamis- ja ohittamiskieltoalueet"]
+${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Nopeusrajoitukset"]
+${FAIRWAY_DATA_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Farledsdata"]
+${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledsdragning och utmärkning"]
+${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "[sv] Väylän mitoitusalus"]
+${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Dimensionering"]
+${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Områden med mötes- och omkörningsförbud"]
+${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fartbegränsningar och -rekommendationer"]
+${FAIRWAY_DATA_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Fairway data"]
+${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Channel alignment and marking"]
+${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway design ship"]
+${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway dimensions"]
+${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Meeting and overtaking prohibition areas"]
+${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Speed limits and recommendations"]
 
 *** Test Cases ***
 Check Copyright And Scale
@@ -94,6 +112,7 @@ Check Fairway Card
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
+	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_FINNISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -109,6 +128,7 @@ Check Fairway Card In Swedish
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
+	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_SWEDISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -124,6 +144,7 @@ Check Fairway Card In English
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
+	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_ENGLISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}
 	Capture Page Screenshot
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
@@ -224,4 +245,20 @@ Check Fairway Navigability Headings
 	Element Should Be Visible    ${heading2_locator}
 	Scroll Element Into View    ${heading3_locator}
 	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+
+Check Fairway Data Headings
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}    ${heading5_locator}    ${heading6_locator}
+	Scroll Element Into View    ${heading1_locator}
+	Element Should Be Visible    ${heading1_locator}
+	Scroll Element Into View    ${heading2_locator}
+	Element Should Be Visible    ${heading2_locator}
+	Scroll Element Into View    ${heading3_locator}
+	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${heading4_locator}
+	Element Should Be Visible    ${heading4_locator}
+	Scroll Element Into View    ${heading5_locator}
+	Element Should Be Visible    ${heading5_locator}
+	Scroll Element Into View    ${heading6_locator}
+	Element Should Be Visible    ${heading6_locator}
 	Scroll Element Into View    ${CLOSE_BUTTON}

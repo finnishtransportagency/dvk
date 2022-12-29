@@ -14,10 +14,11 @@ import {
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './FairwayCards.css';
-import { FairwayCardPartsFragment, useFindAllFairwayCardsQuery } from '../graphql/generated';
+import { FairwayCardPartsFragment } from '../graphql/generated';
 import arrow_down from '../theme/img/arrow_down.svg';
 import { Link } from 'react-router-dom';
 import { Lang } from '../utils/constants';
+import { useFairwayCardListData } from '../utils/dataLoader';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -74,7 +75,7 @@ type FairwayCardsProps = {
 
 const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const { data, loading } = useFindAllFairwayCardsQuery();
+  const { data, isLoading } = useFairwayCardListData();
   const [showDescription, setShowDescription] = useState();
 
   return (
@@ -120,9 +121,14 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
       </IonAccordionGroup>
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
-        <FairwayCardGroup title={t('archipelagoSea')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '1') || []} first />
-        <FairwayCardGroup title={t('gulfOfFinland')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-        <FairwayCardGroup title={t('gulfOfBothnia')} loading={loading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+        <FairwayCardGroup
+          title={t('archipelagoSea')}
+          loading={isLoading}
+          data={data?.fairwayCards.filter((card) => card.group === '1') || []}
+          first
+        />
+        <FairwayCardGroup title={t('gulfOfFinland')} loading={isLoading} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
+        <FairwayCardGroup title={t('gulfOfBothnia')} loading={isLoading} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
       </div>
     </>
   );
