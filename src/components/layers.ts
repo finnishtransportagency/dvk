@@ -264,7 +264,7 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) =>
     getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, false)
   );
-  addFeatureLayer(map, 'marinewarning', undefined, 2, getMarineWarningStyle);
+  addFeatureLayer(map, 'marinewarning', undefined, 50, getMarineWarningStyle);
 
   // POI:t
   // Luotsipaikat

@@ -1,4 +1,4 @@
-import { Fill, Icon, RegularShape, Stroke, Style, Text } from 'ol/style';
+import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
 import a from '../theme/img/safetyequipment/a.svg';
 import b from '../theme/img/safetyequipment/b.svg';
 import c from '../theme/img/safetyequipment/c.svg';
@@ -250,17 +250,6 @@ export function getMarineWarningStyle(feature: FeatureLike) {
           return feat.getGeometry() as Point;
         }
       },
-    }),
-    new Style({
-      image: new RegularShape({
-        radius: 20,
-        points: 4,
-        stroke: new Stroke({ color: 'black', width: 1 }),
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
-        }),
-        angle: Math.PI / 4,
-      }),
     }),
   ];
   if (feature.getGeometry()?.getType() === 'Polygon') {
