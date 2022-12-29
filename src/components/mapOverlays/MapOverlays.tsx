@@ -11,6 +11,7 @@ import { Lang } from '../../utils/constants';
 import { MobileModal } from './MobileModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
+import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 
 export type PopupProperties = {
@@ -19,6 +20,7 @@ export type PopupProperties = {
   area?: AreaProperties;
   specialarea?: AreaProperties;
   line?: LineProperties;
+  safetyequipment?: EquipmentProperties;
 };
 
 const MapOverlays: React.FC = () => {
@@ -73,6 +75,7 @@ const MapOverlays: React.FC = () => {
           {popupProps?.area && <AreaPopupContent area={popupProps.area} />}
           {popupProps?.specialarea && <AreaPopupContent area={popupProps.specialarea} />}
           {popupProps?.line && <LinePopupContent line={popupProps.line} />}
+          {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />

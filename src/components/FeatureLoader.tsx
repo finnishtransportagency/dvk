@@ -7,6 +7,7 @@ import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
+import { Text } from '../graphql/generated';
 
 function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId) {
   const [ready, setReady] = useState(false);
@@ -162,6 +163,52 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
 
+export type EquipmentFault = {
+  faultId: number;
+  faultType: Text;
+  faultTypeCode: string;
+  recordTime: number;
+};
+
 export function useSafetyEquipmentLayer() {
-  return useDataLayer('safetyequipment', 'safetyequipment');
+  const [ready, setReady] = useState(false);
+  const eQuery = useFeatureData('safetyequipment');
+  const fQuery = useFeatureData('safetyequipmentfault');
+  useEffect(() => {
+    const eData = eQuery.data;
+    const fData = fQuery.data;
+    if (eData && fData) {
+      const format = new GeoJSON();
+      const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const source = dvkMap.getVectorSource('safetyequipment');
+      source.addFeatures(efs);
+      const faultMap = new Map<number, EquipmentFault[]>();
+      for (const ff of ffs) {
+        const id = ff.getProperties().equipmentId as number;
+        const feature = source.getFeatureById(id);
+        if (feature) {
+          const fault: EquipmentFault = {
+            faultId: ff.getId() as number,
+            faultType: ff.getProperties().type,
+            faultTypeCode: ff.getProperties().typeCode,
+            recordTime: ff.getProperties().recordTime,
+          };
+          if (!faultMap.has(id)) {
+            faultMap.set(id, []);
+          }
+          faultMap.get(id)?.push(fault);
+        }
+      }
+      faultMap.forEach((faults, equipmentId) => {
+        const feature = source.getFeatureById(equipmentId);
+        if (feature) {
+          faults.sort((a, b) => a.recordTime - b.recordTime);
+          feature.set('faults', faults, true);
+        }
+      });
+      setReady(true);
+    }
+  }, [eQuery.data, fQuery.data]);
+  return ready;
 }

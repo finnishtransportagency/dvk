@@ -58,6 +58,7 @@ import V from '../theme/img/safetyequipment/big/V.svg';
 import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
 import Y from '../theme/img/safetyequipment/big/Y.svg';
+import errorIcon from '../theme/img/safetyequipment/error_icon.svg';
 import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
@@ -129,27 +130,55 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 20 },
 };
 
-export const getSafetyEquipmentStyle = (symbol: string, resolution: number) => {
+export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolution: number, selected: boolean) => {
   const key = symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
   let image: Icon;
+  let errorImageRight: Icon | undefined = undefined;
+  let errorImageLeft: Icon | undefined = undefined;
+  if (faults) {
+    errorImageRight = new Icon({
+      src: errorIcon,
+      anchor: [-0.75, 0.5],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      scale: selected ? 1.2 : 1,
+    });
+    errorImageLeft = new Icon({
+      src: errorIcon,
+      anchor: [1.75, 0.5],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      scale: selected ? 1.2 : 1,
+    });
+  }
   if (symbol === '1' || resolution <= 7) {
     if (center) {
       image = new Icon({
         src: icon,
+        color: faults ? '#EC0E0E' : '#231F20',
+        scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
+        color: faults ? '#EC0E0E' : '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
+        scale: selected ? 1.2 : 1,
       });
     }
     return [
+      new Style({
+        image: errorImageRight,
+      }),
+      new Style({
+        image: errorImageLeft,
+      }),
       new Style({
         image,
       }),

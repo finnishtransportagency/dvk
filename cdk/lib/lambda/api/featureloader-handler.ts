@@ -250,6 +250,7 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
 
 async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
+  const cardMap = await getCardMap();
   log.debug('equipments: %d', equipments.length);
   for (const equipment of equipments) {
     features.push({
@@ -268,7 +269,7 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         typeName: { fi: equipment.turvalaitetyyppiFI, sv: equipment.turvalaitetyyppiSV },
         lightning: equipment.valaistu === 'K',
         fairways: equipment.vayla?.map((v) => {
-          return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
+          return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
         }),
       },
     });
@@ -289,6 +290,7 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
         name: { fi: fault.turvalaiteNimiFI, sv: fault.turvalaiteNimiSV },
         type: { fi: fault.vikatyyppiFI, sv: fault.vikatyyppiSV },
         typeCode: fault.vikatyyppiKoodi,
+        recordTime: Date.parse(fault.kirjausAika),
       },
     });
   }

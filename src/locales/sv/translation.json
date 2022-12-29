@@ -219,6 +219,17 @@
       "direction": "[sv] Tosisuunta {{val}}°",
       "fairways": "[sv] Navigointilinja on osa väylää",
       "extra": "[sv] Lisätieto"
+    },
+    "equipment": {
+      "yes": "Ja",
+      "no": "Nej",
+      "fault": "[sv] Turvalaitevika -",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "[sv] Koordinaatit",
+      "type": "[sv] Tyyppi",
+      "lightning": "[sv] Valaistu",
+      "navigationCode": "[sv] Navigointilaji",
+      "fairways": "[sv] Turvalaitteeseen liittyvät väylät"
     }
   },
   "common": {

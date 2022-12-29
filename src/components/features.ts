@@ -1,4 +1,5 @@
 import { Text } from '../graphql/generated';
+import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
   type: string;
@@ -75,4 +76,25 @@ export type LineFeatureProperties = {
   direction?: number;
   extra?: string;
   fairways?: LineFairway[];
+};
+
+type EquipmentFairway = {
+  fairwayId: number;
+  primary: boolean;
+  fairwayCards?: Card[];
+};
+
+export type EquipmentFeatureProperties = {
+  id: number;
+  featureType: string;
+  subType?: string;
+  navigation?: Text;
+  navigationCode?: string;
+  name?: Text;
+  symbol?: string;
+  typeCode?: string;
+  typeName?: Text;
+  lightning: boolean;
+  fairways?: EquipmentFairway[];
+  faults?: EquipmentFault[];
 };

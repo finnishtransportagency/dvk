@@ -219,6 +219,17 @@
       "direction": "Tosisuunta {{val}}°",
       "fairways": "Navigointilinja on osa väylää",
       "extra": "Lisätieto"
+    },
+    "equipment": {
+      "yes": "Kyllä",
+      "no": "Ei",
+      "fault": "Turvalaitevika -",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Koordinaatit",
+      "type": "Tyyppi",
+      "lightning": "Valaistu",
+      "navigationCode": "Navigointilaji",
+      "fairways": "Turvalaitteeseen liittyvät väylät"
     }
   },
   "common": {
