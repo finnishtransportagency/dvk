@@ -66,7 +66,7 @@ import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
-import { Polygon } from 'ol/geom';
+import { Point, Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
 
@@ -233,8 +233,12 @@ export function getMarineWarningStyle() {
       }),
       zIndex: 100,
       geometry: function (feat) {
-        const geometry = feat.getGeometry() as Polygon;
-        return geometry.getInteriorPoint();
+        if (feat.getGeometry()?.getType() === 'Polygon') {
+          const geometry = feat.getGeometry() as Polygon;
+          return geometry.getInteriorPoint();
+        } else {
+          return feat.getGeometry() as Point;
+        }
       },
     }),
     new Style({

@@ -66,7 +66,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
             </IonRow>
             <IonRow>
               <IonCol>
-                {t('popup.equipment.datetimeFormat', {
+                {t('popup.marine.datetimeFormat', {
                   val: marine.properties.dateTime,
                 })}
               </IonCol>

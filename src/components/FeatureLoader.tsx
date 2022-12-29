@@ -164,19 +164,7 @@ export function useHarborLayer() {
 }
 
 export function useMarineWarningLayer() {
-  const [ready, setReady] = useState(false);
-  const { data } = useFeatureData('marinewarning');
-  useEffect(() => {
-    if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection: 'EPSG:3395', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('marinewarning');
-      features.forEach((f) => f.set('dataSource', 'marinewarning', true));
-      source.addFeatures(features);
-      setReady(true);
-    }
-  }, [data]);
-  return ready;
+  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395');
 }
 
 export type EquipmentFault = {

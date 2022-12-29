@@ -304,6 +304,7 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
       id: feature.properties?.ID,
       geometry: feature.geometry,
       properties: {
+        featureType: 'marinewarning',
         number: feature.properties?.NUMERO,
         area: { fi: feature.properties?.ALUEET_FI, sv: feature.properties?.ALUEET_SV, en: feature.properties?.ALUEET_EN },
         type: { fi: feature.properties?.TYYPPI_FI, sv: feature.properties?.TYYPPI_SV, en: feature.properties?.TYYPPI_EN },
