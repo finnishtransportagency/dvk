@@ -1,4 +1,4 @@
-import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
+import { Fill, Icon, RegularShape, Stroke, Style, Text } from 'ol/style';
 import a from '../theme/img/safetyequipment/a.svg';
 import b from '../theme/img/safetyequipment/b.svg';
 import c from '../theme/img/safetyequipment/c.svg';
@@ -221,17 +221,27 @@ export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatu
 const marineAreaImage = new Image();
 marineAreaImage.src = marinearea;
 
-export function getMarineWarningStyle() {
+export function getMarineWarningStyle(feature: FeatureLike) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   const gradient = context.createPattern(marineAreaImage, 'repeat');
-  return [
+  const polygonStyles = [
+    new Style({
+      stroke: new Stroke({
+        color: '#EC0E0E',
+        width: 2,
+      }),
+      fill: new Fill({
+        color: gradient,
+      }),
+    }),
+  ];
+  const pointStyles = [
     new Style({
       image: new Icon({
         src: marine,
         opacity: 1,
       }),
-      zIndex: 100,
       geometry: function (feat) {
         if (feat.getGeometry()?.getType() === 'Polygon') {
           const geometry = feat.getGeometry() as Polygon;
@@ -242,16 +252,22 @@ export function getMarineWarningStyle() {
       },
     }),
     new Style({
-      stroke: new Stroke({
-        color: '#EC0E0E',
-        width: 2,
-      }),
-      zIndex: 99,
-      fill: new Fill({
-        color: gradient,
+      image: new RegularShape({
+        radius: 20,
+        points: 4,
+        stroke: new Stroke({ color: 'black', width: 1 }),
+        fill: new Fill({
+          color: 'rgba(0,0,0,0)',
+        }),
+        angle: Math.PI / 4,
       }),
     }),
   ];
+  if (feature.getGeometry()?.getType() === 'Polygon') {
+    return polygonStyles.concat(pointStyles);
+  } else {
+    return pointStyles;
+  }
 }
 
 export function getDepthStyle(feature: FeatureLike) {
