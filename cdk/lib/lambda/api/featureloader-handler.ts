@@ -298,7 +298,30 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
 
 async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
   const resp = await fetchMarineWarnings();
+  const dateFormat = /(\d{1,2}).(\d{1,2}).(\d{4}) (\d{1,2}):(\d{1,2})/;
   for (const feature of resp.data?.features || []) {
+    let dateTime, startDateTime, endDateTime;
+    if (feature.properties?.PAIVAYS) {
+      try {
+        const [, day, month, year, hours, minutes] = dateFormat.exec(feature.properties?.PAIVAYS) as RegExpExecArray;
+        dateTime = new Date(Number(year), Number(month) - 1, Number(day), Number(hours), Number(minutes)).getTime();
+      } catch (e) {
+        log.error('Error parsing date: %s', feature.properties?.PAIVAYS);
+        dateTime = Date.parse(feature.properties?.TALLENNUSPAIVA);
+      }
+    } else {
+      dateTime = Date.parse(feature.properties?.TALLENNUSPAIVA);
+    }
+    if (feature.properties?.VOIMASSA_ALKAA && feature.properties.VOIMASSA_ALKAA.length === 10) {
+      startDateTime = Date.parse(feature.properties.VOIMASSA_ALKAA + ' 00:00');
+    } else {
+      startDateTime = Date.parse(feature.properties?.VOIMASSA_ALKAA);
+    }
+    if (feature.properties?.VOIMASSA_PAATTYY && feature.properties.VOIMASSA_PAATTYY.length === 10) {
+      endDateTime = Date.parse(feature.properties.VOIMASSA_PAATTYY + ' 00:00');
+    } else {
+      endDateTime = Date.parse(feature.properties?.VOIMASSA_PAATTYY);
+    }
     features.push({
       type: feature.type,
       id: feature.properties?.ID,
@@ -310,9 +333,9 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
         type: { fi: feature.properties?.TYYPPI_FI, sv: feature.properties?.TYYPPI_SV, en: feature.properties?.TYYPPI_EN },
         location: { fi: feature.properties?.SIJAINTI_FI, sv: feature.properties?.SIJAINTI_SV, en: feature.properties?.SIJAINTI_EN },
         description: { fi: feature.properties?.SISALTO_FI, sv: feature.properties?.SISALTO_SV, en: feature.properties?.SISALTO_EN },
-        startDateTime: Date.parse(feature.properties?.VOIMASSA_ALKAA),
-        endDateTime: Date.parse(feature.properties?.VOIMASSA_PAATTYY),
-        dateTime: Date.parse(feature.properties?.TALLENNUSPAIVA),
+        startDateTime,
+        endDateTime,
+        dateTime,
         notifier: feature.properties?.TIEDOKSIANTAJA,
         equipmentText: feature.properties?.TURVALAITE_TXT,
         equipmentId: Number(feature.properties?.TURVALAITE_TXT?.match(/\d.*/)[0]),

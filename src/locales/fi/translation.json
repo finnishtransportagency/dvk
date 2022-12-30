@@ -236,7 +236,9 @@
       "location": "Sijainti",
       "description": "Sisältö",
       "datetime": "Päivämäärä ja aika",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}"
+      "startend": "Voimassaolo",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat2": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}} - {{ val2, datetime(dateStyle: 'short')}} {{ val2, datetime(timeStyle: 'short')}}"
     }
   },
   "common": {
