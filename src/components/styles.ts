@@ -244,6 +244,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
         image: new Icon({
           src: marine,
           opacity: 1,
+          scale: selected ? 1.2 : 1,
         }),
         geometry: function (feat) {
           const geometry = feat.getGeometry() as Polygon;
