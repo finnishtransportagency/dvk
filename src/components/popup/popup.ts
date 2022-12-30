@@ -86,7 +86,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'safetyequipment') {
       return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, true);
     } else if (type === 'marinewarning') {
-      return getMarineWarningStyle(feature);
+      return getMarineWarningStyle(feature, true);
     } else {
       return undefined;
     }

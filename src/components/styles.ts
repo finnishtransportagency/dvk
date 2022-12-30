@@ -66,7 +66,7 @@ import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
-import { Point, Polygon } from 'ol/geom';
+import { Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
 
@@ -221,41 +221,45 @@ export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatu
 const marineAreaImage = new Image();
 marineAreaImage.src = marinearea;
 
-export function getMarineWarningStyle(feature: FeatureLike) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  const gradient = context.createPattern(marineAreaImage, 'repeat');
-  const polygonStyles = [
-    new Style({
-      stroke: new Stroke({
-        color: '#EC0E0E',
-        width: 2,
+export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
+  if (feature.getGeometry()?.getType() === 'Polygon') {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const gradient = context.createPattern(marineAreaImage, 'repeat');
+    return [
+      new Style({
+        stroke: new Stroke({
+          color: '#EC0E0E',
+          width: 2,
+        }),
+        fill: new Fill({
+          color: gradient,
+        }),
       }),
-      fill: new Fill({
-        color: gradient,
-      }),
-    }),
-  ];
-  const pointStyles = [
-    new Style({
-      image: new Icon({
-        src: marine,
-        opacity: 1,
-      }),
-      geometry: function (feat) {
-        if (feat.getGeometry()?.getType() === 'Polygon') {
+      new Style({
+        image: new Icon({
+          src: marine,
+          opacity: 1,
+        }),
+        geometry: function (feat) {
           const geometry = feat.getGeometry() as Polygon;
           return geometry.getInteriorPoint();
-        } else {
-          return feat.getGeometry() as Point;
-        }
-      },
-    }),
-  ];
-  if (feature.getGeometry()?.getType() === 'Polygon') {
-    return polygonStyles.concat(pointStyles);
+        },
+      }),
+    ];
   } else {
-    return pointStyles;
+    return [
+      new Style({
+        image: new Icon({
+          src: marine,
+          opacity: 1,
+          anchor: [0.5, 28],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+          scale: selected ? 1.2 : 1,
+        }),
+      }),
+    ];
   }
 }
 
