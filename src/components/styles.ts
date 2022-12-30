@@ -68,6 +68,7 @@ import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
 import { Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
+import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
 
 const symbol2Icon = {
@@ -221,11 +222,14 @@ export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatu
 const marineAreaImage = new Image();
 marineAreaImage.src = marinearea;
 
+const marineAreaSelectedImage = new Image();
+marineAreaSelectedImage.src = marineareaSelected;
+
 export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   if (feature.getGeometry()?.getType() === 'Polygon') {
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const gradient = context.createPattern(marineAreaImage, 'repeat');
+    const gradient = context.createPattern(selected ? marineAreaSelectedImage : marineAreaImage, 'repeat');
     return [
       new Style({
         stroke: new Stroke({
