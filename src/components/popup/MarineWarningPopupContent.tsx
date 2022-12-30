@@ -88,6 +88,16 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
             </IonRow>
           </>
         )}
+        {marine.properties.notifier && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.marine.notifier')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{marine.properties.notifier}</IonCol>
+            </IonRow>
+          </>
+        )}
       </IonGrid>
     </IonGrid>
   );
