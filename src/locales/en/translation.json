@@ -240,7 +240,6 @@
       "datetime": "Date and time",
       "startend": "Validity",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-      "datetimeFormat2": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}} - {{ val2, datetime(dateStyle: 'short')}} {{ val2, datetime(timeStyle: 'short')}}",
       "notifier": "Notifier"
     }
   },

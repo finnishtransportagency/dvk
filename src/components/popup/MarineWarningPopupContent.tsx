@@ -150,10 +150,15 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
             </IonRow>
             <IonRow>
               <IonCol>
-                {t('popup.marine.datetimeFormat2', {
-                  val: marine.properties.startDateTime,
-                  val2: marine.properties.endDateTime,
-                })}
+                {marine.properties.startDateTime &&
+                  t('popup.marine.datetimeFormat', {
+                    val: marine.properties.startDateTime,
+                  })}
+                {' - '}
+                {marine.properties.endDateTime &&
+                  t('popup.marine.datetimeFormat', {
+                    val: marine.properties.endDateTime,
+                  })}
               </IonCol>
             </IonRow>
           </>

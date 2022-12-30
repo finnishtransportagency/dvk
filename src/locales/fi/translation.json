@@ -240,7 +240,6 @@
       "datetime": "Päivämäärä ja aika",
       "startend": "Voimassaolo",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-      "datetimeFormat2": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}} - {{ val2, datetime(dateStyle: 'short')}} {{ val2, datetime(timeStyle: 'short')}}",
       "notifier": "Tiedoksiantaja"
     }
   },
