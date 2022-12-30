@@ -3,7 +3,9 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Lang } from '../../utils/constants';
-import { MarineWarningFeatureProperties } from '../features';
+import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
+import { getMap } from '../DvkMap';
+import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
@@ -17,9 +19,10 @@ export type MarineWarningProperties = {
 const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ marine }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const dvkMap = getMap();
   return (
-    <IonGrid id="marinePopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="marinePopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         {marine.properties.type && (
           <IonRow>
             <IonCol className="header">
@@ -58,6 +61,73 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
               <IonCol>{marine.properties.description[lang] || marine.properties.description.fi}</IonCol>
             </IonRow>
           </>
+        )}
+        <IonRow>
+          <IonCol className="header">{t('popup.marine.target')}</IonCol>
+        </IonRow>
+        {marine.properties.equipmentId && (
+          <IonRow>
+            <IonCol>
+              {dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId)?.getProperties().name[lang] ||
+                dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId)?.getProperties().name.fi}
+              {' - '}
+              {marine.properties.equipmentId}
+            </IonCol>
+          </IonRow>
+        )}
+        {dvkMap
+          .getVectorSource('line12')
+          .getFeatureById(marine.properties.lineId || 0)
+          ?.getProperties()
+          .fairways?.map((fairway: LineFairway, index: number) => {
+            return (
+              <IonRow key={index}>
+                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+              </IonRow>
+            );
+          })}
+        {dvkMap
+          .getVectorSource('line3456')
+          .getFeatureById(marine.properties.lineId || 0)
+          ?.getProperties()
+          .fairways?.map((fairway: LineFairway, index: number) => {
+            return (
+              <IonRow key={index}>
+                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+              </IonRow>
+            );
+          })}
+        {dvkMap
+          .getVectorSource('area12')
+          .getFeatureById(marine.properties.areaId || 0)
+          ?.getProperties()
+          .fairways?.map((fairway: AreaFairway, index: number) => {
+            return (
+              <IonRow key={index}>
+                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+              </IonRow>
+            );
+          })}
+        {dvkMap
+          .getVectorSource('area3456')
+          .getFeatureById(marine.properties.areaId || 0)
+          ?.getProperties()
+          .fairways?.map((fairway: AreaFairway, index: number) => {
+            return (
+              <IonRow key={index}>
+                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+              </IonRow>
+            );
+          })}
+        {!marine.properties.areaId && !marine.properties.lineId && !marine.properties.equipmentId && (
+          <IonRow>
+            <IonCol>
+              <p className="info use-flex ion-align-items-center">
+                <InfoIcon />
+                {t('popup.marine.notarget')}
+              </p>
+            </IonCol>
+          </IonRow>
         )}
         {marine.properties.dateTime && (
           <>

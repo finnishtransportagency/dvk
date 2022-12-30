@@ -235,6 +235,8 @@
       "area": "Area",
       "location": "Location",
       "description": "Content",
+      "target": "[en] Liittyvät kohteet",
+      "notarget": "Data is not available.",
       "datetime": "Date and time",
       "startend": "Validity",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
