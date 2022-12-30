@@ -66,7 +66,7 @@ import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
-import { Polygon } from 'ol/geom';
+import { LineString, Point, Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
@@ -252,7 +252,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
         },
       }),
     ];
-  } else {
+  } else if (feature.getGeometry()?.getType() === 'Point') {
     return [
       new Style({
         image: new Icon({
@@ -263,6 +263,26 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
           anchorYUnits: 'pixels',
           scale: selected ? 1.2 : 1,
         }),
+      }),
+    ];
+  } else {
+    return [
+      new Style({
+        stroke: new Stroke({
+          color: '#EC0E0E',
+          width: 2,
+        }),
+      }),
+      new Style({
+        image: new Icon({
+          src: marine,
+          opacity: 1,
+          scale: selected ? 1.2 : 1,
+        }),
+        geometry: function (feat) {
+          const geometry = feat.getGeometry() as LineString;
+          return new Point(geometry.getFlatMidpoint());
+        },
       }),
     ];
   }
