@@ -2,6 +2,7 @@ import React from 'react';
 import { IonCol, IonContent, IonFooter, IonGrid, IonItem, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
+import { useTranslation } from 'react-i18next';
 
 export const showLanguages = (): boolean => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -10,6 +11,8 @@ export const showLanguages = (): boolean => {
 };
 
 const Home: React.FC = () => {
+  const { t } = useTranslation('', { keyPrefix: 'homePage' });
+
   return (
     <IonPage>
       <IonContent>
@@ -24,14 +27,14 @@ const Home: React.FC = () => {
               <IonRow>
                 <IonCol class="ion-align-self-center">
                   <IonItem
-                    href="https://vayla.fi/tietoa-meista/yhteystiedot/saavutettavuus"
+                    href={t('saavutettavuus-url')}
                     rel="external"
                     target="_blank"
                     detail={false}
                     lines="none"
                     className="ion-no-padding external-link"
                   >
-                    Saavutettavuusseloste
+                    {t('saavutettavuusseloste')}
                   </IonItem>
                 </IonCol>
                 <IonCol size="auto" class="ion-align-self-center">
