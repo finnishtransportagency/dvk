@@ -162,7 +162,9 @@
       "froude-varoitus": "Froude numret över 0,7",
       "squat-tulokset": "Squat resultat"
     },
-    "vaylavirasto-logo": "Trafikledsverket logotyp"
+    "vaylavirasto-logo": "Trafikledsverket logotyp",
+    "saavutettavuusseloste": "Tillgänglighet",
+    "saavutettavuus-url": "https://vayla.fi/sv/trafikledsverket/kontaktuppgifter/tillganglighet"
   },
   "common": {
     "tonnes": "ton",
