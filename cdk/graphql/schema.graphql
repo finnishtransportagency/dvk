@@ -248,7 +248,7 @@ type SafetyEquipmentFault {
   equipmentId: Int!
   typeCode: Int!
   type: Text
-  recordTime: String!
+  recordTime: Float!
   geometry: GeometryPoint!
 }
 

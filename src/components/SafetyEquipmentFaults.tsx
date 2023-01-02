@@ -82,7 +82,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 </IonCol>
                 <IonCol className="ion-text-end">
                   <IonLabel>
-                    <em>{fault.recordTime && <>{t('recordTime', { val: Date.parse(fault.recordTime) })}</>}</em>
+                    <em>{fault.recordTime && <>{t('recordTime', { val: fault.recordTime })}</>}</em>
                   </IonLabel>
                 </IonCol>
               </IonRow>

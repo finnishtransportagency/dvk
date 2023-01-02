@@ -20,7 +20,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Safety
         fi: apiFault.vikatyyppiFI,
         sv: apiFault.vikatyyppiSV,
       },
-      recordTime: apiFault.kirjausAika,
+      recordTime: Date.parse(apiFault.kirjausAika),
       geometry: apiFault.geometria,
     };
     return fault;
