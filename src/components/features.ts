@@ -50,7 +50,7 @@ export type AreaFeatureProperties = {
   fairways?: AreaFairway[];
 };
 
-type AreaFairway = {
+export type AreaFairway = {
   id: number;
   name: Text;
   sizingSpeed?: number;
@@ -58,7 +58,7 @@ type AreaFairway = {
   fairwayCards?: Card[];
 };
 
-type LineFairway = {
+export type LineFairway = {
   fairwayId: number;
   name: Text;
   fairwayCards?: Card[];
@@ -97,4 +97,22 @@ export type EquipmentFeatureProperties = {
   lightning: boolean;
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
+};
+
+export type MarineWarningFeatureProperties = {
+  number?: number;
+  area?: Text;
+  type?: Text;
+  location?: Text;
+  description?: Text;
+  startDateTime?: number;
+  endDateTime?: number;
+  dateTime?: number;
+  notifier?: string;
+  equipmentText?: string;
+  equipmentId?: number;
+  lineText?: string;
+  lineId?: number;
+  areaText?: string;
+  areaId?: number;
 };

@@ -49,6 +49,7 @@ jest.mock('./components/FeatureLoader', () => ({
   useSpeedLimitLayer: () => {},
   useHarborLayer: () => {},
   useSafetyEquipmentLayer: () => {},
+  useMarineWarningLayer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {

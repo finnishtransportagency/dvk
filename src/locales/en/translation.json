@@ -257,6 +257,17 @@
       "lightning": "[en] Valaistu",
       "navigationCode": "[en] Navigointilaji",
       "fairways": "[en] Turvalaitteeseen liittyvät väylät"
+    },
+    "marine": {
+      "area": "Area",
+      "location": "Location",
+      "description": "Content",
+      "target": "[en] Liittyvät kohteet",
+      "notarget": "Data is not available.",
+      "datetime": "Date and time",
+      "startend": "Validity",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "notifier": "Notifier"
     }
   },
   "common": {
