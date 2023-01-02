@@ -230,6 +230,17 @@
       "lightning": "[sv] Valaistu",
       "navigationCode": "[sv] Navigointilaji",
       "fairways": "[sv] Turvalaitteeseen liittyvät väylät"
+    },
+    "marine": {
+      "area": "[sv] Alue",
+      "location": "[sv] Sijainti",
+      "description": "[sv] Sisältö",
+      "target": "[sv] Liittyvät kohteet",
+      "notarget": "[sv] Tietoa ei ole asetettu.",
+      "datetime": "[sv] Päivämäärä ja aika",
+      "startend": "[sv] Voimassaolo",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "notifier": "[sv] Tiedoksiantaja"
     }
   },
   "common": {

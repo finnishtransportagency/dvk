@@ -25,12 +25,13 @@ type FairwayCardIdName = {
 const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  const fairwayCards: FairwayCardIdName[] = [];
+  let fairwayCards: FairwayCardIdName[] = [];
   equipment.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
       fairwayCards.push(...f.fairwayCards);
     }
   });
+  fairwayCards = [...new Map(fairwayCards.map((item) => [item.id, item])).values()];
   return (
     <IonGrid id="equipmentPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
