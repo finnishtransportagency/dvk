@@ -3,8 +3,9 @@
     "sidebarMenu": {
       "closeMenu": "Sulje",
       "title": "Digitaalinen väyläkortti",
-      "squat": "Squat-laskuri",
-      "fairway-cards": "Väyläkortit"
+      "fairway-cards": "Väyläkortit",
+      "safety-equipment-faults": "Turvalaiteviat",
+      "squat": "Squat-laskuri"
     },
     "map": {
       "content": "TODO: Kartta",
@@ -171,6 +172,32 @@
       "kmhDesc_one": "kilometri tunnissa",
       "kmhDesc_other": "kilometriä tunnissa"
     }
+  },
+  "faults": {
+    "documentTitle": "Digitaalinen väyläkortti",
+    "title": "Turvalaiteviat",
+    "openMenu": "Avaa valikko",
+    "general": "Yleistä",
+    "openDescription": "Avaa",
+    "closeDescription": "Sulje",
+    "description": "Väyläkortti sisältää väylänkäyttäjälle tarkoitettua informaatiota väylästä ja siihen liittyvästä satamasta. Se täydentää osaltaan merikartoilta ja muista julkaisuista saatavia väylätietoja. Väyläkortteja on laadittu talvisatamiin johtavista meriväylistä, ja ne kattavat suurimman osan nk. kauppamerenkulun pääväylistä.",
+    "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
+    "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
+    "search": "Hae väylän nimellä",
+    "searchTitle": "Väylähaku",
+    "clearTitle": "Tyhjennä",
+    "expandPane": "Laajenna",
+    "revertPane": "Palauta",
+    "closePane": "Sulje",
+    "hidePane": "Piilota",
+    "showPane": "Näytä",
+    "home": "Digitaalinen väyläkortti",
+    "print": "Tulosta turvalaiteviat",
+    "archipelagoSea": "Saaristomeri",
+    "gulfOfFinland": "Suomenlahti",
+    "gulfOfBothnia": "Pohjanlahden alue",
+    "and": " ja ",
+    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
