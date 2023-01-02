@@ -1,0 +1,20 @@
+query findAllSafetyEquipmentFaults {
+  safetyEquipmentFaults {
+    id
+    name {
+      fi
+      sv
+    }
+    equipmentId
+    typeCode
+    type {
+      fi
+      sv
+    }
+    recordTime
+    geometry {
+      type
+      coordinates
+    }
+  }
+}

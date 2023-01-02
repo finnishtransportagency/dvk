@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources } from './constants';
-import { useFindAllFairwayCardsQuery } from '../graphql/generated';
+import { useFindAllFairwayCardsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
 
 export function useFeatureData(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
@@ -26,4 +26,8 @@ const datasourceClient = {
 
 export function useFairwayCardListData() {
   return useFindAllFairwayCardsQuery(datasourceClient);
+}
+
+export function useSafetyEquipmentFaultData() {
+  return useFindAllSafetyEquipmentFaultsQuery(datasourceClient);
 }

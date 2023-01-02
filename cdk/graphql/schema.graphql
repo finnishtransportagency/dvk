@@ -6,6 +6,7 @@ type Query {
   fairwayCards: [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
+  safetyEquipmentFaults: [SafetyEquipmentFault!]!
 }
 
 type FairwayCard {
@@ -239,6 +240,16 @@ type NavigationLineFairway {
   fairwayId: Int!
   status: Int
   line: Int
+}
+
+type SafetyEquipmentFault {
+  id: Int!
+  name: Text
+  equipmentId: Int!
+  typeCode: Int!
+  type: Text
+  recordTime: Float!
+  geometry: GeometryPoint!
 }
 
 type GeometryPolygon {

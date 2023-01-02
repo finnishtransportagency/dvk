@@ -15,6 +15,7 @@ import { filterFairways } from '../utils/common';
 import { unsetSelectedFairwayCard } from './layers';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import { useFairwayCardListData } from '../utils/dataLoader';
+import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 
 interface RouterProps {
   fairwayId?: string;
@@ -22,9 +23,10 @@ interface RouterProps {
 
 interface MainContentProps extends RouteComponentProps<RouterProps> {
   splitPane?: boolean;
+  target?: 'faults' | 'warnings';
 }
 
-const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) => {
+const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane, target }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
@@ -111,7 +113,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
   });
 
   return (
-    <IonPage id="mainContent" data-testid={fairwayId ? 'fairwayCard' : 'fairwayList'}>
+    <IonPage id="mainContent" data-testid={!target && (fairwayId ? 'fairwayCard' : 'fairwayList')}>
       <IonContent>
         <IonGrid className="ion-no-padding" id="splitPane">
           <IonRow>
@@ -120,7 +122,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                 <IonCol
                   id="fairwayContent"
                   className={(widePane ? 'wide' : '') + (showPane ? '' : ' hidden')}
-                  data-testid={fairwayId ? 'cardPane' : 'listPane'}
+                  data-testid={!target && (fairwayId ? 'cardPane' : 'listPane')}
                 >
                   <IonContent id="fairwayCardsContainer">
                     <IonGrid className="ion-no-padding no-print">
@@ -128,7 +130,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                         <IonCol size="auto">
                           <button
                             className="icon"
-                            data-testid={fairwayId ? '' : 'menuController'}
+                            data-testid={!fairwayId && !target ? 'menuController' : ''}
                             onClick={() => menuController.open()}
                             title={t('openMenu')}
                             aria-label={t('openMenu')}
@@ -148,7 +150,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                               onIonBlur={blurAction}
                               onKeyDown={(e) => keyDownAction(e)}
                               ref={inputRef}
-                              data-testid={fairwayId ? '' : 'searchInput'}
+                              data-testid={!fairwayId && !target ? 'searchInput' : ''}
                             />
                             <button
                               type="button"
@@ -156,7 +158,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                               title={t('clearTitle')}
                               aria-label={t('clearTitle')}
                               onClick={clearInput}
-                              data-testid={fairwayId ? '' : 'clearInput'}
+                              data-testid={!fairwayId && !target ? 'clearInput' : ''}
                             ></button>
                             <SearchbarDropdown
                               isOpen={isSearchbarOpen}
@@ -169,7 +171,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                         <IonCol size="auto">
                           <button
                             className={'icon ' + (widePane ? 'flip invert' : '')}
-                            data-testid={fairwayId ? '' : 'toggleWide'}
+                            data-testid={!fairwayId && !target ? 'toggleWide' : ''}
                             onClick={() => toggleWide()}
                             title={widePane ? t('revertPane') : t('expandPane')}
                             aria-label={widePane ? t('revertPane') : t('expandPane')}
@@ -182,7 +184,7 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                             fill="clear"
                             className="closeButton"
                             routerLink="/"
-                            data-testid={fairwayId ? '' : 'backToHome'}
+                            data-testid={!fairwayId && !target ? 'backToHome' : ''}
                             title={t('closePane')}
                             aria-label={t('closePane')}
                           >
@@ -194,14 +196,15 @@ const MainContent: React.FC<MainContentProps> = ({ match, history, splitPane }) 
                     <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
 
                     {fairwayId && <FairwayCard widePane={widePane} id={fairwayId} />}
-                    {!fairwayId && <FairwayCards widePane={widePane} />}
+                    {!fairwayId && !target && <FairwayCards widePane={widePane} />}
+                    {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                   </IonContent>
                 </IonCol>
                 <IonCol size="auto">
                   <IonButton
                     fill="clear"
                     className={'togglePane' + (showPane ? ' flip' : '')}
-                    data-testid={fairwayId ? '' : 'togglePane'}
+                    data-testid={!fairwayId && !target ? 'togglePane' : ''}
                     onClick={() => togglePane()}
                     title={showPane ? t('hidePane') : t('showPane')}
                     aria-label={showPane ? t('hidePane') : t('showPane')}

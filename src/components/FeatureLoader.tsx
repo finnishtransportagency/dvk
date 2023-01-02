@@ -207,7 +207,7 @@ export function useSafetyEquipmentLayer() {
       faultMap.forEach((faults, equipmentId) => {
         const feature = source.getFeatureById(equipmentId);
         if (feature) {
-          faults.sort((a, b) => a.recordTime - b.recordTime);
+          faults.sort((a, b) => b.recordTime - a.recordTime);
           feature.set('faults', faults, true);
         }
       });

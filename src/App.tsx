@@ -132,6 +132,7 @@ const DvkIonApp: React.FC = () => {
             <Route exact path="/" render={(props) => <Home {...props} />} />
             <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
             <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
+            <Route exact path="/turvalaiteviat" render={(props) => <MainContent splitPane target="faults" {...props} />} />
           </IonRouterOutlet>
         </IonContent>
         <MapOverlays />

@@ -289,6 +289,15 @@ ion-grid.table ion-row > ion-col {
 ion-grid.table ion-row > ion-col:last-child {
   border-right: none;
 }
+ion-grid.table.light ion-row.header {
+  font-weight: normal;
+}
+ion-grid.table.light ion-row:not(.header) {
+  border: none;
+}
+ion-grid.table.light ion-row > ion-col {
+  border-right: none;
+}
 
 /* Breadcrumb */
 ion-breadcrumbs {
