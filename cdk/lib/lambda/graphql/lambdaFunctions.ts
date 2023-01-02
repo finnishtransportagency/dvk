@@ -52,6 +52,11 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'safetyEquipmentFaults',
   },
+  {
+    entry: path.join(__dirname, 'query/marineWarnings-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'marineWarnings',
+  },
 ];
 
 export default lambdaFunctions;

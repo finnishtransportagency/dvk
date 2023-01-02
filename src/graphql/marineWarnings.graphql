@@ -1,0 +1,32 @@
+query findAllMarineWarnings {
+  marineWarnings {
+    number
+    area {
+      fi
+      sv
+      en
+    }
+    type {
+      fi
+      sv
+      en
+    }
+    location {
+      fi
+      sv
+      en
+    }
+    description {
+      fi
+      sv
+      en
+    }
+    dateTime
+    startDateTime
+    endDateTime
+    notifier
+    equipmentId
+    areaId
+    lineId
+  }
+}

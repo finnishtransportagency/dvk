@@ -7,6 +7,7 @@ type Query {
   fairwayCard(id: String!): FairwayCard
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
+  marineWarnings: [MarineWarning!]!
 }
 
 type FairwayCard {
@@ -271,4 +272,19 @@ type Text {
   fi: String
   sv: String
   en: String
+}
+
+type MarineWarning {
+  number: Int!
+  area: Text!
+  type: Text!
+  location: Text!
+  description: Text!
+  startDateTime: Float
+  endDateTime: Float
+  dateTime: Float!
+  notifier: String!
+  equipmentId: Float
+  lineId: Float
+  areaId: Float
 }
