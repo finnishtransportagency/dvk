@@ -57,6 +57,12 @@ ion-row.input-row > ion-col {
 .no-margin-bottom {
   margin-bottom: 0;
 }
+.no-margin {
+  margin: 0;
+}
+.margin-small-top {
+  margin-top:18px;
+}
 
 .small-text {
   font-size: 14px;

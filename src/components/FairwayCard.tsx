@@ -809,14 +809,14 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonBreadcrumb>
           </IonBreadcrumbs>
 
-          <IonGrid className="ion-no-padding">
+          <IonGrid className="ion-no-padding margin-small-top">
             <IonRow>
               <IonCol>
                 <IonText className="fairwayTitle">
-                  <h2 className="no-margin-bottom">
+                  <h2 className="no-margin">
                     <strong>{fairwayCard?.name[lang]}</strong>
                   </h2>
-                  <em>
+                  <em className="printable">
                     {t('modified')}{' '}
                     {t('modifiedDate', {
                       val: fairwayCard?.modificationTimestamp ? new Date(fairwayCard?.modificationTimestamp * 1000) : '-',
@@ -841,6 +841,24 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <IonCol size="auto" className="ion-align-self-end ion-text-end printable">
                 <IonText className="fairwayTitle">
                   <h3 className="no-margin-bottom">{t('title', { count: 1 })}</h3>
+                  <em>{t('notForNavigation')}</em>
+                </IonText>
+              </IonCol>
+            </IonRow>
+            <IonRow className="no-print">
+              <IonCol>
+                <IonText className="fairwayTitle">
+                  <em>
+                    {t('modified')}{' '}
+                    {t('modifiedDate', {
+                      val: fairwayCard?.modificationTimestamp ? new Date(fairwayCard?.modificationTimestamp * 1000) : '-',
+                    })}
+                    {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                  </em>
+                </IonText>
+              </IonCol>
+              <IonCol className="ion-align-self-end ion-text-end fairwayTitle">
+                <IonText>
                   <em>{t('notForNavigation')}</em>
                 </IonText>
               </IonCol>
