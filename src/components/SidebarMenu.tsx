@@ -111,6 +111,20 @@ const SidebarMenu: React.FC = () => {
             </IonCol>
             <IonCol size="auto">
               <IonItem
+                routerLink="/turvalaiteviat/"
+                detail={false}
+                lines="none"
+                className="ion-no-padding internal"
+                onClick={async () => menuController.close()}
+                disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
+                data-testid="faultsLink"
+              >
+                <IonIcon slot="start" src="/assets/icon/error_icon.svg" />
+                {t('safety-equipment-faults')}
+              </IonItem>
+            </IonCol>
+            <IonCol size="auto">
+              <IonItem
                 href="/squat/"
                 rel="external"
                 target="_blank"

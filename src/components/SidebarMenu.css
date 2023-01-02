@@ -131,6 +131,7 @@
   height: 24px;
   margin: 0;
   margin-inline-end: 24px;
+  color: var(--ion-color-primary);
 }
 .sidebarMenu ion-item ion-icon[slot="end"] {
   width: 10px;
