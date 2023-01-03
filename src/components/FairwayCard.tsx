@@ -816,6 +816,28 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   <h2 className="no-margin-bottom">
                     <strong>{fairwayCard?.name[lang]}</strong>
                   </h2>
+                </IonText>
+              </IonCol>
+              <IonCol size="auto" className="ion-align-self-end">
+                <IonButton
+                  fill="clear"
+                  className="icon-only small no-print"
+                  onClick={() => window.print()}
+                  title={t('print')}
+                  aria-label={t('print')}
+                  role="button"
+                  data-testid="printButton"
+                >
+                  <PrintIcon />
+                </IonButton>
+                <IonText className="fairwayTitle printable">
+                  <h3 className="no-margin-bottom">{t('title', { count: 1 })}</h3>
+                </IonText>
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                <IonText className="fairwayTitle">
                   <em>
                     {t('modified')}{' '}
                     {t('modifiedDate', {
@@ -825,22 +847,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   </em>
                 </IonText>
               </IonCol>
-              <IonCol size="auto" className="ion-align-self-center no-print">
-                <IonButton
-                  fill="clear"
-                  className="icon-only small"
-                  onClick={() => window.print()}
-                  title={t('print')}
-                  aria-label={t('print')}
-                  role="button"
-                  data-testid="printButton"
-                >
-                  <PrintIcon />
-                </IonButton>
-              </IonCol>
-              <IonCol size="auto" className="ion-align-self-end ion-text-end printable">
+              <IonCol size="auto" className="ion-align-self-center">
                 <IonText className="fairwayTitle">
-                  <h3 className="no-margin-bottom">{t('title', { count: 1 })}</h3>
                   <em>{t('notForNavigation')}</em>
                 </IonText>
               </IonCol>
