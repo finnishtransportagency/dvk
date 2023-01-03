@@ -78,6 +78,10 @@ async function readParametersForEnv(environment: string): Promise<Record<string,
   return envParameters;
 }
 
+export async function initializeEnvironmentVariables() {
+  await readParametersForEnv(getEnvironment());
+}
+
 export async function getVatuUsername() {
   const parameters = await readParametersForEnv(getEnvironment());
   return parameters.VatuUsername;
