@@ -39,17 +39,39 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('./components/FeatureLoader', () => ({
-  useLine12Layer: () => {},
-  useLine3456Layer: () => {},
-  useArea12Layer: () => {},
-  useArea3456Layer: () => {},
-  useDepth12Layer: () => {},
-  usePilotLayer: () => {},
-  useSpecialAreaLayer: () => {},
-  useSpeedLimitLayer: () => {},
-  useHarborLayer: () => {},
-  useSafetyEquipmentLayer: () => {},
-  useMarineWarningLayer: () => {},
+  useLine12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useLine3456Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useArea12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useArea3456Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useDepth12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  usePilotLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useSpecialAreaLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useSpeedLimitLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useHarborLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useSafetyEquipmentLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
+  useMarineWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989 };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {
