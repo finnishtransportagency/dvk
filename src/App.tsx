@@ -93,18 +93,18 @@ const DvkIonApp: React.FC = () => {
 
   useEffect(() => {
     if (
-      line12Layer &&
-      line3456Layer &&
-      area12Layer &&
-      area3456Layer &&
-      depth12Layer &&
-      speedLimitLayer &&
-      specialAreaLayer &&
-      pilotLayer &&
-      harborLayer &&
-      safetyEquipmentLayer &&
-      marineWarningLayer &&
-      fairwayCardList
+      line12Layer.ready &&
+      line3456Layer.ready &&
+      area12Layer.ready &&
+      area3456Layer.ready &&
+      depth12Layer.ready &&
+      speedLimitLayer.ready &&
+      specialAreaLayer.ready &&
+      pilotLayer.ready &&
+      harborLayer.ready &&
+      safetyEquipmentLayer.ready &&
+      marineWarningLayer.ready &&
+      fairwayCardList.ready
     ) {
       setInitDone(true);
     }

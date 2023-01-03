@@ -3,11 +3,11 @@ import { useFairwayCardListData } from '../utils/dataLoader';
 
 export function useFairwayCardList() {
   const [ready, setReady] = useState(false);
-  const { data } = useFairwayCardListData();
+  const { data, dataUpdatedAt } = useFairwayCardListData();
   useEffect(() => {
     if (data) {
       setReady(true);
     }
   }, [data]);
-  return ready;
+  return { ready, dataUpdatedAt };
 }
