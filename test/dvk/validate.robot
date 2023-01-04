@@ -106,9 +106,12 @@ Check Center And Zoom Buttons
 
 Check Fairway Card
 	Select Fairway
+	${SELECTED_FAIRWAY_CARD}=    Set Variable    Haminan väylä
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	${FAIRWAY}=    Get Text    //*[@data-testid = "cardOption" and text() = "Haminan väylä"]
+	#${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
+	Click Element    //*[@data-testid = "cardOption" and text() = "Haminan väylä"]
+	#Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
