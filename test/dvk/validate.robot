@@ -108,9 +108,9 @@ Check Fairway Card
 	Select Fairway
 	${SELECTED_FAIRWAY_CARD}=    Set Variable    Haminan väylä
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    //*[@data-testid = "cardOption" and text() = "Haminan väylä"]
+	${FAIRWAY}=    Get Text    //*[@data-testid = "cardOption"]
 	#${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    //*[@data-testid = "cardOption" and text() = "Haminan väylä"]
+	Click Element    //*[@data-testid = "cardOption"]
 	#Click Element    ${INPUT_FAIRWAY_DROPDOWN}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
