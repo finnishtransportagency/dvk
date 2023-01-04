@@ -10,7 +10,6 @@ Test Teardown    Close All Browsers
 ${BROWSER}    headlesschrome
 ${PORT}    3000
 ${INPUT_FAIRWAY}    //div[contains(@class, "searchbarControlContainer")]/input
-${INPUT_FAIRWAY_DROPDOWN}    //*[contains(@class, "searchbarDropdown")]
 ${FAIRWAY_HEADING}    //ion-col[@data-testid = "cardPane"]/descendant::h2/strong
 ${LAYER_CONTROL_BUTTON}    //button[@class = "layerControl"]
 ${LAYER_CONTROL_HEADING}    //ion-modal[@id = "layerModalContainer"]/descendant::h6[1]
@@ -122,10 +121,10 @@ Check Fairway Card
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
 	Select Fairway
-	Capture Page Screenshot
+	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
+	Click Element    ${input_fairway_dropdown_locator}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
@@ -138,10 +137,10 @@ Check Fairway Card In Swedish
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
 	Select Fairway
-	Capture Page Screenshot
+	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${INPUT_FAIRWAY_DROPDOWN}
-	Click Element    ${INPUT_FAIRWAY_DROPDOWN}
+	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
+	Click Element    ${input_fairway_dropdown_locator}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
