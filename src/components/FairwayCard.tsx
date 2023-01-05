@@ -20,7 +20,7 @@ import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
 import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
 import { getCurrentDecimalSeparator } from '../utils/common';
-import { setSelectedPilotPlace, useSetSelectedFairwayCard } from './layers';
+import { setSelectedPilotPlace } from './layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../utils/constants';
 import PrintMap from './PrintMap';
 import { useFairwayCardListData } from '../utils/dataLoader';
@@ -768,8 +768,6 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
       document.title = t('documentTitle') + ' — ' + fairwayCard?.name[lang];
     }
   }, [t, fairwayCard, lang]);
-
-  useSetSelectedFairwayCard(fairwayCard);
 
   return (
     <>
