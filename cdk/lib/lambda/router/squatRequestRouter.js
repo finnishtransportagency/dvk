@@ -10,8 +10,7 @@ function handler(event) {
   }
 
   // Default index pages do not work on subdirectories such as /squat/
-  // and Ionic language pathing all to index.html
-  if (request.uri === '/squat/' || request.uri === '/squat/en' || request.uri === '/squat/sv' || request.uri === '/squat/fi') {
+  if (request.uri === '/squat/' || request.uri === '/squat') {
     request.uri = '/squat/index.html';
   }
 
