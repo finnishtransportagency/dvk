@@ -7,6 +7,7 @@ export const handler = async (): Promise<MarineWarning[]> => {
   for (const feature of resp.data?.features || []) {
     const dates = parseDateTimes(feature);
     const warning: MarineWarning = {
+      id: feature.properties?.ID,
       number: feature.properties?.NUMERO || 0,
       area: { fi: feature.properties?.ALUEET_FI, sv: feature.properties?.ALUEET_SV, en: feature.properties?.ALUEET_EN },
       type: { fi: feature.properties?.TYYPPI_FI, sv: feature.properties?.TYYPPI_SV, en: feature.properties?.TYYPPI_EN },

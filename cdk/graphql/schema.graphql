@@ -275,6 +275,7 @@ type Text {
 }
 
 type MarineWarning {
+  id: Int!
   number: Int!
   area: Text!
   type: Text!

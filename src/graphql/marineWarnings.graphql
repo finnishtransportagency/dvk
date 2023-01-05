@@ -1,5 +1,6 @@
 query findAllMarineWarnings {
   marineWarnings {
+    id
     number
     area {
       fi
