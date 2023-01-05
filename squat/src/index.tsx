@@ -5,38 +5,36 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import './i18n';
 import i18next, { changeLanguage } from 'i18next';
+import { getUrlParam } from './pages/Home';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement as Element);
 
 (async () => {
-  const items = window.location.pathname.split('/');
-
-  if (items.includes('sv')) {
+  const paramLang = getUrlParam('lang');
+  if (paramLang === 'sv') {
     await changeLanguage('sv');
-  } else if (items.includes('en')) {
+  } else if (paramLang === 'en') {
     await changeLanguage('en');
   } else {
     await changeLanguage('fi');
   }
 
   i18next.on('languageChanged', (lang: string) => {
-    const dirs = window.location.pathname.split('/');
-
-    const newDirs = dirs.map((dir) => {
-      if (dir === 'fi' || dir === 'sv' || dir === 'en') {
-        return lang;
-      }
-      return dir;
-    });
-
-    let newPath = newDirs.join('/');
-
-    if (!newDirs.includes(lang)) {
-      newPath += lang;
+    const currentLang = getUrlParam('lang');
+    if (!currentLang) {
+      window.history.replaceState(
+        null,
+        '',
+        'index.html' + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang) + window.location.hash
+      );
+    } else {
+      window.history.replaceState(
+        null,
+        '',
+        'index.html' + window.location.search.replace('lang=' + currentLang, 'lang=' + lang) + window.location.hash
+      );
     }
-
-    window.history.replaceState(null, '', newPath + window.location.search + window.location.hash);
   });
 
   root.render(
