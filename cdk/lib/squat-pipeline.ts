@@ -54,7 +54,7 @@ export class SquatPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build squat app', 'cd squat', 'npm ci', 'BUILD_PATH=./build/squat npm run build'],
+            commands: ['echo build squat app', 'cd squat', 'npm ci', 'BUILD_PATH=./build/squat PUBLIC_URL=/squat npm run build'],
           },
         },
         artifacts: {
