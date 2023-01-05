@@ -194,21 +194,25 @@ button.icon:focus-visible:hover {
   line-height: 1.125rem;
   margin-top: 0;
 }
-#fairwayCardsContainer ion-text h4 {
+#fairwayCardsContainer ion-text h4,
+#fairwayCardsContainer ion-text .h4 {
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
   line-height: 1.5rem;
   break-after: avoid;
 }
-#fairwayCardsContainer ion-text h4 span {
+#fairwayCardsContainer ion-text h4 span,
+#fairwayCardsContainer ion-text .h4 span {
   text-transform: none;
 }
-#fairwayCardsContainer ion-text h5 {
+#fairwayCardsContainer ion-text h5,
+#fairwayCardsContainer ion-text .h5 {
   font-size: 12px;
   margin: 12px 0 6px;
   font-weight: bold;
   line-height: 1.125rem;
+  text-transform: none;
   break-after: avoid;
 }
 #fairwayCardsContainer ion-text .info svg {
@@ -297,6 +301,14 @@ ion-grid.table.light ion-row:not(.header) {
 }
 ion-grid.table.light ion-row > ion-col {
   border-right: none;
+}
+#fairwayCardsContainer ion-grid.table.light ion-row.header .h5 {
+  margin-bottom: 0;
+  text-transform: lowercase;
+  line-height: 0.875rem;
+}
+#fairwayCardsContainer ion-grid.table.light ion-row.header .h5::first-letter {
+  text-transform: capitalize;
 }
 
 /* Breadcrumb */
