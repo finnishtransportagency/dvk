@@ -5,6 +5,7 @@
       "title": "Digitaalinen väyläkortti",
       "fairway-cards": "Väyläkortit",
       "safety-equipment-faults": "Turvalaiteviat",
+      "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri"
     },
     "map": {
@@ -219,7 +220,14 @@
     "showPane": "Näytä",
     "home": "Digitaalinen väyläkortti",
     "print": "Tulosta merivaroitukset",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}"
+    "area": "Alue",
+    "location": "Sijainti",
+    "content": "Sisältö",
+    "relatedObjects": "Liittyvät kohteet",
+    "noObjects": "Tietoa ei ole asetettu.",
+    "validityTime": "Voimassaolo",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "Tiedoksiantaja"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
@@ -294,7 +302,8 @@
   },
   "common": {
     "close": "Sulje",
-    "close-dialog": "Sulje ilmoitus"
+    "close-dialog": "Sulje ilmoitus",
+    "noData": "Tietoa ei ole asetettu."
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
