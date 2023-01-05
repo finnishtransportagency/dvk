@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
@@ -130,9 +130,6 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Route exact path="/" render={(props) => <Home {...props} />} />
-            <Route exact path="/squat">
-              <Redirect to="/squat/index.html" />
-            </Route>
             <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
             <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
             <Route exact path="/turvalaiteviat" render={(props) => <MainContent splitPane target="faults" {...props} />} />
