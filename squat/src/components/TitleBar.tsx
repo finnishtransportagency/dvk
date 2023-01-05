@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './TitleBar.css';
 import LanguageBar from './LanguageBar';
-import { showLanguages } from '../pages/Home';
+import { showLanguages, showLogo } from '../pages/Home';
 import PrintBar from './PrintBar';
 
 const TitleBar: React.FC = () => {
@@ -20,7 +20,9 @@ const TitleBar: React.FC = () => {
           </IonText>
         </IonCol>
         <IonCol class="ion-align-self-center mobile-logo" size="auto">
-          <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
+          {showLogo() && (
+            <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
+          )}
         </IonCol>
         <IonCol className="langbar" style={{ textAlign: 'end' }}>
           {showLanguages() && <LanguageBar />}
@@ -31,9 +33,11 @@ const TitleBar: React.FC = () => {
               <IonCol className="ion-align-self-center">
                 <PrintBar />
               </IonCol>
-              <IonCol className="ion-align-self-center desktop-logo" size="auto">
-                <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
-              </IonCol>
+              {showLogo() && (
+                <IonCol className="ion-align-self-center desktop-logo" size="auto">
+                  <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
+                </IonCol>
+              )}
             </IonRow>
           </IonGrid>
         </IonCol>

@@ -4,10 +4,22 @@ import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
 import { useTranslation } from 'react-i18next';
 
-export const showLanguages = (): boolean => {
+export function getUrlParam(param: string) {
   const urlParams = new URLSearchParams(window.location.search);
-  const sh = urlParams.get('showLanguages');
+  return urlParams.get(param);
+}
+
+function parseBooleanUrlParam(param: string): boolean {
+  const sh = getUrlParam(param);
   return sh && sh === 'false' ? false : true;
+}
+
+export const showLanguages = (): boolean => {
+  return parseBooleanUrlParam('showLanguages');
+};
+
+export const showLogo = (): boolean => {
+  return parseBooleanUrlParam('showLogo');
 };
 
 const Home: React.FC = () => {

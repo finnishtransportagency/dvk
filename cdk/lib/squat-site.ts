@@ -230,7 +230,7 @@ export class SquatSite extends Construct {
           'x-api-key': importedAppSyncAPIKey,
         });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
-      'squat/*': squatBehavior,
+      'squat*': squatBehavior,
       'geotiff/*': geoTiffBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
