@@ -212,8 +212,6 @@ export class SquatPipeline extends Construct {
         return 'prod';
       case 'test':
         return 'test';
-      case 'pete':
-        return 'DVK-535';
       default:
         return 'main';
     }

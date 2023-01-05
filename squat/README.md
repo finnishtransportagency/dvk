@@ -37,7 +37,7 @@
         <!-- Pass url params to iframe from parent window, baseURL is used creating shareable link and named field values to adjust default values. -->
         <script>
           const baseURL = window.location.href.split('?')[0];
-          document.getElementById("squatIframe").src = "http://localhost:3000/index.html" + (window.location.search.length? window.location.search + "&" : "?") + "showLogo=false&showLanguages=false&baseURL=" + baseURL;
+          document.getElementById("squatIframe").src = "http://localhost:3000/index.html" + (window.location.search.length? window.location.search + "&" : "?") + "lang=fi&showLogo=false&showLanguages=false&baseURL=" + baseURL;
           // Reset current url
           window.history.replaceState(null, document.title, baseURL);
         </script>
