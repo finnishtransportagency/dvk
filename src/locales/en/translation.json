@@ -6,7 +6,8 @@
       "fairway-cards": "Fairway Cards",
       "safety-equipment-faults": "Safety Equipment Faults",
       "marine-warnings": "Marine Warnings",
-      "squat": "[en] Squat-laskuri"
+      "squat": "[en] Squat-laskuri",
+      "squat-url": "/squat/index.html?lang=en"
     },
     "map": {
       "content": "[en] TODO: Kartta",

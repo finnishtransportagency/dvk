@@ -6,7 +6,8 @@
       "fairway-cards": "Väyläkortit",
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
-      "squat": "Squat-laskuri"
+      "squat": "Squat-laskuri",
+      "squat-url": "/squat/index.html?lang=fi"
     },
     "map": {
       "content": "TODO: Kartta",
