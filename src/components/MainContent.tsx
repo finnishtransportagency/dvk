@@ -192,6 +192,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
+                {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">

@@ -53,6 +53,7 @@ import { isMobile } from './utils/common';
 import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
+import MarineWarningPage from './pages/MarineWarningPage';
 
 setupIonicReact({
   mode: 'md',
@@ -143,6 +144,9 @@ const DvkIonApp: React.FC = () => {
               </Route>
               <Route exact path="/turvalaiteviat">
                 <SafetyEquipmentFaultPage />
+              </Route>
+              <Route exact path="/merivaroitukset">
+                <MarineWarningPage />
               </Route>
             </Switch>
           </IonRouterOutlet>
