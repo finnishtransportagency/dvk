@@ -139,7 +139,7 @@ const SidebarMenu: React.FC = () => {
             </IonCol>
             <IonCol size="auto">
               <IonItem
-                href="/squat/"
+                href={t('squat-url')}
                 rel="external"
                 target="_blank"
                 detail={false}

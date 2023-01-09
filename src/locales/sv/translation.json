@@ -6,7 +6,8 @@
       "fairway-cards": "Farledskort",
       "safety-equipment-faults": "[sv] Turvalaiteviat",
       "marine-warnings": "[sv] Merivaroitukset",
-      "squat": "Squat beräkning"
+      "squat": "Squat beräkning",
+      "squat-url": "/squat/index.html?lang=sv"
     },
     "map": {
       "content": "[sv] TODO: Kartta",
