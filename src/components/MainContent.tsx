@@ -15,6 +15,7 @@ import { filterFairways } from '../utils/common';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import { useFairwayCardListData } from '../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
+import MarineWarnings from './content/MarineWarnings';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -191,6 +192,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
+                {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">

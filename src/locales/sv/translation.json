@@ -5,6 +5,7 @@
       "title": "[sv] Digitaalinen väyläkortti",
       "fairway-cards": "Farledskort",
       "safety-equipment-faults": "[sv] Turvalaiteviat",
+      "marine-warnings": "[sv] Merivaroitukset",
       "squat": "Squat beräkning"
     },
     "map": {
@@ -175,7 +176,7 @@
   },
   "faults": {
     "documentTitle": "[sv] Digitaalinen väyläkortti",
-    "title": "[sv] Turvalaiteviat]",
+    "title": "[sv] Turvalaiteviat",
     "openMenu": "[sv] Avaa valikko",
     "general": "Allmänt",
     "openDescription": "[sv] Avaa",
@@ -198,6 +199,35 @@
     "gulfOfBothnia": "[sv] Pohjanlahden alue",
     "and": " och ",
     "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+  },
+  "warnings": {
+    "documentTitle": "[sv] Digitaalinen väyläkortti",
+    "title": "[sv] Merivaroitukset",
+    "openMenu": "[sv] Avaa valikko",
+    "general": "Allmänt",
+    "openDescription": "[sv] Avaa",
+    "closeDescription": "Stäng",
+    "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
+    "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
+    "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
+    "search": "[sv] Hae väylän nimellä",
+    "searchTitle": "[sv] Väylähaku",
+    "clearTitle": "[sv] Tyhjennä",
+    "expandPane": "[sv] Laajenna",
+    "revertPane": "[sv] Palauta",
+    "closePane": "Stäng",
+    "hidePane": "[sv] Piilota",
+    "showPane": "[sv] Näytä",
+    "home": "[sv] Digitaalinen väyläkortti",
+    "print": "[sv] Tulosta merivaroitukset",
+    "area": "[sv] Alue",
+    "location": "[sv] Sijainti",
+    "content": "[sv] Sisältö",
+    "relatedObjects": "[sv] Liittyvät kohteet",
+    "noObjects": "[sv] Tietoa ei ole asetettu.",
+    "validityTime": "[sv] Voimassaolo",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "[sv] Tiedoksiantaja"
   },
   "appUpdateAlert": {
     "title": "[sv] Päivitys saatavilla",
@@ -272,7 +302,8 @@
   },
   "common": {
     "close": "Stäng",
-    "close-dialog": "Stäng dialogrutan"
+    "close-dialog": "Stäng dialogrutan",
+    "noData": "[sv] Tietoa ei ole asetettu."
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",
