@@ -76,6 +76,18 @@ ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active
 ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway dimensions"]
 ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Meeting and overtaking prohibition areas"]
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Speed limits and recommendations"]
+${TRAFFIC_SERVICES_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Liikennepalvelut"]
+${PILOTAGE_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Luotsintilaus"]
+${VTS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
+${TUGS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Hinaajat"]
+${TRAFFIC_SERVICES_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Trafikservice"]
+${PILOTAGE_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Lotsbeställning"]
+${VTS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
+${TUGS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Bogserbåtar"]
+${TRAFFIC_SERVICES_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Traffic services"]
+${PILOTAGE_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Pilotage"]
+${VTS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
+${TUGS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Tugs"]
 
 *** Test Cases ***
 Check Copyright And Scale
@@ -113,6 +125,7 @@ Check Fairway Card
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_FINNISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_FINNISH}    ${PILOTAGE_HEADING_FINNISH}    ${VTS_HEADING_FINNISH}    ${TUGS_HEADING_FINNISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -128,6 +141,7 @@ Check Fairway Card In Swedish
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_SWEDISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_SWEDISH}    ${PILOTAGE_HEADING_SWEDISH}    ${VTS_HEADING_SWEDISH}    ${TUGS_HEADING_SWEDISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -143,6 +157,7 @@ Check Fairway Card In English
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_ENGLISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_ENGLISH}    ${PILOTAGE_HEADING_ENGLISH}    ${VTS_HEADING_ENGLISH}    ${TUGS_HEADING_ENGLISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -258,4 +273,16 @@ Check Fairway Data Headings
 	Element Should Be Visible    ${heading5_locator}
 	Scroll Element Into View    ${heading6_locator}
 	Element Should Be Visible    ${heading6_locator}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+
+Check Traffic Services Headings
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}
+	Scroll Element Into View    ${heading1_locator}
+	Element Should Be Visible    ${heading1_locator}
+	Scroll Element Into View    ${heading2_locator}
+	Element Should Be Visible    ${heading2_locator}
+	Scroll Element Into View    ${heading3_locator}
+	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${heading4_locator}
+	Element Should Be Visible    ${heading4_locator}
 	Scroll Element Into View    ${CLOSE_BUTTON}
