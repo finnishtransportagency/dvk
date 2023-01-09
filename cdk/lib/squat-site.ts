@@ -146,6 +146,13 @@ export class SquatSite extends Construct {
       code: cloudfront.FunctionCode.fromInline(routerSourceCode),
     });
 
+    const strictTransportSecurityResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'STSResponsePolicy', {
+      responseHeadersPolicyName: 'STSResponsePolicy' + props.env,
+      securityHeadersBehavior: {
+        strictTransportSecurity: { accessControlMaxAge: Duration.seconds(3600), includeSubdomains: true, override: true },
+      },
+    });
+
     const squatBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
@@ -157,6 +164,7 @@ export class SquatSite extends Construct {
           eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
         },
       ],
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
     };
 
     const dvkRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`).toString('utf-8');
@@ -175,6 +183,7 @@ export class SquatSite extends Construct {
           eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
         },
       ],
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
     };
 
     const importedLoadBalancerDnsName = cdk.Fn.importValue('LoadBalancerDnsName' + props.env);
@@ -198,7 +207,7 @@ export class SquatSite extends Construct {
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
       originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -215,18 +224,20 @@ export class SquatSite extends Construct {
         customHeaders: { 'x-api-key': config.getGlobalStringParameter('BGMapSOAApiKey') },
       }),
       originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: Config.isPermanentEnvironment() ? undefined : corsResponsePolicy,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: true,
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
     };
 
-    const proxyBehavior = this.useProxy() ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction) : undefined;
+    const proxyBehavior = this.useProxy()
+      ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
+      : undefined;
     const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     const graphqlProxyBehavior = proxyBehavior
       ? proxyBehavior
-      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, corsResponsePolicy, {
+      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
           'x-api-key': importedAppSyncAPIKey,
         });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
@@ -277,7 +288,8 @@ export class SquatSite extends Construct {
     domainName: string,
     authFunction: cloudfront.Function | undefined,
     useSSL = true,
-    corsResponsePolicy: ResponseHeadersPolicy | undefined = undefined,
+    useCORS = false,
+    responsePolicy: ResponseHeadersPolicy | undefined = undefined,
     customHeaders: Record<string, string> | undefined = undefined
   ) {
     const dmzBehavior: BehaviorOptions = {
@@ -288,10 +300,10 @@ export class SquatSite extends Construct {
         customHeaders,
       }),
       cachePolicy: CachePolicy.CACHING_DISABLED,
-      originRequestPolicy: corsResponsePolicy ? OriginRequestPolicy.CORS_CUSTOM_ORIGIN : OriginRequestPolicy.ALL_VIEWER,
+      originRequestPolicy: useCORS ? OriginRequestPolicy.CORS_CUSTOM_ORIGIN : OriginRequestPolicy.ALL_VIEWER,
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      responseHeadersPolicy: corsResponsePolicy,
+      responseHeadersPolicy: responsePolicy,
       functionAssociations: authFunction
         ? [
             {
