@@ -89,9 +89,7 @@ export class DvkBackendStack extends Stack {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
-      backendLambda.addToRolePolicy(
-        new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath', 'ssm:GetParameter'], resources: ['*'] })
-      );
+      backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
@@ -231,9 +229,7 @@ export class DvkBackendStack extends Stack {
       harborTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
-      backendLambda.addToRolePolicy(
-        new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath', 'ssm:GetParameter'], resources: ['*'] })
-      );
+      backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     return alb;
   }

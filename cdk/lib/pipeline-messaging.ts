@@ -29,7 +29,7 @@ export class PipelineMessaging extends Construct {
       },
     });
 
-    messageHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));
+    messageHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
 
     const importedSquatPipelineArnDev = cdk.Fn.importValue('SquatPipeline-ARN-dev');
     const importedSquatPipelineArnTest = cdk.Fn.importValue('SquatPipeline-ARN-test');

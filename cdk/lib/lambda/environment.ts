@@ -110,8 +110,8 @@ export async function getVatuHeaders(): Promise<Record<string, string>> {
 }
 
 export async function getRocketChatCredentials() {
-  const RocketchatUser = await readParameterForEnv('RocketchatUser');
-  const RocketchatPassword = await readParameterForEnv('RocketchatPassword');
+  const RocketchatUser = await readParameterByPath('/RocketchatUser');
+  const RocketchatPassword = await readParameterByPath('/RocketchatPassword');
   return { RocketchatUser, RocketchatPassword };
 }
 
