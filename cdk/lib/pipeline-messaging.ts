@@ -8,14 +8,25 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as subscription from 'aws-cdk-lib/aws-sns-subscriptions';
 import { CfnOutput } from 'aws-cdk-lib';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { LayerVersion } from 'aws-cdk-lib/aws-lambda';
 export class PipelineMessaging extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
-
+    const layer = LayerVersion.fromLayerVersionArn(
+      this,
+      'ParameterLayer',
+      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
+    );
     const messageHandler = new nodejsfunction.NodejsFunction(this, 'WebhookHandler', {
       runtime: lambda.Runtime.NODEJS_16_X,
       entry: 'lib/lambda/message-handler.ts',
       handler: 'handler',
+      layers: [layer],
+      environment: {
+        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: 'DEBUG',
+        SSM_PARAMETER_STORE_TTL: '300',
+      },
     });
 
     messageHandler.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParametersByPath'], resources: ['*'] }));

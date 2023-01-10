@@ -1,6 +1,5 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Area, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
-import { initializeEnvironmentVariables } from '../../environment';
 import { log } from '../../logger';
 import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, VaylaAPIModel } from './vatu';
 
@@ -225,7 +224,6 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   });
   const fairwayIds = event.source.fairways.map((f) => f.id);
   log.debug(`fairwayIds: ${fairwayIds}`);
-  await initializeEnvironmentVariables();
   const lineMap = await getNavigationLineMap(fairwayIds);
   const areaMap = await getAreaMap(fairwayIds);
   const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);

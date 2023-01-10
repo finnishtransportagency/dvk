@@ -1,14 +1,11 @@
 // This script examines stack outputs and writes .env.local file
 // eslint-disable-next-line import/named
 import { CloudFormationClient, DescribeStacksCommand, DescribeStacksCommandOutput } from '@aws-sdk/client-cloudformation';
-// eslint-disable-next-line import/named
-import { GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandOutput, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
 import * as fs from 'fs';
 import Config from '../lib/config';
-import { readParametersByPath } from '../lib/lambda/environment';
+import { readParametersByPath, readSecrets } from './environment';
 
 const euWestCFClient = new CloudFormationClient({ region: 'eu-west-1' });
-const euWestSecretClient = new SecretsManagerClient({ region: 'eu-west-1' });
 
 type BackendStackOutputs = {
   AppSyncAPIURL: string;
@@ -44,23 +41,6 @@ async function readFrontendStackOutputs(): Promise<FrontendStackOutputs> {
     // Frontend stack is not mandatory for local development
     return { CloudFrontDomainName: undefined };
   }
-}
-
-async function readSecrets(path: string, global = false): Promise<Record<string, string>> {
-  const variables: Record<string, string> = {};
-  let nextToken;
-  do {
-    const filters = [{ Key: 'name', Values: [(global ? '!' : '') + path] }];
-    const output: ListSecretsCommandOutput = await euWestSecretClient.send(new ListSecretsCommand({ Filters: filters, NextToken: nextToken }));
-    for (const param of output.SecretList || []) {
-      const value = await euWestSecretClient.send(new GetSecretValueCommand({ SecretId: param.ARN }));
-      if (param.Name && value.SecretString) {
-        variables[global ? param.Name : param.Name.replace(path, '')] = value.SecretString;
-      }
-    }
-    nextToken = output.NextToken;
-  } while (nextToken);
-  return variables;
 }
 
 async function readParametersForEnv(environment: string): Promise<Record<string, string>> {
