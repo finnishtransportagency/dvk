@@ -266,7 +266,7 @@
       "draft": "[sv] Mitoitussyväys {{val, number}}m",
       "speedLimit": "[sv] Nopeusrajoitus {{val}} km/h",
       "speed": "[sv] Mitoitusnopeus",
-      "fairways": "[sv] Väyläalue on osa väylää",
+      "fairways": "[sv] Väyläalue on osa väyläkorttia",
       "extra": "[sv] Lisätieto"
     },
     "line": {
@@ -275,7 +275,7 @@
       "draft": "[sv] Mitoitussyväys {{val, number}}m",
       "length": "[sv] Pituus {{val}}m",
       "direction": "[sv] Tosisuunta {{val}}°",
-      "fairways": "[sv] Navigointilinja on osa väylää",
+      "fairways": "[sv] Navigointilinja on osa väyläkorttia",
       "extra": "[sv] Lisätieto"
     },
     "equipment": {
@@ -287,7 +287,7 @@
       "type": "[sv] Tyyppi",
       "lightning": "[sv] Valaistu",
       "navigationCode": "[sv] Navigointilaji",
-      "fairways": "[sv] Turvalaitteeseen liittyvät väylät"
+      "fairways": "[sv] Turvalaitteeseen liittyvät väyläkortit"
     },
     "marine": {
       "area": "[sv] Alue",
