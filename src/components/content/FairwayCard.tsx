@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IonBreadcrumbs, IonButton, IonCol, IonGrid, IonLabel, IonRow, IonSegment, IonSegmentButton, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../../graphql/generated';
