@@ -26,14 +26,6 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
     <div>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
-        if (warning.lineId) {
-          console.log('line12', dvkMap.getVectorSource('line12').getFeatureById(warning.lineId)?.getProperties().fairways);
-          console.log('line3456', dvkMap.getVectorSource('line3456').getFeatureById(warning.lineId)?.getProperties().fairways);
-        }
-        if (warning.areaId) {
-          console.log('area12', dvkMap.getVectorSource('area12').getFeatureById(warning.areaId)?.getProperties().fairways);
-          console.log('area3456', dvkMap.getVectorSource('area3456').getFeatureById(warning.areaId)?.getProperties().fairways);
-        }
         return (
           <IonGrid className="table light group" key={warning.id}>
             <IonRow className="header">
