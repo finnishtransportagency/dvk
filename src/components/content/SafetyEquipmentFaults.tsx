@@ -1,4 +1,4 @@
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonBreadcrumbs, IonBreadcrumb, IonSkeletonText } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
