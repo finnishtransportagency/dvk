@@ -194,8 +194,8 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
   const datas = response ? (response.data as T[]) : [];
   for (const obj of datas) {
-    if ((obj as GeometryModel).geometria) {
-      roundGeometry((obj as GeometryModel).geometria as Geometry);
+    if ('geometria' in obj) {
+      roundGeometry(obj.geometria as Geometry);
     }
   }
   return datas;
