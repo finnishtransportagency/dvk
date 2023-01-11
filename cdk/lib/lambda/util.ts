@@ -18,19 +18,13 @@ function transformArray(coordinates: Position[]) {
 
 function transformArray2(coordinates: Position[][]) {
   for (const positionArray of coordinates) {
-    for (const position of positionArray) {
-      transform(position);
-    }
+    transformArray(positionArray);
   }
 }
 
 function transformArray3(coordinates: Position[][][]) {
   for (const positionArray of coordinates) {
-    for (const position of positionArray) {
-      for (const pos of position) {
-        transform(pos);
-      }
-    }
+    transformArray2(positionArray);
   }
 }
 
