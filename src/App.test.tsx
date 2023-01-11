@@ -3,7 +3,7 @@ import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { mockFairwayCard, mockFairwayList } from '../__tests__/mockData';
+import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 
 class ResizeObserver {
   observe() {
@@ -60,13 +60,25 @@ jest.mock('./graphql/generated', () => {
     useFindAllFairwayCardsQuery: () => {
       return {
         data: mockFairwayList,
-        loading: false,
+        isLoading: false,
       };
     },
     useFindFairwayCardByIdQuery: () => {
       return {
         data: mockFairwayCard,
-        loading: false,
+        isLoading: false,
+      };
+    },
+    useFindAllMarineWarningsQuery: () => {
+      return {
+        data: mockMarineWarningList,
+        isLoading: false,
+      };
+    },
+    useFindAllSafetyEquipmentFaultsQuery: () => {
+      return {
+        data: mockSafetyEquipmentFaultList,
+        isLoading: false,
       };
     },
   };
@@ -262,5 +274,35 @@ it('should trigger map hovers successfully', () => {
     fireEvent.ionBlur(pilotPlace);
     fireEvent.blur(pilotPlace);
     fireEvent.mouseOut(pilotPlace);
+  });
+});
+
+it('should render safety equipment fault page successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/turvalaiteviat/' } = {}) => {
+    window.history.pushState({}, 'Turvalaiteviat', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // Fault list
+    const faultList = screen.getByTestId('safetyEquipmentFaultList');
+    expect(faultList).toBeInTheDocument();
+  });
+});
+
+it('should render marine warning page successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/merivaroitukset/' } = {}) => {
+    window.history.pushState({}, 'Merivaroitukset', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // Warning list
+    const warningList = screen.getByTestId('marineWarningList');
+    expect(warningList).toBeInTheDocument();
   });
 });
