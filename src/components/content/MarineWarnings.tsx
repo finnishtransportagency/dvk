@@ -1,26 +1,14 @@
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonText,
-  IonBreadcrumbs,
-  IonBreadcrumb,
-  IonSkeletonText,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-} from '@ionic/react';
-import React, { useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
-import arrow_down from '../../theme/img/arrow_down.svg';
 import { Lang } from '../../utils/constants';
 import { useWarineWarningsData } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
-import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { AreaFairway, LineFairway } from '../features';
-import Paragraph from './Paragraph';
+import Paragraph, { InfoParagraph } from './Paragraph';
+import GeneralInfoAccordion from './GeneralInfoAccordion';
+import Breadcrumb from './Breadcrumb';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -38,6 +26,14 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
     <div>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
+        if (warning.lineId) {
+          console.log('line12', dvkMap.getVectorSource('line12').getFeatureById(warning.lineId)?.getProperties().fairways);
+          console.log('line3456', dvkMap.getVectorSource('line3456').getFeatureById(warning.lineId)?.getProperties().fairways);
+        }
+        if (warning.areaId) {
+          console.log('area12', dvkMap.getVectorSource('area12').getFeatureById(warning.areaId)?.getProperties().fairways);
+          console.log('area3456', dvkMap.getVectorSource('area3456').getFeatureById(warning.areaId)?.getProperties().fairways);
+        }
         return (
           <IonGrid className="table light group" key={warning.id}>
             <IonRow className="header">
@@ -80,74 +76,71 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
               <IonCol size="6">
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('relatedObjects')}</h4>
-                  <p>
-                    {warning.equipmentId && (
-                      <>
-                        {dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name[lang] ||
-                          dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name.fi}
-                        {' - '}
-                        {warning.equipmentId}
-                      </>
-                    )}
-                    {warning.lineId && (
-                      <>
-                        {dvkMap
-                          .getVectorSource('line12')
-                          .getFeatureById(warning.lineId)
-                          ?.getProperties()
-                          .fairways?.map((fairway: LineFairway, index: number) => {
-                            return (
-                              <span key={index}>
-                                {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
-                              </span>
-                            );
-                          })}
-                        {dvkMap
-                          .getVectorSource('line3456')
-                          .getFeatureById(warning.lineId)
-                          ?.getProperties()
-                          .fairways?.map((fairway: LineFairway, index: number) => {
-                            return (
-                              <span key={index}>
-                                {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
-                              </span>
-                            );
-                          })}
-                      </>
-                    )}
-                    {warning.areaId && (
-                      <>
-                        {dvkMap
-                          .getVectorSource('area12')
-                          .getFeatureById(warning.areaId)
-                          ?.getProperties()
-                          .fairways?.map((fairway: AreaFairway, index: number) => {
-                            return (
-                              <span key={index}>
-                                {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
-                              </span>
-                            );
-                          })}
-                        {dvkMap
-                          .getVectorSource('area3456')
-                          .getFeatureById(warning.areaId)
-                          ?.getProperties()
-                          .fairways?.map((fairway: AreaFairway, index: number) => {
-                            return (
-                              <span key={index}>
-                                {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
-                              </span>
-                            );
-                          })}
-                      </>
-                    )}
-                    {!warning.areaId && !warning.lineId && !warning.equipmentId && (
-                      <span className="info use-flex ion-align-items-center">
-                        <InfoIcon />
-                        {t('noObjects')}
-                      </span>
-                    )}
-                  </p>
+                  {(warning.areaId || warning.lineId || warning.equipmentId) && (
+                    <p>
+                      {warning.equipmentId && (
+                        <>
+                          {dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name[lang] ||
+                            dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name.fi}
+                          {' - '}
+                          {warning.equipmentId}
+                        </>
+                      )}
+                      {warning.lineId && (
+                        <>
+                          {dvkMap
+                            .getVectorSource('line12')
+                            .getFeatureById(warning.lineId)
+                            ?.getProperties()
+                            .fairways?.map((fairway: LineFairway, index: number) => {
+                              return (
+                                <span key={index}>
+                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                </span>
+                              );
+                            })}
+                          {dvkMap
+                            .getVectorSource('line3456')
+                            .getFeatureById(warning.lineId)
+                            ?.getProperties()
+                            .fairways?.map((fairway: LineFairway, index: number) => {
+                              return (
+                                <span key={index}>
+                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                </span>
+                              );
+                            })}
+                        </>
+                      )}
+                      {warning.areaId && (
+                        <>
+                          {dvkMap
+                            .getVectorSource('area12')
+                            .getFeatureById(warning.areaId)
+                            ?.getProperties()
+                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                              return (
+                                <span key={index}>
+                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                </span>
+                              );
+                            })}
+                          {dvkMap
+                            .getVectorSource('area3456')
+                            .getFeatureById(warning.areaId)
+                            ?.getProperties()
+                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                              return (
+                                <span key={index}>
+                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                </span>
+                              );
+                            })}
+                        </>
+                      )}
+                    </p>
+                  )}
+                  {!warning.areaId && !warning.lineId && !warning.equipmentId && <InfoParagraph />}
                 </IonText>
               </IonCol>
               {(warning.startDateTime || warning.endDateTime) && (
@@ -193,51 +186,20 @@ type MarineWarningsProps = {
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading } = useWarineWarningsData();
-  const [showDescription, setShowDescription] = useState();
+  const path = [{ title: t('title') }];
 
   return (
     <>
-      <IonBreadcrumbs>
-        <IonBreadcrumb routerLink="/">
-          {t('home')}
-          <IonLabel slot="separator">&gt;</IonLabel>
-        </IonBreadcrumb>
-        <IonBreadcrumb>
-          <strong>{t('title')}</strong>
-        </IonBreadcrumb>
-      </IonBreadcrumbs>
+      <Breadcrumb path={path} />
 
       <IonText>
         <h2>
           <strong>{t('title')}</strong>
         </h2>
       </IonText>
-      <IonAccordionGroup onIonChange={(e) => setShowDescription(e.detail.value)}>
-        <IonAccordion toggleIcon={arrow_down} color="lightest" value="1">
-          <IonItem
-            slot="header"
-            color="lightest"
-            className="accItem"
-            title={showDescription ? t('closeDescription') : t('openDescription')}
-            aria-label={showDescription ? t('closeDescription') : t('openDescription')}
-          >
-            <IonLabel>{t('general')}</IonLabel>
-          </IonItem>
-          <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} slot="content">
-            <IonText>
-              <p>
-                <strong>{t('description')}</strong>
-              </p>
-              <p>{t('additionalDescription')}</p>
-              <p>
-                <em>{t('notification')}</em>
-              </p>
-            </IonText>
-          </div>
-        </IonAccordion>
-      </IonAccordionGroup>
+      <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
-      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
+      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />
       </div>
     </>
