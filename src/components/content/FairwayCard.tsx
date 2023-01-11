@@ -683,12 +683,6 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
 
-  useEffect(() => {
-    if (fairwayCard) {
-      document.title = t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '';
-    }
-  }, [t, fairwayCard, lang]);
-
   const path = [
     {
       title: t('title', { count: 0 }),

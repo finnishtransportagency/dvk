@@ -14,15 +14,17 @@ import {
   useLine3456Layer,
   useSpecialAreaLayer,
 } from '../components/FeatureLoader';
+import { Lang } from '../utils/constants';
 
 interface FairwayCardPageProps {
   fairwayCardId?: string;
 }
 
 const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'common' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
+  const lang = i18n.resolvedLanguage as Lang;
   const { fairwayCardId } = useParams<FairwayCardPageProps>();
-  document.title = t('documentTitle');
+
   const { data } = useFairwayCardListData();
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
@@ -46,12 +48,13 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
       const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
+        document.title = t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '';
       }
     }
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone]);
+  }, [fairwayCardId, data, initDone, t, lang]);
 
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">
