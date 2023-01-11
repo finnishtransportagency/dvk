@@ -32,6 +32,10 @@ import VectorLayer from 'ol/layer/Vector';
 import { GeoJSON } from 'ol/format';
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
+import LinearRing from 'ol/geom/LinearRing';
+import { Geometry, Polygon } from 'ol/geom';
+import { fromExtent } from 'ol/geom/Polygon';
+import { Feature } from 'ol';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -199,40 +203,82 @@ class DvkMap {
 
     const mapLayers = olMap.getLayers();
 
-    const finlandLayer = new VectorLayer({
+    /* Features of the layer behind backgound tile layer */
+    const bgVectorLayerFeatures: Feature<Geometry>[] = [];
+
+    const finFeatures = new GeoJSON().readFeatures(finlandGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+
+    finFeatures.forEach((f) => {
+      f.setStyle(
+        new Style({
+          fill: new Fill({
+            color: bgColor,
+          }),
+          zIndex: 3 /* Must be in front of of the Baltic Sea features to get right background color for the map */,
+        })
+      );
+      bgVectorLayerFeatures.push(f);
+    });
+
+    /* Max extend polygon with Finland shape hole in it */
+    const bgPolygon = fromExtent(MAP.EXTENT);
+    finFeatures.forEach((f) => {
+      const type = f?.getGeometry()?.getType();
+      if (type === 'Polygon') {
+        const finPolygon = f.getGeometry() as Polygon;
+        const coordinates = finPolygon.getCoordinates();
+        if (coordinates) {
+          const linearRing = new LinearRing(finPolygon.getCoordinates()[0]);
+          bgPolygon.appendLinearRing(linearRing);
+        }
+      }
+    });
+
+    const invertFinFeature = new Feature({
+      geometry: bgPolygon,
+    });
+
+    invertFinFeature.setStyle(
+      new Style({
+        fill: new Fill({
+          color: '#cccccc',
+        }),
+        zIndex: 1 /* Must be behind the Baltic Sea feature */,
+      })
+    );
+
+    bgVectorLayerFeatures.push(invertFinFeature);
+
+    /* Read baltic sea polygons */
+    const bsFeatures = new GeoJSON().readFeatures(balticseaGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+
+    bsFeatures.forEach((bsf) => {
+      bsf.setStyle(
+        new Style({
+          fill: new Fill({
+            color: waterColor,
+          }),
+          zIndex: 2 /* Behind Finland polygon, but in front of the invert Finland polygon */,
+        })
+      );
+      bgVectorLayerFeatures.push(bsf);
+    });
+
+    /* Layer behind the background tile layer */
+    const bgVectorLayer = new VectorLayer({
       source: new VectorSource({
-        features: new GeoJSON().readFeatures(finlandGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }),
+        features: bgVectorLayerFeatures,
       }),
       background: '#cccccc',
-      style: new Style({
-        fill: new Fill({
-          color: bgColor,
-        }),
-      }),
       updateWhileAnimating: true,
       updateWhileInteracting: true,
     });
-    finlandLayer.set('type', 'background');
-    mapLayers.setAt(0, finlandLayer);
-
-    const balticseaLayer = new VectorLayer({
-      source: new VectorSource({
-        features: new GeoJSON().readFeatures(balticseaGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }),
-      }),
-      style: new Style({
-        fill: new Fill({
-          color: waterColor,
-        }),
-      }),
-      updateWhileAnimating: true,
-      updateWhileInteracting: true,
-    });
-    finlandLayer.set('type', 'background');
-    mapLayers.setAt(1, balticseaLayer);
+    bgVectorLayer.set('type', 'background');
+    mapLayers.setAt(0, bgVectorLayer);
 
     backLayers.forEach((layer, index) => {
-      // Finland and baltic sea layers mus be behind this so "index + 2"
-      mapLayers.setAt(index + 2, layer);
+      // Background vector layer must be behind this - so "index + 1"
+      mapLayers.setAt(index + 1, layer);
     });
   };
 
