@@ -3,7 +3,7 @@ import { IonContent, IonPage } from '@ionic/react';
 import { useParams } from 'react-router-dom';
 import { setSelectedFairwayCard, unsetSelectedFairwayCard } from '../components/layers';
 import { useTranslation } from 'react-i18next';
-import MainContent from '../components/MainContent';
+import MainContent from '../components/content/MainContent';
 import { useFairwayCardListData } from '../utils/dataLoader';
 import {
   useArea12Layer,
@@ -20,7 +20,7 @@ interface FairwayCardPageProps {
 }
 
 const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const { fairwayCardId } = useParams<FairwayCardPageProps>();
   document.title = t('documentTitle');
   const { data } = useFairwayCardListData();
@@ -56,7 +56,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">
       <IonContent>
-        <MainContent fairwayCardId={fairwayCardId} splitPane />;
+        <MainContent fairwayCardId={fairwayCardId} splitPane />
       </IonContent>
     </IonPage>
   );

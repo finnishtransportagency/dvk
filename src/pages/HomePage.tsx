@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const HomePage: React.FC = () => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const mapElement = useRef<HTMLDivElement | null>(null);
   const history = useHistory();
   document.title = t('documentTitle');
