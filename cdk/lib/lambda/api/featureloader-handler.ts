@@ -19,43 +19,6 @@ import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
-const GEOMETRY_DECIMALS = 5;
-
-function roundGeometry(geometry: Geometry) {
-  const power = Math.pow(10, GEOMETRY_DECIMALS);
-  const transform = function (coordinates: number[]) {
-    for (let i = 0, ii = coordinates.length; i < ii; ++i) {
-      coordinates[i] = Math.round(coordinates[i] * power) / power;
-    }
-    return coordinates;
-  };
-  if (geometry.type === 'Point') {
-    transform(geometry.coordinates);
-  } else if (geometry.type === 'LineString' || geometry.type === 'MultiPoint') {
-    for (const coordinates of geometry.coordinates) {
-      transform(coordinates);
-    }
-  } else if (geometry.type === 'Polygon' || geometry.type === 'MultiLineString') {
-    for (const coordinates of geometry.coordinates) {
-      for (const coord of coordinates) {
-        transform(coord);
-      }
-    }
-  } else if (geometry.type === 'MultiPolygon') {
-    for (const coordinates of geometry.coordinates) {
-      for (const coord of coordinates) {
-        for (const coord2 of coord) {
-          transform(coord2);
-        }
-      }
-    }
-  } else {
-    for (const geom of geometry.geometries) {
-      roundGeometry(geom);
-    }
-  }
-  return geometry;
-}
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -75,7 +38,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
     if (harbor?.geometry?.coordinates?.length === 2) {
       features.push({
         type: 'Feature',
-        geometry: roundGeometry(harbor.geometry as Geometry),
+        geometry: harbor.geometry as Geometry,
         properties: {
           featureType: 'harbor',
           id: harbor.id,
@@ -108,7 +71,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   for (const place of placeMap.values()) {
     features.push({
       type: 'Feature',
-      geometry: roundGeometry(place.geometry as Geometry),
+      geometry: place.geometry as Geometry,
       id: place.id,
       properties: {
         featureType: 'pilot',
@@ -149,7 +112,7 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
     features.push({
       type: 'Feature',
       id: area.id,
-      geometry: roundGeometry(area.geometria as Geometry),
+      geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
         featureType: 'depth',
@@ -179,7 +142,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
     features.push({
       type: 'Feature',
       id: area.id,
-      geometry: roundGeometry(area.geometria as Geometry),
+      geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
         featureType: navigationArea ? 'area' : 'specialarea',
@@ -221,7 +184,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
     const feature: Feature<Geometry, GeoJsonProperties> = {
       type: 'Feature',
       id: area.id,
-      geometry: roundGeometry(area.geometria as Geometry),
+      geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
         featureType: 'restrictionarea',
@@ -257,7 +220,7 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
     features.push({
       type: 'Feature',
       id: line.id,
-      geometry: roundGeometry(line.geometria as Geometry),
+      geometry: line.geometria as Geometry,
       properties: {
         id: line.id,
         featureType: 'line',
@@ -293,7 +256,7 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
     features.push({
       type: 'Feature',
       id: equipment.turvalaitenumero,
-      geometry: roundGeometry(equipment.geometria as Geometry),
+      geometry: equipment.geometria as Geometry,
       properties: {
         id: equipment.turvalaitenumero,
         featureType: 'safetyequipment',
@@ -320,7 +283,7 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
     features.push({
       type: 'Feature',
       id: fault.vikaId,
-      geometry: roundGeometry(fault.geometria as Geometry),
+      geometry: fault.geometria as Geometry,
       properties: {
         equipmentId: fault.turvalaiteNumero,
         featureType: 'safetyequipmentfault',
@@ -340,7 +303,7 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
     features.push({
       type: feature.type,
       id: feature.properties?.ID,
-      geometry: roundGeometry(feature.geometry),
+      geometry: feature.geometry,
       properties: {
         featureType: 'marinewarning',
         number: feature.properties?.NUMERO,

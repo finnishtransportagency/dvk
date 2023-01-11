@@ -1,7 +1,13 @@
 import { ALBEvent } from 'aws-lambda';
 import axios from 'axios';
+import { Geometry } from 'geojson';
 import { getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
+import { roundGeometry } from '../../util';
+
+type GeometryModel = {
+  geometria: object;
+};
 
 export type AlueVaylaAPIModel = {
   jnro: number;
@@ -13,6 +19,7 @@ export type AlueVaylaAPIModel = {
   nimiFI?: string;
   nimiSV?: string;
 };
+
 export type AlueAPIModel = {
   id: number;
   nimi?: string;
@@ -38,8 +45,7 @@ export type AlueAPIModel = {
   liikenteenTyyppi?: string;
   liikennointiSuuntaKoodi?: number;
   liikennointiSuunta?: string;
-  geometria: object;
-};
+} & GeometryModel;
 
 export type NavigointiLinjaAPIModel = {
   id: number;
@@ -57,9 +63,9 @@ export type NavigointiLinjaAPIModel = {
   lisatieto?: string;
   tyyppiKoodi?: string;
   tyyppi?: string;
-  geometria: object;
   vayla: NavigointiLinjaVaylaAPIModel[];
-};
+} & GeometryModel;
+
 type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
   status?: number;
@@ -84,13 +90,14 @@ export type RajoitusAlueAPIModel = {
   sijainti?: string;
   kunta?: string;
   poikkeus?: string;
-  geometria: object;
   vayla?: RajoitusVaylaAPIModel[];
-};
+} & GeometryModel;
+
 export type RajoitustyyppiAPIModel = {
   koodi?: string;
   rajoitustyyppi?: string;
 };
+
 export type RajoitusVaylaAPIModel = {
   jnro: number;
   nimiFI?: string;
@@ -152,8 +159,7 @@ export type TurvalaiteVikatiedotAPIModel = {
   vikatyyppiFI: string;
   vikatyyppiSV?: string;
   kirjausAika: string;
-  geometria: object;
-};
+} & GeometryModel;
 
 export type TurvalaiteAPIModel = {
   turvalaitenumero: number;
@@ -171,10 +177,9 @@ export type TurvalaiteAPIModel = {
   omistajaSV?: string;
   symboli?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
-  geometria: object;
-};
+} & GeometryModel;
 
-export async function fetchVATUByApi<T>(api: string, params: Record<string, string> = {}) {
+export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
   const response = await axios
@@ -187,15 +192,21 @@ export async function fetchVATUByApi<T>(api: string, params: Record<string, stri
       log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  return response ? (response.data as T[]) : [];
+  const datas = response ? (response.data as T[]) : [];
+  for (const obj of datas) {
+    if ((obj as GeometryModel).geometria) {
+      roundGeometry((obj as GeometryModel).geometria as Geometry);
+    }
+  }
+  return datas;
 }
 
-export async function fetchVATUByFairwayId<T>(fairwayId: number | number[], api: string) {
+export async function fetchVATUByFairwayId<T extends GeometryModel | VaylaAPIModel>(fairwayId: number | number[], api: string) {
   const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();
   return fetchVATUByApi<T>(api, { jnro: ids });
 }
 
-export async function fetchVATUByFairwayClass<T>(api: string, event: ALBEvent) {
+export async function fetchVATUByFairwayClass<T extends GeometryModel | VaylaAPIModel>(api: string, event: ALBEvent) {
   const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
   return fetchVATUByApi<T>(api, { vaylaluokka: fairwayClass });
 }
