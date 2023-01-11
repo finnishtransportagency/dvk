@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/named
-import { GetParametersByPathCommand, GetParametersByPathCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
+import axios from 'axios';
+import { log } from './logger';
 
 function errorMessage(variable: string): string {
   return `Environment variable ${variable} missing`;
@@ -10,6 +10,13 @@ export function getEnvironment(): string {
     return process.env.ENVIRONMENT;
   }
   throw new Error(errorMessage('ENVIRONMENT'));
+}
+
+function getExtensionPort(): string {
+  if (process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT) {
+    return process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT;
+  }
+  throw new Error(errorMessage('PARAMETERS_SECRETS_EXTENSION_HTTP_PORT'));
 }
 
 export function isPermanentEnvironment() {
@@ -41,65 +48,53 @@ export function getHeaders(): Record<string, string> {
   };
 }
 
-let euWestSSMClient: SSMClient;
-let envParameters: Record<string, string>;
-
-function getSSMClient(): SSMClient {
-  if (!euWestSSMClient) {
-    euWestSSMClient = new SSMClient({ region: 'eu-west-1' });
-  }
-  return euWestSSMClient;
-}
-
-export async function readParametersByPath(path: string): Promise<Record<string, string>> {
-  const variables: Record<string, string> = {};
-  let nextToken;
-  do {
-    const output: GetParametersByPathCommandOutput = await getSSMClient().send(
-      new GetParametersByPathCommand({ Path: path, WithDecryption: true, NextToken: nextToken })
-    );
-    output.Parameters?.forEach((param) => {
-      if (param.Name && param.Value) {
-        variables[param.Name.replace(path, '')] = param.Value;
+async function readParameterByPath(path: string): Promise<string | undefined> {
+  const url = `http://localhost:${getExtensionPort()}/systemsmanager/parameters/get/?name=${path}&withDecryption=true`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: { 'X-Aws-Parameters-Secrets-Token': process.env.AWS_SESSION_TOKEN as string },
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      // ignore parameter not found
+      if (errorObj.status !== 400) {
+        log.fatal(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       }
     });
-    nextToken = output.NextToken;
-  } while (nextToken);
-  return variables;
-}
-
-async function readParametersForEnv(environment: string): Promise<Record<string, string>> {
-  if (!envParameters) {
-    envParameters = {
-      ...(await readParametersByPath('/')), // Read global parameters from root
-      ...(await readParametersByPath('/' + environment + '/')), // Then override with environment specific ones if provided
-    };
+  log.debug(`Parameter cache response time: ${Date.now() - start} ms`);
+  if (response?.data) {
+    return response.data.Parameter.Value;
   }
-  return envParameters;
+  return undefined;
 }
 
-export async function initializeEnvironmentVariables() {
-  await readParametersForEnv(getEnvironment());
+async function readParameterForEnv(path: string): Promise<string> {
+  let value = await readParameterByPath('/' + getEnvironment() + '/' + path);
+  if (!value) {
+    value = await readParameterByPath('/' + path);
+  }
+  if (value) {
+    return value;
+  }
+  throw new Error(`Getting parameter ${path} failed`);
 }
 
 export async function getVatuUsername() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.VatuUsername;
+  return readParameterForEnv('VatuUsername');
 }
 
 export async function getVatuPassword() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.VatuPassword;
+  return readParameterForEnv('VatuPassword');
 }
 
 export async function getVatuUrl() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.VatuUrl;
+  return readParameterForEnv('VatuUrl');
 }
 
 export async function getFeatureCacheDurationHours() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.FeatureCacheDurationHours ? Number.parseFloat(parameters.FeatureCacheDurationHours) : 0;
+  const value = await readParameterForEnv('FeatureCacheDurationHours');
+  return value ? Number.parseFloat(value) : 0;
 }
 
 export async function getVatuHeaders(): Promise<Record<string, string>> {
@@ -111,24 +106,21 @@ export async function getVatuHeaders(): Promise<Record<string, string>> {
 }
 
 export async function getRocketChatCredentials() {
-  const parameters = { ...(await readParametersByPath('/')) };
-  const { RocketchatUser, RocketchatPassword } = parameters;
+  const RocketchatUser = await readParameterByPath('/RocketchatUser');
+  const RocketchatPassword = await readParameterByPath('/RocketchatPassword');
   return { RocketchatUser, RocketchatPassword };
 }
 
 async function getPookiUsername() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.PookiUsername;
+  return readParameterForEnv('PookiUsername');
 }
 
 async function getPookiPassword() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.PookiPassword;
+  return readParameterForEnv('PookiPassword');
 }
 
 export async function getPookiUrl() {
-  const parameters = await readParametersForEnv(getEnvironment());
-  return parameters.PookiUrl;
+  return readParameterForEnv('PookiUrl');
 }
 
 export async function getPookiHeaders(): Promise<Record<string, string>> {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { readParametersByPath } from '../lib/lambda/environment';
+import { readParametersByPath } from './environment';
 
 async function main() {
   const parameters = await readParametersByPath('/');
