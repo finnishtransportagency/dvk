@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { log } from './logger';
 
-const envParameters: Record<string, string> = {};
-
 function errorMessage(variable: string): string {
   return `Environment variable ${variable} missing`;
 }
@@ -71,17 +69,15 @@ async function readParameterByPath(path: string): Promise<string | undefined> {
   return undefined;
 }
 
-export async function readParameterForEnv(path: string): Promise<string> {
-  if (!envParameters[path]) {
-    let value = await readParameterByPath('/' + getEnvironment() + '/' + path);
-    if (!value) {
-      value = await readParameterByPath('/' + path);
-    }
-    if (value) {
-      envParameters[path] = value;
-    }
+async function readParameterForEnv(path: string): Promise<string> {
+  let value = await readParameterByPath('/' + getEnvironment() + '/' + path);
+  if (!value) {
+    value = await readParameterByPath('/' + path);
   }
-  return envParameters[path];
+  if (value) {
+    return value;
+  }
+  throw new Error(`Getting parameter ${path} failed`);
 }
 
 export async function getVatuUsername() {
