@@ -7,6 +7,7 @@ import fs from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { mapFairwayIds } from '../lib/lambda/db/modelMapper';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
+import { transform } from '../lib/lambda/util';
 
 function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
   const files = fs.readdirSync(dirPath);

@@ -49,7 +49,10 @@
           "name": "Orrengrund",
           "geometry": {
             "type": "Point",
-            "coordinates": [26.422667, 60.238333]
+            "coordinates": [
+              26.42267,
+              60.23833
+            ]
           }
         },
         {
@@ -58,7 +61,10 @@
           "pilotJourney": 38,
           "geometry": {
             "type": "Point",
-            "coordinates": [26.603333, 60.166667]
+            "coordinates": [
+              26.60333,
+              60.16667
+            ]
           }
         }
       ]

@@ -59,7 +59,10 @@
           "name": "Pietarsaari",
           "geometry": {
             "type": "Point",
-            "coordinates": [22.474833, 63.741833]
+            "coordinates": [
+              22.47483,
+              63.74183
+            ]
           }
         }
       ]

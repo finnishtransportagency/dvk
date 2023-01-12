@@ -44,7 +44,10 @@
           "name": "Hanko N",
           "geometry": {
             "type": "Point",
-            "coordinates": [23.005167, 59.781167]
+            "coordinates": [
+              23.00517,
+              59.78117
+            ]
           }
         },
         {
@@ -53,7 +56,10 @@
           "pilotJourney": 9,
           "geometry": {
             "type": "Point",
-            "coordinates": [23.096667, 59.708333]
+            "coordinates": [
+              23.09667,
+              59.70833
+            ]
           }
         }
       ]
@@ -66,7 +72,10 @@
           "en": "Hanko VTS"
         },
         "phoneNumber": "+358204485391",
-        "email": ["helsinki.vts@fintraffic.fi", "supervisors.hki@fintraffic.fi"],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ],
         "vhf": [
           {
             "channel": 67

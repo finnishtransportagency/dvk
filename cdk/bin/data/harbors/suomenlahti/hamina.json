@@ -30,7 +30,10 @@
   ],
   "geometry": {
     "type": "Point",
-    "coordinates": [27.16347499410118, 60.5244033810887]
+    "coordinates": [
+      27.16347,
+      60.5244
+    ]
   },
   "quays": [
     {

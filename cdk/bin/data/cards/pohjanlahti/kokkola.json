@@ -53,7 +53,10 @@
           "name": "Kokkola",
           "geometry": {
             "type": "Point",
-            "coordinates": [22.818167, 64.008667]
+            "coordinates": [
+              22.81817,
+              64.00867
+            ]
           }
         }
       ]

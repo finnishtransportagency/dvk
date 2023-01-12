@@ -44,7 +44,10 @@
           "name": "Nyhamn",
           "geometry": {
             "type": "Point",
-            "coordinates": [19.938333, 59.938333]
+            "coordinates": [
+              19.93833,
+              59.93833
+            ]
           }
         }
       ]

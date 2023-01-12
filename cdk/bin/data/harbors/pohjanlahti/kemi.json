@@ -32,7 +32,10 @@
   ],
   "geometry": {
     "type": "Point",
-    "coordinates": [24.51529305714698, 65.6627988885]
+    "coordinates": [
+      24.51529,
+      65.6628
+    ]
   },
   "quays": [
     {
@@ -43,7 +46,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.514831248879485, 65.65967922617939]
+        "coordinates": [
+          24.51483,
+          65.65968
+        ]
       },
       "sections": [
         {
@@ -59,7 +65,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.519962294663394, 65.6634276730848]
+        "coordinates": [
+          24.51996,
+          65.66343
+        ]
       },
       "length": 160,
       "sections": [
@@ -76,7 +85,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.5187731688107, 65.66448745094786]
+        "coordinates": [
+          24.51877,
+          65.66449
+        ]
       },
       "length": 179,
       "sections": [
@@ -93,7 +105,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.517202566973943, 65.66493198205238]
+        "coordinates": [
+          24.5172,
+          65.66493
+        ]
       },
       "length": 292,
       "sections": [
@@ -110,7 +125,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.515699152426542, 65.66629646880082]
+        "coordinates": [
+          24.5157,
+          65.6663
+        ]
       },
       "length": 178,
       "sections": [
@@ -127,7 +145,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.515497139361216, 65.66786381014046]
+        "coordinates": [
+          24.5155,
+          65.66786
+        ]
       },
       "length": 178,
       "sections": [
