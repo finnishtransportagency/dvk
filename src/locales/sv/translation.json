@@ -204,7 +204,7 @@
     "pilotPlace": {
       "header": "[sv] Luotsipaikka {{val}}",
       "coordinates": "[sv] Koordinaatit",
-      "fairways": "[sv] Luotsipaikkaan liittyvät väylät"
+      "fairways": "[sv] Luotsipaikkaan liittyvät väyläkortit"
     },
     "harbor": {
       "coordinates": "[sv] Koordinaatit",
