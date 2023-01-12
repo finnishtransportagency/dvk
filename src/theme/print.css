@@ -82,6 +82,7 @@
   }
   #fairwayCardsContainer::part(scroll) {
     scrollbar-gutter: unset !important;
+    padding: 0;
   }
   ion-breadcrumbs {
     display: none;
@@ -116,6 +117,9 @@
   #fairwayCardsContainer ion-text h4 {
     border-bottom: 1px solid var(--ion-color-light);
   }
+  #fairwayCardsContainer ion-grid.table.light ion-text h4 {
+    border-bottom: none;
+  }
 
   .printGrid {
     display: flex;
@@ -140,10 +144,10 @@
   }
 
   .mapWrapper {
-    position: static;
+    position: static !important;
     display: flex;
     justify-content: center;
-    visibility: visible;
+    visibility: visible !important;
   }
   .mapWrapper .mapContent {
     position: relative;
@@ -203,6 +207,7 @@
     line-height: 1rem;
     text-align: center;
     margin: 6px auto 0 0;
+    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
     transition: all 0.25s;
   }
 
