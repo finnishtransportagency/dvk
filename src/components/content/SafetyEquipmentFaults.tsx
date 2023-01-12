@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from 'react';
 import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -90,16 +90,38 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
   const { data, isLoading } = useSafetyEquipmentFaultData();
   const path = [{ title: t('title') }];
+  const [timestamp, setTimestamp] = useState<string>();
+
+  useEffect(() => {
+    if (!isLoading) setTimestamp(Date());
+  }, [isLoading]);
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonText>
-        <h2>
-          <strong>{t('title')}</strong>
-        </h2>
-      </IonText>
+      <IonGrid className="ion-no-padding">
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle">
+              <h2 className="no-margin-bottom">
+                <strong>{t('title')}</strong>
+              </h2>
+            </IonText>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <IonRow>
+        <IonCol>
+          <IonText className="fairwayTitle">
+            <em>
+              {' '}
+              {t('modified')} {t('modifiedDate', timestamp)}
+            </em>
+          </IonText>
+        </IonCol>
+      </IonRow>
+
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">

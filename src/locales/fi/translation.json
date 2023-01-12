@@ -172,7 +172,9 @@
     "gulfOfFinland": "Suomenlahti",
     "gulfOfBothnia": "Pohjanlahden alue",
     "and": " ja ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "modified": "Päivitetty",
+    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
   },
   "warnings": {
     "title": "Merivaroitukset",
