@@ -27,7 +27,6 @@
         "project":[ "./tsconfig.json", "./cdk/tsconfig.json" ]
     },
     "plugins": [
-        "import",
         "react",
         "@typescript-eslint",
         "prettier"

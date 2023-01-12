@@ -1,6 +1,5 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import './FairwayCards.css';
 import { Text } from '../graphql/generated';
 import { Lang } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
@@ -48,7 +47,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
             </div>
             <div className="cardInfo">
               <IonText>
-                <h3 id="exportFairwayName">{name ? name[lang] : t('documentTitle')}</h3>
+                <h3 id="exportFairwayName">{name ? name[lang] || name.fi : t('documentTitle')}</h3>
               </IonText>
               {modified && (
                 <em>
