@@ -7,7 +7,6 @@ import fs from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { mapFairwayIds } from '../lib/lambda/db/modelMapper';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
-import { transform } from '../lib/lambda/util';
 
 function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
   const files = fs.readdirSync(dirPath);
@@ -25,7 +24,7 @@ function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
 async function processCard(file: string): Promise<FairwayCardDBModel> {
   const fairwayCard = JSON.parse(fs.readFileSync(file).toString()) as FairwayCardDBModel;
   fairwayCard.fairwayIds = mapFairwayIds(fairwayCard);
-  fairwayCard.modificationTimestamp = Math.round(Date.now() / 1000);
+  fairwayCard.modificationTimestamp = Date.now();
   console.log(`Fairway card: ${fairwayCard.name?.fi}`);
   return fairwayCard;
 }
