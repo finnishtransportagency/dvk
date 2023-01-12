@@ -1,4 +1,3 @@
-
 {
   "id": "naantali",
   "name": {
@@ -24,7 +23,10 @@
   ],
   "geometry": {
     "type": "Point",
-    "coordinates": [22.04173594782463, 60.45883273029457]
+    "coordinates": [
+      22.04174,
+      60.45883
+    ]
   },
   "quays": [
     {
@@ -35,7 +37,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.049396230713068,60.45713319403657]
+        "coordinates": [
+          22.0494,
+          60.45713
+        ]
       },
       "length": 370,
       "sections": [
@@ -52,7 +57,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.04413824454278, 60.45736725868343]
+        "coordinates": [
+          22.04414,
+          60.45737
+        ]
       },
       "length": 200,
       "sections": [
@@ -69,7 +77,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.042803713941662, 60.457609481364706]
+        "coordinates": [
+          22.0428,
+          60.45761
+        ]
       }
     },
     {
@@ -80,7 +91,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.039237212491265, 60.45809186249343]
+        "coordinates": [
+          22.03924,
+          60.45809
+        ]
       },
       "length": 170,
       "sections": [
@@ -97,7 +111,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.03782392353523, 60.458250987543416]
+        "coordinates": [
+          22.03782,
+          60.45825
+        ]
       },
       "length": 50,
       "sections": [
@@ -114,7 +131,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.03736300840052, 60.45765879739641]
+        "coordinates": [
+          22.03736,
+          60.45766
+        ]
       },
       "length": 150,
       "sections": [
@@ -131,7 +151,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [22.036488883979295, 60.45789854824226]
+        "coordinates": [
+          22.03649,
+          60.4579
+        ]
       },
       "length": 180,
       "sections": [

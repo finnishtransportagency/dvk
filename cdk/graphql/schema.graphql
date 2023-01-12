@@ -15,7 +15,7 @@ type FairwayCard {
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
-  modificationTimestamp: Int
+  modificationTimestamp: Float
   fairwayIds: String
   fairways: [Fairway!]!
   lineText: Text

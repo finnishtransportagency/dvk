@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getPookiHeaders, getPookiUrl } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
+import { roundGeometry } from '../util';
 
 export type PookiResponse = {
   status: number;
@@ -21,6 +22,11 @@ export async function fetchMarineWarnings(): Promise<PookiResponse> {
       log.fatal(`Pooki fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
     });
   log.debug(`Pooki response time: ${Date.now() - start} ms`);
+  if (response?.data) {
+    for (const feature of (response.data as FeatureCollection).features) {
+      roundGeometry(feature.geometry);
+    }
+  }
   return response ? { status, data: response.data as FeatureCollection } : { status };
 }
 

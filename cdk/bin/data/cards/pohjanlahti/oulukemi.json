@@ -54,7 +54,10 @@
           "name": "Oulu N",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.3, 65.1825]
+            "coordinates": [
+              24.3,
+              65.1825
+            ]
           }
         },
         {
@@ -62,7 +65,10 @@
           "name": "Oulu S",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.282333, 65.116667]
+            "coordinates": [
+              24.28233,
+              65.11667
+            ]
           }
         },
         {
@@ -70,7 +76,10 @@
           "name": "Kemi N",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.448333, 65.551667]
+            "coordinates": [
+              24.44833,
+              65.55167
+            ]
           }
         }
       ]

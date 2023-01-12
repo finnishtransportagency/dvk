@@ -18,9 +18,9 @@
     "en": "Design speed 12.0 knots (Sc= -11.8 m)."
   },
   "anchorage": {
-      "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs=-14,3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella.",
-      "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd= -14,3, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari.",
-      "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth sc=-14.3 m, mud seabed) and west of Kotakari, is a wider area on right."
+    "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs=-14,3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella.",
+    "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd= -14,3, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari.",
+    "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth sc=-14.3 m, mud seabed) and west of Kotakari, is a wider area on right."
   },
   "navigationCondition": {
     "fi": "Väylän ulko-osa Oulun portilta Kattilankallaan on avomerta; SW - NW tuulilla merenkäynti on voimakasta. Oulu 3 lähtien matalikot vaimentavat merenkäyntiä. Kattilankallasta väylä jatkuu harvan saariston ja karien osittain suojaamana Ouluun. Oulu 5 ja Hammasmatalan välillä on 1,4 km pitkä ja 170 m leveä kapeikko. Väylän loppuosa Kyrönkarin ankkurointipaikalta satamaan n. 2,5 km matkalta on ruopattua kaivantoa, leveys 116 m.",
@@ -70,7 +70,10 @@
           "pilotJourney": 31.3,
           "geometry": {
             "type": "Point",
-            "coordinates": [24.3, 65.1825]
+            "coordinates": [
+              24.3,
+              65.1825
+            ]
           }
         },
         {
@@ -79,7 +82,10 @@
           "pilotJourney": 37.8,
           "geometry": {
             "type": "Point",
-            "coordinates": [24.282333, 65.116667]
+            "coordinates": [
+              24.28233,
+              65.11667
+            ]
           }
         }
       ]
@@ -97,7 +103,7 @@
         ],
         "vhf": [
           {
-          "channel": 67
+            "channel": 67
           }
         ]
       }

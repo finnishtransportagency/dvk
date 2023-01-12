@@ -17,7 +17,10 @@
   "email": "port.helsinki@portofhelsinki.fi",
   "geometry": {
     "type": "Point",
-    "coordinates": [24.96317135264056, 60.162067047917276]
+    "coordinates": [
+      24.96317,
+      60.16207
+    ]
   },
   "quays": [
     {
@@ -32,15 +35,21 @@
           "name": "EO1",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.95982323138278, 60.16080391357215]
+            "coordinates": [
+              24.95982,
+              60.1608
+            ]
           },
           "depth": 7.5
         },
         {
-          "name":"EO2",
+          "name": "EO2",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.957867393406815, 60.162172462169046]
+            "coordinates": [
+              24.95787,
+              60.16217
+            ]
           },
           "depth": 8.8
         }
@@ -54,7 +63,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [24.9558804804978, 60.16379951951082]
+        "coordinates": [
+          24.95588,
+          60.1638
+        ]
       },
       "length": 240,
       "sections": [
@@ -62,10 +74,10 @@
           "depth": 7.3
         },
         {
-        "depth": 7.5
+          "depth": 7.5
         },
         {
-        "depth": 7.8
+          "depth": 7.8
         }
       ]
     },
@@ -81,7 +93,10 @@
           "name": "EPL",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.954071530026948, 60.165666111439805]
+            "coordinates": [
+              24.95407,
+              60.16567
+            ]
           },
           "depth": 6
         }
@@ -99,7 +114,10 @@
           "name": "EKL",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.960080457384183, 60.16609300451217]
+            "coordinates": [
+              24.96008,
+              60.16609
+            ]
           },
           "depth": 8.8
         },
@@ -107,7 +125,10 @@
           "name": "EK6",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.965329089920694, 60.164343039388825]
+            "coordinates": [
+              24.96533,
+              60.16434
+            ]
           },
           "depth": 8.8
         },
@@ -115,7 +136,10 @@
           "name": "EK7",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.968660014187158, 60.16345006967473]
+            "coordinates": [
+              24.96866,
+              60.16345
+            ]
           },
           "depth": 8.8
         }
@@ -133,7 +157,10 @@
           "name": "ERA",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.970615818569915, 60.16335940073721]
+            "coordinates": [
+              24.97062,
+              60.16336
+            ]
           },
           "depth": 10.3
         },
@@ -141,7 +168,10 @@
           "name": "ERB",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.973177062888116, 60.16424651293902]
+            "coordinates": [
+              24.97318,
+              60.16425
+            ]
           },
           "depth": 10
         }
@@ -159,7 +189,10 @@
           "name": "SHA/SHB",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.96900370143037, 60.18087406040237]
+            "coordinates": [
+              24.969,
+              60.18087
+            ]
           },
           "depth": 9.35
         }
