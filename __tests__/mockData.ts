@@ -4,7 +4,7 @@ export const mockFairwayCard = {
     name: { fi: 'Vuosaaren väylä', sv: 'Nordsjöleden', en: 'Vuosaari channel' },
     n2000HeightSystem: false,
     group: '2',
-    modificationTimestamp: 1668180623,
+    modificationTimestamp: 1668180623000,
     fairways: [
       {
         id: 4921,
@@ -950,7 +950,7 @@ export const mockFairwayList = {
     {
       id: 'hanko',
       name: { fi: 'Hangon meriväylä', sv: 'Hangö havsfarled', en: 'Hanko channel' },
-      modificationTimestamp: 1667808284,
+      modificationTimestamp: 1667808284000,
       group: '1',
       n2000HeightSystem: false,
       fairways: [],
@@ -958,7 +958,7 @@ export const mockFairwayList = {
     {
       id: 'uusikaupunki',
       name: { fi: 'Uudenkaupungin väylä', sv: '[sv] Uudenkaupungin väylä', en: 'Uusikaupunki channel' },
-      modificationTimestamp: 1667808285,
+      modificationTimestamp: 1667808285000,
       group: '1',
       n2000HeightSystem: false,
       fairways: [],
@@ -966,7 +966,7 @@ export const mockFairwayList = {
     {
       id: 'saimaa',
       name: { fi: 'Saimaan väylä', sv: 'Saimaan väylä', en: 'Saimaan väylä' },
-      modificationTimestamp: 1667808285,
+      modificationTimestamp: 1667808285000,
       group: '3',
       n2000HeightSystem: false,
       fairways: [],
@@ -974,7 +974,7 @@ export const mockFairwayList = {
     {
       id: 'helsinki',
       name: { fi: 'Helsingin väylä', sv: 'Helsingforsleden', en: 'Helsinki channel' },
-      modificationTimestamp: 1667808284,
+      modificationTimestamp: 1667808284000,
       group: '2',
       n2000HeightSystem: false,
       fairways: [],
@@ -982,7 +982,7 @@ export const mockFairwayList = {
     {
       id: 'utohanko',
       name: { fi: 'Utö-Hanko väylä', sv: 'Farleden Utö-Hangö', en: 'Utö-Hanko channel' },
-      modificationTimestamp: 1667808284,
+      modificationTimestamp: 1667808284000,
       group: '1',
       n2000HeightSystem: false,
       fairways: [],
@@ -990,7 +990,7 @@ export const mockFairwayList = {
     {
       id: 'kemi',
       name: { fi: '', sv: '[sv] Kemin väylä', en: 'Kemi Ajos fairway' },
-      modificationTimestamp: 1667808284,
+      modificationTimestamp: 1667808284000,
       group: '3',
       n2000HeightSystem: true,
       fairways: [],
@@ -998,7 +998,7 @@ export const mockFairwayList = {
     {
       id: 'naantali',
       name: { fi: 'Naantalin väylä', sv: 'Farleden Nådendal', en: 'Naantali channel' },
-      modificationTimestamp: 1667808285,
+      modificationTimestamp: 1667808285000,
       group: '1',
       n2000HeightSystem: false,
       fairways: [],

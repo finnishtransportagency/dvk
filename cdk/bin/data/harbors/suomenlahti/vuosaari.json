@@ -35,7 +35,10 @@
   ],
   "geometry": {
     "type": "Point",
-    "coordinates": [25.19618672915246, 60.21587619828192]
+    "coordinates": [
+      25.19619,
+      60.21588
+    ]
   },
   "quays": [
     {
@@ -46,7 +49,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.19323465568021, 60.21030442526192]
+        "coordinates": [
+          25.19323,
+          60.2103
+        ]
       },
       "length": 180,
       "sections": [
@@ -68,7 +74,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.19473180480529, 60.20955125229692]
+        "coordinates": [
+          25.19473,
+          60.20955
+        ]
       },
       "length": 215,
       "sections": [
@@ -93,7 +102,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.189489375700667, 60.21558232946173]
+        "coordinates": [
+          25.18949,
+          60.21558
+        ]
       },
       "length": 250,
       "sections": [
@@ -115,7 +127,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.199991979381792, 60.218917742690294]
+        "coordinates": [
+          25.19999,
+          60.21892
+        ]
       },
       "length": 250,
       "sections": [
@@ -137,7 +152,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.19037552074544, 60.213384247190206]
+        "coordinates": [
+          25.19038,
+          60.21338
+        ]
       },
       "length": 750,
       "sections": [
@@ -162,7 +180,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.193576012449466, 60.214864489604146]
+        "coordinates": [
+          25.19358,
+          60.21486
+        ]
       },
       "length": 750,
       "sections": [
@@ -196,7 +217,10 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [25.19826034595303, 60.217641803529204]
+        "coordinates": [
+          25.19826,
+          60.21764
+        ]
       },
       "extraInfo": {
         "fi": "2 kpl kiinteää ramppia",
@@ -212,7 +236,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.19961921791056, 60.21401347543198]
+        "coordinates": [
+          25.19962,
+          60.21401
+        ]
       },
       "length": 162,
       "sections": [
@@ -234,7 +261,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.202402425482397, 60.21365830752661]
+        "coordinates": [
+          25.2024,
+          60.21366
+        ]
       },
       "length": 204,
       "sections": [
@@ -256,7 +286,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.20380171410149, 60.2142420858206]
+        "coordinates": [
+          25.2038,
+          60.21424
+        ]
       },
       "length": 204,
       "sections": [
@@ -281,7 +314,10 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [25.199142678660635, 60.212803690896315]
+        "coordinates": [
+          25.19914,
+          60.2128
+        ]
       },
       "length": 189,
       "sections": [

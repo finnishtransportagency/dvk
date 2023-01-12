@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { log } from './logger';
 
+const envParameters: Record<string, string> = {};
+
 function errorMessage(variable: string): string {
   return `Environment variable ${variable} missing`;
 }
@@ -70,11 +72,12 @@ async function readParameterByPath(path: string): Promise<string | undefined> {
 }
 
 async function readParameterForEnv(path: string): Promise<string> {
-  let value = await readParameterByPath('/' + getEnvironment() + '/' + path);
-  if (!value) {
-    value = await readParameterByPath('/' + path);
+  if (envParameters[path]) {
+    return envParameters[path];
   }
+  const value = await readParameterByPath('/' + path);
   if (value) {
+    envParameters[path] = value;
     return value;
   }
   throw new Error(`Getting parameter ${path} failed`);
@@ -106,8 +109,8 @@ export async function getVatuHeaders(): Promise<Record<string, string>> {
 }
 
 export async function getRocketChatCredentials() {
-  const RocketchatUser = await readParameterByPath('/RocketchatUser');
-  const RocketchatPassword = await readParameterByPath('/RocketchatPassword');
+  const RocketchatUser = await readParameterForEnv('RocketchatUser');
+  const RocketchatPassword = await readParameterForEnv('RocketchatPassword');
   return { RocketchatUser, RocketchatPassword };
 }
 

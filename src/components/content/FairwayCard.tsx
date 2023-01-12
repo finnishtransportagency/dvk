@@ -751,7 +751,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   <em>
                     {t('modified')}{' '}
                     {t('modifiedDate', {
-                      val: fairwayCard?.modificationTimestamp ? new Date(fairwayCard?.modificationTimestamp * 1000) : '-',
+                      val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
                     })}
                     {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
                   </em>

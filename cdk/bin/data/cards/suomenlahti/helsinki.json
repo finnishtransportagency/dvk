@@ -64,7 +64,10 @@
           "name": "Helsinki N",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.961667, 60.071667]
+            "coordinates": [
+              24.96167,
+              60.07167
+            ]
           }
         }
       ]

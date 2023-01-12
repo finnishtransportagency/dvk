@@ -54,7 +54,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
                 <em>
                   {t('modified')}{' '}
                   {t('modifiedDate', {
-                    val: modified ? new Date(modified * 1000) : '-',
+                    val: modified ? modified : '-',
                   })}
                   {isN2000 ? ' - N2000 (BSCD2000)' : ' - MW'}
                 </em>

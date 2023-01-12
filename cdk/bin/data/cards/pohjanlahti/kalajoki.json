@@ -60,7 +60,10 @@
           "pilotJourney": 6.5,
           "geometry": {
             "type": "Point",
-            "coordinates": [23.5, 64.258333]
+            "coordinates": [
+              23.5,
+              64.25833
+            ]
           }
         }
       ]
@@ -114,7 +117,6 @@
           "+358102190750"
         ]
       }
-
     ]
   },
   "harbors": [
