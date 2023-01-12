@@ -1,24 +1,12 @@
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonText,
-  IonBreadcrumbs,
-  IonBreadcrumb,
-  IonSkeletonText,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-} from '@ionic/react';
-import React, { useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import './FairwayCards.css';
-import { FairwayCardPartsFragment } from '../graphql/generated';
-import arrow_down from '../theme/img/arrow_down.svg';
+import { FairwayCardPartsFragment } from '../../graphql/generated';
 import { Link } from 'react-router-dom';
-import { Lang } from '../utils/constants';
-import { useFairwayCardListData } from '../utils/dataLoader';
+import { Lang } from '../../utils/constants';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import GeneralInfo from './GeneralInfoAccordion';
+import Breadcrumb from './Breadcrumb';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -74,49 +62,18 @@ type FairwayCardsProps = {
 const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { data, isLoading } = useFairwayCardListData();
-  const [showDescription, setShowDescription] = useState();
+  const path = [{ title: t('title', { count: 0 }) }];
 
   return (
     <>
-      <IonBreadcrumbs>
-        <IonBreadcrumb routerLink="/">
-          {t('home')}
-          <IonLabel slot="separator">&gt;</IonLabel>
-        </IonBreadcrumb>
-        <IonBreadcrumb>
-          <strong>{t('title', { count: 0 })}</strong>
-        </IonBreadcrumb>
-      </IonBreadcrumbs>
+      <Breadcrumb path={path} />
 
       <IonText>
         <h2>
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
       </IonText>
-      <IonAccordionGroup onIonChange={(e) => setShowDescription(e.detail.value)}>
-        <IonAccordion toggleIcon={arrow_down} color="lightest" value="1">
-          <IonItem
-            slot="header"
-            color="lightest"
-            className="accItem"
-            title={showDescription ? t('closeDescription') : t('openDescription')}
-            aria-label={showDescription ? t('closeDescription') : t('openDescription')}
-          >
-            <IonLabel>{t('general')}</IonLabel>
-          </IonItem>
-          <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} slot="content">
-            <IonText>
-              <p>
-                <strong>{t('description')}</strong>
-              </p>
-              <p>{t('additionalDescription')}</p>
-              <p>
-                <em>{t('notification')}</em>
-              </p>
-            </IonText>
-          </div>
-        </IonAccordion>
-      </IonAccordionGroup>
+      <GeneralInfo description={t('description')} additionalDesc={t('additionalDescription')} notification={t('notification')} widePane={widePane} />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
         <FairwayCardGroup

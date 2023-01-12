@@ -1,21 +1,21 @@
 import React, { useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
-import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
-import { ReactComponent as MenuIcon } from '../theme/img/menu.svg';
+import { ReactComponent as ChevronIcon } from '../../theme/img/chevron.svg';
+import { ReactComponent as MenuIcon } from '../../theme/img/menu.svg';
 import { menuController } from '@ionic/core/components';
 import { useTranslation } from 'react-i18next';
-import './FairwayCards.css';
 import { useHistory } from 'react-router-dom';
 import FairwayCards from './FairwayCards';
 import FairwayCard from './FairwayCard';
-import dvkMap from '../components/DvkMap';
-import SearchbarDropdown from './mapOverlays/SearchbarDropdown';
-import { Lang, MINIMUM_QUERYLENGTH } from '../utils/constants';
-import { filterFairways } from '../utils/common';
-import vayla_logo from '../theme/img/vayla_logo.png';
-import { useFairwayCardListData } from '../utils/dataLoader';
+import dvkMap from '../DvkMap';
+import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
+import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { filterFairways } from '../../utils/common';
+import vayla_logo from '../../theme/img/vayla_logo.png';
+import { useFairwayCardListData } from '../../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
-import MarineWarnings from './content/MarineWarnings';
+import MarineWarnings from './MarineWarnings';
+import './Content.css';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -24,7 +24,7 @@ interface MainContentProps {
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
 

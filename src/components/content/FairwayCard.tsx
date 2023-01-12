@@ -1,98 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import {
-  IonBreadcrumb,
-  IonBreadcrumbs,
-  IonButton,
-  IonCol,
-  IonGrid,
-  IonLabel,
-  IonRow,
-  IonSegment,
-  IonSegmentButton,
-  IonSkeletonText,
-  IonText,
-} from '@ionic/react';
+import React, { useState } from 'react';
+import { IonBreadcrumbs, IonButton, IonCol, IonGrid, IonLabel, IonRow, IonSegment, IonSegmentButton, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import './FairwayCards.css';
-import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../graphql/generated';
-import { metresToNauticalMiles } from '../utils/conversions';
-import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
-import { ReactComponent as PrintIcon } from '../theme/img/print.svg';
-import { ReactComponent as InfoIcon } from '../theme/img/info.svg';
-import { getCurrentDecimalSeparator } from '../utils/common';
-import { setSelectedPilotPlace } from './layers';
-import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../utils/constants';
-import PrintMap from './PrintMap';
-import { useFairwayCardListData } from '../utils/dataLoader';
-
-type PhonenumberProps = {
-  number?: string | null;
-  title?: string;
-  showEmpty?: boolean;
-};
-
-const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) => {
-  return (
-    <>
-      {number && (
-        <>
-          {title && title + ': '}
-          <a href={'tel:' + number} aria-label={number?.split('').join(' ')}>
-            {number}
-          </a>
-        </>
-      )}
-      {!number && showEmpty && (
-        <>
-          {title && title + ': '}
-          {'-'}
-        </>
-      )}
-    </>
-  );
-};
-
-type ParagraphProps = {
-  title?: string;
-  bodyText?: Text;
-  showNoData?: boolean;
-};
-
-const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, showNoData }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as Lang;
-
-  return (
-    <>
-      {bodyText && (
-        <p>
-          {title && <strong>{title}: </strong>}
-          {bodyText[lang]}
-        </p>
-      )}
-      {showNoData && !bodyText && (
-        <p>
-          {title && <strong>{title}: </strong>} {t('noData')}
-        </p>
-      )}
-    </>
-  );
-};
-
-type InfoParagraphProps = {
-  title?: string;
-};
-
-const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-
-  return (
-    <p className="info use-flex ion-align-items-center no-print">
-      <InfoIcon />
-      {title || t('noData')}
-    </p>
-  );
-};
+import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../../graphql/generated';
+import { metresToNauticalMiles } from '../../utils/conversions';
+import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
+import { getCurrentDecimalSeparator } from '../../utils/common';
+import { setSelectedPilotPlace } from '../layers';
+import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
+import PrintMap from '../PrintMap';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import Breadcrumb from './Breadcrumb';
+import Paragraph, { InfoParagraph } from './Paragraph';
+import Phonenumber from './Phonenumber';
 
 type FairwaysProps = {
   data?: Fairway[] | null;
@@ -763,11 +683,19 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
 
-  useEffect(() => {
-    if (fairwayCard?.name[lang]) {
-      document.title = t('documentTitle') + ' — ' + fairwayCard?.name[lang];
-    }
-  }, [t, fairwayCard, lang]);
+  const path = [
+    {
+      title: t('title', { count: 0 }),
+      route: '/vaylakortit/',
+    },
+    {
+      title: fairwayCard?.name[lang] || fairwayCard?.name.fi || '',
+      route: '/vaylakortit/' + id,
+    },
+    {
+      title: t('title', { count: 1 }),
+    },
+  ];
 
   return (
     <>
@@ -789,23 +717,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
       {!isLoading && (
         <>
-          <IonBreadcrumbs>
-            <IonBreadcrumb routerLink="/">
-              {t('home')}
-              <IonLabel slot="separator">&gt;</IonLabel>
-            </IonBreadcrumb>
-            <IonBreadcrumb routerLink="/vaylakortit/">
-              {t('title', { count: 0 })}
-              <IonLabel slot="separator">&gt;</IonLabel>
-            </IonBreadcrumb>
-            <IonBreadcrumb routerLink={'/vaylakortit/' + id}>
-              {fairwayCard?.name[lang]}
-              <IonLabel slot="separator">&gt;</IonLabel>
-            </IonBreadcrumb>
-            <IonBreadcrumb>
-              <strong>{t('title', { count: 1 })}</strong>
-            </IonBreadcrumb>
-          </IonBreadcrumbs>
+          <Breadcrumb path={path} />
 
           <IonGrid className="ion-no-padding">
             <IonRow>
