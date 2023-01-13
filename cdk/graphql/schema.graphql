@@ -197,6 +197,13 @@ type RestrictionFairway {
   fairwayId: Int!
 }
 
+type Boardline {
+  id: Int!
+  fairwayId: Int!
+  direction: Float
+  geometry: GeometryLine
+}
+
 type SizingVessel {
   typeCode: String
   type: String
