@@ -212,6 +212,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea') {
     return getSpecialAreaStyle(feature, '#C57A11', 2, true);
+  } else if (ds === 'boardline') {
+    return getLineStyle('#00FF00', 2);
   } else {
     return undefined;
   }
@@ -379,7 +381,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
-
+    const format = new GeoJSON();
     for (const fairway of fairwayCard?.fairways || []) {
       for (const line of fairway.navigationLines || []) {
         let feature = line12Source.getFeatureById(line.id);
@@ -418,6 +420,19 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
+      }
+      for (const line of fairway.boardLines || []) {
+        const feature = format.readFeature(line.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        feature.setProperties(
+          {
+            featureType: 'boardline',
+            fairwayId: line.fairwayId,
+            dataSource: 'boardline',
+          },
+          true
+        );
+        feature.setId(line.id);
+        fairwayFeatures.push(feature);
       }
     }
 

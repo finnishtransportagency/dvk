@@ -87,6 +87,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, true);
     } else if (type === 'marinewarning') {
       return getMarineWarningStyle(feature, true);
+    } else if (type === 'boardline') {
+      return getLineStyle('#00FF00', 2);
     } else {
       return undefined;
     }

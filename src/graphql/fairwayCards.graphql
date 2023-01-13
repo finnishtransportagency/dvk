@@ -125,6 +125,14 @@ fragment FairwayCardParts on FairwayCard {
       notationCode
       typeCode
     }
+    boardLines {
+      id
+      fairwayId
+      geometry {
+        type
+        coordinates
+      }
+    }
   }
   lineText {
     fi

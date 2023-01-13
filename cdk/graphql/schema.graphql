@@ -124,6 +124,7 @@ type Fairway {
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
   geotiffImages: [String]
+  boardLines: [Boardline!]
 }
 
 type Classification {
