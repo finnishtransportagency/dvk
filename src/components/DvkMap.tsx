@@ -32,9 +32,7 @@ import VectorLayer from 'ol/layer/Vector';
 import { GeoJSON } from 'ol/format';
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
-import LinearRing from 'ol/geom/LinearRing';
-import { Geometry, Polygon } from 'ol/geom';
-import { fromExtent } from 'ol/geom/Polygon';
+import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
 
 export type BackgroundMapType = 'sea' | 'land';
@@ -206,6 +204,7 @@ class DvkMap {
     /* Features of the layer behind backgound tile layer */
     const bgVectorLayerFeatures: Feature<Geometry>[] = [];
 
+    /* Read Finland polygons */
     const finFeatures = new GeoJSON().readFeatures(finlandGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
 
     finFeatures.forEach((f) => {
@@ -214,40 +213,10 @@ class DvkMap {
           fill: new Fill({
             color: bgColor,
           }),
-          zIndex: 3 /* Must be in front of of the Baltic Sea features to get right background color for the map */,
         })
       );
       bgVectorLayerFeatures.push(f);
     });
-
-    /* Max extend polygon with Finland shape hole in it */
-    const bgPolygon = fromExtent(MAP.EXTENT);
-    finFeatures.forEach((f) => {
-      const type = f?.getGeometry()?.getType();
-      if (type === 'Polygon') {
-        const finPolygon = f.getGeometry() as Polygon;
-        const coordinates = finPolygon.getCoordinates();
-        if (coordinates) {
-          const linearRing = new LinearRing(finPolygon.getCoordinates()[0]);
-          bgPolygon.appendLinearRing(linearRing);
-        }
-      }
-    });
-
-    const invertFinFeature = new Feature({
-      geometry: bgPolygon,
-    });
-
-    invertFinFeature.setStyle(
-      new Style({
-        fill: new Fill({
-          color: '#cccccc',
-        }),
-        zIndex: 1 /* Must be behind the Baltic Sea feature */,
-      })
-    );
-
-    bgVectorLayerFeatures.push(invertFinFeature);
 
     /* Read baltic sea polygons */
     const bsFeatures = new GeoJSON().readFeatures(balticseaGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
@@ -258,7 +227,6 @@ class DvkMap {
           fill: new Fill({
             color: waterColor,
           }),
-          zIndex: 2 /* Behind Finland polygon, but in front of the invert Finland polygon */,
         })
       );
       bgVectorLayerFeatures.push(bsf);
