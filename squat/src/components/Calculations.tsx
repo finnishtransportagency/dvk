@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
 
@@ -39,6 +39,7 @@ import {
   isUKCUnderMinimum,
 } from '../utils/validations';
 import Modal from './Modal';
+import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
@@ -274,12 +275,15 @@ const Calculations: React.FC = () => {
   ]);
 
   // Update status to state
-  const setStateStatus = (key: string, value: string | undefined) => {
-    dispatch({
-      type: 'status',
-      payload: { key: key, value: value === 'true', elType: 'boolean' },
-    });
-  };
+  const setStateStatus = useCallback(
+    (key: string, value: string | undefined) => {
+      dispatch({
+        type: 'status',
+        payload: { key: key, value: value === 'true', elType: 'boolean' },
+      });
+    },
+    [dispatch]
+  );
 
   // Determine values to show
   const getUKCVesselMotionValue = () => {
@@ -302,6 +306,20 @@ const Calculations: React.FC = () => {
     if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
     return '';
   };
+
+  const handleShowDeepWaterChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      setStateStatus('showDeepWaterValues', e.detail.value);
+    },
+    [setStateStatus]
+  );
+
+  const handleShowBarrassWaterChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      setStateStatus('showBarrass', e.detail.value);
+    },
+    [setStateStatus]
+  );
 
   return (
     <>
@@ -343,7 +361,7 @@ const Calculations: React.FC = () => {
         <div className="in-print top-padding">
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
-            onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
+            onIonChange={handleShowDeepWaterChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
             disabled={!state.environment.weather.waveLength[0]}
             selectOnFocus
@@ -357,7 +375,7 @@ const Calculations: React.FC = () => {
           </IonSegment>
           <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
-            onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
+            onIonChange={handleShowBarrassWaterChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
             disabled={getSquatValue() === ''}
