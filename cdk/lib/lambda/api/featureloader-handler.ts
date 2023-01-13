@@ -10,6 +10,7 @@ import {
   fetchVATUByFairwayClass,
   NavigointiLinjaAPIModel,
   RajoitusAlueAPIModel,
+  TaululinjaAPIModel,
   TurvalaiteAPIModel,
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
@@ -212,6 +213,34 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
+async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
+  const cardMap = await getCardMap();
+  log.debug('board lines: %d', lines.length);
+  for (const line of lines) {
+    features.push({
+      type: 'Feature',
+      id: line.taululinjaId,
+      geometry: line.geometria as Geometry,
+      properties: {
+        id: line.taululinjaId,
+        featureType: 'boardline',
+        direction: line.suunta,
+        fairways: line.vayla?.map((v) => {
+          return {
+            fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFI,
+              sv: v.nimiSV,
+            },
+            fairwayCards: cardMap.get(v.jnro),
+          };
+        }),
+      },
+    });
+  }
+}
+
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   const cardMap = await getCardMap();
@@ -410,6 +439,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addMarineWarnings(features);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
+  } else if (type === 'boardline') {
+    await addBoardLineFeatures(features, event);
   }
 }
 

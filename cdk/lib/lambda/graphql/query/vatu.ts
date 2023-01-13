@@ -179,6 +179,12 @@ export type TurvalaiteAPIModel = {
   vayla?: TurvalaiteVaylaAPIModel[];
 } & GeometryModel;
 
+export type TaululinjaVaylaAPIModel = {
+  jnro: number;
+  nimiFI?: string;
+  nimiSV?: string;
+};
+
 export type TaululinjaAPIModel = {
   taululinjaId: number;
   suunta: number;
@@ -186,6 +192,7 @@ export type TaululinjaAPIModel = {
   etuTLId?: number;
   keskiTLId?: number;
   takaTLId?: number;
+  vayla: TaululinjaVaylaAPIModel[];
 } & GeometryModel;
 
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {

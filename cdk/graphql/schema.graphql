@@ -200,7 +200,6 @@ type RestrictionFairway {
 
 type Boardline {
   id: Int!
-  fairwayId: Int!
   direction: Float
   geometry: GeometryLine
 }
