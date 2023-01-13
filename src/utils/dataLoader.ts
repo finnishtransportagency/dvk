@@ -33,5 +33,5 @@ export function useSafetyEquipmentFaultData() {
 }
 
 export function useWarineWarningsData() {
-  return useFindAllMarineWarningsQuery(datasourceClient);
+  return useFindAllMarineWarningsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }

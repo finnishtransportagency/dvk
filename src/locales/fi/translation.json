@@ -189,7 +189,9 @@
     "noObjects": "Tietoa ei ole asetettu.",
     "validityTime": "Voimassaolo",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-    "notifier": "Tiedoksiantaja"
+    "notifier": "Tiedoksiantaja",
+    "modified": "Päivitetty",
+    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
