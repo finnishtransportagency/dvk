@@ -188,7 +188,7 @@
     "relatedObjects": "Liittyvät kohteet",
     "noObjects": "Tietoa ei ole asetettu.",
     "validityTime": "Voimassaolo",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Tiedoksiantaja",
     "modified": "Päivitetty",
     "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
