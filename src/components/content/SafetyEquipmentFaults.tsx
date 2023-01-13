@@ -88,19 +88,14 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
-  const { data, isLoading } = useSafetyEquipmentFaultData();
+  const { data, isLoading, dataUpdatedAt } = useSafetyEquipmentFaultData();
   const path = [{ title: t('title') }];
-  const [timestamp, setTimestamp] = useState<string>();
-
-  useEffect(() => {
-    if (!isLoading) setTimestamp(Date());
-  }, [isLoading]);
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonGrid className="ion-no-padding">
+      <IonGrid className="ion-no-padding" style={{ marginBottom: '20px' }}>
         <IonRow>
           <IonCol>
             <IonText className="fairwayTitle">
@@ -110,17 +105,18 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
             </IonText>
           </IonCol>
         </IonRow>
+
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle">
+              <em>
+                {' '}
+                {t('modified')} {t('modifiedDate', new Date(dataUpdatedAt))}
+              </em>
+            </IonText>
+          </IonCol>
+        </IonRow>
       </IonGrid>
-      <IonRow>
-        <IonCol>
-          <IonText className="fairwayTitle">
-            <em>
-              {' '}
-              {t('modified')} {t('modifiedDate', timestamp)}
-            </em>
-          </IonText>
-        </IonCol>
-      </IonRow>
 
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
