@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,6 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { Drivers, Storage } from '@ionic/storage';
 import IonicAsyncStorage from './utils/IonicAsyncStorage';
 import { OFFLINE_STORAGE } from './utils/constants';
-import MainContent from './components/MainContent';
 import { InitDvkMap } from './components/DvkMap';
 import {
   useLine12Layer,
@@ -47,10 +46,14 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import './theme/dvk.css';
 import './theme/print.css';
-import Home from './pages/Home';
+import HomePage from './pages/HomePage';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
 import { isMobile } from './utils/common';
+import FairwayCardPage from './pages/FairwayCardPage';
+import FairwayCardListPage from './pages/FairwayCardListPage';
+import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
+import MarineWarningPage from './pages/MarineWarningPage';
 
 setupIonicReact({
   mode: 'md',
@@ -129,10 +132,23 @@ const DvkIonApp: React.FC = () => {
         <SidebarMenu />
         <IonContent id="MainContent">
           <IonRouterOutlet>
-            <Route exact path="/" render={(props) => <Home {...props} />} />
-            <Route path="/vaylakortit/:fairwayId" render={(props) => <MainContent splitPane {...props} />} />
-            <Route exact path="/vaylakortit" render={(props) => <MainContent splitPane {...props} />} />
-            <Route exact path="/turvalaiteviat" render={(props) => <MainContent splitPane target="faults" {...props} />} />
+            <Switch>
+              <Route exact path="/">
+                <HomePage />
+              </Route>
+              <Route exact path="/vaylakortit">
+                <FairwayCardListPage />
+              </Route>
+              <Route exact path="/vaylakortit/:fairwayCardId">
+                <FairwayCardPage />
+              </Route>
+              <Route exact path="/turvalaiteviat">
+                <SafetyEquipmentFaultPage />
+              </Route>
+              <Route exact path="/merivaroitukset">
+                <MarineWarningPage />
+              </Route>
+            </Switch>
           </IonRouterOutlet>
         </IonContent>
         <MapOverlays />

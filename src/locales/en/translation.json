@@ -2,10 +2,12 @@
   "homePage": {
     "sidebarMenu": {
       "closeMenu": "Close",
-      "title": "[en] Digitaalinen väyläkortti",
+      "title": "Digital Fairway Card",
       "fairway-cards": "Fairway Cards",
       "safety-equipment-faults": "Safety Equipment Faults",
-      "squat": "[en] Squat-laskuri"
+      "marine-warnings": "Marine Warnings",
+      "squat": "[en] Squat-laskuri",
+      "squat-url": "/squat/index.html?lang=en"
     },
     "map": {
       "content": "[en] TODO: Kartta",
@@ -56,22 +58,9 @@
     "documentTitle": "Digital Fairway Card",
     "title_one": "Fairway card",
     "title_other": "Fairway cards",
-    "openMenu": "Open menu",
-    "general": "General",
-    "openDescription": "Open",
-    "closeDescription": "Close",
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
-    "search": "Search by fairway name",
-    "searchTitle": "Fairway search",
-    "clearTitle": "Clear",
-    "expandPane": "Expand",
-    "revertPane": "Revert",
-    "closePane": "Close",
-    "hidePane": "Hide",
-    "showPane": "Show",
-    "home": "Digital Fairway Card",
     "name": "Fairway card name",
     "print": "Print fairway card",
     "modified": "Modified",
@@ -104,7 +93,7 @@
     "minimumTurningCircle_one": "Minimum turning radius",
     "minimumTurningCircle_other": "Minimum turning radii",
     "designSpeed": "Design speed",
-    "attention": "Note",
+    "attention": "Note:",
     "n2000Info": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Meeting and overtaking prohibition areas",
     "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to West Coast VTS Master´s Guide",
@@ -174,30 +163,31 @@
     }
   },
   "faults": {
-    "documentTitle": "Digital Fairway Card",
     "title": "Safety equipment faults",
-    "openMenu": "Open menu",
-    "general": "General",
-    "openDescription": "Open",
-    "closeDescription": "Close",
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
-    "search": "Search by fairway name",
-    "searchTitle": "Fairway search",
-    "clearTitle": "Clear",
-    "expandPane": "Expand",
-    "revertPane": "Revert",
-    "closePane": "Close",
-    "hidePane": "Hide",
-    "showPane": "Show",
-    "home": "Digital Fairway Card",
     "print": "Print safety equipment faults",
     "archipelagoSea": "Archipelago sea",
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
     "and": " and ",
     "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+  },
+  "warnings": {
+    "title": "Marine warnings",
+    "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
+    "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
+    "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
+    "print": "Print marine warnings",
+    "area": "Area",
+    "location": "Location",
+    "content": "Content",
+    "relatedObjects": "Related objects",
+    "noObjects": "Data is not available.",
+    "validityTime": "Validity time",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "Notifier"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -214,7 +204,7 @@
     "pilotPlace": {
       "header": "[en] Luotsipaikka {{val}}",
       "coordinates": "[en] Koordinaatit",
-      "fairways": "[en] Luotsipaikkaan liittyvät väylät"
+      "fairways": "[en] Luotsipaikkaan liittyvät väyläkortit"
     },
     "harbor": {
       "coordinates": "[en] Koordinaatit",
@@ -235,7 +225,7 @@
       "draft": "[en] Mitoitussyväys {{val, number}}m",
       "speedLimit": "[en] Nopeusrajoitus {{val}} km/h",
       "speed": "[en] Mitoitusnopeus",
-      "fairways": "[en] Väyläalue on osa väylää",
+      "fairways": "[en] Väyläalue on osa väyläkorttia",
       "extra": "[en] Lisätieto"
     },
     "line": {
@@ -244,7 +234,7 @@
       "draft": "[en] Mitoitussyväys {{val, number}}m",
       "length": "[en] Pituus {{val}}m",
       "direction": "[en] Tosisuunta {{val}}°",
-      "fairways": "[en] Navigointilinja on osa väylää",
+      "fairways": "[en] Navigointilinja on osa väyläkorttia",
       "extra": "[en] Lisätieto"
     },
     "equipment": {
@@ -256,7 +246,7 @@
       "type": "Type",
       "lightning": "[en] Valaistu",
       "navigationCode": "[en] Navigointilaji",
-      "fairways": "[en] Turvalaitteeseen liittyvät väylät"
+      "fairways": "[en] Turvalaitteeseen liittyvät väyläkortit"
     },
     "marine": {
       "area": "Area",
@@ -271,8 +261,23 @@
     }
   },
   "common": {
+    "documentTitle":"Digital Fairway Card",
+    "home": "Digitaalinen väyläkortti",
+    "openMenu": "Open menu",
+    "general": "General",
+    "openDescription": "Open",
+    "closeDescription": "Close",
+    "search": "Search by fairway name",
+    "searchTitle": "Fairway search",
+    "clearTitle": "Clear",
+    "expandPane": "Expand",
+    "revertPane": "Revert",
+    "closePane": "Close",
+    "hidePane": "Hide",
+    "showPane": "Show",
     "close": "Close",
-    "close-dialog": "Close dialog"
+    "close-dialog": "Close dialog",
+    "noData": "Data is not available."
   },
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",

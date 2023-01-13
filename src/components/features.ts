@@ -51,7 +51,7 @@ export type AreaFeatureProperties = {
 };
 
 export type AreaFairway = {
-  id: number;
+  fairwayId: number;
   name: Text;
   sizingSpeed?: number;
   sizingSpeed2?: number;

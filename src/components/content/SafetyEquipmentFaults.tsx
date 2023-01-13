@@ -1,24 +1,12 @@
-import {
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonText,
-  IonBreadcrumbs,
-  IonBreadcrumb,
-  IonSkeletonText,
-  IonAccordionGroup,
-  IonAccordion,
-  IonItem,
-} from '@ionic/react';
-import React, { useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import './FairwayCards.css';
-import { SafetyEquipmentFault } from '../graphql/generated';
-import arrow_down from '../theme/img/arrow_down.svg';
-import { Lang } from '../utils/constants';
-import { useSafetyEquipmentFaultData } from '../utils/dataLoader';
-import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
+import { SafetyEquipmentFault } from '../../graphql/generated';
+import { Lang } from '../../utils/constants';
+import { useSafetyEquipmentFaultData } from '../../utils/dataLoader';
+import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import GeneralInfoAccordion from './GeneralInfoAccordion';
+import Breadcrumb from './Breadcrumb';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -101,51 +89,20 @@ type FaultsProps = {
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
   const { data, isLoading } = useSafetyEquipmentFaultData();
-  const [showDescription, setShowDescription] = useState();
+  const path = [{ title: t('title') }];
 
   return (
     <>
-      <IonBreadcrumbs>
-        <IonBreadcrumb routerLink="/">
-          {t('home')}
-          <IonLabel slot="separator">&gt;</IonLabel>
-        </IonBreadcrumb>
-        <IonBreadcrumb>
-          <strong>{t('title')}</strong>
-        </IonBreadcrumb>
-      </IonBreadcrumbs>
+      <Breadcrumb path={path} />
 
       <IonText>
         <h2>
           <strong>{t('title')}</strong>
         </h2>
       </IonText>
-      <IonAccordionGroup onIonChange={(e) => setShowDescription(e.detail.value)}>
-        <IonAccordion toggleIcon={arrow_down} color="lightest" value="1">
-          <IonItem
-            slot="header"
-            color="lightest"
-            className="accItem"
-            title={showDescription ? t('closeDescription') : t('openDescription')}
-            aria-label={showDescription ? t('closeDescription') : t('openDescription')}
-          >
-            <IonLabel>{t('general')}</IonLabel>
-          </IonItem>
-          <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} slot="content">
-            <IonText>
-              <p>
-                <strong>{t('description')}</strong>
-              </p>
-              <p>{t('additionalDescription')}</p>
-              <p>
-                <em>{t('notification')}</em>
-              </p>
-            </IonText>
-          </div>
-        </IonAccordion>
-      </IonAccordionGroup>
+      <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
-      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
+      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
         <FaultGroup
           title={t('archipelagoSea') + ', ' + t('gulfOfFinland') + t('and') + t('gulfOfBothnia')}
           loading={isLoading}

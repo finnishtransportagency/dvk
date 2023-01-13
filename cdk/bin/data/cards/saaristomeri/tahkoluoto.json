@@ -50,7 +50,10 @@
           "pilotJourney": 9,
           "geometry": {
             "type": "Point",
-            "coordinates": [21.283333, 61.613333]
+            "coordinates": [
+              21.28333,
+              61.61333
+            ]
           }
         }
       ]

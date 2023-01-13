@@ -18,11 +18,6 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'fairwayCard',
   },
   {
-    entry: path.join(__dirname, 'query/fairwayNavigationLines-handler.ts'),
-    typeName: 'Fairway',
-    fieldName: 'navigationLines',
-  },
-  {
     entry: path.join(__dirname, 'query/fairwayCardFairways-handler.ts'),
     typeName: 'FairwayCard',
     fieldName: 'fairways',
@@ -33,16 +28,6 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'fairwayCardsByFairwayId',
   },
   {
-    entry: path.join(__dirname, 'query/fairwayAreas-handler.ts'),
-    typeName: 'Fairway',
-    fieldName: 'areas',
-  },
-  {
-    entry: path.join(__dirname, 'query/fairwayRestrictionAreas-handler.ts'),
-    typeName: 'Fairway',
-    fieldName: 'restrictionAreas',
-  },
-  {
     entry: path.join(__dirname, 'query/fairwayCardHarbors-handler.ts'),
     typeName: 'FairwayCard',
     fieldName: 'harbors',
@@ -51,6 +36,11 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'query/safetyEquipmentFaults-handler.ts'),
     typeName: 'Query',
     fieldName: 'safetyEquipmentFaults',
+  },
+  {
+    entry: path.join(__dirname, 'query/marineWarnings-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'marineWarnings',
   },
 ];
 

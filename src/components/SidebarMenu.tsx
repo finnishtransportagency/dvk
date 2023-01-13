@@ -119,13 +119,27 @@ const SidebarMenu: React.FC = () => {
                 disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                 data-testid="faultsLink"
               >
-                <IonIcon slot="start" src="/assets/icon/error_icon.svg" />
+                <IonIcon slot="start" src="/assets/icon/alert_icon.svg" />
                 {t('safety-equipment-faults')}
               </IonItem>
             </IonCol>
             <IonCol size="auto">
               <IonItem
-                href="/squat/"
+                routerLink="/merivaroitukset/"
+                detail={false}
+                lines="none"
+                className="ion-no-padding internal"
+                onClick={async () => menuController.close()}
+                disabled={router.routeInfo.pathname === '/merivaroitukset/'}
+                data-testid="warningsLink"
+              >
+                <IonIcon slot="start" src="/assets/icon/weather_icon.svg" />
+                {t('marine-warnings')}
+              </IonItem>
+            </IonCol>
+            <IonCol size="auto">
+              <IonItem
+                href={t('squat-url')}
                 rel="external"
                 target="_blank"
                 detail={false}
@@ -134,7 +148,7 @@ const SidebarMenu: React.FC = () => {
                 onClick={async () => menuController.close()}
                 data-testid="squatLink"
               >
-                <IonIcon slot="start" src="/assets/icon/squat_icon.svg" />
+                <IonIcon slot="start" src="/assets/icon/calculate_icon.svg" />
                 {t('squat')}
                 <IonIcon slot="end" src="/assets/icon/ext_link.svg" />
               </IonItem>

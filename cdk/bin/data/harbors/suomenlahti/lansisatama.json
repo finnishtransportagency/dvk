@@ -17,7 +17,10 @@
   "email": "port.helsinki@portofhelsinki.fi",
   "geometry": {
     "type": "Point",
-    "coordinates": [24.913882373350514, 60.14907092284604]
+    "coordinates": [
+      24.91388,
+      60.14907
+    ]
   },
   "quays": [
     {
@@ -32,7 +35,10 @@
           "name": "LJ3",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.923055773956474, 60.156270996205734]
+            "coordinates": [
+              24.92306,
+              60.15627
+            ]
           },
           "depth": 7.8
         }
@@ -50,7 +56,10 @@
           "name": "LJ4",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.923003552264284, 60.1554308144813]
+            "coordinates": [
+              24.923,
+              60.15543
+            ]
           },
           "depth": 8.8
         }
@@ -68,7 +77,10 @@
           "name": "LJ5",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.920123502658925, 60.15271015023181]
+            "coordinates": [
+              24.92012,
+              60.15271
+            ]
           },
           "depth": 8.8
         }
@@ -86,7 +98,10 @@
           "name": "LJ6",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.919266799225305, 60.15190401558368]
+            "coordinates": [
+              24.91927,
+              60.1519
+            ]
           },
           "depth": 9.8
         }
@@ -104,7 +119,10 @@
           "name": "LJ7",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.915847387109896, 60.14937160957522]
+            "coordinates": [
+              24.91585,
+              60.14937
+            ]
           },
           "depth": 11.9
         }
@@ -122,7 +140,10 @@
           "name": "LJ8",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.91328496985716, 60.150058330613874]
+            "coordinates": [
+              24.91328,
+              60.15006
+            ]
           },
           "depth": 11.9
         }
@@ -140,7 +161,10 @@
           "name": "LHA",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.925742715915337, 60.1540541339185]
+            "coordinates": [
+              24.92574,
+              60.15405
+            ]
           }
         }
       ]
@@ -157,7 +181,10 @@
           "name": "LHB",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.924795856545522, 60.15324580766122]
+            "coordinates": [
+              24.9248,
+              60.15325
+            ]
           },
           "depth": 9.15
         }
@@ -175,7 +202,10 @@
           "name": "LHC",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.920916377536084, 60.1495964713914]
+            "coordinates": [
+              24.92092,
+              60.1496
+            ]
           },
           "depth": 9.8
         }
@@ -193,7 +223,10 @@
           "name": "LHD",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.921128952311605, 60.14698245471573]
+            "coordinates": [
+              24.92113,
+              60.14698
+            ]
           },
           "depth": 11.9
         }
@@ -211,7 +244,10 @@
           "name": "LKL",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.928020403528958, 60.160393947025106]
+            "coordinates": [
+              24.92802,
+              60.16039
+            ]
           }
         }
       ]
@@ -228,7 +264,10 @@
           "name": "LEL",
           "geometry": {
             "type": "Point",
-            "coordinates": [24.905752496651328, 60.16022427831901]
+            "coordinates": [
+              24.90575,
+              60.16022
+            ]
           },
           "depth": 9.2
         }

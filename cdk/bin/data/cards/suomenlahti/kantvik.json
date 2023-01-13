@@ -70,7 +70,10 @@
           "pilotJourney": 13,
           "geometry": {
             "type": "Point",
-            "coordinates": [24.194667, 59.893333]
+            "coordinates": [
+              24.19467,
+              59.89333
+            ]
           }
         },
         {
@@ -79,13 +82,16 @@
           "pilotJourney": 10.5,
           "geometry": {
             "type": "Point",
-            "coordinates": [24.236667, 59.927667]
+            "coordinates": [
+              24.23667,
+              59.92767
+            ]
           }
         }
       ]
     },
     "vts": [
-        {
+      {
         "name": {
           "fi": "Suomenlahden meriliikennekeskus",
           "sv": "Finska vikens sjötrafikcentral",
