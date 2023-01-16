@@ -84,7 +84,7 @@ export function getBoardLineStyle(color: string, width: number) {
     stroke: new Stroke({
       color,
       width,
-      lineDash: [5],
+      lineDash: [15, 10],
     }),
   });
 }
