@@ -218,6 +218,7 @@ function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
   return lines.map((line) => {
     const boardLine: Boardline = {
       id: line.taululinjaId,
+      direction: line.suunta,
       geometry: line.geometria,
     };
     boardLine.fairways = line.vayla?.map((apiFairway) => {
