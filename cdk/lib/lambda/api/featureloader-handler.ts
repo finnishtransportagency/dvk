@@ -34,52 +34,60 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const harbors = await HarborDBModel.getAll();
-  for (const harbor of harbors || []) {
-    if (harbor?.geometry?.coordinates?.length === 2) {
-      features.push({
-        type: 'Feature',
-        geometry: harbor.geometry as Geometry,
-        properties: {
-          featureType: 'harbor',
-          id: harbor.id,
-          name: harbor.name ?? harbor.company,
-          email: harbor.email,
-          phoneNumber: harbor.phoneNumber,
-          fax: harbor.fax,
-          internet: harbor.internet,
-        },
-      });
+  try {
+    const harbors = await HarborDBModel.getAll();
+    for (const harbor of harbors || []) {
+      if (harbor?.geometry?.coordinates?.length === 2) {
+        features.push({
+          type: 'Feature',
+          geometry: harbor.geometry as Geometry,
+          properties: {
+            featureType: 'harbor',
+            id: harbor.id,
+            name: harbor.name ?? harbor.company,
+            email: harbor.email,
+            phoneNumber: harbor.phoneNumber,
+            fax: harbor.fax,
+            internet: harbor.internet,
+          },
+        });
+      }
     }
+  } catch (e) {
+    log.error('Getting all harbors failed: %s', e);
   }
 }
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAll();
-  for (const card of cards) {
-    const pilot = card.trafficService?.pilot;
-    if (pilot && pilot.places) {
-      for (const place of pilot.places) {
-        if (!placeMap.has(place.id)) {
-          placeMap.set(place.id, place);
-          place.fairwayCards = [];
+  try {
+    const placeMap = new Map<number, PilotPlace>();
+    const cards = await FairwayCardDBModel.getAll();
+    for (const card of cards) {
+      const pilot = card.trafficService?.pilot;
+      if (pilot && pilot.places) {
+        for (const place of pilot.places) {
+          if (!placeMap.has(place.id)) {
+            placeMap.set(place.id, place);
+            place.fairwayCards = [];
+          }
+          placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
         }
-        placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
       }
     }
-  }
-  for (const place of placeMap.values()) {
-    features.push({
-      type: 'Feature',
-      geometry: place.geometry as Geometry,
-      id: place.id,
-      properties: {
-        featureType: 'pilot',
-        name: place.name,
-        fairwayCards: place.fairwayCards,
-      },
-    });
+    for (const place of placeMap.values()) {
+      features.push({
+        type: 'Feature',
+        geometry: place.geometry as Geometry,
+        id: place.id,
+        properties: {
+          featureType: 'pilot',
+          name: place.name,
+          fairwayCards: place.fairwayCards,
+        },
+      });
+    }
+  } catch (e) {
+    log.error('Getting all pilot places failed: %s', e);
   }
 }
 
@@ -382,7 +390,12 @@ async function cacheResponse(key: string, response: string) {
   await s3Client.send(command);
 }
 
-async function getFromCache(key: string): Promise<string | undefined> {
+type CacheResponse = {
+  expired: boolean;
+  data?: string;
+};
+
+async function getFromCache(key: string): Promise<CacheResponse> {
   try {
     const data = await s3Client.send(
       new GetObjectCommand({
@@ -390,7 +403,7 @@ async function getFromCache(key: string): Promise<string | undefined> {
         Bucket: getCacheBucketName(),
       })
     );
-    if (data.Body && data.Expires && data.Expires.getTime() > Date.now()) {
+    if (data.Body) {
       log.debug(`returning ${key} from cache`);
       const streamToString = (stream: Readable): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -399,13 +412,12 @@ async function getFromCache(key: string): Promise<string | undefined> {
           stream.on('error', reject);
           stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
         });
-      return await streamToString(data.Body as Readable);
+      return { expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(), data: await streamToString(data.Body as Readable) };
     }
   } catch (e) {
-    // not found
-    return undefined;
+    // errors ignored also not found
   }
-  return undefined;
+  return { expired: true };
 }
 
 const noCache = ['safetyequipmentfault', 'marinewarning'];
@@ -418,7 +430,7 @@ async function isCacheEnabled(type: string): Promise<boolean> {
   return cacheEnabled;
 }
 
-async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
   if (type === 'pilot') {
     await addPilotFeatures(features);
   } else if (type === 'harbor') {
@@ -441,40 +453,53 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {
     await addBoardLineFeatures(features, event);
+  } else {
+    return false;
   }
+  return true;
 }
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.queryStringParameters);
   const type = event.queryStringParameters?.type || '';
-  let base64Response: string;
+  let base64Response: string | undefined;
+  let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);
-  const response = cacheEnabled ? await getFromCache(key) : undefined;
-  if (response) {
-    base64Response = response;
+  const response = cacheEnabled ? await getFromCache(key) : { expired: true };
+  if (!response.expired && response.data) {
+    base64Response = response.data;
   } else {
     const features: Feature<Geometry, GeoJsonProperties>[] = [];
-    await addFeatures(type, features, event);
+    const validType = await addFeatures(type, features, event);
     const collection: FeatureCollection = {
       type: 'FeatureCollection',
       features,
     };
-    let start = Date.now();
-    const body = JSON.stringify(collection);
-    log.debug('stringify duration: %d ms', Date.now() - start);
-    start = Date.now();
-    const gzippedResponse = await gzipString(body);
-    log.debug('gzip duration: %d ms', Date.now() - start);
-    start = Date.now();
-    base64Response = gzippedResponse.toString('base64');
-    log.debug('base64 duration: %d ms', Date.now() - start);
-    if (cacheEnabled && collection.features.length > 0) {
-      await cacheResponse(key, base64Response);
+    if (features.length === 0 && response.data) {
+      log.warn('Getting features failed, returning response from s3 cache');
+      base64Response = response.data;
+    } else if (features.length === 0) {
+      base64Response = undefined;
+      statusCode = validType ? 500 : 400;
+      log.error('Getting features failed and no cached response, statusCode: %d', statusCode);
+    } else {
+      let start = Date.now();
+      const body = JSON.stringify(collection);
+      log.debug('stringify duration: %d ms', Date.now() - start);
+      start = Date.now();
+      const gzippedResponse = await gzipString(body);
+      log.debug('gzip duration: %d ms', Date.now() - start);
+      start = Date.now();
+      base64Response = gzippedResponse.toString('base64');
+      log.debug('base64 duration: %d ms', Date.now() - start);
+      if (cacheEnabled && collection.features.length > 0) {
+        await cacheResponse(key, base64Response);
+      }
     }
   }
   return {
-    statusCode: 200,
+    statusCode,
     body: base64Response,
     isBase64Encoded: true,
     headers: { ...getHeaders(), 'Content-Type': 'application/geo+json' },
