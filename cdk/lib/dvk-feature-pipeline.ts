@@ -77,7 +77,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync',
               'npm run setup && cd ..',
-              'npm run build && npx serve -p 3001 -s build &',
+              'CI=false npm run build && npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
