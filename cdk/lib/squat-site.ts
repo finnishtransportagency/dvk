@@ -199,6 +199,9 @@ export class SquatSite extends Construct {
         originOverride: false,
         accessControlMaxAge: Duration.seconds(600),
       },
+      securityHeadersBehavior: {
+        strictTransportSecurity: { accessControlMaxAge: Duration.seconds(3600), includeSubdomains: true, override: true },
+      },
     });
     // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
     const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
@@ -207,7 +210,7 @@ export class SquatSite extends Construct {
     const geoTiffBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
       originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
+      responseHeadersPolicy: Config.isDeveloperOrDevEnvironment() ? corsResponsePolicy : strictTransportSecurityResponsePolicy,
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,

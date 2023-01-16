@@ -33,6 +33,10 @@ export function useLine3456Layer() {
   return useDataLayer('line3456', 'line3456');
 }
 
+export function useSeaNameLayer() {
+  return useDataLayer('seaname', 'seaname');
+}
+
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
   for (const raf of rafs) {

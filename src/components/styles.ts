@@ -381,3 +381,26 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
     }),
   ];
 }
+
+export function getSeaNameStyle(feature: FeatureLike, resolution: number) {
+  const priority = feature.getProperties().AHTI_PRIOR as string;
+  const visible =
+    (priority === '6' && resolution < 20) ||
+    (priority === '5' && resolution < 35) ||
+    (priority === '4' && resolution < 45) ||
+    (priority === '3' && resolution < 65) ||
+    (priority === '2' && resolution < 85) ||
+    priority === '1';
+  return visible
+    ? new Style({
+        text: new Text({
+          font: 'bold 12px "Exo2"',
+          placement: 'point',
+          text: feature.getProperties().AHTI_NAMFI,
+          fill: new Fill({
+            color: '#000000',
+          }),
+        }),
+      })
+    : undefined;
+}

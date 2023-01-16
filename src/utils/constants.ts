@@ -2,6 +2,8 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
+const staticUrl = process.env.REACT_APP_STATIC_URL ? process.env.REACT_APP_STATIC_URL + '/geotiff' : window.location.origin + '/geotiff';
+
 export type FeatureDataId =
   | 'area12'
   | 'area3456'
@@ -14,7 +16,8 @@ export type FeatureDataId =
   | 'safetyequipment'
   | 'depth12'
   | 'safetyequipmentfault'
-  | 'marinewarning';
+  | 'marinewarning'
+  | 'seaname';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -31,6 +34,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2') },
   { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
+  { id: 'seaname', url: new URL(staticUrl + '/vesisto_nimet.json') },
 ];
 
 export type FeatureDataLayerId =
@@ -45,7 +49,8 @@ export type FeatureDataLayerId =
   | 'quay'
   | 'safetyequipment'
   | 'depth12'
-  | 'marinewarning';
+  | 'marinewarning'
+  | 'seaname';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
