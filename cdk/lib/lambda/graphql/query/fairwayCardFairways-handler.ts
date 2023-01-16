@@ -216,11 +216,16 @@ async function getRestrictionAreaMap(fairwayIds: number[]) {
 
 function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
   return lines.map((line) => {
-    return {
+    const boardLine: Boardline = {
       id: line.taululinjaId,
-      fairwayId: line.vaylaId,
       geometry: line.geometria,
     };
+    boardLine.fairways = line.vayla?.map((apiFairway) => {
+      return {
+        fairwayId: apiFairway.jnro,
+      };
+    });
+    return boardLine;
   });
 }
 
@@ -229,10 +234,12 @@ async function getBoardLineMap(fairwayIds: number[]) {
   log.debug('board lines: %d', lines.length);
   const lineMap = new Map<number, TaululinjaAPIModel[]>();
   for (const line of lines) {
-    if (!lineMap.has(line.vaylaId)) {
-      lineMap.set(line.vaylaId, []);
+    for (const lineFairway of line.vayla || []) {
+      if (!lineMap.has(lineFairway.jnro)) {
+        lineMap.set(lineFairway.jnro, []);
+      }
+      lineMap.get(lineFairway.jnro)?.push(line);
     }
-    lineMap.get(line.vaylaId)?.push(line);
   }
   return lineMap;
 }

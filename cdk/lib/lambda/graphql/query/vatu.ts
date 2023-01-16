@@ -188,7 +188,6 @@ export type TaululinjaVaylaAPIModel = {
 export type TaululinjaAPIModel = {
   taululinjaId: number;
   suunta: number;
-  vaylaId: number;
   etuTLId?: number;
   keskiTLId?: number;
   takaTLId?: number;

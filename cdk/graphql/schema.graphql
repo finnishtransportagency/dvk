@@ -198,10 +198,15 @@ type RestrictionFairway {
   fairwayId: Int!
 }
 
+type BoardlineFairway {
+  fairwayId: Int!
+}
+
 type Boardline {
   id: Int!
   direction: Float
   geometry: GeometryLine
+  fairways: [BoardlineFairway!]
 }
 
 type SizingVessel {
