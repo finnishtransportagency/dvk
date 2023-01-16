@@ -260,7 +260,7 @@
       "notarget": "Tietoa ei ole asetettu.",
       "datetime": "Päivämäärä ja aika",
       "startend": "Voimassaolo",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Tiedoksiantaja"
     }
   },

@@ -188,7 +188,7 @@
     "relatedObjects": "Related objects",
     "noObjects": "Data is not available.",
     "validityTime": "Validity time",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Notifier",
     "modified": "Updated",
     "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
@@ -260,7 +260,7 @@
       "notarget": "Data is not available.",
       "datetime": "Date and time",
       "startend": "Validity",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Notifier"
     }
   },

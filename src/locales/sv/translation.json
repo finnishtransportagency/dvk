@@ -188,7 +188,7 @@
     "relatedObjects": "[sv] Liittyvät kohteet",
     "noObjects": "[sv] Tietoa ei ole asetettu.",
     "validityTime": "[sv] Voimassaolo",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "[sv] Tiedoksiantaja",
     "modified": "[sv] Päivitetty",
     "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
@@ -260,7 +260,7 @@
       "notarget": "[sv] Tietoa ei ole asetettu.",
       "datetime": "[sv] Päivämäärä ja aika",
       "startend": "[sv] Voimassaolo",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "[sv] Tiedoksiantaja"
     }
   },
