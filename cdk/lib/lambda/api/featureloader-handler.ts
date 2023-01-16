@@ -34,60 +34,52 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  try {
-    const harbors = await HarborDBModel.getAll();
-    for (const harbor of harbors || []) {
-      if (harbor?.geometry?.coordinates?.length === 2) {
-        features.push({
-          type: 'Feature',
-          geometry: harbor.geometry as Geometry,
-          properties: {
-            featureType: 'harbor',
-            id: harbor.id,
-            name: harbor.name ?? harbor.company,
-            email: harbor.email,
-            phoneNumber: harbor.phoneNumber,
-            fax: harbor.fax,
-            internet: harbor.internet,
-          },
-        });
-      }
+  const harbors = await HarborDBModel.getAll();
+  for (const harbor of harbors || []) {
+    if (harbor?.geometry?.coordinates?.length === 2) {
+      features.push({
+        type: 'Feature',
+        geometry: harbor.geometry as Geometry,
+        properties: {
+          featureType: 'harbor',
+          id: harbor.id,
+          name: harbor.name ?? harbor.company,
+          email: harbor.email,
+          phoneNumber: harbor.phoneNumber,
+          fax: harbor.fax,
+          internet: harbor.internet,
+        },
+      });
     }
-  } catch (e) {
-    log.error('Getting all harbors failed: %s', e);
   }
 }
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  try {
-    const placeMap = new Map<number, PilotPlace>();
-    const cards = await FairwayCardDBModel.getAll();
-    for (const card of cards) {
-      const pilot = card.trafficService?.pilot;
-      if (pilot && pilot.places) {
-        for (const place of pilot.places) {
-          if (!placeMap.has(place.id)) {
-            placeMap.set(place.id, place);
-            place.fairwayCards = [];
-          }
-          placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
+  const placeMap = new Map<number, PilotPlace>();
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    const pilot = card.trafficService?.pilot;
+    if (pilot && pilot.places) {
+      for (const place of pilot.places) {
+        if (!placeMap.has(place.id)) {
+          placeMap.set(place.id, place);
+          place.fairwayCards = [];
         }
+        placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
       }
     }
-    for (const place of placeMap.values()) {
-      features.push({
-        type: 'Feature',
-        geometry: place.geometry as Geometry,
-        id: place.id,
-        properties: {
-          featureType: 'pilot',
-          name: place.name,
-          fairwayCards: place.fairwayCards,
-        },
-      });
-    }
-  } catch (e) {
-    log.error('Getting all pilot places failed: %s', e);
+  }
+  for (const place of placeMap.values()) {
+    features.push({
+      type: 'Feature',
+      geometry: place.geometry as Geometry,
+      id: place.id,
+      properties: {
+        featureType: 'pilot',
+        name: place.name,
+        fairwayCards: place.fairwayCards,
+      },
+    });
   }
 }
 
@@ -335,7 +327,7 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
 
 async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
   const resp = await fetchMarineWarnings();
-  for (const feature of resp.data?.features || []) {
+  for (const feature of resp.features) {
     const dates = parseDateTimes(feature);
     features.push({
       type: feature.type,
@@ -470,31 +462,39 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   if (!response.expired && response.data) {
     base64Response = response.data;
   } else {
-    const features: Feature<Geometry, GeoJsonProperties>[] = [];
-    const validType = await addFeatures(type, features, event);
-    const collection: FeatureCollection = {
-      type: 'FeatureCollection',
-      features,
-    };
-    if (features.length === 0 && response.data) {
-      log.warn('Getting features failed, returning response from s3 cache');
-      base64Response = response.data;
-    } else if (features.length === 0) {
-      base64Response = undefined;
-      statusCode = validType ? 500 : 400;
-      log.error('Getting features failed and no cached response, statusCode: %d', statusCode);
-    } else {
-      let start = Date.now();
-      const body = JSON.stringify(collection);
-      log.debug('stringify duration: %d ms', Date.now() - start);
-      start = Date.now();
-      const gzippedResponse = await gzipString(body);
-      log.debug('gzip duration: %d ms', Date.now() - start);
-      start = Date.now();
-      base64Response = gzippedResponse.toString('base64');
-      log.debug('base64 duration: %d ms', Date.now() - start);
-      if (cacheEnabled && collection.features.length > 0) {
-        await cacheResponse(key, base64Response);
+    try {
+      const features: Feature<Geometry, GeoJsonProperties>[] = [];
+      const validType = await addFeatures(type, features, event);
+      const collection: FeatureCollection = {
+        type: 'FeatureCollection',
+        features,
+      };
+      if (!validType) {
+        log.info('Invalid type: %s', type);
+        base64Response = undefined;
+        statusCode = 400;
+      } else {
+        let start = Date.now();
+        const body = JSON.stringify(collection);
+        log.debug('stringify duration: %d ms', Date.now() - start);
+        start = Date.now();
+        const gzippedResponse = await gzipString(body);
+        log.debug('gzip duration: %d ms', Date.now() - start);
+        start = Date.now();
+        base64Response = gzippedResponse.toString('base64');
+        log.debug('base64 duration: %d ms', Date.now() - start);
+        if (cacheEnabled) {
+          await cacheResponse(key, base64Response);
+        }
+      }
+    } catch (e) {
+      log.error('Getting features failed: %s', e);
+      if (response.data) {
+        log.warn('Returning expired response from s3 cache');
+        base64Response = response.data;
+      } else {
+        base64Response = undefined;
+        statusCode = 500;
       }
     }
   }

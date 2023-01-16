@@ -206,6 +206,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     .catch(function (error) {
       const errorObj = error.toJSON();
       log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from VATU failed');
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
   const datas = response ? (response.data as T[]) : [];

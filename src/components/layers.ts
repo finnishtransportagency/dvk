@@ -80,7 +80,13 @@ export function getLineStyle(color: string, width: number) {
 }
 
 export function getBoardLineStyle(color: string, width: number) {
-  return getLineStyle(color, width);
+  return new Style({
+    stroke: new Stroke({
+      color,
+      width,
+      lineDash: [5],
+    }),
+  });
 }
 
 export function getPilotStyle(selected: boolean) {
@@ -217,7 +223,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'specialarea') {
     return getSpecialAreaStyle(feature, '#C57A11', 2, true);
   } else if (ds === 'boardline12') {
-    return getBoardLineStyle('#00FF00', 2);
+    return getBoardLineStyle('#FFFFFF', 2);
   } else {
     return undefined;
   }
@@ -253,7 +259,7 @@ export function addAPILayers(map: Map) {
   // Kauppamerenkulku
   addFeatureLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
-  addFeatureLayer(map, 'boardline12', undefined, 1, getBoardLineStyle('#00FF00', 1));
+  addFeatureLayer(map, 'boardline12', undefined, 1, getBoardLineStyle('#FFFFF', 1));
   // Muu vesiliikenne
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
   addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
