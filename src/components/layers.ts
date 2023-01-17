@@ -21,7 +21,7 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getSeaNameStyle, getSpeedLimitStyle } from './styles';
+import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle, getSpeedLimitStyle } from './styles';
 import { GeoJSON } from 'ol/format';
 
 const specialAreaImage = new Image();
@@ -225,11 +225,13 @@ function addFeatureLayer(
   style: StyleLike,
   minResolution: number | undefined = undefined,
   opacity = 1,
-  className = 'bg-layer'
+  className = 'bg-layer',
+  declutter = false
 ) {
   map.addLayer(
     new VectorLayer({
       source: new VectorSource(),
+      declutter,
       className,
       style,
       properties: { id },
@@ -251,7 +253,7 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
   addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
 
-  addFeatureLayer(map, 'seaname', undefined, 1, getSeaNameStyle);
+  addFeatureLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, 'bg-layer', true);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
   // Valitun väyläkortin navigointilinjat ja väyläalueet

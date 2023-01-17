@@ -2,7 +2,7 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
-const staticUrl = process.env.REACT_APP_STATIC_URL ? process.env.REACT_APP_STATIC_URL + '/geotiff' : window.location.origin + '/geotiff';
+const staticUrl = process.env.REACT_APP_STATIC_URL ? `https://${process.env.REACT_APP_STATIC_URL}/geotiff` : window.location.origin + '/geotiff';
 
 export type FeatureDataId =
   | 'area12'
@@ -17,7 +17,8 @@ export type FeatureDataId =
   | 'depth12'
   | 'safetyequipmentfault'
   | 'marinewarning'
-  | 'seaname';
+  | 'seaname'
+  | 'groundname';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -35,6 +36,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
   { id: 'seaname', url: new URL(staticUrl + '/vesisto_nimet.json') },
+  { id: 'groundname', url: new URL(staticUrl + '/maa_nimet.json') },
 ];
 
 export type FeatureDataLayerId =
@@ -50,7 +52,7 @@ export type FeatureDataLayerId =
   | 'safetyequipment'
   | 'depth12'
   | 'marinewarning'
-  | 'seaname';
+  | 'name';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
