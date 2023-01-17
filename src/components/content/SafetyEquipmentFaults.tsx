@@ -88,7 +88,7 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
-  const { data, isLoading, dataUpdatedAt } = useSafetyEquipmentFaultData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultData();
   const path = [{ title: t('title') }];
 
   return (
@@ -108,12 +108,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
 
         <IonRow>
           <IonCol>
-            <IonText className="fairwayTitle">
-              <em>
-                {' '}
-                {t('modified')} {t('modifiedDate', new Date(dataUpdatedAt))}
-              </em>
-            </IonText>
+            {!isLoading && !isFetching && (
+              <IonText className="fairwayTitle">
+                <em>
+                  {t('modified')} {t('recordTime', { val: dataUpdatedAt })}
+                </em>
+              </IonText>
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>

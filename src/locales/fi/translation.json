@@ -173,8 +173,7 @@
     "gulfOfBothnia": "Pohjanlahden alue",
     "and": " ja ",
     "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-    "modified": "Päivitetty",
-    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
+    "modified": "Päivitetty"
   },
   "warnings": {
     "title": "Merivaroitukset",
@@ -190,8 +189,7 @@
     "validityTime": "Voimassaolo",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Tiedoksiantaja",
-    "modified": "Päivitetty",
-    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
+    "modified": "Päivitetty"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",

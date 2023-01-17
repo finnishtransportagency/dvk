@@ -177,7 +177,7 @@ type MarineWarningsProps = {
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
-  const { data, isLoading, dataUpdatedAt } = useWarineWarningsData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useWarineWarningsData();
   const path = [{ title: t('title') }];
 
   return (
@@ -197,12 +197,14 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
         <IonRow>
           <IonCol>
-            <IonText className="fairwayTitle">
-              <em>
-                {' '}
-                {t('modified')} {t('modifiedDate', new Date(dataUpdatedAt))}
-              </em>
-            </IonText>
+            {!isLoading && !isFetching && (
+              <IonText className="fairwayTitle">
+                <em>
+                  {' '}
+                  {t('modified')} {t('datetimeFormat', { val: dataUpdatedAt })}
+                </em>
+              </IonText>
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>

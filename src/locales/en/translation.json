@@ -173,8 +173,7 @@
     "gulfOfBothnia": "Gulf of Bothnia",
     "and": " and ",
     "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-    "modified": "Updated",
-    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
+    "modified": "Updated"
   },
   "warnings": {
     "title": "Marine warnings",
@@ -190,8 +189,7 @@
     "validityTime": "Validity time",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Notifier",
-    "modified": "Updated",
-    "modifiedDate": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'medium')}}"
+    "modified": "Updated"
   },
   "appUpdateAlert": {
     "title": "Update available",
