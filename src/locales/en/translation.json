@@ -35,6 +35,7 @@
           "specialAreas": "[en] Erityisalueet",
           "pilotPlaces": "[en] Luotsipaikat",
           "marineWarnings": "Marine warnings",
+          "boardLines": "[en] Taululinjat",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",

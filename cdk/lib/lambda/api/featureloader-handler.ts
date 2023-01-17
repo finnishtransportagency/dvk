@@ -10,6 +10,7 @@ import {
   fetchVATUByFairwayClass,
   NavigointiLinjaAPIModel,
   RajoitusAlueAPIModel,
+  TaululinjaAPIModel,
   TurvalaiteAPIModel,
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
@@ -212,6 +213,34 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
+async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+  const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
+  const cardMap = await getCardMap();
+  log.debug('board lines: %d', lines.length);
+  for (const line of lines) {
+    features.push({
+      type: 'Feature',
+      id: line.taululinjaId,
+      geometry: line.geometria as Geometry,
+      properties: {
+        id: line.taululinjaId,
+        featureType: 'boardline',
+        direction: line.suunta,
+        fairways: line.vayla?.map((v) => {
+          return {
+            fairwayId: v.jnro,
+            name: {
+              fi: v.nimiFI,
+              sv: v.nimiSV,
+            },
+            fairwayCards: cardMap.get(v.jnro),
+          };
+        }),
+      },
+    });
+  }
+}
+
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   const cardMap = await getCardMap();
@@ -298,7 +327,7 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
 
 async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
   const resp = await fetchMarineWarnings();
-  for (const feature of resp.data?.features || []) {
+  for (const feature of resp.features) {
     const dates = parseDateTimes(feature);
     features.push({
       type: feature.type,
@@ -353,7 +382,12 @@ async function cacheResponse(key: string, response: string) {
   await s3Client.send(command);
 }
 
-async function getFromCache(key: string): Promise<string | undefined> {
+type CacheResponse = {
+  expired: boolean;
+  data?: string;
+};
+
+async function getFromCache(key: string): Promise<CacheResponse> {
   try {
     const data = await s3Client.send(
       new GetObjectCommand({
@@ -361,7 +395,7 @@ async function getFromCache(key: string): Promise<string | undefined> {
         Bucket: getCacheBucketName(),
       })
     );
-    if (data.Body && data.Expires && data.Expires.getTime() > Date.now()) {
+    if (data.Body) {
       log.debug(`returning ${key} from cache`);
       const streamToString = (stream: Readable): Promise<string> =>
         new Promise((resolve, reject) => {
@@ -370,13 +404,12 @@ async function getFromCache(key: string): Promise<string | undefined> {
           stream.on('error', reject);
           stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
         });
-      return await streamToString(data.Body as Readable);
+      return { expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(), data: await streamToString(data.Body as Readable) };
     }
   } catch (e) {
-    // not found
-    return undefined;
+    // errors ignored also not found
   }
-  return undefined;
+  return { expired: true };
 }
 
 const noCache = ['safetyequipmentfault', 'marinewarning'];
@@ -389,7 +422,7 @@ async function isCacheEnabled(type: string): Promise<boolean> {
   return cacheEnabled;
 }
 
-async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
   if (type === 'pilot') {
     await addPilotFeatures(features);
   } else if (type === 'harbor') {
@@ -410,40 +443,63 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addMarineWarnings(features);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
+  } else if (type === 'boardline') {
+    await addBoardLineFeatures(features, event);
+  } else {
+    return false;
   }
+  return true;
 }
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.queryStringParameters);
   const type = event.queryStringParameters?.type || '';
-  let base64Response: string;
+  let base64Response: string | undefined;
+  let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);
-  const response = cacheEnabled ? await getFromCache(key) : undefined;
-  if (response) {
-    base64Response = response;
+  const response = cacheEnabled ? await getFromCache(key) : { expired: true };
+  if (!response.expired && response.data) {
+    base64Response = response.data;
   } else {
-    const features: Feature<Geometry, GeoJsonProperties>[] = [];
-    await addFeatures(type, features, event);
-    const collection: FeatureCollection = {
-      type: 'FeatureCollection',
-      features,
-    };
-    let start = Date.now();
-    const body = JSON.stringify(collection);
-    log.debug('stringify duration: %d ms', Date.now() - start);
-    start = Date.now();
-    const gzippedResponse = await gzipString(body);
-    log.debug('gzip duration: %d ms', Date.now() - start);
-    start = Date.now();
-    base64Response = gzippedResponse.toString('base64');
-    log.debug('base64 duration: %d ms', Date.now() - start);
-    if (cacheEnabled && collection.features.length > 0) {
-      await cacheResponse(key, base64Response);
+    try {
+      const features: Feature<Geometry, GeoJsonProperties>[] = [];
+      const validType = await addFeatures(type, features, event);
+      const collection: FeatureCollection = {
+        type: 'FeatureCollection',
+        features,
+      };
+      if (!validType) {
+        log.info('Invalid type: %s', type);
+        base64Response = undefined;
+        statusCode = 400;
+      } else {
+        let start = Date.now();
+        const body = JSON.stringify(collection);
+        log.debug('stringify duration: %d ms', Date.now() - start);
+        start = Date.now();
+        const gzippedResponse = await gzipString(body);
+        log.debug('gzip duration: %d ms', Date.now() - start);
+        start = Date.now();
+        base64Response = gzippedResponse.toString('base64');
+        log.debug('base64 duration: %d ms', Date.now() - start);
+        if (cacheEnabled) {
+          await cacheResponse(key, base64Response);
+        }
+      }
+    } catch (e) {
+      log.error('Getting features failed: %s', e);
+      if (response.data) {
+        log.warn('Returning expired response from s3 cache');
+        base64Response = response.data;
+      } else {
+        base64Response = undefined;
+        statusCode = 500;
+      }
     }
   }
   return {
-    statusCode: 200,
+    statusCode,
     body: base64Response,
     isBase64Encoded: true,
     headers: { ...getHeaders(), 'Content-Type': 'application/geo+json' },

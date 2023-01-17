@@ -179,6 +179,21 @@ export type TurvalaiteAPIModel = {
   vayla?: TurvalaiteVaylaAPIModel[];
 } & GeometryModel;
 
+export type TaululinjaVaylaAPIModel = {
+  jnro: number;
+  nimiFI?: string;
+  nimiSV?: string;
+};
+
+export type TaululinjaAPIModel = {
+  taululinjaId: number;
+  suunta: number;
+  etuTLId?: number;
+  keskiTLId?: number;
+  takaTLId?: number;
+  vayla: TaululinjaVaylaAPIModel[];
+} & GeometryModel;
+
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
@@ -190,6 +205,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     .catch(function (error) {
       const errorObj = error.toJSON();
       log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from VATU failed');
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
   const datas = response ? (response.data as T[]) : [];

@@ -4,7 +4,7 @@ import { fetchMarineWarnings, parseDateTimes } from '../../api/pooki';
 export const handler = async (): Promise<MarineWarning[]> => {
   const resp = await fetchMarineWarnings();
   const warnings = [];
-  for (const feature of resp.data?.features || []) {
+  for (const feature of resp.features) {
     const dates = parseDateTimes(feature);
     const warning: MarineWarning = {
       id: feature.properties?.ID,
