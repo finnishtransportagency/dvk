@@ -172,7 +172,8 @@
     "gulfOfFinland": "Suomenlahti",
     "gulfOfBothnia": "Pohjanlahden alue",
     "and": " ja ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "modified": "Päivitetty"
   },
   "warnings": {
     "title": "Merivaroitukset",
@@ -186,8 +187,9 @@
     "relatedObjects": "Liittyvät kohteet",
     "noObjects": "Tietoa ei ole asetettu.",
     "validityTime": "Voimassaolo",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-    "notifier": "Tiedoksiantaja"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "Tiedoksiantaja",
+    "modified": "Päivitetty"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
@@ -256,7 +258,7 @@
       "notarget": "Tietoa ei ole asetettu.",
       "datetime": "Päivämäärä ja aika",
       "startend": "Voimassaolo",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Tiedoksiantaja"
     }
   },

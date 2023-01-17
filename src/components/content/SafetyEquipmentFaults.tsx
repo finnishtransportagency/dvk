@@ -1,5 +1,5 @@
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import React from 'react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -88,18 +88,37 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
-  const { data, isLoading } = useSafetyEquipmentFaultData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultData();
   const path = [{ title: t('title') }];
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonText>
-        <h2>
-          <strong>{t('title')}</strong>
-        </h2>
-      </IonText>
+      <IonGrid className="ion-no-padding" style={{ marginBottom: '20px' }}>
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle">
+              <h2 className="no-margin-bottom">
+                <strong>{t('title')}</strong>
+              </h2>
+            </IonText>
+          </IonCol>
+        </IonRow>
+
+        <IonRow>
+          <IonCol>
+            {!isLoading && !isFetching && (
+              <IonText className="fairwayTitle">
+                <em>
+                  {t('modified')} {t('recordTime', { val: dataUpdatedAt })}
+                </em>
+              </IonText>
+            )}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
