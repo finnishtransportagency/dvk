@@ -19,7 +19,7 @@
     <html>
       <body>
         <!-- Squat calculator can be embedded into any page by using html iframe. -->
-        <iframe id="squatIframe" name="squatIframe" src="http://localhost:3000/index.html?showLogo=false&showLanguages=false" style="width: 100%; height: 2000px; border: none;" allow="clipboard-write"></iframe>
+        <iframe id="squatIframe" name="squatIframe" src="http://localhost:3000/index.html?showLogo=false&showLanguages=false" style="width: 100%; height: 2800px; border: none;" allow="clipboard-write"></iframe>
 
         <!-- Squat calculator language can be changed by changing url. Iframe url can be changed using standard html links. -->
         <ul>

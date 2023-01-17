@@ -172,7 +172,8 @@
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
     "and": " and ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "modified": "Updated"
   },
   "warnings": {
     "title": "Marine warnings",
@@ -186,8 +187,9 @@
     "relatedObjects": "Related objects",
     "noObjects": "Data is not available.",
     "validityTime": "Validity time",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-    "notifier": "Notifier"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "Notifier",
+    "modified": "Updated"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -256,7 +258,7 @@
       "notarget": "Data is not available.",
       "datetime": "Date and time",
       "startend": "Validity",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Notifier"
     }
   },
