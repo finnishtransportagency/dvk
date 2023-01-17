@@ -33,6 +33,12 @@ export function useLine3456Layer() {
   return useDataLayer('line3456', 'line3456');
 }
 
+export function useNameLayer() {
+  const seaReady = useDataLayer('seaname', 'name');
+  const groundReady = useDataLayer('groundname', 'name');
+  return seaReady && groundReady;
+}
+
 export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }

@@ -50,6 +50,7 @@ jest.mock('./components/FeatureLoader', () => ({
   useHarborLayer: () => {},
   useSafetyEquipmentLayer: () => {},
   useMarineWarningLayer: () => {},
+  useNameLayer: () => {},
   useBoardLine12Layer: () => {},
 }));
 
