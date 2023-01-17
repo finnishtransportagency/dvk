@@ -29,9 +29,9 @@ export function useFairwayCardListData() {
 }
 
 export function useSafetyEquipmentFaultData() {
-  return useFindAllSafetyEquipmentFaultsQuery(datasourceClient);
+  return useFindAllSafetyEquipmentFaultsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }
 
 export function useWarineWarningsData() {
-  return useFindAllMarineWarningsQuery(datasourceClient);
+  return useFindAllMarineWarningsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }

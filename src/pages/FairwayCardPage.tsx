@@ -8,6 +8,7 @@ import { useFairwayCardListData } from '../utils/dataLoader';
 import {
   useArea12Layer,
   useArea3456Layer,
+  useBoardLine12Layer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
@@ -33,14 +34,15 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
   const depth12Layer = useDepth12Layer();
   const specialAreaLayer = useSpecialAreaLayer();
   const harborLayer = useHarborLayer();
+  const boardLine12Layer = useBoardLine12Layer();
 
   const [initDone, setInitDone] = useState(false);
 
   useEffect(() => {
-    if (line12Layer && line3456Layer && area12Layer && area3456Layer && depth12Layer && specialAreaLayer && harborLayer) {
+    if (line12Layer && line3456Layer && area12Layer && area3456Layer && depth12Layer && specialAreaLayer && harborLayer && boardLine12Layer) {
       setInitDone(true);
     }
-  }, [line12Layer, line3456Layer, area12Layer, area3456Layer, depth12Layer, specialAreaLayer, harborLayer]);
+  }, [line12Layer, line3456Layer, area12Layer, area3456Layer, depth12Layer, specialAreaLayer, harborLayer, boardLine12Layer]);
 
   useEffect(() => {
     if (data && fairwayCardId && initDone) {

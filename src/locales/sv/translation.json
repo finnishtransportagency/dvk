@@ -35,6 +35,7 @@
           "specialAreas": "[sv] Erityisalueet",
           "pilotPlaces": "[sv] Luotsipaikat",
           "marineWarnings": "[sv] Merivaroitukset",
+          "boardLines": "[sv] Taululinjat",
           "mapStyle": {
             "header": "[sv] Kartan tyyli",
             "landButtonLabel": "[sv] Maa",
@@ -172,7 +173,8 @@
     "gulfOfFinland": "[sv] Suomenlahti",
     "gulfOfBothnia": "[sv] Pohjanlahden alue",
     "and": " och ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "modified": "[sv] Päivitetty"
   },
   "warnings": {
     "title": "[sv] Merivaroitukset",
@@ -186,8 +188,9 @@
     "relatedObjects": "[sv] Liittyvät kohteet",
     "noObjects": "[sv] Tietoa ei ole asetettu.",
     "validityTime": "[sv] Voimassaolo",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
-    "notifier": "[sv] Tiedoksiantaja"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "notifier": "[sv] Tiedoksiantaja",
+    "modified": "[sv] Päivitetty"
   },
   "appUpdateAlert": {
     "title": "[sv] Päivitys saatavilla",
@@ -256,7 +259,7 @@
       "notarget": "[sv] Tietoa ei ole asetettu.",
       "datetime": "[sv] Päivämäärä ja aika",
       "startend": "[sv] Voimassaolo",
-      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
+      "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "[sv] Tiedoksiantaja"
     }
   },

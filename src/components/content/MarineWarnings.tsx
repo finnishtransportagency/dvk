@@ -177,18 +177,38 @@ type MarineWarningsProps = {
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
-  const { data, isLoading } = useWarineWarningsData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useWarineWarningsData();
   const path = [{ title: t('title') }];
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonText>
-        <h2>
-          <strong>{t('title')}</strong>
-        </h2>
-      </IonText>
+      <IonGrid className="ion-no-padding" style={{ marginBottom: '20px' }}>
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle">
+              <h2 className="no-margin-bottom">
+                <strong>{t('title')}</strong>
+              </h2>
+            </IonText>
+          </IonCol>
+        </IonRow>
+
+        <IonRow>
+          <IonCol>
+            {!isLoading && !isFetching && (
+              <IonText className="fairwayTitle">
+                <em>
+                  {' '}
+                  {t('modified')} {t('datetimeFormat', { val: dataUpdatedAt })}
+                </em>
+              </IonText>
+            )}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">

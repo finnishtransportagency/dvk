@@ -24,6 +24,7 @@ import {
   useSafetyEquipmentLayer,
   useMarineWarningLayer,
   useNameLayer,
+  useBoardLine12Layer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -93,7 +94,7 @@ const DvkIonApp: React.FC = () => {
   const marineWarningLayer = useMarineWarningLayer();
   const fairwayCardList = useFairwayCardList();
   const nameLayer = useNameLayer();
-
+  const boardLine12Layer = useBoardLine12Layer();
   const [initDone, setInitDone] = useState(false);
 
   useEffect(() => {
@@ -110,7 +111,8 @@ const DvkIonApp: React.FC = () => {
       safetyEquipmentLayer &&
       marineWarningLayer &&
       fairwayCardList &&
-      nameLayer
+      nameLayer &&
+      boardLine12Layer
     ) {
       setInitDone(true);
     }
@@ -128,6 +130,7 @@ const DvkIonApp: React.FC = () => {
     marineWarningLayer,
     fairwayCardList,
     nameLayer,
+    boardLine12Layer,
   ]);
 
   return (

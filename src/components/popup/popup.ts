@@ -8,7 +8,7 @@ import { pointerMove } from 'ol/events/condition';
 import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle } from '../layers';
+import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
 import { getMarineWarningStyle, getSafetyEquipmentStyle } from '../styles';
 
@@ -87,6 +87,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, true);
     } else if (type === 'marinewarning') {
       return getMarineWarningStyle(feature, true);
+    } else if (type === 'boardline') {
+      return getBoardLineStyle('#000000', 2);
     } else {
       return undefined;
     }
@@ -111,7 +113,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     multi: true,
   });
   pointerMoveSelect.on('select', (e) => {
-    const hit = e.selected.length > 0;
+    const hit = e.selected.length > 0 && e.selected.some((f) => types.includes(f.getProperties().featureType));
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = hit ? 'pointer' : '';
   });

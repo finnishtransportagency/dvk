@@ -39,6 +39,10 @@ export function useNameLayer() {
   return seaReady && groundReady;
 }
 
+export function useBoardLine12Layer() {
+  return useDataLayer('boardline12', 'boardline12');
+}
+
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
   for (const raf of rafs) {
