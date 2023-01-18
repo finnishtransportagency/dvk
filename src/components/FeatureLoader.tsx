@@ -11,7 +11,7 @@ import { Text } from '../graphql/generated';
 
 function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId, dataProjection = 'EPSG:4326') {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt } = useFeatureData(featureDataId);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused } = useFeatureData(featureDataId);
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
@@ -22,7 +22,7 @@ function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataL
       setReady(true);
     }
   }, [featureLayerId, data, dataProjection]);
-  return { ready, dataUpdatedAt };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useLine12Layer() {
@@ -67,11 +67,15 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
 
 export function useArea12Layer() {
   const [ready, setReady] = useState(false);
-  const { data: aData, dataUpdatedAt: aUpdatedAt } = useFeatureData('area12');
-  const { data: raData, dataUpdatedAt: raUpdatedAt } = useFeatureData('restrictionarea');
-  const dataUpdatedAt = Math.round(aUpdatedAt + raUpdatedAt / 2);
+  const aQuery = useFeatureData('area12');
+  const raQuery = useFeatureData('restrictionarea');
+  const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
+  const isPaused = aQuery.isPaused || raQuery.isPaused;
 
   useEffect(() => {
+    const aData = aQuery.data;
+    const raData = raQuery.data;
     if (aData && raData) {
       const format = new GeoJSON();
       const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
@@ -82,8 +86,8 @@ export function useArea12Layer() {
       source.addFeatures(afs);
       setReady(true);
     }
-  }, [aData, raData]);
-  return { ready, dataUpdatedAt };
+  }, [aQuery.data, raQuery.data]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useArea3456Layer() {
@@ -130,11 +134,15 @@ function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry
 
 export function useSpeedLimitLayer() {
   const [ready, setReady] = useState(false);
-  const { data: aData, dataUpdatedAt: aUpdatedAt } = useFeatureData('area12');
-  const { data: raData, dataUpdatedAt: raUpdatedAt } = useFeatureData('restrictionarea');
-  const dataUpdatedAt = Math.round(aUpdatedAt + raUpdatedAt / 2);
+  const aQuery = useFeatureData('area12');
+  const raQuery = useFeatureData('restrictionarea');
+  const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
+  const isPaused = aQuery.isPaused || raQuery.isPaused;
 
   useEffect(() => {
+    const aData = aQuery.data;
+    const raData = raQuery.data;
     if (aData && raData) {
       const format = new GeoJSON();
       const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
@@ -145,8 +153,8 @@ export function useSpeedLimitLayer() {
       source.addFeatures(speedLimitFeatures);
       setReady(true);
     }
-  }, [aData, raData]);
-  return { ready, dataUpdatedAt };
+  }, [aQuery.data, raQuery.data]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useSpecialAreaLayer() {
@@ -174,11 +182,15 @@ export type EquipmentFault = {
 
 export function useSafetyEquipmentLayer() {
   const [ready, setReady] = useState(false);
-  const { data: eData, dataUpdatedAt: eUpdatedAt } = useFeatureData('safetyequipment');
-  const { data: fData, dataUpdatedAt: fUpdatedAt } = useFeatureData('safetyequipmentfault');
-  const dataUpdatedAt = Math.round(eUpdatedAt + fUpdatedAt / 2);
+  const eQuery = useFeatureData('safetyequipment');
+  const fQuery = useFeatureData('safetyequipmentfault');
+  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
+  const isPaused = eQuery.isPaused || fQuery.isPaused;
 
   useEffect(() => {
+    const eData = eQuery.data;
+    const fData = fQuery.data;
     if (eData && fData) {
       const format = new GeoJSON();
       const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
@@ -211,6 +223,6 @@ export function useSafetyEquipmentLayer() {
       });
       setReady(true);
     }
-  }, [eData, fData]);
-  return { ready, dataUpdatedAt };
+  }, [eQuery.data, fQuery.data]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }

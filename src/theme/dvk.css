@@ -108,6 +108,24 @@ ion-icon.medium {
   --ionicon-stroke-width: 32px;
 }
 
+.offlineStatus {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: var(--ion-color-primary);
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.94;
+}
+ion-text.offlineStatus > * {
+  font-size: 12px;
+  line-height: 1.125rem;
+  color: var(--ion-color-primary-contrast);
+}
+
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;

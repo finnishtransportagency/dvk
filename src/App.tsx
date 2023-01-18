@@ -54,6 +54,7 @@ import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
 import MarineWarningPage from './pages/MarineWarningPage';
+import OfflineStatus from './components/OfflineStatus';
 
 setupIonicReact({
   mode: 'md',
@@ -128,6 +129,7 @@ const DvkIonApp: React.FC = () => {
 
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
+      <OfflineStatus />
       <IonReactRouter>
         <SidebarMenu />
         <IonContent id="MainContent">
