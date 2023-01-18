@@ -5,7 +5,7 @@ import { FairwayCardPartsFragment } from '../../graphql/generated';
 import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { useFairwayCardListData } from '../../utils/dataLoader';
-import GeneralInfo from './GeneralInfoAccordion';
+import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
 
 type FairwayCardGroupProps = {
@@ -61,19 +61,33 @@ type FairwayCardsProps = {
 
 const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const { data, isLoading } = useFairwayCardListData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useFairwayCardListData();
   const path = [{ title: t('title', { count: 0 }) }];
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonText>
-        <h2>
+      <IonText className="fairwayTitle">
+        <h2 className="no-margin-bottom">
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
+        <em className="no-print">
+          {t('dataUpdated')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isLoading || isFetching) && (
+            <IonSkeletonText
+              animated={true}
+              style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+            />
+          )}
+        </em>
       </IonText>
-      <GeneralInfo description={t('description')} additionalDesc={t('additionalDescription')} notification={t('notification')} widePane={widePane} />
+      <GeneralInfoAccordion
+        description={t('description')}
+        additionalDesc={t('additionalDescription')}
+        notification={t('notification')}
+        widePane={widePane}
+      />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>
         <FairwayCardGroup
