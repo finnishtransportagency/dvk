@@ -1,7 +1,7 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import { Area, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
+import { Area, Boardline, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, VaylaAPIModel } from './vatu';
+import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel, VaylaAPIModel } from './vatu';
 
 function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
@@ -214,6 +214,37 @@ async function getRestrictionAreaMap(fairwayIds: number[]) {
   return areaMap;
 }
 
+function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
+  return lines.map((line) => {
+    const boardLine: Boardline = {
+      id: line.taululinjaId,
+      direction: line.suunta,
+      geometry: line.geometria,
+    };
+    boardLine.fairways = line.vayla?.map((apiFairway) => {
+      return {
+        fairwayId: apiFairway.jnro,
+      };
+    });
+    return boardLine;
+  });
+}
+
+async function getBoardLineMap(fairwayIds: number[]) {
+  const lines = await fetchVATUByFairwayId<TaululinjaAPIModel>(fairwayIds, 'taululinjat');
+  log.debug('board lines: %d', lines.length);
+  const lineMap = new Map<number, TaululinjaAPIModel[]>();
+  for (const line of lines) {
+    for (const lineFairway of line.vayla || []) {
+      if (!lineMap.has(lineFairway.jnro)) {
+        lineMap.set(lineFairway.jnro, []);
+      }
+      lineMap.get(lineFairway.jnro)?.push(line);
+    }
+  }
+  return lineMap;
+}
+
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], FairwayCard> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard>
 ): Promise<Fairway[]> => {
@@ -227,6 +258,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   const lineMap = await getNavigationLineMap(fairwayIds);
   const areaMap = await getAreaMap(fairwayIds);
   const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
+  const boardLineMap = await getBoardLineMap(fairwayIds);
   const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
   return fairways.map((apiFairway) => {
     const fairway = fairwayMap.get(apiFairway.jnro);
@@ -237,6 +269,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
       navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
       areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
       restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
+      boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
     };
   });
 };

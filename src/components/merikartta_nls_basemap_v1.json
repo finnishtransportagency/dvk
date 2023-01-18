@@ -2830,7 +2830,7 @@
           16,
           ["step", ["get", "prioriteetti"], 22, 5, 12]
         ],
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-halo-width": 2,
@@ -2932,7 +2932,7 @@
         "icon-ignore-placement": true,
         "icon-allow-overlap": false,
         "text-font": ["Liberation Sans NLSFI"],
-        "visibility": "visible"
+        "visibility": "none"
       },
       "paint": {
         "text-halo-width": 2,
@@ -2989,7 +2989,8 @@
           ["literal", ["Liberation Sans NLSFI"]],
           6,
           ["literal", ["Liberation Sans NLSFI Bold"]]
-        ]
+        ],
+        "visibility": "none"
       },
       "paint": {
         "text-halo-width": 2,

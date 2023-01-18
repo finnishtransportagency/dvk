@@ -26,6 +26,10 @@ class Config {
     return ['dev', 'test', 'prod', 'feature'].indexOf(Config.getEnvironment()) < 0;
   }
 
+  static isDeveloperOrDevEnvironment() {
+    return this.isDeveloperEnvironment() || 'dev' === Config.getEnvironment();
+  }
+
   static getEnvironment(): string {
     if (process.env.ENVIRONMENT) {
       return process.env.ENVIRONMENT;

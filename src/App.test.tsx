@@ -72,6 +72,8 @@ jest.mock('./components/FeatureLoader', () => ({
   useMarineWarningLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989 };
   },
+  useNameLayer: () => {},
+  useBoardLine12Layer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {

@@ -21,7 +21,7 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getSpeedLimitStyle } from './styles';
+import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle, getSpeedLimitStyle } from './styles';
 import { GeoJSON } from 'ol/format';
 
 const specialAreaImage = new Image();
@@ -75,6 +75,16 @@ export function getLineStyle(color: string, width: number) {
     stroke: new Stroke({
       color,
       width,
+    }),
+  });
+}
+
+export function getBoardLineStyle(color: string, width: number) {
+  return new Style({
+    stroke: new Stroke({
+      color,
+      width,
+      lineDash: [15, 10],
     }),
   });
 }
@@ -212,6 +222,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea') {
     return getSpecialAreaStyle(feature, '#C57A11', 2, true);
+  } else if (ds === 'boardline12') {
+    return getBoardLineStyle('#000000', 2);
   } else {
     return undefined;
   }
@@ -225,11 +237,13 @@ function addFeatureLayer(
   style: StyleLike,
   minResolution: number | undefined = undefined,
   opacity = 1,
-  className = 'bg-layer'
+  className = 'bg-layer',
+  declutter = false
 ) {
   map.addLayer(
     new VectorLayer({
       source: new VectorSource(),
+      declutter,
       className,
       style,
       properties: { id },
@@ -247,10 +261,12 @@ export function addAPILayers(map: Map) {
   // Kauppamerenkulku
   addFeatureLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
+  addFeatureLayer(map, 'boardline12', undefined, 1, getBoardLineStyle('#000000', 1));
   // Muu vesiliikenne
   addFeatureLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
   addFeatureLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
 
+  addFeatureLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, 'bg-layer', true);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
@@ -284,7 +300,7 @@ export function unsetSelectedFairwayCard() {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const depthSource = dvkMap.getVectorSource('depth12');
   const specialAreaSource = dvkMap.getVectorSource('specialarea');
-
+  const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
@@ -306,6 +322,9 @@ export function unsetSelectedFairwayCard() {
       case 'specialarea':
         specialAreaSource.addFeature(feature);
         feature.unset('n2000HeightSystem');
+        break;
+      case 'boardline12':
+        boardLine12Source.addFeature(feature);
         break;
     }
   }
@@ -375,11 +394,11 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
     const depthSource = dvkMap.getVectorSource('depth12');
     const specialAreaSource = dvkMap.getVectorSource('specialarea');
+    const boardLine12Source = dvkMap.getVectorSource('boardline12');
 
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
-
     for (const fairway of fairwayCard?.fairways || []) {
       for (const line of fairway.navigationLines || []) {
         let feature = line12Source.getFeatureById(line.id);
@@ -417,6 +436,13 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             fairwayFeatures.push(feature);
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
+        }
+      }
+      for (const line of fairway.boardLines || []) {
+        const feature = boardLine12Source.getFeatureById(line.id);
+        if (feature) {
+          boardLine12Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
     }

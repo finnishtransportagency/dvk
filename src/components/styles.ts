@@ -381,3 +381,29 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
     }),
   ];
 }
+
+export function getNameStyle(feature: FeatureLike, resolution: number) {
+  const priority = feature.getProperties().AHTI_PRIOR as string;
+  const visible =
+    (priority === '6' && resolution < 20) ||
+    (priority === '5' && resolution < 35) ||
+    (priority === '4' && resolution < 45) ||
+    (priority === '3' && resolution < 75) ||
+    priority === '2';
+  return visible
+    ? new Style({
+        text: new Text({
+          font: 'bold 12px "Exo2"',
+          placement: 'point',
+          text: feature.getProperties().AHTI_NAMFI,
+          fill: new Fill({
+            color: '#000000',
+          }),
+          stroke: new Stroke({
+            width: 1,
+            color: '#FFFFFF',
+          }),
+        }),
+      })
+    : undefined;
+}
