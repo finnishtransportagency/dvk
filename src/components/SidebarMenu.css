@@ -139,3 +139,31 @@
   margin: 0;
   margin-inline-start: 4px;
 }
+
+.sideBar ion-footer ion-toolbar {
+  border-top: 1px solid var(--ion-color-lighter);
+}
+
+.offlineSupport {
+  font-size: 12px;
+  line-height: 1.125rem;
+  margin: 0 22px;
+}
+.offlineSupport ion-item {
+  font-size: 12px;
+  line-height: 1.125rem;
+  font-weight: bold;
+  --min-height: auto;
+}
+.offlineSupport ion-icon {
+  width: 16px;
+}
+.offlineSupport ion-icon.warning {
+  color: var(--ion-color-warning);
+}
+.offlineSupport ion-icon.danger {
+  color: var(--ion-color-danger);
+}
+.offlineSupport ion-icon[slot="start"] {
+  margin: 0 8px 0 0;
+}
