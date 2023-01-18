@@ -133,3 +133,27 @@ export async function getPookiHeaders(): Promise<Record<string, string>> {
     'Accept-Encoding': 'gzip',
   };
 }
+
+async function getWeatherUsername() {
+  return readParameterForEnv('WeatherUsername');
+}
+
+async function getWeatherPassword() {
+  return readParameterForEnv('WeatherPassword');
+}
+
+export async function getWeatherUrl() {
+  return readParameterForEnv('WeatherUrl');
+}
+
+export async function getWeatherApiKey() {
+  return readParameterForEnv('WeatherApiKey');
+}
+
+export async function getWeatherHeaders(): Promise<Record<string, string>> {
+  return {
+    Authorization: 'Basic ' + Buffer.from(`${await getWeatherUsername()}:${await getWeatherPassword()}`).toString('base64'),
+    'Content-type': 'application/json',
+    'Accept-Encoding': 'gzip',
+  };
+}
