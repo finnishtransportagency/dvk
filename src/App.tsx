@@ -111,8 +111,8 @@ const DvkIonApp: React.FC = () => {
       harborLayer.ready &&
       safetyEquipmentLayer.ready &&
       marineWarningLayer.ready &&
-      fairwayCardList &&
-      nameLayer &&
+      fairwayCardList.ready &&
+      nameLayer.ready &&
       boardLine12Layer.ready
     ) {
       setInitDone(true);
