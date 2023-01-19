@@ -3,11 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources } from './constants';
 import { useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
 
-export function useFeatureData(featureDataId: FeatureDataId) {
+export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   const urlStr = fds?.url ? fds.url.toString() : '';
   return useQuery({
     queryKey: [fds?.id],
+    refetchOnMount,
     queryFn: async () => {
       const { data } = await axios.get(urlStr);
       return data;

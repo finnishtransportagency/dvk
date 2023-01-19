@@ -9,9 +9,14 @@ import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 
-function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId, dataProjection = 'EPSG:4326') {
+function useDataLayer(
+  featureDataId: FeatureDataId,
+  featureLayerId: FeatureDataLayerId,
+  dataProjection = 'EPSG:4326',
+  refetchOnMount: 'always' | boolean = true
+) {
   const [ready, setReady] = useState(false);
-  const { data } = useFeatureData(featureDataId);
+  const { data } = useFeatureData(featureDataId, refetchOnMount);
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
@@ -44,7 +49,7 @@ export function useBoardLine12Layer() {
 }
 
 export function useMareographLayer() {
-  return useDataLayer('mareograph', 'mareograph');
+  return useDataLayer('mareograph', 'mareograph', 'EPSG:4326', 'always');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
