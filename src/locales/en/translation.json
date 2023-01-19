@@ -267,7 +267,8 @@
       "mareograph": "Mareograph",
       "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Coordinates",
-      "seaLevel": "Sea level (MW/N2000)",
+      "seaLevel": "[en] Keskivesi",
+      "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[en] Viimeisin havainto"
     }

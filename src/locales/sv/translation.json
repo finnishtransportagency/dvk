@@ -267,7 +267,8 @@
       "mareograph": "[sv] Mareografi",
       "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "[sv] Koordinaatit",
-      "seaLevel": "[sv] Merivedenkorkeus (MW/N2000)",
+      "seaLevel": "[sv] Keskivesi",
+      "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[sv] Viimeisin havainto"
     }
