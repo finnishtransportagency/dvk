@@ -6,11 +6,13 @@ import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultD
 import {
   useArea12Layer,
   useArea3456Layer,
+  useBoardLine12Layer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
   useMarineWarningLayer,
+  useNameLayer,
   usePilotLayer,
   useSafetyEquipmentLayer,
   useSpecialAreaLayer,
@@ -34,6 +36,8 @@ const OfflineSupport: React.FC = () => {
   const harborLayer = useHarborLayer();
   const safetyEquipmentLayer = useSafetyEquipmentLayer();
   const marineWarningLayer = useMarineWarningLayer();
+  const nameLayer = useNameLayer();
+  const boardLine12Layer = useBoardLine12Layer();
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -50,6 +54,8 @@ const OfflineSupport: React.FC = () => {
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
     marineWarningLayer.dataUpdatedAt,
+    nameLayer.dataUpdatedAt,
+    boardLine12Layer.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.errorUpdatedAt,
@@ -66,10 +72,12 @@ const OfflineSupport: React.FC = () => {
     harborLayer.errorUpdatedAt,
     safetyEquipmentLayer.errorUpdatedAt,
     marineWarningLayer.errorUpdatedAt,
+    nameLayer.errorUpdatedAt,
+    boardLine12Layer.errorUpdatedAt,
   ];
-  const offlineLatestError = Math.max(...offlineErrors);
-  const offlineLatestUpdate = Math.max(...offlineUpdates);
-  const offlineOldestUpdate = Math.min(...offlineUpdates);
+  const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x));
+  const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x));
+  const offlineOldestUpdate = Math.min(...offlineUpdates.filter((x) => !!x));
   const oldestUpdateTimestamp = Date.now() - offlineOldestUpdate;
 
   return (

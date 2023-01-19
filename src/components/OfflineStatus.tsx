@@ -5,11 +5,13 @@ import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultD
 import {
   useArea12Layer,
   useArea3456Layer,
+  useBoardLine12Layer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
   useMarineWarningLayer,
+  useNameLayer,
   usePilotLayer,
   useSafetyEquipmentLayer,
   useSpecialAreaLayer,
@@ -33,6 +35,8 @@ const OfflineStatus: React.FC = () => {
   const harborLayer = useHarborLayer();
   const safetyEquipmentLayer = useSafetyEquipmentLayer();
   const marineWarningLayer = useMarineWarningLayer();
+  const nameLayer = useNameLayer();
+  const boardLine12Layer = useBoardLine12Layer();
 
   const statusOffline =
     !navigator.onLine ||
@@ -49,7 +53,9 @@ const OfflineStatus: React.FC = () => {
       pilotLayer.isPaused &&
       harborLayer.isPaused &&
       safetyEquipmentLayer.isPaused &&
-      marineWarningLayer.isPaused);
+      marineWarningLayer.isPaused &&
+      nameLayer.isPaused &&
+      boardLine12Layer.isPaused);
 
   return (
     <>
