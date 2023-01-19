@@ -267,6 +267,7 @@
       "mareograph": "Mareografi",
       "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Koordinaatit",
+      "seaLevel": "Merivedenkorkeus (MW/N2000)",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
     }

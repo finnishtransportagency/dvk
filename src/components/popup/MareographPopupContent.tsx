@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { MareographFeatureProperties } from '../features';
 
 type MareographPopupContentProps = {
-  mareograph?: MareographProperties;
+  mareograph: MareographProperties;
 };
 
 export type MareographProperties = {
@@ -33,6 +33,12 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
             <IonCol>{coordinatesToStringHDM(mareograph.coordinates)}</IonCol>
           </IonRow>
         )}
+        <IonRow>
+          <IonCol className="header">{t('seaLevel')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{`${Math.round(mareograph.properties.waterLevel / 10)}/${Math.round(mareograph.properties.n2000WaterLevel / 10)}cm`}</IonCol>
+        </IonRow>
         <IonRow>
           <IonCol className="header">{t('dateTime')}</IonCol>
         </IonRow>
