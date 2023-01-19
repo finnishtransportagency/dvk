@@ -62,7 +62,6 @@ import errorIcon from '../theme/img/safetyequipment/error_icon.svg';
 import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import speedLimitIcon from '../theme/img/rajoitus_pohja.svg';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
 import { AreaFeatureProperties, LineFeatureProperties } from './features';
@@ -331,51 +330,6 @@ export function getDepthStyle(feature: FeatureLike) {
         stroke: new Stroke({
           width: 1,
           color: '#FFFFFF',
-        }),
-      }),
-    }),
-  ];
-}
-
-export function getSpeedLimitStyle(feature: FeatureLike) {
-  const label: string = '' + feature.getProperties().speedLimit;
-  return [
-    // To see speed limit polygons on the map uncomment following style
-    /*
-    new Style({
-      stroke: new Stroke({
-        color: 'black',
-        width: 1,
-      }),
-      fill: new Fill({
-        color: 'orange',
-      }),
-    }),
-    */
-    new Style({
-      zIndex: 100,
-      image: new Icon({
-        src: speedLimitIcon,
-        anchor: [0.5, 39],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        opacity: 1,
-      }),
-      geometry: function (feat) {
-        const geometry = feat.getGeometry() as Polygon;
-        if (geometry.getInteriorPoint) {
-          return geometry.getInteriorPoint();
-        } else {
-          return undefined;
-        }
-      },
-      text: new Text({
-        font: 'bold 12px "Exo2"',
-        placement: 'point',
-        offsetY: -27,
-        text: label,
-        fill: new Fill({
-          color: '#000000',
         }),
       }),
     }),
