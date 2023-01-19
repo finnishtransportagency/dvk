@@ -20,7 +20,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
     <IonGrid id="mareographPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         <IonRow>
-          <IonCol className="header">{mareograph?.properties.name}</IonCol>
+          <IonCol className="header">{mareograph.properties.name}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol>{t('mareograph')}</IonCol>
@@ -28,7 +28,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
         <IonRow>
           <IonCol className="header">{t('coordinates')}</IonCol>
         </IonRow>
-        {mareograph?.coordinates && (
+        {mareograph.coordinates && (
           <IonRow>
             <IonCol>{coordinatesToStringHDM(mareograph.coordinates)}</IonCol>
           </IonRow>
@@ -43,7 +43,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           <IonCol className="header">{t('dateTime')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{t('dateTimeFormat', { val: mareograph?.properties.dateTime })}</IonCol>
+          <IonCol>{t('dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>
         </IonRow>
       </IonGrid>
     </IonGrid>
