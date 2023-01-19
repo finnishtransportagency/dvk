@@ -82,10 +82,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonList lines="none" className="ion-no-padding">
               <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
               <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
+              <LayerItem id="boardline12" title={t('homePage.map.controls.layer.boardLines')} />
               <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} />
               <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} />
               <LayerItem id="depth12" title={t('homePage.map.controls.layer.depths')} />
-              <LayerItem id="boardline12" title={t('homePage.map.controls.layer.boardLines')} />
             </IonList>
           </IonCol>
         </IonRow>
