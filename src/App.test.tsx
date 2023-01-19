@@ -4,6 +4,7 @@ import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
+import { useLine12Layer } from './components/FeatureLoader';
 
 class ResizeObserver {
   observe() {
@@ -27,6 +28,7 @@ beforeAll(() => {
       addEventListener: jest.fn().mockImplementation(() => Promise.resolve()),
     },
   });
+  jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   jest.spyOn(window, 'print').mockImplementation(() => {});
 });
 
@@ -40,40 +42,44 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('./components/FeatureLoader', () => ({
   useLine12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useLine3456Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useArea12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useArea3456Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useDepth12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   usePilotLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useSpecialAreaLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useSpeedLimitLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useHarborLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useSafetyEquipmentLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
   useMarineWarningLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989 };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
   },
-  useNameLayer: () => {},
-  useBoardLine12Layer: () => {},
+  useNameLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useBoardLine12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 123123123, isPaused: true };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {
