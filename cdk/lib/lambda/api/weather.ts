@@ -26,7 +26,7 @@ export type Mareograph = {
 export async function fetchMareoGraphs(): Promise<Mareograph[]> {
   const start = Date.now();
   // TODO: remove apikey once SOA api exists
-  const url = `${await getWeatherUrl()}/${await getWeatherApiKey()}/timeseries?param=fmisid,geoid,latlon,station_name,localtime,WLEV_PT1S_INSTANT,WLEVN2K_PT1S_INSTANT&precision=double&endtime=now&producer=observations_fmi&timeformat=sql&format=json&keyword=mareografit`;
+  const url = `https://${await getWeatherUrl()}/fmi-apikey/${await getWeatherApiKey()}/timeseries?param=fmisid,geoid,latlon,station_name,localtime,WLEV_PT1S_INSTANT,WLEVN2K_PT1S_INSTANT&precision=double&endtime=now&producer=observations_fmi&timeformat=sql&format=json&keyword=mareografit`;
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),

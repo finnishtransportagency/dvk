@@ -103,7 +103,6 @@ export async function getFeatureCacheDurationHours() {
 export async function getVatuHeaders(): Promise<Record<string, string>> {
   return {
     Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),
-    'Content-type': 'application/json',
     'Accept-Encoding': 'gzip',
   };
 }
@@ -129,17 +128,8 @@ export async function getPookiUrl() {
 export async function getPookiHeaders(): Promise<Record<string, string>> {
   return {
     Authorization: 'Basic ' + Buffer.from(`${await getPookiUsername()}:${await getPookiPassword()}`).toString('base64'),
-    'Content-type': 'application/json',
     'Accept-Encoding': 'gzip',
   };
-}
-
-async function getWeatherUsername() {
-  return readParameterForEnv('WeatherUsername');
-}
-
-async function getWeatherPassword() {
-  return readParameterForEnv('WeatherPassword');
 }
 
 export async function getWeatherUrl() {
@@ -152,8 +142,7 @@ export async function getWeatherApiKey() {
 
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
   return {
-    Authorization: 'Basic ' + Buffer.from(`${await getWeatherUsername()}:${await getWeatherPassword()}`).toString('base64'),
-    'Content-type': 'application/json',
+    'x-api-key': await getWeatherApiKey(),
     'Accept-Encoding': 'gzip',
   };
 }

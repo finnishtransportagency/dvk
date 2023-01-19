@@ -36,6 +36,7 @@
           "pilotPlaces": "[sv] Luotsipaikat",
           "marineWarnings": "[sv] Merivaroitukset",
           "boardLines": "[sv] Taululinjat",
+          "seaLevel": "Vattenståndet",
           "mapStyle": {
             "header": "[sv] Kartan tyyli",
             "landButtonLabel": "[sv] Maa",

@@ -21,7 +21,7 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle } from './styles';
+import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle, getMareographStyle } from './styles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { GeoJSON } from 'ol/format';
 
@@ -282,6 +282,7 @@ export function addAPILayers(map: Map) {
   );
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
 
+  addFeatureLayer(map, 'mareograph', undefined, 50, getMareographStyle);
   // POI:t
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));

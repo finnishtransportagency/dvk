@@ -43,6 +43,10 @@ export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
 
+export function useMareographLayer() {
+  return useDataLayer('mareograph', 'mareograph');
+}
+
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
   for (const raf of rafs) {
