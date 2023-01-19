@@ -73,7 +73,8 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
         multiPolygon.appendPolygon(geom);
       }
       labelStyle.setGeometry(multiPolygon.getInteriorPoints());
+      return [fillStyle, labelStyle];
     }
   }
-  return [fillStyle, labelStyle];
+  return [fillStyle];
 }
