@@ -282,7 +282,7 @@ export function addAPILayers(map: Map) {
   );
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
 
-  addFeatureLayer(map, 'mareograph', undefined, 50, getMareographStyle, undefined, 1, 'ol-layer');
+  addFeatureLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature), undefined, 1, 'ol-layer');
   // POI:t
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));

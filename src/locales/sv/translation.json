@@ -262,6 +262,13 @@
       "startend": "[sv] Voimassaolo",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "[sv] Tiedoksiantaja"
+    },
+    "mareograph": {
+      "mareograph": "[sv] Mareografi",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "[sv] Koordinaatit",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "[sv] Viimeisin havainto"
     }
   },
   "common": {

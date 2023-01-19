@@ -262,6 +262,13 @@
       "startend": "Voimassaolo",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Tiedoksiantaja"
+    },
+    "mareograph": {
+      "mareograph": "Mareografi",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Koordinaatit",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "Viimeisin havainto"
     }
   },
   "common": {

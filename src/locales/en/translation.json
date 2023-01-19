@@ -262,6 +262,13 @@
       "startend": "Validity",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Notifier"
+    },
+    "mareograph": {
+      "mareograph": "Mareograph",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Coordinates",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "[en] Viimeisin havainto"
     }
   },
   "common": {
