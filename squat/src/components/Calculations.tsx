@@ -21,6 +21,7 @@ import {
   calculateUKCVesselMotions,
   calculateWaveForce,
   calculateWindForce,
+  getNumberValueOrEmptyString,
   toDeg,
 } from '../utils/calculations';
 
@@ -288,19 +289,19 @@ const Calculations: React.FC = () => {
   // Determine values to show
   const getUKCVesselMotionValue = () => {
     const currentValue = state.calculations.squat.UKCVesselMotions[state.status.showBarrass ? 0 : 1][state.status.showDeepWaterValues ? 1 : 0];
-    return isNaN(currentValue) ? 0 : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getUKCStraightCourseValue = () => {
     const currentValue = state.calculations.squat.UKCStraightCourse[state.status.showBarrass ? 0 : 1];
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getUKCDuringTurnValue = () => {
     const currentValue = state.calculations.squat.UKCDuringTurn[state.status.showBarrass ? 0 : 1];
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getSquatValue = () => {
     const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const printSquatHelper = () => {
     if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
