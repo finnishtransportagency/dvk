@@ -234,9 +234,13 @@ export class SquatSite extends Construct {
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
     };
 
+    const apiKeyParameterReader = new SSMParameterReader(this, 'WeatherApiKey' + Config.getEnvironment(), {
+      parameterName: 'WeatherApiKey',
+      region: 'eu-west-1',
+    });
     const iceMapBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherUrl'), {
-        customHeaders: { 'x-api-key': config.getGlobalStringParameter('WeatherApiKey') },
+        customHeaders: { 'x-api-key': apiKeyParameterReader.getParameterValue() },
       }),
       originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
