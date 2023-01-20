@@ -116,3 +116,10 @@ export type MarineWarningFeatureProperties = {
   areaText?: string;
   areaId?: number;
 };
+
+export type MareographFeatureProperties = {
+  name: string;
+  waterLevel: number;
+  n2000WaterLevel: number;
+  dateTime: number;
+};

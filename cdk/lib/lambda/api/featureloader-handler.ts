@@ -18,6 +18,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
+import { fetchMareoGraphs } from './weather';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -355,6 +356,24 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
+async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const resp = await fetchMareoGraphs();
+  for (const mareograph of resp) {
+    features.push({
+      type: 'Feature',
+      id: mareograph.id,
+      geometry: mareograph.geometry,
+      properties: {
+        featureType: 'mareograph',
+        name: mareograph.name,
+        waterLevel: mareograph.waterLevel,
+        n2000WaterLevel: mareograph.n2000WaterLevel,
+        dateTime: mareograph.dateTime,
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -412,7 +431,7 @@ async function getFromCache(key: string): Promise<CacheResponse> {
   return { expired: true };
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning'];
+const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
@@ -445,6 +464,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {
     await addBoardLineFeatures(features, event);
+  } else if (type === 'mareograph') {
+    await addMareoGraphs(features);
   } else {
     return false;
   }

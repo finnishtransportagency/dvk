@@ -79,6 +79,7 @@ jest.mock('./components/FeatureLoader', () => ({
   useBoardLine12Layer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 123123123, isPaused: true };
   },
+  useMareographLayer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {
