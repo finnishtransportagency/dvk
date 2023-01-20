@@ -34,6 +34,6 @@ export function useSafetyEquipmentFaultData() {
   return useFindAllSafetyEquipmentFaultsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }
 
-export function useWarineWarningsData() {
+export function useMarineWarningsData() {
   return useFindAllMarineWarningsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }

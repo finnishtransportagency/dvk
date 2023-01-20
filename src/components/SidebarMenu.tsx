@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import './SidebarMenu.css';
+import OfflineSupport from './OfflineSupport';
 
 export const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -162,7 +163,8 @@ const SidebarMenu: React.FC = () => {
         </IonGrid>
       </IonContent>
 
-      <IonFooter collapse="fade" className="small">
+      <IonFooter collapse="fade" className="small ion-no-border">
+        <OfflineSupport />
         <IonToolbar>
           <IonTitle size="small" slot="end">
             <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>

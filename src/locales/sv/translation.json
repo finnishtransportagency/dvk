@@ -60,6 +60,8 @@
     "documentTitle": "[sv] Digitaalinen väyläkortti",
     "title_one": "Farledskort",
     "title_other": "Farledskort",
+    "dataUpdated": "[sv] Tiedot ladattu laitteelle",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
     "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
@@ -174,7 +176,7 @@
     "gulfOfFinland": "[sv] Suomenlahti",
     "gulfOfBothnia": "[sv] Pohjanlahden alue",
     "and": " och ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "[sv] Päivitetty"
   },
   "warnings": {
@@ -290,7 +292,17 @@
     "showPane": "[sv] Näytä",
     "close": "Stäng",
     "close-dialog": "Stäng dialogrutan",
-    "noData": "[sv] Tietoa ei ole asetettu."
+    "noData": "[sv] Tietoa ei ole asetettu.",
+    "serviceOffline": "[sv] Ei internet-yhteyttä",
+    "offlineSupportImpossible": "[sv] Offline-käyttö ei mahdollista",
+    "offlineSupportPartial": "[sv] Osittainen offline-käyttö mahdollinen",
+    "offlineSupportPossible": "[sv] Offline-käyttö mahdollinen",
+    "dataNotUpToDate": "[sv] Palvelun tiedot eivät ole ajan tasalla",
+    "dataPartiallyUpToDate": "[sv] Palvelun tiedot ovat osittain ajan tasalla",
+    "dataUpToDate": "[sv] Palvelun tiedot ovat ajan tasalla",
+    "dataUpdateFailedAt": "[sv] Tietojen päivitys epäonnistui",
+    "latestDataUpdateAt": "[sv] Tietoja päivitetty viimeksi",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",

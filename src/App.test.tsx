@@ -27,6 +27,7 @@ beforeAll(() => {
       addEventListener: jest.fn().mockImplementation(() => Promise.resolve()),
     },
   });
+  jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   jest.spyOn(window, 'print').mockImplementation(() => {});
 });
 
@@ -39,19 +40,45 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('./components/FeatureLoader', () => ({
-  useLine12Layer: () => {},
-  useLine3456Layer: () => {},
-  useArea12Layer: () => {},
-  useArea3456Layer: () => {},
-  useDepth12Layer: () => {},
-  usePilotLayer: () => {},
-  useSpecialAreaLayer: () => {},
-  useSpeedLimitLayer: () => {},
-  useHarborLayer: () => {},
-  useSafetyEquipmentLayer: () => {},
-  useMarineWarningLayer: () => {},
-  useNameLayer: () => {},
-  useBoardLine12Layer: () => {},
+  useLine12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useLine3456Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useArea12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useArea3456Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useDepth12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  usePilotLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useSpecialAreaLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useSpeedLimitLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useHarborLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useSafetyEquipmentLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useMarineWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useNameLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+  },
+  useBoardLine12Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 123123123, isPaused: true };
+  },
   useMareographLayer: () => {},
 }));
 

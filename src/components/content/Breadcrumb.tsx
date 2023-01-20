@@ -21,7 +21,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
         <IonLabel slot="separator">&gt;</IonLabel>
       </IonBreadcrumb>
       {path.map((item, idx) => (
-        <IonBreadcrumb key={item.title || 'key' + idx} routerLink={idx < path.length - 1 ? item.route : undefined}>
+        <IonBreadcrumb key={item.route || item.title} routerLink={idx < path.length - 1 ? item.route : undefined}>
           {idx < path.length - 1 && (
             <>
               {item.title}

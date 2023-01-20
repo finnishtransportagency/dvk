@@ -60,6 +60,8 @@
     "documentTitle": "Digital Fairway Card",
     "title_one": "Fairway card",
     "title_other": "Fairway cards",
+    "dataUpdated": "Data updated to device",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
@@ -174,7 +176,7 @@
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
     "and": " and ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Updated"
   },
   "warnings": {
@@ -290,7 +292,17 @@
     "showPane": "Show",
     "close": "Close",
     "close-dialog": "Close dialog",
-    "noData": "Data is not available."
+    "noData": "Data is not available.",
+    "serviceOffline": "Service offline",
+    "offlineSupportImpossible": "Offline support impossible",
+    "offlineSupportPartial": "Offline support partial",
+    "offlineSupportPossible": "Offline support possible",
+    "dataNotUpToDate": "Data not up to date",
+    "dataPartiallyUpToDate": "Data partially up to date",
+    "dataUpToDate": "Data up to date",
+    "dataUpdateFailedAt": "Data update failed at",
+    "latestDataUpdateAt": "Latest data update at",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",

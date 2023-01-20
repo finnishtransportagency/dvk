@@ -60,6 +60,8 @@
     "documentTitle": "Digitaalinen väyläkortti",
     "title_one": "Väyläkortti",
     "title_other": "Väyläkortit",
+    "dataUpdated": "Tiedot ladattu laitteelle",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Väyläkortti sisältää väylänkäyttäjälle tarkoitettua informaatiota väylästä ja siihen liittyvästä satamasta. Se täydentää osaltaan merikartoilta ja muista julkaisuista saatavia väylätietoja. Väyläkortteja on laadittu talvisatamiin johtavista meriväylistä, ja ne kattavat suurimman osan nk. kauppamerenkulun pääväylistä.",
     "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
@@ -174,7 +176,7 @@
     "gulfOfFinland": "Suomenlahti",
     "gulfOfBothnia": "Pohjanlahden alue",
     "and": " ja ",
-    "recordTime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Päivitetty"
   },
   "warnings": {
@@ -290,7 +292,17 @@
     "showPane": "Näytä",
     "close": "Sulje",
     "close-dialog": "Sulje ilmoitus",
-    "noData": "Tietoa ei ole asetettu."
+    "noData": "Tietoa ei ole asetettu.",
+    "serviceOffline": "Ei internet-yhteyttä",
+    "offlineSupportImpossible": "Offline-käyttö ei mahdollista",
+    "offlineSupportPartial": "Osittainen offline-käyttö mahdollinen",
+    "offlineSupportPossible": "Offline-käyttö mahdollinen",
+    "dataNotUpToDate": "Palvelun tiedot eivät ole ajan tasalla",
+    "dataPartiallyUpToDate": "Palvelun tiedot ovat osittain ajan tasalla",
+    "dataUpToDate": "Palvelun tiedot ovat ajan tasalla",
+    "dataUpdateFailedAt": "Tietojen päivitys epäonnistui",
+    "latestDataUpdateAt": "Tietoja päivitetty viimeksi",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",

@@ -70,7 +70,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 </IonCol>
                 <IonCol className="ion-text-end">
                   <IonLabel>
-                    <em>{fault.recordTime && <>{t('recordTime', { val: fault.recordTime })}</>}</em>
+                    <em>{fault.recordTime && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
                   </IonLabel>
                 </IonCol>
               </IonRow>
@@ -95,29 +95,20 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonGrid className="ion-no-padding" style={{ marginBottom: '20px' }}>
-        <IonRow>
-          <IonCol>
-            <IonText className="fairwayTitle">
-              <h2 className="no-margin-bottom">
-                <strong>{t('title')}</strong>
-              </h2>
-            </IonText>
-          </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
-            {!isLoading && !isFetching && (
-              <IonText className="fairwayTitle">
-                <em>
-                  {t('modified')} {t('recordTime', { val: dataUpdatedAt })}
-                </em>
-              </IonText>
-            )}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
+      <IonText className="fairwayTitle">
+        <h2 className="no-margin-bottom">
+          <strong>{t('title')}</strong>
+        </h2>
+        <em>
+          {t('modified')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isLoading || isFetching) && (
+            <IonSkeletonText
+              animated={true}
+              style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+            />
+          )}
+        </em>
+      </IonText>
 
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 

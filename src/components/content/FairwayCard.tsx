@@ -677,7 +677,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const [tab, setTab] = useState<string>('1');
   const lang = i18n.resolvedLanguage as Lang;
 
-  const { data, isLoading } = useFairwayCardListData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useFairwayCardListData();
   const filteredFairwayCard = data?.fairwayCards.filter((card) => card.id === id);
   const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
 
@@ -755,9 +755,19 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                     })}
                     {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
                   </em>
+                  <br />
+                  <em className="no-print">
+                    {t('dataUpdated')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+                    {(isLoading || isFetching) && (
+                      <IonSkeletonText
+                        animated={true}
+                        style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+                      />
+                    )}
+                  </em>
                 </IonText>
               </IonCol>
-              <IonCol size="auto" className="ion-align-self-center">
+              <IonCol size="auto" className="ion-align-self-start">
                 <IonText className="fairwayTitle">
                   <em>{t('notForNavigation')}</em>
                 </IonText>
@@ -837,7 +847,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               return <HarbourInfo data={harbour} key={idx} />;
             })}
             {(!fairwayCard?.harbors || fairwayCard?.harbors?.length === 0) && (
-              <IonText>
+              <IonText className="no-print">
                 <InfoParagraph />
               </IonText>
             )}

@@ -57,6 +57,7 @@ import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
 import MarineWarningPage from './pages/MarineWarningPage';
+import OfflineStatus from './components/OfflineStatus';
 
 setupIonicReact({
   mode: 'md',
@@ -101,21 +102,21 @@ const DvkIonApp: React.FC = () => {
 
   useEffect(() => {
     if (
-      line12Layer &&
-      line3456Layer &&
-      area12Layer &&
-      area3456Layer &&
-      depth12Layer &&
-      speedLimitLayer &&
-      specialAreaLayer &&
-      pilotLayer &&
-      harborLayer &&
-      safetyEquipmentLayer &&
-      marineWarningLayer &&
-      fairwayCardList &&
-      nameLayer &&
-      boardLine12Layer &&
-      mareographLayer
+      line12Layer.ready &&
+      line3456Layer.ready &&
+      area12Layer.ready &&
+      area3456Layer.ready &&
+      depth12Layer.ready &&
+      speedLimitLayer.ready &&
+      specialAreaLayer.ready &&
+      pilotLayer.ready &&
+      harborLayer.ready &&
+      safetyEquipmentLayer.ready &&
+      marineWarningLayer.ready &&
+      fairwayCardList.ready &&
+      nameLayer.ready &&
+      boardLine12Layer.ready &&
+      mareographLayer.ready
     ) {
       setInitDone(true);
     }
@@ -139,6 +140,7 @@ const DvkIonApp: React.FC = () => {
 
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
+      <OfflineStatus />
       <IonReactRouter>
         <SidebarMenu />
         <IonContent id="MainContent">

@@ -17,7 +17,7 @@ function useDataLayer(
   refetchInterval: number | false = false
 ) {
   const [ready, setReady] = useState(false);
-  const { data } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
@@ -29,7 +29,7 @@ function useDataLayer(
       setReady(true);
     }
   }, [featureLayerId, data, dataProjection]);
-  return ready;
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useLine12Layer() {
@@ -90,6 +90,9 @@ export function useArea12Layer() {
   const [ready, setReady] = useState(false);
   const aQuery = useFeatureData('area12');
   const raQuery = useFeatureData('restrictionarea');
+  const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
+  const isPaused = aQuery.isPaused || raQuery.isPaused;
 
   useEffect(() => {
     const aData = aQuery.data;
@@ -105,7 +108,7 @@ export function useArea12Layer() {
       setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
-  return ready;
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useArea3456Layer() {
@@ -202,6 +205,9 @@ export function useSpeedLimitLayer() {
   const [ready, setReady] = useState(false);
   const aQuery = useFeatureData('area12');
   const raQuery = useFeatureData('restrictionarea');
+  const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
+  const isPaused = aQuery.isPaused || raQuery.isPaused;
 
   useEffect(() => {
     const aData = aQuery.data;
@@ -217,7 +223,7 @@ export function useSpeedLimitLayer() {
       setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
-  return ready;
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }
 
 export function useSpecialAreaLayer() {
@@ -247,6 +253,10 @@ export function useSafetyEquipmentLayer() {
   const [ready, setReady] = useState(false);
   const eQuery = useFeatureData('safetyequipment');
   const fQuery = useFeatureData('safetyequipmentfault');
+  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
+  const isPaused = eQuery.isPaused || fQuery.isPaused;
+
   useEffect(() => {
     const eData = eQuery.data;
     const fData = fQuery.data;
@@ -283,5 +293,5 @@ export function useSafetyEquipmentLayer() {
       setReady(true);
     }
   }, [eQuery.data, fQuery.data]);
-  return ready;
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
 }

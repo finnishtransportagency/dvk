@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
-import { useWarineWarningsData } from '../../utils/dataLoader';
+import { useMarineWarningsData } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
 import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
@@ -177,37 +177,27 @@ type MarineWarningsProps = {
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
-  const { data, isLoading, dataUpdatedAt, isFetching } = useWarineWarningsData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsData();
   const path = [{ title: t('title') }];
 
   return (
     <>
       <Breadcrumb path={path} />
 
-      <IonGrid className="ion-no-padding" style={{ marginBottom: '20px' }}>
-        <IonRow>
-          <IonCol>
-            <IonText className="fairwayTitle">
-              <h2 className="no-margin-bottom">
-                <strong>{t('title')}</strong>
-              </h2>
-            </IonText>
-          </IonCol>
-        </IonRow>
-
-        <IonRow>
-          <IonCol>
-            {!isLoading && !isFetching && (
-              <IonText className="fairwayTitle">
-                <em>
-                  {' '}
-                  {t('modified')} {t('datetimeFormat', { val: dataUpdatedAt })}
-                </em>
-              </IonText>
-            )}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
+      <IonText className="fairwayTitle">
+        <h2 className="no-margin-bottom">
+          <strong>{t('title')}</strong>
+        </h2>
+        <em>
+          {t('modified')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isLoading || isFetching) && (
+            <IonSkeletonText
+              animated={true}
+              style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+            />
+          )}
+        </em>
+      </IonText>
 
       <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
