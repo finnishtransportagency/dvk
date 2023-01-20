@@ -5,7 +5,7 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { BuildEnvironmentVariableType, ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -45,6 +45,10 @@ export class DvkPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
+          REACT_APP_FMI_MAP_API_KEY: {
+            type: BuildEnvironmentVariableType.PARAMETER_STORE,
+            value: 'WeatherApiKey',
+          },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({

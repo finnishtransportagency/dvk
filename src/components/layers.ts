@@ -270,7 +270,7 @@ function addIceLayer(map: Map) {
   } else if (fmiMapApiUrl) {
     tileUrl = `https://${fmiMapApiUrl}/fmi-apikey/${apiKey}/wms`;
   } else {
-    tileUrl = `/fmi-apikey/wms`;
+    tileUrl = `/fmi-apikey/${apiKey}/wms`;
   }
   map.addLayer(
     new TileLayer({
