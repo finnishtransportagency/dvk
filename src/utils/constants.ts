@@ -19,7 +19,8 @@ export type FeatureDataId =
   | 'marinewarning'
   | 'seaname'
   | 'groundname'
-  | 'boardline12';
+  | 'boardline12'
+  | 'mareograph';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -39,6 +40,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'seaname', url: new URL(staticUrl + '/vesisto_nimet.json') },
   { id: 'groundname', url: new URL(staticUrl + '/maa_nimet.json') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
+  { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
 ];
 
 export type FeatureDataLayerId =
@@ -55,7 +57,8 @@ export type FeatureDataLayerId =
   | 'depth12'
   | 'marinewarning'
   | 'name'
-  | 'boardline12';
+  | 'boardline12'
+  | 'mareograph';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -93,6 +96,7 @@ export const MAP: MapType = {
     { id: 'depth12' },
     { id: 'marinewarning' },
     { id: 'boardline12' },
+    { id: 'mareograph' },
   ],
 };
 

@@ -52,6 +52,7 @@ jest.mock('./components/FeatureLoader', () => ({
   useMarineWarningLayer: () => {},
   useNameLayer: () => {},
   useBoardLine12Layer: () => {},
+  useMareographLayer: () => {},
 }));
 
 jest.mock('./graphql/generated', () => {

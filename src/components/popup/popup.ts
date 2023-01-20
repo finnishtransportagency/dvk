@@ -1,4 +1,4 @@
-import { SimpleGeometry } from 'ol/geom';
+import { Point, SimpleGeometry } from 'ol/geom';
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
@@ -10,7 +10,7 @@ import { get as getTransform } from 'ol/proj/transforms';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getMarineWarningStyle, getSafetyEquipmentStyle } from '../styles';
+import { getMareographStyle, getMarineWarningStyle, getSafetyEquipmentStyle } from '../styles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -24,10 +24,11 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'area', 'specialarea', 'mareograph'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
+      setPopupProperties({});
       return true;
     };
   }
@@ -65,7 +66,11 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           properties: feature.getProperties(),
         },
       });
-      overlay.setPosition(evt.coordinate);
+      if (feature.getGeometry()?.getType() === 'Point') {
+        overlay.setPosition((feature.getGeometry() as Point).getCoordinates());
+      } else {
+        overlay.setPosition(evt.coordinate);
+      }
     }
   });
   const style = function (feature: FeatureLike, resolution: number) {
@@ -89,6 +94,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getMarineWarningStyle(feature, true);
     } else if (type === 'boardline') {
       return getBoardLineStyle('#000000', 2);
+    } else if (type === 'mareograph') {
+      return getMareographStyle(feature);
     } else {
       return undefined;
     }
@@ -108,6 +115,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
       dvkMap.getFeatureLayer('marinewarning'),
+      dvkMap.getFeatureLayer('mareograph'),
     ],
     hitTolerance: 3,
     multi: true,

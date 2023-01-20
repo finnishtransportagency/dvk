@@ -64,11 +64,12 @@ import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
-import { AreaFeatureProperties, LineFeatureProperties } from './features';
+import { AreaFeatureProperties, LineFeatureProperties, MareographFeatureProperties } from './features';
 import { LineString, Point, Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
+import mareographIcon from '../theme/img/vedenkorkeus_pohja.svg';
 
 const symbol2Icon = {
   a: { icon: a, center: false, anchorY: 24 },
@@ -360,4 +361,29 @@ export function getNameStyle(feature: FeatureLike, resolution: number) {
         }),
       })
     : undefined;
+}
+
+export function getMareographStyle(feature: FeatureLike) {
+  const image = new Icon({
+    src: mareographIcon,
+    anchor: [14, 32],
+    anchorXUnits: 'pixels',
+    anchorYUnits: 'pixels',
+  });
+  const props = feature.getProperties() as MareographFeatureProperties;
+  return [
+    new Style({
+      image,
+      text: new Text({
+        font: 'bold 12px "Exo2"',
+        placement: 'line',
+        offsetX: 40,
+        offsetY: -16,
+        text: `${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)}cm`,
+        fill: new Fill({
+          color: '#000000',
+        }),
+      }),
+    }),
+  ];
 }

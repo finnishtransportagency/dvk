@@ -36,6 +36,7 @@
           "pilotPlaces": "[en] Luotsipaikat",
           "marineWarnings": "Marine warnings",
           "boardLines": "[en] Taululinjat",
+          "seaLevel": "Sea level",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -261,6 +262,15 @@
       "startend": "Validity",
       "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "notifier": "Notifier"
+    },
+    "mareograph": {
+      "mareograph": "Mareograph",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Coordinates",
+      "seaLevel": "[en] Keskivesi",
+      "n2000SeaLevel": "N2000",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "[en] Viimeisin havainto"
     }
   },
   "common": {
