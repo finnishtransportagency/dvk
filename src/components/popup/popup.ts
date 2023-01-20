@@ -28,7 +28,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
-      setPopupProperties({});
       return true;
     };
   }
