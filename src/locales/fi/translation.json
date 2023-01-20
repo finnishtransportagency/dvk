@@ -226,7 +226,7 @@
     },
     "area": {
       "info": "Väyläalueen tiedot",
-      "overtake": "Väyläalueella jatkuva ohituskielto.",
+      "overtake": "Väyläalueella jatkuva ohituskielto",
       "depth": "Haraussyvyys {{val, number}}m",
       "draft": "Mitoitussyväys {{val, number}}m",
       "speedLimit": "Nopeusrajoitus {{val}} km/h",
