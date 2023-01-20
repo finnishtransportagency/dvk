@@ -75,9 +75,9 @@ const OfflineSupport: React.FC = () => {
     nameLayer.errorUpdatedAt,
     boardLine12Layer.errorUpdatedAt,
   ];
-  const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x));
-  const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x));
-  const offlineOldestUpdate = Math.min(...offlineUpdates.filter((x) => !!x));
+  const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
+  const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);
+  const offlineOldestUpdate = Math.min(...offlineUpdates.filter((x) => !!x), Date.now());
   const oldestUpdateTimestamp = Date.now() - offlineOldestUpdate;
 
   return (
