@@ -234,6 +234,18 @@ export class SquatSite extends Construct {
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
     };
 
+    const iceMapBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherUrl'), {
+        customHeaders: { 'x-api-key': config.getGlobalStringParameter('WeatherApiKey') },
+      }),
+      originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      compress: true,
+      cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+    };
+
     const proxyBehavior = this.useProxy()
       ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
       : undefined;
@@ -249,6 +261,7 @@ export class SquatSite extends Construct {
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
+      'fmi-apikey/*': iceMapBehavior,
     };
 
     // CloudFront webacl reader and id

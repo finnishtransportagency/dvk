@@ -80,6 +80,8 @@ async function main() {
     REACT_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
     REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
     REACT_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName || 'dvkdev.testivaylapilvi.fi',
+    REACT_APP_FMI_MAP_API_KEY: envParameters.WeatherApiKey,
+    REACT_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
   });
 }
 
