@@ -41,45 +41,47 @@ jest.mock('react-i18next', () => ({
 
 jest.mock('./components/FeatureLoader', () => ({
   useLine12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useLine3456Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useArea12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useArea3456Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useDepth12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   usePilotLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useSpecialAreaLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useSpeedLimitLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useHarborLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useSafetyEquipmentLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useMarineWarningLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useNameLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useBoardLine12Layer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 123123123, isPaused: true };
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 123123123, isPaused: true, isError: true };
   },
-  useMareographLayer: () => {},
+  useMareographLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {
