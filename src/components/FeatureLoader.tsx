@@ -14,7 +14,8 @@ function useDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
+  refetchInterval: number | false = false,
+  clearSource = true
 ) {
   const [ready, setReady] = useState(false);
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
@@ -23,12 +24,14 @@ function useDataLayer(
       const format = new GeoJSON();
       const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
       const source = dvkMap.getVectorSource(featureLayerId);
-      source.clear();
+      if (clearSource) {
+        source.clear();
+      }
       features.forEach((f) => f.set('dataSource', featureLayerId, true));
       source.addFeatures(features);
       setReady(true);
     }
-  }, [featureLayerId, data, dataProjection]);
+  }, [featureLayerId, data, dataProjection, clearSource]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -41,8 +44,8 @@ export function useLine3456Layer() {
 }
 
 export function useNameLayer() {
-  const seaReady = useDataLayer('seaname', 'name');
-  const groundReady = useDataLayer('groundname', 'name');
+  const seaReady = useDataLayer('seaname', 'name', 'EPSG:4326', true, false, false);
+  const groundReady = useDataLayer('groundname', 'name', 'EPSG:4326', true, false, false);
   return seaReady && groundReady;
 }
 
