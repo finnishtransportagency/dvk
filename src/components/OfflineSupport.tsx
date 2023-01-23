@@ -11,6 +11,7 @@ import {
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
+  useMareographLayer,
   useMarineWarningLayer,
   useNameLayer,
   usePilotLayer,
@@ -38,6 +39,7 @@ const OfflineSupport: React.FC = () => {
   const marineWarningLayer = useMarineWarningLayer();
   const nameLayer = useNameLayer();
   const boardLine12Layer = useBoardLine12Layer();
+  const mareographLayer = useMareographLayer();
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -56,24 +58,26 @@ const OfflineSupport: React.FC = () => {
     marineWarningLayer.dataUpdatedAt,
     nameLayer.dataUpdatedAt,
     boardLine12Layer.dataUpdatedAt,
+    mareographLayer.dataUpdatedAt,
   ];
   const offlineErrors = [
-    fairwayCardList.errorUpdatedAt,
-    equipmentFaultList.errorUpdatedAt,
-    marineWarningList.errorUpdatedAt,
-    line12Layer.errorUpdatedAt,
-    line3456Layer.errorUpdatedAt,
-    area12Layer.errorUpdatedAt,
-    area3456Layer.errorUpdatedAt,
-    depth12Layer.errorUpdatedAt,
-    speedLimitLayer.errorUpdatedAt,
-    specialAreaLayer.errorUpdatedAt,
-    pilotLayer.errorUpdatedAt,
-    harborLayer.errorUpdatedAt,
-    safetyEquipmentLayer.errorUpdatedAt,
-    marineWarningLayer.errorUpdatedAt,
-    nameLayer.errorUpdatedAt,
-    boardLine12Layer.errorUpdatedAt,
+    fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
+    equipmentFaultList.isError ? equipmentFaultList.errorUpdatedAt : 0,
+    marineWarningList.isError ? marineWarningList.errorUpdatedAt : 0,
+    line12Layer.isError ? line12Layer.errorUpdatedAt : 0,
+    line3456Layer.isError ? line3456Layer.errorUpdatedAt : 0,
+    area12Layer.isError ? area12Layer.errorUpdatedAt : 0,
+    area3456Layer.isError ? area3456Layer.errorUpdatedAt : 0,
+    depth12Layer.isError ? depth12Layer.errorUpdatedAt : 0,
+    speedLimitLayer.isError ? speedLimitLayer.errorUpdatedAt : 0,
+    specialAreaLayer.isError ? specialAreaLayer.errorUpdatedAt : 0,
+    pilotLayer.isError ? pilotLayer.errorUpdatedAt : 0,
+    harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
+    safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
+    marineWarningLayer.isError ? marineWarningLayer.errorUpdatedAt : 0,
+    nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
+    boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
+    mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);

@@ -17,7 +17,7 @@ function useDataLayer(
   refetchInterval: number | false = false
 ) {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
@@ -29,7 +29,7 @@ function useDataLayer(
       setReady(true);
     }
   }, [featureLayerId, data, dataProjection]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useLine12Layer() {
@@ -93,6 +93,7 @@ export function useArea12Layer() {
   const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
   const isPaused = aQuery.isPaused || raQuery.isPaused;
+  const isError = aQuery.isError || raQuery.isError;
 
   useEffect(() => {
     const aData = aQuery.data;
@@ -108,7 +109,7 @@ export function useArea12Layer() {
       setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useArea3456Layer() {
@@ -208,6 +209,7 @@ export function useSpeedLimitLayer() {
   const dataUpdatedAt = Math.max(aQuery.dataUpdatedAt, raQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(aQuery.errorUpdatedAt, raQuery.errorUpdatedAt);
   const isPaused = aQuery.isPaused || raQuery.isPaused;
+  const isError = aQuery.isError || raQuery.isError;
 
   useEffect(() => {
     const aData = aQuery.data;
@@ -223,7 +225,7 @@ export function useSpeedLimitLayer() {
       setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useSpecialAreaLayer() {
@@ -256,6 +258,7 @@ export function useSafetyEquipmentLayer() {
   const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
   const isPaused = eQuery.isPaused || fQuery.isPaused;
+  const isError = eQuery.isError || fQuery.isError;
 
   useEffect(() => {
     const eData = eQuery.data;
@@ -293,5 +296,5 @@ export function useSafetyEquipmentLayer() {
       setReady(true);
     }
   }, [eQuery.data, fQuery.data]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
