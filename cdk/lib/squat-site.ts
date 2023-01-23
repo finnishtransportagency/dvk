@@ -197,7 +197,7 @@ export class SquatSite extends Construct {
         accessControlAllowOrigins: ['*'],
         accessControlAllowHeaders: ['*'],
         originOverride: false,
-        accessControlMaxAge: Duration.seconds(600),
+        accessControlMaxAge: Duration.seconds(3600),
       },
       securityHeadersBehavior: {
         strictTransportSecurity: { accessControlMaxAge: Duration.seconds(3600), includeSubdomains: true, override: true },
@@ -247,7 +247,7 @@ export class SquatSite extends Construct {
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       compress: true,
-      cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
+      cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
     };
 
     const proxyBehavior = this.useProxy()
