@@ -132,17 +132,21 @@ export async function getPookiHeaders(): Promise<Record<string, string>> {
   };
 }
 
-export async function getWeatherUrl() {
-  return readParameterForEnv('WeatherUrl');
+export async function getWeatherSOAUrl() {
+  return readParameterForEnv('WeatherSOAUrl');
 }
 
 export async function getWeatherApiKey() {
   return readParameterForEnv('WeatherApiKey');
 }
 
+async function getWeatherSOAApiKey() {
+  return readParameterForEnv('WeatherSOAApiKey');
+}
+
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
   return {
-    'x-api-key': await getWeatherApiKey(),
+    'x-api-key': await getWeatherSOAApiKey(),
     'Accept-Encoding': 'gzip',
   };
 }

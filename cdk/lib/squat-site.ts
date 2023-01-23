@@ -234,15 +234,15 @@ export class SquatSite extends Construct {
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
     };
 
-    const apiKeyParameterReader = new SSMParameterReader(this, 'WeatherApiKey' + Config.getEnvironment(), {
-      parameterName: 'WeatherApiKey',
+    const apiKeyParameterReader = new SSMParameterReader(this, 'WeatherSOAApiKey' + Config.getEnvironment(), {
+      parameterName: 'WeatherSOAApiKey',
       region: 'eu-west-1',
     });
     const iceMapBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherUrl'), {
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherSOAUrl'), {
         customHeaders: { 'x-api-key': apiKeyParameterReader.getParameterValue() },
       }),
-      originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,

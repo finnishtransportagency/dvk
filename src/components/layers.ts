@@ -266,10 +266,12 @@ function addIceLayer(map: Map) {
   const fmiMapApiUrl = process.env.REACT_APP_FMI_MAP_API_URL;
   let tileUrl;
   if (cloudFrontUrl) {
+    // TODO: remove apikey from url once SOA api exists
     tileUrl = `https://${cloudFrontUrl}/fmi-apikey/${apiKey}/wms`;
   } else if (fmiMapApiUrl) {
     tileUrl = `https://${fmiMapApiUrl}/fmi-apikey/${apiKey}/wms`;
   } else {
+    // TODO: remove apikey from url once SOA api exists
     tileUrl = `/fmi-apikey/${apiKey}/wms`;
   }
   map.addLayer(
