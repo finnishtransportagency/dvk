@@ -282,6 +282,7 @@ function addIceLayer(map: Map) {
         params: { layers: 'fmi:ice:icechart_iceareas' },
         transition: 0,
       }),
+      preload: 10,
     })
   );
 }
