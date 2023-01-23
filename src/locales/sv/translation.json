@@ -37,6 +37,7 @@
           "marineWarnings": "[sv] Merivaroitukset",
           "boardLines": "[sv] Taululinjat",
           "seaLevel": "Vattenståndet",
+          "ice": "[sv] Jääkartta",
           "mapStyle": {
             "header": "[sv] Kartan tyyli",
             "landButtonLabel": "[sv] Maa",

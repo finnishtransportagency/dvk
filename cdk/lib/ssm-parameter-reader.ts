@@ -16,6 +16,7 @@ export class SSMParameterReader extends AwsCustomResource {
         service: 'SSM',
         parameters: {
           Name: parameterName,
+          WithDecryption: true,
         },
         region,
         physicalResourceId: PhysicalResourceId.of(name),

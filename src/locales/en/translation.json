@@ -37,6 +37,7 @@
           "marineWarnings": "Marine warnings",
           "boardLines": "[en] Taululinjat",
           "seaLevel": "Sea level",
+          "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",

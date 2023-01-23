@@ -24,6 +24,8 @@ import Polygon from 'ol/geom/Polygon';
 import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle, getMareographStyle } from './styles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { GeoJSON } from 'ol/format';
+import TileLayer from 'ol/layer/Tile';
+import TileWMS from 'ol/source/TileWMS';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -258,7 +260,35 @@ function addFeatureLayer(
   );
 }
 
+function addIceLayer(map: Map) {
+  const apiKey = process.env.REACT_APP_FMI_MAP_API_KEY;
+  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
+  const fmiMapApiUrl = process.env.REACT_APP_FMI_MAP_API_URL;
+  let tileUrl;
+  if (cloudFrontUrl) {
+    // TODO: remove apikey from url once SOA api exists
+    tileUrl = `https://${cloudFrontUrl}/fmi-apikey/${apiKey}/wms`;
+  } else if (fmiMapApiUrl) {
+    tileUrl = `https://${fmiMapApiUrl}/fmi-apikey/${apiKey}/wms`;
+  } else {
+    // TODO: remove apikey from url once SOA api exists
+    tileUrl = `/fmi-apikey/${apiKey}/wms`;
+  }
+  map.addLayer(
+    new TileLayer({
+      properties: { id: 'ice' },
+      source: new TileWMS({
+        url: tileUrl,
+        params: { layers: 'fmi:ice:icechart_iceareas' },
+        transition: 0,
+      }),
+      preload: 10,
+    })
+  );
+}
+
 export function addAPILayers(map: Map) {
+  addIceLayer(map);
   // Kauppamerenkulku
   addFeatureLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   addFeatureLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));

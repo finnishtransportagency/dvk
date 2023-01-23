@@ -58,7 +58,8 @@ export type FeatureDataLayerId =
   | 'marinewarning'
   | 'name'
   | 'boardline12'
-  | 'mareograph';
+  | 'mareograph'
+  | 'ice';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -97,6 +98,7 @@ export const MAP: MapType = {
     { id: 'marinewarning' },
     { id: 'boardline12' },
     { id: 'mareograph' },
+    { id: 'ice' },
   ],
 };
 

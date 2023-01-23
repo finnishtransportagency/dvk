@@ -197,7 +197,7 @@ export class SquatSite extends Construct {
         accessControlAllowOrigins: ['*'],
         accessControlAllowHeaders: ['*'],
         originOverride: false,
-        accessControlMaxAge: Duration.seconds(600),
+        accessControlMaxAge: Duration.seconds(3600),
       },
       securityHeadersBehavior: {
         strictTransportSecurity: { accessControlMaxAge: Duration.seconds(3600), includeSubdomains: true, override: true },
@@ -234,6 +234,22 @@ export class SquatSite extends Construct {
       cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
     };
 
+    const apiKeyParameterReader = new SSMParameterReader(this, 'WeatherSOAApiKey' + Config.getEnvironment(), {
+      parameterName: 'WeatherSOAApiKey',
+      region: 'eu-west-1',
+    });
+    const iceMapBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherSOAUrl'), {
+        customHeaders: { 'x-api-key': apiKeyParameterReader.getParameterValue() },
+      }),
+      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      compress: true,
+      cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+    };
+
     const proxyBehavior = this.useProxy()
       ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
       : undefined;
@@ -249,6 +265,7 @@ export class SquatSite extends Construct {
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
+      'fmi-apikey/*': iceMapBehavior,
     };
 
     // CloudFront webacl reader and id
