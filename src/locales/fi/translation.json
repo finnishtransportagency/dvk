@@ -37,6 +37,7 @@
           "marineWarnings": "Merivaroitukset",
           "boardLines": "Taululinjat",
           "seaLevel": "Merivedenkorkeus",
+          "weatherStation": "Säähavaintoasemat",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",

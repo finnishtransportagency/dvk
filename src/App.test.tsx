@@ -82,6 +82,9 @@ jest.mock('./components/FeatureLoader', () => ({
   useMareographLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useObservationLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {

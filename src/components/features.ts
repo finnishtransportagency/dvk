@@ -123,3 +123,13 @@ export type MareographFeatureProperties = {
   n2000WaterLevel: number;
   dateTime: number;
 };
+
+export type ObservationFeatureProperties = {
+  name: string;
+  temperature: number;
+  windSpeedAvg: number;
+  windSpeedMax: number;
+  windDirection: number;
+  visibility: number | null;
+  dateTime: number;
+};

@@ -57,6 +57,10 @@ export function useMareographLayer() {
   return useDataLayer('mareograph', 'mareograph', 'EPSG:4326', 'always', 1000 * 60 * 5);
 }
 
+export function useObservationLayer() {
+  return useDataLayer('observation', 'observation', 'EPSG:4326', 'always', 1000 * 60 * 5);
+}
+
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
   for (const raf of rafs) {

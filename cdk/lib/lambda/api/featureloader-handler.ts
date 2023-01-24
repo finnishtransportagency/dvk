@@ -18,7 +18,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
-import { fetchMareoGraphs } from './weather';
+import { fetchMareoGraphs, fetchWeatherObservations } from './weather';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -374,6 +374,27 @@ async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) 
   }
 }
 
+async function addWeatherObservations(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const resp = await fetchWeatherObservations();
+  for (const observation of resp) {
+    features.push({
+      type: 'Feature',
+      id: observation.id,
+      geometry: observation.geometry,
+      properties: {
+        featureType: 'observation',
+        name: observation.name,
+        temperature: observation.temperature,
+        windSpeedAvg: observation.windSpeedAvg,
+        windSpeedMax: observation.windSpeedMax,
+        windDirection: observation.windDirection,
+        visibility: observation.visibility,
+        dateTime: observation.dateTime,
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -466,6 +487,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addBoardLineFeatures(features, event);
   } else if (type === 'mareograph') {
     await addMareoGraphs(features);
+  } else if (type === 'observation') {
+    await addWeatherObservations(features);
   } else {
     return false;
   }

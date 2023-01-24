@@ -112,6 +112,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
               <LayerItem id="marinewarning" title={t('homePage.map.controls.layer.marineWarnings')} />
               <LayerItem id="mareograph" title={t('homePage.map.controls.layer.seaLevel')} />
+              <LayerItem id="observation" title={t('homePage.map.controls.layer.weatherStation')} />
               <LayerItem id="ice" title={t('homePage.map.controls.layer.ice')} />
             </IonList>
           </IonCol>
