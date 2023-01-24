@@ -389,9 +389,10 @@ export function getMareographStyle(feature: FeatureLike) {
   ];
 }
 
-export function getObservationStyle() {
+export function getObservationStyle(selected: boolean) {
   const image = new Icon({
     src: observationIcon,
+    scale: selected ? 1.2 : 1,
     anchor: [0.5, 32],
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
