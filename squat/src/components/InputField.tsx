@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from 'react';
+import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 import { IonIcon, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import { warningOutline } from 'ionicons/icons';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import { Action } from '../hooks/squatReducer';
 import Label from './Label';
 import i18n from '../i18n';
 import { countDecimals } from '../utils/helpers';
+import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
 
 interface InputProps {
   title: string;
@@ -36,37 +37,43 @@ const InputField: React.FC<InputProps> = (props) => {
     setValue(props.value);
   }, [props.value]);
 
-  const innerUpdateAction = (event: CustomEvent, actionType: Action['type']) => {
-    setValue((event.target as HTMLInputElement).value);
-    dispatch({
-      type: 'validation',
-      payload: {
-        key: (event.target as HTMLInputElement).name,
-        value: ((event.target as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-        elType: 'boolean',
-      },
-    });
-    dispatch({
-      type: actionType,
-      payload: {
-        key: (event.target as HTMLInputElement).name,
-        value: (event.target as HTMLInputElement).value,
-        elType: (event.target as HTMLInputElement).tagName,
-        fallThrough: true,
-      },
-    });
-  };
+  const innerUpdateAction = useCallback(
+    (event: CustomEvent, actionType: Action['type']) => {
+      setValue((event.target as HTMLInputElement).value);
+      dispatch({
+        type: 'validation',
+        payload: {
+          key: (event.target as HTMLInputElement).name,
+          value: ((event.target as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
+          elType: 'boolean',
+        },
+      });
+      dispatch({
+        type: actionType,
+        payload: {
+          key: (event.target as HTMLInputElement).name,
+          value: (event.target as HTMLInputElement).value,
+          elType: (event.target as HTMLInputElement).tagName,
+          fallThrough: true,
+        },
+      });
+    },
+    [dispatch]
+  );
 
-  const updateAction = (event: CustomEvent, actionType: Action['type']) => {
-    dispatch({
-      type: actionType,
-      payload: {
-        key: (event.target as HTMLInputElement).name,
-        value: (event.target as HTMLInputElement).value,
-        elType: (event.target as HTMLInputElement).tagName,
-      },
-    });
-  };
+  const updateAction = useCallback(
+    (event: CustomEvent, actionType: Action['type']) => {
+      dispatch({
+        type: actionType,
+        payload: {
+          key: (event.target as HTMLInputElement).name,
+          value: (event.target as HTMLInputElement).value,
+          elType: (event.target as HTMLInputElement).tagName,
+        },
+      });
+    },
+    [dispatch]
+  );
 
   const getHelperText = () => {
     let helper;
@@ -110,6 +117,7 @@ const InputField: React.FC<InputProps> = (props) => {
       );
     return helper;
   };
+
   const getErrorText = () => {
     if (value) {
       if (props.min !== undefined && value < props.min) {
@@ -143,6 +151,20 @@ const InputField: React.FC<InputProps> = (props) => {
     return t('required');
   };
 
+  const handleChange = useCallback(
+    (e: IonInputCustomEvent<InputChangeEventDetail>) => {
+      innerUpdateAction(e, props.actionType);
+    },
+    [innerUpdateAction, props.actionType]
+  );
+
+  const handleBlur = useCallback(
+    (e: IonInputCustomEvent<FocusEvent>) => {
+      updateAction(e, props.actionType);
+    },
+    [updateAction, props.actionType]
+  );
+
   return (
     <>
       <Label
@@ -163,8 +185,8 @@ const InputField: React.FC<InputProps> = (props) => {
           required={props.required}
           value={value}
           placeholder={props.placeholder}
-          onIonChange={(e) => innerUpdateAction(e, props.actionType)}
-          onIonBlur={(e) => updateAction(e, props.actionType)}
+          onIonChange={handleChange}
+          onIonBlur={handleBlur}
           debounce={250}
           inputmode="decimal"
           mode="md"

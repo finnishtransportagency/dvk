@@ -8,6 +8,10 @@ const DRIFT_COEFFICIENTS: number[][] = [
   [0, 0.013, 0.025, 0.03, 0.032, 0.031, 0.029, 0.015, 0.005, 0.022, 0.041, 0.059, 0.073, 0.081, 0.089, 0.075, 0.053, 0.024, 0],
 ];
 
+export function getNumberValueOrEmptyString(value: number): number | '' {
+  return isNaN(value) ? '' : value;
+}
+
 // Common helper functions
 function toRad(x: number) {
   return x * (Math.PI / 180);

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { IonItem, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Label from './Label';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
 
 type OptionType = {
   id: number;
@@ -39,12 +40,16 @@ const SelectField: React.FC<SelectProps> = (props) => {
     });
   };
 
+  const handleChange = useCallback((e: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
+    updateAction(e, props.actionType);
+  }, []);
+
   return (
     <>
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
       <IonItem fill="outline" className={props.fieldClass}>
-        <IonSelect value={props.value} name={props.name} onIonChange={(e) => updateAction(e, props.actionType)} className="full-width">
+        <IonSelect value={props.value} name={props.name} onIonChange={handleChange} className="full-width">
           {props.options.map((option) => (
             <IonSelectOption key={option.id} value={option}>
               {props.translateOptions ? t(option.name) : option.name}

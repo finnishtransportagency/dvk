@@ -1,9 +1,10 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback } from 'react';
 import { IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRadio, IonRadioGroup, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Modal from './Modal';
+import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core';
 
 export type OptionType = {
   id: number;
@@ -31,19 +32,30 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
   const { t } = useTranslation();
   const { dispatch } = useSquatContext();
 
-  const updateAction = (event: CustomEvent, actionType: Action['type']) => {
-    dispatch({
-      type: actionType,
-      payload: {
-        key: props.name,
-        value: (event.target as HTMLInputElement).value,
-        elType: (event.target as HTMLInputElement).tagName,
-      },
-    });
-  };
+  const updateAction = useCallback(
+    (event: CustomEvent, actionType: Action['type']) => {
+      dispatch({
+        type: actionType,
+        payload: {
+          key: props.name,
+          value: (event.target as HTMLInputElement).value,
+          elType: (event.target as HTMLInputElement).tagName,
+        },
+      });
+    },
+    [dispatch, props.name]
+  );
+
+  const handleChange = useCallback(
+    // eslint-disable-next-line
+    (e: IonRadioGroupCustomEvent<RadioGroupChangeEventDetail<any>>) => {
+      updateAction(e, props.actionType);
+    },
+    [updateAction, props.actionType]
+  );
 
   return (
-    <IonRadioGroup value={props.value} name={props.name} onIonChange={(e) => updateAction(e, props.actionType)} aria-label={props.title}>
+    <IonRadioGroup value={props.value} name={props.name} onIonChange={handleChange} aria-label={props.title}>
       <IonItem lines="none" className="only-label no-focus">
         <IonItem lines="none" className="only-label no-padding no-focus">
           <IonLabel color="dark" title={props.title}>

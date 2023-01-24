@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
 
@@ -21,6 +21,7 @@ import {
   calculateUKCVesselMotions,
   calculateWaveForce,
   calculateWindForce,
+  getNumberValueOrEmptyString,
   toDeg,
 } from '../utils/calculations';
 
@@ -39,6 +40,7 @@ import {
   isUKCUnderMinimum,
 } from '../utils/validations';
 import Modal from './Modal';
+import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
@@ -274,34 +276,51 @@ const Calculations: React.FC = () => {
   ]);
 
   // Update status to state
-  const setStateStatus = (key: string, value: string | undefined) => {
-    dispatch({
-      type: 'status',
-      payload: { key: key, value: value === 'true', elType: 'boolean' },
-    });
-  };
+  const setStateStatus = useCallback(
+    (key: string, value: string | undefined) => {
+      dispatch({
+        type: 'status',
+        payload: { key: key, value: value === 'true', elType: 'boolean' },
+      });
+    },
+    [dispatch]
+  );
 
   // Determine values to show
   const getUKCVesselMotionValue = () => {
     const currentValue = state.calculations.squat.UKCVesselMotions[state.status.showBarrass ? 0 : 1][state.status.showDeepWaterValues ? 1 : 0];
-    return isNaN(currentValue) ? 0 : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getUKCStraightCourseValue = () => {
     const currentValue = state.calculations.squat.UKCStraightCourse[state.status.showBarrass ? 0 : 1];
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getUKCDuringTurnValue = () => {
     const currentValue = state.calculations.squat.UKCDuringTurn[state.status.showBarrass ? 0 : 1];
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const getSquatValue = () => {
     const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
-    return isNaN(currentValue) ? '' : currentValue;
+    return getNumberValueOrEmptyString(currentValue);
   };
   const printSquatHelper = () => {
     if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
     return '';
   };
+
+  const handleWaterValuesChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      setStateStatus('showDeepWaterValues', e.detail.value);
+    },
+    [setStateStatus]
+  );
+
+  const handleCalculationMethodChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      setStateStatus('showBarrass', e.detail.value);
+    },
+    [setStateStatus]
+  );
 
   return (
     <>
@@ -343,7 +362,7 @@ const Calculations: React.FC = () => {
         <div className="in-print top-padding">
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
-            onIonChange={(e) => setStateStatus('showDeepWaterValues', e.detail.value)}
+            onIonChange={handleWaterValuesChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
             disabled={!state.environment.weather.waveLength[0]}
             selectOnFocus
@@ -357,7 +376,7 @@ const Calculations: React.FC = () => {
           </IonSegment>
           <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
-            onIonChange={(e) => setStateStatus('showBarrass', e.detail.value)}
+            onIonChange={handleCalculationMethodChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
             disabled={getSquatValue() === ''}

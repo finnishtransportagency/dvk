@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonTextarea, IonToast } from '@ionic/react';
 import { checkmarkCircleOutline, clipboardOutline } from 'ionicons/icons';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { copyToClipboard, createShareableLink } from '../utils/helpers';
@@ -12,10 +12,19 @@ const PrintBar: React.FC = () => {
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
-  const handleCopyClick = () => {
+  const handleCopyClick = useCallback(() => {
     copyToClipboard(createShareableLink(state, true));
     setShowCopyToast(true);
-  };
+  }, [state]);
+
+  const handlePrintClick = useCallback(() => {
+    window.print();
+  }, []);
+
+  const handleToastDismiss = useCallback(() => {
+    setShowCopyToast(false);
+  }, []);
+
   return (
     <>
       <IonGrid>
@@ -33,7 +42,7 @@ const PrintBar: React.FC = () => {
                     <IonButton
                       fill="clear"
                       className="icon-only"
-                      onClick={() => handleCopyClick()}
+                      onClick={handleCopyClick}
                       id="hover-trigger_"
                       title={t('header.copy-to-clipboard')}
                       slot="end"
@@ -43,7 +52,7 @@ const PrintBar: React.FC = () => {
                   </IonItem>
                   <IonToast
                     isOpen={showCopyToast}
-                    onDidDismiss={() => setShowCopyToast(false)}
+                    onDidDismiss={handleToastDismiss}
                     message={t('header.copied-to-clipboard')}
                     duration={2000}
                     position="middle"
@@ -59,7 +68,7 @@ const PrintBar: React.FC = () => {
             <IonButton
               fill="clear"
               className="icon-only"
-              onClick={() => window.print()}
+              onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
               role="button"
