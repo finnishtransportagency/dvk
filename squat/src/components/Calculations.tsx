@@ -308,14 +308,14 @@ const Calculations: React.FC = () => {
     return '';
   };
 
-  const handleShowDeepWaterChange = useCallback(
+  const handleWaterValuesChange = useCallback(
     (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
       setStateStatus('showDeepWaterValues', e.detail.value);
     },
     [setStateStatus]
   );
 
-  const handleShowBarrassWaterChange = useCallback(
+  const handleCalculationMethodChange = useCallback(
     (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
       setStateStatus('showBarrass', e.detail.value);
     },
@@ -362,7 +362,7 @@ const Calculations: React.FC = () => {
         <div className="in-print top-padding">
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
-            onIonChange={handleShowDeepWaterChange}
+            onIonChange={handleWaterValuesChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
             disabled={!state.environment.weather.waveLength[0]}
             selectOnFocus
@@ -376,7 +376,7 @@ const Calculations: React.FC = () => {
           </IonSegment>
           <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
-            onIonChange={handleShowBarrassWaterChange}
+            onIonChange={handleCalculationMethodChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
             disabled={getSquatValue() === ''}
