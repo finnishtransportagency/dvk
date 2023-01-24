@@ -283,6 +283,7 @@ function addIceLayer(map: Map) {
         transition: 0,
       }),
       preload: 10,
+      opacity: 0.7,
     })
   );
 }
