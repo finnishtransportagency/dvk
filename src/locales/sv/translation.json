@@ -54,7 +54,9 @@
           "title": "[sv] Väylähaku",
           "clearTitle": "[sv] Tyhjennä",
           "no-search-results": "[sv] Haulla '{{query}}' ei löydy yhtään väylää"
-        }
+        },
+        "resetRotation": "[sv] Palauta oletusorientaatio",
+        "infoText": "Ej för navigation"
       }
     }
   },
