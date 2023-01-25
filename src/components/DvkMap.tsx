@@ -6,7 +6,7 @@ import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
 import { FeatureLayerId, MAP } from '../utils/constants';
-import { MousePosition, ScaleLine, Zoom } from 'ol/control';
+import { MousePosition, ScaleLine, Zoom, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { useTranslation } from 'react-i18next';
@@ -34,6 +34,9 @@ import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
 import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
+import { defaults } from 'ol/interaction/defaults';
+import north_arrow_small from '../theme/img/north_arrow_small.svg';
+import InfoTextControl from './mapControls/InfoTextControl';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -46,6 +49,13 @@ class DvkMap {
     zoomInTipLabel: '',
     zoomOutTipLabel: '',
   });
+
+  private rotateControl: Rotate = new Rotate({
+    autoHide: false,
+    tipLabel: '',
+  });
+
+  private readonly infoTextControl: InfoTextControl = new InfoTextControl();
 
   private readonly centerToOwnLocationControl: CenterToOwnLocationControl = new CenterToOwnLocationControl();
 
@@ -136,7 +146,10 @@ class DvkMap {
         }),
         this.layerPopupControl,
         this.searchbarControl,
+        this.rotateControl,
+        this.infoTextControl,
       ],
+      interactions: defaults({ altShiftDragRotate: true, pinchRotate: true }),
     });
 
     // override with tileURL
@@ -268,6 +281,16 @@ class DvkMap {
     });
     this.olMap?.addControl(this.zoomControl);
 
+    const span = document.createElement('span');
+    span.innerHTML = '<img src="' + north_arrow_small + '">';
+    this.olMap?.removeControl(this.rotateControl);
+    this.rotateControl = new Rotate({
+      autoHide: false,
+      label: span,
+      tipLabel: this.t('homePage.map.controls.resetRotation'),
+    });
+    this.olMap?.addControl(this.rotateControl);
+
     this.centerToOwnLocationControl.setTipLabel(this.t('homePage.map.controls.ownLocation.tipLabel'));
     this.openSidebarMenuControl.setTipLabel(this.t('homePage.map.controls.openMenu.tipLabel'));
     this.mapDetailsControl.setCopyrightLabel(this.t('homePage.map.controls.mapDetails.copyrightLabel'));
@@ -276,12 +299,15 @@ class DvkMap {
     this.searchbarControl?.setPlaceholder(this.t('homePage.map.controls.searchbar.placeholder'));
     this.searchbarControl?.setTitle(this.t('homePage.map.controls.searchbar.title'));
     this.searchbarControl?.setClearTitle(this.t('homePage.map.controls.searchbar.clearTitle'));
+    this.infoTextControl.setText(this.t('homePage.map.controls.infoText'));
 
     // Workaround to add aria-labels for Zoom control (no support OOTB)
     const zoomInButton = this.olMap?.getViewport().querySelector('.ol-zoom-in') as HTMLButtonElement;
     zoomInButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomInTipLabel');
     const zoomOutButton = this.olMap?.getViewport().querySelector('.ol-zoom-out') as HTMLButtonElement;
     zoomOutButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomOutTipLabel');
+    const rotationResetButton = this.olMap?.getViewport().querySelector('.ol-rotate') as HTMLButtonElement;
+    rotationResetButton.ariaLabel = this.t('homePage.map.controls.resetRotation');
   };
 
   public addShowSidebarMenuControl = () => {
@@ -310,6 +336,10 @@ class DvkMap {
 
   public addZoomControl = () => {
     this.zoomControl?.setMap(this.olMap);
+  };
+
+  public addRotationControl = () => {
+    this.rotateControl?.setMap(this.olMap);
   };
 
   public setTarget = (target: HTMLElement | string | undefined) => {
