@@ -4,7 +4,13 @@
   line-height: 24px;
 }
 
-.ol-popup #pilotPopupContent, .ol-popup #areaPopupContent, .ol-popup #linePopupContent, .ol-popup #equipmentPopupContent, .ol-popup #marinePopupContent, .ol-popup #quayPopupContent {
+.ol-popup #pilotPopupContent,
+.ol-popup #areaPopupContent,
+.ol-popup #linePopupContent,
+.ol-popup #equipmentPopupContent,
+.ol-popup #marinePopupContent,
+.ol-popup #quayPopupContent,
+.ol-popup #observationPopupContent {
   border-radius: 4px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);

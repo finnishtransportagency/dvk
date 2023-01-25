@@ -13,6 +13,7 @@ import {
   useMareographLayer,
   useMarineWarningLayer,
   useNameLayer,
+  useObservationLayer,
   usePilotLayer,
   useSafetyEquipmentLayer,
   useSpecialAreaLayer,
@@ -39,6 +40,7 @@ const OfflineStatus: React.FC = () => {
   const nameLayer = useNameLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const mareographLayer = useMareographLayer();
+  const observationLayer = useObservationLayer();
 
   const statusOffline =
     !navigator.onLine ||
@@ -58,7 +60,8 @@ const OfflineStatus: React.FC = () => {
       marineWarningLayer.isPaused &&
       nameLayer.isPaused &&
       boardLine12Layer.isPaused &&
-      mareographLayer.isPaused);
+      mareographLayer.isPaused &&
+      observationLayer.isPaused);
 
   return (
     <>

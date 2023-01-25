@@ -37,6 +37,7 @@
           "marineWarnings": "Merivaroitukset",
           "boardLines": "Taululinjat",
           "seaLevel": "Merivedenkorkeus",
+          "weatherStation": "Säähavaintoasemat",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
@@ -272,6 +273,17 @@
       "coordinates": "Koordinaatit",
       "seaLevel": "Keskivesi",
       "n2000SeaLevel": "N2000",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "Viimeisin havainto"
+    },
+    "observation": {
+      "observation": "Säähavaintoasema",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Koordinaatit",
+      "temperature": "Ilman lämpötila",
+      "windSpeedAvgDir": "Tuulen nopeus ja suunta",
+      "windSpeedMax": "Tuulen nopeus (puuska)",
+      "visibility": "Näkyvyys",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
     }

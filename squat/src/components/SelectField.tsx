@@ -29,20 +29,19 @@ const SelectField: React.FC<SelectProps> = (props) => {
   const { t } = useTranslation();
   const { dispatch } = useSquatContext();
 
-  const updateAction = (event: CustomEvent, actionType: Action['type']) => {
-    dispatch({
-      type: actionType,
-      payload: {
-        key: (event.target as HTMLInputElement).name,
-        value: (event.target as HTMLInputElement).value,
-        elType: (event.target as HTMLInputElement).tagName,
-      },
-    });
-  };
-
-  const handleChange = useCallback((e: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
-    updateAction(e, props.actionType);
-  }, []);
+  const handleChange = useCallback(
+    (e: IonSelectCustomEvent<SelectChangeEventDetail>) => {
+      dispatch({
+        type: props.actionType,
+        payload: {
+          key: e.target.name,
+          value: e.target.value,
+          elType: e.target.tagName,
+        },
+      });
+    },
+    [dispatch, props.actionType]
+  );
 
   return (
     <>
