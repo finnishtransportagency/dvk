@@ -54,7 +54,9 @@
           "title": "Fairway search",
           "clearTitle": "Clear",
           "no-search-results": "Search '{{query}}' did not match any fairway"
-        }
+        },
+        "resetRotation": "Reset rotation",
+        "infoText": "Not for navigational use"
       }
     }
   },

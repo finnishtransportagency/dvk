@@ -17,6 +17,7 @@ const HomePage: React.FC = () => {
       dvkMap.addLayerPopupControl();
       dvkMap.addCenterToOwnLocationControl();
       dvkMap.addZoomControl();
+      dvkMap.addRotationControl();
       dvkMap.setTarget(mapElement.current);
       dvkMap.setHistory(history);
     }
