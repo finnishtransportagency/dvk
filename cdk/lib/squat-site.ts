@@ -114,6 +114,22 @@ export class SquatSite extends Construct {
       description: 'The name of GeoTIFF bucket',
       exportName: 'GeoTIFFBucket' + props.env,
     });
+    const staticBucket = new s3.Bucket(this, 'StaticBucket', {
+      bucketName: `static.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      versioned: true,
+      ...s3DeletePolicy,
+    });
+    staticBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [staticBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    Tags.of(staticBucket).add('Backups-' + Config.getEnvironment(), 'true');
 
     // TLS certificate
     let certificate, domainNames;
@@ -221,6 +237,27 @@ export class SquatSite extends Construct {
         },
       ],
     };
+    const staticSourceCode = fs.readFileSync(`${__dirname}/lambda/router/replaceFunction.js`).toString('utf-8');
+    const staticFunctionCode = cdk.Fn.sub(staticSourceCode, {
+      REPLACE_PATH: 'static',
+    });
+    const staticCfFunction = new cloudfront.Function(this, 'StaticRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(staticFunctionCode),
+    });
+    const staticBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.S3Origin(staticBucket, { originAccessIdentity: cloudfrontOAI }),
+      originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
+      responseHeadersPolicy: Config.isDeveloperOrDevEnvironment() ? corsResponsePolicy : strictTransportSecurityResponsePolicy,
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: staticCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
+    };
 
     const vectorMapBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapSOAApiUrl'), {
@@ -262,6 +299,7 @@ export class SquatSite extends Construct {
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat*': squatBehavior,
       'geotiff/*': geoTiffBehavior,
+      'static/*': staticBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
