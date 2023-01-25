@@ -206,7 +206,9 @@
   },
   "appInitAlert": {
     "title": "Initializing app",
-    "content": "Please wait"
+    "content": "Please wait",
+    "errorTitle": "Loading error",
+    "errorContent": "Error occurred when loading data. Please try again later."
   },
   "popup": {
     "pilotPlace": {

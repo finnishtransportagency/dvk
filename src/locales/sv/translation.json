@@ -206,7 +206,9 @@
   },
   "appInitAlert": {
     "title": "[sv] Sovellusta alustetaan",
-    "content": "[sv] Ole hyvä ja odota hetki"
+    "content": "[sv] Ole hyvä ja odota hetki",
+    "errorTitle": "[sv] Latausvirhe",
+    "errorContent": "[sv] Tietojen latauksessa tapahtui virhe. Ole hyvä ja yritä uudelleen."
   },
   "popup": {
     "pilotPlace": {
