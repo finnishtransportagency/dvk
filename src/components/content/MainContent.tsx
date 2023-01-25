@@ -104,6 +104,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
       dvkMap.addLayerPopupControl();
       dvkMap.addCenterToOwnLocationControl();
       dvkMap.addZoomControl();
+      dvkMap.addRotationControl();
       dvkMap?.setTarget(mapElement.current);
     }
   });
