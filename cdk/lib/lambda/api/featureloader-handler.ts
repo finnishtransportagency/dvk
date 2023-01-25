@@ -452,7 +452,7 @@ async function getFromCache(key: string): Promise<CacheResponse> {
   return { expired: true };
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph'];
+const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
