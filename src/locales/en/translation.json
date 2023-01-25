@@ -37,6 +37,7 @@
           "marineWarnings": "Marine warnings",
           "boardLines": "[en] Taululinjat",
           "seaLevel": "Sea level",
+          "weatherStation": "Weather stations",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
@@ -274,6 +275,17 @@
       "coordinates": "Coordinates",
       "seaLevel": "[en] Keskivesi",
       "n2000SeaLevel": "N2000",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "[en] Viimeisin havainto"
+    },
+    "observation": {
+      "observation": "Weather station",
+      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "coordinates": "Coordinates",
+      "temperature": "Air temperature",
+      "windSpeedAvgDir": "Wind speed and direction",
+      "windSpeedMax": "Wind speed (puuska)",
+      "visibility": "Visibility",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[en] Viimeisin havainto"
     }

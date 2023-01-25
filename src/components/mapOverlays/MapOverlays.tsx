@@ -15,6 +15,7 @@ import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPo
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
+import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -25,6 +26,7 @@ export type PopupProperties = {
   safetyequipment?: EquipmentProperties;
   marinewarning?: MarineWarningProperties;
   mareograph?: MareographProperties;
+  observation?: ObservationProperties;
 };
 
 const MapOverlays: React.FC = () => {
@@ -81,7 +83,8 @@ const MapOverlays: React.FC = () => {
           {popupProps?.line && <LinePopupContent line={popupProps.line} />}
           {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} />}
           {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} />}
-          {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps?.mareograph} />}
+          {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} />}
+          {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />
