@@ -53,7 +53,9 @@
           "title": "Väylähaku",
           "clearTitle": "Tyhjennä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
-        }
+        },
+        "resetRotation": "Palauta oletusorientaatio",
+        "infoText": "Ei navigointikäyttöön"
       }
     }
   },
