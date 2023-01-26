@@ -2,6 +2,19 @@ import fs from 'fs';
 import { Feature, FeatureCollection, Point } from 'geojson';
 import { roundGeometry } from '../lib/lambda/util';
 import proj4 from 'proj4';
+import { gzip } from 'zlib';
+
+const gzipString = async (input: string): Promise<Buffer> => {
+  const buffer = Buffer.from(input);
+  return new Promise((resolve, reject) =>
+    gzip(buffer, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    })
+  );
+};
 
 async function main() {
   proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
@@ -32,7 +45,7 @@ async function main() {
       }
     }
     const collection: FeatureCollection = { type: 'FeatureCollection', features };
-    fs.writeFileSync('bin/data/names.json', JSON.stringify(collection, undefined, 2) + '\n');
+    fs.writeFileSync('names.json.gz', await gzipString(JSON.stringify(collection, undefined, 2) + '\n'));
   }
 }
 

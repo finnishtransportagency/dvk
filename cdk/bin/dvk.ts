@@ -82,15 +82,6 @@ class SquatPipelineStack extends cdk.Stack {
 
 const app = new cdk.App();
 
-new DvkBuildImageStack(app, 'DvkBuildImageStack', {
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
-  },
-  stackName: 'DvkBuildImageStack',
-  tags: Config.tags,
-});
-
 new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -102,6 +93,20 @@ new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
 
 const appEnv = Config.getEnvironment();
 console.log('app environment:', appEnv);
+
+new DvkBuildImageStack(
+  app,
+  'DvkBuildImageStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+    stackName: 'DvkBuildImageStack',
+    tags: Config.tags,
+  },
+  appEnv
+);
 
 new DvkPipelineStack(
   app,
