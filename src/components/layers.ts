@@ -188,7 +188,7 @@ export function getHarborStyle(feature: FeatureLike, resolution: number) {
     new Style({
       image,
       text: new Text({
-        font: `bold ${resolution < 50 ? '18' : '12'}px "Exo2"`,
+        font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
         placement: 'line',
         offsetY: -55,
         text,

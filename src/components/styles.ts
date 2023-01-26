@@ -358,7 +358,7 @@ export function getNameStyle(feature: FeatureLike, resolution: number) {
   return visible
     ? new Style({
         text: new Text({
-          font: 'bold 12px "Exo2"',
+          font: `bold ${16 - priority}px "Exo2"`,
           placement: 'point',
           text,
           fill: new Fill({
