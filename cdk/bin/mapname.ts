@@ -37,8 +37,10 @@ async function main() {
               name: {
                 fi: feature.properties?.AHTI_NAMFI,
                 sv: feature.properties?.AHTI_NAMSV,
-                priority: Number.parseInt(feature.properties?.AHTI_PRIOR, 10),
               },
+              priority: Number.parseInt(feature.properties?.AHTI_PRIOR, 10),
+              // TODO: set based on source
+              level: Number.parseInt(feature.properties?.AHTI_PRIOR, 10),
             },
           });
         }

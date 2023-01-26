@@ -2,7 +2,7 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
   : window.location.origin + '/api/featureloader';
 
-const staticUrl = process.env.REACT_APP_STATIC_URL ? `https://${process.env.REACT_APP_STATIC_URL}/geotiff` : window.location.origin + '/geotiff';
+const staticUrl = process.env.REACT_APP_STATIC_URL ? `https://${process.env.REACT_APP_STATIC_URL}/s3static` : window.location.origin + '/s3static';
 
 export type FeatureDataId =
   | 'area12'
@@ -17,8 +17,7 @@ export type FeatureDataId =
   | 'depth12'
   | 'safetyequipmentfault'
   | 'marinewarning'
-  | 'seaname'
-  | 'groundname'
+  | 'name'
   | 'boardline12'
   | 'mareograph'
   | 'observation';
@@ -38,8 +37,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2') },
   { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
-  { id: 'seaname', url: new URL(staticUrl + '/vesisto_nimet.json') },
-  { id: 'groundname', url: new URL(staticUrl + '/maa_nimet.json') },
+  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
