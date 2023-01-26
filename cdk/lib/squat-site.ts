@@ -239,7 +239,7 @@ export class SquatSite extends Construct {
     };
     const staticSourceCode = fs.readFileSync(`${__dirname}/lambda/router/replaceFunction.js`).toString('utf-8');
     const staticFunctionCode = cdk.Fn.sub(staticSourceCode, {
-      REPLACE_PATH: 'static',
+      REPLACE_PATH: 's3static',
     });
     const staticCfFunction = new cloudfront.Function(this, 'StaticRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(staticFunctionCode),
@@ -299,7 +299,7 @@ export class SquatSite extends Construct {
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat*': squatBehavior,
       'geotiff/*': geoTiffBehavior,
-      'static/*': staticBehavior,
+      's3static/*': staticBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
