@@ -20,7 +20,9 @@ export type FeatureDataId =
   | 'name'
   | 'boardline12'
   | 'mareograph'
-  | 'observation';
+  | 'observation'
+  | 'balticsea'
+  | 'finland';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -38,6 +40,8 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
+  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
+  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
@@ -60,7 +64,8 @@ export type FeatureDataLayerId =
   | 'boardline12'
   | 'mareograph'
   | 'ice'
-  | 'observation';
+  | 'observation'
+  | 'background';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 

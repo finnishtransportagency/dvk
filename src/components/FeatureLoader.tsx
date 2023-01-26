@@ -8,6 +8,8 @@ import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
+import VectorSource from 'ol/source/Vector';
+import Layer from 'ol/layer/Layer';
 
 function useDataLayer(
   featureDataId: FeatureDataId,
@@ -42,6 +44,28 @@ export function useLine3456Layer() {
 
 export function useNameLayer() {
   return useDataLayer('name', 'name', MAP.EPSG);
+}
+
+export function useBackgroundLayer() {
+  const [ready, setReady] = useState(false);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('balticsea', true, false);
+  const { data: data2 } = useFeatureData('finland', true, false);
+  useEffect(() => {
+    if (data && data2) {
+      const format = new GeoJSON();
+      let features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
+      const source = layer.getSource() as VectorSource;
+      source.clear();
+      features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'balticsea' }, true));
+      source.addFeatures(features);
+      features = format.readFeatures(data2, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
+      source.addFeatures(features);
+      setReady(true);
+    }
+  }, [data, data2]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useBoardLine12Layer() {
