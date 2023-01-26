@@ -21,14 +21,18 @@ function useDataLayer(
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
   useEffect(() => {
     if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource(featureLayerId);
-      if (clearSource) {
-        source.clear();
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (!layer.get('initialized')) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const source = dvkMap.getVectorSource(featureLayerId);
+        if (clearSource) {
+          source.clear();
+        }
+        features.forEach((f) => f.set('dataSource', featureLayerId, true));
+        source.addFeatures(features);
+        layer.set('initialized', true);
       }
-      features.forEach((f) => f.set('dataSource', featureLayerId, true));
-      source.addFeatures(features);
       setReady(true);
     }
   }, [featureLayerId, data, dataProjection, clearSource]);
@@ -222,13 +226,16 @@ export function useSpeedLimitLayer() {
     const aData = aQuery.data;
     const raData = raQuery.data;
     if (aData && raData) {
-      const format = new GeoJSON();
-      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-
-      const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
-      const source = dvkMap.getVectorSource('speedlimit');
-      source.addFeatures(speedLimitFeatures);
+      const layer = dvkMap.getFeatureLayer('speedlimit');
+      if (!layer.get('initialized')) {
+        const format = new GeoJSON();
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
+        const source = dvkMap.getVectorSource('speedlimit');
+        source.addFeatures(speedLimitFeatures);
+        layer.set('initialized', true);
+      }
       setReady(true);
     }
   }, [aQuery.data, raQuery.data]);
