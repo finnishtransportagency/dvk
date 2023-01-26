@@ -191,10 +191,11 @@ const DvkIonApp: React.FC = () => {
       <OfflineStatus />
       <IonReactRouter>
         <SidebarMenu />
-        {(isFetching || !initDone) && (
+        {(!!isFetching || !initDone) && (
           <IonProgressBar
             value={percentDone}
-            type={isFetching && initDone ? 'indeterminate' : 'determinate'}
+            buffer={percentDone}
+            type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
             className={fetchError ? 'danger' : ''}
           />
         )}
