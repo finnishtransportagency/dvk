@@ -220,7 +220,6 @@ class DvkMap {
     });
 
     const mapLayers = olMap.getLayers();
-    /* Layer behind the background tile layer */
     const style = (feature: FeatureLike) => {
       const type = feature.getProperties().dataId as FeatureDataId;
       if (type === 'finland') {
