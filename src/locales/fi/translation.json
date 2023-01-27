@@ -291,7 +291,6 @@
       "dateTime": "Viimeisin havainto"
     },
     "buoy": {
-      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Koordinaatit",
       "temperature": "Veden lämpötila",
       "waveHeightDir": "Aallonkorkeus ja suunta",
