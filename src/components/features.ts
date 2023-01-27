@@ -133,3 +133,11 @@ export type ObservationFeatureProperties = {
   visibility: number | null;
   dateTime: number;
 };
+
+export type BuoyFeatureProperties = {
+  name: string;
+  dateTime: number;
+  temperature: number | null;
+  waveDirection: number | null;
+  waveHeight: number | null;
+};

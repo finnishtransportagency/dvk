@@ -7,6 +7,7 @@ import {
   useArea12Layer,
   useArea3456Layer,
   useBoardLine12Layer,
+  useBuoyLayer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
@@ -42,6 +43,7 @@ const OfflineSupport: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const mareographLayer = useMareographLayer();
   const observationLayer = useObservationLayer();
+  const buoyLayer = useBuoyLayer();
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -62,6 +64,7 @@ const OfflineSupport: React.FC = () => {
     boardLine12Layer.dataUpdatedAt,
     mareographLayer.dataUpdatedAt,
     observationLayer.dataUpdatedAt,
+    buoyLayer.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -82,6 +85,7 @@ const OfflineSupport: React.FC = () => {
     boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
     mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
     observationLayer.isError ? observationLayer.errorUpdatedAt : 0,
+    buoyLayer.isError ? buoyLayer.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);

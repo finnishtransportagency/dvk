@@ -21,7 +21,8 @@ export type FeatureDataId =
   | 'groundname'
   | 'boardline12'
   | 'mareograph'
-  | 'observation';
+  | 'observation'
+  | 'buoy';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -43,6 +44,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
+  { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy') },
 ];
 
 export type FeatureDataLayerId =
@@ -62,7 +64,8 @@ export type FeatureDataLayerId =
   | 'boardline12'
   | 'mareograph'
   | 'ice'
-  | 'observation';
+  | 'observation'
+  | 'buoy';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -103,6 +106,7 @@ export const MAP: MapType = {
     { id: 'mareograph' },
     { id: 'ice' },
     { id: 'observation' },
+    { id: 'buoy' },
   ],
 };
 
