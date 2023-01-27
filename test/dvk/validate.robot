@@ -207,6 +207,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Capture Page Screenshot
 	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
+	Sleep    2s
 
 Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
@@ -216,6 +217,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Capture Page Screenshot
 	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+	Sleep    2s
 
 Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
@@ -225,6 +227,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Capture Page Screenshot
 	Click Element    ${REVERT_WIDE_BUTTON}
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+	Sleep    2s
 
 Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Click Element    ${FAIRWAY_HARBOURS_TAB}
