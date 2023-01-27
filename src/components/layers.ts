@@ -177,7 +177,7 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-export function getHarborStyle(feature: FeatureLike) {
+export function getHarborStyle(feature: FeatureLike, resolution: number) {
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -196,7 +196,7 @@ export function getHarborStyle(feature: FeatureLike) {
     new Style({
       image,
       text: new Text({
-        font: 'bold 18px "Exo2"',
+        font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
         placement: 'line',
         offsetY: -55,
         text,
@@ -330,7 +330,7 @@ export function addAPILayers(map: Map) {
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false), undefined, 1, 'ol-layer');
   // Satamat
-  addFeatureLayer(map, 'harbor', 30, 1, (feature) => getHarborStyle(feature), 3, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {

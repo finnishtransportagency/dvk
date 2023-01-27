@@ -88,6 +88,9 @@ jest.mock('./components/FeatureLoader', () => ({
   useBuoyLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useBackgroundLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {
