@@ -126,6 +126,15 @@ ion-text.offlineStatus > * {
   color: var(--ion-color-primary-contrast);
 }
 
+ion-progress-bar {
+  position: fixed;
+  z-index: 9999;
+}
+ion-progress-bar.danger {
+  --background: rgba(var(--ion-color-danger-rgb), 0.3);
+  --progress-background: var(--ion-color-danger);
+}
+
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;
