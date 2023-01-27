@@ -92,28 +92,6 @@ export class SquatSite extends Construct {
       exportName: 'DVKBucket' + props.env,
     });
 
-    // Pohjatopografia bucket
-    const geoTiffBucket = new s3.Bucket(this, 'GeoTIFFBucket', {
-      bucketName: `geotiff.${siteDomain}`,
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      encryption: BucketEncryption.S3_MANAGED,
-      versioned: true,
-      ...s3DeletePolicy,
-    });
-    geoTiffBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [geoTiffBucket.arnForObjects('*')],
-        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
-      })
-    );
-    Tags.of(geoTiffBucket).add('Backups-' + Config.getEnvironment(), 'true');
-    new CfnOutput(parent, 'GeoTIFF Bucket', {
-      value: geoTiffBucket.bucketName,
-      description: 'The name of GeoTIFF bucket',
-      exportName: 'GeoTIFFBucket' + props.env,
-    });
     const staticBucket = new s3.Bucket(this, 'StaticBucket', {
       bucketName: `static.${siteDomain}`,
       publicReadAccess: false,
@@ -219,24 +197,6 @@ export class SquatSite extends Construct {
         strictTransportSecurity: { accessControlMaxAge: Duration.seconds(3600), includeSubdomains: true, override: true },
       },
     });
-    // Cloudfront function routing /geotiff/10/Saimaa_5_1m_ruutu.tif -> /10/Saimaa_5_1m_ruutu.tif
-    const geoTiffCfFunction = new cloudfront.Function(this, 'GeoTIFFRouterFunction' + props.env, {
-      code: cloudfront.FunctionCode.fromFile({ filePath: './lib/lambda/router/geotiffRequestRouter.js' }),
-    });
-    const geoTiffBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(geoTiffBucket, { originAccessIdentity: cloudfrontOAI }),
-      originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
-      responseHeadersPolicy: Config.isDeveloperOrDevEnvironment() ? corsResponsePolicy : strictTransportSecurityResponsePolicy,
-      compress: true,
-      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      functionAssociations: [
-        {
-          function: geoTiffCfFunction,
-          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
-        },
-      ],
-    };
     const staticSourceCode = fs.readFileSync(`${__dirname}/lambda/router/replaceFunction.js`).toString('utf-8');
     const staticFunctionCode = cdk.Fn.sub(staticSourceCode, {
       REPLACE_PATH: 's3static',
@@ -298,7 +258,6 @@ export class SquatSite extends Construct {
         });
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat*': squatBehavior,
-      'geotiff/*': geoTiffBehavior,
       's3static/*': staticBehavior,
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
