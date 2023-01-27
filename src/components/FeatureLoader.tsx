@@ -52,23 +52,35 @@ export function useNameLayer() {
 
 export function useBackgroundLayer() {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('balticsea', true, false);
-  const { data: data2 } = useFeatureData('finland', true, false);
+  const baQuery = useFeatureData('balticsea', true, false);
+  const fiQuery = useFeatureData('finland', true, false);
+  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt, fiQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt, fiQuery.errorUpdatedAt);
+  const isPaused = baQuery.isPaused || fiQuery.isPaused;
+  const isError = baQuery.isError || fiQuery.isError;
+
   useEffect(() => {
-    if (data && data2) {
-      const format = new GeoJSON();
-      let features = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+    if (baQuery.data && fiQuery.data) {
       const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
-      const source = layer.getSource() as VectorSource;
-      source.clear();
-      features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'balticsea' }, true));
-      source.addFeatures(features);
-      features = format.readFeatures(data2, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
-      source.addFeatures(features);
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        let features = format.readFeatures(baQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'balticsea' }, true));
+        source.addFeatures(features);
+        features = format.readFeatures(fiQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      dvkMap.olMap
+        ?.getAllLayers()
+        .filter((l) => l.get('type') === 'background')
+        .forEach((l) => l.setVisible(true));
       setReady(true);
     }
-  }, [data, data2]);
+  }, [baQuery.data, fiQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 

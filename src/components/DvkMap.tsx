@@ -213,6 +213,7 @@ class DvkMap {
         source,
         updateWhileAnimating: true,
         updateWhileInteracting: true,
+        visible: false,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'background');
