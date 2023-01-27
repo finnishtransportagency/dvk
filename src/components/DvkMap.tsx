@@ -168,12 +168,12 @@ class DvkMap {
     bgVectorLayer.set('type', 'background');
     this.olMap.getLayers().setAt(0, bgVectorLayer);
 
-    this.setBackGroundMapType(this.backgroundMapType);
+    this.setBackGroundMapType(this.backgroundMapType, false);
     this.translate();
   }
 
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
+  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string, visible: boolean) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
@@ -201,7 +201,6 @@ class DvkMap {
       }
       buckets[buckets.length - 1].layers.push(layer.id);
     });
-
     buckets.forEach((bucket: { source: string; layers: Array<string> }) => {
       const source = this.source;
       if (!source) {
@@ -213,7 +212,7 @@ class DvkMap {
         source,
         updateWhileAnimating: true,
         updateWhileInteracting: true,
-        visible: false,
+        visible,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'background');
@@ -247,11 +246,11 @@ class DvkMap {
     });
   };
 
-  public setBackGroundMapType = (bgMapType: BackgroundMapType) => {
+  public setBackGroundMapType = (bgMapType: BackgroundMapType, visible: boolean) => {
     if (this.olMap && bgMapType === 'sea') {
-      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
+      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc', visible);
     } else if (this.olMap && bgMapType === 'land') {
-      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)');
+      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)', visible);
     }
   };
 
