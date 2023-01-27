@@ -52,7 +52,7 @@ const MapOverlays: React.FC = () => {
 
   const setBgMapType = (bgMapType: BackgroundMapType) => {
     setBackgroundMapType(bgMapType);
-    dvkMap.setBackGroundMapType(bgMapType);
+    dvkMap.setBackGroundMapType(bgMapType, true);
   };
 
   useEffect(() => {
