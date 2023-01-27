@@ -8,14 +8,15 @@ import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
+import VectorSource from 'ol/source/Vector';
+import Layer from 'ol/layer/Layer';
 
 function useDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
-  clearSource = true
+  refetchInterval: number | false = false
 ) {
   const [ready, setReady] = useState(false);
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
@@ -26,16 +27,14 @@ function useDataLayer(
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
-        if (clearSource) {
-          source.clear();
-        }
+        source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
         source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection, clearSource]);
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -48,9 +47,41 @@ export function useLine3456Layer() {
 }
 
 export function useNameLayer() {
-  const seaReady = useDataLayer('seaname', 'name', 'EPSG:4326', true, false, false);
-  const groundReady = useDataLayer('groundname', 'name', 'EPSG:4326', true, false, false);
-  return seaReady && groundReady;
+  return useDataLayer('name', 'name', MAP.EPSG);
+}
+
+export function useBackgroundLayer() {
+  const [ready, setReady] = useState(false);
+  const baQuery = useFeatureData('balticsea', true, false);
+  const fiQuery = useFeatureData('finland', true, false);
+  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt, fiQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt, fiQuery.errorUpdatedAt);
+  const isPaused = baQuery.isPaused || fiQuery.isPaused;
+  const isError = baQuery.isError || fiQuery.isError;
+
+  useEffect(() => {
+    if (baQuery.data && fiQuery.data) {
+      const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        let features = format.readFeatures(baQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'balticsea' }, true));
+        source.addFeatures(features);
+        features = format.readFeatures(fiQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      dvkMap.olMap
+        ?.getAllLayers()
+        .filter((l) => l.get('type') === 'background')
+        .forEach((l) => l.setVisible(true));
+      setReady(true);
+    }
+  }, [baQuery.data, fiQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useBoardLine12Layer() {
@@ -63,6 +94,10 @@ export function useMareographLayer() {
 
 export function useObservationLayer() {
   return useDataLayer('observation', 'observation', 'EPSG:4326', 'always', 1000 * 60 * 5);
+}
+
+export function useBuoyLayer() {
+  return useDataLayer('buoy', 'buoy', 'EPSG:4326', 'always', 1000 * 60 * 5);
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {

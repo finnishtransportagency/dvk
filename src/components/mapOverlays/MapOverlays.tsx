@@ -16,6 +16,7 @@ import { useFairwayCardListData } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
+import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -27,6 +28,7 @@ export type PopupProperties = {
   marinewarning?: MarineWarningProperties;
   mareograph?: MareographProperties;
   observation?: ObservationProperties;
+  buoy?: BuoyProperties;
 };
 
 const MapOverlays: React.FC = () => {
@@ -52,7 +54,7 @@ const MapOverlays: React.FC = () => {
 
   const setBgMapType = (bgMapType: BackgroundMapType) => {
     setBackgroundMapType(bgMapType);
-    dvkMap.setBackGroundMapType(bgMapType);
+    dvkMap.setBackGroundMapType(bgMapType, true);
   };
 
   useEffect(() => {
@@ -85,6 +87,7 @@ const MapOverlays: React.FC = () => {
           {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} />}
           {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} />}
           {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} />}
+          {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />

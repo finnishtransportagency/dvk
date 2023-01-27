@@ -213,12 +213,12 @@ export class DvkPipeline extends Construct {
           input: sourceOutput,
           runOrder: 1,
         }),
-        //new cdk.aws_codepipeline_actions.CodeBuildAction({
-        //  actionName: 'DeleteFiles',
-        //  project: emptyS3BuildProject,
-        //  input: buildOutput,
-        //  runOrder: 2,
-        //}),
+        new cdk.aws_codepipeline_actions.CodeBuildAction({
+          actionName: 'DeleteFiles',
+          project: emptyS3BuildProject,
+          input: buildOutput,
+          runOrder: 2,
+        }),
         new cdk.aws_codepipeline_actions.S3DeployAction({
           actionName: 'S3Deploy',
           bucket: s3.Bucket.fromBucketName(this, 'Bucket', importedBucketValue.toString()),

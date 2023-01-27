@@ -27,6 +27,8 @@ import {
   useBoardLine12Layer,
   useMareographLayer,
   useObservationLayer,
+  useBuoyLayer,
+  useBackgroundLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -100,14 +102,15 @@ const DvkIonApp: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const mareographLayer = useMareographLayer();
   const observationLayer = useObservationLayer();
-
+  const buoyLayer = useBuoyLayer();
+  const bgLayer = useBackgroundLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
     let percent = 0;
-    const resourcePercentage = 1 / 16;
+    const resourcePercentage = 1 / 18;
     if (line12Layer.ready) percent += resourcePercentage;
     if (line3456Layer.ready) percent += resourcePercentage;
     if (area12Layer.ready) percent += resourcePercentage;
@@ -124,6 +127,8 @@ const DvkIonApp: React.FC = () => {
     if (boardLine12Layer.ready) percent += resourcePercentage;
     if (mareographLayer.ready) percent += resourcePercentage;
     if (observationLayer.ready) percent += resourcePercentage;
+    if (buoyLayer.ready) percent += resourcePercentage;
+    if (bgLayer.ready) percent += resourcePercentage;
     setPercentDone(percent);
 
     setFetchError(
@@ -142,7 +147,9 @@ const DvkIonApp: React.FC = () => {
         nameLayer.isError ||
         boardLine12Layer.isError ||
         mareographLayer.isError ||
-        observationLayer.isError
+        observationLayer.isError ||
+        buoyLayer.isError ||
+        bgLayer.isError
     );
 
     if (
@@ -161,7 +168,9 @@ const DvkIonApp: React.FC = () => {
       nameLayer.ready &&
       boardLine12Layer.ready &&
       mareographLayer.ready &&
-      observationLayer.ready
+      observationLayer.ready &&
+      buoyLayer.ready &&
+      bgLayer.ready
     ) {
       setInitDone(true);
     }
@@ -182,6 +191,8 @@ const DvkIonApp: React.FC = () => {
     boardLine12Layer,
     mareographLayer,
     observationLayer,
+    buoyLayer,
+    bgLayer,
   ]);
 
   const isFetching = useIsFetching();

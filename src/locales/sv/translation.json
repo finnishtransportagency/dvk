@@ -39,6 +39,7 @@
           "seaLevel": "Vattenståndet",
           "weatherStation": "[sv] Säähavaintoasemat",
           "ice": "[sv] Jääkartta",
+          "buoys": "[sv] Aaltopoijut",
           "mapStyle": {
             "header": "Kartans stil",  
             "landButtonLabel": "Fastland",      
@@ -273,7 +274,6 @@
     },
     "mareograph": {
       "mareograph": "[sv] Mareografi",
-      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "[sv] Koordinaatit",
       "seaLevel": "[sv] Keskivesi",
       "n2000SeaLevel": "N2000",
@@ -282,12 +282,18 @@
     },
     "observation": {
       "observation": "[sv] Säähavaintoasema",
-      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "[sv] Koordinaatit",
       "temperature": "[sv] Ilman lämpötila",
       "windSpeedAvgDir": "[sv] Tuulen nopeus ja suunta",
       "windSpeedMax": "[sv] Tuulen nopeus (puuska)",
       "visibility": "[sv] Näkyvyys",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "[sv] Viimeisin havainto"
+    },
+    "buoy": {
+      "coordinates": "[sv] Koordinaatit",
+      "temperature": "[sv] Veden lämpötila",
+      "waveHeightDir": "[sv] Aallonkorkeus ja suunta",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[sv] Viimeisin havainto"
     }

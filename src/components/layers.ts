@@ -21,7 +21,15 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getNameStyle, getMareographStyle, getObservationStyle } from './styles';
+import {
+  getDepthStyle,
+  getMarineWarningStyle,
+  getSafetyEquipmentStyle,
+  getNameStyle,
+  getMareographStyle,
+  getObservationStyle,
+  getBuoyStyle,
+} from './styles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
@@ -169,7 +177,7 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-export function getHarborStyle(feature: FeatureLike) {
+export function getHarborStyle(feature: FeatureLike, resolution: number) {
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -188,7 +196,7 @@ export function getHarborStyle(feature: FeatureLike) {
     new Style({
       image,
       text: new Text({
-        font: 'bold 18px "Exo2"',
+        font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
         placement: 'line',
         offsetY: -55,
         text,
@@ -315,13 +323,14 @@ export function addAPILayers(map: Map) {
 
   addFeatureLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature), undefined, 1, 'ol-layer');
   addFeatureLayer(map, 'observation', undefined, 50, () => getObservationStyle(false));
+  addFeatureLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false));
   // POI:t
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false), undefined, 1, 'ol-layer');
   // Satamat
-  addFeatureLayer(map, 'harbor', 30, 1, (feature) => getHarborStyle(feature), 3, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {

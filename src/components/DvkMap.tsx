@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { FeatureLayerId, MAP } from '../utils/constants';
+import { FeatureDataId, FeatureLayerId, MAP } from '../utils/constants';
 import { MousePosition, ScaleLine, Zoom, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -26,17 +26,13 @@ import { addAPILayers } from './layers';
 import { RouteComponentProps } from 'react-router-dom';
 import VectorSource from 'ol/source/Vector';
 import Layer from 'ol/layer/Layer';
-import finlandGeojson from '../geodata//finland.json';
-import balticseaGeojson from '../geodata//balticsea.json';
 import VectorLayer from 'ol/layer/Vector';
-import { GeoJSON } from 'ol/format';
 import Style from 'ol/style/Style';
 import Fill from 'ol/style/Fill';
-import { Geometry } from 'ol/geom';
-import { Feature } from 'ol';
 import { defaults } from 'ol/interaction/defaults';
 import north_arrow_small from '../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
+import { FeatureLike } from 'ol/Feature';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -161,12 +157,23 @@ class DvkMap {
       url: tileUrl,
     });
 
-    this.setBackGroundMapType(this.backgroundMapType);
+    const bgVectorLayer = new VectorLayer({
+      source: new VectorSource({
+        features: [],
+      }),
+      background: '#cccccc',
+      updateWhileAnimating: true,
+      updateWhileInteracting: true,
+    });
+    bgVectorLayer.set('type', 'background');
+    this.olMap.getLayers().setAt(0, bgVectorLayer);
+
+    this.setBackGroundMapType(this.backgroundMapType, false);
     this.translate();
   }
 
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
+  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string, visible: boolean) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
@@ -194,7 +201,6 @@ class DvkMap {
       }
       buckets[buckets.length - 1].layers.push(layer.id);
     });
-
     buckets.forEach((bucket: { source: string; layers: Array<string> }) => {
       const source = this.source;
       if (!source) {
@@ -206,6 +212,7 @@ class DvkMap {
         source,
         updateWhileAnimating: true,
         updateWhileInteracting: true,
+        visible,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'background');
@@ -213,49 +220,25 @@ class DvkMap {
     });
 
     const mapLayers = olMap.getLayers();
-
-    /* Features of the layer behind backgound tile layer */
-    const bgVectorLayerFeatures: Feature<Geometry>[] = [];
-
-    /* Read Finland polygons */
-    const finFeatures = new GeoJSON().readFeatures(finlandGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-
-    finFeatures.forEach((f) => {
-      f.setStyle(
-        new Style({
+    const style = (feature: FeatureLike) => {
+      const type = feature.getProperties().dataId as FeatureDataId;
+      if (type === 'finland') {
+        return new Style({
           fill: new Fill({
             color: bgColor,
           }),
-        })
-      );
-      bgVectorLayerFeatures.push(f);
-    });
-
-    /* Read baltic sea polygons */
-    const bsFeatures = new GeoJSON().readFeatures(balticseaGeojson, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-
-    bsFeatures.forEach((bsf) => {
-      bsf.setStyle(
-        new Style({
+        });
+      } else {
+        return new Style({
           fill: new Fill({
             color: waterColor,
           }),
-        })
-      );
-      bgVectorLayerFeatures.push(bsf);
-    });
+        });
+      }
+    };
 
-    /* Layer behind the background tile layer */
-    const bgVectorLayer = new VectorLayer({
-      source: new VectorSource({
-        features: bgVectorLayerFeatures,
-      }),
-      background: '#cccccc',
-      updateWhileAnimating: true,
-      updateWhileInteracting: true,
-    });
-    bgVectorLayer.set('type', 'background');
-    mapLayers.setAt(0, bgVectorLayer);
+    const bgVectorLayer = mapLayers.getArray()[0] as VectorLayer<VectorSource>;
+    bgVectorLayer.setStyle(style);
 
     backLayers.forEach((layer, index) => {
       // Background vector layer must be behind this - so "index + 1"
@@ -263,11 +246,11 @@ class DvkMap {
     });
   };
 
-  public setBackGroundMapType = (bgMapType: BackgroundMapType) => {
+  public setBackGroundMapType = (bgMapType: BackgroundMapType, visible: boolean) => {
     if (this.olMap && bgMapType === 'sea') {
-      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
+      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc', visible);
     } else if (this.olMap && bgMapType === 'land') {
-      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)');
+      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)', visible);
     }
   };
 
