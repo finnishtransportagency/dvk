@@ -21,17 +21,21 @@ function useDataLayer(
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
   useEffect(() => {
     if (data) {
-      const format = new GeoJSON();
-      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource(featureLayerId);
-      if (clearSource) {
-        source.clear();
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const source = dvkMap.getVectorSource(featureLayerId);
+        if (clearSource) {
+          source.clear();
+        }
+        features.forEach((f) => f.set('dataSource', featureLayerId, true));
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
       }
-      features.forEach((f) => f.set('dataSource', featureLayerId, true));
-      source.addFeatures(features);
       setReady(true);
     }
-  }, [featureLayerId, data, dataProjection, clearSource]);
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection, clearSource]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -106,16 +110,21 @@ export function useArea12Layer() {
     const aData = aQuery.data;
     const raData = raQuery.data;
     if (aData && raData) {
-      const format = new GeoJSON();
-      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      addSpeedLimits(afs, rafs);
-      afs.forEach((f) => f.set('dataSource', 'area12', true));
-      const source = dvkMap.getVectorSource('area12');
-      source.addFeatures(afs);
+      const layer = dvkMap.getFeatureLayer('area12');
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        addSpeedLimits(afs, rafs);
+        afs.forEach((f) => f.set('dataSource', 'area12', true));
+        const source = dvkMap.getVectorSource('area12');
+        source.clear();
+        source.addFeatures(afs);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
       setReady(true);
     }
-  }, [aQuery.data, raQuery.data]);
+  }, [aQuery.data, raQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -222,16 +231,20 @@ export function useSpeedLimitLayer() {
     const aData = aQuery.data;
     const raData = raQuery.data;
     if (aData && raData) {
-      const format = new GeoJSON();
-      const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-
-      const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
-      const source = dvkMap.getVectorSource('speedlimit');
-      source.addFeatures(speedLimitFeatures);
+      const layer = dvkMap.getFeatureLayer('speedlimit');
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
+        const source = dvkMap.getVectorSource('speedlimit');
+        source.clear();
+        source.addFeatures(speedLimitFeatures);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
       setReady(true);
     }
-  }, [aQuery.data, raQuery.data]);
+  }, [aQuery.data, raQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -271,37 +284,42 @@ export function useSafetyEquipmentLayer() {
     const eData = eQuery.data;
     const fData = fQuery.data;
     if (eData && fData) {
-      const format = new GeoJSON();
-      const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-      const source = dvkMap.getVectorSource('safetyequipment');
-      source.addFeatures(efs);
-      const faultMap = new Map<number, EquipmentFault[]>();
-      for (const ff of ffs) {
-        const id = ff.getProperties().equipmentId as number;
-        const feature = source.getFeatureById(id);
-        if (feature) {
-          const fault: EquipmentFault = {
-            faultId: ff.getId() as number,
-            faultType: ff.getProperties().type,
-            faultTypeCode: ff.getProperties().typeCode,
-            recordTime: ff.getProperties().recordTime,
-          };
-          if (!faultMap.has(id)) {
-            faultMap.set(id, []);
+      const layer = dvkMap.getFeatureLayer('safetyequipment');
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const source = dvkMap.getVectorSource('safetyequipment');
+        source.clear();
+        source.addFeatures(efs);
+        const faultMap = new Map<number, EquipmentFault[]>();
+        for (const ff of ffs) {
+          const id = ff.getProperties().equipmentId as number;
+          const feature = source.getFeatureById(id);
+          if (feature) {
+            const fault: EquipmentFault = {
+              faultId: ff.getId() as number,
+              faultType: ff.getProperties().type,
+              faultTypeCode: ff.getProperties().typeCode,
+              recordTime: ff.getProperties().recordTime,
+            };
+            if (!faultMap.has(id)) {
+              faultMap.set(id, []);
+            }
+            faultMap.get(id)?.push(fault);
           }
-          faultMap.get(id)?.push(fault);
         }
+        faultMap.forEach((faults, equipmentId) => {
+          const feature = source.getFeatureById(equipmentId);
+          if (feature) {
+            faults.sort((a, b) => b.recordTime - a.recordTime);
+            feature.set('faults', faults, true);
+          }
+        });
+        layer.set('dataUpdatedAt', dataUpdatedAt);
       }
-      faultMap.forEach((faults, equipmentId) => {
-        const feature = source.getFeatureById(equipmentId);
-        if (feature) {
-          faults.sort((a, b) => b.recordTime - a.recordTime);
-          feature.set('faults', faults, true);
-        }
-      });
       setReady(true);
     }
-  }, [eQuery.data, fQuery.data]);
+  }, [eQuery.data, fQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
