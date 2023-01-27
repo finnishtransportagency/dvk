@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert, IonProgressBar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
 /* React query offline cache */
-import { QueryClient } from '@tanstack/react-query';
+import { QueryClient, useIsFetching } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { Drivers, Storage } from '@ionic/storage';
@@ -100,9 +100,51 @@ const DvkIonApp: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const mareographLayer = useMareographLayer();
   const observationLayer = useObservationLayer();
+
   const [initDone, setInitDone] = useState(false);
+  const [percentDone, setPercentDone] = useState(0);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
+    let percent = 0;
+    const resourcePercentage = 1 / 16;
+    if (line12Layer.ready) percent += resourcePercentage;
+    if (line3456Layer.ready) percent += resourcePercentage;
+    if (area12Layer.ready) percent += resourcePercentage;
+    if (area3456Layer.ready) percent += resourcePercentage;
+    if (depth12Layer.ready) percent += resourcePercentage;
+    if (speedLimitLayer.ready) percent += resourcePercentage;
+    if (specialAreaLayer.ready) percent += resourcePercentage;
+    if (pilotLayer.ready) percent += resourcePercentage;
+    if (harborLayer.ready) percent += resourcePercentage;
+    if (safetyEquipmentLayer.ready) percent += resourcePercentage;
+    if (marineWarningLayer.ready) percent += resourcePercentage;
+    if (fairwayCardList.ready) percent += resourcePercentage;
+    if (nameLayer.ready) percent += resourcePercentage;
+    if (boardLine12Layer.ready) percent += resourcePercentage;
+    if (mareographLayer.ready) percent += resourcePercentage;
+    if (observationLayer.ready) percent += resourcePercentage;
+    setPercentDone(percent);
+
+    setFetchError(
+      line12Layer.isError ||
+        line3456Layer.isError ||
+        area12Layer.isError ||
+        area3456Layer.isError ||
+        depth12Layer.isError ||
+        speedLimitLayer.isError ||
+        specialAreaLayer.isError ||
+        pilotLayer.isError ||
+        harborLayer.isError ||
+        safetyEquipmentLayer.isError ||
+        marineWarningLayer.isError ||
+        fairwayCardList.isError ||
+        nameLayer.isError ||
+        boardLine12Layer.isError ||
+        mareographLayer.isError ||
+        observationLayer.isError
+    );
+
     if (
       line12Layer.ready &&
       line3456Layer.ready &&
@@ -142,11 +184,21 @@ const DvkIonApp: React.FC = () => {
     observationLayer,
   ]);
 
+  const isFetching = useIsFetching();
+
   return (
     <IonApp className={isMobile() ? 'mobile' : ''}>
       <OfflineStatus />
       <IonReactRouter>
         <SidebarMenu />
+        {(!!isFetching || !initDone) && (
+          <IonProgressBar
+            value={percentDone}
+            buffer={percentDone}
+            type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+            className={fetchError ? 'danger' : ''}
+          />
+        )}
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Switch>
@@ -170,7 +222,10 @@ const DvkIonApp: React.FC = () => {
         </IonContent>
         <MapOverlays />
       </IonReactRouter>
-      <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
+      {fetchError && (
+        <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
+      )}
+      {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
     </IonApp>
   );
 };
