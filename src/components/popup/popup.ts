@@ -10,7 +10,7 @@ import { get as getTransform } from 'ol/proj/transforms';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
+import { getBuoyStyle, getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -24,7 +24,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'area', 'specialarea', 'mareograph', 'observation'];
+  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -97,6 +97,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getMareographStyle(feature);
     } else if (type === 'observation') {
       return getObservationStyle(true);
+    } else if (type === 'buoy') {
+      return getBuoyStyle(true);
     } else {
       return undefined;
     }
@@ -118,6 +120,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('marinewarning'),
       dvkMap.getFeatureLayer('mareograph'),
       dvkMap.getFeatureLayer('observation'),
+      dvkMap.getFeatureLayer('buoy'),
     ],
     hitTolerance: 3,
     multi: true,

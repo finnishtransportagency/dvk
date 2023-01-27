@@ -48,6 +48,27 @@ export type Observation = {
   geometry: Geometry;
 };
 
+type WeatherBuoy = {
+  fmisid: number;
+  geoid: number;
+  latlon: string;
+  station_name: string;
+  localtime: string;
+  WH_PT1M_ACC: number | null;
+  WHD_PT1M_ACC: number | null;
+  TW_PT1M_AVG: number | null;
+};
+
+export type Buoy = {
+  id: number;
+  name: string;
+  dateTime: number;
+  geometry: Geometry;
+  temperature: number | null;
+  waveDirection: number | null;
+  waveHeight: number | null;
+};
+
 async function fetchApi<T>(path: string) {
   const start = Date.now();
   // TODO: remove apikey once SOA api exists
@@ -107,4 +128,29 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
       geometry: parseGeometry(measure.latlon),
     };
   });
+}
+
+export async function fetchBuoys(): Promise<Buoy[]> {
+  const buoys = (
+    await fetchApi<WeatherBuoy>(
+      'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WH_PT1M_ACC,WHD_PT1M_ACC,TW_PT1M_AVG&fmisid=103976,134220,134221,134246,137228&precision=double&starttime=-2h&timestep=data&producer=observations_fmi&timeformat=sql&format=json'
+    )
+  ).map((measure) => {
+    return {
+      id: measure.fmisid,
+      name: measure.station_name,
+      dateTime: Date.parse(measure.localtime),
+      geometry: parseGeometry(measure.latlon),
+      temperature: measure.TW_PT1M_AVG,
+      waveDirection: measure.WHD_PT1M_ACC,
+      waveHeight: measure.WH_PT1M_ACC,
+    };
+  });
+  const latestObservations = new Map<number, Buoy>();
+  for (const buoy of buoys) {
+    if (!latestObservations.has(buoy.id) || (latestObservations.get(buoy.id)?.dateTime || 0) < buoy.dateTime) {
+      latestObservations.set(buoy.id, buoy);
+    }
+  }
+  return [...latestObservations.values()];
 }

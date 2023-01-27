@@ -18,7 +18,7 @@ import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3
 import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
-import { fetchMareoGraphs, fetchWeatherObservations } from './weather';
+import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -395,6 +395,25 @@ async function addWeatherObservations(features: Feature<Geometry, GeoJsonPropert
   }
 }
 
+async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const resp = await fetchBuoys();
+  for (const buoy of resp) {
+    features.push({
+      type: 'Feature',
+      id: buoy.id,
+      geometry: buoy.geometry,
+      properties: {
+        featureType: 'buoy',
+        name: buoy.name,
+        dateTime: buoy.dateTime,
+        temperature: buoy.temperature,
+        waveDirection: buoy.waveDirection,
+        waveHeight: buoy.waveHeight,
+      },
+    });
+  }
+}
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -452,7 +471,7 @@ async function getFromCache(key: string): Promise<CacheResponse> {
   return { expired: true };
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation'];
+const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
@@ -489,6 +508,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addMareoGraphs(features);
   } else if (type === 'observation') {
     await addWeatherObservations(features);
+  } else if (type === 'buoy') {
+    await addBuoys(features);
   } else {
     return false;
   }

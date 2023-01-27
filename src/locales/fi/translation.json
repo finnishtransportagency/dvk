@@ -39,6 +39,7 @@
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
           "ice": "Jääkartta",
+          "buoys": "Aaltopoijut",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -273,7 +274,6 @@
     },
     "mareograph": {
       "mareograph": "Mareografi",
-      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Koordinaatit",
       "seaLevel": "Keskivesi",
       "n2000SeaLevel": "N2000",
@@ -282,12 +282,18 @@
     },
     "observation": {
       "observation": "Säähavaintoasema",
-      "datetime": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "coordinates": "Koordinaatit",
       "temperature": "Ilman lämpötila",
       "windSpeedAvgDir": "Tuulen nopeus ja suunta",
       "windSpeedMax": "Tuulen nopeus (puuska)",
       "visibility": "Näkyvyys",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+      "dateTime": "Viimeisin havainto"
+    },
+    "buoy": {
+      "coordinates": "Koordinaatit",
+      "temperature": "Veden lämpötila",
+      "waveHeightDir": "Aallonkorkeus ja suunta",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
     }
