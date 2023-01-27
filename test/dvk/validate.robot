@@ -30,15 +30,15 @@ ${EXPAND_WIDE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::butt
 ${REVERT_WIDE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::button[@class = "icon flip invert"]
 ${FAIRWAY_CARD_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab1 wide active"]
 ${FAIRWAY_CARD_TAB}    //ion-segment-button[@value = "1"]
-${FAIRWAY_CARD_TAB_IS_SELECTED}    //ion-segment-button[@value = "1" and @aria-selected = "true"]
+${FAIRWAY_CARD_TAB_IS_SELECTED}    //ion-segment[@data-testid = "tabChange" and @value = "1"]
 ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab1 active"]
 ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab2 wide active"]
 ${FAIRWAY_HARBOURS_TAB}    //ion-segment-button[@value = "2"]
-${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    //ion-segment-button[@value = "2" and @aria-selected = "true"]
+${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    //ion-segment[@data-testid = "tabChange" and @value = "2"]
 ${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab2 active"]
 ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}    //div[@class = "tabContent tab3 wide active"]
 ${FAIRWAY_AREAS_TAB}    //ion-segment-button[@value = "3"]
-${FAIRWAY_AREAS_TAB_IS_SELECTED}    //ion-segment-button[@value = "3" and @aria-selected = "true"]
+${FAIRWAY_AREAS_TAB_IS_SELECTED}    //ion-segment[@data-testid = "tabChange" and @value = "3"]
 ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}    //div[@class = "tabContent tab3 active"]
 ${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
 ${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
@@ -60,7 +60,7 @@ ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 acti
 ${ICE_CONDITIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Ice conditions"]
 ${FAIRWAY_DATA_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Väylätiedot"]
 ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Linjaus ja merkintä"]
-${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Väylän mitoitusalus"]
+${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Väylän mitoitusalus" or text() = "Väylän mitoitusalukset"]
 ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Väylän mitoitustiedot"]
 ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Kohtaamis- ja ohittamiskieltoalueet"]
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Nopeusrajoitukset"]
@@ -79,15 +79,28 @@ ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}    //div[@class = "tabConten
 ${TRAFFIC_SERVICES_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Liikennepalvelut"]
 ${PILOTAGE_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Luotsintilaus"]
 ${VTS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
-${TUGS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Hinaajat"]
 ${TRAFFIC_SERVICES_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Trafikservice"]
 ${PILOTAGE_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Lotsbeställning"]
 ${VTS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
-${TUGS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Bogserbåtar"]
 ${TRAFFIC_SERVICES_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Traffic services"]
 ${PILOTAGE_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Pilotage"]
 ${VTS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
-${TUGS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Tugs"]
+${HARBOUR_NAME_HEADING}    //div[@class = "tabContent tab2 active"]/ion-text/h4
+${HARBOUR_RESTRICTIONS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Sataman rajoitukset"]
+${QUAYS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Laiturit"]
+${CARGO_HANDLING_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Lastinkäsittely"]
+${HARBOUR_BASIN_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Satama-allas"]
+${CONTACT_DETAILS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Yhteystiedot"]
+${HARBOUR_RESTRICTIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "[sv] Sataman rajoitukset"]
+${QUAYS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Kajer"]
+${CARGO_HANDLING_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Lasthantering"]
+${HARBOUR_BASIN_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Hamnbassäng"]
+${CONTACT_DETAILS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Kontaktinformation"]
+${HARBOUR_RESTRICTIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Harbour restrictions"]
+${QUAYS_HEADING_ENGLISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Quays"]
+${CARGO_HANDLING_HEADING_ENGLISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Cargo handling"]
+${HARBOUR_BASIN_HEADING_ENGLISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Harbour basin"]
+${CONTACT_DETAILS_HEADING_ENGLISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Contact details"]
 
 *** Test Cases ***
 Check Copyright And Scale
@@ -125,7 +138,8 @@ Check Fairway Card
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_FINNISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_FINNISH}    ${PILOTAGE_HEADING_FINNISH}    ${VTS_HEADING_FINNISH}    ${TUGS_HEADING_FINNISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_FINNISH}    ${PILOTAGE_HEADING_FINNISH}    ${VTS_HEADING_FINNISH}
+	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_FINNISH}    ${QUAYS_HEADING_FINNISH}    ${CARGO_HANDLING_HEADING_FINNISH}    ${HARBOUR_BASIN_HEADING_FINNISH}    ${CONTACT_DETAILS_HEADING_FINNISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -141,7 +155,8 @@ Check Fairway Card In Swedish
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_SWEDISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_SWEDISH}    ${PILOTAGE_HEADING_SWEDISH}    ${VTS_HEADING_SWEDISH}    ${TUGS_HEADING_SWEDISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_SWEDISH}    ${PILOTAGE_HEADING_SWEDISH}    ${VTS_HEADING_SWEDISH}
+	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_SWEDISH}    ${QUAYS_HEADING_SWEDISH}    ${CARGO_HANDLING_HEADING_SWEDISH}    ${HARBOUR_BASIN_HEADING_SWEDISH}    ${CONTACT_DETAILS_HEADING_SWEDISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -157,7 +172,8 @@ Check Fairway Card In English
 	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_ENGLISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_ENGLISH}    ${PILOTAGE_HEADING_ENGLISH}    ${VTS_HEADING_ENGLISH}    ${TUGS_HEADING_ENGLISH}
+	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_ENGLISH}    ${PILOTAGE_HEADING_ENGLISH}    ${VTS_HEADING_ENGLISH}
+	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_ENGLISH}    ${QUAYS_HEADING_ENGLISH}    ${CARGO_HANDLING_HEADING_ENGLISH}    ${HARBOUR_BASIN_HEADING_ENGLISH}    ${CONTACT_DETAILS_HEADING_ENGLISH}
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -276,13 +292,49 @@ Check Fairway Data Headings
 	Scroll Element Into View    ${CLOSE_BUTTON}
 
 Check Traffic Services Headings
-	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}
 	Scroll Element Into View    ${heading1_locator}
 	Element Should Be Visible    ${heading1_locator}
 	Scroll Element Into View    ${heading2_locator}
 	Element Should Be Visible    ${heading2_locator}
 	Scroll Element Into View    ${heading3_locator}
 	Element Should Be Visible    ${heading3_locator}
+	Scroll Element Into View    ${CLOSE_BUTTON}
+
+Check Fairway Harbours Headings
+	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}    ${heading5_locator}    ${heading6_locator}
+	Click Element    ${FAIRWAY_HARBOURS_TAB}
+	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
+	${heading1_elements}=    Get WebElements    ${heading1_locator}
+	${harbours_count}=    Get Length    ${heading1_elements}
+	Run Keyword And Return If    ${harbours_count} == 0    Open Fairway Card Tab
+	Scroll Element Into View    ${heading1_locator}
+	Element Should Be Visible    ${heading1_locator}
+	Scroll Element Into View    ${heading2_locator}
+	Heading Count Matches Harbours Count    ${heading2_locator}    ${harbours_count}
+	Element Should Be Visible    ${heading2_locator}
+	Scroll Element Into View    ${heading3_locator}
+	Heading Count Matches Harbours Count    ${heading3_locator}    ${harbours_count}
+	Element Should Be Visible    ${heading3_locator}
 	Scroll Element Into View    ${heading4_locator}
+	Heading Count Matches Harbours Count    ${heading4_locator}    ${harbours_count}
 	Element Should Be Visible    ${heading4_locator}
+	Scroll Element Into View    ${heading5_locator}
+	Heading Count Matches Harbours Count    ${heading5_locator}    ${harbours_count}
+	Element Should Be Visible    ${heading5_locator}
+	Scroll Element Into View    ${heading6_locator}
+	Heading Count Matches Harbours Count    ${heading6_locator}    ${harbours_count}
+	Element Should Be Visible    ${heading6_locator}
+	Scroll Element Into View    ${FAIRWAY_CARD_TAB}
+	Open Fairway Card Tab
+
+Heading Count Matches Harbours Count
+	[Arguments]    ${heading_locator}    ${harbours_count}
+	${heading_elements}=    Get WebElements    ${heading_locator}
+	${heading_count}=    Get Length    ${heading_elements}
+	Should Be Equal    ${heading_count}    ${harbours_count}
+
+Open Fairway Card Tab
+	Click Element    ${FAIRWAY_CARD_TAB}
+	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
 	Scroll Element Into View    ${CLOSE_BUTTON}
