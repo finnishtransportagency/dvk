@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonImg, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './TitleBar.css';
 import LanguageBar from './LanguageBar';
-import { showLanguages, showLogo } from '../pages/Home';
+import { isEmbedded, showLanguages, showLogo } from '../pages/Home';
 import PrintBar from './PrintBar';
 
 const TitleBar: React.FC = () => {
@@ -14,9 +14,16 @@ const TitleBar: React.FC = () => {
       <IonRow className="ion-align-items-center">
         <IonCol className="mainTitle">
           <IonText color="dark" className="equal-margin-top">
-            <h1>
-              <strong>{t('squat.content')}</strong>
-            </h1>
+            {!isEmbedded() && (
+              <h1>
+                <strong>{t('squat.content')}</strong>
+              </h1>
+            )}
+            {isEmbedded() && (
+              <h2>
+                <strong>{t('squat.content')}</strong>
+              </h2>
+            )}
           </IonText>
         </IonCol>
         <IonCol class="ion-align-self-center mobile-logo" size="auto">

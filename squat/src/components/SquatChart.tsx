@@ -12,6 +12,7 @@ import {
 } from '../utils/calculations';
 import './SquatChart.css';
 import SquatDataTable from './SquatDataTable';
+import { isEmbedded } from '../pages/Home';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
@@ -394,7 +395,12 @@ const SquatChart: React.FC = () => {
     <IonGrid className="squatChartGrid" aria-hidden="true">
       <IonRow className="squatChartRow">
         <IonCol>
-          <h4 className="squatChartTitle">{t('heading')}</h4>
+          {!isEmbedded() && <h4 className="squatChartTitle">{t('heading')}</h4>}
+          {isEmbedded() && (
+            <h3 className="squatChartTitle">
+              <strong>{t('heading')}</strong>
+            </h3>
+          )}
         </IonCol>
       </IonRow>
       <IonRow className="squatChartRow">
