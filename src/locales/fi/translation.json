@@ -275,10 +275,11 @@
     "mareograph": {
       "mareograph": "Mareografi",
       "coordinates": "Koordinaatit",
-      "seaLevel": "Keskivesi",
+      "seaLevel": "MW",
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Viimeisin havainto"
+      "dateTime": "Viimeisin havainto",
+      "calculated": "Laskennallinen vedenkorkeus"
     },
     "observation": {
       "observation": "Säähavaintoasema",
