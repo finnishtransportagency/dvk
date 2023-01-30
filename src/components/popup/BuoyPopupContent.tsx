@@ -40,7 +40,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy }) => {
           <IonCol className="header">{t('waveHeightDir')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${buoy.properties.waveHeight ? Math.round(buoy.properties.waveHeight) : '-'} m/s, ${
+          <IonCol>{`${buoy.properties.waveHeight ? buoy.properties.waveHeight : '-'} m/s, ${
             buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'
           } °`}</IonCol>
         </IonRow>
