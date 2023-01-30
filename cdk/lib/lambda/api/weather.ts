@@ -135,20 +135,26 @@ export async function fetchBuoys(): Promise<Buoy[]> {
     await fetchApi<WeatherBuoy>(
       'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WH_PT1M_ACC,WHD_PT1M_ACC,TW_PT1M_AVG&fmisid=103976,134220,134221,134246,137228&precision=double&starttime=-2h&timestep=data&producer=observations_fmi&timeformat=sql&format=json'
     )
-  ).map((measure) => {
-    return {
-      id: measure.fmisid,
-      name: measure.station_name,
-      dateTime: Date.parse(measure.localtime),
-      geometry: parseGeometry(measure.latlon),
-      temperature: measure.TW_PT1M_AVG,
-      waveDirection: measure.WHD_PT1M_ACC,
-      waveHeight: measure.WH_PT1M_ACC,
-    };
-  });
+  )
+    .map((measure) => {
+      return {
+        id: measure.fmisid,
+        name: measure.station_name,
+        dateTime: Date.parse(measure.localtime),
+        geometry: parseGeometry(measure.latlon),
+        temperature: measure.TW_PT1M_AVG,
+        waveDirection: measure.WHD_PT1M_ACC,
+        waveHeight: measure.WH_PT1M_ACC,
+      };
+    })
+    .sort((a, b) => a.dateTime - b.dateTime);
+
   const latestObservations = new Map<number, Buoy>();
   for (const buoy of buoys) {
-    if (!latestObservations.has(buoy.id) || (latestObservations.get(buoy.id)?.dateTime || 0) < buoy.dateTime) {
+    if (
+      !latestObservations.has(buoy.id) ||
+      ((latestObservations.get(buoy.id)?.dateTime || 0) < buoy.dateTime && buoy.temperature && buoy.waveDirection && buoy.waveHeight)
+    ) {
       latestObservations.set(buoy.id, buoy);
     }
   }
