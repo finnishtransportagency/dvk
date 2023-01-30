@@ -279,6 +279,7 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[sv] Viimeisin havainto",
+      "dateTime2": "[sv] Ennuste",
       "calculated": "[sv] Laskennallinen vedenkorkeus"
     },
     "observation": {
