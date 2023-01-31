@@ -390,6 +390,7 @@ Check Fairway Cards Page
 	[Arguments]    ${language}
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
+	Sleep    2s
 	Click Element    ${FAIRWAYS_LINK}
 	Sleep    5s
 	Capture Page Screenshot
