@@ -128,6 +128,15 @@ fragment FairwayCardParts on FairwayCard {
     boardLines {
       id
     }
+    restrictionAreas {
+      id
+      types {
+        code
+      }
+      value
+      location
+      exception
+    }
   }
   lineText {
     fi
