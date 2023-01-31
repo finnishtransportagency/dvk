@@ -45,10 +45,6 @@ export class DvkPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
-          REACT_APP_FMI_MAP_API_KEY: {
-            type: BuildEnvironmentVariableType.PARAMETER_STORE,
-            value: 'WeatherApiKey',
-          },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({

@@ -19,7 +19,7 @@ export class SSMParameterReader extends AwsCustomResource {
           WithDecryption: true,
         },
         region,
-        physicalResourceId: PhysicalResourceId.of(name),
+        physicalResourceId: PhysicalResourceId.of(Date.now().toString()), // Update physical id to always fetch the latest version
       },
       policy: AwsCustomResourcePolicy.fromSdkCalls({
         resources: AwsCustomResourcePolicy.ANY_RESOURCE,

@@ -220,7 +220,7 @@ export class SquatSite extends Construct {
     };
 
     const vectorMapBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('BGMapSOAApiUrl'), {
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('SOAApiUrl'), {
         customHeaders: { 'x-api-key': config.getGlobalStringParameter('BGMapSOAApiKey') },
       }),
       originRequestPolicy: OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
@@ -236,7 +236,7 @@ export class SquatSite extends Construct {
       region: 'eu-west-1',
     });
     const iceMapBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('WeatherSOAUrl'), {
+      origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('SOAApiUrl'), {
         customHeaders: { 'x-api-key': apiKeyParameterReader.getParameterValue() },
       }),
       originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
@@ -262,7 +262,7 @@ export class SquatSite extends Construct {
       '/graphql': graphqlProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
-      'fmi-apikey/*': iceMapBehavior,
+      'fmi/*': iceMapBehavior,
     };
 
     // CloudFront webacl reader and id

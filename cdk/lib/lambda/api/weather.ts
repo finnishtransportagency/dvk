@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherApiKey, getWeatherHeaders, getWeatherSOAUrl } from '../environment';
+import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
@@ -142,8 +142,7 @@ async function fetchIlmanetApi(): Promise<Mareograph[]> {
 
 async function fetchApi<T>(path: string) {
   const start = Date.now();
-  // TODO: remove apikey once SOA api exists
-  const url = `https://${await getWeatherSOAUrl()}/fmi-apikey/${await getWeatherApiKey()}/${path}`;
+  const url = `https://${await getSOAApiUrl()}/fmi/${path}`;
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),
