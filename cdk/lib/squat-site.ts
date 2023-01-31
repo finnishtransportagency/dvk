@@ -12,7 +12,10 @@ import {
   CachePolicy,
   GeoRestriction,
   OriginProtocolPolicy,
+  OriginRequestCookieBehavior,
+  OriginRequestHeaderBehavior,
   OriginRequestPolicy,
+  OriginRequestQueryStringBehavior,
   OriginSslPolicy,
   PriceClass,
   ResponseHeadersPolicy,
@@ -235,11 +238,17 @@ export class SquatSite extends Construct {
       parameterName: 'WeatherSOAApiKey',
       region: 'eu-west-1',
     });
+    const originRequestPolicy = new OriginRequestPolicy(this, 'FMIPolicy' + Config.getEnvironment(), {
+      cookieBehavior: OriginRequestCookieBehavior.all(),
+      headerBehavior: OriginRequestHeaderBehavior.none(),
+      queryStringBehavior: OriginRequestQueryStringBehavior.all(),
+      originRequestPolicyName: 'FMIPolicy-' + Config.getEnvironment(),
+    });
     const iceMapBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.HttpOrigin(config.getGlobalStringParameter('SOAApiUrl'), {
         customHeaders: { 'x-api-key': apiKeyParameterReader.getParameterValue() },
       }),
-      originRequestPolicy: OriginRequestPolicy.ALL_VIEWER,
+      originRequestPolicy,
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : corsResponsePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,

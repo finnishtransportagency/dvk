@@ -5,7 +5,7 @@ import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
-import { BuildEnvironmentVariableType, ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
+import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
