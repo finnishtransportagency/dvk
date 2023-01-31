@@ -122,6 +122,7 @@ export type MareographFeatureProperties = {
   waterLevel: number;
   n2000WaterLevel: number;
   dateTime: number;
+  calculated: boolean;
 };
 
 export type ObservationFeatureProperties = {

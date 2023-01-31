@@ -276,10 +276,12 @@
     "mareograph": {
       "mareograph": "Mareograph",
       "coordinates": "Coordinates",
-      "seaLevel": "[en] Keskivesi",
+      "seaLevel": "MW",
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[en] Viimeisin havainto"
+      "dateTime": "[en] Viimeisin havainto",
+      "dateTime2": "Forecast",
+      "calculated": "[en] Laskennallinen vedenkorkeus"
     },
     "observation": {
       "observation": "Weather station",

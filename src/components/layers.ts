@@ -321,7 +321,7 @@ export function addAPILayers(map: Map) {
   );
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
 
-  addFeatureLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature), undefined, 1, 'ol-layer');
+  addFeatureLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, 'ol-layer');
   addFeatureLayer(map, 'observation', undefined, 50, () => getObservationStyle(false));
   addFeatureLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false));
   // POI:t
