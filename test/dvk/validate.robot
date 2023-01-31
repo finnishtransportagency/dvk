@@ -45,7 +45,48 @@ ${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
 ${REGEX_SCALE}    \\d+\\s(m|km)
 ${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
 ${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
-${FAIRWAY_CARDS_HEADING}    //h2/strong[text()= "Väyläkortit"]
+${FAIRWAY_CARDS_HEADING_FINNISH}    //ion-text[@class = "fairwayTitle md"]/h2/strong[text() = "Väyläkortit"]
+${GENERAL_HEADING_FINNISH}    //ion-item[@slot = "header"]/ion-label[text() = "Yleistä"]
+${ARCHIPELAGO_SEA_HEADING_FINNISH}    //ion-text/h4/strong[text() = "Saaristomeri"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_FINNISH}    //ion-text/h4/strong[text() = "Saaristomeri"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_1_FINNISH}    //ion-text/h4/strong[text() = "Saaristomeri"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Väyläkortin nimi"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_2_FINNISH}    //ion-text/h4/strong[text() = "Saaristomeri"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Päivitetty"]
+${GULF_OF_FINLAND_HEADING_FINNISH}    //ion-text/h4/strong[text() = "Suomenlahti"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_FINNISH}    //ion-text/h4/strong[text() = "Suomenlahti"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_1_FINNISH}    //ion-text/h4/strong[text() = "Suomenlahti"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Väyläkortin nimi"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_2_FINNISH}    //ion-text/h4/strong[text() = "Suomenlahti"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Päivitetty"]
+${GULF_OF_BOTHNIA_HEADING_FINNISH}    //ion-text/h4/strong[text() = "Pohjanlahden alue"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_FINNISH}    //ion-text/h4/strong[text() = "Pohjanlahden alue"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_1_FINNISH}    //ion-text/h4/strong[text() = "Pohjanlahden alue"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Väyläkortin nimi"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_FINNISH}    //ion-text/h4/strong[text() = "Pohjanlahden alue"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Päivitetty"]
+${FAIRWAY_CARDS_HEADING_SWEDISH}    //ion-text[@class = "fairwayTitle md"]/h2/strong[text() = "Farledskort"]
+${GENERAL_HEADING_SWEDISH}    //ion-item[@slot = "header"]/ion-label[text() = "Allmänt"]
+${ARCHIPELAGO_SEA_HEADING_SWEDISH}    //ion-text/h4/strong[text() = "Skärgårdshavet"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_SWEDISH}    //ion-text/h4/strong[text() = "Skärgårdshavet"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_1_SWEDISH}    //ion-text/h4/strong[text() = "Skärgårdshavet"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Farledskortets namn"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_2_SWEDISH}    //ion-text/h4/strong[text() = "Skärgårdshavet"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Uppdaterat"]
+${GULF_OF_FINLAND_HEADING_SWEDISH}    //ion-text/h4/strong[text() = "Finska vikens område"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_SWEDISH}    //ion-text/h4/strong[text() = "Finska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_1_SWEDISH}    //ion-text/h4/strong[text() = "Finska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Farledskortets namn"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_2_SWEDISH}    //ion-text/h4/strong[text() = "Finska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Uppdaterat"]
+${GULF_OF_BOTHNIA_HEADING_SWEDISH}    //ion-text/h4/strong[text() = "Bottniska vikens område"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_SWEDISH}    //ion-text/h4/strong[text() = "Bottniska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_1_SWEDISH}    //ion-text/h4/strong[text() = "Bottniska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Farledskortets namn"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_SWEDISH}    //ion-text/h4/strong[text() = "Bottniska vikens område"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Uppdaterat"]
+${FAIRWAY_CARDS_HEADING_ENGLISH}    //ion-text[@class = "fairwayTitle md"]/h2/strong[text() = "Fairway cards"]
+${GENERAL_HEADING_ENGLISH}    //ion-item[@slot = "header"]/ion-label[text() = "General"]
+${ARCHIPELAGO_SEA_HEADING_ENGLISH}    //ion-text/h4/strong[text() = "Archipelago sea"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_ENGLISH}    //ion-text/h4/strong[text() = "Archipelago sea"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_1_ENGLISH}    //ion-text/h4/strong[text() = "Archipelago sea"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Fairway card name"]
+${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_2_ENGLISH}    //ion-text/h4/strong[text() = "Archipelago sea"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Modified"]
+${GULF_OF_FINLAND_HEADING_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Finland"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Finland"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_1_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Finland"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Fairway card name"]
+${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_2_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Finland"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Modified"]
+${GULF_OF_BOTHNIA_HEADING_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Bothnia"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Bothnia"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_1_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Bothnia"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Fairway card name"]
+${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_ENGLISH}    //ion-text/h4/strong[text() = "Gulf of Bothnia"]/ancestor::div[@class = "group"]/ion-grid[@class = "table md"]/ion-row[@class = "header md"]/ion-col[text() = "Modified"]
 ${BACK_TO_HOME_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[@data-testid = "backToHome"]
 ${CLOSE_BUTTON}    //div[@class = "ion-page can-go-back"]/descendant::ion-button[contains(@class, "closeButton")]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
@@ -66,7 +107,7 @@ ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    //div[@class = "t
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Nopeusrajoitukset"]
 ${FAIRWAY_DATA_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Farledsdata"]
 ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledsdragning och utmärkning"]
-${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "[sv] Väylän mitoitusalus"]
+${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledens dimensionerande fartyg"]
 ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Dimensionering"]
 ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Områden med mötes- och omkörningsförbud"]
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fartbegränsningar och -rekommendationer"]
@@ -91,7 +132,7 @@ ${QUAYS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5
 ${CARGO_HANDLING_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Lastinkäsittely"]
 ${HARBOUR_BASIN_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Satama-allas"]
 ${CONTACT_DETAILS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Yhteystiedot"]
-${HARBOUR_RESTRICTIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "[sv] Sataman rajoitukset"]
+${HARBOUR_RESTRICTIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Hamnens begränsningar"]
 ${QUAYS_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Kajer"]
 ${CARGO_HANDLING_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Lasthantering"]
 ${HARBOUR_BASIN_HEADING_SWEDISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Hamnbassäng"]
@@ -129,6 +170,7 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
 
 Check Fairway Card
+	Check Fairway Cards Page    FINNISH
 	Select Fairway
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
@@ -146,6 +188,7 @@ Check Fairway Card
 
 Check Fairway Card In Swedish
 	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
+	Check Fairway Cards Page    SWEDISH
 	Select Fairway
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
@@ -163,6 +206,7 @@ Check Fairway Card In Swedish
 
 Check Fairway Card In English
 	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
+	Check Fairway Cards Page    ENGLISH
 	Select Fairway
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
@@ -341,3 +385,43 @@ Open Fairway Card Tab
 	Click Element    ${FAIRWAY_CARD_TAB}
 	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
 	Scroll Element Into View    ${CLOSE_BUTTON}
+
+Check Fairway Cards Page
+	[Arguments]    ${language}
+	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
+	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
+	Click Element    ${FAIRWAYS_LINK}
+	Sleep    5s
+	Capture Page Screenshot
+	Scroll Element Into View    ${FAIRWAY_CARDS_HEADING_${language}}
+	Element Should Be Visible    ${FAIRWAY_CARDS_HEADING_${language}}
+	Scroll Element Into View    ${GENERAL_HEADING_${language}}
+	Element Should Be Visible    ${GENERAL_HEADING_${language}}
+	Scroll Element Into View    ${ARCHIPELAGO_SEA_HEADING_${language}}
+	Element Should Be Visible    ${ARCHIPELAGO_SEA_HEADING_${language}}
+	Scroll Element Into View    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_${language}}
+	Element Should Be Visible    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_${language}}
+	Scroll Element Into View    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_1_${language}}
+	Element Should Be Visible    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_1_${language}}
+	Scroll Element Into View    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_2_${language}}
+	Element Should Be Visible    ${ARCHIPELAGO_SEA_FAIRWAY_TABLE_HEADING_2_${language}}
+	Scroll Element Into View    ${GULF_OF_FINLAND_HEADING_${language}}
+	Element Should Be Visible    ${GULF_OF_FINLAND_HEADING_${language}}
+	Scroll Element Into View    ${GULF_OF_FINLAND_FAIRWAY_TABLE_${language}}
+	Element Should Be Visible    ${GULF_OF_FINLAND_FAIRWAY_TABLE_${language}}
+	Scroll Element Into View    ${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_1_${language}}
+	Element Should Be Visible    ${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_1_${language}}
+	Scroll Element Into View    ${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_2_${language}}
+	Element Should Be Visible    ${GULF_OF_FINLAND_FAIRWAY_TABLE_HEADING_2_${language}}
+	Scroll Element Into View    ${GULF_OF_BOTHNIA_HEADING_${language}}
+	Element Should Be Visible    ${GULF_OF_BOTHNIA_HEADING_${language}}
+	Scroll Element Into View    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_${language}}
+	Element Should Be Visible    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_${language}}
+	Scroll Element Into View    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_1_${language}}
+	Element Should Be Visible    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_1_${language}}
+	Scroll Element Into View    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_${language}}
+	Element Should Be Visible    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_${language}}
+	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+	Capture Page Screenshot
+	Click Element    ${BACK_TO_HOME_BUTTON}
+	Sleep    5s
