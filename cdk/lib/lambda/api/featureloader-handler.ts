@@ -365,6 +365,7 @@ async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) 
       geometry: mareograph.geometry,
       properties: {
         featureType: 'mareograph',
+        calculated: mareograph.calculated,
         name: mareograph.name,
         waterLevel: mareograph.waterLevel,
         n2000WaterLevel: mareograph.n2000WaterLevel,

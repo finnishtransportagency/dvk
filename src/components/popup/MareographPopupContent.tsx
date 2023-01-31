@@ -23,7 +23,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           <IonCol className="header">{mareograph.properties.name}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{t('mareograph')}</IonCol>
+          <IonCol>{mareograph.properties.calculated ? t('calculated') : t('mareograph')}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('coordinates')}</IonCol>
@@ -34,7 +34,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           </IonRow>
         )}
         <IonRow>
-          <IonCol className="header">{t('dateTime')}</IonCol>
+          <IonCol className="header">{mareograph.properties.calculated ? t('dateTime2') : t('dateTime')}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol>{t('dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>
@@ -43,13 +43,13 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           <IonCol className="header">{t('seaLevel')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${Math.round(mareograph.properties.waterLevel / 10)}cm`}</IonCol>
+          <IonCol>{`${mareograph.properties.waterLevel >= 0 ? '+' : ''}${Math.round(mareograph.properties.waterLevel / 10)}cm`}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('n2000SeaLevel')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${Math.round(mareograph.properties.n2000WaterLevel / 10)}cm`}</IonCol>
+          <IonCol>{`${mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}${Math.round(mareograph.properties.n2000WaterLevel / 10)}cm`}</IonCol>
         </IonRow>
       </IonGrid>
     </IonGrid>

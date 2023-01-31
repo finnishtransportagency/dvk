@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getWeatherApiKey, getWeatherHeaders, getWeatherSOAUrl } from '../environment';
+import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherApiKey, getWeatherHeaders, getWeatherSOAUrl } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
+import { XMLParser } from 'fast-xml-parser';
 
 type WeatherMareograph = {
   fmisid: number;
@@ -21,6 +23,7 @@ export type Mareograph = {
   dateTime: number;
   waterLevel: number;
   n2000WaterLevel: number;
+  calculated: boolean;
 };
 
 type WeatherObservation = {
@@ -69,6 +72,74 @@ export type Buoy = {
   waveHeight: number | null;
 };
 
+function parseLocation(location: any): Partial<Mareograph> {
+  return {
+    id: location['@_id'],
+    name: location['@_name'],
+    geometry: roundGeometry({ type: 'Point', coordinates: [Number.parseFloat(location['@_lon']), Number.parseFloat(location['@_lat'])] }),
+  };
+}
+
+function parseForecast(forecast: any): Partial<Mareograph> {
+  return {
+    dateTime: Date.parse(forecast['@_time']),
+    waterLevel: Number.parseFloat(forecast.param.filter((p: any) => p['@_name'] === 'SeaLevel')[0]['@_value']) * 10,
+    n2000WaterLevel: Number.parseFloat(forecast.param.filter((p: any) => p['@_name'] === 'sealeveln2000')[0]['@_value']) * 10,
+  };
+}
+
+function parseMeasure(location: any): Partial<Mareograph> {
+  let measure;
+  if (Array.isArray(location.forecast)) {
+    for (const forecast of location.forecast) {
+      const result = parseForecast(forecast);
+      if (!measure || (measure.dateTime as number) > (result.dateTime as number)) {
+        measure = result;
+      }
+    }
+  } else {
+    measure = parseForecast(location.forecast);
+  }
+  return measure || {};
+}
+
+export function parseXml(xml: string): Mareograph[] {
+  const options = {
+    ignoreAttributes: false,
+    attributeNamePrefix: '@_',
+  };
+  const mareographs: Mareograph[] = [];
+  try {
+    const parser = new XMLParser(options);
+    const obj = parser.parse(xml);
+    if (Array.isArray(obj.pointweather.location)) {
+      for (const location of obj.pointweather.location) {
+        const mareograph = parseLocation(location);
+        mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+      }
+    } else {
+      const mareograph = parseLocation(obj.pointweather.location);
+      mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
+    }
+  } catch (e) {
+    log.fatal('Parsing Ilmanet xml failed: %o', e);
+  }
+  return mareographs;
+}
+
+async function fetchIlmanetApi(): Promise<Mareograph[]> {
+  const start = Date.now();
+  // TODO: update url to SOA api
+  const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}`;
+  const response = await axios.get(url).catch(function (error) {
+    const errorObj = error.toJSON();
+    log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+    throw new Error('Fetching from Ilmanet api failed');
+  });
+  log.debug(`Ilmanet api response time: ${Date.now() - start} ms`);
+  return response.data ? parseXml(response.data as string) : [];
+}
+
 async function fetchApi<T>(path: string) {
   const start = Date.now();
   // TODO: remove apikey once SOA api exists
@@ -98,16 +169,19 @@ export async function fetchMareoGraphs(): Promise<Mareograph[]> {
     await fetchApi<WeatherMareograph>(
       'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WLEV_PT1S_INSTANT,WLEVN2K_PT1S_INSTANT&precision=double&endtime=now&producer=observations_fmi&timeformat=sql&format=json&keyword=mareografit'
     )
-  ).map((measure) => {
-    return {
-      id: measure.fmisid,
-      name: measure.station_name,
-      n2000WaterLevel: measure.WLEVN2K_PT1S_INSTANT,
-      waterLevel: measure.WLEV_PT1S_INSTANT,
-      dateTime: Date.parse(measure.localtime),
-      geometry: parseGeometry(measure.latlon),
-    };
-  });
+  )
+    .map((measure) => {
+      return {
+        id: measure.fmisid,
+        name: measure.station_name,
+        n2000WaterLevel: measure.WLEVN2K_PT1S_INSTANT,
+        waterLevel: measure.WLEV_PT1S_INSTANT,
+        dateTime: Date.parse(measure.localtime),
+        geometry: parseGeometry(measure.latlon),
+        calculated: false,
+      };
+    })
+    .concat(await fetchIlmanetApi());
 }
 
 export async function fetchWeatherObservations(): Promise<Observation[]> {
