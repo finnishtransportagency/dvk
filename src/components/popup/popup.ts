@@ -24,7 +24,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);

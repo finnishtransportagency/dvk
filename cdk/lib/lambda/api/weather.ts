@@ -130,7 +130,7 @@ export function parseXml(xml: string): Mareograph[] {
 async function fetchIlmanetApi(): Promise<Mareograph[]> {
   const start = Date.now();
   // TODO: update url to SOA api
-  const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}&orderId=165690`;
+  const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}`;
   const response = await axios.get(url).catch(function (error) {
     const errorObj = error.toJSON();
     log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
