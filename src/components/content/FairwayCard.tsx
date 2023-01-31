@@ -138,7 +138,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                   {vessel && (
                     <>
                       <br />
-                      {t('designVessel')} {idx + 1}: {vessel.type} l = {vessel.length}&nbsp;
+                      {t('designVessel')} {idx + 1}: {t('vesselType' + vessel.typeCode)} l = {vessel.length}&nbsp;
                       <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })} role="definition">
                         m
                       </span>
