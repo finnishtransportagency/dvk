@@ -108,10 +108,10 @@ export function parseXml(xml: string): Mareograph[] {
     ignoreAttributes: false,
     attributeNamePrefix: '@_',
   };
-  const parser = new XMLParser(options);
-  const obj = parser.parse(xml);
   const mareographs: Mareograph[] = [];
   try {
+    const parser = new XMLParser(options);
+    const obj = parser.parse(xml);
     if (Array.isArray(obj.pointweather.location)) {
       for (const location of obj.pointweather.location) {
         const mareograph = parseLocation(location);
