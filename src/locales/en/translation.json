@@ -114,6 +114,7 @@
     "recommendations": "Traffic recommendations",
     "fairwayAndHarbour": "Channel and harbour",
     "speedLimit": "Speed limits and recommendations",
+    "speedLimitAt": "Speed limit at",
     "windRecommendation": "Wind recommendations",
     "vesselRecommendation": "Vessel recommendations",
     "visibilityRecommendation": "Visibility",
