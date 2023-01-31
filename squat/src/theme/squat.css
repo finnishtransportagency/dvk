@@ -430,8 +430,9 @@ ion-item.external-link:hover::part(native) {
   color: var(--ion-color-primary);
 }
 
-ion-content.embedded ion-grid {
+ion-content.embedded > ion-grid {
   padding-inline-start: 0px !important;
+  padding-inline-end: 0px !important;
 }
 
 ion-content.embedded ion-col {
