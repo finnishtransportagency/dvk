@@ -5,6 +5,7 @@ import './TitleBar.css';
 import LanguageBar from './LanguageBar';
 import { isEmbedded, showLanguages, showLogo } from '../pages/Home';
 import PrintBar from './PrintBar';
+import SquatHeader from './SquatHeader';
 
 const TitleBar: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
@@ -14,16 +15,7 @@ const TitleBar: React.FC = () => {
       <IonRow className="ion-align-items-center">
         <IonCol className="mainTitle">
           <IonText color="dark" className="equal-margin-top">
-            {!isEmbedded() && (
-              <h1>
-                <strong>{t('squat.content')}</strong>
-              </h1>
-            )}
-            {isEmbedded() && (
-              <h2>
-                <strong>{t('squat.content')}</strong>
-              </h2>
-            )}
+            <SquatHeader level={1} text={t('squat.content')} embedded={isEmbedded()}></SquatHeader>
           </IonText>
         </IonCol>
         <IonCol class="ion-align-self-center mobile-logo" size="auto">

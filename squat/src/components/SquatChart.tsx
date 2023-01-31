@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { IonGrid, IonRow, IonCol } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonText } from '@ionic/react';
 import * as d3 from 'd3';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
@@ -13,6 +13,7 @@ import {
 import './SquatChart.css';
 import SquatDataTable from './SquatDataTable';
 import { isEmbedded } from '../pages/Home';
+import SquatHeader from './SquatHeader';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
@@ -395,12 +396,9 @@ const SquatChart: React.FC = () => {
     <IonGrid className="squatChartGrid" aria-hidden="true">
       <IonRow className="squatChartRow">
         <IonCol>
-          {!isEmbedded() && <h4 className="squatChartTitle">{t('heading')}</h4>}
-          {isEmbedded() && (
-            <h3 className="squatChartTitle">
-              <strong>{t('heading')}</strong>
-            </h3>
-          )}
+          <IonText className="squatChartTitle">
+            <SquatHeader level={3} text={t('heading')} embedded={isEmbedded()}></SquatHeader>
+          </IonText>
         </IonCol>
       </IonRow>
       <IonRow className="squatChartRow">

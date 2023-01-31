@@ -9,6 +9,8 @@ import InputField from './InputField';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import RadioSelectField from './RadioSelectField';
+import SquatHeader from './SquatHeader';
+import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
@@ -113,9 +115,7 @@ const Environment: React.FC = () => {
   return (
     <>
       <IonText color="dark" className="equal-margin-top">
-        <h2>
-          <strong>{t('title')}</strong>
-        </h2>
+        <SquatHeader level={2} text={t('title')} embedded={isEmbedded()}></SquatHeader>
       </IonText>
 
       <>

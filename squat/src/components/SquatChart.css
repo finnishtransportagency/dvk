@@ -1,4 +1,5 @@
-.squatChartTitle {
+ion-text.squatChartTitle .h3,
+ion-text.squatChartTitle h3 {
   border-bottom: 1px solid #d8d8d8;
 }
 
