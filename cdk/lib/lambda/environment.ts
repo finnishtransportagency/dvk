@@ -144,6 +144,18 @@ async function getWeatherSOAApiKey() {
   return readParameterForEnv('WeatherSOAApiKey');
 }
 
+export async function getIlmanetUrl() {
+  return readParameterForEnv('IlmanetUrl');
+}
+
+export async function getIlmanetUsername() {
+  return readParameterForEnv('IlmanetUsername');
+}
+
+export async function getIlmanetPassword() {
+  return readParameterForEnv('IlmanetPassword');
+}
+
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
   return {
     'x-api-key': await getWeatherSOAApiKey(),

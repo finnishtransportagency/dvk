@@ -24,7 +24,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'marinewarning', 'line', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -94,7 +94,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'boardline') {
       return getBoardLineStyle('#000000', 2);
     } else if (type === 'mareograph') {
-      return getMareographStyle(feature);
+      return getMareographStyle(feature, true);
     } else if (type === 'observation') {
       return getObservationStyle(true);
     } else if (type === 'buoy') {

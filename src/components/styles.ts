@@ -374,9 +374,10 @@ export function getNameStyle(feature: FeatureLike, resolution: number) {
     : undefined;
 }
 
-export function getMareographStyle(feature: FeatureLike) {
+export function getMareographStyle(feature: FeatureLike, selected: boolean) {
   const image = new Icon({
     src: mareographIcon,
+    scale: selected ? 1.2 : 1,
     anchor: [14, 32],
     anchorXUnits: 'pixels',
     anchorYUnits: 'pixels',
@@ -389,7 +390,7 @@ export function getMareographStyle(feature: FeatureLike) {
         font: 'bold 12px "Exo2"',
         placement: 'line',
         offsetX: 40,
-        offsetY: -16,
+        offsetY: selected ? -20 : -16,
         text: `${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)}cm`,
         fill: new Fill({
           color: '#000000',
