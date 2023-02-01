@@ -54,13 +54,14 @@ export function useBackgroundLayer() {
   const [ready, setReady] = useState(false);
   const baQuery = useFeatureData('balticsea', true, false);
   const fiQuery = useFeatureData('finland', true, false);
-  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt, fiQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt, fiQuery.errorUpdatedAt);
-  const isPaused = baQuery.isPaused || fiQuery.isPaused;
-  const isError = baQuery.isError || fiQuery.isError;
+  const mmlmeriQuery = useFeatureData('mml_meri', true, false);
+  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt, fiQuery.dataUpdatedAt, mmlmeriQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt, fiQuery.errorUpdatedAt, mmlmeriQuery.errorUpdatedAt);
+  const isPaused = baQuery.isPaused || fiQuery.isPaused || mmlmeriQuery.isPaused;
+  const isError = baQuery.isError || fiQuery.isError || mmlmeriQuery.isError;
 
   useEffect(() => {
-    if (baQuery.data && fiQuery.data) {
+    if (baQuery.data && fiQuery.data && mmlmeriQuery.data) {
       const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
@@ -72,6 +73,9 @@ export function useBackgroundLayer() {
         features = format.readFeatures(fiQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
         source.addFeatures(features);
+        features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'mml_meri' }, true));
+        source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       dvkMap.olMap
@@ -80,7 +84,7 @@ export function useBackgroundLayer() {
         .forEach((l) => l.setVisible(true));
       setReady(true);
     }
-  }, [baQuery.data, fiQuery.data, dataUpdatedAt]);
+  }, [baQuery.data, fiQuery.data, mmlmeriQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 

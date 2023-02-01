@@ -23,7 +23,8 @@ export type FeatureDataId =
   | 'observation'
   | 'buoy'
   | 'balticsea'
-  | 'finland';
+  | 'finland'
+  | 'mml_meri';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL };
 
@@ -43,6 +44,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
