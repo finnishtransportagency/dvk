@@ -79,9 +79,9 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           .getVectorSource('line12')
           .getFeatureById(marine.properties.lineId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: LineFairway, index: number) => {
+          .fairways?.map((fairway: LineFairway) => {
             return (
-              <IonRow key={index}>
+              <IonRow key={fairway.fairwayId}>
                 <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
               </IonRow>
             );
@@ -90,9 +90,9 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           .getVectorSource('line3456')
           .getFeatureById(marine.properties.lineId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: LineFairway, index: number) => {
+          .fairways?.map((fairway: LineFairway) => {
             return (
-              <IonRow key={index}>
+              <IonRow key={fairway.fairwayId}>
                 <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
               </IonRow>
             );
@@ -101,9 +101,9 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           .getVectorSource('area12')
           .getFeatureById(marine.properties.areaId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: AreaFairway, index: number) => {
+          .fairways?.map((fairway: AreaFairway) => {
             return (
-              <IonRow key={index}>
+              <IonRow key={fairway.fairwayId}>
                 <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
               </IonRow>
             );
@@ -112,9 +112,9 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           .getVectorSource('area3456')
           .getFeatureById(marine.properties.areaId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: AreaFairway, index: number) => {
+          .fairways?.map((fairway: AreaFairway) => {
             return (
-              <IonRow key={index}>
+              <IonRow key={fairway.fairwayId}>
                 <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
               </IonRow>
             );
