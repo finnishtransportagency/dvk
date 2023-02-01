@@ -3,6 +3,8 @@ import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { checkmarkCircle, radioButtonOff } from 'ionicons/icons';
 import Modal from './Modal';
 import { useTranslation } from 'react-i18next';
+import SquatHeader from './SquatHeader';
+import { isEmbedded } from '../pages/Home';
 
 interface SectionProps {
   title: string;
@@ -19,10 +21,9 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
       <IonRow>
         <IonCol>
           <IonText color="dark" className="no-margin">
-            <h3>
-              <strong style={{ verticalAlign: 'middle' }}>{props.title}</strong>
+            <SquatHeader level={3} text={props.title} embedded={isEmbedded()}>
               {props.infoContent && props.infoContentTitle && <Modal title={props.infoContentTitle} content={props.infoContent} />}
-            </h3>
+            </SquatHeader>
           </IonText>
         </IonCol>
         {!props.hideValidity && (

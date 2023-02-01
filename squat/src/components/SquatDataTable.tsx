@@ -2,6 +2,7 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
+import { isEmbedded } from '../pages/Home';
 import { calculateFroudeNumber, knotsToMetresPerSecond } from '../utils/calculations';
 import DataTableDataColumn, { DATACOLOR } from './DataTableDataColumn';
 import DataTableTitleColumn from './DataTableTitleColumn';
@@ -50,7 +51,7 @@ const SquatDataTable: React.FC<Props> = (props) => {
 
   return (
     <IonGrid className="dataTableGrid">
-      <IonRow className="ion-align-items-center">
+      <IonRow className="ion-align-items-center" style={isEmbedded() ? { paddingLeft: '1px' } : undefined}>
         <IonCol size="auto">
           <div className="squatSquare" />
         </IonCol>
