@@ -25,7 +25,12 @@
   "iceCondition": {
     "fi": "Talvella jääkentät liikkuvat väylän ulko-osalla Pihlukseen asti. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet. Jääolosuhteiden vaikeutuessa väylä suljetaan liikenteeltä.",
     "sv": "På vintern rör sig isfält i farledens yttre del ända till Pihlus. Då isfälten är i rörelse kan bojarna tidvis vara tryckta under ytan och lysanordningarna skadade. Vid svåra isförhållanden stängs farleden för trafik.",
-    "en": ""
+    "en": "In winter ice fields are moving in the outer channel as far as Pihlus. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices may be damaged. Under severe ice conditions the channel is closed to traffic."
+  },
+  "speedLimit": {
+    "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (14 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
+    "sv": "Fartyg med djupgående på över 7 m har fartbegränsningen 8 knop (14 km/h). Om det krävs högre hastighet för att manövrera fartyget skall 10 m-farleden användas. Fartyg som är större än det dimensionerande fartyget skall också använda 10 m-farleden.",
+    "en": "Vessels with a draught exceeding 7 m have a speed limit of 8 kn (14 km/h). If a higher speed is required in order to manoeuvre the vessel, the Rauma channel (10.0 m) shall be used. Vessels larger than the design vessel shall also use the 10.0-metre channel."
   },
   "vesselRecommendation": {
     "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (14 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
