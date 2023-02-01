@@ -89,6 +89,7 @@ fragment FairwayCardParts on FairwayCard {
       reserveWater
     }
     sizingVessels {
+      typeCode
       type
       length
       width

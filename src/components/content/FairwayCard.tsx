@@ -138,7 +138,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                   {vessel && (
                     <>
                       <br />
-                      {t('designVessel')} {idx + 1}: {vessel.type} l = {vessel.length}&nbsp;
+                      {t('designVessel')} {idx + 1}: {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
                       <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })} role="definition">
                         m
                       </span>
@@ -272,11 +272,11 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
         {inlineLabel && speedLimits.length > 0 && <strong>{t('speedLimit')}: </strong>}
         {speedLimits.map((area) => (
           <span key={'limit-' + area?.id}>
+            <br />
             {t('speedLimitAt')} {area?.location}: {area?.value}{' '}
             <span aria-label={t('unit.kmhDesc', { count: area?.value || 0 })} role="definition">
               km/h
             </span>
-            <br />
           </span>
         ))}
       </p>
