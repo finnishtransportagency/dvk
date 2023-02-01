@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherApiKey, getWeatherHeaders, getWeatherSOAUrl } from '../environment';
+import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
@@ -129,21 +129,23 @@ export function parseXml(xml: string): Mareograph[] {
 
 async function fetchIlmanetApi(): Promise<Mareograph[]> {
   const start = Date.now();
-  // TODO: update url to SOA api
   const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}`;
-  const response = await axios.get(url).catch(function (error) {
-    const errorObj = error.toJSON();
-    log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-    throw new Error('Fetching from Ilmanet api failed');
-  });
+  const response = await axios
+    .get(url, {
+      headers: await getWeatherHeaders(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from Ilmanet api failed');
+    });
   log.debug(`Ilmanet api response time: ${Date.now() - start} ms`);
   return response.data ? parseXml(response.data as string) : [];
 }
 
 async function fetchApi<T>(path: string) {
   const start = Date.now();
-  // TODO: remove apikey once SOA api exists
-  const url = `https://${await getWeatherSOAUrl()}/fmi-apikey/${await getWeatherApiKey()}/${path}`;
+  const url = `https://${await getSOAApiUrl()}/fmi/${path}`;
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),

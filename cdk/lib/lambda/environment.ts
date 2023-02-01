@@ -132,8 +132,8 @@ export async function getPookiHeaders(): Promise<Record<string, string>> {
   };
 }
 
-export async function getWeatherSOAUrl() {
-  return readParameterForEnv('WeatherSOAUrl');
+export async function getSOAApiUrl() {
+  return readParameterForEnv('SOAApiUrl');
 }
 
 export async function getWeatherApiKey() {
