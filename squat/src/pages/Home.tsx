@@ -22,12 +22,17 @@ export const showLogo = (): boolean => {
   return parseBooleanUrlParam('showLogo');
 };
 
+export const isEmbedded = (): boolean => {
+  const param = getUrlParam('baseURL');
+  return !!param;
+};
+
 const Home: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
   return (
     <IonPage>
-      <IonContent>
+      <IonContent className={isEmbedded() ? 'embedded' : undefined}>
         <Squat />
         <SquatChart />
       </IonContent>
