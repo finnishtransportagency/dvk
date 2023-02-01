@@ -270,9 +270,9 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
     <>
       <p>
         {inlineLabel && speedLimits.length > 0 && <strong>{t('speedLimit')}: </strong>}
-        {speedLimits.map((area) => (
+        {speedLimits.map((area, idx) => (
           <span key={'limit-' + area?.id}>
-            <br />
+            {(inlineLabel || idx > 0) && <br />}
             {t('speedLimitAt')} {area?.location}: {area?.value}{' '}
             <span aria-label={t('unit.kmhDesc', { count: area?.value || 0 })} role="definition">
               km/h
