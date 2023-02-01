@@ -129,13 +129,16 @@ export function parseXml(xml: string): Mareograph[] {
 
 async function fetchIlmanetApi(): Promise<Mareograph[]> {
   const start = Date.now();
-  // TODO: update url to SOA api
   const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}`;
-  const response = await axios.get(url).catch(function (error) {
-    const errorObj = error.toJSON();
-    log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-    throw new Error('Fetching from Ilmanet api failed');
-  });
+  const response = await axios
+    .get(url, {
+      headers: await getWeatherHeaders(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from Ilmanet api failed');
+    });
   log.debug(`Ilmanet api response time: ${Date.now() - start} ms`);
   return response.data ? parseXml(response.data as string) : [];
 }
