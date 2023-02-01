@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>5EB24D11-D965-4B3D-85A9-E19AE98F4A9E</title>
     <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-962.000000, -962.000000)">
-            <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
+        <g id="colors_and_typography" transform="translate(-958.000000, -954.000000)">
+            <g id="turvalaite_ikonit" transform="translate(718.000000, 906.000000)">
                 <g id="erikoisemerkki" transform="translate(240.000000, 48.000000)">
-                    <path d="M8.43,23.1428571 L15.5742857,23.1428571 L15.5742857,24 L8.43,24 L8.43,23.1428571 Z M10.0885714,5.43 L14.7171429,10.0585714 L13.9157143,10.86 L9.28714286,6.23142857 L10.0885714,5.43 L10.0885714,5.43 Z M14.7171429,6.23142857 L10.0885714,10.86 L9.28714286,10.0585714 L13.9157143,5.43 L14.7171429,6.23142857 L14.7171429,6.23142857 Z M11.5457143,9.40285714 L12.4585714,9.40285714 L12,8.94428571 L11.5414286,9.40285714 L11.5457143,9.40285714 Z M11.5757143,9.40285714 L12.4328571,9.40285714 L12.4328571,23.1428571 L11.5757143,23.1428571 L11.5757143,9.39857143 L11.5757143,9.40285714 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
-                    <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                    <path d="M11.24,30.8571429 L20.7657143,30.8571429 L20.7657143,32 L11.24,32 L11.24,30.8571429 Z M13.4514286,7.24 L19.6228571,13.4114286 L18.5542857,14.48 L12.3828571,8.30857143 L13.4514286,7.24 L13.4514286,7.24 Z M19.6228571,8.30857143 L13.4514286,14.48 L12.3828571,13.4114286 L18.5542857,7.24 L19.6228571,8.30857143 L19.6228571,8.30857143 Z M15.3942857,12.5371429 L16.6114286,12.5371429 L16,11.9257143 L15.3885714,12.5371429 L15.3942857,12.5371429 Z M15.4342857,12.5371429 L16.5771429,12.5371429 L16.5771429,30.8571429 L15.4342857,30.8571429 L15.4342857,12.5314286 L15.4342857,12.5371429 Z" id="Shape" fill="#231F20" fill-rule="nonzero"></path>
+                    <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
                 </g>
             </g>
         </g>
