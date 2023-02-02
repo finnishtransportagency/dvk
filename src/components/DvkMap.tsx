@@ -228,12 +228,21 @@ class DvkMap {
           fill: new Fill({
             color: bgColor,
           }),
+          zIndex: 1,
+        });
+      } else if (type === 'balticsea') {
+        return new Style({
+          fill: new Fill({
+            color: waterColor,
+          }),
+          zIndex: 2,
         });
       } else {
         return new Style({
           fill: new Fill({
             color: waterColor,
           }),
+          zIndex: 3,
         });
       }
     };
