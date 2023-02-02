@@ -6,7 +6,7 @@ import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import { getCurrentDecimalSeparator } from '../../utils/common';
-import { setSelectedPilotPlace } from '../layers';
+import { setSelectedFairwayCard, setSelectedPilotPlace } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -726,6 +726,9 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     {
       title: fairwayCard?.name[lang] || fairwayCard?.name.fi || '',
       route: '/vaylakortit/' + id,
+      onClick: () => {
+        setSelectedFairwayCard(fairwayCard);
+      },
     },
     {
       title: t('title', { count: 1 }),
