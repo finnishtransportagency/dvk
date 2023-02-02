@@ -177,13 +177,13 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
     if (center) {
       image = new Icon({
         src: icon,
-        color: props.faults ? '#EC0E0E' : '#311F20',
+        color: props.faults ? '#EC0E0E' : '#231F20',
         scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
-        color: props.faults ? '#EC0E0E' : '#311F20',
+        color: props.faults ? '#EC0E0E' : '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
