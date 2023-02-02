@@ -2,13 +2,13 @@ import { IonLabel, IonBreadcrumbs, IonBreadcrumb } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-export type PathItem = {
+type PathItem = {
   title?: string;
   route?: string;
   onClick?: () => void;
 };
 
-export type BreadcrumbProps = {
+type BreadcrumbProps = {
   path: PathItem[];
 };
 
@@ -24,7 +24,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
       {path.map((item, idx) => (
         <IonBreadcrumb
           key={item.route || item.title}
-          routerLink={!!item.onClick || idx < path.length - 1 ? item.route : undefined}
+          routerLink={idx < path.length - 1 ? item.route : undefined}
           onClick={item.onClick}
           className={item.onClick ? 'ion-activatable ion-focusable' : undefined}
         >

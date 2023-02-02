@@ -725,6 +725,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     },
     {
       title: fairwayCard?.name[lang] || fairwayCard?.name.fi || '',
+      route: '/vaylakortit/' + id,
       onClick: () => {
         setSelectedFairwayCard(fairwayCard);
       },
