@@ -190,16 +190,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
         scale: selected ? 1.2 : 1,
       });
     }
-    return [
-      new Style({
-        image: virtualIcon,
-      }),
-      new Style({
-        image: errorImageRight,
-      }),
-      new Style({
-        image: errorImageLeft,
-      }),
+    const styles = [
       new Style({
         image,
       }),
@@ -212,6 +203,24 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
         }),
       }),
     ];
+    if (props.faults) {
+      styles.push(
+        new Style({
+          image: errorImageRight,
+        }),
+        new Style({
+          image: errorImageLeft,
+        })
+      );
+    }
+    if (virtualIcon) {
+      styles.push(
+        new Style({
+          image: virtualIcon,
+        })
+      );
+    }
+    return styles;
   }
   return undefined;
 };
