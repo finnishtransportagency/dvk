@@ -95,6 +95,8 @@ export type EquipmentFeatureProperties = {
   typeCode?: string;
   typeName?: Text;
   lightning: boolean;
+  aisType?: number;
+  remoteControl?: number;
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
 };

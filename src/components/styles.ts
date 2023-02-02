@@ -58,13 +58,15 @@ import V from '../theme/img/safetyequipment/big/V.svg';
 import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
 import Y from '../theme/img/safetyequipment/big/Y.svg';
+import ais from '../theme/img/safetyequipment/ais.svg';
+import vais from '../theme/img/safetyequipment/vais.svg';
 import errorIcon from '../theme/img/safetyequipment/error_icon.svg';
 import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
-import { AreaFeatureProperties, LineFeatureProperties, MareographFeatureProperties } from './features';
+import { AreaFeatureProperties, EquipmentFeatureProperties, LineFeatureProperties, MareographFeatureProperties } from './features';
 import { LineString, Point, Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
@@ -136,8 +138,9 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
-export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolution: number, selected: boolean) => {
-  const key = symbol as keyof typeof symbol2Icon;
+export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
+  const props = feature.getProperties() as EquipmentFeatureProperties;
+  const key = props.symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
@@ -145,7 +148,8 @@ export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolut
   let image: Icon;
   let errorImageRight: Icon | undefined = undefined;
   let errorImageLeft: Icon | undefined = undefined;
-  if (faults) {
+  let virtualIcon: Icon | undefined = undefined;
+  if (props.faults) {
     errorImageRight = new Icon({
       src: errorIcon,
       anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
@@ -161,17 +165,25 @@ export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolut
       scale: selected ? 1.2 : 1,
     });
   }
-  if (symbol === '1' || resolution <= 7) {
+  if (props.aisType !== undefined && props.aisType !== 1) {
+    virtualIcon = new Icon({
+      src: props.aisType === 3 ? ais : vais,
+      anchor: [0.5, 0.4],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+    });
+  }
+  if (props.symbol === '1' || resolution <= 7) {
     if (center) {
       image = new Icon({
         src: icon,
-        color: faults ? '#EC0E0E' : '#311F20',
+        color: props.faults ? '#EC0E0E' : '#311F20',
         scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
-        color: faults ? '#EC0E0E' : '#311F20',
+        color: props.faults ? '#EC0E0E' : '#311F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
@@ -179,6 +191,9 @@ export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolut
       });
     }
     return [
+      new Style({
+        image: virtualIcon,
+      }),
       new Style({
         image: errorImageRight,
       }),
