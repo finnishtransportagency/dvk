@@ -41,6 +41,8 @@ import {
 } from '../utils/validations';
 import Modal from './Modal';
 import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core';
+import SquatHeader from './SquatHeader';
+import { isEmbedded } from '../pages/Home';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
@@ -329,9 +331,7 @@ const Calculations: React.FC = () => {
         <IonRow>
           <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
             <IonText color="dark" className="equal-margin-top">
-              <h2>
-                <strong>{t('title')}</strong>
-              </h2>
+              <SquatHeader level={2} text={t('title')} embedded={isEmbedded()}></SquatHeader>
             </IonText>
           </IonCol>
           <IonCol size="auto" className="ion-align-self-center" style={{ paddingLeft: 0, paddingRight: 0 }}>

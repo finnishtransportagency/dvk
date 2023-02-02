@@ -1,9 +1,22 @@
 ion-text h1 {
   font-size: 2.2rem;
 }
+
+ion-text .h2,
+ion-text h2 {
+  font-size: 1.5rem;
+}
+
+ion-text .h3,
 ion-text h3 {
   font-size: 1rem;
 }
+
+ion-text .h4,
+ion-text h4 {
+  font-size: 1rem;
+}
+
 ion-text.equal-margin-top > * {
   margin-top: 10px;
 }
@@ -415,4 +428,13 @@ ion-item.external-link:hover {
 
 ion-item.external-link:hover::part(native) {
   color: var(--ion-color-primary);
+}
+
+ion-content.embedded > ion-grid {
+  padding-inline-start: 0px !important;
+  padding-inline-end: 0px !important;
+}
+
+ion-content.embedded ion-col {
+  padding-inline-start: 0px !important;
 }
