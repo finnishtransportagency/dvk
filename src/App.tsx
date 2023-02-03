@@ -61,6 +61,8 @@ import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
 import MarineWarningPage from './pages/MarineWarningPage';
 import OfflineStatus from './components/OfflineStatus';
+import { DvkReducer, initialState } from './hooks/dvkReducer';
+import DvkContext, { useDvkContext } from './hooks/dvkContext';
 
 setupIonicReact({
   mode: 'md',
@@ -107,6 +109,8 @@ const DvkIonApp: React.FC = () => {
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
+
+  const { state } = useDvkContext();
 
   useEffect(() => {
     let percent = 0;
@@ -196,9 +200,12 @@ const DvkIonApp: React.FC = () => {
   ]);
 
   const isFetching = useIsFetching();
+  const appClasses = [];
+  if (isMobile()) appClasses.push('mobile');
+  if (state.isOffline) appClasses.push('offline');
 
   return (
-    <IonApp className={isMobile() ? 'mobile' : ''}>
+    <IonApp className={appClasses.join(' ')}>
       <OfflineStatus />
       <IonReactRouter>
         <SidebarMenu />
@@ -247,6 +254,12 @@ const App: React.FC = () => {
   const [updating, setUpdating] = useState(false);
   const originalSW = navigator.serviceWorker?.controller;
 
+  const [state, dispatch] = React.useReducer(DvkReducer, initialState);
+  const providerState = {
+    state,
+    dispatch,
+  };
+
   document.documentElement.lang = i18n.language;
 
   InitDvkMap();
@@ -277,7 +290,9 @@ const App: React.FC = () => {
 
   return (
     <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
-      <DvkIonApp />
+      <DvkContext.Provider value={providerState}>
+        <DvkIonApp />
+      </DvkContext.Provider>
     </PersistQueryClientProvider>
   );
 };
