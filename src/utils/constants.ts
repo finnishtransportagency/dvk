@@ -78,7 +78,7 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId };
+type DataLayer = { id: FeatureDataLayerId; noOfflineSupport?: boolean };
 
 type MapType = {
   EPSG: string;
@@ -108,10 +108,10 @@ export const MAP: MapType = {
     { id: 'depth12' },
     { id: 'marinewarning' },
     { id: 'boardline12' },
-    { id: 'mareograph' },
-    { id: 'ice' },
-    { id: 'observation' },
-    { id: 'buoy' },
+    { id: 'mareograph', noOfflineSupport: true },
+    { id: 'ice', noOfflineSupport: true },
+    { id: 'observation', noOfflineSupport: true },
+    { id: 'buoy', noOfflineSupport: true },
   ],
 };
 

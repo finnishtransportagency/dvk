@@ -21,6 +21,7 @@ import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import './SidebarMenu.css';
 import OfflineSupport from './OfflineSupport';
+import { useDvkContext } from '../hooks/dvkContext';
 
 export const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -66,6 +67,7 @@ export const LanguageBar: React.FC = () => {
 const SidebarMenu: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
+  const { state } = useDvkContext();
 
   return (
     <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
@@ -148,6 +150,7 @@ const SidebarMenu: React.FC = () => {
                 className="ion-no-padding external"
                 onClick={async () => menuController.close()}
                 data-testid="squatLink"
+                disabled={state.isOffline}
               >
                 <IonIcon slot="start" src="/assets/icon/calculate_icon.svg" />
                 {t('squat')}

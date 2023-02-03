@@ -5,6 +5,7 @@ import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { MAP } from '../../utils/constants';
 import { refreshPrintableMap } from '../../utils/common';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 interface ModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface ModalProps {
 interface CheckBoxProps {
   id: string;
   title: string;
+  noOfflineSupport?: boolean;
 }
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
@@ -35,10 +37,20 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setTimeout(refreshPrintableMap, 100);
   }, [layers, dvkMap]);
 
-  const LayerItem: React.FC<CheckBoxProps> = ({ id, title }) => {
+  const LayerItem: React.FC<CheckBoxProps> = ({ id, title, noOfflineSupport }) => {
+    const { state } = useDvkContext();
+
+    useEffect(() => {
+      if (noOfflineSupport && layers.includes(id) && state.isOffline) {
+        setLayers((prev) => {
+          return [...prev.filter((p) => p !== id)];
+        });
+      }
+    }, [id, noOfflineSupport, state.isOffline]);
+
     return (
       <IonItem>
-        <IonText>{title}</IonText>
+        <IonText className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>{title}</IonText>
         <IonCheckbox
           value={id}
           checked={layers.includes(id)}
@@ -51,6 +63,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               return [...prev, id];
             })
           }
+          disabled={noOfflineSupport && state.isOffline}
         />
       </IonItem>
     );
@@ -111,10 +124,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
               <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
               <LayerItem id="marinewarning" title={t('homePage.map.controls.layer.marineWarnings')} />
-              <LayerItem id="mareograph" title={t('homePage.map.controls.layer.seaLevel')} />
-              <LayerItem id="observation" title={t('homePage.map.controls.layer.weatherStation')} />
-              <LayerItem id="buoy" title={t('homePage.map.controls.layer.buoys')} />
-              <LayerItem id="ice" title={t('homePage.map.controls.layer.ice')} />
+              <LayerItem id="mareograph" noOfflineSupport title={t('homePage.map.controls.layer.seaLevel')} />
+              <LayerItem id="observation" noOfflineSupport title={t('homePage.map.controls.layer.weatherStation')} />
+              <LayerItem id="buoy" noOfflineSupport title={t('homePage.map.controls.layer.buoys')} />
+              <LayerItem id="ice" noOfflineSupport title={t('homePage.map.controls.layer.ice')} />
             </IonList>
           </IonCol>
         </IonRow>

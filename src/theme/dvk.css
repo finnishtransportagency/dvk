@@ -16,6 +16,10 @@ ion-text.no-margin > * {
 ion-text.no-margin-top > *:first-child {
   margin-top: 0 !important;
 }
+ion-text.disabled {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
 
 /* Grid */
 ion-grid.margin-top {
@@ -65,6 +69,49 @@ ion-row.input-row > ion-col {
   display: none;
 }
 
+
+/* Links */
+a {
+  color: var(--ion-color-dark);
+  text-decoration: underline;
+}
+a[target="_blank"] {
+  color: var(--ion-color-primary);
+  padding-right: 14px;
+  background: url('./img/externalLink.svg') no-repeat right center;
+}
+a:hover {
+  background-color: var(--ion-color-light);
+}
+a:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
+  outline-offset: 1px;
+}
+a[target="_blank"]:focus-visible {
+  outline: 1px solid var(--ion-color-primary);
+}
+.offline a[target="_blank"] {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
+.offline a[target="_blank"]:focus-visible {
+  outline: none;
+}
+
+/* Lists */
+ol {
+  margin: 0;
+  padding: 0;
+}
+ol li {
+  font-size: 12px;
+  line-height: 1.125rem;
+  margin-bottom: 1em;
+  list-style-position: inside;
+}
+
+/* Buttons */
 ion-button.icon-only {
   --padding-top: 0;
   --padding-bottom: 0;

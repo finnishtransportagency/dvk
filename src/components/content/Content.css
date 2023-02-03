@@ -392,36 +392,3 @@ ion-segment.tabs ion-label h3 {
   left: -9999px;
   visibility: hidden;
 }
-
-/* Links */
-.tabContent a {
-  color: var(--ion-color-dark);
-  text-decoration: underline;
-}
-.tabContent a[target='_blank'] {
-  color: var(--ion-color-primary);
-  padding-right: 14px;
-  background: url('../../theme/img/externalLink.svg') no-repeat right center;
-}
-.tabContent a:hover {
-  background-color: var(--ion-color-light);
-}
-.tabContent a:focus-visible {
-  outline: 1px solid var(--ion-color-dark);
-  outline-offset: 1px;
-}
-.tabContent a[target='_blank']:focus-visible {
-  outline: 1px solid var(--ion-color-primary);
-}
-
-/* Lists */
-ol {
-  margin: 0;
-  padding: 0;
-}
-ol li {
-  font-size: 12px;
-  line-height: 1.125rem;
-  margin-bottom: 1em;
-  list-style-position: inside;
-}
