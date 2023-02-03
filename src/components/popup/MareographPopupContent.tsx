@@ -34,7 +34,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           </IonRow>
         )}
         <IonRow>
-          <IonCol className="header">{mareograph.properties.calculated ? t('dateTime2') : t('dateTime')}</IonCol>
+          <IonCol className="header">{t('dateTime')}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol>{t('dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>

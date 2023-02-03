@@ -80,25 +80,25 @@ function parseLocation(location: any): Partial<Mareograph> {
   };
 }
 
-function parseForecast(forecast: any): Partial<Mareograph> {
+function parseObservation(observation: any): Partial<Mareograph> {
   return {
-    dateTime: Date.parse(forecast['@_time']),
-    waterLevel: Number.parseFloat(forecast.param.filter((p: any) => p['@_name'] === 'SeaLevel')[0]['@_value']) * 10,
-    n2000WaterLevel: Number.parseFloat(forecast.param.filter((p: any) => p['@_name'] === 'sealeveln2000')[0]['@_value']) * 10,
+    dateTime: Date.parse(observation['@_time']),
+    waterLevel: Number.parseFloat(observation.param.filter((p: any) => p['@_name'] === 'InterpolatedSeaLevel')[0]['@_value']) * 10,
+    n2000WaterLevel: Number.parseFloat(observation.param.filter((p: any) => p['@_name'] === 'InterpolatedSeaLevelN2000')[0]['@_value']) * 10,
   };
 }
 
 function parseMeasure(location: any): Partial<Mareograph> {
   let measure;
-  if (Array.isArray(location.forecast)) {
-    for (const forecast of location.forecast) {
-      const result = parseForecast(forecast);
-      if (!measure || (measure.dateTime as number) > (result.dateTime as number)) {
+  if (Array.isArray(location.observation)) {
+    for (const observation of location.observation) {
+      const result = parseObservation(observation);
+      if (!measure || (measure.dateTime as number) < (result.dateTime as number)) {
         measure = result;
       }
     }
   } else {
-    measure = parseForecast(location.forecast);
+    measure = parseObservation(location.observation);
   }
   return measure || {};
 }
@@ -122,16 +122,20 @@ export function parseXml(xml: string): Mareograph[] {
       mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
     }
   } catch (e) {
-    log.fatal('Parsing Ilmanet xml failed: %o', e);
+    log.fatal('Parsing Ilmanet xml failed: %s', e);
   }
   return mareographs;
 }
 
 async function fetchIlmanetApi(): Promise<Mareograph[]> {
   const start = Date.now();
-  const url = `${await getIlmanetUrl()}${'&username=' + (await getIlmanetUsername())}&password=${await getIlmanetPassword()}`;
   const response = await axios
-    .get(url, {
+    .get(await getIlmanetUrl(), {
+      params: {
+        username: await getIlmanetUsername(),
+        password: await getIlmanetPassword(),
+        orderId: 165689,
+      },
       headers: await getWeatherHeaders(),
     })
     .catch(function (error) {
