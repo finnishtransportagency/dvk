@@ -5,7 +5,6 @@ import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
-import { get as getTransform } from 'ol/proj/transforms';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
@@ -33,10 +32,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   }
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
-    const fn = getTransform(MAP.EPSG, 'EPSG:4326');
-    if (fn) {
-      console.log('coordinates: ' + fn.call(map, evt.coordinate, undefined, undefined));
-    }
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
       evt.pixel,
