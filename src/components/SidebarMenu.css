@@ -98,6 +98,11 @@
   text-decoration: none;
   font-weight: bold;
 }
+.sidebarMenu ion-item.item-disabled.external {
+  opacity: 0.5;
+  text-decoration: none;
+  font-weight: normal;
+}
 
 .sidebarMenu ion-item.internal {
   color: var(--ion-color-dark);
