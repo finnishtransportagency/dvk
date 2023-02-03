@@ -13,6 +13,7 @@ import { useFairwayCardListData } from '../../utils/dataLoader';
 import Breadcrumb from './Breadcrumb';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Phonenumber from './Phonenumber';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type FairwaysProps = {
   data?: Fairway[] | null;
@@ -98,6 +99,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
 const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000HeightSystem }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const sizingVessels =
     data
@@ -198,7 +200,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                 <br />
                 <strong>{t('attention')}</strong> {t('n2000Info')}
                 <br />
-                <a href={'//' + N2000_URLS[lang]} target="_blank" rel="noreferrer">
+                <a href={'//' + N2000_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                   {N2000_URLS[lang]}
                 </a>
               </>
@@ -219,6 +221,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
 const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const prohibitionAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 15)) || [];
 
@@ -232,7 +235,7 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
             {prohibitionAreas?.length > 0 && (
               <>
                 {t('prohibitionText', { count: prohibitionAreas?.length })}{' '}
-                <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer">
+                <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                   {MASTERSGUIDE_URLS[lang]}
                 </a>
                 .
@@ -411,6 +414,7 @@ type PilotInfoProps = {
 const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const highlightPilot = (id: string | number) => {
     setSelectedPilotPlace(id);
@@ -425,7 +429,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             {t('email')}: <a href={'mailto:' + data.email}>{data.email}</a>
             <br />
             {t('orderFrom')}:{' '}
-            <a href={'//' + PILOTORDER_URL} target="_blank" rel="noreferrer">
+            <a href={'//' + PILOTORDER_URL} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
               {PILOTORDER_URL}
             </a>
             <br />
@@ -618,6 +622,8 @@ type ContactInfoProps = {
 const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
+
   return (
     <>
       {data && (
@@ -630,7 +636,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
           )}
           {data.internet && (
             <>
-              <a href={data.internet} target="_blank" rel="noreferrer">
+              <a href={data.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                 {data.internet}
               </a>
               <br />
