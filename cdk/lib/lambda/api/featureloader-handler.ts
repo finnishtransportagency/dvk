@@ -298,6 +298,8 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         typeCode: equipment.turvalaitetyyppiKoodi,
         typeName: { fi: equipment.turvalaitetyyppiFI, sv: equipment.turvalaitetyyppiSV },
         lightning: equipment.valaistu === 'K',
+        aisType: equipment.AISTyyppi,
+        remoteControl: equipment.kaukohallinta,
         fairways: equipment.vayla?.map((v) => {
           return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
         }),
