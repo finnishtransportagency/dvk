@@ -16,6 +16,8 @@ const gzipString = async (input: string): Promise<Buffer> => {
   );
 };
 
+const ignoredNames = ['Vuosaaren satama'];
+
 async function main() {
   proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
   proj4.defs('EPSG:3067', '+proj=utm +zone=35 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs');
@@ -25,10 +27,10 @@ async function main() {
     for (const file of process.argv.slice(2)) {
       const names = JSON.parse(fs.readFileSync(file).toString()) as FeatureCollection;
       for (const feature of names.features) {
-        if (feature.geometry.type === 'Point') {
+        if (feature.geometry.type === 'Point' && !ignoredNames.includes(feature.properties?.AHTI_NAMFI)) {
           const coordinates = proj4('EPSG:4326', 'EPSG:3067').forward(feature.geometry.coordinates);
           const geometry = { type: 'Point', coordinates: coordinates } as Point;
-          roundGeometry(geometry);
+          roundGeometry(geometry, 0);
           features.push({
             id: ++i,
             type: 'Feature',
