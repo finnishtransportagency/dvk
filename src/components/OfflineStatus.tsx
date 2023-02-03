@@ -1,7 +1,11 @@
 import { IonText } from '@ionic/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDvkContext } from '../hooks/dvkContext';
+import { refreshPrintableMap } from '../utils/common';
+import { MAP } from '../utils/constants';
 import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
+import { getMap } from './DvkMap';
 import {
   useArea12Layer,
   useArea3456Layer,
@@ -25,6 +29,8 @@ import {
 const OfflineStatus: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
 
+  const { state, dispatch } = useDvkContext();
+
   const fairwayCardList = useFairwayCardListData();
   const equipmentFaultList = useSafetyEquipmentFaultData();
   const marineWarningList = useMarineWarningsData();
@@ -45,6 +51,7 @@ const OfflineStatus: React.FC = () => {
   const observationLayer = useObservationLayer();
   const buoyLayer = useBuoyLayer();
   const bgLayer = useBackgroundLayer();
+
   const statusOffline =
     !navigator.onLine ||
     (fairwayCardList.isPaused &&
@@ -68,9 +75,27 @@ const OfflineStatus: React.FC = () => {
       buoyLayer.isPaused &&
       bgLayer.isPaused);
 
+  useEffect(() => {
+    dispatch({
+      type: 'setOffline',
+      payload: {
+        value: statusOffline,
+      },
+    });
+  }, [statusOffline, dispatch]);
+
+  const dvkMap = getMap();
+  useEffect(() => {
+    MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
+      const layer = dvkMap.getFeatureLayer(dataLayer.id);
+      if (dataLayer.noOfflineSupport && state.isOffline) layer.setVisible(false);
+    });
+    setTimeout(refreshPrintableMap, 100);
+  }, [dvkMap, state.isOffline]);
+
   return (
     <>
-      {statusOffline && (
+      {state.isOffline && (
         <IonText className="offlineStatus">
           <strong>{t('serviceOffline')}</strong>
         </IonText>

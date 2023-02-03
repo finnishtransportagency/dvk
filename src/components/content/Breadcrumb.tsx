@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 type PathItem = {
   title?: string;
   route?: string;
+  onClick?: () => void;
 };
 
 type BreadcrumbProps = {
@@ -21,7 +22,12 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
         <IonLabel slot="separator">&gt;</IonLabel>
       </IonBreadcrumb>
       {path.map((item, idx) => (
-        <IonBreadcrumb key={item.route || item.title} routerLink={idx < path.length - 1 ? item.route : undefined}>
+        <IonBreadcrumb
+          key={item.route || item.title}
+          routerLink={idx < path.length - 1 ? item.route : undefined}
+          onClick={item.onClick}
+          className={item.onClick ? 'ion-activatable ion-focusable' : undefined}
+        >
           {idx < path.length - 1 && (
             <>
               {item.title}
