@@ -5,6 +5,7 @@ import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -18,6 +19,8 @@ export type QuayProperties = {
 const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'popup.harbor' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
+
   return (
     <IonGrid id="quayPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
@@ -90,7 +93,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay }) => {
           <IonRow>
             <IonCol>
               {t('internet')}:{' '}
-              <a href={quay.properties.internet} target="_blank" rel="noreferrer">
+              <a href={quay.properties.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                 {quay.properties.internet}
               </a>
             </IonCol>
