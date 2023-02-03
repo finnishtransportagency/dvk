@@ -1,6 +1,7 @@
 import { IonText } from '@ionic/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDvkContext } from '../hooks/dvkContext';
 import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 import {
   useArea12Layer,
@@ -25,6 +26,8 @@ import {
 const OfflineStatus: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
 
+  const { state, dispatch } = useDvkContext();
+
   const fairwayCardList = useFairwayCardListData();
   const equipmentFaultList = useSafetyEquipmentFaultData();
   const marineWarningList = useMarineWarningsData();
@@ -45,6 +48,7 @@ const OfflineStatus: React.FC = () => {
   const observationLayer = useObservationLayer();
   const buoyLayer = useBuoyLayer();
   const bgLayer = useBackgroundLayer();
+
   const statusOffline =
     !navigator.onLine ||
     (fairwayCardList.isPaused &&
@@ -68,9 +72,18 @@ const OfflineStatus: React.FC = () => {
       buoyLayer.isPaused &&
       bgLayer.isPaused);
 
+  useEffect(() => {
+    dispatch({
+      type: 'setOffline',
+      payload: {
+        value: statusOffline,
+      },
+    });
+  }, [statusOffline, dispatch]);
+
   return (
     <>
-      {statusOffline && (
+      {state.isOffline && (
         <IonText className="offlineStatus">
           <strong>{t('serviceOffline')}</strong>
         </IonText>
