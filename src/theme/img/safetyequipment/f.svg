@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>CF20792B-69AB-498E-840A-3A897D586118</title>
     <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-962.000000, -914.000000)">
-            <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
+        <g id="colors_and_typography" transform="translate(-958.000000, -906.000000)">
+            <g id="turvalaite_ikonit" transform="translate(718.000000, 906.000000)">
                 <g id="kardinaali_pohjoinen" transform="translate(240.000000, 0.000000)">
-                    <path d="M8.43,23.1428571 L15.5742857,23.1428571 L15.5742857,24 L8.43,24 L8.43,23.1428571 Z M14.0014286,8.00142857 L10.0028571,8.00142857 L12.0042857,4.57285714 L14.0057143,8.00142857 L14.0014286,8.00142857 Z M14.0014286,11.43 L10.0028571,11.43 L12.0042857,8.00142857 L14.0057143,11.43 L14.0014286,11.43 Z M11.5714286,11.4 L11.5714286,23.1428571 L12.4285714,23.1428571 L12.4285714,11.4 L11.5714286,11.4 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
-                    <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                    <path d="M11.24,30.8571429 L20.7657143,30.8571429 L20.7657143,32 L11.24,32 L11.24,30.8571429 Z M18.6685714,10.6685714 L13.3371429,10.6685714 L16.0057143,6.09714286 L18.6742857,10.6685714 L18.6685714,10.6685714 Z M18.6685714,15.24 L13.3371429,15.24 L16.0057143,10.6685714 L18.6742857,15.24 L18.6685714,15.24 Z M15.4285714,15.2 L15.4285714,30.8571429 L16.5714286,30.8571429 L16.5714286,15.2 L15.4285714,15.2 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
+                    <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
                 </g>
             </g>
         </g>

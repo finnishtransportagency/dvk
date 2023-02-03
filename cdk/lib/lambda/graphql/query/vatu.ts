@@ -176,6 +176,10 @@ export type TurvalaiteAPIModel = {
   omistajaFI?: string;
   omistajaSV?: string;
   symboli?: string;
+  kaukohallinta?: number;
+  AISTyyppi?: number;
+  AISTyyppiSeliteFI?: string;
+  AISTyyppiSeliteSV?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
 } & GeometryModel;
 
