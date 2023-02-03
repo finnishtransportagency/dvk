@@ -267,7 +267,10 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
       ?.flatMap((fairway) =>
         fairway.restrictionAreas?.filter((area) => (area.types?.filter((type) => type.code === '01') || []).length > 0 && area.location && area.value)
       )
-      .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) || [];
+      .filter(
+        (value, index, self) =>
+          self.findIndex((inner) => inner?.id === value?.id || (inner?.location === value?.location && inner?.value === value?.value)) === index
+      ) || [];
 
   return (
     <>
