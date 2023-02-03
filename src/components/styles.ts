@@ -58,13 +58,15 @@ import V from '../theme/img/safetyequipment/big/V.svg';
 import W from '../theme/img/safetyequipment/big/W.svg';
 import X from '../theme/img/safetyequipment/big/X.svg';
 import Y from '../theme/img/safetyequipment/big/Y.svg';
+import ais from '../theme/img/safetyequipment/ais.svg';
+import vais from '../theme/img/safetyequipment/vais.svg';
 import errorIcon from '../theme/img/safetyequipment/error_icon.svg';
 import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import depthIconMWsmall from '../theme/img/depthmw1.svg';
 import depthIconMWbig from '../theme/img/depthmw2.svg';
-import { AreaFeatureProperties, LineFeatureProperties, MareographFeatureProperties } from './features';
+import { AreaFeatureProperties, EquipmentFeatureProperties, LineFeatureProperties, MareographFeatureProperties } from './features';
 import { LineString, Point, Polygon } from 'ol/geom';
 import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
@@ -75,69 +77,70 @@ import buoyIcon from '../theme/img/buoy.svg';
 import { Lang } from '../utils/constants';
 
 const symbol2Icon = {
-  a: { icon: a, center: false, anchorY: 24 },
-  b: { icon: b, center: false, anchorY: 24 },
-  c: { icon: c, center: false, anchorY: 24 },
-  d: { icon: d, center: false, anchorY: 24 },
-  e: { icon: e, center: false, anchorY: 24 },
-  f: { icon: f, center: false, anchorY: 24 },
-  g: { icon: g, center: false, anchorY: 24 },
-  h: { icon: h, center: false, anchorY: 24 },
-  i: { icon: i, center: false, anchorY: 24 },
-  j: { icon: j, center: false, anchorY: 24 },
-  k: { icon: k, center: false, anchorY: 24 },
-  l: { icon: l, center: false, anchorY: 24 },
-  m: { icon: m, center: false, anchorY: 24 },
-  n: { icon: n, center: false, anchorY: 24 },
-  o: { icon: o, center: false, anchorY: 24 },
-  p: { icon: p, center: false, anchorY: 24 },
-  q: { icon: q, center: false, anchorY: 24 },
-  r: { icon: r, center: false, anchorY: 24 },
-  s: { icon: s, center: false, anchorY: 24 },
+  a: { icon: a, center: false, anchorY: 32 },
+  b: { icon: b, center: false, anchorY: 32 },
+  c: { icon: c, center: false, anchorY: 32 },
+  d: { icon: d, center: false, anchorY: 32 },
+  e: { icon: e, center: false, anchorY: 32 },
+  f: { icon: f, center: false, anchorY: 32 },
+  g: { icon: g, center: false, anchorY: 32 },
+  h: { icon: h, center: false, anchorY: 32 },
+  i: { icon: i, center: false, anchorY: 32 },
+  j: { icon: j, center: false, anchorY: 32 },
+  k: { icon: k, center: false, anchorY: 32 },
+  l: { icon: l, center: false, anchorY: 32 },
+  m: { icon: m, center: false, anchorY: 32 },
+  n: { icon: n, center: false, anchorY: 32 },
+  o: { icon: o, center: false, anchorY: 32 },
+  p: { icon: p, center: false, anchorY: 32 },
+  q: { icon: q, center: false, anchorY: 32 },
+  r: { icon: r, center: false, anchorY: 32 },
+  s: { icon: s, center: false, anchorY: 32 },
   t: { icon: t, center: true, anchorY: 0 },
-  u: { icon: u, center: false, anchorY: 23 },
-  v: { icon: v, center: false, anchorY: 24 },
-  w: { icon: w, center: false, anchorY: 24 },
-  A: { icon: A, center: false, anchorY: 23 },
-  B: { icon: B, center: false, anchorY: 23 },
-  C: { icon: C, center: false, anchorY: 23 },
-  D: { icon: D, center: false, anchorY: 23 },
-  E: { icon: E, center: false, anchorY: 23 },
-  F: { icon: F, center: false, anchorY: 23 },
-  G: { icon: G, center: false, anchorY: 24 },
-  H: { icon: H, center: false, anchorY: 24 },
-  I: { icon: I, center: false, anchorY: 24 },
-  J: { icon: J, center: false, anchorY: 24 },
-  K: { icon: K, center: false, anchorY: 24 },
-  L: { icon: L, center: false, anchorY: 24 },
-  M: { icon: M, center: false, anchorY: 24 },
-  N: { icon: N, center: false, anchorY: 24 },
-  O: { icon: O, center: false, anchorY: 24 },
-  P: { icon: P, center: false, anchorY: 24 },
-  Q: { icon: Q, center: false, anchorY: 24 },
-  R: { icon: R, center: false, anchorY: 24 },
-  S: { icon: S, center: false, anchorY: 24 },
-  T: { icon: T, center: false, anchorY: 24 },
-  U: { icon: U, center: false, anchorY: 24 },
-  V: { icon: V, center: false, anchorY: 24 },
-  W: { icon: W, center: false, anchorY: 24 },
-  X: { icon: X, center: false, anchorY: 24 },
-  Y: { icon: Y, center: false, anchorY: 24 },
+  u: { icon: u, center: false, anchorY: 31 },
+  v: { icon: v, center: false, anchorY: 32 },
+  w: { icon: w, center: false, anchorY: 32 },
+  A: { icon: A, center: false, anchorY: 31 },
+  B: { icon: B, center: false, anchorY: 31 },
+  C: { icon: C, center: false, anchorY: 31 },
+  D: { icon: D, center: false, anchorY: 31 },
+  E: { icon: E, center: false, anchorY: 31 },
+  F: { icon: F, center: false, anchorY: 31 },
+  G: { icon: G, center: false, anchorY: 32 },
+  H: { icon: H, center: false, anchorY: 32 },
+  I: { icon: I, center: false, anchorY: 32 },
+  J: { icon: J, center: false, anchorY: 32 },
+  K: { icon: K, center: false, anchorY: 32 },
+  L: { icon: L, center: false, anchorY: 32 },
+  M: { icon: M, center: false, anchorY: 32 },
+  N: { icon: N, center: false, anchorY: 32 },
+  O: { icon: O, center: false, anchorY: 32 },
+  P: { icon: P, center: false, anchorY: 32 },
+  Q: { icon: Q, center: false, anchorY: 32 },
+  R: { icon: R, center: false, anchorY: 32 },
+  S: { icon: S, center: false, anchorY: 32 },
+  T: { icon: T, center: false, anchorY: 32 },
+  U: { icon: U, center: false, anchorY: 32 },
+  V: { icon: V, center: false, anchorY: 32 },
+  W: { icon: W, center: false, anchorY: 32 },
+  X: { icon: X, center: false, anchorY: 32 },
+  Y: { icon: Y, center: false, anchorY: 32 },
   '1': { icon: n1, center: true, anchorY: 0 },
-  '2': { icon: n2, center: false, anchorY: 23 },
-  '3': { icon: n3, center: false, anchorY: 23 },
-  '4': { icon: n4, center: false, anchorY: 23 },
-  '5': { icon: n5, center: false, anchorY: 23 },
-  '6': { icon: n6, center: false, anchorY: 23 },
-  '7': { icon: n7, center: false, anchorY: 23 },
-  '8': { icon: n8, center: false, anchorY: 23 },
-  '9': { icon: n9, center: false, anchorY: 23 },
-  '0': { icon: n0, center: false, anchorY: 23 },
-  '?': { icon: questionmark, center: false, anchorY: 20 },
+  '2': { icon: n2, center: false, anchorY: 31 },
+  '3': { icon: n3, center: false, anchorY: 31 },
+  '4': { icon: n4, center: false, anchorY: 31 },
+  '5': { icon: n5, center: false, anchorY: 31 },
+  '6': { icon: n6, center: false, anchorY: 31 },
+  '7': { icon: n7, center: false, anchorY: 31 },
+  '8': { icon: n8, center: false, anchorY: 31 },
+  '9': { icon: n9, center: false, anchorY: 31 },
+  '0': { icon: n0, center: false, anchorY: 31 },
+  '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
-export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolution: number, selected: boolean) => {
-  const key = symbol as keyof typeof symbol2Icon;
+export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
+  const props = feature.getProperties() as EquipmentFeatureProperties;
+  const key = props.symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
@@ -145,46 +148,49 @@ export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolut
   let image: Icon;
   let errorImageRight: Icon | undefined = undefined;
   let errorImageLeft: Icon | undefined = undefined;
-  if (faults) {
+  let virtualIcon: Icon | undefined = undefined;
+  if (props.faults) {
     errorImageRight = new Icon({
       src: errorIcon,
-      anchor: [-0.75, 0.5],
+      anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction',
       scale: selected ? 1.2 : 1,
     });
     errorImageLeft = new Icon({
       src: errorIcon,
-      anchor: [1.75, 0.5],
+      anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
       anchorXUnits: 'fraction',
       anchorYUnits: 'fraction',
       scale: selected ? 1.2 : 1,
     });
   }
-  if (symbol === '1' || resolution <= 7) {
+  if (props.aisType !== undefined && props.aisType !== 1) {
+    virtualIcon = new Icon({
+      src: props.aisType === 3 ? ais : vais,
+      anchor: [0.5, 0.4],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+    });
+  }
+  if (props.symbol === '1' || resolution <= 7) {
     if (center) {
       image = new Icon({
         src: icon,
-        color: faults ? '#EC0E0E' : '#231F20',
+        color: props.faults ? '#EC0E0E' : '#231F20',
         scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
-        color: faults ? '#EC0E0E' : '#231F20',
+        color: props.faults ? '#EC0E0E' : '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         scale: selected ? 1.2 : 1,
       });
     }
-    return [
-      new Style({
-        image: errorImageRight,
-      }),
-      new Style({
-        image: errorImageLeft,
-      }),
+    const styles = [
       new Style({
         image,
       }),
@@ -197,6 +203,24 @@ export const getSafetyEquipmentStyle = (symbol: string, faults: boolean, resolut
         }),
       }),
     ];
+    if (props.faults) {
+      styles.push(
+        new Style({
+          image: errorImageRight,
+        }),
+        new Style({
+          image: errorImageLeft,
+        })
+      );
+    }
+    if (virtualIcon) {
+      styles.push(
+        new Style({
+          image: virtualIcon,
+        })
+      );
+    }
+    return styles;
   }
   return undefined;
 };

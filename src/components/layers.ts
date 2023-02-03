@@ -314,9 +314,7 @@ export function addAPILayers(map: Map) {
   // Haraussyvyydet
   addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
   // Turvalaitteet
-  addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) =>
-    getSafetyEquipmentStyle(feature.getProperties().symbol, feature.getProperties().faults !== undefined, resolution, false)
-  );
+  addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
 
   addFeatureLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, 'ol-layer');
@@ -328,7 +326,7 @@ export function addAPILayers(map: Map) {
   // Laiturit
   addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false), undefined, 1, 'ol-layer');
   // Satamat
-  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), 3, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {
