@@ -2,7 +2,10 @@ import { IonText } from '@ionic/react';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDvkContext } from '../hooks/dvkContext';
+import { refreshPrintableMap } from '../utils/common';
+import { MAP } from '../utils/constants';
 import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
+import { getMap } from './DvkMap';
 import {
   useArea12Layer,
   useArea3456Layer,
@@ -80,6 +83,15 @@ const OfflineStatus: React.FC = () => {
       },
     });
   }, [statusOffline, dispatch]);
+
+  const dvkMap = getMap();
+  useEffect(() => {
+    MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
+      const layer = dvkMap.getFeatureLayer(dataLayer.id);
+      if (dataLayer.noOfflineSupport && state.isOffline) layer.setVisible(false);
+    });
+    setTimeout(refreshPrintableMap, 100);
+  }, [dvkMap, state.isOffline]);
 
   return (
     <>
