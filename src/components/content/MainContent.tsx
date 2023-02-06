@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ChevronIcon } from '../../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../../theme/img/menu.svg';
@@ -16,6 +16,7 @@ import { useFairwayCardListData } from '../../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 import MarineWarnings from './MarineWarnings';
 import './Content.css';
+import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -40,8 +41,12 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const curPath = history.location.pathname;
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
+  const title = t('documentTitle');
+  const [, setDoucmentTitle] = useDocumentTitle(title);
 
-  document.title = t('documentTitle');
+  useEffect(() => {
+    setDoucmentTitle(title);
+  }, [setDoucmentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
