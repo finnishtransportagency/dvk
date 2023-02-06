@@ -42,11 +42,11 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const title = t('documentTitle');
-  const [, setDoucmentTitle] = useDocumentTitle(title);
+  const [, setDocumentTitle] = useDocumentTitle(title);
 
   useEffect(() => {
-    setDoucmentTitle(title);
-  }, [setDoucmentTitle, title]);
+    setDocumentTitle(title);
+  }, [setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);

@@ -8,11 +8,11 @@ const SafetyEquipmentFaultPage: React.FC = () => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const tRoot = i18n.getFixedT(i18n.language);
   const title = t('documentTitle') + ' - ' + tRoot('homePage.sidebarMenu.safety-equipment-faults');
-  const [, setDoucmentTitle] = useDocumentTitle(title);
+  const [, setDocumentTitle] = useDocumentTitle(title);
 
   useEffect(() => {
-    setDoucmentTitle(title);
-  }, [setDoucmentTitle, title]);
+    setDocumentTitle(title);
+  }, [setDocumentTitle, title]);
 
   return (
     <IonPage id="mainContent">

@@ -38,7 +38,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
   const boardLine12Layer = useBoardLine12Layer();
 
   const [initDone, setInitDone] = useState(false);
-  const [, setDoucmentTitle] = useDocumentTitle(t('documentTitle'));
+  const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
 
   useEffect(() => {
     if (
@@ -70,13 +70,13 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
       const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
-        setDoucmentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
+        setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
       }
     }
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDoucmentTitle]);
+  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle]);
 
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">
