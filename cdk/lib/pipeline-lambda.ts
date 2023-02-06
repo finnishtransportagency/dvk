@@ -14,6 +14,8 @@ export class PipelineLambda extends Construct {
     const importedSquatPipelineNameTest = cdk.Fn.importValue('SquatPipeline-test');
     const importedDVKPipelineNameDev = cdk.Fn.importValue('DvkPipeline-dev');
     const importedDVKPipelineNameTest = cdk.Fn.importValue('DvkPipeline-test');
+    const importedAdminPipelineNameDev = cdk.Fn.importValue('AdminPipeline-dev');
+    const importedAdminPipelineNameTest = cdk.Fn.importValue('AdminPipeline-test');
     const importedBuildimagePipelineName = cdk.Fn.importValue('BuildimagePipeline');
     const storedGithubWebhookSecret = ssm.StringParameter.valueForStringParameter(this, '/github/WebhookSecret', 1);
 
@@ -26,6 +28,8 @@ export class PipelineLambda extends Construct {
         TEST_PIPELINE_SQUAT: importedSquatPipelineNameTest,
         DEV_PIPELINE_DVK: importedDVKPipelineNameDev,
         TEST_PIPELINE_DVK: importedDVKPipelineNameTest,
+        DEV_PIPELINE_ADMIN: importedAdminPipelineNameDev,
+        TEST_PIPELINE_ADMIN: importedAdminPipelineNameTest,
         BUILDIMAGE_PIPELINE: importedBuildimagePipelineName,
         WEBHOOK_SECRET: storedGithubWebhookSecret,
       },
