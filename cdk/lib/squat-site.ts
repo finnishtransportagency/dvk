@@ -183,11 +183,21 @@ export class SquatSite extends Construct {
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
     };
 
+    const adminRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/adminRequestRouter.js`).toString('utf-8');
+    const adminCfFunction = new cloudfront.Function(this, 'AdminRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(adminRouterSourceCode),
+    });
     const adminBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(adminBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: adminCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
     };
 
