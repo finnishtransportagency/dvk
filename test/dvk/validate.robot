@@ -43,12 +43,7 @@ Check Center And Zoom Buttons
 Check Fairway Card In Finnish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in finnish language
 	Change Language And Check Fairway Cards Page And Select Fairway    FINNISH    ${IN_FINNISH_BUTTON}    ${IN_FINNISH_BUTTON_DISABLED}    Väyläkortit
-	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
-	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
-	Click Element    ${input_fairway_dropdown_locator}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_FINNISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}
 	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_FINNISH}    ${PILOTAGE_HEADING_FINNISH}    ${VTS_HEADING_FINNISH}
@@ -60,12 +55,7 @@ Check Fairway Card In Finnish
 Check Fairway Card In Swedish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
 	Change Language And Check Fairway Cards Page And Select Fairway    SWEDISH    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
-	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
-	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
-	Click Element    ${input_fairway_dropdown_locator}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_SWEDISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}
 	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_SWEDISH}    ${PILOTAGE_HEADING_SWEDISH}    ${VTS_HEADING_SWEDISH}
@@ -77,12 +67,7 @@ Check Fairway Card In Swedish
 Check Fairway Card In English
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
 	Change Language And Check Fairway Cards Page And Select Fairway    ENGLISH    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
-	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
-	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
-	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
-	Click Element    ${input_fairway_dropdown_locator}
-	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
-	Element Should Contain    ${FAIRWAY_HEADING}    ${SELECTED_FAIRWAY_CARD}
+	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
 	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
 	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_ENGLISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}
 	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_ENGLISH}    ${PILOTAGE_HEADING_ENGLISH}    ${VTS_HEADING_ENGLISH}
@@ -285,3 +270,13 @@ Check Fairway Cards Page
 	Scroll Element Into View    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_${language}}
 	Element Should Be Visible    ${GULF_OF_BOTHNIA_FAIRWAY_TABLE_HEADING_2_${language}}
 	Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
+
+Search Selected Fairway Card
+	[Arguments]    ${selected_fairway}
+	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${selected_fairway}"]
+	Input Text    ${INPUT_FAIRWAY}    ${selected_fairway}
+	${fairway}=    Get Text    ${input_fairway_dropdown_locator}
+	Should Be Equal    ${selected_fairway}    ${fairway}
+	Click Element    ${input_fairway_dropdown_locator}
+	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
+	Element Should Contain    ${FAIRWAY_HEADING}    ${selected_fairway}
