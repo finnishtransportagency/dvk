@@ -3,7 +3,7 @@ import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@io
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
-import { useSafetyEquipmentFaultData } from '../../utils/dataLoader';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
@@ -88,7 +88,7 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
-  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
 
   return (
