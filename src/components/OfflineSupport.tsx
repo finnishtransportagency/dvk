@@ -2,26 +2,7 @@ import { IonIcon, IonText, IonItem } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { OFFLINE_STORAGE } from '../utils/constants';
-import { useFairwayCardListData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
-import {
-  useArea12Layer,
-  useArea3456Layer,
-  useBackgroundLayer,
-  useBoardLine12Layer,
-  useBuoyLayer,
-  useDepth12Layer,
-  useHarborLayer,
-  useLine12Layer,
-  useLine3456Layer,
-  useMareographLayer,
-  useMarineWarningLayer,
-  useNameLayer,
-  useObservationLayer,
-  usePilotLayer,
-  useSafetyEquipmentLayer,
-  useSpecialAreaLayer,
-  useSpeedLimitLayer,
-} from './FeatureLoader';
+import { useFairwayCardListData, useFeatureData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 
 const OfflineSupport: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
@@ -29,23 +10,26 @@ const OfflineSupport: React.FC = () => {
   const fairwayCardList = useFairwayCardListData();
   const equipmentFaultList = useSafetyEquipmentFaultData();
   const marineWarningList = useMarineWarningsData();
-  const line12Layer = useLine12Layer();
-  const line3456Layer = useLine3456Layer();
-  const area12Layer = useArea12Layer();
-  const area3456Layer = useArea3456Layer();
-  const depth12Layer = useDepth12Layer();
-  const speedLimitLayer = useSpeedLimitLayer();
-  const specialAreaLayer = useSpecialAreaLayer();
-  const pilotLayer = usePilotLayer();
-  const harborLayer = useHarborLayer();
-  const safetyEquipmentLayer = useSafetyEquipmentLayer();
-  const marineWarningLayer = useMarineWarningLayer();
-  const nameLayer = useNameLayer();
-  const boardLine12Layer = useBoardLine12Layer();
-  const mareographLayer = useMareographLayer();
-  const observationLayer = useObservationLayer();
-  const buoyLayer = useBuoyLayer();
-  const bgLayer = useBackgroundLayer();
+  const line12Layer = useFeatureData('line12');
+  const line3456Layer = useFeatureData('line3456');
+  const area12Layer = useFeatureData('area12');
+  const area3456Layer = useFeatureData('area3456');
+  const depth12Layer = useFeatureData('depth12');
+  const speedLimitLayer = useFeatureData('restrictionarea');
+  const specialAreaLayer = useFeatureData('specialarea');
+  const pilotLayer = useFeatureData('pilot');
+  const harborLayer = useFeatureData('harbor');
+  const safetyEquipmentLayer = useFeatureData('safetyequipment');
+  const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
+  const marineWarningLayer = useFeatureData('marinewarning');
+  const nameLayer = useFeatureData('name');
+  const boardLine12Layer = useFeatureData('boardline12');
+  const mareographLayer = useFeatureData('mareograph');
+  const observationLayer = useFeatureData('observation');
+  const buoyLayer = useFeatureData('buoy');
+  const bgLayerBa = useFeatureData('balticsea');
+  const bgLayerFi = useFeatureData('finland');
+  const bgLayerSea = useFeatureData('mml_meri');
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -61,13 +45,16 @@ const OfflineSupport: React.FC = () => {
     pilotLayer.dataUpdatedAt,
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
+    safetyEquipmentFaultLayer.dataUpdatedAt,
     marineWarningLayer.dataUpdatedAt,
     nameLayer.dataUpdatedAt,
     boardLine12Layer.dataUpdatedAt,
     mareographLayer.dataUpdatedAt,
     observationLayer.dataUpdatedAt,
     buoyLayer.dataUpdatedAt,
-    bgLayer.dataUpdatedAt,
+    bgLayerBa.dataUpdatedAt,
+    bgLayerFi.dataUpdatedAt,
+    bgLayerSea.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -83,13 +70,16 @@ const OfflineSupport: React.FC = () => {
     pilotLayer.isError ? pilotLayer.errorUpdatedAt : 0,
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
+    safetyEquipmentFaultLayer.isError ? safetyEquipmentFaultLayer.errorUpdatedAt : 0,
     marineWarningLayer.isError ? marineWarningLayer.errorUpdatedAt : 0,
     nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
     boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
     mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
     observationLayer.isError ? observationLayer.errorUpdatedAt : 0,
     buoyLayer.isError ? buoyLayer.errorUpdatedAt : 0,
-    bgLayer.isError ? bgLayer.errorUpdatedAt : 0,
+    bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
+    bgLayerFi.isError ? bgLayerFi.errorUpdatedAt : 0,
+    bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);
