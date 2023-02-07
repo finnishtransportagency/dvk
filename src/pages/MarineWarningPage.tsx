@@ -5,9 +5,8 @@ import MainContent from '../components/content/MainContent';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 
 const MarineWarningPage: React.FC = () => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
-  const tRoot = i18n.getFixedT(i18n.language);
-  const title = t('documentTitle') + ' - ' + tRoot('homePage.sidebarMenu.marine-warnings');
+  const { t } = useTranslation(undefined, { keyPrefix: 'common' });
+  const title = t('documentTitle') + ' - ' + t('marine-warnings');
   const [, setDocumentTitle] = useDocumentTitle(title);
 
   useEffect(() => {
