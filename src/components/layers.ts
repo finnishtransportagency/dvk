@@ -21,16 +21,9 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import {
-  getDepthStyle,
-  getMarineWarningStyle,
-  getSafetyEquipmentStyle,
-  getNameStyle,
-  getMareographStyle,
-  getObservationStyle,
-  getBuoyStyle,
-} from './styles';
+import { getDepthStyle, getMarineWarningStyle, getSafetyEquipmentStyle, getMareographStyle, getObservationStyle, getBuoyStyle } from './styles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
+import { getNameStyle } from './layerStyles/nameStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
