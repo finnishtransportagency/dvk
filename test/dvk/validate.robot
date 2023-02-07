@@ -44,10 +44,10 @@ Check Fairway Card In Finnish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in finnish language
 	Change Language And Check Fairway Cards Page And Select Fairway    FINNISH    ${IN_FINNISH_BUTTON}    ${IN_FINNISH_BUTTON_DISABLED}    Väyläkortit
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_FINNISH}    ${NAVIGATION_CONDITIONS_HEADING_FINNISH}    ${ICE_CONDITIONS_HEADING_FINNISH}
-	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_FINNISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_FINNISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_FINNISH}    ${FAIRWAY_DIMENSIONS_HEADING_FINNISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_FINNISH}    ${PILOTAGE_HEADING_FINNISH}    ${VTS_HEADING_FINNISH}
-	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_FINNISH}    ${QUAYS_HEADING_FINNISH}    ${CARGO_HANDLING_HEADING_FINNISH}    ${HARBOUR_BASIN_HEADING_FINNISH}    ${CONTACT_DETAILS_HEADING_FINNISH}
+	Check Fairway Navigability Headings    FINNISH
+	Check Fairway Data Headings    FINNISH
+	Check Traffic Services Headings    FINNISH
+	Check Fairway Harbours Headings    FINNISH
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -56,22 +56,22 @@ Check Fairway Card In Swedish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
 	Change Language And Check Fairway Cards Page And Select Fairway    SWEDISH    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_SWEDISH}    ${NAVIGATION_CONDITIONS_HEADING_SWEDISH}    ${ICE_CONDITIONS_HEADING_SWEDISH}
-	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_SWEDISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_SWEDISH}    ${PILOTAGE_HEADING_SWEDISH}    ${VTS_HEADING_SWEDISH}
-	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_SWEDISH}    ${QUAYS_HEADING_SWEDISH}    ${CARGO_HANDLING_HEADING_SWEDISH}    ${HARBOUR_BASIN_HEADING_SWEDISH}    ${CONTACT_DETAILS_HEADING_SWEDISH}
+	Check Fairway Navigability Headings    SWEDISH
+	Check Fairway Data Headings    SWEDISH
+	Check Traffic Services Headings    SWEDISH
+	Check Fairway Harbours Headings    SWEDISH
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In English
-	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
+	[Documentation]    This test case contains checks for content of randomly selected fairway card in english language
 	Change Language And Check Fairway Cards Page And Select Fairway    ENGLISH    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    ${FAIRWAY_NAVIGABILITY_HEADING_ENGLISH}    ${NAVIGATION_CONDITIONS_HEADING_ENGLISH}    ${ICE_CONDITIONS_HEADING_ENGLISH}
-	Check Fairway Data Headings    ${FAIRWAY_DATA_HEADING_ENGLISH}    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    ${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}
-	Check Traffic Services Headings    ${TRAFFIC_SERVICES_HEADING_ENGLISH}    ${PILOTAGE_HEADING_ENGLISH}    ${VTS_HEADING_ENGLISH}
-	Check Fairway Harbours Headings    ${HARBOUR_NAME_HEADING}    ${HARBOUR_RESTRICTIONS_HEADING_ENGLISH}    ${QUAYS_HEADING_ENGLISH}    ${CARGO_HANDLING_HEADING_ENGLISH}    ${HARBOUR_BASIN_HEADING_ENGLISH}    ${CONTACT_DETAILS_HEADING_ENGLISH}
+	Check Fairway Navigability Headings    ENGLISH
+	Check Fairway Data Headings    ENGLISH
+	Check Traffic Services Headings    ENGLISH
+	Check Fairway Harbours Headings    ENGLISH
 	Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
@@ -166,65 +166,65 @@ Change Language And Check Fairway Cards Page And Select Fairway
 	Sleep    2s
 
 Check Fairway Navigability Headings
-	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}
-	Scroll Element Into View    ${heading1_locator}
-	Element Should Be Visible    ${heading1_locator}
-	Scroll Element Into View    ${heading2_locator}
-	Element Should Be Visible    ${heading2_locator}
-	Scroll Element Into View    ${heading3_locator}
-	Element Should Be Visible    ${heading3_locator}
+	[Arguments]    ${language}
+	Scroll Element Into View    ${FAIRWAY_NAVIGABILITY_HEADING_${language}}
+	Element Should Be Visible    ${FAIRWAY_NAVIGABILITY_HEADING_${language}}
+	Scroll Element Into View    ${NAVIGATION_CONDITIONS_HEADING_${language}}
+	Element Should Be Visible    ${NAVIGATION_CONDITIONS_HEADING_${language}}
+	Scroll Element Into View    ${ICE_CONDITIONS_HEADING_${language}}
+	Element Should Be Visible    ${ICE_CONDITIONS_HEADING_${language}}
 	Scroll Element Into View    ${CLOSE_BUTTON}
 
 Check Fairway Data Headings
-	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}    ${heading5_locator}    ${heading6_locator}
-	Scroll Element Into View    ${heading1_locator}
-	Element Should Be Visible    ${heading1_locator}
-	Scroll Element Into View    ${heading2_locator}
-	Element Should Be Visible    ${heading2_locator}
-	Scroll Element Into View    ${heading3_locator}
-	Element Should Be Visible    ${heading3_locator}
-	Scroll Element Into View    ${heading4_locator}
-	Element Should Be Visible    ${heading4_locator}
-	Scroll Element Into View    ${heading5_locator}
-	Element Should Be Visible    ${heading5_locator}
-	Scroll Element Into View    ${heading6_locator}
-	Element Should Be Visible    ${heading6_locator}
+	[Arguments]    ${language}
+	Scroll Element Into View    ${FAIRWAY_DATA_HEADING_${language}}
+	Element Should Be Visible    ${FAIRWAY_DATA_HEADING_${language}}
+	Scroll Element Into View    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_${language}}
+	Element Should Be Visible    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_${language}}
+	Scroll Element Into View    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
+	Element Should Be Visible    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
+	Scroll Element Into View    ${FAIRWAY_DIMENSIONS_HEADING_${language}}
+	Element Should Be Visible    ${FAIRWAY_DIMENSIONS_HEADING_${language}}
+	Scroll Element Into View    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_${language}}
+	Element Should Be Visible    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_${language}}
+	Scroll Element Into View    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_${language}}
+	Element Should Be Visible    ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_${language}}
 	Scroll Element Into View    ${CLOSE_BUTTON}
 
 Check Traffic Services Headings
-	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}
-	Scroll Element Into View    ${heading1_locator}
-	Element Should Be Visible    ${heading1_locator}
-	Scroll Element Into View    ${heading2_locator}
-	Element Should Be Visible    ${heading2_locator}
-	Scroll Element Into View    ${heading3_locator}
-	Element Should Be Visible    ${heading3_locator}
+	[Arguments]    ${language}
+	Scroll Element Into View    ${TRAFFIC_SERVICES_HEADING_${language}}
+	Element Should Be Visible    ${TRAFFIC_SERVICES_HEADING_${language}}
+	Scroll Element Into View    ${PILOTAGE_HEADING_${language}}
+	Element Should Be Visible    ${PILOTAGE_HEADING_${language}}
+	Scroll Element Into View    ${VTS_HEADING_${language}}
+	Element Should Be Visible    ${VTS_HEADING_${language}}
 	Scroll Element Into View    ${CLOSE_BUTTON}
 
 Check Fairway Harbours Headings
-	[Arguments]    ${heading1_locator}    ${heading2_locator}    ${heading3_locator}    ${heading4_locator}    ${heading5_locator}    ${heading6_locator}
+	[Arguments]    ${language}
 	Click Element    ${FAIRWAY_HARBOURS_TAB}
 	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
-	${heading1_elements}=    Get WebElements    ${heading1_locator}
+	${heading1_elements}=    Get WebElements    ${HARBOUR_NAME_HEADING}
 	${harbours_count}=    Get Length    ${heading1_elements}
 	Run Keyword And Return If    ${harbours_count} == 0    Open Fairway Card Tab
-	Scroll Element Into View    ${heading1_locator}
-	Element Should Be Visible    ${heading1_locator}
-	Scroll Element Into View    ${heading2_locator}
-	Heading Count Matches Harbours Count    ${heading2_locator}    ${harbours_count}
-	Element Should Be Visible    ${heading2_locator}
-	Scroll Element Into View    ${heading3_locator}
-	Heading Count Matches Harbours Count    ${heading3_locator}    ${harbours_count}
-	Element Should Be Visible    ${heading3_locator}
-	Scroll Element Into View    ${heading4_locator}
-	Heading Count Matches Harbours Count    ${heading4_locator}    ${harbours_count}
-	Element Should Be Visible    ${heading4_locator}
-	Scroll Element Into View    ${heading5_locator}
-	Heading Count Matches Harbours Count    ${heading5_locator}    ${harbours_count}
-	Element Should Be Visible    ${heading5_locator}
-	Scroll Element Into View    ${heading6_locator}
-	Heading Count Matches Harbours Count    ${heading6_locator}    ${harbours_count}
-	Element Should Be Visible    ${heading6_locator}
+	Scroll Element Into View    ${HARBOUR_NAME_HEADING}
+	Element Should Be Visible    ${HARBOUR_NAME_HEADING}
+	Scroll Element Into View    ${HARBOUR_RESTRICTIONS_HEADING_${language}}
+	Heading Count Matches Harbours Count    ${HARBOUR_RESTRICTIONS_HEADING_${language}}    ${harbours_count}
+	Element Should Be Visible    ${HARBOUR_RESTRICTIONS_HEADING_${language}}
+	Scroll Element Into View    ${QUAYS_HEADING_${language}}
+	Heading Count Matches Harbours Count    ${QUAYS_HEADING_${language}}    ${harbours_count}
+	Element Should Be Visible    ${QUAYS_HEADING_${language}}
+	Scroll Element Into View    ${CARGO_HANDLING_HEADING_${language}}
+	Heading Count Matches Harbours Count    ${CARGO_HANDLING_HEADING_${language}}    ${harbours_count}
+	Element Should Be Visible    ${CARGO_HANDLING_HEADING_${language}}
+	Scroll Element Into View    ${HARBOUR_BASIN_HEADING_${language}}
+	Heading Count Matches Harbours Count    ${HARBOUR_BASIN_HEADING_${language}}    ${harbours_count}
+	Element Should Be Visible    ${HARBOUR_BASIN_HEADING_${language}}
+	Scroll Element Into View    ${CONTACT_DETAILS_HEADING_${language}}
+	Heading Count Matches Harbours Count    ${CONTACT_DETAILS_HEADING_${language}}    ${harbours_count}
+	Element Should Be Visible    ${CONTACT_DETAILS_HEADING_${language}}
 	Scroll Element Into View    ${FAIRWAY_CARD_TAB}
 	Open Fairway Card Tab
 
