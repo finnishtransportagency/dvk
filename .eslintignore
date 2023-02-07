@@ -4,6 +4,7 @@ service-worker.ts
 capacitor.config.ts
 build
 squat
+admin
 cdk.out
 cdk/graphql/generated.ts
 src/graphql/generated.ts
