@@ -43,7 +43,7 @@ const App: React.FC = () => {
       state,
       dispatch,
     }),
-    []
+    [state]
   );
 
   useEffect(() => {

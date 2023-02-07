@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert, IonProgressBar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -255,10 +255,13 @@ const App: React.FC = () => {
   const originalSW = navigator.serviceWorker?.controller;
 
   const [state, dispatch] = React.useReducer(DvkReducer, initialState);
-  const providerState = {
-    state,
-    dispatch,
-  };
+  const providerState = useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state]
+  );
 
   document.documentElement.lang = i18n.language;
 
