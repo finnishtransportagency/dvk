@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
-import { useMarineWarningsData } from '../../utils/dataLoader';
+import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
 import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
@@ -177,7 +177,7 @@ type MarineWarningsProps = {
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
-  const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsData();
+  const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
 
   return (

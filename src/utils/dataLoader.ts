@@ -34,7 +34,7 @@ export function useSafetyEquipmentFaultData() {
   return useFindAllSafetyEquipmentFaultsQuery(datasourceClient);
 }
 
-export function useSafetyEquipmentFaultDataWithLinkedDataInvalidation() {
+export function useSafetyEquipmentFaultDataWithRelatedDataInvalidation() {
   const queryClient = useQueryClient();
   queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
   queryClient.invalidateQueries({ queryKey: ['safetyequipmentfault'] });
@@ -44,7 +44,7 @@ export function useSafetyEquipmentFaultDataWithLinkedDataInvalidation() {
 export function useMarineWarningsData() {
   return useFindAllMarineWarningsQuery(datasourceClient);
 }
-export function useMarineWarningsDataWithLinkedDataInvalidation() {
+export function useMarineWarningsDataWithRelatedDataInvalidation() {
   const queryClient = useQueryClient();
   queryClient.invalidateQueries({ queryKey: ['marinewarning'] });
   queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
