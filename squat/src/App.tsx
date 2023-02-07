@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { IonApp, setupIonicReact, useIonAlert } from '@ionic/react';
 import { SquatReducer, initialState } from './hooks/squatReducer';
 import { useTranslation } from 'react-i18next';
@@ -38,10 +38,13 @@ const App: React.FC = () => {
   document.title = tRoot('homePage.header.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', tRoot('meta-description'));
 
-  const providerState = {
-    state,
-    dispatch,
-  };
+  const providerState = useMemo(
+    () => ({
+      state,
+      dispatch,
+    }),
+    [state]
+  );
 
   useEffect(() => {
     if (!updating) {

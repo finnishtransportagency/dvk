@@ -16,6 +16,7 @@ import {
   useSpecialAreaLayer,
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
+import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 
 interface FairwayCardPageProps {
   fairwayCardId?: string;
@@ -37,12 +38,31 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
   const boardLine12Layer = useBoardLine12Layer();
 
   const [initDone, setInitDone] = useState(false);
+  const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
 
   useEffect(() => {
-    if (line12Layer && line3456Layer && area12Layer && area3456Layer && depth12Layer && specialAreaLayer && harborLayer && boardLine12Layer) {
+    if (
+      line12Layer.ready &&
+      line3456Layer.ready &&
+      area12Layer.ready &&
+      area3456Layer.ready &&
+      depth12Layer.ready &&
+      specialAreaLayer.ready &&
+      harborLayer.ready &&
+      boardLine12Layer.ready
+    ) {
       setInitDone(true);
     }
-  }, [line12Layer, line3456Layer, area12Layer, area3456Layer, depth12Layer, specialAreaLayer, harborLayer, boardLine12Layer]);
+  }, [
+    line12Layer.ready,
+    line3456Layer.ready,
+    area12Layer.ready,
+    area3456Layer.ready,
+    depth12Layer.ready,
+    specialAreaLayer.ready,
+    harborLayer.ready,
+    boardLine12Layer.ready,
+  ]);
 
   useEffect(() => {
     if (data && fairwayCardId && initDone) {
@@ -50,13 +70,13 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
       const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
-        document.title = t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '';
+        setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
       }
     }
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang]);
+  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle]);
 
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">

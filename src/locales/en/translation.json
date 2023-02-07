@@ -315,7 +315,7 @@
     }
   },
   "common": {
-    "documentTitle":"Digital Fairway Card",
+    "documentTitle": "Digital Fairway Card",
     "home": "Digital fairway card",
     "openMenu": "Open menu",
     "general": "General",
@@ -341,7 +341,9 @@
     "dataUpToDate": "Data up to date",
     "dataUpdateFailedAt": "Data update failed at",
     "latestDataUpdateAt": "Latest data update at",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "safety-equipment-faults": "Safety Equipment Faults",
+    "marine-warnings": "Marine Warnings"
   },
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",

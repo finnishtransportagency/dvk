@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
-import { useFairwayCardListData } from '../utils/dataLoader';
+import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 
 const FairwayCardListPage: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
-  document.title = t('documentTitle');
-  const { data } = useFairwayCardListData();
+  const title = t('documentTitle');
+  const [, setDocumentTitle] = useDocumentTitle(title);
 
-  useEffect(() => {}, [data]);
+  useEffect(() => {}, [setDocumentTitle, title]);
 
   return (
     <IonPage id="mainContent" data-testid="fairwayList">

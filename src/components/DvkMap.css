@@ -33,16 +33,12 @@
 }
 
 .dvkMap .openSidebarMenuControlContainer {
-  top: auto;
-  left: auto;
   left: 48px;
   top: 48px;
   background: transparent;
 }
 
 .dvkMap .searchbarControlContainer {
-  top: auto;
-  left: auto;
   left: 112px;
   top: 48px;
   background: var(--ion-color-dark);
