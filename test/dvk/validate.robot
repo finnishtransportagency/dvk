@@ -40,9 +40,9 @@ Check Center And Zoom Buttons
 	Element Should Be Visible    ${ZOOM_IN_BUTTON}
 	Element Should Be Visible    ${ZOOM_OUT_BUTTON}
 
-Check Fairway Card
+Check Fairway Card In Finnish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in finnish language
-	Check Fairway Cards Page And Select Fairway    FINNISH
+	Change Language And Check Fairway Cards Page And Select Fairway    FINNISH    ${IN_FINNISH_BUTTON}    ${IN_FINNISH_BUTTON_DISABLED}    Väyläkortit
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
 	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
@@ -59,8 +59,7 @@ Check Fairway Card
 
 Check Fairway Card In Swedish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
-	Change Fairway Card Language To    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
-	Check Fairway Cards Page And Select Fairway    SWEDISH
+	Change Language And Check Fairway Cards Page And Select Fairway    SWEDISH    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
 	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
@@ -77,8 +76,7 @@ Check Fairway Card In Swedish
 
 Check Fairway Card In English
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
-	Change Fairway Card Language To    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
-	Check Fairway Cards Page And Select Fairway    ENGLISH
+	Change Language And Check Fairway Cards Page And Select Fairway    ENGLISH    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${SELECTED_FAIRWAY_CARD}"]
 	Input Text    ${INPUT_FAIRWAY}   ${SELECTED_FAIRWAY_CARD}
 	${FAIRWAY}=    Get Text    ${input_fairway_dropdown_locator}
@@ -104,15 +102,14 @@ Open DVK
 	Element Should Not Be Visible    ${LATAUSVIRHE_POP_UP}    Loading DVK failed
 
 Change Fairway Card Language To
-	[Arguments]    ${language}    ${language_button_disabled}    ${fairways_text}
-	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
-	Sleep    2s
-	Wait Until Element Is Visible    ${language}
-	Click Element    ${language}
+	[Arguments]    ${language_button}    ${language_button_disabled}    ${fairways_text}
+	${count}=    Get WebElements    ${language_button_disabled}
+	${language_button_disabled_count}=    Get Length    ${count}
+	IF    ${language_button_disabled_count} == 1    RETURN
+	Wait Until Element Is Visible    ${language_button}
+	Click Element    ${language_button}
 	Wait Until Element Is Visible    ${language_button_disabled}    30s
 	Wait Until Element Contains    ${FAIRWAYS_LINK}    ${fairways_text}    30s
-	Click Element    ${CLOSE_MENU_BUTTON}
-	Wait Until Element Is Not Visible    ${CLOSE_MENU_BUTTON}    30s
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
@@ -155,11 +152,12 @@ Check That Tabs Can Be Selected And Tab Contents Are Activated
 	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
 	Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 
-Check Fairway Cards Page And Select Fairway
-	[Arguments]    ${language}
+Change Language And Check Fairway Cards Page And Select Fairway
+	[Arguments]    ${language}    ${language_button}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
 	Capture Page Screenshot
+	Change Fairway Card Language To    ${language_button}    ${language_button_disabled}    ${fairways_text}
 	Click Element    ${FAIRWAYS_LINK}
 	Sleep    5s
 	Capture Page Screenshot
