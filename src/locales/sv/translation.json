@@ -31,7 +31,7 @@
           "fairwayAreas": "Farledsområden",
           "depths": "Djupen",
           "safetyEquipments": "Säkerhetsanordningar",
-          "speedLimits": "Hastighetsbegränsningar", 
+          "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
@@ -41,9 +41,9 @@
           "ice": "[sv] Jääkartta",
           "buoys": "[sv] Aaltopoijut",
           "mapStyle": {
-            "header": "Kartans stil",  
-            "landButtonLabel": "Fastland",      
-            "seaButtonLabel": "Hav"       
+            "header": "Kartans stil",
+            "landButtonLabel": "Fastland",
+            "seaButtonLabel": "Hav"
           }
         },
         "mapDetails": {
@@ -341,7 +341,9 @@
     "dataUpToDate": "[sv] Palvelun tiedot ovat ajan tasalla",
     "dataUpdateFailedAt": "[sv] Tietojen päivitys epäonnistui",
     "latestDataUpdateAt": "[sv] Tietoja päivitetty viimeksi",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "safety-equipment-faults": "Fel i säkerhetsanordningar",
+    "marine-warnings": "Navigationsvarningar"
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",
