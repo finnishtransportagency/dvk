@@ -9,6 +9,7 @@ export const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fra
   let deg = Math.floor(x / 3600);
   let min = Math.floor((x - deg * 3600) / 60);
   let sec = x - deg * 3600 - min * 60;
+  let returnedSeconds = '';
 
   if (sec >= 60) {
     sec = 0;
@@ -22,13 +23,11 @@ export const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fra
   min += sec / 60;
   min = Math.ceil(min * precision) / precision;
 
-  return (
-    deg +
-    '\u00b0 ' +
-    padNumber(min, 2, dflPrecision).replace('.', ',') +
-    '\u2032 ' +
-    (normalizedDegrees === 0 ? '' : hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0))
-  );
+  if (normalizedDegrees !== 0) {
+    returnedSeconds = hemispheres.charAt(normalizedDegrees < 0 ? 1 : 0);
+  }
+
+  return deg + '\u00b0 ' + padNumber(min, 2, dflPrecision).replace('.', ',') + '\u2032 ' + returnedSeconds;
 };
 
 export const coordinatesToStringHDM = (coords: number[] | undefined): string => {
