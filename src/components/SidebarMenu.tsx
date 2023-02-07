@@ -151,6 +151,7 @@ const SidebarMenu: React.FC = () => {
                 onClick={async () => menuController.close()}
                 data-testid="squatLink"
                 disabled={state.isOffline}
+                tabIndex={state.isOffline ? -1 : undefined}
               >
                 <IonIcon slot="start" src="/assets/icon/calculate_icon.svg" />
                 {t('squat')}
