@@ -33,6 +33,7 @@ import { defaults } from 'ol/interaction/defaults';
 import north_arrow_small from '../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
 import { FeatureLike } from 'ol/Feature';
+import { isMobile } from '../utils/common';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -340,6 +341,7 @@ class DvkMap {
     if (target !== undefined) {
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.add('dvkMap');
+      if (isMobile()) targetElement?.classList.add('mobile');
     }
   };
 

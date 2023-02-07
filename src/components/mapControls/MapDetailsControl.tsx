@@ -1,4 +1,5 @@
 import Control from 'ol/control/Control';
+import { isMobile } from '../../utils/common';
 
 class MapDetailsControl extends Control {
   private copyrightElement = document.createElement('div');
@@ -26,12 +27,14 @@ class MapDetailsControl extends Control {
     this.copyrightElement.className = 'copyrightElem';
     rowElem.appendChild(this.copyrightElement);
 
-    this.mousePositionLabelElement.style.display = 'table-cell';
-    this.mousePositionLabelElement.className = 'mousePositionLabelElem';
-    rowElem.appendChild(this.mousePositionLabelElement);
+    if (!isMobile()) {
+      this.mousePositionLabelElement.style.display = 'table-cell';
+      this.mousePositionLabelElement.className = 'mousePositionLabelElem';
+      rowElem.appendChild(this.mousePositionLabelElement);
 
-    this.mousePositionElement.style.display = 'table-cell';
-    rowElem.appendChild(this.mousePositionElement);
+      this.mousePositionElement.style.display = 'table-cell';
+      rowElem.appendChild(this.mousePositionElement);
+    }
 
     this.scaleLineElement.style.display = 'table-cell';
     rowElem.appendChild(this.scaleLineElement);
