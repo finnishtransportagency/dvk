@@ -6,8 +6,7 @@ function handler(event) {
       statusDescription: 'Not found',
     };
   }
-  var regex = /[\.]/g;
-  if (request.uri === '/yllapito/' || request.uri === '/yllapito' || !request.uri.match(regex)) {
+  if (request.uri === '/yllapito/' || request.uri === '/yllapito') {
     request.uri = '/yllapito/index.html';
   }
   return request;

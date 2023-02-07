@@ -309,7 +309,7 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
-      'yllapito/*': adminBehavior,
+      'yllapito*': adminBehavior,
     };
 
     // CloudFront webacl reader and id

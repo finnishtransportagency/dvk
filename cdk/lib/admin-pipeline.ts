@@ -206,8 +206,6 @@ export class AdminPipeline extends Construct {
         return 'prod';
       case 'test':
         return 'test';
-      case 'pete':
-        return 'DVK-598';
       default:
         return 'main';
     }
