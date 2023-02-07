@@ -96,6 +96,8 @@ export class DvkFeaturePipelineStack extends Stack {
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'squat-tests': { files: 'squat/junit.xml' },
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
+          'admin-tests': { files: 'admin/junit.xml' },
+          'admin-coverage': { files: 'admin/coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
           'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
         },
