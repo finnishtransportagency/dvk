@@ -16,6 +16,19 @@ export type MarineWarningProperties = {
   properties: MarineWarningFeatureProperties;
 };
 
+export type FairwayPopupRowProperties = {
+  lang: Lang;
+  fairway: LineFairway | AreaFairway;
+};
+
+const FairwayPopupRow: React.FC<FairwayPopupRowProperties> = ({ fairway, lang }) => {
+  return (
+    <IonRow>
+      <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+    </IonRow>
+  );
+};
+
 const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ marine }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
@@ -79,45 +92,29 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           .getVectorSource('line12')
           .getFeatureById(marine.properties.lineId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: LineFairway, index: number) => {
-            return (
-              <IonRow key={index}>
-                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
-              </IonRow>
-            );
+          .fairways?.map((fairway: LineFairway) => {
+            return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('line3456')
           .getFeatureById(marine.properties.lineId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: LineFairway, index: number) => {
-            return (
-              <IonRow key={index}>
-                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
-              </IonRow>
-            );
+          .fairways?.map((fairway: LineFairway) => {
+            return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('area12')
           .getFeatureById(marine.properties.areaId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: AreaFairway, index: number) => {
-            return (
-              <IonRow key={index}>
-                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
-              </IonRow>
-            );
+          .fairways?.map((fairway: AreaFairway) => {
+            return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('area3456')
           .getFeatureById(marine.properties.areaId || 0)
           ?.getProperties()
-          .fairways?.map((fairway: AreaFairway, index: number) => {
-            return (
-              <IonRow key={index}>
-                <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
-              </IonRow>
-            );
+          .fairways?.map((fairway: AreaFairway) => {
+            return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {!marine.properties.areaId && !marine.properties.lineId && !marine.properties.equipmentId && (
           <IonRow>

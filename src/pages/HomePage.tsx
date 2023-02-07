@@ -1,14 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 
 const HomePage: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const mapElement = useRef<HTMLDivElement | null>(null);
   const history = useHistory();
-  document.title = t('documentTitle');
+  const title = t('documentTitle');
+  const [, setDocumentTitle] = useDocumentTitle(title);
+
+  useEffect(() => {
+    setDocumentTitle(title);
+  }, [setDocumentTitle, title]);
 
   useIonViewWillEnter(() => {
     if (mapElement?.current) {
