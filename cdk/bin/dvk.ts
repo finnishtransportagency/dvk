@@ -15,6 +15,7 @@ import { SquatPipeline } from '../lib/squat-pipeline';
 import { BackupServices } from '../lib/dvk-backup-services';
 import { MonitoringServices } from '../lib/dvk-monitoring';
 import { DvkUsEast } from '../lib/dvk-us-east';
+import { AdminPipeline } from '../lib/admin-pipeline';
 
 class DvkUsEastStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -202,3 +203,25 @@ new DvkUsEastStack(app, 'DvkUsEastStack', {
   stackName: 'DvkUsEastStack-' + appEnv,
   tags: Config.tags,
 });
+
+class AdminPipelineStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps, env: string) {
+    super(parent, id, props);
+
+    new AdminPipeline(this, 'AdminPipeline', { env });
+  }
+}
+
+new AdminPipelineStack(
+  app,
+  'AdminPipelineStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: 'eu-west-1',
+    },
+    stackName: 'AdminPipelineStack-' + appEnv,
+    tags: Config.tags,
+  },
+  appEnv
+);
