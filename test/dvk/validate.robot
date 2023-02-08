@@ -76,7 +76,6 @@ Open DVK
 	Open Browser    http://localhost:${PORT}    ${BROWSER}
 	Sleep    5s
 	Press Keys    None    ESC
-	Sleep    5s
 	Wait Until Element Is Not Visible    ${SOVELLUSTA_ALUSTETAAN_POP_UP}    30s
 	Capture Page Screenshot
 	Element Should Not Be Visible    ${LATAUSVIRHE_POP_UP}    Loading DVK failed
