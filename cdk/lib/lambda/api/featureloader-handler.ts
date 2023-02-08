@@ -45,6 +45,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
         ids.push(id);
         features.push({
           type: 'Feature',
+          id,
           geometry: harbor.geometry as Geometry,
           properties: {
             featureType: 'harbor',

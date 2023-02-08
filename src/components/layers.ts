@@ -121,7 +121,10 @@ export function getPilotStyle(selected: boolean) {
   ];
 }
 
-export function getQuayStyle(feature: FeatureLike, selected: boolean) {
+export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
+  if (resolution > 3) {
+    return undefined;
+  }
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -330,9 +333,10 @@ export function addAPILayers(map: Map) {
   addFeatureLayer(
     map,
     'quay',
-    3,
+    300,
     50,
-    (feature, resolution) => (feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, false) : getHarborStyle(feature, resolution, 3)),
+    (feature, resolution) =>
+      feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getHarborStyle(feature, resolution, 3),
     undefined,
     1,
     'ol-layer'
