@@ -72,7 +72,7 @@ Check Fairway Card In English
 
 *** Keywords ***
 Open DVK
-	[Documentation]    This keyword opens DVK in localhost with port and browser given as keyword arguments
+	[Documentation]    This keyword opens DVK in localhost with port and browser given as variables
 	Open Browser    http://localhost:${PORT}    ${BROWSER}
 	Sleep    5s
 	Press Keys    None    ESC
@@ -83,7 +83,7 @@ Open DVK
 
 Change Fairway Card Language To
 	[Arguments]    ${language_button}    ${language_button_disabled}    ${fairways_text}
-	[Documentation]    This keyword changes Fairway Card language with language given in keyword arguments, if language is already selected the keyword is returned before changing language
+	[Documentation]    This keyword changes Fairway Card language to language given in keyword arguments, but if language is already selected the keyword is returned before changing language
 	${count}=    Get WebElements    ${language_button_disabled}
 	${language_button_disabled_count}=    Get Length    ${count}
 	IF    ${language_button_disabled_count} == 1    RETURN
@@ -220,7 +220,7 @@ Check Fairway Harbours Headings
 
 Heading Count Matches Harbours Count
 	[Arguments]    ${heading_locator}    ${harbours_count}
-	[Documentation]    This keyword checks that heading count matches the harbours count, with both are given in keyword arguments
+	[Documentation]    This keyword checks that heading count matches the harbours count, both are given in keyword arguments
 	${heading_elements}=    Get WebElements    ${heading_locator}
 	${heading_count}=    Get Length    ${heading_elements}
 	Should Be Equal    ${heading_count}    ${harbours_count}
