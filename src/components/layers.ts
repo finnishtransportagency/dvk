@@ -177,7 +177,10 @@ export function getQuayStyle(feature: FeatureLike, selected: boolean) {
   ];
 }
 
-export function getHarborStyle(feature: FeatureLike, resolution: number) {
+export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0) {
+  if (minResolution && resolution < minResolution) {
+    return undefined;
+  }
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -324,9 +327,18 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Laiturit
-  addFeatureLayer(map, 'quay', 3, 50, (feature) => getQuayStyle(feature, false), undefined, 1, 'ol-layer');
+  addFeatureLayer(
+    map,
+    'quay',
+    3,
+    50,
+    (feature, resolution) => (feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, false) : getHarborStyle(feature, resolution, 3)),
+    undefined,
+    1,
+    'ol-layer'
+  );
   // Satamat
-  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), 3, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {
@@ -340,7 +352,8 @@ export function unsetSelectedFairwayCard() {
   const depthSource = dvkMap.getVectorSource('depth12');
   const specialAreaSource = dvkMap.getVectorSource('specialarea');
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
-  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
+  const harborSource = dvkMap.getVectorSource('harbor');
+  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
       case 'line12':
@@ -364,6 +377,9 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'boardline12':
         boardLine12Source.addFeature(feature);
+        break;
+      case 'harbor':
+        harborSource.addFeature(feature);
         break;
     }
   }
@@ -422,6 +438,15 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   }
 }
 
+function addHarbor(harbor: HarborPartsFragment, harbors: VectorSource, quays: VectorSource) {
+  const id = harbor.geometry?.coordinates?.join(';');
+  const feature = id ? harbors.getFeatureById(id) : undefined;
+  if (feature) {
+    quays.addFeature(feature);
+    harbors.removeFeature(feature);
+  }
+}
+
 export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
   const dvkMap = getMap();
   if (fairwayCard) {
@@ -434,7 +459,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const depthSource = dvkMap.getVectorSource('depth12');
     const specialAreaSource = dvkMap.getVectorSource('specialarea');
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
-
+    const harborSource = dvkMap.getVectorSource('harbor');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -487,6 +512,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     }
 
     for (const harbor of fairwayCard?.harbors || []) {
+      addHarbor(harbor, harborSource, quaySource);
       addQuay(harbor, quaySource);
     }
 

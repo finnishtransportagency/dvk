@@ -36,21 +36,28 @@ const gzipString = async (input: string): Promise<Buffer> => {
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAll();
+  const ids: string[] = [];
   for (const harbor of harbors || []) {
     if (harbor?.geometry?.coordinates?.length === 2) {
-      features.push({
-        type: 'Feature',
-        geometry: harbor.geometry as Geometry,
-        properties: {
-          featureType: 'harbor',
-          id: harbor.id,
-          name: harbor.name ?? harbor.company,
-          email: harbor.email,
-          phoneNumber: harbor.phoneNumber,
-          fax: harbor.fax,
-          internet: harbor.internet,
-        },
-      });
+      const id = harbor.geometry.coordinates.join(';');
+      // MW/N2000 Harbors should have same location
+      if (!ids.includes(id)) {
+        ids.push(id);
+        features.push({
+          type: 'Feature',
+          geometry: harbor.geometry as Geometry,
+          properties: {
+            featureType: 'harbor',
+            id,
+            harborId: harbor.id,
+            name: harbor.name ?? harbor.company,
+            email: harbor.email,
+            phoneNumber: harbor.phoneNumber,
+            fax: harbor.fax,
+            internet: harbor.internet,
+          },
+        });
+      }
     }
   }
 }
