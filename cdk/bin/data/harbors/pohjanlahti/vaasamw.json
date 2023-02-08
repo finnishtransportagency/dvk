@@ -29,6 +29,13 @@
       "en": "Mobile cranes for all quays."
     }
   ],
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.55704,
+      63.0871
+    ]
+  },
   "quays": [
     {
       "name": {
