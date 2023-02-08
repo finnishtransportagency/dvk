@@ -9,7 +9,8 @@ import { pointerMove } from 'ol/events/condition';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getBuoyStyle, getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
+import { getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
+import { getBuoyStyle } from '../layerStyles/buoyStyles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
