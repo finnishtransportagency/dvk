@@ -208,6 +208,9 @@ export class DvkBackendStack extends Stack {
         entry: lambdaFunc.entry,
         handler: 'handler',
         layers: [layer],
+        bundling: {
+          nodeModules: ['camaro'],
+        },
         timeout: Duration.seconds(60),
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',

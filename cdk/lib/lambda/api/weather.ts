@@ -105,19 +105,25 @@ export async function parseXml(xml: string): Promise<Mareograph[]> {
   try {
     const mareographXmls = (await transform(xml, template)) as MareographXML[];
     for (const m of mareographXmls) {
-      const latestObs = [...m.observations].sort((a, b) => Date.parse(b.time) - Date.parse(a.time))[0];
-      const waterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevel')?.value;
-      const n2000WaterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevelN2000')?.value;
-      if (waterLevel !== undefined && n2000WaterLevel !== undefined) {
-        mareographs.push({
-          id: m.id,
-          name: m.name,
-          calculated: true,
-          dateTime: Date.parse(latestObs.time),
-          geometry: { type: 'Point', coordinates: [m.lon, m.lat] },
-          waterLevel: waterLevel * 10,
-          n2000WaterLevel: n2000WaterLevel * 10,
-        });
+      const latestObs = [...m.observations]
+        .sort((a, b) => Date.parse(b.time) - Date.parse(a.time))
+        .find(
+          (o) => o.params.find((p) => p.name === 'InterpolatedSeaLevel')?.value && o.params.find((p) => p.name === 'InterpolatedSeaLevelN2000')?.value
+        );
+      if (latestObs) {
+        const waterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevel')?.value;
+        const n2000WaterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevelN2000')?.value;
+        if (waterLevel !== undefined && n2000WaterLevel !== undefined) {
+          mareographs.push({
+            id: m.id,
+            name: m.name,
+            calculated: true,
+            dateTime: Date.parse(latestObs.time),
+            geometry: { type: 'Point', coordinates: [m.lon, m.lat] },
+            waterLevel: waterLevel * 10,
+            n2000WaterLevel: n2000WaterLevel * 10,
+          });
+        }
       }
     }
   } catch (e) {
