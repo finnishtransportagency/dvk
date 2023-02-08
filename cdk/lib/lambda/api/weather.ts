@@ -4,7 +4,7 @@ import { Geometry } from 'geojson';
 import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
-import { XMLParser } from 'fast-xml-parser';
+import { transform } from 'camaro';
 
 type WeatherMareograph = {
   fmisid: number;
@@ -72,54 +72,53 @@ export type Buoy = {
   waveHeight: number | null;
 };
 
-function parseLocation(location: any): Partial<Mareograph> {
-  return {
-    id: location['@_id'],
-    name: location['@_name'],
-    geometry: roundGeometry({ type: 'Point', coordinates: [Number.parseFloat(location['@_lon']), Number.parseFloat(location['@_lat'])] }),
-  };
-}
+type ParamXML = {
+  name: string;
+  value: number;
+};
 
-function parseObservation(observation: any): Partial<Mareograph> {
-  return {
-    dateTime: Date.parse(observation['@_time']),
-    waterLevel: Number.parseFloat(observation.param.filter((p: any) => p['@_name'] === 'InterpolatedSeaLevel')[0]['@_value']) * 10,
-    n2000WaterLevel: Number.parseFloat(observation.param.filter((p: any) => p['@_name'] === 'InterpolatedSeaLevelN2000')[0]['@_value']) * 10,
-  };
-}
+type ObservationXML = {
+  time: string;
+  params: ParamXML[];
+};
 
-function parseMeasure(location: any): Partial<Mareograph> {
-  let measure;
-  if (Array.isArray(location.observation)) {
-    for (const observation of location.observation) {
-      const result = parseObservation(observation);
-      if (!measure || (measure.dateTime as number) < (result.dateTime as number)) {
-        measure = result;
-      }
-    }
-  } else {
-    measure = parseObservation(location.observation);
-  }
-  return measure || {};
-}
+type MareographXML = {
+  id: number;
+  name: string;
+  lat: number;
+  lon: number;
+  observations: ObservationXML[];
+};
 
-export function parseXml(xml: string): Mareograph[] {
-  const options = {
-    ignoreAttributes: false,
-    attributeNamePrefix: '@_',
-  };
+export async function parseXml(xml: string): Promise<Mareograph[]> {
+  const template = [
+    'pointweather/location',
+    {
+      name: '@name',
+      id: 'number(@id)',
+      lat: 'number(@lat)',
+      lon: 'number(@lon)',
+      observations: ['observation', { time: '@time', params: ['param', { name: '@name', value: 'number(@value)' }] }],
+    },
+  ];
   const mareographs: Mareograph[] = [];
   try {
-    const parser = new XMLParser(options);
-    const obj = parser.parse(xml);
-    if (Array.isArray(obj.pointweather.location)) {
-      for (const location of obj.pointweather.location) {
-        const mareograph = parseLocation(location);
-        mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+    const mareographXmls = (await transform(xml, template)) as MareographXML[];
+    for (const m of mareographXmls) {
+      const latestObs = [...m.observations].sort((a, b) => Date.parse(b.time) - Date.parse(a.time))[0];
+      const waterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevel')?.value;
+      const n2000WaterLevel = latestObs.params.find((p) => p.name === 'InterpolatedSeaLevelN2000')?.value;
+      if (waterLevel !== undefined && n2000WaterLevel !== undefined) {
+        mareographs.push({
+          id: m.id,
+          name: m.name,
+          calculated: true,
+          dateTime: Date.parse(latestObs.time),
+          geometry: { type: 'Point', coordinates: [m.lon, m.lat] },
+          waterLevel: waterLevel * 10,
+          n2000WaterLevel: n2000WaterLevel * 10,
+        });
       }
-    } else {
-      const mareograph = parseLocation(obj.pointweather.location);
-      mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
     }
   } catch (e) {
     log.fatal('Parsing Ilmanet xml failed: %s', e);
