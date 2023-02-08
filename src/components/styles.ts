@@ -72,7 +72,6 @@ import marinearea from '../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../theme/img/merivaroitus_tausta_valittu.svg';
 import marine from '../theme/img/merivaroitus_ikoni.svg';
 import mareographIcon from '../theme/img/vedenkorkeus_pohja.svg';
-import observationIcon from '../theme/img/saahavaintoasema.svg';
 
 const symbol2Icon = {
   a: { icon: a, center: false, anchorY: 32 },
@@ -384,21 +383,6 @@ export function getMareographStyle(feature: FeatureLike, selected: boolean) {
           color: '#000000',
         }),
       }),
-    }),
-  ];
-}
-
-export function getObservationStyle(selected: boolean) {
-  const image = new Icon({
-    src: observationIcon,
-    scale: selected ? 1.2 : 1,
-    anchor: [0.5, 32],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  return [
-    new Style({
-      image,
     }),
   ];
 }
