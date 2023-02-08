@@ -1,5 +1,9 @@
 fragment HarborParts on Harbor {
   id
+  geometry {
+    type
+    coordinates
+  }
   quays {
     name {
       fi

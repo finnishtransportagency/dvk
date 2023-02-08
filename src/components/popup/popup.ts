@@ -7,7 +7,7 @@ import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle } from '../layers';
+import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
 import dvkMap from '../DvkMap';
 import { getBuoyStyle, getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
 
@@ -71,7 +71,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     const type = feature.getProperties().featureType;
     const dataSource = feature.getProperties().dataSource;
     if (type === 'quay') {
-      return getQuayStyle(feature, true);
+      return getQuayStyle(feature, resolution, true);
+    } else if (type === 'harbor') {
+      return getHarborStyle(feature, resolution);
     } else if (type === 'pilot') {
       return getPilotStyle(true);
     } else if (type === 'area' && dataSource === 'area12') {

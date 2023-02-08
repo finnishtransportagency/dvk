@@ -1,8 +1,10 @@
 const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
   ? process.env.REACT_APP_REST_API_URL + '/featureloader'
-  : window.location.origin + '/api/featureloader';
+  : globalThis.location.origin + '/api/featureloader';
 
-const staticUrl = process.env.REACT_APP_STATIC_URL ? `https://${process.env.REACT_APP_STATIC_URL}/s3static` : window.location.origin + '/s3static';
+const staticUrl = process.env.REACT_APP_STATIC_URL
+  ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
+  : globalThis.location.origin + '/s3static';
 
 export type FeatureDataId =
   | 'area12'
