@@ -42,42 +42,37 @@ Check Center And Zoom Buttons
 
 Check Fairway Card In Finnish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in finnish language
-	Change Language And Check Fairway Cards Page And Select Fairway    FINNISH    ${IN_FINNISH_BUTTON}    ${IN_FINNISH_BUTTON_DISABLED}    Väyläkortit
+	Change Language And Check Fairway Cards Page And Select Fairway    FINNISH
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    FINNISH
-	Check Fairway Data Headings    FINNISH
-	Check Traffic Services Headings    FINNISH
-	Check Fairway Harbours Headings    FINNISH
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check Fairway Harbours Tab    FINNISH
+	Check Fairway Areas Tab
+	Check Fairway Card Tab    FINNISH
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In Swedish
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in swedish language
-	Change Language And Check Fairway Cards Page And Select Fairway    SWEDISH    ${IN_SWEDISH_BUTTON}    ${IN_SWEDISH_BUTTON_DISABLED}    Farledskort
+	Change Language And Check Fairway Cards Page And Select Fairway    SWEDISH
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    SWEDISH
-	Check Fairway Data Headings    SWEDISH
-	Check Traffic Services Headings    SWEDISH
-	Check Fairway Harbours Headings    SWEDISH
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check Fairway Harbours Tab    SWEDISH
+	Check Fairway Areas Tab
+	Check Fairway Card Tab    SWEDISH
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
 
 Check Fairway Card In English
 	[Documentation]    This test case contains checks for content of randomly selected fairway card in english language
-	Change Language And Check Fairway Cards Page And Select Fairway    ENGLISH    ${IN_ENGLISH_BUTTON}    ${IN_ENGLISH_BUTTON_DISABLED}    Fairway Cards
+	Change Language And Check Fairway Cards Page And Select Fairway    ENGLISH
 	Search Selected Fairway Card    ${SELECTED_FAIRWAY_CARD}
-	Check Fairway Navigability Headings    ENGLISH
-	Check Fairway Data Headings    ENGLISH
-	Check Traffic Services Headings    ENGLISH
-	Check Fairway Harbours Headings    ENGLISH
-	Check That Tabs Can Be Selected And Tab Contents Are Activated
+	Check Fairway Harbours Tab    ENGLISH
+	Check Fairway Areas Tab
+	Check Fairway Card Tab    ENGLISH
 	Scroll Element Into View    ${CLOSE_BUTTON}
 	Click Element    ${CLOSE_BUTTON}
 
 *** Keywords ***
 Open DVK
+	[Documentation]    This keyword opens DVK in localhost with port and browser given as keyword arguments
 	Open Browser    http://localhost:${PORT}    ${BROWSER}
 	Sleep    5s
 	Press Keys    None    ESC
@@ -88,6 +83,7 @@ Open DVK
 
 Change Fairway Card Language To
 	[Arguments]    ${language_button}    ${language_button_disabled}    ${fairways_text}
+	[Documentation]    This keyword changes Fairway Card language with language given in keyword arguments, if language is already selected the keyword is returned before changing language
 	${count}=    Get WebElements    ${language_button_disabled}
 	${language_button_disabled_count}=    Get Length    ${count}
 	IF    ${language_button_disabled_count} == 1    RETURN
@@ -97,6 +93,7 @@ Change Fairway Card Language To
 	Wait Until Element Contains    ${FAIRWAYS_LINK}    ${fairways_text}    30s
 
 Check That Toggle Wide Button Works Correctly For Fairway Card Tab
+	[Documentation]    This keyword checks that toggle wide button work correctly in Fairway Card tab
 	Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
 	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
 	Click Element    ${EXPAND_WIDE_BUTTON}
@@ -106,6 +103,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
 	Sleep    2s
 
 Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
+	[Documentation]    This keyword checks that toggle wide button work correctly in Fairway Harbours tab
 	Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
 	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
 	Click Element    ${EXPAND_WIDE_BUTTON}
@@ -115,6 +113,7 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
 	Sleep    2s
 
 Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
+	[Documentation]    This keyword checks that toggle wide button work correctly in Fairway Areas tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 	Element Should Be Visible    ${EXPAND_WIDE_BUTTON}
 	Click Element    ${EXPAND_WIDE_BUTTON}
@@ -123,26 +122,13 @@ Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
 	Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
 	Sleep    2s
 
-Check That Tabs Can Be Selected And Tab Contents Are Activated
-	Click Element    ${FAIRWAY_HARBOURS_TAB}
-	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
-	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}
-	Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
-	Click Element    ${FAIRWAY_AREAS_TAB}
-	Wait Until Element Is Visible    ${FAIRWAY_AREAS_TAB_IS_SELECTED}    30s
-	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}
-	Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
-	Click Element    ${FAIRWAY_CARD_TAB}
-	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
-	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
-	Check That Toggle Wide Button Works Correctly For Fairway Card Tab
-
 Change Language And Check Fairway Cards Page And Select Fairway
-	[Arguments]    ${language}    ${language_button}    ${language_button_disabled}    ${fairways_text}
+	[Arguments]    ${language}
+	[Documentation]    This keyword changes language with language given in keyword argument, checks content of Fairway Cards page, selects random fairway and sets the selected fairway as test variable
 	Click Element    ${SIDEBAR_MENU_CONTROL_BUTTON}
 	Wait Until Element Is Visible    ${FAIRWAYS_LINK}    30s
 	Capture Page Screenshot
-	Change Fairway Card Language To    ${language_button}    ${language_button_disabled}    ${fairways_text}
+	Change Fairway Card Language To    ${IN_${language}_BUTTON}    ${IN_${language}_BUTTON_DISABLED}    ${FAIRWAYS_TEXT_${language}}
 	Click Element    ${FAIRWAYS_LINK}
 	Sleep    5s
 	Capture Page Screenshot
@@ -167,6 +153,7 @@ Change Language And Check Fairway Cards Page And Select Fairway
 
 Check Fairway Navigability Headings
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks headings of Fairway Navigability section with language given in keyword argument
 	Scroll Element Into View    ${FAIRWAY_NAVIGABILITY_HEADING_${language}}
 	Element Should Be Visible    ${FAIRWAY_NAVIGABILITY_HEADING_${language}}
 	Scroll Element Into View    ${NAVIGATION_CONDITIONS_HEADING_${language}}
@@ -177,6 +164,7 @@ Check Fairway Navigability Headings
 
 Check Fairway Data Headings
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks headings of Fairway Data section with language given in keyword argument
 	Scroll Element Into View    ${FAIRWAY_DATA_HEADING_${language}}
 	Element Should Be Visible    ${FAIRWAY_DATA_HEADING_${language}}
 	Scroll Element Into View    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_${language}}
@@ -193,6 +181,7 @@ Check Fairway Data Headings
 
 Check Traffic Services Headings
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks headings of Traffice Services section with language given in keyword argument
 	Scroll Element Into View    ${TRAFFIC_SERVICES_HEADING_${language}}
 	Element Should Be Visible    ${TRAFFIC_SERVICES_HEADING_${language}}
 	Scroll Element Into View    ${PILOTAGE_HEADING_${language}}
@@ -203,6 +192,7 @@ Check Traffic Services Headings
 
 Check Fairway Harbours Headings
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks headings of Fairway Harbours tab with language given in keyword argument
 	Click Element    ${FAIRWAY_HARBOURS_TAB}
 	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
 	${heading1_elements}=    Get WebElements    ${HARBOUR_NAME_HEADING}
@@ -230,17 +220,20 @@ Check Fairway Harbours Headings
 
 Heading Count Matches Harbours Count
 	[Arguments]    ${heading_locator}    ${harbours_count}
+	[Documentation]    This keyword checks that heading count matches the harbours count, with both are given in keyword arguments
 	${heading_elements}=    Get WebElements    ${heading_locator}
 	${heading_count}=    Get Length    ${heading_elements}
 	Should Be Equal    ${heading_count}    ${harbours_count}
 
 Open Fairway Card Tab
+	[Documentation]    This keyword opens Fairway Card tab
 	Click Element    ${FAIRWAY_CARD_TAB}
 	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
 	Scroll Element Into View    ${CLOSE_BUTTON}
 
 Check Fairway Cards Page
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks the headings in Fairway Cards page with language given in keyword argument
 	Scroll Element Into View    ${FAIRWAY_CARDS_HEADING_${language}}
 	Element Should Be Visible    ${FAIRWAY_CARDS_HEADING_${language}}
 	Scroll Element Into View    ${GENERAL_HEADING_${language}}
@@ -273,6 +266,7 @@ Check Fairway Cards Page
 
 Search Selected Fairway Card
 	[Arguments]    ${selected_fairway}
+	[Documentation]    This keyword searches the Fairway Card that is given in keyword argument
 	${input_fairway_dropdown_locator}=    Set Variable    //*[@data-testid = "cardOption"]/*[text() = "${selected_fairway}"]
 	Input Text    ${INPUT_FAIRWAY}    ${selected_fairway}
 	${fairway}=    Get Text    ${input_fairway_dropdown_locator}
@@ -280,3 +274,30 @@ Search Selected Fairway Card
 	Click Element    ${input_fairway_dropdown_locator}
 	Wait Until Element Is Visible    ${FAIRWAY_HEADING}    30s
 	Element Should Contain    ${FAIRWAY_HEADING}    ${selected_fairway}
+
+Check Fairway Card Tab
+	[Arguments]    ${language}
+	[Documentation]    This keyword checks that Fairway Card tab can be selected, tab content is activated and checks the tab content with language given in keyword argument
+	Click Element    ${FAIRWAY_CARD_TAB}
+	Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_IS_SELECTED}    30s
+	Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Card Tab
+	Check Fairway Navigability Headings    ${language}
+	Check Fairway Data Headings    ${language}
+	Check Traffic Services Headings    ${language}
+
+Check Fairway Harbours Tab
+	[Arguments]    ${language}
+	[Documentation]    This keyword checks that Fairway Harbours tab can be selected, tab content is activated and checks the tab content with language given in keyword argument
+	Click Element    ${FAIRWAY_HARBOURS_TAB}
+	Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_IS_SELECTED}    30s
+	Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
+	Check Fairway Harbours Headings    ${language}
+
+Check Fairway Areas Tab
+	[Documentation]    This keyword checks that Fairway Areas tab can be selected and tab content is activated
+	Click Element    ${FAIRWAY_AREAS_TAB}
+	Wait Until Element Is Visible    ${FAIRWAY_AREAS_TAB_IS_SELECTED}    30s
+	Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_IS_ACTIVE}
+	Check That Toggle Wide Button Works Correctly For Fairway Areas Tab

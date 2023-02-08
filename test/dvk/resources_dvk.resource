@@ -20,7 +20,7 @@ ${LATAUSVIRHE_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "aler
 #Regular expression
 ${REGEX_SCALE}    \\d+\\s(m|km)
 
-#Digital Fairway Card sidebar menu locators
+#Digital Fairway Card sidebar menu locators and variables
 ${IN_FINNISH_BUTTON}    //ion-button[@data-testid = "langFi"]
 ${IN_FINNISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langFi" and @aria-disabled = "true"]
 ${IN_SWEDISH_BUTTON}    //ion-button[@data-testid = "langSv"]
@@ -29,6 +29,9 @@ ${IN_ENGLISH_BUTTON}    //ion-button[@data-testid = "langEn"]
 ${IN_ENGLISH_BUTTON_DISABLED}    //ion-button[@data-testid = "langEn" and @aria-disabled = "true"]
 ${FAIRWAYS_LINK}    //ion-item[@data-testid = "fairwaysLink"]
 ${CLOSE_MENU_BUTTON}    //ion-button[@data-testid = "closeMenu"]
+${FAIRWAYS_TEXT_FINNISH}    Väyläkortit
+${FAIRWAYS_TEXT_SWEDISH}    Farledskort
+${FAIRWAYS_TEXT_ENGLISH}    Fairway Cards
 
 #Fairway Cards list locators
 ${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
@@ -135,7 +138,7 @@ ${TRAFFIC_SERVICES_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/
 ${PILOTAGE_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Pilotage"]
 ${VTS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "VTS"]
 
-#Fairway harbours tab
+#Fairway harbours tab locators
 ${HARBOUR_NAME_HEADING}    //div[@class = "tabContent tab2 active"]/ion-text/h4
 ${HARBOUR_RESTRICTIONS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Sataman rajoitukset"]
 ${QUAYS_HEADING_FINNISH}    //div[@class = "tabContent tab2 active"]/ion-text/h5[text() = "Laiturit"]
