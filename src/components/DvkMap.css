@@ -25,7 +25,7 @@
 }
 
 .dvkMap.mobile .ol-zoom {
-  visibility: hidden;
+  display: none;
 }
 
 .dvkMap .centerToOwnLocationControlContainer {
@@ -208,10 +208,6 @@
   padding-right: 0px;
 }
 
-.dvkMap.mobile .mapDetailsControl .mousePositionLabelElem {
-  visibility: hidden;
-}
-
 .dvkMap .mapDetailsControl .ol-mouse-position {
   position: relative;
   top: auto;
@@ -222,10 +218,6 @@
   padding-right: 10px;
   background: none;
   min-width: 13em;
-}
-
-.dvkMap.mobile .mapDetailsControl .ol-mouse-position {
-  visibility: hidden;
 }
 
 .dvkMap .mapDetailsControl .ol-scale-line {
@@ -239,8 +231,9 @@
   background: none;
 }
 
-.dvkMap .mapDetailsControl .ol-scale-line {
-  text-align: -webkit-right;
+.dvkMap.mobile .mapDetailsControl .ol-scale-line {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .dvkMap .ol-rotate {
