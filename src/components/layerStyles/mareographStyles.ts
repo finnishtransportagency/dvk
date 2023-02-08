@@ -1,6 +1,5 @@
 import { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Text, Fill } from 'ol/style';
-import observationIcon from '../../theme/img/saahavaintoasema.svg';
 import mareographIcon from '../../theme/img/vedenkorkeus_pohja.svg';
 import { MareographFeatureProperties } from '../features';
 
