@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources } from './constants';
 import { useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
+import { useEffect } from 'react';
 
 export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true, refetchInterval: number | false = false) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
@@ -36,8 +37,10 @@ export function useSafetyEquipmentFaultData() {
 
 export function useSafetyEquipmentFaultDataWithRelatedDataInvalidation() {
   const queryClient = useQueryClient();
-  queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
-  queryClient.invalidateQueries({ queryKey: ['safetyequipmentfault'] });
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
+    queryClient.invalidateQueries({ queryKey: ['safetyequipmentfault'] });
+  }, [queryClient]);
   return useFindAllSafetyEquipmentFaultsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }
 
@@ -46,11 +49,13 @@ export function useMarineWarningsData() {
 }
 export function useMarineWarningsDataWithRelatedDataInvalidation() {
   const queryClient = useQueryClient();
-  queryClient.invalidateQueries({ queryKey: ['marinewarning'] });
-  queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
-  queryClient.invalidateQueries({ queryKey: ['line12'] });
-  queryClient.invalidateQueries({ queryKey: ['line3456'] });
-  queryClient.invalidateQueries({ queryKey: ['area12'] });
-  queryClient.invalidateQueries({ queryKey: ['area3456'] });
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['marinewarning'] });
+    queryClient.invalidateQueries({ queryKey: ['safetyequipment'] });
+    queryClient.invalidateQueries({ queryKey: ['line12'] });
+    queryClient.invalidateQueries({ queryKey: ['line3456'] });
+    queryClient.invalidateQueries({ queryKey: ['area12'] });
+    queryClient.invalidateQueries({ queryKey: ['area3456'] });
+  }, [queryClient]);
   return useFindAllMarineWarningsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
 }
