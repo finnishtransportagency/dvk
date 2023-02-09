@@ -128,7 +128,6 @@ const symbol2Icon = {
 };
 
 export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
-  console.log('Safety equipment style');
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
