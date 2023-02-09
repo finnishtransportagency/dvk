@@ -112,6 +112,25 @@ export class SquatSite extends Construct {
     );
     Tags.of(staticBucket).add('Backups-' + Config.getEnvironment(), 'true');
 
+    const adminBucket = new s3.Bucket(this, 'AdminSiteBucket', {
+      bucketName: `admin.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
+    });
+    adminBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [adminBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    new CfnOutput(parent, 'AdminBucket', {
+      value: adminBucket.bucketName,
+      description: 'The name of Admin app S3',
+      exportName: 'AdminBucket' + props.env,
+    });
     // TLS certificate
     let certificate, domainNames;
     if (props.cloudfrontCertificateArn) {
@@ -158,6 +177,24 @@ export class SquatSite extends Construct {
       functionAssociations: [
         {
           function: cfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
+    };
+
+    const adminRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/adminRequestRouter.js`).toString('utf-8');
+    const adminCfFunction = new cloudfront.Function(this, 'AdminRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(adminRouterSourceCode),
+    });
+    const adminBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.S3Origin(adminBucket, { originAccessIdentity: cloudfrontOAI }),
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: adminCfFunction,
           eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
         },
       ],
@@ -272,6 +309,7 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
+      'yllapito*': adminBehavior,
     };
 
     // CloudFront webacl reader and id

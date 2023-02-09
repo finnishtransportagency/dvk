@@ -5,6 +5,9 @@ const devPipelineSquat = process.env.DEV_PIPELINE_SQUAT;
 const testPipelineSquat = process.env.TEST_PIPELINE_SQUAT;
 const devPipelineDVK = process.env.DEV_PIPELINE_DVK;
 const testPipelineDVK = process.env.TEST_PIPELINE_DVK;
+const devPipelineAdmin = process.env.DEV_PIPELINE_ADMIN;
+const testPipelineAdmin = process.env.TEST_PIPELINE_ADMIN;
+
 const buildimagePipeline = process.env.BUILDIMAGE_PIPELINE;
 const webhookSecret = process.env.WEBHOOK_SECRET;
 
@@ -12,6 +15,7 @@ enum APPS {
   SQUAT = 'squat',
   DVK = 'dvk',
   IMAGE = 'image',
+  ADMIN = 'admin',
 }
 
 function parseBranchName(branch: string) {
@@ -37,6 +41,13 @@ function getPipelineName(branch: string, appName: string) {
         return devPipelineDVK;
       } else if (branchName === 'test') {
         return testPipelineDVK;
+      }
+      return undefined;
+    case APPS.ADMIN:
+      if (branchName === 'main') {
+        return devPipelineAdmin;
+      } else if (branchName === 'test') {
+        return testPipelineAdmin;
       }
       return undefined;
     case APPS.IMAGE:
@@ -223,7 +234,10 @@ const handler = async function (event: any) {
     const dvkPipelineName = getPipelineName(branch, APPS.DVK);
     if (dvkPipelineName) await kaynnistaPipeline(dvkPipelineName);
   }
-
+  if (folders.includes('admin')) {
+    const adminPipelineName = getPipelineName(branch, APPS.ADMIN);
+    if (adminPipelineName) await kaynnistaPipeline(adminPipelineName);
+  }
   // ja build image -pipeline
   if (isDockerFiles) {
     const imagePipelineName = getPipelineName(branch, APPS.IMAGE);
