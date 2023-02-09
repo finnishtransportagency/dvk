@@ -54,7 +54,13 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build dvk app', 'npm ci', 'npm run generate', 'npm run build'],
+            commands: [
+              'echo build dvk app',
+              'npm ci',
+              'npm run generate',
+              'BUILD_PATH=./build/vaylakortti PUBLIC_URL=/vaylakortti npm run build',
+              'cp ./public/redirect.html ./build/index.html',
+            ],
           },
         },
         artifacts: {
@@ -249,6 +255,8 @@ export class DvkPipeline extends Construct {
         return 'prod';
       case 'test':
         return 'test';
+      case 'pete':
+        return 'DVK-644';
       default:
         return 'main';
     }
