@@ -4,6 +4,7 @@ service-worker.ts
 capacitor.config.ts
 build
 squat
+admin
 cdk.out
 cdk/graphql/generated.ts
 src/graphql/generated.ts
@@ -14,3 +15,4 @@ cdk/lib/lambda/router/replaceFunction.js
 cdk/lib/lambda/router/squatRequestRouter.js
 cdk/lib/lambda/router/dvkRequestRouter.js
 cdk/lib/lambda/auth/authFunction.js
+cdk/lib/lambda/router/adminRequestRouter.js
