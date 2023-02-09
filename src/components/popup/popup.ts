@@ -7,9 +7,14 @@ import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 // eslint-disable-next-line import/named
 import { FeatureLike } from 'ol/Feature';
-import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
+import { getQuayStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getBuoyStyle, getMareographStyle, getMarineWarningStyle, getObservationStyle, getSafetyEquipmentStyle } from '../styles';
+import { getPilotStyle } from '../layerStyles/pilotStyles';
+import { getSafetyEquipmentStyle } from '../layerStyles/safetyEquipmentStyles';
+import { getMarineWarningStyle } from '../layerStyles/marineWarningStyles';
+import { getMareographStyle } from '../layerStyles/mareographStyles';
+import { getObservationStyle } from '../layerStyles/observationStyles';
+import { getBuoyStyle } from '../layerStyles/buoyStyles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
