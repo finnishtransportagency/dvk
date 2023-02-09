@@ -81,6 +81,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
               <IonCol>
                 {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
                 {equipment.properties.subType ? `${', ' + equipment.properties.subType.toLowerCase()}` : ''}
+                {equipment.properties.aisType !== 1 ? `${', ' + t('popup.equipment.type' + equipment.properties.aisType)}` : ''}
               </IonCol>
             </IonRow>
           </>

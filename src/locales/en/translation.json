@@ -274,7 +274,10 @@
       "type": "Type",
       "lightning": "Lit",
       "navigationCode": "Navigation type",
-      "fairways": "Fairway cards connected to the navigational aid"
+      "fairways": "Fairway cards connected to the navigational aid",
+      "type2": "[en] reaalinen",
+      "type3": "[en] synteettinen",
+      "type4": "virtual"
     },
     "marine": {
       "area": "Area",
