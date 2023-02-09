@@ -4,8 +4,6 @@ import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill, Icon } from 'ol/style';
 import Map from 'ol/Map';
-import pilotIcon from '../theme/img/pilotPlace.svg';
-import pilotIconActive from '../theme/img/pilotPlace_active.svg';
 import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
 import CircleStyle from 'ol/style/Circle';
@@ -21,16 +19,15 @@ import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import Polygon from 'ol/geom/Polygon';
-import {
-  getDepthStyle,
-  getMarineWarningStyle,
-  getSafetyEquipmentStyle,
-  getNameStyle,
-  getMareographStyle,
-  getObservationStyle,
-  getBuoyStyle,
-} from './styles';
+import { getPilotStyle } from './layerStyles/pilotStyles';
+import { getDepthStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
+import { getNameStyle } from './layerStyles/nameStyles';
+import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
+import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
+import { getMareographStyle } from './layerStyles/mareographStyles';
+import { getObservationStyle } from './layerStyles/observationStyles';
+import { getBuoyStyle } from './layerStyles/buoyStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -98,27 +95,6 @@ export function getBoardLineStyle(color: string, width: number) {
       lineDash: [15, 10],
     }),
   });
-}
-
-export function getPilotStyle(selected: boolean) {
-  const image = new Icon({
-    src: selected ? pilotIconActive : pilotIcon,
-    scale: selected ? 1.2 : 1,
-    anchor: [0.5, 0.5],
-  });
-  return [
-    new Style({
-      image,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 10,
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
-        }),
-      }),
-    }),
-  ];
 }
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
@@ -316,9 +292,9 @@ export function addAPILayers(map: Map) {
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Nopeusrajoitus
-  addFeatureLayer(map, 'speedlimit', 15, 2, (feature) => getSpeedLimitStyle(feature));
+  addFeatureLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle);
   // Haraussyvyydet
-  addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
+  addFeatureLayer(map, 'depth12', 10, 50, getDepthStyle);
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
@@ -342,7 +318,7 @@ export function addAPILayers(map: Map) {
     'ol-layer'
   );
   // Satamat
-  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, getHarborStyle, undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {

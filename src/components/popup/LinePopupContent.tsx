@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { LineFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
-import { isShowN2000HeightSystem } from '../styles';
+import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 
 type LinePopupContentProps = {
   line: LineProperties;
