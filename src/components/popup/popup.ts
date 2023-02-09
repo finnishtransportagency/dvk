@@ -9,7 +9,7 @@ import { pointerMove } from 'ol/events/condition';
 import { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getPilotStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
 import dvkMap from '../DvkMap';
-import { getSafetyEquipmentStyle } from '../styles';
+import { getSafetyEquipmentStyle } from '../layerStyles/safetyEquipmentStyles';
 import { getMarineWarningStyle } from '../layerStyles/marineWarningStyles';
 import { getMareographStyle } from '../layerStyles/mareographStyles';
 import { getObservationStyle } from '../layerStyles/observationStyles';
