@@ -188,7 +188,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                         title={t('closePane')}
                         aria-label={t('closePane')}
                       >
-                        <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                        <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
                       </IonButton>
                     </IonCol>
                   </IonRow>
