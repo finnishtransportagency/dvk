@@ -1,9 +1,9 @@
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
 import { FeatureLike } from 'ol/Feature';
-import { getMap } from './DvkMap';
-import depthIconMWsmall from '../theme/img/depthmw1.svg';
-import depthIconMWbig from '../theme/img/depthmw2.svg';
-import { AreaFeatureProperties, LineFeatureProperties } from './features';
+import { getMap } from '../DvkMap';
+import depthIconMWsmall from '../../theme/img/depthmw1.svg';
+import depthIconMWbig from '../../theme/img/depthmw2.svg';
+import { AreaFeatureProperties, LineFeatureProperties } from '../features';
 import { Polygon } from 'ol/geom';
 
 export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatureProperties): boolean | undefined {

@@ -7,7 +7,7 @@ import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
-import { isShowN2000HeightSystem } from '../styles';
+import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
