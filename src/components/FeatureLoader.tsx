@@ -76,7 +76,7 @@ export function useBackgroundLayer() {
         source.addFeatures(features);
         features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
         features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'mml_meri' }, true));
-        //source.addFeatures(features);
+        source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       dvkMap.olMap

@@ -292,9 +292,9 @@ export function addAPILayers(map: Map) {
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Nopeusrajoitus
-  addFeatureLayer(map, 'speedlimit', 15, 2, (feature) => getSpeedLimitStyle(feature));
+  addFeatureLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle);
   // Haraussyvyydet
-  addFeatureLayer(map, 'depth12', 10, 50, (feature) => getDepthStyle(feature));
+  addFeatureLayer(map, 'depth12', 10, 50, getDepthStyle);
   // Turvalaitteet
   addFeatureLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
   addFeatureLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
@@ -318,7 +318,7 @@ export function addAPILayers(map: Map) {
     'ol-layer'
   );
   // Satamat
-  addFeatureLayer(map, 'harbor', 300, 1, (feature, resolution) => getHarborStyle(feature, resolution), undefined, 1, 'ol-layer');
+  addFeatureLayer(map, 'harbor', 300, 1, getHarborStyle, undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {
