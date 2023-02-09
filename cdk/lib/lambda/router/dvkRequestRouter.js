@@ -10,8 +10,12 @@ function handler(event) {
   }
 
   // Default index pages do not work on s3 subdirectories -> all to /index.html
-  if (request.uri === '/vaylakortit' || request.uri.startsWith('/vaylakortit/')) {
-    request.uri = '/index.html';
+  if (request.uri === '/vaylakortti' ||
+    request.uri === '/vaylakortti/' ||
+    request.uri.startsWith('/vaylakortti/vaylakortit') ||
+    request.uri.startsWith('/vaylakortti/turvalaiteviat') ||
+    request.uri.startsWith('/vaylakortti/merivaroitukset')) {
+    request.uri = '/vaylakortti/index.html';
   }
 
   return request;
