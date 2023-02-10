@@ -85,8 +85,8 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
     }
     if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
       closeDropdown();
-      const targetPath = '/vaylakortit/' + filteredFairways[activeSelection - 1].id;
-      if (curPath !== targetPath) history.push('/vaylakortit/' + filteredFairways[activeSelection - 1].id);
+      const targetPath = '/kortit/' + filteredFairways[activeSelection - 1].id;
+      if (curPath !== targetPath) history.push('/kortit/' + filteredFairways[activeSelection - 1].id);
     }
   };
 

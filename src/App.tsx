@@ -223,10 +223,10 @@ const DvkIonApp: React.FC = () => {
               <Route exact path="/">
                 <HomePage />
               </Route>
-              <Route exact path="/vaylakortit">
+              <Route exact path="/kortit">
                 <FairwayCardListPage />
               </Route>
-              <Route exact path="/vaylakortit/:fairwayCardId">
+              <Route exact path="/kortit/:fairwayCardId">
                 <FairwayCardPage />
               </Route>
               <Route exact path="/turvalaiteviat">

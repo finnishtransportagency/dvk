@@ -100,12 +100,12 @@ const SidebarMenu: React.FC = () => {
           <IonRow className="ion-direction-column">
             <IonCol size="auto">
               <IonItem
-                routerLink="/vaylakortit/"
+                routerLink="/kortit/"
                 detail={false}
                 lines="none"
                 className="ion-no-padding internal"
                 onClick={async () => menuController.close()}
-                disabled={router.routeInfo.pathname === '/vaylakortit/'}
+                disabled={router.routeInfo.pathname === '/kortit/'}
                 data-testid="fairwaysLink"
               >
                 <IonIcon slot="start" src="assets/icon/fairways_icon.svg" />

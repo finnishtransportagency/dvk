@@ -81,7 +81,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
           return (
             <IonRow key={index}>
               <IonCol>
-                <Link to={`/vaylakortit/${card.id}`}>{card.name[lang]}</Link>
+                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>
             </IonRow>
           );
