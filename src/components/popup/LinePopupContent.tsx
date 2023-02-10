@@ -58,7 +58,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
                     title={t('common.close')}
                     aria-label={t('common.close')}
                   >
-                    <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                    <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
                   </IonButton>
                 </IonCol>
               )}
