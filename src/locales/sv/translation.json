@@ -274,7 +274,10 @@
       "type": "Typ",
       "lightning": "Belyst",
       "navigationCode": "Navigationstyp",
-      "fairways": "Farledskorten angående säkerhetsanordningen"
+      "fairways": "Farledskorten angående säkerhetsanordningen",
+      "type2": "[sv] reaalinen",
+      "type3": "syntetisk",
+      "type4": "virtuell"
     },
     "marine": {
       "area": "Område",
