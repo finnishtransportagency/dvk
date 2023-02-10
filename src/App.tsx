@@ -220,11 +220,11 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Switch>
-              <Route path="/kortit">
-                <FairwayCardListPage />
-              </Route>
               <Route path="/kortit/:fairwayCardId">
                 <FairwayCardPage />
+              </Route>
+              <Route path="/kortit">
+                <FairwayCardListPage />
               </Route>
               <Route path="/turvalaiteviat">
                 <SafetyEquipmentFaultPage />
