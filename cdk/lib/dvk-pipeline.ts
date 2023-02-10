@@ -9,6 +9,7 @@ import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import Config from './config';
 
 interface DvkPipelineProps {
   env: string;
@@ -45,6 +46,7 @@ export class DvkPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
+          REACT_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({

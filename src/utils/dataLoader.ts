@@ -6,7 +6,12 @@ import { useEffect } from 'react';
 
 export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true, refetchInterval: number | false = false) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
-  const urlStr = fds?.url ? fds.url.toString() : '';
+  let urlStr: string;
+  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
+    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
+  } else {
+    urlStr = fds?.url ? fds.url.toString() : '';
+  }
   return useQuery({
     queryKey: [fds?.id],
     refetchOnMount,

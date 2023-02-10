@@ -6,4 +6,4 @@ node_modules
 cdk.out
 graphql/generated.ts
 cdk.context.json
-names.json.gz
+*.json.gz
