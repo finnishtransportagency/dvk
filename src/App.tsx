@@ -207,7 +207,7 @@ const DvkIonApp: React.FC = () => {
   return (
     <IonApp className={appClasses.join(' ')}>
       <OfflineStatus />
-      <IonReactRouter>
+      <IonReactRouter basename="/vaylakortti">
         <SidebarMenu />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
