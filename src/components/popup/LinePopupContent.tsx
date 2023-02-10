@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
@@ -7,9 +7,11 @@ import { Lang } from '../../utils/constants';
 import { LineFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
+import { PopupProperties } from '../mapOverlays/MapOverlays';
 
 type LinePopupContentProps = {
   line: LineProperties;
+  setPopupProperties?: (properties: PopupProperties) => void;
 };
 
 export type LineProperties = {
@@ -22,9 +24,10 @@ type FairwayCardIdName = {
   name: Text;
 };
 
-const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
+const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+
   const fairwayCards: FairwayCardIdName[] = [];
   line.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
@@ -32,15 +35,33 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line }) => {
     }
   });
   const showN2000HeightSystem = isShowN2000HeightSystem(line.properties);
+
+  const closePopup = () => {
+    if (setPopupProperties) setPopupProperties({});
+  };
+
   return (
     <IonGrid id="linePopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
         {line.properties.fairways?.map((fairway, index) => {
           return (
-            <IonRow key={index}>
-              <IonCol className="header">
+            <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
+              <IonCol size="auto" className="header">
                 {fairway.name[lang] || fairway.name.fi} {fairway.fairwayId}
               </IonCol>
+              {index === 0 && (
+                <IonCol size="auto">
+                  <IonButton
+                    fill="clear"
+                    className="closeButton"
+                    onClick={() => closePopup()}
+                    title={t('common.close')}
+                    aria-label={t('common.close')}
+                  >
+                    <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                  </IonButton>
+                </IonCol>
+              )}
             </IonRow>
           );
         })}

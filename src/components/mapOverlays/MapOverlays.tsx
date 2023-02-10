@@ -78,16 +78,16 @@ const MapOverlays: React.FC = () => {
     <>
       <div id="popup" className="ol-popup">
         <div id="popup-content">
-          {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} />}
-          {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} />}
-          {popupProps?.area && <AreaPopupContent area={popupProps.area} />}
-          {popupProps?.specialarea && <AreaPopupContent area={popupProps.specialarea} />}
-          {popupProps?.line && <LinePopupContent line={popupProps.line} />}
-          {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} />}
-          {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} />}
-          {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} />}
-          {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} />}
-          {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} />}
+          {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} setPopupProperties={setPopupProperties} />}
+          {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} setPopupProperties={setPopupProperties} />}
+          {popupProps?.area && <AreaPopupContent area={popupProps.area} setPopupProperties={setPopupProperties} />}
+          {popupProps?.specialarea && <AreaPopupContent area={popupProps.specialarea} setPopupProperties={setPopupProperties} />}
+          {popupProps?.line && <LinePopupContent line={popupProps.line} setPopupProperties={setPopupProperties} />}
+          {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} setPopupProperties={setPopupProperties} />}
+          {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} setPopupProperties={setPopupProperties} />}
+          {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} setPopupProperties={setPopupProperties} />}
+          {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} setPopupProperties={setPopupProperties} />}
+          {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} setPopupProperties={setPopupProperties} />}
         </div>
       </div>
       <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />

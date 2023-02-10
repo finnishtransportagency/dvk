@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
@@ -8,9 +8,11 @@ import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
+import { PopupProperties } from '../mapOverlays/MapOverlays';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
+  setPopupProperties?: (properties: PopupProperties) => void;
 };
 
 export type AreaProperties = {
@@ -23,10 +25,11 @@ type FairwayCardIdName = {
   name: Text;
 };
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const fairwayCards: FairwayCardIdName[] = [];
+
   area.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
       fairwayCards.push(...f.fairwayCards);
@@ -44,13 +47,24 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area }) => {
   const speedLimits = Array.from(
     new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit || 0]).filter((val) => val > 0))
   ).sort((a, b) => a - b);
-
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
+
+  const closePopup = () => {
+    if (setPopupProperties) setPopupProperties({});
+  };
+
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        <IonRow>
-          <IonCol className="header">{area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        <IonRow className="ion-justify-content-between">
+          <IonCol size="auto" className="header">
+            {area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}
+          </IonCol>
+          <IonCol size="auto">
+            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
+              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+            </IonButton>
+          </IonCol>
         </IonRow>
         {showN2000HeightSystem !== undefined && (
           <IonRow>
