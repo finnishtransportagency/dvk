@@ -158,7 +158,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                 </span>
               );
             })}
-            {sizingVessels.length < 1 && t('noData')}
+            {sizingVessels.length < 1 && t('noDataSet')}
           </p>
           <p>
             <strong>{t('fairwayDimensions')}: </strong>
@@ -251,7 +251,7 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
                 ))}
               </>
             )}
-            {prohibitionAreas?.length < 1 && t('noData')}
+            {prohibitionAreas?.length < 1 && t('noDataSet')}
           </p>
         </>
       )}

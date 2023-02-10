@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
@@ -7,9 +7,11 @@ import { Lang } from '../../utils/constants';
 import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { PopupProperties } from '../mapOverlays/MapOverlays';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
+  setPopupProperties?: (properties: PopupProperties) => void;
 };
 
 export type EquipmentProperties = {
@@ -22,9 +24,10 @@ type FairwayCardIdName = {
   name: Text;
 };
 
-const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment }) => {
+const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+
   let fairwayCards: FairwayCardIdName[] = [];
   equipment.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
@@ -32,23 +35,31 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
     }
   });
   fairwayCards = [...new Map(fairwayCards.map((item) => [item.id, item])).values()];
+
+  const closePopup = () => {
+    if (setPopupProperties) setPopupProperties({});
+  };
+
   return (
     <IonGrid id="equipmentPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        {equipment.properties.name && (
-          <IonRow>
-            <IonCol className="header">
-              {equipment.properties.name[lang] || equipment.properties.name.fi}
-              {' - '}
-              {equipment.properties.id}
-            </IonCol>
-          </IonRow>
-        )}
+        <IonRow className="ion-justify-content-between">
+          <IonCol size="auto" className="header">
+            {equipment.properties.name && (equipment.properties.name[lang] || equipment.properties.name.fi)}
+            {' - '}
+            {equipment.properties.id}
+          </IonCol>
+          <IonCol size="auto">
+            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
+              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+            </IonButton>
+          </IonCol>
+        </IonRow>
         {equipment.properties.faults && (
           <IonGrid class="faultGrid">
-            {equipment.properties.faults.map((fault, index) => {
+            {equipment.properties.faults.map((fault) => {
               return (
-                <div key={index}>
+                <div key={fault.faultId}>
                   <IonRow>
                     <IonCol>
                       <strong>{t('popup.equipment.fault')}</strong>
@@ -111,9 +122,9 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             <IonCol className="header">{t('popup.equipment.fairways')}</IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card, index) => {
+        {fairwayCards?.map((card) => {
           return (
-            <IonRow key={index}>
+            <IonRow key={card.id}>
               <IonCol>
                 <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>

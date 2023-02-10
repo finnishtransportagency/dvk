@@ -169,7 +169,7 @@
     "areaType11": "Additional swept area",
     "areaType14": "STS area",
     "areaType15": "Meeting and overtaking prohibition area",
-    "noData": "Data is not available.",
+    "noDataSet": "Data is not set.",
     "noRestrictions": "No effective restrictions.",
     "notForNavigation": "Not for navigational use",
     "unit": {
@@ -183,7 +183,13 @@
       "ktsDesc_one": "knot",
       "ktsDesc_other": "knots",
       "kmhDesc_one": "kilometre per hour",
-      "kmhDesc_other": "kilometres per hour"
+      "kmhDesc_other": "kilometres per hour",
+      "msDesc_one": "metre per second",
+      "msDesc_other": "metres per second",
+      "cmDesc_one": "centimetre",
+      "cmDesc_other": "centimetres",
+      "degDesc_one": "degree",
+      "degDesc_other": "degrees"
     }
   },
   "faults": {
@@ -249,19 +255,19 @@
     "area": {
       "info": "Fairway area information",
       "overtake": "Continuous overtaking prohibition on the fairway area",
-      "depth": "Swept depth {{val, number}}m",
-      "draft": "Design draught {{val, number}}m",
-      "speedLimit": "Speed limit {{val}} km/h",
+      "depth": "Swept depth {{val, number}}",
+      "draft": "Design draught {{val, number}}",
+      "speedLimit": "Speed limit {{val}}",
       "speed": "Design speed",
       "fairways": "Fairway area is part of the fairway card",
       "extra": "Additional information"
     },
     "line": {
       "info": "Navigation line information",
-      "depth": "Swept depth {{val, number}}m",
-      "draft": "Design draught {{val, number}}m",
-      "length": "Length {{val}}m",
-      "direction": "True bearing {{val}}°",
+      "depth": "Swept depth {{val, number}}",
+      "draft": "Design draught {{val, number}}",
+      "length": "Length {{val}}",
+      "direction": "True bearing {{val, number}}",
       "fairways": "Navigation line is part of the fairway card",
       "extra": "Additional information"
     },
@@ -335,6 +341,7 @@
     "close": "Close",
     "close-dialog": "Close dialog",
     "noData": "Data is not available.",
+    "noDataSet": "Data is not set.",
     "serviceOffline": "Service offline",
     "offlineSupportImpossible": "Offline support impossible",
     "offlineSupportPartial": "Offline support partial",

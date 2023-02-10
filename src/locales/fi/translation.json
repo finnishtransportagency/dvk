@@ -169,7 +169,7 @@
     "areaType11": "Varmistettu lisäalue",
     "areaType14": "STS-alue",
     "areaType15": "Kohtaamis- ja ohittamiskieltoalue",
-    "noData": "Tietoa ei ole asetettu.",
+    "noDataSet": "Tietoa ei ole asetettu.",
     "noRestrictions": "Ei voimassa olevia rajoituksia.",
     "notForNavigation": "Ei navigointikäyttöön",
     "unit": {
@@ -183,7 +183,13 @@
       "ktsDesc_one": "solmu",
       "ktsDesc_other": "solmua",
       "kmhDesc_one": "kilometri tunnissa",
-      "kmhDesc_other": "kilometriä tunnissa"
+      "kmhDesc_other": "kilometriä tunnissa",
+      "msDesc_one": "metri sekunnissa",
+      "msDesc_other": "metriä sekunnissa",
+      "cmDesc_one": "senttimetri",
+      "cmDesc_other": "senttimetriä",
+      "degDesc_one": "aste",
+      "degDesc_other": "astetta"
     }
   },
   "faults": {
@@ -249,19 +255,19 @@
     "area": {
       "info": "Väyläalueen tiedot",
       "overtake": "Väyläalueella jatkuva ohituskielto",
-      "depth": "Haraussyvyys {{val, number}}m",
-      "draft": "Mitoitussyväys {{val, number}}m",
-      "speedLimit": "Nopeusrajoitus {{val}} km/h",
+      "depth": "Haraussyvyys {{val, number}}",
+      "draft": "Mitoitussyväys {{val, number}}",
+      "speedLimit": "Nopeusrajoitus {{val}}",
       "speed": "Mitoitusnopeus",
       "fairways": "Väyläalue on osa väyläkorttia",
       "extra": "Lisätieto"
     },
     "line": {
       "info": "Navigointilinjan tiedot",
-      "depth": "Haraussyvyys {{val, number}}m",
-      "draft": "Mitoitussyväys {{val, number}}m",
-      "length": "Pituus {{val}}m",
-      "direction": "Tosisuunta {{val}}°",
+      "depth": "Haraussyvyys {{val, number}}",
+      "draft": "Mitoitussyväys {{val, number}}",
+      "length": "Pituus {{val}}",
+      "direction": "Tosisuunta {{val, number}}",
       "fairways": "Navigointilinja on osa väyläkorttia",
       "extra": "Lisätieto"
     },
@@ -334,7 +340,8 @@
     "showPane": "Näytä",
     "close": "Sulje",
     "close-dialog": "Sulje ilmoitus",
-    "noData": "Tietoa ei ole asetettu.",
+    "noData": "Tietoa ei ole saatavilla.",
+    "noDataSet": "Tietoa ei ole asetettu.",
     "serviceOffline": "Ei internet-yhteyttä",
     "offlineSupportImpossible": "Offline-käyttö ei mahdollista",
     "offlineSupportPartial": "Osittainen offline-käyttö mahdollinen",
