@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import { InfoParagraph } from '../content/Paragraph';
 
 type PilotPopupContentProps = {
   pilot?: PilotProperties;
@@ -42,11 +43,9 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
         <IonRow>
           <IonCol className="header">{t('popup.pilotPlace.coordinates')}</IonCol>
         </IonRow>
-        {pilot?.coordinates && (
-          <IonRow>
-            <IonCol>{coordinatesToStringHDM(pilot.coordinates)}</IonCol>
-          </IonRow>
-        )}
+        <IonRow>
+          <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+        </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
         </IonRow>

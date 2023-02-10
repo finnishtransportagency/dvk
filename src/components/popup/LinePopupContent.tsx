@@ -75,22 +75,48 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         </IonRow>
         {(line.properties.n2000draft || line.properties.draft) && (
           <IonRow>
-            <IonCol>{t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}</IonCol>
+            <IonCol>
+              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}{' '}
+              <span
+                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}
+                role="definition"
+              >
+                m
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {(line.properties.n2000depth || line.properties.depth) && (
           <IonRow>
-            <IonCol>{t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}</IonCol>
+            <IonCol>
+              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}{' '}
+              <span
+                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}
+                role="definition"
+              >
+                m
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {line.properties.length && (
           <IonRow>
-            <IonCol>{t('popup.line.length', { val: line.properties.length })}</IonCol>
+            <IonCol>
+              {t('popup.line.length', { val: line.properties.length })}{' '}
+              <span aria-label={t('fairwayCards.unit.mDesc', { count: line.properties.length })} role="definition">
+                m
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {line.properties.direction && (
           <IonRow>
-            <IonCol>{t('popup.line.direction', { val: line.properties.direction })}</IonCol>
+            <IonCol>
+              {t('popup.line.direction', { val: line.properties.direction })}{' '}
+              <span aria-label={t('fairwayCards.unit.degDesc', { count: line.properties.direction })} role="definition">
+                °
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {fairwayCards.length > 0 && (

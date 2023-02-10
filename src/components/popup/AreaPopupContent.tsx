@@ -84,25 +84,49 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         <IonRow>
           <IonCol className="header">{t('popup.area.info')}</IonCol>
         </IonRow>
-        {(area.properties.n2000depth || area.properties.depth) && (
-          <IonRow>
-            <IonCol>{t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}</IonCol>
-          </IonRow>
-        )}
         {(area.properties.n2000draft || area.properties.draft) && (
           <IonRow>
-            <IonCol>{t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}</IonCol>
+            <IonCol>
+              {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}{' '}
+              <span
+                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}
+                role="definition"
+              >
+                m
+              </span>
+            </IonCol>
+          </IonRow>
+        )}
+        {(area.properties.n2000depth || area.properties.depth) && (
+          <IonRow>
+            <IonCol>
+              {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}{' '}
+              <span
+                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}
+                role="definition"
+              >
+                m
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {speedLimits.length > 0 && (
           <IonRow>
-            <IonCol>{t('popup.area.speedLimit', { val: speedLimits.join(' / ') })}</IonCol>
+            <IonCol>
+              {t('popup.area.speedLimit', { val: speedLimits.join(' / ') })}{' '}
+              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                km/h
+              </span>
+            </IonCol>
           </IonRow>
         )}
         {sizingSpeeds.length > 0 && (
           <IonRow>
             <IonCol>
-              {t('popup.area.speed')} {sizingSpeeds.join(' / ')} {t('fairwayCards.unit.ktsDesc', { count: 0 })}
+              {t('popup.area.speed')} {sizingSpeeds.join(' / ')}{' '}
+              <span aria-label={t('fairwayCards.unit.ktsDesc', { count: 0 })} role="definition">
+                kts
+              </span>
             </IonCol>
           </IonRow>
         )}

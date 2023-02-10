@@ -5,6 +5,7 @@ import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import { InfoParagraph } from '../content/Paragraph';
 
 type BuoyPopupContentProps = {
   buoy: BuoyProperties;
@@ -39,11 +40,9 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
         <IonRow>
           <IonCol className="header">{t('popup.buoy.coordinates')}</IonCol>
         </IonRow>
-        {buoy.coordinates && (
-          <IonRow>
-            <IonCol>{coordinatesToStringHDM(buoy.coordinates)}</IonCol>
-          </IonRow>
-        )}
+        <IonRow>
+          <IonCol>{coordinatesToStringHDM(buoy.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+        </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.buoy.dateTime')}</IonCol>
         </IonRow>
@@ -54,15 +53,41 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
           <IonCol className="header">{t('popup.buoy.waveHeightDir')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${buoy.properties.waveHeight ? buoy.properties.waveHeight : '-'} m/s, ${
-            buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'
-          } °`}</IonCol>
+          <IonCol>
+            {((buoy.properties.waveHeight || buoy.properties.waveDirection) && (
+              <>
+                {buoy.properties.waveHeight ? buoy.properties.waveHeight.toLocaleString() : '-'}{' '}
+                <span aria-label={t('fairwayCards.unit.mDesc', { count: Number(buoy.properties.waveHeight || 0) })} role="definition">
+                  m
+                </span>
+                , {buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'}{' '}
+                <span
+                  aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.waveDirection || 0)) })}
+                  role="definition"
+                >
+                  °
+                </span>
+              </>
+            )) || <InfoParagraph title={t('common.noData')} />}
+          </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.buoy.temperature')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${buoy.properties.temperature ? Math.round(buoy.properties.temperature) : '-'} °C`}</IonCol>
+          <IonCol>
+            {(typeof null === 'number' && (
+              <>
+                {Math.round(buoy.properties.temperature || 0)}{' '}
+                <span
+                  aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.temperature || 0)) }) + ' (Celsius)'}
+                  role="definition"
+                >
+                  °C
+                </span>
+              </>
+            )) || <InfoParagraph title={t('common.noData')} />}
+          </IonCol>
         </IonRow>
       </IonGrid>
     </IonGrid>

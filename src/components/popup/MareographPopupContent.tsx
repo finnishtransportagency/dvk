@@ -5,6 +5,7 @@ import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { MareographFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import { InfoParagraph } from '../content/Paragraph';
 
 type MareographPopupContentProps = {
   mareograph: MareographProperties;
@@ -42,11 +43,9 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
         <IonRow>
           <IonCol className="header">{t('popup.mareograph.coordinates')}</IonCol>
         </IonRow>
-        {mareograph.coordinates && (
-          <IonRow>
-            <IonCol>{coordinatesToStringHDM(mareograph.coordinates)}</IonCol>
-          </IonRow>
-        )}
+        <IonRow>
+          <IonCol>{coordinatesToStringHDM(mareograph.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+        </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.mareograph.dateTime')}</IonCol>
         </IonRow>
@@ -57,13 +56,28 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           <IonCol className="header">{t('popup.mareograph.seaLevel')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${mareograph.properties.waterLevel >= 0 ? '+' : ''}${Math.round(mareograph.properties.waterLevel / 10)}cm`}</IonCol>
+          <IonCol>
+            {mareograph.properties.waterLevel >= 0 ? '+' : ''}
+            {Math.round(mareograph.properties.waterLevel / 10)}{' '}
+            <span aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.waterLevel || 0) / 10) })} role="definition">
+              cm
+            </span>
+          </IonCol>
         </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.mareograph.n2000SeaLevel')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>{`${mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}${Math.round(mareograph.properties.n2000WaterLevel / 10)}cm`}</IonCol>
+          <IonCol>
+            {mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}
+            {Math.round(mareograph.properties.n2000WaterLevel / 10)}{' '}
+            <span
+              aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.n2000WaterLevel || 0) / 10) })}
+              role="definition"
+            >
+              cm
+            </span>
+          </IonCol>
         </IonRow>
       </IonGrid>
     </IonGrid>
