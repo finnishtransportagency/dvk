@@ -4,14 +4,7 @@
   line-height: 24px;
 }
 
-.ol-popup #pilotPopupContent,
-.ol-popup #areaPopupContent,
-.ol-popup #linePopupContent,
-.ol-popup #equipmentPopupContent,
-.ol-popup #marinePopupContent,
-.ol-popup #quayPopupContent,
-.ol-popup #observationPopupContent,
-.ol-popup #buoyPopupContent {
+.ol-popup #popup-content > ion-grid {
   border-radius: 4px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
@@ -24,21 +17,30 @@
   letter-spacing: 0;
   line-height: 18px;
   cursor: auto;
+  padding: 8px;
 }
 
-.ol-popup #mareographPopupContent {
-  border-radius: 4px;
-  background-color: #FFFFFF;
-  box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
-  position: relative;
+.ol-popup #popup-content > ion-grid#mareographPopupContent {
   right: 220px;
-  min-width: 200px;
-  max-width: 350px;
-  color: #333333;
-  font-size: 12px;
-  letter-spacing: 0;
-  line-height: 18px;
-  cursor: auto;
+  left: unset;
+}
+
+.ol-popup .closeButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lighter);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 0;
+  --padding-start: 0;
+  height: 24px;
+  margin: 0 0 0 12px;
+}
+.ol-popup .closeButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+.ol-popup .closeButton ion-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .ol-popup .info svg {

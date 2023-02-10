@@ -1,14 +1,16 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Lang } from '../../utils/constants';
 import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import { getMap } from '../DvkMap';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import { PopupProperties } from '../mapOverlays/MapOverlays';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
+  setPopupProperties?: (properties: PopupProperties) => void;
 };
 
 export type MarineWarningProperties = {
@@ -29,22 +31,30 @@ const FairwayPopupRow: React.FC<FairwayPopupRowProperties> = ({ fairway, lang })
   );
 };
 
-const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ marine }) => {
+const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ marine, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const dvkMap = getMap();
+
+  const closePopup = () => {
+    if (setPopupProperties) setPopupProperties({});
+  };
+
   return (
     <IonGrid id="marinePopupContent" className="ion-padding">
       <IonGrid className="ion-no-padding">
-        {marine.properties.type && (
-          <IonRow>
-            <IonCol className="header">
-              {marine.properties.type[lang] || marine.properties.type.fi}
-              {' - '}
-              {marine.properties.number}
-            </IonCol>
-          </IonRow>
-        )}
+        <IonRow className="ion-justify-content-between">
+          <IonCol size="auto" className="header">
+            {marine.properties.type && (marine.properties.type[lang] || marine.properties.type.fi)}
+            {' - '}
+            {marine.properties.number}
+          </IonCol>
+          <IonCol size="auto">
+            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
+              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+            </IonButton>
+          </IonCol>
+        </IonRow>
         {marine.properties.area && (
           <>
             <IonRow>
