@@ -1,4 +1,4 @@
-import { Fill, Icon, Style } from 'ol/style';
+import { Fill, Icon, Stroke, Style } from 'ol/style';
 import CircleStyle from 'ol/style/Circle';
 import { FeatureLike } from 'ol/Feature';
 import a from '../../theme/img/safetyequipment/a.svg';
@@ -60,9 +60,9 @@ import V from '../../theme/img/safetyequipment/big/V.svg';
 import W from '../../theme/img/safetyequipment/big/W.svg';
 import X from '../../theme/img/safetyequipment/big/X.svg';
 import Y from '../../theme/img/safetyequipment/big/Y.svg';
-import ais from '../../theme/img/safetyequipment/ais.svg';
-import vais from '../../theme/img/safetyequipment/vais.svg';
+import virtual from '../../theme/img/safetyequipment/virtual.svg';
 import errorIcon from '../../theme/img/safetyequipment/error_icon.svg';
+import Text from 'ol/style/Text';
 import { EquipmentFeatureProperties } from '../features';
 
 const symbol2Icon = {
@@ -86,15 +86,15 @@ const symbol2Icon = {
   r: { icon: r, center: false, anchorY: 32 },
   s: { icon: s, center: false, anchorY: 32 },
   t: { icon: t, center: true, anchorY: 0 },
-  u: { icon: u, center: false, anchorY: 31 },
+  u: { icon: u, center: false, anchorY: 29 },
   v: { icon: v, center: false, anchorY: 32 },
   w: { icon: w, center: false, anchorY: 32 },
-  A: { icon: A, center: false, anchorY: 31 },
-  B: { icon: B, center: false, anchorY: 31 },
-  C: { icon: C, center: false, anchorY: 31 },
-  D: { icon: D, center: false, anchorY: 31 },
-  E: { icon: E, center: false, anchorY: 31 },
-  F: { icon: F, center: false, anchorY: 31 },
+  A: { icon: A, center: false, anchorY: 29 },
+  B: { icon: B, center: false, anchorY: 29 },
+  C: { icon: C, center: false, anchorY: 29 },
+  D: { icon: D, center: false, anchorY: 29 },
+  E: { icon: E, center: false, anchorY: 29 },
+  F: { icon: F, center: false, anchorY: 29 },
   G: { icon: G, center: false, anchorY: 32 },
   H: { icon: H, center: false, anchorY: 32 },
   I: { icon: I, center: false, anchorY: 32 },
@@ -115,55 +115,27 @@ const symbol2Icon = {
   X: { icon: X, center: false, anchorY: 32 },
   Y: { icon: Y, center: false, anchorY: 32 },
   '1': { icon: n1, center: true, anchorY: 0 },
-  '2': { icon: n2, center: false, anchorY: 31 },
-  '3': { icon: n3, center: false, anchorY: 31 },
-  '4': { icon: n4, center: false, anchorY: 31 },
-  '5': { icon: n5, center: false, anchorY: 31 },
-  '6': { icon: n6, center: false, anchorY: 31 },
-  '7': { icon: n7, center: false, anchorY: 31 },
-  '8': { icon: n8, center: false, anchorY: 31 },
-  '9': { icon: n9, center: false, anchorY: 31 },
-  '0': { icon: n0, center: false, anchorY: 31 },
+  '2': { icon: n2, center: false, anchorY: 29 },
+  '3': { icon: n3, center: false, anchorY: 29 },
+  '4': { icon: n4, center: false, anchorY: 29 },
+  '5': { icon: n5, center: false, anchorY: 29 },
+  '6': { icon: n6, center: false, anchorY: 29 },
+  '7': { icon: n7, center: false, anchorY: 29 },
+  '8': { icon: n8, center: false, anchorY: 29 },
+  '9': { icon: n9, center: false, anchorY: 29 },
+  '0': { icon: n0, center: false, anchorY: 29 },
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
 export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
-  console.log('Safety equipment style');
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
-  let image: Icon;
-  let errorImageRight: Icon | undefined = undefined;
-  let errorImageLeft: Icon | undefined = undefined;
-  let virtualIcon: Icon | undefined = undefined;
-  if (props.faults) {
-    errorImageRight = new Icon({
-      src: errorIcon,
-      anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'fraction',
-      scale: selected ? 1.2 : 1,
-    });
-    errorImageLeft = new Icon({
-      src: errorIcon,
-      anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'fraction',
-      scale: selected ? 1.2 : 1,
-    });
-  }
-  if (props.aisType !== undefined && props.aisType !== 1) {
-    virtualIcon = new Icon({
-      src: props.aisType === 3 ? ais : vais,
-      anchor: [0.5, 0.4],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'fraction',
-    });
-  }
   if (props.symbol === '1' || resolution <= 7) {
+    let image: Icon;
     if (center) {
       image = new Icon({
         src: icon,
@@ -196,17 +168,56 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
     if (props.faults) {
       styles.push(
         new Style({
-          image: errorImageRight,
+          image: new Icon({
+            src: errorIcon,
+            anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            scale: selected ? 1.2 : 1,
+          }),
         }),
         new Style({
-          image: errorImageLeft,
+          image: new Icon({
+            src: errorIcon,
+            anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            scale: selected ? 1.2 : 1,
+          }),
         })
       );
     }
-    if (virtualIcon) {
+    if (props.aisType !== undefined && props.aisType !== 1) {
+      let text;
+      if (props.aisType === 2) {
+        text = undefined;
+      } else if (props.aisType === 3) {
+        text = 'AIS';
+      } else {
+        text = 'V-AIS';
+      }
       styles.push(
         new Style({
-          image: virtualIcon,
+          image: new Icon({
+            src: virtual,
+            anchor: [0.5, 0.5],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            scale: selected ? 1.2 : 1,
+          }),
+          text: text
+            ? new Text({
+                font: '12px "Exo2"',
+                placement: 'line',
+                offsetY: selected ? 17 : 15,
+                text,
+                scale: selected ? 1.2 : 1,
+                fill: new Fill({
+                  color: '#FF00FF',
+                }),
+                stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
+              })
+            : undefined,
         })
       );
     }
