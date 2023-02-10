@@ -12,7 +12,7 @@ export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'al
     refetchOnMount,
     refetchInterval,
     queryFn: async () => {
-      const { data } = { data: [] };
+      const { data } = { data: { type: 'FeatureCollection', features: [] } };
       return data;
     },
   });
