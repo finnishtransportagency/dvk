@@ -274,7 +274,10 @@
       "type": "Tyyppi",
       "lightning": "Valaistu",
       "navigationCode": "Navigointilaji",
-      "fairways": "Turvalaitteeseen liittyvät väyläkortit"
+      "fairways": "Turvalaitteeseen liittyvät väyläkortit",
+      "type2": "reaalinen",
+      "type3": "synteettinen",
+      "type4": "virtuaalinen"
     },
     "marine": {
       "area": "Alue",
