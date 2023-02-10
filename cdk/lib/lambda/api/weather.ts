@@ -93,8 +93,10 @@ function parseMeasure(location: any): Partial<Mareograph> {
   if (Array.isArray(location.observation)) {
     for (const observation of location.observation) {
       const result = parseObservation(observation);
-      if (!measure || (measure.dateTime as number) < (result.dateTime as number)) {
-        measure = result;
+      if (!Number.isNaN(result.waterLevel) && !Number.isNaN(result.n2000WaterLevel)) {
+        if (!measure || (measure.dateTime as number) < (result.dateTime as number)) {
+          measure = result;
+        }
       }
     }
   } else {
@@ -103,14 +105,27 @@ function parseMeasure(location: any): Partial<Mareograph> {
   return measure || {};
 }
 
+const options = {
+  ignoreAttributes: false,
+  attributeNamePrefix: '@_',
+};
+const parser = new XMLParser(options);
+parser.addEntity('#xE4', 'ä');
+parser.addEntity('#228', 'ä');
+parser.addEntity('#xC4', 'Ä');
+parser.addEntity('#196', 'Ä');
+parser.addEntity('#xF6', 'ö');
+parser.addEntity('#246', 'ö');
+parser.addEntity('#xD6', 'Ö');
+parser.addEntity('#214', 'Ö');
+parser.addEntity('#xE5', 'å');
+parser.addEntity('#229', 'å');
+parser.addEntity('#xC5', 'Å');
+parser.addEntity('#197', 'Å');
+
 export function parseXml(xml: string): Mareograph[] {
-  const options = {
-    ignoreAttributes: false,
-    attributeNamePrefix: '@_',
-  };
   const mareographs: Mareograph[] = [];
   try {
-    const parser = new XMLParser(options);
     const obj = parser.parse(xml);
     if (Array.isArray(obj.pointweather.location)) {
       for (const location of obj.pointweather.location) {
