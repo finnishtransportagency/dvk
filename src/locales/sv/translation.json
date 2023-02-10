@@ -169,7 +169,7 @@
     "areaType11": "Djupsäkrat tilläggsområde",
     "areaType14": "STS-operationsområde",
     "areaType15": "Området med mötes- och omkörningsförbud",
-    "noData": "Uppgifter finns inte",
+    "noDataSet": "Uppgifter finns inte.",
     "noRestrictions": "Inga begränsningar i kraft",
     "notForNavigation": "Ej för navigation",
     "unit": {
@@ -183,7 +183,13 @@
       "ktsDesc_one": "knop",
       "ktsDesc_other": "knop",
       "kmhDesc_one": "kilometer i timmen",
-      "kmhDesc_other": "kilometer i timmen"
+      "kmhDesc_other": "kilometer i timmen",
+      "msDesc_one": "meter i sekunden",
+      "msDesc_other": "meter per sekund",
+      "cmDesc_one": "centimeter",
+      "cmDesc_other": "centimeter",
+      "degDesc_one": "grad",
+      "degDesc_other": "grader"
     }
   },
   "faults": {
@@ -249,19 +255,19 @@
     "area": {
       "info": "Farledsområdets uppgifter",
       "overtake": " Farledsområdet har ett kontinuerligt omkörningsförbud.",
-      "depth": "Ramningsdjup {{val, number}}m",
-      "draft": "Dimensionerande djup {{val, number}}m",
-      "speedLimit": " Hastighetsbegränsning {{val}} km/h",
+      "depth": "Ramningsdjup {{val, number}}",
+      "draft": "Dimensionerande djup {{val, number}}",
+      "speedLimit": " Hastighetsbegränsning {{val}}",
       "speed": "Dimensionerande hastighet",
       "fairways": " Farledsområdet är en del av farledskortet",
       "extra": "Tilläggsuppgift"
     },
     "line": {
       "info": " Navigationslinjens uppgifter",
-      "depth": "Ramningsdjup {{val, number}}m",
-      "draft": "Dimensionerad djup {{val, number}}m",
-      "length": "Längd {{val}}m",
-      "direction": "Rättvisande kurs {{val}}°",
+      "depth": "Ramningsdjup {{val, number}}",
+      "draft": "Dimensionerad djup {{val, number}}",
+      "length": "Längd {{val}}",
+      "direction": "Rättvisande kurs {{val, number}}",
       "fairways": "Navigationslinje är en del av farledskortet",
       "extra": "Tilläggsuppgift"
     },
@@ -331,7 +337,8 @@
     "showPane": "Visa",
     "close": "Stäng",
     "close-dialog": "Stäng dialogrutan",
-    "noData": "Ingen data eller information saknas",
+    "noData": "Ingen data eller information saknas.",
+    "noDataSet": "Uppgifter finns inte.",
     "serviceOffline": "[sv] Ei internet-yhteyttä",
     "offlineSupportImpossible": "[sv] Offline-käyttö ei mahdollista",
     "offlineSupportPartial": "[sv] Osittainen offline-käyttö mahdollinen",
