@@ -1,6 +1,6 @@
 {
   "name": "dvk",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "private": true,
   "dependencies": {
     "@capacitor/app": "4.1.1",
