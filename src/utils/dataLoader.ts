@@ -1,4 +1,4 @@
-//import axios from 'axios';
+import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources } from './constants';
 import { useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
@@ -6,13 +6,13 @@ import { useEffect } from 'react';
 
 export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true, refetchInterval: number | false = false) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
-  //const urlStr = fds?.url ? fds.url.toString() : '';
+  const urlStr = fds?.url ? fds.url.toString() : '';
   return useQuery({
     queryKey: [fds?.id],
     refetchOnMount,
     refetchInterval,
     queryFn: async () => {
-      const { data } = { data: { type: 'FeatureCollection', features: [] } };
+      const { data } = await axios.get(urlStr);
       return data;
     },
   });
