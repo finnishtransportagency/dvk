@@ -24,7 +24,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, showNoData }) =>
       )}
       {showNoData && !bodyText && (
         <p>
-          {title && <strong>{title}: </strong>} {t('noData')}
+          {title && <strong>{title}: </strong>} {t('noDataSet')}
         </p>
       )}
     </>
@@ -41,7 +41,7 @@ export const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
   return (
     <p className="info use-flex ion-align-items-center">
       <InfoIcon className="no-print" />
-      {title || t('noData')}
+      {title || t('noDataSet')}
     </p>
   );
 };
