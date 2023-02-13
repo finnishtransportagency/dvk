@@ -395,4 +395,4 @@ Check The Squat Calculation Values
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_2}    ${SUHTEELLINEN_TUULEN_SUUNTA_2_${vessel_type}}
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_2}    ${SUHTEELLINEN_TUULEN_NOPEUS_2_${vessel_type}}
 	Should Be Equal    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_${vessel_type}}
-	Should Be Equal    ${ARVIOITU_SORTOKULMA}    ${ARVIOITU_SORTOKULMA_FERRY}
+	Should Be Equal    ${ARVIOITU_SORTOKULMA}    ${ARVIOITU_SORTOKULMA_${vessel_type}}
