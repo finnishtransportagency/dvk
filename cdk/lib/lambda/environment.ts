@@ -167,6 +167,6 @@ export async function getCloudFrontPrivateKey() {
   return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPrivateKey');
 }
 
-export async function getCloudFrontPublicKey() {
-  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPublicKey');
+export async function getCloudFrontPublicKeyId() {
+  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPublicKeyId');
 }

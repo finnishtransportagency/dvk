@@ -1,4 +1,4 @@
-import { getCloudFrontPrivateKey, getCloudFrontPublicKey } from '../environment';
+import { getCloudFrontPrivateKey, getCloudFrontPublicKeyId } from '../environment';
 import { getSignedCookies } from '@aws-sdk/cloudfront-signer';
 import { ALBResult } from 'aws-lambda';
 
@@ -21,7 +21,7 @@ export const handler = async (): Promise<ALBResult> => {
   const cookie = getSignedCookies({
     url: cloudFrontDnsName as string,
     privateKey: await getCloudFrontPrivateKey(),
-    keyPairId: await getCloudFrontPublicKey(),
+    keyPairId: await getCloudFrontPublicKeyId(),
     policy: cloudFrontPolicy,
   });
 

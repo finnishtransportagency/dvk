@@ -200,7 +200,10 @@ export class SquatSite extends Construct {
     type Writeable<T> = { -readonly [P in keyof T]: T[P] };
     const cfnKeyConfig = cfnKey.publicKeyConfig as Writeable<CfnPublicKey.PublicKeyConfigProperty>;
     cfnKeyConfig.callerReference = cfnKeyConfig.callerReference + props.env;
-
+    config.saveStringParameter(`/${Config.getEnvironment()}/CloudFrontPublicKeyId`, publicKey.publicKeyId);
+    new CfnOutput(this, 'FrontendPublicKeyIdOutput', {
+      value: publicKey.publicKeyId || '',
+    });
     const keyGroups = [
       new cloudfront.KeyGroup(this, 'FrontendKeyGroup', {
         keyGroupName: 'FrontendKeyGroup' + props.env,
