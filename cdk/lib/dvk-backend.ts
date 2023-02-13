@@ -23,8 +23,6 @@ export class DvkBackendStack extends Stack {
 
   private siteSubDomain: string;
 
-  private privateKey: string;
-
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
     this.domainName = env === 'prod' ? 'vaylapilvi.fi' : 'testivaylapilvi.fi';
