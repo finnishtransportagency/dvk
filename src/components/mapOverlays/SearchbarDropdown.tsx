@@ -34,7 +34,7 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
               <IonItem
                 key={fairwayCard.id}
                 className={'fairwayCards' + checkSelected(idx + 1)}
-                routerLink={'/vaylakortit/' + fairwayCard.id}
+                routerLink={'/kortit/' + fairwayCard.id}
                 data-testid="cardOption"
               >
                 <IonLabel>{fairwayCard.name[lang]}</IonLabel>

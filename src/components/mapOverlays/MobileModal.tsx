@@ -23,7 +23,7 @@ export const MobileModal: React.FC = () => {
               title={t('common.close-dialog')}
               aria-label={t('common.close-dialog')}
             >
-              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
             </IonButton>
           </IonButtons>
         </IonToolbar>

@@ -30,6 +30,7 @@
     "setup": "ts-node bin/setup.ts",
     "vatu": "ts-node bin/vatu.ts",
     "mapname": "ts-node bin/mapname.ts",
+    "featuresync": "ts-node bin/featuresync.ts",
     "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive"
   },
   "devDependencies": {

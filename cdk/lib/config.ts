@@ -22,8 +22,8 @@ class Config {
     return 'feature' === Config.getEnvironment();
   }
 
-  static isDeveloperEnvironment() {
-    return ['dev', 'test', 'prod', 'feature'].indexOf(Config.getEnvironment()) < 0;
+  static isDeveloperEnvironment(env?: string) {
+    return ['dev', 'test', 'prod', 'feature'].indexOf(env ? env : Config.getEnvironment()) < 0;
   }
 
   static isDeveloperOrDevEnvironment() {

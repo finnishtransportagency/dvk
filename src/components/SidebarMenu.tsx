@@ -86,7 +86,7 @@ const SidebarMenu: React.FC = () => {
                 title={t('closeMenu')}
                 aria-label={t('closeMenu')}
               >
-                <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
               </IonButton>
             </IonCol>
           </IonRow>
@@ -100,15 +100,15 @@ const SidebarMenu: React.FC = () => {
           <IonRow className="ion-direction-column">
             <IonCol size="auto">
               <IonItem
-                routerLink="/vaylakortit/"
+                routerLink="/kortit/"
                 detail={false}
                 lines="none"
                 className="ion-no-padding internal"
                 onClick={async () => menuController.close()}
-                disabled={router.routeInfo.pathname === '/vaylakortit/'}
+                disabled={router.routeInfo.pathname === '/kortit/'}
                 data-testid="fairwaysLink"
               >
-                <IonIcon slot="start" src="/assets/icon/fairways_icon.svg" />
+                <IonIcon slot="start" src="assets/icon/fairways_icon.svg" />
                 {t('fairway-cards')}
               </IonItem>
             </IonCol>
@@ -122,7 +122,7 @@ const SidebarMenu: React.FC = () => {
                 disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                 data-testid="faultsLink"
               >
-                <IonIcon slot="start" src="/assets/icon/alert_icon.svg" />
+                <IonIcon slot="start" src="assets/icon/alert_icon.svg" />
                 {t('safety-equipment-faults')}
               </IonItem>
             </IonCol>
@@ -136,7 +136,7 @@ const SidebarMenu: React.FC = () => {
                 disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                 data-testid="warningsLink"
               >
-                <IonIcon slot="start" src="/assets/icon/weather_icon.svg" />
+                <IonIcon slot="start" src="assets/icon/weather_icon.svg" />
                 {t('marine-warnings')}
               </IonItem>
             </IonCol>
@@ -153,9 +153,9 @@ const SidebarMenu: React.FC = () => {
                 disabled={state.isOffline}
                 tabIndex={state.isOffline ? -1 : undefined}
               >
-                <IonIcon slot="start" src="/assets/icon/calculate_icon.svg" />
+                <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
                 {t('squat')}
-                <IonIcon slot="end" src="/assets/icon/ext_link.svg" />
+                <IonIcon slot="end" src="assets/icon/ext_link.svg" />
               </IonItem>
             </IonCol>
           </IonRow>

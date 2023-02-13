@@ -9,6 +9,7 @@ import { ComputeType, LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import Config from './config';
 
 interface DvkPipelineProps {
   env: string;
@@ -45,6 +46,7 @@ export class DvkPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
+          REACT_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -54,7 +56,13 @@ export class DvkPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build dvk app', 'npm ci', 'npm run generate', 'npm run build'],
+            commands: [
+              'echo build dvk app',
+              'npm ci',
+              'npm run generate',
+              'BUILD_PATH=./build/vaylakortti PUBLIC_URL=/vaylakortti npm run build',
+              'mv ./build/vaylakortti/redirect.html ./build/index.html',
+            ],
           },
         },
         artifacts: {
@@ -249,6 +257,8 @@ export class DvkPipeline extends Construct {
         return 'prod';
       case 'test':
         return 'test';
+      case 'pete':
+        return 'DVK-644';
       default:
         return 'main';
     }

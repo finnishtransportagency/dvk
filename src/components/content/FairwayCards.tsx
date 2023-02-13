@@ -41,7 +41,7 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
             <IonRow key={idx} className="fairwayCards">
               <IonCol>
                 <IonLabel>
-                  <Link to={'/vaylakortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</Link>
+                  <Link to={'/kortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</Link>
                 </IonLabel>
               </IonCol>
               <IonCol>

@@ -28,29 +28,45 @@ export type FeatureDataId =
   | 'finland'
   | 'mml_meri';
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL };
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
-  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
-  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
-  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2') },
-  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
-  { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
-  { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
-  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
-  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
-  { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
-  { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2') },
-  { id: 'safetyequipmentfault', url: new URL(featureLoaderUrl + '?type=safetyequipmentfault') },
-  { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning') },
+  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/area12.json.gz') },
+  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/area3456.json.gz') },
+  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/line12.json.gz') },
+  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/line3456.json.gz') },
+  {
+    id: 'restrictionarea',
+    url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
+  },
+  {
+    id: 'specialarea',
+    url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea.json.gz'),
+  },
+  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
+  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
+  {
+    id: 'safetyequipment',
+    url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99'),
+    staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
+  },
+  { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/depth12.json.gz') },
+  {
+    id: 'safetyequipmentfault',
+    url: new URL(featureLoaderUrl + '?type=safetyequipmentfault'),
+    staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
+  },
+  { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning'), staticUrl: new URL(staticUrl + '/marinewarning.json.gz') },
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2') },
-  { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
-  { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
-  { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy') },
+  { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
+  { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
+  { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
+  { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
 ];
 
 export type FeatureDataLayerId =

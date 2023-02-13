@@ -730,11 +730,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const path = [
     {
       title: t('title', { count: 0 }),
-      route: '/vaylakortit/',
+      route: '/kortit/',
     },
     {
       title: fairwayCard?.name[lang] || fairwayCard?.name.fi || '',
-      route: '/vaylakortit/' + id,
+      route: '/kortit/' + id,
       onClick: () => {
         setSelectedFairwayCard(fairwayCard);
       },
