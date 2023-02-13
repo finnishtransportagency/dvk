@@ -162,3 +162,11 @@ export async function getWeatherHeaders(): Promise<Record<string, string>> {
     'Accept-Encoding': 'gzip',
   };
 }
+
+export async function getCloudFrontPrivateKey() {
+  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPrivateKey');
+}
+
+export async function getCloudFrontPublicKey() {
+  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPublicKey');
+}

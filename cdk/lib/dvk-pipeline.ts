@@ -258,7 +258,7 @@ export class DvkPipeline extends Construct {
       case 'test':
         return 'test';
       case 'pete':
-        return 'DVK-644';
+        return 'DVK-599';
       default:
         return 'main';
     }

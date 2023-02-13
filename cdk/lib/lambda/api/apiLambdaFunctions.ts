@@ -14,6 +14,12 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     functionName: 'featureloader',
     priority: 10,
   },
+  {
+    entry: path.join(__dirname, 'login.ts'),
+    pathPattern: '/api/login',
+    functionName: 'login',
+    priority: 20,
+  },
 ];
 
 export default apiLambdaFunctions;

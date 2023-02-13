@@ -59,6 +59,7 @@
     "@aws-sdk/client-secrets-manager": "^3.254.0",
     "@aws-sdk/client-ssm": "^3.254.0",
     "@aws-sdk/lib-dynamodb": "^3.254.0",
+    "@aws-sdk/cloudfront-signer": "^3.254.0",
     "@types/aws-lambda": "^8.10.109",
     "@types/geojson": "^7946.0.10",
     "aws-cdk-lib": "^2.61.1",
