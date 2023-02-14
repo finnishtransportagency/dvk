@@ -164,9 +164,9 @@ export async function getWeatherHeaders(): Promise<Record<string, string>> {
 }
 
 export async function getCloudFrontPrivateKey() {
-  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPrivateKey');
+  return readParameterForEnv(getEnvironment() + '/CloudFrontPrivateKey');
 }
 
 export async function getCloudFrontPublicKeyId() {
-  return readParameterForEnv('/' + getEnvironment() + '/CloudFrontPublicKeyId');
+  return readParameterForEnv(getEnvironment() + '/CloudFrontPublicKeyId');
 }
