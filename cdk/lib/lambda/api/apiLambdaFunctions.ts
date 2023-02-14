@@ -16,7 +16,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
   },
   {
     entry: path.join(__dirname, 'login.ts'),
-    pathPattern: '/api/login',
+    pathPattern: '/yllapito/kirjaudu',
     functionName: 'login',
     priority: 20,
   },

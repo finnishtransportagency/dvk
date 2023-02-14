@@ -334,6 +334,8 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
+      'yllapito/graphql': graphqlProxyBehavior,
+      'yllapito/kirjaudu': apiProxyBehavior,
       'yllapito*': adminBehavior,
       '/oauth2/*': apiProxyBehavior,
     };
