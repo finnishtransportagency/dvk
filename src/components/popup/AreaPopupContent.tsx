@@ -62,7 +62,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
             </IonButton>
           </IonCol>
         </IonRow>
@@ -139,7 +139,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
           return (
             <IonRow key={index}>
               <IonCol>
-                <Link to={`/vaylakortit/${card.id}`}>{card.name[lang]}</Link>
+                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>
             </IonRow>
           );

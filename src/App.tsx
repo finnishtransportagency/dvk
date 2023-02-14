@@ -207,7 +207,7 @@ const DvkIonApp: React.FC = () => {
   return (
     <IonApp className={appClasses.join(' ')}>
       <OfflineStatus />
-      <IonReactRouter>
+      <IonReactRouter basename="/vaylakortti">
         <SidebarMenu />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
@@ -220,20 +220,20 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Switch>
-              <Route exact path="/">
-                <HomePage />
-              </Route>
-              <Route exact path="/vaylakortit">
-                <FairwayCardListPage />
-              </Route>
-              <Route exact path="/vaylakortit/:fairwayCardId">
+              <Route path="/kortit/:fairwayCardId">
                 <FairwayCardPage />
               </Route>
-              <Route exact path="/turvalaiteviat">
+              <Route path="/kortit">
+                <FairwayCardListPage />
+              </Route>
+              <Route path="/turvalaiteviat">
                 <SafetyEquipmentFaultPage />
               </Route>
-              <Route exact path="/merivaroitukset">
+              <Route path="/merivaroitukset">
                 <MarineWarningPage />
+              </Route>
+              <Route path="/">
+                <HomePage />
               </Route>
             </Switch>
           </IonRouterOutlet>

@@ -91,7 +91,7 @@ class SearchbarControl extends Control {
       }
       if (event.key === 'Enter' && this.isOpen && this.activeSelection) {
         closeDropdown();
-        this.history.push('/vaylakortit/' + this.filteredData[this.activeSelection - 1].id);
+        this.history.push('/kortit/' + this.filteredData[this.activeSelection - 1].id);
       }
     });
 
