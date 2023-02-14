@@ -142,6 +142,46 @@ ${SUHTEELLINEN_TUULEN_NOPEUS_2_FERRY}    11
 ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_FERRY}    31,33
 ${ARVIOITU_SORTOKULMA_FERRY}    0,09
 
+#LNG input-values
+${LENGTHBPP_INPUT_LNG}    170
+${BREADTH_INPUT_LNG}    29.5
+${DRAUGHT_INPUT_LNG}    8
+${WINDSPEED_INPUT_LNG}    8
+${WAVEHEIGHT_INPUT_LNG}    2
+${WAVEPERIOD_INPUT_LNG}    4
+${WINDSURFACE_INPUT_LNG}    2500
+${DECKCARGO_INPUT_LNG}    5000
+${BOWTHRUSTER_INPUT_LNG}    1500
+${SWEPTDEPTH_INPUT_LNG}    12.5
+${WATERLEVEL_INPUT_LNG}    10
+${WATERDEPTH_INPUT_LNG}    23
+${CHANNELWIDTH_INPUT_LNG}    200
+${SLOPEHEIGHT_INPUT_LNG}    12
+${KG_INPUT_LNG}    8
+${VESSEL_COURSE_INPUT_LNG}    10
+${VESSEL_SPEED_INPUT_LNG}    16
+
+#LNG squat-values
+${KALLISTUMA_TUULI_LNG}    1,27
+${KALLISTUMA_KAANNOS_LNG}    7,64
+${ALUKSEN_TODELLINEN_SYVAYS_LNG}    8,33
+${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_LNG}    9,89
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_LNG}    2,01
+${KOLIVARA_SUORALLA_KURSSILLA_LNG}    2,01
+${KOLIVARA_KAANNOKSESSA_LNG}    −1,45
+${PAINUMA_LUISKA_LNG}    2,26
+${SUHTEELLINEN_TUULEN_SUUNTA_1_LNG}    39
+${SUHTEELLINEN_TUULEN_NOPEUS_1_LNG}    12
+${TUULEN_VOIMA_LNG}    7,7
+${AALLOKON_VOIMA_LNG}    37,9
+${KEULAPOTKURIN_SUORITUSKYKY_LNG}    20,1
+${TURVAMARGINAALI_LNG}    −26,6
+${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_LNG}    5,3
+${SUHTEELLINEN_TUULEN_SUUNTA_2_LNG}    39
+${SUHTEELLINEN_TUULEN_NOPEUS_2_LNG}    12
+${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_LNG}    29,82
+${ARVIOITU_SORTOKULMA_LNG}    0,11
+
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
@@ -190,6 +230,19 @@ Calculate Squat For Ferry
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
 	Check The Squat Calculation Values    FERRY
+
+Calculate Squat For LNG
+	[Documentation]    This test case inputs valid values to Squat calculator for LNG and checks the result
+	Set Input Values To General Section    LNG
+	Set Input Values To Weather Section    LNG
+	Set Input Values To Detailed Section    LNG
+	Set Input Values To Fairway Section    LNG
+	Set Input Values To Stability Section    LNG
+	Set Input Values To Vessel Section    LNG
+	Get Squat Calculation Values
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Squat Calculation Values    LNG
 
 *** Keywords ***
 Change Squat Calculator Language To
