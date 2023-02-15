@@ -1,10 +1,11 @@
 *** Settings ***
 Library    SeleniumLibrary
-Test Setup    Open Browser    http://localhost:3000    ${BROWSER}
+Test Setup    Open Browser    http://localhost:${PORT}    ${BROWSER}
 Test Teardown    Close All Browsers
 
 *** Variables ***
 ${BROWSER}    headlesschrome
+${PORT}    3000
 
 #Language selection locators
 ${LANGUAGE_SELECT_BUTTON}    //ion-select[@class = "ion-padding md"]
