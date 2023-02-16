@@ -1,10 +1,11 @@
 *** Settings ***
 Library    SeleniumLibrary
-Test Setup    Open Browser    http://localhost:3000    ${BROWSER}
+Test Setup    Open Browser    http://localhost:${PORT}    ${BROWSER}
 Test Teardown    Close All Browsers
 
 *** Variables ***
 ${BROWSER}    headlesschrome
+${PORT}    3000
 
 #Language selection locators
 ${LANGUAGE_SELECT_BUTTON}    //ion-select[@class = "ion-padding md"]
@@ -18,7 +19,7 @@ ${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
 ${ALUKSEN_TIEDOT_HEADER}    //h2/strong[text() = "Aluksen tiedot"]
 ${YMPARISTO_HEADER}    //h2/strong[text() = "Ympäristö"]
 ${LASKENTA_HEADER}    //h2/strong[text() = "Laskenta"]
-${ALUKSEN_SQUAT_HEADER}    //h4[text() = "Aluksen painuma nopeuden funktiona"]
+${ALUKSEN_SQUAT_HEADER}    //h3/strong[text() = "Aluksen painuma nopeuden funktiona"]
 
 #General
 ${LENGTHBPP_INPUT}    //input[@name = "lengthBPP"]
@@ -102,6 +103,85 @@ ${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}    //strong[text() = "Tuulen voima"]/ances
 ${ARVIOITU_SORTOKULMA_VALUE}    //ion-label[@title = "Arvioitu sortokulma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}    //ion-label[@title = "Aluksen arvioitu leveys sorto huomioiden"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 
+#Ferry input-values
+${LENGTHBPP_INPUT_FERRY}    212
+${BREADTH_INPUT_FERRY}    31
+${DRAUGHT_INPUT_FERRY}    8
+${WINDSPEED_INPUT_FERRY}    5
+${WAVEHEIGHT_INPUT_FERRY}    1.5
+${WAVEPERIOD_INPUT_FERRY}    5
+${WINDSURFACE_INPUT_FERRY}    2000
+${DECKCARGO_INPUT_FERRY}    5000
+${BOWTHRUSTER_INPUT_FERRY}    1000
+${SWEPTDEPTH_INPUT_FERRY}    12.5
+${WATERLEVEL_INPUT_FERRY}    10
+${WATERDEPTH_INPUT_FERRY}    23
+${CHANNELWIDTH_INPUT_FERRY}    200
+${SLOPEHEIGHT_INPUT_FERRY}    12
+${KG_INPUT_FERRY}    8
+${VESSEL_COURSE_INPUT_FERRY}    10
+${VESSEL_SPEED_INPUT_FERRY}    17
+
+#Ferry squat-values
+${KALLISTUMA_TUULI_FERRY}    0,36
+${KALLISTUMA_KAANNOS_FERRY}    8,64
+${ALUKSEN_TODELLINEN_SYVAYS_FERRY}    8,1
+${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_FERRY}    10,24
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_FERRY}    2,13
+${KOLIVARA_SUORALLA_KURSSILLA_FERRY}    2,13
+${KOLIVARA_KAANNOKSESSA_FERRY}    −2,25
+${PAINUMA_LUISKA_FERRY}    2,37
+${SUHTEELLINEN_TUULEN_SUUNTA_1_FERRY}    27
+${SUHTEELLINEN_TUULEN_NOPEUS_1_FERRY}    11
+${TUULEN_VOIMA_FERRY}    1,7
+${AALLOKON_VOIMA_FERRY}    19,1
+${KEULAPOTKURIN_SUORITUSKYKY_FERRY}    13,4
+${TURVAMARGINAALI_FERRY}    44,4
+${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_FERRY}    -
+${SUHTEELLINEN_TUULEN_SUUNTA_2_FERRY}    27
+${SUHTEELLINEN_TUULEN_NOPEUS_2_FERRY}    11
+${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_FERRY}    31,33
+${ARVIOITU_SORTOKULMA_FERRY}    0,09
+
+#LNG input-values
+${LENGTHBPP_INPUT_LNG}    170
+${BREADTH_INPUT_LNG}    29.5
+${DRAUGHT_INPUT_LNG}    8
+${WINDSPEED_INPUT_LNG}    8
+${WAVEHEIGHT_INPUT_LNG}    2
+${WAVEPERIOD_INPUT_LNG}    4
+${WINDSURFACE_INPUT_LNG}    2500
+${DECKCARGO_INPUT_LNG}    5000
+${BOWTHRUSTER_INPUT_LNG}    1500
+${SWEPTDEPTH_INPUT_LNG}    12.5
+${WATERLEVEL_INPUT_LNG}    10
+${WATERDEPTH_INPUT_LNG}    23
+${CHANNELWIDTH_INPUT_LNG}    200
+${SLOPEHEIGHT_INPUT_LNG}    12
+${KG_INPUT_LNG}    8
+${VESSEL_COURSE_INPUT_LNG}    10
+${VESSEL_SPEED_INPUT_LNG}    16
+
+#LNG squat-values
+${KALLISTUMA_TUULI_LNG}    1,27
+${KALLISTUMA_KAANNOS_LNG}    7,64
+${ALUKSEN_TODELLINEN_SYVAYS_LNG}    8,33
+${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_LNG}    9,89
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_LNG}    2,01
+${KOLIVARA_SUORALLA_KURSSILLA_LNG}    2,01
+${KOLIVARA_KAANNOKSESSA_LNG}    −1,45
+${PAINUMA_LUISKA_LNG}    2,26
+${SUHTEELLINEN_TUULEN_SUUNTA_1_LNG}    39
+${SUHTEELLINEN_TUULEN_NOPEUS_1_LNG}    12
+${TUULEN_VOIMA_LNG}    7,7
+${AALLOKON_VOIMA_LNG}    37,9
+${KEULAPOTKURIN_SUORITUSKYKY_LNG}    20,1
+${TURVAMARGINAALI_LNG}    −26,6
+${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_LNG}    5,3
+${SUHTEELLINEN_TUULEN_SUUNTA_2_LNG}    39
+${SUHTEELLINEN_TUULEN_NOPEUS_2_LNG}    12
+${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_LNG}    29,82
+${ARVIOITU_SORTOKULMA_LNG}    0,11
 
 *** Test Cases ***
 Check UI Elements In Finnish Language
@@ -139,18 +219,31 @@ Check UI Elements In English Language
 	Check Input Fields In Vessel Section
 	Check Input Fields Attribute Section
 
-Calculate Squat
-	[Documentation]    This test case inputs valid values to Squat calculator and checks the result
-	Set Input Values To General Section
-	Set Input Values To Weather Section
-	Set Input Values To Detailed Section
-	Set Input Values To Fairway Section
-	Set Input Values To Stability Section
-	Set Input Values To Vessel Section
+Calculate Squat For Ferry
+	[Documentation]    This test case inputs valid values to Squat calculator for Ferry and checks the result
+	Set Input Values To General Section    FERRY
+	Set Input Values To Weather Section    FERRY
+	Set Input Values To Detailed Section    FERRY
+	Set Input Values To Fairway Section    FERRY
+	Set Input Values To Stability Section    FERRY
+	Set Input Values To Vessel Section    FERRY
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values
+	Check The Squat Calculation Values    FERRY
+
+Calculate Squat For LNG
+	[Documentation]    This test case inputs valid values to Squat calculator for LNG and checks the result
+	Set Input Values To General Section    LNG
+	Set Input Values To Weather Section    LNG
+	Set Input Values To Detailed Section    LNG
+	Set Input Values To Fairway Section    LNG
+	Set Input Values To Stability Section    LNG
+	Set Input Values To Vessel Section    LNG
+	Get Squat Calculation Values
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Squat Calculation Values    LNG
 
 *** Keywords ***
 Change Squat Calculator Language To
@@ -197,7 +290,7 @@ Check Input Fields In Weather Section
 
 Check Input Fields In Detailed Section
 	Page Should Contain Element    ${WINDSURFACE_INPUT}
-	Page Should Contain Element    ${WINDSURFACE_INPUT}
+	Page Should Contain Element    ${DECKCARGO_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTER_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTEREFFICIENCY_INPUT}
 	Page Should Contain Element    ${BULKER_RADIO}
@@ -228,61 +321,68 @@ Check Input Fields Attribute Section
 	Page Should Contain Element    ${SAFETYMARGINWINDFORCE_INPUT}
 
 Set Input Values To General Section
+	[Arguments]    ${vessel_type}
 	Press Keys    ${LENGTHBPP_INPUT}    RETURN
-	Press Keys    ${LENGTHBPP_INPUT}    212
+	Press Keys    ${LENGTHBPP_INPUT}    ${LENGTHBPP_INPUT_${vessel_type}}
 	Press Keys    ${BREADTH_INPUT}    RETURN
-	Press Keys    ${BREADTH_INPUT}    31
+	Press Keys    ${BREADTH_INPUT}    ${BREADTH_INPUT_${vessel_type}}
 	Press Keys    ${DRAUGHT_INPUT}    RETURN
-	Press Keys    ${DRAUGHT_INPUT}    8
+	Press Keys    ${DRAUGHT_INPUT}    ${DRAUGHT_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Weather Section
+	[Arguments]    ${vessel_type}
 	Press Keys    ${WINDSPEED_INPUT}    RETURN
-	Press Keys    ${WINDSPEED_INPUT}    5
+	Press Keys    ${WINDSPEED_INPUT}    ${WINDSPEED_INPUT_${vessel_type}}
 	Press Keys    ${WAVEHEIGHT_INPUT}    RETURN
-	Press Keys    ${WAVEHEIGHT_INPUT}    1.5
+	Press Keys    ${WAVEHEIGHT_INPUT}    ${WAVEHEIGHT_INPUT_${vessel_type}}
 	Press Keys    ${WAVEPERIOD_INPUT}    RETURN
-	Press Keys    ${WAVEPERIOD_INPUT}    5
+	Press Keys    ${WAVEPERIOD_INPUT}    ${WAVEPERIOD_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Detailed Section
+	[Arguments]    ${vessel_type}
 	Scroll Element Into View    ${KG_INPUT}
 	Press Keys    ${WINDSURFACE_INPUT}    RETURN
-	Press Keys    ${WINDSURFACE_INPUT}    2000
+	Press Keys    ${WINDSURFACE_INPUT}    ${WINDSURFACE_INPUT_${vessel_type}}
 	Press Keys    ${DECKCARGO_INPUT}    RETURN
-	Press Keys    ${DECKCARGO_INPUT}    5000
+	Press Keys    ${DECKCARGO_INPUT}    ${DECKCARGO_INPUT_${vessel_type}}
 	Press Keys    ${BOWTHRUSTER_INPUT}    RETURN
-	Press Keys    ${BOWTHRUSTER_INPUT}    1000
-	Click Element    ${FERRY_RADIO}
+	Press Keys    ${BOWTHRUSTER_INPUT}    ${BOWTHRUSTER_INPUT_${vessel_type}}
+	Click Element    ${${vessel_type}_RADIO}
 	Capture Page Screenshot
 
 Set Input Values To Fairway Section
+	[Arguments]    ${vessel_type}
 	Press Keys    ${SWEPTDEPTH_INPUT}    RETURN
-	Press Keys    ${SWEPTDEPTH_INPUT}    12.5
+	Press Keys    ${SWEPTDEPTH_INPUT}    ${SWEPTDEPTH_INPUT_${vessel_type}}
 	Press Keys    ${WATERLEVEL_INPUT}    RETURN
-	Press Keys    ${WATERLEVEL_INPUT}    10
+	Press Keys    ${WATERLEVEL_INPUT}    ${WATERLEVEL_INPUT_${vessel_type}}
 	Press Keys    ${WATERDEPTH_INPUT}    RETURN
-	Press Keys    ${WATERDEPTH_INPUT}    23
+	Press Keys    ${WATERDEPTH_INPUT}    ${WATERDEPTH_INPUT_${vessel_type}}
 	Click Element    ${LUISKA_RADIOBUTTON}
 	Sleep    2 seconds
 	Scroll Element Into View    ${SLOPESCALE_INPUT}
 	Press Keys    ${CHANNELWIDTH_INPUT}    RETURN
-	Press Keys    ${CHANNELWIDTH_INPUT}    200
+	Press Keys    ${CHANNELWIDTH_INPUT}    ${CHANNELWIDTH_INPUT_${vessel_type}}
 	Press Keys    ${SLOPEHEIGHT_INPUT}    RETURN
-	Press Keys    ${SLOPEHEIGHT_INPUT}    12
+	Press Keys    ${SLOPEHEIGHT_INPUT}    ${SLOPEHEIGHT_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Stability Section
+	[Arguments]    ${vessel_type}
 	Press Keys    ${KG_INPUT}    RETURN
-	Press Keys    ${KG_INPUT}    8
+	Press Keys    ${KG_INPUT}    ${KG_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Vessel Section
+	[Arguments]    ${vessel_type}
 	Scroll Element Into View    ${TURNING_RADIUS_INPUT}
 	Press Keys    ${VESSEL_COURSE_INPUT}    RETURN
-	Press Keys    ${VESSEL_COURSE_INPUT}    10
+	Press Keys    ${VESSEL_COURSE_INPUT}    ${VESSEL_COURSE_INPUT_${vessel_type}}
 	Press Keys    ${VESSEL_SPEED_INPUT}    RETURN
-	Press Keys    ${VESSEL_SPEED_INPUT}    17
+	Press Keys    ${VESSEL_SPEED_INPUT}    ${VESSEL_SPEED_INPUT_${vessel_type}}
+	Click Element    ${TURNING_RADIUS_INPUT}
 	Capture Page Screenshot
 
 Get Squat Calculation Values
@@ -330,21 +430,23 @@ Get Sorto Calculation Values
 	Set Test Variable    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}
 
 Check The Squat Calculation Values
-	Should Be Equal    ${KALLISTUMA_TUULI}    0,69
-	Should Be Equal    ${KALLISTUMA_KAANNOS}    0
-	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    8,19
-	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}    8
-	Should Be Equal    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}    4,41
-	Should Be Equal    ${KOLIVARA_SUORALLA_KURSSILLA}    4,41
-	Should Be Equal    ${KOLIVARA_KAANNOKSESSA}    4,6
-	Should Be Equal    ${PAINUMA_LUISKA}    0
-	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_1}    80
-	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_1}    5
-	Should Be Equal    ${TUULEN_VOIMA}    3,7
-	Should Be Equal    ${AALLOKON_VOIMA}    41,3
-	Should Be Equal    ${KEULAPOTKURIN_SUORITUSKYKY}    13,4
-	Should Be Equal    ${TURVAMARGINAALI}    −136
-	Should Be Equal    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}    18,2
-	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_2}    80
-	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_2}    5
-	Should Be Equal    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}    31
+	[Arguments]    ${vessel_type}
+	Should Be Equal    ${KALLISTUMA_TUULI}    ${KALLISTUMA_TUULI_${vessel_type}}
+	Should Be Equal    ${KALLISTUMA_KAANNOS}    ${KALLISTUMA_KAANNOS_${vessel_type}}
+	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    ${ALUKSEN_TODELLINEN_SYVAYS_${vessel_type}}
+	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_${vessel_type}}
+	Should Be Equal    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}    ${KOLIVARA_JA_ALUKSEN_LIIKKEET_${vessel_type}}
+	Should Be Equal    ${KOLIVARA_SUORALLA_KURSSILLA}    ${KOLIVARA_SUORALLA_KURSSILLA_${vessel_type}}
+	Should Be Equal    ${KOLIVARA_KAANNOKSESSA}    ${KOLIVARA_KAANNOKSESSA_${vessel_type}}
+	Should Be Equal    ${PAINUMA_LUISKA}    ${PAINUMA_LUISKA_${vessel_type}}
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_1}    ${SUHTEELLINEN_TUULEN_SUUNTA_1_${vessel_type}}
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_1}    ${SUHTEELLINEN_TUULEN_NOPEUS_1_${vessel_type}}
+	Should Be Equal    ${TUULEN_VOIMA}    ${TUULEN_VOIMA_${vessel_type}}
+	Should Be Equal    ${AALLOKON_VOIMA}    ${AALLOKON_VOIMA_${vessel_type}}
+	Should Be Equal    ${KEULAPOTKURIN_SUORITUSKYKY}    ${KEULAPOTKURIN_SUORITUSKYKY_${vessel_type}}
+	Should Be Equal    ${TURVAMARGINAALI}    ${TURVAMARGINAALI_${vessel_type}}
+	Should Be Equal    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_${vessel_type}}
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_2}    ${SUHTEELLINEN_TUULEN_SUUNTA_2_${vessel_type}}
+	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_2}    ${SUHTEELLINEN_TUULEN_NOPEUS_2_${vessel_type}}
+	Should Be Equal    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_${vessel_type}}
+	Should Be Equal    ${ARVIOITU_SORTOKULMA}    ${ARVIOITU_SORTOKULMA_${vessel_type}}
