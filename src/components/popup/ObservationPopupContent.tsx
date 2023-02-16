@@ -99,11 +99,11 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
         </IonRow>
         <IonRow>
           <IonCol>
-            {(!observation.properties.visibility && (
+            {(observation.properties.visibility !== null && (
               <>
-                {Math.round(observation.properties.visibility || 0 / 1000)}{' '}
+                {Math.round((observation.properties.visibility || 0) / 1000)}{' '}
                 <span
-                  aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round(observation.properties.visibility || 0 / 1000) })}
+                  aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((observation.properties.visibility || 0) / 1000) })}
                   role="definition"
                 >
                   km
