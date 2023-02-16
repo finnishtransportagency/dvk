@@ -170,3 +170,7 @@ export async function getCloudFrontPrivateKey() {
 export async function getCloudFrontPublicKeyId() {
   return readParameterForEnv(getEnvironment() + '/CloudFrontPublicKeyId');
 }
+
+export async function getCognitoUrl() {
+  return readParameterForEnv('CognitoUrl');
+}
