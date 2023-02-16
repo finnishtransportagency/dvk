@@ -34,6 +34,7 @@ import north_arrow_small from '../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
 import { FeatureLike } from 'ol/Feature';
 import { isMobile } from '../utils/common';
+import VectorImageLayer from 'ol/layer/VectorImage';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -159,13 +160,11 @@ class DvkMap {
       url: tileUrl,
     });
 
-    const bgVectorLayer = new VectorLayer({
+    const bgVectorLayer = new VectorImageLayer({
       source: new VectorSource({
         features: [],
       }),
-      background: '#cccccc',
-      updateWhileAnimating: true,
-      updateWhileInteracting: true,
+      imageRatio: 3,
     });
     bgVectorLayer.set('type', 'background');
     this.olMap.getLayers().setAt(0, bgVectorLayer);
@@ -209,11 +208,12 @@ class DvkMap {
         return;
       }
       const layer = new VectorTileLayer({
-        declutter: true,
+        declutter: false,
         className: 'bg-layer',
         source,
-        updateWhileAnimating: true,
-        updateWhileInteracting: true,
+        updateWhileAnimating: false,
+        updateWhileInteracting: false,
+        useInterimTilesOnError: false,
         visible,
       });
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
