@@ -1,6 +1,7 @@
 .dvkMap {
   width: 100%;
   height: 100%;
+  background: #cccccc;
 }
 
 .ios .dvkMap .ol-layers {
