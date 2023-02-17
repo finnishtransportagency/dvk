@@ -68,6 +68,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
     let jwtToken;
     if (event.headers) {
+      log.info({ headers: event.headers }, 'Request headers');
       const token = event.headers['x-iam-accesstoken'];
       const data = event.headers['x-iam-data'];
       jwtToken = await validateJwtToken(token, data || '');
