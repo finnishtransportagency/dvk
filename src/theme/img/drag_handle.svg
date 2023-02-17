@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="8px" viewBox="0 0 26 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>A01A511C-255D-44CE-9E0F-03A7B7E75E9A</title>
+    <g id="Digitaalinen-väyläkortti-(DVK)---responsive" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mobile_search_result_1" transform="translate(-167.000000, -332.000000)" fill="#0064AF" fill-rule="nonzero" stroke="#0364AF" stroke-width="0.5">
+            <g id="drag_area" transform="translate(0.000000, 320.000000)">
+                <g id="drag_handle_FILL0_wght400_GRAD0_opsz48" transform="translate(168.000000, 13.000000)">
+                    <path d="M0,6.5 L0,4.75 C-1.69088438e-17,4.61192881 0.111928813,4.5 0.25,4.5 L23.75,4.5 C23.8880712,4.5 24,4.61192881 24,4.75 L24,6.5 C24,6.63807119 23.8880712,6.75 23.75,6.75 L0.25,6.75 C0.111928813,6.75 4.60998054e-16,6.63807119 0,6.5 Z M0,2 L0,0.25 C-1.69088438e-17,0.111928813 0.111928813,2.53632657e-17 0.25,0 L23.75,0 C23.8880712,-2.53632657e-17 24,0.111928813 24,0.25 L24,2 C24,2.13807119 23.8880712,2.25 23.75,2.25 L0.25,2.25 C0.111928813,2.25 4.60998054e-16,2.13807119 0,2 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

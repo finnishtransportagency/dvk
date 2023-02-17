@@ -1,5 +1,6 @@
 .sideBar {
   --width: 320px;
+  z-index: 50000;
 }
 
 .sidebarMenu ion-row {

@@ -49,7 +49,7 @@
 
   ion-header,
   .titlebar,
-  ion-modal,
+  ion-modal:not(.contentModal),
   ion-menu,
   #splitPane .togglePane {
     display: none;

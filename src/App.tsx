@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert, IonProgressBar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -63,6 +63,7 @@ import MarineWarningPage from './pages/MarineWarningPage';
 import OfflineStatus from './components/OfflineStatus';
 import { DvkReducer, initialState } from './hooks/dvkReducer';
 import DvkContext, { useDvkContext } from './hooks/dvkContext';
+import { ContentModal } from './components/content/MainContentWithModal';
 
 setupIonicReact({
   mode: 'md',
@@ -133,7 +134,7 @@ const DvkIonApp: React.FC = () => {
     if (observationLayer.ready) percent += resourcePercentage;
     if (buoyLayer.ready) percent += resourcePercentage;
     if (bgLayer.ready) percent += resourcePercentage;
-    setPercentDone(percent);
+    setPercentDone(Math.round(percent * 100) / 100);
 
     setFetchError(
       line12Layer.isError ||
@@ -199,10 +200,19 @@ const DvkIonApp: React.FC = () => {
     bgLayer,
   ]);
 
+  const modal = useRef<HTMLIonModalElement>(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState('');
+
   const isFetching = useIsFetching();
   const appClasses = [];
   if (isMobile()) appClasses.push('mobile');
   if (state.isOffline) appClasses.push('offline');
+  if (!modalContent) appClasses.push('fullMap');
+
+  useEffect(() => {
+    setModalOpen(modalContent !== '');
+  }, [modalContent]);
 
   return (
     <IonApp className={appClasses.join(' ')}>
@@ -221,24 +231,25 @@ const DvkIonApp: React.FC = () => {
           <IonRouterOutlet>
             <Switch>
               <Route path="/kortit/:fairwayCardId">
-                <FairwayCardPage />
+                <FairwayCardPage setModalContent={setModalContent} />
               </Route>
               <Route path="/kortit">
-                <FairwayCardListPage />
+                <FairwayCardListPage setModalContent={setModalContent} />
               </Route>
               <Route path="/turvalaiteviat">
-                <SafetyEquipmentFaultPage />
+                <SafetyEquipmentFaultPage setModalContent={setModalContent} />
               </Route>
               <Route path="/merivaroitukset">
-                <MarineWarningPage />
+                <MarineWarningPage setModalContent={setModalContent} />
               </Route>
               <Route path="/">
-                <HomePage />
+                <HomePage setModalContent={setModalContent} />
               </Route>
             </Switch>
           </IonRouterOutlet>
         </IonContent>
         <MapOverlays />
+        {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (
         <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />

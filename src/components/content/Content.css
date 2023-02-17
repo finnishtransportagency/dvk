@@ -81,40 +81,46 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer ion-col.wide:last-child {
   padding-left: 24px;
 }
-#fairwayCardsContainer .dropdownWrapper {
+
+/* Search input */
+.dropdownWrapper {
   max-width: 273px;
   position: relative;
   transition: max-width 150ms;
 }
-.wide #fairwayCardsContainer .dropdownWrapper {
+.wide .dropdownWrapper {
   max-width: 335px;
 }
-#fairwayCardsContainer ion-input.searchBar {
+.contentModal .dropdownWrapper {
+  max-width: none;
+}
+.dropdownWrapper ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;
   max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
 }
-#fairwayCardsContainer ion-input.searchBar input {
+.dropdownWrapper ion-input.searchBar input {
   height: 100%;
   padding: 0 40px 0 12px;
   background: var(--ion-color-primary-contrast) url('../../theme/img/search.svg') no-repeat right 12px center;
   background-size: 24px 24px;
+  border-radius: 0;
 }
-#fairwayCardsContainer ion-input.searchBar.has-focus {
+.dropdownWrapper ion-input.searchBar.has-focus {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   padding: 2px !important;
 }
-#fairwayCardsContainer ion-input.searchBar.has-focus input {
+.dropdownWrapper ion-input.searchBar.has-focus input {
   padding: 0 39px 0 11px;
   background-position: right 11px center;
 }
-#fairwayCardsContainer ion-input.searchBar.has-value input {
+.dropdownWrapper ion-input.searchBar.has-value input {
   padding-right: 12px;
   background: var(--ion-color-primary-contrast);
 }
-#fairwayCardsContainer ion-input.searchBar.has-value + button.input-clear-icon {
+.dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon {
   background: var(--ion-color-primary-contrast) url('../../theme/img/close_primary.svg') no-repeat center;
   background-size: 18px;
   width: 24px;
@@ -124,15 +130,15 @@ button.icon:focus-visible:hover {
   right: 12px;
   z-index: 2;
 }
-#fairwayCardsContainer ion-input.searchBar.has-value + button.input-clear-icon:hover {
+.dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
   background-color: var(--ion-color-light);
 }
-#fairwayCardsContainer ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
+.dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
   background-color: var(--ion-color-primary-contrast);
   opacity: 1;
   outline: 1px solid var(--ion-color-dark);
 }
-#fairwayCardsContainer ion-input.searchBar:not(.has-value) + button.input-clear-icon {
+.dropdownWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
   display: none;
 }
 
@@ -183,31 +189,31 @@ button.icon:focus-visible:hover {
   transform: scaleX(-1);
 }
 
-#fairwayCardsContainer .fairwayTitle h2 {
+.fairwayTitle h2 {
   line-height: 2rem;
 }
-#fairwayCardsContainer .fairwayTitle em {
+.fairwayTitle em {
   font-size: 12px;
 }
-#fairwayCardsContainer ion-text p {
+ion-text p {
   font-size: 12px;
   line-height: 1.125rem;
   margin-top: 0;
 }
-#fairwayCardsContainer ion-text h4,
-#fairwayCardsContainer ion-text .h4 {
+ion-text h4,
+ion-text .h4 {
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
   line-height: 1.5rem;
   break-after: avoid;
 }
-#fairwayCardsContainer ion-text h4 span,
-#fairwayCardsContainer ion-text .h4 span {
+ion-text h4 span,
+ion-text .h4 span {
   text-transform: none;
 }
-#fairwayCardsContainer ion-text h5,
-#fairwayCardsContainer ion-text .h5 {
+ion-text h5,
+ion-text .h5 {
   font-size: 12px;
   margin: 12px 0 6px;
   font-weight: bold;
@@ -215,20 +221,20 @@ button.icon:focus-visible:hover {
   text-transform: none;
   break-after: avoid;
 }
-#fairwayCardsContainer ion-text .info svg {
+ion-text .info svg {
   color: var(--ion-color-primary);
   width: 16px;
   height: 16px;
   margin-right: 8px;
 }
-#fairwayCardsContainer ion-text .hoverText {
+ion-text .hoverText {
   display: block;
 }
-#fairwayCardsContainer ion-text .hoverText:hover {
+ion-text .hoverText:hover {
   background-color: var(--ion-color-light);
   cursor: default;
 }
-#fairwayCardsContainer ion-text .hoverText:focus-visible {
+ion-text .hoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
@@ -303,18 +309,18 @@ ion-grid.table.light ion-row:not(.header) {
 ion-grid.table.light ion-row > ion-col {
   border-right: none;
 }
-#fairwayCardsContainer ion-grid.table.light ion-row.header .h5 {
+ion-grid.table.light ion-row.header .h5 {
   margin-bottom: 0;
   text-transform: lowercase;
   line-height: 0.875rem;
 }
-#fairwayCardsContainer ion-grid.table.light ion-row.header .h5::first-letter {
+ion-grid.table.light ion-row.header .h5::first-letter {
   text-transform: capitalize;
 }
 
 /* Breadcrumb */
 ion-breadcrumbs {
-  padding: 20px 0 5px;
+  padding: 20px 0 6px;
 }
 ion-breadcrumb::part(native) {
   padding: 0;
@@ -332,6 +338,13 @@ ion-breadcrumb.ion-focusable::part(native):hover {
 ion-breadcrumb.ion-focused::part(native) {
   outline: 1px solid var(--ion-color-dark);
   outline-offset: 1px;
+}
+ion-breadcrumb::part(separator) {
+  color: var(--ion-color-dark);
+  margin: 0 5px;
+}
+ion-app:not(.mobile) .breadcrumbs .closeButton {
+  display: none;
 }
 
 /* Tabs */
@@ -391,4 +404,82 @@ ion-segment.tabs ion-label h3 {
   bottom: 0;
   left: -9999px;
   visibility: hidden;
+}
+
+/* Modals */
+#ion-react-wrapper {
+  height: fit-content !important;
+  max-height: calc(100vh - 96px);
+  overflow: auto;
+}
+.mobile #ion-react-wrapper {
+  max-height: calc(90vh - 96px);
+}
+.contentModal #ion-react-wrapper {
+  height: 100% !important;
+  max-height: none;
+}
+
+.contentModal .closeButton {
+  margin: 0;
+}
+.contentModal ion-content {
+  --padding-top: 0;
+}
+.contentModal::part(handle) {
+  height: 22px;
+  background: url('../../theme/img/drag_handle.svg') no-repeat center;
+  opacity: 1;
+  transition: height 150ms, opacity 150ms, padding 150ms;
+}
+.contentModal.full::part(handle) {
+  height: 0;
+  padding: 0;
+  opacity: 0;
+}
+.contentModal::part(content) {
+  top: 0;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 0 8px 2px rgba(0, 0, 0, 0.2);
+}
+.contentModal.ion-disable-focus-trap ion-content::part(scroll) {
+  overflow: hidden;
+}
+
+.contentModal ion-content > ion-grid.searchBar {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 150ms, opacity 150ms;
+}
+.contentModal.full ion-content > ion-grid.searchBar {
+  max-height: calc(45px + 24px + 16px);
+  opacity: 1;
+  overflow: unset;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  padding: 24px 16px 16px;
+  background-color: var(--ion-color-primary-contrast);
+}
+.contentModal .breadcrumbs {
+  padding-top: 26px;
+}
+.contentModal.full .breadcrumbs {
+  padding-top: calc(24px + 45px + 10px);
+}
+.contentModal.full .breadcrumbs .closeButton {
+  display: none;
+}
+.contentModal ion-breadcrumbs {
+  padding-top: 6px;
+}
+.contentModal ion-breadcrumbs ion-breadcrumb {
+  font-size: 12px;
+}
+
+.contentModal .fairwayTitle h2 {
+  margin-top: 10px;
 }

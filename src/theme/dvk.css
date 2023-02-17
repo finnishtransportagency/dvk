@@ -65,7 +65,8 @@ ion-row.input-row > ion-col {
 .small-text {
   font-size: 14px;
 }
-.printable {
+.printable,
+.mobile .no-mobile {
   display: none;
 }
 
@@ -159,7 +160,7 @@ ion-icon.medium {
   position: absolute;
   left: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 99999;
   background-color: var(--ion-color-primary);
   height: 24px;
   display: flex;
@@ -175,11 +176,15 @@ ion-text.offlineStatus > * {
 
 ion-progress-bar {
   position: fixed;
-  z-index: 9999;
+  z-index: 99999;
 }
 ion-progress-bar.danger {
   --background: rgba(var(--ion-color-danger-rgb), 0.3);
   --progress-background: var(--ion-color-danger);
+}
+
+.mobile ion-alert {
+  z-index: 30000 !important;
 }
 
 /* Footer */
