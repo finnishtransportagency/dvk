@@ -101,10 +101,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
 
     const setCookieAttributes = `; Domain=${cloudFrontDnsName}; Path=/; Secure; HttpOnly; SameSite=Lax`;
 
-    const response = {
+    const response: ALBResult = {
       statusCode: 302,
+      headers: {
+        Location: `https://${cloudFrontDnsName}/yllapito/index.html`,
+      },
       multiValueHeaders: {
-        Location: [`https://${cloudFrontDnsName}/yllapito/index.html`],
         'Set-Cookie': [
           `CloudFront-Key-Pair-Id=${cookie['CloudFront-Key-Pair-Id']}${setCookieAttributes}`,
           `CloudFront-Policy=${cookie['CloudFront-Policy']}${setCookieAttributes}`,
