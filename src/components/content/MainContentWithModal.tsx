@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ArrowBackIcon } from '../../theme/img/arrow_back.svg';
 import { useTranslation } from 'react-i18next';
@@ -136,7 +136,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     modal.current?.dismiss();
     history.push('/');
   };
-  
+
   const checkBreakpoint = () => {
     modal.current?.getCurrentBreakpoint().then((breakpoint) => {
       dispatch({
