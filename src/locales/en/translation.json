@@ -338,6 +338,7 @@
     "closePane": "Close",
     "hidePane": "Hide",
     "showPane": "Show",
+    "back": "Back",
     "close": "Close",
     "close-dialog": "Close dialog",
     "noData": "Data is not available.",
