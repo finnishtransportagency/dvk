@@ -78,6 +78,22 @@
             "channel": 71
           }
         ]
+      },
+      {
+        "name": {
+          "fi": "Hanko VTS",
+          "sv": "Hanko VTS",
+          "en": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "email": [
+          "hanko.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ]
       }
     ],
     "tugs": [
