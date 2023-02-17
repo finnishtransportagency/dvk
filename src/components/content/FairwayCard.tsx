@@ -778,7 +778,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <IonCol size="auto" className="ion-align-self-end">
                 <IonButton
                   fill="clear"
-                  className="icon-only small no-print"
+                  className="icon-only small no-mobile no-print"
                   onClick={() => window.print()}
                   title={t('print')}
                   aria-label={t('print')}

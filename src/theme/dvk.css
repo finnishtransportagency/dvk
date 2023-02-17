@@ -65,7 +65,8 @@ ion-row.input-row > ion-col {
 .small-text {
   font-size: 14px;
 }
-.printable {
+.printable,
+.mobile .no-mobile {
   display: none;
 }
 
