@@ -8,6 +8,11 @@ type Query {
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
+  currentUser: CurrentUser
+}
+
+type CurrentUser {
+  name: String
 }
 
 type FairwayCard {

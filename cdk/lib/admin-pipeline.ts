@@ -48,7 +48,13 @@ export class AdminPipeline extends Construct {
             commands: ['echo Show node versions', 'node -v', 'npm -v'],
           },
           build: {
-            commands: ['echo build admin app', 'cd admin', 'npm ci', 'BUILD_PATH=./build/yllapito PUBLIC_URL=/yllapito npm run build'],
+            commands: [
+              'echo build admin app',
+              'cd admin',
+              'npm ci',
+              'npm run generate',
+              'BUILD_PATH=./build/yllapito PUBLIC_URL=/yllapito npm run build',
+            ],
           },
         },
         artifacts: {

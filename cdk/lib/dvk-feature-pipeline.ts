@@ -83,6 +83,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'cd test',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
               'cd ../admin && npm ci',
+              'npm run generate',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
