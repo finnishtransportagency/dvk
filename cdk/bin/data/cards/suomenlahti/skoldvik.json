@@ -56,11 +56,11 @@
     "vts": [
       {
         "name": {
-          "fi": "Suomenlahden meriliikennekeskus",
-          "sv": "Finska vikens sjötrafikcentral",
-          "en": "Helsinki VTS"
+          "fi": "Helsinki VTS, sektori 2",
+          "sv": "Helsingfors VTS, sektor 2",
+          "en": "Helsinki VTS, sector 2"
         },
-        "phoneNumber": "+358204485391",
+        "phoneNumber": "+358204485385",
         "email": [
           "helsinki.vts@fintraffic.fi",
           "supervisors.hki@fintraffic.fi"
