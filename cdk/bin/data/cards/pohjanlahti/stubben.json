@@ -70,13 +70,18 @@
     "vts": [
       {
         "name": {
-          "fi": "Väylä ei ole VTS-sektorissa. Bothnia VTS.",
-          "sv": "Farleden övervakas inte av VTS. Bothnia VTS.",
-          "en": "The fairway is not in VTS-sector. Bothnia VTS."
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS",
+          "en": "Bothnia VTS"
         },
         "phoneNumber": "+358204487356",
         "email": [
           "bothnia.vts@fintraffic.fi"
+        ],
+        "vhf": [
+          {
+            "channel": 67
+          }
         ]
       }
     ],
