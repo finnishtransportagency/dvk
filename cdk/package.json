@@ -40,6 +40,8 @@
     "@types/jest": "^29.2.6",
     "@types/node": "^18.11.18",
     "@types/prettier": "^2.7.2",
+    "@types/jsonwebtoken": "8.5.8",
+    "@types/jwk-to-pem": "2.0.1",
     "aws-cdk": "^2.61.1",
     "cdk-sso-sync": "0.0.6",
     "cross-env": "7.0.3",
@@ -59,6 +61,7 @@
     "@aws-sdk/client-secrets-manager": "^3.254.0",
     "@aws-sdk/client-ssm": "^3.254.0",
     "@aws-sdk/lib-dynamodb": "^3.254.0",
+    "@aws-sdk/cloudfront-signer": "^3.254.0",
     "@types/aws-lambda": "^8.10.109",
     "@types/geojson": "^7946.0.10",
     "aws-cdk-lib": "^2.61.1",
@@ -68,6 +71,8 @@
     "graphql": "^16.6.0",
     "pino": "^8.8.0",
     "proj4": "^2.8.1",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "jsonwebtoken": "9.0.0",
+    "jwk-to-pem": "2.0.5"
   }
 }
