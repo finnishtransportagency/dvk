@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useParams } from 'react-router-dom';
 import { setSelectedFairwayCard, unsetSelectedFairwayCard } from '../components/layers';
@@ -17,12 +17,18 @@ import {
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
+import { isMobile } from '../utils/common';
+import MainContentWithModal from '../components/content/MainContentWithModal';
 
 interface FairwayCardPageProps {
   fairwayCardId?: string;
 }
 
-const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
+interface ModalProps {
+  setModalContent: Dispatch<SetStateAction<string>>;
+}
+
+const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModalContent }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
   const { fairwayCardId } = useParams<FairwayCardPageProps>();
@@ -78,10 +84,15 @@ const FairwayCardPage: React.FC<FairwayCardPageProps> = () => {
     };
   }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle]);
 
+  useEffect(() => {
+    setModalContent(fairwayCardId || 'fairwayCardList');
+  }, [setModalContent, fairwayCardId]);
+
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">
       <IonContent>
-        <MainContent fairwayCardId={fairwayCardId} splitPane />
+        {isMobile() && <MainContentWithModal />}
+        {!isMobile() && <MainContent fairwayCardId={fairwayCardId} splitPane />}
       </IonContent>
     </IonPage>
   );

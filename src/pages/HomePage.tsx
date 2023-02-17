@@ -1,16 +1,36 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { IonContent, IonPage, useIonViewWillEnter } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
+import { useDvkContext } from '../hooks/dvkContext';
 
-const HomePage: React.FC = () => {
+interface ModalProps {
+  setModalContent: Dispatch<SetStateAction<string>>;
+}
+
+const HomePage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const mapElement = useRef<HTMLDivElement | null>(null);
   const history = useHistory();
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
+
+  const { dispatch } = useDvkContext();
+
+  useEffect(() => {
+    setModalContent('');
+  }, [setModalContent]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'setBreakpoint',
+      payload: {
+        value: 0.5,
+      },
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     setDocumentTitle(title);
