@@ -359,6 +359,7 @@ export class SquatSite extends Construct {
       priceClass: PriceClass.PRICE_CLASS_100,
       webAclId,
       geoRestriction,
+      errorResponses: [{ httpStatus: 403, responseHttpStatus: 200, responsePagePath: '/forbidden.html' }],
     });
 
     new CfnOutput(parent, 'DistributionId', {

@@ -62,6 +62,7 @@ export class DvkPipeline extends Construct {
               'npm run generate',
               'BUILD_PATH=./build/vaylakortti PUBLIC_URL=/vaylakortti npm run build',
               'mv ./build/vaylakortti/redirect.html ./build/index.html',
+              'mv ./build/vaylakortti/forbidden.html ./build/',
             ],
           },
         },
