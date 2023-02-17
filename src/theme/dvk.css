@@ -182,6 +182,10 @@ ion-progress-bar.danger {
   --progress-background: var(--ion-color-danger);
 }
 
+.mobile ion-alert {
+  z-index: 30000 !important;
+}
+
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;
