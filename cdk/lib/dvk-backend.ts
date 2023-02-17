@@ -19,8 +19,14 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
 export class DvkBackendStack extends Stack {
+  private domainName: string;
+
+  private siteSubDomain: string;
+
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
     super(scope, id, props);
+    this.domainName = env === 'prod' ? 'vaylapilvi.fi' : 'testivaylapilvi.fi';
+    this.siteSubDomain = env === 'prod' ? 'dvk' : 'dvk' + env;
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
       name: 'dvk-graphql-api-' + env,
       schema: appsync.Schema.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
@@ -74,6 +80,7 @@ export class DvkBackendStack extends Stack {
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
           SSM_PARAMETER_STORE_TTL: '300',
+          CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -218,6 +225,7 @@ export class DvkBackendStack extends Stack {
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
           SSM_PARAMETER_STORE_TTL: '300',
+          CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });

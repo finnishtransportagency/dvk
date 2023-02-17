@@ -189,9 +189,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
     }
     if (props.aisType !== undefined && props.aisType !== 1) {
       let text;
-      if (props.aisType === 2) {
-        text = undefined;
-      } else if (props.aisType === 3) {
+      if (props.aisType === 2 || props.aisType === 3) {
         text = 'AIS';
       } else {
         text = 'V-AIS';
