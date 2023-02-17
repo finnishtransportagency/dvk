@@ -229,11 +229,12 @@ export class DvkBackendStack extends Stack {
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
-      httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
+      const target = httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
         targets: [new LambdaTarget(backendLambda)],
         priority: lambdaFunc.priority,
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
       });
+      target.setAttribute('lambda.multi_value_headers.enabled', 'true');
       fairwayCardTable.grantReadData(backendLambda);
       harborTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);

@@ -578,6 +578,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     statusCode,
     body: base64Response,
     isBase64Encoded: true,
-    headers: { ...getHeaders(), 'Content-Type': 'application/geo+json' },
+    multiValueHeaders: {
+      ...getHeaders(),
+      'Content-Type': ['application/geo+json'],
+    },
   };
 };

@@ -37,16 +37,16 @@ export function getAllowOrigin() {
   return `http://localhost:${isFeatureEnvironment() ? '3001' : '3000'}`;
 }
 
-export function getHeaders(): Record<string, string> {
+export function getHeaders(): Record<string, string[]> {
   if (isPermanentEnvironment()) {
-    return { 'Content-Type': 'application/json', 'Content-Encoding': 'gzip' };
+    return { 'Content-Type': ['application/json'], 'Content-Encoding': ['gzip'] };
   }
   return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': getAllowOrigin(),
-    'Access-Control-Allow-Methods': '*',
-    'Access-Control-Allow-Headers': '*',
-    'Content-Encoding': 'gzip',
+    'Content-Type': ['application/json'],
+    'Access-Control-Allow-Origin': [getAllowOrigin()],
+    'Access-Control-Allow-Methods': ['*'],
+    'Access-Control-Allow-Headers': ['*'],
+    'Content-Encoding': ['gzip'],
   };
 }
 
