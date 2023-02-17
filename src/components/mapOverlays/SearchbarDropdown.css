@@ -13,11 +13,24 @@ ion-list.searchbarDropdownContainer {
   top: calc(23px + 45px);
   left: calc(16px + 42px + 16px);
   max-width: calc(100% - 16px * 3 - 42px);
-  max-height: min(calc(90vh - 92px - 48px), 496px);
+  max-height: calc(16px + 5 * 40px);
+}
+.mobile.fullMap ion-list.searchbarDropdownContainer {
+  max-height: calc(16px + 10 * 40px);
 }
 #fairwayCardsContainer ion-list.searchbarDropdownContainer {
   top: 45px;
   left: 0;
   max-width: 100%;
   z-index: 1;
+}
+.contentModal ion-list.searchbarDropdownContainer {
+  top: 45px;
+  left: 0;
+  max-width: 100%;
+  z-index: 1;
+  max-height: min(calc(90vh - 92px - 48px), 496px);
+}
+.mobile ion-list.searchbarDropdownContainer ion-item {
+  --min-height: 40px;
 }
