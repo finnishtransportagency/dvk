@@ -10,6 +10,7 @@ import {
   AllowedMethods,
   BehaviorOptions,
   CachePolicy,
+  CfnPublicKey,
   GeoRestriction,
   OriginProtocolPolicy,
   OriginRequestCookieBehavior,
@@ -187,6 +188,29 @@ export class SquatSite extends Construct {
     const adminCfFunction = new cloudfront.Function(this, 'AdminRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(adminRouterSourceCode),
     });
+    const key = new SSMParameterReader(this, 'FrontendPublicKey' + Config.getEnvironment(), {
+      parameterName: `/${Config.getEnvironment()}/CloudFrontPublicKey`,
+      region: 'eu-west-1',
+    });
+    const publicKey = new cloudfront.PublicKey(this, 'FrontendPublicKey', {
+      publicKeyName: 'FrontendPublicKey' + props.env,
+      encodedKey: key.getParameterValue(),
+    });
+    const cfnKey: CfnPublicKey = publicKey.node.defaultChild as CfnPublicKey;
+    type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+    const cfnKeyConfig = cfnKey.publicKeyConfig as Writeable<CfnPublicKey.PublicKeyConfigProperty>;
+    cfnKeyConfig.callerReference = cfnKeyConfig.callerReference + props.env;
+    config.saveStringParameter(`/${Config.getEnvironment()}/CloudFrontPublicKeyId`, publicKey.publicKeyId);
+    new CfnOutput(this, 'FrontendPublicKeyIdOutput', {
+      value: publicKey.publicKeyId || '',
+    });
+    const keyGroups = [
+      new cloudfront.KeyGroup(this, 'FrontendKeyGroup', {
+        keyGroupName: 'FrontendKeyGroup' + props.env,
+        items: [publicKey],
+      }),
+    ];
+
     const adminBehavior: BehaviorOptions = {
       origin: new cloudfront_origins.S3Origin(adminBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
@@ -199,6 +223,7 @@ export class SquatSite extends Construct {
         },
       ],
       responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
+      trustedKeyGroups: keyGroups,
     };
 
     const dvkRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`).toString('utf-8');
@@ -309,7 +334,11 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
+      'yllapito/graphql': graphqlProxyBehavior,
+      'yllapito/kirjaudu.html': apiProxyBehavior,
+      'yllapito/api/*': apiProxyBehavior,
       'yllapito*': adminBehavior,
+      '/oauth2/*': apiProxyBehavior,
     };
 
     // CloudFront webacl reader and id
@@ -330,6 +359,7 @@ export class SquatSite extends Construct {
       priceClass: PriceClass.PRICE_CLASS_100,
       webAclId,
       geoRestriction,
+      errorResponses: [{ httpStatus: 403, responseHttpStatus: 200, responsePagePath: '/forbidden.html' }],
     });
 
     new CfnOutput(parent, 'DistributionId', {
