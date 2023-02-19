@@ -22,6 +22,10 @@ import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weathe
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
+function getNumberValue(value: number | undefined): number | undefined {
+  return value && value > 0 ? value : undefined;
+}
+
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
   return new Promise((resolve, reject) =>
@@ -157,13 +161,13 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         id: area.id,
         featureType: navigationArea ? 'area' : 'specialarea',
         name: area.nimi,
-        depth: area.harausSyvyys && area.harausSyvyys > 0 ? area.harausSyvyys : undefined,
+        depth: getNumberValue(area.harausSyvyys),
         typeCode: area.tyyppiKoodi,
         type: area.tyyppi,
-        draft: area.mitoitusSyvays && area.mitoitusSyvays > 0 ? area.mitoitusSyvays : undefined,
+        draft: getNumberValue(area.mitoitusSyvays),
         referenceLevel: area.vertaustaso,
-        n2000draft: area.n2000MitoitusSyvays && area.n2000MitoitusSyvays > 0 ? area.n2000MitoitusSyvays : undefined,
-        n2000depth: area.n2000HarausSyvyys && area.n2000HarausSyvyys > 0 ? area.n2000HarausSyvyys : undefined,
+        n2000draft: getNumberValue(area.n2000MitoitusSyvays),
+        n2000depth: getNumberValue(area.n2000HarausSyvyys),
         n2000ReferenceLevel: area.n2000Vertaustaso,
         extra: area.lisatieto,
         fairways: area.vayla?.map((v) => {
@@ -248,10 +252,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
       },
     });
   }
-}
-
-function getNumberValue(value: number | undefined): number | undefined {
-  return value && value > 0 ? value : undefined;
 }
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
