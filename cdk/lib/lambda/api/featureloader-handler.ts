@@ -250,6 +250,10 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
   }
 }
 
+function getNumberValue(value: number | undefined): number | undefined {
+  return value && value > 0 ? value : undefined;
+}
+
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   const cardMap = await getCardMap();
@@ -262,12 +266,11 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
       properties: {
         id: line.id,
         featureType: 'line',
-        depth: line.harausSyvyys && line.harausSyvyys > 0 ? line.harausSyvyys : undefined,
-        draft: line.mitoitusSyvays && line.mitoitusSyvays > 0 ? line.mitoitusSyvays : undefined,
-        length: line.pituus && line.pituus > 0 ? line.pituus : undefined,
-        n2000depth: line.n2000HarausSyvyys && line.n2000HarausSyvyys > 0 ? line.n2000HarausSyvyys : undefined,
-        n2000draft: line.n2000MitoitusSyvays && line.n2000MitoitusSyvays > 0 ? line.n2000MitoitusSyvays : undefined,
-        direction: line.tosisuunta,
+        depth: getNumberValue(line.harausSyvyys),
+        draft: getNumberValue(line.mitoitusSyvays),
+        length: getNumberValue(line.pituus),
+        n2000depth: getNumberValue(line.n2000HarausSyvyys),
+        n2000draft: getNumberValue(line.n2000MitoitusSyvays),
         extra: line.lisatieto,
         fairways: line.vayla?.map((v) => {
           return {
