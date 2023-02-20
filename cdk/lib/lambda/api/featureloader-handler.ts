@@ -1,4 +1,4 @@
-import { ALBEvent, ALBEventQueryStringParameters, ALBResult } from 'aws-lambda';
+import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
@@ -429,9 +429,9 @@ function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
 
-function getKey(queryString: ALBEventQueryStringParameters | undefined) {
+function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined) {
   if (queryString) {
-    const key = (queryString.type || '') + (queryString.vaylaluokka ? queryString.vaylaluokka : '');
+    const key = (queryString.type?.join(',') || '') + (queryString.vaylaluokka ? queryString.vaylaluokka.join(',') : '');
     if (key !== '') {
       return key;
     }
@@ -529,8 +529,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
-  const key = getKey(event.queryStringParameters);
-  const type = event.queryStringParameters?.type || '';
+  const key = getKey(event.multiValueQueryStringParameters);
+  const type = event.multiValueQueryStringParameters?.type?.join(',') || '';
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);

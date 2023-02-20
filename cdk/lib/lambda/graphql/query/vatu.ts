@@ -227,6 +227,6 @@ export async function fetchVATUByFairwayId<T extends GeometryModel | VaylaAPIMod
 }
 
 export async function fetchVATUByFairwayClass<T extends GeometryModel | VaylaAPIModel>(api: string, event: ALBEvent) {
-  const fairwayClass = event.queryStringParameters?.vaylaluokka || '1';
+  const fairwayClass = event.multiValueQueryStringParameters?.vaylaluokka?.join(',') || '1';
   return fetchVATUByApi<T>(api, { vaylaluokka: fairwayClass });
 }

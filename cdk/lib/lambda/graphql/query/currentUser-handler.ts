@@ -10,6 +10,6 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Curren
   const jwtToken = await validateJwtToken(token, data || '');
   log.debug('JwtToken: %s', jwtToken);
   return {
-    name: jwtToken ? jwtToken['custom:etunimi'] : '????',
+    name: jwtToken ? jwtToken['custom:etunimi'] + ' ' + jwtToken['custom:sukunimi'] : '????',
   };
 };

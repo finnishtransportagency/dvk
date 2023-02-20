@@ -74,11 +74,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       jwtToken = await validateJwtToken(token, data || '');
     }
     log.debug('JwtToken: %s', jwtToken);
-    if (!jwtToken) {
+    // TODO: comment out once token received from ALB
+    /*if (!jwtToken) {
       return {
         statusCode: 403,
       };
-    }
+    }*/
     const cloudFrontPolicy = JSON.stringify({
       Statement: [
         {
