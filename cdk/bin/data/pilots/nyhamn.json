@@ -1,0 +1,11 @@
+{
+  "id": 19,
+  "name": "Nyhamn",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      19.93833,
+      59.93833
+    ]
+  }
+}

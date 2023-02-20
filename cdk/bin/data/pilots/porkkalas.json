@@ -1,0 +1,11 @@
+{
+  "id": 25,
+  "name": "Porkkala S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.19467,
+      59.89333
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": 13,
+  "name": "Pori S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.36833,
+      61.56667
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": 20,
+  "name": "Utö",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.34833,
+      59.74167
+    ]
+  }
+}

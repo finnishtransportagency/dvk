@@ -1,0 +1,11 @@
+{
+  "id": 26,
+  "name": "Helsinki S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.94833,
+      59.98333
+    ]
+  }
+}

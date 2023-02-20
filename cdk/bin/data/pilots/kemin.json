@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "Kemi N",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.44833,
+      65.55167
+    ]
+  }
+}

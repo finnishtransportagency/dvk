@@ -1,0 +1,11 @@
+{
+  "id": 4,
+  "name": "Oulu S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.28233,
+      65.11667
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id": 15,
+  "name": "Rauma S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.17917,
+      61.12083
+    ]
+  }
+}

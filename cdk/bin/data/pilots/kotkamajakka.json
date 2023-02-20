@@ -1,0 +1,11 @@
+{
+  "id": 32,
+  "name": "Kotkan majakka",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      26.60333,
+      60.16667
+    ]
+  }
+}
