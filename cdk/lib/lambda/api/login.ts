@@ -68,16 +68,18 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
     let jwtToken;
     if (event.headers) {
+      log.info({ headers: event.headers }, 'Request headers');
       const token = event.headers['x-iam-accesstoken'];
       const data = event.headers['x-iam-data'];
       jwtToken = await validateJwtToken(token, data || '');
     }
     log.debug('JwtToken: %s', jwtToken);
-    if (!jwtToken) {
+    // TODO: comment out once token received from ALB
+    /*if (!jwtToken) {
       return {
         statusCode: 403,
       };
-    }
+    }*/
     const cloudFrontPolicy = JSON.stringify({
       Statement: [
         {
@@ -100,7 +102,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
 
     const setCookieAttributes = `; Domain=${cloudFrontDnsName}; Path=/; Secure; HttpOnly; SameSite=Lax`;
 
-    const response = {
+    const response: ALBResult = {
       statusCode: 302,
       multiValueHeaders: {
         Location: [`https://${cloudFrontDnsName}/yllapito/index.html`],

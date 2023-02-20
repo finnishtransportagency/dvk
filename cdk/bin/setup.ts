@@ -83,6 +83,10 @@ async function main() {
     REACT_APP_FMI_MAP_API_KEY: envParameters.WeatherApiKey,
     REACT_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
   });
+  writeEnvFile('../admin/.env.local', {
+    REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
+    REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
+  });
 }
 
 main().catch((e) => {
