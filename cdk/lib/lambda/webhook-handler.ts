@@ -134,6 +134,12 @@ interface GithubCommit {
   modified: string[];
 }
 
+interface WebhookResponse {
+  statusCode: number;
+  body: string;
+  headers?: object;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function validateSignature(event: any): boolean {
   if (!webhookSecret) {
@@ -168,12 +174,12 @@ async function kaynnistaPipeline(pipelineName: string | undefined) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handler = async function (event: any) {
-  console.log('Full event', event);
+function validateEvent(event: any): WebhookResponse | undefined {
+  let response: WebhookResponse | undefined = undefined;
 
   const method = event.requestContext.http.method;
   if (!method || method !== 'POST') {
-    return {
+    response = {
       statusCode: 400,
       body: `Cannot process http method: ${method}`,
     };
@@ -181,7 +187,7 @@ const handler = async function (event: any) {
 
   const valid = validateSignature(event);
   if (!valid) {
-    return {
+    response = {
       statusCode: 403,
       body: `Signature isn't valid`,
     };
@@ -191,7 +197,7 @@ const handler = async function (event: any) {
   const branch = githubData.ref;
 
   if (!branch || !isDevTestProd(branch)) {
-    return {
+    response = {
       statusCode: 400,
       body: `Branch isn't deployable: ${branch}`,
     };
@@ -199,12 +205,40 @@ const handler = async function (event: any) {
 
   const commits: GithubCommit[] = githubData?.commits;
   if (!commits) {
-    return {
+    response = {
       statusCode: 404,
       body: `No commits found in payload`,
     };
   }
 
+  return response;
+}
+
+function validateCommits(folders: string[], isDockerFiles: boolean) {
+  let response: WebhookResponse | undefined = undefined;
+
+  if (!isDockerFiles && (!folders || folders.length < 1)) {
+    response = {
+      statusCode: 400,
+      body: `No suitable application files or folders in commit`,
+    };
+  }
+
+  return response;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const handler = async function (event: any) {
+  console.log('Full event', event);
+
+  let response = validateEvent(event);
+  if (response) {
+    return response;
+  }
+
+  const githubData = JSON.parse(event.body);
+  const branch = githubData.ref;
+  const commits: GithubCommit[] = githubData?.commits;
   let commitAdded: string[] = [];
   let commitRemoved: string[] = [];
   let commitModified: string[] = [];
@@ -217,11 +251,9 @@ const handler = async function (event: any) {
   const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
   const isDockerFiles = hasDockerFiles(commitAdded.concat(commitRemoved).concat(commitModified));
 
-  if (!isDockerFiles && (!folders || folders.length < 1)) {
-    return {
-      statusCode: 400,
-      body: `No suitable application files or folders in commit`,
-    };
+  response = validateCommits(folders, isDockerFiles);
+  if (response) {
+    return response;
   }
 
   // Kaynnista tarvittaessa squat-pipelinet
@@ -244,11 +276,13 @@ const handler = async function (event: any) {
     if (imagePipelineName) await kaynnistaPipeline(imagePipelineName);
   }
 
-  return {
+  response = {
     statusCode: 200,
     headers: {},
     body: JSON.stringify({ received: true }),
   };
+
+  return response;
 };
 
 export { handler };
