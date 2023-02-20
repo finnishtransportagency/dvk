@@ -56,15 +56,7 @@
       "places": [
         {
           "id": 15,
-          "name": "Rauma S",
-          "pilotJourney": 10,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              21.17917,
-              61.12083
-            ]
-          }
+          "pilotJourney": 10
         }
       ]
     },

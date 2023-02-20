@@ -66,15 +66,7 @@
       "places": [
         {
           "id": 2,
-          "name": "Kemi S",
-          "pilotJourney": 10.8,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.317,
-              65.488
-            ]
-          }
+          "pilotJourney": 10.8
         }
       ]
     },

@@ -56,15 +56,7 @@
       "places": [
         {
           "id": 25,
-          "name": "Porkkala S",
-          "pilotJourney": 12,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.19467,
-              59.89333
-            ]
-          }
+          "pilotJourney": 12
         }
       ]
     },

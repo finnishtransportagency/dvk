@@ -50,37 +50,13 @@
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 3,
-          "name": "Oulu N",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.3,
-              65.1825
-            ]
-          }
+          "id": 3
         },
         {
-          "id": 4,
-          "name": "Oulu S",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.28233,
-              65.11667
-            ]
-          }
+          "id": 4
         },
         {
-          "id": 1,
-          "name": "Kemi N",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.44833,
-              65.55167
-            ]
-          }
+          "id": 1
         }
       ]
     },

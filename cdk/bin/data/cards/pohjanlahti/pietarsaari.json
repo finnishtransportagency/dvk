@@ -61,15 +61,7 @@
       "places": [
         {
           "id": 8,
-          "name": "Pietarsaari",
-          "pilotJourney": 7,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              22.47483,
-              63.74183
-            ]
-          }
+          "pilotJourney": 7
         }
       ]
     },

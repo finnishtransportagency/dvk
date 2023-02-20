@@ -56,15 +56,7 @@
       "places": [
         {
           "id": 6,
-          "name": "Kalajoki",
-          "pilotJourney": 6.5,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              23.5,
-              64.25833
-            ]
-          }
+          "pilotJourney": 6.5
         }
       ]
     },

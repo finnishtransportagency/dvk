@@ -66,27 +66,11 @@
       "places": [
         {
           "id": 3,
-          "name": "Oulu N",
-          "pilotJourney": 31.3,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.3,
-              65.1825
-            ]
-          }
+          "pilotJourney": 31.3
         },
         {
           "id": 4,
-          "name": "Oulu S",
-          "pilotJourney": 37.8,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.28233,
-              65.11667
-            ]
-          }
+          "pilotJourney": 37.8
         }
       ]
     },
