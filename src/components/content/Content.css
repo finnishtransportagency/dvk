@@ -91,9 +91,6 @@ button.icon:focus-visible:hover {
 .wide .dropdownWrapper {
   max-width: 335px;
 }
-.contentModal .dropdownWrapper {
-  max-width: none;
-}
 .dropdownWrapper ion-input.searchBar {
   box-sizing: border-box;
   height: 45px;

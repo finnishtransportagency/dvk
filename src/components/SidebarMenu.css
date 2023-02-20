@@ -3,7 +3,7 @@
   z-index: 50000;
 }
 
-.sidebarMenu ion-row {
+.sidebarMenu .contentGrid ion-row {
   padding: 12px 22px;
   border-bottom: 1px solid var(--ion-color-lighter);
 }
@@ -16,11 +16,10 @@
   flex-direction: column;
 }
 
-.sidebarMenu .header {
-  border-bottom: 1px solid var(--ion-color-lighter);
+.sidebarMenu .contentGrid .header {
   padding: 0;
 }
-.sidebarMenu .header .logo {
+.sidebarMenu .contentGrid .header .logo {
   width: 234px;
 }
 
@@ -81,7 +80,7 @@
   margin: 0 10px;
 }
 
-.sidebarMenu ion-item {
+.sidebarMenu .contentGrid ion-item {
   color: var(--ion-color-primary);
   font-size: 12px;
   text-transform: none;
@@ -93,53 +92,52 @@
   --background-focused: unset;
   --min-height: 40px;
 }
-
-.sidebarMenu ion-item.item-disabled {
+.sidebarMenu .contentGrid ion-item.item-disabled {
   opacity: 1;
   text-decoration: none;
   font-weight: bold;
 }
-.sidebarMenu ion-item.item-disabled.external {
+.sidebarMenu .contentGrid ion-item.item-disabled.external {
   opacity: 0.5;
   text-decoration: none;
   font-weight: normal;
 }
 
-.sidebarMenu ion-item.internal {
+.sidebarMenu .contentGrid ion-item.internal {
   color: var(--ion-color-dark);
 }
 
-.sidebarMenu ion-item.ion-focused {
+.sidebarMenu .contentGrid ion-item.ion-focused {
   outline: 1px solid var(--ion-color-primary);
 }
-.sidebarMenu ion-item.ion-focused::part(native) {
+.sidebarMenu .contentGrid ion-item.ion-focused::part(native) {
   color: var(--ion-color-primary);
 }
-.sidebarMenu ion-item.internal.ion-focused {
+.sidebarMenu .contentGrid ion-item.internal.ion-focused {
   outline: 1px solid var(--ion-color-dark);
 }
-.sidebarMenu ion-item.internal.ion-focused::part(native) {
+.sidebarMenu .contentGrid ion-item.internal.ion-focused::part(native) {
   color: var(--ion-color-dark);
 }
 
-.sidebarMenu ion-item:hover {
+.sidebarMenu .contentGrid ion-item:hover {
   text-decoration: none;
 }
-.sidebarMenu ion-item:hover::part(native) {
+.sidebarMenu .contentGrid ion-item:hover::part(native) {
   color: var(--ion-color-primary);
 }
-.sidebarMenu ion-item.internal:hover::part(native) {
+.sidebarMenu .contentGrid ion-item.internal:hover::part(native) {
   color: var(--ion-color-dark);
 }
 
-.sidebarMenu ion-item ion-icon[slot="start"] {
+.sidebarMenu .contentGrid ion-item ion-icon[slot="start"] {
   width: 24px;
   height: 24px;
   margin: 0;
   margin-inline-end: 24px;
   color: var(--ion-color-primary);
 }
-.sidebarMenu ion-item ion-icon[slot="end"] {
+.sidebarMenu .contentGrid ion-item ion-icon[slot="end"] {
   width: 10px;
   height: 10px;
   margin: 0;
@@ -153,7 +151,7 @@
 .offlineSupport {
   font-size: 12px;
   line-height: 1.125rem;
-  margin: 0 22px;
+  margin: 12px 22px 0;
 }
 .offlineSupport ion-item {
   font-size: 12px;
