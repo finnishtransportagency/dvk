@@ -72,103 +72,111 @@ const SidebarMenu: React.FC = () => {
   return (
     <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
       <IonContent className="sidebarMenu">
-        <IonGrid className="ion-no-padding">
-          <IonRow className="header ion-align-items-end">
+        <IonGrid className="mainGrid ion-no-padding" style={{ height: '100%' }}>
+          <IonRow className="ion-justify-content-between" style={{ height: '100%' }}>
             <IonCol>
-              <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
+              <IonGrid className="contentGrid ion-no-padding">
+                <IonRow className="header ion-align-items-end">
+                  <IonCol>
+                    <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
+                  </IonCol>
+                  <IonCol size="auto">
+                    <IonButton
+                      fill="clear"
+                      className="closeButton"
+                      onClick={async () => menuController.close()}
+                      data-testid="closeMenu"
+                      title={t('closeMenu')}
+                      aria-label={t('closeMenu')}
+                    >
+                      <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+                <IonRow className="title">
+                  <IonCol>
+                    <IonText>
+                      <h1>{t('title')}</h1>
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+                <IonRow className="ion-direction-column">
+                  <IonCol size="auto">
+                    <IonItem
+                      routerLink="/kortit/"
+                      detail={false}
+                      lines="none"
+                      className="ion-no-padding internal"
+                      onClick={async () => menuController.close()}
+                      disabled={router.routeInfo.pathname === '/kortit/'}
+                      data-testid="fairwaysLink"
+                    >
+                      <IonIcon slot="start" src="assets/icon/fairways_icon.svg" />
+                      {t('fairway-cards')}
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="auto">
+                    <IonItem
+                      routerLink="/turvalaiteviat/"
+                      detail={false}
+                      lines="none"
+                      className="ion-no-padding internal"
+                      onClick={async () => menuController.close()}
+                      disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
+                      data-testid="faultsLink"
+                    >
+                      <IonIcon slot="start" src="assets/icon/alert_icon.svg" />
+                      {t('safety-equipment-faults')}
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="auto">
+                    <IonItem
+                      routerLink="/merivaroitukset/"
+                      detail={false}
+                      lines="none"
+                      className="ion-no-padding internal"
+                      onClick={async () => menuController.close()}
+                      disabled={router.routeInfo.pathname === '/merivaroitukset/'}
+                      data-testid="warningsLink"
+                    >
+                      <IonIcon slot="start" src="assets/icon/weather_icon.svg" />
+                      {t('marine-warnings')}
+                    </IonItem>
+                  </IonCol>
+                  <IonCol size="auto">
+                    <IonItem
+                      href={t('squat-url')}
+                      rel="external"
+                      target="_blank"
+                      detail={false}
+                      lines="none"
+                      className="ion-no-padding external"
+                      onClick={async () => menuController.close()}
+                      data-testid="squatLink"
+                      disabled={state.isOffline}
+                      tabIndex={state.isOffline ? -1 : undefined}
+                    >
+                      <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
+                      {t('squat')}
+                      <IonIcon slot="end" src="assets/icon/ext_link.svg" />
+                    </IonItem>
+                  </IonCol>
+                </IonRow>
+                <IonRow className="languageSelection">
+                  <IonCol size="12">
+                    <LanguageBar />
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
             </IonCol>
-            <IonCol size="auto">
-              <IonButton
-                fill="clear"
-                className="closeButton"
-                onClick={async () => menuController.close()}
-                data-testid="closeMenu"
-                title={t('closeMenu')}
-                aria-label={t('closeMenu')}
-              >
-                <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
-              </IonButton>
-            </IonCol>
-          </IonRow>
-          <IonRow className="title">
-            <IonCol>
-              <IonText>
-                <h1>{t('title')}</h1>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow className="ion-direction-column">
-            <IonCol size="auto">
-              <IonItem
-                routerLink="/kortit/"
-                detail={false}
-                lines="none"
-                className="ion-no-padding internal"
-                onClick={async () => menuController.close()}
-                disabled={router.routeInfo.pathname === '/kortit/'}
-                data-testid="fairwaysLink"
-              >
-                <IonIcon slot="start" src="assets/icon/fairways_icon.svg" />
-                {t('fairway-cards')}
-              </IonItem>
-            </IonCol>
-            <IonCol size="auto">
-              <IonItem
-                routerLink="/turvalaiteviat/"
-                detail={false}
-                lines="none"
-                className="ion-no-padding internal"
-                onClick={async () => menuController.close()}
-                disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
-                data-testid="faultsLink"
-              >
-                <IonIcon slot="start" src="assets/icon/alert_icon.svg" />
-                {t('safety-equipment-faults')}
-              </IonItem>
-            </IonCol>
-            <IonCol size="auto">
-              <IonItem
-                routerLink="/merivaroitukset/"
-                detail={false}
-                lines="none"
-                className="ion-no-padding internal"
-                onClick={async () => menuController.close()}
-                disabled={router.routeInfo.pathname === '/merivaroitukset/'}
-                data-testid="warningsLink"
-              >
-                <IonIcon slot="start" src="assets/icon/weather_icon.svg" />
-                {t('marine-warnings')}
-              </IonItem>
-            </IonCol>
-            <IonCol size="auto">
-              <IonItem
-                href={t('squat-url')}
-                rel="external"
-                target="_blank"
-                detail={false}
-                lines="none"
-                className="ion-no-padding external"
-                onClick={async () => menuController.close()}
-                data-testid="squatLink"
-                disabled={state.isOffline}
-                tabIndex={state.isOffline ? -1 : undefined}
-              >
-                <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
-                {t('squat')}
-                <IonIcon slot="end" src="assets/icon/ext_link.svg" />
-              </IonItem>
-            </IonCol>
-          </IonRow>
-          <IonRow className="languageSelection">
-            <IonCol size="12">
-              <LanguageBar />
+            <IonCol className="ion-align-self-end">
+              <OfflineSupport />
             </IonCol>
           </IonRow>
         </IonGrid>
       </IonContent>
 
       <IonFooter collapse="fade" className="small ion-no-border">
-        <OfflineSupport />
         <IonToolbar>
           <IonTitle size="small" slot="end">
             <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>
