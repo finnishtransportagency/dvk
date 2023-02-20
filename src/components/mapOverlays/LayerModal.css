@@ -13,7 +13,7 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
   height: 100% !important;
 }
 
-ion-modal#layerModalContainer .borderBottom {
+ion-modal#layerModalContainer .divider {
   border-bottom: 1px solid var(--ion-color-light);
 }
 
@@ -26,13 +26,19 @@ ion-modal#layerModalContainer::part(content) {
   position: static;
 }
 
-#layerModalContainer ion-grid {
+#layerModalContainer ion-grid.mainGrid {
   margin: 0 28px;
   padding: 12px 0;
 }
-.mobile #layerModalContainer ion-grid {
+.mobile #layerModalContainer ion-grid.mainGrid {
   margin: 0 16px;
   padding: 12px 0;
+}
+@media screen and (orientation:landscape) {
+  .mobile #layerModalContainer ion-grid.mainGrid ion-grid ion-list {
+    column-count: 3;
+    column-gap: 16px;
+  }
 }
 
 #layerModalContainer ion-item {
