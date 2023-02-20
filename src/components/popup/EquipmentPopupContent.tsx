@@ -91,8 +91,12 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             <IonRow>
               <IonCol>
                 {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
-                {equipment.properties.subType && equipment.properties.aisType === 1 ? `${', ' + equipment.properties.subType.toLowerCase()}` : ''}
-                {equipment.properties.aisType !== 1 ? `${', ' + t('popup.equipment.type' + equipment.properties.aisType)}` : ''}
+                {equipment.properties.subType && (equipment.properties.aisType === undefined || equipment.properties.aisType === 1)
+                  ? `${', ' + equipment.properties.subType.toLowerCase()}`
+                  : ''}
+                {equipment.properties.aisType !== undefined && equipment.properties.aisType !== 1
+                  ? `${', ' + t('popup.equipment.type' + equipment.properties.aisType)}`
+                  : ''}
               </IonCol>
             </IonRow>
           </>
