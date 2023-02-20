@@ -36,10 +36,13 @@ export class AdminPipeline extends Construct {
       stageName: 'Source',
       actions: [sourceAction],
     });
-
+    const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
     const adminBuildProject = new codebuild.PipelineProject(this, 'AdminBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
+        environmentVariables: {
+          REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
+        },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
