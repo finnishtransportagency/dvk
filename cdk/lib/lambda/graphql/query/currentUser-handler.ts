@@ -4,7 +4,7 @@ import { validateJwtToken } from '../../api/login';
 import { log } from '../../logger';
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<CurrentUser> => {
-  log.info(`currentUser(${event.identity})`);
+  log.info({ headers: event.request.headers }, `currentUser(${event.identity})`);
   const token = event.request.headers['x-iam-accesstoken'];
   const data = event.request.headers['x-iam-data'];
   const jwtToken = await validateJwtToken(token, data || '');

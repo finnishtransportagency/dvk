@@ -67,11 +67,13 @@ export const validateJwtToken = async (token: string | undefined, dataToken: str
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
     let jwtToken;
-    if (event.headers) {
-      log.info({ headers: event.headers }, 'Request headers');
-      const token = event.headers['x-iam-accesstoken'];
-      const data = event.headers['x-iam-data'];
-      jwtToken = await validateJwtToken(token, data || '');
+    if (event.multiValueHeaders) {
+      log.info({ headers: event.multiValueHeaders }, 'Request headers');
+      const token = event.multiValueHeaders['x-iam-accesstoken'];
+      const data = event.multiValueHeaders['x-iam-data'];
+      if (token && data) {
+        jwtToken = await validateJwtToken(token[0], data[0]);
+      }
     }
     log.debug('JwtToken: %s', jwtToken);
     // TODO: comment out once token received from ALB
