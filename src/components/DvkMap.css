@@ -61,7 +61,7 @@
 .dvkMap.mobile .searchbarControlContainer {
   left: calc(16px + 42px + 16px);
   top: 23px;
-  max-width: calc(100% - 16px * 3 - 42px);
+  max-width: min(273px, calc(100% - 16px * 3 - 42px));
 }
 .dvkMap .searchbarControlContainer input {
   width: 333px;
