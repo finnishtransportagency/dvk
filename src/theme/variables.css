@@ -138,6 +138,32 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-lightest-contrast-rgb: 0,0,0;
   --ion-color-lightest-shade: #dadada;
   --ion-color-lightest-tint: #f9f9f9;
+
+  /** common **/
+  --ion-color-layer-line: #0000ff;
+  --ion-color-layer-boardline: #000000;
+  --ion-color-layer-safetyequipment: #231f20;
+  --ion-color-layer-depth: #ff00ff;
+  --ion-color-layer-speedlimit-border: #d72416;
+  --ion-color-layer-speedlimit-text: #000000;
+  --ion-color-layer-ice: #969696;
+  --ion-color-speedlimit-30: #00b0cc;
+  --ion-color-speedlimit-25: #8dcb6d;
+  --ion-color-speedlimit-20: #ffc300;
+  --ion-color-speedlimit-15: #ff5100;
+  --ion-color-speedlimit-10: #c73f00;
+  --ion-color-speedlimit-5: #e50083;
+  --ion-color-ice-free: #ffffff;
+  --ion-color-ice-new: #ffafff;
+  --ion-color-ice-thin: #ff64ff;
+  --ion-color-ice-fast: #969696;
+  --ion-color-ice-rotten: #6473a0;
+  --ion-color-ice-openwater: #96c8ff;
+  --ion-color-ice-veryopen: #8cffa0;
+  --ion-color-ice-open: #ffff00;
+  --ion-color-ice-close: #ff7d07;
+  --ion-color-ice-veryclose: #ff0000;
+  --ion-color-ice-consolidated: #910000;
 }
 
 @media (prefers-color-scheme: dark) {
