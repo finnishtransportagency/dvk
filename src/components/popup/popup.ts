@@ -75,6 +75,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const style = function (feature: FeatureLike, resolution: number) {
     const type = feature.getProperties().featureType;
     const dataSource = feature.getProperties().dataSource;
+    const selected: boolean | undefined = feature.getProperties().selected;
     if (type === 'quay') {
       return getQuayStyle(feature, resolution, true);
     } else if (type === 'harbor') {
@@ -82,9 +83,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'pilot') {
       return getPilotStyle(true);
     } else if (type === 'area' && dataSource === 'area12') {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+      return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
     } else if (type === 'area' && dataSource === 'area3456') {
-      return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
+      return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
     } else if (type === 'specialarea') {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true);
     } else if (type === 'line') {
