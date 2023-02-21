@@ -71,15 +71,7 @@
       "places": [
         {
           "id": 1,
-          "name": "Kemi N",
-          "pilotJourney": 22.5,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.44833,
-              65.55167
-            ]
-          }
+          "pilotJourney": 22.5
         }
       ]
     },

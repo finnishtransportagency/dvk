@@ -45,15 +45,7 @@
       "places": [
         {
           "id": 13,
-          "name": "Pori S",
-          "pilotJourney": 4,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              21.36833,
-              61.56667
-            ]
-          }
+          "pilotJourney": 4
         }
       ]
     },

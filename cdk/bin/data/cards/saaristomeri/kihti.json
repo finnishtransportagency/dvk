@@ -40,15 +40,7 @@
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 19,
-          "name": "Nyhamn",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              19.93833,
-              59.93833
-            ]
-          }
+          "id": 19
         }
       ]
     },

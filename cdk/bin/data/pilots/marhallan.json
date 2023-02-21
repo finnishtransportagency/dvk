@@ -1,0 +1,11 @@
+{
+  "id": 18,
+  "name": "Marhällan",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      19.842,
+      60.016
+    ]
+  }
+}

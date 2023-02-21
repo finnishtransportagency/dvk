@@ -65,15 +65,7 @@
       },
       "places": [
         {
-          "id": 43,
-          "name": "Oulu W",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.055,
-              65.0835
-            ]
-          }
+          "id": 43
         }
       ]
     },

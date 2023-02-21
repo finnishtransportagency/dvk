@@ -1,0 +1,11 @@
+{
+  "id": 6,
+  "name": "Kalajoki",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      23.5,
+      64.25833
+    ]
+  }
+}

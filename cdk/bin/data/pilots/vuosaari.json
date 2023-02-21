@@ -1,0 +1,11 @@
+{
+  "id": 28,
+  "name": "Vuosaari",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      25.16317,
+      60.08267
+    ]
+  }
+}

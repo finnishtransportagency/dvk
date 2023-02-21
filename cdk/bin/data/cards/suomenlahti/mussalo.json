@@ -36,15 +36,7 @@
       "places": [
         {
           "id": 32,
-          "name": "Kotkan majakka",
-          "pilotJourney": 20,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              26.60333,
-              60.16667
-            ]
-          }
+          "pilotJourney": 20
         }
       ]
     },

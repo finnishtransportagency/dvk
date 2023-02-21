@@ -1,0 +1,11 @@
+{
+  "id": 11,
+  "name": "Kaskinen",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.08517,
+      62.2585
+    ]
+  }
+}

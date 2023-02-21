@@ -1,0 +1,11 @@
+{
+  "id": 16,
+  "name": "Isokari NW",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.905,
+      60.735
+    ]
+  }
+}

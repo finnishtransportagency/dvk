@@ -51,15 +51,7 @@
       "places": [
         {
           "id": 20,
-          "name": "Utö",
-          "pilotJourney": 65,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              21.34833,
-              59.74167
-            ]
-          }
+          "pilotJourney": 65
         }
       ]
     },

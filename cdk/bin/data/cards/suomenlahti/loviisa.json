@@ -41,15 +41,7 @@
       "places": [
         {
           "id": 31,
-          "name": "Orrengrund",
-          "pilotJourney": 12,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              26.42267,
-              60.23833
-            ]
-          }
+          "pilotJourney": 12
         }
       ]
     },

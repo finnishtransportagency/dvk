@@ -66,27 +66,11 @@
       "places": [
         {
           "id": 9,
-          "name": "Vaasa N",
-          "pilotJourney": 24,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              20.85317,
-              63.26283
-            ]
-          }
+          "pilotJourney": 24
         },
         {
           "id": 10,
-          "name": "Vaasa S",
-          "pilotJourney": 24,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              20.75633,
-              63.20167
-            ]
-          }
+          "pilotJourney": 24
         }
       ]
     },

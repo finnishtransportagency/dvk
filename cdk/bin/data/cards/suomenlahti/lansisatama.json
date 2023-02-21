@@ -56,15 +56,7 @@
       "places": [
         {
           "id": 26,
-          "name": "Helsinki S",
-          "pilotJourney": 10,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              24.94833,
-              59.98333
-            ]
-          }
+          "pilotJourney": 10
         }
       ]
     },

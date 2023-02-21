@@ -51,27 +51,11 @@
       "places": [
         {
           "id": 18,
-          "name": "Marhällan",
-          "pilotJourney": 5.7,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              19.842,
-              60.016
-            ]
-          }
+          "pilotJourney": 5.7
         },
         {
           "id": 19,
-          "name": "Nyhamn",
-          "pilotJourney": 10,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              19.93833,
-              59.93833
-            ]
-          }
+          "pilotJourney": 10
         }
       ]
     },

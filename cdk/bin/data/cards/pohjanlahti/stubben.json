@@ -55,15 +55,7 @@
       },
       "places": [
         {
-          "id": 8,
-          "name": "Pietarsaari",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              22.47483,
-              63.74183
-            ]
-          }
+          "id": 8
         }
       ]
     },

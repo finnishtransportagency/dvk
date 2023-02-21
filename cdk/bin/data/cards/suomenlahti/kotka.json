@@ -35,15 +35,7 @@
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 31,
-          "name": "Orrengrund",
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              26.42267,
-              60.23833
-            ]
-          }
+          "id": 31
         }
       ]
     },

@@ -1,5 +1,4 @@
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -17,7 +16,7 @@ export type FairwayDBModel = {
   geotiffImages?: string[];
 };
 
-export type TrafficService = {
+export type TrafficServiceDBModel = {
   pilot?: Pilot;
   vts?: VTS[];
   tugs?: Tug[];
@@ -53,10 +52,7 @@ export type Pilot = {
 
 export type PilotPlace = {
   id: number;
-  name: string;
   pilotJourney?: number;
-  geometry: GeometryPoint;
-  fairwayCards?: FairwayCardIdName[];
 };
 
 export type FairwayCardIdName = {
@@ -112,7 +108,7 @@ class FairwayCardDBModel {
 
   windRecommendation?: Text;
 
-  trafficService?: TrafficService;
+  trafficService?: TrafficServiceDBModel;
 
   harbors?: Harbor[];
 

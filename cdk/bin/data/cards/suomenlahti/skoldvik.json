@@ -41,15 +41,7 @@
       "places": [
         {
           "id": 29,
-          "name": "Emäsalo S",
-          "pilotJourney": 21,
-          "geometry": {
-            "type": "Point",
-            "coordinates": [
-              25.54367,
-              60.00017
-            ]
-          }
+          "pilotJourney": 21
         }
       ]
     },

@@ -85,12 +85,7 @@
       "places": [
         {
           "id": 0,
-          "name": "",
-          "pilotJourney": 0,
-          "geometry": {
-            "type": "Point",
-            "coordinates": []
-          }
+          "pilotJourney": 0
         }
       ]
     },

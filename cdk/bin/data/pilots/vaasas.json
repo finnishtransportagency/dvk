@@ -1,0 +1,11 @@
+{
+  "id": 10,
+  "name": "Vaasa S",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      20.75633,
+      63.20167
+    ]
+  }
+}
