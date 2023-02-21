@@ -32,7 +32,7 @@ async function processCard(file: string): Promise<FairwayCardDBModel> {
 
 function processHarborOrPilotPlace(file: string): HarborDBModel | PilotPlaceDBModel {
   const jsonObj: HarborDBModel | PilotPlaceDBModel = JSON.parse(fs.readFileSync(file).toString());
-  if ('fairwayCards' in jsonObj) {
+  if ('geometry' in jsonObj) {
     console.log(`PilotPlace: ${jsonObj.name}`);
   } else {
     console.log(`Harbor: ${jsonObj.name?.fi}`);
