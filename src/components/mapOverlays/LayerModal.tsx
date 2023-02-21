@@ -6,6 +6,7 @@ import './LayerModal.css';
 import { MAP } from '../../utils/constants';
 import { refreshPrintableMap } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
+import arrowDownIcon from '../../theme/img/arrow_down.svg';
 
 interface ModalProps {
   isOpen: boolean;
@@ -24,11 +25,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
+  const [legends, setLegends] = useState<string[]>([]);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
   };
   const dvkMap = getMap();
+
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
@@ -37,8 +40,174 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setTimeout(refreshPrintableMap, 100);
   }, [layers, dvkMap]);
 
+  const LegendSpeedlimits = () => {
+    return (
+      <IonGrid className="legend speedlimit ion-no-padding">
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                30-26{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit30"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                25-21{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit25"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                20-16{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit20"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                15-11{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit15"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                10-6{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit10"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>
+                5-1{' '}
+                <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
+                  km/h
+                </span>
+              </IonText>
+              <IonText slot="start" className="def limit5"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    );
+  };
+
+  const LegendIce = () => {
+    return (
+      <IonGrid className="legend ice ion-no-padding">
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.icefree')}</IonText>
+              <IonText slot="start" className="def icefree"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.newice')}</IonText>
+              <IonText slot="start" className="def newice"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.thinice')}</IonText>
+              <IonText slot="start" className="def thinice"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.fastice')}</IonText>
+              <IonText slot="start" className="def fastice"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.rottenice')}</IonText>
+              <IonText slot="start" className="def rottenice"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.openwater')}</IonText>
+              <IonText slot="start" className="def openwater"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.veryopenice')}</IonText>
+              <IonText slot="start" className="def veryopenice"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.openice')}</IonText>
+              <IonText slot="start" className="def openice"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.closeice')}</IonText>
+              <IonText slot="start" className="def closeice"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.verycloseice')}</IonText>
+              <IonText slot="start" className="def verycloseice"></IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText>{t('homePage.map.controls.layer.legend.consolidatedice')}</IonText>
+              <IonText slot="start" className="def consolidatedice"></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol></IonCol>
+        </IonRow>
+      </IonGrid>
+    );
+  };
+
   const LayerItem: React.FC<CheckBoxProps> = ({ id, title, noOfflineSupport }) => {
     const { state } = useDvkContext();
+    const [legendOpen, setLegendOpen] = useState(false);
 
     useEffect(() => {
       if (noOfflineSupport && layers.includes(id) && state.isOffline) {
@@ -48,24 +217,63 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       }
     }, [id, noOfflineSupport, state.isOffline]);
 
-    return (
-      <IonItem>
-        <IonText className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>{title}</IonText>
-        <IonCheckbox
-          value={id}
-          checked={layers.includes(id)}
-          slot="start"
-          onClick={() =>
-            setLayers((prev) => {
-              if (prev.includes(id)) {
-                return [...prev.filter((p) => p !== id)];
-              }
-              return [...prev, id];
-            })
+    const toggleDetails = () => {
+      setLegendOpen(!legendOpen);
+      setTimeout(() => {
+        setLegends((prev) => {
+          if (prev.includes(id)) {
+            return [...prev.filter((l) => l !== id)];
           }
-          disabled={noOfflineSupport && state.isOffline}
-        />
-      </IonItem>
+          return [...prev, id];
+        });
+      }, 250);
+    };
+
+    return (
+      <IonGrid className="ion-no-padding layerItem">
+        <IonRow>
+          <IonCol>
+            <IonItem>
+              <IonText className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>{title}</IonText>
+              <IonCheckbox
+                value={id}
+                checked={layers.includes(id)}
+                slot="start"
+                onClick={() =>
+                  setLayers((prev) => {
+                    if (prev.includes(id)) {
+                      return [...prev.filter((p) => p !== id)];
+                    }
+                    return [...prev, id];
+                  })
+                }
+                disabled={noOfflineSupport && state.isOffline}
+              />
+              <IonText slot="end" className={'layer ' + id}></IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol size="auto">
+            {(id === 'speedlimit' || id === 'ice') && (
+              <IonButton
+                fill="clear"
+                className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
+                aria-label={legendOpen || legends.includes(id) ? t('common.close') : t('common.open')}
+                onClick={() => toggleDetails()}
+              >
+                <IonIcon icon={arrowDownIcon} />
+              </IonButton>
+            )}
+          </IonCol>
+        </IonRow>
+        {(id === 'speedlimit' || id === 'ice') && (
+          <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
+            <IonCol>
+              {id === 'speedlimit' && <LegendSpeedlimits />}
+              {id === 'ice' && <LegendIce />}
+            </IonCol>
+          </IonRow>
+        )}
+      </IonGrid>
     );
   };
 

@@ -44,6 +44,19 @@
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
             "seaButtonLabel": "Meri"
+          },
+          "legend": {
+            "icefree": "Jäätön",
+            "newice": "Uusi jää",
+            "thinice": "Ohut tasainen jää",
+            "fastice": "Kiintojää",
+            "rottenice": "Hauras kiintojää",
+            "openwater": "Avovesi",
+            "veryopenice": "Hyvin harva ajojää",
+            "openice": "Harva ajojää",
+            "closeice": "Tiheä ajojää",
+            "verycloseice": "Hyvin tiheä ajojää",
+            "consolidatedice": "Yhteenjäätynyt ajojää"
           }
         },
         "mapDetails": {
@@ -339,6 +352,7 @@
     "hidePane": "Piilota",
     "showPane": "Näytä",
     "back": "Takaisin",
+    "open": "Avaa",
     "close": "Sulje",
     "close-dialog": "Sulje ilmoitus",
     "noData": "Tietoa ei ole saatavilla.",

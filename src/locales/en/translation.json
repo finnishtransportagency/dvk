@@ -44,6 +44,19 @@
             "header": "Map style",
             "landButtonLabel": "Land",
             "seaButtonLabel": "Sea"
+          },
+          "legend": {
+            "icefree": "Ice free",
+            "newice": "New ice",
+            "thinice": "Thin level ice",
+            "fastice": "Fast ice",
+            "rottenice": "Rotten fast ice",
+            "openwater": "Open water",
+            "veryopenice": "Very open ice",
+            "openice": "Open ice",
+            "closeice": "Close ice",
+            "verycloseice": "Very close or compact ice",
+            "consolidatedice": "Consolidated ice"
           }
         },
         "mapDetails": {
@@ -339,6 +352,7 @@
     "hidePane": "Hide",
     "showPane": "Show",
     "back": "Back",
+    "open": "Open",
     "close": "Close",
     "close-dialog": "Close dialog",
     "noData": "Data is not available.",

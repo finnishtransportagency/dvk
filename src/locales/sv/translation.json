@@ -44,6 +44,19 @@
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
             "seaButtonLabel": "Hav"
+          },
+          "legend": {
+            "icefree": "Isfritt",
+            "newice": "Nyis",
+            "thinice": "Tunn jämn is",
+            "fastice": "Fastis",
+            "rottenice": "Rutten fastis",
+            "openwater": "Öppet vatten",
+            "veryopenice": "Mycket spridd drivis",
+            "openice": "Spridd drivis",
+            "closeice": "Tät drivis",
+            "verycloseice": "Mycket tät / kompakt drivis",
+            "consolidatedice": "Sammanfrusen drivis"
           }
         },
         "mapDetails": {
@@ -339,6 +352,7 @@
     "hidePane": "Göm",
     "showPane": "Visa",
     "back": "[sv] Takaisin",
+    "open": "Öppna",
     "close": "Stäng",
     "close-dialog": "Stäng dialogrutan",
     "noData": "Ingen data eller information saknas.",
