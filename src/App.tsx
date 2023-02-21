@@ -10,7 +10,7 @@ import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persi
 import { Drivers, Storage } from '@ionic/storage';
 import IonicAsyncStorage from './utils/IonicAsyncStorage';
 import { OFFLINE_STORAGE } from './utils/constants';
-import { InitDvkMap } from './components/DvkMap';
+import { getMap, InitDvkMap } from './components/DvkMap';
 import {
   useLine12Layer,
   useLine3456Layer,
@@ -28,7 +28,9 @@ import {
   useMareographLayer,
   useObservationLayer,
   useBuoyLayer,
-  useBackgroundLayer,
+  useBackgroundFinlandLayer,
+  useBackgroundMmlmeriLayer,
+  useBackgroundBalticseaLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -106,7 +108,9 @@ const DvkIonApp: React.FC = () => {
   const mareographLayer = useMareographLayer();
   const observationLayer = useObservationLayer();
   const buoyLayer = useBuoyLayer();
-  const bgLayer = useBackgroundLayer();
+  const bgFinlandLayer = useBackgroundFinlandLayer();
+  const bgBalticseaLayer = useBackgroundBalticseaLayer();
+  const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -115,7 +119,7 @@ const DvkIonApp: React.FC = () => {
 
   useEffect(() => {
     let percent = 0;
-    const resourcePercentage = 1 / 18;
+    const resourcePercentage = 1 / 20;
     if (line12Layer.ready) percent += resourcePercentage;
     if (line3456Layer.ready) percent += resourcePercentage;
     if (area12Layer.ready) percent += resourcePercentage;
@@ -133,7 +137,9 @@ const DvkIonApp: React.FC = () => {
     if (mareographLayer.ready) percent += resourcePercentage;
     if (observationLayer.ready) percent += resourcePercentage;
     if (buoyLayer.ready) percent += resourcePercentage;
-    if (bgLayer.ready) percent += resourcePercentage;
+    if (bgFinlandLayer.ready) percent += resourcePercentage;
+    if (bgBalticseaLayer.ready) percent += resourcePercentage;
+    if (bgMmlmeriLayer.ready) percent += resourcePercentage;
     setPercentDone(Math.round(percent * 100) / 100);
 
     setFetchError(
@@ -154,7 +160,9 @@ const DvkIonApp: React.FC = () => {
         mareographLayer.isError ||
         observationLayer.isError ||
         buoyLayer.isError ||
-        bgLayer.isError
+        bgFinlandLayer.isError ||
+        bgBalticseaLayer.isError ||
+        bgMmlmeriLayer.isError
     );
 
     if (
@@ -175,7 +183,9 @@ const DvkIonApp: React.FC = () => {
       mareographLayer.ready &&
       observationLayer.ready &&
       buoyLayer.ready &&
-      bgLayer.ready
+      bgFinlandLayer.ready &&
+      bgBalticseaLayer.ready &&
+      bgMmlmeriLayer.ready
     ) {
       setInitDone(true);
     }
@@ -197,7 +207,9 @@ const DvkIonApp: React.FC = () => {
     mareographLayer,
     observationLayer,
     buoyLayer,
-    bgLayer,
+    bgFinlandLayer,
+    bgBalticseaLayer,
+    bgMmlmeriLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -213,6 +225,18 @@ const DvkIonApp: React.FC = () => {
   useEffect(() => {
     setModalOpen(modalContent !== '');
   }, [modalContent]);
+
+  const dvkMap = getMap();
+
+  useEffect(() => {
+    if (dvkMap.initialized) {
+      if (state.isOffline) {
+        dvkMap.setOfflineMode(true);
+      } else {
+        dvkMap.setOfflineMode(false);
+      }
+    }
+  }, [dvkMap, state.isOffline]);
 
   return (
     <IonApp className={appClasses.join(' ')}>

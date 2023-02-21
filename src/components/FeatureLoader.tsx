@@ -51,41 +51,78 @@ export function useNameLayer() {
   return useDataLayer('name', 'name', MAP.EPSG);
 }
 
-export function useBackgroundLayer() {
+export function useBackgroundFinlandLayer() {
   const [ready, setReady] = useState(false);
-  const baQuery = useFeatureData('balticsea', true, false);
   const fiQuery = useFeatureData('finland', true, false);
-  const mmlmeriQuery = useFeatureData('mml_meri', true, false);
-  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt, fiQuery.dataUpdatedAt, mmlmeriQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt, fiQuery.errorUpdatedAt, mmlmeriQuery.errorUpdatedAt);
-  const isPaused = baQuery.isPaused || fiQuery.isPaused || mmlmeriQuery.isPaused;
-  const isError = baQuery.isError || fiQuery.isError || mmlmeriQuery.isError;
+  const dataUpdatedAt = Math.max(fiQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(fiQuery.errorUpdatedAt);
+  const isPaused = fiQuery.isPaused;
+  const isError = fiQuery.isError;
 
   useEffect(() => {
-    if (baQuery.data && fiQuery.data && mmlmeriQuery.data) {
+    if (fiQuery.data) {
       const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        let features = format.readFeatures(baQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         const source = layer.getSource() as VectorSource;
         source.clear();
-        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'balticsea' }, true));
+        const features = format.readFeatures(fiQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
         source.addFeatures(features);
-        features = format.readFeatures(fiQuery.data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'finland' }, true));
-        source.addFeatures(features);
-        // features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        // features.forEach((f) => f.setProperties({ dataSource: 'background', dataId: 'mml_meri' }, true));
-        // source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
-      dvkMap.olMap
-        ?.getAllLayers()
-        .filter((l) => l.get('type') === 'background')
-        .forEach((l) => l.setVisible(true));
       setReady(true);
     }
-  }, [baQuery.data, fiQuery.data, mmlmeriQuery.data, dataUpdatedAt]);
+  }, [fiQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useBackgroundMmlmeriLayer() {
+  const [ready, setReady] = useState(false);
+  const mmlmeriQuery = useFeatureData('mml_meri', true, false);
+  const dataUpdatedAt = Math.max(mmlmeriQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(mmlmeriQuery.errorUpdatedAt);
+  const isPaused = mmlmeriQuery.isPaused;
+  const isError = mmlmeriQuery.isError;
+
+  useEffect(() => {
+    if (mmlmeriQuery.data) {
+      const layer = dvkMap.olMap?.getLayers().getArray()[1] as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [mmlmeriQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useBackgroundBalticseaLayer() {
+  const [ready, setReady] = useState(false);
+  const baQuery = useFeatureData('balticsea', true, false);
+  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt);
+  const isPaused = baQuery.isPaused;
+  const isError = baQuery.isError;
+
+  useEffect(() => {
+    if (baQuery.data) {
+      const layer = dvkMap.olMap?.getLayers().getArray()[2] as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(baQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [baQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
