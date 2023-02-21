@@ -18,6 +18,7 @@ import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
+import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthStyle } from './layerStyles/depthStyles';
@@ -37,11 +38,18 @@ const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
 const specialAreaSelectedImage = new Image();
 specialAreaSelectedImage.src = specialareaSelected;
+const specialAreaSelectedImage2 = new Image();
+specialAreaSelectedImage2.src = specialareaSelected2;
 
-export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean) {
+export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean, selected2 = false) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  const gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
+  let gradient;
+  if (selected2) {
+    gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
+  } else {
+    gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
+  }
   return [
     new Style({
       image: new Icon({
@@ -393,6 +401,7 @@ export function unsetSelectedFairwayCard() {
         break;
     }
   }
+  selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false, true));
   selectedFairwayCardSource.clear();
   quaySource.clear();
 }
@@ -525,7 +534,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       addHarbor(harbor, harborSource, quaySource);
       addQuay(harbor, quaySource);
     }
-
+    fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
     const extent = olExtent.createEmpty();
