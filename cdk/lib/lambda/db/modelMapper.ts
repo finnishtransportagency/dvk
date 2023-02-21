@@ -1,5 +1,5 @@
-import { Fairway, FairwayCard } from '../../../graphql/generated';
-import FairwayCardDBModel, { FairwayDBModel, TrafficService } from './fairwayCardDBModel';
+import { Fairway, FairwayCard, TrafficService } from '../../../graphql/generated';
+import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
@@ -24,7 +24,7 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   return fairway;
 }
 
-function mapTrafficService(service: TrafficService | undefined, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
+function mapTrafficService(service: TrafficServiceDBModel | undefined, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
   return {
     pilot: {
       email: service?.pilot?.email,

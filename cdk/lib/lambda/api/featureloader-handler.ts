@@ -2,7 +2,7 @@ import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aw
 import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { FairwayCardIdName, PilotPlace } from '../db/fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
 import { gzip } from 'zlib';
 import {
   AlueAPIModel,
@@ -19,6 +19,7 @@ import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
+import PilotPlaceDBModel from '../db/pilotPlaceDBModel';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -68,17 +69,18 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
 }
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const placeMap = new Map<number, PilotPlace>();
+  const placeMap = new Map<number, PilotPlaceDBModel>();
   const cards = await FairwayCardDBModel.getAll();
+  const pilots = await PilotPlaceDBModel.getAll();
+  for (const pilot of pilots) {
+    pilot.fairwayCards = [];
+    placeMap.set(pilot.id, pilot);
+  }
   for (const card of cards) {
     const pilot = card.trafficService?.pilot;
     if (pilot && pilot.places) {
       for (const place of pilot.places) {
-        if (!placeMap.has(place.id)) {
-          placeMap.set(place.id, place);
-          place.fairwayCards = [];
-        }
-        placeMap.get(place.id)?.fairwayCards?.push({ id: card.id, name: card.name });
+        placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
       }
     }
   }
