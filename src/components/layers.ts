@@ -41,12 +41,11 @@ specialAreaSelectedImage.src = specialareaSelected;
 const specialAreaSelectedImage2 = new Image();
 specialAreaSelectedImage2.src = specialareaSelected2;
 
-export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean) {
+export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean, selected2 = false) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   let gradient;
-  const selectedFairwayCardLayer: boolean | undefined = feature.getProperties().selected;
-  if (selectedFairwayCardLayer) {
+  if (selected2) {
     gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
   } else {
     gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');

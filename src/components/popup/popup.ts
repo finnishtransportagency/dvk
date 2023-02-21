@@ -87,7 +87,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'area' && dataSource === 'area3456') {
       return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
     } else if (type === 'specialarea') {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true);
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
