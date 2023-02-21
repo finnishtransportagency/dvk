@@ -2,7 +2,6 @@ import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { GeometryPoint } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
-import { FairwayCardIdName } from './fairwayCardDBModel';
 
 const pilotPlaceTable = process.env.PILOTPLACE_TABLE;
 
@@ -12,8 +11,6 @@ class PilotPlaceDBModel {
   name: string;
 
   geometry: GeometryPoint;
-
-  fairwayCards: FairwayCardIdName[] = [];
 
   static async getAll(): Promise<PilotPlaceDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: pilotPlaceTable }));
