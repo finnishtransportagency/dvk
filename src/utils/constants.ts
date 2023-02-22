@@ -87,8 +87,7 @@ export type FeatureDataLayerId =
   | 'mareograph'
   | 'ice'
   | 'observation'
-  | 'buoy'
-  | 'background';
+  | 'buoy';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
