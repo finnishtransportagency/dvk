@@ -2,7 +2,7 @@ import { Fairway, FairwayCard, TrafficService } from '../../../graphql/generated
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
-export function mapFairwayIds(dbModel: FairwayCardDBModel) {
+export function mapFairwayIds(dbModel: FairwayCardDBModel | FairwayCard) {
   return `#${dbModel.fairways?.map((f) => f.id).join('#')}#`;
 }
 

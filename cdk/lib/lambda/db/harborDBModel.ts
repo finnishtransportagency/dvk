@@ -1,4 +1,4 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { GeometryPoint } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
@@ -61,6 +61,10 @@ class HarborDBModel {
     }
     log.debug('No harbors found');
     return [];
+  }
+
+  static async save(data: HarborDBModel) {
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data }));
   }
 }
 

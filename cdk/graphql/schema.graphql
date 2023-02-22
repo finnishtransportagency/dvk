@@ -1,5 +1,6 @@
 schema { 
   query: Query
+  mutation: Mutation
 }
 
 type Query {
@@ -9,6 +10,29 @@ type Query {
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
+  pilotPlaces: [PilotPlace!]!
+  harbors: [Harbor!]!
+  harbor(id: String!): Harbor
+  fairways: [Fairway!]!
+  fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
+}
+
+type Mutation {
+  saveFairwayCard(card: FairwayCard): FairwayCard
+  saveHarbor(harbor: Harbor): Harbor
+}
+
+type FairwayCardOrHarbor {
+  id: ID!
+  type: Int!
+  name: Text
+  group: String
+  fairwayIds: [Int!]
+  n2000HeightSystem: Boolean!
+  status: Int!
+  creator: String
+  modifier: String
+  modificationTimestamp: Float
 }
 
 type CurrentUser {

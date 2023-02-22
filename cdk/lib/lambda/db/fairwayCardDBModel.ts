@@ -1,4 +1,4 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -151,6 +151,10 @@ class FairwayCardDBModel {
       }
     }
     return fairwayCards;
+  }
+
+  static async save(data: FairwayCardDBModel) {
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: fairwayCardTable, Item: data }));
   }
 }
 
