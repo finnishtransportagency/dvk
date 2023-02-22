@@ -9,8 +9,9 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import { Drivers, Storage } from '@ionic/storage';
 import IonicAsyncStorage from './utils/IonicAsyncStorage';
-import { OFFLINE_STORAGE } from './utils/constants';
 import { getMap, InitDvkMap } from './components/DvkMap';
+import { Lang, OFFLINE_STORAGE } from './utils/constants';
+
 import {
   useLine12Layer,
   useLine3456Layer,
@@ -90,7 +91,9 @@ store.create();
 const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
 
 const DvkIonApp: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
+
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -221,6 +224,7 @@ const DvkIonApp: React.FC = () => {
   if (isMobile()) appClasses.push('mobile');
   if (state.isOffline) appClasses.push('offline');
   if (!modalContent) appClasses.push('fullMap');
+  if (lang === 'en') appClasses.push('en');
 
   useEffect(() => {
     setModalOpen(modalContent !== '');

@@ -17,7 +17,6 @@ ion-text.no-margin-top > *:first-child {
   margin-top: 0 !important;
 }
 ion-text.disabled {
-  text-decoration: line-through;
   opacity: 0.5;
 }
 
