@@ -69,6 +69,7 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
   if (event.arguments.harbor?.id) {
     const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel);
+    log.debug('harbor: %o', newModel);
     await HarborDBModel.save(newModel);
     return newModel;
   }
