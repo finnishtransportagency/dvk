@@ -27,6 +27,7 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined): 
   return {
     id: harbor.id,
     name: harbor.name,
+    status: harbor.status,
     company: mapText(harbor.company),
     creator: old ? old.creator : 'Erkki Esimerkki',
     creationTimestamp: old ? old.creationTimestamp : Date.now(),

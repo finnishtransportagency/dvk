@@ -1,4 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -73,6 +74,8 @@ class FairwayCardDBModel {
   id: string;
 
   name: Text;
+
+  status?: Status;
 
   n2000HeightSystem?: boolean;
 

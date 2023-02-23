@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint } from '../../../graphql/generated';
+import { GeometryPoint, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
@@ -22,6 +22,8 @@ export type Section = {
 
 class HarborDBModel {
   id: string;
+
+  status?: Status;
 
   n2000HeightSystem?: boolean;
 

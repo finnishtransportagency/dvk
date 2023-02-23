@@ -27,7 +27,7 @@ input FairwayCardInput {
   name: TextInput!
   n2000HeightSystem: Boolean!
   group: String!
-  status: Status
+  status: Status!
   fairwayIds: [Float!]!
   lineText: TextInput
   designSpeed: TextInput

@@ -28,6 +28,7 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
   return {
     id: card.id,
     name: card.name,
+    status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: map<string>(card.group),
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
@@ -101,6 +102,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   if (event.arguments.card?.id) {
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel);
+    log.debug('card: %o', newModel);
     await FairwayCardDBModel.save(newModel);
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap);
