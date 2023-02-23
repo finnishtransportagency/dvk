@@ -131,7 +131,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
           </IonCol>
           <IonCol>
             <IonItem>
-              <IonText>{t('homePage.map.controls.layer.legend.newice')}</IonText>
+              <IonText>
+                {t('homePage.map.controls.layer.legend.newice')} (&lt; 5{' '}
+                <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
+                  cm
+                </span>
+                )
+              </IonText>
               <IonText slot="start" className="def newice"></IonText>
             </IonItem>
           </IonCol>
@@ -139,7 +145,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         <IonRow>
           <IonCol>
             <IonItem>
-              <IonText>{t('homePage.map.controls.layer.legend.thinice')}</IonText>
+              <IonText>
+                {t('homePage.map.controls.layer.legend.thinice')} (5-15{' '}
+                <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
+                  cm
+                </span>
+                )
+              </IonText>
               <IonText slot="start" className="def thinice"></IonText>
             </IonItem>
           </IonCol>
