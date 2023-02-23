@@ -44,6 +44,10 @@ type FairwayCard {
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
+  status: Int
+  creator: String
+  creationTimestamp: Float
+  modifier: String
   modificationTimestamp: Float
   fairwayIds: String
   fairways: [Fairway!]!
@@ -107,6 +111,11 @@ type PilotPlace {
 
 type Harbor {
   id: String!
+  status: Int
+  creator: String
+  creationTimestamp: Float
+  modifier: String
+  modificationTimestamp: Float
   quays: [Quay]
   name: Text
   company: Text

@@ -23,6 +23,14 @@ export type Section = {
 class HarborDBModel {
   id: string;
 
+  modifier?: string;
+
+  modificationTimestamp?: number;
+
+  creationTimestamp?: number;
+
+  creator?: string;
+
   quays?: Quay[];
 
   name?: Text;

@@ -24,12 +24,15 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
   return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
 }
 
-function mapFairwayCardToModel(card: FairwayCard): FairwayCardDBModel {
+function mapFairwayCardToModel(card: FairwayCard, old: FairwayCardDBModel | undefined): FairwayCardDBModel {
   return {
     id: card.id,
     name: mapText(card.name),
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: map<string>(card.group),
+    creationTimestamp: old ? old.creationTimestamp : Date.now(),
+    creator: old ? old.creator : 'Erkki Esimerkki',
+    modifier: 'Erkki Esimerkki',
     modificationTimestamp: Date.now(),
     fairways: card.fairways.map((f) => {
       return { id: f.id, primary: f.primary || false };
@@ -96,12 +99,11 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 ): Promise<FairwayCard> => {
   log.info(`saveFairwayCard(${event.arguments.card?.id})`);
   if (event.arguments.card?.id) {
-    await FairwayCardDBModel.save(mapFairwayCardToModel(event.arguments.card));
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
-    if (dbModel) {
-      const pilotMap = await getPilotPlaceMap();
-      return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap);
-    }
+    const newModel = mapFairwayCardToModel(event.arguments.card, dbModel);
+    await FairwayCardDBModel.save(newModel);
+    const pilotMap = await getPilotPlaceMap();
+    return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap);
   }
   throw new Error('Card id missing');
 };

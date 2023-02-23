@@ -23,11 +23,15 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
   return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
 }
 
-function mapHarborToModel(harbor: Harbor): HarborDBModel {
+function mapHarborToModel(harbor: Harbor, old: HarborDBModel | undefined): HarborDBModel {
   return {
     id: harbor.id,
     name: mapText(harbor.name),
     company: mapText(harbor.company),
+    creator: old ? old.creator : 'Erkki Esimerkki',
+    creationTimestamp: old ? old.creationTimestamp : Date.now(),
+    modifier: 'Erkki Esimerkki',
+    modificationTimestamp: Date.now(),
     email: map<string>(harbor.email),
     extraInfo: mapText(harbor.extraInfo),
     fax: map<string>(harbor.fax),
@@ -63,11 +67,10 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
 ): Promise<Harbor> => {
   log.info(`saveHarbor(${event.arguments.harbor?.id})`);
   if (event.arguments.harbor?.id) {
-    await HarborDBModel.save(mapHarborToModel(event.arguments.harbor));
     const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
-    if (dbModel) {
-      return dbModel;
-    }
+    const newModel = mapHarborToModel(event.arguments.harbor, dbModel);
+    await HarborDBModel.save(newModel);
+    return newModel;
   }
   throw new Error('Harbor id missing');
 };

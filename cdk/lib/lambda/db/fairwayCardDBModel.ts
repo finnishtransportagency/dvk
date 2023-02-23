@@ -76,7 +76,13 @@ class FairwayCardDBModel {
 
   n2000HeightSystem?: boolean;
 
+  modifier?: string;
+
   modificationTimestamp?: number;
+
+  creationTimestamp?: number;
+
+  creator?: string;
 
   group?: string;
 
