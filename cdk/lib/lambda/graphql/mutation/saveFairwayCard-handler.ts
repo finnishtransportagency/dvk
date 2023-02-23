@@ -7,9 +7,9 @@ import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '..
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
     return {
-      fi: text.fi || undefined,
-      sv: text.sv || undefined,
-      en: text.en || undefined,
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
     };
   } else {
     return undefined;
@@ -27,7 +27,7 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
 function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined): FairwayCardDBModel {
   return {
     id: card.id,
-    name: mapText(card.name),
+    name: card.name,
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: map<string>(card.group),
     creationTimestamp: old ? old.creationTimestamp : Date.now(),

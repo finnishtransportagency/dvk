@@ -23,6 +23,8 @@ export type Section = {
 class HarborDBModel {
   id: string;
 
+  n2000HeightSystem?: boolean;
+
   modifier?: string;
 
   modificationTimestamp?: number;
@@ -33,7 +35,7 @@ class HarborDBModel {
 
   quays?: Quay[];
 
-  name?: Text;
+  name: Text;
 
   company?: Text;
 

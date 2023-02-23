@@ -1,5 +1,5 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
-import { FairwayCardOrHarbor } from '../../../../graphql/generated';
+import { ContentType, FairwayCardOrHarbor, Status } from '../../../../graphql/generated';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import HarborDBModel from '../../db/harborDBModel';
 import { log } from '../../logger';
@@ -15,25 +15,25 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
       id: card.id,
       n2000HeightSystem: card.n2000HeightSystem || false,
       name: card.name,
-      type: 1,
+      type: ContentType.Card,
       group: card.group,
-      status: 1,
+      status: Status.Public,
       fairwayIds: card.fairways.map((f) => f.id),
-      creator: undefined,
-      modifier: undefined,
+      creator: card.creator,
+      modifier: card.modifier,
       modificationTimestamp: card.modificationTimestamp,
     };
   });
   const harbors: FairwayCardOrHarbor[] = harborModels.map((harbor) => {
     return {
       id: harbor.id,
-      n2000HeightSystem: false,
+      n2000HeightSystem: harbor.n2000HeightSystem || false,
       name: harbor.name,
-      type: 2,
-      status: 1,
-      creator: undefined,
-      modifier: undefined,
-      modificationTimestamp: undefined,
+      type: ContentType.Harbor,
+      status: Status.Public,
+      creator: harbor.creator,
+      modifier: harbor.modifier,
+      modificationTimestamp: harbor.modificationTimestamp,
     };
   });
   return cards.concat(harbors);

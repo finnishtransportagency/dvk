@@ -72,7 +72,7 @@ type FairwayCardByFairwayIdIndex = {
 class FairwayCardDBModel {
   id: string;
 
-  name?: Text;
+  name: Text;
 
   n2000HeightSystem?: boolean;
 

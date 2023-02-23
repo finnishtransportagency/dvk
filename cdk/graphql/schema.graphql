@@ -134,15 +134,20 @@ input SectionInput {
 
 type FairwayCardOrHarbor {
   id: ID!
-  type: Int!
-  name: Text
+  type: ContentType!
+  name: Text!
   group: String
   fairwayIds: [Int!]
   n2000HeightSystem: Boolean!
-  status: Int!
+  status: Status!
   creator: String
   modifier: String
   modificationTimestamp: Float
+}
+
+enum ContentType {
+  CARD
+  HARBOR
 }
 
 type CurrentUser {
