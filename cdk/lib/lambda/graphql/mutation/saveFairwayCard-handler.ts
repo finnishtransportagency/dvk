@@ -1,10 +1,10 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { FairwayCard, Maybe, MutationSaveFairwayCardArgs, Text } from '../../../../graphql/generated';
+import { FairwayCard, FairwayCardInput, Maybe, MutationSaveFairwayCardArgs, TextInput } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
-import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapFairwayIds } from '../../db/modelMapper';
+import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
 
-function mapText(text?: Maybe<Text>) {
+function mapText(text?: Maybe<TextInput>) {
   if (text) {
     return {
       fi: text.fi || undefined,
@@ -24,7 +24,7 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
   return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
 }
 
-function mapFairwayCardToModel(card: FairwayCard, old: FairwayCardDBModel | undefined): FairwayCardDBModel {
+function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined): FairwayCardDBModel {
   return {
     id: card.id,
     name: mapText(card.name),
@@ -34,8 +34,8 @@ function mapFairwayCardToModel(card: FairwayCard, old: FairwayCardDBModel | unde
     creator: old ? old.creator : 'Erkki Esimerkki',
     modifier: 'Erkki Esimerkki',
     modificationTimestamp: Date.now(),
-    fairways: card.fairways.map((f) => {
-      return { id: f.id, primary: f.primary || false };
+    fairways: card.fairwayIds.map((id, idx) => {
+      return { id, primary: idx === 0 };
     }),
     generalInfo: mapText(card.generalInfo),
     anchorage: mapText(card.anchorage),
@@ -87,10 +87,10 @@ function mapFairwayCardToModel(card: FairwayCard, old: FairwayCardDBModel | unde
         };
       }),
     },
-    harbors: card.harbors?.map((h) => {
-      return { id: h.id };
+    harbors: card.harbors?.map((id) => {
+      return { id };
     }),
-    fairwayIds: mapFairwayIds(card),
+    fairwayIds: mapIds(card.fairwayIds),
   };
 }
 
