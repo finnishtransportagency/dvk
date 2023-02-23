@@ -17,6 +17,7 @@ import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/Mar
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
 import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
+import { MarineWarningModal } from './MarineWarningModal';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -41,6 +42,7 @@ const MapOverlays: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const { data } = useFairwayCardListData();
+  const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
@@ -50,6 +52,9 @@ const MapOverlays: React.FC = () => {
     const lpc = dvkMap.getLayerPopupControl();
     setIsOpen(false);
     lpc?.modalClosed();
+  };
+  const dismissMarineWarningNotificationModal = () => {
+    setShowMarineWarningNotification(false);
   };
 
   const setBgMapType = (bgMapType: BackgroundMapType) => {
@@ -90,9 +95,16 @@ const MapOverlays: React.FC = () => {
           {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} setPopupProperties={setPopupProperties} />}
         </div>
       </div>
-      <LayerModal isOpen={isOpen} setIsOpen={dismissMapLayersModal} bgMapType={backgroundMapType} setBgMapType={setBgMapType} />
+      <LayerModal
+        isOpen={isOpen}
+        setIsOpen={dismissMapLayersModal}
+        bgMapType={backgroundMapType}
+        setBgMapType={setBgMapType}
+        setMarineWarningLayer={setShowMarineWarningNotification}
+      />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <MobileModal />
+      <MarineWarningModal isOpen={showMarineWarningNotification && !isOpen} setIsOpen={dismissMarineWarningNotificationModal} />
     </>
   );
 };
