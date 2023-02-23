@@ -104,7 +104,7 @@ const MapOverlays: React.FC = () => {
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <MobileModal />
-      <MarineWarningModal isOpen={showMarineWarningNotification && !isOpen} setIsOpen={dismissMarineWarningNotificationModal} />
+      <MarineWarningModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
     </>
   );
 };
