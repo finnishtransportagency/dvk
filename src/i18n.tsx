@@ -20,7 +20,6 @@ const i18n = use(initReactI18next).init({
   lng: 'fi',
   fallbackLng: 'fi',
   preload: ['fi', 'en', 'sv'],
-  debug: true,
 
   interpolation: {
     escapeValue: false,
