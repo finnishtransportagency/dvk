@@ -13,6 +13,7 @@ interface ModalProps {
   setIsOpen: (isOpen: boolean) => void;
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
+  setMarineWarningLayer: (marineWarningLayer: boolean) => void;
 }
 
 interface CheckBoxProps {
@@ -21,7 +22,7 @@ interface CheckBoxProps {
   noOfflineSupport?: boolean;
 }
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
@@ -36,9 +37,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       layer.setVisible(layers.includes(dataLayer.id));
+      if (dataLayer.id === 'marinewarning') setMarineWarningLayer(layers.includes(dataLayer.id));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, dvkMap]);
+  }, [layers, setMarineWarningLayer, dvkMap]);
 
   const LegendSpeedlimits = () => {
     return (
@@ -131,7 +133,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
           </IonCol>
           <IonCol>
             <IonItem>
-              <IonText>{t('homePage.map.controls.layer.legend.newice')}</IonText>
+              <IonText>
+                {t('homePage.map.controls.layer.legend.newice')} (&lt; 5{' '}
+                <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
+                  cm
+                </span>
+                )
+              </IonText>
               <IonText slot="start" className="def newice"></IonText>
             </IonItem>
           </IonCol>
@@ -139,7 +147,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         <IonRow>
           <IonCol>
             <IonItem>
-              <IonText>{t('homePage.map.controls.layer.legend.thinice')}</IonText>
+              <IonText>
+                {t('homePage.map.controls.layer.legend.thinice')} (5-15{' '}
+                <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
+                  cm
+                </span>
+                )
+              </IonText>
               <IonText slot="start" className="def thinice"></IonText>
             </IonItem>
           </IonCol>

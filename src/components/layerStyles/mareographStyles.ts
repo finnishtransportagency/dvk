@@ -53,6 +53,6 @@ export function getMareographStyle(feature: FeatureLike, selected: boolean) {
     }
   }
   const props = feature.getProperties() as MareographFeatureProperties;
-  s.getText().setText(`${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)}cm`);
+  s.getText().setText(`${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)} cm`);
   return s;
 }

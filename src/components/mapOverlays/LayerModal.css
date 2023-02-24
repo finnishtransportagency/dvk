@@ -1,5 +1,6 @@
 ion-modal#layerModalContainer {
   --min-width: 225px;
+  z-index: 21000 !important;
 }
 ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;

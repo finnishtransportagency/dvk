@@ -4,7 +4,7 @@
       "closeMenu": "Stäng",
       "title": "Digital farledskort",
       "fairway-cards": "Farledskort",
-      "safety-equipment-faults": " Fel i säkerhetsanordningar",
+      "safety-equipment-faults": "Säkerhetsanordningsfelen",
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
       "squat-url": "/squat/index.html?lang=sv"
@@ -220,9 +220,8 @@
   },
   "warnings": {
     "title": "Navigationsvarningar",
-    "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
-    "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
-    "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
+    "note": "OBS!",
+    "notification": "[sv] Tämän sivuston päivitys voi olla viivästynyt. Merivaroitusten saatavuus netissä ei vapauta päälliköitä vaatimuksesta vastaanottaa merivaroituksia IMO:n/IHO:n hyväksymien lähetysjärjestelmien kautta.",
     "print": "Skriv ut navigationsvarningar",
     "area": "Område",
     "location": "Position",
@@ -367,7 +366,7 @@
     "dataUpdateFailedAt": "[sv] Tietojen päivitys epäonnistui",
     "latestDataUpdateAt": "[sv] Tietoja päivitetty viimeksi",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-    "safety-equipment-faults": "Fel i säkerhetsanordningar",
+    "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar"
   },
   "mobile": {
