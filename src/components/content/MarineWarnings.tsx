@@ -1,4 +1,4 @@
-import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
@@ -7,8 +7,8 @@ import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/da
 import dvkMap from '../DvkMap';
 import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
-import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
+import infoIcon from '../../theme/img/info.svg';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -27,7 +27,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
         return (
-          <IonGrid className="table light group" key={warning.id}>
+          <IonGrid className="table light group ion-no-padding" key={warning.id}>
             <IonRow className="header">
               <IonCol>
                 <IonText>
@@ -199,7 +199,16 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
+      <IonGrid className="marineWarningNotification ion-no-padding">
+        <IonRow>
+          <IonCol size="auto" className="ion-align-self-center">
+            <IonIcon icon={infoIcon} />
+          </IonCol>
+          <IonCol>
+            <strong>{t('note')}</strong> {t('notification')}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />
