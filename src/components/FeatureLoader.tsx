@@ -101,6 +101,31 @@ export function useBackgroundMmlmeriLayer() {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
+export function useBackgroundMmljarviLayer() {
+  const [ready, setReady] = useState(false);
+  const mmljarviQuery = useFeatureData('mml_jarvi', true, false);
+  const dataUpdatedAt = Math.max(mmljarviQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(mmljarviQuery.errorUpdatedAt);
+  const isPaused = mmljarviQuery.isPaused;
+  const isError = mmljarviQuery.isError;
+
+  useEffect(() => {
+    if (mmljarviQuery.data) {
+      const layer = dvkMap.olMap?.getLayers().getArray()[2] as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(mmljarviQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [mmljarviQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
 export function useBackgroundBalticseaLayer() {
   const [ready, setReady] = useState(false);
   const baQuery = useFeatureData('balticsea', true, false);
@@ -111,7 +136,7 @@ export function useBackgroundBalticseaLayer() {
 
   useEffect(() => {
     if (baQuery.data) {
-      const layer = dvkMap.olMap?.getLayers().getArray()[2] as Layer;
+      const layer = dvkMap.olMap?.getLayers().getArray()[3] as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(baQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
