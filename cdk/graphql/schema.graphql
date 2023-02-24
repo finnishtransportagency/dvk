@@ -1,5 +1,6 @@
 schema { 
   query: Query
+  mutation: Mutation
 }
 
 type Query {
@@ -9,6 +10,144 @@ type Query {
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
+  pilotPlaces: [PilotPlace!]!
+  harbors: [Harbor!]!
+  harbor(id: String!): Harbor
+  fairways: [Fairway!]!
+  fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
+}
+
+type Mutation {
+  saveFairwayCard(card: FairwayCardInput): FairwayCard
+  saveHarbor(harbor: HarborInput): Harbor
+}
+
+input FairwayCardInput {
+  id: ID!
+  name: TextInput!
+  n2000HeightSystem: Boolean!
+  group: String!
+  status: Status!
+  fairwayIds: [Float!]!
+  lineText: TextInput
+  designSpeed: TextInput
+  generalInfo: TextInput
+  anchorage: TextInput
+  navigationCondition: TextInput
+  iceCondition: TextInput
+  attention: TextInput
+  speedLimit: TextInput
+  visibility: TextInput
+  windGauge: TextInput
+  vesselRecommendation: TextInput
+  seaLevel: TextInput
+  windRecommendation: TextInput
+  trafficService: TrafficServiceInput
+  harbors: [ID!]
+}
+
+input TrafficServiceInput {
+  pilot: PilotInput
+  vts: [VTSInput]
+  tugs: [TugInput]
+}
+
+input TugInput {
+  name: TextInput!
+  phoneNumber: [String!]
+  fax: String
+  email: String
+}
+
+input VHFInput {
+  name: TextInput
+  channel: Int!
+}
+
+input VTSInput {
+  name: TextInput!
+  phoneNumber: String
+  email: [String]
+  vhf: [VHFInput]
+}
+
+input PilotInput {
+  email: String
+  phoneNumber: String
+  fax: String
+  internet: String
+  extraInfo: TextInput
+  places: [PilotPlaceInput!]
+}
+
+input PilotPlaceInput {
+  id: Int!
+  pilotJourney: Float
+}
+
+input HarborInput {
+  id: ID!
+  status: Status!
+  phoneNumber: [String]
+  fax: String
+  email: String
+  internet: String
+  name: TextInput!
+  company: TextInput
+  extraInfo: TextInput
+  harborBasin: TextInput
+  cargo: [TextInput]
+  quays: [QuayInput]
+  geometry: GeometryInput!
+}
+
+enum Status {
+  DRAFT
+  PUBLIC
+  REMOVED
+}
+
+input GeometryInput {
+  lat: Float!
+  lon: Float!
+}
+
+input TextInput {
+  fi: String!
+  sv: String!
+  en: String!
+}
+
+input QuayInput {
+  name: TextInput
+  length: Float
+  sections: [SectionInput]
+  extraInfo: TextInput
+  geometry: GeometryInput
+}
+
+input SectionInput {
+  name: String
+  depth: Float
+  geometry: GeometryInput
+}
+
+type FairwayCardOrHarbor {
+  id: ID!
+  type: ContentType!
+  name: Text!
+  group: String
+  fairwayIds: [Int!]
+  n2000HeightSystem: Boolean!
+  status: Status!
+  creator: String
+  modifier: String
+  modificationTimestamp: Float
+}
+
+enum ContentType {
+  CARD
+  HARBOR
 }
 
 type CurrentUser {
@@ -20,6 +159,10 @@ type FairwayCard {
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
+  status: Status
+  creator: String
+  creationTimestamp: Float
+  modifier: String
   modificationTimestamp: Float
   fairwayIds: String
   fairways: [Fairway!]!
@@ -83,6 +226,11 @@ type PilotPlace {
 
 type Harbor {
   id: String!
+  status: Status
+  creator: String
+  creationTimestamp: Float
+  modifier: String
+  modificationTimestamp: Float
   quays: [Quay]
   name: Text
   company: Text

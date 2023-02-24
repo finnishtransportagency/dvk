@@ -3,7 +3,7 @@ import { Area, Boardline, Fairway, FairwayCard, NavigationLine, QueryFairwayCard
 import { log } from '../../logger';
 import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel, VaylaAPIModel } from './vatu';
 
-function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
+export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
     id: apiModel.jnro,
     name: {

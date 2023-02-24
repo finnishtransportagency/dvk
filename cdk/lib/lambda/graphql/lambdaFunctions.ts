@@ -47,6 +47,41 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'currentUser',
   },
+  {
+    entry: path.join(__dirname, 'query/fairwayCardsAndHarbors-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'fairwayCardsAndHarbors',
+  },
+  {
+    entry: path.join(__dirname, 'query/pilotPlaces-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'pilotPlaces',
+  },
+  {
+    entry: path.join(__dirname, 'query/harbors-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'harbors',
+  },
+  {
+    entry: path.join(__dirname, 'query/harbor-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'harbor',
+  },
+  {
+    entry: path.join(__dirname, 'query/fairways-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'fairways',
+  },
+  {
+    entry: path.join(__dirname, 'mutation/saveFairwayCard-handler.ts'),
+    typeName: 'Mutation',
+    fieldName: 'saveFairwayCard',
+  },
+  {
+    entry: path.join(__dirname, 'mutation/saveHarbor-handler.ts'),
+    typeName: 'Mutation',
+    fieldName: 'saveHarbor',
+  },
 ];
 
 export default lambdaFunctions;

@@ -1,5 +1,5 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint } from '../../../graphql/generated';
+import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GeometryPoint, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
@@ -23,9 +23,21 @@ export type Section = {
 class HarborDBModel {
   id: string;
 
+  status?: Status;
+
+  n2000HeightSystem?: boolean;
+
+  modifier?: string;
+
+  modificationTimestamp?: number;
+
+  creationTimestamp?: number;
+
+  creator?: string;
+
   quays?: Quay[];
 
-  name?: Text;
+  name: Text;
 
   company?: Text;
 
@@ -61,6 +73,10 @@ class HarborDBModel {
     }
     log.debug('No harbors found');
     return [];
+  }
+
+  static async save(data: HarborDBModel) {
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data }));
   }
 }
 

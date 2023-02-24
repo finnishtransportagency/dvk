@@ -1,4 +1,5 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -72,11 +73,19 @@ type FairwayCardByFairwayIdIndex = {
 class FairwayCardDBModel {
   id: string;
 
-  name?: Text;
+  name: Text;
+
+  status?: Status;
 
   n2000HeightSystem?: boolean;
 
+  modifier?: string;
+
   modificationTimestamp?: number;
+
+  creationTimestamp?: number;
+
+  creator?: string;
 
   group?: string;
 
@@ -151,6 +160,10 @@ class FairwayCardDBModel {
       }
     }
     return fairwayCards;
+  }
+
+  static async save(data: FairwayCardDBModel) {
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: fairwayCardTable, Item: data }));
   }
 }
 

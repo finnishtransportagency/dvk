@@ -5,7 +5,7 @@ let client: DynamoDBDocumentClient;
 
 function getDynamoDBDocumentClient(): DynamoDBDocumentClient {
   if (!client) {
-    client = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-1' }));
+    client = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-1' }), { marshallOptions: { removeUndefinedValues: true } });
   }
   return client;
 }

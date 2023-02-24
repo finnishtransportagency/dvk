@@ -2,8 +2,12 @@ import { Fairway, FairwayCard, TrafficService } from '../../../graphql/generated
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
+export function mapIds(ids: number[]) {
+  return `#${ids.join('#')}#`;
+}
+
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
-  return `#${dbModel.fairways?.map((f) => f.id).join('#')}#`;
+  return mapIds(dbModel.fairways.map((f) => f.id));
 }
 
 const pilotPlaceMap = new Map<number, PilotPlaceDBModel>();
@@ -56,7 +60,11 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
       en: dbModel.name?.en,
     },
     n2000HeightSystem: !!dbModel.n2000HeightSystem,
+    status: dbModel.status,
     group: dbModel.group,
+    creator: dbModel.creator,
+    creationTimestamp: dbModel.creationTimestamp,
+    modifier: dbModel.modifier,
     modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],
     generalInfo: dbModel.generalInfo,
