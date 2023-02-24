@@ -16,21 +16,20 @@ export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) 
   const { t } = useTranslation();
   const [size, setSize] = useState(dvkMap.olMap?.getSize() || [0, 0]);
 
-  const debouncedPrintImageRefresh = React.useRef(
+  const debouncedModalPositionRefresh = React.useRef(
     debounce(() => {
       setSize(dvkMap.olMap?.getSize() || [0, 0]);
     }, 50)
   ).current;
 
   dvkMap.olMap?.on('moveend', () => {
-    debouncedPrintImageRefresh();
+    debouncedModalPositionRefresh();
   });
   dvkMap.olMap?.on('loadend', () => {
-    debouncedPrintImageRefresh();
+    debouncedModalPositionRefresh();
   });
-
   dvkMap.olMap?.once('rendercomplete', () => {
-    debouncedPrintImageRefresh();
+    debouncedModalPositionRefresh();
   });
 
   return (
