@@ -149,7 +149,7 @@ export class DvkFeaturePipelineStack extends Stack {
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['cloudformation:*'],
-        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}/*`],
+        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}*`],
       })
     );
     project.addToRolePolicy(
