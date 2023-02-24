@@ -159,7 +159,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: ['*'],
       })
     );
-    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
@@ -167,7 +167,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName());
+    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
@@ -175,7 +175,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName());
+    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
