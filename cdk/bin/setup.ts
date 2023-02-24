@@ -65,7 +65,6 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
       envFile += `${key}=${variables[key]}\n`;
     }
   }
-  console.log('envFile: ' + envFile);
   fs.writeFileSync(fileName, envFile);
 }
 
