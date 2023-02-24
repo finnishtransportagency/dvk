@@ -181,6 +181,16 @@ class DvkMap {
     bgMmlmeriLayer.set('type', 'backgroundMmlmeri');
     this.olMap.getLayers().setAt(1, bgMmlmeriLayer);
 
+    const bgMmljarviLayer = new VectorImageLayer({
+      source: new VectorSource({
+        features: [],
+        overlaps: false,
+      }),
+      imageRatio: 3,
+    });
+    bgMmljarviLayer.set('type', 'backgroundMmljarvi');
+    this.olMap.getLayers().setAt(2, bgMmljarviLayer);
+
     const bgBalticseaLayer = new VectorImageLayer({
       source: new VectorSource({
         features: [],
@@ -189,7 +199,7 @@ class DvkMap {
       imageRatio: 3,
     });
     bgBalticseaLayer.set('type', 'backgroundBalticsea');
-    this.olMap.getLayers().setAt(2, bgBalticseaLayer);
+    this.olMap.getLayers().setAt(3, bgBalticseaLayer);
 
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
@@ -276,7 +286,28 @@ class DvkMap {
       }
     });
 
-    const bgBsLayer = mapLayers.getArray()[2] as VectorLayer<VectorSource>;
+    const bgMmljarviLayer = mapLayers.getArray()[2] as VectorLayer<VectorSource>;
+    bgMmljarviLayer.setStyle((feature: FeatureLike, resolution: number) => {
+      if (resolution < 32) {
+        return new Style({
+          fill: new Fill({
+            color: waterColor,
+          }),
+          stroke: new Stroke({
+            color: '#222222',
+            width: 0.5,
+          }),
+        });
+      } else {
+        return new Style({
+          fill: new Fill({
+            color: waterColor,
+          }),
+        });
+      }
+    });
+
+    const bgBsLayer = mapLayers.getArray()[3] as VectorLayer<VectorSource>;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -287,7 +318,7 @@ class DvkMap {
 
     backLayers.forEach((layer, index) => {
       // Background vector layers must be behind this - so "index + 3"
-      mapLayers.setAt(index + 3, layer);
+      mapLayers.setAt(index + 4, layer);
     });
   };
 
@@ -306,6 +337,8 @@ class DvkMap {
         if (layer.get('type') === 'backgroundTile') {
           layer.setVisible(isOffline ? false : true);
         } else if (layer.get('type') === 'backgroundMmlmeri') {
+          layer.setMinResolution(isOffline ? 0.5 : 4);
+        } else if (layer.get('type') === 'backgroundMmljarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
       });

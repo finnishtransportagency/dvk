@@ -31,6 +31,7 @@ import {
   useBuoyLayer,
   useBackgroundFinlandLayer,
   useBackgroundMmlmeriLayer,
+  useBackgroundMmljarviLayer,
   useBackgroundBalticseaLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
@@ -114,6 +115,7 @@ const DvkIonApp: React.FC = () => {
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgBalticseaLayer = useBackgroundBalticseaLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
+  const bgMmljarviLayer = useBackgroundMmljarviLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -122,7 +124,7 @@ const DvkIonApp: React.FC = () => {
 
   useEffect(() => {
     let percent = 0;
-    const resourcePercentage = 1 / 20;
+    const resourcePercentage = 1 / 21;
     if (line12Layer.ready) percent += resourcePercentage;
     if (line3456Layer.ready) percent += resourcePercentage;
     if (area12Layer.ready) percent += resourcePercentage;
@@ -143,6 +145,7 @@ const DvkIonApp: React.FC = () => {
     if (bgFinlandLayer.ready) percent += resourcePercentage;
     if (bgBalticseaLayer.ready) percent += resourcePercentage;
     if (bgMmlmeriLayer.ready) percent += resourcePercentage;
+    if (bgMmljarviLayer.ready) percent += resourcePercentage;
     setPercentDone(Math.round(percent * 100) / 100);
 
     setFetchError(
@@ -165,7 +168,8 @@ const DvkIonApp: React.FC = () => {
         buoyLayer.isError ||
         bgFinlandLayer.isError ||
         bgBalticseaLayer.isError ||
-        bgMmlmeriLayer.isError
+        bgMmlmeriLayer.isError ||
+        bgMmljarviLayer.isError
     );
 
     if (
@@ -188,7 +192,8 @@ const DvkIonApp: React.FC = () => {
       buoyLayer.ready &&
       bgFinlandLayer.ready &&
       bgBalticseaLayer.ready &&
-      bgMmlmeriLayer.ready
+      bgMmlmeriLayer.ready &&
+      bgMmljarviLayer.ready
     ) {
       setInitDone(true);
     }
@@ -213,6 +218,7 @@ const DvkIonApp: React.FC = () => {
     bgFinlandLayer,
     bgBalticseaLayer,
     bgMmlmeriLayer,
+    bgMmljarviLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);
