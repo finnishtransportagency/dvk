@@ -18,12 +18,12 @@ class Config {
     return 'prod' === Config.getEnvironment();
   }
 
-  static isFeatureEnvironment() {
-    return 'feature' === Config.getEnvironment();
+  static isFeatureEnvironment(env?: string) {
+    return (env ? env : Config.getEnvironment()).startsWith('feature');
   }
 
   static isDeveloperEnvironment(env?: string) {
-    return ['dev', 'test', 'prod', 'feature'].indexOf(env ? env : Config.getEnvironment()) < 0;
+    return !this.isFeatureEnvironment(env) && ['dev', 'test', 'prod'].indexOf(env ? env : Config.getEnvironment()) < 0;
   }
 
   static isDeveloperOrDevEnvironment() {
