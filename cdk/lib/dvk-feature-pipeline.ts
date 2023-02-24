@@ -53,12 +53,13 @@ export class DvkFeaturePipelineStack extends Stack {
     const project = new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
       vpc,
-      concurrentBuildLimit: 1,
+      concurrentBuildLimit: 3,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
           build: {
             commands: [
+              'export ENVIRONMENT=feature$CODEBUILD_BUILD_NUMBER',
               'npm ci',
               'npm run generate',
               'cd cdk && npm ci && npm run generate',
@@ -88,7 +89,10 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
             ],
-            finally: ['cd $CODEBUILD_SRC_DIR/cdk && npm run cdk destroy DvkBackendStack -- --force'],
+            finally: [
+              'export ENVIRONMENT=feature$CODEBUILD_BUILD_NUMBER',
+              'cd $CODEBUILD_SRC_DIR/cdk && npm run cdk destroy DvkBackendStack -- --force',
+            ],
           },
         },
         cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
@@ -116,7 +120,6 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
-          ENVIRONMENT: { value: 'feature' },
           REACT_APP_BG_MAP_API_KEY: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
             value: 'BGMapApiKey',
@@ -146,7 +149,7 @@ export class DvkFeaturePipelineStack extends Stack {
       new PolicyStatement({
         effect: Effect.ALLOW,
         actions: ['cloudformation:*'],
-        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}/*`],
+        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}*`],
       })
     );
     project.addToRolePolicy(
@@ -156,7 +159,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: ['*'],
       })
     );
-    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName());
+    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
@@ -164,7 +167,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName());
+    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
@@ -172,7 +175,7 @@ export class DvkFeaturePipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName());
+    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

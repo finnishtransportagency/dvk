@@ -30,6 +30,7 @@ const OfflineSupport: React.FC = () => {
   const bgLayerBa = useFeatureData('balticsea');
   const bgLayerFi = useFeatureData('finland');
   const bgLayerSea = useFeatureData('mml_meri');
+  const bgLayerLake = useFeatureData('mml_jarvi');
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -55,6 +56,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerBa.dataUpdatedAt,
     bgLayerFi.dataUpdatedAt,
     bgLayerSea.dataUpdatedAt,
+    bgLayerLake.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -80,6 +82,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
     bgLayerFi.isError ? bgLayerFi.errorUpdatedAt : 0,
     bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
+    bgLayerLake.isError ? bgLayerLake.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);

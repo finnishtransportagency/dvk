@@ -26,7 +26,8 @@ export type FeatureDataId =
   | 'buoy'
   | 'balticsea'
   | 'finland'
-  | 'mml_meri';
+  | 'mml_meri'
+  | 'mml_jarvi';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -63,6 +64,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },

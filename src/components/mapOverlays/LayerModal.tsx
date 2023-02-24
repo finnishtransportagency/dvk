@@ -36,8 +36,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
+      if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id))
+        setMarineWarningLayer(layers.includes(dataLayer.id));
       layer.setVisible(layers.includes(dataLayer.id));
-      if (dataLayer.id === 'marinewarning') setMarineWarningLayer(layers.includes(dataLayer.id));
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningLayer, dvkMap]);
