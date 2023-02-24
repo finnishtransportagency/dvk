@@ -30,7 +30,7 @@ export function isProductionEnvironment() {
 }
 
 export function isFeatureEnvironment() {
-  return 'feature' === getEnvironment();
+  return getEnvironment().startsWith('feature');
 }
 
 export function getAllowOrigin() {
