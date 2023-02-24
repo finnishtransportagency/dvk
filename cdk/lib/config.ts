@@ -19,7 +19,7 @@ class Config {
   }
 
   static isFeatureEnvironment() {
-    return 'feature' === Config.getEnvironment();
+    return Config.getEnvironment().startsWith('feature');
   }
 
   static isDeveloperEnvironment(env?: string) {
