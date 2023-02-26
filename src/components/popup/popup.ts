@@ -29,6 +29,14 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     positioning: 'center-left',
   });
   const types = ['pilot', 'quay', 'harbor', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
+  if (container) {
+    container.addEventListener('pointercancel', (e) => {
+      e.preventDefault();
+    });
+    container.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    });
+  }
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
