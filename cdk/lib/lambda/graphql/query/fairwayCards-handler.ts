@@ -7,7 +7,7 @@ import { log } from '../../logger';
 export const handler = async (event: AppSyncResolverEvent<QueryFairwayCardsArgs>): Promise<FairwayCard[]> => {
   log.info(`fairwayCards(${event.arguments.status})`);
   const fairwayCards = (await FairwayCardDBModel.getAll()).filter((card) =>
-    event.arguments.status && card.status ? event.arguments.status.includes(card.status) : true
+    event.arguments.status?.length && event.arguments.status.length > 0 ? event.arguments.status.includes(card.status) : true
   );
   log.debug('%d filtered fairway card(s) found', fairwayCards.length);
   const pilotMap = await getPilotPlaceMap();
