@@ -175,6 +175,12 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
+  const activeImage = new Icon({
+    src: quayIconActive,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
   const props = feature.getProperties() as HarborFeatureProperties;
   let text;
   const dvkMap = getMap();
@@ -185,14 +191,14 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   }
   return [
     new Style({
-      image,
+      image: selected ? activeImage : image,
       text: new Text({
         font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
         placement: 'line',
         offsetY: -55,
         text,
         fill: new Fill({
-          color: '#000000',
+          color: selected ? '#0064AF' : '#000000',
         }),
         stroke: new Stroke({
           width: 3,
@@ -358,7 +364,7 @@ export function addAPILayers(map: Map) {
     'ol-layer'
   );
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 1, getHarborStyle, undefined, 1, 'ol-layer');
+  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, 'ol-layer');
 }
 
 export function unsetSelectedFairwayCard() {
