@@ -336,13 +336,14 @@
     },
     "harbor": {
       "coordinates": "Coordinates",
-      "quays": "[en] Laitureiden lukumäärä",
+      "quays": "Number of quays",
       "contactDetails": "Contact information",
       "email": "E-mail",
       "fax": "Fax",
       "phoneNumber": "Telephone",
       "internet": "Website",
-      "fairways": "[en] Satamaan liittyvät väyläkortit"
+      "fairways": "[en] Satamaan liittyvät väyläkortit",
+      "extra": "Additional information"
     }
   },
   "common": {

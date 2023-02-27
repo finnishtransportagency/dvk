@@ -10,6 +10,7 @@ export type HarborFeatureProperties = {
   internet?: string;
   quays: number;
   fairwayCards: Card[];
+  extraInfo?: Text;
 };
 
 export type QuayFeatureProperties = {

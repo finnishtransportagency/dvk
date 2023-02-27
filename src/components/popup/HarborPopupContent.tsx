@@ -109,6 +109,16 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
             </IonRow>
           );
         })}
+        {harbor.properties.extraInfo && harbor.properties.extraInfo[lang] && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.harbor.extra')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{harbor.properties.extraInfo[lang]}</IonCol>
+            </IonRow>
+          </>
+        )}
       </IonGrid>
     </IonGrid>
   );

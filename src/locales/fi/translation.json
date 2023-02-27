@@ -342,7 +342,8 @@
       "fax": "Fax",
       "phoneNumber": "Puhelin",
       "internet": "Verkkosivu",
-      "fairways": "Satamaan liittyvät väyläkortit"
+      "fairways": "Satamaan liittyvät väyläkortit",
+      "extra": "Lisätieto"
     }
   },
   "common": {

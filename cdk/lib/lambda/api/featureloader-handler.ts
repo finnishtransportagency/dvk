@@ -74,6 +74,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             internet: harbor.internet,
             quays: harbor.quays?.length || 0,
             fairwayCards: harbor.fairwayCards,
+            extraInfo: harbor.extraInfo,
           },
         });
       }

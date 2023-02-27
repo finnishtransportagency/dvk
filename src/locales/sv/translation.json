@@ -342,7 +342,8 @@
       "fax": "Fax",
       "phoneNumber": "Telefonnummer",
       "internet": "Nätsida",
-      "fairways": "[sv] Satamaan liittyvät väyläkortit"
+      "fairways": "[sv] Satamaan liittyvät väyläkortit",
+      "extra": "Tilläggsuppgift"
     }
   },
   "common": {
