@@ -252,7 +252,7 @@
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
     },
-    "harbor": {
+    "quay": {
       "coordinates": "Coordinates",
       "length": "Length of the quay",
       "depth": "Swept depth",
@@ -333,6 +333,16 @@
       "waveHeightDir": "Wave height and direction",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[en] Viimeisin havainto"
+    },
+    "harbor": {
+      "coordinates": "Coordinates",
+      "quays": "[en] Laitureiden lukumäärä",
+      "contactDetails": "Contact information",
+      "email": "E-mail",
+      "fax": "Fax",
+      "phoneNumber": "Telephone",
+      "internet": "Website",
+      "fairways": "[en] Satamaan liittyvät väyläkortit"
     }
   },
   "common": {

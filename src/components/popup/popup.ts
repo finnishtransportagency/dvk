@@ -28,7 +28,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
+  const types = ['pilot', 'quay', 'harbor', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
   if (content) {
     content.onclick = () => {
       overlay.setPosition(undefined);
@@ -79,7 +79,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (type === 'quay') {
       return getQuayStyle(feature, resolution, true);
     } else if (type === 'harbor') {
-      return getHarborStyle(feature, resolution);
+      return getHarborStyle(feature, resolution, 0, true);
     } else if (type === 'pilot') {
       return getPilotStyle(true);
     } else if (type === 'area' && dataSource === 'area12') {
@@ -124,6 +124,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('mareograph'),
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),
+      dvkMap.getFeatureLayer('harbor'),
     ],
     hitTolerance: 3,
     multi: true,

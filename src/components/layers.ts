@@ -126,9 +126,9 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   let text;
   const dvkMap = getMap();
   if (props.name && props.depth) {
-    text = `${props.name} ${props.depth?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
+    text = `${props.name} ${props.depth?.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m`;
   } else if (props.depth) {
-    text = `${props.depth?.map((d) => dvkMap.t('popup.harbor.number', { val: d })).join(' m / ')} m`;
+    text = `${props.depth?.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m`;
   } else if (props.name) {
     text = props.name;
   } else {
@@ -165,7 +165,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   ];
 }
 
-export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0) {
+export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
   if (minResolution && resolution < minResolution) {
     return undefined;
   }
@@ -199,6 +199,7 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
           color: '#ffffff',
         }),
       }),
+      zIndex: selected ? 10 : 1,
     }),
     new Style({
       image: new CircleStyle({
@@ -208,6 +209,7 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
           color: 'rgba(0,0,0,0)',
         }),
       }),
+      zIndex: selected ? 11 : 2,
     }),
   ];
 }

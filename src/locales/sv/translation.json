@@ -252,7 +252,7 @@
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
     },
-    "harbor": {
+    "quay": {
       "coordinates": "Koordinater",
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
@@ -310,7 +310,7 @@
     },
     "mareograph": {
       "mareograph": "[sv] Mareografi",
-      "coordinates": "[sv] Koordinaatit",
+      "coordinates": "Koordinater",
       "seaLevel": "MW",
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
@@ -319,7 +319,7 @@
     },
     "observation": {
       "observation": "[sv] Säähavaintoasema",
-      "coordinates": "[sv] Koordinaatit",
+      "coordinates": "Koordinater",
       "temperature": "[sv] Ilman lämpötila",
       "windSpeedAvgDir": "[sv] Tuulen nopeus ja suunta",
       "windSpeedMax": "[sv] Tuulen nopeus (puuska)",
@@ -328,11 +328,21 @@
       "dateTime": "[sv] Viimeisin havainto"
     },
     "buoy": {
-      "coordinates": "[sv] Koordinaatit",
+      "coordinates": "Koordinater",
       "temperature": "[sv] Veden lämpötila",
       "waveHeightDir": "[sv] Aallonkorkeus ja suunta",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "[sv] Viimeisin havainto"
+    },
+    "harbor": {
+      "coordinates": "Koordinater",
+      "quays": "[sv] Laitureiden lukumäärä",
+      "contactDetails": "Kontaktuppgifter",
+      "email": "E-post",
+      "fax": "Fax",
+      "phoneNumber": "Telefonnummer",
+      "internet": "Nätsida",
+      "fairways": "[sv] Satamaan liittyvät väyläkortit"
     }
   },
   "common": {

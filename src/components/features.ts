@@ -8,6 +8,8 @@ export type HarborFeatureProperties = {
   phoneNumber?: string[];
   fax?: string;
   internet?: string;
+  quays: number;
+  fairwayCards: Card[];
 };
 
 export type QuayFeatureProperties = {

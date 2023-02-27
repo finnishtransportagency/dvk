@@ -252,7 +252,7 @@
       "coordinates": "Koordinaatit",
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
-    "harbor": {
+    "quay": {
       "coordinates": "Koordinaatit",
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
@@ -333,6 +333,16 @@
       "waveHeightDir": "Aallonkorkeus ja suunta",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
+    },
+    "harbor": {
+      "coordinates": "Koordinaatit",
+      "quays": "Laitureiden lukumäärä",
+      "contactDetails": "Yhteystiedot",
+      "email": "Sähköposti",
+      "fax": "Fax",
+      "phoneNumber": "Puhelin",
+      "internet": "Verkkosivu",
+      "fairways": "Satamaan liittyvät väyläkortit"
     }
   },
   "common": {
