@@ -18,6 +18,7 @@ import MareographPopupContent, { MareographProperties } from '../popup/Mareograp
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
 import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 import { MarineWarningModal } from './MarineWarningModal';
+import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -30,6 +31,7 @@ export type PopupProperties = {
   mareograph?: MareographProperties;
   observation?: ObservationProperties;
   buoy?: BuoyProperties;
+  harbor?: HarborProperties;
 };
 
 const MapOverlays: React.FC = () => {
@@ -93,6 +95,7 @@ const MapOverlays: React.FC = () => {
           {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} setPopupProperties={setPopupProperties} />}
           {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} setPopupProperties={setPopupProperties} />}
           {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} setPopupProperties={setPopupProperties} />}
+          {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} setPopupProperties={setPopupProperties} />}
         </div>
       </div>
       <LayerModal

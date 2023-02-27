@@ -42,8 +42,18 @@ const gzipString = async (input: string): Promise<Buffer> => {
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAll();
+  const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
+  for (const harbor of harbors) {
+    harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
+  }
+  const cards = await FairwayCardDBModel.getAll();
+  for (const card of cards) {
+    for (const h of card.harbors || []) {
+      harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
+    }
+  }
   const ids: string[] = [];
-  for (const harbor of harbors || []) {
+  for (const harbor of harborMap.values()) {
     if (harbor?.geometry?.coordinates?.length === 2) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
@@ -62,6 +72,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             phoneNumber: harbor.phoneNumber,
             fax: harbor.fax,
             internet: harbor.internet,
+            quays: harbor.quays?.length || 0,
+            fairwayCards: harbor.fairwayCards,
+            extraInfo: harbor.extraInfo,
           },
         });
       }

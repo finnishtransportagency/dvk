@@ -41,7 +41,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonCol className="header">{t('popup.harbor.coordinates')}</IonCol>
+          <IonCol className="header">{t('popup.quay.coordinates')}</IonCol>
         </IonRow>
         {quay.coordinates && (
           <IonRow>
@@ -51,37 +51,37 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
         {quay.properties.depth && (
           <>
             <IonRow>
-              <IonCol className="header">{t('popup.harbor.depth')}</IonCol>
+              <IonCol className="header">{t('popup.quay.depth')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{quay.properties.depth?.map((d) => t('popup.harbor.number', { val: d })).join(' / ')} m</IonCol>
+              <IonCol>{quay.properties.depth?.map((d) => t('popup.quay.number', { val: d })).join(' / ')} m</IonCol>
             </IonRow>
           </>
         )}
         {quay.properties.length && (
           <>
             <IonRow>
-              <IonCol className="header">{t('popup.harbor.length')}</IonCol>
+              <IonCol className="header">{t('popup.quay.length')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{t('popup.harbor.number', { val: quay.properties.length })} m</IonCol>
+              <IonCol>{t('popup.quay.number', { val: quay.properties.length })} m</IonCol>
             </IonRow>
           </>
         )}
         <IonRow>
-          <IonCol className="header">{t('popup.harbor.contactDetails')}</IonCol>
+          <IonCol className="header">{t('popup.quay.contactDetails')}</IonCol>
         </IonRow>
         {quay.properties.email && (
           <IonRow>
             <IonCol>
-              {t('popup.harbor.email')}: <a href={'mailto:' + quay.properties.email}>{quay.properties.email}</a>
+              {t('popup.quay.email')}: <a href={'mailto:' + quay.properties.email}>{quay.properties.email}</a>
             </IonCol>
           </IonRow>
         )}
         {quay.properties.phoneNumber && (
           <IonRow>
             <IonCol>
-              {t('popup.harbor.phoneNumber')}:{' '}
+              {t('popup.quay.phoneNumber')}:{' '}
               {quay.properties.phoneNumber.map((p, i) => {
                 return (
                   <span key={i}>
@@ -96,14 +96,14 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
         {quay.properties.fax && (
           <IonRow>
             <IonCol>
-              {t('popup.harbor.fax')}: <a href={'tel:' + quay.properties.fax}>{quay.properties.fax}</a>
+              {t('popup.quay.fax')}: <a href={'tel:' + quay.properties.fax}>{quay.properties.fax}</a>
             </IonCol>
           </IonRow>
         )}
         {quay.properties.internet && (
           <IonRow>
             <IonCol>
-              {t('popup.harbor.internet')}:{' '}
+              {t('popup.quay.internet')}:{' '}
               <a href={quay.properties.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                 {quay.properties.internet}
               </a>
@@ -113,7 +113,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
         {quay.properties.extraInfo && quay.properties.extraInfo[lang] && (
           <>
             <IonRow>
-              <IonCol className="header">{t('popup.harbor.extra')}</IonCol>
+              <IonCol className="header">{t('popup.quay.extra')}</IonCol>
             </IonRow>
             <IonRow>
               <IonCol>{quay.properties.extraInfo[lang]}</IonCol>
