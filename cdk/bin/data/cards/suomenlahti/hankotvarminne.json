@@ -5,6 +5,7 @@
     "sv": "Farleden Hangö-Tvärminne",
     "en": "Hanko-Tvärminne channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "2",
   "lineText": {

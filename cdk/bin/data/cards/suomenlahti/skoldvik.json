@@ -5,6 +5,7 @@
     "sv": "Sköldviksleden",
     "en": "Sköldvik channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "2",
   "lineText": {
