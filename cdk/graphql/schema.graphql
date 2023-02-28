@@ -4,7 +4,7 @@ schema {
 }
 
 type Query {
-  fairwayCards: [FairwayCard!]!
+  fairwayCards(status: [Status!]): [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
   fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   safetyEquipmentFaults: [SafetyEquipmentFault!]!

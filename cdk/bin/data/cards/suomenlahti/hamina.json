@@ -5,6 +5,7 @@
     "sv": "Fredrikshamnsleden",
     "en": "Hamina channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "2",
   "lineText": {

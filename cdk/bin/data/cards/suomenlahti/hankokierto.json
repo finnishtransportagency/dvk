@@ -5,6 +5,7 @@
     "sv": "Hangö omfartsled",
     "en": "Hanko bypass channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "2",
   "lineText": {

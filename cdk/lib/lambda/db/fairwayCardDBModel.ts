@@ -75,7 +75,7 @@ class FairwayCardDBModel {
 
   name: Text;
 
-  status?: Status;
+  status: Status;
 
   n2000HeightSystem?: boolean;
 

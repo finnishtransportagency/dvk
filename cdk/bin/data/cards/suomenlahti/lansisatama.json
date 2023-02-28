@@ -5,6 +5,7 @@
     "sv": "Farleden till Västra hamnen i Helsingfors",
     "en": "Helsinki West Harbour channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "2",
   "lineText": {

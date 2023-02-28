@@ -5,6 +5,7 @@
     "sv": "Kasköleden",
     "en": "Kaskinen channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "3",
   "lineText": {

@@ -5,6 +5,7 @@
     "sv": "Valkeakarileden till Raumo",
     "en": "Rauma, Valkeakari channel"
   },
+  "status": "PUBLIC",
   "n2000HeightSystem": false,
   "group": "1",
   "lineText": {
