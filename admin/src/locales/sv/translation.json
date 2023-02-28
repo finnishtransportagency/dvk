@@ -3,5 +3,32 @@
     "mainTitle": "Digital farledskort",
     "appTitle": "[sv] Ylläpitokäyttöliittymä",
     "logout": "[sv] Kirjaudu ulos"
+  },
+  "general": {
+    "search-placeholder": "[sv] Hae nimellä",
+    "search-title": "[sv] Hae nimellä",
+    "search-clear-title": "Töm",
+    "select-type": "[sv] Valitse tyyppi",
+    "type-fairwaycard": "Farledskort",
+    "type-harbour": "[sv] Satama",
+    "new-harbour": "[sv] Luo satama",
+    "new-fairwaycard": "[sv] Luo väyläkortti",
+    "item-name": "[sv] Kohteen nimi",
+    "item-type": "[sv] Kohteen tyyppi",
+    "item-area": "[sv] Merialue",
+    "item-referencelevel": "[sv] Vertaustaso",
+    "item-status": "[sv] Tila",
+    "item-creator": "[sv] Luonut",
+    "item-modifier": "[sv] Muokannut",
+    "item-modified": "Uppdaterat",
+    "item-type-CARD": "Farledskort",
+    "item-type-HARBOR": "[sv] Satama",
+    "item-status-DRAFT": "[sv] Luonnos",
+    "item-status-PUBLIC": "[sv] Julkaistu",
+    "item-status-REMOVED": "[sv] Poistettu",
+    "archipelagoSea": "Skärgårdshavet",
+    "gulfOfFinland": "Finska vikens område",
+    "gulfOfBothnia": "Bottniska vikens område",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   }
 }

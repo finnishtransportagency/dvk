@@ -3,5 +3,32 @@
     "mainTitle": "Digital Fairway Card",
     "appTitle": "Admin dashboard",
     "logout": "Logout"
+  },
+  "general": {
+    "search-placeholder": "Search",
+    "search-title": "Search",
+    "search-clear-title": "Clear",
+    "select-type": "Select type",
+    "type-fairwaycard": "Fairway card",
+    "type-harbour": "Harbour",
+    "new-harbour": "Create harbour",
+    "new-fairwaycard": "Create fairway card",
+    "item-name": "Item name",
+    "item-type": "Item type",
+    "item-area": "Area",
+    "item-referencelevel": "Reference level",
+    "item-status": "Status",
+    "item-creator": "Creator",
+    "item-modifier": "Modifier",
+    "item-modified": "Updated",
+    "item-type-CARD": "Fairway card",
+    "item-type-HARBOR": "Harbour",
+    "item-status-DRAFT": "Draft",
+    "item-status-PUBLIC": "Published",
+    "item-status-REMOVED": "Removed",
+    "archipelagoSea": "Archipelago sea",
+    "gulfOfFinland": "Gulf of Finland",
+    "gulfOfBothnia": "Gulf of Bothnia",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   }
 }

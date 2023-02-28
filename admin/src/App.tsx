@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { IonApp, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonReactRouter } from '@ionic/react-router';
+import { Route, Switch } from 'react-router-dom';
 import PageHeader from './components/PageHeader';
+import MainPage from './pages/MainPage';
 import { useTranslation } from 'react-i18next';
 import { Lang } from './utils/constants';
 
@@ -24,6 +27,8 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/dvk.css';
+import FairwayCardEditPage from './pages/FairwayCardEditPage';
+import HarbourEditPage from './pages/HarbourEditPage';
 
 setupIonicReact({
   mode: 'md',
@@ -34,7 +39,30 @@ const queryClient = new QueryClient();
 const AdminIonApp: React.FC = () => {
   return (
     <IonApp>
-      <PageHeader />
+      <IonReactRouter basename="/yllapito">
+        <PageHeader />
+        <IonContent>
+          <IonRouterOutlet>
+            <Switch>
+              <Route path="/fairwaycard/:fairwayCardId">
+                <FairwayCardEditPage />
+              </Route>
+              <Route path="/fairwaycard/">
+                <FairwayCardEditPage />
+              </Route>
+              <Route path="/harbour/:harbourId">
+                <HarbourEditPage />
+              </Route>
+              <Route path="/harbour/">
+                <HarbourEditPage />
+              </Route>
+              <Route path="/">
+                <MainPage />
+              </Route>
+            </Switch>
+          </IonRouterOutlet>
+        </IonContent>
+      </IonReactRouter>
     </IonApp>
   );
 };
