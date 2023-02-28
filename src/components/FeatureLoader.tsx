@@ -44,7 +44,7 @@ export function useLine12Layer() {
 }
 
 export function useLine3456Layer() {
-  return useDataLayer('line3456', 'line3456');
+  return useDataLayer('line3456', 'line3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
 }
 
 export function useNameLayer() {
@@ -160,11 +160,11 @@ export function useMareographLayer() {
 }
 
 export function useObservationLayer() {
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 5);
+  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10);
 }
 
 export function useBuoyLayer() {
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 5);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -231,7 +231,7 @@ export function useArea12Layer() {
 }
 
 export function useArea3456Layer() {
-  return useDataLayer('area3456', 'area3456');
+  return useDataLayer('area3456', 'area3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
 }
 
 export function useDepth12Layer() {
@@ -292,7 +292,7 @@ export function useHarborLayer() {
 }
 
 export function useMarineWarningLayer() {
-  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395');
+  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
 }
 
 export type EquipmentFault = {
@@ -305,7 +305,7 @@ export type EquipmentFault = {
 export function useSafetyEquipmentLayer() {
   const [ready, setReady] = useState(false);
   const eQuery = useFeatureData('safetyequipment');
-  const fQuery = useFeatureData('safetyequipmentfault');
+  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
   const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
   const isPaused = eQuery.isPaused || fQuery.isPaused;
