@@ -1,0 +1,14 @@
+query fairwayCardsAndHarbors {
+  fairwayCardsAndHarbors {
+    id
+    name {fi sv en}
+    status
+    type
+    group
+    fairwayIds
+    n2000HeightSystem
+    creator
+    modifier
+    modificationTimestamp
+  }
+}

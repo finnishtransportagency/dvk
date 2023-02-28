@@ -65,18 +65,13 @@ ion-row.input-row > ion-col {
 .small-text {
   font-size: 14px;
 }
-.printable,
-.mobile .no-mobile {
-  display: none;
-}
-
 
 /* Links */
 a {
   color: var(--ion-color-dark);
   text-decoration: underline;
 }
-a[target="_blank"] {
+a[target='_blank'] {
   color: var(--ion-color-primary);
   /*padding-right: 14px;
   background: url('./img/externalLink.svg') no-repeat right center;*/
@@ -88,15 +83,15 @@ a:focus-visible {
   outline: 1px solid var(--ion-color-dark);
   outline-offset: 1px;
 }
-a[target="_blank"]:focus-visible {
+a[target='_blank']:focus-visible {
   outline: 1px solid var(--ion-color-primary);
 }
-.offline a[target="_blank"] {
+.offline a[target='_blank'] {
   pointer-events: none;
   cursor: default;
   opacity: 0.5;
 }
-.offline a[target="_blank"]:focus-visible {
+.offline a[target='_blank']:focus-visible {
   outline: none;
 }
 
@@ -113,13 +108,22 @@ ol li {
 }
 
 /* Buttons */
+ion-button {
+  height: 42px;
+  margin: 0 0 0 10px;
+  font-size: 16px;
+  letter-spacing: normal;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
 ion-button.icon-only {
   --padding-top: 0;
   --padding-bottom: 0;
   --padding-start: 0;
   --padding-end: 0;
   --border-radius: 20px;
-  --box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
   margin: 0;
   height: 40px;
   width: 40px;
@@ -162,11 +166,11 @@ ion-button.plainButton {
   margin: 0;
   text-decoration: underline;
   height: 1.25rem;
-  --background-hover: unset;
   --padding-start: 0;
   --padding-end: 0;
   --background-hover: unset;
   --background-focused: unset;
+  --border-radius: 0;
 }
 ion-button.plainButton:hover {
   text-decoration: none;
@@ -179,6 +183,80 @@ ion-button.plainButton.button-disabled {
   color: var(--ion-color-dark);
   font-weight: bold;
   text-decoration: none;
+}
+
+/* Search input */
+.searchWrapper {
+  width: 320px;
+  max-width: 100%;
+  position: relative;
+}
+.searchWrapper ion-input.searchBar {
+  box-sizing: border-box;
+  height: 45px;
+  max-width: 100%;
+  background-color: var(--ion-color-dark);
+  padding: 1px !important;
+  font-size: 14px;
+  --placeholder-color: var(--ion-color-medium);
+  --placeholder-opacity: 1;
+}
+.searchWrapper ion-input.searchBar input {
+  height: 100%;
+  padding: 0 40px 0 12px;
+  background: var(--ion-color-primary-contrast) url('./img/search.svg') no-repeat right 12px center;
+  background-size: 24px 24px;
+  border-radius: 0;
+}
+.searchWrapper ion-input.searchBar.has-focus {
+  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  padding: 2px !important;
+}
+.searchWrapper ion-input.searchBar.has-focus input {
+  padding: 0 39px 0 11px;
+  background-position: right 11px center;
+}
+.searchWrapper ion-input.searchBar.has-value input {
+  padding-right: 12px;
+  background: var(--ion-color-primary-contrast);
+}
+.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon {
+  background: var(--ion-color-primary-contrast) url('./img/close_primary.svg') no-repeat center;
+  background-size: 18px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 11px;
+  right: 12px;
+  z-index: 2;
+}
+.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
+  background-color: var(--ion-color-light);
+}
+.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
+  background-color: var(--ion-color-primary-contrast);
+  opacity: 1;
+  outline: 1px solid var(--ion-color-dark);
+}
+.searchWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
+  display: none;
+}
+
+ion-item.selectInput {
+  width: 200px;
+  max-width: 100%;
+  --min-height: 43px;
+  --border-color: var(--ion-color-dark);
+  --padding-start: 14px;
+}
+ion-item.selectInput::part(native) {
+  border-radius: 0;
+}
+ion-item.selectInput ion-select {
+  width: 100%;
+  font-size: 14px;
+  --placeholder-color: var(--ion-color-medium);
+  --placeholder-opacity: 1;
 }
 
 /* Header */
@@ -208,6 +286,72 @@ ion-header ion-grid.languageBar ion-button.plainButton {
 ion-header ion-grid.userInfo {
   font-size: 12px;
   line-height: 1.125rem;
+}
+
+/* Content */
+div.ion-page > ion-content.mainContent {
+  --padding-start: 43px;
+  --padding-end: 28px; /* scrollbar width (~15px on average) and default grid padding 5px subtracted */
+  --padding-bottom: 43px;
+}
+div.ion-page > ion-content.mainContent::part(scroll) {
+  scrollbar-gutter: stable;
+}
+
+ion-grid.optionBar {
+  padding: 24px 0 10px;
+}
+/* Item table / list */
+ion-grid.itemList {
+  font-size: 12px;
+  line-height: 1.125rem;
+}
+ion-grid.itemList ion-row {
+  border-bottom: 1px solid var(--ion-color-lighter);
+}
+ion-grid.itemList ion-row:not(.header):hover {
+  background: var(--ion-color-lightest);
+  cursor: pointer;
+}
+ion-grid.itemList ion-row:first-of-type {
+  border-top: 1px solid var(--ion-color-lighter);
+}
+ion-grid.itemList ion-row:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
+}
+ion-grid.itemList ion-col {
+  border-left: 1px solid var(--ion-color-lighter);
+  padding: 10px 8px;
+  overflow: hidden;
+}
+ion-grid.itemList ion-row ion-col:first-of-type {
+  border-left: none;
+}
+ion-grid.itemList .header ion-col {
+  padding: 10px 8px;
+  align-items: center !important;
+  display: flex;
+}
+ion-grid.itemList .header ion-button {
+  font-weight: bold;
+  height: auto;
+  white-space: normal;
+  text-align: left;
+  vertical-align: middle;
+  word-break: break-word;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+}
+ion-grid.itemList .header ion-button svg {
+  width: 12px;
+  height: 12px;
+  margin-left: 4px;
+  overflow: visible;
+  transform: rotate(-90deg);
+  transition: transform 150ms;
+}
+ion-grid.itemList .header ion-button.desc svg {
+  transform: rotate(90deg);
 }
 
 /* Footer */
