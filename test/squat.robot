@@ -223,6 +223,46 @@ ${SUHTEELLINEN_TUULEN_NOPEUS_2_CONTAINER}    6
 ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_CONTAINER}    35,37
 ${ARVIOITU_SORTOKULMA_CONTAINER}    0,05
 
+#Bulker input-values
+${LENGTHBPP_INPUT_BULKER}    189.90
+${BREADTH_INPUT_BULKER}    32.26
+${DRAUGHT_INPUT_BULKER}    12.04
+${WINDSPEED_INPUT_BULKER}    5
+${WAVEHEIGHT_INPUT_BULKER}    1
+${WAVEPERIOD_INPUT_BULKER}    10
+${WINDSURFACE_INPUT_BULKER}    2500
+${DECKCARGO_INPUT_BULKER}    8000
+${BOWTHRUSTER_INPUT_BULKER}    1000
+${SWEPTDEPTH_INPUT_BULKER}    12.5
+${WATERLEVEL_INPUT_BULKER}    10
+${WATERDEPTH_INPUT_BULKER}    23
+${CHANNELWIDTH_INPUT_BULKER}    200
+${SLOPEHEIGHT_INPUT_BULKER}    12
+${KG_INPUT_BULKER}    8
+${VESSEL_COURSE_INPUT_BULKER}    10
+${VESSEL_SPEED_INPUT_BULKER}    12
+
+#Bulker squat-values
+${KALLISTUMA_TUULI_BULKER}    0,54
+${KALLISTUMA_KAANNOS_BULKER}    2,12
+${ALUKSEN_TODELLINEN_SYVAYS_BULKER}    12,19
+${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_BULKER}    12,63
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_BULKER}    −1,27
+${KOLIVARA_SUORALLA_KURSSILLA_BULKER}    −1,27
+${KOLIVARA_KAANNOKSESSA_BULKER}    −2,3
+${PAINUMA_LUISKA_BULKER}    1,68
+${SUHTEELLINEN_TUULEN_SUUNTA_1_BULKER}    35
+${SUHTEELLINEN_TUULEN_NOPEUS_1_BULKER}    9
+${TUULEN_VOIMA_BULKER}    2,7
+${AALLOKON_VOIMA_BULKER}    9,6
+${KEULAPOTKURIN_SUORITUSKYKY_BULKER}    13,4
+${TURVAMARGINAALI_BULKER}    108,4
+${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_BULKER}    -
+${SUHTEELLINEN_TUULEN_SUUNTA_2_BULKER}    35
+${SUHTEELLINEN_TUULEN_NOPEUS_2_BULKER}    9
+${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_BULKER}    32,32
+${ARVIOITU_SORTOKULMA_BULKER}    0,02
+
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
@@ -297,6 +337,19 @@ Calculate Squat For Container
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
 	Check The Squat Calculation Values    CONTAINER
+
+Calculate Squat For Bulker
+	[Documentation]    This test case inputs valid values to Squat calculator for Bulker and checks the result
+	Set Input Values To General Section    BULKER
+	Set Input Values To Weather Section    BULKER
+	Set Input Values To Detailed Section    BULKER
+	Set Input Values To Fairway Section    BULKER
+	Set Input Values To Stability Section    BULKER
+	Set Input Values To Vessel Section    BULKER
+	Get Squat Calculation Values
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Squat Calculation Values    BULKER
 
 *** Keywords ***
 Change Squat Calculator Language To
