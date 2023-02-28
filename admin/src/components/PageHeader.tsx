@@ -20,12 +20,12 @@ const PageHeader: React.FC = () => {
         <IonRow>
           <IonCol size="auto">
             <IonText>
-              <strong>{data?.currentUser?.name}</strong>
+              <strong data-testid="currentUser">{data?.currentUser?.name}</strong>
             </IonText>
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonButton fill="clear" className="plainButton" onClick={() => logoutAction()}>
+          <IonButton fill="clear" className="plainButton" data-testid="logoutButton" onClick={() => logoutAction()}>
             {t('header.logout')}
           </IonButton>
         </IonRow>

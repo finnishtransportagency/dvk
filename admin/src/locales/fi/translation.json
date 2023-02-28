@@ -3,5 +3,32 @@
     "mainTitle": "Digitaalinen väyläkortti",
     "appTitle": "Ylläpitokäyttöliittymä",
     "logout": "Kirjaudu ulos"
+  },
+  "general": {
+    "search-placeholder": "Hae nimellä",
+    "search-title": "Hae nimellä",
+    "search-clear-title": "Tyhjennä",
+    "select-type": "Valitse tyyppi",
+    "type-fairwaycard": "Väyläkortti",
+    "type-harbour": "Satama",
+    "new-harbour": "Luo satama",
+    "new-fairwaycard": "Luo väyläkortti",
+    "item-name": "Koh­teen ni­mi",
+    "item-type": "Koh­teen tyyp­pi",
+    "item-area": "Meri­alue",
+    "item-referencelevel": "Ver­taus­ta­so",
+    "item-status": "Tila",
+    "item-creator": "Luonut",
+    "item-modifier": "Muo­kan­nut",
+    "item-modified": "Päi­vi­tet­ty",
+    "item-type-CARD": "Väyläkortti",
+    "item-type-HARBOR": "Satama",
+    "item-status-DRAFT": "Luonnos",
+    "item-status-PUBLIC": "Julkaistu",
+    "item-status-REMOVED": "Poistettu",
+    "archipelagoSea": "Saaristomeri",
+    "gulfOfFinland": "Suomenlahti",
+    "gulfOfBothnia": "Pohjanlahden alue",
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   }
 }

@@ -147,7 +147,7 @@ it('renders home page without crashing', () => {
 });
 
 it('should render fairway list without crashing', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/' } = {}) => {
     window.history.pushState({}, 'Väyläkortit', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -161,7 +161,7 @@ it('should render fairway list without crashing', () => {
 });
 
 it('should render fairway card for "vuosaari" without crashing', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/vuosaari/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/vuosaari/' } = {}) => {
     window.history.pushState({}, 'Vuosaaren väylä', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -175,7 +175,7 @@ it('should render fairway card for "vuosaari" without crashing', () => {
 });
 
 test('if sidePane header elements are present and working', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/' } = {}) => {
     window.history.pushState({}, 'Väyläkortit', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -224,7 +224,7 @@ test('if sidePane header elements are present and working', () => {
 });
 
 test('if sidebarMenu elements are present and working', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/' } = {}) => {
     window.history.pushState({}, 'Väyläkortit', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -265,7 +265,7 @@ test('if sidebarMenu elements are present and working', () => {
 });
 
 it('should find key elements in fairway card for "vuosaari"', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/vuosaari/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/vuosaari/' } = {}) => {
     window.history.pushState({}, 'Vuosaaren väylä', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -290,7 +290,7 @@ it('should find key elements in fairway card for "vuosaari"', () => {
 });
 
 it('should change to third tab successfully', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/vuosaari/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/vuosaari/' } = {}) => {
     window.history.pushState({}, 'Vuosaaren väylä', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -306,7 +306,7 @@ it('should change to third tab successfully', () => {
 });
 
 it('should trigger map hovers successfully', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/kortit/vuosaari/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/kortit/vuosaari/' } = {}) => {
     window.history.pushState({}, 'Vuosaaren väylä', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -328,7 +328,7 @@ it('should trigger map hovers successfully', () => {
 });
 
 it('should render safety equipment fault page successfully', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/turvalaiteviat/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/turvalaiteviat/' } = {}) => {
     window.history.pushState({}, 'Turvalaiteviat', route);
     return render(ui, { wrapper: BrowserRouter });
   };
@@ -343,7 +343,7 @@ it('should render safety equipment fault page successfully', () => {
 });
 
 it('should render marine warning page successfully', () => {
-  const renderWithRouter = (ui: JSX.Element, { route = '/merivaroitukset/' } = {}) => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/merivaroitukset/' } = {}) => {
     window.history.pushState({}, 'Merivaroitukset', route);
     return render(ui, { wrapper: BrowserRouter });
   };
