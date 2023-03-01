@@ -44,16 +44,16 @@ const AdminIonApp: React.FC = () => {
         <IonContent>
           <IonRouterOutlet>
             <Switch>
-              <Route path="/fairwaycard/:fairwayCardId">
+              <Route path="/vaylakortti/:fairwayCardId">
                 <FairwayCardEditPage />
               </Route>
-              <Route path="/fairwaycard/">
+              <Route path="/vaylakortti/">
                 <FairwayCardEditPage />
               </Route>
-              <Route path="/harbour/:harbourId">
+              <Route path="/satama/:harbourId">
                 <HarbourEditPage />
               </Route>
-              <Route path="/harbour/">
+              <Route path="/satama/">
                 <HarbourEditPage />
               </Route>
               <Route path="/">
