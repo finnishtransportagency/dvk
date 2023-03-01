@@ -360,9 +360,9 @@ export class SquatSite extends Construct {
       webAclId,
       geoRestriction,
       errorResponses: [
-        { httpStatus: 403, responseHttpStatus: 200, responsePagePath: '/forbidden.html' },
-        { httpStatus: 404, responseHttpStatus: 200, responsePagePath: '/notfound.html' },
-        { httpStatus: 500, responseHttpStatus: 200, responsePagePath: '/error.html' },
+        { httpStatus: 403, responseHttpStatus: 403, responsePagePath: '/forbidden.html' },
+        { httpStatus: 404, responseHttpStatus: 404, responsePagePath: '/notfound.html' },
+        { httpStatus: 500, responseHttpStatus: 500, responsePagePath: '/error.html' },
       ],
     });
 
