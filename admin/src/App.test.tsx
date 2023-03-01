@@ -74,7 +74,7 @@ it('renders main admin page without crashing', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    const mainPage = screen.getByTestId('mainPage');
+    const mainPage = screen.getByTestId('mainPageContent');
     expect(mainPage).toBeInTheDocument();
   });
 });
