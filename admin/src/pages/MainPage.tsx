@@ -4,6 +4,7 @@ import {
   IonCol,
   IonContent,
   IonGrid,
+  IonHeader,
   IonInput,
   IonItem,
   IonPage,
@@ -52,8 +53,8 @@ const MainPage: React.FC = () => {
   };
 
   const selectItem = (id: string, type: string) => {
-    if (type === 'CARD') history.push('/fairwaycard/' + id);
-    if (type === 'HARBOR') history.push('/harbour/' + id);
+    if (type === 'CARD') history.push('/vaylakortti/' + id);
+    if (type === 'HARBOR') history.push('/satama/' + id);
   };
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string) => {
     if (event.key === 'Enter') selectItem(id, type);
@@ -61,7 +62,7 @@ const MainPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="mainContent ion-no-padding" data-testid="mainPage">
+      <IonHeader className="ion-no-border">
         <IonGrid className="optionBar">
           <IonRow>
             <IonCol size="auto">
@@ -90,6 +91,10 @@ const MainPage: React.FC = () => {
                   interface="popover"
                   multiple={true}
                   onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
+                  interfaceOptions={{
+                    size: 'cover',
+                    className: 'multiSelect',
+                  }}
                 >
                   <IonSelectOption value="CARD">{t('type-fairwaycard') || ''}</IonSelectOption>
                   <IonSelectOption value="HARBOR">{t('type-harbour') || ''}</IonSelectOption>
@@ -97,16 +102,18 @@ const MainPage: React.FC = () => {
               </IonItem>
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" routerLink="/harbour/">
+              <IonButton shape="round" routerLink="/satama/">
                 {t('new-harbour')}
               </IonButton>
-              <IonButton shape="round" routerLink="/fairwaycard/">
+              <IonButton shape="round" routerLink="/vaylakortti/">
                 {t('new-fairwaycard')}
               </IonButton>
             </IonCol>
           </IonRow>
         </IonGrid>
+      </IonHeader>
 
+      <IonContent className="mainContent ion-no-padding" data-testid="mainPageContent">
         <IonGrid className="itemList">
           <IonRow className="header ion-align-items-stretch">
             <IonCol size="2.5">
