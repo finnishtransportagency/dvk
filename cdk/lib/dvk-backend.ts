@@ -173,7 +173,8 @@ export class DvkBackendStack extends Stack {
 
   private createApiKeyExpiration() {
     const now = new Date();
-    return new Date(Date.UTC(now.getUTCFullYear() + 1, now.getUTCMonth(), 1, 0, 0, 0, 0));
+    now.setDate(now.getDate() + 365);
+    return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1, 0, 0, 0, 0));
   }
 
   private createCacheBucket(env: string): Bucket {
