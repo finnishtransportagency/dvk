@@ -33,9 +33,9 @@ export function getDepthStyle(feature: FeatureLike) {
   const dvkMap = getMap();
   const n2000HeightSystem = isShowN2000HeightSystem(feature.getProperties() as AreaFeatureProperties);
   if (n2000HeightSystem === true) {
-    text = dvkMap.t('popup.harbor.number', { val: props.n2000depth }) + 'm';
+    text = dvkMap.t('popup.quay.number', { val: props.n2000depth }) + 'm';
   } else if (n2000HeightSystem === false) {
-    text = dvkMap.t('popup.harbor.number', { val: props.depth });
+    text = dvkMap.t('popup.quay.number', { val: props.depth });
   } else {
     text = '-';
   }
