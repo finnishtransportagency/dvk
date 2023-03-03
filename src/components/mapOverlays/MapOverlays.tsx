@@ -8,7 +8,7 @@ import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
 import { filterFairways } from '../../utils/common';
 import { Lang } from '../../utils/constants';
-import { MobileModal } from './MobileModal';
+import { MobileModal, SourceModal } from './MobileModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
@@ -34,7 +34,12 @@ export type PopupProperties = {
   harbor?: HarborProperties;
 };
 
-const MapOverlays: React.FC = () => {
+type MapOverlaysProps = {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+};
+
+const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const [isOpen, setIsOpen] = useState(false);
@@ -107,6 +112,7 @@ const MapOverlays: React.FC = () => {
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <MobileModal />
+      <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <MarineWarningModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
     </>
   );

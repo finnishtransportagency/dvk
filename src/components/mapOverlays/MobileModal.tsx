@@ -4,8 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
 import './MobileModal.css';
 
-export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
+type ModalProps = {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  languageBar: boolean;
+  title: string;
+  content: string;
+};
+
+const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, content }) => {
   const { t } = useTranslation();
   return (
     <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)}>
@@ -13,7 +20,7 @@ export const MobileModal: React.FC = () => {
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
           <IonTitle>
-            <div className="wrappable-title">{t('mobile.title')}</div>
+            <div className="wrappable-title">{title}</div>
           </IonTitle>
           <IonButtons slot="end" style={{ marginRight: '16px' }}>
             <IonButton
@@ -30,13 +37,15 @@ export const MobileModal: React.FC = () => {
       </IonHeader>
       <IonGrid>
         <IonRow className="content">
-          <IonCol>{t('mobile.content')}</IonCol>
+          <IonCol>{content}</IonCol>
         </IonRow>
-        <IonRow className="languageBar">
-          <IonCol>
-            <LanguageBar />
-          </IonCol>
-        </IonRow>
+        {languageBar && (
+          <IonRow className="languageBar">
+            <IonCol>
+              <LanguageBar />
+            </IonCol>
+          </IonRow>
+        )}
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
@@ -47,4 +56,20 @@ export const MobileModal: React.FC = () => {
       </IonFooter>
     </IonModal>
   );
+};
+
+export const MobileModal: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV !== 'production' ? true : false);
+  const { t } = useTranslation();
+  return <Modal isOpen={isOpen} setIsOpen={setIsOpen} languageBar={true} title={t('mobile.title')} content={t('mobile.content')} />;
+};
+
+type SourceModalProps = {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+};
+
+export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
+  const { t } = useTranslation();
+  return <Modal isOpen={isOpen} setIsOpen={setIsOpen} languageBar={true} title={t('source.title')} content={t('source.content')} />;
 };

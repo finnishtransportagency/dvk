@@ -64,7 +64,12 @@ export const LanguageBar: React.FC = () => {
   );
 };
 
-const SidebarMenu: React.FC = () => {
+type SidebarMenuProps = {
+  isSourceOpen: boolean;
+  setIsSourceOpen: (open: boolean) => void;
+};
+
+const SidebarMenu: React.FC<SidebarMenuProps> = ({ isSourceOpen, setIsSourceOpen }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
   const { state } = useDvkContext();
@@ -191,6 +196,11 @@ const SidebarMenu: React.FC = () => {
           </IonTitle>
         </IonToolbar>
         <IonToolbar className="ion-no-border">
+          <IonTitle size="small" slot="start">
+            <IonItem detail={false} lines="none" className="ion-no-padding internal" onClick={() => setIsSourceOpen(true)}>
+              {t('source')}
+            </IonItem>
+          </IonTitle>
           <IonTitle size="small" slot="end">
             <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>
           </IonTitle>

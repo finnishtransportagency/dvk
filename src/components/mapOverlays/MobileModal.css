@@ -42,7 +42,7 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
 
 ion-modal .closeButton {
   --color: var(--ion-color-dark);
-  --background-hover: var(--ion-color-lightest);
+  --background-hover: var(--ion-color-lightest) !important;
   --background-hover-opacity: 1;
   --background-focused: unset;
   --padding-end: 3px;

@@ -8,7 +8,8 @@
       "marine-warnings": "Marine Warnings",
       "squat": "Squat calculator",
       "squat-url": "/squat/index.html?lang=en",
-      "customer-service": "[en] Liikenteen asiakaspalvelu"
+      "customer-service": "[en] Liikenteen asiakaspalvelu",
+      "source": "[en] Tietolähteet ja käyttöehdot"
     },
     "map": {
       "content": "[en] TODO: Kartta",
@@ -384,5 +385,9 @@
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",
     "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
+  },
+  "source": {
+    "title": "[en] Tietolähteet ja käyttöehdot",
+    "content": "[en] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }
 }

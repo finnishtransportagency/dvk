@@ -8,7 +8,8 @@
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
       "squat-url": "/squat/index.html?lang=fi",
-      "customer-service": "Liikenteen asiakaspalvelu"
+      "customer-service": "Liikenteen asiakaspalvelu",
+      "source": "Tietolähteet ja käyttöehdot"
     },
     "map": {
       "content": "TODO: Kartta",
@@ -384,5 +385,9 @@
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
     "content": "Digitaalinen väyläkortti on vielä kehitteillä. Tämä palvelu ei alkuvaiheessa tue virallisesti esim. mobiililaitteiden käyttöä, joten suosittelemme pöytäkoneen tai tabletin selaimen käyttöä."
+  },
+  "source": {
+    "title": "Tietolähteet ja käyttöehdot",
+    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
   }
 }
