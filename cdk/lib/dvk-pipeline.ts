@@ -253,8 +253,6 @@ export class DvkPipeline extends Construct {
 
   private getBranch(env: string): string {
     switch (env) {
-      case 'pete':
-        return 'feature/DVK-652-mobiili-popup-zoomaus';
       case 'prod':
         return 'prod';
       case 'test':
