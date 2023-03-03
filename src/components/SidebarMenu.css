@@ -144,13 +144,13 @@
   margin-inline-start: 4px;
 }
 
+.sideBar ion-footer {
+  border-top: 1px solid var(--ion-color-lighter);
+}
+
 .sideBar ion-footer ion-toolbar ion-title a {
   font-size: 12px;
   margin-inline-start: 4px;
-}
-
-.sideBar ion-footer {
-  border-top: 1px solid var(--ion-color-lighter);
 }
 
 .sideBar ion-footer ion-toolbar ion-title a:hover {

@@ -184,7 +184,7 @@ const SidebarMenu: React.FC = () => {
               rel="noreferrer"
               target="_blank"
               className="ion-no-padding external"
-              onClick={async () => menuController.close()}
+              onClick={() => menuController.close()}
             >
               {t('customer-service')}
             </a>
