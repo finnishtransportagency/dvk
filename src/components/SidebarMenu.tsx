@@ -176,7 +176,7 @@ const SidebarMenu: React.FC = () => {
         </IonGrid>
       </IonContent>
 
-      <IonFooter collapse="fade" className="small">
+      <IonFooter collapse="fade" className="small ion-no-border">
         <IonToolbar className="ion-no-border">
           <IonTitle size="small">
             <a
