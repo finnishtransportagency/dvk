@@ -7,7 +7,8 @@
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
-      "squat-url": "/squat/index.html?lang=fi"
+      "squat-url": "/squat/index.html?lang=fi",
+      "customer-service": "Liikenteen asiakaspalvelu"
     },
     "map": {
       "content": "TODO: Kartta",

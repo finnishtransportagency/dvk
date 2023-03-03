@@ -177,7 +177,20 @@ const SidebarMenu: React.FC = () => {
       </IonContent>
 
       <IonFooter collapse="fade" className="small ion-no-border">
-        <IonToolbar>
+        <IonToolbar className="ion-no-border">
+          <IonTitle size="small">
+            <a
+              href="https://www.palautevayla.fi/aspa"
+              rel="noreferrer"
+              target="_blank"
+              className="ion-no-padding external"
+              onClick={() => menuController.close()}
+            >
+              {t('customer-service')}
+            </a>
+          </IonTitle>
+        </IonToolbar>
+        <IonToolbar className="ion-no-border">
           <IonTitle size="small" slot="end">
             <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>
           </IonTitle>

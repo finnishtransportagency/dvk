@@ -7,7 +7,8 @@
       "safety-equipment-faults": "Safety Equipment Faults",
       "marine-warnings": "Marine Warnings",
       "squat": "Squat calculator",
-      "squat-url": "/squat/index.html?lang=en"
+      "squat-url": "/squat/index.html?lang=en",
+      "customer-service": "[en] Liikenteen asiakaspalvelu"
     },
     "map": {
       "content": "[en] TODO: Kartta",
