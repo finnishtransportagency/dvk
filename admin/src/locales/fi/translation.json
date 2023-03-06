@@ -29,6 +29,16 @@
     "archipelagoSea": "Saaristomeri",
     "gulfOfFinland": "Suomenlahti",
     "gulfOfBothnia": "Pohjanlahden alue",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "close": "Sulje",
+    "cancel": "Peruuta"
+  },
+  "modal": {
+    "title-new-CARD": "Uusi väyläkortti",
+    "title-new-HARBOR": "Uusi satama",
+    "description-new-CARD": "Voit valita halutessasi olemassa olevan väyläkortin pohjaksi uuden luontia varten.",
+    "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
+    "create-CARD": "Luo väyläkortti",
+    "create-HARBOR": "Luo satama"
   }
 }

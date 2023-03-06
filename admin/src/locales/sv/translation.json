@@ -29,6 +29,16 @@
     "archipelagoSea": "Skärgårdshavet",
     "gulfOfFinland": "Finska vikens område",
     "gulfOfBothnia": "Bottniska vikens område",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "close": "Stäng",
+    "cancel": "[sv] Peruuta"
+  },
+  "modal": {
+    "title-new-CARD": "Ny farledskort",
+    "title-new-HARBOR": "Ny hamn",
+    "description-new-CARD": "[sv] Voit valita halutessasi olemassa olevan väyläkortin pohjaksi uuden luontia varten.",
+    "description-new-HARBOR": "[sv] Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
+    "create-CARD": "[sv] Luo väyläkortti",
+    "create-HARBOR": "[sv] Luo satama"
   }
 }
