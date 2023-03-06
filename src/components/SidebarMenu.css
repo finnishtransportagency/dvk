@@ -167,7 +167,7 @@
 
 .sideBar ion-footer ion-item {
   margin-inline-start: 4px;
-  color: var(--ion-color-primary);
+  color: var(--ion-color-dark);
   font-size: 12px;
   text-transform: none;
   letter-spacing: normal;
