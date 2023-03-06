@@ -29,6 +29,16 @@
     "archipelagoSea": "Archipelago sea",
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
-    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "close": "Close",
+    "cancel": "Cancel"
+  },
+  "modal": {
+    "title-new-CARD": "New fairway card",
+    "title-new-HARBOR": "New harbour",
+    "description-new-CARD": "[en] Voit valita halutessasi olemassa olevan väyläkortin pohjaksi uuden luontia varten.",
+    "description-new-HARBOR": "[en] Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
+    "create-CARD": "Create fairway card",
+    "create-HARBOR": "Create harbour"
   }
 }

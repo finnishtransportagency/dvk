@@ -117,6 +117,17 @@ ion-button {
   --padding-end: 16px;
 }
 
+ion-button.invert {
+  --border-color: var(--ion-color-primary);
+  --border-style: solid;
+  --border-width: 1px;
+  --color: var(--ion-color-primary);
+  --background: var(--ion-color-primary-contrast);
+  --background-hover: var(--ion-color-primary);
+  --background-activated: var(--ion-color-primary);
+  --background-focused: var(--ion-color-primary);
+}
+
 ion-button.icon-only {
   --padding-top: 0;
   --padding-bottom: 0;
@@ -384,4 +395,89 @@ ion-grid.itemList .header ion-button.desc svg {
 /* Footer */
 ion-footer.small ion-toolbar {
   --min-height: 30px;
+}
+
+/* Modal */
+ion-modal .gradient-top {
+  height: 12px;
+  background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
+}
+
+ion-modal ion-header.header-md::after {
+  content: none;
+}
+
+ion-modal ion-footer.footer-md::before {
+  content: none;
+}
+
+ion-modal ion-header ion-title {
+  font-size: 24px;
+  font-weight: bold;
+  padding-inline: 28px;
+  margin-top: 28px;
+  margin-bottom: 28px;
+  letter-spacing: 0;
+}
+
+ion-modal.prompt ion-grid {
+  padding: 0 calc(28px - 5px);
+  margin: 0;
+}
+
+ion-modal ion-text p {
+  margin-top: 0;
+}
+
+ion-modal ion-header ion-toolbar.titleBar {
+  padding-left: 0;
+}
+
+ion-modal ion-footer ion-toolbar.buttonBar {
+  padding: 0 28px;
+  --min-height: calc(42px + 2 * 28px);
+}
+ion-modal ion-footer ion-toolbar.buttonBar ion-button {
+  margin-bottom: 0px;
+}
+
+ion-modal .closeButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lightest);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 30px;
+  margin: 0 calc(24px - 6px) 0 0;
+}
+ion-modal .closeButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+ion-modal .closeButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+ion-modal .wrappable-title {
+  overflow: visible;
+  white-space: normal;
+}
+
+ion-modal.prompt {
+  --max-height: 90%;
+  --width: 600px;
+  --max-width: 95%;
+}
+
+ion-modal.prompt::part(content) {
+  height: fit-content;
+  overflow: visible;
+}
+
+ion-modal ion-button.button-disabled {
+  text-decoration: none;
+  font-weight: bold;
+  color: var(--ion-color-dark);
+  opacity: 1;
 }
