@@ -335,9 +335,7 @@ class DvkMap {
       mapLayers.forEach((layer) => {
         if (layer.get('type') === 'backgroundTile') {
           layer.setVisible(isOffline ? false : true);
-        } else if (layer.get('type') === 'backgroundMmlmeri') {
-          layer.setMinResolution(isOffline ? 0.5 : 4);
-        } else if (layer.get('type') === 'backgroundMmljarvi') {
+        } else if (layer.get('type') === 'backgroundMmlmeri' || layer.get('type') === 'backgroundMmljarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
       });
