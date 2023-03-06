@@ -18,7 +18,6 @@ import { getBuoyStyle } from '../layerStyles/buoyStyles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
-  const content = document.getElementById('popup-content') as HTMLElement | undefined;
   const overlay = new Overlay({
     element: container,
     autoPan: {
@@ -29,12 +28,15 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     positioning: 'center-left',
   });
   const types = ['pilot', 'quay', 'harbor', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
-  if (content) {
-    content.onclick = () => {
-      overlay.setPosition(undefined);
-      return true;
-    };
+  if (container) {
+    container.addEventListener('pointercancel', (e) => {
+      e.preventDefault();
+    });
+    container.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+    });
   }
+
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
     const features: FeatureLike[] = [];
@@ -52,13 +54,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (!feature) {
       overlay.setPosition(undefined);
       setPopupProperties({});
-      return;
-    }
-    const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-    if (overlay.getPosition()) {
-      overlay.setPosition(undefined);
-      setPopupProperties({});
     } else {
+      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+      if (overlay.getPosition()) {
+        overlay.setPosition(undefined);
+        setPopupProperties({});
+      }
       setPopupProperties({
         [feature.getProperties().featureType]: {
           coordinates: geom.getCoordinates() as number[],
