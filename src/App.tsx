@@ -248,11 +248,12 @@ const DvkIonApp: React.FC = () => {
     }
   }, [dvkMap, state.isOffline]);
 
+  const [isSourceOpen, setIsSourceOpen] = useState(false);
   return (
     <IonApp className={appClasses.join(' ')}>
       <OfflineStatus />
       <IonReactRouter basename="/vaylakortti">
-        <SidebarMenu />
+        <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
             value={percentDone}
@@ -282,7 +283,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (
