@@ -15,10 +15,11 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
-import { Lang } from '../utils/constants';
+import { Lang, PromptType } from '../utils/constants';
 import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
+import CreationModal from '../components/CreationModal';
 
 const MainPage: React.FC = () => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
@@ -30,14 +31,15 @@ const MainPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [itemTypes, setItemTypes] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
+  const [prompt, setPrompt] = useState<PromptType>('');
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending);
 
   const changeAction = (val?: string | number | null) => {
-    setSearchQuery(String(val)?.toLowerCase());
+    setSearchQuery(String(val));
   };
   const clearInput = () => {
     setSearchQuery('');
@@ -45,6 +47,9 @@ const MainPage: React.FC = () => {
   };
   const itemTypeSelection = (value: string[]) => {
     setItemTypes(value);
+  };
+  const itemCreationAction = (itemType: PromptType) => {
+    setPrompt(itemType);
   };
 
   const sortItemsBy = (param: string) => {
@@ -102,10 +107,10 @@ const MainPage: React.FC = () => {
               </IonItem>
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" routerLink="/satama/">
+              <IonButton shape="round" onClick={() => itemCreationAction('HARBOR')}>
                 {t('new-harbour')}
               </IonButton>
-              <IonButton shape="round" routerLink="/vaylakortti/">
+              <IonButton shape="round" onClick={() => itemCreationAction('CARD')}>
                 {t('new-fairwaycard')}
               </IonButton>
             </IonCol>
@@ -194,6 +199,8 @@ const MainPage: React.FC = () => {
               );
             })}
         </IonGrid>
+
+        <CreationModal itemList={data?.fairwayCardsAndHarbors || []} prompt={prompt} setPrompt={setPrompt} />
       </IonContent>
     </IonPage>
   );
