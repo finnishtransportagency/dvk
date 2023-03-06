@@ -15,7 +15,7 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
-import { Lang, PromptType } from '../utils/constants';
+import { ItemType, Lang } from '../utils/constants';
 import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
@@ -30,10 +30,11 @@ const MainPage: React.FC = () => {
   const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [itemTypes, setItemTypes] = useState<string[]>([]);
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+  const [itemType, setItemType] = useState<ItemType>('');
+  const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
-  const [prompt, setPrompt] = useState<PromptType>('');
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending);
@@ -45,11 +46,12 @@ const MainPage: React.FC = () => {
     setSearchQuery('');
     searchRef.current?.setFocus();
   };
-  const itemTypeSelection = (value: string[]) => {
+  const itemTypeSelection = (value: ItemType[]) => {
     setItemTypes(value);
   };
-  const itemCreationAction = (itemType: PromptType) => {
-    setPrompt(itemType);
+  const itemCreationAction = (selectedType: ItemType) => {
+    setItemType(selectedType);
+    setIsOpen(true);
   };
 
   const sortItemsBy = (param: string) => {
@@ -200,7 +202,7 @@ const MainPage: React.FC = () => {
             })}
         </IonGrid>
 
-        <CreationModal itemList={data?.fairwayCardsAndHarbors || []} prompt={prompt} setPrompt={setPrompt} />
+        <CreationModal itemList={data?.fairwayCardsAndHarbors || []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
       </IonContent>
     </IonPage>
   );

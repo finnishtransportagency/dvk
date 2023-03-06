@@ -1,11 +1,11 @@
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { Lang } from './constants';
+import { ItemType, Lang } from './constants';
 
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
   lang: Lang,
   searchQuery: string,
-  itemTypes: string[],
+  itemTypes: ItemType[],
   sortBy: string,
   sortDescending: boolean
 ) => {

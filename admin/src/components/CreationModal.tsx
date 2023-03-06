@@ -2,18 +2,19 @@ import React, { useRef, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { PromptType } from '../utils/constants';
+import { ItemType } from '../utils/constants';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
-  prompt: PromptType;
-  setPrompt: (prompt: PromptType) => void;
+  itemType: ItemType;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-const CreationModal: React.FC<ModalProps> = ({ itemList, prompt, setPrompt }) => {
+const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen }) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -23,25 +24,25 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, prompt, setPrompt }) =>
 
   const createNewItem = () => {
     modal.current?.dismiss();
-    if (prompt === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
-    if (prompt === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
+    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
   };
 
   const closeModal = () => {
-    setOrigin(undefined);
+    setIsOpen(false);
     modal.current?.dismiss();
     setTimeout(() => {
-      setPrompt('');
+      if (!isDropdownOpen) setOrigin(undefined);
     }, 150);
   };
 
   return (
-    <IonModal ref={modal} isOpen={prompt !== ''} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
           <IonTitle>
-            <div className="wrappable-title">{t('modal.title-new-' + prompt)}</div>
+            <div className="wrappable-title">{t('modal.title-new-' + itemType)}</div>
           </IonTitle>
           <IonButton
             slot="end"
@@ -59,10 +60,10 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, prompt, setPrompt }) =>
         <IonRow className="content">
           <IonCol>
             <IonText>
-              <p>{t('modal.description-new-' + prompt)}</p>
+              <p>{t('modal.description-new-' + itemType)}</p>
             </IonText>
             <SearchInput
-              itemList={itemList.filter((item) => item.type === prompt) || []}
+              itemList={itemList.filter((item) => item.type === itemType) || []}
               selectedItem={origin}
               setSelectedItem={setOrigin}
               isDropdownOpen={isDropdownOpen}
@@ -77,7 +78,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, prompt, setPrompt }) =>
             {t('general.cancel')}
           </IonButton>
           <IonButton slot="end" size="large" onClick={() => createNewItem()} shape="round">
-            {t('modal.create-' + prompt)}
+            {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>
       </IonFooter>
