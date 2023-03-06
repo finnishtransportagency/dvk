@@ -2,7 +2,12 @@ import { IonButton, IonButtons, IonCol, IonFooter, IonGrid, IonHeader, IonIcon, 
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
-import './MobileModal.css';
+import './CommonModal.css';
+
+type Link = {
+  href: string;
+  name: string;
+};
 
 type ModalProps = {
   isOpen: boolean;
@@ -10,12 +15,15 @@ type ModalProps = {
   languageBar: boolean;
   title: string;
   content: string;
+  showBackdrop: boolean;
+  size: string;
+  links?: Link[];
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, content }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, content, showBackdrop, size, links }) => {
   const { t } = useTranslation();
   return (
-    <IonModal isOpen={isOpen} className="small" onDidDismiss={() => setIsOpen(false)}>
+    <IonModal isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
@@ -39,6 +47,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, co
         <IonRow className="content">
           <IonCol>{content}</IonCol>
         </IonRow>
+        {links &&
+          links.map((link, idx) => {
+            return (
+              <IonRow key={idx} className="linkBar">
+                <IonCol>
+                  <a href={link.href} rel="noreferrer" target="_blank" className="ion-no-padding external">
+                    {t(link.name)}
+                  </a>
+                </IonCol>
+              </IonRow>
+            );
+          })}
         {languageBar && (
           <IonRow className="languageBar">
             <IonCol>
@@ -59,9 +79,19 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, co
 };
 
 export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV !== 'production' ? true : false);
+  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
   const { t } = useTranslation();
-  return <Modal isOpen={isOpen} setIsOpen={setIsOpen} languageBar={true} title={t('mobile.title')} content={t('mobile.content')} />;
+  return (
+    <Modal
+      size="small"
+      showBackdrop={true}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      languageBar={true}
+      title={t('mobile.title')}
+      content={t('mobile.content')}
+    />
+  );
 };
 
 type SourceModalProps = {
@@ -71,5 +101,17 @@ type SourceModalProps = {
 
 export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  return <Modal isOpen={isOpen} setIsOpen={setIsOpen} languageBar={true} title={t('source.title')} content={t('source.content')} />;
+  const links: Link[] = [{ href: 'https://www.maanmittauslaitos.fi/avoindata-lisenssi-cc40', name: 'source.link1' }];
+  return (
+    <Modal
+      size="large"
+      showBackdrop={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      languageBar={false}
+      title={t('source.title')}
+      content={t('source.content')}
+      links={links}
+    />
+  );
 };

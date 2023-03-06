@@ -69,7 +69,7 @@ type SidebarMenuProps = {
   setIsSourceOpen: (open: boolean) => void;
 };
 
-const SidebarMenu: React.FC<SidebarMenuProps> = ({ isSourceOpen, setIsSourceOpen }) => {
+const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
   const { state } = useDvkContext();
@@ -197,7 +197,15 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ isSourceOpen, setIsSourceOpen
         </IonToolbar>
         <IonToolbar className="ion-no-border">
           <IonTitle size="small" slot="start">
-            <IonItem detail={false} lines="none" className="ion-no-padding internal" onClick={() => setIsSourceOpen(true)}>
+            <IonItem
+              detail={false}
+              lines="none"
+              className="ion-no-padding internal"
+              onClick={() => {
+                menuController.close();
+                setIsSourceOpen(true);
+              }}
+            >
               {t('source')}
             </IonItem>
           </IonTitle>
