@@ -1,21 +1,84 @@
-import React from 'react';
-import { IonButton, IonCol, IonGrid, IonHeader, IonImg, IonRow, IonText } from '@ionic/react';
+import React, { useRef, useState } from 'react';
+import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonImg, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserQueryData } from '../graphql/api';
 import LanguageBar from './LanguageBar';
 import vayla_logo from '../theme/img/vayla_logo.png';
+import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 
-const PageHeader: React.FC = () => {
+interface ModalProps {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
 
-  const UserInfo = () => {
-    const { data } = useCurrentUserQueryData();
+  const modal = useRef<HTMLIonModalElement>(null);
 
-    const logoutAction = () => {
-      console.warn('TODO: Trigger action logout');
-    };
+  const closeModal = () => {
+    setIsOpen(false);
+    modal.current?.dismiss();
+  };
+  const logoutAction = () => {
+    modal.current?.dismiss();
+  };
 
-    return (
+  return (
+    <IonModal ref={modal} isOpen={isOpen} className="prompt" onDidDismiss={() => closeModal()}>
+      <IonHeader>
+        <div className="gradient-top" />
+        <IonToolbar className="titleBar">
+          <IonTitle>
+            <div className="wrappable-title">{t('modal.logout-title')}</div>
+          </IonTitle>
+          <IonButton
+            slot="end"
+            onClick={() => closeModal()}
+            fill="clear"
+            className="closeButton"
+            title={t('general.close') || ''}
+            aria-label={t('general.close') || ''}
+          >
+            <CloseIcon />
+          </IonButton>
+        </IonToolbar>
+      </IonHeader>
+      <IonGrid>
+        <IonRow className="content">
+          <IonCol>
+            <IonText>
+              <p>{t('modal.logout-description')}</p>
+            </IonText>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <IonFooter>
+        <IonToolbar className="buttonBar">
+          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+            {t('general.cancel')}
+          </IonButton>
+          <IonButton slot="end" size="large" onClick={() => logoutAction()} shape="round">
+            {t('header.logout')}
+          </IonButton>
+        </IonToolbar>
+      </IonFooter>
+    </IonModal>
+  );
+};
+
+const UserInfo = () => {
+  const { t } = useTranslation();
+  const { data } = useCurrentUserQueryData();
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const showLogoutPrompt = () => {
+    setIsOpen(true);
+  };
+
+  return (
+    <>
       <IonGrid className="ion-no-padding userInfo">
         <IonRow>
           <IonCol size="auto">
@@ -25,13 +88,18 @@ const PageHeader: React.FC = () => {
           </IonCol>
         </IonRow>
         <IonRow>
-          <IonButton fill="clear" className="plainButton" data-testid="logoutButton" onClick={() => logoutAction()}>
+          <IonButton fill="clear" className="plainButton" data-testid="logoutButton" onClick={() => showLogoutPrompt()}>
             {t('header.logout')}
           </IonButton>
         </IonRow>
       </IonGrid>
-    );
-  };
+      <LogoutModal isOpen={isOpen} setIsOpen={setIsOpen} />
+    </>
+  );
+};
+
+const PageHeader: React.FC = () => {
+  const { t } = useTranslation();
 
   return (
     <IonHeader>

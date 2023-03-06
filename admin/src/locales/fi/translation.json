@@ -39,6 +39,8 @@
     "description-new-CARD": "Voit valita halutessasi olemassa olevan väyläkortin pohjaksi uuden luontia varten.",
     "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "Luo väyläkortti",
-    "create-HARBOR": "Luo satama"
+    "create-HARBOR": "Luo satama",
+    "logout-title": "Olet kirjautumassa ulos",
+    "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
   }
 }
