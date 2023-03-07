@@ -3,6 +3,10 @@ import { Feature, FeatureCollection, Point } from 'geojson';
 import { roundGeometry } from '../lib/lambda/util';
 import proj4 from 'proj4';
 import { gzip } from 'zlib';
+import Config from '../lib/config';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+
+const s3Client = new S3Client({ region: 'eu-west-1' });
 
 const gzipString = async (input: string): Promise<Buffer> => {
   const buffer = Buffer.from(input);
@@ -15,6 +19,21 @@ const gzipString = async (input: string): Promise<Buffer> => {
     })
   );
 };
+
+function getBucketName() {
+  return `static.dvk${Config.getEnvironment()}.testivaylapilvi.fi`;
+}
+
+async function saveToS3(filename: string, data: Buffer) {
+  const command = new PutObjectCommand({
+    Key: filename,
+    Bucket: getBucketName(),
+    Body: data,
+    ContentType: 'application/json',
+    ContentEncoding: 'gzip',
+  });
+  await s3Client.send(command);
+}
 
 const ignoredNames = ['Vuosaaren satama'];
 
@@ -41,15 +60,17 @@ async function main() {
                 sv: feature.properties?.AHTI_NAMSV,
               },
               priority: Number.parseInt(feature.properties?.AHTI_PRIOR, 10),
-              // TODO: set based on source
-              level: Number.parseInt(feature.properties?.AHTI_PRIOR, 10),
             },
           });
         }
       }
     }
     const collection: FeatureCollection = { type: 'FeatureCollection', features };
-    fs.writeFileSync('names.json.gz', await gzipString(JSON.stringify(collection, undefined, 2) + '\n'));
+    const data = await gzipString(JSON.stringify(collection) + '\n');
+    const filename = 'names.json.gz';
+    fs.writeFileSync(filename, data);
+    await saveToS3(filename, data);
+    console.log(`${filename} uploaded to S3 bucket ${getBucketName()}`);
   }
 }
 

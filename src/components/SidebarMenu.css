@@ -151,6 +151,8 @@
 .sideBar ion-footer ion-toolbar ion-title small {
   white-space: nowrap;
   font-size: 12px;
+  display: block;
+  min-height: 18px;
 }
 
 .sideBar ion-footer ion-toolbar ion-title a {
