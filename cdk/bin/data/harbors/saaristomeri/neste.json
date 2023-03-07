@@ -10,6 +10,8 @@
     "sv": "Neste Oyj:s hamn, Nådendal",
     "en": "Neste Oyj’s harbour in Naantali"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358504586487"
   ],

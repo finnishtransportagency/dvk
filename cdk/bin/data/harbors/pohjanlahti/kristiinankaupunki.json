@@ -10,6 +10,8 @@
     "sv": "Björnö hamn, Kristinestad",
     "en": "Karhusaari Harbour, Kristiinankaupunki"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358503133441"
   ],

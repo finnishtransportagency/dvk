@@ -10,6 +10,8 @@
     "sv": "Fredrikshamn-Kotka hamn",
     "en": "Port of HaminaKotka Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358207908800",
     "+358207908840"

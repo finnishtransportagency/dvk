@@ -10,6 +10,8 @@
     "sv": "Inkoo Shipping Oy Ab Ingå",
     "en": "Inkoo Shipping Oy Ab Inkoo"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358207631500"
   ],

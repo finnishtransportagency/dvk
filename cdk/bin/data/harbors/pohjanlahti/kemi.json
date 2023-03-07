@@ -10,6 +10,8 @@
     "sv": "Kemi hamn Ab",
     "en": "Kemi Port Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35816258100"
   ],

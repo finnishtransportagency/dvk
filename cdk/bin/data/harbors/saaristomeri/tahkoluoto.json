@@ -10,6 +10,8 @@
     "sv": "Björneborgs hamn Ab, Björneborg",
     "en": "Port of Pori, Pori"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358447012623"
   ],

@@ -10,6 +10,8 @@
     "sv": "Hangon satama - Hangö Hamn Oy Ab",
     "en": "Hangon satama - Hangö Hamn Oy Ab"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358102355013",
     "+358405486534"

@@ -10,6 +10,8 @@
     "sv": "Röyttä hamn, Torneå",
     "en": "Röyttä harbour, Tornio"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35816454511"
   ],

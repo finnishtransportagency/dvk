@@ -10,6 +10,8 @@
     "sv": "Helsingfors hamn, Helsingfors",
     "en": "Port of Helsinki, Helsinki"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+35893101621"
   ],

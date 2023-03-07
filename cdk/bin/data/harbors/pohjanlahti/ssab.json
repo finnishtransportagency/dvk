@@ -10,6 +10,8 @@
     "sv": "SSAB Europe Ab Brahestad hamn",
     "en": "SSAB Europe Ltd Raahe harbour"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+358205923890"
   ],
