@@ -10,6 +10,8 @@
     "sv": "Neste Abp, Borgå",
     "en": "Neste Oyj, Porvoo"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358104583120",
     "+358104583115"

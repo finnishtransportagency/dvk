@@ -10,6 +10,8 @@
     "sv": "Nystads hamn",
     "en": "Port of Uusikaupunki"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358504205193",
     "+358447778686"

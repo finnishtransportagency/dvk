@@ -10,6 +10,8 @@
     "sv": "Mariehamns hamn",
     "en": "Port of Mariehamn"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358185310",
     "+35818531476"

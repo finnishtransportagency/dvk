@@ -10,6 +10,8 @@
     "sv": "Omya Oy Förby hamn",
     "en": "Omya Oy Förby harbour"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358277571"
   ],

@@ -10,6 +10,8 @@
     "sv": "Kalajoki Hamn",
     "en": "Port of Kalajoki"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+358400798698"
   ],

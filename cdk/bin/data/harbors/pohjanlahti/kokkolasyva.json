@@ -10,6 +10,8 @@
     "sv": "Karleby hamn, Karleby",
     "en": "Port of Kokkola"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35868242400"
   ],

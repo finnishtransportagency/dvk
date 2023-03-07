@@ -10,6 +10,8 @@
     "sv": "Kvarken Ports Ltd",
     "en": "Kvarken Ports Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358400479163",
     "+358405672975"

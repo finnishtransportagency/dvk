@@ -1,15 +1,17 @@
 {
   "id": "hamina",
   "name": {
-    "fi": "HaminaKotka Satama Oy",
-    "sv": "Fredrikshamn-Kotka hamn",
-    "en": "Port of HaminaKotka"
-  },
-  "mapName": {
     "fi": "Haminan satama",
     "sv": "Hamnen i Fredrikshamn",
     "en": "Port of Hamina"
   },
+  "company": {
+    "fi": "HaminaKotka Satama Oy",
+    "sv": "Fredrikshamn-Kotka hamn",
+    "en": "Port of HaminaKotka"
+  },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358207908800",
     "+358207908840"

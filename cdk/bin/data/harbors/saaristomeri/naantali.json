@@ -10,6 +10,8 @@
     "sv": "Nådendals hamn",
     "en": "Port of Naantali"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358447334550"
   ],

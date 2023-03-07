@@ -10,6 +10,8 @@
     "sv": "Yara Suomi Oy",
     "en": "Yara Suomi Oy"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358505240072"
   ],

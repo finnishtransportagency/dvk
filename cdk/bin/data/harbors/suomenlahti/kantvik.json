@@ -10,6 +10,8 @@
     "sv": "Oy Kantvik Shipping Ltd",
     "en": "Oy Kantvik Shipping Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358503873672"
   ],

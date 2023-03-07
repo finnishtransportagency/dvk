@@ -227,6 +227,7 @@ type PilotPlace {
 type Harbor {
   id: String!
   status: Status
+  n2000HeightSystem: Boolean
   creator: String
   creationTimestamp: Float
   modifier: String

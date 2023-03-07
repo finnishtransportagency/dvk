@@ -10,6 +10,8 @@
     "sv": "Rauman Satama Oy, Rauma",
     "en": "Port of Rauma Oy, Rauma"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358283711",
     "+358500597579"

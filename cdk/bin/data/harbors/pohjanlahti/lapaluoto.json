@@ -10,6 +10,8 @@
     "sv": "Brahestad hamn Ab, Lapaluoto",
     "en": "Port of Raahe Ltd. Lapaluoto"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35882277555"
   ],

@@ -10,6 +10,8 @@
     "sv": "Kanäs oljehamn",
     "en": "Kanäsin öljysatama"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35867645261"
   ],

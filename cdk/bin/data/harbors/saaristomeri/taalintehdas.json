@@ -10,6 +10,8 @@
     "sv": "Dalsbruks hamn",
     "en": "Port of Dalsbruk, Seaport Logistics Oy"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+35824285423"
   ],

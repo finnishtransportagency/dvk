@@ -10,6 +10,8 @@
     "sv": "Uleåborg hamn Ab",
     "en": "Port of Oulu Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+358447032753"
   ],
