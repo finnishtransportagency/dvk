@@ -8,7 +8,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Curren
   const token = event.request.headers['x-iam-accesstoken'];
   const data = event.request.headers['x-iam-data'];
   const jwtToken = await validateJwtToken(token, data || '');
-  log.debug('JwtToken: %s', jwtToken);
+  log.info('JwtToken: %o', jwtToken);
   return {
     name: jwtToken ? jwtToken['custom:etunimi'] + ' ' + jwtToken['custom:sukunimi'] : '????',
   };
