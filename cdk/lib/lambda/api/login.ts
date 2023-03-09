@@ -75,7 +75,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         jwtToken = await validateJwtToken(token[0], data[0]);
       }
     }
-    log.info('JwtToken: %s', jwtToken);
+    log.info('JwtToken: %o', jwtToken);
     // TODO: comment out once token received from ALB
     /*if (!jwtToken) {
       return {
