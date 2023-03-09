@@ -347,7 +347,7 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Kartan nimistö
-  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1);
+  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true);
   // Laiturit
   addFeatureVectorLayer(
     map,
