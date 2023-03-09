@@ -144,7 +144,7 @@ export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unkn
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
-    const currentUser = await getCurrentUser(event);
+    const currentUser = await getOptionalCurrentUser(event);
     if (!currentUser) {
       return {
         statusCode: 403,
