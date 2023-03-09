@@ -1,6 +1,6 @@
-import { getCloudFrontPrivateKey, getCloudFrontPublicKeyId, getCognitoUrl } from '../environment';
+import { getCloudFrontPrivateKey, getCloudFrontPublicKeyId, getCognitoUrl, isPermanentEnvironment } from '../environment';
 import { getSignedCookies } from '@aws-sdk/cloudfront-signer';
-import { ALBEvent, ALBResult } from 'aws-lambda';
+import { ALBEvent, ALBResult, AppSyncResolverEvent } from 'aws-lambda';
 import { log } from '../logger';
 import JWT, { JwtPayload } from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
@@ -23,7 +23,7 @@ const getPublicKeys = async (issuerUrl: string) => {
   }
 };
 
-export const validateJwtToken = async (token: string | undefined, dataToken: string): Promise<JwtPayload | undefined> => {
+const validateJwtToken = async (token: string | undefined, dataToken: string): Promise<JwtPayload | undefined> => {
   if (!token) {
     log.debug('IAM JWT Token missing');
     return;
@@ -59,36 +59,95 @@ export const validateJwtToken = async (token: string | undefined, dataToken: str
     log.error('Invalid token use');
     return;
   }
-
+  log.debug({ jwtToken: result }, 'JwtToken');
   // Return decoded data token
   return JWT.decode(dataToken.replace(/=/g, '')) as JwtPayload;
 };
 
+function parseRoles(roles: string): string[] {
+  return roles
+    ? roles
+        .replace('\\', '')
+        .split(',')
+        .map((s) => {
+          const s1 = s.split('/').pop();
+          if (s1) {
+            return s1;
+          }
+          // tsc fails if undefined is returned here
+          return '';
+        })
+        .filter((s) => s && s.startsWith('DVK_'))
+    : [];
+}
+
+export type CurrentUser = {
+  firstName: string;
+  lastName: string;
+  uid: string;
+  roles: string[];
+};
+
+export class IllegalAccessError extends Error {
+  constructor(m?: string) {
+    super('IllegalAccessError: ' + m ? m : 'no message');
+    Object.setPrototypeOf(this, IllegalAccessError.prototype);
+  }
+}
+
+export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>): Promise<CurrentUser> {
+  let jwtDataToken;
+  if ('multiValueHeaders' in event && event.multiValueHeaders) {
+    log.debug({ headers: event.multiValueHeaders }, 'Request headers');
+    const token = event.multiValueHeaders['x-iam-accesstoken'];
+    const data = event.multiValueHeaders['x-iam-data'];
+    if (token && data) {
+      jwtDataToken = await validateJwtToken(token[0], data[0]);
+    }
+  } else if ('request' in event && event.request.headers) {
+    log.debug({ headers: event.request.headers }, 'Request headers');
+    const token = event.request.headers['x-iam-accesstoken'];
+    const data = event.request.headers['x-iam-data'];
+    if (token && data) {
+      jwtDataToken = await validateJwtToken(token[0], data[0]);
+    }
+  }
+  log.debug({ jwtDataToken }, 'JwtDataToken');
+  const roles = jwtDataToken ? parseRoles(jwtDataToken['custom:rooli']) : [];
+  if (jwtDataToken && roles.length > 0) {
+    return {
+      uid: jwtDataToken['custom:uid'] as string,
+      firstName: jwtDataToken['custom:etunimi'] as string,
+      lastName: jwtDataToken['custom:sukunimi'] as string,
+      roles,
+    };
+  }
+  if (!isPermanentEnvironment()) {
+    return {
+      uid: 'K123456',
+      firstName: 'Developer',
+      lastName: 'X',
+      roles: ['DVK_yllapito'],
+    };
+  }
+  throw new IllegalAccessError('No permissions');
+}
+
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
-    let jwtToken;
-    if (event.multiValueHeaders) {
-      log.info({ headers: event.multiValueHeaders }, 'Request headers');
-      const token = event.multiValueHeaders['x-iam-accesstoken'];
-      const data = event.multiValueHeaders['x-iam-data'];
-      if (token && data) {
-        jwtToken = await validateJwtToken(token[0], data[0]);
-      }
-    }
-    log.info('JwtToken: %o', jwtToken);
-    // TODO: comment out once token received from ALB
-    /*if (!jwtToken) {
+    const currentUser = await getCurrentUser(event);
+    if (!currentUser) {
       return {
         statusCode: 403,
       };
-    }*/
+    }
     const cloudFrontPolicy = JSON.stringify({
       Statement: [
         {
           Resource: `https://${cloudFrontDnsName}/*`,
           Condition: {
             DateLessThan: {
-              'AWS:EpochTime': Math.floor(new Date().getTime() / 1000) + 3600,
+              'AWS:EpochTime': Math.floor(new Date().getTime() / 1000) + 60 * 60 * 8,
             },
           },
         },

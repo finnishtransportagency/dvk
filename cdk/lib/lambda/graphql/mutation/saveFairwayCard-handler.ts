@@ -3,6 +3,7 @@ import { FairwayCard, FairwayCardInput, Maybe, MutationSaveFairwayCardArgs, Text
 import { log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
+import { getCurrentUser } from '../../api/login';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -98,7 +99,8 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
 export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, FairwayCard> = async (
   event: AppSyncResolverEvent<MutationSaveFairwayCardArgs>
 ): Promise<FairwayCard> => {
-  log.info(`saveFairwayCard(${event.arguments.card?.id})`);
+  const user = await getCurrentUser(event);
+  log.info(`saveFairwayCard(${event.arguments.card?.id}, ${user.uid})`);
   if (event.arguments.card?.id) {
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel);

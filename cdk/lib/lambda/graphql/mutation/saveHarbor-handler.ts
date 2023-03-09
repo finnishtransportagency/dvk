@@ -2,6 +2,7 @@ import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger
 import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, TextInput } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
+import { getCurrentUser } from '../../api/login';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -66,7 +67,8 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined): 
 export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = async (
   event: AppSyncResolverEvent<MutationSaveHarborArgs>
 ): Promise<Harbor> => {
-  log.info(`saveHarbor(${event.arguments.harbor?.id})`);
+  const user = await getCurrentUser(event);
+  log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
   if (event.arguments.harbor?.id) {
     const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel);

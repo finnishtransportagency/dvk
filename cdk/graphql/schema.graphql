@@ -151,7 +151,9 @@ enum ContentType {
 }
 
 type CurrentUser {
-  name: String
+  uid: String!
+  name: String!
+  roles: [String!]!
 }
 
 type FairwayCard {
