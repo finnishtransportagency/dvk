@@ -1,5 +1,6 @@
-import { Fairway, FairwayCard, TrafficService } from '../../../graphql/generated';
+import { Fairway, FairwayCard, Harbor, TrafficService } from '../../../graphql/generated';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
+import HarborDBModel from './harborDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 export function mapIds(ids: number[]) {
@@ -62,9 +63,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     n2000HeightSystem: !!dbModel.n2000HeightSystem,
     status: dbModel.status,
     group: dbModel.group,
-    creator: dbModel.creator,
     creationTimestamp: dbModel.creationTimestamp,
-    modifier: dbModel.modifier,
     modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],
     generalInfo: dbModel.generalInfo,
@@ -88,4 +87,25 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     card.fairways.push(mapFairwayDBModelToFairway(fairway));
   }
   return card;
+}
+
+export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel): Harbor {
+  return {
+    id: dbModel.id,
+    cargo: dbModel.cargo,
+    company: dbModel.company,
+    creationTimestamp: dbModel.creationTimestamp,
+    email: dbModel.email,
+    extraInfo: dbModel.extraInfo,
+    fax: dbModel.fax,
+    geometry: dbModel.geometry,
+    harborBasin: dbModel.harborBasin,
+    internet: dbModel.internet,
+    modificationTimestamp: dbModel.modificationTimestamp,
+    n2000HeightSystem: dbModel.n2000HeightSystem,
+    name: dbModel.name,
+    phoneNumber: dbModel.phoneNumber,
+    quays: dbModel.quays,
+    status: dbModel.status,
+  };
 }
