@@ -109,7 +109,7 @@ export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unkn
     const token = event.request.headers['x-iam-accesstoken'];
     const data = event.request.headers['x-iam-data'];
     if (token && data) {
-      jwtDataToken = await validateJwtToken(token[0], data[0]);
+      jwtDataToken = await validateJwtToken(token, data);
     }
   }
   log.debug({ jwtDataToken }, 'JwtDataToken');
