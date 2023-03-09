@@ -107,7 +107,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     log.debug('card: %o', newModel);
     await FairwayCardDBModel.save(newModel);
     const pilotMap = await getPilotPlaceMap();
-    return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap);
+    return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
   }
   throw new Error('Card id missing');
 };

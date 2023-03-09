@@ -95,7 +95,7 @@ export class IllegalAccessError extends Error {
   }
 }
 
-export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>): Promise<CurrentUser> {
+export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>): Promise<CurrentUser | undefined> {
   let jwtDataToken;
   if ('multiValueHeaders' in event && event.multiValueHeaders) {
     log.debug({ headers: event.multiValueHeaders }, 'Request headers');
@@ -130,7 +130,16 @@ export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unkn
       roles: ['DVK_yllapito'],
     };
   }
-  throw new IllegalAccessError('No permissions');
+  return undefined;
+}
+
+export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>): Promise<CurrentUser> {
+  const user = await getOptionalCurrentUser(event);
+  if (user) {
+    return user;
+  } else {
+    throw new IllegalAccessError('No permissions');
+  }
 }
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
