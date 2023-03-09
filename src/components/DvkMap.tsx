@@ -241,7 +241,6 @@ class DvkMap {
       }
       const layer = new VectorTileLayer({
         declutter: false,
-        className: 'bg-layer',
         source,
         minResolution: undefined,
         maxResolution: 4,

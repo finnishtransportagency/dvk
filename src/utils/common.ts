@@ -45,7 +45,7 @@ export const refreshPrintableMap = () => {
   mapCanvas.width = size[0];
   mapCanvas.height = size[1];
   const mapContext = mapCanvas.getContext('2d');
-  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.bg-layer canvas, .ol-layer canvas'), function (canvas) {
+  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
     if (canvas.width > 0) {
       const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
       if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
