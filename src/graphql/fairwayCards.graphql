@@ -78,6 +78,7 @@ fragment FairwayCardParts on FairwayCard {
       en
     }
     primary
+    secondary
     startText
     endText
     lightingCode

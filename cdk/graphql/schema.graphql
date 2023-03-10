@@ -22,13 +22,28 @@ type Mutation {
   saveHarbor(harbor: HarborInput): Harbor
 }
 
+enum Operation {
+  CREATE
+  UPDATE
+}
+
+enum OperationError {
+  CARD_ID_MISSING
+  CARD_ALREADY_EXIST
+  HARBOR_ID_MISSING
+  HARBOR_ALREADY_EXIST
+}
+
 input FairwayCardInput {
   id: ID!
+  operation: Operation!
   name: TextInput!
   n2000HeightSystem: Boolean!
   group: String!
   status: Status!
   fairwayIds: [Float!]!
+  primaryFairwayId: Float
+  secondaryFairwayId: Float
   lineText: TextInput
   designSpeed: TextInput
   generalInfo: TextInput
@@ -87,6 +102,8 @@ input PilotPlaceInput {
 
 input HarborInput {
   id: ID!
+  n2000HeightSystem: Boolean!
+  operation: Operation!
   status: Status!
   phoneNumber: [String]
   fax: String
@@ -265,6 +282,7 @@ type Fairway {
   id: Int!
   name: Text
   primary: Boolean
+  secondary: Boolean
   startText: String
   endText: String
   lightingCode: String
@@ -279,7 +297,6 @@ type Fairway {
   navigationLines: [NavigationLine!]
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
-  geotiffImages: [String]
   boardLines: [Boardline!]
 }
 

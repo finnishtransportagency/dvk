@@ -25,8 +25,8 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   const fairway: Fairway = {
     id: dbModel.id,
     primary: dbModel.primary ?? false,
+    secondary: dbModel.secondary ?? false,
   };
-  fairway.geotiffImages = dbModel.geotiffImages;
   return fairway;
 }
 

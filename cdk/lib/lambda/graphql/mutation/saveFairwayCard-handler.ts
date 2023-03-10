@@ -1,9 +1,17 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { FairwayCard, FairwayCardInput, Maybe, MutationSaveFairwayCardArgs, TextInput } from '../../../../graphql/generated';
+import {
+  FairwayCard,
+  FairwayCardInput,
+  Maybe,
+  MutationSaveFairwayCardArgs,
+  Operation,
+  OperationError,
+  TextInput,
+} from '../../../../graphql/generated';
 import { log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
-import { getCurrentUser } from '../../api/login';
+import { CurrentUser, getCurrentUser } from '../../api/login';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -25,7 +33,7 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
   return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
 }
 
-function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined): FairwayCardDBModel {
+function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
     id: card.id,
     name: card.name,
@@ -33,11 +41,15 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: map<string>(card.group),
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
-    creator: old ? old.creator : 'Erkki Esimerkki',
-    modifier: 'Erkki Esimerkki',
+    creator: old ? old.creator : user.uid,
+    modifier: user.uid,
     modificationTimestamp: Date.now(),
     fairways: card.fairwayIds.map((id, idx) => {
-      return { id, primary: idx === 0 };
+      return {
+        id,
+        primary: card.primaryFairwayId ? card.primaryFairwayId === id : idx === 0,
+        secondary: card.secondaryFairwayId ? id === card.secondaryFairwayId : idx === 0,
+      };
     }),
     generalInfo: mapText(card.generalInfo),
     anchorage: mapText(card.anchorage),
@@ -103,11 +115,16 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   log.info(`saveFairwayCard(${event.arguments.card?.id}, ${user.uid})`);
   if (event.arguments.card?.id) {
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
-    const newModel = mapFairwayCardToModel(event.arguments.card, dbModel);
+    if (event.arguments.card.operation === Operation.Create && dbModel !== undefined) {
+      log.warn(`Card with id ${event.arguments.card.id} already exists`);
+      throw new Error(OperationError.CardAlreadyExist);
+    }
+    const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
     await FairwayCardDBModel.save(newModel);
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
   }
-  throw new Error('Card id missing');
+  log.warn({ input: event.arguments.card }, 'Card id missing');
+  throw new Error(OperationError.CardIdMissing);
 };

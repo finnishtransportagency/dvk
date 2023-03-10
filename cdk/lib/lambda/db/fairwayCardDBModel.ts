@@ -14,7 +14,7 @@ export type Text = {
 export type FairwayDBModel = {
   id: number;
   primary?: boolean;
-  geotiffImages?: string[];
+  secondary?: boolean;
 };
 
 export type TrafficServiceDBModel = {
