@@ -30,7 +30,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
   const lang = i18n.resolvedLanguage as Lang;
 
   const primaryFairway = data?.find((fairway) => fairway.primary);
-  const secondaryFairway = data?.find((fairway) => fairway.secondary);
+  const secondaryFairway = data?.find((fairway) => fairway.secondary) || primaryFairway;
 
   // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
   const extractNavigationLinesLength = () => {
