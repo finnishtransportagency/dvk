@@ -89,9 +89,8 @@ export type CurrentUser = {
 };
 
 export class IllegalAccessError extends Error {
-  constructor(m?: string) {
-    super('IllegalAccessError: ' + m ? m : 'no message');
-    Object.setPrototypeOf(this, IllegalAccessError.prototype);
+  constructor() {
+    super('NO_PERMISSIONS');
   }
 }
 
@@ -138,7 +137,7 @@ export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unkn
   if (user) {
     return user;
   } else {
-    throw new IllegalAccessError('No permissions');
+    throw new IllegalAccessError();
   }
 }
 
