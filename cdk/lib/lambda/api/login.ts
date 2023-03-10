@@ -5,6 +5,7 @@ import { log } from '../logger';
 import JWT, { JwtPayload } from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
 import axios from 'axios';
+import { OperationError } from '../../../graphql/generated';
 
 const cloudFrontDnsName = process.env.CLOUDFRONT_DNSNAME;
 let cachedKeys: Record<string, string>;
@@ -90,7 +91,7 @@ export type CurrentUser = {
 
 export class IllegalAccessError extends Error {
   constructor() {
-    super('NO_PERMISSIONS');
+    super(OperationError.NoPermissions);
   }
 }
 

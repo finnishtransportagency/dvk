@@ -32,6 +32,7 @@ enum OperationError {
   CARD_ALREADY_EXIST
   HARBOR_ID_MISSING
   HARBOR_ALREADY_EXIST
+  NO_PERMISSIONS
 }
 
 input FairwayCardInput {
