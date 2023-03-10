@@ -189,35 +189,23 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   } else {
     text = '';
   }
-  return [
-    new Style({
-      image: selected ? activeImage : image,
-      text: new Text({
-        font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
-        placement: 'line',
-        offsetY: -55,
-        text,
-        fill: new Fill({
-          color: selected ? '#0064AF' : '#000000',
-        }),
-        stroke: new Stroke({
-          width: 3,
-          color: '#ffffff',
-        }),
+  return new Style({
+    image: selected ? activeImage : image,
+    text: new Text({
+      font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
+      placement: 'line',
+      offsetY: -55,
+      text,
+      fill: new Fill({
+        color: selected ? '#0064AF' : '#000000',
       }),
-      zIndex: selected ? 10 : 1,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 20,
-        displacement: [0, 20],
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
-        }),
+      stroke: new Stroke({
+        width: 3,
+        color: '#ffffff',
       }),
-      zIndex: selected ? 11 : 2,
     }),
-  ];
+    zIndex: selected ? 10 : 1,
+  });
 }
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
@@ -247,7 +235,8 @@ function addFeatureVectorLayer(
   style: StyleLike,
   minResolution: number | undefined = undefined,
   opacity = 1,
-  declutter = false
+  declutter = false,
+  zIndex: number | undefined = undefined
 ) {
   map.addLayer(
     new VectorLayer({
@@ -262,6 +251,7 @@ function addFeatureVectorLayer(
       updateWhileAnimating: false,
       opacity,
       renderOrder: undefined,
+      zIndex,
     })
   );
 }
@@ -347,7 +337,7 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Kartan nimistö
-  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true);
+  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 100);
   // Laiturit
   addFeatureVectorLayer(
     map,
@@ -360,7 +350,7 @@ export function addAPILayers(map: Map) {
     1
   );
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1);
+  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 101);
 }
 
 export function unsetSelectedFairwayCard() {
