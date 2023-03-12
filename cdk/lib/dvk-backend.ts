@@ -18,6 +18,8 @@ import { WafConfig } from './wafConfig';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
+import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { StreamViewType } from '@aws-sdk/client-dynamodb';
 export class DvkBackendStack extends Stack {
   private domainName: string;
 
@@ -57,11 +59,32 @@ export class DvkBackendStack extends Stack {
     const fairwayCardTable = this.createFairwayCardTable();
     const harborTable = this.createHarborTable();
     const pilotPlaceTable = this.createPilotPlaceTable();
+
     const layer = LayerVersion.fromLayerVersionArn(
       this,
       'ParameterLayer',
       'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
     );
+
+    const versioningBucket = this.createVersioningBucket(env);
+
+    const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
+      functionName: `db-stream-handler-${env}`,
+      runtime: lambda.Runtime.NODEJS_16_X,
+      handler: 'handler',
+      entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
+      layers: [layer],
+      environment: {
+        VERSIONING_BUCKET: versioningBucket.bucketName,
+      },
+    });
+
+    dbStreamHandler.addEventSource(
+      new DynamoEventSource(fairwayCardTable, {
+        startingPosition: lambda.StartingPosition.LATEST,
+      })
+    );
+
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -135,6 +158,7 @@ export class DvkBackendStack extends Stack {
       },
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
     });
     table.addGlobalSecondaryIndex({
       indexName: 'FairwayCardByFairwayIdIndex',
@@ -189,6 +213,21 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       ...s3DeletePolicy,
       lifecycleRules: [{ expiration: Duration.days(1) }],
+    });
+  }
+
+  private createVersioningBucket(env: string): Bucket {
+    const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
+    };
+    return new Bucket(this, 'VersioningBucket', {
+      bucketName: `fairwaycard-versioning-${env}`,
+      publicReadAccess: false,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
+      // lifecycleRules: [{ expiration: Duration.days(1) }],
     });
   }
 
