@@ -1,15 +1,14 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { CurrentUser } from '../../../../graphql/generated';
-import { validateJwtToken } from '../../api/login';
+import { getCurrentUser } from '../../api/login';
 import { log } from '../../logger';
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<CurrentUser> => {
-  log.info({ headers: event.request.headers }, `currentUser(${event.identity})`);
-  const token = event.request.headers['x-iam-accesstoken'];
-  const data = event.request.headers['x-iam-data'];
-  const jwtToken = await validateJwtToken(token, data || '');
-  log.info('JwtToken: %o', jwtToken);
+  const user = await getCurrentUser(event);
+  log.debug(`currentUser(${user.uid})`);
   return {
-    name: jwtToken ? jwtToken['custom:etunimi'] + ' ' + jwtToken['custom:sukunimi'] : '????',
+    uid: user.uid,
+    name: `${user.firstName} ${user.lastName}`,
+    roles: user.roles,
   };
 };

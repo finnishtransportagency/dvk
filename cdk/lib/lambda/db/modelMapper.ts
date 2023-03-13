@@ -1,5 +1,7 @@
-import { Fairway, FairwayCard, TrafficService } from '../../../graphql/generated';
+import { Fairway, FairwayCard, Harbor, TrafficService } from '../../../graphql/generated';
+import { CurrentUser } from '../api/login';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
+import HarborDBModel from './harborDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 export function mapIds(ids: number[]) {
@@ -23,8 +25,8 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   const fairway: Fairway = {
     id: dbModel.id,
     primary: dbModel.primary ?? false,
+    secondary: dbModel.secondary ?? false,
   };
-  fairway.geotiffImages = dbModel.geotiffImages;
   return fairway;
 }
 
@@ -51,7 +53,11 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined, pilotMap:
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlaceDBModel>) {
+export function mapFairwayCardDBModelToGraphqlType(
+  dbModel: FairwayCardDBModel,
+  pilotMap: Map<number, PilotPlaceDBModel>,
+  user: CurrentUser | undefined
+) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {
@@ -62,9 +68,9 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     n2000HeightSystem: !!dbModel.n2000HeightSystem,
     status: dbModel.status,
     group: dbModel.group,
-    creator: dbModel.creator,
+    creator: user ? dbModel.creator : null,
     creationTimestamp: dbModel.creationTimestamp,
-    modifier: dbModel.modifier,
+    modifier: user ? dbModel.modifier : null,
     modificationTimestamp: dbModel.modificationTimestamp,
     fairways: [],
     generalInfo: dbModel.generalInfo,
@@ -88,4 +94,27 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     card.fairways.push(mapFairwayDBModelToFairway(fairway));
   }
   return card;
+}
+
+export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: CurrentUser | undefined): Harbor {
+  return {
+    id: dbModel.id,
+    cargo: dbModel.cargo,
+    company: dbModel.company,
+    creator: user ? dbModel.creator : null,
+    creationTimestamp: dbModel.creationTimestamp,
+    email: dbModel.email,
+    extraInfo: dbModel.extraInfo,
+    fax: dbModel.fax,
+    geometry: dbModel.geometry,
+    harborBasin: dbModel.harborBasin,
+    internet: dbModel.internet,
+    modifier: user ? dbModel.modifier : null,
+    modificationTimestamp: dbModel.modificationTimestamp,
+    n2000HeightSystem: dbModel.n2000HeightSystem,
+    name: dbModel.name,
+    phoneNumber: dbModel.phoneNumber,
+    quays: dbModel.quays,
+    status: dbModel.status,
+  };
 }

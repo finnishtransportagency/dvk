@@ -88,7 +88,8 @@
   "fairways": [
     {
       "id": 4070,
-      "primary": true
+      "primary": true,
+      "secondary": true
     }
   ]
 }

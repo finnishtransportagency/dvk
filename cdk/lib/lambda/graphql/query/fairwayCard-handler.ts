@@ -3,6 +3,7 @@ import { FairwayCard, QueryFairwayCardArgs } from '../../../../graphql/generated
 import { log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
+import { getOptionalCurrentUser } from '../../api/login';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, FairwayCard | undefined> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs>
@@ -11,7 +12,8 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, FairwayCard |
   const pilotMap = await getPilotPlaceMap();
   const dbModel = await FairwayCardDBModel.get(event.arguments.id);
   if (dbModel) {
-    return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap);
+    const user = await getOptionalCurrentUser(event);
+    return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap, user);
   }
   return undefined;
 };
