@@ -6,6 +6,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function saveToS3(data: Record<string, any>, bucket: string) {
   const command = new PutObjectCommand({
     Key: data.id + '.json',
@@ -68,7 +69,7 @@ const handler: DynamoDBStreamHandler = async function (event: DynamoDBStreamEven
     log.debug('DynamoDB Record: %j', record.dynamodb);
   });
 
-  for (const record of (event as DynamoDBStreamEvent).Records) {
+  for (const record of event.Records) {
     switch (record.eventName) {
       case 'INSERT':
       case 'MODIFY':
