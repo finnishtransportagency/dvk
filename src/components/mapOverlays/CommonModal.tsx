@@ -1,26 +1,19 @@
 import { IonButton, IonButtons, IonCol, IonFooter, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useState } from 'react';
+import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
 import './CommonModal.css';
 
-type Link = {
-  href: string;
-  name: string;
-};
-
 type ModalProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  languageBar: boolean;
   title: string;
-  content: string;
   showBackdrop: boolean;
   size: string;
-  links?: Link[];
+  children: ReactElement;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, content, showBackdrop, size, links }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children }) => {
   const { t } = useTranslation();
   return (
     <IonModal isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
@@ -43,30 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, co
           </IonButtons>
         </IonToolbar>
       </IonHeader>
-      <IonGrid>
-        <IonRow className="content">
-          <IonCol>{content}</IonCol>
-        </IonRow>
-        {links &&
-          links.map((link, idx) => {
-            return (
-              <IonRow key={idx} className="linkBar">
-                <IonCol>
-                  <a href={link.href} rel="noreferrer" target="_blank" className="ion-no-padding external">
-                    {t(link.name)}
-                  </a>
-                </IonCol>
-              </IonRow>
-            );
-          })}
-        {languageBar && (
-          <IonRow className="languageBar">
-            <IonCol>
-              <LanguageBar />
-            </IonCol>
-          </IonRow>
-        )}
-      </IonGrid>
+      {children}
       <IonFooter>
         <IonToolbar className="buttonBar">
           <IonButton slot="end" size="large" onClick={() => setIsOpen(false)} shape="round">
@@ -79,18 +49,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, languageBar, title, co
 };
 
 export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
+  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV !== 'production' ? true : false);
   const { t } = useTranslation();
   return (
-    <Modal
-      size="small"
-      showBackdrop={true}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      languageBar={true}
-      title={t('mobile.title')}
-      content={t('mobile.content')}
-    />
+    <Modal size="small" showBackdrop={true} isOpen={isOpen} setIsOpen={setIsOpen} title={t('mobile.title')}>
+      <IonGrid>
+        <IonRow className="content">
+          <IonCol>{t('mobile.content')}</IonCol>
+        </IonRow>
+        <IonRow className="languageBar">
+          <IonCol>
+            <LanguageBar />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </Modal>
   );
 };
 
@@ -101,17 +74,33 @@ type SourceModalProps = {
 
 export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  const links: Link[] = [{ href: 'https://www.maanmittauslaitos.fi/avoindata-lisenssi-cc40', name: 'source.link1' }];
   return (
-    <Modal
-      size="large"
-      showBackdrop={false}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      languageBar={false}
-      title={t('source.title')}
-      content={t('source.content')}
-      links={links}
-    />
+    <Modal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
+      <IonGrid className="linkBar">
+        <IonRow className="content">
+          <IonCol> {t('source.content1')}</IonCol>
+        </IonRow>
+        <IonRow className="content">
+          <IonCol> {t('source.content2')}</IonCol>
+        </IonRow>
+        <IonRow className="content">
+          <IonCol>
+            <a href="http://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
+              http://creativecommons.org/licenses/by/4.0/deed.fi
+            </a>{' '}
+            {t('source.content3')}
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {t('source.content4')}
+            {' | '}
+            <a href="https://www.maanmittauslaitos.fi/avoindata-lisenssi-cc40" rel="noreferrer" target="_blank" className="ion-no-padding external">
+              {t('source.content5')}
+            </a>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </Modal>
   );
 };
