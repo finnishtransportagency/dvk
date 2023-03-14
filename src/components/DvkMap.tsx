@@ -78,6 +78,10 @@ class DvkMap {
 
   public initialized = false;
 
+  public tileStatus: 'ok' | 'error' = 'ok';
+
+  public onTileStatusChange: () => void = () => {};
+
   // eslint-disable-next-line
   init(t: any, i18n: any) {
     if (this.initialized) {
@@ -239,6 +243,21 @@ class DvkMap {
       if (!source) {
         return;
       }
+
+      source.on('tileloadend', () => {
+        if (this.tileStatus !== 'ok') {
+          this.tileStatus = 'ok';
+          this.onTileStatusChange();
+        }
+      });
+
+      source.on('tileloaderror', () => {
+        if (this.tileStatus !== 'error') {
+          this.tileStatus = 'error';
+          this.onTileStatusChange();
+        }
+      });
+
       const layer = new VectorTileLayer({
         declutter: false,
         source,
