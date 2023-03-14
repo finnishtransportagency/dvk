@@ -12,10 +12,12 @@ interface ModalProps {
 
 const FairwayCardListPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
-  const title = t('documentTitle');
+  const title = t('documentTitle') + ' - ' + t('fairway-cards');
   const [, setDocumentTitle] = useDocumentTitle(title);
 
-  useEffect(() => {}, [setDocumentTitle, title]);
+  useEffect(() => {
+    setDocumentTitle(title);
+  }, [setDocumentTitle, title]);
 
   useEffect(() => {
     setModalContent('fairwayCardList');

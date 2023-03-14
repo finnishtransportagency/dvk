@@ -12,13 +12,21 @@ import VectorSource from 'ol/source/Vector';
 import Layer from 'ol/layer/Layer';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 
+export type DvkLayerState = {
+  ready: boolean;
+  dataUpdatedAt: number;
+  errorUpdatedAt: number;
+  isPaused: boolean;
+  isError: boolean;
+};
+
 function useDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
   refetchInterval: number | false = false
-) {
+): DvkLayerState {
   const [ready, setReady] = useState(false);
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
   useEffect(() => {
@@ -51,7 +59,7 @@ export function useNameLayer() {
   return useDataLayer('name', 'name', MAP.EPSG);
 }
 
-export function useBackgroundFinlandLayer() {
+export function useBackgroundFinlandLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const fiQuery = useFeatureData('finland', true, false);
   const dataUpdatedAt = Math.max(fiQuery.dataUpdatedAt);
@@ -76,7 +84,7 @@ export function useBackgroundFinlandLayer() {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useBackgroundMmlmeriLayer() {
+export function useBackgroundMmlmeriLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const mmlmeriQuery = useFeatureData('mml_meri', true, false);
   const dataUpdatedAt = Math.max(mmlmeriQuery.dataUpdatedAt);
@@ -101,7 +109,7 @@ export function useBackgroundMmlmeriLayer() {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useBackgroundMmljarviLayer() {
+export function useBackgroundMmljarviLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const mmljarviQuery = useFeatureData('mml_jarvi', true, false);
   const dataUpdatedAt = Math.max(mmljarviQuery.dataUpdatedAt);
@@ -126,7 +134,7 @@ export function useBackgroundMmljarviLayer() {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useBackgroundBalticseaLayer() {
+export function useBackgroundBalticseaLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const baQuery = useFeatureData('balticsea', true, false);
   const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt);
@@ -199,7 +207,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   }
 }
 
-export function useArea12Layer() {
+export function useArea12Layer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const aQuery = useFeatureData('area12');
   const raQuery = useFeatureData('restrictionarea');
@@ -238,7 +246,7 @@ export function useDepth12Layer() {
   return useDataLayer('depth12', 'depth12');
 }
 
-export function useSpeedLimitLayer() {
+export function useSpeedLimitLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const aQuery = useFeatureData('area12');
   const raQuery = useFeatureData('restrictionarea');
@@ -302,7 +310,7 @@ export type EquipmentFault = {
   recordTime: number;
 };
 
-export function useSafetyEquipmentLayer() {
+export function useSafetyEquipmentLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const eQuery = useFeatureData('safetyequipment');
   const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);

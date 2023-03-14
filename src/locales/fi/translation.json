@@ -380,7 +380,8 @@
     "latestDataUpdateAt": "Tietoja päivitetty viimeksi",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
-    "marine-warnings": "Merivaroitukset"
+    "marine-warnings": "Merivaroitukset",
+    "fairway-cards": "Väyläkortit"
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
