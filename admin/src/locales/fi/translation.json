@@ -38,6 +38,7 @@
     "delete": "Poista",
     "create-new": "Luo uusi",
     "save": "Tallenna",
+    "choose": "Valitse...",
     "loading-error": "Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "Voit valita tarvittaessa useita kohteita",
     "required-field": "Pakollinen tieto"

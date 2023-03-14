@@ -38,6 +38,7 @@
     "delete": "Delete",
     "create-new": "Create new",
     "save": "Save",
+    "choose": "Choose...",
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
     "required-field": "Required field"

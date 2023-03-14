@@ -38,6 +38,7 @@
     "delete": "[sv] Poista",
     "create-new": "[sv] Luo uusi",
     "save": "[sv] Tallenna",
+    "choose": "[sv] Valitse...",
     "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
     "required-field": "[sv] Pakollinen tieto"
