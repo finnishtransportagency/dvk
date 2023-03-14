@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ActionTypeSelect } from '../utils/constants';
+import { ActionType, ActionTypeSelect, ValueType } from '../utils/constants';
 import { FairwayCardInput, Operation, Status } from '../graphql/generated';
 import { useFairwaysQueryData, useHarboursQueryData } from '../graphql/api';
 import FormInput from './FormInput';
@@ -26,38 +26,41 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
+  const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
 
-  const updateState = (value?: string | null, actionType?: ActionType) => {
+  const updateState = (value: ValueType, actionType: ActionType | ActionTypeSelect) => {
     console.log('updateState... for input ' + actionType);
     let newState;
     switch (actionType) {
       case 'nameFi':
-        newState = { ...state, name: { ...state.name, fi: value || '' } };
+        newState = { ...state, name: { ...state.name, fi: value as string } };
         break;
       case 'nameSv':
-        newState = { ...state, name: { ...state.name, sv: value || '' } };
+        newState = { ...state, name: { ...state.name, sv: value as string } };
         break;
       case 'nameEn':
-        newState = { ...state, name: { ...state.name, en: value || '' } };
+        newState = { ...state, name: { ...state.name, en: value as string } };
         break;
       case 'primaryId':
-        newState = { ...state, id: value || '' };
+        newState = { ...state, id: value as string };
         break;
-      default:
-        console.warn(`Unknown action type, state not updated.`);
-        return state;
-    }
-    setState(newState);
-  };
-  const updateStateFromSelect = (actionType: ActionTypeSelect, value: boolean | number | string) => {
-    console.log('updateState... for input ' + actionType);
-    let newState = state;
-    switch (actionType) {
       case 'status':
         newState = { ...state, status: value as Status };
         break;
       case 'referenceLevel':
         newState = { ...state, n2000HeightSystem: !!value };
+        break;
+      case 'fairwayIds':
+        newState = {
+          ...state,
+          fairwayIds: value as number[],
+        };
+        if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
+        if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
+        if ((value as number[]).length === 1) {
+          newState.primaryFairwayId = (value as number[])[0];
+          newState.secondaryFairwayId = (value as number[])[0];
+        }
         break;
       case 'fairwayPrimary':
         newState = { ...state, primaryFairwayId: Number(value) };
@@ -65,22 +68,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       case 'fairwaySecondary':
         newState = { ...state, secondaryFairwayId: Number(value) };
         break;
-      default:
-        console.warn(`Unknown action type, state not updated.`);
-        return state;
-    }
-    setState(newState);
-  };
-  const updateStateFromSelectMultiple = (actionType: ActionTypeSelect, value: boolean | number | string, strArray: string[], numArray: number[]) => {
-    console.log('updateState... for input ' + actionType, value);
-    if (!Array.isArray(value)) return;
-    let newState;
-    switch (actionType) {
-      case 'fairwayIds':
-        newState = { ...state, fairwayIds: numArray };
-        break;
       case 'harbours':
-        newState = { ...state, harbors: strArray };
+        newState = { ...state, harbors: value as string[] };
         break;
       default:
         console.warn(`Unknown action type, state not updated.`);
@@ -95,8 +84,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = () => {
-    console.log('...submitting...');
-    console.log(formRef.current?.checkValidity());
+    console.log('...submitting... isFormValid? ' + formRef.current?.checkValidity());
+    console.log(state);
     formRef.current?.reportValidity();
   };
 
@@ -114,10 +103,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                       animated={true}
                       style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
                     />
-                  ) : modified ? (
-                    t('general.datetimeFormat', { val: modified })
                   ) : (
-                    '-'
+                    modifiedInfo
                   )}
                   <br />
                   {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifier || t('general.unknown')}
@@ -133,7 +120,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                   { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
                   { name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed },
                 ]}
-                setSelected={updateStateFromSelect}
+                setSelected={updateState}
                 actionType="status"
                 hideLabel={true}
               />
@@ -193,8 +180,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                         label={t('fairwaycard.linked-fairways')}
                         selected={state.fairwayIds || []}
                         options={fairwayList?.fairways || []}
-                        setSelected={updateStateFromSelectMultiple}
+                        setSelected={updateState}
                         actionType="fairwayIds"
+                        multiple
                         disabled={isFetchingFairways}
                         required
                         showId
@@ -207,7 +195,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                                 label={t('fairwaycard.starting-fairway')}
                                 selected={state.primaryFairwayId || ''}
                                 options={fairwaySelection || []}
-                                setSelected={updateStateFromSelect}
+                                setSelected={updateState}
                                 actionType="fairwayPrimary"
                                 required
                                 showId
@@ -218,7 +206,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                                 label={t('fairwaycard.ending-fairway')}
                                 selected={state.secondaryFairwayId || ''}
                                 options={fairwaySelection || []}
-                                setSelected={updateStateFromSelect}
+                                setSelected={updateState}
                                 actionType="fairwaySecondary"
                                 required
                                 showId
@@ -236,8 +224,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                       label={t('fairwaycard.linked-harbours')}
                       selected={state.harbors || []}
                       options={harbourList?.harbors || []}
-                      setSelected={updateStateFromSelectMultiple}
+                      setSelected={updateState}
                       actionType="harbours"
+                      multiple
                       disabled={isFetchingHarbours}
                     />
                   )}
@@ -250,7 +239,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                       { name: { fi: 'MW' }, id: false },
                       { name: { fi: 'N2000' }, id: true },
                     ]}
-                    setSelected={updateStateFromSelect}
+                    setSelected={updateState}
                     actionType="referenceLevel"
                   />
                 </IonCol>

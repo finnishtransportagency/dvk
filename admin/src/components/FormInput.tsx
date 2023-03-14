@@ -1,14 +1,14 @@
 import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
-import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
 import React, { useRef, useState } from 'react';
 import { ActionType } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
+import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
 
 interface InputProps {
   label: string;
   val: string;
-  setValue: (val: string | null | undefined, actionType: ActionType) => void;
+  setValue: (val: string, actionType: ActionType) => void;
   actionType: ActionType;
   required?: boolean;
   disabled?: boolean;
@@ -29,7 +29,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, req
   };
   const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
     checkValidity(event);
-    setValue(event.detail.value, actionType);
+    setValue(event.detail.value as string, actionType);
   };
 
   return (

@@ -1,10 +1,10 @@
-import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonText, SelectChangeEventDetail } from '@ionic/react';
+import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActionTypeSelect, Lang } from '../utils/constants';
+import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
 import { Text } from '../graphql/generated';
-import { IonSelectCustomEvent } from '@ionic/core';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
+import { SelectChangeEventDetail, IonSelectCustomEvent } from '@ionic/core';
 
 interface SelectOption {
   id: number | string | boolean;
@@ -13,9 +13,9 @@ interface SelectOption {
 
 interface SelectProps {
   label: string;
-  selected?: boolean | number | number[] | string | string[];
+  selected?: ValueType;
   options: SelectOption[] | null;
-  setSelected: (actionType: ActionTypeSelect, value: boolean | number | string, strArray: string[], numArray: number[]) => void;
+  setSelected: (value: ValueType, actionType: ActionType | ActionTypeSelect) => void;
   actionType: ActionTypeSelect;
   required?: boolean;
   multiple?: boolean;
@@ -59,11 +59,12 @@ const FormSelect: React.FC<SelectProps> = ({
   const [isValid, setIsValid] = useState(true);
 
   const checkValidity = () => {
-    setIsValid(required ? (Array.isArray(selected) ? selected.length > 0 : !!selected) : true);
+    const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
+    setIsValid(required ? validity : true);
   };
-  const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<any>>) => {
+  const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<boolean | number | string | number[] | string[]>>) => {
     checkValidity();
-    setSelected(actionType, event.detail.value, event.detail.value, event.detail.value);
+    setSelected(event.detail.value, actionType);
   };
 
   return (
@@ -76,7 +77,7 @@ const FormSelect: React.FC<SelectProps> = ({
       <IonItem fill="outline" className={'selectInput' + (isValid ? '' : ' invalid')}>
         <IonSelect
           ref={selectRef}
-          placeholder={label}
+          placeholder={t('choose') || ''}
           interface="popover"
           onIonChange={(ev) => handleChange(ev)}
           onIonBlur={() => checkValidity()}
