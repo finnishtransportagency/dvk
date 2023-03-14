@@ -66,7 +66,9 @@ export class DvkBackendStack extends Stack {
       'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
     );
 
-    const versioningBucket = this.createVersioningBucket(env);
+    const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycards', env);
+    const harborVersioningBucket = this.createVersioningBucket('harbor', env);
+    const pilotVersioningBucket = this.createVersioningBucket('pilot', env);
 
     const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
       functionName: `db-stream-handler-${env}`,
@@ -75,7 +77,10 @@ export class DvkBackendStack extends Stack {
       entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
       layers: [layer],
       environment: {
-        VERSIONING_BUCKET: versioningBucket.bucketName,
+        FAIRWAYCARD_VERSIONING_BUCKET: fairwayCardVersioningBucket.bucketName,
+        HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
+        PILOT_VERSIONING_BUCKET: pilotVersioningBucket.bucketName,
+        ENVIRONMENT: Config.getEnvironment(),
       },
     });
 
@@ -84,6 +89,23 @@ export class DvkBackendStack extends Stack {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
+    dbStreamHandler.addEventSource(
+      new DynamoEventSource(harborTable, {
+        startingPosition: lambda.StartingPosition.LATEST,
+      })
+    );
+    dbStreamHandler.addEventSource(
+      new DynamoEventSource(pilotPlaceTable, {
+        startingPosition: lambda.StartingPosition.LATEST,
+      })
+    );
+
+    fairwayCardVersioningBucket.grantPut(dbStreamHandler);
+    fairwayCardVersioningBucket.grantRead(dbStreamHandler);
+    harborVersioningBucket.grantPut(dbStreamHandler);
+    harborVersioningBucket.grantRead(dbStreamHandler);
+    pilotVersioningBucket.grantPut(dbStreamHandler);
+    pilotVersioningBucket.grantRead(dbStreamHandler);
 
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
@@ -179,6 +201,7 @@ export class DvkBackendStack extends Stack {
       },
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
     });
   }
 
@@ -192,6 +215,7 @@ export class DvkBackendStack extends Stack {
       },
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
     });
   }
 
@@ -216,16 +240,17 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createVersioningBucket(env: string): Bucket {
+  private createVersioningBucket(table: string, env: string): Bucket {
     const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
     };
-    return new Bucket(this, 'VersioningBucket', {
-      bucketName: `fairwaycard-versioning-${env}`,
+    return new Bucket(this, table + 'VersioningBucket', {
+      bucketName: `${table}-versioning-${env}`,
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
+      versioned: true,
       ...s3DeletePolicy,
       // lifecycleRules: [{ expiration: Duration.days(1) }],
     });
