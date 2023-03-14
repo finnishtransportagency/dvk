@@ -76,14 +76,14 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
   const { t } = useTranslation();
   return (
     <Modal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
-      <IonGrid className="linkBar">
-        <IonRow className="content">
+      <IonGrid className="linkBar content">
+        <IonRow>
           <IonCol> {t('source.content1')}</IonCol>
         </IonRow>
-        <IonRow className="content">
+        <IonRow>
           <IonCol> {t('source.content2')}</IonCol>
         </IonRow>
-        <IonRow className="content">
+        <IonRow>
           <IonCol>
             <a href="http://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
               http://creativecommons.org/licenses/by/4.0/deed.fi
