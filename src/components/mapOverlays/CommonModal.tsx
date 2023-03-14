@@ -49,7 +49,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, s
 };
 
 export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV !== 'production' ? true : false);
+  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
   const { t } = useTranslation();
   return (
     <Modal size="small" showBackdrop={true} isOpen={isOpen} setIsOpen={setIsOpen} title={t('mobile.title')}>
