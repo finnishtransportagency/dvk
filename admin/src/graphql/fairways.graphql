@@ -1,0 +1,6 @@
+query fairways {
+  fairways {
+    id
+    name {fi sv en}
+  }
+}

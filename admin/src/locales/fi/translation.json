@@ -19,6 +19,7 @@
     "item-referencelevel": "Ver­taus­ta­so",
     "item-status": "Tila",
     "item-creator": "Luonut",
+    "item-created": "Luotu",
     "item-modifier": "Muo­kan­nut",
     "item-modified": "Päi­vi­tet­ty",
     "item-type-CARD": "Väyläkortti",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Pohjanlahden alue",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Sulje",
-    "cancel": "Peruuta"
+    "cancel": "Peruuta",
+    "unknown": "Tuntematon",
+    "preview": "Esikatselu",
+    "delete": "Poista",
+    "create-new": "Luo uusi",
+    "save": "Tallenna",
+    "choose": "Valitse...",
+    "loading-error": "Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
+    "multiple-values-supported": "Voit valita tarvittaessa useita kohteita",
+    "required-field": "Pakollinen tieto"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -40,5 +50,13 @@
     "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama"
+  },
+  "fairwaycard": {
+    "name": "Väyläkortin nimi",
+    "primary-id": "Väyläkortin tunniste",
+    "linked-fairways": "Liitetyt väylät",
+    "starting-fairway": "Aloitusväylä",
+    "ending-fairway": "Lopetusväylä",
+    "linked-harbours": "Liitetyt satamat"
   }
 }

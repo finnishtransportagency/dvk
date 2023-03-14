@@ -19,6 +19,7 @@
     "item-referencelevel": "Reference level",
     "item-status": "Status",
     "item-creator": "Creator",
+    "item-created": "Created",
     "item-modifier": "Modifier",
     "item-modified": "Updated",
     "item-type-CARD": "Fairway card",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Gulf of Bothnia",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "unknown": "Unknown",
+    "preview": "Preview",
+    "delete": "Delete",
+    "create-new": "Create new",
+    "save": "Save",
+    "choose": "Choose...",
+    "loading-error": "Data fetching failed, please try again later.",
+    "multiple-values-supported": "Multiple items can be selected",
+    "required-field": "Required field"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -40,5 +50,13 @@
     "description-new-HARBOR": "[en] Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "Create fairway card",
     "create-HARBOR": "Create harbour"
+  },
+  "fairwaycard": {
+    "name": "Fairway card name",
+    "primary-id": "Fairway card ID",
+    "linked-fairways": "Linked fairways",
+    "starting-fairway": "Starting fairway",
+    "ending-fairway": "Ending fairway",
+    "linked-harbours": "Linked harbours"
   }
 }

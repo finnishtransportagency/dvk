@@ -1,0 +1,6 @@
+query harbors {
+  harbors {
+    id
+    name {fi sv en}
+  }
+}

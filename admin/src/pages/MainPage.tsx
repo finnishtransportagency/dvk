@@ -119,7 +119,7 @@ const MainPage: React.FC = () => {
                 ></button>
               </div>
             </IonCol>
-            <IonCol>
+            <IonCol size="auto">
               <IonItem fill="outline" className="selectInput">
                 <IonSelect
                   placeholder={translatedTextOrEmpty('select-type')}
@@ -136,6 +136,7 @@ const MainPage: React.FC = () => {
                 </IonSelect>
               </IonItem>
             </IonCol>
+            <IonCol></IonCol>
             <IonCol size="auto">
               <IonButton shape="round" onClick={() => itemCreationAction('HARBOR')}>
                 {t('new-harbour')}

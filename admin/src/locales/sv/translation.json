@@ -19,6 +19,7 @@
     "item-referencelevel": "[sv] Vertaustaso",
     "item-status": "[sv] Tila",
     "item-creator": "[sv] Luonut",
+    "item-created": "[sv] Luotu",
     "item-modifier": "[sv] Muokannut",
     "item-modified": "Uppdaterat",
     "item-type-CARD": "Farledskort",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Bottniska vikens område",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Stäng",
-    "cancel": "[sv] Peruuta"
+    "cancel": "[sv] Peruuta",
+    "unknown": "[sv] Tuntematon",
+    "preview": "[sv] Esikatselu",
+    "delete": "[sv] Poista",
+    "create-new": "[sv] Luo uusi",
+    "save": "[sv] Tallenna",
+    "choose": "[sv] Valitse...",
+    "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
+    "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
+    "required-field": "[sv] Pakollinen tieto"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -40,5 +50,13 @@
     "description-new-HARBOR": "[sv] Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "[sv] Luo väyläkortti",
     "create-HARBOR": "[sv] Luo satama"
+  },
+  "fairwaycard": {
+    "name": "[sv] Väyläkortin nimi",
+    "primary-id": "[sv] Väyläkortin tunniste",
+    "linked-fairways": "[sv] Liitetyt väylät",
+    "starting-fairway": "[sv] Aloitusväylä",
+    "ending-fairway": "[sv] Lopetusväylä",
+    "linked-harbours": "[sv] Liitetyt satamat"
   }
 }
