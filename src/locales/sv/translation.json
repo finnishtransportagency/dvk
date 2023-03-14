@@ -42,6 +42,7 @@
           "weatherStation": "[sv] Säähavaintoasemat",
           "ice": "[sv] Jääkartta",
           "buoys": "[sv] Aaltopoijut",
+          "vts": "[sv] VTS-ilmoituslinjat ja pisteet",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -276,7 +277,7 @@
       "extra": "Tilläggsuppgift"
     },
     "line": {
-      "info": " Navigationslinjens uppgifter",
+      "info": "Navigationslinjens uppgifter",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerad djup {{val, number}}",
       "length": "Längd {{val}}",
@@ -345,6 +346,12 @@
       "internet": "Nätsida",
       "fairways": "[sv] Satamaan liittyvät väyläkortit",
       "extra": "Tilläggsuppgift"
+    },
+    "vts": {
+      "coordinates": "Koordinater",
+      "point": "[sv] VTS-pisteen tiedot",
+      "line": "[sv] VTS-linjan tiedot",
+      "channel": "VHF kanal"
     }
   },
   "common": {

@@ -42,6 +42,7 @@
           "weatherStation": "Säähavaintoasemat",
           "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
+          "vts": "VTS-ilmoituslinjat ja pisteet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -345,6 +346,12 @@
       "internet": "Verkkosivu",
       "fairways": "Satamaan liittyvät väyläkortit",
       "extra": "Lisätieto"
+    },
+    "vts": {
+      "coordinates": "Koordinaatit",
+      "point": "VTS-pisteen tiedot",
+      "line": "VTS-linjan tiedot",
+      "channel": "VHF-kanava"
     }
   },
   "common": {

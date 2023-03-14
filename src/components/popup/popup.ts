@@ -15,6 +15,7 @@ import { getMarineWarningStyle } from '../layerStyles/marineWarningStyles';
 import { getMareographStyle } from '../layerStyles/mareographStyles';
 import { getObservationStyle } from '../layerStyles/observationStyles';
 import { getBuoyStyle } from '../layerStyles/buoyStyles';
+import { getVtsStyle } from '../layerStyles/vtsStyles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -27,7 +28,21 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
     positioning: 'center-left',
   });
-  const types = ['pilot', 'quay', 'harbor', 'marinewarning', 'safetyequipment', 'observation', 'buoy', 'mareograph', 'line', 'area', 'specialarea'];
+  const types = [
+    'pilot',
+    'vtspoint',
+    'quay',
+    'harbor',
+    'marinewarning',
+    'safetyequipment',
+    'observation',
+    'buoy',
+    'mareograph',
+    'vtsline',
+    'line',
+    'area',
+    'specialarea',
+  ];
   if (container) {
     container.addEventListener('pointercancel', (e) => {
       e.preventDefault();
@@ -103,6 +118,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getObservationStyle(true);
     } else if (type === 'buoy') {
       return getBuoyStyle(true);
+    } else if (type === 'vtsline' || type === 'vtspoint') {
+      return getVtsStyle(feature, true);
     } else {
       return undefined;
     }
@@ -126,6 +143,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),
       dvkMap.getFeatureLayer('harbor'),
+      dvkMap.getFeatureLayer('vts'),
     ],
     hitTolerance: 3,
     multi: true,

@@ -15,7 +15,8 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
       log.fatal(`Pooki fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       throw new Error('Fetching from Pooki failed');
     });
-  log.debug(`Pooki response time: ${Date.now() - start} ms`);
+  const duration = Date.now() - start;
+  log.debug({ duration }, `Pooki response time: ${duration} ms`);
   if (response?.data) {
     for (const feature of (response.data as FeatureCollection).features) {
       roundGeometry(feature.geometry);

@@ -21,6 +21,7 @@ import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import PilotPlaceDBModel from '../db/pilotPlaceDBModel';
 import { GeometryPoint } from '../../../graphql/generated';
+import { fetchVTSPointsAndLines } from './traficom';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -391,6 +392,25 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
+async function addVTSPointsAndLines(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const resp = await fetchVTSPointsAndLines();
+  for (const feature of resp) {
+    features.push({
+      type: feature.type,
+      id: feature.id,
+      geometry: feature.geometry,
+      properties: {
+        featureType: feature.geometry.type === 'Point' ? 'vtspoint' : 'vtsline',
+        identifier: feature.properties?.IDENTIFIER,
+        name: feature.properties?.OBJNAM,
+        information: feature.properties?.INFORM,
+        // eslint-disable-next-line no-useless-escape
+        channel: feature.properties?.COMCHA?.replace(/[\[\]]/g, ''),
+      },
+    });
+  }
+}
+
 async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) {
   const resp = await fetchMareoGraphs();
   for (const mareograph of resp) {
@@ -536,6 +556,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFaultFeatures(features);
   } else if (type === 'marinewarning') {
     await addMarineWarnings(features);
+  } else if (type === 'vts') {
+    await addVTSPointsAndLines(features);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {

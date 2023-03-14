@@ -36,6 +36,7 @@ const OfflineStatus: React.FC = () => {
   const bgLayerFi = useFeatureData('finland');
   const bgLayerSea = useFeatureData('mml_meri');
   const bgLayerLake = useFeatureData('mml_jarvi');
+  const vtsLayer = useFeatureData('vts');
 
   const statusOffline =
     !navigator.onLine ||
@@ -62,7 +63,8 @@ const OfflineStatus: React.FC = () => {
       bgLayerBa.isPaused &&
       bgLayerFi.isPaused &&
       bgLayerSea.isPaused &&
-      bgLayerLake.isPaused);
+      bgLayerLake.isPaused &&
+      vtsLayer.isPaused);
 
   useEffect(() => {
     dispatch({
