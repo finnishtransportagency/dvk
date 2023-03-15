@@ -66,7 +66,7 @@ export class DvkBackendStack extends Stack {
       'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
     );
 
-    const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycards', env);
+    const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
     const harborVersioningBucket = this.createVersioningBucket('harbor', env);
     const pilotVersioningBucket = this.createVersioningBucket('pilot', env);
 
