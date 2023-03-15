@@ -32,6 +32,11 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) || [],
     primaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.primary)?.id || 0,
     secondaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.secondary)?.id || 0,
+    lineText: {
+      fi: data?.fairwayCard?.lineText?.fi || '',
+      sv: data?.fairwayCard?.lineText?.sv || '',
+      en: data?.fairwayCard?.lineText?.en || '',
+    },
     operation: origin ? Operation.Create : Operation.Update,
   };
 
@@ -68,6 +73,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     id: '',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
+    lineText: { fi: '', sv: '', en: '' },
     status: Status.Draft,
     operation: Operation.Create,
   };
