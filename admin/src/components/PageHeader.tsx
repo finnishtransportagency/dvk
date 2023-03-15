@@ -43,7 +43,7 @@ const PageHeader: React.FC = () => {
           <IonCol>
             <IonText>
               <h1>
-                {t('header.mainTitle')} - {t('header.appTitle')}
+                {t('header.mainTitle')} - {t('header.appTitle')} <small>(v{`${process.env.REACT_APP_VERSION}`})</small>
               </h1>
             </IonText>
           </IonCol>

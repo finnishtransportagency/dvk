@@ -64,6 +64,15 @@
     "lining-and-marking": "Linjaus ja merkintä",
     "design-speed": "Mitoitusnopeus",
     "speed-limit": "Nopeusrajoitukset",
-    "anchorage": "Ankkurointi- ym. erityisalueet"
+    "anchorage": "Ankkurointi- ym. erityisalueet",
+    "navigation": "Väylän navigoitavuus",
+    "navigation-condition": "Navigointiolosuhteet",
+    "ice-condition": "Jääolosuhteet",
+    "recommendation": "Käyttösuositukset",
+    "wind-recommendation": "Tuulisuositukset",
+    "vessel-recommendation": "Aluskohtaiset suositukset",
+    "visibility-recommendation": "Näkyvyyssuositukset",
+    "wind-gauge": "Tuulimittarit",
+    "sea-level": "Merivedenkorkeus"
   }
 }
