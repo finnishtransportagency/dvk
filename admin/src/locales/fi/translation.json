@@ -57,6 +57,10 @@
     "linked-fairways": "Liitetyt väylät",
     "starting-fairway": "Aloitusväylä",
     "ending-fairway": "Lopetusväylä",
-    "linked-harbours": "Liitetyt satamat"
+    "linked-harbours": "Liitetyt satamat",
+    "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan",
+    "error-duplicate-id": "Tunniste on jo käytössä",
+    "fairway-info": "Väylätiedot",
+    "lining-and-marking": "Linjaus ja merkintä"
   }
 }

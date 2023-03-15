@@ -57,6 +57,10 @@
     "linked-fairways": "[sv] Liitetyt väylät",
     "starting-fairway": "[sv] Aloitusväylä",
     "ending-fairway": "[sv] Lopetusväylä",
-    "linked-harbours": "[sv] Liitetyt satamat"
+    "linked-harbours": "[sv] Liitetyt satamat",
+    "fairway-order-help-text": "[sv] Väyläkortin suunta avomereltä rantaan",
+    "error-duplicate-id": "[sv] Tunniste on jo käytössä",
+    "fairway-info": "[sv] Väylätiedot",
+    "lining-and-marking": "Farledsdragning och utmärkning"
   }
 }
