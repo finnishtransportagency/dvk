@@ -1,5 +1,5 @@
 import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ActionType } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
@@ -12,9 +12,10 @@ interface InputProps {
   actionType: ActionType;
   required?: boolean;
   disabled?: boolean;
+  error?: string;
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, required, disabled }) => {
+const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, required, disabled, error }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -22,15 +23,25 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, req
     inputRef.current?.setFocus();
   };
 
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(error ? false : true);
 
   const checkValidity = (event: IonInputCustomEvent<InputChangeEventDetail> | IonInputCustomEvent<FocusEvent>) => {
-    setIsValid((event.target.firstChild as HTMLInputElement)?.checkValidity());
+    setIsValid(error ? false : (event.target.firstChild as HTMLInputElement)?.checkValidity());
   };
   const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
     checkValidity(event);
     setValue(event.detail.value as string, actionType);
   };
+
+  const getErrorText = () => {
+    if (error) return error;
+    if (!isValid) return t('required-field');
+    return;
+  };
+
+  useEffect(() => {
+    setIsValid(error ? false : true);
+  }, [error]);
 
   return (
     <>
@@ -48,7 +59,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, req
         />
         <IonNote slot="error" className="input-error">
           <ErrorIcon aria-label={t('error') || ''} />
-          {t('required-field')}
+          {getErrorText()}
         </IonNote>
       </IonItem>
     </>
