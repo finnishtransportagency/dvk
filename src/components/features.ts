@@ -26,7 +26,7 @@ export type QuayFeatureProperties = {
   internet?: string;
 };
 
-type Card = {
+export type Card = {
   id: string;
   name: Text;
 };

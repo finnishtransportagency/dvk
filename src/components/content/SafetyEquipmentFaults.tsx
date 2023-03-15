@@ -5,8 +5,10 @@ import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
-import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
+import { getMap } from '../DvkMap';
+import { Card, EquipmentFeatureProperties } from '../features';
+import { Link } from 'react-router-dom';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -30,7 +32,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-
+  const equipments = getMap().getVectorSource('safetyequipment');
   return (
     <div>
       <IonText className={first ? 'no-margin-top' : ''}>
@@ -40,6 +42,16 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
       </IonText>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
+        const equipment = equipments.getFeatureById(faultArray[0].equipmentId)?.getProperties() as EquipmentFeatureProperties | undefined;
+        const cardMap: Map<string, Card> = new Map();
+        equipment?.fairways?.forEach((f) => {
+          if (f.fairwayCards) {
+            for (const card of f.fairwayCards) {
+              cardMap.set(card.id, card);
+            }
+          }
+        });
+        const cards = Array.from(cardMap.values());
         return (
           <IonGrid className="table light group" key={faultArray[0].equipmentId}>
             <IonRow className="header">
@@ -75,6 +87,25 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 </IonCol>
               </IonRow>
             ))}
+            {cards.length > 0 && (
+              <>
+                <IonRow>
+                  <IonCol>{t('fairways')}</IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol>
+                    {cards.map((card, idx) => (
+                      <>
+                        <Link key={card.id} to={`/kortit/${card.id}`}>
+                          {card.name[lang]}
+                        </Link>
+                        {idx < cards.length - 1 ? ', ' : ''}
+                      </>
+                    ))}
+                  </IonCol>
+                </IonRow>
+              </>
+            )}
           </IonGrid>
         );
       })}
@@ -109,8 +140,6 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
           )}
         </em>
       </IonText>
-
-      <GeneralInfoAccordion description={t('description')} additionalDesc={t('additionalDescription')} widePane={widePane} />
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
         <FaultGroup
