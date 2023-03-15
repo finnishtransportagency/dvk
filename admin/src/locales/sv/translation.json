@@ -64,6 +64,15 @@
     "lining-and-marking": "Farledsdragning och utmärkning",
     "design-speed": "Dimensionerande fart",
     "speed-limit": "Fartbegränsningar och -rekommendationer",
-    "anchorage": "Ankrings- och andra specialområden"
+    "anchorage": "Ankrings- och andra specialområden",
+    "navigation": "Navigerbarhet",
+    "navigation-condition": "Navigationsförhållanden",
+    "ice-condition": "Isförhållanden",
+    "recommendation": "Rekommendationer",
+    "wind-recommendation": "Vindrekommendationer",
+    "vessel-recommendation": "Rekommendationer för fartyg",
+    "visibility-recommendation": "Sikt",
+    "wind-gauge": "Vindmätare",
+    "sea-level": "Vattenståndet"
   }
 }

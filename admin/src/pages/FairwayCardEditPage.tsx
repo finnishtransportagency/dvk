@@ -47,6 +47,41 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
       sv: data?.fairwayCard?.anchorage?.sv || '',
       en: data?.fairwayCard?.anchorage?.en || '',
     },
+    navigationCondition: {
+      fi: data?.fairwayCard?.navigationCondition?.fi || '',
+      sv: data?.fairwayCard?.navigationCondition?.sv || '',
+      en: data?.fairwayCard?.navigationCondition?.en || '',
+    },
+    iceCondition: {
+      fi: data?.fairwayCard?.iceCondition?.fi || '',
+      sv: data?.fairwayCard?.iceCondition?.sv || '',
+      en: data?.fairwayCard?.iceCondition?.en || '',
+    },
+    windRecommendation: {
+      fi: data?.fairwayCard?.windRecommendation?.fi || '',
+      sv: data?.fairwayCard?.windRecommendation?.sv || '',
+      en: data?.fairwayCard?.windRecommendation?.en || '',
+    },
+    vesselRecommendation: {
+      fi: data?.fairwayCard?.vesselRecommendation?.fi || '',
+      sv: data?.fairwayCard?.vesselRecommendation?.sv || '',
+      en: data?.fairwayCard?.vesselRecommendation?.en || '',
+    },
+    visibility: {
+      fi: data?.fairwayCard?.visibility?.fi || '',
+      sv: data?.fairwayCard?.visibility?.sv || '',
+      en: data?.fairwayCard?.visibility?.en || '',
+    },
+    windGauge: {
+      fi: data?.fairwayCard?.windGauge?.fi || '',
+      sv: data?.fairwayCard?.windGauge?.sv || '',
+      en: data?.fairwayCard?.windGauge?.en || '',
+    },
+    seaLevel: {
+      fi: data?.fairwayCard?.seaLevel?.fi || '',
+      sv: data?.fairwayCard?.seaLevel?.sv || '',
+      en: data?.fairwayCard?.seaLevel?.en || '',
+    },
     operation: origin ? Operation.Create : Operation.Update,
   };
 
@@ -87,6 +122,13 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     designSpeed: { fi: '', sv: '', en: '' },
     speedLimit: { fi: '', sv: '', en: '' },
     anchorage: { fi: '', sv: '', en: '' },
+    navigationCondition: { fi: '', sv: '', en: '' },
+    iceCondition: { fi: '', sv: '', en: '' },
+    windRecommendation: { fi: '', sv: '', en: '' },
+    vesselRecommendation: { fi: '', sv: '', en: '' },
+    visibility: { fi: '', sv: '', en: '' },
+    windGauge: { fi: '', sv: '', en: '' },
+    seaLevel: { fi: '', sv: '', en: '' },
     status: Status.Draft,
     operation: Operation.Create,
   };

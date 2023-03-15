@@ -64,6 +64,15 @@
     "lining-and-marking": "Channel alignment and marking",
     "design-speed": "Design speed",
     "speed-limit": "Speed limits and recommendations",
-    "anchorage": "Anchorage and special areas"
+    "anchorage": "Anchorage and special areas",
+    "navigation": "Fairway navigability",
+    "navigation-condition": "Navigation conditions",
+    "ice-condition": "Ice conditions",
+    "recommendation": "Traffic recommendations",
+    "wind-recommendation": "Wind recommendations",
+    "vessel-recommendation": "Vessel recommendations",
+    "visibility-recommendation": "Visibility",
+    "wind-gauge": "Wind gauges",
+    "sea-level": "Sea level"
   }
 }

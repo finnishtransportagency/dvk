@@ -125,6 +125,96 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       case 'anchorageEn':
         newState = { ...state, anchorage: { fi: state.anchorage?.fi || '', sv: state.anchorage?.sv || '', en: value as string } };
         break;
+      case 'navigationConditionFi':
+        newState = {
+          ...state,
+          navigationCondition: { fi: value as string, sv: state.navigationCondition?.sv || '', en: state.navigationCondition?.en || '' },
+        };
+        break;
+      case 'navigationConditionSv':
+        newState = {
+          ...state,
+          navigationCondition: { fi: state.navigationCondition?.fi || '', sv: value as string, en: state.navigationCondition?.en || '' },
+        };
+        break;
+      case 'navigationConditionEn':
+        newState = {
+          ...state,
+          navigationCondition: { fi: state.navigationCondition?.fi || '', sv: state.navigationCondition?.sv || '', en: value as string },
+        };
+        break;
+      case 'iceConditionFi':
+        newState = { ...state, iceCondition: { fi: value as string, sv: state.iceCondition?.sv || '', en: state.iceCondition?.en || '' } };
+        break;
+      case 'iceConditionSv':
+        newState = { ...state, iceCondition: { fi: state.iceCondition?.fi || '', sv: value as string, en: state.iceCondition?.en || '' } };
+        break;
+      case 'iceConditionEn':
+        newState = { ...state, iceCondition: { fi: state.iceCondition?.fi || '', sv: state.iceCondition?.sv || '', en: value as string } };
+        break;
+      case 'windRecommendationFi':
+        newState = {
+          ...state,
+          windRecommendation: { fi: value as string, sv: state.windRecommendation?.sv || '', en: state.windRecommendation?.en || '' },
+        };
+        break;
+      case 'windRecommendationSv':
+        newState = {
+          ...state,
+          windRecommendation: { fi: state.windRecommendation?.fi || '', sv: value as string, en: state.windRecommendation?.en || '' },
+        };
+        break;
+      case 'windRecommendationEn':
+        newState = {
+          ...state,
+          windRecommendation: { fi: state.windRecommendation?.fi || '', sv: state.windRecommendation?.sv || '', en: value as string },
+        };
+        break;
+      case 'vesselRecommendationFi':
+        newState = {
+          ...state,
+          vesselRecommendation: { fi: value as string, sv: state.vesselRecommendation?.sv || '', en: state.vesselRecommendation?.en || '' },
+        };
+        break;
+      case 'vesselRecommendationSv':
+        newState = {
+          ...state,
+          vesselRecommendation: { fi: state.vesselRecommendation?.fi || '', sv: value as string, en: state.vesselRecommendation?.en || '' },
+        };
+        break;
+      case 'vesselRecommendationEn':
+        newState = {
+          ...state,
+          vesselRecommendation: { fi: state.vesselRecommendation?.fi || '', sv: state.vesselRecommendation?.sv || '', en: value as string },
+        };
+        break;
+      case 'visibilityFi':
+        newState = { ...state, visibility: { fi: value as string, sv: state.visibility?.sv || '', en: state.visibility?.en || '' } };
+        break;
+      case 'visibilitySv':
+        newState = { ...state, visibility: { fi: state.visibility?.fi || '', sv: value as string, en: state.visibility?.en || '' } };
+        break;
+      case 'visibilityEn':
+        newState = { ...state, visibility: { fi: state.visibility?.fi || '', sv: state.visibility?.sv || '', en: value as string } };
+        break;
+      case 'windGaugeFi':
+        newState = { ...state, windGauge: { fi: value as string, sv: state.windGauge?.sv || '', en: state.windGauge?.en || '' } };
+        break;
+      case 'windGaugeSv':
+        newState = { ...state, windGauge: { fi: state.windGauge?.fi || '', sv: value as string, en: state.windGauge?.en || '' } };
+        break;
+      case 'windGaugeEn':
+        newState = { ...state, windGauge: { fi: state.windGauge?.fi || '', sv: state.windGauge?.sv || '', en: value as string } };
+        break;
+      case 'seaLevelFi':
+        newState = { ...state, seaLevel: { fi: value as string, sv: state.seaLevel?.sv || '', en: state.seaLevel?.en || '' } };
+        break;
+      case 'seaLevelSv':
+        newState = { ...state, seaLevel: { fi: state.seaLevel?.fi || '', sv: value as string, en: state.seaLevel?.en || '' } };
+        break;
+      case 'seaLevelEn':
+        newState = { ...state, seaLevel: { fi: state.seaLevel?.fi || '', sv: state.seaLevel?.sv || '', en: value as string } };
+        break;
       default:
         console.warn(`Unknown action type, state not updated.`);
         return state;
@@ -396,6 +486,200 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     val={state.anchorage?.en || ''}
                     setValue={updateState}
                     actionType="anchorageEn"
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
+            <IonText>
+              <h2>{t('fairwaycard.navigation')}</h2>
+            </IonText>
+            <IonGrid className="formGrid">
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.navigation-condition') + ' (fi)'}
+                    val={state.navigationCondition?.fi || ''}
+                    setValue={updateState}
+                    actionType="navigationConditionFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.navigation-condition') + ' (sv)'}
+                    val={state.navigationCondition?.sv || ''}
+                    setValue={updateState}
+                    actionType="navigationConditionSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.navigation-condition') + ' (en)'}
+                    val={state.navigationCondition?.en || ''}
+                    setValue={updateState}
+                    actionType="navigationConditionEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.ice-condition') + ' (fi)'}
+                    val={state.iceCondition?.fi || ''}
+                    setValue={updateState}
+                    actionType="iceConditionFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.ice-condition') + ' (sv)'}
+                    val={state.iceCondition?.sv || ''}
+                    setValue={updateState}
+                    actionType="iceConditionSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.ice-condition') + ' (en)'}
+                    val={state.iceCondition?.en || ''}
+                    setValue={updateState}
+                    actionType="iceConditionEn"
+                  />
+                </IonCol>
+              </IonRow>
+            </IonGrid>
+
+            <IonText>
+              <h2>{t('fairwaycard.recommendation')}</h2>
+            </IonText>
+            <IonGrid className="formGrid">
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.wind-recommendation') + ' (fi)'}
+                    val={state.windRecommendation?.fi || ''}
+                    setValue={updateState}
+                    actionType="windRecommendationFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.wind-recommendation') + ' (sv)'}
+                    val={state.windRecommendation?.sv || ''}
+                    setValue={updateState}
+                    actionType="windRecommendationSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.wind-recommendation') + ' (en)'}
+                    val={state.windRecommendation?.en || ''}
+                    setValue={updateState}
+                    actionType="windRecommendationEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.vessel-recommendation') + ' (fi)'}
+                    val={state.vesselRecommendation?.fi || ''}
+                    setValue={updateState}
+                    actionType="vesselRecommendationFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.vessel-recommendation') + ' (sv)'}
+                    val={state.vesselRecommendation?.sv || ''}
+                    setValue={updateState}
+                    actionType="vesselRecommendationSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.vessel-recommendation') + ' (en)'}
+                    val={state.vesselRecommendation?.en || ''}
+                    setValue={updateState}
+                    actionType="vesselRecommendationEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.visibility-recommendation') + ' (fi)'}
+                    val={state.visibility?.fi || ''}
+                    setValue={updateState}
+                    actionType="visibilityFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.visibility-recommendation') + ' (sv)'}
+                    val={state.visibility?.sv || ''}
+                    setValue={updateState}
+                    actionType="visibilitySv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.visibility-recommendation') + ' (en)'}
+                    val={state.visibility?.en || ''}
+                    setValue={updateState}
+                    actionType="visibilityEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.wind-gauge') + ' (fi)'}
+                    val={state.windGauge?.fi || ''}
+                    setValue={updateState}
+                    actionType="windGaugeFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.wind-gauge') + ' (sv)'}
+                    val={state.windGauge?.sv || ''}
+                    setValue={updateState}
+                    actionType="windGaugeSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.wind-gauge') + ' (en)'}
+                    val={state.windGauge?.en || ''}
+                    setValue={updateState}
+                    actionType="windGaugeEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.sea-level') + ' (fi)'}
+                    val={state.seaLevel?.fi || ''}
+                    setValue={updateState}
+                    actionType="seaLevelFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.sea-level') + ' (sv)'}
+                    val={state.seaLevel?.sv || ''}
+                    setValue={updateState}
+                    actionType="seaLevelSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.sea-level') + ' (en)'}
+                    val={state.seaLevel?.en || ''}
+                    setValue={updateState}
+                    actionType="seaLevelEn"
                   />
                 </IonCol>
               </IonRow>
