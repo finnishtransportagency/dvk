@@ -14,11 +14,6 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = {
-    anchorage: {
-      fi: data?.fairwayCard?.anchorage?.fi || '',
-      sv: data?.fairwayCard?.anchorage?.sv || '',
-      en: data?.fairwayCard?.anchorage?.en || '',
-    },
     id: origin ? '' : data?.fairwayCard?.id || '',
     group: data?.fairwayCard?.group || '',
     name: {
@@ -36,6 +31,21 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
       fi: data?.fairwayCard?.lineText?.fi || '',
       sv: data?.fairwayCard?.lineText?.sv || '',
       en: data?.fairwayCard?.lineText?.en || '',
+    },
+    designSpeed: {
+      fi: data?.fairwayCard?.designSpeed?.fi || '',
+      sv: data?.fairwayCard?.designSpeed?.sv || '',
+      en: data?.fairwayCard?.designSpeed?.en || '',
+    },
+    speedLimit: {
+      fi: data?.fairwayCard?.speedLimit?.fi || '',
+      sv: data?.fairwayCard?.speedLimit?.sv || '',
+      en: data?.fairwayCard?.speedLimit?.en || '',
+    },
+    anchorage: {
+      fi: data?.fairwayCard?.anchorage?.fi || '',
+      sv: data?.fairwayCard?.anchorage?.sv || '',
+      en: data?.fairwayCard?.anchorage?.en || '',
     },
     operation: origin ? Operation.Create : Operation.Update,
   };
@@ -74,6 +84,9 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
     lineText: { fi: '', sv: '', en: '' },
+    designSpeed: { fi: '', sv: '', en: '' },
+    speedLimit: { fi: '', sv: '', en: '' },
+    anchorage: { fi: '', sv: '', en: '' },
     status: Status.Draft,
     operation: Operation.Create,
   };

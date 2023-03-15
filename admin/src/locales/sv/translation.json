@@ -61,6 +61,9 @@
     "fairway-order-help-text": "[sv] Väyläkortin suunta avomereltä rantaan",
     "error-duplicate-id": "[sv] Tunniste on jo käytössä",
     "fairway-info": "[sv] Väylätiedot",
-    "lining-and-marking": "Farledsdragning och utmärkning"
+    "lining-and-marking": "Farledsdragning och utmärkning",
+    "design-speed": "Dimensionerande fart",
+    "speed-limit": "Fartbegränsningar och -rekommendationer",
+    "anchorage": "Ankrings- och andra specialområden"
   }
 }

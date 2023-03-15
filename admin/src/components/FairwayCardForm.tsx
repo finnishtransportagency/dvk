@@ -98,6 +98,33 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       case 'lineEn':
         newState = { ...state, lineText: { fi: state.lineText?.fi || '', sv: state.lineText?.sv || '', en: value as string } };
         break;
+      case 'speedLimitFi':
+        newState = { ...state, speedLimit: { fi: value as string, sv: state.speedLimit?.sv || '', en: state.speedLimit?.en || '' } };
+        break;
+      case 'speedLimitSv':
+        newState = { ...state, speedLimit: { fi: state.speedLimit?.fi || '', sv: value as string, en: state.speedLimit?.en || '' } };
+        break;
+      case 'speedLimitEn':
+        newState = { ...state, speedLimit: { fi: state.speedLimit?.fi || '', sv: state.speedLimit?.sv || '', en: value as string } };
+        break;
+      case 'designSpeedFi':
+        newState = { ...state, designSpeed: { fi: value as string, sv: state.designSpeed?.sv || '', en: state.designSpeed?.en || '' } };
+        break;
+      case 'designSpeedSv':
+        newState = { ...state, designSpeed: { fi: state.designSpeed?.fi || '', sv: value as string, en: state.designSpeed?.en || '' } };
+        break;
+      case 'designSpeedEn':
+        newState = { ...state, designSpeed: { fi: state.designSpeed?.fi || '', sv: state.designSpeed?.sv || '', en: value as string } };
+        break;
+      case 'anchorageFi':
+        newState = { ...state, anchorage: { fi: value as string, sv: state.anchorage?.sv || '', en: state.anchorage?.en || '' } };
+        break;
+      case 'anchorageSv':
+        newState = { ...state, anchorage: { fi: state.anchorage?.fi || '', sv: value as string, en: state.anchorage?.en || '' } };
+        break;
+      case 'anchorageEn':
+        newState = { ...state, anchorage: { fi: state.anchorage?.fi || '', sv: state.anchorage?.sv || '', en: value as string } };
+        break;
       default:
         console.warn(`Unknown action type, state not updated.`);
         return state;
@@ -291,6 +318,84 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     val={state.lineText?.en || ''}
                     setValue={updateState}
                     actionType="lineEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.design-speed') + ' (fi)'}
+                    val={state.designSpeed?.fi || ''}
+                    setValue={updateState}
+                    actionType="designSpeedFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.design-speed') + ' (sv)'}
+                    val={state.designSpeed?.sv || ''}
+                    setValue={updateState}
+                    actionType="designSpeedSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.design-speed') + ' (en)'}
+                    val={state.designSpeed?.en || ''}
+                    setValue={updateState}
+                    actionType="designSpeedEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.speed-limit') + ' (fi)'}
+                    val={state.speedLimit?.fi || ''}
+                    setValue={updateState}
+                    actionType="speedLimitFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.speed-limit') + ' (sv)'}
+                    val={state.speedLimit?.sv || ''}
+                    setValue={updateState}
+                    actionType="speedLimitSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.speed-limit') + ' (en)'}
+                    val={state.speedLimit?.en || ''}
+                    setValue={updateState}
+                    actionType="speedLimitEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.anchorage') + ' (fi)'}
+                    val={state.anchorage?.fi || ''}
+                    setValue={updateState}
+                    actionType="anchorageFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.anchorage') + ' (sv)'}
+                    val={state.anchorage?.sv || ''}
+                    setValue={updateState}
+                    actionType="anchorageSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.anchorage') + ' (en)'}
+                    val={state.anchorage?.en || ''}
+                    setValue={updateState}
+                    actionType="anchorageEn"
                   />
                 </IonCol>
               </IonRow>

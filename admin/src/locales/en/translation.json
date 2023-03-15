@@ -61,6 +61,9 @@
     "fairway-order-help-text": "[en] Väyläkortin suunta avomereltä rantaan",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "fairway-info": "[en] Väylätiedot",
-    "lining-and-marking": "Channel alignment and marking"
+    "lining-and-marking": "Channel alignment and marking",
+    "design-speed": "Design speed",
+    "speed-limit": "Speed limits and recommendations",
+    "anchorage": "Anchorage and special areas"
   }
 }

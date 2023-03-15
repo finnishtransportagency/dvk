@@ -61,6 +61,9 @@
     "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "fairway-info": "Väylätiedot",
-    "lining-and-marking": "Linjaus ja merkintä"
+    "lining-and-marking": "Linjaus ja merkintä",
+    "design-speed": "Mitoitusnopeus",
+    "speed-limit": "Nopeusrajoitukset",
+    "anchorage": "Ankkurointi- ym. erityisalueet"
   }
 }
