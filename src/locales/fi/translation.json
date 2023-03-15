@@ -389,7 +389,10 @@
   },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",
-    "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "link1": "Maanmittauslaitoksen avoimen tietoaineiston -lisenssi"
+    "content1": "Väylävirasto",
+    "content2": "Ilmatieteen laitos",
+    "content3": "Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
+    "content4": "Maanmittauslaitos",
+    "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
   }
 }

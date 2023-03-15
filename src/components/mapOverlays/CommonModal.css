@@ -72,6 +72,7 @@ ion-modal.small {
 
 ion-modal.small::part(content) {
   height: fit-content;
+  color: var(--ion-color-dark);
 }
 
 ion-modal.large {
@@ -83,6 +84,7 @@ ion-modal.large {
 
 ion-modal.large::part(content) {
   height: fit-content;
+  color: var(--ion-color-dark);
 }
 
 ion-modal ion-button.languageSelection {
