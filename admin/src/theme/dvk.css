@@ -270,6 +270,9 @@ ion-item.selectInput.ion-focused {
   --border-width: 0;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
+ion-item.selectInput.item-select-disabled {
+  opacity: 0.5;
+}
 ion-item.selectInput::part(native) {
   border-radius: 0;
   overflow: hidden;
@@ -289,6 +292,9 @@ ion-item.selectInput.ion-focused ion-select {
   background-color: var(--ion-color-primary-contrast);
   --padding-start: 13px;
   --padding-end: 13px;
+}
+ion-item.selectInput.item-select-disabled ion-select.select-disabled {
+  opacity: 1;
 }
 ion-item.selectInput.item-has-value ion-select::part(text) {
   overflow: auto;
@@ -320,6 +326,9 @@ ion-label.formLabel {
   display: block;
   padding-bottom: 2px;
 }
+ion-label.formLabel.disabled {
+  opacity: 0.5;
+}
 ion-item.formInput {
   font-size: 14px;
   --min-height: 43px;
@@ -335,6 +344,18 @@ ion-item.formInput::part(native) {
 ion-item.formInput > ion-label {
   position: absolute;
   top: -30px;
+}
+ion-item.formInput ion-textarea {
+  margin: 0;
+}
+ion-item.formInput ion-textarea .textarea-wrapper::after {
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+}
+ion-item.formInput ion-textarea textarea {
+  overflow: hidden;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
 }
 ion-item.invalid ion-note.input-error {
   display: flex;
@@ -463,6 +484,14 @@ ion-grid.formGrid ion-col:first-of-type {
 }
 ion-grid.formGrid ion-col:last-of-type {
   padding-right: 0;
+}
+.mainContent form ion-text h2 {
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin: 10px 5px 0;
+  border-bottom: 1px solid var(--ion-color-lighter);
 }
 
 /* Footer */
