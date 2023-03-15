@@ -337,6 +337,9 @@ ion-item.formInput {
   --inner-padding-start: 14px;
   --inner-padding-end: 14px;
 }
+ion-item.formInput.item-interactive-disabled {
+  opacity: 0.5;
+}
 ion-item.formInput::part(native) {
   border-radius: 0;
   border-color: var(--ion-color-dark);
@@ -344,6 +347,9 @@ ion-item.formInput::part(native) {
 ion-item.formInput > ion-label {
   position: absolute;
   top: -30px;
+}
+ion-item.formInput input.native-input[disabled] {
+  opacity: 1 !important;
 }
 ion-item.formInput ion-textarea {
   margin: 0;

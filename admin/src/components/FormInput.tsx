@@ -45,7 +45,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, req
 
   return (
     <>
-      <IonLabel className="formLabel" onClick={() => focusInput()}>
+      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
       <IonItem className={'formInput' + (isValid ? '' : ' invalid')} lines="none" fill="outline">

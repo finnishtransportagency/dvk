@@ -83,7 +83,7 @@ const FormSelect: React.FC<SelectProps> = ({
           {label} {required ? '*' : ''}
         </IonLabel>
       )}
-      <IonItem fill="outline" className={'selectInput' + (isValid ? '' : ' invalid') + (disabled ? '' : ' disabled')}>
+      <IonItem fill="outline" className={'selectInput' + (isValid ? '' : ' invalid')}>
         <IonSelect
           ref={selectRef}
           placeholder={t('choose') || ''}
