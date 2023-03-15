@@ -16,7 +16,7 @@ import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps, LifecycleRule } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { StreamViewType } from '@aws-sdk/client-dynamodb';
@@ -75,7 +75,6 @@ export class DvkBackendStack extends Stack {
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
-      layers: [layer],
       environment: {
         FAIRWAYCARD_VERSIONING_BUCKET: fairwayCardVersioningBucket.bucketName,
         HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
@@ -241,6 +240,16 @@ export class DvkBackendStack extends Stack {
   }
 
   private createVersioningBucket(table: string, env: string): Bucket {
+    const duration = Config.isPermanentEnvironment() ? Duration.days(30) : Duration.days(1);
+    const numberOfVersionsToKeep = Config.isPermanentEnvironment() ? 5 : 1; // how many versions to keep at expiration point
+
+    const lifecycleRules: LifecycleRule[] = [
+      {
+        noncurrentVersionExpiration: duration,
+        noncurrentVersionsToRetain: numberOfVersionsToKeep,
+      },
+    ];
+
     const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
@@ -252,7 +261,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      // lifecycleRules: [{ expiration: Duration.days(1) }],
+      lifecycleRules,
     });
   }
 
