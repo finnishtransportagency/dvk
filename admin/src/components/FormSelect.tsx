@@ -21,6 +21,7 @@ interface SelectProps {
   multiple?: boolean;
   showId?: boolean;
   disabled?: boolean;
+  helperText?: string;
   hideLabel?: boolean;
 }
 
@@ -34,6 +35,7 @@ const FormSelect: React.FC<SelectProps> = ({
   multiple,
   showId,
   disabled,
+  helperText,
   hideLabel,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
@@ -57,20 +59,27 @@ const FormSelect: React.FC<SelectProps> = ({
   };
 
   const [isValid, setIsValid] = useState(true);
+  const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = () => {
     const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
     setIsValid(required ? validity : true);
   };
-  const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<boolean | number | string | number[] | string[]>>) => {
-    checkValidity();
+  const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    if (isTouched) checkValidity();
     setSelected(event.detail.value, actionType);
+  };
+
+  const getHelperText = () => {
+    if (helperText) return helperText;
+    if (Array.isArray(selected) || multiple) return t('multiple-values-supported');
+    return false;
   };
 
   return (
     <>
       {!hideLabel && (
-        <IonLabel className="formLabel" onClick={() => focusInput()}>
+        <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
           {label} {required ? '*' : ''}
         </IonLabel>
       )}
@@ -79,6 +88,7 @@ const FormSelect: React.FC<SelectProps> = ({
           ref={selectRef}
           placeholder={t('choose') || ''}
           interface="popover"
+          onIonFocus={() => setIsTouched(true)}
           onIonChange={(ev) => handleChange(ev)}
           onIonBlur={() => checkValidity()}
           interfaceOptions={{
@@ -100,7 +110,7 @@ const FormSelect: React.FC<SelectProps> = ({
               );
             })}
         </IonSelect>
-        {(Array.isArray(selected) || multiple) && <IonNote slot="helper">{t('multiple-values-supported')}</IonNote>}
+        <IonNote slot="helper">{getHelperText()}</IonNote>
         <IonNote slot="error" className="input-error">
           <ErrorIcon aria-label={t('error') || ''} />
           {t('required-field')}

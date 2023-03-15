@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, ValueType } from '../utils/constants';
-import { FairwayCardInput, Operation, Status } from '../graphql/generated';
-import { useFairwaysQueryData, useHarboursQueryData } from '../graphql/api';
+import { ContentType, FairwayCardInput, Operation, Status } from '../graphql/generated';
+import { useFairwayCardsAndHarborsQueryData, useFairwaysQueryData, useHarboursQueryData } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
+import FormTextarea from './FormTextarea';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -21,15 +22,32 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
 
-  const { data: fairwayList, isLoading: isLoadingFairways, isFetching: isFetchingFairways } = useFairwaysQueryData();
-  const { data: harbourList, isLoading: isLoadingHarbours, isFetching: isFetchingHarbours } = useHarboursQueryData();
+  const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
+  const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  const statusOptions = [
+    { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
+    { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
+  ];
+  if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+
+  const [validationErrors, setValidationErrors] = useState({ primaryId: '' });
+  const reservedFairwayIds = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter((item) => item.type === ContentType.Card).flatMap((item) => item.id);
 
   const updateState = (value: ValueType, actionType: ActionType | ActionTypeSelect) => {
     console.log('updateState... for input ' + actionType);
+    // Check manual validations
+    if (actionType === 'primaryId' && state.operation === Operation.Create) {
+      setValidationErrors({
+        ...validationErrors,
+        primaryId: reservedFairwayIds?.includes(value as string) ? t('fairwaycard.error-duplicate-id') : '',
+      });
+    }
+
     let newState;
     switch (actionType) {
       case 'nameFi':
@@ -46,9 +64,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
         break;
       case 'status':
         newState = { ...state, status: value as Status };
-        break;
-      case 'referenceLevel':
-        newState = { ...state, n2000HeightSystem: !!value };
         break;
       case 'fairwayIds':
         newState = {
@@ -71,6 +86,45 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       case 'harbours':
         newState = { ...state, harbors: value as string[] };
         break;
+      case 'referenceLevel':
+        newState = { ...state, n2000HeightSystem: !!value };
+        break;
+      case 'lineFi':
+        newState = { ...state, lineText: { fi: value as string, sv: state.lineText?.sv || '', en: state.lineText?.en || '' } };
+        break;
+      case 'lineSv':
+        newState = { ...state, lineText: { fi: state.lineText?.fi || '', sv: value as string, en: state.lineText?.en || '' } };
+        break;
+      case 'lineEn':
+        newState = { ...state, lineText: { fi: state.lineText?.fi || '', sv: state.lineText?.sv || '', en: value as string } };
+        break;
+      case 'speedLimitFi':
+        newState = { ...state, speedLimit: { fi: value as string, sv: state.speedLimit?.sv || '', en: state.speedLimit?.en || '' } };
+        break;
+      case 'speedLimitSv':
+        newState = { ...state, speedLimit: { fi: state.speedLimit?.fi || '', sv: value as string, en: state.speedLimit?.en || '' } };
+        break;
+      case 'speedLimitEn':
+        newState = { ...state, speedLimit: { fi: state.speedLimit?.fi || '', sv: state.speedLimit?.sv || '', en: value as string } };
+        break;
+      case 'designSpeedFi':
+        newState = { ...state, designSpeed: { fi: value as string, sv: state.designSpeed?.sv || '', en: state.designSpeed?.en || '' } };
+        break;
+      case 'designSpeedSv':
+        newState = { ...state, designSpeed: { fi: state.designSpeed?.fi || '', sv: value as string, en: state.designSpeed?.en || '' } };
+        break;
+      case 'designSpeedEn':
+        newState = { ...state, designSpeed: { fi: state.designSpeed?.fi || '', sv: state.designSpeed?.sv || '', en: value as string } };
+        break;
+      case 'anchorageFi':
+        newState = { ...state, anchorage: { fi: value as string, sv: state.anchorage?.sv || '', en: state.anchorage?.en || '' } };
+        break;
+      case 'anchorageSv':
+        newState = { ...state, anchorage: { fi: state.anchorage?.fi || '', sv: value as string, en: state.anchorage?.en || '' } };
+        break;
+      case 'anchorageEn':
+        newState = { ...state, anchorage: { fi: state.anchorage?.fi || '', sv: state.anchorage?.sv || '', en: value as string } };
+        break;
       default:
         console.warn(`Unknown action type, state not updated.`);
         return state;
@@ -85,7 +139,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = () => {
     console.log('...submitting... isFormValid? ' + formRef.current?.checkValidity());
-    console.log(state);
+    console.log(state, validationErrors);
     formRef.current?.reportValidity();
   };
 
@@ -115,11 +169,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
               <FormSelect
                 label={t('fairwaycard.status')}
                 selected={state.status}
-                options={[
-                  { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
-                  { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-                  { name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed },
-                ]}
+                options={statusOptions}
                 setSelected={updateState}
                 actionType="status"
                 hideLabel={true}
@@ -134,9 +184,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                   {t('general.delete')}
                 </IonButton>
               )}
-              <IonButton shape="round" disabled>
-                {t('general.preview')}
-              </IonButton>
               <IonButton shape="round" disabled={isError} onClick={() => handleSubmit()}>
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
@@ -171,51 +218,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     actionType="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
+                    error={validationErrors.primaryId}
                   />
                 </IonCol>
                 <IonCol size="3">
                   {!isLoadingFairways && (
-                    <>
-                      <FormSelect
-                        label={t('fairwaycard.linked-fairways')}
-                        selected={state.fairwayIds || []}
-                        options={fairwayList?.fairways || []}
-                        setSelected={updateState}
-                        actionType="fairwayIds"
-                        multiple
-                        disabled={isFetchingFairways}
-                        required
-                        showId
-                      />
-                      {state.fairwayIds.length > 1 && (
-                        <IonGrid>
-                          <IonRow>
-                            <IonCol>
-                              <FormSelect
-                                label={t('fairwaycard.starting-fairway')}
-                                selected={state.primaryFairwayId || ''}
-                                options={fairwaySelection || []}
-                                setSelected={updateState}
-                                actionType="fairwayPrimary"
-                                required
-                                showId
-                              />
-                            </IonCol>
-                            <IonCol>
-                              <FormSelect
-                                label={t('fairwaycard.ending-fairway')}
-                                selected={state.secondaryFairwayId || ''}
-                                options={fairwaySelection || []}
-                                setSelected={updateState}
-                                actionType="fairwaySecondary"
-                                required
-                                showId
-                              />
-                            </IonCol>
-                          </IonRow>
-                        </IonGrid>
-                      )}
-                    </>
+                    <FormSelect
+                      label={t('fairwaycard.linked-fairways')}
+                      selected={state.fairwayIds || []}
+                      options={fairwayList?.fairways || []}
+                      setSelected={updateState}
+                      actionType="fairwayIds"
+                      multiple
+                      required
+                      showId
+                    />
                   )}
                 </IonCol>
                 <IonCol size="3">
@@ -227,7 +244,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                       setSelected={updateState}
                       actionType="harbours"
                       multiple
-                      disabled={isFetchingHarbours}
                     />
                   )}
                 </IonCol>
@@ -241,6 +257,145 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="3">
+                  <FormSelect
+                    label={t('fairwaycard.starting-fairway')}
+                    selected={state.primaryFairwayId || ''}
+                    options={fairwaySelection || []}
+                    setSelected={updateState}
+                    actionType="fairwayPrimary"
+                    required
+                    showId
+                    disabled={state.fairwayIds.length < 2}
+                    helperText={t('fairwaycard.fairway-order-help-text') || ''}
+                  />
+                </IonCol>
+                <IonCol size="3">
+                  <FormSelect
+                    label={t('fairwaycard.ending-fairway')}
+                    selected={state.secondaryFairwayId || ''}
+                    options={fairwaySelection || []}
+                    setSelected={updateState}
+                    actionType="fairwaySecondary"
+                    required
+                    showId
+                    disabled={state.fairwayIds.length < 2}
+                    helperText={t('fairwaycard.fairway-order-help-text') || ''}
+                  />
+                </IonCol>
+                <IonCol size="6"></IonCol>
+              </IonRow>
+            </IonGrid>
+
+            <IonText>
+              <h2>{t('fairwaycard.fairway-info')}</h2>
+            </IonText>
+            <IonGrid className="formGrid">
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.lining-and-marking') + ' (fi)'}
+                    val={state.lineText?.fi || ''}
+                    setValue={updateState}
+                    actionType="lineFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.lining-and-marking') + ' (sv)'}
+                    val={state.lineText?.sv || ''}
+                    setValue={updateState}
+                    actionType="lineSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.lining-and-marking') + ' (en)'}
+                    val={state.lineText?.en || ''}
+                    setValue={updateState}
+                    actionType="lineEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.design-speed') + ' (fi)'}
+                    val={state.designSpeed?.fi || ''}
+                    setValue={updateState}
+                    actionType="designSpeedFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.design-speed') + ' (sv)'}
+                    val={state.designSpeed?.sv || ''}
+                    setValue={updateState}
+                    actionType="designSpeedSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.design-speed') + ' (en)'}
+                    val={state.designSpeed?.en || ''}
+                    setValue={updateState}
+                    actionType="designSpeedEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.speed-limit') + ' (fi)'}
+                    val={state.speedLimit?.fi || ''}
+                    setValue={updateState}
+                    actionType="speedLimitFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.speed-limit') + ' (sv)'}
+                    val={state.speedLimit?.sv || ''}
+                    setValue={updateState}
+                    actionType="speedLimitSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.speed-limit') + ' (en)'}
+                    val={state.speedLimit?.en || ''}
+                    setValue={updateState}
+                    actionType="speedLimitEn"
+                  />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol>
+                  <FormTextarea
+                    label={fi('fairwaycard.anchorage') + ' (fi)'}
+                    val={state.anchorage?.fi || ''}
+                    setValue={updateState}
+                    actionType="anchorageFi"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={sv('fairwaycard.anchorage') + ' (sv)'}
+                    val={state.anchorage?.sv || ''}
+                    setValue={updateState}
+                    actionType="anchorageSv"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormTextarea
+                    label={en('fairwaycard.anchorage') + ' (en)'}
+                    val={state.anchorage?.en || ''}
+                    setValue={updateState}
+                    actionType="anchorageEn"
                   />
                 </IonCol>
               </IonRow>
