@@ -33,6 +33,7 @@ import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import VectorImageLayer from 'ol/layer/VectorImage';
+import { getVtsStyle } from './layerStyles/vtsStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -334,6 +335,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1);
   addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false));
   addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false));
+  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false));
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Kartan nimistö

@@ -175,6 +175,10 @@ export function useBuoyLayer() {
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
+export function useVtsLayer() {
+  return useDataLayer('vts', 'vts', 'EPSG:4258');
+}
+
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
   for (const raf of rafs) {

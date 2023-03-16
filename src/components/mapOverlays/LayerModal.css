@@ -70,6 +70,12 @@ ion-modal#layerModalContainer::part(content) {
   border-top: 2px dashed var(--ion-color-layer-boardline);
   height: 1px;
 }
+
+#layerModalContainer ion-item .vts {
+  border-top: 2px dashed var(--ion-color-layer-vts);
+  height: 1px;
+}
+
 #layerModalContainer ion-item .safetyequipment {
   -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
   -webkit-mask-repeat: no-repeat;

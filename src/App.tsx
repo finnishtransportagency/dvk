@@ -34,6 +34,7 @@ import {
   useBackgroundMmljarviLayer,
   useBackgroundBalticseaLayer,
   DvkLayerState,
+  useVtsLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -117,6 +118,7 @@ const DvkIonApp: React.FC = () => {
   const bgBalticseaLayer = useBackgroundBalticseaLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const vtsLayer = useVtsLayer();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
@@ -147,10 +149,11 @@ const DvkIonApp: React.FC = () => {
       bgBalticseaLayer,
       bgMmlmeriLayer,
       bgMmljarviLayer,
+      vtsLayer,
     ];
 
     let percent = 0;
-    const resourcePercentage = 1 / 21;
+    const resourcePercentage = 1 / allLayers.length;
 
     allLayers.forEach(function (layer) {
       if (layer.ready) percent += resourcePercentage;
@@ -183,6 +186,7 @@ const DvkIonApp: React.FC = () => {
     bgBalticseaLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
+    vtsLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);

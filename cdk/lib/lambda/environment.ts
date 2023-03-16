@@ -159,6 +159,10 @@ export async function getWeatherHeaders(): Promise<Record<string, string>> {
   };
 }
 
+export async function getTraficomHeaders(): Promise<Record<string, string>> {
+  return getWeatherHeaders();
+}
+
 export async function getCloudFrontPrivateKey() {
   return readParameterForEnv(getEnvironment() + '/CloudFrontPrivateKey');
 }

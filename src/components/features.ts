@@ -147,3 +147,11 @@ export type BuoyFeatureProperties = {
   waveDirection: number | null;
   waveHeight: number | null;
 };
+
+export type VtsFeatureProperties = {
+  featureType: 'vtspoint' | 'vtsline';
+  identifier: string;
+  name?: string;
+  information?: string;
+  channel?: string;
+};
