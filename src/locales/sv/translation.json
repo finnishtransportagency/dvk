@@ -42,7 +42,7 @@
           "weatherStation": "[sv] Säähavaintoasemat",
           "ice": "[sv] Jääkartta",
           "buoys": "[sv] Aaltopoijut",
-          "vts": "[sv] VTS-ilmoituslinjat ja pisteet",
+          "vts": "[sv] VTS-ilmoituslinjat ja -pisteet",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",

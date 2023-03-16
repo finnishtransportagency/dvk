@@ -42,7 +42,7 @@
           "weatherStation": "Säähavaintoasemat",
           "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
-          "vts": "VTS-ilmoituslinjat ja pisteet",
+          "vts": "VTS-ilmoituslinjat ja -pisteet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
