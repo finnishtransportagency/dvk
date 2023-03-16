@@ -1,6 +1,6 @@
-import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActionType } from '../utils/constants';
+import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
+import { ActionType, Lang } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
@@ -8,15 +8,16 @@ import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
 interface InputProps {
   label: string;
   val: string;
-  setValue: (val: string, actionType: ActionType) => void;
+  setValue: (val: string, actionType: ActionType, actionLang?: Lang) => void;
   actionType: ActionType;
+  actionLang?: Lang;
   required?: boolean;
   disabled?: boolean;
   error?: string;
-  helperText?: string;
+  helperText?: string | null;
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, required, disabled, error, helperText }) => {
+const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
@@ -31,7 +32,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, req
   };
   const handleChange = (event: IonTextareaCustomEvent<TextareaChangeEventDetail>) => {
     checkValidity(event);
-    setValue(event.detail.value as string, actionType);
+    setValue(event.detail.value as string, actionType, actionLang);
   };
 
   const getErrorText = () => {

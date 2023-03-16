@@ -54,9 +54,10 @@
   "fairwaycard": {
     "name": "Väyläkortin nimi",
     "primary-id": "Väyläkortin tunniste",
+    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
     "linked-fairways": "Liitetyt väylät",
-    "starting-fairway": "Aloitusväylä",
-    "ending-fairway": "Lopetusväylä",
+    "starting-fairway": "Aloittava väylä",
+    "ending-fairway": "Päättävä väylä",
     "linked-harbours": "Liitetyt satamat",
     "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan",
     "error-duplicate-id": "Tunniste on jo käytössä",

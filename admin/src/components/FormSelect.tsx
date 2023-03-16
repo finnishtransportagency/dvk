@@ -1,5 +1,5 @@
-import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import React, { useRef, useState } from 'react';
+import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
 import { Text } from '../graphql/generated';
@@ -21,7 +21,7 @@ interface SelectProps {
   multiple?: boolean;
   showId?: boolean;
   disabled?: boolean;
-  helperText?: string;
+  helperText?: string | null;
   hideLabel?: boolean;
 }
 
