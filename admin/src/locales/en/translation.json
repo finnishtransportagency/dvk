@@ -54,6 +54,7 @@
   "fairwaycard": {
     "name": "Fairway card name",
     "primary-id": "Fairway card ID",
+    "primary-id-help-text": "[en] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
     "linked-fairways": "Linked fairways",
     "starting-fairway": "Starting fairway",
     "ending-fairway": "Ending fairway",
