@@ -43,11 +43,7 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, u
     internet: map<string>(harbor.internet),
     phoneNumber: mapStringArray(harbor.phoneNumber),
     geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : undefined,
-    cargo: harbor.cargo
-      ?.map((c) => {
-        return { fi: c?.fi || undefined, sv: c?.sv || undefined, en: c?.en || undefined };
-      })
-      .filter((c) => c.fi || c.sv || c.en),
+    cargo: mapText(harbor.cargo),
     quays: harbor.quays?.map((q) => {
       return {
         extraInfo: mapText(q?.extraInfo),

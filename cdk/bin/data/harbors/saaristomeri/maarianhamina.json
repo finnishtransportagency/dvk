@@ -12,28 +12,20 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358185310",
-    "+35818531476"
-  ],
+  "phoneNumber": ["+358185310", "+35818531476"],
   "harborBasin": {
     "fi": "Maksimi syväys -9,2 m, maksimi aluspituus n. 270 m riippuen navigoitavuudesta.",
     "sv": "Max djupgående -9,2 m, max fartygslängd ca. 270 m beroende på navigerbarheten.",
     "en": "Maximum draught -9,2 m, maximum vessel length approx. 270 m depending on navigability."
   },
-  "cargo": [
-    {
-      "fi": "Laiturit 1-2, ainoastaan matkustajalaivoille. Laiturit 3-6, ainoastaan ro-ro aluksille. Öljyterminaali sijaitsee pohjoisempana lahdessa. Nostureita yksityisillä yrittäjillä.",
-      "sv": "Kaj 1-2 endast passagerartrafik över landgång, kaj 3-6 endast ro-ro. En oljeterminal längre norrut i viken. Privatägda krana.",
-      "en": "Quay 1-2 only for passanger ships. Quay 3-6 only for ro-ro ships. The oil terminal is located in the northern part of the bay. Privately owned cranes."
-    }
-  ],
+  "cargo": {
+    "fi": "Laiturit 1-2, ainoastaan matkustajalaivoille. Laiturit 3-6, ainoastaan ro-ro aluksille. Öljyterminaali sijaitsee pohjoisempana lahdessa. Nostureita yksityisillä yrittäjillä.",
+    "sv": "Kaj 1-2 endast passagerartrafik över landgång, kaj 3-6 endast ro-ro. En oljeterminal längre norrut i viken. Privatägda krana.",
+    "en": "Quay 1-2 only for passanger ships. Quay 3-6 only for ro-ro ships. The oil terminal is located in the northern part of the bay. Privately owned cranes."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      19.92891,
-      60.09182
-    ]
+    "coordinates": [19.92891, 60.09182]
   },
   "quays": [
     {
@@ -50,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          19.92644,
-          60.09553
-        ]
+        "coordinates": [19.92644, 60.09553]
       }
     },
     {
@@ -75,10 +64,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          19.92737,
-          60.09354
-        ]
+        "coordinates": [19.92737, 60.09354]
       }
     },
     {
@@ -100,10 +86,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          19.92822,
-          60.09172
-        ]
+        "coordinates": [19.92822, 60.09172]
       }
     },
     {
@@ -125,10 +108,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          19.92894,
-          60.09082
-        ]
+        "coordinates": [19.92894, 60.09082]
       }
     },
     {
@@ -150,10 +130,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          19.93006,
-          60.0896
-        ]
+        "coordinates": [19.93006, 60.0896]
       }
     },
     {

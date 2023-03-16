@@ -53,7 +53,7 @@ class HarborDBModel {
 
   harborBasin?: Text;
 
-  cargo?: Text[];
+  cargo?: Text;
 
   geometry?: GeometryPoint;
 

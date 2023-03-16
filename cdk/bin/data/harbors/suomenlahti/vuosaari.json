@@ -12,35 +12,18 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+35893101621"
-  ],
+  "phoneNumber": ["+35893101621"],
   "fax": "+358931033802",
   "email": "port.helsinki@portofhelsinki.fi",
   "internet": "https://www.portofhelsinki.fi/",
-  "cargo": [
-    {
-      "fi": "D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m",
-      "sv": "D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m",
-      "en": "Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m"
-    },
-    {
-      "fi": "E laituri: 4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m",
-      "sv": "E kajen: 4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m",
-      "en": "Quay E: 4 container cranes, lifting capacity 65/90 t, outreach 46 m"
-    },
-    {
-      "fi": "F laituri: konttinosturi, nostokyky 40/50 tn, ulottuma 34 m",
-      "sv": "F kajen: containerkran, lyftkapacitet 40/50 t, räckvidd 34 m",
-      "en": "Quay F: container crane, lifting capacity 40/50 t, outreach 34 m"
-    }
-  ],
+  "cargo": {
+    "fi": "D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m. E laituri: 4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m. F laituri: konttinosturi, nostokyky 40/50 tn, ulottuma 34 m.",
+    "sv": "D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m. E kajen: 4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m. F kajen: containerkran, lyftkapacitet 40/50 t, räckvidd 34 m.",
+    "en": "Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m. Quay E: 4 container cranes, lifting capacity 65/90 t, outreach 46 m. Quay F: container crane, lifting capacity 40/50 t, outreach 34 m."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      25.19619,
-      60.21588
-    ]
+    "coordinates": [25.19619, 60.21588]
   },
   "quays": [
     {
@@ -51,10 +34,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19323,
-          60.2103
-        ]
+        "coordinates": [25.19323, 60.2103]
       },
       "length": 180,
       "sections": [
@@ -76,10 +56,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19473,
-          60.20955
-        ]
+        "coordinates": [25.19473, 60.20955]
       },
       "length": 215,
       "sections": [
@@ -104,10 +81,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.18949,
-          60.21558
-        ]
+        "coordinates": [25.18949, 60.21558]
       },
       "length": 250,
       "sections": [
@@ -129,10 +103,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19999,
-          60.21892
-        ]
+        "coordinates": [25.19999, 60.21892]
       },
       "length": 250,
       "sections": [
@@ -154,10 +125,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19038,
-          60.21338
-        ]
+        "coordinates": [25.19038, 60.21338]
       },
       "length": 750,
       "sections": [
@@ -182,10 +150,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19358,
-          60.21486
-        ]
+        "coordinates": [25.19358, 60.21486]
       },
       "length": 750,
       "sections": [
@@ -219,10 +184,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19826,
-          60.21764
-        ]
+        "coordinates": [25.19826, 60.21764]
       },
       "extraInfo": {
         "fi": "2 kpl kiinteää ramppia",
@@ -238,10 +200,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19962,
-          60.21401
-        ]
+        "coordinates": [25.19962, 60.21401]
       },
       "length": 162,
       "sections": [
@@ -263,10 +222,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.2024,
-          60.21366
-        ]
+        "coordinates": [25.2024, 60.21366]
       },
       "length": 204,
       "sections": [
@@ -288,10 +244,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.2038,
-          60.21424
-        ]
+        "coordinates": [25.2038, 60.21424]
       },
       "length": 204,
       "sections": [
@@ -316,10 +269,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.19914,
-          60.2128
-        ]
+        "coordinates": [25.19914, 60.2128]
       },
       "length": 189,
       "sections": [

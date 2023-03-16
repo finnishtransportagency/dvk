@@ -12,28 +12,20 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358504205193",
-    "+358447778686"
-  ],
+  "phoneNumber": ["+358504205193", "+358447778686"],
   "harborBasin": {
     "fi": "Kääntöympyrän halkaisija 370 m.",
     "sv": "Svängbassängens diameter 370 m.",
     "en": "Swinging area, diameter 370 m."
   },
-  "cargo": [
-    {
-      "fi": "Operaattorilla monitoimikone.",
-      "sv": "Operatören har en lasthanteringsmaskin.",
-      "en": "Multifunctional cranes and devices."
-    }
-  ],
+  "cargo": {
+    "fi": "Operaattorilla monitoimikone.",
+    "sv": "Operatören har en lasthanteringsmaskin.",
+    "en": "Multifunctional cranes and devices."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.37874,
-      60.79688
-    ]
+    "coordinates": [21.37874, 60.79688]
   },
   "quays": [
     {
@@ -55,10 +47,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.37567,
-          60.79707
-        ]
+        "coordinates": [21.37567, 60.79707]
       }
     },
     {
@@ -80,10 +69,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.37623,
-          60.79685
-        ]
+        "coordinates": [21.37623, 60.79685]
       }
     },
     {
@@ -105,10 +91,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.37739,
-          60.79627
-        ]
+        "coordinates": [21.37739, 60.79627]
       }
     },
     {
@@ -130,10 +113,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.38027,
-          60.7956
-        ]
+        "coordinates": [21.38027, 60.7956]
       }
     }
   ]

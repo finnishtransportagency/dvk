@@ -12,27 +12,20 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": true,
-  "phoneNumber": [
-    "+35868242400"
-  ],
+  "phoneNumber": ["+35868242400"],
   "harborBasin": {
     "fi": "Kääntöympyröiden halkaisijat: Kantasataman kemikaalilaiturin edustalla 400 m, laitureiden 1 ja 2 sekä AW-terminaalin edustalla 250 m.",
     "sv": "Svängcirklarnas diametrar: vid kemikaliekajen i Stamhamnen 400 m, vid kaj 1 och 2 samt vid AW-terminalen 250 m.",
     "en": "Diameter of turning circles: in General Port at the chemical terminal 400 m, at Quay 1 and 2 and the AWT 250 m."
   },
-  "cargo": [
-    {
-      "fi": "Kantasatamassa 2 kpl 8 t nostureita. AW-terminaalissa 50 t siltanosturi. Lisäksi satamassa liikkuva 60 t nosturi.",
-      "sv": "I Stamhamnen 2 st. 8 t kranar. Vid AW-terminalen 50 t brokran. Därtill mobil 60 t kran.",
-      "en": "Two eight-ton cranes in the General Port. One 50-ton bridge crane at the AWT. One 60-ton crane in the port area."
-    }
-  ],
+  "cargo": {
+    "fi": "Kantasatamassa 2 kpl 8 t nostureita. AW-terminaalissa 50 t siltanosturi. Lisäksi satamassa liikkuva 60 t nosturi.",
+    "sv": "I Stamhamnen 2 st. 8 t kranar. Vid AW-terminalen 50 t brokran. Därtill mobil 60 t kran.",
+    "en": "Two eight-ton cranes in the General Port. One 50-ton bridge crane at the AWT. One 60-ton crane in the port area."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      23.02009,
-      63.84744
-    ]
+    "coordinates": [23.02009, 63.84744]
   },
   "quays": [
     {
@@ -49,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.02316,
-          63.84334
-        ]
+        "coordinates": [23.02316, 63.84334]
       }
     },
     {
@@ -69,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.02013,
-          63.84375
-        ]
+        "coordinates": [23.02013, 63.84375]
       }
     },
     {
@@ -89,10 +76,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.01061,
-          63.85065
-        ]
+        "coordinates": [23.01061, 63.85065]
       }
     },
     {
@@ -114,10 +98,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.01849,
-          63.84465
-        ]
+        "coordinates": [23.01849, 63.84465]
       }
     }
   ]

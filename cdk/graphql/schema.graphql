@@ -114,7 +114,7 @@ input HarborInput {
   company: TextInput
   extraInfo: TextInput
   harborBasin: TextInput
-  cargo: [TextInput]
+  cargo: TextInput
   quays: [QuayInput]
   geometry: GeometryInput!
 }
@@ -261,7 +261,7 @@ type Harbor {
   internet: String
   extraInfo: Text
   harborBasin: Text
-  cargo: [Text]
+  cargo: Text
   geometry: GeometryPoint
 }
 
