@@ -12,28 +12,21 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358447012623"
-  ],
+  "phoneNumber": ["+358447012623"],
   "email": "info@portofpori.fi",
   "harborBasin": {
     "fi": "Kääntöaltaan halkaisija 900 m.",
     "sv": "Svängbassängens diameter 900 m. ",
     "en": "Diameter of the turning basin 900 m."
   },
-  "cargo": [
-    {
-      "fi": "Syväsatamassa nosturit 32 t ja 40 t sekä lastain 1500 t/h.",
-      "sv": "I djuphamnen pålastare 1500 t/h, kranar 32 t och 40 t.",
-      "en": "A loader of 1,500 t/h, cranes of 32 t and 40 t. "
-    }
-  ],
+  "cargo": {
+    "fi": "Syväsatamassa nosturit 32 t ja 40 t sekä lastain 1500 t/h.",
+    "sv": "I djuphamnen pålastare 1500 t/h, kranar 32 t och 40 t.",
+    "en": "A loader of 1,500 t/h, cranes of 32 t and 40 t. "
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.38682,
-      61.63504
-    ]
+    "coordinates": [21.38682, 61.63504]
   },
   "quays": [
     {
@@ -50,10 +43,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.38476,
-          61.63399
-        ]
+        "coordinates": [21.38476, 61.63399]
       }
     },
     {
@@ -69,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.39978,
-          61.6401
-        ]
+        "coordinates": [21.39978, 61.6401]
       }
     }
   ]

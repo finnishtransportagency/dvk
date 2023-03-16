@@ -12,23 +12,16 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358447334550"
-  ],
+  "phoneNumber": ["+358447334550"],
   "email": "satama@portofnaantali.fi",
-  "cargo": [
-    {
-      "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
-      "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål",
-      "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
-    }
-  ],
+  "cargo": {
+    "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+    "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål",
+    "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies"
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      22.04174,
-      60.45883
-    ]
+    "coordinates": [22.04174, 60.45883]
   },
   "quays": [
     {
@@ -39,10 +32,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.0494,
-          60.45713
-        ]
+        "coordinates": [22.0494, 60.45713]
       },
       "length": 370,
       "sections": [
@@ -59,10 +49,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.04414,
-          60.45737
-        ]
+        "coordinates": [22.04414, 60.45737]
       },
       "length": 200,
       "sections": [
@@ -79,10 +66,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.0428,
-          60.45761
-        ]
+        "coordinates": [22.0428, 60.45761]
       }
     },
     {
@@ -93,10 +77,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.03924,
-          60.45809
-        ]
+        "coordinates": [22.03924, 60.45809]
       },
       "length": 170,
       "sections": [
@@ -113,10 +94,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.03782,
-          60.45825
-        ]
+        "coordinates": [22.03782, 60.45825]
       },
       "length": 50,
       "sections": [
@@ -133,10 +111,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.03736,
-          60.45766
-        ]
+        "coordinates": [22.03736, 60.45766]
       },
       "length": 150,
       "sections": [
@@ -153,10 +128,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.03649,
-          60.4579
-        ]
+        "coordinates": [22.03649, 60.4579]
       },
       "length": 180,
       "sections": [

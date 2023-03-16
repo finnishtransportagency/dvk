@@ -12,10 +12,7 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358207908800",
-    "+358207908840"
-  ],
+  "phoneNumber": ["+358207908800", "+358207908840"],
   "fax": "+358207908891",
   "email": "office@haminakotka.fi",
   "harborBasin": {
@@ -23,19 +20,14 @@
     "sv": "Förbjudet att använda ankare i hamnbassängen.",
     "en": "Use of anchor prohibited in the harbour basin."
   },
-  "cargo": [
-    {
-      "fi": "Useita mobiilinostureita, maksiminostokyky 100 tonnia.",
-      "sv": "Flera mobilkranar, max. lyftförmåga 100 ton.",
-      "en": "Several mobile cranes, maximum lifting capacity 100 tonnes."
-    }
-  ],
+  "cargo": {
+    "fi": "Useita mobiilinostureita, maksiminostokyky 100 tonnia.",
+    "sv": "Flera mobilkranar, max. lyftförmåga 100 ton.",
+    "en": "Several mobile cranes, maximum lifting capacity 100 tonnes."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      27.16347,
-      60.5244
-    ]
+    "coordinates": [27.16347, 60.5244]
   },
   "quays": [
     {

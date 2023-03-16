@@ -12,38 +12,21 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358207631500"
-  ],
+  "phoneNumber": ["+358207631500"],
   "email": "inkooshp@inkooshipping.fi",
   "harborBasin": {
     "fi": "Kääntöaltaan halkaisija 400 m, haraussyvyys -9,5 m.",
     "sv": "Svängbassängens diameter 400 m, ramat djup -9,5 m.",
     "en": "Diameter of swinging area 400 m, safe clearance depth -9.5 m."
   },
-  "cargo": [
-    {
-      "fi": "Fortum laituri 1: 2 kpl 10 t nivelpuominostureita.",
-      "sv": "Fortum kaj 1: 2 st. 10 t vikarmskranar.",
-      "en": "Fortum quay No. 1: Two 10 t cranes."
-    },
-    {
-      "fi": "Inkoo Shipping laituri 3: 1 kpl 10 t nivelpuominosturi, sivurampillisten proomujen purkaus/lastausramppi.",
-      "sv": "Ingå Shipping kaj 3: 1 st. 10 t vikarmskran, lossning av pråmar med sidoramper/lastningsramp.",
-      "en": "Inkoo Shipping quay 3: 10 t crane on rail, quay for loading and unloading barges using side ramp"
-    },
-    {
-      "fi": "Laituri 4: peräporttipaikka, 3 kpl täsmänostureita.",
-      "sv": "Kaj 4: akterportplats, 3 st. precisionskranar.",
-      "en": "Quay No. 4: bow/stern ramp, 3 mobile multipurpose cranes."
-    }
-  ],
+  "cargo": {
+    "fi": "Fortum laituri 1: 2 kpl 10 t nivelpuominostureita. Inkoo Shipping laituri 3: 1 kpl 10 t nivelpuominosturi, sivurampillisten proomujen purkaus/lastausramppi. Laituri 4: peräporttipaikka, 3 kpl täsmänostureita.",
+    "sv": "Fortum kaj 1: 2 st. 10 t vikarmskranar. Ingå Shipping kaj 3: 1 st. 10 t vikarmskran, lossning av pråmar med sidoramper/lastningsramp. Kaj 4: akterportplats, 3 st. precisionskranar.",
+    "en": "Fortum quay No. 1: Two 10 t cranes. Inkoo Shipping quay 3: 10 t crane on rail, quay for loading and unloading barges using side ramp. Quay No. 4: bow/stern ramp, 3 mobile multipurpose cranes."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      23.92418,
-      60.01624
-    ]
+    "coordinates": [23.92418, 60.01624]
   },
   "quays": [
     {
@@ -57,10 +40,7 @@
         {
           "geometry": {
             "type": "Point",
-            "coordinates": [
-              23.91585,
-              60.01547
-            ]
+            "coordinates": [23.91585, 60.01547]
           },
           "depth": 10.9
         }
@@ -77,10 +57,7 @@
         {
           "geometry": {
             "type": "Point",
-            "coordinates": [
-              23.9184,
-              60.01496
-            ]
+            "coordinates": [23.9184, 60.01496]
           },
           "depth": 14.2
         }
@@ -97,10 +74,7 @@
         {
           "geometry": {
             "type": "Point",
-            "coordinates": [
-              23.92771,
-              60.01563
-            ]
+            "coordinates": [23.92771, 60.01563]
           },
           "depth": 8.5
         }
@@ -117,10 +91,7 @@
         {
           "geometry": {
             "type": "Point",
-            "coordinates": [
-              23.92672,
-              60.01541
-            ]
+            "coordinates": [23.92672, 60.01541]
           },
           "depth": 8.5
         }

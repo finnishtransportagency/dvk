@@ -12,25 +12,17 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358283711",
-    "+358500597579"
-  ],
+  "phoneNumber": ["+358283711", "+358500597579"],
   "email": "office@portofrauma.com",
   "internet": "http://www.portofrauma.com",
-  "cargo": [
-    {
-      "fi": "http://www.portofrauma.com",
-      "sv": "http://www.portofrauma.com",
-      "en": "http://www.portofrauma.com"
-    }
-  ],
+  "cargo": {
+    "fi": "http://www.portofrauma.com",
+    "sv": "http://www.portofrauma.com",
+    "en": "http://www.portofrauma.com"
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.42929,
-      61.12878
-    ]
+    "coordinates": [21.42929, 61.12878]
   },
   "quays": [
     {
@@ -47,10 +39,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.42912,
-          61.1315
-        ]
+        "coordinates": [21.42912, 61.1315]
       }
     },
     {
@@ -67,10 +56,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.42853,
-          61.13033
-        ]
+        "coordinates": [21.42853, 61.13033]
       }
     },
     {
@@ -87,10 +73,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.42672,
-          61.13018
-        ]
+        "coordinates": [21.42672, 61.13018]
       }
     },
     {
@@ -111,10 +94,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.43475,
-          61.12654
-        ]
+        "coordinates": [21.43475, 61.12654]
       }
     },
     {
@@ -130,10 +110,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.45246,
-          61.12565
-        ]
+        "coordinates": [21.45246, 61.12565]
       }
     },
     {
@@ -158,10 +135,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.45209,
-          61.12703
-        ]
+        "coordinates": [21.45209, 61.12703]
       }
     },
     {
@@ -178,10 +152,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.45771,
-          61.12715
-        ]
+        "coordinates": [21.45771, 61.12715]
       }
     }
   ]

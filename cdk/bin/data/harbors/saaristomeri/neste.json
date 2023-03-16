@@ -12,23 +12,16 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358504586487"
-  ],
+  "phoneNumber": ["+358504586487"],
   "email": "naantali.harbour@neste.com",
-  "cargo": [
-    {
-      "fi": "Fortum: nostureita yksityisillä yrittäjillä",
-      "sv": "Fortum: privata företags kranar",
-      "en": "Cranes available from private companies"
-    }
-  ],
+  "cargo": {
+    "fi": "Fortum: nostureita yksityisillä yrittäjillä",
+    "sv": "Fortum: privata företags kranar",
+    "en": "Cranes available from private companies"
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      22.06637,
-      60.45544
-    ]
+    "coordinates": [22.06637, 60.45544]
   },
   "quays": [
     {
@@ -39,10 +32,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.06305,
-          60.45601
-        ]
+        "coordinates": [22.06305, 60.45601]
       },
       "length": 170,
       "sections": [
@@ -59,10 +49,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.06502,
-          60.4545
-        ]
+        "coordinates": [22.06502, 60.4545]
       },
       "length": 200,
       "sections": [
@@ -79,10 +66,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.06846,
-          60.45319
-        ]
+        "coordinates": [22.06846, 60.45319]
       },
       "length": 300,
       "sections": [

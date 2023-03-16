@@ -10,9 +10,7 @@
     "sv": "",
     "en": ""
   },
-  "phoneNumber": [
-    ""
-  ],
+  "phoneNumber": [""],
   "fax": "",
   "email": "",
   "internet": "",
@@ -26,13 +24,11 @@
     "sv": "",
     "en": ""
   },
-  "cargo": [
-    {
-      "fi": "",
-      "sv": "",
-      "en": ""
-    }
-  ],
+  "cargo": {
+    "fi": "",
+    "sv": "",
+    "en": ""
+  },
   "geometry": {
     "type": "Point",
     "coordinates": []

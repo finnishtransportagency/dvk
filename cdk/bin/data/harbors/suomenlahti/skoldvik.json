@@ -12,28 +12,20 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358104583120",
-    "+358104583115"
-  ],
+  "phoneNumber": ["+358104583120", "+358104583115"],
   "harborBasin": {
     "fi": "Satama-allas on ympärivuotisesti merkitty valojääpoijuin. Avovesikautena laituri on myös ympyröity öljypuomein.",
     "sv": "Utmärkt med lysisbojar året runt. Under den isfria tiden är kajerna omgärdade med oljebommar.",
     "en": "Buoyage: lighted ice buoys all the year round. Open water season: quays surrounded by oil spill booms."
   },
-  "cargo": [
-    {
-      "fi": "Lasti käsitellään yleisesti käytössä olevin menetelmin.",
-      "sv": "Allmänt brukade hanteringsmetoder.",
-      "en": "All methods in general use."
-    }
-  ],
+  "cargo": {
+    "fi": "Lasti käsitellään yleisesti käytössä olevin menetelmin.",
+    "sv": "Allmänt brukade hanteringsmetoder.",
+    "en": "All methods in general use."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      25.54666,
-      60.30437
-    ]
+    "coordinates": [25.54666, 60.30437]
   },
   "quays": [
     {
@@ -50,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55366,
-          60.30761
-        ]
+        "coordinates": [25.55366, 60.30761]
       }
     },
     {
@@ -75,10 +64,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55604,
-          60.31301
-        ]
+        "coordinates": [25.55604, 60.31301]
       }
     },
     {
@@ -100,10 +86,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55581,
-          60.31263
-        ]
+        "coordinates": [25.55581, 60.31263]
       }
     },
     {
@@ -120,10 +103,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55069,
-          60.3056
-        ]
+        "coordinates": [25.55069, 60.3056]
       }
     },
     {
@@ -145,10 +125,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55254,
-          60.30924
-        ]
+        "coordinates": [25.55254, 60.30924]
       }
     },
     {
@@ -169,10 +146,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.55208,
-          60.31149
-        ]
+        "coordinates": [25.55208, 60.31149]
       }
     },
     {
@@ -189,10 +163,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.54665,
-          60.29765
-        ]
+        "coordinates": [25.54665, 60.29765]
       }
     },
     {
@@ -209,10 +180,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          25.54186,
-          60.29043
-        ]
+        "coordinates": [25.54186, 60.29043]
       }
     }
   ]

@@ -694,9 +694,7 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
           </IonText>
           <IonText>
             <h5>{t('cargo')}</h5>
-            {data.cargo?.map((cargo, jdx) => {
-              return <p key={jdx}>{cargo && cargo[lang]}</p>;
-            }) || <InfoParagraph />}
+            {(data.cargo && <p>{data.cargo[lang]}</p>) || <InfoParagraph />}
           </IonText>
           <IonText>
             <h5>{t('harbourBasin')}</h5>

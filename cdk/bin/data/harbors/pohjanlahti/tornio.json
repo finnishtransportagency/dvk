@@ -12,28 +12,21 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": true,
-  "phoneNumber": [
-    "+35816454511"
-  ],
+  "phoneNumber": ["+35816454511"],
   "fax": "+35816454513",
   "harborBasin": {
     "fi": "Kääntöympyrän halkaisija 330 m, ankkurin käyttö kielletty.",
     "sv": "Svängcirkelns diameter 330 m, förbjudet att använda ankare.",
     "en": "Diameter of turning circle 330 m. Use of anchor forbidden."
   },
-  "cargo": [
-    {
-      "fi": "1 56kpl t, 1 kpl 80 t ja 2 kpl 100 t ja 1kpl 125 t nostureita sekä autonostureita, kaasunpurkausvarsi.",
-      "sv": "En 56 t, en 80 t, två 100 t och en 125 t kranar samt mobilkranar, apparatur för lossning av gas.",
-      "en": "One 56 t, one 80 t, two 100 t cranes, one 125 t, mobile cranes, gas-discharge beam."
-    }
-  ],
+  "cargo": {
+    "fi": "1 56kpl t, 1 kpl 80 t ja 2 kpl 100 t ja 1kpl 125 t nostureita sekä autonostureita, kaasunpurkausvarsi.",
+    "sv": "En 56 t, en 80 t, två 100 t och en 125 t kranar samt mobilkranar, apparatur för lossning av gas.",
+    "en": "One 56 t, one 80 t, two 100 t cranes, one 125 t, mobile cranes, gas-discharge beam."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      24.15845,
-      65.75382
-    ]
+    "coordinates": [24.15845, 65.75382]
   },
   "quays": [
     {
@@ -50,10 +43,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.16095,
-          65.75342
-        ]
+        "coordinates": [24.16095, 65.75342]
       }
     },
     {
@@ -70,10 +60,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.15821,
-          65.75276
-        ]
+        "coordinates": [24.15821, 65.75276]
       }
     },
     {
@@ -90,10 +77,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.15609,
-          65.75317
-        ]
+        "coordinates": [24.15609, 65.75317]
       }
     },
     {
@@ -110,10 +94,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.15585,
-          65.75422
-        ]
+        "coordinates": [24.15585, 65.75422]
       }
     },
     {
@@ -130,10 +111,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.15667,
-          65.75551
-        ]
+        "coordinates": [24.15667, 65.75551]
       }
     },
     {
@@ -150,10 +128,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.15269,
-          65.75511
-        ]
+        "coordinates": [24.15269, 65.75511]
       }
     },
     {
@@ -170,10 +145,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.1511,
-          65.7557
-        ]
+        "coordinates": [24.1511, 65.7557]
       }
     },
     {
@@ -190,10 +162,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.16014,
-          65.75044
-        ]
+        "coordinates": [24.16014, 65.75044]
       }
     }
   ]

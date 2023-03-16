@@ -12,29 +12,20 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": true,
-  "phoneNumber": [
-    "+35816258100",
-    "+358162151628",
-    "+358405482065"
-  ],
+  "phoneNumber": ["+35816258100", "+358162151628", "+358405482065"],
   "harborBasin": {
     "fi": "Kääntöympyrän halkaisija 370 m, ankkurin käyttö sallittu.",
     "sv": "Svängcirkelns diameter 370 m, tillåtet att använda ankare.",
     "en": "Diameter of turning circle 370 m, use of anchor permitted."
   },
-  "cargo": [
-    {
-      "fi": "Mobiilinostureita 7 / 6 - 12 t, 4 peräporttipaikkaa.",
-      "sv": "Mobila kranar 7 / 6 - 12 t, 4 st. ro-ro-ramper.",
-      "en": "Mobile cranes 7 / 6 - 12 t, 4 Ro-Ro ramps."
-    }
-  ],
+  "cargo": {
+    "fi": "Mobiilinostureita 7 / 6 - 12 t, 4 peräporttipaikkaa.",
+    "sv": "Mobila kranar 7 / 6 - 12 t, 4 st. ro-ro-ramper.",
+    "en": "Mobile cranes 7 / 6 - 12 t, 4 Ro-Ro ramps."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      24.6227,
-      65.68785
-    ]
+    "coordinates": [24.6227, 65.68785]
   },
   "quays": [
     {
@@ -51,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.61866,
-          65.68779
-        ]
+        "coordinates": [24.61866, 65.68779]
       }
     },
     {
@@ -71,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.61394,
-          65.68938
-        ]
+        "coordinates": [24.61394, 65.68938]
       }
     }
   ]

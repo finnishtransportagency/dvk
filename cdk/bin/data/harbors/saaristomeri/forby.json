@@ -12,28 +12,21 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358277571"
-  ],
+  "phoneNumber": ["+358277571"],
   "fax": "+35827757594",
   "harborBasin": {
     "fi": "Kääntöaltaan halkaisija 480 m, haraussyvyys -11,0 m.",
     "sv": "Hamnbassängens diameter 480 m, ramat djup -11,0 m.",
     "en": "Diameter 480 m, safe clearance depth -11.0 m."
   },
-  "cargo": [
-    {
-      "fi": "Purkuputkistolla säiliöihin.",
-      "sv": "Lossningsrör till tankarna.",
-      "en": "With discharge pipes into tanks."
-    }
-  ],
+  "cargo": {
+    "fi": "Purkuputkistolla säiliöihin.",
+    "sv": "Lossningsrör till tankarna.",
+    "en": "With discharge pipes into tanks."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      22.86218,
-      60.10094
-    ]
+    "coordinates": [22.86218, 60.10094]
   },
   "quays": [
     {
@@ -55,10 +48,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.86189,
-          60.1015
-        ]
+        "coordinates": [22.86189, 60.1015]
       }
     }
   ]

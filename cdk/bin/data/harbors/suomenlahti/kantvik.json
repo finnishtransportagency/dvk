@@ -12,29 +12,17 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358503873672"
-  ],
+  "phoneNumber": ["+358503873672"],
   "fax": "+35892985163",
   "email": "kantvik@inkooshipping.fi",
-  "cargo": [
-    {
-      "fi": "Pohjoislaiturilla 8 tn nosturi, joka soveltuu kahmari- ja koukkukäyttöön ja lisäksi monitoiminosturi ja kuljetin. Etelälaiturilla monitoiminosturi.",
-      "sv": "Vid norra kajen finns en 8 t kran som kan användas med gripskopa och krok samt en multifunktionell kran och transportör. Vid södra kajen finns en multifunktionell kran.",
-      "en": "A 8 t crane on North Quay, suited for use as a grab bucket crane or hook crane, and a multipurpose crane and conveyor. A multipurpose crane on the South Quay."
-    },
-    {
-      "fi": "Laivankiinnitys/ -irrotus käyttää meri-VHF kanavaa ch 12.",
-      "sv": "Förtöjning/losskastning använder sjö-VHF-kanal ch 12.",
-      "en": "Marine VHF channel 12 used for mooring/casting off."
-    }
-  ],
+  "cargo": {
+    "fi": "Pohjoislaiturilla 8 tn nosturi, joka soveltuu kahmari- ja koukkukäyttöön ja lisäksi monitoiminosturi ja kuljetin. Etelälaiturilla monitoiminosturi. Laivankiinnitys/ -irrotus käyttää meri-VHF kanavaa ch 12.",
+    "sv": "Vid norra kajen finns en 8 t kran som kan användas med gripskopa och krok samt en multifunktionell kran och transportör. Vid södra kajen finns en multifunktionell kran. Förtöjning/losskastning använder sjö-VHF-kanal ch 12.",
+    "en": "A 8 t crane on North Quay, suited for use as a grab bucket crane or hook crane, and a multipurpose crane and conveyor. A multipurpose crane on the South Quay. Marine VHF channel 12 used for mooring/casting off."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      24.37518,
-      60.08399
-    ]
+    "coordinates": [24.37518, 60.08399]
   },
   "quays": [
     {
@@ -51,10 +39,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.37535,
-          60.08372
-        ]
+        "coordinates": [24.37535, 60.08372]
       }
     },
     {
@@ -71,10 +56,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.37718,
-          60.08444
-        ]
+        "coordinates": [24.37718, 60.08444]
       }
     },
     {
@@ -91,10 +73,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.37501,
-          60.08207
-        ]
+        "coordinates": [24.37501, 60.08207]
       }
     }
   ]

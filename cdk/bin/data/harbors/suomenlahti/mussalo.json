@@ -12,10 +12,7 @@
   },
   "status": "PUBLIC",
   "n2000HeightSystem": false,
-  "phoneNumber": [
-    "+358207908800",
-    "+358207908840"
-  ],
+  "phoneNumber": ["+358207908800", "+358207908840"],
   "fax": "+358207908891",
   "email": "office@haminakotka.fi",
   "harborBasin": {
@@ -23,19 +20,14 @@
     "sv": "Farten bör regleras så att risk för skada, olägenhet eller fara inte uppstår.",
     "en": "Speed of vessel to be adjusted to ensure that no harm, damage or danger is caused."
   },
-  "cargo": [
-    {
-      "fi": "A-laiturilla kolme 40 t nosturia, B-laiturilla yksi 40/50 t nosturi sekä mobiilinosturi, C-laiturilla viisi 40/50 t nosturia.",
-      "sv": "Kaj A - tre kranar (40 t), kaj B - en kran (40/50 t) samt en mobilkran, kaj C - fem kranar (40/50 t).",
-      "en": "A Quay - three cranes (40 t), B Quay - one crane (40/50 t) and a mobile crane, C Quay - five cranes (40/50 t)."
-    }
-  ],
+  "cargo": {
+    "fi": "A-laiturilla kolme 40 t nosturia, B-laiturilla yksi 40/50 t nosturi sekä mobiilinosturi, C-laiturilla viisi 40/50 t nosturia.",
+    "sv": "Kaj A - tre kranar (40 t), kaj B - en kran (40/50 t) samt en mobilkran, kaj C - fem kranar (40/50 t).",
+    "en": "A Quay - three cranes (40 t), B Quay - one crane (40/50 t) and a mobile crane, C Quay - five cranes (40/50 t)."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      26.9116,
-      60.42258
-    ]
+    "coordinates": [26.9116, 60.42258]
   },
   "quays": [
     {
@@ -55,10 +47,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.92007,
-          60.4268
-        ]
+        "coordinates": [26.92007, 60.4268]
       }
     },
     {
@@ -78,10 +67,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.91086,
-          60.42366
-        ]
+        "coordinates": [26.91086, 60.42366]
       }
     },
     {
@@ -101,10 +87,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.90883,
-          60.42157
-        ]
+        "coordinates": [26.90883, 60.42157]
       }
     },
     {
@@ -120,10 +103,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.90234,
-          60.41921
-        ]
+        "coordinates": [26.90234, 60.41921]
       }
     },
     {
@@ -140,10 +120,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.92155,
-          60.42809
-        ]
+        "coordinates": [26.92155, 60.42809]
       }
     },
     {
@@ -160,10 +137,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.92223,
-          60.42854
-        ]
+        "coordinates": [26.92223, 60.42854]
       }
     },
     {
@@ -185,10 +159,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.91994,
-          60.43771
-        ]
+        "coordinates": [26.91994, 60.43771]
       }
     }
   ]
