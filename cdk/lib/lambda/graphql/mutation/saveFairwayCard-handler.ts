@@ -122,13 +122,13 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     }
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
+    await FairwayCardDBModel.save(newModel);
     if (dbModel) {
       const changes = detailedDiff(dbModel, newModel);
       auditLog.info({ changes, user: user.uid }, 'FairwayCard updated');
     } else {
       auditLog.info({ harbor: newModel, user: user.uid }, 'FairwayCard added');
     }
-    await FairwayCardDBModel.save(newModel);
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
   }
