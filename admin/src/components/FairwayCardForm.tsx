@@ -358,6 +358,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.lineText}
                 updateState={updateState}
                 actionType="line"
+                required={!!(state.lineText?.fi || state.lineText?.sv || state.lineText?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -365,6 +366,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.designSpeed}
                 updateState={updateState}
                 actionType="designSpeed"
+                required={!!(state.designSpeed?.fi || state.designSpeed?.sv || state.designSpeed?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -372,6 +374,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.speedLimit}
                 updateState={updateState}
                 actionType="speedLimit"
+                required={!!(state.speedLimit?.fi || state.speedLimit?.sv || state.speedLimit?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -379,6 +382,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.anchorage}
                 updateState={updateState}
                 actionType="anchorage"
+                required={!!(state.anchorage?.fi || state.anchorage?.sv || state.anchorage?.en)}
                 inputType="textarea"
               />
             </IonGrid>
@@ -392,6 +396,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.navigationCondition}
                 updateState={updateState}
                 actionType="navigationCondition"
+                required={!!(state.navigationCondition?.fi || state.navigationCondition?.sv || state.navigationCondition?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -399,6 +404,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.iceCondition}
                 updateState={updateState}
                 actionType="iceCondition"
+                required={!!(state.iceCondition?.fi || state.iceCondition?.sv || state.iceCondition?.en)}
                 inputType="textarea"
               />
             </IonGrid>
@@ -412,6 +418,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.windRecommendation}
                 updateState={updateState}
                 actionType="windRecommendation"
+                required={!!(state.windRecommendation?.fi || state.windRecommendation?.sv || state.windRecommendation?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -419,6 +426,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.vesselRecommendation}
                 updateState={updateState}
                 actionType="vesselRecommendation"
+                required={!!(state.vesselRecommendation?.fi || state.vesselRecommendation?.sv || state.vesselRecommendation?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -426,6 +434,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.visibility}
                 updateState={updateState}
                 actionType="visibility"
+                required={!!(state.visibility?.fi || state.visibility?.sv || state.visibility?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -433,6 +442,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.windGauge}
                 updateState={updateState}
                 actionType="windGauge"
+                required={!!(state.windGauge?.fi || state.windGauge?.sv || state.windGauge?.en)}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -440,6 +450,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 value={state.seaLevel}
                 updateState={updateState}
                 actionType="seaLevel"
+                required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
                 inputType="textarea"
               />
             </IonGrid>

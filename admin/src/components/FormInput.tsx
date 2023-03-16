@@ -45,6 +45,10 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
     setIsValid(error ? false : true);
   }, [error]);
 
+  useEffect(() => {
+    inputRef.current?.getInputElement().then((textinput) => (textinput ? setIsValid(error ? false : textinput.checkValidity()) : null));
+  }, [required, error]);
+
   return (
     <>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>

@@ -14,7 +14,7 @@ interface InputRowProps {
   required?: boolean;
   disabled?: boolean;
   error?: string;
-  helperTextKey?: string;
+  helperText?: string | null;
   inputType?: '' | 'input' | 'textarea';
 }
 
@@ -26,7 +26,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   required,
   disabled,
   error,
-  helperTextKey,
+  helperText,
   inputType,
 }) => {
   const { i18n } = useTranslation();
@@ -47,7 +47,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? fi(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
         {inputType === 'textarea' && (
@@ -60,7 +60,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? fi(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
       </IonCol>
@@ -75,7 +75,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? sv(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
         {inputType === 'textarea' && (
@@ -88,7 +88,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? sv(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
       </IonCol>
@@ -103,7 +103,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? en(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
         {inputType === 'textarea' && (
@@ -116,7 +116,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             required={required}
             disabled={disabled}
             error={error}
-            helperText={helperTextKey ? en(helperTextKey) : null}
+            helperText={helperText}
           />
         )}
       </IonCol>
