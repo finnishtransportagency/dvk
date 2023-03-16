@@ -8,10 +8,11 @@ import {
   OperationError,
   TextInput,
 } from '../../../../graphql/generated';
-import { log } from '../../logger';
+import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
+import { detailedDiff } from 'deep-object-diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -121,6 +122,12 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     }
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
+    if (dbModel) {
+      const changes = detailedDiff(dbModel, newModel);
+      auditLog.info({ changes, user: user.uid }, 'FairwayCard updated');
+    } else {
+      auditLog.info({ harbor: newModel, user: user.uid }, 'FairwayCard added');
+    }
     await FairwayCardDBModel.save(newModel);
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);

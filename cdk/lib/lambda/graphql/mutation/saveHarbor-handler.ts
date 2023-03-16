@@ -1,9 +1,10 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
 import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, Operation, OperationError, TextInput } from '../../../../graphql/generated';
-import { log } from '../../logger';
+import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
+import { detailedDiff } from 'deep-object-diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -74,6 +75,12 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
       throw new Error(OperationError.HarborAlreadyExist);
     }
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
+    if (dbModel) {
+      const changes = detailedDiff(dbModel, newModel);
+      auditLog.info({ changes, user: user.uid }, 'Harbor updated');
+    } else {
+      auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');
+    }
     log.debug('harbor: %o', newModel);
     await HarborDBModel.save(newModel);
     return mapHarborDBModelToGraphqlType(newModel, user);
