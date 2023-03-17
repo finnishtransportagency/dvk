@@ -69,8 +69,12 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
   };
 
   const formatSentence = (str?: string | null, endSentence?: boolean) => {
-    if (endSentence) return str?.trim() + (str?.trim().slice(-1) === '.' ? '' : '.');
-    return str?.trim().slice(-1) === '.' ? str?.trim().slice(0, -1) : str?.trim();
+    if (str) {
+      if (endSentence) return str.trim() + (str.trim().slice(-1) === '.' ? '' : '.');
+      return str.trim().slice(-1) === '.' ? str.trim().slice(0, -1) : str.trim();
+    } else {
+      return '';
+    }
   };
 
   return (
