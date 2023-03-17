@@ -1,64 +1,64 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Status } from '../../../graphql/generated';
+import { Maybe, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
 const fairwayCardTable = process.env.FAIRWAY_CARD_TABLE;
 
 export type Text = {
-  fi?: string;
-  sv?: string;
-  en?: string;
+  fi?: Maybe<string>;
+  sv?: Maybe<string>;
+  en?: Maybe<string>;
 };
 
 export type FairwayDBModel = {
   id: number;
-  primary?: boolean;
-  secondary?: boolean;
+  primary?: Maybe<boolean>;
+  secondary?: Maybe<boolean>;
 };
 
 export type TrafficServiceDBModel = {
-  pilot?: Pilot;
-  vts?: VTS[];
-  tugs?: Tug[];
+  pilot?: Maybe<Pilot>;
+  vts?: Maybe<VTS[]>;
+  tugs?: Maybe<Tug[]>;
 };
 
 export type Tug = {
-  name?: Text;
-  phoneNumber?: string[];
-  fax?: string;
-  email?: string;
+  name?: Maybe<Text>;
+  phoneNumber?: Maybe<string[]>;
+  fax?: Maybe<string>;
+  email?: Maybe<string>;
 };
 
 export type VHF = {
-  name?: Text;
-  channel?: number;
+  name?: Maybe<Text>;
+  channel?: Maybe<number>;
 };
 
 export type VTS = {
-  name?: Text;
-  phoneNumber?: string;
-  email?: string[];
-  vhf?: VHF[];
+  name?: Maybe<Text>;
+  phoneNumber?: Maybe<string>;
+  email?: Maybe<string[]>;
+  vhf?: Maybe<VHF[]>;
 };
 
 export type Pilot = {
-  email?: string;
-  phoneNumber?: string;
-  fax?: string;
-  internet?: string;
-  extraInfo?: Text;
-  places?: PilotPlace[];
+  email?: Maybe<string>;
+  phoneNumber?: Maybe<string>;
+  fax?: Maybe<string>;
+  internet?: Maybe<string>;
+  extraInfo?: Maybe<Text>;
+  places?: Maybe<PilotPlace[]>;
 };
 
 export type PilotPlace = {
   id: number;
-  pilotJourney?: number;
+  pilotJourney?: Maybe<number>;
 };
 
 export type FairwayCardIdName = {
   id: string;
-  name?: Text;
+  name?: Maybe<Text>;
 };
 
 export type Harbor = {
@@ -77,49 +77,49 @@ class FairwayCardDBModel {
 
   status: Status;
 
-  n2000HeightSystem?: boolean;
+  n2000HeightSystem?: Maybe<boolean>;
 
-  modifier?: string;
+  modifier?: Maybe<string>;
 
-  modificationTimestamp?: number;
+  modificationTimestamp?: Maybe<number>;
 
-  creationTimestamp?: number;
+  creationTimestamp?: Maybe<number>;
 
-  creator?: string;
+  creator?: Maybe<string>;
 
-  group?: string;
+  group?: Maybe<string>;
 
-  fairwayIds?: string;
+  fairwayIds?: Maybe<string>;
 
-  lineText?: Text;
+  lineText?: Maybe<Text>;
 
-  designSpeed?: Text;
+  designSpeed?: Maybe<Text>;
 
-  generalInfo?: Text;
+  generalInfo?: Maybe<Text>;
 
-  anchorage?: Text;
+  anchorage?: Maybe<Text>;
 
-  navigationCondition?: Text;
+  navigationCondition?: Maybe<Text>;
 
-  iceCondition?: Text;
+  iceCondition?: Maybe<Text>;
 
-  attention?: Text;
+  attention?: Maybe<Text>;
 
-  speedLimit?: Text;
+  speedLimit?: Maybe<Text>;
 
-  visibility?: Text;
+  visibility?: Maybe<Text>;
 
-  windGauge?: Text;
+  windGauge?: Maybe<Text>;
 
-  vesselRecommendation?: Text;
+  vesselRecommendation?: Maybe<Text>;
 
-  seaLevel?: Text;
+  seaLevel?: Maybe<Text>;
 
-  windRecommendation?: Text;
+  windRecommendation?: Maybe<Text>;
 
-  trafficService?: TrafficServiceDBModel;
+  trafficService?: Maybe<TrafficServiceDBModel>;
 
-  harbors?: Harbor[];
+  harbors?: Maybe<Harbor[]>;
 
   fairways: FairwayDBModel[];
 
