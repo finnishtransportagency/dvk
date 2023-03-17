@@ -4,7 +4,7 @@ import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
-import { detailedDiff } from 'deep-object-diff';
+import { diff } from './diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -77,11 +77,13 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
     log.debug('harbor: %o', newModel);
     await HarborDBModel.save(newModel);
-    if (dbModel) {
-      const changes = detailedDiff(dbModel, newModel);
-      auditLog.info({ changes, user: user.uid }, 'Harbor updated');
+    // fetch again since dynamodb omits undefined
+    const updatedDbModel = await HarborDBModel.get(event.arguments.harbor.id);
+    if (dbModel && updatedDbModel) {
+      const changes = diff(dbModel, updatedDbModel);
+      auditLog.info({ changes, harbor: updatedDbModel, user: user.uid }, 'Harbor updated');
     } else {
-      auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');
+      auditLog.info({ harbor: updatedDbModel, user: user.uid }, 'Harbor added');
     }
     return mapHarborDBModelToGraphqlType(newModel, user);
   }

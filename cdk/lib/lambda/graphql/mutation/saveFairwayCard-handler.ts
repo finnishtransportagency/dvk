@@ -12,7 +12,7 @@ import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
-import { detailedDiff } from 'deep-object-diff';
+import { diff } from './diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -123,11 +123,13 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
     await FairwayCardDBModel.save(newModel);
-    if (dbModel) {
-      const changes = detailedDiff(dbModel, newModel);
-      auditLog.info({ changes, user: user.uid }, 'FairwayCard updated');
+    // fetch again since dynamodb omits undefined
+    const updatedDbModel = await FairwayCardDBModel.get(event.arguments.card.id);
+    if (dbModel && updatedDbModel) {
+      const changes = diff(dbModel, updatedDbModel);
+      auditLog.info({ changes, card: updatedDbModel, user: user.uid }, 'FairwayCard updated');
     } else {
-      auditLog.info({ harbor: newModel, user: user.uid }, 'FairwayCard added');
+      auditLog.info({ harbor: updatedDbModel, user: user.uid }, 'FairwayCard added');
     }
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
