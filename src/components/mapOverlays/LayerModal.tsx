@@ -47,7 +47,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
   const LegendDepth = () => {
     return (
-      <IonGrid className="legend speedlimit ion-no-padding">
+      <IonGrid className="legend ion-no-padding">
         <IonRow>
           <IonCol size="2">
             <IonItem>
