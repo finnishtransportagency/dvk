@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="24px" viewBox="0 0 29 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <text id="text-2" font-family="Exo2Roman-Bold, Exo 2" font-size="12" font-weight="bold" fill="#FF00FF">
+            <tspan x="2.69" y="16">10,2</tspan>
+        </text>
+        <filter x="-1.0%" y="-1.8%" width="104.2%" height="107.1%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0.5" dy="0.5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+        <path d="M0.7,14.5 L0.7,19.5 M27.3,14.5 L27.3,19.5 M0.7,19.5 L27.3,19.5" id="path-3"></path>
+        <filter x="-0.2%" y="-13.6%" width="102.1%" height="127.3%" filterUnits="objectBoundingBox" id="filter-4">
+            <feMorphology radius="0.5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0.5" dy="0.5" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feMorphology radius="1" operator="erode" in="SourceAlpha" result="shadowInner"></feMorphology>
+            <feOffset dx="0.5" dy="0.5" in="shadowInner" result="shadowInner"></feOffset>
+            <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="dvk_land_layer_selection" transform="translate(-656.000000, -403.000000)">
+            <g id="layers_open-copy-8" transform="translate(512.000000, 61.000000)">
+                <g id="haraussyvyydet" transform="translate(28.000000, 308.000000)">
+                    <g id="syvyys_mw" transform="translate(116.000000, 34.000000)">
+                        <rect id="Rectangle" x="2" y="0" width="24" height="24"></rect>
+                        <g id="10,2" fill="#FF00FF" fill-opacity="1">
+                            <use xlink:href="#text-2"></use>
+                        </g>
+                        <g id="Combined-Shape" stroke-linecap="square">
+                            <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                            <use stroke="#FF00FF" stroke-width="1" xlink:href="#path-3"></use>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
