@@ -48,8 +48,8 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
           };
         }) || [],
     },
-    tugs: service?.tugs ? service.tugs : null,
-    vts: service?.vts ? service.vts : null,
+    tugs: service?.tugs || null,
+    vts: service?.vts || null,
   };
 }
 
