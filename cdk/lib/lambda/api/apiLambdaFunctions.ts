@@ -20,6 +20,12 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     functionName: 'login',
     priority: 20,
   },
+  {
+    entry: path.join(__dirname, 'logout.ts'),
+    pathPattern: '/yllapito/api/logout',
+    functionName: 'logout',
+    priority: 30,
+  },
 ];
 
 export default apiLambdaFunctions;
