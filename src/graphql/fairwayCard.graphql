@@ -147,7 +147,11 @@ query findFairwayCardById($id: String!) {
         internet
         places {
           id
-          name
+          name {
+            fi
+            sv
+            en
+          }
           pilotJourney
           geometry {
             coordinates

@@ -1,6 +1,10 @@
 {
   "id": 6,
-  "name": "Kalajoki",
+  "name": {
+    "fi": "Kalajoki",
+    "sv": "Kalajoki",
+    "en": "Kalajoki"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

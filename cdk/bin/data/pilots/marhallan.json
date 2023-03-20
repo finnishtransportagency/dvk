@@ -1,6 +1,10 @@
 {
   "id": 18,
-  "name": "Marhällan",
+  "name": {
+    "fi": "Marhällan",
+    "sv": "Marhällan",
+    "en": "Marhällan"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

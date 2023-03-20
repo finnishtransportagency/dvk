@@ -454,7 +454,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
                 >
                   {place.geometry?.coordinates && (
                     <>
-                      {t('pilotPlace')} {place.name}:{' '}
+                      {t('pilotPlace')} {place.name[lang]}:{' '}
                       {place.geometry?.coordinates[0] &&
                         place.geometry?.coordinates[1] &&
                         coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]])}

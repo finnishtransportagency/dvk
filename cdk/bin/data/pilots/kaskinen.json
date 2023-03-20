@@ -1,6 +1,10 @@
 {
   "id": 11,
-  "name": "Kaskinen",
+  "name": {
+    "fi": "Kaskinen",
+    "sv": "Kaskö",
+    "en": "Kaskinen"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

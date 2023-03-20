@@ -43,7 +43,7 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined, pilotMap:
           return {
             id: p.id,
             pilotJourney: p.pilotJourney,
-            name: pilotMap.get(p.id)?.name || '',
+            name: pilotMap.get(p.id)?.name || { fi: '', sv: '', en: '' },
             geometry: pilotMap.get(p.id)?.geometry || { type: 'Point', coordinates: [] },
           };
         }) || [],

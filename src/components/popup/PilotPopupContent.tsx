@@ -32,7 +32,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
       <IonGrid class="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
-            {t('popup.pilotPlace.header', { val: pilot?.properties.name })}
+            {t('popup.pilotPlace.header', { val: pilot?.properties.name[lang] })}
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>

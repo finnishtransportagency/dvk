@@ -1,6 +1,10 @@
 {
   "id": 13,
-  "name": "Pori S",
+  "name": {
+    "fi": "Pori S",
+    "sv": "Björneborg S",
+    "en": "Pori S"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

@@ -1,6 +1,10 @@
 {
   "id": 29,
-  "name": "Emäsalo S",
+  "name": {
+    "fi": "Emäsalo S",
+    "sv": "Emäsalo S",
+    "en": "Emäsalo S"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

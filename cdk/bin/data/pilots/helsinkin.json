@@ -1,6 +1,10 @@
 {
   "id": 27,
-  "name": "Helsinki N",
+  "name": {
+    "fi": "Helsinki N",
+    "sv": "Helsingfors N",
+    "en": "Helsinki N"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

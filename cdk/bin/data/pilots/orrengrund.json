@@ -1,6 +1,10 @@
 {
   "id": 31,
-  "name": "Orrengrund",
+  "name": {
+    "fi": "Orrengrund",
+    "sv": "Orrengrund",
+    "en": "Orrengrund"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

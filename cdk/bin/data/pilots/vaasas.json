@@ -1,6 +1,10 @@
 {
   "id": 10,
-  "name": "Vaasa S",
+  "name": {
+    "fi": "Vaasa S",
+    "sv": "Vasa S",
+    "en": "Vaasa S"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

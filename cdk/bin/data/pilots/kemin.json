@@ -1,6 +1,10 @@
 {
   "id": 1,
-  "name": "Kemi N",
+  "name": {
+    "fi": "Kemi N",
+    "sv": "Kemi N",
+    "en": "Kemi N"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

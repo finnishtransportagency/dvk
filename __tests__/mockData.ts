@@ -765,7 +765,7 @@ export const mockFairwayCard = {
         places: [
           {
             id: 28.0,
-            name: 'Vuosaari',
+            name: { fi: 'Vuosaari' },
             pilotJourney: 9.0,
             geometry: { coordinates: [25.163167, 60.082667] },
           },

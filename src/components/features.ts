@@ -32,7 +32,7 @@ export type Card = {
 };
 
 export type PilotFeatureProperties = {
-  name: string;
+  name: Text;
   fairwayCards: Card[];
 };
 

@@ -1,6 +1,10 @@
 {
   "id": 5,
-  "name": "Raahe",
+  "name": {
+    "fi": "Raahe",
+    "sv": "Brahestad",
+    "en": "Raahe"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [
