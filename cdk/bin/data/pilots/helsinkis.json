@@ -2,8 +2,8 @@
   "id": 26,
   "name": {
     "fi": "Helsinki S",
-    "sv": "",
-    "en": ""
+    "sv": "Helsingfors S",
+    "en": "Helsinki S"
   },
   "geometry": {
     "type": "Point",

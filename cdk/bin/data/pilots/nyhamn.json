@@ -2,8 +2,8 @@
   "id": 19,
   "name": {
     "fi": "Nyhamn",
-    "sv": "",
-    "en": ""
+    "sv": "Nyhamn",
+    "en": "Nyhamn"
   },
   "geometry": {
     "type": "Point",
