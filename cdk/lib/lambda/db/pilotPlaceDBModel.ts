@@ -1,5 +1,5 @@
 import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint } from '../../../graphql/generated';
+import { GeometryPoint, Text } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -8,7 +8,7 @@ const pilotPlaceTable = process.env.PILOTPLACE_TABLE;
 class PilotPlaceDBModel {
   id: number;
 
-  name: string;
+  name: Text;
 
   geometry: GeometryPoint;
 

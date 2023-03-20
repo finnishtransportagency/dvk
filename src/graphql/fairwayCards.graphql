@@ -222,7 +222,11 @@ fragment FairwayCardParts on FairwayCard {
       internet
       places {
         id
-        name
+        name {
+          fi
+          sv
+          en
+        }
         pilotJourney
         geometry {
           coordinates
