@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="29px" height="24px" viewBox="0 0 29 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
-        <text id="text-2" font-family="Exo2Roman-Bold, Exo 2" font-size="12" font-weight="bold" fill="#FF00FF">
+        <text id="text-2" font-family="'Exo2', sans-serif" font-size="12" font-weight="bold" fill="#FF00FF">
             <tspan x="2.69" y="16">10,2</tspan>
         </text>
         <filter x="-1.0%" y="-1.8%" width="104.2%" height="107.1%" filterUnits="objectBoundingBox" id="filter-2">
