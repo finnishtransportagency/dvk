@@ -9,6 +9,8 @@ import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
+import Alert from '../Alert';
+import { getAlertProperties } from '../../utils/common';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -179,7 +181,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-
+  const alertProps = getAlertProperties(dataUpdatedAt);
   return (
     <>
       <Breadcrumb path={path} />
@@ -209,6 +211,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
           </IonCol>
         </IonRow>
       </IonGrid>
+
+      {alertProps && <Alert color={alertProps.color} className="top-margin" title={t('lastUpdatedAt', { val: alertProps.duration })} />}
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />

@@ -9,6 +9,8 @@ import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
+import Alert from '../Alert';
+import { getAlertProperties } from '../../utils/common';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -118,20 +120,20 @@ type FaultsProps = {
 };
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
+  const { t } = useTranslation();
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const path = [{ title: t('title') }];
-
+  const path = [{ title: t('faults.title') }];
+  const alertProps = getAlertProperties(dataUpdatedAt);
   return (
     <>
       <Breadcrumb path={path} />
 
       <IonText className="fairwayTitle">
         <h2 className="no-margin-bottom">
-          <strong>{t('title')}</strong>
+          <strong>{t('faults.title')}</strong>
         </h2>
         <em>
-          {t('modified')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {t('faults.modified')} {!isLoading && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
           {(isLoading || isFetching) && (
             <IonSkeletonText
               animated={true}
@@ -141,9 +143,11 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
+      {alertProps && <Alert color={alertProps.color} className="top-margin" title={t('warnings.lastUpdatedAt', { val: alertProps.duration })} />}
+
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
         <FaultGroup
-          title={t('archipelagoSea') + ', ' + t('gulfOfFinland') + t('and') + t('gulfOfBothnia')}
+          title={t('faults.archipelagoSea') + ', ' + t('faults.gulfOfFinland') + t('faults.and') + t('faults.gulfOfBothnia')}
           loading={isLoading}
           data={data?.safetyEquipmentFaults || []}
           first

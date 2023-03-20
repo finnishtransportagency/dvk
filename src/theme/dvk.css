@@ -190,3 +190,34 @@ ion-progress-bar.danger {
 ion-footer.small ion-toolbar {
   --min-height: 30px;
 }
+
+/* General alerts */
+ion-grid.danger {
+  padding: 16px;
+  background-color: var(--ion-color-dangerbg);
+  border: 1px solid var(--ion-color-danger);
+  margin-bottom: 1em;
+}
+ion-grid.danger.top-margin {
+  margin-top: 1em;
+  margin-bottom: 0;
+}
+
+ion-grid.danger.warning {
+  background-color: var(--ion-color-warningbg);
+  border: 1px solid var(--ion-color-warning);
+}
+
+ion-grid.danger ion-col.icon {
+  height: 22px;
+  box-sizing: content-box;
+}
+
+ion-grid.danger ion-icon {
+  font-size: 22px;
+  margin-right: 16px;
+}
+
+ion-grid.danger ion-text {
+  color: rgb(36, 34, 34);
+}

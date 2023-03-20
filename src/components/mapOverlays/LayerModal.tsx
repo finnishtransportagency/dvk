@@ -4,11 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { MAP } from '../../utils/constants';
-import { refreshPrintableMap } from '../../utils/common';
+import { getAlertProperties, refreshPrintableMap } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
+import { AlertLayer } from '../Alert';
 
 interface ModalProps {
   isOpen: boolean;
@@ -274,7 +275,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         });
       }, 250);
     };
-
+    let alertProps = undefined;
+    if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
+      const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
+      alertProps = getAlertProperties(dataUpdatedAt);
+    }
     return (
       <IonGrid className="ion-no-padding layerItem">
         <IonRow>
@@ -311,6 +316,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             )}
           </IonCol>
         </IonRow>
+        {alertProps && (
+          <AlertLayer className={'layerAlert'} title={t('warnings.lastUpdatedAt2', { val: alertProps.duration })} color={alertProps.color} />
+        )}
         {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
           <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
             <IonCol>
