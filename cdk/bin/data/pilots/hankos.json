@@ -1,6 +1,10 @@
 {
   "id": 24,
-  "name": "Hanko S",
+  "name":  {
+    "fi": "Hanko S",
+    "sv": "",
+    "en": ""
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

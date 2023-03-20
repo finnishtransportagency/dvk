@@ -1,6 +1,10 @@
 {
   "id": 28,
-  "name": "Vuosaari",
+  "name": {
+    "fi": "Vuosaari",
+    "sv": "",
+    "en": ""
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [
