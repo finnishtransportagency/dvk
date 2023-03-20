@@ -42,6 +42,7 @@
           "weatherStation": "[sv] Säähavaintoasemat",
           "ice": "[sv] Jääkartta",
           "buoys": "[sv] Aaltopoijut",
+          "vts": "[sv] VTS-ilmoituslinjat ja -pisteet",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -209,8 +210,6 @@
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
-    "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
-    "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
     "print": "Skriv ut säkerhetsanordningsfelen",
     "archipelagoSea": "Skärgårdshavet",
@@ -218,7 +217,8 @@
     "gulfOfBothnia": "Bottniska viken",
     "and": " och ",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-    "modified": "Uppdaterat"
+    "modified": "Uppdaterat",
+    "fairways": "Farledskorten angående säkerhetsanordningen"
   },
   "warnings": {
     "title": "Navigationsvarningar",
@@ -277,7 +277,7 @@
       "extra": "Tilläggsuppgift"
     },
     "line": {
-      "info": " Navigationslinjens uppgifter",
+      "info": "Navigationslinjens uppgifter",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerad djup {{val, number}}",
       "length": "Längd {{val}}",
@@ -346,6 +346,12 @@
       "internet": "Nätsida",
       "fairways": "[sv] Satamaan liittyvät väyläkortit",
       "extra": "Tilläggsuppgift"
+    },
+    "vts": {
+      "coordinates": "Koordinater",
+      "point": "[sv] VTS-pisteen tiedot",
+      "line": "[sv] VTS-linjan tiedot",
+      "channel": "VHF kanal"
     }
   },
   "common": {
@@ -380,7 +386,8 @@
     "latestDataUpdateAt": "[sv] Tietoja päivitetty viimeksi",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
-    "marine-warnings": "Navigationsvarningar"
+    "marine-warnings": "Navigationsvarningar",
+    "fairway-cards": "Farledskort"
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",
@@ -388,7 +395,10 @@
   },
   "source": {
     "title": "[sv] Tietolähteet ja käyttöehdot",
-    "content": "[sv] Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    "link1": "[sv] Maanmittauslaitoksen avoimen tietoaineiston -lisenssi"
+    "content1": "[sv] Väylävirasto",
+    "content2": "[sv] Ilmatieteen laitos",
+    "content3": "[sv] Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
+    "content4": "[sv] Maanmittauslaitos",
+    "content5": "[sv] Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
   }
 }

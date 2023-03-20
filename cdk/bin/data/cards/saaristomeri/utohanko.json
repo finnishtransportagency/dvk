@@ -105,7 +105,8 @@
       "primary": true
     },
     {
-      "id": 4000
+      "id": 4000,
+      "secondary": true
     }
   ]
 }

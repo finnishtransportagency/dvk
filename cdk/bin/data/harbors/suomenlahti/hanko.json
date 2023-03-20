@@ -10,34 +10,23 @@
     "sv": "Hangon satama - Hangö Hamn Oy Ab",
     "en": "Hangon satama - Hangö Hamn Oy Ab"
   },
-  "phoneNumber": [
-    "+358102355013",
-    "+358405486534"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
+  "phoneNumber": ["+358102355013", "+358405486534"],
   "email": "traffic@portofhanko.fi",
   "harborBasin": {
     "fi": "Kääntöaltaan halkaisija 800 m, haraussyvyys -15,0 m.",
     "sv": "Svängbassängens diameter 800 m, ramat djup -15,0 m.",
     "en": "Diameter of swinging area 800 m, safe clearance depth -15.0 m."
   },
-  "cargo": [
-    {
-      "fi": "Länsisatama: Ro-ro-laituri No: 1 (syvälaituri), monitoiminosturi 50 t, peräporttipaikka; Ro-ro-laiturit No: 2 – 5, peräporttipaikat.",
-      "sv": "Västra hamnen: Ro/ro-kaj Nr 1 (djupkaj), universalkran 50 t, inkörsramp; ro/ro-kajerna Nr 2-5, inkörsramp.",
-      "en": "Western Harbour: Ro/Ro berth No 1 (deep quay), multipurpose crane 50 t, ramp; Ro/Ro berths No 2-5, ramps."
-    },
-    {
-      "fi": "Ulkosatama: laituri-OH1, ro-ro-ramppi, nestebulk purku; laituri-OH2, ro-ro-ramppi.",
-      "sv": "Yttre hamnen: kaj OH1, ro-ro-ramp, lossning av bulklast i flytande form; kaj OH2, ro-ro-ramp.",
-      "en": "Outer Harbour: Berth OH1, Ro/Ro ramp, discharge of liquid bulk cargo; Berth OH2, Ro/Ro ramp."
-    }
-  ],
+  "cargo": {
+    "fi": "Länsisatama: Ro-ro-laituri No: 1 (syvälaituri), monitoiminosturi 50 t, peräporttipaikka; Ro-ro-laiturit No: 2 – 5, peräporttipaikat. Ulkosatama: laituri-OH1, ro-ro-ramppi, nestebulk purku; laituri-OH2, ro-ro-ramppi.",
+    "sv": "Västra hamnen: Ro/ro-kaj Nr 1 (djupkaj), universalkran 50 t, inkörsramp; ro/ro-kajerna Nr 2-5, inkörsramp. Yttre hamnen: kaj OH1, ro-ro-ramp, lossning av bulklast i flytande form; kaj OH2, ro-ro-ramp.",
+    "en": "Western Harbour: Ro/Ro berth No 1 (deep quay), multipurpose crane 50 t, ramp; Ro/Ro berths No 2-5, ramps. Outer Harbour: Berth OH1, Ro/Ro ramp, discharge of liquid bulk cargo; Berth OH2, Ro/Ro ramp."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      22.95026,
-      59.82109
-    ]
+    "coordinates": [22.95026, 59.82109]
   },
   "quays": [
     {
@@ -48,10 +37,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.94776,
-          59.82251
-        ]
+        "coordinates": [22.94776, 59.82251]
       },
       "length": 245,
       "sections": [
@@ -68,10 +54,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.95218,
-          59.82201
-        ]
+        "coordinates": [22.95218, 59.82201]
       },
       "length": 230,
       "sections": [
@@ -88,10 +71,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.95395,
-          59.82106
-        ]
+        "coordinates": [22.95395, 59.82106]
       },
       "length": 245,
       "sections": [
@@ -108,10 +88,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.94843,
-          59.82164
-        ]
+        "coordinates": [22.94843, 59.82164]
       },
       "length": 160,
       "sections": [
@@ -128,10 +105,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.9488,
-          59.82007
-        ]
+        "coordinates": [22.9488, 59.82007]
       },
       "length": 210,
       "sections": [

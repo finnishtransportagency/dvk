@@ -26,7 +26,7 @@ export type QuayFeatureProperties = {
   internet?: string;
 };
 
-type Card = {
+export type Card = {
   id: string;
   name: Text;
 };
@@ -146,4 +146,12 @@ export type BuoyFeatureProperties = {
   temperature: number | null;
   waveDirection: number | null;
   waveHeight: number | null;
+};
+
+export type VtsFeatureProperties = {
+  featureType: 'vtspoint' | 'vtsline';
+  identifier: string;
+  name?: string;
+  information?: string;
+  channel?: string;
 };

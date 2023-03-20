@@ -19,6 +19,7 @@
     "item-referencelevel": "[sv] Vertaustaso",
     "item-status": "[sv] Tila",
     "item-creator": "[sv] Luonut",
+    "item-created": "[sv] Luotu",
     "item-modifier": "[sv] Muokannut",
     "item-modified": "Uppdaterat",
     "item-type-CARD": "Farledskort",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Bottniska vikens område",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Stäng",
-    "cancel": "[sv] Peruuta"
+    "cancel": "[sv] Peruuta",
+    "unknown": "[sv] Tuntematon",
+    "preview": "[sv] Esikatselu",
+    "delete": "[sv] Poista",
+    "create-new": "[sv] Luo uusi",
+    "save": "[sv] Tallenna",
+    "choose": "[sv] Valitse...",
+    "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
+    "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
+    "required-field": "[sv] Pakollinen tieto"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -42,5 +52,30 @@
     "create-HARBOR": "[sv] Luo satama",
     "logout-title": "[sv] Olet kirjautumassa ulos",
     "logout-description": "[sv] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
+  },
+  "fairwaycard": {
+    "name": "[sv] Väyläkortin nimi",
+    "primary-id": "[sv] Väyläkortin tunniste",
+    "primary-id-help-text": "[sv] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "linked-fairways": "[sv] Liitetyt väylät",
+    "starting-fairway": "[sv] Aloittava väylä",
+    "ending-fairway": "[sv] Päättävä väylä",
+    "linked-harbours": "[sv] Liitetyt satamat",
+    "fairway-order-help-text": "[sv] Väyläkortin suunta avomereltä rantaan",
+    "error-duplicate-id": "[sv] Tunniste on jo käytössä",
+    "fairway-info": "[sv] Väylätiedot",
+    "lining-and-marking": "Farledsdragning och utmärkning",
+    "design-speed": "Dimensionerande fart",
+    "speed-limit": "Fartbegränsningar och -rekommendationer",
+    "anchorage": "Ankrings- och andra specialområden",
+    "navigation": "Navigerbarhet",
+    "navigation-condition": "Navigationsförhållanden",
+    "ice-condition": "Isförhållanden",
+    "recommendation": "Rekommendationer",
+    "wind-recommendation": "Vindrekommendationer",
+    "vessel-recommendation": "Rekommendationer för fartyg",
+    "visibility-recommendation": "Sikt",
+    "wind-gauge": "Vindmätare",
+    "sea-level": "Vattenståndet"
   }
 }

@@ -136,10 +136,6 @@ export async function getSOAApiUrl() {
   return readParameterForEnv('SOAApiUrl');
 }
 
-export async function getWeatherApiKey() {
-  return readParameterForEnv('WeatherApiKey');
-}
-
 async function getWeatherSOAApiKey() {
   return readParameterForEnv('WeatherSOAApiKey');
 }
@@ -161,6 +157,10 @@ export async function getWeatherHeaders(): Promise<Record<string, string>> {
     'x-api-key': await getWeatherSOAApiKey(),
     'Accept-Encoding': 'gzip',
   };
+}
+
+export async function getTraficomHeaders(): Promise<Record<string, string>> {
+  return getWeatherHeaders();
 }
 
 export async function getCloudFrontPrivateKey() {

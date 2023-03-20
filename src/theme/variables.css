@@ -142,6 +142,7 @@ http://ionicframework.com/docs/theming/ */
   /** common **/
   --ion-color-layer-line: #0000ff;
   --ion-color-layer-boardline: #000000;
+  --ion-color-layer-vts: #ff00ff;
   --ion-color-layer-safetyequipment: #231f20;
   --ion-color-layer-depth: #ff00ff;
   --ion-color-layer-speedlimit-border: #d72416;

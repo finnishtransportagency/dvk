@@ -36,6 +36,7 @@ const OfflineStatus: React.FC = () => {
   const bgLayerFi = useFeatureData('finland');
   const bgLayerSea = useFeatureData('mml_meri');
   const bgLayerLake = useFeatureData('mml_jarvi');
+  const vtsLayer = useFeatureData('vts');
 
   const statusOffline =
     !navigator.onLine ||
@@ -62,7 +63,8 @@ const OfflineStatus: React.FC = () => {
       bgLayerBa.isPaused &&
       bgLayerFi.isPaused &&
       bgLayerSea.isPaused &&
-      bgLayerLake.isPaused);
+      bgLayerLake.isPaused &&
+      vtsLayer.isPaused);
 
   useEffect(() => {
     dispatch({
@@ -74,6 +76,39 @@ const OfflineStatus: React.FC = () => {
   }, [statusOffline, dispatch]);
 
   const dvkMap = getMap();
+
+  dvkMap.onTileStatusChange = () => {
+    dispatch({
+      type: 'setOffline',
+      payload: {
+        value: dvkMap.tileStatus === 'error' ? true : false,
+      },
+    });
+  };
+
+  window.ononline = async () => {
+    /* Send test query to check if we really have connection to the backend */
+    const url = new URL(window.location.origin);
+    /* Set url param to avoid caches */
+    url.searchParams.set('ts', '' + Date.now());
+
+    try {
+      const response = await fetch(url.toString(), { method: 'HEAD' });
+
+      /* Unset offline mode only if test query succeed */
+      if (response.ok) {
+        dispatch({
+          type: 'setOffline',
+          payload: {
+            value: false,
+          },
+        });
+      }
+    } catch {
+      /* NOTHING TO DO */
+    }
+  };
+
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);

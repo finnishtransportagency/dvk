@@ -100,6 +100,9 @@ jest.mock('./components/FeatureLoader', () => ({
   useBackgroundMmljarviLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useVtsLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 jest.mock('./graphql/generated', () => {

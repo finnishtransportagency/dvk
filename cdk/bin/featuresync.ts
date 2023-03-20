@@ -53,6 +53,7 @@ async function main() {
     { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
     { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
     { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy') },
+    { id: 'vts', url: new URL(featureLoaderUrl + '?type=vts') },
   ];
   for (const source of sources) {
     const response = await axios.get(source.url.toString(), {

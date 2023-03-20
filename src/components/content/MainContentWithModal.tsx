@@ -217,7 +217,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
             </IonCol>
             <IonCol size="auto">
               <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
-                <IonIcon className="otherIconLarge" src="/assets/icon/close_black_24dp.svg" />
+                <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
               </IonButton>
             </IonCol>
           </IonRow>

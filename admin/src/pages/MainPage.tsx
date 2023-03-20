@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import {
   IonButton,
   IonCol,
@@ -20,6 +20,23 @@ import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
 import CreationModal from '../components/CreationModal';
+
+type HeaderButtonProps = {
+  headername: string;
+  text: string;
+  sortBy: string;
+  headerButtonClassName: () => string;
+  sortItemsBy: (param: string) => void;
+};
+const HeaderButton: React.FC<HeaderButtonProps> = ({ headername, text, sortBy, headerButtonClassName, sortItemsBy }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'general' });
+  return (
+    <IonButton fill="clear" className={headerButtonClassName()} onClick={() => sortItemsBy(headername)}>
+      {t(text)}
+      {sortBy === headername && <ArrowIcon />}
+    </IonButton>
+  );
+};
 
 const MainPage: React.FC = () => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
@@ -67,6 +84,17 @@ const MainPage: React.FC = () => {
     if (event.key === 'Enter') selectItem(id, type);
   };
 
+  const translatedTextOrEmpty = useCallback(
+    (text: string) => {
+      return t(text) || '';
+    },
+    [t]
+  );
+
+  const headerButtonClassName = useCallback(() => {
+    return 'plainButton' + (sortDescending ? ' desc' : '');
+  }, [sortDescending]);
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
@@ -76,8 +104,8 @@ const MainPage: React.FC = () => {
               <div className="searchWrapper">
                 <IonInput
                   className="searchBar"
-                  placeholder={t('search-placeholder') || ''}
-                  title={t('search-title') || ''}
+                  placeholder={translatedTextOrEmpty('search-placeholder')}
+                  title={translatedTextOrEmpty('search-title')}
                   value={searchQuery}
                   onIonChange={(e) => changeAction(e.detail.value)}
                   ref={searchRef}
@@ -85,16 +113,16 @@ const MainPage: React.FC = () => {
                 <button
                   type="button"
                   className="input-clear-icon"
-                  title={t('search-clear-title') || ''}
-                  aria-label={t('search-clear-title') || ''}
+                  title={translatedTextOrEmpty('search-clear-title')}
+                  aria-label={translatedTextOrEmpty('search-clear-title')}
                   onClick={clearInput}
                 ></button>
               </div>
             </IonCol>
-            <IonCol>
+            <IonCol size="auto">
               <IonItem fill="outline" className="selectInput">
                 <IonSelect
-                  placeholder={t('select-type') || ''}
+                  placeholder={translatedTextOrEmpty('select-type')}
                   interface="popover"
                   multiple={true}
                   onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
@@ -103,11 +131,12 @@ const MainPage: React.FC = () => {
                     className: 'multiSelect',
                   }}
                 >
-                  <IonSelectOption value="CARD">{t('type-fairwaycard') || ''}</IonSelectOption>
-                  <IonSelectOption value="HARBOR">{t('type-harbour') || ''}</IonSelectOption>
+                  <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
+                  <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
                 </IonSelect>
               </IonItem>
             </IonCol>
+            <IonCol></IonCol>
             <IonCol size="auto">
               <IonButton shape="round" onClick={() => itemCreationAction('HARBOR')}>
                 {t('new-harbour')}
@@ -124,52 +153,76 @@ const MainPage: React.FC = () => {
         <IonGrid className="itemList">
           <IonRow className="header ion-align-items-stretch">
             <IonCol size="2.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('name')}>
-                {t('item-name')}
-                {sortBy === 'name' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="name"
+                text="item-name"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('type')}>
-                {t('item-type')}
-                {sortBy === 'type' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="type"
+                text="item-type"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('area')}>
-                {t('item-area')}
-                {sortBy === 'area' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="area"
+                text="item-area"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('referencelevel')}>
-                {t('item-referencelevel')}
-                {sortBy === 'referencelevel' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="referencelevel"
+                text="item-referencelevel"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('status')}>
-                {t('item-status')}
-                {sortBy === 'status' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="status"
+                text="item-status"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('creator')}>
-                {t('item-creator')}
-                {sortBy === 'creator' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="creator"
+                text="item-creator"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('modifier')}>
-                {t('item-modifier')}
-                {sortBy === 'modifier' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="modifier"
+                text="item-modifier"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
             <IonCol size="1.5">
-              <IonButton fill="clear" className={'plainButton' + (sortDescending ? ' desc' : '')} onClick={() => sortItemsBy('modified')}>
-                {t('item-modified')}
-                {sortBy === 'modified' && <ArrowIcon />}
-              </IonButton>
+              <HeaderButton
+                headername="modified"
+                text="item-modified"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
             </IonCol>
           </IonRow>
           {isLoading &&

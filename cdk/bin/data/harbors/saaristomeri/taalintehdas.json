@@ -10,9 +10,9 @@
     "sv": "Dalsbruks hamn",
     "en": "Port of Dalsbruk, Seaport Logistics Oy"
   },
-  "phoneNumber": [
-    "+35824285423"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
+  "phoneNumber": ["+35824285423"],
   "fax": "+35824285462",
   "email": "harri.kiviaho@seaportlogistisc.fi",
   "harborBasin": {
@@ -20,19 +20,14 @@
     "sv": "Svängbassängens diameter 400 m, ramat djup -9,0 m.",
     "en": "Diameter 400 m, safe clearance depth -9.0 m."
   },
-  "cargo": [
-    {
-      "fi": "Nosturi ja trukit.",
-      "sv": "Lyftkran och truckar.",
-      "en": "Crane and trucks."
-    }
-  ],
+  "cargo": {
+    "fi": "Nosturi ja trukit.",
+    "sv": "Lyftkran och truckar.",
+    "en": "Crane and trucks."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      22.51156,
-      60.01572
-    ]
+    "coordinates": [22.51156, 60.01572]
   },
   "quays": [
     {
@@ -49,10 +44,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          22.51161,
-          60.01555
-        ]
+        "coordinates": [22.51161, 60.01555]
       }
     }
   ]

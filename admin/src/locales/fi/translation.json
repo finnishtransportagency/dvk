@@ -19,6 +19,7 @@
     "item-referencelevel": "Ver­taus­ta­so",
     "item-status": "Tila",
     "item-creator": "Luonut",
+    "item-created": "Luotu",
     "item-modifier": "Muo­kan­nut",
     "item-modified": "Päi­vi­tet­ty",
     "item-type-CARD": "Väyläkortti",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Pohjanlahden alue",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Sulje",
-    "cancel": "Peruuta"
+    "cancel": "Peruuta",
+    "unknown": "Tuntematon",
+    "preview": "Esikatselu",
+    "delete": "Poista",
+    "create-new": "Luo uusi",
+    "save": "Tallenna",
+    "choose": "Valitse...",
+    "loading-error": "Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
+    "multiple-values-supported": "Voit valita tarvittaessa useita kohteita",
+    "required-field": "Pakollinen tieto"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -42,5 +52,30 @@
     "create-HARBOR": "Luo satama",
     "logout-title": "Olet kirjautumassa ulos",
     "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
+  },
+  "fairwaycard": {
+    "name": "Väyläkortin nimi",
+    "primary-id": "Väyläkortin tunniste",
+    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "linked-fairways": "Liitetyt väylät",
+    "starting-fairway": "Aloittava väylä",
+    "ending-fairway": "Päättävä väylä",
+    "linked-harbours": "Liitetyt satamat",
+    "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan",
+    "error-duplicate-id": "Tunniste on jo käytössä",
+    "fairway-info": "Väylätiedot",
+    "lining-and-marking": "Linjaus ja merkintä",
+    "design-speed": "Mitoitusnopeus",
+    "speed-limit": "Nopeusrajoitukset",
+    "anchorage": "Ankkurointi- ym. erityisalueet",
+    "navigation": "Väylän navigoitavuus",
+    "navigation-condition": "Navigointiolosuhteet",
+    "ice-condition": "Jääolosuhteet",
+    "recommendation": "Käyttösuositukset",
+    "wind-recommendation": "Tuulisuositukset",
+    "vessel-recommendation": "Aluskohtaiset suositukset",
+    "visibility-recommendation": "Näkyvyyssuositukset",
+    "wind-gauge": "Tuulimittarit",
+    "sea-level": "Merivedenkorkeus"
   }
 }

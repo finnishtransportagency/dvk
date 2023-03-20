@@ -30,6 +30,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
   const lang = i18n.resolvedLanguage as Lang;
 
   const primaryFairway = data?.find((fairway) => fairway.primary);
+  const secondaryFairway = data?.find((fairway) => fairway.secondary) || primaryFairway;
 
   // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
   const extractNavigationLinesLength = () => {
@@ -78,7 +79,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
         <IonText>
           <p>
             <strong>{t('liningAndMarking')}: </strong>
-            {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(primaryFairway?.endText, true)}{' '}
+            {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)}{' '}
             {lineText && formatSentence(lineText[lang], true)} {t('length')}:{' '}
             {((extractNavigationLinesLength() || 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
             <span aria-label={t('unit.kmDesc', { count: 3 })} role="definition">
@@ -693,9 +694,7 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
           </IonText>
           <IonText>
             <h5>{t('cargo')}</h5>
-            {data.cargo?.map((cargo, jdx) => {
-              return <p key={jdx}>{cargo && cargo[lang]}</p>;
-            }) || <InfoParagraph />}
+            {(data.cargo && <p>{data.cargo[lang]}</p>) || <InfoParagraph />}
           </IonText>
           <IonText>
             <h5>{t('harbourBasin')}</h5>

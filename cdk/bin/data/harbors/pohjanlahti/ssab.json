@@ -10,27 +10,22 @@
     "sv": "SSAB Europe Ab Brahestad hamn",
     "en": "SSAB Europe Ltd Raahe harbour"
   },
-  "phoneNumber": [
-    "+358205923890"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
+  "phoneNumber": ["+358205923890"],
   "harborBasin": {
     "fi": "Kääntöympyrän halkaisija 340 m. Ankkurin käyttö kielletty.",
     "sv": "Svängcirkelns diameter 340 m. Förbjudet att använda ankare.",
     "en": "Diameter of turning circle 340 m. Use of anchor prohibited."
   },
-  "cargo": [
-    {
-      "fi": "1 kpl 40 t ja 1 kpl 60 t nostureita, liikkuva nosturi 100 t käytettävissä.",
-      "sv": "1 st. 40 t ja 1 st. 60 t kranar, en mobil kran 100 t kan användas.",
-      "en": "1 x 40t and 1 x 60 t cranes, a mobile crane 100 t available."
-    }
-  ],
+  "cargo": {
+    "fi": "1 kpl 40 t ja 1 kpl 60 t nostureita, liikkuva nosturi 100 t käytettävissä.",
+    "sv": "1 st. 40 t ja 1 st. 60 t kranar, en mobil kran 100 t kan användas.",
+    "en": "1 x 40t and 1 x 60 t cranes, a mobile crane 100 t available."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      24.41181,
-      64.65544
-    ]
+    "coordinates": [24.41181, 64.65544]
   },
   "quays": [
     {
@@ -46,10 +41,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40431,
-          64.65637
-        ]
+        "coordinates": [24.40431, 64.65637]
       }
     },
     {
@@ -65,10 +57,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40545,
-          64.6544
-        ]
+        "coordinates": [24.40545, 64.6544]
       }
     },
     {
@@ -84,10 +73,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40751,
-          64.65641
-        ]
+        "coordinates": [24.40751, 64.65641]
       }
     },
     {
@@ -103,10 +89,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40851,
-          64.65471
-        ]
+        "coordinates": [24.40851, 64.65471]
       }
     },
     {
@@ -122,10 +105,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40895,
-          64.65399
-        ]
+        "coordinates": [24.40895, 64.65399]
       }
     },
     {
@@ -141,10 +121,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41036,
-          64.65416
-        ]
+        "coordinates": [24.41036, 64.65416]
       }
     },
     {
@@ -160,10 +137,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41022,
-          64.6556
-        ]
+        "coordinates": [24.41022, 64.6556]
       }
     },
     {
@@ -180,10 +154,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41161,
-          64.65686
-        ]
+        "coordinates": [24.41161, 64.65686]
       }
     },
     {
@@ -199,10 +170,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41047,
-          64.65623
-        ]
+        "coordinates": [24.41047, 64.65623]
       }
     }
   ]

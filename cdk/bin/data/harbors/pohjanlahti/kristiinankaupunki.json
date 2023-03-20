@@ -10,27 +10,22 @@
     "sv": "Björnö hamn, Kristinestad",
     "en": "Karhusaari Harbour, Kristiinankaupunki"
   },
-  "phoneNumber": [
-    "+358503133441"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
+  "phoneNumber": ["+358503133441"],
   "harborBasin": {
     "fi": "Kääntöaltaan halkaisija 500 m, ankkurin käyttö sallittu.",
     "sv": "Svängbassängens diameter 500 m, tillåtet att använda ankare.",
     "en": "Swinging area, diameter 500 m, use of anchor permitted."
   },
-  "cargo": [
-    {
-      "fi": "Mobiililaitteet.",
-      "sv": "Mobila enheter.",
-      "en": "Mobile devices."
-    }
-  ],
+  "cargo": {
+    "fi": "Mobiililaitteet.",
+    "sv": "Mobila enheter.",
+    "en": "Mobile devices."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.31824,
-      62.25926
-    ]
+    "coordinates": [21.31824, 62.25926]
   },
   "quays": [
     {
@@ -47,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.31762,
-          62.25979
-        ]
+        "coordinates": [21.31762, 62.25979]
       }
     },
     {
@@ -67,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.31468,
-          62.25797
-        ]
+        "coordinates": [21.31468, 62.25797]
       }
     }
   ]

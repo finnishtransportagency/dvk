@@ -10,28 +10,23 @@
     "sv": "Loviisan Satama Oy",
     "en": "Loviisan Satama Oy"
   },
-  "phoneNumber": [
-    "+358400717215"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
+  "phoneNumber": ["+358400717215"],
   "internet": "https://www.portofloviisa.fi",
   "harborBasin": {
     "fi": "Ankkurin käyttö kielletty laitureiden läheisyydessä, koska ilmapulputuslaitteiston letkut ovat pohjassa. Satama-allas on suojaisa aallokolta ja tuulilta. Vesisyvyys 10,2/10,5 m. Kääntöaltaanhalkaisija 986 m.",
     "sv": "Förbjudet att använda ankare vintertid, då bubbelanordningens slangar är nedsänkta på bottnen. Skyddad för sjögång och vindar. Vattendjup 10,2/10,5 m. Svängbassängens diameter 986 m.",
     "en": "Use of anchors prohibited in winter to protect the bubbling tubes at the bottom. Sheltered against swell and winds. Water depth 10.2/10.5 m. Diameter of swinging area 986 m."
   },
-  "cargo": [
-    {
-      "fi": "Nostureita, mobiilinostureita.",
-      "sv": "Kranar, mobilkranar.",
-      "en": "Cranes, mobile cranes."
-    }
-  ],
+  "cargo": {
+    "fi": "Nostureita, mobiilinostureita.",
+    "sv": "Kranar, mobilkranar.",
+    "en": "Cranes, mobile cranes."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      26.25462,
-      60.41238
-    ]
+    "coordinates": [26.25462, 60.41238]
   },
   "quays": [
     {
@@ -48,10 +43,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.25828,
-          60.41021
-        ]
+        "coordinates": [26.25828, 60.41021]
       }
     },
     {
@@ -68,10 +60,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.25731,
-          60.41131
-        ]
+        "coordinates": [26.25731, 60.41131]
       }
     },
     {
@@ -88,10 +77,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.25637,
-          60.4125
-        ]
+        "coordinates": [26.25637, 60.4125]
       }
     },
     {
@@ -108,10 +94,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.25462,
-          60.41373
-        ]
+        "coordinates": [26.25462, 60.41373]
       }
     },
     {
@@ -128,10 +111,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          26.25321,
-          60.41665
-        ]
+        "coordinates": [26.25321, 60.41665]
       }
     }
   ]

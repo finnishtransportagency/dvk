@@ -10,6 +10,8 @@
     "sv": "Jakobstad Hamn Ab",
     "en": "Port of Pietarsaari Ltd"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
   "phoneNumber": [
     "+35867236128",
     "+35867231388"

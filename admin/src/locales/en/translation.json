@@ -19,6 +19,7 @@
     "item-referencelevel": "Reference level",
     "item-status": "Status",
     "item-creator": "Creator",
+    "item-created": "Created",
     "item-modifier": "Modifier",
     "item-modified": "Updated",
     "item-type-CARD": "Fairway card",
@@ -31,7 +32,16 @@
     "gulfOfBothnia": "Gulf of Bothnia",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Close",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "unknown": "Unknown",
+    "preview": "Preview",
+    "delete": "Delete",
+    "create-new": "Create new",
+    "save": "Save",
+    "choose": "Choose...",
+    "loading-error": "Data fetching failed, please try again later.",
+    "multiple-values-supported": "Multiple items can be selected",
+    "required-field": "Required field"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -42,5 +52,30 @@
     "create-HARBOR": "Create harbour",
     "logout-title": "You are logging out",
     "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
+  },
+  "fairwaycard": {
+    "name": "Fairway card name",
+    "primary-id": "Fairway card ID",
+    "primary-id-help-text": "[en] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "linked-fairways": "Linked fairways",
+    "starting-fairway": "Starting fairway",
+    "ending-fairway": "Ending fairway",
+    "linked-harbours": "Linked harbours",
+    "fairway-order-help-text": "[en] Väyläkortin suunta avomereltä rantaan",
+    "error-duplicate-id": "[en] Tunniste on jo käytössä",
+    "fairway-info": "[en] Väylätiedot",
+    "lining-and-marking": "Channel alignment and marking",
+    "design-speed": "Design speed",
+    "speed-limit": "Speed limits and recommendations",
+    "anchorage": "Anchorage and special areas",
+    "navigation": "Fairway navigability",
+    "navigation-condition": "Navigation conditions",
+    "ice-condition": "Ice conditions",
+    "recommendation": "Traffic recommendations",
+    "wind-recommendation": "Wind recommendations",
+    "vessel-recommendation": "Vessel recommendations",
+    "visibility-recommendation": "Visibility",
+    "wind-gauge": "Wind gauges",
+    "sea-level": "Sea level"
   }
 }

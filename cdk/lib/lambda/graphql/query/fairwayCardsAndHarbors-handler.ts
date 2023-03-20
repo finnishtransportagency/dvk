@@ -1,11 +1,13 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { ContentType, FairwayCardOrHarbor, Status } from '../../../../graphql/generated';
+import { getCurrentUser } from '../../api/login';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import HarborDBModel from '../../db/harborDBModel';
 import { log } from '../../logger';
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<FairwayCardOrHarbor[]> => {
-  log.info(`fairwayCardsAndHarbors(${event.identity})`);
+  const user = await getCurrentUser(event);
+  log.info(`fairwayCardsAndHarbors(${user.uid})`);
   const fairwayCardModels = await FairwayCardDBModel.getAll();
   log.debug('%d fairway card(s) found', fairwayCardModels.length);
   const harborModels = await HarborDBModel.getAll();

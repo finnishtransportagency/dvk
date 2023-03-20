@@ -10,27 +10,22 @@
     "sv": "Karleby hamn, Karleby",
     "en": "Port of Kokkola"
   },
-  "phoneNumber": [
-    "+35868242400"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
+  "phoneNumber": ["+35868242400"],
   "harborBasin": {
     "fi": "Kääntöympyröiden halkaisijat: Syväsataman edustalla 600 m.",
     "sv": "Svängcirklarnas diametrar: utanför Djuphamnen 600 m.",
     "en": "Diameter of turning circles: in the Deep Port 600 m."
   },
-  "cargo": [
-    {
-      "fi": "Syväsatamassa 4 kpl 40 t nostureita, sekä 10 t ja 8 t nosturit.",
-      "sv": "4 st. 40 t kranar i Djuphamnen samt 10 t kran och 8 t kran.",
-      "en": "4 forty-ton cranes, one ten-ton and one eight-ton crane in the Deep Port."
-    }
-  ],
+  "cargo": {
+    "fi": "Syväsatamassa 4 kpl 40 t nostureita, sekä 10 t ja 8 t nosturit.",
+    "sv": "4 st. 40 t kranar i Djuphamnen samt 10 t kran och 8 t kran.",
+    "en": "4 forty-ton cranes, one ten-ton and one eight-ton crane in the Deep Port."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      23.02537,
-      63.86685
-    ]
+    "coordinates": [23.02537, 63.86685]
   },
   "quays": [
     {
@@ -47,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.02448,
-          63.86501
-        ]
+        "coordinates": [23.02448, 63.86501]
       }
     },
     {
@@ -67,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.0278,
-          63.86421
-        ]
+        "coordinates": [23.0278, 63.86421]
       }
     },
     {
@@ -87,10 +76,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.03112,
-          63.86343
-        ]
+        "coordinates": [23.03112, 63.86343]
       }
     },
     {
@@ -107,10 +93,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.0352,
-          63.86246
-        ]
+        "coordinates": [23.0352, 63.86246]
       }
     },
     {
@@ -127,10 +110,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.03825,
-          63.86172
-        ]
+        "coordinates": [23.03825, 63.86172]
       }
     },
     {
@@ -147,10 +127,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.04023,
-          63.86124
-        ]
+        "coordinates": [23.04023, 63.86124]
       }
     },
     {
@@ -167,10 +144,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.03808,
-          63.85983
-        ]
+        "coordinates": [23.03808, 63.85983]
       }
     },
     {
@@ -187,10 +161,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.03452,
-          63.86047
-        ]
+        "coordinates": [23.03452, 63.86047]
       }
     }
   ]

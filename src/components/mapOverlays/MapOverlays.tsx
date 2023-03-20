@@ -19,6 +19,8 @@ import ObservationPopupContent, { ObservationProperties } from '../popup/Observa
 import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 import { MarineWarningModal } from './MarineWarningModal';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
+import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
+import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -32,6 +34,8 @@ export type PopupProperties = {
   observation?: ObservationProperties;
   buoy?: BuoyProperties;
   harbor?: HarborProperties;
+  vtspoint?: VtsProperties;
+  vtsline?: VtsProperties;
 };
 
 type MapOverlaysProps = {
@@ -101,6 +105,8 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
           {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} setPopupProperties={setPopupProperties} />}
           {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} setPopupProperties={setPopupProperties} />}
           {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} setPopupProperties={setPopupProperties} />}
+          {popupProps?.vtspoint && <VtsPointPopupContent vts={popupProps.vtspoint} setPopupProperties={setPopupProperties} />}
+          {popupProps?.vtsline && <VtsLinePopupContent vts={popupProps.vtsline} setPopupProperties={setPopupProperties} />}
         </div>
       </div>
       <LayerModal

@@ -10,10 +10,9 @@
     "sv": "Kvarken Ports Ltd",
     "en": "Kvarken Ports Ltd"
   },
-  "phoneNumber": [
-    "+358400479163",
-    "+358405672975"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
+  "phoneNumber": ["+358400479163", "+358405672975"],
   "fax": "",
   "email": "vaasaport@kvarkenports.com",
   "internet": "https://www.kvarkenports.com",
@@ -22,19 +21,14 @@
     "sv": "Svängcirkelns diameter 310 m, ramat djup -9,6 m och 9,7 m. Tillåtet att använda ankare.",
     "en": "Diameter of turning circle 310 m, safe clearance depth -9,6 m and 9.7 m. Use of anchor allowed."
   },
-  "cargo": [
-    {
-      "fi": "Siirrettävät nosturit kaikille laitureille.",
-      "sv": "Mobila kranar vid alla kajer.",
-      "en": "Mobile cranes for all quays."
-    }
-  ],
+  "cargo": {
+    "fi": "Siirrettävät nosturit kaikille laitureille.",
+    "sv": "Mobila kranar vid alla kajer.",
+    "en": "Mobile cranes for all quays."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.55704,
-      63.0871
-    ]
+    "coordinates": [21.55704, 63.0871]
   },
   "quays": [
     {
@@ -51,10 +45,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.547,
-          63.08817
-        ]
+        "coordinates": [21.547, 63.08817]
       }
     },
     {
@@ -76,10 +67,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55278,
-          63.08843
-        ]
+        "coordinates": [21.55278, 63.08843]
       }
     },
     {
@@ -96,10 +84,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55233,
-          63.08726
-        ]
+        "coordinates": [21.55233, 63.08726]
       }
     },
     {
@@ -116,10 +101,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55346,
-          63.08748
-        ]
+        "coordinates": [21.55346, 63.08748]
       }
     },
     {
@@ -136,10 +118,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55334,
-          63.08654
-        ]
+        "coordinates": [21.55334, 63.08654]
       }
     },
     {
@@ -156,10 +135,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55407,
-          63.08593
-        ]
+        "coordinates": [21.55407, 63.08593]
       }
     },
     {
@@ -176,10 +152,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.55725,
-          63.08446
-        ]
+        "coordinates": [21.55725, 63.08446]
       }
     },
     {
@@ -201,10 +174,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.56197,
-          63.08315
-        ]
+        "coordinates": [21.56197, 63.08315]
       }
     }
   ]

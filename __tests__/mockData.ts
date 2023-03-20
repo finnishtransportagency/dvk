@@ -923,23 +923,11 @@ export const mockFairwayCard = {
           sv: 'Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj.',
           en: 'Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay.',
         },
-        cargo: [
-          {
-            fi: 'D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m',
-            sv: 'D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m',
-            en: 'Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m',
-          },
-          {
-            fi: 'E laituri: 4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m',
-            sv: 'E kajen: 4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m',
-            en: 'Quay E: 4 container cranes, lifting capacity 65/90 t, outreach 46 m',
-          },
-          {
-            fi: 'F laituri: konttinosturi, nostokyky 40/50 tn, ulottuma 34 m',
-            sv: 'F kajen: containerkran, lyftkapacitet 40/50 t, räckvidd 34 m',
-            en: 'Quay F: container crane, lifting capacity 40/50 t, outreach 34 m',
-          },
-        ],
+        cargo: {
+          fi: 'D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m',
+          sv: 'D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m',
+          en: 'Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m',
+        },
       },
     ],
   },

@@ -1,7 +1,9 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, TextInput } from '../../../../graphql/generated';
+import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, Operation, OperationError, TextInput } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
+import { CurrentUser, getCurrentUser } from '../../api/login';
+import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -23,15 +25,16 @@ function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | un
   return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
 }
 
-function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined): HarborDBModel {
+function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {
     id: harbor.id,
     name: harbor.name,
+    n2000HeightSystem: !!harbor.n2000HeightSystem,
     status: harbor.status,
     company: mapText(harbor.company),
-    creator: old ? old.creator : 'Erkki Esimerkki',
+    creator: old ? old.creator : user.uid,
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
-    modifier: 'Erkki Esimerkki',
+    modifier: user.uid,
     modificationTimestamp: Date.now(),
     email: map<string>(harbor.email),
     extraInfo: mapText(harbor.extraInfo),
@@ -40,11 +43,7 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined): 
     internet: map<string>(harbor.internet),
     phoneNumber: mapStringArray(harbor.phoneNumber),
     geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : undefined,
-    cargo: harbor.cargo
-      ?.map((c) => {
-        return { fi: c?.fi || undefined, sv: c?.sv || undefined, en: c?.en || undefined };
-      })
-      .filter((c) => c.fi || c.sv || c.en),
+    cargo: mapText(harbor.cargo),
     quays: harbor.quays?.map((q) => {
       return {
         extraInfo: mapText(q?.extraInfo),
@@ -66,13 +65,19 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined): 
 export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = async (
   event: AppSyncResolverEvent<MutationSaveHarborArgs>
 ): Promise<Harbor> => {
-  log.info(`saveHarbor(${event.arguments.harbor?.id})`);
+  const user = await getCurrentUser(event);
+  log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
   if (event.arguments.harbor?.id) {
     const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
-    const newModel = mapHarborToModel(event.arguments.harbor, dbModel);
+    if (event.arguments.harbor.operation === Operation.Create && dbModel !== undefined) {
+      log.warn(`Harbor with id ${event.arguments.harbor.id} already exists`);
+      throw new Error(OperationError.HarborAlreadyExist);
+    }
+    const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
     log.debug('harbor: %o', newModel);
     await HarborDBModel.save(newModel);
-    return newModel;
+    return mapHarborDBModelToGraphqlType(newModel, user);
   }
-  throw new Error('Harbor id missing');
+  log.warn({ input: event.arguments.harbor }, 'Harbor id missing');
+  throw new Error(OperationError.HarborIdMissing);
 };

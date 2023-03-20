@@ -158,13 +158,14 @@ async function fetchIlmanetApi(): Promise<Mareograph[]> {
       log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       throw new Error('Fetching from Ilmanet api failed');
     });
-  log.debug(`Ilmanet api response time: ${Date.now() - start} ms`);
+  const duration = Date.now() - start;
+  log.debug({ duration }, `Ilmanet api response time: ${duration} ms`);
   return response.data ? parseXml(response.data as string) : [];
 }
 
 async function fetchApi<T>(path: string) {
-  const start = Date.now();
   const url = `https://${await getSOAApiUrl()}/fmi/${path}`;
+  const start = Date.now();
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),
@@ -174,7 +175,8 @@ async function fetchApi<T>(path: string) {
       log.fatal(`Weather api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
       throw new Error('Fetching from Weather api failed');
     });
-  log.debug(`Weather api response time: ${Date.now() - start} ms`);
+  const duration = Date.now() - start;
+  log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
   return response.data ? (response.data as T[]) : [];
 }
 

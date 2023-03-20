@@ -10,6 +10,8 @@
     "sv": "Kaskö hamn",
     "en": "Port of Kaskinen"
   },
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
   "phoneNumber": [
     "+358406152848"
   ],

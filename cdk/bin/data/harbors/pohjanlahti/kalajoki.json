@@ -10,28 +10,23 @@
     "sv": "Kalajoki Hamn",
     "en": "Port of Kalajoki"
   },
-  "phoneNumber": [
-    "+358400798698"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
+  "phoneNumber": ["+358400798698"],
   "fax": "+3588465311",
   "harborBasin": {
     "fi": "Laiturin edustalla on kääntöympyrä noin 225 m silloin, kun laiturissa ei ole laivoja.",
     "sv": "Framför kajen finns en svängplats med diametern ca 225 m, svängning förutsätter att inga fartyg ligger vid kaj.",
     "en": "In front of quay is a turning circle with diameter of about 225 m, turning requires that no ships are at the quay."
   },
-  "cargo": [
-    {
-      "fi": "Satamaoperaattorit: Blomberg Stevedoring ja Rahjan Huolinta.",
-      "sv": "Hamnoperatörerna Blomberg Stevedoring och Rahjan Huolinta.",
-      "en": "Blomberg Stevedoring and Rahjan Huolinta."
-    }
-  ],
+  "cargo": {
+    "fi": "Satamaoperaattorit: Blomberg Stevedoring ja Rahjan Huolinta.",
+    "sv": "Hamnoperatörerna Blomberg Stevedoring och Rahjan Huolinta.",
+    "en": "Blomberg Stevedoring and Rahjan Huolinta."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      23.70896,
-      64.22297
-    ]
+    "coordinates": [23.70896, 64.22297]
   },
   "quays": [
     {
@@ -48,10 +43,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.7148,
-          64.22151
-        ]
+        "coordinates": [23.7148, 64.22151]
       }
     },
     {
@@ -67,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.71214,
-          64.22265
-        ]
+        "coordinates": [23.71214, 64.22265]
       }
     },
     {
@@ -89,10 +78,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          23.70988,
-          64.22383
-        ]
+        "coordinates": [23.70988, 64.22383]
       }
     }
   ]

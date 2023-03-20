@@ -10,27 +10,22 @@
     "sv": "Brahestad hamn Ab, Lapaluoto",
     "en": "Port of Raahe Ltd. Lapaluoto"
   },
-  "phoneNumber": [
-    "+35882277555"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": true,
+  "phoneNumber": ["+35882277555"],
   "harborBasin": {
     "fi": "Kääntöympyrän halkaisija 340 m. Ankkurin käyttö kielletty.",
     "sv": "Svängcirkelns diameter 340 m. Förbjudet att använda ankare.",
     "en": "Diameter of turning circle 340 m. Use of anchor prohibited."
   },
-  "cargo": [
-    {
-      "fi": "Liikkuvia nostureita max 140 t.",
-      "sv": "Mobila kranar max 140 t.",
-      "en": "Mobile cranes max. 140 t."
-    }
-  ],
+  "cargo": {
+    "fi": "Liikkuvia nostureita max 140 t.",
+    "sv": "Mobila kranar max 140 t.",
+    "en": "Mobile cranes max. 140 t."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      24.41041,
-      64.66119
-    ]
+    "coordinates": [24.41041, 64.66119]
   },
   "quays": [
     {
@@ -47,10 +42,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40734,
-          64.65989
-        ]
+        "coordinates": [24.40734, 64.65989]
       }
     },
     {
@@ -67,10 +59,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.4114,
-          64.65948
-        ]
+        "coordinates": [24.4114, 64.65948]
       }
     },
     {
@@ -87,10 +76,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41405,
-          64.65925
-        ]
+        "coordinates": [24.41405, 64.65925]
       }
     },
     {
@@ -107,10 +93,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.40403,
-          64.66059
-        ]
+        "coordinates": [24.40403, 64.66059]
       }
     },
     {
@@ -126,10 +109,7 @@
       ],
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          24.41575,
-          64.65952
-        ]
+        "coordinates": [24.41575, 64.65952]
       }
     }
   ]

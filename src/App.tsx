@@ -33,6 +33,8 @@ import {
   useBackgroundMmlmeriLayer,
   useBackgroundMmljarviLayer,
   useBackgroundBalticseaLayer,
+  DvkLayerState,
+  useVtsLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -116,6 +118,8 @@ const DvkIonApp: React.FC = () => {
   const bgBalticseaLayer = useBackgroundBalticseaLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const vtsLayer = useVtsLayer();
+
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -123,80 +127,43 @@ const DvkIonApp: React.FC = () => {
   const { state } = useDvkContext();
 
   useEffect(() => {
+    const allLayers: DvkLayerState[] = [
+      line12Layer,
+      line3456Layer,
+      area12Layer,
+      area3456Layer,
+      depth12Layer,
+      speedLimitLayer,
+      specialAreaLayer,
+      pilotLayer,
+      harborLayer,
+      safetyEquipmentLayer,
+      marineWarningLayer,
+      fairwayCardList,
+      nameLayer,
+      boardLine12Layer,
+      mareographLayer,
+      observationLayer,
+      buoyLayer,
+      bgFinlandLayer,
+      bgBalticseaLayer,
+      bgMmlmeriLayer,
+      bgMmljarviLayer,
+      vtsLayer,
+    ];
+
     let percent = 0;
-    const resourcePercentage = 1 / 21;
-    if (line12Layer.ready) percent += resourcePercentage;
-    if (line3456Layer.ready) percent += resourcePercentage;
-    if (area12Layer.ready) percent += resourcePercentage;
-    if (area3456Layer.ready) percent += resourcePercentage;
-    if (depth12Layer.ready) percent += resourcePercentage;
-    if (speedLimitLayer.ready) percent += resourcePercentage;
-    if (specialAreaLayer.ready) percent += resourcePercentage;
-    if (pilotLayer.ready) percent += resourcePercentage;
-    if (harborLayer.ready) percent += resourcePercentage;
-    if (safetyEquipmentLayer.ready) percent += resourcePercentage;
-    if (marineWarningLayer.ready) percent += resourcePercentage;
-    if (fairwayCardList.ready) percent += resourcePercentage;
-    if (nameLayer.ready) percent += resourcePercentage;
-    if (boardLine12Layer.ready) percent += resourcePercentage;
-    if (mareographLayer.ready) percent += resourcePercentage;
-    if (observationLayer.ready) percent += resourcePercentage;
-    if (buoyLayer.ready) percent += resourcePercentage;
-    if (bgFinlandLayer.ready) percent += resourcePercentage;
-    if (bgBalticseaLayer.ready) percent += resourcePercentage;
-    if (bgMmlmeriLayer.ready) percent += resourcePercentage;
-    if (bgMmljarviLayer.ready) percent += resourcePercentage;
+    const resourcePercentage = 1 / allLayers.length;
+
+    allLayers.forEach(function (layer) {
+      if (layer.ready) percent += resourcePercentage;
+    });
+
     setPercentDone(Math.round(percent * 100) / 100);
 
-    setFetchError(
-      line12Layer.isError ||
-        line3456Layer.isError ||
-        area12Layer.isError ||
-        area3456Layer.isError ||
-        depth12Layer.isError ||
-        speedLimitLayer.isError ||
-        specialAreaLayer.isError ||
-        pilotLayer.isError ||
-        harborLayer.isError ||
-        safetyEquipmentLayer.isError ||
-        marineWarningLayer.isError ||
-        fairwayCardList.isError ||
-        nameLayer.isError ||
-        boardLine12Layer.isError ||
-        mareographLayer.isError ||
-        observationLayer.isError ||
-        buoyLayer.isError ||
-        bgFinlandLayer.isError ||
-        bgBalticseaLayer.isError ||
-        bgMmlmeriLayer.isError ||
-        bgMmljarviLayer.isError
-    );
+    setFetchError(allLayers.some((layer) => layer.isError));
 
-    if (
-      line12Layer.ready &&
-      line3456Layer.ready &&
-      area12Layer.ready &&
-      area3456Layer.ready &&
-      depth12Layer.ready &&
-      speedLimitLayer.ready &&
-      specialAreaLayer.ready &&
-      pilotLayer.ready &&
-      harborLayer.ready &&
-      safetyEquipmentLayer.ready &&
-      marineWarningLayer.ready &&
-      fairwayCardList.ready &&
-      nameLayer.ready &&
-      boardLine12Layer.ready &&
-      mareographLayer.ready &&
-      observationLayer.ready &&
-      buoyLayer.ready &&
-      bgFinlandLayer.ready &&
-      bgBalticseaLayer.ready &&
-      bgMmlmeriLayer.ready &&
-      bgMmljarviLayer.ready
-    ) {
-      setInitDone(true);
-    }
+    setInitDone(allLayers.every((layer) => layer.ready));
   }, [
     line12Layer,
     line3456Layer,
@@ -219,6 +186,7 @@ const DvkIonApp: React.FC = () => {
     bgBalticseaLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
+    vtsLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);

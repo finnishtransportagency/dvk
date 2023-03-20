@@ -10,28 +10,23 @@
     "sv": "Yara Suomi Oy",
     "en": "Yara Suomi Oy"
   },
-  "phoneNumber": [
-    "+358505240072"
-  ],
+  "status": "PUBLIC",
+  "n2000HeightSystem": false,
+  "phoneNumber": ["+358505240072"],
   "fax": "+358102153000",
   "extraInfo": {
     "fi": "Satamaan saapuvien alusten maksimipituus on rajoitettu 225 metriin.",
     "sv": "Maximilängden på fartyg som anlöper hamnen är begränsad till 225 m.",
     "en": "Maximum length of inbound vessels restricted to 225 m."
   },
-  "cargo": [
-    {
-      "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
-      "sv": "2 st 8 t kranar, 2 st lastare.",
-      "en": "2 eight-ton cranes, 2 loaders."
-    }
-  ],
+  "cargo": {
+    "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
+    "sv": "2 st 8 t kranar, 2 st lastare.",
+    "en": "2 eight-ton cranes, 2 loaders."
+  },
   "geometry": {
     "type": "Point",
-    "coordinates": [
-      21.33964,
-      60.79429
-    ]
+    "coordinates": [21.33964, 60.79429]
   },
   "quays": [
     {
@@ -42,10 +37,7 @@
       },
       "geometry": {
         "type": "Point",
-        "coordinates": [
-          21.33948,
-          60.79436
-        ]
+        "coordinates": [21.33948, 60.79436]
       },
       "length": 330,
       "sections": [

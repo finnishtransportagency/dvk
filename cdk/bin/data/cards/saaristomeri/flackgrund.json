@@ -96,7 +96,8 @@
   "fairways": [
     {
       "id": 3725,
-      "primary": true
+      "primary": true,
+      "secondary": true
     }
   ]
 }

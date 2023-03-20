@@ -27,7 +27,8 @@ export type FeatureDataId =
   | 'balticsea'
   | 'finland'
   | 'mml_meri'
-  | 'mml_jarvi';
+  | 'mml_jarvi'
+  | 'vts';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -69,6 +70,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
   { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
+  { id: 'vts', url: new URL(featureLoaderUrl + '?type=vts'), staticUrl: new URL(staticUrl + '/vts.json.gz') },
 ];
 
 export type FeatureDataLayerId =
@@ -89,7 +91,8 @@ export type FeatureDataLayerId =
   | 'mareograph'
   | 'ice'
   | 'observation'
-  | 'buoy';
+  | 'buoy'
+  | 'vts';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -131,6 +134,7 @@ export const MAP: MapType = {
     { id: 'ice', noOfflineSupport: true },
     { id: 'observation', noOfflineSupport: true },
     { id: 'buoy', noOfflineSupport: true },
+    { id: 'vts' },
   ],
 };
 

@@ -333,6 +333,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                   <IonList lines="none" className="ion-no-padding">
                     <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
                     <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
+                    <LayerItem id="vts" title={t('homePage.map.controls.layer.vts')} />
                     <LayerItem id="boardline12" title={t('homePage.map.controls.layer.boardLines')} />
                     <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} />
                     <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} />
