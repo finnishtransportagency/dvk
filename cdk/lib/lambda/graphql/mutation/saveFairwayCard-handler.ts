@@ -8,10 +8,11 @@ import {
   OperationError,
   TextInput,
 } from '../../../../graphql/generated';
-import { log } from '../../logger';
+import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
+import { diff } from 'deep-object-diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -21,16 +22,16 @@ function mapText(text?: Maybe<TextInput>) {
       en: text.en,
     };
   } else {
-    return undefined;
+    return null;
   }
 }
 
-function map<T>(text: Maybe<T> | undefined): T | undefined {
-  return text ? text : undefined;
+function map<T>(text: Maybe<T> | undefined): T | null {
+  return text ? text : null;
 }
 
-function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | undefined {
-  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
+function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : null;
 }
 
 function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
@@ -79,31 +80,34 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
             };
           }) || [],
       },
-      tugs: card.trafficService?.tugs?.map((t) => {
-        return {
-          email: map<string>(t?.email),
-          fax: map<string>(t?.fax),
-          name: mapText(t?.name),
-          phoneNumber: mapStringArray(t?.phoneNumber),
-        };
-      }),
-      vts: card.trafficService?.vts?.map((v) => {
-        return {
-          email: mapStringArray(v?.email),
-          name: mapText(v?.name),
-          phoneNumber: map<string>(v?.phoneNumber),
-          vhf: v?.vhf?.map((v2) => {
-            return {
-              name: mapText(v2?.name),
-              channel: map<number>(v2?.channel),
-            };
-          }),
-        };
-      }),
+      tugs:
+        card.trafficService?.tugs?.map((t) => {
+          return {
+            email: map<string>(t?.email),
+            fax: map<string>(t?.fax),
+            name: mapText(t?.name),
+            phoneNumber: mapStringArray(t?.phoneNumber),
+          };
+        }) || null,
+      vts:
+        card.trafficService?.vts?.map((v) => {
+          return {
+            email: mapStringArray(v?.email),
+            name: mapText(v?.name),
+            phoneNumber: map<string>(v?.phoneNumber),
+            vhf: v?.vhf?.map((v2) => {
+              return {
+                name: mapText(v2?.name),
+                channel: map<number>(v2?.channel),
+              };
+            }),
+          };
+        }) || null,
     },
-    harbors: card.harbors?.map((id) => {
-      return { id };
-    }),
+    harbors:
+      card.harbors?.map((id) => {
+        return { id };
+      }) || null,
     fairwayIds: mapIds(card.fairwayIds),
   };
 }
@@ -122,6 +126,12 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
     await FairwayCardDBModel.save(newModel);
+    if (dbModel) {
+      const changes = diff(dbModel, newModel);
+      auditLog.info({ changes, card: newModel, user: user.uid }, 'FairwayCard updated');
+    } else {
+      auditLog.info({ card: newModel, user: user.uid }, 'FairwayCard added');
+    }
     const pilotMap = await getPilotPlaceMap();
     return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
   }
