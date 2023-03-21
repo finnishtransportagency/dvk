@@ -339,6 +339,7 @@ export class SquatSite extends Construct {
       'yllapito/api/*': apiProxyBehavior,
       'yllapito*': adminBehavior,
       '/oauth2/*': apiProxyBehavior,
+      '/sso/*': apiProxyBehavior,
     };
 
     // CloudFront webacl reader and id
