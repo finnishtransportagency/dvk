@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint, Status } from '../../../graphql/generated';
+import { GeometryPoint, Maybe, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
@@ -7,55 +7,55 @@ import { Text } from './fairwayCardDBModel';
 const harborTable = process.env.HARBOR_TABLE;
 
 export type Quay = {
-  name?: Text;
-  length?: number;
-  sections?: Section[];
-  extraInfo?: Text;
-  geometry?: GeometryPoint;
+  name?: Maybe<Text>;
+  length?: Maybe<number>;
+  sections?: Maybe<Section[]>;
+  extraInfo?: Maybe<Text>;
+  geometry?: Maybe<GeometryPoint>;
 };
 
 export type Section = {
-  name?: string;
-  depth?: number;
-  geometry?: GeometryPoint;
+  name?: Maybe<string>;
+  depth?: Maybe<number>;
+  geometry?: Maybe<GeometryPoint>;
 };
 
 class HarborDBModel {
   id: string;
 
-  status?: Status;
+  status?: Maybe<Status>;
 
-  n2000HeightSystem?: boolean;
+  n2000HeightSystem?: Maybe<boolean>;
 
-  modifier?: string;
+  modifier?: Maybe<string>;
 
-  modificationTimestamp?: number;
+  modificationTimestamp?: Maybe<number>;
 
-  creationTimestamp?: number;
+  creationTimestamp?: Maybe<number>;
 
-  creator?: string;
+  creator?: Maybe<string>;
 
-  quays?: Quay[];
+  quays?: Maybe<Quay[]>;
 
   name: Text;
 
-  company?: Text;
+  company?: Maybe<Text>;
 
-  phoneNumber?: string[];
+  phoneNumber?: Maybe<string[]>;
 
-  fax?: string;
+  fax?: Maybe<string>;
 
-  email?: string;
+  email?: Maybe<string>;
 
-  internet?: string;
+  internet?: Maybe<string>;
 
-  extraInfo?: Text;
+  extraInfo?: Maybe<Text>;
 
-  harborBasin?: Text;
+  harborBasin?: Maybe<Text>;
 
-  cargo?: Text;
+  cargo?: Maybe<Text>;
 
-  geometry?: GeometryPoint;
+  geometry?: Maybe<GeometryPoint>;
 
   static async get(id: string): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: harborTable, Key: { id } }));

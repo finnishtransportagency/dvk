@@ -1,9 +1,10 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
 import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, Operation, OperationError, TextInput } from '../../../../graphql/generated';
-import { log } from '../../logger';
+import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
+import { diff } from 'deep-object-diff';
 
 function mapText(text?: Maybe<TextInput>) {
   if (text) {
@@ -13,16 +14,16 @@ function mapText(text?: Maybe<TextInput>) {
       en: text.en,
     };
   } else {
-    return undefined;
+    return null;
   }
 }
 
-function map<T>(text: Maybe<T> | undefined): T | undefined {
-  return text ? text : undefined;
+function map<T>(text: Maybe<T> | undefined): T | null {
+  return text ? text : null;
 }
 
-function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | undefined {
-  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : undefined;
+function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : null;
 }
 
 function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
@@ -42,23 +43,25 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, u
     harborBasin: mapText(harbor.harborBasin),
     internet: map<string>(harbor.internet),
     phoneNumber: mapStringArray(harbor.phoneNumber),
-    geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : undefined,
+    geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : null,
     cargo: mapText(harbor.cargo),
-    quays: harbor.quays?.map((q) => {
-      return {
-        extraInfo: mapText(q?.extraInfo),
-        length: map<number>(q?.length),
-        name: mapText(q?.name),
-        geometry: q?.geometry ? { type: 'Point', coordinates: [q.geometry.lat, q.geometry.lon] } : undefined,
-        sections: q?.sections?.map((s) => {
-          return {
-            depth: map<number>(s?.depth),
-            name: map<string>(s?.name),
-            geometry: s?.geometry ? { type: 'Point', coordinates: [s.geometry.lat, s.geometry.lon] } : undefined,
-          };
-        }),
-      };
-    }),
+    quays:
+      harbor.quays?.map((q) => {
+        return {
+          extraInfo: mapText(q?.extraInfo),
+          length: map<number>(q?.length),
+          name: mapText(q?.name),
+          geometry: q?.geometry ? { type: 'Point', coordinates: [q.geometry.lat, q.geometry.lon] } : null,
+          sections:
+            q?.sections?.map((s) => {
+              return {
+                depth: map<number>(s?.depth),
+                name: map<string>(s?.name),
+                geometry: s?.geometry ? { type: 'Point', coordinates: [s.geometry.lat, s.geometry.lon] } : null,
+              };
+            }) || null,
+        };
+      }) || null,
   };
 }
 
@@ -76,6 +79,12 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
     log.debug('harbor: %o', newModel);
     await HarborDBModel.save(newModel);
+    if (dbModel) {
+      const changes = diff(dbModel, newModel);
+      auditLog.info({ changes, harbor: newModel, user: user.uid }, 'Harbor updated');
+    } else {
+      auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');
+    }
     return mapHarborDBModelToGraphqlType(newModel, user);
   }
   log.warn({ input: event.arguments.harbor }, 'Harbor id missing');

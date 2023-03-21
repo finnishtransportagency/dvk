@@ -68,6 +68,7 @@
     "aws-cdk-lib": "^2.61.1",
     "axios": "^1.2.3",
     "constructs": "^10.1.225",
+    "deep-object-diff": "^1.1.9",
     "fast-xml-parser": "^4.0.15",
     "graphql": "^16.6.0",
     "jsonwebtoken": "9.0.0",
