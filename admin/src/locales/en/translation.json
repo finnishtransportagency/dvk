@@ -75,5 +75,22 @@
     "visibility-recommendation": "Visibility",
     "wind-gauge": "Wind gauges",
     "sea-level": "Sea level"
+  },
+  "harbour": {
+    "primary-id": "Harbour ID",
+    "error-duplicate-id": "[en] Tunniste on jo käytössä",
+    "harbour-info": "[en] Satamatiedot",
+    "name": "Port name",
+    "extra-info": "Harbour restrictions",
+    "cargo": "Cargo handling",
+    "harbour-basin": "Harbour basin",
+    "contact-info": "[en] Yhteystiedot",
+    "company-name": "Company name",
+    "email": "Email",
+    "phoneNumber": "Phone number",
+    "fax": "Fax",
+    "internet": "[en] Internet (luotsintilaus)",
+    "lat": "[en] Leveysaste (lat)",
+    "lon": "[en] Pituusaste (lng)"
   }
 }

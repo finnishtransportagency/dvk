@@ -75,5 +75,22 @@
     "visibility-recommendation": "Sikt",
     "wind-gauge": "Vindmätare",
     "sea-level": "Vattenståndet"
+  },
+  "harbour": {
+    "primary-id": "[sv] Sataman tunniste",
+    "error-duplicate-id": "[sv] Tunniste on jo käytössä",
+    "harbour-info": "[sv] Satamatiedot",
+    "name": "Portnamn",
+    "extra-info": "Hamnens begränsningar",
+    "cargo": "Lasthantering",
+    "harbour-basin": "Hamnbassäng",
+    "contact-info": "[sv] Yhteystiedot",
+    "company-name": "Företagsnamn",
+    "email": "[sv] Sähköposti",
+    "phoneNumber": "[sv] Puhelin",
+    "fax": "[sv] Fax",
+    "internet": "[sv] Internet (luotsintilaus)",
+    "lat": "[sv] Leveysaste (lat)",
+    "lon": "[sv] Pituusaste (lng)"
   }
 }

@@ -534,6 +534,13 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 5px 0;
   border-bottom: 1px solid var(--ion-color-lighter);
 }
+.mainContent form ion-text h3 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: bold;
+  margin: 10px 5px 0;
+  border-bottom: 1px solid var(--ion-color-lighter);
+}
 
 /* Footer */
 ion-footer.small ion-toolbar {

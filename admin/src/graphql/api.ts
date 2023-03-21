@@ -1,4 +1,11 @@
-import { useCurrentUserQuery, useFairwayCardByIdQuery, useFairwayCardsAndHarborsQuery, useFairwaysQuery, useHarborsQuery } from './generated';
+import {
+  useCurrentUserQuery,
+  useFairwayCardByIdQuery,
+  useFairwayCardsAndHarborsQuery,
+  useFairwaysQuery,
+  useHarborsQuery,
+  useHarbourByIdQuery,
+} from './generated';
 
 const datasourceClient = {
   endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/yllapito/graphql',
@@ -27,4 +34,8 @@ export function useFairwaysQueryData() {
 
 export function useHarboursQueryData() {
   return useHarborsQuery(datasourceClient);
+}
+
+export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
+  return useHarbourByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
