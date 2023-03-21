@@ -7,17 +7,31 @@ import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
 
 interface InputProps {
   label: string;
-  val: string;
-  setValue: (val: string, actionType: ActionType, actionLang?: Lang) => void;
+  val: string | number | null | undefined;
+  setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
   actionType: ActionType;
   actionLang?: Lang;
+  actionTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
   error?: string;
   helperText?: string | null;
+  inputType?: 'text' | 'number' | 'tel' | 'email';
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
+const FormInput: React.FC<InputProps> = ({
+  label,
+  val,
+  setValue,
+  actionType,
+  actionLang,
+  actionTarget,
+  required,
+  disabled,
+  error,
+  helperText,
+  inputType,
+}) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -32,13 +46,20 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
   const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
     checkValidity(event);
-    setValue(event.detail.value as string, actionType, actionLang);
+    setValue(event.detail.value as string, actionType, actionLang, actionTarget);
   };
 
   const getErrorText = () => {
     if (error) return error;
-    if (!isValid) return t('required-field');
+    if (!isValid && required && (val || '').toString().trim().length < 1) return t('required-field');
+    if (!isValid) return t('check-input');
     return;
+  };
+
+  const getInputMode = () => {
+    if (inputType && inputType === 'number') return 'decimal';
+    if (inputType) return inputType;
+    return 'text';
   };
 
   useEffect(() => {
@@ -54,14 +75,18 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem className={'formInput' + (isValid ? '' : ' invalid')} lines="none" fill="outline">
+      <IonItem className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')} lines="none" fill="outline">
         <IonInput
           ref={inputRef}
           value={val}
+          min={inputType === 'number' ? 0 : undefined}
+          step={inputType === 'number' ? '0.1' : undefined}
           required={required}
           onIonChange={(ev) => handleChange(ev)}
           onIonBlur={(ev) => checkValidity(ev)}
           disabled={disabled}
+          type={inputType || 'text'}
+          inputMode={getInputMode()}
         />
         <IonNote slot="helper">{helperText}</IonNote>
         <IonNote slot="error" className="input-error">
