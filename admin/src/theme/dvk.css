@@ -412,6 +412,17 @@ ion-note.input-error svg {
   display: inline-block;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
 /* Header */
 ion-header {
   box-shadow: 4px 0 8px 0 rgba(var(--ion-color-dark), 0.5);
@@ -449,6 +460,9 @@ div.ion-page > ion-content.mainContent {
 }
 div.ion-page > ion-content.mainContent::part(scroll) {
   scrollbar-gutter: stable;
+}
+div.ion-page > ion-header ion-progress-bar {
+  position: fixed;
 }
 
 ion-grid.optionBar {
