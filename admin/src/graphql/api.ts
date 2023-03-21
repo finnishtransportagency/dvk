@@ -1,4 +1,15 @@
-import { useCurrentUserQuery, useFairwayCardByIdQuery, useFairwayCardsAndHarborsQuery, useFairwaysQuery, useHarborsQuery } from './generated';
+import { UseMutationOptions } from '@tanstack/react-query/build/lib/types';
+import {
+  SaveFairwayCardMutation,
+  SaveFairwayCardMutationVariables,
+  useCurrentUserQuery,
+  useFairwayCardByIdQuery,
+  useFairwayCardsAndHarborsQuery,
+  useFairwaysQuery,
+  useHarborsQuery,
+  usePilotPlacesQuery,
+  useSaveFairwayCardMutation,
+} from './generated';
 
 const datasourceClient = {
   endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/yllapito/graphql',
@@ -27,4 +38,14 @@ export function useFairwaysQueryData() {
 
 export function useHarboursQueryData() {
   return useHarborsQuery(datasourceClient);
+}
+
+export function usePilotPlacesQueryData() {
+  return usePilotPlacesQuery(datasourceClient);
+}
+
+export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<SaveFairwayCardMutation, TError, SaveFairwayCardMutationVariables, TContext>
+) {
+  return useSaveFairwayCardMutation(datasourceClient, options);
 }

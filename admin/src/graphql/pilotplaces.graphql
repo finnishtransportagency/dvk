@@ -1,0 +1,14 @@
+query pilotPlaces {
+  pilotPlaces {
+    id
+    name {
+      fi
+      sv
+      en
+    }
+    pilotJourney
+    geometry {
+      coordinates
+    }
+  }
+}
