@@ -11,6 +11,7 @@ import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
+import { warningOutline } from 'ionicons/icons';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -143,7 +144,14 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      {alertProps && <Alert color={alertProps.color} className="top-margin" title={t('warnings.lastUpdatedAt', { val: alertProps.duration })} />}
+      {alertProps && (
+        <Alert
+          icon={warningOutline}
+          color={alertProps.color}
+          className={'top-margin ' + alertProps.color}
+          title={t('warnings.lastUpdatedAt', { val: alertProps.duration })}
+        />
+      )}
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
         <FaultGroup
