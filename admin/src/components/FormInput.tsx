@@ -17,6 +17,7 @@ interface InputProps {
   error?: string;
   helperText?: string | null;
   inputType?: 'text' | 'number' | 'tel' | 'email';
+  unit?: string;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -31,6 +32,7 @@ const FormInput: React.FC<InputProps> = ({
   error,
   helperText,
   inputType,
+  unit,
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -88,6 +90,20 @@ const FormInput: React.FC<InputProps> = ({
           type={inputType || 'text'}
           inputMode={getInputMode()}
         />
+        {unit && (
+          <IonLabel slot="end" color="medium" className="unit use-flex">
+            <span
+              aria-label={
+                t('unit.' + unit + 'Desc', {
+                  count: Number(val),
+                }) || ''
+              }
+              role="definition"
+            >
+              {t('unit.' + unit)}
+            </span>
+          </IonLabel>
+        )}
         <IonNote slot="helper">{helperText}</IonNote>
         <IonNote slot="error" className="input-error">
           <ErrorIcon aria-label={t('error') || ''} />
