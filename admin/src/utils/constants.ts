@@ -1,4 +1,4 @@
-import { PilotPlaceInput } from "../graphql/generated";
+import { PilotPlaceInput } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
