@@ -328,7 +328,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t('general.required-field') : '' },
     ];
     setValidationErrors(manualValidations);
-    console.log(manualValidations);
     const currentCard = {
       ...state,
       trafficService: {
@@ -358,7 +357,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
           setSavedCard(null);
         }}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
-        subHeader={(saveError ? t('general.error-' + saveError) : t('fairwaycard.saved-by-id') + ' "' + savedCard?.id + '"') || ''}
+        subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedCard?.id })) || ''}
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
         buttons={[t('general.button-ok') || '']}
         cssClass={saveError ? 'error' : 'success'}
@@ -650,7 +649,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 </IonCol>
               </IonRow>
               <FormTextInputRow
-                labelKey="fairwaycard.additional-information"
+                labelKey="general.additional-information"
                 value={state.trafficService?.pilot?.extraInfo}
                 updateState={updateState}
                 actionType="pilotExtraInfo"
@@ -677,21 +676,18 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     />
                   )}
                 </IonCol>
-                <IonCol size="6"></IonCol>
-              </IonRow>
-              <IonRow>
                 {state.trafficService?.pilot?.places?.map((place) => {
                   const pilotPlace = place as PilotPlace;
                   const pilotName = (pilotPlace.name && (pilotPlace.name[lang] || pilotPlace.name.fi)) || pilotPlace.id.toString();
                   return (
                     <IonCol key={place.id}>
                       <FormInput
-                        label={t('fairwaycard.pilot-journey-from') + ' ' + pilotName}
+                        label={t('fairwaycard.pilotage-distance-from') + ' ' + pilotName}
                         val={place.pilotJourney}
                         setValue={updateState}
                         actionType="pilotJourney"
                         actionTarget={place.id}
-                        helperText={t('fairwaycard.pilot-journey-help-text')}
+                        unit="nm"
                         inputType="number"
                       />
                     </IonCol>
