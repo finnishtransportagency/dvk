@@ -239,7 +239,7 @@ type Pilot {
 
 type PilotPlace {
   id: Float!
-  name: String!
+  name: Text!
   pilotJourney: Float
   geometry: GeometryPoint!
 }

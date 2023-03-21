@@ -1,6 +1,10 @@
 {
   "id": 44,
-  "name": "Porkkala N",
+  "name": {
+    "fi": "Porkkala N",
+    "sv": "Porkkala N",
+    "en": "Porkkala N"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

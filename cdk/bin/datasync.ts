@@ -36,7 +36,7 @@ function processHarborOrPilotPlace(file: string): HarborDBModel | PilotPlaceDBMo
     jsonObj.modificationTimestamp = Date.now();
     console.log(`Harbor: ${jsonObj.name?.fi}`);
   } else {
-    console.log(`PilotPlace: ${jsonObj.name}`);
+    console.log(`PilotPlace: ${jsonObj.name.fi}`);
   }
   return jsonObj;
 }

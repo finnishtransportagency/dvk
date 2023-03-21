@@ -1,6 +1,10 @@
 {
   "id": 26,
-  "name": "Helsinki S",
+  "name": {
+    "fi": "Helsinki S",
+    "sv": "Helsingfors S",
+    "en": "Helsinki S"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

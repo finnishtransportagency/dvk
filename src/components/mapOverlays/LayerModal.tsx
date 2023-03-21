@@ -7,6 +7,8 @@ import { MAP } from '../../utils/constants';
 import { refreshPrintableMap } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
+import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
+import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 
 interface ModalProps {
   isOpen: boolean;
@@ -42,6 +44,35 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningLayer, dvkMap]);
+
+  const LegendDepth = () => {
+    return (
+      <IonGrid className="legend ion-no-padding">
+        <IonRow>
+          <IonCol size="2">
+            <IonItem>
+              <DepthN2000 />
+            </IonItem>
+          </IonCol>
+          <IonCol size="3">
+            <IonItem>
+              <IonText>N2000</IonText>
+            </IonItem>
+          </IonCol>
+          <IonCol size="2">
+            <IonItem>
+              <DepthMW />
+            </IonItem>
+          </IonCol>
+          <IonCol>
+            <IonItem>
+              <IonText>MW</IonText>
+            </IonItem>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    );
+  };
 
   const LegendSpeedlimits = () => {
     return (
@@ -268,7 +299,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             </IonItem>
           </IonCol>
           <IonCol size="auto">
-            {(id === 'speedlimit' || id === 'ice') && (
+            {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
               <IonButton
                 fill="clear"
                 className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
@@ -280,11 +311,12 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             )}
           </IonCol>
         </IonRow>
-        {(id === 'speedlimit' || id === 'ice') && (
+        {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
           <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
             <IonCol>
               {id === 'speedlimit' && <LegendSpeedlimits />}
               {id === 'ice' && <LegendIce />}
+              {id === 'depth12' && <LegendDepth />}
             </IonCol>
           </IonRow>
         )}

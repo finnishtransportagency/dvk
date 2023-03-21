@@ -30,7 +30,7 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   return fairway;
 }
 
-function mapTrafficService(service: TrafficServiceDBModel | undefined, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
+function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
   return {
     pilot: {
       email: service?.pilot?.email,
@@ -43,13 +43,13 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined, pilotMap:
           return {
             id: p.id,
             pilotJourney: p.pilotJourney,
-            name: pilotMap.get(p.id)?.name || '',
+            name: pilotMap.get(p.id)?.name || { fi: '', sv: '', en: '' },
             geometry: pilotMap.get(p.id)?.geometry || { type: 'Point', coordinates: [] },
           };
         }) || [],
     },
-    tugs: service?.tugs,
-    vts: service?.vts,
+    tugs: service?.tugs || null,
+    vts: service?.vts || null,
   };
 }
 

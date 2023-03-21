@@ -1,6 +1,10 @@
 {
   "id": 43,
-  "name": "Oulu W",
+  "name": {
+    "fi": "Oulu W",
+    "sv": "Uleåborg W",
+    "en": "Oulu W"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

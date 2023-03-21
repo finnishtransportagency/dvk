@@ -1,6 +1,10 @@
 {
   "id": 16,
-  "name": "Isokari NW",
+  "name": {
+    "fi": "Isokari NW",
+    "sv": "Isokari NW",
+    "en": "Isokari NW"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [

@@ -1,6 +1,10 @@
 {
   "id": 32,
-  "name": "Kotkan majakka",
+  "name": {
+    "fi": "Kotkan majakka",
+    "sv": "Kotka fyr",
+    "en": "Kotka lighthouse"
+  },
   "geometry": {
     "type": "Point",
     "coordinates": [
