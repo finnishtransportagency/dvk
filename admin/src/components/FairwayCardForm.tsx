@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
-import { ContentType, FairwayCardInput, Operation, Status } from '../graphql/generated';
-import { useFairwayCardsAndHarborsQueryData, useFairwaysQueryData, useHarboursQueryData } from '../graphql/api';
+import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, Status } from '../graphql/generated';
+import {
+  useFairwayCardsAndHarborsQueryData,
+  useFairwaysQueryData,
+  useHarboursQueryData,
+  usePilotPlacesQueryData,
+  useSaveFairwayCardMutationQuery,
+} from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
@@ -16,11 +22,18 @@ interface FormProps {
   isError?: boolean;
 }
 
+type ValidationType = {
+  id: string;
+  msg: string;
+};
+
 const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified, modifier, isError }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
+  const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
@@ -32,17 +45,32 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   ];
   if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
-  const [validationErrors, setValidationErrors] = useState({ primaryId: '' });
-  const reservedFairwayIds = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter((item) => item.type === ContentType.Card).flatMap((item) => item.id);
+  const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
+  const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
+    .filter((item) => item.type === ContentType.Card)
+    .flatMap((item) => item.id);
 
-  const updateState = (value: ValueType, actionType: ActionType | ActionTypeSelect, actionLang?: Lang) => {
+  const updateState = (value: ValueType, actionType: ActionType | ActionTypeSelect, actionLang?: Lang, actionTarget?: string | number) => {
     console.log('updateState... for input ' + actionType, actionLang);
-    // Check manual validations
+    // Check manual validations and clear triggered validations by save
     if (actionType === 'primaryId' && state.operation === Operation.Create) {
-      setValidationErrors({
-        ...validationErrors,
-        primaryId: reservedFairwayIds?.includes(value as string) ? t('fairwaycard.error-duplicate-id') : '',
-      });
+      let primaryIdErrorMsg = '';
+      if (reservedFairwayCardIds?.includes(value as string)) primaryIdErrorMsg = t('fairwaycard.error-duplicate-id');
+      if ((value as string).length < 1) primaryIdErrorMsg = t('general.required-field');
+      setValidationErrors((oldErrorList) => [
+        ...oldErrorList.filter((error) => error.id !== 'primaryId'),
+        { id: 'primaryId', msg: primaryIdErrorMsg },
+      ]);
+    } else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
+      setValidationErrors((oldErrorList) => [
+        ...oldErrorList.filter((error) => error.id !== 'name'),
+        { id: 'name', msg: (value as string).length < 1 ? t('general.required-field') : '' },
+      ]);
+    } else if (actionType === 'fairwayIds' && validationErrors.find((error) => error.id === 'fairwayIds')?.msg) {
+      setValidationErrors((oldErrorList) => [
+        ...oldErrorList.filter((error) => error.id !== 'fairwayIds'),
+        { id: 'fairwayIds', msg: (value as number[]).length < 1 ? t('general.required-field') : '' },
+      ]);
     }
 
     let newState;
@@ -191,6 +219,83 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
           },
         };
         break;
+      case 'pilotEmail':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              email: value as string,
+            },
+          },
+        };
+        break;
+      case 'pilotPhone':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              phoneNumber: value as string,
+            },
+          },
+        };
+        break;
+      case 'pilotFax':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              fax: value as string,
+            },
+          },
+        };
+        break;
+      case 'pilotExtraInfo':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              extraInfo: {
+                ...(state.trafficService?.pilot?.extraInfo || { fi: '', sv: '', en: '' }),
+                [actionLang as string]: value as string,
+              },
+            },
+          },
+        };
+        break;
+      case 'pilotPlaces':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              places: value as PilotPlace[],
+            },
+          },
+        };
+        break;
+      case 'pilotJourney':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              places: state.trafficService?.pilot?.places?.map((place) =>
+                place.id === actionTarget ? { ...place, pilotJourney: value as number } : place
+              ),
+            },
+          },
+        };
+        break;
       default:
         console.warn(`Unknown action type, state not updated.`);
         return state;
@@ -202,16 +307,64 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     setState(fairwayCard);
   }, [fairwayCard]);
 
+  // Save fairway card
+  const [saveError, setSaveError] = useState<string>();
+  const [savedCard, setSavedCard] = useState<FairwayCard | null>();
+  const { mutate: saveFairwayCard, isLoading: isLoadingMutation } = useSaveFairwayCardMutationQuery({
+    onSuccess(data) {
+      setSavedCard(data.saveFairwayCard);
+    },
+    onError: (error: Error) => {
+      setSaveError(error.message);
+    },
+  });
+
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = () => {
-    console.log('...submitting... isFormValid? ' + formRef.current?.checkValidity());
-    console.log(state, validationErrors);
-    formRef.current?.reportValidity();
+    // Manual validations for required fields
+    const manualValidations = [
+      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
+      { id: 'primaryId', msg: !state.id.trim() ? t('general.required-field') : '' },
+      { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t('general.required-field') : '' },
+    ];
+    setValidationErrors(manualValidations);
+    console.log(manualValidations);
+    const currentCard = {
+      ...state,
+      trafficService: {
+        ...state.trafficService,
+        pilot: {
+          ...state.trafficService?.pilot,
+          places: state.trafficService?.pilot?.places?.map((place) => {
+            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
+          }),
+        },
+      },
+    };
+    console.log(currentCard);
+    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
+      saveFairwayCard({ card: currentCard as FairwayCardInput });
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
   };
 
   return (
     <IonPage>
+      <IonAlert
+        isOpen={!!saveError || !!savedCard}
+        onDidDismiss={() => {
+          setSaveError('');
+          setSavedCard(null);
+        }}
+        header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
+        subHeader={(saveError ? t('general.error-' + saveError) : t('fairwaycard.saved-by-id') + ' "' + savedCard?.id + '"') || ''}
+        message={saveError ? t('general.fix-errors-try-again') || '' : ''}
+        buttons={[t('general.button-ok') || '']}
+        cssClass={saveError ? 'error' : 'success'}
+      />
       <IonHeader className="ion-no-border">
+        {(isLoading || isLoadingMutation) && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow>
             <IonCol className="ion-align-self-center align-right">
@@ -250,7 +403,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                   {t('general.delete')}
                 </IonButton>
               )}
-              <IonButton shape="round" disabled={isError} onClick={() => handleSubmit()}>
+              <IonButton shape="round" disabled={isError || isLoadingMutation} onClick={() => handleSubmit()}>
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
             </IonCol>
@@ -260,12 +413,18 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}
-        {isLoading && <IonProgressBar type="indeterminate" />}
 
         {!isLoading && !isError && (
           <form ref={formRef}>
             <IonGrid className="formGrid">
-              <FormTextInputRow labelKey="fairwaycard.name" value={state.name} updateState={updateState} actionType="name" required />
+              <FormTextInputRow
+                labelKey="fairwaycard.name"
+                value={state.name}
+                updateState={updateState}
+                actionType="name"
+                required
+                error={validationErrors.find((error) => error.id === 'name')?.msg}
+              />
               <IonRow>
                 <IonCol size="3">
                   <FormInput
@@ -275,7 +434,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     actionType="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
-                    error={validationErrors.primaryId}
+                    error={validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('fairwaycard.primary-id-help-text')}
                   />
                 </IonCol>
@@ -290,6 +449,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                       multiple
                       required
                       showId
+                      error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
                     />
                   )}
                 </IonCol>
@@ -453,6 +613,91 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
                 inputType="textarea"
               />
+            </IonGrid>
+
+            <IonText>
+              <h2>{t('fairwaycard.traffic-services')}</h2>
+              <h3>{t('fairwaycard.pilot-order')}</h3>
+            </IonText>
+            <IonGrid className="formGrid">
+              <IonRow>
+                <IonCol>
+                  <FormInput
+                    label={t('general.email')}
+                    val={state.trafficService?.pilot?.email || ''}
+                    setValue={updateState}
+                    actionType="pilotEmail"
+                    inputType="email"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormInput
+                    label={t('general.phone-number')}
+                    val={state.trafficService?.pilot?.phoneNumber || ''}
+                    setValue={updateState}
+                    actionType="pilotPhone"
+                    inputType="tel"
+                  />
+                </IonCol>
+                <IonCol>
+                  <FormInput
+                    label={t('general.fax')}
+                    val={state.trafficService?.pilot?.fax || ''}
+                    setValue={updateState}
+                    actionType="pilotFax"
+                    inputType="tel"
+                  />
+                </IonCol>
+              </IonRow>
+              <FormTextInputRow
+                labelKey="fairwaycard.additional-information"
+                value={state.trafficService?.pilot?.extraInfo}
+                updateState={updateState}
+                actionType="pilotExtraInfo"
+                required={
+                  !!(
+                    state.trafficService?.pilot?.extraInfo?.fi ||
+                    state.trafficService?.pilot?.extraInfo?.sv ||
+                    state.trafficService?.pilot?.extraInfo?.en
+                  )
+                }
+                inputType="textarea"
+              />
+              <IonRow>
+                <IonCol size="6">
+                  {!isLoadingPilotPlaces && (
+                    <FormSelect
+                      label={t('fairwaycard.linked-pilot-places')}
+                      selected={(state.trafficService?.pilot?.places as PilotPlace[]) || []}
+                      options={pilotPlaceList?.pilotPlaces || []}
+                      setSelected={updateState}
+                      actionType="pilotPlaces"
+                      multiple
+                      compareObjects
+                    />
+                  )}
+                </IonCol>
+                <IonCol size="6"></IonCol>
+              </IonRow>
+              <IonRow>
+                {state.trafficService?.pilot?.places?.map((place) => {
+                  const pilotPlace = place as PilotPlace;
+                  const pilotName = (pilotPlace.name && (pilotPlace.name[lang] || pilotPlace.name.fi)) || pilotPlace.id.toString();
+                  return (
+                    <IonCol key={place.id}>
+                      <FormInput
+                        label={t('fairwaycard.pilot-journey-from') + ' ' + pilotName}
+                        val={place.pilotJourney}
+                        setValue={updateState}
+                        actionType="pilotJourney"
+                        actionTarget={place.id}
+                        helperText={t('fairwaycard.pilot-journey-help-text')}
+                        inputType="number"
+                      />
+                    </IonCol>
+                  );
+                })}
+              </IonRow>
             </IonGrid>
           </form>
         )}
