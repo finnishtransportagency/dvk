@@ -1,10 +1,15 @@
+import { UseMutationOptions } from '@tanstack/react-query/build/lib/types';
 import {
+  SaveFairwayCardMutation,
+  SaveFairwayCardMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
   useFairwaysQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
+  usePilotPlacesQuery,
+  useSaveFairwayCardMutation,
 } from './generated';
 
 const datasourceClient = {
@@ -38,4 +43,14 @@ export function useHarboursQueryData() {
 
 export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
   return useHarbourByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
+}
+
+export function usePilotPlacesQueryData() {
+  return usePilotPlacesQuery(datasourceClient);
+}
+
+export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<SaveFairwayCardMutation, TError, SaveFairwayCardMutationVariables, TContext>
+) {
+  return useSaveFairwayCardMutation(datasourceClient, options);
 }

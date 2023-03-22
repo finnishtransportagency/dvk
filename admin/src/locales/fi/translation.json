@@ -40,8 +40,26 @@
     "save": "Tallenna",
     "choose": "Valitse...",
     "loading-error": "Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
-    "multiple-values-supported": "Voit valita tarvittaessa useita kohteita",
-    "required-field": "Pakollinen tieto"
+    "multiple-values-supported": "Voit valita tarvittaessa useita kohteita.",
+    "required-field": "Pakollinen tieto",
+    "email": "Sähköposti",
+    "phone-number": "Puhelinnumero",
+    "fax": "Faksin numero",
+    "additional-information": "Lisätiedot",
+    "save-successful": "Tallennus onnistui",
+    "save-failed": "Tallennus epäonnistui",
+    "saved-by-id": "Kohteen \"{{ id }}\" tiedot tallennettu.",
+    "error-MISSING-INFORMATION": "Pakollisia tietoja puuttuu.",
+    "error-CARD_ALREADY_EXIST": "Väyläkortin tunniste on jo käytössä.",
+    "error-CARD_ID_MISSING": "Väyläkortin tunniste puuttuu.",
+    "error-NO_PERMISSIONS": "Ei tarvittavia käyttöoikeuksia.",
+    "fix-errors-try-again": "Korjaa virheet ja yritä uudelleen.",
+    "button-ok": "Ok",
+    "unit": {
+      "nm": "M",
+      "nmDesc_one": "meripeninkulma",
+      "nmDesc_other": "meripeninkulmaa"
+    }
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -76,7 +94,11 @@
     "vessel-recommendation": "Aluskohtaiset suositukset",
     "visibility-recommendation": "Näkyvyyssuositukset",
     "wind-gauge": "Tuulimittarit",
-    "sea-level": "Merivedenkorkeus"
+    "sea-level": "Merivedenkorkeus",
+    "traffic-services": "Liikennepalvelut",
+    "pilot-order": "Luotsintilaus",
+    "linked-pilot-places": "Linkitetyt luotsipaikat",
+    "pilotage-distance-from": "Luotsausmatka kohteesta"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",

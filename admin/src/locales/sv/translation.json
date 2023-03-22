@@ -41,7 +41,25 @@
     "choose": "[sv] Valitse...",
     "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
-    "required-field": "[sv] Pakollinen tieto"
+    "required-field": "[sv] Pakollinen tieto",
+    "email": "E-post",
+    "phone-number": "Telefonnummer",
+    "fax": "Faxnummer",
+    "additional-information": "[sv] Lisätiedot",
+    "save-successful": "[sv] Tallennus onnistui",
+    "save-failed": "[sv] Tallennus epäonnistui",
+    "saved-by-id": "[sv] Kohteen \"{{ id }}\" tiedot tallennettu.",
+    "error-MISSING-INFORMATION": "[sv] Pakollisia tietoja puuttuu.",
+    "error-CARD_ALREADY_EXIST": "[sv] Väyläkortin tunniste on jo käytössä.",
+    "error-CARD_ID_MISSING": "[sv] Väyläkortin tunniste puuttuu.",
+    "error-NO_PERMISSIONS": "[sv] Ei tarvittavia käyttöoikeuksia.",
+    "fix-errors-try-again": "[sv] Korjaa virheet ja yritä uudelleen.",
+    "button-ok": "Ok",
+    "unit": {
+      "nm": "M",
+      "nmDesc_one": "sjömil",
+      "nmDesc_other": "sjömil"
+    }
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -76,7 +94,11 @@
     "vessel-recommendation": "Rekommendationer för fartyg",
     "visibility-recommendation": "Sikt",
     "wind-gauge": "Vindmätare",
-    "sea-level": "Vattenståndet"
+    "sea-level": "Vattenståndet",
+    "traffic-services": "Trafikservice",
+    "pilot-order": "Lotsbeställning",
+    "linked-pilot-places": "[sv] Linkitetyt luotsipaikat",
+    "pilotage-distance-from": "Lotsled från"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

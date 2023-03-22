@@ -82,6 +82,19 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
       sv: data?.fairwayCard?.seaLevel?.sv || '',
       en: data?.fairwayCard?.seaLevel?.en || '',
     },
+    trafficService: {
+      pilot: {
+        email: data?.fairwayCard?.trafficService?.pilot?.email || '',
+        phoneNumber: data?.fairwayCard?.trafficService?.pilot?.phoneNumber || '',
+        fax: data?.fairwayCard?.trafficService?.pilot?.fax || '',
+        extraInfo: {
+          fi: data?.fairwayCard?.trafficService?.pilot?.extraInfo?.fi || '',
+          sv: data?.fairwayCard?.trafficService?.pilot?.extraInfo?.sv || '',
+          en: data?.fairwayCard?.trafficService?.pilot?.extraInfo?.en || '',
+        },
+        places: data?.fairwayCard?.trafficService?.pilot?.places,
+      },
+    },
     operation: origin ? Operation.Create : Operation.Update,
   };
 
@@ -129,6 +142,15 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     visibility: { fi: '', sv: '', en: '' },
     windGauge: { fi: '', sv: '', en: '' },
     seaLevel: { fi: '', sv: '', en: '' },
+    trafficService: {
+      pilot: {
+        email: '',
+        phoneNumber: '',
+        fax: '',
+        extraInfo: { fi: '', sv: '', en: '' },
+        places: [],
+      },
+    },
     status: Status.Draft,
     operation: Operation.Create,
   };
