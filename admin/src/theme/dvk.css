@@ -37,7 +37,7 @@ ion-row.input-row > ion-col {
   transform: rotate(180deg);
 }
 .use-flex {
-  display: flex;
+  display: flex !important;
 }
 
 .align-center {
@@ -351,10 +351,6 @@ ion-item.formInput::part(native) {
   border-radius: 0;
   border-color: var(--ion-color-dark);
 }
-ion-item.formInput > ion-label {
-  position: absolute;
-  top: -30px;
-}
 ion-item.formInput ion-input {
   background-color: var(--ion-color-primary-contrast);
   height: calc(100% - 2px);
@@ -365,6 +361,17 @@ ion-item.formInput.item-has-focus ion-input {
   height: calc(100% - 4px);
   --padding-start: 12px !important;
   --padding-end: 12px;
+}
+ion-item.formInput ion-label.unit {
+  background-color: var(--ion-color-primary-contrast);
+  height: calc(100% - 2px);
+  padding: 0 13px 0 0;
+  margin: 0;
+  align-items: center;
+}
+ion-item.formInput.item-has-focus ion-label.unit {
+  height: calc(100% - 4px);
+  padding-right: 12px;
 }
 ion-item.formInput input.native-input[disabled] {
   opacity: 1 !important;
@@ -412,6 +419,17 @@ ion-note.input-error svg {
   display: inline-block;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: none;
+}
+
 /* Header */
 ion-header {
   box-shadow: 4px 0 8px 0 rgba(var(--ion-color-dark), 0.5);
@@ -449,6 +467,9 @@ div.ion-page > ion-content.mainContent {
 }
 div.ion-page > ion-content.mainContent::part(scroll) {
   scrollbar-gutter: stable;
+}
+div.ion-page > ion-header ion-progress-bar {
+  position: fixed;
 }
 
 ion-grid.optionBar {
@@ -528,9 +549,16 @@ ion-grid.formGrid ion-col:last-of-type {
 }
 .mainContent form ion-text h2 {
   font-size: 14px;
-  line-height: 24px;
+  line-height: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
+  margin: 10px 5px 0;
+  border-bottom: 1px solid var(--ion-color-light);
+}
+.mainContent form ion-text h3 {
+  font-size: 14px;
+  line-height: 1.25rem;
+  font-weight: bold;
   margin: 10px 5px 0;
   border-bottom: 1px solid var(--ion-color-lighter);
 }

@@ -41,7 +41,25 @@
     "choose": "Choose...",
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
-    "required-field": "Required field"
+    "required-field": "Required field",
+    "email": "Email",
+    "phone-number": "Phone number",
+    "fax": "Fax number",
+    "additional-information": "Additional information",
+    "save-successful": "Save successful",
+    "save-failed": "save failed",
+    "saved-by-id": "Data for item \"{{ id }}\" saved.",
+    "error-MISSING-INFORMATION": "Required information missing.",
+    "error-CARD_ALREADY_EXIST": "Fairway card ID already in use.",
+    "error-CARD_ID_MISSING": "Fairway card ID missing.",
+    "error-NO_PERMISSIONS": "Permission needed.",
+    "fix-errors-try-again": "Fix errors and try again.",
+    "button-ok": "Ok",
+    "unit": {
+      "nm": "M",
+      "nmDesc_one": "nautical mile",
+      "nmDesc_other": "nautical miles"
+    }
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -76,6 +94,10 @@
     "vessel-recommendation": "Vessel recommendations",
     "visibility-recommendation": "Visibility",
     "wind-gauge": "Wind gauges",
-    "sea-level": "Sea level"
+    "sea-level": "Sea level",
+    "traffic-services": "Traffic services",
+    "pilot-order": "Pilotage",
+    "linked-pilot-places": "Linked pilot boarding positions",
+    "pilotage-distance-from": "Pilotage distance from"
   }
 }

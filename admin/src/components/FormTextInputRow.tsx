@@ -29,7 +29,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   helperText,
   inputType,
 }) => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
@@ -46,7 +46,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
             helperText={helperText}
           />
         )}
@@ -59,7 +59,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
             helperText={helperText}
           />
         )}
@@ -74,7 +74,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
             helperText={helperText}
           />
         )}
@@ -87,7 +87,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
             helperText={helperText}
           />
         )}
@@ -102,7 +102,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
             helperText={helperText}
           />
         )}
@@ -115,7 +115,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error}
+            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
             helperText={helperText}
           />
         )}

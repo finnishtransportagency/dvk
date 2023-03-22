@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
-import { Text } from '../graphql/generated';
+import { PilotPlace, Text } from '../graphql/generated';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { SelectChangeEventDetail, IonSelectCustomEvent } from '@ionic/core';
 
@@ -14,7 +14,7 @@ interface SelectOption {
 interface SelectProps {
   label: string;
   selected?: ValueType;
-  options: SelectOption[] | null;
+  options: SelectOption[] | PilotPlace[] | null;
   setSelected: (value: ValueType, actionType: ActionType | ActionTypeSelect) => void;
   actionType: ActionTypeSelect;
   required?: boolean;
@@ -23,6 +23,8 @@ interface SelectProps {
   disabled?: boolean;
   helperText?: string | null;
   hideLabel?: boolean;
+  error?: string;
+  compareObjects?: boolean;
 }
 
 const FormSelect: React.FC<SelectProps> = ({
@@ -37,12 +39,14 @@ const FormSelect: React.FC<SelectProps> = ({
   disabled,
   helperText,
   hideLabel,
+  error,
+  compareObjects,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
   const sortedOptions = options?.sort((a, b) => {
-    const nameA = (a.name && a.name[lang]) || '';
-    const nameB = (b.name && b.name[lang]) || '';
+    const nameA = (typeof a.name === 'string' ? a.name : a.name && a.name[lang]) || '';
+    const nameB = (typeof b.name === 'string' ? b.name : b.name && b.name[lang]) || '';
     return nameA.localeCompare(nameB);
   });
 
@@ -51,19 +55,22 @@ const FormSelect: React.FC<SelectProps> = ({
     selectRef.current?.click();
   };
 
-  const compareOptions = (o1: string | number, o2: string | number) => {
+  const compareOptions = (o1: string | number | PilotPlace, o2: string | number | PilotPlace) => {
     if (!o1 || !o2) {
       return o1 === o2;
+    }
+    if (compareObjects && typeof o1 === 'object' && typeof o2 === 'object') {
+      return o1.id === o2.id;
     }
     return o1 === o2;
   };
 
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(error ? false : true);
   const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = () => {
     const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
-    setIsValid(required ? validity : true);
+    setIsValid(required ? validity && !error : true);
   };
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
     if (isTouched) checkValidity();
@@ -76,6 +83,12 @@ const FormSelect: React.FC<SelectProps> = ({
     return false;
   };
 
+  const getErrorText = () => {
+    if (error) return error;
+    if (!isValid) return t('required-field');
+    return;
+  };
+
   return (
     <>
       {!hideLabel && (
@@ -83,7 +96,7 @@ const FormSelect: React.FC<SelectProps> = ({
           {label} {required ? '*' : ''}
         </IonLabel>
       )}
-      <IonItem fill="outline" className={'selectInput' + (isValid ? '' : ' invalid')}>
+      <IonItem fill="outline" className={'selectInput' + (isValid && (!error || error === '') ? '' : ' invalid')}>
         <IonSelect
           ref={selectRef}
           placeholder={t('choose') || ''}
@@ -102,10 +115,12 @@ const FormSelect: React.FC<SelectProps> = ({
         >
           {sortedOptions &&
             sortedOptions.map((item) => {
-              const optionLabel = (showId ? '[' + item.id + '] ' : '') + (item.name ? item.name[lang] || item.name.fi : item.id);
+              const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+              const additionalLabel = (item as PilotPlace).geometry?.coordinates?.join(', ');
               return (
-                <IonSelectOption key={item.id.toString()} value={item.id}>
-                  {optionLabel}
+                <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
+                  {showId ? '[' + item.id + '] ' : ''}
+                  {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
                 </IonSelectOption>
               );
             })}
@@ -113,7 +128,7 @@ const FormSelect: React.FC<SelectProps> = ({
         <IonNote slot="helper">{getHelperText()}</IonNote>
         <IonNote slot="error" className="input-error">
           <ErrorIcon aria-label={t('error') || ''} />
-          {t('required-field')}
+          {getErrorText()}
         </IonNote>
       </IonItem>
     </>
