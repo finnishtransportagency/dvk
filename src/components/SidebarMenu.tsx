@@ -15,7 +15,7 @@ import {
   IonItem,
   IonTitle,
 } from '@ionic/react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
@@ -73,10 +73,10 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
   const { state } = useDvkContext();
+  const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
+  const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
-    const firstFocusableElement = document.getElementById('dvkModalStart');
-    const lastFocusableElement = document.getElementById('dvkModalEnd');
     const isTabPressed = e.key === 'Tab';
 
     if (!isTabPressed) {
@@ -85,14 +85,14 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
 
     if (e.shiftKey) {
       // peruutus
-      if (document.activeElement === firstFocusableElement) {
-        lastFocusableElement?.focus();
+      if (document.activeElement === firstFocusableElement.current) {
+        lastFocusableElement.current?.focus();
         e.preventDefault();
       }
     } else {
       // eteenpain
-      if (document.activeElement === lastFocusableElement) {
-        firstFocusableElement?.focus();
+      if (document.activeElement === lastFocusableElement.current) {
+        firstFocusableElement.current?.focus();
         e.preventDefault();
       }
     }
@@ -107,7 +107,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   }, [handleTabFocus]);
 
   return (
-    <IonMenu id="dvksidebar" disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
+    <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
       <IonContent className="sidebarMenu">
         <IonGrid className="mainGrid ion-no-padding" style={{ height: '100%' }}>
           <IonRow className="ion-justify-content-between" style={{ height: '100%' }}>
@@ -119,7 +119,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   </IonCol>
                   <IonCol size="auto">
                     <IonButton
-                      id="dvkModalStart"
+                      ref={firstFocusableElement}
                       tabIndex={0}
                       fill="clear"
                       className="closeButton"
@@ -238,7 +238,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 <IonTitle>
                   <IonButtons>
                     <IonButton
-                      id="dvkModalEnd"
+                      ref={lastFocusableElement}
                       tabIndex={0}
                       className="sourceText"
                       onClick={() => {
