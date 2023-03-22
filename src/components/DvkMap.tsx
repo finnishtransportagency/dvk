@@ -353,6 +353,9 @@ class DvkMap {
       const mapLayers = this.olMap.getLayers();
       mapLayers.forEach((layer) => {
         if (layer.get('type') === 'backgroundTile') {
+          if (!isOffline) {
+            (layer as Layer).getSource()?.refresh();
+          }
           layer.setVisible(isOffline ? false : true);
         } else if (layer.get('type') === 'backgroundMmlmeri' || layer.get('type') === 'backgroundMmljarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
