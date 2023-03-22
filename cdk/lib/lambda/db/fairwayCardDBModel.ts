@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status } from '../../../graphql/generated';
+import { Maybe, Status, Operation } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -123,6 +123,8 @@ class FairwayCardDBModel {
 
   fairways: FairwayDBModel[];
 
+  expires?: Maybe<number>;
+
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
@@ -162,8 +164,9 @@ class FairwayCardDBModel {
     return fairwayCards;
   }
 
-  static async save(data: FairwayCardDBModel) {
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: fairwayCardTable, Item: data }));
+  static async save(data: FairwayCardDBModel, operation: Operation) {
+    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: fairwayCardTable, Item: data, ConditionExpression: expr }));
   }
 }
 

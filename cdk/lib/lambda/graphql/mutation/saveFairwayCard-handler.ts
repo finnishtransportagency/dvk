@@ -6,6 +6,7 @@ import {
   MutationSaveFairwayCardArgs,
   Operation,
   OperationError,
+  Status,
   TextInput,
 } from '../../../../graphql/generated';
 import { auditLog, log } from '../../logger';
@@ -13,34 +14,54 @@ import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
+import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { getExpires } from '../../environment';
 
 function mapText(text?: Maybe<TextInput>) {
-  if (text) {
+  if (text && text.fi && text.sv && text.en) {
+    return {
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
+    };
+  } else if (text && (text.fi || text.sv || text.en)) {
+    throw new Error(OperationError.InvalidInput);
+  } else {
+    return null;
+  }
+}
+
+function mapMandatoryText(text: TextInput) {
+  if (text.fi && text.sv && text.en) {
     return {
       fi: text.fi,
       sv: text.sv,
       en: text.en,
     };
   } else {
-    return null;
+    throw new Error(OperationError.InvalidInput);
   }
 }
 
-function map<T>(text: Maybe<T> | undefined): T | null {
+function mapString(text: Maybe<string> | undefined): string | null {
   return text ? text : null;
 }
 
+function mapNumber(text: Maybe<number> | undefined): number | null {
+  return text ?? null;
+}
+
 function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : null;
+  return text ? (text.map((t) => mapString(t)).filter((t) => t !== null) as string[]) : null;
 }
 
 function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
     id: card.id,
-    name: card.name,
+    name: mapMandatoryText(card.name),
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
-    group: map<string>(card.group),
+    group: mapString(card.group),
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
     creator: old ? old.creator : user.uid,
     modifier: user.uid,
@@ -67,24 +88,24 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
     vesselRecommendation: mapText(card.vesselRecommendation),
     trafficService: {
       pilot: {
-        email: map<string>(card.trafficService?.pilot?.email),
+        email: mapString(card.trafficService?.pilot?.email),
         extraInfo: mapText(card.trafficService?.pilot?.extraInfo),
-        fax: map<string>(card.trafficService?.pilot?.fax),
-        internet: map<string>(card.trafficService?.pilot?.internet),
-        phoneNumber: map<string>(card.trafficService?.pilot?.phoneNumber),
+        fax: mapString(card.trafficService?.pilot?.fax),
+        internet: mapString(card.trafficService?.pilot?.internet),
+        phoneNumber: mapString(card.trafficService?.pilot?.phoneNumber),
         places:
           card.trafficService?.pilot?.places?.map((p) => {
             return {
               id: p.id,
-              pilotJourney: map<number>(p.pilotJourney),
+              pilotJourney: mapNumber(p.pilotJourney),
             };
           }) || [],
       },
       tugs:
         card.trafficService?.tugs?.map((t) => {
           return {
-            email: map<string>(t?.email),
-            fax: map<string>(t?.fax),
+            email: mapString(t?.email),
+            fax: mapString(t?.fax),
             name: mapText(t?.name),
             phoneNumber: mapStringArray(t?.phoneNumber),
           };
@@ -94,11 +115,11 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
           return {
             email: mapStringArray(v?.email),
             name: mapText(v?.name),
-            phoneNumber: map<string>(v?.phoneNumber),
+            phoneNumber: mapString(v?.phoneNumber),
             vhf: v?.vhf?.map((v2) => {
               return {
                 name: mapText(v2?.name),
-                channel: map<number>(v2?.channel),
+                channel: mapNumber(v2?.channel),
               };
             }),
           };
@@ -109,6 +130,7 @@ function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel |
         return { id };
       }) || null,
     fairwayIds: mapIds(card.fairwayIds),
+    expires: card.status === Status.Removed ? getExpires() : null,
   };
 }
 
@@ -119,15 +141,18 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   log.info(`saveFairwayCard(${event.arguments.card?.id}, ${user.uid})`);
   if (event.arguments.card?.id) {
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
-    if (event.arguments.card.operation === Operation.Create && dbModel !== undefined) {
-      log.warn(`Card with id ${event.arguments.card.id} already exists`);
-      throw new Error(OperationError.CardAlreadyExist);
-    }
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
-    await FairwayCardDBModel.save(newModel);
-    if (dbModel) {
-      const changes = diff(dbModel, newModel);
+    try {
+      await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
+    } catch (e) {
+      if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
+        throw new Error(event.arguments.card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);
+      }
+      throw e;
+    }
+    if (event.arguments.card.operation === Operation.Update) {
+      const changes = dbModel ? diff(dbModel, newModel) : null;
       auditLog.info({ changes, card: newModel, user: user.uid }, 'FairwayCard updated');
     } else {
       auditLog.info({ card: newModel, user: user.uid }, 'FairwayCard added');

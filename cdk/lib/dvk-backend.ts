@@ -124,9 +124,10 @@ export class DvkBackendStack extends Stack {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
+          DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -180,6 +181,7 @@ export class DvkBackendStack extends Stack {
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
     });
     table.addGlobalSecondaryIndex({
       indexName: 'FairwayCardByFairwayIdIndex',
@@ -201,6 +203,7 @@ export class DvkBackendStack extends Stack {
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
     });
   }
 
@@ -261,7 +264,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      lifecycleRules,
+      lifecycleRules: Config.isProductionEnvironment() ? undefined : lifecycleRules,
     });
   }
 
@@ -295,7 +298,7 @@ export class DvkBackendStack extends Stack {
       environment: {
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
         SSM_PARAMETER_STORE_TTL: '300',
       },
       logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -322,7 +325,7 @@ export class DvkBackendStack extends Stack {
           PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },
