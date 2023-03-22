@@ -82,3 +82,21 @@ export const refreshPrintableMap = () => {
     mapExport?.appendChild(img);
   }
 };
+
+function getDuration(dataUpdatedAt: number, decimals = 1) {
+  const power = Math.pow(10, decimals);
+  const now = Date.now(); // for testing warning vs danger + 1000 * 60 * 60 * 11;
+  const duration = Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60;
+  return Math.round(duration * power) / power;
+}
+
+export function getAlertProperties(dataUpdatedAt: number) {
+  const duration = getDuration(dataUpdatedAt);
+  if (duration < 2) {
+    return undefined;
+  } else if (duration < 12) {
+    return { duration, color: 'warning' };
+  } else {
+    return { duration, color: 'danger' };
+  }
+}

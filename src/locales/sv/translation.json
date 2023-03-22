@@ -233,7 +233,9 @@
     "validityTime": "Giltighet",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Uppgiftslämnare",
-    "modified": "Uppdaterat"
+    "modified": "Uppdaterat",
+    "lastUpdatedAt": "[sv] Näkymän tiedot ladattu {{ val, number}}h sitten.",
+    "lastUpdatedAt2": "[sv] Tason tiedot on ladattu {{ val, number}}h sitten."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
