@@ -10,12 +10,11 @@ import {
   IonCol,
   IonFooter,
   IonToolbar,
-  IonTitle,
   IonText,
   useIonRouter,
   IonItem,
 } from '@ionic/react';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
@@ -74,8 +73,40 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const router = useIonRouter();
   const { state } = useDvkContext();
 
+  const handleTabFocus = useCallback((e: KeyboardEvent) => {
+    const firstFocusableElement = document.getElementById('dvkModalStart');
+    const lastFocusableElement = document.getElementById('dvkModalEnd');
+    const isTabPressed = e.key === 'Tab';
+
+    if (!isTabPressed) {
+      return;
+    }
+
+    if (e.shiftKey) {
+      // peruutus
+      if (document.activeElement === firstFocusableElement) {
+        lastFocusableElement?.focus();
+        e.preventDefault();
+      }
+    } else {
+      // eteenpain
+      if (document.activeElement === lastFocusableElement) {
+        firstFocusableElement?.focus();
+        e.preventDefault();
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleTabFocus);
+
+    return () => {
+      document.removeEventListener('keydown', handleTabFocus);
+    };
+  }, [handleTabFocus]);
+
   return (
-    <IonMenu disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
+    <IonMenu id="dvksidebar" disabled={false} hidden={false} side="start" maxEdgeStart={24} content-id="MainContent" className="sideBar">
       <IonContent className="sidebarMenu">
         <IonGrid className="mainGrid ion-no-padding" style={{ height: '100%' }}>
           <IonRow className="ion-justify-content-between" style={{ height: '100%' }}>
@@ -87,6 +118,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   </IonCol>
                   <IonCol size="auto">
                     <IonButton
+                      id="dvkModalStart"
+                      tabIndex={0}
                       fill="clear"
                       className="closeButton"
                       onClick={async () => menuController.close()}
@@ -150,6 +183,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   </IonCol>
                   <IonCol size="auto">
                     <IonItem
+                      id="squatlink"
                       href={t('squat-url')}
                       rel="external"
                       target="_blank"
@@ -180,38 +214,39 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
           </IonRow>
         </IonGrid>
       </IonContent>
-
-      <IonFooter collapse="fade" className="small ion-no-border">
+      <IonFooter collapse="fade" className="small ion-no-border dvkFooter">
         <IonToolbar className="ion-no-border">
-          <IonTitle size="small">
-            <a
-              href="https://www.palautevayla.fi/aspa"
-              rel="noreferrer"
-              target="_blank"
-              className="ion-no-padding external"
-              onClick={() => menuController.close()}
-            >
-              {t('customer-service')}
-            </a>
-          </IonTitle>
-        </IonToolbar>
-        <IonToolbar className="ion-no-border">
-          <IonTitle size="small" slot="start">
-            <IonItem
-              detail={false}
-              lines="none"
-              className="ion-no-padding internal"
-              onClick={() => {
-                menuController.close();
-                setIsSourceOpen(true);
-              }}
-            >
-              {t('source')}
+          <IonGrid>
+            <IonItem>
+              <a
+                href="https://www.palautevayla.fi/aspa"
+                rel="noreferrer"
+                target="_blank"
+                className="ion-no-padding external"
+                onClick={() => menuController.close()}
+              >
+                {t('customer-service')}
+              </a>
             </IonItem>
-          </IonTitle>
-          <IonTitle size="small" slot="end">
-            <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>
-          </IonTitle>
+            <IonItem>
+              <IonButtons>
+                <IonButton
+                  id="dvkModalEnd"
+                  tabIndex={0}
+                  className="sourceText"
+                  onClick={() => {
+                    menuController.close();
+                    setIsSourceOpen(true);
+                  }}
+                >
+                  {t('source')}
+                </IonButton>
+              </IonButtons>
+            </IonItem>
+            <IonItem>
+              <small>Beta v{`${process.env.REACT_APP_VERSION}`}</small>
+            </IonItem>
+          </IonGrid>
         </IonToolbar>
       </IonFooter>
     </IonMenu>

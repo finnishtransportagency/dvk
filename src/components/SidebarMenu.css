@@ -48,7 +48,8 @@
   margin: 0;
 }
 
-.sidebarMenu ion-button.languageSelection {
+.sidebarMenu ion-button.languageSelection,
+.dvkFooter ion-button.sourceText {
   color: var(--ion-color-dark);
   font-size: 12px;
   text-transform: none;
@@ -62,10 +63,12 @@
   --background-focused: unset;
 }
 
-.sidebarMenu ion-button.languageSelection:hover {
+.sidebarMenu ion-button.languageSelection:hover,
+.dvkFooter ion-button.sourceText:hover {
   text-decoration: none;
 }
-.sidebarMenu ion-button.languageSelection.ion-focused {
+.sidebarMenu ion-button.languageSelection.ion-focused,
+.dvkFooter ion-button.sourceText.ion-focused {
   outline: 1px solid var(--ion-color-dark);
 }
 
@@ -130,14 +133,14 @@
   color: var(--ion-color-dark);
 }
 
-.sidebarMenu .contentGrid ion-item ion-icon[slot="start"] {
+.sidebarMenu .contentGrid ion-item ion-icon[slot='start'] {
   width: 24px;
   height: 24px;
   margin: 0;
   margin-inline-end: 24px;
   color: var(--ion-color-primary);
 }
-.sidebarMenu .contentGrid ion-item ion-icon[slot="end"] {
+.sidebarMenu .contentGrid ion-item ion-icon[slot='end'] {
   width: 10px;
   height: 10px;
   margin: 0;
@@ -202,6 +205,6 @@
 .offlineSupport ion-icon.danger {
   color: var(--ion-color-danger);
 }
-.offlineSupport ion-icon[slot="start"] {
+.offlineSupport ion-icon[slot='start'] {
   margin: 0 8px 0 0;
 }
