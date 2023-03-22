@@ -13,6 +13,8 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
   const { data, isLoading, isFetching, isError } = useHarbourByIdQueryData(harbourId, false);
   const { data: userData } = useCurrentUserQueryData();
 
+  const coordinates = data?.harbor?.geometry?.coordinates || [0, 0];
+
   const harbour: HarborInput = {
     id: origin ? '' : data?.harbor?.id || '',
     name: {
@@ -36,7 +38,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
       en: data?.harbor?.harborBasin?.en || '',
     },
     n2000HeightSystem: data?.harbor?.n2000HeightSystem || false,
-    geometry: { lat: 0, lon: 0 },
+    geometry: { lat: coordinates[1] || 0, lon: coordinates[0] || 0 },
     company: {
       fi: data?.harbor?.company?.fi || '',
       sv: data?.harbor?.company?.sv || '',
@@ -76,7 +78,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
 
   const { data } = useCurrentUserQueryData();
 
-  const emptyHarbourInput = {
+  const emptyHarbourInput: HarborInput = {
     geometry: { lat: 0, lon: 0 },
     id: '',
     n2000HeightSystem: false,

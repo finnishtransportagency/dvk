@@ -102,6 +102,7 @@
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
+    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "harbour-info": "Satamatiedot",
     "name": "Sataman nimi",
@@ -111,7 +112,7 @@
     "contact-info": "Yhteystiedot",
     "company-name": "Yrityksen nimi",
     "email": "Sähköposti",
-    "phoneNumber": "Puhelin",
+    "phone-number": "Puhelin",
     "fax": "Fax",
     "internet": "Internet (luotsintilaus)",
     "lat": "Leveysaste (lat)",

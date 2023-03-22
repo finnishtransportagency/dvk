@@ -102,6 +102,7 @@
   },
   "harbour": {
     "primary-id": "Harbour ID",
+    "primary-id-help-text": "[en] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
     "name": "Port name",
@@ -111,7 +112,7 @@
     "contact-info": "[en] Yhteystiedot",
     "company-name": "Company name",
     "email": "Email",
-    "phoneNumber": "Phone number",
+    "phone-number": "Phone number",
     "fax": "Fax",
     "internet": "[en] Internet (luotsintilaus)",
     "lat": "[en] Leveysaste (lat)",

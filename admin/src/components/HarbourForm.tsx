@@ -44,7 +44,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, isLoading, modified, modifi
       });
     }
 
-    let newState;
+    let newState: HarborInput;
     switch (actionType) {
       case 'primaryId':
         newState = { ...state, id: value as string };
@@ -106,10 +106,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, isLoading, modified, modifi
         newState = { ...state, internet: value as string };
         break;
       case 'lat':
-        newState = { ...state }; // TODO
+        newState = { ...state, geometry: { lat: value as number, lon: state.geometry.lon } };
         break;
       case 'lon':
-        newState = { ...state }; // TODO
+        newState = { ...state, geometry: { lat: state.geometry.lat, lon: value as number } };
         break;
       case 'status':
         newState = { ...state, status: value as Status };
@@ -200,6 +200,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, isLoading, modified, modifi
                     required
                     disabled={state.operation === Operation.Update}
                     error={validationErrors.primaryId}
+                    helperText={t('harbour.primary-id-help-text')}
                   />
                 </IonCol>
               </IonRow>
@@ -236,7 +237,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, isLoading, modified, modifi
                 </IonCol>
                 <IonCol>
                   <FormInput
-                    label={t('harbour.phoneNumber')}
+                    label={t('harbour.phone-number')}
                     val={state.phoneNumber?.join(',') || ''}
                     setValue={updateState}
                     actionType="phoneNumber"
@@ -251,10 +252,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, isLoading, modified, modifi
                   <FormInput label={t('harbour.internet')} val={state.internet || ''} setValue={updateState} actionType="internet" />
                 </IonCol>
                 <IonCol>
-                  <FormInput label={t('harbour.lat')} val={(state.geometry.lat as unknown as string) || ''} setValue={updateState} actionType="lat" />
+                  <FormInput label={t('harbour.lat')} val={state.geometry.lat || ''} setValue={updateState} actionType="lat" />
                 </IonCol>
                 <IonCol>
-                  <FormInput label={t('harbour.lon')} val={(state.geometry.lon as unknown as string) || ''} setValue={updateState} actionType="lon" />
+                  <FormInput label={t('harbour.lon')} val={state.geometry.lon || ''} setValue={updateState} actionType="lon" />
                 </IonCol>
               </IonRow>
             </IonGrid>
