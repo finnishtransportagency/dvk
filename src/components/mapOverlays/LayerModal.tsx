@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonList, IonModal, IonText, IonButton, IonIcon, IonListHeader } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
@@ -372,13 +372,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
           <IonCol>
             <IonGrid className="ion-no-padding">
               <IonRow>
-                <IonCol className="divider">
-                  <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
-                </IonCol>
-              </IonRow>
-              <IonRow>
                 <IonCol>
                   <IonList lines="none" className="ion-no-padding">
+                    <IonListHeader lines="full">
+                      <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
+                    </IonListHeader>
                     <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} />
                     <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} />
                     <LayerItem id="vts" title={t('homePage.map.controls.layer.vts')} />
@@ -390,24 +388,22 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol className="divider">
-                  <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
-                </IonCol>
-              </IonRow>
-              <IonRow>
                 <IonCol>
                   <IonList lines="none" className="ion-no-padding">
+                    <IonListHeader lines="full">
+                      <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
+                    </IonListHeader>
                     <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} />
                     <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} />
                   </IonList>
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol className="divider" />
-              </IonRow>
-              <IonRow>
                 <IonCol>
                   <IonList lines="none" className="ion-no-padding">
+                    <IonListHeader lines="full">
+                      <IonText>{t('homePage.map.controls.layer.general')}</IonText>
+                    </IonListHeader>
                     <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} />
                     <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} />
                     <LayerItem id="marinewarning" title={t('homePage.map.controls.layer.marineWarnings')} />
