@@ -6,8 +6,11 @@ Documentation    This resource file contains resources for Squat tests
 ${LANGUAGE_SELECT_BUTTON}    //ion-select[@class = "ion-padding md"]
 ${OK_BUTTON}    //span[text() = "OK"]
 ${FI_BUTTON}	//ion-button[@id="language_fi"]
+${FI_BUTTON_NOT_SELECTED}	//ion-button[@id="language_fi" and @disabled="false"]
 ${SV_BUTTON}	//ion-button[@id="language_sv"]
+${SV_BUTTON_NOT_SELECTED}	//ion-button[@id="language_sv" and @disabled="false"]
 ${EN_BUTTON}	//ion-button[@id="language_en"]
+${EN_BUTTON_NOT_SELECTED}	//ion-button[@id="language_en" and @disabled="false"]
 
 #Squat-calculator locators in Finnish language
 ${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
