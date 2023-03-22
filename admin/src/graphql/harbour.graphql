@@ -1,0 +1,21 @@
+query harbourById($id: String!) {
+  harbor(id: $id) {
+    id
+    name {fi sv en}
+    n2000HeightSystem
+    status
+    creator
+    creationTimestamp
+    modifier
+    modificationTimestamp
+    extraInfo {fi sv en}
+    cargo {fi sv en}
+    harborBasin {fi sv en}
+    company {fi sv en}
+    email
+    fax
+    internet
+    phoneNumber,
+    geometry { coordinates }
+  }
+}

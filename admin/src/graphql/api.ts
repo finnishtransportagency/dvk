@@ -7,6 +7,7 @@ import {
   useFairwayCardsAndHarborsQuery,
   useFairwaysQuery,
   useHarborsQuery,
+  useHarbourByIdQuery,
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
 } from './generated';
@@ -38,6 +39,10 @@ export function useFairwaysQueryData() {
 
 export function useHarboursQueryData() {
   return useHarborsQuery(datasourceClient);
+}
+
+export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
+  return useHarbourByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
 
 export function usePilotPlacesQueryData() {
