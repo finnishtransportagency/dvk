@@ -334,3 +334,19 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer .bgMapButtonLand:disabled .mapImage {
   background-image: url('../../theme/img/bg_map_buttons/landSelected.png');
 }
+
+#layerModalContainer ion-item .layerAlert {
+  font-size: 12px;
+}
+
+#layerModalContainer ion-item .layerAlert.warning {
+  color: var(--ion-color-warning);
+}
+
+#layerModalContainer ion-item .layerAlert.danger {
+  color: var(--ion-color-danger);
+}
+
+#layerModalContainer ion-item ion-icon {
+  margin-right: 6px;
+}

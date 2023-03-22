@@ -1,4 +1,4 @@
-import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
@@ -9,6 +9,9 @@ import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
+import { warningOutline } from 'ionicons/icons';
+import Alert from '../Alert';
+import { getAlertProperties } from '../../utils/common';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -179,7 +182,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-
+  const alertProps = getAlertProperties(dataUpdatedAt);
   return (
     <>
       <Breadcrumb path={path} />
@@ -199,16 +202,24 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      <IonGrid className="marineWarningNotification ion-no-padding">
-        <IonRow>
-          <IonCol size="auto" className="ion-align-self-center">
-            <IonIcon icon={infoIcon} />
-          </IonCol>
-          <IonCol>
+      <Alert
+        icon={infoIcon}
+        className="top-margin info"
+        title={
+          <>
             <strong>{t('note')}</strong> {t('notification')}
-          </IonCol>
-        </IonRow>
-      </IonGrid>
+          </>
+        }
+      />
+
+      {alertProps && !isLoading && !isFetching && (
+        <Alert
+          icon={warningOutline}
+          color={alertProps.color}
+          className={'top-margin ' + alertProps.color}
+          title={t('lastUpdatedAt', { val: alertProps.duration })}
+        />
+      )}
 
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />

@@ -9,6 +9,9 @@ import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
+import Alert from '../Alert';
+import { getAlertProperties } from '../../utils/common';
+import { warningOutline } from 'ionicons/icons';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -95,12 +98,10 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 <IonRow>
                   <IonCol>
                     {cards.map((card, idx) => (
-                      <>
-                        <Link key={card.id} to={`/kortit/${card.id}`}>
-                          {card.name[lang]}
-                        </Link>
+                      <div key={card.id}>
+                        <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
                         {idx < cards.length - 1 ? ', ' : ''}
-                      </>
+                      </div>
                     ))}
                   </IonCol>
                 </IonRow>
@@ -118,20 +119,20 @@ type FaultsProps = {
 };
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'faults' });
+  const { t } = useTranslation();
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const path = [{ title: t('title') }];
-
+  const path = [{ title: t('faults.title') }];
+  const alertProps = getAlertProperties(dataUpdatedAt);
   return (
     <>
       <Breadcrumb path={path} />
 
       <IonText className="fairwayTitle">
         <h2 className="no-margin-bottom">
-          <strong>{t('title')}</strong>
+          <strong>{t('faults.title')}</strong>
         </h2>
         <em>
-          {t('modified')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {t('faults.modified')} {!isLoading && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
           {(isLoading || isFetching) && (
             <IonSkeletonText
               animated={true}
@@ -141,9 +142,18 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
+      {alertProps && !isLoading && !isFetching && (
+        <Alert
+          icon={warningOutline}
+          color={alertProps.color}
+          className={'top-margin ' + alertProps.color}
+          title={t('warnings.lastUpdatedAt', { val: alertProps.duration })}
+        />
+      )}
+
       <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
         <FaultGroup
-          title={t('archipelagoSea') + ', ' + t('gulfOfFinland') + t('and') + t('gulfOfBothnia')}
+          title={t('faults.archipelagoSea') + ', ' + t('faults.gulfOfFinland') + t('faults.and') + t('faults.gulfOfBothnia')}
           loading={isLoading}
           data={data?.safetyEquipmentFaults || []}
           first
