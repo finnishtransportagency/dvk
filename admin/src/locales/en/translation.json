@@ -69,7 +69,7 @@
     "create-CARD": "Create fairway card",
     "create-HARBOR": "Create harbour",
     "logout-title": "You are logging out",
-    "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
+    "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella."
   },
   "fairwaycard": {
     "name": "Fairway card name",

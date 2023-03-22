@@ -69,7 +69,7 @@
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama",
     "logout-title": "Olet kirjautumassa ulos",
-    "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väylän tarjoamalla K-tunnuksella."
+    "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella."
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
