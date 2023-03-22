@@ -89,9 +89,25 @@ class SearchbarControl extends Control {
         event.preventDefault();
         this.setActiveSelection(this.activeSelection < 2 ? this.filteredData.length : this.activeSelection - 1);
       }
-      if (event.key === 'Enter' && this.isOpen && this.activeSelection) {
+      if (event.key === 'Enter' && this.isOpen) {
         closeDropdown();
-        this.history.push('/kortit/' + this.filteredData[this.activeSelection - 1].id);
+
+        if (this.activeSelection) {
+          this.history.push('/kortit/' + this.filteredData[this.activeSelection - 1].id);
+        } else if (this.filteredData.length === 1) {
+          this.history.push('/kortit/' + this.filteredData[0].id);
+        } else {
+          const searchTerm = this.inputElement.value.trim().toLowerCase();
+          const card = this.filteredData
+            .filter(
+              (data) =>
+                data.name.fi?.toLowerCase() === searchTerm || data.name.sv?.toLowerCase() === searchTerm || data.name.en?.toLowerCase() === searchTerm
+            )
+            .pop();
+          if (card) {
+            this.history.push('/kortit/' + card.id);
+          }
+        }
       }
     });
 

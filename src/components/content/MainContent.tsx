@@ -83,10 +83,21 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
       event.preventDefault();
       setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
     }
-    if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
+    if (event.key === 'Enter' && isSearchbarOpen) {
       closeDropdown();
-      const targetPath = '/kortit/' + filteredFairways[activeSelection - 1].id;
-      if (curPath !== targetPath) history.push('/kortit/' + filteredFairways[activeSelection - 1].id);
+      let targetPath = undefined;
+      if (activeSelection) {
+        targetPath = '/kortit/' + filteredFairways[activeSelection - 1].id;
+      } else if (filteredFairways.length === 1) {
+        targetPath = '/kortit/' + filteredFairways[0].id;
+      } else {
+        const searchTerm = searchQuery.trim().toLowerCase();
+        const card = filteredFairways.filter((fairway) => fairway.name[lang]?.toLowerCase() === searchTerm).pop();
+        if (card) {
+          targetPath = '/kortit/' + card.id;
+        }
+      }
+      if (targetPath && curPath !== targetPath) history.push(targetPath);
     }
   };
 
