@@ -126,6 +126,7 @@ class DvkMap {
     }
 
     this.olMap = new Map({
+      pixelRatio: 1,
       view: new View({
         projection: projection,
         resolutions: MAP.RESOLUTIONS,
