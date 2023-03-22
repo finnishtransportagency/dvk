@@ -63,6 +63,12 @@
   --background-focused: unset;
 }
 
+.dvkFooter ion-button.sourceText {
+  --padding-start: 0px;
+  --padding-end: 0px;
+  margin: 2px;
+}
+
 .sidebarMenu ion-button.languageSelection:hover,
 .dvkFooter ion-button.sourceText:hover {
   text-decoration: none;
@@ -160,7 +166,7 @@
 
 .sideBar ion-footer ion-toolbar ion-title a {
   font-size: 12px;
-  margin-inline-start: 4px;
+  margin: 2px;
 }
 
 .sideBar ion-footer ion-toolbar ion-title a:hover,
