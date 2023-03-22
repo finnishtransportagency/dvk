@@ -212,7 +212,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         }
       />
 
-      {alertProps && (
+      {alertProps && !isLoading && !isFetching && (
         <Alert
           icon={warningOutline}
           color={alertProps.color}

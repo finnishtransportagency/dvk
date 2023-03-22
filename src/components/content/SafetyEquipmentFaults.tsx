@@ -98,12 +98,10 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 <IonRow>
                   <IonCol>
                     {cards.map((card, idx) => (
-                      <>
-                        <Link key={card.id} to={`/kortit/${card.id}`}>
-                          {card.name[lang]}
-                        </Link>
+                      <div key={card.id}>
+                        <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
                         {idx < cards.length - 1 ? ', ' : ''}
-                      </>
+                      </div>
                     ))}
                   </IonCol>
                 </IonRow>
@@ -144,7 +142,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      {alertProps && (
+      {alertProps && !isLoading && !isFetching && (
         <Alert
           icon={warningOutline}
           color={alertProps.color}
