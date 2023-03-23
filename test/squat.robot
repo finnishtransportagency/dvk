@@ -168,6 +168,27 @@ ${SUHTEELLINEN_TUULEN_NOPEUS_2_BULKER}    9
 ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_BULKER}    32,32
 ${ARVIOITU_SORTOKULMA_BULKER}    0,02
 
+#Squat-calculation Finnish header texts
+${SQUAT_CALCULATION_HEADER_TEXT_FI}    Painumalaskenta (Squat)
+${VESSEL_HEADER_TEXT_FI}    Aluksen tiedot
+${ENVIRONMENT_HEADER_TEXT_FI}    Ympäristö
+${CALCULATIONS_HEADER_TEXT_FI}    Laskenta
+${SQUAT_GRAPH_HEADER_TEXT_FI}    Aluksen painuma nopeuden funktiona
+
+#Squat-calculation Swedish header texts
+${SQUAT_CALCULATION_HEADER_TEXT_SV}    Squat beräkning
+${VESSEL_HEADER_TEXT_SV}    Fartygets basuppgifter
+${ENVIRONMENT_HEADER_TEXT_SV}    Omgivning
+${CALCULATIONS_HEADER_TEXT_SV}    Beräkning
+${SQUAT_GRAPH_HEADER_TEXT_SV}    Fartygets Squat i samband med fart
+
+#Squat-calculation English header texts
+${SQUAT_CALCULATION_HEADER_TEXT_EN}    Squat Calculation
+${VESSEL_HEADER_TEXT_EN}    Vessel
+${ENVIRONMENT_HEADER_TEXT_EN}    Environment
+${CALCULATIONS_HEADER_TEXT_EN}    Calculations
+${SQUAT_GRAPH_HEADER_TEXT_EN}    Squat as a Function of Speed
+
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
@@ -266,31 +287,31 @@ Change Squat Calculator Language To
 	Click Element    ${${language}_BUTTON}
 
 Check Labels In Finnish
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_FI}    Painumalaskenta (Squat)
-	Element Should Contain    ${VESSEL_HEADER_FI}    Aluksen tiedot
-	Element Should Contain    ${ENVIRONMENT_HEADER_FI}    Ympäristö
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_FI}    ${SQUAT_CALCULATION_HEADER_TEXT_FI}
+	Element Should Contain    ${VESSEL_HEADER_FI}    ${VESSEL_HEADER_TEXT_FI}
+	Element Should Contain    ${ENVIRONMENT_HEADER_FI}    ${ENVIRONMENT_HEADER_TEXT_FI}
 	Scroll Element Into View    ${CALCULATIONS_HEADER_FI}
-	Element Should Contain    ${CALCULATIONS_HEADER_FI}    Laskenta
+	Element Should Contain    ${CALCULATIONS_HEADER_FI}    ${CALCULATIONS_HEADER_TEXT_FI}
 	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Aluksen painuma nopeuden funktiona
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_FI}
 
 Check Labels In Swedish
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_SV}    Squat beräkning
-	Element Should Contain    ${VESSEL_HEADER_SV}    Fartygets basuppgifter
-	Element Should Contain    ${ENVIRONMENT_HEADER_SV}    Omgivning
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_SV}    ${SQUAT_CALCULATION_HEADER_TEXT_SV}
+	Element Should Contain    ${VESSEL_HEADER_SV}    ${VESSEL_HEADER_TEXT_SV}
+	Element Should Contain    ${ENVIRONMENT_HEADER_SV}    ${ENVIRONMENT_HEADER_TEXT_SV}
 	Scroll Element Into View    ${CALCULATIONS_HEADER_SV}
-	Element Should Contain    ${CALCULATIONS_HEADER_SV}    Beräkning
+	Element Should Contain    ${CALCULATIONS_HEADER_SV}    ${CALCULATIONS_HEADER_TEXT_SV}
 	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Fartygets Squat i samband med fart
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_SV}
 
 Check Labels In English
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_EN}    Squat Calculation
-	Element Should Contain    ${VESSEL_HEADER_EN}    Vessel
-	Element Should Contain    ${ENVIRONMENT_HEADER_EN}    Environment
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_EN}    ${SQUAT_CALCULATION_HEADER_TEXT_EN}
+	Element Should Contain    ${VESSEL_HEADER_EN}    ${VESSEL_HEADER_TEXT_EN}
+	Element Should Contain    ${ENVIRONMENT_HEADER_EN}    ${ENVIRONMENT_HEADER_TEXT_EN}
 	Scroll Element Into View    ${CALCULATIONS_HEADER_EN}
-	Element Should Contain    ${CALCULATIONS_HEADER_EN}    Calculations
+	Element Should Contain    ${CALCULATIONS_HEADER_EN}    ${CALCULATIONS_HEADER_TEXT_EN}
 	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Squat as a Function of Speed
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_EN}
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
