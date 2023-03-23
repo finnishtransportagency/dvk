@@ -74,4 +74,11 @@ test('test too long texts', () => {
   expect(() => mapText({ fi: 'xyz', sv: 'xyz', en: 'xyz' }, 2)).toThrow(OperationError.InvalidInput);
   expect(mapMandatoryText(text, 2)).not.toBe(text);
   expect(() => mapMandatoryText({ fi: 'xyz', sv: 'xyz', en: 'xyz' }, 2)).toThrow(OperationError.InvalidInput);
+  let str = '';
+  for (let i = 0; i < 2000; i++) {
+    str += 'x';
+  }
+  expect(mapString(str)).toBe(str);
+  str += 'x';
+  expect(() => mapString(str)).toThrow(OperationError.InvalidInput);
 });
