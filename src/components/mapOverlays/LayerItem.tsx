@@ -263,8 +263,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonText className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>{title}</IonText>
+            <IonText id={`${title}-label`} className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>
+              {title}
+            </IonText>
             <IonCheckbox
+              aria-labelledby={`${title}-label`}
               value={id}
               checked={layers.includes(id)}
               slot="start"

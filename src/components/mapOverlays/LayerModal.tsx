@@ -68,9 +68,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonGrid className="ion-no-padding">
               <IonRow>
                 <IonCol>
-                  <IonList lines="none" className="ion-no-padding">
+                  <IonList lines="none" className="ion-no-padding" aria-labelledby="class1-label">
                     <IonListHeader lines="full">
-                      <IonText>{t('homePage.map.controls.layer.class1')}</IonText>
+                      <IonText id="class1-label">{t('homePage.map.controls.layer.class1')}</IonText>
                     </IonListHeader>
                     <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} layers={layers} setLayers={setLayers} />
@@ -84,9 +84,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <IonList lines="none" className="ion-no-padding">
+                  <IonList lines="none" className="ion-no-padding" aria-labelledby="class2-label">
                     <IonListHeader lines="full">
-                      <IonText>{t('homePage.map.controls.layer.class2')}</IonText>
+                      <IonText id="class2-label">{t('homePage.map.controls.layer.class2')}</IonText>
                     </IonListHeader>
                     <LayerItem id="area3456" title={t('homePage.map.controls.layer.fairwayAreas')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="line3456" title={t('homePage.map.controls.layer.lines')} layers={layers} setLayers={setLayers} />
@@ -95,9 +95,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <IonList lines="none" className="ion-no-padding">
+                  <IonList lines="none" className="ion-no-padding" aria-labelledby="general-label">
                     <IonListHeader lines="full">
-                      <IonText>{t('homePage.map.controls.layer.general')}</IonText>
+                      <IonText id="general-label">{t('homePage.map.controls.layer.general')}</IonText>
                     </IonListHeader>
                     <LayerItem id="specialarea" title={t('homePage.map.controls.layer.specialAreas')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="pilot" title={t('homePage.map.controls.layer.pilotPlaces')} layers={layers} setLayers={setLayers} />
