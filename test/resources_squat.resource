@@ -12,12 +12,26 @@ ${SV_BUTTON_NOT_SELECTED}	//ion-button[@id="language_sv" and @disabled="false"]
 ${EN_BUTTON}	//ion-button[@id="language_en"]
 ${EN_BUTTON_NOT_SELECTED}	//ion-button[@id="language_en" and @disabled="false"]
 
+#Squat-calculator header locators
+${SQUAT_GRAPH_HEADER}    //ion-text[@class = "squatChartTitle md"]/h3/strong
+
 #Squat-calculator locators in Finnish language
-${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
-${ALUKSEN_TIEDOT_HEADER}    //h2/strong[text() = "Aluksen tiedot"]
-${YMPARISTO_HEADER}    //h2/strong[text() = "Ympäristö"]
-${LASKENTA_HEADER}    //h2/strong[text() = "Laskenta"]
-${ALUKSEN_SQUAT_HEADER}    //h3/strong[text() = "Aluksen painuma nopeuden funktiona"]
+${SQUAT_CALCULATION_HEADER_FI}    //h1/strong[text() = "Painumalaskenta (Squat)"]
+${VESSEL_HEADER_FI}    //h2/strong[text() = "Aluksen tiedot"]
+${ENVIRONMENT_HEADER_FI}    //h2/strong[text() = "Ympäristö"]
+${CALCULATIONS_HEADER_FI}    //h2/strong[text() = "Laskenta"]
+
+#Squat-calculator locators in Swedish language
+${SQUAT_CALCULATION_HEADER_SV}    //h1/strong[text() = "Squat beräkning"]
+${VESSEL_HEADER_SV}    //h2/strong[text() = "Fartygets basuppgifter"]
+${ENVIRONMENT_HEADER_SV}    //h2/strong[text() = "Omgivning"]
+${CALCULATIONS_HEADER_SV}    //h2/strong[text() = "Beräkning"]
+
+#Squat-calculator locators in English language
+${SQUAT_CALCULATION_HEADER_EN}    //h1/strong[text() = "Squat Calculation"]
+${VESSEL_HEADER_EN}    //h2/strong[text() = "Vessel"]
+${ENVIRONMENT_HEADER_EN}    //h2/strong[text() = "Environment"]
+${CALCULATIONS_HEADER_EN}    //h2/strong[text() = "Calculations"]
 
 #General
 ${LENGTHBPP_INPUT}    //input[@name = "lengthBPP"]

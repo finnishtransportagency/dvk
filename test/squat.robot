@@ -266,30 +266,31 @@ Change Squat Calculator Language To
 	Click Element    ${${language}_BUTTON}
 
 Check Labels In Finnish
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Aluksen tiedot
-	Element Should Contain    ${YMPARISTO_HEADER}    Ympäristö
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Laskenta
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_FI}    Painumalaskenta (Squat)
+	Element Should Contain    ${VESSEL_HEADER_FI}    Aluksen tiedot
+	Element Should Contain    ${ENVIRONMENT_HEADER_FI}    Ympäristö
+	Scroll Element Into View    ${CALCULATIONS_HEADER_FI}
+	Element Should Contain    ${CALCULATIONS_HEADER_FI}    Laskenta
+	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Aluksen painuma nopeuden funktiona
 
 Check Labels In Swedish
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Squat beräkning
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Fartygets basuppgifter
-	Element Should Contain    ${YMPARISTO_HEADER}    Omgivning
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Beräkning
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Fartygets Squat i samband med fart
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_SV}    Squat beräkning
+	Element Should Contain    ${VESSEL_HEADER_SV}    Fartygets basuppgifter
+	Element Should Contain    ${ENVIRONMENT_HEADER_SV}    Omgivning
+	Scroll Element Into View    ${CALCULATIONS_HEADER_SV}
+	Element Should Contain    ${CALCULATIONS_HEADER_SV}    Beräkning
+	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Fartygets Squat i samband med fart
 
 Check Labels In English
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Vessel
-	Element Should Contain    ${YMPARISTO_HEADER}    Environment
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Calculations
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Squat as a Function of Speed
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_EN}    Squat Calculation
+	Element Should Contain    ${VESSEL_HEADER_EN}    Vessel
+	Element Should Contain    ${ENVIRONMENT_HEADER_EN}    Environment
+	Scroll Element Into View    ${CALCULATIONS_HEADER_EN}
+	Element Should Contain    ${CALCULATIONS_HEADER_EN}    Calculations
+	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    Squat as a Function of Speed
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
