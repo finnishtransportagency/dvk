@@ -171,7 +171,6 @@ ${ARVIOITU_SORTOKULMA_BULKER}    0,02
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
-	Change Squat Calculator Language To    SV	# Finnish selected and disabled by default, test it by changing to sv first
 	Change Squat Calculator Language To    FI
 	Check Labels In Finnish
 	Check Input Fields In General Section
@@ -259,6 +258,9 @@ Calculate Squat For Bulker
 *** Keywords ***
 Change Squat Calculator Language To
 	[Arguments]    ${language}
+	${count}=    Get WebElements    ${${language}_BUTTON_NOT_SELECTED}
+	${language_not_selected}=    Get Length    ${count}
+	IF    ${language_not_selected} == 0    RETURN
 	Click Element    ${${language}_BUTTON}
 
 Check Labels In Finnish
