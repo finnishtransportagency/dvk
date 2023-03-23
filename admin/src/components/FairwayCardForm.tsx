@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
+import {
+  IonAlert,
+  IonButton,
+  IonCol,
+  IonContent,
+  IonGrid,
+  IonHeader,
+  IonPage,
+  IonProgressBar,
+  IonRow,
+  IonSkeletonText,
+  IonText,
+} from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
-import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, Status } from '../graphql/generated';
+import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, Status, TugInput, VtsInput } from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
@@ -13,6 +25,7 @@ import {
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
+import FormOptionalSection from './FormOptionalSection';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -50,7 +63,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     .filter((item) => item.type === ContentType.Card)
     .flatMap((item) => item.id);
 
-  const updateState = (value: ValueType, actionType: ActionType | ActionTypeSelect, actionLang?: Lang, actionTarget?: string | number) => {
+  const updateState = (
+    value: ValueType,
+    actionType: ActionType | ActionTypeSelect,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => {
     console.log('updateState... for input ' + actionType, actionLang);
     // Check manual validations and clear triggered validations by save
     if (actionType === 'primaryId' && state.operation === Operation.Create) {
@@ -72,6 +91,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
         { id: 'fairwayIds', msg: (value as number[]).length < 1 ? t('general.required-field') : '' },
       ]);
     }
+    // TODO: add vts + tug name (and add clearing to save)
 
     let newState;
     switch (actionType) {
@@ -293,6 +313,272 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 place.id === actionTarget ? { ...place, pilotJourney: value as number } : place
               ),
             },
+          },
+        };
+        break;
+      case 'vts':
+        // Add and delete
+        if (value && !actionTarget) {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              vts: state.trafficService?.vts?.concat([
+                {
+                  email: [],
+                  name: { fi: '', sv: '', en: '' },
+                  phoneNumber: '',
+                  vhf: [],
+                },
+              ]),
+            },
+          };
+        } else {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              vts: state.trafficService?.vts?.filter((vtsItem, idx) => idx !== actionTarget),
+            },
+          };
+        }
+        break;
+      case 'vtsName':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...vtsItem,
+                    name: {
+                      ...(vtsItem?.name || { fi: '', sv: '', en: '' }),
+                      [actionLang as string]: value as string,
+                    },
+                  }
+                : vtsItem
+            ),
+          },
+        };
+        break;
+      case 'vtsEmail':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...vtsItem,
+                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    email: (value as string).split(',').map((item) => item.trim()),
+                  }
+                : vtsItem
+            ),
+          },
+        };
+        break;
+      case 'vtsPhone':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...vtsItem,
+                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    phoneNumber: ((value as string) || '').trim(),
+                  }
+                : vtsItem
+            ),
+          },
+        };
+        break;
+      case 'vhf':
+        // Add and delete
+        if (value && actionOuterTarget !== undefined) {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              vts: state.trafficService?.vts?.map((vtsItem, i) =>
+                i === actionOuterTarget
+                  ? {
+                      ...vtsItem,
+                      name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                      vhf: vtsItem?.vhf?.concat([{ channel: 0, name: { fi: '', sv: '', en: '' } }]),
+                    }
+                  : vtsItem
+              ),
+            },
+          };
+        } else if (!value && actionTarget !== undefined) {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              vts: state.trafficService?.vts?.map((vtsItem) => {
+                return {
+                  ...vtsItem,
+                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
+                };
+              }),
+            },
+          };
+        } else {
+          return state;
+        }
+        break;
+      case 'vhfName':
+        if (actionTarget === undefined || actionOuterTarget === undefined) return state;
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+              idx === actionOuterTarget
+                ? {
+                    ...vtsItem,
+                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    vhf: vtsItem?.vhf?.map((vhfItem, j) =>
+                      j === actionTarget
+                        ? {
+                            name: {
+                              ...(vhfItem?.name || { fi: '', sv: '', en: '' }),
+                              [actionLang as string]: value as string,
+                            },
+                            channel: vhfItem?.channel || 0,
+                          }
+                        : vhfItem
+                    ),
+                  }
+                : vtsItem
+            ),
+          },
+        };
+        break;
+      case 'vhfChannel':
+        if (actionTarget === undefined || actionOuterTarget === undefined) return state;
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+              idx === actionOuterTarget
+                ? {
+                    ...vtsItem,
+                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    vhf: vtsItem?.vhf?.map((vhfItem, j) =>
+                      j === actionTarget
+                        ? {
+                            name: vhfItem?.name || { fi: '', sv: '', en: '' },
+                            channel: value as number,
+                          }
+                        : vhfItem
+                    ),
+                  }
+                : vtsItem
+            ),
+          },
+        };
+        break;
+      case 'tug':
+        // Add and delete
+        if (value && !actionTarget) {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              tugs: state.trafficService?.tugs?.concat([
+                {
+                  email: '',
+                  name: { fi: '', sv: '', en: '' },
+                  phoneNumber: [],
+                  fax: '',
+                },
+              ]),
+            },
+          };
+        } else {
+          newState = {
+            ...state,
+            trafficService: {
+              ...state.trafficService,
+              tugs: state.trafficService?.tugs?.filter((tugItem, idx) => idx !== actionTarget),
+            },
+          };
+        }
+        break;
+      case 'tugName':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...tugItem,
+                    name: {
+                      ...(tugItem?.name || { fi: '', sv: '', en: '' }),
+                      [actionLang as string]: value as string,
+                    },
+                  }
+                : tugItem
+            ),
+          },
+        };
+        break;
+      case 'tugEmail':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...tugItem,
+                    name: tugItem?.name || { fi: '', sv: '', en: '' },
+                    email: ((value as string) || '').trim(),
+                  }
+                : tugItem
+            ),
+          },
+        };
+        break;
+      case 'tugPhone':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...tugItem,
+                    name: tugItem?.name || { fi: '', sv: '', en: '' },
+                    phoneNumber: (value as string).split(',').map((item) => item.trim()),
+                  }
+                : tugItem
+            ),
+          },
+        };
+        break;
+      case 'tugFax':
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+              idx === actionTarget
+                ? {
+                    ...tugItem,
+                    name: tugItem?.name || { fi: '', sv: '', en: '' },
+                    fax: ((value as string) || '').trim(),
+                  }
+                : tugItem
+            ),
           },
         };
         break;
@@ -695,6 +981,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 })}
               </IonRow>
             </IonGrid>
+
+            <FormOptionalSection
+              title={t('fairwaycard.vts-heading')}
+              sections={state.trafficService?.vts as VtsInput[]}
+              updateState={updateState}
+              sectionType="vts"
+            />
+
+            <FormOptionalSection
+              title={t('fairwaycard.tug-heading')}
+              sections={state.trafficService?.tugs as TugInput[]}
+              updateState={updateState}
+              sectionType="tug"
+            />
           </form>
         )}
       </IonContent>
