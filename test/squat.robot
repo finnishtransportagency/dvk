@@ -184,6 +184,7 @@ Check UI Elements In Finnish Language
 Check UI Elements In Swedish Language
 	[Documentation]    This test case opens Squat calculation page in Swedish and checks the UI elements in it
 	Change Squat Calculator Language To    SV
+	Check Labels In Swedish
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -195,6 +196,7 @@ Check UI Elements In Swedish Language
 Check UI Elements In English Language
 	[Documentation]    This test case opens Squat calculation page in English and checks the UI elements in it
 	Change Squat Calculator Language To    EN
+	Check Labels In English
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
