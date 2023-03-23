@@ -193,7 +193,7 @@ ${SQUAT_GRAPH_HEADER_TEXT_EN}    Squat as a Function of Speed
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
 	Change Squat Calculator Language To    FI
-	Check Labels In Finnish
+	Check Headers    FI
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -205,7 +205,7 @@ Check UI Elements In Finnish Language
 Check UI Elements In Swedish Language
 	[Documentation]    This test case opens Squat calculation page in Swedish and checks the UI elements in it
 	Change Squat Calculator Language To    SV
-	Check Labels In Swedish
+	Check Headers    SV
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -217,7 +217,7 @@ Check UI Elements In Swedish Language
 Check UI Elements In English Language
 	[Documentation]    This test case opens Squat calculation page in English and checks the UI elements in it
 	Change Squat Calculator Language To    EN
-	Check Labels In English
+	Check Headers    EN
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -286,32 +286,15 @@ Change Squat Calculator Language To
 	IF    ${language_not_selected} == 0    RETURN
 	Click Element    ${${language}_BUTTON}
 
-Check Labels In Finnish
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_FI}    ${SQUAT_CALCULATION_HEADER_TEXT_FI}
-	Element Should Contain    ${VESSEL_HEADER_FI}    ${VESSEL_HEADER_TEXT_FI}
-	Element Should Contain    ${ENVIRONMENT_HEADER_FI}    ${ENVIRONMENT_HEADER_TEXT_FI}
-	Scroll Element Into View    ${CALCULATIONS_HEADER_FI}
-	Element Should Contain    ${CALCULATIONS_HEADER_FI}    ${CALCULATIONS_HEADER_TEXT_FI}
+Check Headers
+	[Arguments]    ${language}
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_${language}}    ${SQUAT_CALCULATION_HEADER_TEXT_${language}}
+	Element Should Contain    ${VESSEL_HEADER_${language}}    ${VESSEL_HEADER_TEXT_${language}}
+	Element Should Contain    ${ENVIRONMENT_HEADER_${language}}    ${ENVIRONMENT_HEADER_TEXT_${language}}
+	Scroll Element Into View    ${CALCULATIONS_HEADER_${language}}
+	Element Should Contain    ${CALCULATIONS_HEADER_${language}}    ${CALCULATIONS_HEADER_TEXT_${language}}
 	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_FI}
-
-Check Labels In Swedish
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_SV}    ${SQUAT_CALCULATION_HEADER_TEXT_SV}
-	Element Should Contain    ${VESSEL_HEADER_SV}    ${VESSEL_HEADER_TEXT_SV}
-	Element Should Contain    ${ENVIRONMENT_HEADER_SV}    ${ENVIRONMENT_HEADER_TEXT_SV}
-	Scroll Element Into View    ${CALCULATIONS_HEADER_SV}
-	Element Should Contain    ${CALCULATIONS_HEADER_SV}    ${CALCULATIONS_HEADER_TEXT_SV}
-	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_SV}
-
-Check Labels In English
-	Element Should Contain    ${SQUAT_CALCULATION_HEADER_EN}    ${SQUAT_CALCULATION_HEADER_TEXT_EN}
-	Element Should Contain    ${VESSEL_HEADER_EN}    ${VESSEL_HEADER_TEXT_EN}
-	Element Should Contain    ${ENVIRONMENT_HEADER_EN}    ${ENVIRONMENT_HEADER_TEXT_EN}
-	Scroll Element Into View    ${CALCULATIONS_HEADER_EN}
-	Element Should Contain    ${CALCULATIONS_HEADER_EN}    ${CALCULATIONS_HEADER_TEXT_EN}
-	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
-	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_EN}
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_${language}}
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
