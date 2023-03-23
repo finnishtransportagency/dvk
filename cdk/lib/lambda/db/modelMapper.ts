@@ -1,8 +1,46 @@
-import { Fairway, FairwayCard, Harbor, TrafficService } from '../../../graphql/generated';
+import { Fairway, FairwayCard, Harbor, Maybe, OperationError, TextInput, TrafficService } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
+
+export function mapText(text?: Maybe<TextInput>) {
+  if (text && text.fi && text.sv && text.en) {
+    return {
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
+    };
+  } else if (text && (text.fi || text.sv || text.en)) {
+    throw new Error(OperationError.InvalidInput);
+  } else {
+    return null;
+  }
+}
+
+export function mapMandatoryText(text: TextInput) {
+  if (text.fi && text.sv && text.en) {
+    return {
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
+    };
+  } else {
+    throw new Error(OperationError.InvalidInput);
+  }
+}
+
+export function mapString(text: Maybe<string> | undefined): string | null {
+  return text ? text : null;
+}
+
+export function mapNumber(text: Maybe<number> | undefined): number | null {
+  return text ?? null;
+}
+
+export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapString(t)).filter((t) => t !== null) as string[]) : null;
+}
 
 export function mapIds(ids: number[]) {
   return `#${ids.join('#')}#`;

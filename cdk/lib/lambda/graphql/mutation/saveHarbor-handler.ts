@@ -1,50 +1,12 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, Operation, OperationError, Status, TextInput } from '../../../../graphql/generated';
+import { Harbor, HarborInput, MutationSaveHarborArgs, Operation, OperationError, Status } from '../../../../graphql/generated';
 import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
-import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
+import { mapHarborDBModelToGraphqlType, mapMandatoryText, mapNumber, mapString, mapStringArray, mapText } from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires } from '../../environment';
-
-function mapText(text?: Maybe<TextInput>) {
-  if (text && text.fi && text.sv && text.en) {
-    return {
-      fi: text.fi,
-      sv: text.sv,
-      en: text.en,
-    };
-  } else if (text && (text.fi || text.sv || text.en)) {
-    throw new Error(OperationError.InvalidInput);
-  } else {
-    return null;
-  }
-}
-
-function mapMandatoryText(text: TextInput) {
-  if (text.fi && text.sv && text.en) {
-    return {
-      fi: text.fi,
-      sv: text.sv,
-      en: text.en,
-    };
-  } else {
-    throw new Error(OperationError.InvalidInput);
-  }
-}
-
-function mapString(text: Maybe<string> | undefined): string | null {
-  return text ? text : null;
-}
-
-function mapNumber(text: Maybe<number> | undefined): number | null {
-  return text ?? null;
-}
-
-function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => mapString(t)).filter((t) => t !== null) as string[]) : null;
-}
 
 function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {

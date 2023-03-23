@@ -80,6 +80,7 @@ export class DvkBackendStack extends Stack {
         HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
         PILOT_VERSIONING_BUCKET: pilotVersioningBucket.bucketName,
         ENVIRONMENT: Config.getEnvironment(),
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
       },
     });
 

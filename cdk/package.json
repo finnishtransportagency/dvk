@@ -26,6 +26,7 @@
     "deploy:sonarpipeline": "cross-env cdk --profile=$AWS_PROFILE deploy DvkSonarPipelineStack",
     "generate": "graphql-codegen",
     "log:backend": "cross-env-shell aws logs tail --follow --since 1h /aws/lambda/$FUNC-$ENVIRONMENT",
+    "remove:loggroups": "aws logs describe-log-groups --query 'logGroups[?storedBytes == `0`].logGroupName' --output text | xargs -r -n1 aws logs delete-log-group --log-group-name",
     "datasync": "ts-node bin/datasync.ts",
     "setup": "ts-node bin/setup.ts",
     "vatu": "ts-node bin/vatu.ts",

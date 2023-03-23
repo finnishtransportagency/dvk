@@ -1,59 +1,21 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import {
-  FairwayCard,
-  FairwayCardInput,
-  Maybe,
-  MutationSaveFairwayCardArgs,
-  Operation,
-  OperationError,
-  Status,
-  TextInput,
-} from '../../../../graphql/generated';
+import { FairwayCard, FairwayCardInput, MutationSaveFairwayCardArgs, Operation, OperationError, Status } from '../../../../graphql/generated';
 import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
-import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType, mapIds } from '../../db/modelMapper';
+import {
+  getPilotPlaceMap,
+  mapFairwayCardDBModelToGraphqlType,
+  mapIds,
+  mapMandatoryText,
+  mapNumber,
+  mapString,
+  mapStringArray,
+  mapText,
+} from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires } from '../../environment';
-
-function mapText(text?: Maybe<TextInput>) {
-  if (text && text.fi && text.sv && text.en) {
-    return {
-      fi: text.fi,
-      sv: text.sv,
-      en: text.en,
-    };
-  } else if (text && (text.fi || text.sv || text.en)) {
-    throw new Error(OperationError.InvalidInput);
-  } else {
-    return null;
-  }
-}
-
-function mapMandatoryText(text: TextInput) {
-  if (text.fi && text.sv && text.en) {
-    return {
-      fi: text.fi,
-      sv: text.sv,
-      en: text.en,
-    };
-  } else {
-    throw new Error(OperationError.InvalidInput);
-  }
-}
-
-function mapString(text: Maybe<string> | undefined): string | null {
-  return text ? text : null;
-}
-
-function mapNumber(text: Maybe<number> | undefined): number | null {
-  return text ?? null;
-}
-
-function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => mapString(t)).filter((t) => t !== null) as string[]) : null;
-}
 
 function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
