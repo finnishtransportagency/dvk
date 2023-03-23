@@ -18,8 +18,8 @@ export function mapText(text?: Maybe<TextInput>) {
   }
 }
 
-export function mapMandatoryText(text: TextInput) {
-  if (text.fi && text.sv && text.en) {
+export function mapMandatoryText(text?: TextInput) {
+  if (text?.fi && text?.sv && text?.en) {
     return {
       fi: text.fi,
       sv: text.sv,
