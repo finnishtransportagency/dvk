@@ -1,0 +1,122 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test mapHarborToModel all 1`] = `
+{
+  "cargo": {
+    "en": "cargoen",
+    "fi": "cargofi",
+    "sv": "cargosv",
+  },
+  "company": {
+    "en": "companyen",
+    "fi": "companyfi",
+    "sv": "companysv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": "email@fi",
+  "expires": null,
+  "extraInfo": {
+    "en": "extraen",
+    "fi": "extrafi",
+    "sv": "extrasv",
+  },
+  "fax": "323",
+  "geometry": {
+    "coordinates": [
+      11,
+      22,
+    ],
+    "type": "Point",
+  },
+  "harborBasin": {
+    "en": "basinen",
+    "fi": "basinfi",
+    "sv": "basinsv",
+  },
+  "id": "2",
+  "internet": "www.fi",
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "testen2",
+    "fi": "test2",
+    "sv": "testsv2",
+  },
+  "phoneNumber": [
+    "1",
+    "22",
+  ],
+  "quays": [
+    {
+      "extraInfo": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "geometry": {
+        "coordinates": [
+          222.1,
+          33.2,
+        ],
+        "type": "Point",
+      },
+      "length": 123,
+      "name": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "sections": [
+        {
+          "depth": 10,
+          "geometry": {
+            "coordinates": [
+              123,
+              62.2,
+            ],
+            "type": "Point",
+          },
+          "name": "stest",
+        },
+      ],
+    },
+  ],
+  "status": "PUBLIC",
+}
+`;
+
+exports[`test mapHarborToModel minimal 1`] = `
+{
+  "cargo": null,
+  "company": null,
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": null,
+  "expires": null,
+  "extraInfo": null,
+  "fax": null,
+  "geometry": {
+    "coordinates": [
+      1,
+      2,
+    ],
+    "type": "Point",
+  },
+  "harborBasin": null,
+  "id": "1",
+  "internet": null,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "testen",
+    "fi": "test",
+    "sv": "testsv",
+  },
+  "phoneNumber": null,
+  "quays": null,
+  "status": "DRAFT",
+}
+`;
