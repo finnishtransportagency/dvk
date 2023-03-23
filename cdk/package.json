@@ -8,6 +8,7 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
+    "update:snapshot": "jest --updateSnapshot",
     "cdk": "cdk",
     "login": "cross-env-shell aws sso login --profile $AWS_PROFILE",
     "postlogin": "cross-env-shell cdk-sso-sync $AWS_PROFILE",
