@@ -94,6 +94,24 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
         },
         places: data?.fairwayCard?.trafficService?.pilot?.places,
       },
+      vts: data?.fairwayCard?.trafficService?.vts?.map((vts) => {
+        return {
+          email: vts?.email,
+          name: { fi: vts?.name?.fi || '', sv: vts?.name?.sv || '', en: vts?.name?.en || '' },
+          phoneNumber: vts?.phoneNumber,
+          vhf: vts?.vhf?.map((vhf) => {
+            return { channel: vhf?.channel || 0, name: { fi: vhf?.name?.fi || '', sv: vhf?.name?.sv || '', en: vhf?.name?.en || '' } };
+          }),
+        };
+      }),
+      tugs: data?.fairwayCard?.trafficService?.tugs?.map((tug) => {
+        return {
+          email: tug?.email,
+          name: { fi: tug?.name?.fi || '', sv: tug?.name?.sv || '', en: tug?.name?.en || '' },
+          phoneNumber: tug?.phoneNumber?.map((phone) => phone || ''),
+          fax: tug?.fax,
+        };
+      }),
     },
     operation: origin ? Operation.Create : Operation.Update,
   };
@@ -150,6 +168,8 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
         extraInfo: { fi: '', sv: '', en: '' },
         places: [],
       },
+      vts: [],
+      tugs: [],
     },
     status: Status.Draft,
     operation: Operation.Create,
