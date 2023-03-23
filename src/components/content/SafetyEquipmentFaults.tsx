@@ -85,7 +85,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 </IonCol>
                 <IonCol className="ion-text-end">
                   <IonLabel>
-                    <em>{fault.recordTime && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
+                    <em>{fault.recordTime > 0 && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
                   </IonLabel>
                 </IonCol>
               </IonRow>
@@ -98,10 +98,10 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 <IonRow>
                   <IonCol>
                     {cards.map((card, idx) => (
-                      <div key={card.id}>
+                      <span key={card.id}>
                         <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
                         {idx < cards.length - 1 ? ', ' : ''}
-                      </div>
+                      </span>
                     ))}
                   </IonCol>
                 </IonRow>

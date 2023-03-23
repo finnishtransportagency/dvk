@@ -62,3 +62,16 @@ test('test mapStringArray', () => {
   expect(mapStringArray(text3)).toHaveLength(2);
   expect(mapStringArray(text3)).toMatchObject(['x', ' ']);
 });
+
+test('test too long texts', () => {
+  expect(mapString('12', 2)).toBe('12');
+  expect(() => mapString('123', 2)).toThrow(OperationError.InvalidInput);
+  expect(mapStringArray(['12'], 2)).toMatchObject(['12']);
+  expect(() => mapStringArray(['123'], 2)).toThrow(OperationError.InvalidInput);
+  expect(() => mapStringArray(['12', '123'], 2)).toThrow(OperationError.InvalidInput);
+  const text = { fi: 'xy', sv: 'yx', en: 'zx' };
+  expect(mapText(text, 2)).not.toBe(text);
+  expect(() => mapText({ fi: 'xyz', sv: 'xyz', en: 'xyz' }, 2)).toThrow(OperationError.InvalidInput);
+  expect(mapMandatoryText(text, 2)).not.toBe(text);
+  expect(() => mapMandatoryText({ fi: 'xyz', sv: 'xyz', en: 'xyz' }, 2)).toThrow(OperationError.InvalidInput);
+});
