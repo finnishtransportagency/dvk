@@ -39,5 +39,17 @@ export type ActionType =
   | 'pilotExtraInfo'
   | 'pilotPhone'
   | 'pilotFax'
-  | 'pilotJourney';
+  | 'pilotJourney'
+  | 'vts'
+  | 'vtsName'
+  | 'vtsPhone'
+  | 'vtsEmail'
+  | 'tug'
+  | 'tugName'
+  | 'tugPhone'
+  | 'tugEmail'
+  | 'tugFax'
+  | 'vhf'
+  | 'vhfName'
+  | 'vhfChannel';
 export type ActionTypeSelect = 'fairwayIds' | 'fairwayPrimary' | 'fairwaySecondary' | 'harbours' | 'status' | 'referenceLevel' | 'pilotPlaces';

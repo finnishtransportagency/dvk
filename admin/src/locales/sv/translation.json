@@ -32,6 +32,7 @@
     "gulfOfBothnia": "Bottniska vikens område",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Stäng",
+    "open": "Öppna",
     "cancel": "[sv] Peruuta",
     "unknown": "[sv] Tuntematon",
     "preview": "[sv] Esikatselu",
@@ -42,6 +43,7 @@
     "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
     "required-field": "[sv] Pakollinen tieto",
+    "use-comma-separated-values": "[sv] Käytä pilkkua erottimena jos haluat lisätä useamman",
     "email": "E-post",
     "phone-number": "Telefonnummer",
     "fax": "Faxnummer",
@@ -98,7 +100,16 @@
     "traffic-services": "Trafikservice",
     "pilot-order": "Lotsbeställning",
     "linked-pilot-places": "[sv] Linkitetyt luotsipaikat",
-    "pilotage-distance-from": "Lotsled från"
+    "pilotage-distance-from": "Lotsled från",
+    "vts-heading": "[sv] VTS (alusliikennepalvelija)",
+    "vts-name": "Namn",
+    "add-section-vts": "[sv] Lisää alusliikennepalvelija",
+    "vhf-name": "[sv] VHF-kanavan nimi",
+    "vhf-channel": "[sv] VHF-kanavan numero",
+    "add-section-vhf": "[sv] Lisää VHF-kanava",
+    "tug-heading": "Bogserbåt",
+    "tug-name": "Bogserbåt namn",
+    "add-section-tug": "[sv] Lisää hinaaja"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
