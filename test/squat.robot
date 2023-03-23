@@ -287,6 +287,7 @@ Check Labels In English
 	Scroll Element Into View    ${LASKENTA_HEADER}
 	Element Should Contain    ${LASKENTA_HEADER}    Calculations
 	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
+	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Squat as a Function of Speed
 
 Check Input Fields In General Section
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
