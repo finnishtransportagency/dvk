@@ -8,8 +8,8 @@
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
       "squat-url": "/squat/index.html?lang=sv",
-      "customer-service": "[sv] Liikenteen asiakaspalvelu",
-      "source": "[sv] Tietolähteet ja käyttöehdot"
+      "customer-service": "Trafikens kundtjänst",
+      "source": "Informationskällor och användningsvillkor"
     },
     "map": {
       "content": "[sv] TODO: Karta",
@@ -37,11 +37,11 @@
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
-          "boardLines": "[sv] Taululinjat",
+          "boardLines": "Enslinjer",
           "seaLevel": "Vattenståndet",
-          "weatherStation": "[sv] Säähavaintoasemat",
-          "ice": "[sv] Jääkartta",
-          "buoys": "[sv] Aaltopoijut",
+          "weatherStation": "Kustväderstationerna",
+          "ice": "Iskarta",
+          "buoys": "Vågbojar",
           "vts": "[sv] VTS-ilmoituslinjat ja -pisteet",
           "general": "Allmänt",
           "mapStyle": {
@@ -82,7 +82,7 @@
     "documentTitle": "Digital farledskort",
     "title_one": "Farledskort",
     "title_other": "Farledskort",
-    "dataUpdated": "[sv] Tiedot ladattu laitteelle",
+    "dataUpdated": "Data laddat till enheten",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
     "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
@@ -145,7 +145,7 @@
     "recommendations": "Rekommendationer",
     "fairwayAndHarbour": "Farleden och hamnen",
     "speedLimit": "Fartbegränsningar och -rekommendationer",
-    "speedLimitAt": "[sv] Nopeusrajoitus paikassa",
+    "speedLimitAt": "Hastighetsbegränsning på platsen",
     "windRecommendation": "Vindrekommendationer",
     "vesselRecommendation": "Rekommendationer för fartyg",
     "visibilityRecommendation": "Sikt",
@@ -224,7 +224,7 @@
   "warnings": {
     "title": "Navigationsvarningar",
     "note": "OBS!",
-    "notification": "[sv] Tämän sivuston päivitys voi olla viivästynyt. Merivaroitusten saatavuus netissä ei vapauta päälliköitä vaatimuksesta vastaanottaa merivaroituksia IMO:n/IHO:n hyväksymien lähetysjärjestelmien kautta.",
+    "notification": "Uppdateringen av denna sida kan vara försenad. Tillgängligheten till navigationsvarningar på nätet befriar inte befälhavarna från kravet att ta emot navigationsvarningar via de sändningssystem som godkänts av IMO/IHO.",
     "print": "Skriv ut navigationsvarningar",
     "area": "Område",
     "location": "Position",
@@ -248,8 +248,8 @@
   "appInitAlert": {
     "title": "Appen initialiseras",
     "content": "Var vänlig och vänta",
-    "errorTitle": "[sv] Latausvirhe",
-    "errorContent": "[sv] Tietojen latauksessa tapahtui virhe. Ole hyvä ja yritä uudelleen."
+    "errorTitle": "Nedladdningsfel",
+    "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen."
   },
   "popup": {
     "pilotPlace": {
@@ -298,7 +298,7 @@
       "lightning": "Belyst",
       "navigationCode": "Navigationstyp",
       "fairways": "Farledskorten angående säkerhetsanordningen",
-      "type2": "[sv] reaalinen",
+      "type2": "reell",
       "type3": "syntetisk",
       "type4": "virtuell"
     },
@@ -314,40 +314,40 @@
       "notifier": "Uppgiftslämnare"
     },
     "mareograph": {
-      "mareograph": "[sv] Mareografi",
+      "mareograph": "Mareograf",
       "coordinates": "Koordinater",
       "seaLevel": "MW",
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[sv] Viimeisin havainto",
-      "calculated": "[sv] Laskennallinen vedenkorkeus"
+      "dateTime": "Senaste observation",
+      "calculated": "Beräknat vattenstånd"
     },
     "observation": {
-      "observation": "[sv] Säähavaintoasema",
+      "observation": "Kustväderstation",
       "coordinates": "Koordinater",
-      "temperature": "[sv] Ilman lämpötila",
-      "windSpeedAvgDir": "[sv] Tuulen nopeus ja suunta",
-      "windSpeedMax": "[sv] Tuulen nopeus (puuska)",
-      "visibility": "[sv] Näkyvyys",
+      "temperature": "Luftens temperatur",
+      "windSpeedAvgDir": "Vindhastighet och vindriktning",
+      "windSpeedMax": "Vindhastighet ([sv] puuska)",
+      "visibility": "Sikt",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[sv] Viimeisin havainto"
+      "dateTime": "Beräknat vattenstånd"
     },
     "buoy": {
       "coordinates": "Koordinater",
-      "temperature": "[sv] Veden lämpötila",
-      "waveHeightDir": "[sv] Aallonkorkeus ja suunta",
+      "temperature": "Vattentemperatur",
+      "waveHeightDir": "Våghöjd och riktning",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[sv] Viimeisin havainto"
+      "dateTime": "Beräknat vattenstånd"
     },
     "harbor": {
       "coordinates": "Koordinater",
-      "quays": "[sv] Laitureiden lukumäärä",
+      "quays": "Antal kajer",
       "contactDetails": "Kontaktuppgifter",
       "email": "E-post",
       "fax": "Fax",
       "phoneNumber": "Telefonnummer",
       "internet": "Nätsida",
-      "fairways": "[sv] Satamaan liittyvät väyläkortit",
+      "fairways": "Farledskort för hamnen",
       "extra": "Tilläggsuppgift"
     },
     "vts": {
@@ -372,21 +372,21 @@
     "closePane": "Stäng",
     "hidePane": "Göm",
     "showPane": "Visa",
-    "back": "[sv] Takaisin",
+    "back": "Tillbaka",
     "open": "Öppna",
     "close": "Stäng",
     "close-dialog": "Stäng dialogrutan",
     "noData": "Ingen data eller information saknas.",
     "noDataSet": "Uppgifter finns inte.",
-    "serviceOffline": "[sv] Ei internet-yhteyttä",
-    "offlineSupportImpossible": "[sv] Offline-käyttö ei mahdollista",
-    "offlineSupportPartial": "[sv] Osittainen offline-käyttö mahdollinen",
-    "offlineSupportPossible": "[sv] Offline-käyttö mahdollinen",
-    "dataNotUpToDate": "[sv] Palvelun tiedot eivät ole ajan tasalla",
-    "dataPartiallyUpToDate": "[sv] Palvelun tiedot ovat osittain ajan tasalla",
-    "dataUpToDate": "[sv] Palvelun tiedot ovat ajan tasalla",
-    "dataUpdateFailedAt": "[sv] Tietojen päivitys epäonnistui",
-    "latestDataUpdateAt": "[sv] Tietoja päivitetty viimeksi",
+    "serviceOffline": "Ingen internetförbinderlse",
+    "offlineSupportImpossible": "Offline-användning inte möjlig",
+    "offlineSupportPartial": "Offline-använding delvis möjlig",
+    "offlineSupportPossible": "Offline-användning möjlig",
+    "dataNotUpToDate": "Tjänstens uppgifter är inte uppdaterade",
+    "dataPartiallyUpToDate": "Tjänstens uppgifter delvis uppdaterad",
+    "dataUpToDate": "Tjänstens iuppgifter är uppdaterad",
+    "dataUpdateFailedAt": "Misslyckad uppdatering av data",
+    "latestDataUpdateAt": "Senaste uppdateringen av data",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",
@@ -397,11 +397,11 @@
     "content": "Digital farledskort tjänst är för tillfället ännu under utveckling. I första steget tjänsten stöder inte mobilanvändning officiellt, därför rekommenderas att Digital farledskort används med en dator eller en surfplatta."
   },
   "source": {
-    "title": "[sv] Tietolähteet ja käyttöehdot",
-    "content1": "[sv] Väylävirasto",
-    "content2": "[sv] Ilmatieteen laitos",
-    "content3": "[sv] Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
-    "content4": "[sv] Maanmittauslaitos",
-    "content5": "[sv] Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
+    "title": "Informationskällor och användningsvillkor",
+    "content1": "Trafikledsverket",
+    "content2": "Meteorologiska institutet",
+    "content3": "[sv] Lähde: Traficom. Ej för navigation. Ei täytä virallisen merikartan vaatimuksia.",
+    "content4": "Lantmäteriverket",
+    "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
   }
 }
