@@ -13,7 +13,7 @@ exports[`test mapHarborToModel all 1`] = `
     "sv": "companysv",
   },
   "creationTimestamp": Any<Number>,
-  "creator": "test",
+  "creator": "Test Test",
   "email": "email@fi",
   "expires": null,
   "extraInfo": {
@@ -37,7 +37,7 @@ exports[`test mapHarborToModel all 1`] = `
   "id": "2",
   "internet": "www.fi",
   "modificationTimestamp": Any<Number>,
-  "modifier": "test",
+  "modifier": "Test Test",
   "n2000HeightSystem": true,
   "name": {
     "en": "testen2",
@@ -92,7 +92,7 @@ exports[`test mapHarborToModel minimal 1`] = `
   "cargo": null,
   "company": null,
   "creationTimestamp": Any<Number>,
-  "creator": "test",
+  "creator": "Test Test",
   "email": null,
   "expires": null,
   "extraInfo": null,
@@ -108,7 +108,7 @@ exports[`test mapHarborToModel minimal 1`] = `
   "id": "1",
   "internet": null,
   "modificationTimestamp": Any<Number>,
-  "modifier": "test",
+  "modifier": "Test Test",
   "n2000HeightSystem": false,
   "name": {
     "en": "testen",

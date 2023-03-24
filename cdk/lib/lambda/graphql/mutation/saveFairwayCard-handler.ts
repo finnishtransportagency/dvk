@@ -25,8 +25,8 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: mapString(card.group),
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
-    creator: old ? old.creator : user.uid,
-    modifier: user.uid,
+    creator: old ? old.creator : `${user.firstName} ${user.lastName}`,
+    modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
     fairways: card.fairwayIds.map((id, idx) => {
       return {

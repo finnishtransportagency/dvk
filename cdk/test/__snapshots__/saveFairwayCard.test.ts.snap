@@ -13,7 +13,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "sv": "attentionsv",
   },
   "creationTimestamp": Any<Number>,
-  "creator": "test",
+  "creator": "Test Test",
   "designSpeed": {
     "en": "designSpeeden",
     "fi": "designSpeed",
@@ -51,7 +51,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "sv": "lineTextsv",
   },
   "modificationTimestamp": Any<Number>,
-  "modifier": "test",
+  "modifier": "Test Test",
   "n2000HeightSystem": true,
   "name": {
     "en": "testen2",
@@ -158,7 +158,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "anchorage": null,
   "attention": null,
   "creationTimestamp": Any<Number>,
-  "creator": "test",
+  "creator": "Test Test",
   "designSpeed": null,
   "expires": null,
   "fairwayIds": "#1#",
@@ -176,7 +176,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "id": "1",
   "lineText": null,
   "modificationTimestamp": Any<Number>,
-  "modifier": "test",
+  "modifier": "Test Test",
   "n2000HeightSystem": false,
   "name": {
     "en": "testen",
