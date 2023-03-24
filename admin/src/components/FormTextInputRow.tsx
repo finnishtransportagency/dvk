@@ -16,6 +16,8 @@ interface InputRowProps {
   error?: string;
   helperText?: string | null;
   inputType?: '' | 'input' | 'textarea';
+  actionTarget?: string | number;
+  actionOuterTarget?: string | number;
 }
 
 const FormTextInputRow: React.FC<InputRowProps> = ({
@@ -28,6 +30,8 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   error,
   helperText,
   inputType,
+  actionTarget,
+  actionOuterTarget,
 }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
@@ -48,6 +52,8 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             disabled={disabled}
             error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
             helperText={helperText}
+            actionTarget={actionTarget}
+            actionOuterTarget={actionOuterTarget}
           />
         )}
         {inputType === 'textarea' && (
@@ -76,6 +82,8 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             disabled={disabled}
             error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
             helperText={helperText}
+            actionTarget={actionTarget}
+            actionOuterTarget={actionOuterTarget}
           />
         )}
         {inputType === 'textarea' && (
@@ -104,6 +112,8 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             disabled={disabled}
             error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
             helperText={helperText}
+            actionTarget={actionTarget}
+            actionOuterTarget={actionOuterTarget}
           />
         )}
         {inputType === 'textarea' && (

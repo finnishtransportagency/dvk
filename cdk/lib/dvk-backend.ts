@@ -10,7 +10,7 @@ import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
-import { Vpc } from 'aws-cdk-lib/aws-ec2';
+import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
 import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
@@ -80,6 +80,7 @@ export class DvkBackendStack extends Stack {
         HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
         PILOT_VERSIONING_BUCKET: pilotVersioningBucket.bucketName,
         ENVIRONMENT: Config.getEnvironment(),
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
       },
     });
 
@@ -106,6 +107,7 @@ export class DvkBackendStack extends Stack {
     pilotVersioningBucket.grantPut(dbStreamHandler);
     pilotVersioningBucket.grantRead(dbStreamHandler);
 
+    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
@@ -116,6 +118,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         timeout: Duration.seconds(30),
         layers: [layer],
+        vpc,
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
@@ -124,9 +127,10 @@ export class DvkBackendStack extends Stack {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
+          DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
@@ -149,7 +153,7 @@ export class DvkBackendStack extends Stack {
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(pilotPlaceTable).add('Backups-' + Config.getEnvironment(), 'true');
     const bucket = this.createCacheBucket(env);
-    const alb = this.createALB(env, fairwayCardTable, harborTable, pilotPlaceTable, bucket, layer);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, pilotPlaceTable, bucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -180,6 +184,7 @@ export class DvkBackendStack extends Stack {
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
     });
     table.addGlobalSecondaryIndex({
       indexName: 'FairwayCardByFairwayIdIndex',
@@ -201,6 +206,7 @@ export class DvkBackendStack extends Stack {
       pointInTimeRecovery: true,
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
       stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
     });
   }
 
@@ -261,7 +267,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      lifecycleRules,
+      lifecycleRules: Config.isProductionEnvironment() ? undefined : lifecycleRules,
     });
   }
 
@@ -271,9 +277,9 @@ export class DvkBackendStack extends Stack {
     harborTable: Table,
     pilotPlaceTable: Table,
     cacheBucket: Bucket,
-    layer: ILayerVersion
+    layer: ILayerVersion,
+    vpc: IVpc
   ): ApplicationLoadBalancer {
-    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     const alb = new ApplicationLoadBalancer(this, `ALB-${env}`, {
       vpc,
       internetFacing: false,
@@ -292,10 +298,11 @@ export class DvkBackendStack extends Stack {
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       layers: [layer],
+      vpc,
       environment: {
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
         SSM_PARAMETER_STORE_TTL: '300',
       },
       logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
@@ -314,6 +321,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         layers: [layer],
         timeout: Duration.seconds(60),
+        vpc,
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
@@ -322,7 +330,7 @@ export class DvkBackendStack extends Stack {
           PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'NONE',
+          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },

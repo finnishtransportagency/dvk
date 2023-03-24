@@ -1,47 +1,29 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { Harbor, HarborInput, Maybe, MutationSaveHarborArgs, Operation, OperationError, TextInput } from '../../../../graphql/generated';
+import { Harbor, HarborInput, MutationSaveHarborArgs, Operation, OperationError, Status } from '../../../../graphql/generated';
 import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
-import { mapHarborDBModelToGraphqlType } from '../../db/modelMapper';
+import { mapHarborDBModelToGraphqlType, mapMandatoryText, mapNumber, mapString, mapStringArray, mapText } from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
+import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
+import { getExpires } from '../../environment';
 
-function mapText(text?: Maybe<TextInput>) {
-  if (text) {
-    return {
-      fi: text.fi,
-      sv: text.sv,
-      en: text.en,
-    };
-  } else {
-    return null;
-  }
-}
-
-function map<T>(text: Maybe<T> | undefined): T | null {
-  return text ? text : null;
-}
-
-function mapStringArray(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => map<string>(t)).filter((t) => t !== undefined) as string[]) : null;
-}
-
-function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
+export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {
     id: harbor.id,
-    name: harbor.name,
+    name: mapMandatoryText(harbor.name),
     n2000HeightSystem: !!harbor.n2000HeightSystem,
     status: harbor.status,
     company: mapText(harbor.company),
-    creator: old ? old.creator : user.uid,
+    creator: old ? old.creator : `${user.firstName} ${user.lastName}`,
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
-    modifier: user.uid,
+    modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
-    email: map<string>(harbor.email),
+    email: mapString(harbor.email),
     extraInfo: mapText(harbor.extraInfo),
-    fax: map<string>(harbor.fax),
+    fax: mapString(harbor.fax),
     harborBasin: mapText(harbor.harborBasin),
-    internet: map<string>(harbor.internet),
+    internet: mapString(harbor.internet),
     phoneNumber: mapStringArray(harbor.phoneNumber),
     geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : null,
     cargo: mapText(harbor.cargo),
@@ -49,19 +31,20 @@ function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, u
       harbor.quays?.map((q) => {
         return {
           extraInfo: mapText(q?.extraInfo),
-          length: map<number>(q?.length),
+          length: mapNumber(q?.length),
           name: mapText(q?.name),
           geometry: q?.geometry ? { type: 'Point', coordinates: [q.geometry.lat, q.geometry.lon] } : null,
           sections:
             q?.sections?.map((s) => {
               return {
-                depth: map<number>(s?.depth),
-                name: map<string>(s?.name),
+                depth: mapNumber(s?.depth),
+                name: mapString(s?.name),
                 geometry: s?.geometry ? { type: 'Point', coordinates: [s.geometry.lat, s.geometry.lon] } : null,
               };
             }) || null,
         };
       }) || null,
+    expires: harbor.status === Status.Removed ? getExpires() : null,
   };
 }
 
@@ -72,15 +55,18 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
   log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
   if (event.arguments.harbor?.id) {
     const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
-    if (event.arguments.harbor.operation === Operation.Create && dbModel !== undefined) {
-      log.warn(`Harbor with id ${event.arguments.harbor.id} already exists`);
-      throw new Error(OperationError.HarborAlreadyExist);
-    }
     const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
     log.debug('harbor: %o', newModel);
-    await HarborDBModel.save(newModel);
-    if (dbModel) {
-      const changes = diff(dbModel, newModel);
+    try {
+      await HarborDBModel.save(newModel, event.arguments.harbor.operation);
+    } catch (e) {
+      if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
+        throw new Error(event.arguments.harbor.operation === Operation.Create ? OperationError.HarborAlreadyExist : OperationError.HarborNotExist);
+      }
+      throw e;
+    }
+    if (event.arguments.harbor.operation === Operation.Update) {
+      const changes = dbModel ? diff(dbModel, newModel) : null;
       auditLog.info({ changes, harbor: newModel, user: user.uid }, 'Harbor updated');
     } else {
       auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');

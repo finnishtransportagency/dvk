@@ -1,0 +1,207 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test mapFairwayCardToModel all 1`] = `
+{
+  "anchorage": {
+    "en": "anchorageen",
+    "fi": "anchorage",
+    "sv": "anchoragesv",
+  },
+  "attention": {
+    "en": "attentionen",
+    "fi": "attentionfi",
+    "sv": "attentionsv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "Test Test",
+  "designSpeed": {
+    "en": "designSpeeden",
+    "fi": "designSpeed",
+    "sv": "designSpeedsv",
+  },
+  "expires": null,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": true,
+    },
+  ],
+  "generalInfo": {
+    "en": "generalInfoen",
+    "fi": "generalInfo",
+    "sv": "generalInfosv",
+  },
+  "group": "1",
+  "harbors": [
+    {
+      "id": "1",
+    },
+  ],
+  "iceCondition": {
+    "en": "iceConditionen",
+    "fi": "iceCondition",
+    "sv": "iceConditionsv",
+  },
+  "id": "2",
+  "lineText": {
+    "en": "lineTexten",
+    "fi": "lineText",
+    "sv": "lineTextsv",
+  },
+  "modificationTimestamp": Any<Number>,
+  "modifier": "Test Test",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "testen2",
+    "fi": "test2",
+    "sv": "testsv2",
+  },
+  "navigationCondition": {
+    "en": "navigationConditionen",
+    "fi": "navigationCondition",
+    "sv": "navigationConditionsv",
+  },
+  "seaLevel": {
+    "en": "seaLevelen",
+    "fi": "seaLevel",
+    "sv": "seaLevelsv",
+  },
+  "speedLimit": {
+    "en": "speedLimiten",
+    "fi": "speedLimit",
+    "sv": "speedLimitsv",
+  },
+  "status": "PUBLIC",
+  "trafficService": {
+    "pilot": {
+      "email": "i@fi",
+      "extraInfo": {
+        "en": "extraInfoen",
+        "fi": "extraInfo",
+        "sv": "extraInfosv",
+      },
+      "fax": "123",
+      "internet": "www",
+      "phoneNumber": "1234",
+      "places": [
+        {
+          "id": 1,
+          "pilotJourney": 0,
+        },
+      ],
+    },
+    "tugs": [
+      {
+        "email": "test@fi",
+        "fax": "12",
+        "name": {
+          "en": "nameen",
+          "fi": "name",
+          "sv": "namesv",
+        },
+        "phoneNumber": [
+          "+358",
+        ],
+      },
+    ],
+    "vts": [
+      {
+        "email": [
+          "email@fi",
+        ],
+        "name": {
+          "en": "nameen",
+          "fi": "name",
+          "sv": "namesv",
+        },
+        "phoneNumber": "789",
+        "vhf": [
+          {
+            "channel": 0,
+            "name": {
+              "en": "nameen",
+              "fi": "name",
+              "sv": "namesv",
+            },
+          },
+        ],
+      },
+    ],
+  },
+  "vesselRecommendation": {
+    "en": "vesselRecommendationen",
+    "fi": "vesselRecommendation",
+    "sv": "vesselRecommendationsv",
+  },
+  "visibility": {
+    "en": "visibilityen",
+    "fi": "visibility",
+    "sv": "visibilitysv",
+  },
+  "windGauge": {
+    "en": "windGaugeen",
+    "fi": "windGauge",
+    "sv": "windGaugesv",
+  },
+  "windRecommendation": {
+    "en": "windRecommendationen",
+    "fi": "windRecommendation",
+    "sv": "windRecommendationsv",
+  },
+}
+`;
+
+exports[`test mapFairwayCardToModel minimal 1`] = `
+{
+  "anchorage": null,
+  "attention": null,
+  "creationTimestamp": Any<Number>,
+  "creator": "Test Test",
+  "designSpeed": null,
+  "expires": null,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": true,
+    },
+  ],
+  "generalInfo": null,
+  "group": "1",
+  "harbors": null,
+  "iceCondition": null,
+  "id": "1",
+  "lineText": null,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "Test Test",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "testen",
+    "fi": "test",
+    "sv": "testsv",
+  },
+  "navigationCondition": null,
+  "seaLevel": null,
+  "speedLimit": null,
+  "status": "DRAFT",
+  "trafficService": {
+    "pilot": {
+      "email": null,
+      "extraInfo": null,
+      "fax": null,
+      "internet": null,
+      "phoneNumber": null,
+      "places": [],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "vesselRecommendation": null,
+  "visibility": null,
+  "windGauge": null,
+  "windRecommendation": null,
+}
+`;

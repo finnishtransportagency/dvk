@@ -43,6 +43,7 @@
           "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
           "vts": "VTS-ilmoituslinjat ja -pisteet",
+          "general": "Yleiset",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

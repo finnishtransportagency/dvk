@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { GeometryPoint, Maybe, Status } from '../../../graphql/generated';
+import { GeometryPoint, Maybe, Operation, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
@@ -57,6 +57,8 @@ class HarborDBModel {
 
   geometry?: Maybe<GeometryPoint>;
 
+  expires?: Maybe<number>;
+
   static async get(id: string): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: harborTable, Key: { id } }));
     const harbor = response.Item as HarborDBModel | undefined;
@@ -75,8 +77,9 @@ class HarborDBModel {
     return [];
   }
 
-  static async save(data: HarborDBModel) {
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data }));
+  static async save(data: HarborDBModel, operation: Operation) {
+    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data, ConditionExpression: expr }));
   }
 }
 

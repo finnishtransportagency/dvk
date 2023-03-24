@@ -1,7 +1,7 @@
 import { DynamoDBStreamEvent, DynamoDBRecord, DynamoDBStreamHandler } from 'aws-lambda/trigger/dynamodb-stream';
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
-import { log } from '../logger';
+import { auditLog, log } from '../logger';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
@@ -25,11 +25,11 @@ function getBucketForTable(arn: string | undefined) {
   if (!arn) {
     return undefined;
   } else if (arn.includes('FairwayCard')) {
-    return process.env.FAIRWAYCARD_VERSIONING_BUCKET;
+    return { bucket: process.env.FAIRWAYCARD_VERSIONING_BUCKET, table: 'FairwayCard' };
   } else if (arn.includes('Harbor')) {
-    return process.env.HARBOR_VERSIONING_BUCKET;
+    return { bucket: process.env.HARBOR_VERSIONING_BUCKET, table: 'Harbor' };
   } else if (arn.includes('PilotPlace')) {
-    return process.env.PILOT_VERSIONING_BUCKET;
+    return { bucket: process.env.PILOT_VERSIONING_BUCKET, table: 'PilotPlace' };
   }
   return undefined;
 }
@@ -43,21 +43,30 @@ async function handleUpdate(record: DynamoDBRecord) {
   }
 
   const bucket = getBucketForTable(record.eventSourceARN);
-  if (!bucket) {
+  if (!bucket?.bucket) {
     log.error('no known table found %s', record.eventSourceARN);
     return;
   }
 
   const data = unmarshall(record.dynamodb.NewImage as { [key: string]: AttributeValue });
 
-  await saveToS3(data, bucket);
+  await saveToS3(data, bucket.bucket);
 }
 
-function handleRemove(record: DynamoDBRecord) {
-  log.info('remove record: %s', record.dynamodb?.Keys?.id);
-  //TODO: to be decided if removing means a status change or physical removal
-  //and in case of (db) removal, do we create a final s3 json with "removed"-status or what
-  //and what are the effects to that files s3 lifecycle
+async function handleRemove(record: DynamoDBRecord) {
+  log.info('handling remove event from %s', record.eventSourceARN);
+  if (!record.dynamodb?.OldImage) {
+    log.error('no old record');
+    return;
+  }
+  const bucket = getBucketForTable(record.eventSourceARN);
+  if (!bucket?.bucket) {
+    log.error('no known table found %s', record.eventSourceARN);
+    return;
+  }
+
+  const data = unmarshall(record.dynamodb.OldImage as { [key: string]: AttributeValue });
+  auditLog.info({ data, user: 'system' }, `${bucket.table} removed`);
 }
 
 const handler: DynamoDBStreamHandler = async function (event: DynamoDBStreamEvent) {
@@ -76,7 +85,7 @@ const handler: DynamoDBStreamHandler = async function (event: DynamoDBStreamEven
         await handleUpdate(record);
         break;
       case 'REMOVE':
-        handleRemove(record);
+        await handleRemove(record);
     }
   }
 };
