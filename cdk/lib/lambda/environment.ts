@@ -174,3 +174,8 @@ export async function getCloudFrontPublicKeyId() {
 export async function getCognitoUrl() {
   return readParameterForEnv('CognitoUrl');
 }
+
+export function getExpires() {
+  const days = process.env.DAYS_TO_EXPIRE ? Number.parseInt(process.env.DAYS_TO_EXPIRE, 10) : 30;
+  return Math.round(Date.now() / 1000) + 60 * 60 * 24 * days;
+}

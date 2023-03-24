@@ -1,8 +1,62 @@
-import { Fairway, FairwayCard, Harbor, TrafficService } from '../../../graphql/generated';
+import { Fairway, FairwayCard, Harbor, Maybe, OperationError, TextInput, TrafficService } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
+
+const MAX_TEXT_LENGTH = 2000;
+
+function checkLength(maxLength: number, ...text: string[]) {
+  text.forEach((s) => {
+    if (s && s.length > maxLength) {
+      throw new Error(OperationError.InvalidInput);
+    }
+  });
+}
+
+export function mapText(text?: Maybe<TextInput>, maxLength = MAX_TEXT_LENGTH) {
+  if (text && text.fi && text.sv && text.en) {
+    checkLength(maxLength, text.fi, text.sv, text.en);
+    return {
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
+    };
+  } else if (text && (text.fi || text.sv || text.en)) {
+    throw new Error(OperationError.InvalidInput);
+  } else {
+    return null;
+  }
+}
+
+export function mapMandatoryText(text?: TextInput, maxLength = MAX_TEXT_LENGTH) {
+  if (text?.fi && text?.sv && text?.en) {
+    checkLength(maxLength, text.fi, text.sv, text.en);
+    return {
+      fi: text.fi,
+      sv: text.sv,
+      en: text.en,
+    };
+  } else {
+    throw new Error(OperationError.InvalidInput);
+  }
+}
+
+export function mapString(text: Maybe<string> | undefined, maxLength = MAX_TEXT_LENGTH): string | null {
+  if (text) {
+    checkLength(maxLength, text);
+    return text;
+  }
+  return null;
+}
+
+export function mapNumber(text: Maybe<number> | undefined): number | null {
+  return text ?? null;
+}
+
+export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {
+  return text ? (text.map((t) => mapString(t, maxLength)).filter((t) => t !== null) as string[]) : null;
+}
 
 export function mapIds(ids: number[]) {
   return `#${ids.join('#')}#`;
