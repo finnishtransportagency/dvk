@@ -7,6 +7,7 @@ import { TugInput, VhfInput, VtsInput } from '../graphql/generated';
 import FormTextInputRow from './FormTextInputRow';
 import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
 import { ReactComponent as BinIcon } from '../theme/img/bin.svg';
+import { ValidationType } from './FairwayCardForm';
 
 interface FormSectionProps {
   title: string;
@@ -20,9 +21,10 @@ interface FormSectionProps {
   ) => void;
   sectionType: 'vts' | 'tug' | 'vhf';
   actionOuterTarget?: string | number;
+  validationErrors?: ValidationType[];
 }
 
-const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, updateState, sectionType, actionOuterTarget }) => {
+const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, updateState, sectionType, actionOuterTarget, validationErrors }) => {
   const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
@@ -73,7 +75,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                 <IonButton
                   slot="end"
                   fill="clear"
-                  className={'icon-only small' + (openSections[idx] ? ' close' : ' open')}
+                  className={'icon-only small toggle' + (openSections[idx] ? ' close' : ' open')}
                   onClick={() => toggleSection(idx)}
                   title={(openSections[idx] ? t('general.close') : t('general.open')) || ''}
                   aria-label={(openSections[idx] ? t('general.close') : t('general.open')) || ''}
@@ -85,7 +87,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
             {actionOuterTarget !== undefined && <hr />}
             {sectionType === 'vts' && (
               <div className={'sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
-                <IonGrid>
+                <IonGrid className="formGrid">
                   <FormTextInputRow
                     labelKey="fairwaycard.vts-name"
                     value={section.name}
@@ -93,6 +95,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                     updateState={updateState}
                     actionTarget={idx}
                     required
+                    error={
+                      !section.name?.fi || !section.name.sv || !section.name.en
+                        ? validationErrors?.find((error) => error.id === 'vtsName')?.msg
+                        : undefined
+                    }
                   />
                   <IonRow>
                     <IonCol>
@@ -127,7 +134,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
               </div>
             )}
             {sectionType === 'vhf' && (
-              <IonGrid className={'sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
+              <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
                 <FormTextInputRow
                   labelKey="fairwaycard.vhf-name"
                   value={section.name}
@@ -164,7 +171,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
               </IonGrid>
             )}
             {sectionType === 'tug' && (
-              <IonGrid className={'sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
+              <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
                 <FormTextInputRow
                   labelKey="fairwaycard.tug-name"
                   value={section.name}
@@ -172,6 +179,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                   updateState={updateState}
                   actionTarget={idx}
                   required
+                  error={
+                    !section.name?.fi || !section.name.sv || !section.name.en
+                      ? validationErrors?.find((error) => error.id === 'tugName')?.msg
+                      : undefined
+                  }
                 />
                 <IonRow>
                   <IonCol>
