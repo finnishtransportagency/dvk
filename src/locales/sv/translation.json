@@ -43,6 +43,7 @@
           "ice": "Iskarta",
           "buoys": "Vågbojar",
           "vts": "[sv] VTS-ilmoituslinjat ja -pisteet",
+          "general": "Allmänt",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",

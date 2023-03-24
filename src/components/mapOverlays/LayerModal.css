@@ -6,7 +6,7 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;
   --height: fit-content;
   --border-radius: 4px;
-  --box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
 }
 
 .mobile ion-modal#layerModalContainer #ion-react-wrapper {
@@ -35,7 +35,7 @@ ion-modal#layerModalContainer::part(content) {
   margin: 0 16px;
   padding: 12px 0;
 }
-@media screen and (orientation:landscape) {
+@media screen and (orientation: landscape) {
   .mobile #layerModalContainer ion-grid.mainGrid ion-grid ion-list {
     column-count: 3;
     column-gap: 16px;
@@ -45,7 +45,14 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item {
   --padding-start: 0;
   --inner-padding-end: 0;
-  --min-height: 30px
+  --min-height: 30px;
+}
+
+#layerModalContainer ion-list-header {
+  font-size: 1rem;
+  padding-left: 0px;
+  min-height: auto;
+  padding-bottom: 0.25rem;
 }
 
 #layerModalContainer ion-item .layer {
@@ -299,18 +306,21 @@ ion-modal#layerModalContainer::part(content) {
   background: var(--ion-color-ice-consolidated);
 }
 
-#layerModalContainer .bgMapButtonSea, #layerModalContainer .bgMapButtonLand {
+#layerModalContainer .bgMapButtonSea,
+#layerModalContainer .bgMapButtonLand {
   background-color: #ffffff;
   font-weight: normal;
   font-size: 16px;
   color: #000000;
 }
 
-#layerModalContainer .bgMapButtonSea:disabled, #layerModalContainer .bgMapButtonLand:disabled {
+#layerModalContainer .bgMapButtonSea:disabled,
+#layerModalContainer .bgMapButtonLand:disabled {
   font-weight: bold;
 }
 
-#layerModalContainer .bgMapButtonSea .mapImage, #layerModalContainer .bgMapButtonLand .mapImage {
+#layerModalContainer .bgMapButtonSea .mapImage,
+#layerModalContainer .bgMapButtonLand .mapImage {
   width: 64px;
   height: 64px;
   background-color: #ffffff;

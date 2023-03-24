@@ -590,18 +590,18 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 0 0;
   border: none;
 }
+.mainContent ion-item.sectionHeader ion-button.toggle {
+  transition: transform 150ms;
+}
 .mainContent ion-item.sectionHeader ion-button.open {
   transform: rotate(90deg);
-  transition: transform 150ms;
 }
 .mainContent ion-item.sectionHeader ion-button.close {
   transform: rotate(-90deg);
-  transition: transform 150ms;
 }
 .mainContent .sectionContent {
   transition: all 150ms;
   max-height: 90vh;
-  padding: 5px 0;
 }
 .mainContent .sectionContent.closed {
   max-height: 0;
