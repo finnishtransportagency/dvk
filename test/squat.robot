@@ -1,107 +1,13 @@
 *** Settings ***
+Documentation    This test suite contains tests for Squat calculator
 Library    SeleniumLibrary
+Resource    resources_squat.resource
 Test Setup    Open Browser    http://localhost:${PORT}    ${BROWSER}
 Test Teardown    Close All Browsers
 
 *** Variables ***
 ${BROWSER}    headlesschrome
 ${PORT}    3000
-
-#Language selection locators
-${LANGUAGE_SELECT_BUTTON}    //ion-select[@class = "ion-padding md"]
-${OK_BUTTON}    //span[text() = "OK"]
-${FI_BUTTON}	//ion-button[@id="language_fi"]
-${SV_BUTTON}	//ion-button[@id="language_sv"]
-${EN_BUTTON}	//ion-button[@id="language_en"]
-
-#Squat-calculator locators in Finnish language
-${SQUAT_LASKENTA_HEADER}    //h1/strong[text() = "Painumalaskenta (Squat)"]
-${ALUKSEN_TIEDOT_HEADER}    //h2/strong[text() = "Aluksen tiedot"]
-${YMPARISTO_HEADER}    //h2/strong[text() = "Ympäristö"]
-${LASKENTA_HEADER}    //h2/strong[text() = "Laskenta"]
-${ALUKSEN_SQUAT_HEADER}    //h3/strong[text() = "Aluksen painuma nopeuden funktiona"]
-
-#General
-${LENGTHBPP_INPUT}    //input[@name = "lengthBPP"]
-${BREADTH_INPUT}    //input[@name = "breadth"]
-${DRAUGHT_INPUT}    //input[@name = "draught"]
-${BLOCKCOEFFICIENT_INPUT}    //input[@name = "blockCoefficient"]
-${DISPLACEMENT_INPUT}    //input[@name = "displacement"]
-
-#Weather
-${WINDSPEED_INPUT}    //input[@name = "windSpeed"]
-${WINDDIRECTION_INPUT}    //input[@name = "windDirection"]
-${WAVEHEIGHT_INPUT}    //input[@name = "waveHeight"]
-${WAVEPERIOD_INPUT}    //input[@name = "wavePeriod"]
-
-#Detailed
-${WINDSURFACE_INPUT}    //input[@name = "windSurface"]
-${DECKCARGO_INPUT}    //input[@name = "deckCargo"]
-${BOWTHRUSTER_INPUT}    //input[@name = "bowThruster"]
-${BOWTHRUSTEREFFICIENCY_INPUT}    //input[@name = "bowThrusterEfficiency"]
-${BULKER_RADIO}    //ion-radio[@id="Bulker / Tanker"]
-${CONTAINER_RADIO}    //ion-radio[@id="Container"]
-${FERRY_RADIO}    //ion-radio[@id="Ferry"]
-${LNG_RADIO}    //ion-radio[@id="LNG Tanker"]
-
-#Fairway
-${SWEPTDEPTH_INPUT}    //input[@name = "sweptDepth"]
-${WATERLEVEL_INPUT}    //input[@name = "waterLevel"]
-${WATERDEPTH_INPUT}    //input[@name = "waterDepth"]
-${CHANNELWIDTH_INPUT}    //input[@name = "channelWidth"]
-${AVOVESI_RADIOBUTTON}    //*[text() = "Avovesi"]/following-sibling::ion-radio
-${KANAVA_RADIOBUTTON}    //*[text() = "Kanava"]/following-sibling::ion-radio
-${LUISKA_RADIOBUTTON}    //*[text() = "Luiska"]/following-sibling::ion-radio
-${SLOPESCALE_INPUT}    //input[@name = "slopeScale"]
-${SLOPEHEIGHT_INPUT}    //input[@name = "slopeHeight"]
-
-#Stability
-${GM_INPUT}    //input[@name = "GM"]
-${KB_INPUT}    //input[@name = "KB"]
-${KG_INPUT}    //input[@name = "KG"]
-
-#Vessel
-${VESSEL_COURSE_INPUT}    //input[@name = "vesselCourse"]
-${VESSEL_SPEED_INPUT}    //input[@name = "vesselSpeed"]
-${TURNING_RADIUS_INPUT}    //input[@name = "turningRadius"]
-
-#Attribute
-${AIRDENSITY_INPUT}    //input[@name = "airDensity"]
-${WATERDENSITY_INPUT}    //input[@name = "waterDensity"]
-${REQUIREDUKC_INPUT}    //input[@name = "requiredUKC"]
-${MOTIONCLEARANCE_INPUT}    //input[@name = "motionClearance"]
-${SAFETYMARGINWINDFORCE_INPUT}    //input[@name = "safetyMarginWindForce"]
-
-#Profile selection view
-${BULKER_TANKER_RADIOBUTTON}    //div[contains(text(), "Bulker / Tanker")]/preceding-sibling::div
-${CONTAINER_RADIOBUTTON}    //div[contains(text(), "Container")]/preceding-sibling::div
-${FERRY_RADIOBUTTON}    //div[contains(text(), "Ferry")]/preceding-sibling::div
-${LNG_TANKER_RADIOBUTTON}    //div[contains(text(), "LNG Tanker")]/preceding-sibling::div
-
-#Painuma (Squat) -calculation
-${KALLISTUMA_KAANNOS_VALUE}    //ion-label[@title = "Käännöksen aiheuttama kallistuma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KALLISTUMA_TUULI_VALUE}    //ion-label[@title = "Tuulen aiheuttama kallistuma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ALUKSEN_TODELLINEN_SYVAYS_VALUE}    //ion-label[@title = "Aluksen todellinen syväys"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}    //ion-label[@title = "Aluksen todellinen syväys käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}    //ion-label[@title = "Kölivara ja aluksen liikkeet"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_SUORALLA_KURSSILLA_VALUE}    //ion-label[@title = "Kölivara suoralla kurssilla"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_KAANNOKSESSA_VALUE}    //ion-label[@title = "Kölivara käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_LUISKA_VALUE}    //ion-label[@title = "Painuma (Squat), Luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-
-#Tuulen voima -calculation
-${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen nopeus"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${TUULEN_VOIMA_VALUE}    //ion-label[@title = "Tuulen voima"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${AALLOKON_VOIMA_VALUE}    //ion-label[@title = "Aallokon voima"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KEULAPOTKURIN_SUORITUSKYKY_VALUE}    //ion-label[@title = "Keulapotkurin suorituskyky"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${TURVAMARGINAALI_VALUE}    //ion-label[@title = "Käytettävissä oleva turvamarginaali"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_VALUE}    //ion-label[@title = "Vähimmäisvaatimus tarvittavalle ulkoiselle työntövoimalle"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-
-#Sorto -calculation
-${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-label[@title = "Suhteellinen tuulen nopeus"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ARVIOITU_SORTOKULMA_VALUE}    //ion-label[@title = "Arvioitu sortokulma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}    //ion-label[@title = "Aluksen arvioitu leveys sorto huomioiden"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 
 #Ferry input-values
 ${LENGTHBPP_INPUT_FERRY}    212
@@ -263,12 +169,32 @@ ${SUHTEELLINEN_TUULEN_NOPEUS_2_BULKER}    9
 ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_BULKER}    32,32
 ${ARVIOITU_SORTOKULMA_BULKER}    0,02
 
+#Squat-calculation Finnish header texts
+${SQUAT_CALCULATION_HEADER_TEXT_FI}    Painumalaskenta (Squat)
+${VESSEL_HEADER_TEXT_FI}    Aluksen tiedot
+${ENVIRONMENT_HEADER_TEXT_FI}    Ympäristö
+${CALCULATIONS_HEADER_TEXT_FI}    Laskenta
+${SQUAT_GRAPH_HEADER_TEXT_FI}    Aluksen painuma nopeuden funktiona
+
+#Squat-calculation Swedish header texts
+${SQUAT_CALCULATION_HEADER_TEXT_SV}    Squat beräkning
+${VESSEL_HEADER_TEXT_SV}    Fartygets basuppgifter
+${ENVIRONMENT_HEADER_TEXT_SV}    Omgivning
+${CALCULATIONS_HEADER_TEXT_SV}    Beräkning
+${SQUAT_GRAPH_HEADER_TEXT_SV}    Fartygets Squat i samband med fart
+
+#Squat-calculation English header texts
+${SQUAT_CALCULATION_HEADER_TEXT_EN}    Squat Calculation
+${VESSEL_HEADER_TEXT_EN}    Vessel
+${ENVIRONMENT_HEADER_TEXT_EN}    Environment
+${CALCULATIONS_HEADER_TEXT_EN}    Calculations
+${SQUAT_GRAPH_HEADER_TEXT_EN}    Squat as a Function of Speed
+
 *** Test Cases ***
 Check UI Elements In Finnish Language
 	[Documentation]    This test case opens Squat calculation page in Finnish and checks the UI elements in it
-	Change Squat Calculator Language To    SV	# Finnish selected and disabled by default, test it by changing to sv first
 	Change Squat Calculator Language To    FI
-	Check Labels In Finnish
+	Check Headers    FI
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -280,6 +206,7 @@ Check UI Elements In Finnish Language
 Check UI Elements In Swedish Language
 	[Documentation]    This test case opens Squat calculation page in Swedish and checks the UI elements in it
 	Change Squat Calculator Language To    SV
+	Check Headers    SV
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -291,6 +218,7 @@ Check UI Elements In Swedish Language
 Check UI Elements In English Language
 	[Documentation]    This test case opens Squat calculation page in English and checks the UI elements in it
 	Change Squat Calculator Language To    EN
+	Check Headers    EN
 	Check Input Fields In General Section
 	Check Input Fields In Weather Section
 	Check Input Fields In Detailed Section
@@ -310,7 +238,7 @@ Calculate Squat For Ferry
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    FERRY
+	Check The Calculation Values    FERRY
 
 Calculate Squat For LNG
 	[Documentation]    This test case inputs valid values to Squat calculator for LNG and checks the result
@@ -323,7 +251,7 @@ Calculate Squat For LNG
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    LNG
+	Check The Calculation Values    LNG
 
 Calculate Squat For Container
 	[Documentation]    This test case inputs valid values to Squat calculator for Container and checks the result
@@ -336,7 +264,7 @@ Calculate Squat For Container
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    CONTAINER
+	Check The Calculation Values    CONTAINER
 
 Calculate Squat For Bulker
 	[Documentation]    This test case inputs valid values to Squat calculator for Bulker and checks the result
@@ -349,39 +277,30 @@ Calculate Squat For Bulker
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    BULKER
+	Check The Calculation Values    BULKER
 
 *** Keywords ***
 Change Squat Calculator Language To
 	[Arguments]    ${language}
+	[Documentation]    This keyword changes language in Squat calculator to language given in keyword arguments
+	${count}=    Get WebElements    ${${language}_BUTTON_NOT_SELECTED}
+	${language_not_selected}=    Get Length    ${count}
+	IF    ${language_not_selected} == 0    RETURN
 	Click Element    ${${language}_BUTTON}
 
-Check Labels In Finnish
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Painumalaskenta (Squat)
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Aluksen tiedot
-	Element Should Contain    ${YMPARISTO_HEADER}    Ympäristö
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Laskenta
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Aluksen painuma nopeuden funktiona
-
-Check Labels In Swedish
-	Element Should Contain    ${SQUAT_LASKENTA_HEADER}    Squat beräkning
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Fartygets basuppgifter
-	Element Should Contain    ${YMPARISTO_HEADER}    Omgivning
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Beräkning
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
-	Element Should Contain    ${ALUKSEN_SQUAT_HEADER}    Fartygets Squat i samband med fart
-
-Check Labels In English
-	Element Should Contain    ${ALUKSEN_TIEDOT_HEADER}    Vessel
-	Element Should Contain    ${YMPARISTO_HEADER}    Environment
-	Scroll Element Into View    ${LASKENTA_HEADER}
-	Element Should Contain    ${LASKENTA_HEADER}    Calculations
-	Scroll Element Into View    ${ALUKSEN_SQUAT_HEADER}
+Check Headers
+	[Arguments]    ${language}
+	[Documentation]    This keyword checks headers in language given in keyword arguments
+	Element Should Contain    ${SQUAT_CALCULATION_HEADER_${language}}    ${SQUAT_CALCULATION_HEADER_TEXT_${language}}
+	Element Should Contain    ${VESSEL_HEADER_${language}}    ${VESSEL_HEADER_TEXT_${language}}
+	Element Should Contain    ${ENVIRONMENT_HEADER_${language}}    ${ENVIRONMENT_HEADER_TEXT_${language}}
+	Scroll Element Into View    ${CALCULATIONS_HEADER_${language}}
+	Element Should Contain    ${CALCULATIONS_HEADER_${language}}    ${CALCULATIONS_HEADER_TEXT_${language}}
+	Scroll Element Into View    ${SQUAT_GRAPH_HEADER}
+	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_${language}}
 
 Check Input Fields In General Section
+	[Documentation]    This keyword checks input fields in General section in Squat calculator
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
 	Page Should Contain Element    ${BREADTH_INPUT}
 	Page Should Contain Element    ${DRAUGHT_INPUT}
@@ -389,12 +308,14 @@ Check Input Fields In General Section
 	Page Should Contain Element    ${DISPLACEMENT_INPUT}
 
 Check Input Fields In Weather Section
+	[Documentation]    This keyword checks input fields in Weather section in Squat calculator
 	Page Should Contain Element    ${WINDSPEED_INPUT}
 	Page Should Contain Element    ${WINDDIRECTION_INPUT}
 	Page Should Contain Element    ${WAVEHEIGHT_INPUT}
 	Page Should Contain Element    ${WAVEPERIOD_INPUT}
 
 Check Input Fields In Detailed Section
+	[Documentation]    This keyword checks input fields in Detailed section in Squat calculator
 	Page Should Contain Element    ${WINDSURFACE_INPUT}
 	Page Should Contain Element    ${DECKCARGO_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTER_INPUT}
@@ -405,21 +326,25 @@ Check Input Fields In Detailed Section
 	Page Should Contain Element    ${LNG_RADIO}
 
 Check Input Fields In Fairway Section
+	[Documentation]    This keyword checks input fields in Fairway section in Squat calculator
 	Page Should Contain Element    ${SWEPTDEPTH_INPUT}
 	Page Should Contain Element    ${WATERLEVEL_INPUT}
 	Page Should Contain Element    ${WATERDEPTH_INPUT}
 
 Check Input Fields In Stability Section
+	[Documentation]    This keyword checks input fields in Stability section in Squat calculator
 	Page Should Contain Element    ${KG_INPUT}
 	Page Should Contain Element    ${GM_INPUT}
 	Page Should Contain Element    ${KB_INPUT}
 
 Check Input Fields In Vessel Section
+	[Documentation]    This keyword checks input fields in Vessel section in Squat calculator
 	Page Should Contain Element    ${VESSEL_COURSE_INPUT}
 	Page Should Contain Element    ${VESSEL_SPEED_INPUT}
 	Page Should Contain Element    ${TURNING_RADIUS_INPUT}
 
 Check Input Fields Attribute Section
+	[Documentation]    This keyword checks input fields in Attribute section in Squat calculator
 	Page Should Contain Element    ${AIRDENSITY_INPUT}
 	Page Should Contain Element    ${WATERDENSITY_INPUT}
 	Page Should Contain Element    ${REQUIREDUKC_INPUT}
@@ -428,6 +353,7 @@ Check Input Fields Attribute Section
 
 Set Input Values To General Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in General section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${LENGTHBPP_INPUT}    RETURN
 	Press Keys    ${LENGTHBPP_INPUT}    ${LENGTHBPP_INPUT_${vessel_type}}
 	Press Keys    ${BREADTH_INPUT}    RETURN
@@ -438,6 +364,7 @@ Set Input Values To General Section
 
 Set Input Values To Weather Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Weather section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${WINDSPEED_INPUT}    RETURN
 	Press Keys    ${WINDSPEED_INPUT}    ${WINDSPEED_INPUT_${vessel_type}}
 	Press Keys    ${WAVEHEIGHT_INPUT}    RETURN
@@ -448,6 +375,7 @@ Set Input Values To Weather Section
 
 Set Input Values To Detailed Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Detailed section in Squat calculator for vessel type given in keyword arguments
 	Scroll Element Into View    ${KG_INPUT}
 	Press Keys    ${WINDSURFACE_INPUT}    RETURN
 	Press Keys    ${WINDSURFACE_INPUT}    ${WINDSURFACE_INPUT_${vessel_type}}
@@ -460,6 +388,7 @@ Set Input Values To Detailed Section
 
 Set Input Values To Fairway Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Fairway section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${SWEPTDEPTH_INPUT}    RETURN
 	Press Keys    ${SWEPTDEPTH_INPUT}    ${SWEPTDEPTH_INPUT_${vessel_type}}
 	Press Keys    ${WATERLEVEL_INPUT}    RETURN
@@ -477,12 +406,14 @@ Set Input Values To Fairway Section
 
 Set Input Values To Stability Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Stability section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${KG_INPUT}    RETURN
 	Press Keys    ${KG_INPUT}    ${KG_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Vessel Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Vessel section in Squat calculator for vessel type given in keyword arguments
 	Scroll Element Into View    ${TURNING_RADIUS_INPUT}
 	Press Keys    ${VESSEL_COURSE_INPUT}    RETURN
 	Press Keys    ${VESSEL_COURSE_INPUT}    ${VESSEL_COURSE_INPUT_${vessel_type}}
@@ -492,6 +423,7 @@ Set Input Values To Vessel Section
 	Capture Page Screenshot
 
 Get Squat Calculation Values
+	[Documentation]    This keyword gets squat calculation values from Squat calculator and sets them as test variables
 	${KALLISTUMA_TUULI}=    Get Text    ${KALLISTUMA_TUULI_VALUE}
 	${KALLISTUMA_KAANNOS}=    Get Text    ${KALLISTUMA_KAANNOS_VALUE}
 	${ALUKSEN_TODELLINEN_SYVAYS}=    Get Text    ${ALUKSEN_TODELLINEN_SYVAYS_VALUE}
@@ -510,6 +442,7 @@ Get Squat Calculation Values
 	Set Test Variable    ${PAINUMA_LUISKA}
 
 Get Tuulen Voima Calculation Values
+	[Documentation]    This keyword gets tuulen voima calculation values from Squat calculator and sets them as test variables
 	${SUHTEELLINEN_TUULEN_SUUNTA_1}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}
 	${SUHTEELLINEN_TUULEN_NOPEUS_1}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}
 	${TUULEN_VOIMA}=    Get Text    ${TUULEN_VOIMA_VALUE}
@@ -526,6 +459,7 @@ Get Tuulen Voima Calculation Values
 	Set Test Variable    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}
 
 Get Sorto Calculation Values
+	[Documentation]    This keyword gets sorto calculation values from Squat calculator and sets them as test variables
 	${SUHTEELLINEN_TUULEN_SUUNTA_2}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}
 	${SUHTEELLINEN_TUULEN_NOPEUS_2}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}
 	${ARVIOITU_SORTOKULMA}=    Get Text    ${ARVIOITU_SORTOKULMA_VALUE}
@@ -535,8 +469,9 @@ Get Sorto Calculation Values
 	Set Test Variable    ${ARVIOITU_SORTOKULMA}
 	Set Test Variable    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}
 
-Check The Squat Calculation Values
+Check The Calculation Values
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword compares actual calculation values with calculation value variables for vessel type given in keyword arguments
 	Should Be Equal    ${KALLISTUMA_TUULI}    ${KALLISTUMA_TUULI_${vessel_type}}
 	Should Be Equal    ${KALLISTUMA_KAANNOS}    ${KALLISTUMA_KAANNOS_${vessel_type}}
 	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    ${ALUKSEN_TODELLINEN_SYVAYS_${vessel_type}}
