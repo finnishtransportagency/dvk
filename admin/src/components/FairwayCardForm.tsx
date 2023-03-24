@@ -14,6 +14,7 @@ import FormInput from './FormInput';
 import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
+import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -23,9 +24,14 @@ interface FormProps {
   isError?: boolean;
 }
 
-type ValidationType = {
+export type ValidationType = {
   id: string;
   msg: string;
+};
+
+export type ErrorMessageType = {
+  required: string;
+  duplicateId: string;
 };
 
 const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified, modifier, isError }) => {
@@ -50,6 +56,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Card)
     .flatMap((item) => item.id);
+  const errorMessages = { required: t('general.required-field'), duplicateId: t('fairwaycard.error-duplicate-id') } as ErrorMessageType;
 
   const updateState = (
     value: ValueType,
@@ -58,523 +65,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => {
-    console.log('updateState... for input ' + actionType, actionLang);
-    // Check manual validations and clear triggered validations by save
-    if (actionType === 'primaryId' && state.operation === Operation.Create) {
-      let primaryIdErrorMsg = '';
-      if (reservedFairwayCardIds?.includes(value as string)) primaryIdErrorMsg = t('fairwaycard.error-duplicate-id');
-      if ((value as string).length < 1) primaryIdErrorMsg = t('general.required-field');
-      setValidationErrors((oldErrorList) => [
-        ...oldErrorList.filter((error) => error.id !== 'primaryId'),
-        { id: 'primaryId', msg: primaryIdErrorMsg },
-      ]);
-    } else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
-      setValidationErrors((oldErrorList) => [
-        ...oldErrorList.filter((error) => error.id !== 'name'),
-        { id: 'name', msg: (value as string).length < 1 ? t('general.required-field') : '' },
-      ]);
-    } else if (actionType === 'fairwayIds' && validationErrors.find((error) => error.id === 'fairwayIds')?.msg) {
-      setValidationErrors((oldErrorList) => [
-        ...oldErrorList.filter((error) => error.id !== 'fairwayIds'),
-        { id: 'fairwayIds', msg: (value as number[]).length < 1 ? t('general.required-field') : '' },
-      ]);
-    }
-    // TODO: add vts + tug name (and add clearing to save)
-
-    let newState;
-    switch (actionType) {
-      case 'name':
-        if (!actionLang) return state;
-        newState = { ...state, name: { ...state.name, [actionLang as string]: value as string } };
-        break;
-      case 'primaryId':
-        newState = { ...state, id: value as string };
-        break;
-      case 'status':
-        newState = { ...state, status: value as Status };
-        break;
-      case 'fairwayIds':
-        newState = {
-          ...state,
-          fairwayIds: value as number[],
-        };
-        if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
-        if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
-        if ((value as number[]).length === 1) {
-          newState.primaryFairwayId = (value as number[])[0];
-          newState.secondaryFairwayId = (value as number[])[0];
-        }
-        break;
-      case 'fairwayPrimary':
-        newState = { ...state, primaryFairwayId: Number(value) };
-        break;
-      case 'fairwaySecondary':
-        newState = { ...state, secondaryFairwayId: Number(value) };
-        break;
-      case 'harbours':
-        newState = { ...state, harbors: value as string[] };
-        break;
-      case 'referenceLevel':
-        newState = { ...state, n2000HeightSystem: !!value };
-        break;
-      case 'line':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          lineText: {
-            ...(state.lineText || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'speedLimit':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          speedLimit: {
-            ...(state.speedLimit || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'designSpeed':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          designSpeed: {
-            ...(state.designSpeed || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'anchorage':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          anchorage: {
-            ...(state.anchorage || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'navigationCondition':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          navigationCondition: {
-            ...(state.navigationCondition || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'iceCondition':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          iceCondition: {
-            ...(state.iceCondition || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'windRecommendation':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          windRecommendation: {
-            ...(state.windRecommendation || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'vesselRecommendation':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          vesselRecommendation: {
-            ...(state.vesselRecommendation || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'visibility':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          visibility: {
-            ...(state.visibility || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'windGauge':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          windGauge: {
-            ...(state.windGauge || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'seaLevel':
-        if (!actionLang) return state;
-        newState = {
-          ...state,
-          seaLevel: {
-            ...(state.seaLevel || { fi: '', sv: '', en: '' }),
-            [actionLang as string]: value as string,
-          },
-        };
-        break;
-      case 'pilotEmail':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              email: value as string,
-            },
-          },
-        };
-        break;
-      case 'pilotPhone':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              phoneNumber: value as string,
-            },
-          },
-        };
-        break;
-      case 'pilotFax':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              fax: value as string,
-            },
-          },
-        };
-        break;
-      case 'pilotExtraInfo':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              extraInfo: {
-                ...(state.trafficService?.pilot?.extraInfo || { fi: '', sv: '', en: '' }),
-                [actionLang as string]: value as string,
-              },
-            },
-          },
-        };
-        break;
-      case 'pilotPlaces':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: value as PilotPlace[],
-            },
-          },
-        };
-        break;
-      case 'pilotJourney':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: state.trafficService?.pilot?.places?.map((place) =>
-                place.id === actionTarget ? { ...place, pilotJourney: value as number } : place
-              ),
-            },
-          },
-        };
-        break;
-      case 'vts':
-        // Add and delete
-        if (value && !actionTarget) {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              vts: state.trafficService?.vts?.concat([
-                {
-                  email: [],
-                  name: { fi: '', sv: '', en: '' },
-                  phoneNumber: '',
-                  vhf: [],
-                },
-              ]),
-            },
-          };
-        } else {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              vts: state.trafficService?.vts?.filter((vtsItem, idx) => idx !== actionTarget),
-            },
-          };
-        }
-        break;
-      case 'vtsName':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...vtsItem,
-                    name: {
-                      ...(vtsItem?.name || { fi: '', sv: '', en: '' }),
-                      [actionLang as string]: value as string,
-                    },
-                  }
-                : vtsItem
-            ),
-          },
-        };
-        break;
-      case 'vtsEmail':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                    email: (value as string).split(',').map((item) => item.trim()),
-                  }
-                : vtsItem
-            ),
-          },
-        };
-        break;
-      case 'vtsPhone':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                    phoneNumber: ((value as string) || '').trim(),
-                  }
-                : vtsItem
-            ),
-          },
-        };
-        break;
-      case 'vhf':
-        // Add and delete
-        if (value && actionOuterTarget !== undefined) {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              vts: state.trafficService?.vts?.map((vtsItem, i) =>
-                i === actionOuterTarget
-                  ? {
-                      ...vtsItem,
-                      name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                      vhf: vtsItem?.vhf?.concat([{ channel: 0, name: { fi: '', sv: '', en: '' } }]),
-                    }
-                  : vtsItem
-              ),
-            },
-          };
-        } else if (!value && actionTarget !== undefined) {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              vts: state.trafficService?.vts?.map((vtsItem) => {
-                return {
-                  ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                  vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
-                };
-              }),
-            },
-          };
-        } else {
-          return state;
-        }
-        break;
-      case 'vhfName':
-        if (actionTarget === undefined || actionOuterTarget === undefined) return state;
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-              idx === actionOuterTarget
-                ? {
-                    ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                    vhf: vtsItem?.vhf?.map((vhfItem, j) =>
-                      j === actionTarget
-                        ? {
-                            name: {
-                              ...(vhfItem?.name || { fi: '', sv: '', en: '' }),
-                              [actionLang as string]: value as string,
-                            },
-                            channel: vhfItem?.channel || 0,
-                          }
-                        : vhfItem
-                    ),
-                  }
-                : vtsItem
-            ),
-          },
-        };
-        break;
-      case 'vhfChannel':
-        if (actionTarget === undefined || actionOuterTarget === undefined) return state;
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-              idx === actionOuterTarget
-                ? {
-                    ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                    vhf: vtsItem?.vhf?.map((vhfItem, j) =>
-                      j === actionTarget
-                        ? {
-                            name: vhfItem?.name || { fi: '', sv: '', en: '' },
-                            channel: value as number,
-                          }
-                        : vhfItem
-                    ),
-                  }
-                : vtsItem
-            ),
-          },
-        };
-        break;
-      case 'tug':
-        // Add and delete
-        if (value && !actionTarget) {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              tugs: state.trafficService?.tugs?.concat([
-                {
-                  email: '',
-                  name: { fi: '', sv: '', en: '' },
-                  phoneNumber: [],
-                  fax: '',
-                },
-              ]),
-            },
-          };
-        } else {
-          newState = {
-            ...state,
-            trafficService: {
-              ...state.trafficService,
-              tugs: state.trafficService?.tugs?.filter((tugItem, idx) => idx !== actionTarget),
-            },
-          };
-        }
-        break;
-      case 'tugName':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...tugItem,
-                    name: {
-                      ...(tugItem?.name || { fi: '', sv: '', en: '' }),
-                      [actionLang as string]: value as string,
-                    },
-                  }
-                : tugItem
-            ),
-          },
-        };
-        break;
-      case 'tugEmail':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...tugItem,
-                    name: tugItem?.name || { fi: '', sv: '', en: '' },
-                    email: ((value as string) || '').trim(),
-                  }
-                : tugItem
-            ),
-          },
-        };
-        break;
-      case 'tugPhone':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...tugItem,
-                    name: tugItem?.name || { fi: '', sv: '', en: '' },
-                    phoneNumber: (value as string).split(',').map((item) => item.trim()),
-                  }
-                : tugItem
-            ),
-          },
-        };
-        break;
-      case 'tugFax':
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
-              idx === actionTarget
-                ? {
-                    ...tugItem,
-                    name: tugItem?.name || { fi: '', sv: '', en: '' },
-                    fax: ((value as string) || '').trim(),
-                  }
-                : tugItem
-            ),
-          },
-        };
-        break;
-      default:
-        console.warn(`Unknown action type, state not updated.`);
-        return state;
-    }
-    setState(newState);
+    setState(
+      fairwayCardReducer(
+        state,
+        value,
+        actionType,
+        validationErrors,
+        setValidationErrors,
+        actionLang,
+        actionTarget,
+        actionOuterTarget,
+        errorMessages,
+        reservedFairwayCardIds
+      )
+    );
   };
 
   useEffect(() => {
@@ -600,6 +104,22 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
       { id: 'primaryId', msg: !state.id.trim() ? t('general.required-field') : '' },
       { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t('general.required-field') : '' },
+      {
+        id: 'vtsName',
+        msg:
+          (state.trafficService?.vts?.filter((vtsItem) => !vtsItem?.name.fi.trim() || !vtsItem?.name.sv.trim() || !vtsItem?.name.en.trim()) || [])
+            .length > 0
+            ? t('general.required-field')
+            : '',
+      },
+      {
+        id: 'tugName',
+        msg:
+          (state.trafficService?.tugs?.filter((tugItem) => !tugItem?.name.fi.trim() || !tugItem?.name.sv.trim() || !tugItem?.name.en.trim()) || [])
+            .length > 0
+            ? t('general.required-field')
+            : '',
+      },
     ];
     setValidationErrors(manualValidations);
     const currentCard = {
@@ -975,6 +495,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
               sections={state.trafficService?.vts as VtsInput[]}
               updateState={updateState}
               sectionType="vts"
+              validationErrors={validationErrors}
             />
 
             <FormOptionalSection
@@ -982,6 +503,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
               sections={state.trafficService?.tugs as TugInput[]}
               updateState={updateState}
               sectionType="tug"
+              validationErrors={validationErrors}
             />
           </form>
         )}
