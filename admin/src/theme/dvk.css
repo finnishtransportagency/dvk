@@ -117,6 +117,15 @@ ion-button {
   --padding-end: 16px;
 }
 
+ion-button.button-small {
+  height: 32px;
+  margin: 0 0 0 10px;
+  font-size: 14px;
+  letter-spacing: normal;
+  --padding-start: 16px;
+  --padding-end: 16px;
+}
+
 ion-button.invert {
   --border-color: var(--ion-color-primary);
   --border-style: solid;
@@ -562,12 +571,41 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 5px 0;
   border-bottom: 1px solid var(--ion-color-lighter);
 }
-.mainContent form ion-text h3 {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: bold;
-  margin: 10px 5px 0;
-  border-bottom: 1px solid var(--ion-color-lighter);
+
+.mainContent .formSection hr {
+  border-top: 1px solid var(--ion-color-lighter);
+  margin: 5px;
+}
+.mainContent ion-item.sectionHeader {
+  --background-focused: none;
+  --padding-start: 5px;
+  --padding-end: 5px;
+  --min-height: 30px;
+  --border-color: var(--ion-color-lighter);
+  --inner-padding-end: 0;
+  overflow: visible;
+  margin-top: 16px;
+}
+.mainContent ion-item.sectionHeader h3 {
+  margin: 10px 0 0;
+  border: none;
+}
+.mainContent ion-item.sectionHeader ion-button.open {
+  transform: rotate(90deg);
+  transition: transform 150ms;
+}
+.mainContent ion-item.sectionHeader ion-button.close {
+  transform: rotate(-90deg);
+  transition: transform 150ms;
+}
+.mainContent .sectionContent {
+  transition: all 150ms;
+  max-height: 90vh;
+  padding: 5px 0;
+}
+.mainContent .sectionContent.closed {
+  max-height: 0;
+  overflow: hidden;
 }
 
 /* Footer */

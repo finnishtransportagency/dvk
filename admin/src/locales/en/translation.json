@@ -32,6 +32,7 @@
     "gulfOfBothnia": "Gulf of Bothnia",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Close",
+    "open": "Open",
     "cancel": "Cancel",
     "unknown": "Unknown",
     "preview": "Preview",
@@ -42,6 +43,7 @@
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
     "required-field": "Required field",
+    "use-comma-separated-values": "Use comma to separate multiple values",
     "email": "Email",
     "phone-number": "Phone number",
     "fax": "Fax number",
@@ -98,7 +100,16 @@
     "traffic-services": "Traffic services",
     "pilot-order": "Pilotage",
     "linked-pilot-places": "Linked pilot boarding positions",
-    "pilotage-distance-from": "Pilotage distance from"
+    "pilotage-distance-from": "Pilotage distance from",
+    "vts-heading": "[en] VTS (alusliikennepalvelija)",
+    "vts-name": "Name",
+    "add-section-vts": "[en] Lisää alusliikennepalvelija",
+    "vhf-name": "VHF channel name",
+    "vhf-channel": "VHF channel number",
+    "add-section-vhf": "Add VHF channel",
+    "tug-heading": "Tug",
+    "tug-name": "Tugboat name",
+    "add-section-tug": "Add tug"
   },
   "harbour": {
     "primary-id": "Harbour ID",

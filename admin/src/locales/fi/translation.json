@@ -32,6 +32,7 @@
     "gulfOfBothnia": "Pohjanlahden alue",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "close": "Sulje",
+    "open": "Avaa",
     "cancel": "Peruuta",
     "unknown": "Tuntematon",
     "preview": "Esikatselu",
@@ -42,6 +43,7 @@
     "loading-error": "Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "Voit valita tarvittaessa useita kohteita.",
     "required-field": "Pakollinen tieto",
+    "use-comma-separated-values": "Käytä pilkkua erottimena jos haluat lisätä useamman",
     "email": "Sähköposti",
     "phone-number": "Puhelinnumero",
     "fax": "Faksin numero",
@@ -98,7 +100,16 @@
     "traffic-services": "Liikennepalvelut",
     "pilot-order": "Luotsintilaus",
     "linked-pilot-places": "Linkitetyt luotsipaikat",
-    "pilotage-distance-from": "Luotsausmatka kohteesta"
+    "pilotage-distance-from": "Luotsausmatka kohteesta",
+    "vts-heading": "VTS (alusliikennepalvelija)",
+    "vts-name": "Nimi",
+    "add-section-vts": "Lisää alusliikennepalvelija",
+    "vhf-name": "VHF-kanavan nimi",
+    "vhf-channel": "VHF-kanavan numero",
+    "add-section-vhf": "Lisää VHF-kanava",
+    "tug-heading": "Hinaaja",
+    "tug-name": "Hinaajan nimi",
+    "add-section-tug": "Lisää hinaaja"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",

@@ -8,10 +8,11 @@ import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
 interface InputProps {
   label: string;
   val: string | number | null | undefined;
-  setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
+  setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
   actionType: ActionType;
   actionLang?: Lang;
   actionTarget?: string | number;
+  actionOuterTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
   error?: string;
@@ -27,6 +28,7 @@ const FormInput: React.FC<InputProps> = ({
   actionType,
   actionLang,
   actionTarget,
+  actionOuterTarget,
   required,
   disabled,
   error,
@@ -48,7 +50,7 @@ const FormInput: React.FC<InputProps> = ({
   };
   const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
     checkValidity(event);
-    setValue(event.detail.value as string, actionType, actionLang, actionTarget);
+    setValue(event.detail.value as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
   const getErrorText = () => {
