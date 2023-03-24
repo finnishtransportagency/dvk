@@ -8,8 +8,8 @@
       "marine-warnings": "Marine Warnings",
       "squat": "Squat calculator",
       "squat-url": "/squat/index.html?lang=en",
-      "customer-service": "[en] Liikenteen asiakaspalvelu",
-      "source": "[en] Tietolähteet ja käyttöehdot"
+      "customer-service": "Traffic customer service",
+      "source": "Data sources and terms of use"
     },
     "map": {
       "content": "[en] TODO: Kartta",
@@ -37,11 +37,11 @@
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
           "marineWarnings": "Marine warnings",
-          "boardLines": "[en] Taululinjat",
+          "boardLines": "Leading lines",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
           "ice": "Ice map",
-          "buoys": "[en] Aaltopoijut",
+          "buoys": "Wave buoys",
           "vts": "[en] VTS-ilmoituslinjat ja -pisteet",
           "mapStyle": {
             "header": "Map style",
@@ -223,7 +223,7 @@
   "warnings": {
     "title": "Marine warnings",
     "note": "NOTE!",
-    "notification": "[en] Tämän sivuston päivitys voi olla viivästynyt. Merivaroitusten saatavuus netissä ei vapauta päälliköitä vaatimuksesta vastaanottaa merivaroituksia IMO:n/IHO:n hyväksymien lähetysjärjestelmien kautta.",
+    "notification": "Updating of this page could be delayed. The availability of Navigational Warnings on the web does not relieve Masters of the requirement to receive Navigational Warnings via IMO/IHO approved broadcast systems.",
     "print": "Print marine warnings",
     "area": "Area",
     "location": "Location",
@@ -297,8 +297,8 @@
       "lightning": "Lit",
       "navigationCode": "Navigation type",
       "fairways": "Fairway cards connected to the navigational aid",
-      "type2": "[en] reaalinen",
-      "type3": "[en] synteettinen",
+      "type2": "real",
+      "type3": "synthetic",
       "type4": "virtual"
     },
     "marine": {
@@ -318,8 +318,8 @@
       "seaLevel": "MW",
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[en] Viimeisin havainto",
-      "calculated": "[en] Laskennallinen vedenkorkeus"
+      "dateTime": "Last observation",
+      "calculated": "Calculated sea level"
     },
     "observation": {
       "observation": "Weather station",
@@ -329,14 +329,14 @@
       "windSpeedMax": "Wind speed (puuska)",
       "visibility": "Visibility",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[en] Viimeisin havainto"
+      "dateTime": "Last observation"
     },
     "buoy": {
       "coordinates": "Coordinates",
       "temperature": "Water temperature",
       "waveHeightDir": "Wave height and direction",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "[en] Viimeisin havainto"
+      "dateTime": "Last observation"
     },
     "harbor": {
       "coordinates": "Coordinates",
@@ -346,7 +346,7 @@
       "fax": "Fax",
       "phoneNumber": "Telephone",
       "internet": "Website",
-      "fairways": "[en] Satamaan liittyvät väyläkortit",
+      "fairways": "Fairway cards related to harbour",
       "extra": "Additional information"
     },
     "vts": {
@@ -396,11 +396,11 @@
     "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
   },
   "source": {
-    "title": "[en] Tietolähteet ja käyttöehdot",
-    "content1": "[en] Väylävirasto",
-    "content2": "[en] Ilmatieteen laitos",
-    "content3": "[en] Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
-    "content4": "[en] Maanmittauslaitos",
-    "content5": "[en] Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
+    "title": "Data sources and terms of use",
+    "content1": "Finnish Transport Infrastructure Agency",
+    "content2": "Finnish Meteorological Institute",
+    "content3": "[en] Lähde: Traficom. Not for navigational use. [en] Ei täytä virallisen merikartan vaatimuksia.",
+    "content4": "National Land Survey of Finland",
+    "content5": "National Land Survey open data Attribution CC 4.0 licence"
   }
 }
