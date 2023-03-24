@@ -1,4 +1,5 @@
 *** Settings ***
+Documentation    This test suite contains tests for Squat calculator
 Library    SeleniumLibrary
 Resource    resources_squat.resource
 Test Setup    Open Browser    http://localhost:${PORT}    ${BROWSER}
@@ -237,7 +238,7 @@ Calculate Squat For Ferry
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    FERRY
+	Check The Calculation Values    FERRY
 
 Calculate Squat For LNG
 	[Documentation]    This test case inputs valid values to Squat calculator for LNG and checks the result
@@ -250,7 +251,7 @@ Calculate Squat For LNG
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    LNG
+	Check The Calculation Values    LNG
 
 Calculate Squat For Container
 	[Documentation]    This test case inputs valid values to Squat calculator for Container and checks the result
@@ -263,7 +264,7 @@ Calculate Squat For Container
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    CONTAINER
+	Check The Calculation Values    CONTAINER
 
 Calculate Squat For Bulker
 	[Documentation]    This test case inputs valid values to Squat calculator for Bulker and checks the result
@@ -276,11 +277,12 @@ Calculate Squat For Bulker
 	Get Squat Calculation Values
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
-	Check The Squat Calculation Values    BULKER
+	Check The Calculation Values    BULKER
 
 *** Keywords ***
 Change Squat Calculator Language To
 	[Arguments]    ${language}
+	[Documentation]    This keyword changes language in Squat calculator to language given in keyword arguments
 	${count}=    Get WebElements    ${${language}_BUTTON_NOT_SELECTED}
 	${language_not_selected}=    Get Length    ${count}
 	IF    ${language_not_selected} == 0    RETURN
@@ -288,6 +290,7 @@ Change Squat Calculator Language To
 
 Check Headers
 	[Arguments]    ${language}
+	[Documentation]    This keyword checks headers in language given in keyword arguments
 	Element Should Contain    ${SQUAT_CALCULATION_HEADER_${language}}    ${SQUAT_CALCULATION_HEADER_TEXT_${language}}
 	Element Should Contain    ${VESSEL_HEADER_${language}}    ${VESSEL_HEADER_TEXT_${language}}
 	Element Should Contain    ${ENVIRONMENT_HEADER_${language}}    ${ENVIRONMENT_HEADER_TEXT_${language}}
@@ -297,6 +300,7 @@ Check Headers
 	Element Should Contain    ${SQUAT_GRAPH_HEADER}    ${SQUAT_GRAPH_HEADER_TEXT_${language}}
 
 Check Input Fields In General Section
+	[Documentation]    This keyword checks input fields in General section in Squat calculator
 	Page Should Contain Element    ${LENGTHBPP_INPUT}
 	Page Should Contain Element    ${BREADTH_INPUT}
 	Page Should Contain Element    ${DRAUGHT_INPUT}
@@ -304,12 +308,14 @@ Check Input Fields In General Section
 	Page Should Contain Element    ${DISPLACEMENT_INPUT}
 
 Check Input Fields In Weather Section
+	[Documentation]    This keyword checks input fields in Weather section in Squat calculator
 	Page Should Contain Element    ${WINDSPEED_INPUT}
 	Page Should Contain Element    ${WINDDIRECTION_INPUT}
 	Page Should Contain Element    ${WAVEHEIGHT_INPUT}
 	Page Should Contain Element    ${WAVEPERIOD_INPUT}
 
 Check Input Fields In Detailed Section
+	[Documentation]    This keyword checks input fields in Detailed section in Squat calculator
 	Page Should Contain Element    ${WINDSURFACE_INPUT}
 	Page Should Contain Element    ${DECKCARGO_INPUT}
 	Page Should Contain Element    ${BOWTHRUSTER_INPUT}
@@ -320,21 +326,25 @@ Check Input Fields In Detailed Section
 	Page Should Contain Element    ${LNG_RADIO}
 
 Check Input Fields In Fairway Section
+	[Documentation]    This keyword checks input fields in Fairway section in Squat calculator
 	Page Should Contain Element    ${SWEPTDEPTH_INPUT}
 	Page Should Contain Element    ${WATERLEVEL_INPUT}
 	Page Should Contain Element    ${WATERDEPTH_INPUT}
 
 Check Input Fields In Stability Section
+	[Documentation]    This keyword checks input fields in Stability section in Squat calculator
 	Page Should Contain Element    ${KG_INPUT}
 	Page Should Contain Element    ${GM_INPUT}
 	Page Should Contain Element    ${KB_INPUT}
 
 Check Input Fields In Vessel Section
+	[Documentation]    This keyword checks input fields in Vessel section in Squat calculator
 	Page Should Contain Element    ${VESSEL_COURSE_INPUT}
 	Page Should Contain Element    ${VESSEL_SPEED_INPUT}
 	Page Should Contain Element    ${TURNING_RADIUS_INPUT}
 
 Check Input Fields Attribute Section
+	[Documentation]    This keyword checks input fields in Attribute section in Squat calculator
 	Page Should Contain Element    ${AIRDENSITY_INPUT}
 	Page Should Contain Element    ${WATERDENSITY_INPUT}
 	Page Should Contain Element    ${REQUIREDUKC_INPUT}
@@ -343,6 +353,7 @@ Check Input Fields Attribute Section
 
 Set Input Values To General Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in General section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${LENGTHBPP_INPUT}    RETURN
 	Press Keys    ${LENGTHBPP_INPUT}    ${LENGTHBPP_INPUT_${vessel_type}}
 	Press Keys    ${BREADTH_INPUT}    RETURN
@@ -353,6 +364,7 @@ Set Input Values To General Section
 
 Set Input Values To Weather Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Weather section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${WINDSPEED_INPUT}    RETURN
 	Press Keys    ${WINDSPEED_INPUT}    ${WINDSPEED_INPUT_${vessel_type}}
 	Press Keys    ${WAVEHEIGHT_INPUT}    RETURN
@@ -363,6 +375,7 @@ Set Input Values To Weather Section
 
 Set Input Values To Detailed Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Detailed section in Squat calculator for vessel type given in keyword arguments
 	Scroll Element Into View    ${KG_INPUT}
 	Press Keys    ${WINDSURFACE_INPUT}    RETURN
 	Press Keys    ${WINDSURFACE_INPUT}    ${WINDSURFACE_INPUT_${vessel_type}}
@@ -375,6 +388,7 @@ Set Input Values To Detailed Section
 
 Set Input Values To Fairway Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Fairway section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${SWEPTDEPTH_INPUT}    RETURN
 	Press Keys    ${SWEPTDEPTH_INPUT}    ${SWEPTDEPTH_INPUT_${vessel_type}}
 	Press Keys    ${WATERLEVEL_INPUT}    RETURN
@@ -392,12 +406,14 @@ Set Input Values To Fairway Section
 
 Set Input Values To Stability Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Stability section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${KG_INPUT}    RETURN
 	Press Keys    ${KG_INPUT}    ${KG_INPUT_${vessel_type}}
 	Capture Page Screenshot
 
 Set Input Values To Vessel Section
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Vessel section in Squat calculator for vessel type given in keyword arguments
 	Scroll Element Into View    ${TURNING_RADIUS_INPUT}
 	Press Keys    ${VESSEL_COURSE_INPUT}    RETURN
 	Press Keys    ${VESSEL_COURSE_INPUT}    ${VESSEL_COURSE_INPUT_${vessel_type}}
@@ -407,6 +423,7 @@ Set Input Values To Vessel Section
 	Capture Page Screenshot
 
 Get Squat Calculation Values
+	[Documentation]    This keyword gets squat calculation values from Squat calculator and sets them as test variables
 	${KALLISTUMA_TUULI}=    Get Text    ${KALLISTUMA_TUULI_VALUE}
 	${KALLISTUMA_KAANNOS}=    Get Text    ${KALLISTUMA_KAANNOS_VALUE}
 	${ALUKSEN_TODELLINEN_SYVAYS}=    Get Text    ${ALUKSEN_TODELLINEN_SYVAYS_VALUE}
@@ -425,6 +442,7 @@ Get Squat Calculation Values
 	Set Test Variable    ${PAINUMA_LUISKA}
 
 Get Tuulen Voima Calculation Values
+	[Documentation]    This keyword gets tuulen voima calculation values from Squat calculator and sets them as test variables
 	${SUHTEELLINEN_TUULEN_SUUNTA_1}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}
 	${SUHTEELLINEN_TUULEN_NOPEUS_1}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}
 	${TUULEN_VOIMA}=    Get Text    ${TUULEN_VOIMA_VALUE}
@@ -441,6 +459,7 @@ Get Tuulen Voima Calculation Values
 	Set Test Variable    ${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA}
 
 Get Sorto Calculation Values
+	[Documentation]    This keyword gets sorto calculation values from Squat calculator and sets them as test variables
 	${SUHTEELLINEN_TUULEN_SUUNTA_2}=    Get Text    ${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}
 	${SUHTEELLINEN_TUULEN_NOPEUS_2}=    Get Text    ${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}
 	${ARVIOITU_SORTOKULMA}=    Get Text    ${ARVIOITU_SORTOKULMA_VALUE}
@@ -450,8 +469,9 @@ Get Sorto Calculation Values
 	Set Test Variable    ${ARVIOITU_SORTOKULMA}
 	Set Test Variable    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}
 
-Check The Squat Calculation Values
+Check The Calculation Values
 	[Arguments]    ${vessel_type}
+	[Documentation]    This keyword compares actual calculation values with calculation value variables for vessel type given in keyword arguments
 	Should Be Equal    ${KALLISTUMA_TUULI}    ${KALLISTUMA_TUULI_${vessel_type}}
 	Should Be Equal    ${KALLISTUMA_KAANNOS}    ${KALLISTUMA_KAANNOS_${vessel_type}}
 	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    ${ALUKSEN_TODELLINEN_SYVAYS_${vessel_type}}
