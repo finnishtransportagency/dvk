@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
@@ -15,6 +15,7 @@ import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
+import ConfirmationModal from './ConfirmationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -97,6 +98,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     },
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = () => {
     // Manual validations for required fields
@@ -122,6 +125,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       },
     ];
     setValidationErrors(manualValidations);
+    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
+      setIsOpen(true);
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const saveCard = useCallback(() => {
     const currentCard = {
       ...state,
       trafficService: {
@@ -135,15 +146,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       },
     };
     console.log(currentCard);
-    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      saveFairwayCard({ card: currentCard as FairwayCardInput });
-    } else {
-      setSaveError('MISSING-INFORMATION');
-    }
-  };
+    saveFairwayCard({ card: currentCard as FairwayCardInput });
+  }, [state, saveFairwayCard]);
 
   return (
     <IonPage>
+      <ConfirmationModal
+        action={() => {
+          saveCard();
+        }}
+        buttonTitle={t('general.save')}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        description={t('modal.save-public-card-description')}
+        title={t('modal.save-public-card-title')}
+      />
       <IonAlert
         isOpen={!!saveError || !!savedCard}
         onDidDismiss={() => {

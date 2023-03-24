@@ -71,7 +71,9 @@
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama",
     "logout-title": "Olet kirjautumassa ulos",
-    "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella."
+    "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",
+    "save-public-card-title": "Väyläkortin muutosten tallentaminen",
+    "save-public-card-description": "Olet tallentamassa muutoksia julki olevaan väyläkorttiin. Muutokset tulevat välittömästi näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat jatkaa?"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
