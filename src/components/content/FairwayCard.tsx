@@ -772,7 +772,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonGrid className="ion-no-padding">
             <IonRow>
               <IonCol>
-                <IonText className="fairwayTitle">
+                <IonText className="fairwayTitle" id="mainPageContent">
                   <h2 className="no-margin-bottom">
                     <strong>{fairwayCard?.name[lang]}</strong>
                   </h2>

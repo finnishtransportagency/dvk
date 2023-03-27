@@ -40,7 +40,7 @@ export const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
 
   return (
     <p className="info use-flex ion-align-items-center">
-      <InfoIcon className="no-print" />
+      <InfoIcon aria-label="info" className="no-print" />
       {title || t('noDataSet')}
     </p>
   );

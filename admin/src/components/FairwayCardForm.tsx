@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
@@ -15,6 +15,7 @@ import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
+import ConfirmationModal, { StatusName } from './ConfirmationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -86,8 +87,27 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     },
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const saveCard = useCallback(() => {
+    const currentCard = {
+      ...state,
+      trafficService: {
+        ...state.trafficService,
+        pilot: {
+          ...state.trafficService?.pilot,
+          places: state.trafficService?.pilot?.places?.map((place) => {
+            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
+          }),
+        },
+      },
+    };
+    console.log(currentCard);
+    saveFairwayCard({ card: currentCard as FairwayCardInput });
+  }, [state, saveFairwayCard]);
+
   const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = () => {
+  const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
@@ -111,21 +131,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       },
     ];
     setValidationErrors(manualValidations);
-    const currentCard = {
-      ...state,
-      trafficService: {
-        ...state.trafficService,
-        pilot: {
-          ...state.trafficService?.pilot,
-          places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
-          }),
-        },
-      },
-    };
-    console.log(currentCard);
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      saveFairwayCard({ card: currentCard as FairwayCardInput });
+      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
+        saveCard();
+      } else {
+        setIsOpen(true);
+      }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
@@ -133,6 +144,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   return (
     <IonPage>
+      <ConfirmationModal
+        saveType="fairwaycard"
+        action={saveCard}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        newStatus={state.status}
+        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+      />
       <IonAlert
         isOpen={!!saveError || !!savedCard}
         onDidDismiss={() => {
@@ -173,7 +192,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && (
-                <IonButton shape="round" color="danger" disabled={isError}>
+                <IonButton
+                  shape="round"
+                  color="danger"
+                  disabled={isError}
+                  onClick={() => {
+                    updateState(Status.Removed, 'status');
+                    handleSubmit(true);
+                  }}
+                >
                   {t('general.delete')}
                 </IonButton>
               )}
