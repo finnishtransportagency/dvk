@@ -39,6 +39,8 @@
     "delete": "Delete",
     "create-new": "Create new",
     "save": "Save",
+    "update": "Update",
+    "publish": "Publish",
     "choose": "Choose...",
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
@@ -71,7 +73,16 @@
     "create-CARD": "Create fairway card",
     "create-HARBOR": "Create harbour",
     "logout-title": "You are logging out",
-    "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella."
+    "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",
+    "save-public-card-title": "[en] Väyläkortin muutosten tallentaminen",
+    "save-public-card-description": "[en] Olet tallentamassa muutoksia julki olevaan väyläkorttiin. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat jatkaa?",
+    "delete-public-card-title": "[en] Väyläkortin poisto",
+    "delete-public-card-description": "[en] Olet poistamassa \"{{name}}\" -väyläkortin. Oletko varma, että haluat poistaa väyläkortin?",
+    "update-public-card-title": "[en] Väyläkortin tilamuutos",
+    "update-public-card-description": "[en] Olet muuttamassa julki olevan väyläkortin tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
+    "update2-public-card-description": "[en] Olet muuttamassa poistetun väyläkortin tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
+    "publish-public-card-title": "[en] Väyläkortin julkaiseminen",
+    "publish-public-card-description": "[en] Olet asettamassa \"Luonnos\" -tilassa olevan väyläkortin julkiseksi. Olet varma, että haluat jatkaa?"
   },
   "fairwaycard": {
     "name": "Fairway card name",

@@ -50,8 +50,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
+    { name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed },
   ];
-  if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
@@ -118,7 +118,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   }, [state, saveFairwayCard]);
 
   const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = () => {
+  const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
@@ -143,7 +143,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     ];
     setValidationErrors(manualValidations);
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft)) {
+      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
         saveCard();
       } else {
         setIsOpen(true);
@@ -210,7 +210,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                   disabled={isError}
                   onClick={() => {
                     updateState(Status.Removed, 'status');
-                    handleSubmit();
+                    handleSubmit(true);
                   }}
                 >
                   {t('general.delete')}
