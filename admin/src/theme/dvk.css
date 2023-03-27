@@ -438,6 +438,11 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: none;
 }
+@-moz-document url-prefix() {
+  input[type='number'] {
+    -moz-appearance: textfield !important;
+  }
+}
 
 /* Header */
 ion-header {

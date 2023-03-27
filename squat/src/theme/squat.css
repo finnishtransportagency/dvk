@@ -225,6 +225,12 @@ input[type='number'] {
   appearance: none;
 }
 
+@-moz-document url-prefix() {
+  input[type='number'] {
+    -moz-appearance: textfield !important;
+  }
+}
+
 ion-item.item-radio-unchecked > ion-label > ion-img {
   filter: grayscale(1);
 }
