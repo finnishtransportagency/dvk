@@ -50,8 +50,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-    { name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed },
   ];
+  if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
