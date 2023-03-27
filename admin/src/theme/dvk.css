@@ -556,6 +556,9 @@ ion-grid.formGrid ion-col:first-of-type {
 ion-grid.formGrid ion-col:last-of-type {
   padding-right: 0;
 }
+ion-grid.formGrid ion-col.no-border {
+  border-left: none;
+}
 .mainContent form ion-text h2 {
   font-size: 14px;
   line-height: 1.5rem;
