@@ -95,7 +95,7 @@ const OfflineSupport: React.FC = () => {
   return (
     <div className="offlineSupport">
       <IonItem detail={false} lines="none" className="ion-no-padding">
-        <IonIcon slot="start" src="assets/icon/alert_icon.svg" className={offlineLatestError > 0 ? 'danger' : 'warning'} />
+        <IonIcon aria-hidden slot="start" src="assets/icon/alert_icon.svg" className={offlineLatestError > 0 ? 'danger' : 'warning'} />
         {offlineLatestError > 0 ? t('offlineSupportImpossible') : t('offlineSupportPartial')}
       </IonItem>
       <IonText>
