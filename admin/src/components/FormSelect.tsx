@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
+import { ActionType, Lang, ValueType } from '../utils/constants';
 import { PilotPlace, Text } from '../graphql/generated';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { SelectChangeEventDetail, IonSelectCustomEvent } from '@ionic/core';
@@ -15,8 +15,8 @@ interface SelectProps {
   label: string;
   selected?: ValueType;
   options: SelectOption[] | PilotPlace[] | null;
-  setSelected: (value: ValueType, actionType: ActionType | ActionTypeSelect) => void;
-  actionType: ActionTypeSelect;
+  setSelected: (value: ValueType, actionType: ActionType) => void;
+  actionType: ActionType;
   required?: boolean;
   multiple?: boolean;
   showId?: boolean;
