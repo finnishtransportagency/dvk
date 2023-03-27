@@ -2,6 +2,8 @@ import { UseMutationOptions } from '@tanstack/react-query/build/lib/types';
 import {
   SaveFairwayCardMutation,
   SaveFairwayCardMutationVariables,
+  SaveHarborMutation,
+  SaveHarborMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
@@ -10,6 +12,7 @@ import {
   useHarbourByIdQuery,
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
+  useSaveHarborMutation,
 } from './generated';
 
 const datasourceClient = {
@@ -53,4 +56,10 @@ export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unk
   options?: UseMutationOptions<SaveFairwayCardMutation, TError, SaveFairwayCardMutationVariables, TContext>
 ) {
   return useSaveFairwayCardMutation(datasourceClient, options);
+}
+
+export function useSaveHarborMutationQuery<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<SaveHarborMutation, TError, SaveHarborMutationVariables, TContext>
+) {
+  return useSaveHarborMutation(datasourceClient, options);
 }
