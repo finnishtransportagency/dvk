@@ -57,10 +57,18 @@
     "error-NO_PERMISSIONS": "Ei tarvittavia käyttöoikeuksia.",
     "fix-errors-try-again": "Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
+    "add-section-vts": "Lisää alusliikennepalvelija",
+    "add-section-vhf": "Lisää VHF-kanava",
+    "add-section-tug": "Lisää hinaaja",
+    "add-section-quay": "Lisää laituri",
+    "add-section-section": "Lisää osio",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",
-      "nmDesc_other": "meripeninkulmaa"
+      "nmDesc_other": "meripeninkulmaa",
+      "m": "m",
+      "mDesc_one": "metri",
+      "mDesc_other": "metriä"
     }
   },
   "modal": {
@@ -103,13 +111,10 @@
     "pilotage-distance-from": "Luotsausmatka kohteesta",
     "vts-heading": "VTS (alusliikennepalvelija)",
     "vts-name": "Nimi",
-    "add-section-vts": "Lisää alusliikennepalvelija",
     "vhf-name": "VHF-kanavan nimi",
     "vhf-channel": "VHF-kanavan numero",
-    "add-section-vhf": "Lisää VHF-kanava",
     "tug-heading": "Hinaaja",
-    "tug-name": "Hinaajan nimi",
-    "add-section-tug": "Lisää hinaaja"
+    "tug-name": "Hinaajan nimi"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
@@ -122,11 +127,14 @@
     "harbour-basin": "Satama-allas",
     "contact-info": "Yhteystiedot",
     "company-name": "Yrityksen nimi",
-    "email": "Sähköposti",
-    "phone-number": "Puhelin",
-    "fax": "Fax",
     "internet": "Internet (luotsintilaus)",
     "lat": "Leveysaste (lat)",
-    "lon": "Pituusaste (lng)"
+    "lon": "Pituusaste (lng)",
+    "length": "Pituus",
+    "depth": "Haraussyvyys",
+    "quay-heading": "Laituri",
+    "quay-name": "Laiturin nimi",
+    "quay-extra-info": "Lisätiedot",
+    "section-name": "Osion nimi"
   }
 }

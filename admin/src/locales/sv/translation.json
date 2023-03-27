@@ -57,10 +57,18 @@
     "error-NO_PERMISSIONS": "[sv] Ei tarvittavia käyttöoikeuksia.",
     "fix-errors-try-again": "[sv] Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
+    "add-section-vts": "[sv] Lisää alusliikennepalvelija",
+    "add-section-vhf": "[sv] Lisää VHF-kanava",
+    "add-section-tug": "[sv] Lisää hinaaja",
+    "add-section-quay": "[sv] Lisää laituri",
+    "add-section-section": "[sv] Lisää osio",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",
-      "nmDesc_other": "sjömil"
+      "nmDesc_other": "sjömil",
+      "m": "m",
+      "mDesc_one": "meter",
+      "mDesc_other": "meter"
     }
   },
   "modal": {
@@ -103,13 +111,10 @@
     "pilotage-distance-from": "Lotsled från",
     "vts-heading": "[sv] VTS (alusliikennepalvelija)",
     "vts-name": "Namn",
-    "add-section-vts": "[sv] Lisää alusliikennepalvelija",
     "vhf-name": "[sv] VHF-kanavan nimi",
     "vhf-channel": "[sv] VHF-kanavan numero",
-    "add-section-vhf": "[sv] Lisää VHF-kanava",
     "tug-heading": "Bogserbåt",
-    "tug-name": "Bogserbåt namn",
-    "add-section-tug": "[sv] Lisää hinaaja"
+    "tug-name": "Bogserbåt namn"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
@@ -120,13 +125,16 @@
     "extra-info": "Hamnens begränsningar",
     "cargo": "Lasthantering",
     "harbour-basin": "Hamnbassäng",
-    "contact-info": "[sv] Yhteystiedot",
+    "contact-info": "Kontaktuppgifter",
     "company-name": "Företagsnamn",
-    "email": "[sv] Sähköposti",
-    "phone-number": "[sv] Puhelin",
-    "fax": "[sv] Fax",
     "internet": "[sv] Internet (luotsintilaus)",
     "lat": "[sv] Leveysaste (lat)",
-    "lon": "[sv] Pituusaste (lng)"
+    "lon": "[sv] Pituusaste (lng)",
+    "length": "Längd",
+    "depth": "Ramningsdjup",
+    "quay-heading": "Kaj",
+    "quay-name": "[sv] Laiturin nimi",
+    "quay-extra-info": "Tilläggsuppgift",
+    "section-name": "[sv] Osion nimi"
   }
 }
