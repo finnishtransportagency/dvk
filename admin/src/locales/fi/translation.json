@@ -83,7 +83,17 @@
     "update2-fairwaycard-description": "Olet muuttamassa poistetun väyläkortin tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
     "update3-fairwaycard-description": "Olet muuttamassa poistetun väyläkortin tilan takaisin \"Julkaistu\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
     "publish-fairwaycard-title": "Väyläkortin julkaiseminen",
-    "publish-fairwaycard-description": "Olet asettamassa \"Luonnos\" -tilassa olevan väyläkortin julkiseksi. Olet varma, että haluat jatkaa?"
+    "publish-fairwaycard-description": "Olet asettamassa \"Luonnos\" -tilassa olevan väyläkortin julkiseksi. Olet varma, että haluat jatkaa?",
+    "save-harbor-title": "Sataman muutosten tallentaminen",
+    "save-harbor-description": "Olet tallentamassa muutoksia julki olevaan satamaan. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat jatkaa?",
+    "delete-harbor-title": "Sataman poisto",
+    "delete-harbor-description": "Olet poistamassa \"{{name}}\" -sataman. Oletko varma, että haluat poistaa sataman?",
+    "update-harbor-title": "Sataman tilamuutos",
+    "update-harbor-description": "Olet muuttamassa julki olevan sataman tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa sataman tilaa?",
+    "update2-harbor-description": "Olet muuttamassa poistetun sataman tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa sataman tilaa?",
+    "update3-harbor-description": "Olet muuttamassa poistetun sataman tilan takaisin \"Julkaistu\" -tilaan. Oletko varma, että haluat muuttaa sataman tilaa?",
+    "publish-harbor-title": "Sataman julkaiseminen",
+    "publish-harbor-description": "Olet asettamassa “Luonnos” -tilassa olevan sataman julkiseksi. Olet varma, että haluat jatkaa?"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
