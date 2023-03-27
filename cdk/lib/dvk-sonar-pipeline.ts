@@ -23,7 +23,13 @@ import { Vpc } from 'aws-cdk-lib/aws-ec2';
 
 export class DvkSonarPipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, { stackName: 'DvkSonarPipelineStack' });
+    super(scope, id, {
+      stackName: 'DvkSonarPipelineStack',
+      env: {
+        account: process.env.CDK_DEFAULT_ACCOUNT,
+        region: 'eu-west-1',
+      },
+    });
     const config = new Config(this);
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
@@ -85,13 +91,13 @@ export class DvkSonarPipelineStack extends Stack {
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
               'cd ../test',
               'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
               'cd ..',
               'npm run build',
               'npx serve -p 3001 -s build &',
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
             ],
           },
         },
