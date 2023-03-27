@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
@@ -9,6 +9,7 @@ import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
 import { harbourReducer } from '../utils/harbourReducer';
 import FormOptionalSection from './FormOptionalSection';
+import ConfirmationModal, { StatusName } from './ConfirmationModal';
 
 interface FormProps {
   harbour: HarborInput;
@@ -62,7 +63,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   // Save harbour
   const [saveError, setSaveError] = useState<string>();
   const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
-  const { mutate: saveHarbour, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
+  const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
       setSavedHarbour(data.saveHarbor);
     },
@@ -71,8 +72,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     },
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const saveHarbour = useCallback(() => {
+    console.log(state);
+    saveHarbourMutation({ harbor: state as HarborInput });
+  }, [state, saveHarbourMutation]);
+
   const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = () => {
+  const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
@@ -81,9 +89,13 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       { id: 'lon', msg: !state.geometry.lon ? t('general.required-field') : '' },
     ];
     setValidationErrors(manualValidations);
-    console.log(state);
+
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      saveHarbour({ harbor: state as HarborInput });
+      if (state.operation === Operation.Create || (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)) {
+        saveHarbour();
+      } else {
+        setIsOpen(true);
+      }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
@@ -91,6 +103,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
   return (
     <IonPage>
+      <ConfirmationModal
+        saveType="harbor"
+        action={saveHarbour}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        newStatus={state.status}
+        oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
+      />
       <IonAlert
         isOpen={!!saveError || !!savedHarbour}
         onDidDismiss={() => {
@@ -131,7 +151,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && (
-                <IonButton shape="round" color="danger" disabled={isError}>
+                <IonButton
+                  shape="round"
+                  color="danger"
+                  disabled={isError}
+                  onClick={() => {
+                    updateState(Status.Removed, 'status');
+                    handleSubmit(true);
+                  }}
+                >
                   {t('general.delete')}
                 </IonButton>
               )}
