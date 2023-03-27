@@ -390,7 +390,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Safety Equipment Faults",
     "marine-warnings": "Marine Warnings",
-    "fairway-cards": "Fairway Cards"
+    "fairway-cards": "Fairway Cards",
+    "skip-to-content": "Skip to main content"
   },
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",

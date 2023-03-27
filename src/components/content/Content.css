@@ -480,3 +480,12 @@ ion-segment.tabs ion-label h3 {
 .contentModal .fairwayTitle h2 {
   margin-top: 10px;
 }
+
+#fairwayContent .skip-to-main-content-link {
+  opacity: 0;
+  cursor: default;
+}
+
+#fairwayContent .skip-to-main-content-link:focus {
+  opacity: 1;
+}

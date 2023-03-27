@@ -43,6 +43,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
+  const mainPageContentRef = useRef<HTMLIonButtonElement>(null);
 
   useEffect(() => {
     setDocumentTitle(title);
@@ -136,6 +137,18 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
               data-testid={!target && (fairwayCardId ? 'cardPane' : 'listPane')}
             >
               <IonContent id="fairwayCardsContainer">
+                <a
+                  href="#mainPageContent"
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    document.getElementById('mainPageContent')?.setAttribute('tabIndex', '-1');
+                    document.getElementById('mainPageContent')?.focus({ preventScroll: false });
+                    e.preventDefault();
+                  }}
+                  className="skip-to-main-content-link"
+                >
+                  {t('skip-to-content')}
+                </a>
                 <IonGrid className="ion-no-padding no-print">
                   <IonRow className="ion-align-items-center">
                     <IonCol size="auto">
@@ -192,6 +205,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     </IonCol>
                     <IonCol size="auto">
                       <IonButton
+                        ref={mainPageContentRef}
                         fill="clear"
                         className="closeButton"
                         routerLink="/"

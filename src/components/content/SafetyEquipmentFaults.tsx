@@ -127,7 +127,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonText className="fairwayTitle">
+      <IonText className="fairwayTitle" id="mainPageContent">
         <h2 className="no-margin-bottom">
           <strong>{t('faults.title')}</strong>
         </h2>
