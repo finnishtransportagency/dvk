@@ -15,7 +15,7 @@ import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
-import ConfirmationModal from './ConfirmationModal';
+import ConfirmationModal, { StatusName } from './ConfirmationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -155,7 +155,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
   return (
     <IonPage>
-      <ConfirmationModal action={saveCard} isOpen={isOpen} setIsOpen={setIsOpen} newState={state} oldState={savedCard ? savedCard : fairwayCard} />
+      <ConfirmationModal
+        saveType="fairwaycard"
+        action={saveCard}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        newStatus={state.status}
+        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+      />
       <IonAlert
         isOpen={!!saveError || !!savedCard}
         onDidDismiss={() => {

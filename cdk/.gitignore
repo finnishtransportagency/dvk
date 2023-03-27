@@ -7,3 +7,5 @@ cdk.out
 graphql/generated.ts
 cdk.context.json
 *.json.gz
+coverage
+

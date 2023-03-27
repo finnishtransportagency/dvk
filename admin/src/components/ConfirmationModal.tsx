@@ -1,41 +1,49 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCard, FairwayCardInput, Status } from '../graphql/generated';
+import { Maybe, Status, TextInput } from '../graphql/generated';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import { Lang } from '../utils/constants';
+
+export type StatusName = {
+  status?: Maybe<Status>;
+  name: TextInput;
+};
+
+export type SaveType = 'fairwaycard' | 'harbor';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   action: () => void;
-  oldState: FairwayCardInput | FairwayCard;
-  newState: FairwayCardInput;
+  oldState: StatusName;
+  newStatus: Status;
+  saveType: SaveType;
 }
 
-const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, newState, oldState }) => {
+const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, newStatus, oldState, saveType }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   let buttonTitle = t('general.save');
-  let description = t('modal.save-public-card-description');
-  let title = t('modal.save-public-card-title');
+  let description = t(`modal.save-${saveType}-description`);
+  let title = t(`modal.save-${saveType}-title`);
   const modal = useRef<HTMLIonModalElement>(null);
-  if (newState.status === Status.Removed) {
+  if (newStatus === Status.Removed) {
     buttonTitle = t('general.delete');
-    title = t('modal.delete-public-card-title');
-    description = t('modal.delete-public-card-description', { name: oldState.name[lang] });
-  } else if (oldState.status === Status.Public && newState.status === Status.Draft) {
+    title = t(`modal.delete-${saveType}-title`);
+    description = t(`modal.delete-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
+  } else if (oldState.status === Status.Public && newStatus === Status.Draft) {
     buttonTitle = t('general.update');
-    title = t('modal.update-public-card-title');
-    description = t('modal.update-public-card-description');
-  } else if (oldState.status === Status.Removed && newState.status === Status.Draft) {
+    title = t(`modal.update-${saveType}-title`);
+    description = t(`modal.update-${saveType}-description`);
+  } else if (oldState.status === Status.Removed && newStatus === Status.Draft) {
     buttonTitle = t('general.update');
-    title = t('modal.update-public-card-title');
-    description = t('modal.update2-public-card-description');
-  } else if (oldState.status === Status.Draft && newState.status === Status.Public) {
+    title = t(`modal.update-${saveType}-title`);
+    description = t(`modal.update2-${saveType}-description`);
+  } else if (oldState.status === Status.Draft && newStatus === Status.Public) {
     buttonTitle = t('general.update');
-    title = t('modal.publish-public-card-title');
-    description = t('modal.publish-public-card-description');
+    title = t(`modal.publish-${saveType}-title`);
+    description = t(`modal.publish-${saveType}-description`);
   }
   const closeModal = () => {
     setIsOpen(false);
