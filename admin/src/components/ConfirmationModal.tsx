@@ -40,6 +40,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, ne
     buttonTitle = t('general.update');
     title = t(`modal.update-${saveType}-title`);
     description = t(`modal.update2-${saveType}-description`);
+  } else if (oldState.status === Status.Removed && newStatus === Status.Public) {
+    buttonTitle = t('general.update');
+    title = t(`modal.update-${saveType}-title`);
+    description = t(`modal.update3-${saveType}-description`);
   } else if (oldState.status === Status.Draft && newStatus === Status.Public) {
     buttonTitle = t('general.update');
     title = t(`modal.publish-${saveType}-title`);

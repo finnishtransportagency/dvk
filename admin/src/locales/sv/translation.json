@@ -81,6 +81,7 @@
     "update-fairwaycard-title": "[sv] Väyläkortin tilamuutos",
     "update-fairwaycard-description": "[sv] Olet muuttamassa julki olevan väyläkortin tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
     "update2-fairwaycard-description": "[sv] Olet muuttamassa poistetun väyläkortin tilan takaisin \"Luonnos\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
+    "update3-fairwaycard-description": "[sv] Olet muuttamassa poistetun väyläkortin tilan takaisin \"Julkaistu\" -tilaan. Oletko varma, että haluat muuttaa väyläkortin tilaa?",
     "publish-fairwaycard-title": "[sv] Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "[sv] Olet asettamassa \"Luonnos\" -tilassa olevan väyläkortin julkiseksi. Olet varma, että haluat jatkaa?"
   },
