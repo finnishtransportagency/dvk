@@ -73,7 +73,7 @@
           "clearTitle": "Töm",
           "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
         },
-        "resetRotation": "[sv] Palauta oletusorientaatio",
+        "resetRotation": "Återställ kartriktning",
         "infoText": "Ej för navigation"
       }
     }
