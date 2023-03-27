@@ -187,7 +187,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonText className="fairwayTitle">
+      <IonText className="fairwayTitle" id="mainPageContent">
         <h2 className="no-margin-bottom">
           <strong>{t('title')}</strong>
         </h2>

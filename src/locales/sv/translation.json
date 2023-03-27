@@ -390,7 +390,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",
-    "fairway-cards": "Farledskort"
+    "fairway-cards": "Farledskort",
+    "skip-to-content": "Gå till huvudinnehåll"
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",

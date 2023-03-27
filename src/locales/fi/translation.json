@@ -390,7 +390,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
-    "fairway-cards": "Väyläkortit"
+    "fairway-cards": "Väyläkortit",
+    "skip-to-content": "Siirry pääsisältöön"
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
