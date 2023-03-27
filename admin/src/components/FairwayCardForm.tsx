@@ -100,6 +100,23 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const saveCard = useCallback(() => {
+    const currentCard = {
+      ...state,
+      trafficService: {
+        ...state.trafficService,
+        pilot: {
+          ...state.trafficService?.pilot,
+          places: state.trafficService?.pilot?.places?.map((place) => {
+            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
+          }),
+        },
+      },
+    };
+    console.log(currentCard);
+    saveFairwayCard({ card: currentCard as FairwayCardInput });
+  }, [state, saveFairwayCard]);
+
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = () => {
     // Manual validations for required fields
@@ -126,41 +143,19 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
     ];
     setValidationErrors(manualValidations);
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      setIsOpen(true);
+      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft)) {
+        saveCard();
+      } else {
+        setIsOpen(true);
+      }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
 
-  const saveCard = useCallback(() => {
-    const currentCard = {
-      ...state,
-      trafficService: {
-        ...state.trafficService,
-        pilot: {
-          ...state.trafficService?.pilot,
-          places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
-          }),
-        },
-      },
-    };
-    console.log(currentCard);
-    saveFairwayCard({ card: currentCard as FairwayCardInput });
-  }, [state, saveFairwayCard]);
-
   return (
     <IonPage>
-      <ConfirmationModal
-        action={() => {
-          saveCard();
-        }}
-        buttonTitle={t('general.save')}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        description={t('modal.save-public-card-description')}
-        title={t('modal.save-public-card-title')}
-      />
+      <ConfirmationModal action={saveCard} isOpen={isOpen} setIsOpen={setIsOpen} newState={state} oldState={savedCard ? savedCard : fairwayCard} />
       <IonAlert
         isOpen={!!saveError || !!savedCard}
         onDidDismiss={() => {
@@ -209,7 +204,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && (
-                <IonButton shape="round" color="danger" disabled={isError}>
+                <IonButton
+                  shape="round"
+                  color="danger"
+                  disabled={isError}
+                  onClick={() => {
+                    updateState(Status.Removed, 'status');
+                    handleSubmit();
+                  }}
+                >
                   {t('general.delete')}
                 </IonButton>
               )}

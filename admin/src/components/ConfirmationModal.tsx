@@ -1,22 +1,42 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { FairwayCard, FairwayCardInput, Status } from '../graphql/generated';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
+import { Lang } from '../utils/constants';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  title: string;
-  description: string;
-  buttonTitle: string;
   action: () => void;
+  oldState: FairwayCardInput | FairwayCard;
+  newState: FairwayCardInput;
 }
 
-const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, description, buttonTitle, action }) => {
-  const { t } = useTranslation();
-
+const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, newState, oldState }) => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
+  let buttonTitle = t('general.save');
+  let description = t('modal.save-public-card-description');
+  let title = t('modal.save-public-card-title');
   const modal = useRef<HTMLIonModalElement>(null);
-
+  if (newState.status === Status.Removed) {
+    buttonTitle = t('general.delete');
+    title = t('modal.delete-public-card-title');
+    description = t('modal.delete-public-card-description', { name: oldState.name[lang] });
+  } else if (oldState.status === Status.Public && newState.status === Status.Draft) {
+    buttonTitle = t('general.update');
+    title = t('modal.update-public-card-title');
+    description = t('modal.update-public-card-description');
+  } else if (oldState.status === Status.Removed && newState.status === Status.Draft) {
+    buttonTitle = t('general.update');
+    title = t('modal.update-public-card-title');
+    description = t('modal.update2-public-card-description');
+  } else if (oldState.status === Status.Draft && newState.status === Status.Public) {
+    buttonTitle = t('general.update');
+    title = t('modal.publish-public-card-title');
+    description = t('modal.publish-public-card-description');
+  }
   const closeModal = () => {
     setIsOpen(false);
     modal.current?.dismiss();
