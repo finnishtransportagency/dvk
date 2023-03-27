@@ -64,6 +64,8 @@
     "add-section-tug": "Add tug",
     "add-section-quay": "Add quay",
     "add-section-section": "Add section",
+    "environment-development": "Development environment",
+    "environment-test": "Test environment",
     "unit": {
       "nm": "M",
       "nmDesc_one": "nautical mile",

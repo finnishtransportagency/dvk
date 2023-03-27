@@ -455,6 +455,13 @@ ion-header ion-text h1 {
   font-weight: bold;
   margin: 0 0 0 16px;
 }
+ion-header ion-text h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 0 0 0 16px;
+  line-height: 1rem;
+  color: var(--ion-color-danger);
+}
 ion-header ion-grid.languageBar {
   padding: 0 14px;
 }
