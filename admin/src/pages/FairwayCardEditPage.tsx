@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
+import { IonProgressBar } from '@ionic/react';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
@@ -10,7 +11,7 @@ interface FairwayCardEditProps {
 }
 
 const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, origin }) => {
-  const { data, isLoading, isFetching, isError } = useFairwayCardByIdQueryData(fairwayCardId, false);
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = {
@@ -117,13 +118,17 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
   };
 
   return (
-    <FairwayCardForm
-      fairwayCard={fairwayCard}
-      isLoading={isLoading || isFetching}
-      modified={origin ? 0 : data?.fairwayCard?.modificationTimestamp || data?.fairwayCard?.creationTimestamp || 0}
-      modifier={(origin ? userData?.currentUser?.name : data?.fairwayCard?.modifier || data?.fairwayCard?.creator) || ''}
-      isError={isError}
-    />
+    <>
+      {isLoading && <IonProgressBar type="indeterminate" />}
+      {!isLoading && (
+        <FairwayCardForm
+          fairwayCard={fairwayCard}
+          modified={origin ? 0 : data?.fairwayCard?.modificationTimestamp || data?.fairwayCard?.creationTimestamp || 0}
+          modifier={(origin ? userData?.currentUser?.name : data?.fairwayCard?.modifier || data?.fairwayCard?.creator) || ''}
+          isError={isError}
+        />
+      )}
+    </>
   );
 };
 
