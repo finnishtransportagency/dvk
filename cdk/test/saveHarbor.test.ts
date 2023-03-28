@@ -6,7 +6,7 @@ const currentUser: CurrentUser = { firstName: 'Test', lastName: 'Test', uid: 'te
 test('test mapHarborToModel minimal', () => {
   expect(() => mapHarborToModel({} as HarborInput, undefined, currentUser)).toThrow(OperationError.InvalidInput);
   const input: HarborInput = {
-    id: '1',
+    id: 'a1',
     name: { fi: 'test', sv: 'testsv', en: 'testen' },
     n2000HeightSystem: false,
     operation: Operation.Create,
@@ -21,7 +21,7 @@ test('test mapHarborToModel minimal', () => {
 
 test('test mapHarborToModel all', () => {
   const input: HarborInput = {
-    id: '2',
+    id: 'a2',
     name: { fi: 'test2', sv: 'testsv2', en: 'testen2' },
     n2000HeightSystem: true,
     operation: Operation.Update,

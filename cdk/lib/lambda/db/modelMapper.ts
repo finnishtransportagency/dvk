@@ -1,4 +1,14 @@
-import { Fairway, FairwayCard, Harbor, Maybe, OperationError, TextInput, TrafficService } from '../../../graphql/generated';
+import {
+  Fairway,
+  FairwayCard,
+  GeometryInput,
+  Harbor,
+  InputMaybe,
+  Maybe,
+  OperationError,
+  TextInput,
+  TrafficService,
+} from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
@@ -12,6 +22,23 @@ function checkLength(maxLength: number, ...text: string[]) {
       throw new Error(OperationError.InvalidInput);
     }
   });
+}
+
+export function mapGeometry(geometry?: InputMaybe<GeometryInput>) {
+  if (geometry && (geometry.lat || geometry.lon)) {
+    return { type: 'Point', coordinates: [geometry.lat, geometry.lon] };
+  }
+  return null;
+}
+
+export function mapId(text?: Maybe<string>) {
+  if (text && text.trim().length > 0) {
+    const m = text.match(/[a-z]{1,}[0-9]*/); //NOSONAR
+    if (m && m[0].length === text.length) {
+      return text;
+    }
+  }
+  throw new Error(OperationError.InvalidInput);
 }
 
 export function mapText(text?: Maybe<TextInput>, maxLength = MAX_TEXT_LENGTH) {

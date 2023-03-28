@@ -1,5 +1,5 @@
 import { OperationError, TextInput } from '../graphql/generated';
-import { mapText, mapMandatoryText, mapNumber, mapString, mapStringArray } from '../lib/lambda/db/modelMapper';
+import { mapText, mapMandatoryText, mapNumber, mapString, mapStringArray, mapGeometry, mapId } from '../lib/lambda/db/modelMapper';
 
 test('test mapText', () => {
   expect(mapText()).toBe(null);
@@ -81,4 +81,24 @@ test('test too long texts', () => {
   expect(mapString(str)).toBe(str);
   str += 'x';
   expect(() => mapString(str)).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapGeometry', () => {
+  expect(mapGeometry(null)).toBe(null);
+  expect(mapGeometry()).toBe(null);
+  expect(mapGeometry({ lat: 0, lon: 0 })).toBe(null);
+  expect(mapGeometry({ lat: 0, lon: 1 })).toMatchObject({ type: 'Point', coordinates: [0, 1] });
+  expect(mapGeometry({ lat: 1, lon: 0 })).toMatchObject({ type: 'Point', coordinates: [1, 0] });
+  expect(mapGeometry({ lat: 60.124, lon: 51.221 })).toMatchObject({ type: 'Point', coordinates: [60.124, 51.221] });
+});
+
+test('test mapId', () => {
+  expect(() => mapId(null)).toThrow(OperationError.InvalidInput);
+  expect(() => mapId()).toThrow(OperationError.InvalidInput);
+  expect(() => mapId('')).toThrow(OperationError.InvalidInput);
+  expect(() => mapId(' ')).toThrow(OperationError.InvalidInput);
+  expect(() => mapId('1')).toThrow(OperationError.InvalidInput);
+  expect(mapId('a1')).toBe('a1');
+  expect(() => mapId('abc ')).toThrow(OperationError.InvalidInput);
+  expect(mapId('abc')).toBe('abc');
 });

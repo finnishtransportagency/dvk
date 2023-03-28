@@ -5,6 +5,7 @@ import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import {
   getPilotPlaceMap,
   mapFairwayCardDBModelToGraphqlType,
+  mapId,
   mapIds,
   mapMandatoryText,
   mapNumber,
@@ -19,7 +20,7 @@ import { getExpires } from '../../environment';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
-    id: card.id,
+    id: mapId(card.id),
     name: mapMandatoryText(card.name),
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,

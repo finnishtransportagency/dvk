@@ -44,7 +44,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "fi": "iceCondition",
     "sv": "iceConditionsv",
   },
-  "id": "2",
+  "id": "a2",
   "lineText": {
     "en": "lineTexten",
     "fi": "lineText",
@@ -173,7 +173,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "group": "1",
   "harbors": null,
   "iceCondition": null,
-  "id": "1",
+  "id": "a1",
   "lineText": null,
   "modificationTimestamp": Any<Number>,
   "modifier": "Test Test",
