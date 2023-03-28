@@ -86,7 +86,7 @@ async function main() {
   writeEnvFile('../admin/.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_ENV: 'local'
+    REACT_APP_ENV: 'local',
   });
 }
 
