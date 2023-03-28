@@ -39,6 +39,7 @@ export const harbourReducer = (
         .concat({ id: 'lon', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
     );
   }
+  // TODO: Add coordinate validation check for quays and quay sections
 
   let newState;
   switch (actionType) {
