@@ -265,6 +265,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     val={state.geometry.lat || ''}
                     setValue={updateState}
                     actionType="lat"
+                    required
                     error={validationErrors.find((error) => error.id === 'lat')?.msg}
                   />
                 </IonCol>
@@ -274,6 +275,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     val={state.geometry.lon || ''}
                     setValue={updateState}
                     actionType="lon"
+                    required
                     error={validationErrors.find((error) => error.id === 'lon')?.msg}
                   />
                 </IonCol>
