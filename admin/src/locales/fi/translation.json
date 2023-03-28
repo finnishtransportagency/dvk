@@ -64,8 +64,10 @@
     "add-section-tug": "Lisää hinaaja",
     "add-section-quay": "Lisää laituri",
     "add-section-section": "Lisää osio",
-    "environment-development": "Kehitysympäristö",
+    "environment-local": "Paikallinen kehitysympäristö",
+    "environment-dev": "Kehitysympäristö",
     "environment-test": "Testiympäristö",
+    "environment-undefined": "",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",
