@@ -142,7 +142,7 @@
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
-    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "primary-id-help-text": "Sataman yksilöivä tunniste",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "harbour-info": "Satamatiedot",
     "name": "Sataman nimi",
