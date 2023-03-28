@@ -257,6 +257,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         setValue={updateState}
                         actionType="quayLat"
                         actionTarget={idx}
+                        required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
                       />
                     </IonCol>
                     <IonCol>
@@ -266,6 +267,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         setValue={updateState}
                         actionType="quayLon"
                         actionTarget={idx}
+                        required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
                       />
                     </IonCol>
                   </IonRow>
@@ -328,6 +330,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionType="sectionLat"
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
+                      required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
                     />
                   </IonCol>
                   <IonCol>
@@ -338,6 +341,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionType="sectionLon"
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
+                      required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
                     />
                   </IonCol>
                   <IonCol size="auto">
