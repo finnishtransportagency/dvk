@@ -64,6 +64,7 @@
     "add-section-tug": "Add tug",
     "add-section-quay": "Add quay",
     "add-section-section": "Add section",
+    "environment-local": "Local development environment",
     "environment-dev": "Development environment",
     "environment-test": "Test environment",
     "environment-undefined": "",
