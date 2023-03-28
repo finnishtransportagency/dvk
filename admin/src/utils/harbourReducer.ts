@@ -20,31 +20,25 @@ export const harbourReducer = (
     if (reservedIds?.includes(value as string)) primaryIdErrorMsg = errorMessages?.duplicateId || '';
     if ((value as string).length < 1) primaryIdErrorMsg = errorMessages?.required || '';
     setValidationErrors(validationErrors.filter((error) => error.id !== 'primaryId').concat({ id: 'primaryId', msg: primaryIdErrorMsg }));
-  } /* else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
+  } else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'name')
         .concat({ id: 'name', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
     );
-  } else if (actionType === 'fairwayIds' && validationErrors.find((error) => error.id === 'fairwayIds')?.msg) {
+  } else if (actionType === 'lat' && validationErrors.find((error) => error.id === 'lat')?.msg) {
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== 'fairwayIds')
-        .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? errorMessages?.required || '' : '' })
+        .filter((error) => error.id !== 'lat')
+        .concat({ id: 'lat', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
     );
-  } else if (actionType === 'vtsName' && validationErrors.find((error) => error.id === 'vtsName')?.msg) {
+  } else if (actionType === 'lon' && validationErrors.find((error) => error.id === 'lon')?.msg) {
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== 'vtsName')
-        .concat({ id: 'vtsName', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .filter((error) => error.id !== 'lon')
+        .concat({ id: 'lon', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
     );
-  } else if (actionType === 'tugName' && validationErrors.find((error) => error.id === 'tugName')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'tugName')
-        .concat({ id: 'tugName', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
-    );
-  }*/
+  }
 
   let newState;
   switch (actionType) {
