@@ -4,6 +4,16 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
+export type ValidationType = {
+  id: string;
+  msg: string;
+};
+
+export type ErrorMessageType = {
+  required: string;
+  duplicateId: string;
+};
+
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[];
 
 export type HarbourActionType =
@@ -18,10 +28,20 @@ export type HarbourActionType =
   | 'fax'
   | 'internet'
   | 'lat'
-  | 'lon';
+  | 'lon'
+  | 'quay'
+  | 'quayName'
+  | 'quayLength'
+  | 'quayLat'
+  | 'quayLon'
+  | 'quayExtraInfo'
+  | 'section'
+  | 'sectionName'
+  | 'sectionDepth'
+  | 'sectionLat'
+  | 'sectionLon';
 
-export type ActionType =
-  | HarbourActionType
+export type FairwayCardActionType =
   | 'name'
   | 'primaryId'
   | 'line'
@@ -52,4 +72,14 @@ export type ActionType =
   | 'vhf'
   | 'vhfName'
   | 'vhfChannel';
-export type ActionTypeSelect = 'fairwayIds' | 'fairwayPrimary' | 'fairwaySecondary' | 'harbours' | 'status' | 'referenceLevel' | 'pilotPlaces';
+
+export type FairwayCardActionTypeSelect =
+  | 'fairwayIds'
+  | 'fairwayPrimary'
+  | 'fairwaySecondary'
+  | 'harbours'
+  | 'status'
+  | 'referenceLevel'
+  | 'pilotPlaces';
+
+export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect;

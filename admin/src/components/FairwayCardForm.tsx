@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ActionTypeSelect, Lang, ValueType } from '../utils/constants';
+import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, Status, TugInput, VtsInput } from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
@@ -19,23 +19,12 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
-  isLoading?: boolean;
   modified?: number;
   modifier?: string;
   isError?: boolean;
 }
 
-export type ValidationType = {
-  id: string;
-  msg: string;
-};
-
-export type ErrorMessageType = {
-  required: string;
-  duplicateId: string;
-};
-
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified, modifier, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -61,7 +50,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
 
   const updateState = (
     value: ValueType,
-    actionType: ActionType | ActionTypeSelect,
+    actionType: ActionType,
     actionLang?: Lang,
     actionTarget?: string | number,
     actionOuterTarget?: string | number
@@ -142,6 +131,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       },
     ];
     setValidationErrors(manualValidations);
+
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
       if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
         saveCard();
@@ -176,21 +166,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
         cssClass={saveError ? 'error' : 'success'}
       />
       <IonHeader className="ion-no-border">
-        {(isLoading || isLoadingMutation) && <IonProgressBar type="indeterminate" />}
+        {isLoadingMutation && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow>
             <IonCol className="ion-align-self-center align-right">
               <IonText>
                 <em>
-                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}:{' '}
-                  {isLoading ? (
-                    <IonSkeletonText
-                      animated={true}
-                      style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
-                    />
-                  ) : (
-                    modifiedInfo
-                  )}
+                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {modifiedInfo}
                   <br />
                   {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifier || t('general.unknown')}
                 </em>
@@ -234,7 +216,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}
 
-        {!isLoading && !isError && (
+        {!isError && (
           <form ref={formRef}>
             <IonGrid className="formGrid">
               <FormTextInputRow
@@ -325,7 +307,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, isLoading, modified
                     helperText={t('fairwaycard.fairway-order-help-text')}
                   />
                 </IonCol>
-                <IonCol size="6"></IonCol>
+                <IonCol size="6" className="no-border"></IonCol>
               </IonRow>
             </IonGrid>
 

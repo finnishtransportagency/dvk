@@ -438,6 +438,11 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: none;
 }
+@-moz-document url-prefix() {
+  input[type='number'] {
+    -moz-appearance: textfield !important;
+  }
+}
 
 /* Header */
 ion-header {
@@ -454,6 +459,13 @@ ion-header ion-text h1 {
   line-height: 1.5rem;
   font-weight: bold;
   margin: 0 0 0 16px;
+}
+ion-header ion-text h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 0 0 0 16px;
+  line-height: 1rem;
+  color: var(--ion-color-danger);
 }
 ion-header ion-grid.languageBar {
   padding: 0 14px;
@@ -555,6 +567,9 @@ ion-grid.formGrid ion-col:first-of-type {
 }
 ion-grid.formGrid ion-col:last-of-type {
   padding-right: 0;
+}
+ion-grid.formGrid ion-col.no-border {
+  border-left: none;
 }
 .mainContent form ion-text h2 {
   font-size: 14px;

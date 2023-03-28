@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
+import { IonProgressBar } from '@ionic/react';
 
 interface HarbourEditProps {
   harbourId: string;
@@ -10,12 +11,12 @@ interface HarbourEditProps {
 }
 
 const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
-  const { data, isLoading, isFetching, isError } = useHarbourByIdQueryData(harbourId, false);
+  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const coordinates = data?.harbor?.geometry?.coordinates || [0, 0];
 
-  const harbour: HarborInput = {
+  const harbour = {
     id: origin ? '' : data?.harbor?.id || '',
     name: {
       fi: data?.harbor?.name?.fi || '',
@@ -48,18 +49,39 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
     fax: data?.harbor?.fax || '',
     internet: data?.harbor?.internet || '',
     phoneNumber: data?.harbor?.phoneNumber || [],
+    quays: data?.harbor?.quays?.map((quay) => {
+      const quayCoords = quay?.geometry?.coordinates || [0, 0];
+      return {
+        extraInfo: {
+          fi: quay?.extraInfo?.fi || '',
+          sv: quay?.extraInfo?.sv || '',
+          en: quay?.extraInfo?.en || '',
+        },
+        geometry: { lat: quayCoords[1] || 0, lon: quayCoords[0] || 0 },
+        length: quay?.length,
+        name: { fi: quay?.name?.fi || '', sv: quay?.name?.sv || '', en: quay?.name?.en || '' },
+        sections: quay?.sections?.map((section) => {
+          const sectionCoords = section?.geometry?.coordinates || [0, 0];
+          return { depth: section?.depth || 0, geometry: { lat: sectionCoords[1] || 0, lon: sectionCoords[0] || 0 }, name: section?.name };
+        }),
+      };
+    }),
     status: origin ? Status.Draft : data?.harbor?.status || Status.Draft,
     operation: origin ? Operation.Create : Operation.Update,
   };
 
   return (
-    <HarbourForm
-      harbour={harbour}
-      isLoading={isLoading || isFetching}
-      modified={origin ? 0 : data?.harbor?.modificationTimestamp || data?.harbor?.creationTimestamp || 0}
-      modifier={(origin ? userData?.currentUser?.name : data?.harbor?.modifier || data?.harbor?.creator) || ''}
-      isError={isError}
-    />
+    <>
+      {isLoading && <IonProgressBar type="indeterminate" />}
+      {!isLoading && (
+        <HarbourForm
+          harbour={harbour}
+          modified={origin ? 0 : data?.harbor?.modificationTimestamp || data?.harbor?.creationTimestamp || 0}
+          modifier={(origin ? userData?.currentUser?.name : data?.harbor?.modifier || data?.harbor?.creator) || ''}
+          isError={isError}
+        />
+      )}
+    </>
   );
 };
 
@@ -86,6 +108,12 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
     extraInfo: { fi: '', sv: '', en: '' },
     cargo: { fi: '', sv: '', en: '' },
     harborBasin: { fi: '', sv: '', en: '' },
+    company: { fi: '', sv: '', en: '' },
+    email: '',
+    fax: '',
+    internet: '',
+    phoneNumber: [],
+    quays: [],
     status: Status.Draft,
     operation: Operation.Create,
   };
