@@ -59,10 +59,20 @@
     "error-NO_PERMISSIONS": "Permission needed.",
     "fix-errors-try-again": "Fix errors and try again.",
     "button-ok": "Ok",
+    "add-section-vts": "[en] Lisää alusliikennepalvelija",
+    "add-section-vhf": "Add VHF channel",
+    "add-section-tug": "Add tug",
+    "add-section-quay": "Add quay",
+    "add-section-section": "Add section",
+    "environment-development": "Development environment",
+    "environment-test": "Test environment",
     "unit": {
       "nm": "M",
       "nmDesc_one": "nautical mile",
-      "nmDesc_other": "nautical miles"
+      "nmDesc_other": "nautical miles",
+      "m": "m",
+      "mDesc_one": "metre",
+      "mDesc_other": "metres"
     }
   },
   "modal": {
@@ -125,17 +135,15 @@
     "pilotage-distance-from": "Pilotage distance from",
     "vts-heading": "[en] VTS (alusliikennepalvelija)",
     "vts-name": "Name",
-    "add-section-vts": "[en] Lisää alusliikennepalvelija",
     "vhf-name": "VHF channel name",
     "vhf-channel": "VHF channel number",
     "add-section-vhf": "Add VHF channel",
     "tug-heading": "Tug",
-    "tug-name": "Tugboat name",
-    "add-section-tug": "Add tug"
+    "tug-name": "Tugboat name"
   },
   "harbour": {
     "primary-id": "Harbour ID",
-    "primary-id-help-text": "[en] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "primary-id-help-text": "[en] Sataman yksilöivä tunniste",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
     "name": "Port name",
@@ -144,11 +152,14 @@
     "harbour-basin": "Harbour basin",
     "contact-info": "[en] Yhteystiedot",
     "company-name": "Company name",
-    "email": "Email",
-    "phone-number": "Phone number",
-    "fax": "Fax",
     "internet": "[en] Internet (luotsintilaus)",
     "lat": "[en] Leveysaste (lat)",
-    "lon": "[en] Pituusaste (lng)"
+    "lon": "[en] Pituusaste (lng)",
+    "length": "Length",
+    "depth": "Swept depth",
+    "quay-heading": "Quay",
+    "quay-name": "Quay name",
+    "quay-extra-info": "Additional information",
+    "section-name": "Section name"
   }
 }

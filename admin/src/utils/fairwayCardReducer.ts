@@ -1,11 +1,10 @@
-import { ErrorMessageType, ValidationType } from '../components/FairwayCardForm';
 import { FairwayCardInput, Operation, PilotPlace, Status } from '../graphql/generated';
-import { ActionType, ActionTypeSelect, Lang, ValueType } from './constants';
+import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from './constants';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
   value: ValueType,
-  actionType: ActionType | ActionTypeSelect,
+  actionType: ActionType,
   validationErrors: ValidationType[],
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionLang?: Lang,

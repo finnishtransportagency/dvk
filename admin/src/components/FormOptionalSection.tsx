@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonCol, IonGrid, IonItem, IonRow, IonText } from '@ionic/react';
-import { ActionType, Lang } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import FormInput from './FormInput';
-import { TugInput, VhfInput, VtsInput } from '../graphql/generated';
+import { QuayInput, SectionInput, TugInput, VhfInput, VtsInput } from '../graphql/generated';
 import FormTextInputRow from './FormTextInputRow';
 import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
 import { ReactComponent as BinIcon } from '../theme/img/bin.svg';
-import { ValidationType } from './FairwayCardForm';
 
 interface FormSectionProps {
   title: string;
-  sections?: VtsInput[] | TugInput[] | VhfInput[] | null;
+  sections?: VtsInput[] | TugInput[] | VhfInput[] | QuayInput[] | SectionInput[] | null;
   updateState: (
     value: string | boolean,
     actionType: ActionType,
@@ -19,7 +18,7 @@ interface FormSectionProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  sectionType: 'vts' | 'tug' | 'vhf';
+  sectionType: 'vts' | 'tug' | 'vhf' | 'quay' | 'section';
   actionOuterTarget?: string | number;
   validationErrors?: ValidationType[];
 }
@@ -85,18 +84,19 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
               </IonItem>
             )}
             {actionOuterTarget !== undefined && <hr />}
+
             {sectionType === 'vts' && (
               <div className={'sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
                 <IonGrid className="formGrid">
                   <FormTextInputRow
                     labelKey="fairwaycard.vts-name"
-                    value={section.name}
+                    value={(section as VtsInput).name}
                     actionType="vtsName"
                     updateState={updateState}
                     actionTarget={idx}
                     required
                     error={
-                      !section.name?.fi || !section.name.sv || !section.name.en
+                      !(section as VtsInput).name?.fi || !(section as VtsInput).name.sv || !(section as VtsInput).name.en
                         ? validationErrors?.find((error) => error.id === 'vtsName')?.msg
                         : undefined
                     }
@@ -105,7 +105,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                     <IonCol>
                       <FormInput
                         label={t('general.email')}
-                        val={(section as VtsInput).email?.join(', ')}
+                        val={(section as VtsInput).email?.join(',')}
                         setValue={updateState}
                         actionType="vtsEmail"
                         actionTarget={idx}
@@ -133,16 +133,17 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                 />
               </div>
             )}
+
             {sectionType === 'vhf' && (
               <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
                 <FormTextInputRow
                   labelKey="fairwaycard.vhf-name"
-                  value={section.name}
+                  value={(section as VhfInput).name}
                   actionType="vhfName"
                   updateState={updateState}
                   actionTarget={idx}
                   actionOuterTarget={actionOuterTarget}
-                  required={!!(section.name?.fi || section.name?.sv || section.name?.en)}
+                  required={!!((section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en)}
                 />
                 <IonRow className="ion-justify-content-between ion-align-items-center">
                   <IonCol size="6">
@@ -170,17 +171,18 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                 </IonRow>
               </IonGrid>
             )}
+
             {sectionType === 'tug' && (
               <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
                 <FormTextInputRow
                   labelKey="fairwaycard.tug-name"
-                  value={section.name}
+                  value={(section as TugInput).name}
                   actionType="tugName"
                   updateState={updateState}
                   actionTarget={idx}
                   required
                   error={
-                    !section.name?.fi || !section.name.sv || !section.name.en
+                    !(section as TugInput).name?.fi || !(section as TugInput).name.sv || !(section as TugInput).name.en
                       ? validationErrors?.find((error) => error.id === 'tugName')?.msg
                       : undefined
                   }
@@ -199,7 +201,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                   <IonCol>
                     <FormInput
                       label={t('general.phone-number')}
-                      val={(section as TugInput).phoneNumber?.join(', ')}
+                      val={(section as TugInput).phoneNumber?.join(',')}
                       setValue={updateState}
                       actionType="tugPhone"
                       actionTarget={idx}
@@ -219,6 +221,143 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                 </IonRow>
               </IonGrid>
             )}
+
+            {sectionType === 'quay' && (
+              <div className={'sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
+                <IonGrid className="formGrid">
+                  <FormTextInputRow
+                    labelKey="harbour.quay-name"
+                    value={(section as QuayInput).name}
+                    actionType="quayName"
+                    updateState={updateState}
+                    actionTarget={idx}
+                    required={!!((section as QuayInput).name?.fi || (section as QuayInput).name?.sv || (section as QuayInput).name?.en)}
+                    error={
+                      !(section as QuayInput).name?.fi || !(section as QuayInput).name?.sv || !(section as QuayInput).name?.en
+                        ? validationErrors?.find((error) => error.id === 'quayName')?.msg
+                        : undefined
+                    }
+                  />
+                  <IonRow>
+                    <IonCol>
+                      <FormInput
+                        label={t('harbour.length')}
+                        val={(section as QuayInput).length}
+                        setValue={updateState}
+                        actionType="quayLength"
+                        actionTarget={idx}
+                        inputType="number"
+                        unit="m"
+                      />
+                    </IonCol>
+                    <IonCol>
+                      <FormInput
+                        label={t('harbour.lat')}
+                        val={(section as QuayInput).geometry?.lat}
+                        setValue={updateState}
+                        actionType="quayLat"
+                        actionTarget={idx}
+                        required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
+                      />
+                    </IonCol>
+                    <IonCol>
+                      <FormInput
+                        label={t('harbour.lon')}
+                        val={(section as QuayInput).geometry?.lon}
+                        setValue={updateState}
+                        actionType="quayLon"
+                        actionTarget={idx}
+                        required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
+                      />
+                    </IonCol>
+                  </IonRow>
+                  <FormTextInputRow
+                    labelKey="harbour.quay-extra-info"
+                    value={(section as QuayInput).extraInfo}
+                    actionType="quayExtraInfo"
+                    updateState={updateState}
+                    actionTarget={idx}
+                    required={
+                      !!((section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en)
+                    }
+                    error={
+                      !(section as QuayInput).extraInfo?.fi || !(section as QuayInput).extraInfo?.sv || !(section as QuayInput).extraInfo?.en
+                        ? validationErrors?.find((error) => error.id === 'quayExtraInfo')?.msg
+                        : undefined
+                    }
+                  />
+                </IonGrid>
+                <FormOptionalSection
+                  title={''}
+                  sections={(section as QuayInput).sections as SectionInput[]}
+                  updateState={updateState}
+                  sectionType="section"
+                  actionOuterTarget={idx}
+                />
+              </div>
+            )}
+
+            {sectionType === 'section' && (
+              <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
+                <IonRow className="ion-align-items-center">
+                  <IonCol>
+                    <FormInput
+                      label={t('harbour.section-name')}
+                      val={(section as SectionInput).name}
+                      setValue={updateState}
+                      actionType="sectionName"
+                      actionTarget={idx}
+                      actionOuterTarget={actionOuterTarget}
+                    />
+                  </IonCol>
+                  <IonCol>
+                    <FormInput
+                      label={t('harbour.depth')}
+                      val={(section as SectionInput).depth}
+                      setValue={updateState}
+                      actionType="sectionDepth"
+                      actionTarget={idx}
+                      actionOuterTarget={actionOuterTarget}
+                      inputType="number"
+                      unit="m"
+                    />
+                  </IonCol>
+                  <IonCol>
+                    <FormInput
+                      label={t('harbour.lat')}
+                      val={(section as SectionInput).geometry?.lat}
+                      setValue={updateState}
+                      actionType="sectionLat"
+                      actionTarget={idx}
+                      actionOuterTarget={actionOuterTarget}
+                      required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
+                    />
+                  </IonCol>
+                  <IonCol>
+                    <FormInput
+                      label={t('harbour.lon')}
+                      val={(section as SectionInput).geometry?.lon}
+                      setValue={updateState}
+                      actionType="sectionLon"
+                      actionTarget={idx}
+                      actionOuterTarget={actionOuterTarget}
+                      required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
+                    />
+                  </IonCol>
+                  <IonCol size="auto">
+                    <IonButton
+                      fill="clear"
+                      className="icon-only small"
+                      onClick={() => deleteSection(idx)}
+                      title={t('general.delete') || ''}
+                      aria-label={t('general.delete') || ''}
+                    >
+                      <BinIcon />
+                    </IonButton>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            )}
           </div>
         );
       })}
@@ -227,7 +366,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
             <IonButton shape="round" size={actionOuterTarget !== undefined ? 'small' : 'default'} onClick={() => addSection()}>
-              {t('fairwaycard.add-section-' + sectionType)}
+              {t('general.add-section-' + sectionType)}
             </IonButton>
           </IonCol>
         </IonRow>
