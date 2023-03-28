@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonSkeletonText, IonText } from '@ionic/react';
+import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
