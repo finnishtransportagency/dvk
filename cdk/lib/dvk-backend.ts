@@ -355,7 +355,7 @@ export class DvkBackendStack extends Stack {
   private getVPCName(env: string): string {
     if (env === 'dev') {
       return 'DvkDev-VPC';
-    } else if (env === 'test') {
+    } else if (env === 'test' || env === 'feature') {
       return 'DvkTest-VPC';
     } else if (env === 'prod') {
       return 'DVKProd-VPC';

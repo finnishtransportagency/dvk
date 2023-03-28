@@ -3,14 +3,23 @@ import { Harbor, HarborInput, MutationSaveHarborArgs, Operation, OperationError,
 import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
-import { mapHarborDBModelToGraphqlType, mapMandatoryText, mapNumber, mapString, mapStringArray, mapText } from '../../db/modelMapper';
+import {
+  mapGeometry,
+  mapHarborDBModelToGraphqlType,
+  mapId,
+  mapMandatoryText,
+  mapNumber,
+  mapString,
+  mapStringArray,
+  mapText,
+} from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires } from '../../environment';
 
 export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {
-    id: harbor.id,
+    id: mapId(harbor.id),
     name: mapMandatoryText(harbor.name),
     n2000HeightSystem: !!harbor.n2000HeightSystem,
     status: harbor.status,
@@ -25,7 +34,7 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
     harborBasin: mapText(harbor.harborBasin),
     internet: mapString(harbor.internet),
     phoneNumber: mapStringArray(harbor.phoneNumber),
-    geometry: harbor.geometry ? { type: 'Point', coordinates: [harbor.geometry.lat, harbor.geometry.lon] } : null,
+    geometry: mapGeometry(harbor.geometry),
     cargo: mapText(harbor.cargo),
     quays:
       harbor.quays?.map((q) => {
@@ -33,13 +42,13 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
           extraInfo: mapText(q?.extraInfo),
           length: mapNumber(q?.length),
           name: mapText(q?.name),
-          geometry: q?.geometry ? { type: 'Point', coordinates: [q.geometry.lat, q.geometry.lon] } : null,
+          geometry: mapGeometry(q?.geometry),
           sections:
             q?.sections?.map((s) => {
               return {
                 depth: mapNumber(s?.depth),
                 name: mapString(s?.name),
-                geometry: s?.geometry ? { type: 'Point', coordinates: [s.geometry.lat, s.geometry.lon] } : null,
+                geometry: mapGeometry(s?.geometry),
               };
             }) || null,
         };

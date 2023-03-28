@@ -1,5 +1,4 @@
 import {
-  Artifacts,
   BuildEnvironmentVariableType,
   BuildSpec,
   Cache,
@@ -13,13 +12,9 @@ import {
   Source,
 } from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
-import { Duration, Stack } from 'aws-cdk-lib';
+import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import Config from './config';
-import { Vpc } from 'aws-cdk-lib/aws-ec2';
 
 export class DvkFeaturePipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
@@ -29,13 +24,6 @@ export class DvkFeaturePipelineStack extends Stack {
         account: process.env.CDK_DEFAULT_ACCOUNT,
         region: 'eu-west-1',
       },
-    });
-    const featureBucket = new Bucket(this, 'FeatureBucket', {
-      bucketName: 'dvkfeaturetest.testivaylapilvi.fi',
-      publicReadAccess: false,
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-      encryption: BucketEncryption.S3_MANAGED,
-      lifecycleRules: [{ expiration: Duration.days(14) }],
     });
     const config = new Config(this);
     const sourceProps: GitHubSourceProps = {
@@ -48,50 +36,36 @@ export class DvkFeaturePipelineStack extends Stack {
         ),
       ],
     };
-    const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: 'DvkDev-VPC' });
     const gitHubSource = Source.gitHub(sourceProps);
-    const project = new Project(this, 'DvkTest', {
+    new Project(this, 'DvkTest', {
       projectName: 'DvkFeatureTest',
-      vpc,
-      concurrentBuildLimit: 3,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
         phases: {
           build: {
             commands: [
-              'export ENVIRONMENT=feature$CODEBUILD_BUILD_NUMBER',
               'npm ci',
               'npm run generate',
-              'cd cdk && npm ci && npm run generate',
-              'cd .. && npm run lint',
+              'cd cdk',
+              'npm ci',
+              'npm run generate',
+              'npm run test -- --coverage --reporters=jest-junit',
+              'cd ..',
+              'npm run lint',
               'npm run test -- --coveragePathIgnorePatterns FeatureLoader --coverage --reporters=jest-junit --passWithNoTests',
-              'cd squat && npm ci',
+              'npm run build',
+              'cd squat',
+              'npm ci',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
-              'npx serve -s build &',
-              'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
-              'cd ../test',
-              'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
-              'cd ../cdk',
-              'npm run cdk deploy DvkBackendStack -- --require-approval never',
-              'npm run datasync',
-              'npm run setup && cd ..',
-              'npm run build',
-              'npx serve -p 3001 -s build &',
-              'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
-              'cd test',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot --nostatusrc -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
-              'cd ../admin && npm ci',
+              'cd ..',
+              'cd admin',
+              'npm ci',
               'npm run generate',
               'npm run lint',
               'npm run test -- --coverage --reporters=jest-junit',
               'npm run build',
-            ],
-            finally: [
-              'export ENVIRONMENT=feature$CODEBUILD_BUILD_NUMBER',
-              'cd $CODEBUILD_SRC_DIR/cdk && npm run cdk destroy DvkBackendStack -- --force',
             ],
           },
         },
@@ -103,13 +77,8 @@ export class DvkFeaturePipelineStack extends Stack {
           'squat-coverage': { files: 'squat/coverage/clover.xml', 'file-format': 'CLOVERXML' },
           'admin-tests': { files: 'admin/junit.xml' },
           'admin-coverage': { files: 'admin/coverage/clover.xml', 'file-format': 'CLOVERXML' },
-          'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
-          'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
-        },
-        artifacts: {
-          'base-directory': 'test/report',
-          files: '**/*',
-          name: '$CODEBUILD_BUILD_NUMBER',
+          'cdk-tests': { files: 'cdk/junit.xml' },
+          'cdk-coverage': { files: 'cdk/coverage/clover.xml', 'file-format': 'CLOVERXML' },
         },
       }),
       source: gitHubSource,
@@ -132,56 +101,6 @@ export class DvkFeaturePipelineStack extends Stack {
       },
       grantReportGroupPermissions: true,
       badge: true,
-      artifacts: Artifacts.s3({
-        bucket: featureBucket,
-        includeBuildId: false,
-        packageZip: false,
-      }),
     });
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['s3:*'],
-        resources: [featureBucket.bucketArn],
-      })
-    );
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['cloudformation:*'],
-        resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}*`],
-      })
-    );
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:ListTables', 'sts:*'],
-        resources: ['*'],
-      })
-    );
-    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName() + '*');
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
-        resources: [table.tableArn],
-      })
-    );
-    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName() + '*');
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
-        resources: [table.tableArn],
-      })
-    );
-    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName() + '*');
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
-        resources: [table.tableArn],
-      })
-    );
   }
 }
