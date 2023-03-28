@@ -113,7 +113,7 @@ const PageHeader: React.FC = () => {
               <h1>
                 {t('header.mainTitle')} - {t('header.appTitle')} <small>(v{`${process.env.REACT_APP_VERSION}`})</small>
               </h1>
-              {process.env.NODE_ENV !== 'production' && <h2>{t('general.environment-' + process.env.NODE_ENV)}</h2>}
+              {process.env.REACT_APP_ENV !== 'prod' && <h2>{t('general.environment-' + process.env.REACT_APP_ENV)}</h2>}
             </IonText>
           </IonCol>
           <IonCol size="auto">

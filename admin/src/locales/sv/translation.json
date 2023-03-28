@@ -64,8 +64,9 @@
     "add-section-tug": "[sv] Lisää hinaaja",
     "add-section-quay": "[sv] Lisää laituri",
     "add-section-section": "[sv] Lisää osio",
-    "environment-development": "[sv] Kehitysympäristö",
+    "environment-dev": "[sv] Kehitysympäristö",
     "environment-test": "[sv] Testiympäristö",
+    "environment-undefined": "",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",
