@@ -32,6 +32,12 @@ export const fairwayCardReducer = (
         .filter((error) => error.id !== 'fairwayIds')
         .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? errorMessages?.required || '' : '' })
     );
+  } else if (actionType === 'group' && validationErrors.find((error) => error.id === 'group')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'group')
+        .concat({ id: 'group', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+    );
   } else if (actionType === 'vtsName' && validationErrors.find((error) => error.id === 'vtsName')?.msg) {
     setValidationErrors(
       validationErrors
@@ -81,6 +87,9 @@ export const fairwayCardReducer = (
       break;
     case 'referenceLevel':
       newState = { ...state, n2000HeightSystem: !!value };
+      break;
+    case 'group':
+      newState = { ...state, group: value as string };
       break;
     case 'line':
       if (!actionLang) return state;
