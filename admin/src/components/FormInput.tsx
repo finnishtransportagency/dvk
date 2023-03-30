@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
-import { ActionType, Lang } from '../utils/constants';
+import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
@@ -67,10 +67,6 @@ const FormInput: React.FC<InputProps> = ({
   };
 
   useEffect(() => {
-    setIsValid(error ? false : true);
-  }, [error]);
-
-  useEffect(() => {
     inputRef.current?.getInputElement().then((textinput) => (textinput ? setIsValid(error ? false : textinput.checkValidity()) : null));
   }, [required, error]);
 
@@ -79,7 +75,13 @@ const FormInput: React.FC<InputProps> = ({
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')} lines="none" fill="outline">
+      <IonItem
+        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
+        lines="none"
+        fill="outline"
+        counter={true}
+        counterFormatter={(inputLength, maxLength) => (inputLength > INPUT_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
+      >
         <IonInput
           ref={inputRef}
           value={val}
@@ -91,6 +93,7 @@ const FormInput: React.FC<InputProps> = ({
           disabled={disabled}
           type={inputType || 'text'}
           inputMode={getInputMode()}
+          maxlength={INPUT_MAXLENGTH}
         />
         {unit && (
           <IonLabel slot="end" color="medium" className="unit use-flex">

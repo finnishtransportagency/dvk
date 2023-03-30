@@ -206,7 +206,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   {t('general.delete')}
                 </IonButton>
               )}
-              <IonButton shape="round" disabled={isError || isLoadingMutation} onClick={() => handleSubmit()}>
+              <IonButton
+                shape="round"
+                disabled={isError || isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
+                onClick={() => handleSubmit()}
+              >
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
             </IonCol>
@@ -242,19 +246,18 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol size="3">
-                  {!isLoadingFairways && (
-                    <FormSelect
-                      label={t('fairwaycard.linked-fairways')}
-                      selected={state.fairwayIds || []}
-                      options={fairwayList?.fairways || []}
-                      setSelected={updateState}
-                      actionType="fairwayIds"
-                      multiple
-                      required
-                      showId
-                      error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
-                    />
-                  )}
+                  <FormSelect
+                    label={t('fairwaycard.linked-fairways')}
+                    selected={state.fairwayIds || []}
+                    options={fairwayList?.fairways || []}
+                    setSelected={updateState}
+                    actionType="fairwayIds"
+                    multiple
+                    required
+                    showId
+                    error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
+                    isLoading={isLoadingFairways}
+                  />
                 </IonCol>
                 <IonCol size="3">
                   <FormSelect
@@ -267,6 +270,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     showId
                     disabled={state.fairwayIds.length < 2}
                     helperText={t('fairwaycard.fairway-order-help-text')}
+                    isLoading={isLoadingFairways}
                   />
                 </IonCol>
                 <IonCol size="3">
@@ -280,21 +284,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     showId
                     disabled={state.fairwayIds.length < 2}
                     helperText={t('fairwaycard.fairway-order-help-text')}
+                    isLoading={isLoadingFairways}
                   />
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol size="3">
-                  {!isLoadingHarbours && (
-                    <FormSelect
-                      label={t('fairwaycard.linked-harbours')}
-                      selected={state.harbors || []}
-                      options={harbourList?.harbors || []}
-                      setSelected={updateState}
-                      actionType="harbours"
-                      multiple
-                    />
-                  )}
+                  <FormSelect
+                    label={t('fairwaycard.linked-harbours')}
+                    selected={state.harbors || []}
+                    options={harbourList?.harbors || []}
+                    setSelected={updateState}
+                    actionType="harbours"
+                    multiple
+                    isLoading={isLoadingHarbours}
+                  />
                 </IonCol>
                 <IonCol size="3">
                   <FormSelect
@@ -483,17 +487,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
               <IonRow>
                 <IonCol size="6">
-                  {!isLoadingPilotPlaces && (
-                    <FormSelect
-                      label={t('fairwaycard.linked-pilot-places')}
-                      selected={(state.trafficService?.pilot?.places as PilotPlace[]) || []}
-                      options={pilotPlaceList?.pilotPlaces || []}
-                      setSelected={updateState}
-                      actionType="pilotPlaces"
-                      multiple
-                      compareObjects
-                    />
-                  )}
+                  <FormSelect
+                    label={t('fairwaycard.linked-pilot-places')}
+                    selected={(state.trafficService?.pilot?.places as PilotPlace[]) || []}
+                    options={pilotPlaceList?.pilotPlaces || []}
+                    setSelected={updateState}
+                    actionType="pilotPlaces"
+                    multiple
+                    compareObjects
+                    isLoading={isLoadingPilotPlaces}
+                  />
                 </IonCol>
                 {state.trafficService?.pilot?.places?.map((place) => {
                   const pilotPlace = place as PilotPlace;
