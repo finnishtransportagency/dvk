@@ -113,6 +113,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
       { id: 'primaryId', msg: !state.id.trim() ? t('general.required-field') : '' },
       { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t('general.required-field') : '' },
+      { id: 'group', msg: state.group.length < 1 ? t('general.required-field') : '' },
       {
         id: 'vtsName',
         msg:
@@ -256,32 +257,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   )}
                 </IonCol>
                 <IonCol size="3">
-                  {!isLoadingHarbours && (
-                    <FormSelect
-                      label={t('fairwaycard.linked-harbours')}
-                      selected={state.harbors || []}
-                      options={harbourList?.harbors || []}
-                      setSelected={updateState}
-                      actionType="harbours"
-                      multiple
-                    />
-                  )}
-                </IonCol>
-                <IonCol size="3">
-                  <FormSelect
-                    label={t('general.item-referencelevel')}
-                    selected={state.n2000HeightSystem}
-                    options={[
-                      { name: { fi: 'MW' }, id: false },
-                      { name: { fi: 'N2000' }, id: true },
-                    ]}
-                    setSelected={updateState}
-                    actionType="referenceLevel"
-                  />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="3">
                   <FormSelect
                     label={t('fairwaycard.starting-fairway')}
                     selected={state.primaryFairwayId || ''}
@@ -307,7 +282,48 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     helperText={t('fairwaycard.fairway-order-help-text')}
                   />
                 </IonCol>
-                <IonCol size="6" className="no-border"></IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="3">
+                  {!isLoadingHarbours && (
+                    <FormSelect
+                      label={t('fairwaycard.linked-harbours')}
+                      selected={state.harbors || []}
+                      options={harbourList?.harbors || []}
+                      setSelected={updateState}
+                      actionType="harbours"
+                      multiple
+                    />
+                  )}
+                </IonCol>
+                <IonCol size="3">
+                  <FormSelect
+                    label={t('general.item-referencelevel')}
+                    selected={state.n2000HeightSystem}
+                    options={[
+                      { name: { fi: 'MW' }, id: false },
+                      { name: { fi: 'N2000' }, id: true },
+                    ]}
+                    setSelected={updateState}
+                    actionType="referenceLevel"
+                  />
+                </IonCol>
+                <IonCol size="3">
+                  <FormSelect
+                    label={t('general.item-area')}
+                    selected={state.group}
+                    options={[
+                      { name: { fi: t('general.archipelagoSea') }, id: '1' },
+                      { name: { fi: t('general.gulfOfFinland') }, id: '2' },
+                      { name: { fi: t('general.gulfOfBothnia') }, id: '3' },
+                    ]}
+                    setSelected={updateState}
+                    actionType="group"
+                    required
+                    error={validationErrors.find((error) => error.id === 'group')?.msg}
+                  />
+                </IonCol>
+                <IonCol size="3" className="no-border"></IonCol>
               </IonRow>
             </IonGrid>
 

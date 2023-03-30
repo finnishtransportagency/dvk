@@ -80,6 +80,7 @@ export type FairwayCardActionTypeSelect =
   | 'harbours'
   | 'status'
   | 'referenceLevel'
+  | 'group'
   | 'pilotPlaces';
 
 export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect;
