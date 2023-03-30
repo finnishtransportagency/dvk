@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../graphql/generated';
 import { Lang } from '../utils/constants';
@@ -24,16 +24,17 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
     }, 500)
   ).current;
 
-  dvkMap.olMap?.on('moveend', () => {
-    debouncedPrintImageRefresh();
-  });
-  dvkMap.olMap?.on('loadend', () => {
-    debouncedPrintImageRefresh();
-  });
+  useEffect(() => {
+    dvkMap.olMap?.on('moveend', debouncedPrintImageRefresh);
+    dvkMap.olMap?.on('loadend', debouncedPrintImageRefresh);
+    dvkMap.olMap?.on('rendercomplete', debouncedPrintImageRefresh);
 
-  dvkMap.olMap?.once('rendercomplete', () => {
-    debouncedPrintImageRefresh();
-  });
+    return () => {
+      dvkMap.olMap?.un('moveend', debouncedPrintImageRefresh);
+      dvkMap.olMap?.un('loadend', debouncedPrintImageRefresh);
+      dvkMap.olMap?.un('rendercomplete', debouncedPrintImageRefresh);
+    };
+  }, [debouncedPrintImageRefresh]);
 
   return (
     <>
