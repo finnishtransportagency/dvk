@@ -5,7 +5,7 @@ import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../..
 import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
-import { getCurrentDecimalSeparator } from '../../utils/common';
+import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
 import { setSelectedFairwayCard, setSelectedPilotPlace } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
@@ -916,9 +916,16 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <AreaInfo data={fairwayCard?.fairways} />
             </IonText>
           </div>
-
-          <div className="pagebreak" />
-          <PrintMap name={fairwayCard?.name || undefined} modified={fairwayCard?.modificationTimestamp || undefined} isN2000={isN2000HeightSystem} />
+          {!isMobile() && (
+            <>
+              <div className="pagebreak" />
+              <PrintMap
+                name={fairwayCard?.name || undefined}
+                modified={fairwayCard?.modificationTimestamp || undefined}
+                isN2000={isN2000HeightSystem}
+              />
+            </>
+          )}
         </>
       )}
     </>
