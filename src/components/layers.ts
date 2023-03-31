@@ -314,13 +314,13 @@ export function addAPILayers(map: Map) {
   // Kauppamerenkulku
   addFeatureVectorImageLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
   addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
-  addFeatureVectorImageLayer(map, 'boardline12', undefined, 1, getBoardLineStyle('#000000', 1));
+  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 1));
   // Muu vesiliikenne
   addFeatureVectorImageLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
 
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureVectorLayer(map, 'specialarea', 30, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
+  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Nopeusrajoitus
@@ -329,7 +329,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle);
 
   // Turvalaitteet
-  addFeatureVectorLayer(map, 'safetyequipment', 75, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
+  addFeatureVectorLayer(map, 'safetyequipment', undefined, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
 
   addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1);
