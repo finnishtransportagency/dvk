@@ -134,7 +134,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
-  if (props.symbol === '1' || resolution <= 7) {
+  if (props.symbol === '1' || resolution <= 10) {
     let image: Icon;
     if (center) {
       image = new Icon({
