@@ -86,13 +86,17 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
     if (e.shiftKey) {
       // peruutus
       if (document.activeElement === firstFocusableElement.current) {
+        lastFocusableElement.current?.setAttribute('tabIndex', '-1');
         lastFocusableElement.current?.focus();
+        lastFocusableElement.current?.removeAttribute('tabIndex');
         e.preventDefault();
       }
     } else {
       // eteenpain
       if (document.activeElement === lastFocusableElement.current) {
+        firstFocusableElement.current?.setAttribute('tabIndex', '-1');
         firstFocusableElement.current?.focus();
+        firstFocusableElement.current?.removeAttribute('tabIndex');
         e.preventDefault();
       }
     }
@@ -120,7 +124,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   <IonCol size="auto">
                     <IonButton
                       ref={firstFocusableElement}
-                      tabIndex={0}
                       fill="clear"
                       className="closeButton"
                       onClick={async () => menuController.close()}
@@ -239,7 +242,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   <IonButtons>
                     <IonButton
                       ref={lastFocusableElement}
-                      tabIndex={0}
                       className="sourceText"
                       onClick={() => {
                         menuController.close();
