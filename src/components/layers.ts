@@ -320,21 +320,21 @@ export function addAPILayers(map: Map) {
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
 
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false));
+  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 104);
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
   // Nopeusrajoitus
-  addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle);
+  addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 103);
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle);
 
   // Turvalaitteet
   addFeatureVectorLayer(map, 'safetyequipment', undefined, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
-  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false));
+  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 107);
 
-  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1);
-  addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false));
-  addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false));
+  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, true, 106);
+  addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 105);
+  addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 102);
   addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false));
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
