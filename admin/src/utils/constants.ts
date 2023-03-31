@@ -84,3 +84,6 @@ export type FairwayCardActionTypeSelect =
   | 'pilotPlaces';
 
 export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect;
+
+export const INPUT_MAXLENGTH = 200;
+export const TEXTAREA_MAXLENGTH = 2000;

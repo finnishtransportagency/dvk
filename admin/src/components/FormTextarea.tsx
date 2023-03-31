@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
-import { ActionType, Lang } from '../utils/constants';
+import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
@@ -42,10 +42,6 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   useEffect(() => {
-    setIsValid(error ? false : true);
-  }, [error]);
-
-  useEffect(() => {
     inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
   }, [required, error]);
 
@@ -54,7 +50,13 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem className={'formInput' + (isValid ? '' : ' invalid')} lines="none" fill="outline">
+      <IonItem
+        className={'formInput' + (isValid ? '' : ' invalid')}
+        lines="none"
+        fill="outline"
+        counter={true}
+        counterFormatter={(inputLength, maxLength) => (inputLength > TEXTAREA_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
+      >
         <IonTextarea
           ref={inputRef}
           value={val}
@@ -64,6 +66,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
           disabled={disabled}
           autoGrow
           rows={1}
+          maxlength={TEXTAREA_MAXLENGTH}
           className="ion-align-self-center"
         />
         <IonNote slot="helper">{helperText}</IonNote>
