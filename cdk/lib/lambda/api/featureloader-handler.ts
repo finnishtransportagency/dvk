@@ -137,13 +137,7 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
-    (a) =>
-      a.tyyppiKoodi === 1 ||
-      a.tyyppiKoodi === 3 ||
-      a.tyyppiKoodi === 4 ||
-      a.tyyppiKoodi === 5 ||
-      a.tyyppiKoodi === 11 ||
-      a.tyyppiKoodi === 2
+    (a) => a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11 || a.tyyppiKoodi === 2
   )) {
     features.push({
       type: 'Feature',
