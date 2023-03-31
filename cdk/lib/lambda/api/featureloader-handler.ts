@@ -143,8 +143,7 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
       a.tyyppiKoodi === 4 ||
       a.tyyppiKoodi === 5 ||
       a.tyyppiKoodi === 11 ||
-      a.tyyppiKoodi === 2 ||
-      a.tyyppiKoodi === 15
+      a.tyyppiKoodi === 2
   )) {
     features.push({
       type: 'Feature',

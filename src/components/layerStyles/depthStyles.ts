@@ -40,7 +40,7 @@ export function getDepthStyle(feature: FeatureLike) {
     text = '-';
   }
 
-  const specialFeature = feature.getProperties().areaType === 2 || feature.getProperties().areaType === 15;
+  const specialFeature = feature.getProperties().areaType === 2;
   let image;
   if (!n2000HeightSystem) {
     image = new Icon({
