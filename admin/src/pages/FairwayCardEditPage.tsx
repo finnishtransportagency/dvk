@@ -93,7 +93,12 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
           sv: data?.fairwayCard?.trafficService?.pilot?.extraInfo?.sv || '',
           en: data?.fairwayCard?.trafficService?.pilot?.extraInfo?.en || '',
         },
-        places: data?.fairwayCard?.trafficService?.pilot?.places,
+        places: data?.fairwayCard?.trafficService?.pilot?.places?.map((pilotPlace) => {
+          return {
+            ...pilotPlace,
+            pilotJourney: pilotPlace.pilotJourney?.toString() || '',
+          };
+        }),
       },
       vts: data?.fairwayCard?.trafficService?.vts?.map((vts) => {
         return {
@@ -101,7 +106,10 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
           name: { fi: vts?.name?.fi || '', sv: vts?.name?.sv || '', en: vts?.name?.en || '' },
           phoneNumber: vts?.phoneNumber,
           vhf: vts?.vhf?.map((vhf) => {
-            return { channel: vhf?.channel || 0, name: { fi: vhf?.name?.fi || '', sv: vhf?.name?.sv || '', en: vhf?.name?.en || '' } };
+            return {
+              channel: vhf?.channel?.toString() || '',
+              name: { fi: vhf?.name?.fi || '', sv: vhf?.name?.sv || '', en: vhf?.name?.en || '' },
+            };
           }),
         };
       }),

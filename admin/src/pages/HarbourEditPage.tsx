@@ -39,7 +39,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
       en: data?.harbor?.harborBasin?.en || '',
     },
     n2000HeightSystem: data?.harbor?.n2000HeightSystem || false,
-    geometry: { lat: coordinates[1] || 0, lon: coordinates[0] || 0 },
+    geometry: { lat: coordinates[1]?.toString() || '', lon: coordinates[0]?.toString() || '' },
     company: {
       fi: data?.harbor?.company?.fi || '',
       sv: data?.harbor?.company?.sv || '',
@@ -57,12 +57,16 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
           sv: quay?.extraInfo?.sv || '',
           en: quay?.extraInfo?.en || '',
         },
-        geometry: { lat: quayCoords[1] || 0, lon: quayCoords[0] || 0 },
-        length: quay?.length,
+        geometry: { lat: quayCoords[1]?.toString() || '', lon: quayCoords[0]?.toString() || '' },
+        length: quay?.length?.toString() || '',
         name: { fi: quay?.name?.fi || '', sv: quay?.name?.sv || '', en: quay?.name?.en || '' },
         sections: quay?.sections?.map((section) => {
           const sectionCoords = section?.geometry?.coordinates || [0, 0];
-          return { depth: section?.depth || 0, geometry: { lat: sectionCoords[1] || 0, lon: sectionCoords[0] || 0 }, name: section?.name };
+          return {
+            depth: section?.depth?.toString() || '',
+            geometry: { lat: sectionCoords[1]?.toString() || '', lon: sectionCoords[0]?.toString() || '' },
+            name: section?.name,
+          };
         }),
       };
     }),
@@ -101,7 +105,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   const { data } = useCurrentUserQueryData();
 
   const emptyHarbourInput: HarborInput = {
-    geometry: { lat: 0, lon: 0 },
+    geometry: { lat: '', lon: '' },
     id: '',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
