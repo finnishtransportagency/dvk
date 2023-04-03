@@ -1,6 +1,11 @@
 query harbors {
   harbors {
     id
-    name {fi sv en}
+    name {
+      fi
+      sv
+      en
+    }
+    n2000HeightSystem
   }
 }
