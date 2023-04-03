@@ -44,7 +44,7 @@ export const harbourReducer = (
   let newState;
   switch (actionType) {
     case 'primaryId':
-      newState = { ...state, id: value as string };
+      newState = { ...state, id: (value as string).toLowerCase() };
       break;
     case 'name':
       if (!actionLang) return state;
@@ -103,10 +103,10 @@ export const harbourReducer = (
       newState = { ...state, internet: value as string };
       break;
     case 'lat':
-      newState = { ...state, geometry: { lat: value as number, lon: state.geometry.lon } };
+      newState = { ...state, geometry: { lat: value as string, lon: state.geometry.lon } };
       break;
     case 'lon':
-      newState = { ...state, geometry: { lat: state.geometry.lat, lon: value as number } };
+      newState = { ...state, geometry: { lat: state.geometry.lat, lon: value as string } };
       break;
     case 'quay':
       // Add and delete
@@ -151,7 +151,7 @@ export const harbourReducer = (
           idx === actionTarget
             ? {
                 ...quayItem,
-                length: value as number,
+                length: value as string,
               }
             : quayItem
         ),
@@ -164,7 +164,7 @@ export const harbourReducer = (
           idx === actionTarget
             ? {
                 ...quayItem,
-                geometry: { lat: (value as number) || 0, lon: quayItem?.geometry?.lon || 0 },
+                geometry: { lat: (value as string) || '', lon: quayItem?.geometry?.lon || '' },
               }
             : quayItem
         ),
@@ -177,7 +177,7 @@ export const harbourReducer = (
           idx === actionTarget
             ? {
                 ...quayItem,
-                geometry: { lat: quayItem?.geometry?.lat || 0, lon: (value as number) || 0 },
+                geometry: { lat: quayItem?.geometry?.lat || '', lon: (value as string) || '' },
               }
             : quayItem
         ),
@@ -258,7 +258,7 @@ export const harbourReducer = (
                   j === actionTarget
                     ? {
                         ...sectionItem,
-                        depth: value as number,
+                        depth: value as string,
                       }
                     : sectionItem
                 ),
@@ -278,7 +278,7 @@ export const harbourReducer = (
                   j === actionTarget
                     ? {
                         ...sectionItem,
-                        geometry: { lat: (value as number) || 0, lon: sectionItem?.geometry?.lon || 0 },
+                        geometry: { lat: (value as string) || '', lon: sectionItem?.geometry?.lon || '' },
                       }
                     : sectionItem
                 ),
@@ -298,7 +298,7 @@ export const harbourReducer = (
                   j === actionTarget
                     ? {
                         ...sectionItem,
-                        geometry: { lat: sectionItem?.geometry?.lat || 0, lon: (value as number) || 0 },
+                        geometry: { lat: sectionItem?.geometry?.lat || '', lon: (value as string) || '' },
                       }
                     : sectionItem
                 ),

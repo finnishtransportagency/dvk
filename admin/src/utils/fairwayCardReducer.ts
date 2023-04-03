@@ -1,4 +1,4 @@
-import { FairwayCardInput, Operation, PilotPlace, Status } from '../graphql/generated';
+import { FairwayCardInput, Operation, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from './constants';
 
 export const fairwayCardReducer = (
@@ -59,7 +59,7 @@ export const fairwayCardReducer = (
       newState = { ...state, name: { ...state.name, [actionLang as string]: value as string } };
       break;
     case 'primaryId':
-      newState = { ...state, id: value as string };
+      newState = { ...state, id: (value as string).toLowerCase() };
       break;
     case 'status':
       newState = { ...state, status: value as Status };
@@ -86,7 +86,7 @@ export const fairwayCardReducer = (
       newState = { ...state, harbors: value as string[] };
       break;
     case 'referenceLevel':
-      newState = { ...state, n2000HeightSystem: !!value };
+      newState = { ...state, n2000HeightSystem: !!value, harbors: [] };
       break;
     case 'group':
       newState = { ...state, group: value as string };
@@ -259,7 +259,7 @@ export const fairwayCardReducer = (
           ...state.trafficService,
           pilot: {
             ...state.trafficService?.pilot,
-            places: value as PilotPlace[],
+            places: value as PilotPlaceInput[],
           },
         },
       };
@@ -272,7 +272,7 @@ export const fairwayCardReducer = (
           pilot: {
             ...state.trafficService?.pilot,
             places: state.trafficService?.pilot?.places?.map((place) =>
-              place.id === actionTarget ? { ...place, pilotJourney: value as number } : place
+              place.id === actionTarget ? { ...place, pilotJourney: value as string } : place
             ),
           },
         },
@@ -370,7 +370,7 @@ export const fairwayCardReducer = (
                 ? {
                     ...vtsItem,
                     name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                    vhf: vtsItem?.vhf?.concat([{ channel: 0, name: { fi: '', sv: '', en: '' } }]),
+                    vhf: vtsItem?.vhf?.concat([{ channel: '', name: { fi: '', sv: '', en: '' } }]),
                   }
                 : vtsItem
             ),
@@ -412,7 +412,7 @@ export const fairwayCardReducer = (
                             ...(vhfItem?.name || { fi: '', sv: '', en: '' }),
                             [actionLang as string]: value as string,
                           },
-                          channel: vhfItem?.channel || 0,
+                          channel: vhfItem?.channel?.toString() || '',
                         }
                       : vhfItem
                   ),
@@ -437,7 +437,7 @@ export const fairwayCardReducer = (
                     j === actionTarget
                       ? {
                           name: vhfItem?.name || { fi: '', sv: '', en: '' },
-                          channel: value as number,
+                          channel: value as string,
                         }
                       : vhfItem
                   ),
