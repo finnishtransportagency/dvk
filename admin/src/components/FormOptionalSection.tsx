@@ -109,7 +109,9 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         setValue={updateState}
                         actionType="vtsEmail"
                         actionTarget={idx}
+                        inputType="email"
                         helperText={t('general.use-comma-separated-values')}
+                        multiple
                       />
                     </IonCol>
                     <IonCol>
@@ -145,8 +147,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                   actionOuterTarget={actionOuterTarget}
                   required={!!((section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en)}
                 />
-                <IonRow className="ion-justify-content-between ion-align-items-center">
-                  <IonCol size="6">
+                <IonRow className="ion-justify-content-between">
+                  <IonCol size="4">
                     <FormInput
                       label={t('fairwaycard.vhf-channel')}
                       val={(section as VhfInput).channel}
@@ -155,9 +157,12 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       required
+                      inputType="number"
+                      max={999}
+                      decimalCount={0}
                     />
                   </IonCol>
-                  <IonCol size="auto">
+                  <IonCol size="auto" className="ion-align-self-center">
                     <IonButton
                       fill="clear"
                       className="icon-only small"
@@ -206,6 +211,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionType="tugPhone"
                       actionTarget={idx}
                       helperText={t('general.use-comma-separated-values')}
+                      inputType="tel"
+                      multiple
                     />
                   </IonCol>
                   <IonCol>
@@ -248,6 +255,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         actionTarget={idx}
                         inputType="number"
                         unit="m"
+                        max={9999.9}
+                        decimalCount={1}
                       />
                     </IonCol>
                     <IonCol>
@@ -257,6 +266,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         setValue={updateState}
                         actionType="quayLat"
                         actionTarget={idx}
+                        inputType="latitude"
                         required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
                       />
                     </IonCol>
@@ -267,6 +277,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                         setValue={updateState}
                         actionType="quayLon"
                         actionTarget={idx}
+                        inputType="longitude"
                         required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
                       />
                     </IonCol>
@@ -299,7 +310,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
 
             {sectionType === 'section' && (
               <IonGrid className={'formGrid sectionContent' + (openSections[idx] ? ' open' : ' closed')}>
-                <IonRow className="ion-align-items-center">
+                <IonRow>
                   <IonCol>
                     <FormInput
                       label={t('harbour.section-name')}
@@ -320,6 +331,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionOuterTarget={actionOuterTarget}
                       inputType="number"
                       unit="m"
+                      max={999.9}
+                      decimalCount={1}
                     />
                   </IonCol>
                   <IonCol>
@@ -331,6 +344,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
+                      inputType="latitude"
                     />
                   </IonCol>
                   <IonCol>
@@ -342,9 +356,10 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
+                      inputType="longitude"
                     />
                   </IonCol>
-                  <IonCol size="auto">
+                  <IonCol size="auto" className="ion-align-self-center">
                     <IonButton
                       fill="clear"
                       className="icon-only small"

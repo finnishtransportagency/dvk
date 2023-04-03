@@ -38,7 +38,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   const getErrorText = () => {
     if (error) return error;
     if (!isValid) return t('required-field');
-    return;
+    return '';
   };
 
   useEffect(() => {
