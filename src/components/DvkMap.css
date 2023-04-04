@@ -200,10 +200,6 @@
   width: 100%;
 }
 
-.dvkMap .mapDetailsControl .copyrightElem {
-  padding-right: 32px;
-}
-
 .dvkMap .mapDetailsControl .ol-mouse-position {
   position: relative;
   top: auto;
