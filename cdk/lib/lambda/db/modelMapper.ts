@@ -15,6 +15,9 @@ import HarborDBModel from './harborDBModel';
 import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 const MAX_TEXT_LENGTH = 2000;
+const MAX_NUMBER_LENGTH = 10;
+// geometry allows only 5 decimals
+const MAX_GEOMETRY_NUMBER_LENGTH = 8;
 
 function checkLength(maxLength: number, ...text: string[]) {
   text.forEach((s) => {
@@ -24,9 +27,23 @@ function checkLength(maxLength: number, ...text: string[]) {
   });
 }
 
-export function mapGeometry(geometry?: InputMaybe<GeometryInput>) {
+export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBER_LENGTH): number | null {
+  if (text) {
+    checkLength(maxLength, text);
+    const number = Number(text.replace(',', '.'));
+    if (Number.isNaN(number)) {
+      throw new Error(OperationError.InvalidInput);
+    }
+    if (text.trim().length > 0) {
+      return number;
+    }
+  }
+  return null;
+}
+
+export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
   if (geometry && (geometry.lat || geometry.lon)) {
-    return { type: 'Point', coordinates: [geometry.lat, geometry.lon] };
+    return { type: 'Point', coordinates: [mapNumber(geometry.lat, maxLength), mapNumber(geometry.lon, maxLength)] };
   }
   return null;
 }
@@ -75,10 +92,6 @@ export function mapString(text: Maybe<string> | undefined, maxLength = MAX_TEXT_
     return text;
   }
   return null;
-}
-
-export function mapNumber(text: Maybe<number> | undefined): number | null {
-  return text ?? null;
 }
 
 export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {

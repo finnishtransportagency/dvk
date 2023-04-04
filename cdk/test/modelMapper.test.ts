@@ -27,11 +27,24 @@ test('test mapMandatoryText', () => {
 });
 
 test('test mapNumber', () => {
-  expect(mapNumber(undefined as unknown as number)).toBe(null);
-  expect(mapNumber(null as unknown as number)).toBe(null);
-  expect(mapNumber(0)).toBe(0);
-  expect(mapNumber(1)).toBe(1);
-  expect(mapNumber(-1)).toBe(-1);
+  expect(mapNumber(undefined as unknown as string)).toBe(null);
+  expect(mapNumber(null as unknown as string)).toBe(null);
+  expect(mapNumber('')).toBe(null);
+  expect(mapNumber('0')).toBe(0);
+  expect(mapNumber('1')).toBe(1);
+  expect(mapNumber('-1')).toBe(-1);
+  expect(mapNumber('1.1')).toBe(1.1);
+  expect(mapNumber('1,1')).toBe(1.1);
+  expect(mapNumber('0.123')).toBe(0.123);
+  expect(mapNumber('0,123')).toBe(0.123);
+  expect(mapNumber('1234567890')).toBe(1234567890);
+  expect(() => mapNumber('12345678901')).toThrow(OperationError.InvalidInput);
+  expect(mapNumber('123', 3)).toBe(123);
+  expect(() => mapNumber('1234', 3)).toThrow(OperationError.InvalidInput);
+  expect(() => mapNumber('--1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapNumber('1.,1')).toThrow(OperationError.InvalidInput);
+  expect(mapNumber(' ')).toBe(null);
+  expect(mapNumber(' 1 ')).toBe(1);
 });
 
 test('test mapString', () => {
@@ -86,10 +99,18 @@ test('test too long texts', () => {
 test('test mapGeometry', () => {
   expect(mapGeometry(null)).toBe(null);
   expect(mapGeometry()).toBe(null);
-  expect(mapGeometry({ lat: 0, lon: 0 })).toBe(null);
-  expect(mapGeometry({ lat: 0, lon: 1 })).toMatchObject({ type: 'Point', coordinates: [0, 1] });
-  expect(mapGeometry({ lat: 1, lon: 0 })).toMatchObject({ type: 'Point', coordinates: [1, 0] });
-  expect(mapGeometry({ lat: 60.124, lon: 51.221 })).toMatchObject({ type: 'Point', coordinates: [60.124, 51.221] });
+  expect(mapGeometry({ lat: '', lon: '' })).toBe(null);
+  expect(mapGeometry({ lat: '0', lon: '0' })).toMatchObject({ type: 'Point', coordinates: [0, 0] });
+  expect(mapGeometry({ lat: '0', lon: '1' })).toMatchObject({ type: 'Point', coordinates: [0, 1] });
+  expect(mapGeometry({ lat: '1', lon: '0' })).toMatchObject({ type: 'Point', coordinates: [1, 0] });
+  expect(mapGeometry({ lat: '60.124', lon: '51.221' })).toMatchObject({ type: 'Point', coordinates: [60.124, 51.221] });
+  expect(mapGeometry({ lat: '60,124', lon: '51,221' })).toMatchObject({ type: 'Point', coordinates: [60.124, 51.221] });
+  expect(mapGeometry({ lat: '60,12345', lon: '51,221' })).toMatchObject({ type: 'Point', coordinates: [60.12345, 51.221] });
+  expect(mapGeometry({ lat: '60,12345', lon: '51,12345' })).toMatchObject({ type: 'Point', coordinates: [60.12345, 51.12345] });
+  expect(mapGeometry({ lat: '60.124', lon: '51.221' }, 6)).toMatchObject({ type: 'Point', coordinates: [60.124, 51.221] });
+  expect(() => mapGeometry({ lat: '60,12345', lon: '51,12345' }, 4)).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '60,123456', lon: '51,221' })).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '60,123456', lon: '51,221666' })).toThrow(OperationError.InvalidInput);
 });
 
 test('test mapId', () => {

@@ -75,8 +75,34 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [isOpen, setIsOpen] = useState(false);
 
   const saveHarbour = useCallback(() => {
-    console.log(state);
-    saveHarbourMutation({ harbor: state as HarborInput });
+    const currentHarbour = {
+      ...state,
+      quays: state.quays?.map((quay) => {
+        return {
+          ...quay,
+          geometry:
+            !quay?.geometry?.lat || !quay?.geometry?.lon
+              ? undefined
+              : {
+                  lat: quay?.geometry?.lat,
+                  lon: quay?.geometry?.lon,
+                },
+          length: quay?.length || undefined,
+          sections: quay?.sections?.map((quaySection) => {
+            return {
+              ...quaySection,
+              geometry:
+                !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
+                  ? undefined
+                  : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
+              depth: quaySection?.depth || undefined,
+            };
+          }),
+        };
+      }),
+    };
+    console.log(currentHarbour);
+    saveHarbourMutation({ harbor: currentHarbour as HarborInput });
   }, [state, saveHarbourMutation]);
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -240,7 +266,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <FormTextInputRow labelKey="harbour.company-name" value={state.company} updateState={updateState} actionType="companyName" />
               <IonRow>
                 <IonCol>
-                  <FormInput label={t('general.email')} val={state.email || ''} setValue={updateState} actionType="email" />
+                  <FormInput label={t('general.email')} val={state.email || ''} setValue={updateState} actionType="email" inputType="email" />
                 </IonCol>
                 <IonCol>
                   <FormInput
@@ -249,10 +275,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     setValue={updateState}
                     actionType="phoneNumber"
                     helperText={t('general.use-comma-separated-values')}
+                    inputType="tel"
+                    multiple
                   />
                 </IonCol>
                 <IonCol>
-                  <FormInput label={t('general.fax')} val={state.fax || ''} setValue={updateState} actionType="fax" />
+                  <FormInput label={t('general.fax')} val={state.fax || ''} setValue={updateState} actionType="fax" inputType="tel" />
                 </IonCol>
               </IonRow>
               <IonRow>
@@ -267,6 +295,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     actionType="lat"
                     required
                     error={validationErrors.find((error) => error.id === 'lat')?.msg}
+                    inputType="latitude"
                   />
                 </IonCol>
                 <IonCol>
@@ -277,6 +306,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     actionType="lon"
                     required
                     error={validationErrors.find((error) => error.id === 'lon')?.msg}
+                    inputType="longitude"
                   />
                 </IonCol>
               </IonRow>

@@ -88,7 +88,7 @@ test('test mapFairwayCardToModel all', () => {
         fax: '123',
         internet: 'www',
         phoneNumber: '1234',
-        places: [{ id: 1, pilotJourney: 0 }],
+        places: [{ id: 1, pilotJourney: '0' }],
       },
       tugs: [
         {
@@ -118,7 +118,7 @@ test('test mapFairwayCardToModel all', () => {
                 sv: 'namesv',
                 en: 'nameen',
               },
-              channel: 0,
+              channel: '0',
             },
           ],
         },

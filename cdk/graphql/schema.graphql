@@ -80,7 +80,7 @@ input TugInput {
 
 input VHFInput {
   name: TextInput
-  channel: Int!
+  channel: String!
 }
 
 input VTSInput {
@@ -101,7 +101,7 @@ input PilotInput {
 
 input PilotPlaceInput {
   id: Int!
-  pilotJourney: Float
+  pilotJourney: String
 }
 
 input HarborInput {
@@ -129,8 +129,8 @@ enum Status {
 }
 
 input GeometryInput {
-  lat: Float!
-  lon: Float!
+  lat: String!
+  lon: String!
 }
 
 input TextInput {
@@ -141,7 +141,7 @@ input TextInput {
 
 input QuayInput {
   name: TextInput
-  length: Float
+  length: String
   sections: [SectionInput]
   extraInfo: TextInput
   geometry: GeometryInput
@@ -149,7 +149,7 @@ input QuayInput {
 
 input SectionInput {
   name: String
-  depth: Float
+  depth: String
   geometry: GeometryInput
 }
 

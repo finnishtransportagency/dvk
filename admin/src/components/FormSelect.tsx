@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
@@ -70,12 +70,18 @@ const FormSelect: React.FC<SelectProps> = ({
   const [isValid, setIsValid] = useState(error ? false : true);
   const [isTouched, setIsTouched] = useState(false);
 
-  const checkValidity = () => {
-    const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
+  const checkValidity = (event?: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    let validity = false;
+    if (event) {
+      validity = Array.isArray(event.detail.value) ? event.detail.value.length > 0 : !!event.detail.value;
+    } else {
+      validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
+    }
     setIsValid(required ? validity && !error : true);
+    setIsTouched(true);
   };
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
-    if (isTouched) checkValidity();
+    if (isTouched) checkValidity(event);
     setSelected(event.detail.value, actionType);
   };
 
@@ -91,6 +97,13 @@ const FormSelect: React.FC<SelectProps> = ({
     return;
   };
 
+  useEffect(() => {
+    if (isTouched) {
+      const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
+      setIsValid(required ? validity && !error : true);
+    }
+  }, [required, error, selected, isTouched]);
+
   return (
     <>
       {!hideLabel && (
@@ -105,7 +118,6 @@ const FormSelect: React.FC<SelectProps> = ({
             ref={selectRef}
             placeholder={t('choose') || ''}
             interface="popover"
-            onIonFocus={() => setIsTouched(true)}
             onIonChange={(ev) => handleChange(ev)}
             onIonBlur={() => checkValidity()}
             interfaceOptions={{

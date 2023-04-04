@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
-import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, Status, TugInput, VtsInput } from '../graphql/generated';
+import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
@@ -35,6 +35,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
+  const harborSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
   const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
@@ -97,7 +98,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         pilot: {
           ...state.trafficService?.pilot,
           places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
+            return { id: place.id, pilotJourney: place.pilotJourney || undefined };
           }),
         },
       },
@@ -118,6 +119,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         id: 'vtsName',
         msg:
           (state.trafficService?.vts?.filter((vtsItem) => !vtsItem?.name.fi.trim() || !vtsItem?.name.sv.trim() || !vtsItem?.name.en.trim()) || [])
+            .length > 0
+            ? t('general.required-field')
+            : '',
+      },
+      {
+        id: 'vhfChannel',
+        msg:
+          (state.trafficService?.vts?.filter((vtsItem) => (vtsItem?.vhf?.filter((vhfItem) => !vhfItem?.channel.trim()) || []).length > 0) || [])
             .length > 0
             ? t('general.required-field')
             : '',
@@ -291,13 +300,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonRow>
                 <IonCol size="3">
                   <FormSelect
-                    label={t('fairwaycard.linked-harbours')}
-                    selected={state.harbors || []}
-                    options={harbourList?.harbors || []}
+                    label={t('general.item-area')}
+                    selected={state.group}
+                    options={[
+                      { name: { fi: t('general.archipelagoSea') }, id: '1' },
+                      { name: { fi: t('general.gulfOfFinland') }, id: '2' },
+                      { name: { fi: t('general.gulfOfBothnia') }, id: '3' },
+                    ]}
                     setSelected={updateState}
-                    actionType="harbours"
-                    multiple
-                    isLoading={isLoadingHarbours}
+                    actionType="group"
+                    required
+                    error={validationErrors.find((error) => error.id === 'group')?.msg}
                   />
                 </IonCol>
                 <IonCol size="3">
@@ -314,17 +327,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 </IonCol>
                 <IonCol size="3">
                   <FormSelect
-                    label={t('general.item-area')}
-                    selected={state.group}
-                    options={[
-                      { name: { fi: t('general.archipelagoSea') }, id: '1' },
-                      { name: { fi: t('general.gulfOfFinland') }, id: '2' },
-                      { name: { fi: t('general.gulfOfBothnia') }, id: '3' },
-                    ]}
+                    label={t('fairwaycard.linked-harbours')}
+                    selected={state.harbors || []}
+                    options={harborSelection || []}
                     setSelected={updateState}
-                    actionType="group"
-                    required
-                    error={validationErrors.find((error) => error.id === 'group')?.msg}
+                    actionType="harbours"
+                    multiple
+                    isLoading={isLoadingHarbours}
                   />
                 </IonCol>
                 <IonCol size="3" className="no-border"></IonCol>
@@ -489,7 +498,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 <IonCol size="6">
                   <FormSelect
                     label={t('fairwaycard.linked-pilot-places')}
-                    selected={(state.trafficService?.pilot?.places as PilotPlace[]) || []}
+                    selected={(state.trafficService?.pilot?.places as PilotPlaceInput[]) || []}
                     options={pilotPlaceList?.pilotPlaces || []}
                     setSelected={updateState}
                     actionType="pilotPlaces"
@@ -511,6 +520,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                         actionTarget={place.id}
                         unit="nm"
                         inputType="number"
+                        max={999.9}
+                        decimalCount={1}
                       />
                     </IonCol>
                   );

@@ -14,7 +14,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
   const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
   const { data: userData } = useCurrentUserQueryData();
 
-  const coordinates = data?.harbor?.geometry?.coordinates || [0, 0];
+  const coordinates = data?.harbor?.geometry?.coordinates || ['', ''];
 
   const harbour = {
     id: origin ? '' : data?.harbor?.id || '',
@@ -39,7 +39,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
       en: data?.harbor?.harborBasin?.en || '',
     },
     n2000HeightSystem: data?.harbor?.n2000HeightSystem || false,
-    geometry: { lat: coordinates[1] || 0, lon: coordinates[0] || 0 },
+    geometry: { lat: coordinates[0]?.toString() || '', lon: coordinates[1]?.toString() || '' },
     company: {
       fi: data?.harbor?.company?.fi || '',
       sv: data?.harbor?.company?.sv || '',
@@ -50,19 +50,23 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
     internet: data?.harbor?.internet || '',
     phoneNumber: data?.harbor?.phoneNumber || [],
     quays: data?.harbor?.quays?.map((quay) => {
-      const quayCoords = quay?.geometry?.coordinates || [0, 0];
+      const quayCoords = quay?.geometry?.coordinates || ['', ''];
       return {
         extraInfo: {
           fi: quay?.extraInfo?.fi || '',
           sv: quay?.extraInfo?.sv || '',
           en: quay?.extraInfo?.en || '',
         },
-        geometry: { lat: quayCoords[1] || 0, lon: quayCoords[0] || 0 },
-        length: quay?.length,
+        geometry: { lat: quayCoords[0]?.toString() || '', lon: quayCoords[1]?.toString() || '' },
+        length: quay?.length?.toString() || '',
         name: { fi: quay?.name?.fi || '', sv: quay?.name?.sv || '', en: quay?.name?.en || '' },
         sections: quay?.sections?.map((section) => {
-          const sectionCoords = section?.geometry?.coordinates || [0, 0];
-          return { depth: section?.depth || 0, geometry: { lat: sectionCoords[1] || 0, lon: sectionCoords[0] || 0 }, name: section?.name };
+          const sectionCoords = section?.geometry?.coordinates || ['', ''];
+          return {
+            depth: section?.depth?.toString() || '',
+            geometry: { lat: sectionCoords[0]?.toString() || '', lon: sectionCoords[1]?.toString() || '' },
+            name: section?.name,
+          };
         }),
       };
     }),
@@ -101,7 +105,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   const { data } = useCurrentUserQueryData();
 
   const emptyHarbourInput: HarborInput = {
-    geometry: { lat: 0, lon: 0 },
+    geometry: { lat: '', lon: '' },
     id: '',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },

@@ -17,8 +17,12 @@ interface InputProps {
   disabled?: boolean;
   error?: string;
   helperText?: string | null;
-  inputType?: 'text' | 'number' | 'tel' | 'email';
+  inputType?: 'text' | 'number' | 'tel' | 'email' | 'latitude' | 'longitude';
+  multiple?: boolean;
   unit?: string;
+  min?: number;
+  max?: number;
+  decimalCount?: number;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -34,9 +38,13 @@ const FormInput: React.FC<InputProps> = ({
   error,
   helperText,
   inputType,
+  multiple,
   unit,
+  min,
+  max,
+  decimalCount,
 }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'general' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonInputElement>(null);
   const focusInput = () => {
@@ -57,13 +65,68 @@ const FormInput: React.FC<InputProps> = ({
     if (error) return error;
     if (!isValid && required && (val || '').toString().trim().length < 1) return t('required-field');
     if (!isValid) return t('check-input');
-    return;
+    return '';
+  };
+
+  const getHelperText = () => {
+    if (helperText) return helperText;
+    if (inputType === 'latitude') return '58.00000 - 69.99999';
+    if (inputType === 'longitude') return '17.00000 - 31.99999';
+    if (inputType === 'number' && max) {
+      return (
+        <>
+          <span aria-label={t('general.minimum-value') || ''} role="definition">
+            {Number(min || 0).toLocaleString(i18n.language, {
+              minimumFractionDigits: decimalCount || 0,
+              maximumFractionDigits: decimalCount || 0,
+            })}
+          </span>{' '}
+          -{' '}
+          <span aria-label={t('general.maximum-value') || ''} role="definition">
+            {Number(max).toLocaleString(i18n.language, {
+              minimumFractionDigits: decimalCount || 0,
+              maximumFractionDigits: decimalCount || 0,
+            })}
+          </span>{' '}
+          {unit && (
+            <span
+              aria-label={
+                t('unit.' + unit + 'Desc', {
+                  count: Number(val),
+                }) || ''
+              }
+              role="definition"
+            >
+              {t('unit.' + unit)}
+            </span>
+          )}
+        </>
+      );
+    }
+    return '';
+  };
+
+  const getInputType = () => {
+    if (inputType && (inputType === 'latitude' || inputType === 'longitude')) return 'text';
+    if (inputType) return inputType;
+    return 'text';
   };
 
   const getInputMode = () => {
+    if (multiple) return 'text';
     if (inputType && inputType === 'number') return 'decimal';
+    if (inputType && (inputType === 'latitude' || inputType === 'longitude')) return 'text';
     if (inputType) return inputType;
     return 'text';
+  };
+
+  const getInputPattern = () => {
+    if (actionType === 'primaryId') return '[a-z]+[0-9]*';
+    if (inputType === 'latitude') return '(5[89]|6\\d){1}(.[0-9]{1,5})?'; // lat range 58-70
+    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(.[0-9]{1,5})?'; // lon range 17-32
+    if (inputType === 'tel' && multiple) return '(^$)|(([+]?[0-9\\s]{5,20}){1}(,[+]?[0-9\\s]{5,20}){0,9})';
+    if (inputType === 'tel') return '[+]?[0-9\\s]{5,20}';
+    return undefined;
   };
 
   useEffect(() => {
@@ -85,15 +148,18 @@ const FormInput: React.FC<InputProps> = ({
         <IonInput
           ref={inputRef}
           value={val}
-          min={inputType === 'number' ? 0 : undefined}
-          step={inputType === 'number' ? '0.1' : undefined}
+          min={inputType === 'number' ? min || 0 : undefined}
+          max={inputType === 'number' ? max || 9999999 : undefined}
+          step={inputType === 'number' ? (1 / (10 * (decimalCount || 0.1))).toString() || '0.1' : undefined}
           required={required}
           onIonChange={(ev) => handleChange(ev)}
           onIonBlur={(ev) => checkValidity(ev)}
           disabled={disabled}
-          type={inputType || 'text'}
+          type={getInputType()}
           inputMode={getInputMode()}
           maxlength={INPUT_MAXLENGTH}
+          pattern={getInputPattern()}
+          multiple={inputType === 'email' && multiple}
         />
         {unit && (
           <IonLabel slot="end" color="medium" className="unit use-flex">
@@ -109,7 +175,7 @@ const FormInput: React.FC<InputProps> = ({
             </span>
           </IonLabel>
         )}
-        <IonNote slot="helper">{helperText}</IonNote>
+        <IonNote slot="helper">{getHelperText()}</IonNote>
         <IonNote slot="error" className="input-error">
           <ErrorIcon aria-label={t('error') || ''} />
           {getErrorText()}
