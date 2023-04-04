@@ -2,8 +2,6 @@ import Control from 'ol/control/Control';
 import { isMobile } from '../../utils/common';
 
 class MapDetailsControl extends Control {
-  private copyrightElement = document.createElement('div');
-
   private mousePositionLabelElement: HTMLDivElement = document.createElement('div');
 
   private mousePositionElement: HTMLDivElement = document.createElement('div');
@@ -22,10 +20,6 @@ class MapDetailsControl extends Control {
     super({
       element: element,
     });
-
-    this.copyrightElement.style.display = 'table-cell';
-    this.copyrightElement.className = 'copyrightElem';
-    rowElem.appendChild(this.copyrightElement);
 
     if (!isMobile()) {
       this.mousePositionLabelElement.style.display = 'table-cell';
@@ -46,10 +40,6 @@ class MapDetailsControl extends Control {
 
   public getMousePositionElement() {
     return this.mousePositionElement;
-  }
-
-  public setCopyrightLabel(label: string) {
-    this.copyrightElement.innerHTML = label;
   }
 
   public setMousePositionLabel(label: string) {

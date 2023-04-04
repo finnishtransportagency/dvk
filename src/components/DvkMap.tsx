@@ -387,7 +387,6 @@ class DvkMap {
 
     this.centerToOwnLocationControl.setTipLabel(this.t('homePage.map.controls.ownLocation.tipLabel'));
     this.openSidebarMenuControl.setTipLabel(this.t('homePage.map.controls.openMenu.tipLabel'));
-    this.mapDetailsControl.setCopyrightLabel(this.t('homePage.map.controls.mapDetails.copyrightLabel'));
     this.mapDetailsControl.setMousePositionLabel(this.t('homePage.map.controls.mapDetails.mousePositionLabel'));
     this.layerPopupControl.setTipLabel(this.t('homePage.map.controls.layer.tipLabel'));
     this.searchbarControl?.setPlaceholder(this.t('homePage.map.controls.searchbar.placeholder'));
