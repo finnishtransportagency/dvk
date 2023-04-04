@@ -98,7 +98,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         pilot: {
           ...state.trafficService?.pilot,
           places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: Number(place.pilotJourney) || undefined };
+            return { id: place.id, pilotJourney: place.pilotJourney || undefined };
           }),
         },
       },

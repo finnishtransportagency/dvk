@@ -75,8 +75,34 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [isOpen, setIsOpen] = useState(false);
 
   const saveHarbour = useCallback(() => {
-    console.log(state);
-    saveHarbourMutation({ harbor: state as HarborInput });
+    const currentHarbour = {
+      ...state,
+      quays: state.quays?.map((quay) => {
+        return {
+          ...quay,
+          geometry:
+            !quay?.geometry?.lat || !quay?.geometry?.lon
+              ? undefined
+              : {
+                  lat: quay?.geometry?.lat,
+                  lon: quay?.geometry?.lon,
+                },
+          length: quay?.length || undefined,
+          sections: quay?.sections?.map((quaySection) => {
+            return {
+              ...quaySection,
+              geometry:
+                !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
+                  ? undefined
+                  : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
+              depth: quaySection?.depth || undefined,
+            };
+          }),
+        };
+      }),
+    };
+    console.log(currentHarbour);
+    saveHarbourMutation({ harbor: currentHarbour as HarborInput });
   }, [state, saveHarbourMutation]);
 
   const formRef = useRef<HTMLFormElement>(null);
