@@ -45,6 +45,7 @@
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
     "required-field": "Required field",
+    "check-input": "Check input",
     "use-comma-separated-values": "Use comma to separate multiple values",
     "email": "Email",
     "phone-number": "Phone number",
