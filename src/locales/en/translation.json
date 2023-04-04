@@ -42,7 +42,7 @@
           "weatherStation": "Weather stations",
           "ice": "Ice map",
           "buoys": "Wave buoys",
-          "vts": "[en] VTS-ilmoituslinjat ja -pisteet",
+          "vts": "VTS reporting lines ja points",
           "general": "General",
           "mapStyle": {
             "header": "Map style",
@@ -234,8 +234,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Notifier",
     "modified": "Updated",
-    "lastUpdatedAt": "[en] Näkymän tiedot ladattu {{ val, number}}h sitten.",
-    "lastUpdatedAt2": "[en] Tason tiedot on ladattu {{ val, number}}h sitten."
+    "lastUpdatedAt": "Data of this view loaded {{ val, number}} h ago.",
+    "lastUpdatedAt2": "Data of this layer loaded {{ val, number}} h ago."
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -326,7 +326,7 @@
       "coordinates": "Coordinates",
       "temperature": "Air temperature",
       "windSpeedAvgDir": "Wind speed and direction",
-      "windSpeedMax": "Wind speed (puuska)",
+      "windSpeedMax": "Wind speed (gusts)",
       "visibility": "Visibility",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Last observation"
@@ -400,7 +400,7 @@
     "title": "Data sources and terms of use",
     "content1": "Finnish Transport Infrastructure Agency",
     "content2": "Finnish Meteorological Institute",
-    "content3": "[en] Lähde: Traficom. Not for navigational use. [en] Ei täytä virallisen merikartan vaatimuksia.",
+    "content3": "Source: Traficom. Not for navigational use. Does not fulfil requirements for official navigation chart.",
     "content4": "National Land Survey of Finland",
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
   }

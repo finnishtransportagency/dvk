@@ -42,7 +42,7 @@
           "weatherStation": "Kustväderstationerna",
           "ice": "Iskarta",
           "buoys": "Vågbojar",
-          "vts": "[sv] VTS-ilmoituslinjat ja -pisteet",
+          "vts": "VTS-trafikrapporteringslinjer och -punkter",
           "general": "Allmänt",
           "mapStyle": {
             "header": "Kartans stil",
@@ -234,8 +234,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Uppgiftslämnare",
     "modified": "Uppdaterat",
-    "lastUpdatedAt": "[sv] Näkymän tiedot ladattu {{ val, number}}h sitten.",
-    "lastUpdatedAt2": "[sv] Tason tiedot on ladattu {{ val, number}}h sitten."
+    "lastUpdatedAt": "Vyns uppgifter laddat för {{ val, number}} h sedan.",
+    "lastUpdatedAt2": "Lagrets data laddat för {{ val, number}} h sedan."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
@@ -326,7 +326,7 @@
       "coordinates": "Koordinater",
       "temperature": "Luftens temperatur",
       "windSpeedAvgDir": "Vindhastighet och vindriktning",
-      "windSpeedMax": "Vindhastighet ([sv] puuska)",
+      "windSpeedMax": "Vindhastighet (vindby)",
       "visibility": "Sikt",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Beräknat vattenstånd"
@@ -351,8 +351,8 @@
     },
     "vts": {
       "coordinates": "Koordinater",
-      "point": "[sv] VTS-pisteen tiedot",
-      "line": "[sv] VTS-linjan tiedot",
+      "point": "VTS-punktens uppgifter",
+      "line": "VTS-linjens uppgifter",
       "channel": "VHF kanal"
     }
   },
@@ -400,7 +400,7 @@
     "title": "Informationskällor och användningsvillkor",
     "content1": "Trafikledsverket",
     "content2": "Meteorologiska institutet",
-    "content3": "[sv] Lähde: Traficom. Ej för navigation. Ei täytä virallisen merikartan vaatimuksia.",
+    "content3": "Källa: Traficom. Ej för navigationsbruk. Uppfyller inte kraven för officiella sjökort.",
     "content4": "Lantmäteriverket",
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
   }
