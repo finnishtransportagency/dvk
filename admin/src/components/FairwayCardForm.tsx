@@ -124,6 +124,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             : '',
       },
       {
+        id: 'vhfChannel',
+        msg:
+          (state.trafficService?.vts?.filter((vtsItem) => (vtsItem?.vhf?.filter((vhfItem) => !vhfItem?.channel.trim()) || []).length > 0) || [])
+            .length > 0
+            ? t('general.required-field')
+            : '',
+      },
+      {
         id: 'tugName',
         msg:
           (state.trafficService?.tugs?.filter((tugItem) => !tugItem?.name.fi.trim() || !tugItem?.name.sv.trim() || !tugItem?.name.en.trim()) || [])

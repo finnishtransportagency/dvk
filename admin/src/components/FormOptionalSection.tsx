@@ -132,6 +132,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                   updateState={updateState}
                   sectionType="vhf"
                   actionOuterTarget={idx}
+                  validationErrors={validationErrors}
                 />
               </div>
             )}
@@ -157,6 +158,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       required
+                      error={!(section as VhfInput).channel ? validationErrors?.find((error) => error.id === 'vhfChannel')?.msg : undefined}
                       inputType="number"
                       max={999}
                       decimalCount={0}
@@ -304,6 +306,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                   updateState={updateState}
                   sectionType="section"
                   actionOuterTarget={idx}
+                  validationErrors={validationErrors}
                 />
               </div>
             )}
