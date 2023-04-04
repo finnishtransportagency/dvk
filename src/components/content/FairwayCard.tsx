@@ -730,6 +730,19 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
 
+  const getTabLabel = (tabId: string): string => {
+    switch (tabId) {
+      case '1':
+        return t('title', { count: 1 });
+      case '2':
+        return t('harboursTitle');
+      case '3':
+        return t('areasTitle');
+      default:
+        return '-';
+    }
+  };
+
   const path = [
     {
       title: t('title', { count: 0 }),
@@ -743,7 +756,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
       },
     },
     {
-      title: t('title', { count: 1 }),
+      title: getTabLabel(tab),
     },
   ];
 
@@ -826,21 +839,13 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           </IonGrid>
 
           <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} data-testid="tabChange">
-            <IonSegmentButton value="1">
-              <IonLabel>
-                <h3>{t('title', { count: 1 })}</h3>
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="2">
-              <IonLabel>
-                <h3>{t('harboursTitle')}</h3>
-              </IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="3">
-              <IonLabel>
-                <h3>{t('areasTitle')}</h3>
-              </IonLabel>
-            </IonSegmentButton>
+            {['1', '2', '3'].map((tabId) => (
+              <IonSegmentButton key={tabId} value={tabId}>
+                <IonLabel>
+                  <h3>{getTabLabel(tabId)}</h3>
+                </IonLabel>
+              </IonSegmentButton>
+            ))}
           </IonSegment>
 
           <div className={'tabContent tab1' + (widePane ? ' wide' : '') + (tab === '1' ? ' active' : '')}>
