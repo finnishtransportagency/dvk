@@ -116,7 +116,7 @@
   "fairwaycard": {
     "name": "Fairway card name",
     "primary-id": "Fairway card ID",
-    "primary-id-help-text": "[en] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "primary-id-help-text": "Unique identifier, visible in browser's address bar; valid characters: (a-z) and (0-9)",
     "linked-fairways": "Linked fairways",
     "starting-fairway": "Starting fairway",
     "ending-fairway": "Ending fairway",
@@ -151,7 +151,7 @@
   },
   "harbour": {
     "primary-id": "Harbour ID",
-    "primary-id-help-text": "[en] Sataman yksilöivä tunniste",
+    "primary-id-help-text": "Harbour unique identifier; valid characters: (a-z) and (0-9)",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
     "name": "Port name",
