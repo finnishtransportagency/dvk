@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
 import FormInput from './FormInput';
@@ -35,7 +35,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const reservedHarbourIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Harbor)
     .flatMap((item) => item.id);
-  const errorMessages = { required: t('general.required-field'), duplicateId: t('harbour.error-duplicate-id') } as ErrorMessageType;
 
   const updateState = (
     value: ValueType,
@@ -45,18 +44,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     actionOuterTarget?: string | number
   ) => {
     setState(
-      harbourReducer(
-        state,
-        value,
-        actionType,
-        validationErrors,
-        setValidationErrors,
-        actionLang,
-        actionTarget,
-        actionOuterTarget,
-        errorMessages,
-        reservedHarbourIds
-      )
+      harbourReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget, actionOuterTarget, reservedHarbourIds)
     );
   };
 
@@ -108,11 +96,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
+    let primaryIdErrorMsg = '';
+    if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+    if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
     const manualValidations = [
-      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
-      { id: 'primaryId', msg: !state.id.trim() ? t('general.required-field') : '' },
-      { id: 'lat', msg: !state.geometry.lat ? t('general.required-field') : '' },
-      { id: 'lon', msg: !state.geometry.lon ? t('general.required-field') : '' },
+      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
+      { id: 'primaryId', msg: primaryIdErrorMsg },
+      { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
+      { id: 'lon', msg: !state.geometry.lon ? t(ErrorMessageKeys?.required) : '' },
     ];
     setValidationErrors(manualValidations);
 
@@ -212,7 +203,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     actionType="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
-                    error={validationErrors.find((error) => error.id === 'primaryId')?.msg}
+                    error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('harbour.primary-id-help-text')}
                   />
                 </IonCol>

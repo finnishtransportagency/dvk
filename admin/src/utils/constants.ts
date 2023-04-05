@@ -13,6 +13,7 @@ export type ErrorMessageType = {
   required: string;
   duplicateId: string;
 };
+export const ErrorMessageKeys = { required: 'general.required-field', duplicateId: 'fairwaycard.error-duplicate-id' } as ErrorMessageType;
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[];
 

@@ -1,5 +1,6 @@
+import { t } from 'i18next';
 import { FairwayCardInput, Operation, PilotPlaceInput, Status } from '../graphql/generated';
-import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from './constants';
+import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -10,45 +11,44 @@ export const fairwayCardReducer = (
   actionLang?: Lang,
   actionTarget?: string | number,
   actionOuterTarget?: string | number,
-  errorMessages?: ErrorMessageType,
   reservedIds?: string[]
 ) => {
   console.log('updateState... for input ' + actionType, actionLang);
   // Check manual validations and clear triggered validations by save
   if (actionType === 'primaryId' && state.operation === Operation.Create) {
     let primaryIdErrorMsg = '';
-    if (reservedIds?.includes(value as string)) primaryIdErrorMsg = errorMessages?.duplicateId || '';
-    if ((value as string).length < 1) primaryIdErrorMsg = errorMessages?.required || '';
+    if (reservedIds?.includes(value as string)) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+    if ((value as string).length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
     setValidationErrors(validationErrors.filter((error) => error.id !== 'primaryId').concat({ id: 'primaryId', msg: primaryIdErrorMsg }));
   } else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'name')
-        .concat({ id: 'name', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'name', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'fairwayIds' && validationErrors.find((error) => error.id === 'fairwayIds')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'fairwayIds')
-        .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'group' && validationErrors.find((error) => error.id === 'group')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'group')
-        .concat({ id: 'group', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'group', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'vtsName' && validationErrors.find((error) => error.id === 'vtsName')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'vtsName')
-        .concat({ id: 'vtsName', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'vtsName', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'tugName' && validationErrors.find((error) => error.id === 'tugName')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'tugName')
-        .concat({ id: 'tugName', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'tugName', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   }
 

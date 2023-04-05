@@ -54,7 +54,7 @@
     "save-successful": "[sv] Tallennus onnistui",
     "save-failed": "[sv] Tallennus epäonnistui",
     "saved-by-id": "[sv] Kohteen \"{{ id }}\" tiedot tallennettu.",
-    "error-MISSING-INFORMATION": "[sv] Pakollisia tietoja puuttuu.",
+    "error-MISSING-INFORMATION": "[sv] Pakollisia tietoja puuttuu tai syötetyissä tiedoissa on virheitä.",
     "error-CARD_ALREADY_EXIST": "[sv] Väyläkortin tunniste on jo käytössä.",
     "error-CARD_NOT_EXIST": "[sv] Väyläkorttia ei löydy annetulla tunnisteella.",
     "error-CARD_ID_MISSING": "[sv] Väyläkortin tunniste puuttuu.",
@@ -116,7 +116,7 @@
   "fairwaycard": {
     "name": "[sv] Väyläkortin nimi",
     "primary-id": "[sv] Väyläkortin tunniste",
-    "primary-id-help-text": "[sv] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä",
+    "primary-id-help-text": "[sv] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9)",
     "linked-fairways": "[sv] Liitetyt väylät",
     "starting-fairway": "[sv] Aloittava väylä",
     "ending-fairway": "[sv] Päättävä väylä",
@@ -150,7 +150,7 @@
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
-    "primary-id-help-text": "[sv] Sataman yksilöivä tunniste",
+    "primary-id-help-text": "[sv] Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9)",
     "error-duplicate-id": "[sv] Tunniste on jo käytössä",
     "harbour-info": "[sv] Satamatiedot",
     "name": "Portnamn",
