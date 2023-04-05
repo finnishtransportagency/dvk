@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonImg, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserQueryData } from '../graphql/api';
-import LanguageBar from './LanguageBar';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 
