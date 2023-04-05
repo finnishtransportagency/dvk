@@ -118,7 +118,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         timeout: Duration.seconds(30),
         layers: [layer],
-        vpc,
+        vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
@@ -321,7 +321,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         layers: [layer],
         timeout: Duration.seconds(60),
-        vpc,
+        vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
