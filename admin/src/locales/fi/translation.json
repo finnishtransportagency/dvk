@@ -54,7 +54,7 @@
     "save-successful": "Tallennus onnistui",
     "save-failed": "Tallennus epäonnistui",
     "saved-by-id": "Kohteen \"{{ id }}\" tiedot tallennettu.",
-    "error-MISSING-INFORMATION": "Pakollisia tietoja puuttuu.",
+    "error-MISSING-INFORMATION": "Pakollisia tietoja puuttuu tai syötetyissä tiedoissa on virheitä.",
     "error-CARD_ALREADY_EXIST": "Väyläkortin tunniste on jo käytössä.",
     "error-CARD_NOT_EXIST": "Väyläkorttia ei löydy annetulla tunnisteella.",
     "error-CARD_ID_MISSING": "Väyläkortin tunniste puuttuu.",

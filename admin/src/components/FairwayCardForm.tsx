@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
@@ -47,7 +47,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Card)
     .flatMap((item) => item.id);
-  const errorMessages = { required: t('general.required-field'), duplicateId: t('fairwaycard.error-duplicate-id') } as ErrorMessageType;
 
   const updateState = (
     value: ValueType,
@@ -66,7 +65,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         actionLang,
         actionTarget,
         actionOuterTarget,
-        errorMessages,
         reservedFairwayCardIds
       )
     );
@@ -110,17 +108,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
+    let primaryIdErrorMsg = '';
+    if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+    if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
     const manualValidations = [
-      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t('general.required-field') : '' },
-      { id: 'primaryId', msg: !state.id.trim() ? t('general.required-field') : '' },
-      { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t('general.required-field') : '' },
-      { id: 'group', msg: state.group.length < 1 ? t('general.required-field') : '' },
+      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
+      { id: 'primaryId', msg: primaryIdErrorMsg },
+      { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t(ErrorMessageKeys?.required) : '' },
+      { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
       {
         id: 'vtsName',
         msg:
           (state.trafficService?.vts?.filter((vtsItem) => !vtsItem?.name.fi.trim() || !vtsItem?.name.sv.trim() || !vtsItem?.name.en.trim()) || [])
             .length > 0
-            ? t('general.required-field')
+            ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
@@ -128,7 +129,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         msg:
           (state.trafficService?.vts?.filter((vtsItem) => (vtsItem?.vhf?.filter((vhfItem) => !vhfItem?.channel.trim()) || []).length > 0) || [])
             .length > 0
-            ? t('general.required-field')
+            ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
@@ -136,7 +137,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         msg:
           (state.trafficService?.tugs?.filter((tugItem) => !tugItem?.name.fi.trim() || !tugItem?.name.sv.trim() || !tugItem?.name.en.trim()) || [])
             .length > 0
-            ? t('general.required-field')
+            ? t(ErrorMessageKeys?.required)
             : '',
       },
     ];
@@ -250,7 +251,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     actionType="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
-                    error={validationErrors.find((error) => error.id === 'primaryId')?.msg}
+                    error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('fairwaycard.primary-id-help-text')}
                   />
                 </IonCol>

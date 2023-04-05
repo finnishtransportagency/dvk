@@ -1,5 +1,6 @@
+import { t } from 'i18next';
 import { HarborInput, Operation, Status } from '../graphql/generated';
-import { ActionType, ErrorMessageType, Lang, ValidationType, ValueType } from './constants';
+import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 
 export const harbourReducer = (
   state: HarborInput,
@@ -10,33 +11,32 @@ export const harbourReducer = (
   actionLang?: Lang,
   actionTarget?: string | number,
   actionOuterTarget?: string | number,
-  errorMessages?: ErrorMessageType,
   reservedIds?: string[]
 ) => {
   console.log('updateState... for input ' + actionType, actionLang, value);
   // Check manual validations and clear triggered validations by save
   if (actionType === 'primaryId' && state.operation === Operation.Create) {
     let primaryIdErrorMsg = '';
-    if (reservedIds?.includes(value as string)) primaryIdErrorMsg = errorMessages?.duplicateId || '';
-    if ((value as string).length < 1) primaryIdErrorMsg = errorMessages?.required || '';
+    if (reservedIds?.includes(value as string)) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+    if ((value as string).length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
     setValidationErrors(validationErrors.filter((error) => error.id !== 'primaryId').concat({ id: 'primaryId', msg: primaryIdErrorMsg }));
   } else if (actionType === 'name' && validationErrors.find((error) => error.id === 'name')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'name')
-        .concat({ id: 'name', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'name', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'lat' && validationErrors.find((error) => error.id === 'lat')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'lat')
-        .concat({ id: 'lat', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'lat', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'lon' && validationErrors.find((error) => error.id === 'lon')?.msg) {
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'lon')
-        .concat({ id: 'lon', msg: (value as string).length < 1 ? errorMessages?.required || '' : '' })
+        .concat({ id: 'lon', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   }
   // TODO: Add coordinate validation check for quays and quay sections
