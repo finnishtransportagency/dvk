@@ -203,7 +203,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     actionType="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
-                    error={validationErrors.find((error) => error.id === 'primaryId')?.msg}
+                    error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('harbour.primary-id-help-text')}
                   />
                 </IonCol>
