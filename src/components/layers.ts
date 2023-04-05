@@ -265,7 +265,8 @@ function addFeatureVectorImageLayer(
   style: StyleLike,
   minResolution: number | undefined = undefined,
   opacity = 1,
-  declutter = false
+  declutter = false,
+  zIndex: number | undefined = undefined
 ) {
   map.addLayer(
     new VectorImageLayer({
@@ -279,6 +280,7 @@ function addFeatureVectorImageLayer(
       opacity,
       imageRatio: 2,
       renderOrder: undefined,
+      zIndex,
     })
   );
 }
@@ -303,6 +305,7 @@ function addIceLayer(map: Map) {
         params: { layers: 'fmi:ice:icechart_iceareas' },
         transition: 0,
       }),
+      zIndex: 101,
       preload: 10,
       opacity: 0.4,
     })
@@ -310,36 +313,25 @@ function addIceLayer(map: Map) {
 }
 
 export function addAPILayers(map: Map) {
+  // Jääkartta
   addIceLayer(map);
-  // Kauppamerenkulku
-  addFeatureVectorImageLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'));
-  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1));
-  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 1));
-  // Muu vesiliikenne
-  addFeatureVectorImageLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'));
-  addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1));
-
-  // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 104);
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle);
-  // Nopeusrajoitus
-  addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 103);
-  // Haraussyvyydet
-  addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle);
-
-  // Turvalaitteet
-  addFeatureVectorLayer(map, 'safetyequipment', undefined, 50, (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false));
-  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 107);
-
-  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, true, 106);
-  addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 105);
-  addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 102);
-  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false));
-  // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')));
   // Kartan nimistö
-  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 100);
+  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
+
+  // Kauppamerenkulku
+  addFeatureVectorImageLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'), undefined, 1, false, 201);
+  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 202);
+  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 1), undefined, 1, false, 203);
+  // Muu vesiliikenne
+  addFeatureVectorImageLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'), undefined, 1, false, 204);
+  addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
+  // Valitun väyläkortin navigointilinjat ja väyläalueet
+  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, false, 206);
+
+  // Nopeusrajoitus
+  addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
+  // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
+  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
   // Laiturit
   addFeatureVectorLayer(
     map,
@@ -349,10 +341,38 @@ export function addAPILayers(map: Map) {
     (feature, resolution) =>
       feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getHarborStyle(feature, resolution, 3),
     undefined,
-    1
+    1,
+    false,
+    303
   );
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 101);
+  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 304);
+
+  // Haraussyvyydet
+  addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 305);
+
+  // Turvalaitteet
+  addFeatureVectorLayer(
+    map,
+    'safetyequipment',
+    undefined,
+    50,
+    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
+    undefined,
+    1,
+    false,
+    306
+  );
+
+  addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 307);
+  addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 308);
+  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, true, 309);
+  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
+
+  // VTS linjat ja ilmoituspisteet
+  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  // Luotsipaikat
+  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 312);
 }
 
 export function unsetSelectedFairwayCard() {

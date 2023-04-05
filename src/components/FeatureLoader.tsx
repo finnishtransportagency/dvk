@@ -69,7 +69,7 @@ export function useBackgroundFinlandLayer(): DvkLayerState {
 
   useEffect(() => {
     if (fiQuery.data) {
-      const layer = dvkMap.olMap?.getLayers().getArray()[0] as Layer;
+      const layer = dvkMap.getBackgroundLayer('finland') as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const source = layer.getSource() as VectorSource;
@@ -94,7 +94,7 @@ export function useBackgroundMmlmeriLayer(): DvkLayerState {
 
   useEffect(() => {
     if (mmlmeriQuery.data) {
-      const layer = dvkMap.olMap?.getLayers().getArray()[1] as Layer;
+      const layer = dvkMap.getBackgroundLayer('mml-meri') as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
@@ -119,7 +119,7 @@ export function useBackgroundMmljarviLayer(): DvkLayerState {
 
   useEffect(() => {
     if (mmljarviQuery.data) {
-      const layer = dvkMap.olMap?.getLayers().getArray()[2] as Layer;
+      const layer = dvkMap.getBackgroundLayer('mml-jarvi') as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(mmljarviQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
@@ -144,7 +144,7 @@ export function useBackgroundBalticseaLayer(): DvkLayerState {
 
   useEffect(() => {
     if (baQuery.data) {
-      const layer = dvkMap.olMap?.getLayers().getArray()[3] as Layer;
+      const layer = dvkMap.getBackgroundLayer('balticsea') as Layer;
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(baQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });

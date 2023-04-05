@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { FeatureLayerId, MAP } from '../utils/constants';
+import { BackgroundLayerId, FeatureLayerId, MAP } from '../utils/constants';
 import { MousePosition, ScaleLine, Zoom, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -167,44 +167,48 @@ class DvkMap {
     });
 
     const bgFinlandLayer = new VectorImageLayer({
+      properties: { id: 'finland' },
       source: new VectorSource({
         features: [],
         overlaps: false,
       }),
+      zIndex: 1,
       imageRatio: 3,
     });
-    bgFinlandLayer.set('type', 'backgroundFinland');
-    this.olMap.getLayers().setAt(0, bgFinlandLayer);
+    this.olMap.addLayer(bgFinlandLayer);
 
     const bgMmlmeriLayer = new VectorImageLayer({
+      properties: { id: 'mml-meri' },
       source: new VectorSource({
         features: [],
         overlaps: false,
       }),
+      zIndex: 2,
       imageRatio: 3,
     });
-    bgMmlmeriLayer.set('type', 'backgroundMmlmeri');
-    this.olMap.getLayers().setAt(1, bgMmlmeriLayer);
+    this.olMap.addLayer(bgMmlmeriLayer);
 
     const bgMmljarviLayer = new VectorImageLayer({
+      properties: { id: 'mml-jarvi' },
       source: new VectorSource({
         features: [],
         overlaps: false,
       }),
+      zIndex: 3,
       imageRatio: 3,
     });
-    bgMmljarviLayer.set('type', 'backgroundMmljarvi');
-    this.olMap.getLayers().setAt(2, bgMmljarviLayer);
+    this.olMap.addLayer(bgMmljarviLayer);
 
     const bgBalticseaLayer = new VectorImageLayer({
+      properties: { id: 'balticsea' },
       source: new VectorSource({
         features: [],
         overlaps: false,
       }),
+      zIndex: 4,
       imageRatio: 3,
     });
-    bgBalticseaLayer.set('type', 'backgroundBalticsea');
-    this.olMap.getLayers().setAt(3, bgBalticseaLayer);
+    this.olMap.addLayer(bgBalticseaLayer);
 
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
@@ -273,9 +277,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const mapLayers = olMap.getLayers();
-
-    const bgFiLayer = mapLayers.getArray()[0] as VectorLayer<VectorSource>;
+    const bgFiLayer = this.getBackgroundLayer('finland') as VectorLayer<VectorSource>;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -284,7 +286,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmeriLayer = mapLayers.getArray()[1] as VectorLayer<VectorSource>;
+    const bgMmlmeriLayer = this.getBackgroundLayer('mml-meri') as VectorLayer<VectorSource>;
     bgMmlmeriLayer.setStyle((feature: FeatureLike, resolution: number) => {
       if (resolution < 32) {
         return new Style({
@@ -305,7 +307,7 @@ class DvkMap {
       }
     });
 
-    const bgMmljarviLayer = mapLayers.getArray()[2] as VectorLayer<VectorSource>;
+    const bgMmljarviLayer = this.getBackgroundLayer('mml-jarvi') as VectorLayer<VectorSource>;
     bgMmljarviLayer.setStyle((feature: FeatureLike, resolution: number) => {
       if (resolution < 32) {
         return new Style({
@@ -326,7 +328,7 @@ class DvkMap {
       }
     });
 
-    const bgBsLayer = mapLayers.getArray()[3] as VectorLayer<VectorSource>;
+    const bgBsLayer = this.getBackgroundLayer('balticsea') as VectorLayer<VectorSource>;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -335,9 +337,16 @@ class DvkMap {
       })
     );
 
+    olMap
+      .getLayers()
+      .getArray()
+      .filter((layer) => layer.get('type') === 'backgroundTile')
+      .forEach((layer) => olMap.removeLayer(layer));
+
     backLayers.forEach((layer, index) => {
-      // Background vector layers must be behind this - so "index + 3"
-      mapLayers.setAt(index + 4, layer);
+      // Background vector layers must be behind this
+      layer.set('zIndex', 10 + index);
+      olMap.addLayer(layer);
     });
   };
 
@@ -358,7 +367,7 @@ class DvkMap {
             (layer as Layer).getSource()?.refresh();
           }
           layer.setVisible(isOffline ? false : true);
-        } else if (layer.get('type') === 'backgroundMmlmeri' || layer.get('type') === 'backgroundMmljarvi') {
+        } else if (layer.get('id') === 'mml-meri' || layer.get('id') === 'mml-jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
       });
@@ -465,6 +474,15 @@ class DvkMap {
   }
 
   public getVectorSource(layerId: FeatureLayerId) {
+    const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
+    return layer.getSource() as VectorSource;
+  }
+
+  public getBackgroundLayer(layerId: BackgroundLayerId) {
+    return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
+  }
+
+  public getBackgroundSource(layerId: BackgroundLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
   }
