@@ -116,9 +116,7 @@ const PageHeader: React.FC = () => {
               {process.env.REACT_APP_ENV !== 'prod' && <h2>{t('general.environment-' + process.env.REACT_APP_ENV)}</h2>}
             </IonText>
           </IonCol>
-          <IonCol size="auto">
-            <LanguageBar />
-          </IonCol>
+          <IonCol size="auto">{/*<LanguageBar />*/}</IonCol>
           <IonCol size="auto">
             <UserInfo />
           </IonCol>
