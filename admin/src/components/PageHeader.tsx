@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonImg, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserQueryData } from '../graphql/api';
-import LanguageBar from './LanguageBar';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 
@@ -116,9 +115,7 @@ const PageHeader: React.FC = () => {
               {process.env.REACT_APP_ENV !== 'prod' && <h2>{t('general.environment-' + process.env.REACT_APP_ENV)}</h2>}
             </IonText>
           </IonCol>
-          <IonCol size="auto">
-            <LanguageBar />
-          </IonCol>
+          <IonCol size="auto">{/*<LanguageBar />*/}</IonCol>
           <IonCol size="auto">
             <UserInfo />
           </IonCol>
