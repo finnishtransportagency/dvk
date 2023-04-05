@@ -6,7 +6,7 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
   ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
-export type BackgroundLayerId = 'finland' | 'mml-meri' | 'mml-jarvi' | 'balticsea';
+export type BackgroundLayerId = 'finland' | 'mml-meri' | 'mml-jarvi' | 'mml-laiturit' | 'balticsea';
 
 export type FeatureDataId =
   | 'area12'
@@ -30,6 +30,7 @@ export type FeatureDataId =
   | 'finland'
   | 'mml_meri'
   | 'mml_jarvi'
+  | 'mml_laiturit'
   | 'vts';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
@@ -68,6 +69,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
   { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },

@@ -32,6 +32,7 @@ import {
   useBackgroundFinlandLayer,
   useBackgroundMmlmeriLayer,
   useBackgroundMmljarviLayer,
+  useBackgroundMmllaituritLayer,
   useBackgroundBalticseaLayer,
   DvkLayerState,
   useVtsLayer,
@@ -118,6 +119,7 @@ const DvkIonApp: React.FC = () => {
   const bgBalticseaLayer = useBackgroundBalticseaLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const bgMmllaituritLayer = useBackgroundMmllaituritLayer();
   const vtsLayer = useVtsLayer();
 
   const [initDone, setInitDone] = useState(false);
@@ -149,6 +151,7 @@ const DvkIonApp: React.FC = () => {
       bgBalticseaLayer,
       bgMmlmeriLayer,
       bgMmljarviLayer,
+      bgMmllaituritLayer,
       vtsLayer,
     ];
 
@@ -186,6 +189,7 @@ const DvkIonApp: React.FC = () => {
     bgBalticseaLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
+    bgMmllaituritLayer,
     vtsLayer,
   ]);
 

@@ -210,10 +210,21 @@ class DvkMap {
     });
     this.olMap.addLayer(bgBalticseaLayer);
 
+    const bgMmllaituritLayer = new VectorImageLayer({
+      properties: { id: 'mml-laiturit' },
+      source: new VectorSource({
+        features: [],
+        overlaps: false,
+      }),
+      maxResolution: 4,
+      zIndex: 5,
+      imageRatio: 3,
+    });
+    this.olMap.addLayer(bgMmllaituritLayer);
+
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
   }
-
   // eslint-disable-next-line
   private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
@@ -337,6 +348,16 @@ class DvkMap {
       })
     );
 
+    const bgMmllaituritLayer = this.getBackgroundLayer('mml-laiturit') as VectorLayer<VectorSource>;
+    bgMmllaituritLayer.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: '#918a8c',
+          width: 1,
+        }),
+      })
+    );
+
     olMap
       .getLayers()
       .getArray()
@@ -369,6 +390,8 @@ class DvkMap {
           layer.setVisible(isOffline ? false : true);
         } else if (layer.get('id') === 'mml-meri' || layer.get('id') === 'mml-jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
+        } else if (layer.get('id') === 'mml-laiturit') {
+          layer.setVisible(isOffline ? true : false);
         }
       });
     }
