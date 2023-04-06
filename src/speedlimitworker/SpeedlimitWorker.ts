@@ -18,10 +18,10 @@ onmessage = (e: MessageEvent<{ raData: string; aData: string }>) => {
   const raData = JSON.parse(data.raData);
   const aData = JSON.parse(data.aData);
   const format = new GeoJSON();
-  const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-  const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-  const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
-  const slFeaturesString = format.writeFeatures(speedLimitFeatures, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+  const afs = format.readFeatures(aData);
+  const rafs = format.readFeatures(raData);
+  const speedLimitFeatures2 = getSpeedLimitFeatures(rafs, afs);
+  const slFeaturesString = format.writeFeatures(speedLimitFeatures2);
   postMessage(slFeaturesString);
 };
 
