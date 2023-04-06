@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
@@ -16,6 +16,8 @@ import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
+import { useHistory } from 'react-router';
+import { diff } from 'deep-object-diff';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -74,6 +76,23 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setState(fairwayCard);
   }, [fairwayCard]);
 
+  // Confirmation modal
+  const [confirmationType, setConfirmationType] = useState<ConfirmationType>('');
+
+  const history = useHistory();
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    const diffObj = diff(fairwayCard, state);
+    if (JSON.stringify(diffObj) === '{}') {
+      backToList();
+    } else {
+      setConfirmationType('cancel');
+    }
+  };
+
   // Save fairway card
   const [saveError, setSaveError] = useState<string>();
   const [savedCard, setSavedCard] = useState<FairwayCard | null>();
@@ -85,8 +104,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setSaveError(error.message);
     },
   });
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const saveCard = useCallback(() => {
     const currentCard = {
@@ -147,7 +164,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
         saveCard();
       } else {
-        setIsOpen(true);
+        setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -158,9 +175,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     <IonPage>
       <ConfirmationModal
         saveType="fairwaycard"
-        action={saveCard}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        action={confirmationType === 'cancel' ? backToList : saveCard}
+        confirmationType={confirmationType}
+        setConfirmationType={setConfirmationType}
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
@@ -200,7 +217,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" className="invert" routerLink="/">
+              <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && (

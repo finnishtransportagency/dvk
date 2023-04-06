@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Maybe, Status, TextInput } from '../graphql/generated';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
-import { Lang } from '../utils/constants';
+import { ConfirmationType, Lang } from '../utils/constants';
 
 export type StatusName = {
   status?: Maybe<Status>;
@@ -13,22 +13,28 @@ export type StatusName = {
 export type SaveType = 'fairwaycard' | 'harbor';
 
 interface ModalProps {
-  isOpen: boolean;
-  setIsOpen: (isOpen: boolean) => void;
+  confirmationType: ConfirmationType;
+  setConfirmationType: (isOpen: ConfirmationType) => void;
   action: () => void;
   oldState: StatusName;
   newStatus: Status;
   saveType: SaveType;
 }
 
-const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, newStatus, oldState, saveType }) => {
+const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirmationType, action, newStatus, oldState, saveType }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+
+  const modal = useRef<HTMLIonModalElement>(null);
   let buttonTitle = t('general.save');
   let description = t(`modal.save-${saveType}-description`);
   let title = t(`modal.save-${saveType}-title`);
-  const modal = useRef<HTMLIonModalElement>(null);
-  if (newStatus === Status.Removed) {
+
+  if (confirmationType === 'cancel') {
+    buttonTitle = t('general.leave');
+    title = t(`modal.cancel-${saveType}-title`);
+    description = t(`modal.cancel-${saveType}-description`);
+  } else if (newStatus === Status.Removed) {
     buttonTitle = t('general.delete');
     title = t(`modal.delete-${saveType}-title`);
     description = t(`modal.delete-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
@@ -50,8 +56,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, ne
     description = t(`modal.publish-${saveType}-description`);
   }
   const closeModal = () => {
-    setIsOpen(false);
     modal.current?.dismiss();
+    setTimeout(() => {
+      setConfirmationType('');
+    }, 150);
   };
   const buttonAction = () => {
     modal.current?.dismiss();
@@ -59,7 +67,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, action, ne
   };
 
   return (
-    <IonModal ref={modal} isOpen={isOpen} className="prompt" onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={confirmationType !== ''} className="prompt" onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">

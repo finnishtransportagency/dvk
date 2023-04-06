@@ -1,6 +1,6 @@
 {
   "name": "admin",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -16,6 +16,7 @@
     "@types/node": "^18.15.5",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "deep-object-diff": "^1.1.9",
     "i18next": "^22.4.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
