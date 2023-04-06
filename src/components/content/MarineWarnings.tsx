@@ -12,6 +12,7 @@ import infoIcon from '../../theme/img/info.svg';
 import { warningOutline } from 'ionicons/icons';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
+import './MarineWarnings.css';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -221,7 +222,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         />
       )}
 
-      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
+      <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />
       </div>
     </>
