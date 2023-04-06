@@ -4,6 +4,8 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
+export type ConfirmationType = '' | 'cancel' | 'save';
+
 export type ValidationType = {
   id: string;
   msg: string;
