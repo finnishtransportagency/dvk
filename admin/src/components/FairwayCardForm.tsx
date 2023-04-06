@@ -43,7 +43,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
   ];
-  if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+  if (state.operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
@@ -126,8 +126,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const handleSubmit = (isRemove = false) => {
     // Manual validations for required fields
     let primaryIdErrorMsg = '';
-    if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
-    if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
+    if (state.operation === Operation.Create) {
+      if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
+    }
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
       { id: 'primaryId', msg: primaryIdErrorMsg },
