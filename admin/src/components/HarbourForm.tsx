@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
 import FormInput from './FormInput';
@@ -10,6 +10,8 @@ import FormTextInputRow from './FormTextInputRow';
 import { harbourReducer } from '../utils/harbourReducer';
 import FormOptionalSection from './FormOptionalSection';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
+import { useHistory } from 'react-router';
+import { diff } from 'deep-object-diff';
 
 interface FormProps {
   harbour: HarborInput;
@@ -48,6 +50,23 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     );
   };
 
+  // Confirmation modal
+  const [confirmationType, setConfirmationType] = useState<ConfirmationType>('');
+
+  const history = useHistory();
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    const diffObj = diff(harbour, state);
+    if (JSON.stringify(diffObj) === '{}') {
+      backToList();
+    } else {
+      setConfirmationType('cancel');
+    }
+  };
+
   // Save harbour
   const [saveError, setSaveError] = useState<string>();
   const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
@@ -59,8 +78,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       setSaveError(error.message);
     },
   });
-
-  const [isOpen, setIsOpen] = useState(false);
 
   const saveHarbour = useCallback(() => {
     const currentHarbour = {
@@ -111,7 +128,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       if (state.operation === Operation.Create || (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)) {
         saveHarbour();
       } else {
-        setIsOpen(true);
+        setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -122,9 +139,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     <IonPage>
       <ConfirmationModal
         saveType="harbor"
-        action={saveHarbour}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
+        action={confirmationType === 'cancel' ? backToList : saveHarbour}
+        confirmationType={confirmationType}
+        setConfirmationType={setConfirmationType}
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
@@ -164,7 +181,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               />
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" className="invert" routerLink="/">
+              <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && (
