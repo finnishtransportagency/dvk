@@ -213,7 +213,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
       continue;
     }
     const rafExtent = raf.getGeometry()?.getExtent();
-    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
 
     for (const faf of fafs) {
       const fafExtent = faf.getGeometry()?.getExtent();
@@ -222,7 +222,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
         continue;
       }
 
-      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       // Check if fairway area polygone intersects restriction area polygone
       if (!turf.booleanDisjoint(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
         const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
