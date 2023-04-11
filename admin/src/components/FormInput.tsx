@@ -150,7 +150,7 @@ const FormInput: React.FC<InputProps> = ({
           value={val}
           min={inputType === 'number' ? min || 0 : undefined}
           max={inputType === 'number' ? max || 9999999 : undefined}
-          step={inputType === 'number' ? (1 / (10 * (decimalCount || 0.1))).toString() || '0.1' : undefined}
+          step={inputType === 'number' ? (1 / Math.pow(10, decimalCount || 0)).toString() || '0.1' : undefined}
           required={required}
           onIonChange={(ev) => handleChange(ev)}
           onIonBlur={(ev) => checkValidity(ev)}

@@ -26,7 +26,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
 
   const [state, setState] = useState<HarborInput>(harbour);
-  const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
@@ -137,6 +136,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
   };
 
+  const getModifiedInfo = () => {
+    if (savedHarbour) return t('general.datetimeFormat', { val: savedHarbour.modificationTimestamp || savedHarbour.creationTimestamp });
+    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  };
+
   return (
     <IonPage>
       <ConfirmationModal
@@ -151,7 +155,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         isOpen={!!saveError || !!savedHarbour}
         onDidDismiss={() => {
           setSaveError('');
-          setSavedHarbour(null);
+          if (!saveError && !!savedHarbour) {
+            if (state.operation === Operation.Update) history.go(0);
+            if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
+          }
         }}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
         subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedHarbour?.id })) || ''}
@@ -166,9 +173,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
             <IonCol className="ion-align-self-center align-right">
               <IonText>
                 <em>
-                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {modifiedInfo}
+                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
                   <br />
-                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifier || t('general.unknown')}
+                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
+                  {savedHarbour?.modifier || savedHarbour?.creator || modifier || t('general.unknown')}
                 </em>
               </IonText>
             </IonCol>
