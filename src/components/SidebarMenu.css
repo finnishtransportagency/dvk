@@ -1,6 +1,7 @@
 .sideBar {
   --width: 320px;
   z-index: 50000;
+  touch-action: none;
 }
 
 .sidebarMenu .contentGrid ion-row {
