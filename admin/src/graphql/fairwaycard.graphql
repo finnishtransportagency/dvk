@@ -159,6 +159,10 @@ mutation saveFairwayCard($card: FairwayCardInput!) {
       en
     }
     status
+    creator
+    creationTimestamp
+    modifier
+    modificationTimestamp
     fairwayIds
     fairways {
       id
