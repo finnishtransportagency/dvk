@@ -298,7 +298,6 @@ export class DvkBackendStack extends Stack {
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       layers: [layer],
-      vpc,
       environment: {
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
         PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
