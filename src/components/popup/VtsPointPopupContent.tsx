@@ -36,9 +36,6 @@ const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupPro
             </IonButton>
           </IonCol>
         </IonRow>
-        <IonRow className="header">
-          <IonCol>{vts.properties.identifier}</IonCol>
-        </IonRow>
         <IonRow>
           <IonCol className="header">{t('popup.vts.coordinates')}</IonCol>
         </IonRow>
