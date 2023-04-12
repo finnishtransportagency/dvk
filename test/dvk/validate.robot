@@ -13,7 +13,7 @@ ${PORT}           3000
 
 *** Test Cases ***
 Check Scale
-    [Documentation]    This test case checks scale in DVK
+    [Documentation]    This test case checks that scale exists in DVK
     ${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
     Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
 
