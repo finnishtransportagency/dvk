@@ -12,7 +12,7 @@ ${BROWSER}        headlesschrome
 ${PORT}           3000
 
 *** Test Cases ***
-Check Copyright And Scale
+Check Scale
     [Documentation]    This test case checks scale in DVK
     ${SCALE_STRING}=    Get Text    ${SCALE_ELEMENT}
     Should Match Regexp    ${SCALE_STRING}    ${REGEX_SCALE}
