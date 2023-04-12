@@ -256,7 +256,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
   let alertProps = undefined;
   if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
     const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-    alertProps = getAlertProperties(dataUpdatedAt);
+    alertProps = getAlertProperties(dataUpdatedAt, id);
   }
   return (
     <IonGrid className="ion-no-padding layerItem">

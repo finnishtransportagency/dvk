@@ -234,8 +234,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}} {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Uppgiftslämnare",
     "modified": "Uppdaterat",
-    "lastUpdatedAt": "Vyns uppgifter laddat för {{ val, number}} h sedan.",
-    "lastUpdatedAt2": "Lagrets data laddat för {{ val, number}} h sedan."
+    "lastUpdatedAt": "Vyns uppgifter laddat för över {{ val, number}} h sedan.",
+    "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",

@@ -183,7 +183,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt);
+  const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
   return (
     <>
       <Breadcrumb path={path} />

@@ -234,8 +234,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Notifier",
     "modified": "Updated",
-    "lastUpdatedAt": "Data of this view loaded {{ val, number}} h ago.",
-    "lastUpdatedAt2": "Data of this layer loaded {{ val, number}} h ago."
+    "lastUpdatedAt": "Data of this view loaded over {{ val, number}} h ago.",
+    "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago."
   },
   "appUpdateAlert": {
     "title": "Update available",

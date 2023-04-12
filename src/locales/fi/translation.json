@@ -234,8 +234,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "notifier": "Tiedoksiantaja",
     "modified": "Päivitetty",
-    "lastUpdatedAt": "Näkymän tiedot ladattu {{ val, number}} h sitten.",
-    "lastUpdatedAt2": "Tason tiedot on ladattu {{ val, number}} h sitten."
+    "lastUpdatedAt": "Näkymän tiedot ladattu yli {{ val, number}} h sitten.",
+    "lastUpdatedAt2": "Tason tiedot on ladattu yli {{ val, number}} h sitten."
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
