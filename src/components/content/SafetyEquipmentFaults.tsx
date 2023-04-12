@@ -122,7 +122,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt);
+  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
   return (
     <>
       <Breadcrumb path={path} />

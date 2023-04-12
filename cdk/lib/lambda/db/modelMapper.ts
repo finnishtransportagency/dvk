@@ -43,7 +43,7 @@ export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBE
 
 export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
   if (geometry && (geometry.lat || geometry.lon)) {
-    return { type: 'Point', coordinates: [mapNumber(geometry.lat, maxLength), mapNumber(geometry.lon, maxLength)] };
+    return { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
   }
   return null;
 }

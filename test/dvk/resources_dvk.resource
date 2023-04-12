@@ -1,6 +1,5 @@
 *** Settings ***
-Documentation    This file contains resources for DVK test cases
-
+Documentation     This file contains resources for DVK test cases
 *** Variables ***
 #DVK main screen locators
 ${INPUT_FAIRWAY}    //div[contains(@class, "searchbarControlContainer")]/input
@@ -12,7 +11,6 @@ ${CENTER_TO_OWN_LOCATION_BUTTON}    //button[@class = "centerToOwnLocationContro
 ${ZOOM_IN_BUTTON}    //button[@class = "ol-zoom-in"]
 ${ZOOM_OUT_BUTTON}    //button[@class = "ol-zoom-out"]
 ${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
-${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
 ${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
 ${LATAUSVIRHE_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Latausvirhe"]

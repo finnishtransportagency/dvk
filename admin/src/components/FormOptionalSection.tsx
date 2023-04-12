@@ -334,8 +334,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({ title, sections, upda
                       actionOuterTarget={actionOuterTarget}
                       inputType="number"
                       unit="m"
-                      max={999.9}
-                      decimalCount={1}
+                      max={999.99}
+                      decimalCount={2}
                     />
                   </IonCol>
                   <IonCol>

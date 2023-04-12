@@ -38,7 +38,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harborSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
-  const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
@@ -173,6 +172,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const getModifiedInfo = () => {
+    if (savedCard) return t('general.datetimeFormat', { val: savedCard.modificationTimestamp || savedCard.creationTimestamp });
+    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  };
+
   return (
     <IonPage>
       <ConfirmationModal
@@ -187,7 +191,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         isOpen={!!saveError || !!savedCard}
         onDidDismiss={() => {
           setSaveError('');
-          setSavedCard(null);
+          if (!saveError && !!savedCard) {
+            if (state.operation === Operation.Update) history.go(0);
+            if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
+          }
         }}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
         subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedCard?.id })) || ''}
@@ -202,9 +209,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <IonCol className="ion-align-self-center align-right">
               <IonText>
                 <em>
-                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {modifiedInfo}
+                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
                   <br />
-                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifier || t('general.unknown')}
+                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
+                  {savedCard?.modifier || savedCard?.creator || modifier || t('general.unknown')}
                 </em>
               </IonText>
             </IonCol>
