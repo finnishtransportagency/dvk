@@ -161,6 +161,11 @@ export type TurvalaiteVikatiedotAPIModel = {
   kirjausAika: string;
 } & GeometryModel;
 
+export type TurvalaiteReunaetaisyysAPIModel = {
+  vaylaalueID: number;
+  etaisyys: number;
+};
+
 export type TurvalaiteAPIModel = {
   turvalaitenumero: number;
   nimiFI?: string;
@@ -181,6 +186,7 @@ export type TurvalaiteAPIModel = {
   AISTyyppiSeliteFI?: string;
   AISTyyppiSeliteSV?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
+  reunaetaisyys?: TurvalaiteReunaetaisyysAPIModel[];
 } & GeometryModel;
 
 export type TaululinjaVaylaAPIModel = {

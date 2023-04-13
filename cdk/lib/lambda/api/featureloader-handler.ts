@@ -330,6 +330,9 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         fairways: equipment.vayla?.map((v) => {
           return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
         }),
+        distances: equipment.reunaetaisyys?.map((v) => {
+          return { areaId: v.vaylaalueID, distance: v.etaisyys };
+        }),
       },
     });
   }
