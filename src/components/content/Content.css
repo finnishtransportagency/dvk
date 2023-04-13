@@ -490,6 +490,6 @@ ion-segment.tabs ion-label h3 {
   opacity: 1;
 }
 
-.contentModal {
+ion-modal.contentModal {
   touch-action: none;
 }

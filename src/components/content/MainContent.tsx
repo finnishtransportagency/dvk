@@ -136,7 +136,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
               className={(widePane ? 'wide' : '') + (showPane ? '' : ' hidden')}
               data-testid={!target && (fairwayCardId ? 'cardPane' : 'listPane')}
             >
-              <IonContent id="fairwayCardsContainer">
+              <IonContent id="fairwayCardsContainer" onTouchMove={(e) => e.preventDefault()} onPointerCancel={(e) => e.preventDefault()}>
                 <a
                   href="#mainPageContent"
                   onClick={(e) => {
@@ -219,7 +219,6 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                   </IonRow>
                 </IonGrid>
                 <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
-
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
