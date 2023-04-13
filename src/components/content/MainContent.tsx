@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ChevronIcon } from '../../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../../theme/img/menu.svg';
@@ -44,10 +44,28 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
   const mainPageContentRef = useRef<HTMLIonButtonElement>(null);
+  const grid = useRef<HTMLIonGridElement>(null);
+
+  const handlePointerCancel = useCallback((e: PointerEvent) => {
+    console.log('prevent pointer cancel');
+    e.preventDefault();
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    console.log('prevent touch move');
+    e.preventDefault();
+  }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
-  }, [setDocumentTitle, title]);
+    const curr = grid.current;
+    curr?.addEventListener('pointercancel', handlePointerCancel);
+    curr?.addEventListener('touchmove', handleTouchMove);
+    return () => {
+      curr?.removeEventListener('pointercancel', handlePointerCancel);
+      curr?.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [handlePointerCancel, handleTouchMove, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
@@ -127,7 +145,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   });
 
   return (
-    <IonGrid className="ion-no-padding" id="splitPane">
+    <IonGrid className="ion-no-padding" id="splitPane" ref={grid}>
       <IonRow>
         {splitPane && (
           <>
@@ -136,7 +154,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
               className={(widePane ? 'wide' : '') + (showPane ? '' : ' hidden')}
               data-testid={!target && (fairwayCardId ? 'cardPane' : 'listPane')}
             >
-              <IonContent id="fairwayCardsContainer" onTouchMove={(e) => e.preventDefault()} onPointerCancel={(e) => e.preventDefault()}>
+              <IonContent id="fairwayCardsContainer" /*onTouchMove={(e) => e.preventDefault()} onPointerCancel={(e) => e.preventDefault()}*/>
                 <a
                   href="#mainPageContent"
                   onClick={(e) => {

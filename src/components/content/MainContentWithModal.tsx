@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ArrowBackIcon } from '../../theme/img/arrow_back.svg';
 import { useTranslation } from 'react-i18next';
@@ -80,9 +80,26 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
 
+  const handlePointerCancel = useCallback((e: PointerEvent) => {
+    console.log('prevent pointer cancel');
+    e.preventDefault();
+  }, []);
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    console.log('prevent touch move');
+    e.preventDefault();
+  }, []);
+
   useEffect(() => {
     setDocumentTitle(title);
-  }, [setDocumentTitle, title]);
+    const curr = modal.current;
+    curr?.addEventListener('pointercancel', handlePointerCancel);
+    curr?.addEventListener('touchmove', handleTouchMove);
+    return () => {
+      curr?.removeEventListener('pointercancel', handlePointerCancel);
+      curr?.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [handlePointerCancel, handleTouchMove, modal, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
@@ -170,8 +187,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       className={'contentModal' + (state.modalBreakpoint === 1 ? ' full' : '')}
       onDidDismiss={() => backToHome()}
       onIonBreakpointDidChange={() => checkBreakpoint()}
-      onTouchMove={(e) => e.preventDefault()}
-      onPointerCancel={(e) => e.preventDefault()}
+      // onTouchMove={(e) => e.preventDefault()}
+      // onPointerCancel={(e) => e.preventDefault()}
     >
       <IonContent className="ion-padding" ref={contentRef}>
         <IonGrid className="searchBar ion-no-padding no-print">
