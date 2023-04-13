@@ -92,7 +92,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const handlePointerUp = useCallback(
     (e: PointerEvent) => {
       // If two pointers are down, stop (pinch) gestures
-      if (eventCache.length === 2) {
+      if (eventCache.length >= 2) {
         e.preventDefault();
       }
 
@@ -108,29 +108,18 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     [eventCache]
   );
 
-  const handlePointerMove = useCallback(
-    (e: PointerEvent) => {
-      // Find this event in the cache and update its record with this event
-      const index = eventCache.findIndex((cachedEv) => cachedEv.pointerId === e.pointerId);
-      eventCache[index] = e;
-
-      // If two pointers are down, stop pinch gestures
-      if (eventCache.length === 2) {
-        e.preventDefault();
-      }
-    },
-    [eventCache]
-  );
-
   // const handlePointerCancel = useCallback((e: PointerEvent) => {
   //   console.log('prevent pointer cancel');
   //   e.preventDefault();
   // }, []);
 
-  // const handleTouchMove = useCallback((e: TouchEvent) => {
-  //   console.log('prevent touch move');
-  //   e.preventDefault();
-  // }, []);
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    console.log('prevent touch move');
+    console.log(e);
+    if (e.targetTouches.length > 1 || e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
@@ -141,7 +130,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     curr?.addEventListener('pointerleave', handlePointerUp);
 
     curr?.addEventListener('pointerdown', handlePointerDown);
-    curr?.addEventListener('pointermove', handlePointerMove);
+
+    curr?.addEventListener('touchmove', handleTouchMove);
     return () => {
       curr?.removeEventListener('pointerup', handlePointerUp);
       curr?.removeEventListener('pointercancel', handlePointerUp);
@@ -149,9 +139,10 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       curr?.removeEventListener('pointerleave', handlePointerUp);
 
       curr?.removeEventListener('pointerdown', handlePointerDown);
-      curr?.removeEventListener('pointermove', handlePointerMove);
+
+      curr?.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [handlePointerDown, handlePointerMove, handlePointerUp, modal, setDocumentTitle, title]);
+  }, [handlePointerDown, handlePointerUp, handleTouchMove, modal, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);

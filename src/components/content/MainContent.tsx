@@ -93,10 +93,13 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   //   e.preventDefault();
   // }, []);
 
-  // const handleTouchMove = useCallback((e: TouchEvent) => {
-  //   console.log('prevent touch move');
-  //   e.preventDefault();
-  // }, []);
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    console.log('prevent touch move');
+    console.log(e);
+    if (e.targetTouches.length > 1) {
+      e.preventDefault();
+    }
+  }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
@@ -108,6 +111,11 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
 
     curr?.addEventListener('pointerdown', handlePointerDown);
     curr?.addEventListener('pointermove', handlePointerMove);
+
+    // curr?.addEventListener('touchstart', handleTouchStart);
+    curr?.addEventListener('touchmove', handleTouchMove);
+    // curr?.addEventListener('touchcancel', handleTouchCancel);
+    // curr?.addEventListener('touchend', handleTouchCancel);
     return () => {
       curr?.removeEventListener('pointerup', handlePointerUp);
       curr?.removeEventListener('pointercancel', handlePointerUp);
@@ -116,8 +124,13 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
 
       curr?.removeEventListener('pointerdown', handlePointerDown);
       curr?.removeEventListener('pointermove', handlePointerMove);
+
+      // curr?.removeEventListener('touchstart', handleTouchStart);
+      curr?.removeEventListener('touchmove', handleTouchMove);
+      // curr?.removeEventListener('touchcancel', handleTouchCancel);
+      // curr?.removeEventListener('touchend', handleTouchCancel);
     };
-  }, [handlePointerDown, handlePointerMove, handlePointerUp, setDocumentTitle, title]);
+  }, [handlePointerDown, handlePointerMove, handlePointerUp, handleTouchMove, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
