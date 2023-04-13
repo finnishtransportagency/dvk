@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ArrowBackIcon } from '../../theme/img/arrow_back.svg';
 import { useTranslation } from 'react-i18next';
@@ -79,27 +79,79 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
+  const eventCache: PointerEvent[] = useMemo(() => [], []);
 
-  const handlePointerCancel = useCallback((e: PointerEvent) => {
-    console.log('prevent pointer cancel');
-    e.preventDefault();
-  }, []);
+  const removeEvent = useCallback(
+    (e: PointerEvent) => {
+      const index = eventCache.findIndex((cachedEvent) => cachedEvent.pointerId === e.pointerId);
+      eventCache.splice(index, 1);
+    },
+    [eventCache]
+  );
 
-  const handleTouchMove = useCallback((e: TouchEvent) => {
-    console.log('prevent touch move');
-    e.preventDefault();
-  }, []);
+  const handlePointerUp = useCallback(
+    (e: PointerEvent) => {
+      // If two pointers are down, stop (pinch) gestures
+      if (eventCache.length === 2) {
+        e.preventDefault();
+      }
+
+      removeEvent(e);
+    },
+    [eventCache.length, removeEvent]
+  );
+
+  const handlePointerDown = useCallback(
+    (e: PointerEvent) => {
+      eventCache.push(e);
+    },
+    [eventCache]
+  );
+
+  const handlePointerMove = useCallback(
+    (e: PointerEvent) => {
+      // Find this event in the cache and update its record with this event
+      const index = eventCache.findIndex((cachedEv) => cachedEv.pointerId === e.pointerId);
+      eventCache[index] = e;
+
+      // If two pointers are down, stop pinch gestures
+      if (eventCache.length === 2) {
+        e.preventDefault();
+      }
+    },
+    [eventCache]
+  );
+
+  // const handlePointerCancel = useCallback((e: PointerEvent) => {
+  //   console.log('prevent pointer cancel');
+  //   e.preventDefault();
+  // }, []);
+
+  // const handleTouchMove = useCallback((e: TouchEvent) => {
+  //   console.log('prevent touch move');
+  //   e.preventDefault();
+  // }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
     const curr = modal.current;
-    curr?.addEventListener('pointercancel', handlePointerCancel);
-    curr?.addEventListener('touchmove', handleTouchMove);
+    curr?.addEventListener('pointerup', handlePointerUp);
+    curr?.addEventListener('pointercancel', handlePointerUp);
+    curr?.addEventListener('pointerout', handlePointerUp);
+    curr?.addEventListener('pointerleave', handlePointerUp);
+
+    curr?.addEventListener('pointerdown', handlePointerDown);
+    curr?.addEventListener('pointermove', handlePointerMove);
     return () => {
-      curr?.removeEventListener('pointercancel', handlePointerCancel);
-      curr?.removeEventListener('touchmove', handleTouchMove);
+      curr?.removeEventListener('pointerup', handlePointerUp);
+      curr?.removeEventListener('pointercancel', handlePointerUp);
+      curr?.removeEventListener('pointerout', handlePointerUp);
+      curr?.removeEventListener('pointerleave', handlePointerUp);
+
+      curr?.removeEventListener('pointerdown', handlePointerDown);
+      curr?.removeEventListener('pointermove', handlePointerMove);
     };
-  }, [handlePointerCancel, handleTouchMove, modal, setDocumentTitle, title]);
+  }, [handlePointerDown, handlePointerMove, handlePointerUp, modal, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
