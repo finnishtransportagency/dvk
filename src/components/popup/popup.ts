@@ -26,7 +26,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         duration: 250,
       },
     },
-    positioning: 'center-left',
   });
   const types = [
     'pilot',
@@ -66,26 +65,33 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     );
     features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
     const feature = features[0];
-    if (!feature) {
-      overlay.setPosition(undefined);
-      setPopupProperties({});
-    } else {
-      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-      if (overlay.getPosition()) {
-        overlay.setPosition(undefined);
-        setPopupProperties({});
+
+    overlay.setPosition(undefined);
+    setPopupProperties({});
+
+    if (feature) {
+      if (feature.getProperties().featureType === 'mareograph') {
+        overlay.setPositioning('center-right');
+        overlay.setOffset([-20, 0]);
+      } else {
+        overlay.setPositioning('center-left');
+        overlay.setOffset([20, 0]);
       }
+      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
       setPopupProperties({
         [feature.getProperties().featureType]: {
           coordinates: geom.getCoordinates() as number[],
           properties: feature.getProperties(),
         },
       });
-      if (feature.getGeometry()?.getType() === 'Point') {
-        overlay.setPosition((feature.getGeometry() as Point).getCoordinates());
-      } else {
-        overlay.setPosition(evt.coordinate);
-      }
+      /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
+      setTimeout(() => {
+        if (feature.getGeometry()?.getType() === 'Point') {
+          overlay.setPosition((feature.getGeometry() as Point).getCoordinates());
+        } else {
+          overlay.setPosition(evt.coordinate);
+        }
+      }, 100);
     }
   });
   const style = function (feature: FeatureLike, resolution: number) {
