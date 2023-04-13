@@ -121,12 +121,31 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             </IonRow>
           </>
         )}
+        {equipment.properties.distances && equipment.properties.distances.length > 0 && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.equipment.distances', { count: equipment.properties.distances.length })}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                {equipment.properties.distances.map((d, idx) => {
+                  return (
+                    <span key={d.areaId}>
+                      {d.distance}
+                      {idx < (equipment.properties.distances?.length || 0) - 1 ? 'm, ' : 'm'}
+                    </span>
+                  );
+                })}
+              </IonCol>
+            </IonRow>
+          </>
+        )}
         {fairwayCards.length > 0 && (
           <IonRow>
             <IonCol className="header">{t('popup.equipment.fairways')}</IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card) => {
+        {fairwayCards.map((card) => {
           return (
             <IonRow key={card.id}>
               <IonCol>

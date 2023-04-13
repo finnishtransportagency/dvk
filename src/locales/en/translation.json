@@ -299,7 +299,9 @@
       "fairways": "Fairway cards connected to the navigational aid",
       "type2": "real",
       "type3": "synthetic",
-      "type4": "virtual"
+      "type4": "virtual",
+      "distances_one": "[en] Reunaetäisyys väyläalueeseen",
+      "distances_other": "[en] Reunaetäisyys väyläalueisiin"
     },
     "marine": {
       "area": "Area",

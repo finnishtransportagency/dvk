@@ -299,7 +299,9 @@
       "fairways": "Farledskorten angående säkerhetsanordningen",
       "type2": "reell",
       "type3": "syntetisk",
-      "type4": "virtuell"
+      "type4": "virtuell",
+      "distances_one": "[sv] Reunaetäisyys väyläalueeseen",
+      "distances_other": "[sv] Reunaetäisyys väyläalueisiin"
     },
     "marine": {
       "area": "Område",

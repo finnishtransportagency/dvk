@@ -299,7 +299,9 @@
       "fairways": "Turvalaitteeseen liittyvät väyläkortit",
       "type2": "reaalinen",
       "type3": "synteettinen",
-      "type4": "virtuaalinen"
+      "type4": "virtuaalinen",
+      "distances_one": "Reunaetäisyys väyläalueeseen",
+      "distances_other": "Reunaetäisyys väyläalueisiin"
     },
     "marine": {
       "area": "Alue",
