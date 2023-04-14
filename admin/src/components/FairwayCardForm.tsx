@@ -37,7 +37,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
-  const harborSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
+  const harbourSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem && item.status === Status.Public);
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
@@ -123,6 +123,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
+    if (isRemove) updateState(Status.Removed, 'status');
     // Manual validations for required fields
     let primaryIdErrorMsg = '';
     if (state.operation === Operation.Create) {
@@ -162,7 +163,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setValidationErrors(manualValidations);
 
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
+      if (
+        (state.operation === Operation.Create && state.status === Status.Draft) ||
+        (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)
+      ) {
         saveCard();
       } else {
         setConfirmationType('save');
@@ -236,7 +240,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   color="danger"
                   disabled={isError}
                   onClick={() => {
-                    updateState(Status.Removed, 'status');
                     handleSubmit(true);
                   }}
                 >
@@ -357,7 +360,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   <FormSelect
                     label={t('fairwaycard.linked-harbours')}
                     selected={state.harbors || []}
-                    options={harborSelection || []}
+                    options={harbourSelection || []}
                     setSelected={updateState}
                     actionType="harbours"
                     multiple

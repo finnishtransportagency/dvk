@@ -46,6 +46,9 @@ export const harbourReducer = (
     case 'primaryId':
       newState = { ...state, id: (value as string).toLowerCase() };
       break;
+    case 'referenceLevel':
+      newState = { ...state, n2000HeightSystem: !!value };
+      break;
     case 'name':
       if (!actionLang) return state;
       newState = { ...state, name: { ...state.name, [actionLang as string]: value as string } };
