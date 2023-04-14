@@ -58,7 +58,6 @@ export class DvkBackendStack extends Stack {
     }
     const fairwayCardTable = this.createFairwayCardTable();
     const harborTable = this.createHarborTable();
-    const pilotPlaceTable = this.createPilotPlaceTable();
 
     const layer = LayerVersion.fromLayerVersionArn(
       this,
@@ -68,7 +67,6 @@ export class DvkBackendStack extends Stack {
 
     const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
     const harborVersioningBucket = this.createVersioningBucket('harbor', env);
-    const pilotVersioningBucket = this.createVersioningBucket('pilot', env);
 
     const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
       functionName: `db-stream-handler-${env}`,
@@ -78,7 +76,6 @@ export class DvkBackendStack extends Stack {
       environment: {
         FAIRWAYCARD_VERSIONING_BUCKET: fairwayCardVersioningBucket.bucketName,
         HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
-        PILOT_VERSIONING_BUCKET: pilotVersioningBucket.bucketName,
         ENVIRONMENT: Config.getEnvironment(),
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
       },
@@ -94,18 +91,11 @@ export class DvkBackendStack extends Stack {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
-    dbStreamHandler.addEventSource(
-      new DynamoEventSource(pilotPlaceTable, {
-        startingPosition: lambda.StartingPosition.LATEST,
-      })
-    );
 
     fairwayCardVersioningBucket.grantPut(dbStreamHandler);
     fairwayCardVersioningBucket.grantRead(dbStreamHandler);
     harborVersioningBucket.grantPut(dbStreamHandler);
     harborVersioningBucket.grantRead(dbStreamHandler);
-    pilotVersioningBucket.grantPut(dbStreamHandler);
-    pilotVersioningBucket.grantRead(dbStreamHandler);
 
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
@@ -122,7 +112,6 @@ export class DvkBackendStack extends Stack {
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
-          PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
@@ -146,14 +135,12 @@ export class DvkBackendStack extends Stack {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
-      pilotPlaceTable.grantReadData(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    Tags.of(pilotPlaceTable).add('Backups-' + Config.getEnvironment(), 'true');
     const bucket = this.createCacheBucket(env);
-    const alb = this.createALB(env, fairwayCardTable, harborTable, pilotPlaceTable, bucket, layer, vpc);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -210,20 +197,6 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createPilotPlaceTable(): Table {
-    return new Table(this, 'PilotPlaceTable', {
-      billingMode: BillingMode.PAY_PER_REQUEST,
-      tableName: Config.getPilotPlaceTableName(),
-      partitionKey: {
-        name: 'id',
-        type: AttributeType.NUMBER,
-      },
-      pointInTimeRecovery: true,
-      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
-      stream: StreamViewType.NEW_AND_OLD_IMAGES,
-    });
-  }
-
   private createApiKeyExpiration() {
     const now = new Date();
     now.setDate(now.getDate() + 365);
@@ -275,7 +248,6 @@ export class DvkBackendStack extends Stack {
     env: string,
     fairwayCardTable: Table,
     harborTable: Table,
-    pilotPlaceTable: Table,
     cacheBucket: Bucket,
     layer: ILayerVersion,
     vpc: IVpc
@@ -327,7 +299,6 @@ export class DvkBackendStack extends Stack {
           ENVIRONMENT: Config.getEnvironment(),
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
-          PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
@@ -344,7 +315,6 @@ export class DvkBackendStack extends Stack {
       target.setAttribute('lambda.multi_value_headers.enabled', 'true');
       fairwayCardTable.grantReadData(backendLambda);
       harborTable.grantReadData(backendLambda);
-      pilotPlaceTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));

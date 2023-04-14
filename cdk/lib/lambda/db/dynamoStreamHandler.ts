@@ -28,8 +28,6 @@ function getBucketForTable(arn: string | undefined) {
     return { bucket: process.env.FAIRWAYCARD_VERSIONING_BUCKET, table: 'FairwayCard' };
   } else if (arn.includes('Harbor')) {
     return { bucket: process.env.HARBOR_VERSIONING_BUCKET, table: 'Harbor' };
-  } else if (arn.includes('PilotPlace')) {
-    return { bucket: process.env.PILOT_VERSIONING_BUCKET, table: 'PilotPlace' };
   }
   return undefined;
 }

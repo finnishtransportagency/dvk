@@ -45,10 +45,6 @@ class Config {
     return `Harbor-${Config.getEnvironment()}`;
   }
 
-  static getPilotPlaceTableName(): string {
-    return `PilotPlace-${Config.getEnvironment()}`;
-  }
-
   private static errorMessage(variable: string): string {
     return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
   }
