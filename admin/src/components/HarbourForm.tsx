@@ -3,7 +3,7 @@ import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, I
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
-import { useFairwayCardsAndHarborsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
+import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
 import FormTextInputRow from './FormTextInputRow';
@@ -12,6 +12,7 @@ import FormOptionalSection from './FormOptionalSection';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface FormProps {
   harbour: HarborInput;
@@ -21,9 +22,12 @@ interface FormProps {
 }
 
 const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
 
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: fairwayCardList } = useFairwayCardsQueryData();
+  const queryClient = useQueryClient();
 
   const [state, setState] = useState<HarborInput>(harbour);
   const statusOptions = [
@@ -68,6 +72,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
   // Save harbour
   const [saveError, setSaveError] = useState<string>();
+  const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
   const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
   const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
@@ -111,6 +116,33 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
+    // Check if harbour is linked to some fairway card
+    queryClient.invalidateQueries({ queryKey: ['fairwayCards'] });
+    const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
+      (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
+    );
+    const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
+    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
+    if ((linkedFairwayCards || []).length > 0) {
+      if (isToBeRemoved || isToBeDrafted) {
+        let translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length });
+        if (isToBeDrafted) translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-draft-harbour', { count: linkedFairwayCards?.length });
+        const message =
+          translatedMsg +
+          '<ul>' +
+          linkedFairwayCards
+            ?.map((card) => {
+              return '<li>' + (card.name[lang] || card.name.fi) + '</li>';
+            })
+            .join('') +
+          '</ul>';
+        setSaveError('OPERATION-BLOCKED');
+        setSaveErrorMsg(message);
+        return;
+      }
+    }
+    if (isRemove) updateState(Status.Removed, 'status');
+
     // Manual validations for required fields
     let primaryIdErrorMsg = '';
     if (state.operation === Operation.Create) {
@@ -126,7 +158,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     setValidationErrors(manualValidations);
 
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      if (state.operation === Operation.Create || (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)) {
+      if (
+        (state.operation === Operation.Create && state.status === Status.Draft) ||
+        (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)
+      ) {
         saveHarbour();
       } else {
         setConfirmationType('save');
@@ -155,6 +190,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         isOpen={!!saveError || !!savedHarbour}
         onDidDismiss={() => {
           setSaveError('');
+          setSaveErrorMsg('');
           if (!saveError && !!savedHarbour) {
             if (state.operation === Operation.Update) history.go(0);
             if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
@@ -162,7 +198,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         }}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
         subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedHarbour?.id })) || ''}
-        message={saveError ? t('general.fix-errors-try-again') || '' : ''}
+        message={saveError ? saveErrorMsg || t('general.fix-errors-try-again') || '' : ''}
         buttons={[t('general.button-ok') || '']}
         cssClass={saveError ? 'error' : 'success'}
       />
@@ -200,7 +236,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   color="danger"
                   disabled={isError}
                   onClick={() => {
-                    updateState(Status.Removed, 'status');
                     handleSubmit(true);
                   }}
                 >
