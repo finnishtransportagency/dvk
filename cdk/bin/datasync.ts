@@ -7,7 +7,6 @@ import fs from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { mapFairwayIds } from '../lib/lambda/db/modelMapper';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
-import PilotPlaceDBModel from '../lib/lambda/db/pilotPlaceDBModel';
 
 function getAllFiles(dirPath: string, arrayOfFiles: string[]) {
   const files = fs.readdirSync(dirPath);
@@ -30,14 +29,10 @@ async function processCard(file: string): Promise<FairwayCardDBModel> {
   return fairwayCard;
 }
 
-function processHarborOrPilotPlace(file: string): HarborDBModel | PilotPlaceDBModel {
-  const jsonObj: HarborDBModel | PilotPlaceDBModel = JSON.parse(fs.readFileSync(file).toString());
-  if ('company' in jsonObj) {
-    jsonObj.modificationTimestamp = Date.now();
-    console.log(`Harbor: ${jsonObj.name?.fi}`);
-  } else {
-    console.log(`PilotPlace: ${jsonObj.name.fi}`);
-  }
+function processHarbor(file: string): HarborDBModel {
+  const jsonObj: HarborDBModel = JSON.parse(fs.readFileSync(file).toString());
+  jsonObj.modificationTimestamp = Date.now();
+  console.log(`Harbor: ${jsonObj.name?.fi}`);
   return jsonObj;
 }
 
@@ -51,7 +46,7 @@ async function updateTable(tableName: string, directoryPath: string, card: boole
   for (const file of arrayOfFiles.filter(
     (f) => f.endsWith('.json') && (process.argv.length === 2 || process.argv.slice(2).some((arg) => f.indexOf(arg) >= 0))
   )) {
-    const item = card ? await processCard(file) : processHarborOrPilotPlace(file);
+    const item = card ? await processCard(file) : processHarbor(file);
     await getDynamoDBDocumentClient().send(new PutCommand({ TableName: tableName, Item: item }));
   }
 }
@@ -68,11 +63,6 @@ async function main() {
   if (response.TableNames?.includes(tableName)) {
     await updateTable(tableName, getRootDirectory('harbors'), false);
     console.log(`Harbor table ${tableName} updated`);
-  }
-  tableName = Config.getPilotPlaceTableName();
-  if (response.TableNames?.includes(tableName)) {
-    await updateTable(tableName, getRootDirectory('pilots'), false);
-    console.log(`PilotPlace table ${tableName} updated`);
   }
 }
 
