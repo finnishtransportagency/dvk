@@ -170,6 +170,11 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   if (minResolution && resolution < minResolution) {
     return undefined;
   }
+
+  if (feature.get('hoverStyle')) {
+    selected = true;
+  }
+
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -592,4 +597,14 @@ export function setSelectedFairwayArea(id?: number | string) {
     f.set('hoverStyle', id && ['area', 'specialarea'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function setSelectedHarbor(id?: string) {
+  const dvkMap = getMap();
+  const quaySource = dvkMap.getVectorSource('quay');
+
+  for (const f of quaySource.getFeatures()) {
+    f.set('hoverStyle', id && ['harbor'].includes(f.get('featureType')) && f.get('harborId') === id);
+  }
+  quaySource.dispatchEvent('change');
 }

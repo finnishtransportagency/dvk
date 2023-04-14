@@ -6,7 +6,7 @@ import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
-import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea } from '../layers';
+import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -694,12 +694,22 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
+  const highlightHarbor = (id: string | undefined) => {
+    setSelectedHarbor(id ? id : '');
+  };
+
   return (
     <>
       {data && (
         <>
           <IonText className="no-margin-top">
-            <h4>
+            <h4
+              className="inlineHoverText"
+              onMouseOver={() => highlightHarbor(data.id)}
+              onFocus={() => highlightHarbor(data.id)}
+              onMouseOut={() => highlightHarbor(undefined)}
+              onBlur={() => highlightHarbor(undefined)}
+            >
               <strong>{data.name && data.name[lang]}</strong>
             </h4>
             <h5>{t('restrictions')}</h5>
