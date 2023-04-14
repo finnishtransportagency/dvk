@@ -64,6 +64,7 @@
     "error-HARBOR_ID_MISSING": "Sataman tunniste puuttuu.",
     "error-NO_PERMISSIONS": "Ei tarvittavia käyttöoikeuksia.",
     "error-INVALID_INPUT": "Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
+    "error-OPERATION-BLOCKED": "Toiminto estetty",
     "fix-errors-try-again": "Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
     "add-section-vts": "Lisää alusliikennepalvelija",
@@ -172,6 +173,10 @@
     "quay-heading": "Laituri",
     "quay-name": "Laiturin nimi",
     "quay-extra-info": "Lisätiedot",
-    "section-name": "Osion nimi"
+    "section-name": "Osion nimi",
+    "linked-fairwaycards-exist-cannot-remove-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-remove-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
   }
 }
