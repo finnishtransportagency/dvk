@@ -321,7 +321,7 @@ export function useSpecialAreaLayer() {
 }
 
 export function usePilotLayer() {
-  return useDataLayer('pilot', 'pilot');
+  return useDataLayer('pilot', 'pilot', 'EPSG:4258');
 }
 
 export function useHarborLayer() {
