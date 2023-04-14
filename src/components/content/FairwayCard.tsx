@@ -6,7 +6,7 @@ import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
-import { setSelectedFairwayCard, setSelectedPilotPlace } from '../layers';
+import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -354,6 +354,10 @@ const GeneralInfo: React.FC<FairwaysProps> = ({ data }) => {
 const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
+  const highlightArea = (id: string | number | undefined) => {
+    setSelectedFairwayArea(id ? id : 0);
+  };
+
   const fairwayAreas =
     data?.flatMap((fairway) =>
       fairway.areas?.sort((a, b) => {
@@ -381,7 +385,16 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
 
         return (
           <li key={idx}>
-            <em>{area?.name || <>{t('areaType' + area?.typeCode)}</>}</em>
+            <em
+              key={area?.id}
+              className="inlineHoverText"
+              onMouseOver={() => highlightArea(area?.id)}
+              onFocus={() => highlightArea(area?.id)}
+              onMouseOut={() => highlightArea(0)}
+              onBlur={() => highlightArea(0)}
+            >
+              {area?.name || <>{t('areaType' + area?.typeCode)}</>}
+            </em>
             {isDraftAvailable && (
               <>
                 <br />
