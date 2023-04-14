@@ -7,7 +7,7 @@ import * as appsync from '@aws-cdk/aws-appsync-alpha';
 import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
 import * as path from 'path';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
-import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
+import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
@@ -19,7 +19,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps, LifecycleRule } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
-import { StreamViewType } from '@aws-sdk/client-dynamodb';
+
 export class DvkBackendStack extends Stack {
   private domainName: string;
 
@@ -31,7 +31,7 @@ export class DvkBackendStack extends Stack {
     this.siteSubDomain = env === 'prod' ? 'dvk' : 'dvk' + env;
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
       name: 'dvk-graphql-api-' + env,
-      schema: appsync.Schema.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
+      schema: appsync.SchemaFile.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
@@ -135,7 +135,7 @@ export class DvkBackendStack extends Stack {
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
       });
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
-      lambdaDataSource.createResolver({
+      lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
       });

@@ -20,7 +20,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import PilotPlaceDBModel from '../db/pilotPlaceDBModel';
-import { GeometryPoint, Text } from '../../../graphql/generated';
+import { GeometryPoint, Status, Text } from '../../../graphql/generated';
 import { fetchVTSPointsAndLines } from './traficom';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
@@ -42,12 +42,12 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const harbors = await HarborDBModel.getAll();
+  const harbors = (await HarborDBModel.getAll()).filter((h) => h.status === Status.Public);
   const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
   for (const harbor of harbors) {
     harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
   }
-  const cards = await FairwayCardDBModel.getAll();
+  const cards = (await FairwayCardDBModel.getAll()).filter((f) => f.status === Status.Public);
   for (const card of cards) {
     for (const h of card.harbors || []) {
       harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
@@ -523,7 +523,7 @@ async function getFromCache(key: string): Promise<CacheResponse> {
   return { expired: true };
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy'];
+const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
