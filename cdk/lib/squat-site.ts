@@ -46,9 +46,7 @@ export class SquatSite extends Construct {
       comment: `OAI for ${id}-${props.env}`,
     });
 
-    const certDomainName = Config.isProductionEnvironment() ? 'dvk.vayla.fi' : siteDomain;
-
-    new CfnOutput(this, 'Site', { value: 'https://' + certDomainName });
+    new CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
 
     const s3DeletePolicy: Pick<s3.BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
@@ -138,7 +136,7 @@ export class SquatSite extends Construct {
     let certificate, domainNames;
     if (props.cloudfrontCertificateArn) {
       certificate = acm.Certificate.fromCertificateArn(this, 'certificate', props.cloudfrontCertificateArn);
-      domainNames = [certDomainName];
+      domainNames = [siteDomain];
       new CfnOutput(parent, 'Certificate', { value: certificate.certificateArn });
     }
 
