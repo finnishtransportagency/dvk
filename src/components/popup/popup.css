@@ -1,4 +1,6 @@
 .ol-popup {
+  min-width: 200px;
+  max-width: 350px;
   touch-action: none;
 }
 
@@ -8,25 +10,16 @@
   line-height: 24px;
 }
 
-.ol-popup #popup-content > ion-grid {
+.ol-popup > ion-grid {
   border-radius: 4px;
   background-color: #ffffff;
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
-  position: relative;
-  left: 20px;
-  min-width: 200px;
-  max-width: 350px;
   color: #333333;
   font-size: 12px;
   letter-spacing: 0;
   line-height: 18px;
   cursor: auto;
   padding: 8px;
-}
-
-.ol-popup #popup-content > ion-grid#mareographPopupContent {
-  right: 220px;
-  left: unset;
 }
 
 .ol-popup .closeButton {

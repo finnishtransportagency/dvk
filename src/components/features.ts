@@ -87,6 +87,11 @@ type EquipmentFairway = {
   fairwayCards?: Card[];
 };
 
+type EquipmentDistance = {
+  areaId: number;
+  distance: number;
+};
+
 export type EquipmentFeatureProperties = {
   id: number;
   featureType: string;
@@ -102,6 +107,7 @@ export type EquipmentFeatureProperties = {
   remoteControl?: number;
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
+  distances?: EquipmentDistance[];
 };
 
 export type MarineWarningFeatureProperties = {
