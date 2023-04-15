@@ -73,7 +73,8 @@ type SourceModalProps = {
 };
 
 export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const tRoot = i18n.getFixedT(i18n.language);
   return (
     <Modal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
       <IonGrid className="linkBar content">
@@ -87,6 +88,7 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
           <IonCol>
             <a href="http://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
               http://creativecommons.org/licenses/by/4.0/deed.fi
+              <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
             </a>{' '}
             {t('source.content3')}
           </IonCol>
@@ -97,6 +99,7 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
             {' | '}
             <a href="https://www.maanmittauslaitos.fi/avoindata-lisenssi-cc40" rel="noreferrer" target="_blank" className="ion-no-padding external">
               {t('source.content5')}
+              <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
             </a>
           </IonCol>
         </IonRow>

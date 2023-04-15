@@ -392,7 +392,8 @@
     "safety-equipment-faults": "Safety Equipment Faults",
     "marine-warnings": "Marine Warnings",
     "fairway-cards": "Fairway Cards",
-    "skip-to-content": "Skip to main content"
+    "skip-to-content": "Skip to main content",
+    "opens-in-a-new-tab": "Opens in a new tab"
   },
   "mobile": {
     "title": "Use of digital fairway card in mobile devices",

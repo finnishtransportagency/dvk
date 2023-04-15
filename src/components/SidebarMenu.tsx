@@ -70,7 +70,8 @@ type SidebarMenuProps = {
 };
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
+  const tRoot = i18n.getFixedT(i18n.language);
   const router = useIonRouter();
   const { state } = useDvkContext();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
@@ -202,6 +203,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
                       {t('squat')}
                       <IonIcon slot="end" src="assets/icon/ext_link.svg" />
+                      <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
                     </IonItem>
                   </IonCol>
                 </IonRow>

@@ -392,7 +392,8 @@
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
     "fairway-cards": "Väyläkortit",
-    "skip-to-content": "Siirry pääsisältöön"
+    "skip-to-content": "Siirry pääsisältöön",
+    "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
