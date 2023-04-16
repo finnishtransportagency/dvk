@@ -489,3 +489,7 @@ ion-segment.tabs ion-label h3 {
 #fairwayContent .skip-to-main-content-link:focus {
   opacity: 1;
 }
+
+ion-modal.contentModal {
+  touch-action: none;
+}

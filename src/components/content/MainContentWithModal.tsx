@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ArrowBackIcon } from '../../theme/img/arrow_back.svg';
 import { useTranslation } from 'react-i18next';
@@ -79,10 +79,64 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
+  const pointerEventCache: PointerEvent[] = useMemo(() => [], []);
+
+  const removeEvent = useCallback(
+    (e: PointerEvent) => {
+      const index = pointerEventCache.findIndex((cachedEvent) => cachedEvent.pointerId === e.pointerId);
+      pointerEventCache.splice(index, 1);
+    },
+    [pointerEventCache]
+  );
+
+  const handlePointerUp = useCallback(
+    (e: PointerEvent) => {
+      // If two pointers are down, stop (pinch) gestures
+      if (pointerEventCache.length >= 2) {
+        e.preventDefault();
+      }
+
+      removeEvent(e);
+    },
+    [pointerEventCache.length, removeEvent]
+  );
+
+  const handlePointerDown = useCallback(
+    (e: PointerEvent) => {
+      pointerEventCache.push(e);
+    },
+    [pointerEventCache]
+  );
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    // If two or more touch points are down, stop (pinch) gestures
+    if (e.targetTouches.length > 1 || e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
-  }, [setDocumentTitle, title]);
+    const curr = modal.current;
+    curr?.addEventListener('pointerup', handlePointerUp);
+    curr?.addEventListener('pointercancel', handlePointerUp);
+    curr?.addEventListener('pointerout', handlePointerUp);
+    curr?.addEventListener('pointerleave', handlePointerUp);
+
+    curr?.addEventListener('pointerdown', handlePointerDown);
+
+    curr?.addEventListener('touchmove', handleTouchMove);
+    return () => {
+      curr?.removeEventListener('pointerup', handlePointerUp);
+      curr?.removeEventListener('pointercancel', handlePointerUp);
+      curr?.removeEventListener('pointerout', handlePointerUp);
+      curr?.removeEventListener('pointerleave', handlePointerUp);
+
+      curr?.removeEventListener('pointerdown', handlePointerDown);
+
+      curr?.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [handlePointerDown, handlePointerUp, handleTouchMove, modal, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);

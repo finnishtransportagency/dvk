@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
 import { ReactComponent as ChevronIcon } from '../../theme/img/chevron.svg';
 import { ReactComponent as MenuIcon } from '../../theme/img/menu.svg';
@@ -44,10 +44,65 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const title = t('documentTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
   const mainPageContentRef = useRef<HTMLIonButtonElement>(null);
+  const grid = useRef<HTMLIonGridElement>(null);
+  const pointerEventCache: PointerEvent[] = useMemo(() => [], []);
+
+  const removeEvent = useCallback(
+    (e: PointerEvent) => {
+      const index = pointerEventCache.findIndex((cachedEvent) => cachedEvent.pointerId === e.pointerId);
+      pointerEventCache.splice(index, 1);
+    },
+    [pointerEventCache]
+  );
+
+  const handlePointerUp = useCallback(
+    (e: PointerEvent) => {
+      // If two pointers are down, stop (pinch) gestures
+      if (pointerEventCache.length >= 2) {
+        e.preventDefault();
+      }
+
+      removeEvent(e);
+    },
+    [pointerEventCache.length, removeEvent]
+  );
+
+  const handlePointerDown = useCallback(
+    (e: PointerEvent) => {
+      pointerEventCache.push(e);
+    },
+    [pointerEventCache]
+  );
+
+  const handleTouchMove = useCallback((e: TouchEvent) => {
+    // If two or more touch points are down, stop (pinch) gestures
+    if (e.targetTouches.length > 1 || e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, []);
 
   useEffect(() => {
     setDocumentTitle(title);
-  }, [setDocumentTitle, title]);
+    const curr = grid.current;
+    curr?.addEventListener('pointerup', handlePointerUp);
+    curr?.addEventListener('pointercancel', handlePointerUp);
+    curr?.addEventListener('pointerout', handlePointerUp);
+    curr?.addEventListener('pointerleave', handlePointerUp);
+
+    curr?.addEventListener('pointerdown', handlePointerDown);
+
+    curr?.addEventListener('touchmove', handleTouchMove);
+    return () => {
+      curr?.removeEventListener('pointerup', handlePointerUp);
+      curr?.removeEventListener('pointercancel', handlePointerUp);
+      curr?.removeEventListener('pointerout', handlePointerUp);
+      curr?.removeEventListener('pointerleave', handlePointerUp);
+
+      curr?.removeEventListener('pointerdown', handlePointerDown);
+
+      curr?.removeEventListener('touchmove', handleTouchMove);
+    };
+  }, [handlePointerDown, handlePointerUp, handleTouchMove, setDocumentTitle, title]);
 
   const closeDropdown = () => {
     setIsSearchbarOpen(false);
@@ -127,7 +182,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   });
 
   return (
-    <IonGrid className="ion-no-padding" id="splitPane">
+    <IonGrid className="ion-no-padding" id="splitPane" ref={grid}>
       <IonRow>
         {splitPane && (
           <>
