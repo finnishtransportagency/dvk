@@ -202,6 +202,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
                       {t('squat')}
                       <IonIcon slot="end" src="assets/icon/ext_link.svg" />
+                      <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                     </IonItem>
                   </IonCol>
                 </IonRow>
