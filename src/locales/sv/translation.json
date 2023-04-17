@@ -206,7 +206,8 @@
       "cmDesc_other": "centimeter",
       "degDesc_one": "grad",
       "degDesc_other": "grader"
-    }
+    },
+    "opens-in-a-new-tab": "Öppnas i en ny flik"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

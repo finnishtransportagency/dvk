@@ -9,7 +9,8 @@
       "squat": "Squat-laskuri",
       "squat-url": "/squat/index.html?lang=fi",
       "customer-service": "Liikenteen asiakaspalvelu",
-      "source": "Tietolähteet ja käyttöehdot"
+      "source": "Tietolähteet ja käyttöehdot",
+      "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
     },
     "map": {
       "content": "TODO: Kartta",
@@ -206,7 +207,8 @@
       "cmDesc_other": "senttimetriä",
       "degDesc_one": "aste",
       "degDesc_other": "astetta"
-    }
+    },
+    "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
   },
   "faults": {
     "title": "Turvalaiteviat",

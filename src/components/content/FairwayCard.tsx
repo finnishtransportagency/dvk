@@ -103,7 +103,6 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
 
 const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000HeightSystem }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const tRoot = i18n.getFixedT(i18n.language);
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
@@ -208,7 +207,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                 <br />
                 <a href={'//' + N2000_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                   {N2000_URLS[lang]}
-                  <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
+                  <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
               </>
             )}
@@ -227,7 +226,6 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
 
 const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const tRoot = i18n.getFixedT(i18n.language);
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
@@ -245,7 +243,7 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
                 {t('prohibitionText', { count: prohibitionAreas?.length })}{' '}
                 <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                   {MASTERSGUIDE_URLS[lang]}
-                  <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
+                  <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
                 .
                 {prohibitionAreas.map((area, i) => (
@@ -425,7 +423,6 @@ type PilotInfoProps = {
 
 const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const tRoot = i18n.getFixedT(i18n.language);
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
@@ -444,7 +441,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             {t('orderFrom')}:{' '}
             <a href={'//' + PILOTORDER_URL} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
               {PILOTORDER_URL}
-              <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
+              <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
             </a>
             <br />
             <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />
@@ -635,7 +632,6 @@ type ContactInfoProps = {
 
 const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const tRoot = i18n.getFixedT(i18n.language);
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
@@ -653,7 +649,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
             <>
               <a href={data.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                 {data.internet}
-                <span className="screen-reader-only">{tRoot('common.opens-in-a-new-tab')}</span>
+                <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
               </a>
               <br />
             </>

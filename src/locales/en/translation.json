@@ -206,7 +206,8 @@
       "cmDesc_other": "centimetres",
       "degDesc_one": "degree",
       "degDesc_other": "degrees"
-    }
+    },
+    "opens-in-a-new-tab": "Opens in a new tab"
   },
   "faults": {
     "title": "Safety equipment faults",
