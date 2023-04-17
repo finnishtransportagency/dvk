@@ -301,14 +301,23 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.extraInfo}
                 updateState={updateState}
                 actionType="extraInfo"
+                required={!!(state.extraInfo?.fi || state.extraInfo?.sv || state.extraInfo?.en)}
                 inputType="textarea"
               />
-              <FormTextInputRow labelKey="harbour.cargo" value={state.cargo} updateState={updateState} actionType="cargo" inputType="textarea" />
+              <FormTextInputRow
+                labelKey="harbour.cargo"
+                value={state.cargo}
+                updateState={updateState}
+                actionType="cargo"
+                required={!!(state.cargo?.fi || state.cargo?.sv || state.cargo?.en)}
+                inputType="textarea"
+              />
               <FormTextInputRow
                 labelKey="harbour.harbour-basin"
                 value={state.harborBasin}
                 updateState={updateState}
                 actionType="harbourBasin"
+                required={!!(state.harborBasin?.fi || state.harborBasin?.sv || state.harborBasin?.en)}
                 inputType="textarea"
               />
             </IonGrid>
@@ -316,7 +325,13 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <h3>{t('harbour.contact-info')}</h3>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow labelKey="harbour.company-name" value={state.company} updateState={updateState} actionType="companyName" />
+              <FormTextInputRow
+                labelKey="harbour.company-name"
+                value={state.company}
+                updateState={updateState}
+                actionType="companyName"
+                required={!!(state.company?.fi || state.company?.sv || state.company?.en)}
+              />
               <IonRow>
                 <IonCol>
                   <FormInput label={t('general.email')} val={state.email || ''} setValue={updateState} actionType="email" inputType="email" />
