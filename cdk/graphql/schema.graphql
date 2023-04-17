@@ -100,7 +100,7 @@ input PilotInput {
 }
 
 input PilotPlaceInput {
-  id: Int!
+  id: Float!
   pilotJourney: String
 }
 
