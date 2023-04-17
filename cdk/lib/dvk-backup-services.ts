@@ -5,7 +5,6 @@ import Config from './config';
 import * as backup from 'aws-cdk-lib/aws-backup';
 import * as events from 'aws-cdk-lib/aws-events';
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
-import { getEnvironment } from './lambda/environment';
 
 export class BackupServices extends Construct {
   constructor(scope: Construct, id: string) {
