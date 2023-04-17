@@ -4,7 +4,8 @@ import { Construct } from 'constructs';
 import Config from './config';
 import * as backup from 'aws-cdk-lib/aws-backup';
 import * as events from 'aws-cdk-lib/aws-events';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
+import { getEnvironment } from './lambda/environment';
 
 export class BackupServices extends Construct {
   constructor(scope: Construct, id: string) {
@@ -51,12 +52,18 @@ export class BackupServices extends Construct {
       ],
     });
 
-    const backupSelection = plan.addSelection('DvkBackupSelection', {
+    const backupPlanRole = new Role(this, 'BackupRole' + Config.getEnvironment(), {
+      assumedBy: new ServicePrincipal('backup.amazonaws.com'),
+    });
+    backupPlanRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSBackupServiceRolePolicyForS3Restore'));
+
+    plan.addSelection('DvkBackupSelection' + Config.getEnvironment(), {
       allowRestores: true,
       resources: [backup.BackupResource.fromTag('Backups-' + Config.getEnvironment(), 'true')],
+      role: backupPlanRole,
     });
 
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'S3BucketBackupPermissions',
         actions: [
@@ -74,7 +81,7 @@ export class BackupServices extends Construct {
         resources: ['arn:aws:s3:::*'],
       })
     );
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'S3ObjectBackupPermissions',
         actions: [
@@ -89,7 +96,7 @@ export class BackupServices extends Construct {
         resources: ['arn:aws:s3:::*/*'],
       })
     );
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'S3GlobalPermissions',
         actions: ['s3:ListAllMyBuckets'],
@@ -97,7 +104,7 @@ export class BackupServices extends Construct {
         resources: ['*'],
       })
     );
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'KMSBackupPermissions',
         actions: ['kms:Decrypt', 'kms:DescribeKey'],
@@ -110,7 +117,7 @@ export class BackupServices extends Construct {
         },
       })
     );
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'EventsPermissions',
         actions: [
@@ -127,7 +134,7 @@ export class BackupServices extends Construct {
         resources: ['arn:aws:events:*:*:rule/AwsBackupManagedRule*'],
       })
     );
-    backupSelection.grantPrincipal.addToPrincipalPolicy(
+    backupPlanRole.addToPrincipalPolicy(
       new PolicyStatement({
         sid: 'EventsMetricsGlobalPermissions',
         actions: ['cloudwatch:GetMetricData', 'events:ListRules'],
