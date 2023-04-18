@@ -64,6 +64,7 @@
     "error-HARBOR_ID_MISSING": "Harbour ID missing.",
     "error-NO_PERMISSIONS": "Permission needed.",
     "error-INVALID_INPUT": "Invalid input, data processing not possible.",
+    "error-OPERATION-BLOCKED": "Operation blocked",
     "fix-errors-try-again": "Fix errors and try again.",
     "button-ok": "Ok",
     "add-section-vts": "[en] Lisää alusliikennepalvelija",
@@ -173,6 +174,10 @@
     "quay-heading": "Quay",
     "quay-name": "Quay name",
     "quay-extra-info": "Additional information",
-    "section-name": "Section name"
+    "section-name": "Section name",
+    "linked-fairwaycards-exist-cannot-remove-harbour_one": "[en] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-remove-harbour_other": "[en] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_one": "[en] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_other": "[en] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
   }
 }

@@ -7,6 +7,7 @@ import {
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
+  useFairwayCardsQuery,
   useFairwaysQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
@@ -38,6 +39,10 @@ export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: b
 
 export function useFairwaysQueryData() {
   return useFairwaysQuery(datasourceClient);
+}
+
+export function useFairwayCardsQueryData() {
+  return useFairwayCardsQuery(datasourceClient);
 }
 
 export function useHarboursQueryData() {
