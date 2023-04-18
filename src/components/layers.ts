@@ -170,6 +170,11 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   if (minResolution && resolution < minResolution) {
     return undefined;
   }
+
+  if (feature.get('hoverStyle')) {
+    selected = true;
+  }
+
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -216,11 +221,19 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'line3456') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'area12' && resolution <= 100) {
-    return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+    if (feature.get('hoverStyle')) {
+      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
+    } else {
+      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+    }
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea') {
-    return getSpecialAreaStyle(feature, '#C57A11', 2, true);
+    if (feature.get('hoverStyle')) {
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, true);
+    } else {
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, false);
+    }
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 2);
   } else {
@@ -569,14 +582,29 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 export function setSelectedPilotPlace(id?: number | string) {
   const dvkMap = getMap();
   const pilotSource = dvkMap.getVectorSource('pilot');
-  const pilotFeatures = pilotSource.getFeatures();
-  pilotSource.clear();
 
-  const fairwayFeatures: Feature[] = [];
-  for (const feature of pilotFeatures) {
-    feature.set('hoverStyle', id && feature.getId() === id);
-    fairwayFeatures.push(feature);
+  for (const f of pilotSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
   }
+  pilotSource.dispatchEvent('change');
+}
 
-  pilotSource.addFeatures(fairwayFeatures);
+export function setSelectedFairwayArea(id?: number | string) {
+  const dvkMap = getMap();
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of selectedFairwayCardSource.getFeatures()) {
+    f.set('hoverStyle', id && ['area', 'specialarea'].includes(f.get('featureType')) && f.getId() === id);
+  }
+  selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function setSelectedHarbor(id?: string) {
+  const dvkMap = getMap();
+  const quaySource = dvkMap.getVectorSource('quay');
+
+  for (const f of quaySource.getFeatures()) {
+    f.set('hoverStyle', id && ['harbor'].includes(f.get('featureType')) && f.get('harborId') === id);
+  }
+  quaySource.dispatchEvent('change');
 }
