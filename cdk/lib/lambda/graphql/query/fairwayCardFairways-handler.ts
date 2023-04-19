@@ -269,6 +269,7 @@ async function cacheResponse(key: string, response: object) {
     Body: JSON.stringify(response),
   });
   await s3Client.send(command);
+  log.debug(`${key} cached`);
 }
 
 type CacheResponse = {
@@ -313,6 +314,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
   const key = getKey(fairwayIds);
   const cacheResponseData = await getFromCache(key);
   if (!cacheResponseData.expired && cacheResponseData.data) {
+    log.debug('returning fairways from cache');
     return JSON.parse(cacheResponseData.data);
   } else {
     const fairwayMap = new Map<number, Fairway>();
