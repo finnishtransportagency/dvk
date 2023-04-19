@@ -576,8 +576,8 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);
-  const response = cacheEnabled ? await getFromCache(key) : { expired: true };
-  if (!response.expired && response.data) {
+  const response = await getFromCache(key);
+  if (cacheEnabled && !response.expired && response.data) {
     base64Response = response.data;
   } else {
     try {
@@ -601,14 +601,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         start = Date.now();
         base64Response = gzippedResponse.toString('base64');
         log.debug('base64 duration: %d ms', Date.now() - start);
-        if (cacheEnabled) {
-          await cacheResponse(key, base64Response);
-        }
+        await cacheResponse(key, base64Response);
       }
     } catch (e) {
       log.error('Getting features failed: %s', e);
       if (response.data) {
-        log.warn('Returning expired response from s3 cache');
+        log.warn('Returning possibly expired response from s3 cache');
         base64Response = response.data;
       } else {
         base64Response = undefined;
