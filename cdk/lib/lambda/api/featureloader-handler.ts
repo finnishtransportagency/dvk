@@ -19,9 +19,8 @@ import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import PilotPlaceDBModel from '../db/pilotPlaceDBModel';
 import { GeometryPoint, Status, Text } from '../../../graphql/generated';
-import { fetchVTSPointsAndLines } from './traficom';
+import { fetchPilotPoints, fetchVTSPointsAndLines } from './traficom';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -93,7 +92,7 @@ type PilotPlace = {
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const placeMap = new Map<number, PilotPlace>();
   const cards = await FairwayCardDBModel.getAll();
-  const pilots = await PilotPlaceDBModel.getAll();
+  const pilots = await fetchPilotPoints();
   for (const pilot of pilots) {
     placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
   }

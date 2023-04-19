@@ -132,7 +132,8 @@ const FormSelect: React.FC<SelectProps> = ({
             {sortedOptions &&
               sortedOptions.map((item) => {
                 const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                const additionalLabel = (item as PilotPlace).geometry?.coordinates?.join(', ');
+                const coordinates = (item as PilotPlace).geometry?.coordinates;
+                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
                 return (
                   <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
                     {showId ? '[' + item.id + '] ' : ''}

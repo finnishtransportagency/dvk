@@ -6,13 +6,14 @@ import {
   InputMaybe,
   Maybe,
   OperationError,
+  PilotPlace,
   TextInput,
   TrafficService,
 } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
+import { fetchPilotPoints } from '../api/traficom';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
-import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 const MAX_TEXT_LENGTH = 2000;
 const MAX_NUMBER_LENGTH = 10;
@@ -106,11 +107,11 @@ export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return mapIds(dbModel.fairways.map((f) => f.id));
 }
 
-const pilotPlaceMap = new Map<number, PilotPlaceDBModel>();
+const pilotPlaceMap = new Map<number, PilotPlace>();
 
 export async function getPilotPlaceMap() {
   if (pilotPlaceMap.size === 0) {
-    (await PilotPlaceDBModel.getAll()).forEach((p) => pilotPlaceMap.set(p.id, p));
+    (await fetchPilotPoints()).forEach((p) => pilotPlaceMap.set(p.id, p));
   }
   return pilotPlaceMap;
 }
@@ -124,7 +125,7 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   return fairway;
 }
 
-function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
+function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pilotMap: Map<number, PilotPlace>): TrafficService {
   return {
     pilot: {
       email: service?.pilot?.email,
@@ -147,11 +148,7 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(
-  dbModel: FairwayCardDBModel,
-  pilotMap: Map<number, PilotPlaceDBModel>,
-  user: CurrentUser | undefined
-) {
+export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {

@@ -173,13 +173,5 @@ export class DvkSonarPipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName() + '*');
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
-        resources: [table.tableArn],
-      })
-    );
   }
 }

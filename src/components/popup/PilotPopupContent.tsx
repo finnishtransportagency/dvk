@@ -10,7 +10,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 
 type PilotPopupContentProps = {
-  pilot?: PilotProperties;
+  pilot: PilotProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
 };
 
@@ -46,18 +46,22 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
         <IonRow>
           <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
-        </IonRow>
-        {pilot?.properties.fairwayCards.map((card) => {
-          return (
-            <IonRow key={card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-              </IonCol>
+        {pilot.properties.fairwayCards && pilot.properties.fairwayCards.length > 0 && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
             </IonRow>
-          );
-        })}
+            {pilot.properties.fairwayCards.map((card) => {
+              return (
+                <IonRow key={card.id}>
+                  <IonCol>
+                    <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                  </IonCol>
+                </IonRow>
+              );
+            })}
+          </>
+        )}
       </IonGrid>
     </IonGrid>
   );
