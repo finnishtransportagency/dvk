@@ -377,6 +377,7 @@ ion-item.formInput ion-label.unit {
   padding: 0 13px 0 0;
   margin: 0;
   align-items: center;
+  opacity: 1 !important;
 }
 ion-item.formInput.item-has-focus ion-label.unit {
   height: calc(100% - 4px);

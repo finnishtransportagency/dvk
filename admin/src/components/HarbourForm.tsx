@@ -285,6 +285,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
+                    disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol size="6" className="no-border"></IonCol>
@@ -300,6 +301,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="name"
                 required
+                disabled={harbour.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
               <FormTextInputRow
@@ -308,6 +310,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="extraInfo"
                 required={!!(state.extraInfo?.fi || state.extraInfo?.sv || state.extraInfo?.en)}
+                disabled={harbour.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -316,6 +319,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="cargo"
                 required={!!(state.cargo?.fi || state.cargo?.sv || state.cargo?.en)}
+                disabled={harbour.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -324,6 +328,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="harbourBasin"
                 required={!!(state.harborBasin?.fi || state.harborBasin?.sv || state.harborBasin?.en)}
+                disabled={harbour.status === Status.Removed}
                 inputType="textarea"
               />
             </IonGrid>
@@ -337,10 +342,18 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="companyName"
                 required={!!(state.company?.fi || state.company?.sv || state.company?.en)}
+                disabled={harbour.status === Status.Removed}
               />
               <IonRow>
                 <IonCol>
-                  <FormInput label={t('general.email')} val={state.email || ''} setValue={updateState} actionType="email" inputType="email" />
+                  <FormInput
+                    label={t('general.email')}
+                    val={state.email || ''}
+                    setValue={updateState}
+                    actionType="email"
+                    inputType="email"
+                    disabled={harbour.status === Status.Removed}
+                  />
                 </IonCol>
                 <IonCol>
                   <FormInput
@@ -351,15 +364,29 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     helperText={t('general.use-comma-separated-values')}
                     inputType="tel"
                     multiple
+                    disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol>
-                  <FormInput label={t('general.fax')} val={state.fax || ''} setValue={updateState} actionType="fax" inputType="tel" />
+                  <FormInput
+                    label={t('general.fax')}
+                    val={state.fax || ''}
+                    setValue={updateState}
+                    actionType="fax"
+                    inputType="tel"
+                    disabled={harbour.status === Status.Removed}
+                  />
                 </IonCol>
               </IonRow>
               <IonRow>
                 <IonCol>
-                  <FormInput label={t('harbour.internet')} val={state.internet || ''} setValue={updateState} actionType="internet" />
+                  <FormInput
+                    label={t('harbour.internet')}
+                    val={state.internet || ''}
+                    setValue={updateState}
+                    actionType="internet"
+                    disabled={harbour.status === Status.Removed}
+                  />
                 </IonCol>
                 <IonCol>
                   <FormInput
@@ -370,6 +397,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lat')?.msg}
                     inputType="latitude"
+                    disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol>
@@ -381,6 +409,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lon')?.msg}
                     inputType="longitude"
+                    disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
               </IonRow>
@@ -392,6 +421,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               updateState={updateState}
               sectionType="quay"
               validationErrors={validationErrors}
+              disabled={harbour.status === Status.Removed}
             />
           </form>
         )}
