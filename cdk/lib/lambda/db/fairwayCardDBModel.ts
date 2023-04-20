@@ -143,6 +143,24 @@ class FairwayCardDBModel {
     return [];
   }
 
+  static async getAllPublic(): Promise<FairwayCardDBModel[]> {
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: fairwayCardTable,
+        FilterExpression: '#status = :vStatus',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: { ':vStatus': Status.Public },
+      })
+    );
+    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    if (fairwayCards) {
+      log.debug('%d public fairway card(s) found', fairwayCards.length);
+      return fairwayCards;
+    }
+    log.debug('No public fairway cards found');
+    return [];
+  }
+
   static async findByFairwayId(id: number): Promise<FairwayCardDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({

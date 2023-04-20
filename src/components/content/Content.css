@@ -490,6 +490,9 @@ ion-segment.tabs ion-label h3 {
 }
 
 #fairwayContent .skip-to-main-content-link {
+  position: absolute;
+  top: 20px;
+  left:48px;
   opacity: 0;
   cursor: default;
 }

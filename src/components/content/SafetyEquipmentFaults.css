@@ -1,0 +1,16 @@
+#safetyEquipmentFaultList ion-grid.table {
+  padding-bottom: 5px;
+}
+
+#safetyEquipmentFaultList ion-grid.table ion-row > ion-col {
+  padding: 5px 5px 5px 0;
+  border: none;
+}
+
+#safetyEquipmentFaultList ion-grid.table ion-row > ion-col h4 {
+  margin: 0;
+}
+
+#safetyEquipmentFaultList ion-grid.table ion-row > ion-col p {
+  margin: 0;
+}

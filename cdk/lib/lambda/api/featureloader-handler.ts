@@ -19,7 +19,7 @@ import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import { GeometryPoint, Status, Text } from '../../../graphql/generated';
+import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSPointsAndLines } from './traficom';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
@@ -41,12 +41,12 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const harbors = (await HarborDBModel.getAll()).filter((h) => h.status === Status.Public);
+  const harbors = await HarborDBModel.getAllPublic();
   const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
   for (const harbor of harbors) {
     harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
   }
-  const cards = (await FairwayCardDBModel.getAll()).filter((f) => f.status === Status.Public);
+  const cards = await FairwayCardDBModel.getAllPublic();
   for (const card of cards) {
     for (const h of card.harbors || []) {
       harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
@@ -54,7 +54,8 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
   }
   const ids: string[] = [];
   for (const harbor of harborMap.values()) {
-    if (harbor?.geometry?.coordinates?.length === 2) {
+    const cardHarbor = harborMap.get(harbor.id);
+    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor && cardHarbor.fairwayCards.length > 0) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
@@ -91,7 +92,7 @@ type PilotPlace = {
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAll();
+  const cards = await FairwayCardDBModel.getAllPublic();
   const pilots = await fetchPilotPoints();
   for (const pilot of pilots) {
     placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
@@ -120,7 +121,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 
 async function getCardMap() {
   const cardMap = new Map<number, FairwayCardIdName[]>();
-  const cards = await FairwayCardDBModel.getAll();
+  const cards = await FairwayCardDBModel.getAllPublic();
   for (const card of cards) {
     for (const id of card.fairways.map((f) => f.id)) {
       if (!cardMap.has(id)) {
