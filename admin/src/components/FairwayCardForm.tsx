@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
@@ -18,6 +18,7 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
+import NotificationModal from './NofiticationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -181,6 +182,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
   };
 
+  const closeNotification = () => {
+    setSaveError('');
+    if (!saveError && !!savedCard) {
+      if (state.operation === Operation.Update) history.go(0);
+      if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
+    }
+  };
+
   return (
     <IonPage>
       <ConfirmationModal
@@ -191,20 +200,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
-      <IonAlert
+      <NotificationModal
         isOpen={!!saveError || !!savedCard}
-        onDidDismiss={() => {
-          setSaveError('');
-          if (!saveError && !!savedCard) {
-            if (state.operation === Operation.Update) history.go(0);
-            if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
-          }
-        }}
+        closeAction={closeNotification}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
-        subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedCard?.id })) || ''}
+        subHeader={
+          (saveError
+            ? t('general.error-' + saveError)
+            : t('modal.saved-fairwaycard-by-name', { name: savedCard?.name[lang] || savedCard?.name.fi })) || ''
+        }
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
-        buttons={[t('general.button-ok') || '']}
-        cssClass={saveError ? 'error' : 'success'}
       />
       <IonHeader className="ion-no-border">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
@@ -228,17 +233,23 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setSelected={updateState}
                 actionType="status"
                 hideLabel={true}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
               />
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
+              <IonButton
+                shape="round"
+                className="invert"
+                onClick={() => handleCancel()}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
+              >
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && (
+              {state.operation === Operation.Update && fairwayCard.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
-                  disabled={isError}
+                  disabled={isError || isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
                   onClick={() => {
                     handleSubmit(true);
                   }}
@@ -270,6 +281,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="name"
                 required
+                disabled={fairwayCard.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
               <IonRow>
@@ -295,6 +307,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     multiple
                     required
                     showId
+                    disabled={fairwayCard.status === Status.Removed}
                     error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
                     isLoading={isLoadingFairways}
                   />
@@ -308,7 +321,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     actionType="fairwayPrimary"
                     required
                     showId
-                    disabled={state.fairwayIds.length < 2}
+                    disabled={state.fairwayIds.length < 2 || fairwayCard.status === Status.Removed}
                     helperText={t('fairwaycard.fairway-order-help-text')}
                     isLoading={isLoadingFairways}
                   />
@@ -322,7 +335,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     actionType="fairwaySecondary"
                     required
                     showId
-                    disabled={state.fairwayIds.length < 2}
+                    disabled={state.fairwayIds.length < 2 || fairwayCard.status === Status.Removed}
                     helperText={t('fairwaycard.fairway-order-help-text')}
                     isLoading={isLoadingFairways}
                   />
@@ -341,6 +354,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     setSelected={updateState}
                     actionType="group"
                     required
+                    disabled={fairwayCard.status === Status.Removed}
                     error={validationErrors.find((error) => error.id === 'group')?.msg}
                   />
                 </IonCol>
@@ -354,6 +368,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol size="3">
@@ -365,6 +380,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     actionType="harbours"
                     multiple
                     isLoading={isLoadingHarbours}
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol size="3" className="no-border"></IonCol>
@@ -381,6 +397,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="line"
                 required={!!(state.lineText?.fi || state.lineText?.sv || state.lineText?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -389,6 +406,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="designSpeed"
                 required={!!(state.designSpeed?.fi || state.designSpeed?.sv || state.designSpeed?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -397,6 +415,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="speedLimit"
                 required={!!(state.speedLimit?.fi || state.speedLimit?.sv || state.speedLimit?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -405,6 +424,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="anchorage"
                 required={!!(state.anchorage?.fi || state.anchorage?.sv || state.anchorage?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
             </IonGrid>
@@ -419,6 +439,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="navigationCondition"
                 required={!!(state.navigationCondition?.fi || state.navigationCondition?.sv || state.navigationCondition?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -427,6 +448,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="iceCondition"
                 required={!!(state.iceCondition?.fi || state.iceCondition?.sv || state.iceCondition?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
             </IonGrid>
@@ -441,6 +463,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="windRecommendation"
                 required={!!(state.windRecommendation?.fi || state.windRecommendation?.sv || state.windRecommendation?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -449,6 +472,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="vesselRecommendation"
                 required={!!(state.vesselRecommendation?.fi || state.vesselRecommendation?.sv || state.vesselRecommendation?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -457,6 +481,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="visibility"
                 required={!!(state.visibility?.fi || state.visibility?.sv || state.visibility?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -465,6 +490,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="windGauge"
                 required={!!(state.windGauge?.fi || state.windGauge?.sv || state.windGauge?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -473,6 +499,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="seaLevel"
                 required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
             </IonGrid>
@@ -489,6 +516,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     val={state.trafficService?.pilot?.email || ''}
                     setValue={updateState}
                     actionType="pilotEmail"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="email"
                   />
                 </IonCol>
@@ -498,6 +526,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     val={state.trafficService?.pilot?.phoneNumber || ''}
                     setValue={updateState}
                     actionType="pilotPhone"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="tel"
                   />
                 </IonCol>
@@ -507,6 +536,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     val={state.trafficService?.pilot?.fax || ''}
                     setValue={updateState}
                     actionType="pilotFax"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="tel"
                   />
                 </IonCol>
@@ -523,6 +553,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     state.trafficService?.pilot?.extraInfo?.en
                   )
                 }
+                disabled={fairwayCard.status === Status.Removed}
                 inputType="textarea"
               />
               <IonRow>
@@ -536,6 +567,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     multiple
                     compareObjects
                     isLoading={isLoadingPilotPlaces}
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
                 {state.trafficService?.pilot?.places?.map((place) => {
@@ -553,6 +585,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                         inputType="number"
                         max={999.9}
                         decimalCount={1}
+                        disabled={fairwayCard.status === Status.Removed}
                       />
                     </IonCol>
                   );
@@ -566,6 +599,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               updateState={updateState}
               sectionType="vts"
               validationErrors={validationErrors}
+              disabled={fairwayCard.status === Status.Removed}
             />
 
             <FormOptionalSection
@@ -574,6 +608,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               updateState={updateState}
               sectionType="tug"
               validationErrors={validationErrors}
+              disabled={fairwayCard.status === Status.Removed}
             />
           </form>
         )}
