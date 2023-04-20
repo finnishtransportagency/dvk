@@ -23,7 +23,7 @@ export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'al
   });
   return {
     ...response,
-    data: response.data?.data,
+    data: response.data?.data ? response.data?.data : response.data,
     dataUpdatedAt: response.data?.lastModified ? Date.parse(response.data?.lastModified) : response.dataUpdatedAt,
   };
 }
