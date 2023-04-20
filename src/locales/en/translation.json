@@ -4,8 +4,8 @@
       "closeMenu": "Close",
       "title": "Digital Fairway Card",
       "fairway-cards": "Fairway Cards",
-      "safety-equipment-faults": "Safety Equipment Faults",
-      "marine-warnings": "Marine Warnings",
+      "safety-equipment-faults": "Defective Navigation Aids",
+      "marine-warnings": "Navigational Warnings",
       "squat": "Squat calculator",
       "squat-url": "/squat/index.html?lang=en",
       "customer-service": "Traffic customer service",
@@ -36,7 +36,7 @@
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
-          "marineWarnings": "Marine warnings",
+          "marineWarnings": "Navigational warnings",
           "boardLines": "Leading lines",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
@@ -210,9 +210,9 @@
     "opens-in-a-new-tab": "Opens in a new tab"
   },
   "faults": {
-    "title": "Safety equipment faults",
+    "title": "Defective navigation aids",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
-    "print": "Print safety equipment faults",
+    "print": "Print defective navigation aids",
     "archipelagoSea": "Archipelago sea",
     "gulfOfFinland": "Gulf of Finland",
     "gulfOfBothnia": "Gulf of Bothnia",
@@ -222,10 +222,10 @@
     "fairways": "Fairway cards connected to the navigational aid"
   },
   "warnings": {
-    "title": "Marine warnings",
+    "title": "Navigational warnings",
     "note": "NOTE!",
     "notification": "Updating of this page could be delayed. The availability of Navigational Warnings on the web does not relieve Masters of the requirement to receive Navigational Warnings via IMO/IHO approved broadcast systems.",
-    "print": "Print marine warnings",
+    "print": "Print navigational warnings",
     "area": "Area",
     "location": "Location",
     "content": "Content",
@@ -301,8 +301,8 @@
       "type2": "real",
       "type3": "synthetic",
       "type4": "virtual",
-      "distances_one": "[en] Reunaetäisyys väyläalueeseen",
-      "distances_other": "[en] Reunaetäisyys väyläalueisiin"
+      "distances_one": "Distance to the fairway area",
+      "distances_other": "Distance to the fairway areas"
     },
     "marine": {
       "area": "Area",
@@ -390,8 +390,8 @@
     "dataUpdateFailedAt": "Data update failed at",
     "latestDataUpdateAt": "Latest data update at",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-    "safety-equipment-faults": "Safety Equipment Faults",
-    "marine-warnings": "Marine Warnings",
+    "safety-equipment-faults": "Defective Navigation Aids",
+    "marine-warnings": "Navigational Warnings",
     "fairway-cards": "Fairway Cards",
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab"
