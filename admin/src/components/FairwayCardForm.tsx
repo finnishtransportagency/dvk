@@ -233,17 +233,23 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setSelected={updateState}
                 actionType="status"
                 hideLabel={true}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
               />
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
+              <IonButton
+                shape="round"
+                className="invert"
+                onClick={() => handleCancel()}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
+              >
                 {t('general.cancel')}
               </IonButton>
               {state.operation === Operation.Update && fairwayCard.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
-                  disabled={isError}
+                  disabled={isError || isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
                   onClick={() => {
                     handleSubmit(true);
                   }}
