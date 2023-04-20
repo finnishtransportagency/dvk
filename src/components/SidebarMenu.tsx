@@ -233,6 +233,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                     onClick={() => menuController.close()}
                   >
                     {t('customer-service')}
+                    <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                   </a>
                 </IonTitle>
               </IonCol>
