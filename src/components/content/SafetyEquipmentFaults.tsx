@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import { warningOutline } from 'ionicons/icons';
+import './SafetyEquipmentFaults.css';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -37,7 +38,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
   });
   const equipments = getMap().getVectorSource('safetyequipment');
   return (
-    <div>
+    <>
       <IonText className={first ? 'no-margin-top' : ''}>
         <h4>
           <strong>{title}</strong>
@@ -56,16 +57,16 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
         });
         const cards = Array.from(cardMap.values());
         return (
-          <IonGrid className="table light group" key={faultArray[0].equipmentId}>
+          <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
             <IonRow className="header">
-              <IonCol>
+              <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
                     {(faultArray[0].name && faultArray[0].name[lang]) || faultArray[0].name?.fi} - {faultArray[0].equipmentId}
                   </strong>
                 </IonLabel>
               </IonCol>
-              <IonCol className="ion-text-end">
+              <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
                     <>
@@ -83,7 +84,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
                 <IonCol>
                   <IonLabel>{(fault.type && fault.type[lang]) || fault.type?.fi}</IonLabel>
                 </IonCol>
-                <IonCol className="ion-text-end">
+                <IonCol className="ion-text-end ion-no-padding">
                   <IonLabel>
                     <em>{fault.recordTime > 0 && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
                   </IonLabel>
@@ -110,7 +111,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
           </IonGrid>
         );
       })}
-    </div>
+    </>
   );
 };
 
@@ -151,7 +152,11 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         />
       )}
 
-      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="safetyEquipmentFaultList">
+      <div
+        id="safetyEquipmentFaultList"
+        className={'tabContent active show-print' + (widePane ? ' wide' : '')}
+        data-testid="safetyEquipmentFaultList"
+      >
         <FaultGroup
           title={t('faults.archipelagoSea') + ', ' + t('faults.gulfOfFinland') + t('faults.and') + t('faults.gulfOfBothnia')}
           loading={isLoading}
