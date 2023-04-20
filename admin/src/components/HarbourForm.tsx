@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
@@ -13,6 +13,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
+import NotificationModal from './NofiticationModal';
 
 interface FormProps {
   harbour: HarborInput;
@@ -73,6 +74,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   // Save harbour
   const [saveError, setSaveError] = useState<string>();
   const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
+  const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
   const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
   const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
@@ -127,17 +129,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       if (isToBeRemoved || isToBeDrafted) {
         let translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length });
         if (isToBeDrafted) translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-draft-harbour', { count: linkedFairwayCards?.length });
-        const message =
-          translatedMsg +
-          '<ul>' +
-          linkedFairwayCards
-            ?.map((card) => {
-              return '<li>' + (card.name[lang] || card.name.fi) + '</li>';
-            })
-            .join('') +
-          '</ul>';
         setSaveError('OPERATION-BLOCKED');
-        setSaveErrorMsg(message);
+        setSaveErrorMsg(translatedMsg);
+        setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] || card.name.fi || card.id));
         return;
       }
     }
@@ -176,6 +170,21 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
   };
 
+  const closeNotification = () => {
+    setSaveError('');
+    setSaveErrorMsg('');
+    setSaveErrorItems([]);
+    if (!saveError && !!savedHarbour) {
+      if (state.operation === Operation.Update) history.go(0);
+      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
+    }
+  };
+
+  const getNotificationTitle = () => {
+    if (saveError === 'OPERATION-BLOCKED') return '';
+    return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
+  };
+
   return (
     <IonPage>
       <ConfirmationModal
@@ -186,21 +195,18 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
-      <IonAlert
+      <NotificationModal
         isOpen={!!saveError || !!savedHarbour}
-        onDidDismiss={() => {
-          setSaveError('');
-          setSaveErrorMsg('');
-          if (!saveError && !!savedHarbour) {
-            if (state.operation === Operation.Update) history.go(0);
-            if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
-          }
-        }}
-        header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
-        subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedHarbour?.id })) || ''}
+        closeAction={closeNotification}
+        header={getNotificationTitle()}
+        subHeader={
+          (saveError
+            ? t('general.error-' + saveError)
+            : t('modal.saved-harbor-by-name', { name: savedHarbour?.name ? savedHarbour?.name[lang] || savedHarbour.name.fi : savedHarbour?.id })) ||
+          ''
+        }
         message={saveError ? saveErrorMsg || t('general.fix-errors-try-again') || '' : ''}
-        buttons={[t('general.button-ok') || '']}
-        cssClass={saveError ? 'error' : 'success'}
+        itemList={saveErrorItems}
       />
       <IonHeader className="ion-no-border">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
@@ -230,7 +236,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && (
+              {state.operation === Operation.Update && harbour.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"

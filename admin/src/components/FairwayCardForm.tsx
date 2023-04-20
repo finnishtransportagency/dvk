@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
@@ -18,6 +18,7 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
+import NotificationModal from './NofiticationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -181,6 +182,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
   };
 
+  const closeNotification = () => {
+    setSaveError('');
+    if (!saveError && !!savedCard) {
+      if (state.operation === Operation.Update) history.go(0);
+      if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
+    }
+  };
+
   return (
     <IonPage>
       <ConfirmationModal
@@ -191,20 +200,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
-      <IonAlert
+      <NotificationModal
         isOpen={!!saveError || !!savedCard}
-        onDidDismiss={() => {
-          setSaveError('');
-          if (!saveError && !!savedCard) {
-            if (state.operation === Operation.Update) history.go(0);
-            if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
-          }
-        }}
+        closeAction={closeNotification}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
-        subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedCard?.id })) || ''}
+        subHeader={
+          (saveError
+            ? t('general.error-' + saveError)
+            : t('modal.saved-fairwaycard-by-name', { name: savedCard?.name[lang] || savedCard?.name.fi })) || ''
+        }
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
-        buttons={[t('general.button-ok') || '']}
-        cssClass={saveError ? 'error' : 'success'}
       />
       <IonHeader className="ion-no-border">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
@@ -234,7 +239,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && (
+              {state.operation === Operation.Update && fairwayCard.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
