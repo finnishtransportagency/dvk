@@ -317,28 +317,38 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
     log.debug('returning fairways from cache');
     return JSON.parse(cacheResponseData.data);
   } else {
-    const fairwayMap = new Map<number, Fairway>();
-    event.source.fairways.forEach((f) => {
-      fairwayMap.set(f.id, f);
-    });
-    const lineMap = await getNavigationLineMap(fairwayIds);
-    const areaMap = await getAreaMap(fairwayIds);
-    const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
-    const boardLineMap = await getBoardLineMap(fairwayIds);
-    const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
-    const response = fairways.map((apiFairway) => {
-      const fairway = fairwayMap.get(apiFairway.jnro);
-      log.debug('Fairway: %o', apiFairway);
-      return {
-        ...mapAPIModelToFairway(apiFairway),
-        ...fairway,
-        navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
-        areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
-        restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
-        boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
-      };
-    });
-    await cacheResponse(key, response);
-    return response;
+    try {
+      const fairwayMap = new Map<number, Fairway>();
+      event.source.fairways.forEach((f) => {
+        fairwayMap.set(f.id, f);
+      });
+      const lineMap = await getNavigationLineMap(fairwayIds);
+      const areaMap = await getAreaMap(fairwayIds);
+      const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
+      const boardLineMap = await getBoardLineMap(fairwayIds);
+      const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
+      const response = fairways.map((apiFairway) => {
+        const fairway = fairwayMap.get(apiFairway.jnro);
+        log.debug('Fairway: %o', apiFairway);
+        return {
+          ...mapAPIModelToFairway(apiFairway),
+          ...fairway,
+          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
+          areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
+          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
+          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
+        };
+      });
+      await cacheResponse(key, response);
+      return response;
+    } catch (e) {
+      log.error('Getting fairways failed: %s', e);
+      if (cacheResponseData.data) {
+        log.warn('Returning expired response from s3 cache');
+        return JSON.parse(cacheResponseData.data);
+      } else {
+        throw e;
+      }
+    }
   }
 };

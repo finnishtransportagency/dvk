@@ -495,6 +495,7 @@ async function cacheResponse(key: string, response: string) {
 type CacheResponse = {
   expired: boolean;
   data?: string;
+  lastModified?: string;
 };
 
 async function getFromCache(key: string): Promise<CacheResponse> {
@@ -514,7 +515,11 @@ async function getFromCache(key: string): Promise<CacheResponse> {
           stream.on('error', reject);
           stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
         });
-      return { expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(), data: await streamToString(data.Body as Readable) };
+      return {
+        expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(),
+        data: await streamToString(data.Body as Readable),
+        lastModified: data.LastModified?.toUTCString(),
+      };
     }
   } catch (e) {
     // errors ignored also not found
@@ -577,8 +582,10 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);
   const response = await getFromCache(key);
+  let lastModified = new Date().toUTCString();
   if (cacheEnabled && !response.expired && response.data) {
     base64Response = response.data;
+    lastModified = response.lastModified || lastModified;
   } else {
     try {
       const features: Feature<Geometry, GeoJsonProperties>[] = [];
@@ -608,6 +615,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       if (response.data) {
         log.warn('Returning possibly expired response from s3 cache');
         base64Response = response.data;
+        lastModified = response.lastModified || lastModified;
       } else {
         base64Response = undefined;
         statusCode = 500;
@@ -621,6 +629,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     multiValueHeaders: {
       ...getHeaders(),
       'Content-Type': ['application/geo+json'],
+      'Last-Modified': [lastModified],
     },
   };
 };
