@@ -16,6 +16,7 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -271,7 +272,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
             </IonCol>
             <IonCol size="auto">
               <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
-                <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+                <IonIcon className="otherIconLarge" src={closeIcon} />
               </IonButton>
             </IonCol>
           </IonRow>

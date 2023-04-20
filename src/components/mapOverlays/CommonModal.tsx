@@ -3,6 +3,7 @@ import React, { ReactElement, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LanguageBar } from '../SidebarMenu';
 import './CommonModal.css';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type ModalProps = {
   isOpen: boolean;
@@ -31,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, s
               title={t('common.close-dialog')}
               aria-label={t('common.close-dialog')}
             >
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonButtons>
         </IonToolbar>

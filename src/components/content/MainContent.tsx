@@ -17,6 +17,7 @@ import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -268,7 +269,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                         title={t('closePane')}
                         aria-label={t('closePane')}
                       >
-                        <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+                        <IonIcon className="otherIconLarge" src={closeIcon} />
                       </IonButton>
                     </IonCol>
                   </IonRow>

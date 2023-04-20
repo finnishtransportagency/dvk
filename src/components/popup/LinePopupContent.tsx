@@ -8,6 +8,7 @@ import { LineFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -58,7 +59,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
                     title={t('common.close')}
                     aria-label={t('common.close')}
                   >
-                    <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+                    <IonIcon className="otherIconLarge" src={closeIcon} />
                   </IonButton>
                 </IonCol>
               )}

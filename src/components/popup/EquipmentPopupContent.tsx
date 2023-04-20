@@ -8,6 +8,7 @@ import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -51,7 +52,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>
