@@ -79,6 +79,9 @@ export class DvkBackendStack extends Stack {
         ENVIRONMENT: Config.getEnvironment(),
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
       },
+      bundling: {
+        minify: true,
+      },
     });
 
     dbStreamHandler.addEventSource(
