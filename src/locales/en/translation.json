@@ -12,7 +12,6 @@
       "source": "Data sources and terms of use"
     },
     "map": {
-      "content": "[en] TODO: Kartta",
       "controls": {
         "zoom": {
           "zoomInTipLabel": "Zoom in",
