@@ -7,6 +7,7 @@ import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -36,7 +37,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

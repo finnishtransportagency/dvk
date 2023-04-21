@@ -6,6 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type BuoyPopupContentProps = {
   buoy: BuoyProperties;
@@ -33,7 +34,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

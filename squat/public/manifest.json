@@ -19,12 +19,6 @@
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any"
-    },
-    {
-      "src": "assets/icon/vayla_v_rgb_512x512.png",
-      "type": "image/png",
-      "sizes": "512x512",
-      "purpose": "maskable"
     }
   ],
   "start_url": ".",

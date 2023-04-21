@@ -3,6 +3,7 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { VtsPopupContentProps } from './VtsPointPopupContent';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProperties }) => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProp
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

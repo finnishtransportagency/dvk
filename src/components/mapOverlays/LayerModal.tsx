@@ -6,6 +6,7 @@ import './LayerModal.css';
 import { MAP } from '../../utils/constants';
 import { refreshPrintableMap } from '../../utils/common';
 import LayerItem from './LayerItem';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface ModalProps {
   isOpen: boolean;
@@ -59,7 +60,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               title={t('common.close')}
               aria-label={t('common.close')}
             >
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>
