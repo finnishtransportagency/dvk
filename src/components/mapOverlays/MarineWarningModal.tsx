@@ -6,6 +6,7 @@ import { isMobile } from '../../utils/common';
 import dvkMap from '../DvkMap';
 import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningModal.css';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface ModalProps {
   isOpen: boolean;
@@ -60,7 +61,7 @@ export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) 
               title={t('common.close-dialog')}
               aria-label={t('common.close-dialog')}
             >
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

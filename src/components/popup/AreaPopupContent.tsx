@@ -9,6 +9,7 @@ import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -62,7 +63,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

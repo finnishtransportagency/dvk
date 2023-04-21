@@ -22,6 +22,12 @@ import vayla_logo from '../theme/img/vayla_logo.png';
 import './SidebarMenu.css';
 import OfflineSupport from './OfflineSupport';
 import { useDvkContext } from '../hooks/dvkContext';
+import closeIcon from '../theme/img/close_black_24dp.svg';
+import fairwaysIcon from '../theme/img/fairways_icon.svg';
+import alertIcon from '../theme/img/alert_icon.svg';
+import weatherIcon from '../theme/img/weather_icon.svg';
+import calculateIcon from '../theme/img/calculate_icon.svg';
+import extLinkIcon from '../theme/img/ext_link.svg';
 
 export const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -131,7 +137,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       title={t('closeMenu')}
                       aria-label={t('closeMenu')}
                     >
-                      <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+                      <IonIcon className="otherIconLarge" src={closeIcon} />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -153,7 +159,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
                     >
-                      <IonIcon slot="start" src="assets/icon/fairways_icon.svg" />
+                      <IonIcon slot="start" src={fairwaysIcon} />
                       {t('fairway-cards')}
                     </IonItem>
                   </IonCol>
@@ -167,7 +173,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
                     >
-                      <IonIcon slot="start" src="assets/icon/alert_icon.svg" />
+                      <IonIcon slot="start" src={alertIcon} />
                       {t('safety-equipment-faults')}
                     </IonItem>
                   </IonCol>
@@ -181,7 +187,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
                     >
-                      <IonIcon slot="start" src="assets/icon/weather_icon.svg" />
+                      <IonIcon slot="start" src={weatherIcon} />
                       {t('marine-warnings')}
                     </IonItem>
                   </IonCol>
@@ -199,9 +205,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={state.isOffline}
                       tabIndex={state.isOffline ? -1 : undefined}
                     >
-                      <IonIcon slot="start" src="assets/icon/calculate_icon.svg" />
+                      <IonIcon slot="start" src={calculateIcon} />
                       {t('squat')}
-                      <IonIcon slot="end" src="assets/icon/ext_link.svg" />
+                      <IonIcon slot="end" src={extLinkIcon} />
                       <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                     </IonItem>
                   </IonCol>
