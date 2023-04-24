@@ -143,6 +143,10 @@
     text-decoration: none;
   }
 
+  a[target='_blank'] {
+    padding: 0;
+  }
+
   .mapWrapper {
     position: static !important;
     display: flex;
