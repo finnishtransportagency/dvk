@@ -134,8 +134,8 @@
     "attention": "Obs.",
     "n2000Info": "Referensnivå för djupuppgifter är N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Områden med mötes- och omkörningsförbud",
-    "prohibitionText_one": "Farleden har ett permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master´s Guide",
-    "prohibitionText_other": "Farleden har permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master´s Guide",
+    "prohibitionText_one": "Farleden har ett permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master's Guide",
+    "prohibitionText_other": "Farleden har permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master's Guide",
     "anchorage": "Ankrings- och andra specialområden",
     "navigation": "Navigerbarhet",
     "navigationCondition": "Navigationsförhållanden",
@@ -300,8 +300,8 @@
       "type2": "reell",
       "type3": "syntetisk",
       "type4": "virtuell",
-      "distances_one": "[sv] Reunaetäisyys väyläalueeseen",
-      "distances_other": "[sv] Reunaetäisyys väyläalueisiin"
+      "distances_one": "Avstånd till farledsområdets kant",
+      "distances_other": "Avstånd till farledsområdens kanter"
     },
     "marine": {
       "area": "Område",
