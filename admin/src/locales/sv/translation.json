@@ -51,7 +51,7 @@
     "email": "E-post",
     "phone-number": "Telefonnummer",
     "fax": "Faxnummer",
-    "additional-information": "[sv] Lisätiedot",
+    "additional-information": "Tilläggsuppgifter",
     "save-successful": "[sv] Tallennus onnistui",
     "save-failed": "[sv] Tallennus epäonnistui",
     "saved-by-id": "[sv] Kohteen \"{{ id }}\" tiedot tallennettu.",
@@ -122,7 +122,7 @@
     "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu."
   },
   "fairwaycard": {
-    "name": "[sv] Väyläkortin nimi",
+    "name": "Farledskortets namn",
     "primary-id": "[sv] Väyläkortin tunniste",
     "primary-id-help-text": "[sv] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9)",
     "linked-fairways": "[sv] Liitetyt väylät",
@@ -151,7 +151,7 @@
     "pilotage-distance-from": "Lotsled från",
     "vts-heading": "[sv] VTS (alusliikennepalvelija)",
     "vts-name": "Namn",
-    "vhf-name": "[sv] VHF-kanavan nimi",
+    "vhf-name": "VHF-kanalens namn",
     "vhf-channel": "[sv] VHF-kanavan numero",
     "tug-heading": "Bogserbåt",
     "tug-name": "Bogserbåt namn"
@@ -173,8 +173,8 @@
     "length": "Längd",
     "depth": "Ramningsdjup",
     "quay-heading": "Kaj",
-    "quay-name": "[sv] Laiturin nimi",
-    "quay-extra-info": "Tilläggsuppgift",
+    "quay-name": "Kajens namn",
+    "quay-extra-info": "Tilläggsuppgifter",
     "section-name": "[sv] Osion nimi",
     "linked-fairwaycards-exist-cannot-remove-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
