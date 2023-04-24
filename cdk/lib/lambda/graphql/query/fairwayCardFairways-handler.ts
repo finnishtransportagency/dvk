@@ -2,9 +2,7 @@ import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Area, Boardline, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel, VaylaAPIModel } from './vatu';
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
-import { getEnvironment, getFeatureCacheDurationHours } from '../../environment';
+import { cacheResponse, getFromCache } from '../cache';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
@@ -248,61 +246,8 @@ async function getBoardLineMap(fairwayIds: number[]) {
   return lineMap;
 }
 
-const s3Client = new S3Client({ region: 'eu-west-1' });
-
 function getKey(fairwayIds: number[]) {
   return 'fairways:' + fairwayIds.join(':');
-}
-
-function getCacheBucketName() {
-  return `featurecache-${getEnvironment()}`;
-}
-
-async function cacheResponse(key: string, response: object) {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
-  const expires = new Date();
-  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
-  const command = new PutObjectCommand({
-    Key: key,
-    Bucket: getCacheBucketName(),
-    Expires: expires,
-    Body: JSON.stringify(response),
-  });
-  await s3Client.send(command);
-  log.debug(`${key} cached`);
-}
-
-type CacheResponse = {
-  expired: boolean;
-  data?: string;
-};
-
-async function getFromCache(key: string): Promise<CacheResponse> {
-  try {
-    const data = await s3Client.send(
-      new GetObjectCommand({
-        Key: key,
-        Bucket: getCacheBucketName(),
-      })
-    );
-    if (data.Body) {
-      log.debug(`returning ${key} from cache`);
-      const streamToString = (stream: Readable): Promise<string> =>
-        new Promise((resolve, reject) => {
-          const chunks: Uint8Array[] = [];
-          stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
-          stream.on('error', reject);
-          stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-        });
-      return {
-        expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(),
-        data: await streamToString(data.Body as Readable),
-      };
-    }
-  } catch (e) {
-    // errors ignored also not found
-  }
-  return { expired: true };
 }
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], FairwayCard> = async (

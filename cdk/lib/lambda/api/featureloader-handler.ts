@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
+import { getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
@@ -14,15 +14,12 @@ import {
   TurvalaiteAPIModel,
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSPointsAndLines } from './traficom';
-
-const s3Client = new S3Client({ region: 'eu-west-1' });
+import { cacheResponse, getFromCache } from '../graphql/cache';
 
 function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
@@ -466,10 +463,6 @@ async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
   }
 }
 
-function getCacheBucketName() {
-  return `featurecache-${getEnvironment()}`;
-}
-
 function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined) {
   if (queryString) {
     const key = (queryString.type?.join(',') || '') + (queryString.vaylaluokka ? queryString.vaylaluokka.join(',') : '');
@@ -478,54 +471,6 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
     }
   }
   return 'noquerystring';
-}
-
-async function cacheResponse(key: string, response: string) {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
-  const expires = new Date();
-  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
-  const command = new PutObjectCommand({
-    Key: key,
-    Bucket: getCacheBucketName(),
-    Expires: expires,
-    Body: response,
-  });
-  await s3Client.send(command);
-}
-
-type CacheResponse = {
-  expired: boolean;
-  data?: string;
-  lastModified?: string;
-};
-
-async function getFromCache(key: string): Promise<CacheResponse> {
-  try {
-    const data = await s3Client.send(
-      new GetObjectCommand({
-        Key: key,
-        Bucket: getCacheBucketName(),
-      })
-    );
-    if (data.Body) {
-      log.debug(`returning ${key} from cache`);
-      const streamToString = (stream: Readable): Promise<string> =>
-        new Promise((resolve, reject) => {
-          const chunks: Uint8Array[] = [];
-          stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
-          stream.on('error', reject);
-          stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-        });
-      return {
-        expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(),
-        data: await streamToString(data.Body as Readable),
-        lastModified: data.LastModified?.toUTCString(),
-      };
-    }
-  } catch (e) {
-    // errors ignored also not found
-  }
-  return { expired: true };
 }
 
 const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
