@@ -2,6 +2,7 @@ import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
 import { Area, Boardline, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel, VaylaAPIModel } from './vatu';
+import { cacheResponse, getFromCache } from '../cache';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
@@ -245,31 +246,54 @@ async function getBoardLineMap(fairwayIds: number[]) {
   return lineMap;
 }
 
+function getKey(fairwayIds: number[]) {
+  return 'fairways:' + fairwayIds.join(':');
+}
+
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], FairwayCard> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard>
 ): Promise<Fairway[]> => {
   log.info(`fairwayCardFairways(${event.source.id})`);
-  const fairwayMap = new Map<number, Fairway>();
-  event.source.fairways.forEach((f) => {
-    fairwayMap.set(f.id, f);
-  });
   const fairwayIds = event.source.fairways.map((f) => f.id);
   log.debug(`fairwayIds: ${fairwayIds}`);
-  const lineMap = await getNavigationLineMap(fairwayIds);
-  const areaMap = await getAreaMap(fairwayIds);
-  const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
-  const boardLineMap = await getBoardLineMap(fairwayIds);
-  const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
-  return fairways.map((apiFairway) => {
-    const fairway = fairwayMap.get(apiFairway.jnro);
-    log.debug('Fairway: %o', apiFairway);
-    return {
-      ...mapAPIModelToFairway(apiFairway),
-      ...fairway,
-      navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
-      areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
-      restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
-      boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
-    };
-  });
+  const key = getKey(fairwayIds);
+  const cacheResponseData = await getFromCache(key);
+  if (!cacheResponseData.expired && cacheResponseData.data) {
+    log.debug('returning fairways from cache');
+    return JSON.parse(cacheResponseData.data);
+  } else {
+    try {
+      const fairwayMap = new Map<number, Fairway>();
+      event.source.fairways.forEach((f) => {
+        fairwayMap.set(f.id, f);
+      });
+      const lineMap = await getNavigationLineMap(fairwayIds);
+      const areaMap = await getAreaMap(fairwayIds);
+      const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
+      const boardLineMap = await getBoardLineMap(fairwayIds);
+      const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
+      const response = fairways.map((apiFairway) => {
+        const fairway = fairwayMap.get(apiFairway.jnro);
+        log.debug('Fairway: %o', apiFairway);
+        return {
+          ...mapAPIModelToFairway(apiFairway),
+          ...fairway,
+          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
+          areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
+          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
+          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
+        };
+      });
+      await cacheResponse(key, response);
+      return response;
+    } catch (e) {
+      log.error('Getting fairways failed: %s', e);
+      if (cacheResponseData.data) {
+        log.warn('Returning expired response from s3 cache');
+        return JSON.parse(cacheResponseData.data);
+      } else {
+        throw e;
+      }
+    }
+  }
 };

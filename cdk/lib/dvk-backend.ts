@@ -79,6 +79,9 @@ export class DvkBackendStack extends Stack {
         ENVIRONMENT: Config.getEnvironment(),
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
       },
+      bundling: {
+        minify: true,
+      },
     });
 
     dbStreamHandler.addEventSource(
@@ -96,7 +99,7 @@ export class DvkBackendStack extends Stack {
     fairwayCardVersioningBucket.grantRead(dbStreamHandler);
     harborVersioningBucket.grantPut(dbStreamHandler);
     harborVersioningBucket.grantRead(dbStreamHandler);
-
+    const bucket = this.createCacheBucket(env);
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
@@ -122,6 +125,9 @@ export class DvkBackendStack extends Stack {
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        bundling: {
+          minify: true,
+        },
       });
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
       lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
@@ -135,11 +141,12 @@ export class DvkBackendStack extends Stack {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
+      bucket.grantPut(backendLambda);
+      bucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const bucket = this.createCacheBucket(env);
     const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
@@ -278,6 +285,9 @@ export class DvkBackendStack extends Stack {
         SSM_PARAMETER_STORE_TTL: '300',
       },
       logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
     });
     httpListener.addTargets('HTTPListenerTarget-CORS', {
       targets: [new LambdaTarget(corsLambda)],
@@ -306,6 +316,9 @@ export class DvkBackendStack extends Stack {
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        bundling: {
+          minify: true,
+        },
       });
       const target = httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
         targets: [new LambdaTarget(backendLambda)],
