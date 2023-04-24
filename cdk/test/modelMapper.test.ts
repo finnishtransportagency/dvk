@@ -1,5 +1,18 @@
 import { OperationError, TextInput } from '../graphql/generated';
-import { mapText, mapMandatoryText, mapNumber, mapString, mapStringArray, mapGeometry, mapId } from '../lib/lambda/db/modelMapper';
+import {
+  mapText,
+  mapMandatoryText,
+  mapNumber,
+  mapString,
+  mapStringArray,
+  mapGeometry,
+  mapId,
+  mapEmail,
+  mapPhoneNumber,
+  mapEmails,
+  mapPhoneNumbers,
+  mapInternetAddress,
+} from '../lib/lambda/db/modelMapper';
 
 test('test mapText', () => {
   expect(mapText()).toBe(null);
@@ -100,15 +113,18 @@ test('test mapGeometry', () => {
   expect(mapGeometry(null)).toBe(null);
   expect(mapGeometry()).toBe(null);
   expect(mapGeometry({ lat: '', lon: '' })).toBe(null);
-  expect(mapGeometry({ lat: '0', lon: '0' })).toMatchObject({ type: 'Point', coordinates: [0, 0] });
-  expect(mapGeometry({ lat: '0', lon: '1' })).toMatchObject({ type: 'Point', coordinates: [1, 0] });
-  expect(mapGeometry({ lat: '1', lon: '0' })).toMatchObject({ type: 'Point', coordinates: [0, 1] });
-  expect(mapGeometry({ lat: '60.124', lon: '51.221' })).toMatchObject({ type: 'Point', coordinates: [51.221, 60.124] });
-  expect(mapGeometry({ lat: '60,124', lon: '51,221' })).toMatchObject({ type: 'Point', coordinates: [51.221, 60.124] });
-  expect(mapGeometry({ lat: '60,12345', lon: '51,221' })).toMatchObject({ type: 'Point', coordinates: [51.221, 60.12345] });
-  expect(mapGeometry({ lat: '60,12345', lon: '51,12345' })).toMatchObject({ type: 'Point', coordinates: [51.12345, 60.12345] });
-  expect(mapGeometry({ lat: '60.124', lon: '51.221' }, 6)).toMatchObject({ type: 'Point', coordinates: [51.221, 60.124] });
-  expect(() => mapGeometry({ lat: '60,12345', lon: '51,12345' }, 4)).toThrow(OperationError.InvalidInput);
+  expect(mapGeometry({ lat: '60.124', lon: '31.221' })).toMatchObject({ type: 'Point', coordinates: [31.221, 60.124] });
+  expect(mapGeometry({ lat: '60,124', lon: '31,221' })).toMatchObject({ type: 'Point', coordinates: [31.221, 60.124] });
+  expect(mapGeometry({ lat: '60,12345', lon: '31,221' })).toMatchObject({ type: 'Point', coordinates: [31.221, 60.12345] });
+  expect(mapGeometry({ lat: '60,12345', lon: '31,12345' })).toMatchObject({ type: 'Point', coordinates: [31.12345, 60.12345] });
+  expect(mapGeometry({ lat: '60.124', lon: '31.221' })).toMatchObject({ type: 'Point', coordinates: [31.221, 60.124] });
+  expect(mapGeometry({ lat: '58', lon: '17' })).toMatchObject({ type: 'Point', coordinates: [17, 58] });
+  expect(mapGeometry({ lat: '69.99999', lon: '31.99999' })).toMatchObject({ type: 'Point', coordinates: [31.99999, 69.99999] });
+  expect(() => mapGeometry({ lat: '57.99999', lon: '31' })).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '58.99999', lon: '32' })).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '70', lon: '31' })).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '58.99999', lon: '16.9999' })).toThrow(OperationError.InvalidInput);
+  expect(() => mapGeometry({ lat: '60,12345', lon: '31,12345' }, 4)).toThrow(OperationError.InvalidInput);
   expect(() => mapGeometry({ lat: '60,123456', lon: '51,221' })).toThrow(OperationError.InvalidInput);
   expect(() => mapGeometry({ lat: '60,123456', lon: '51,221666' })).toThrow(OperationError.InvalidInput);
 });
@@ -122,4 +138,86 @@ test('test mapId', () => {
   expect(mapId('a1')).toBe('a1');
   expect(() => mapId('abc ')).toThrow(OperationError.InvalidInput);
   expect(mapId('abc')).toBe('abc');
+});
+
+test('test mapEmail', () => {
+  expect(mapEmail(undefined)).toBe(null);
+  expect(mapEmail(null)).toBe(null);
+  expect(mapEmail('')).toBe(null);
+  expect(mapEmail('test@vayla.fi')).toBe('test@vayla.fi');
+  expect(mapEmail('Testi.Teppo@vayla.fi')).toBe('Testi.Teppo@vayla.fi');
+  expect(mapEmail('test123@vayla.info')).toBe('test123@vayla.info');
+  expect(mapEmail('test123@vayla123.org')).toBe('test123@vayla123.org');
+  expect(mapEmail('123x@x.com')).toBe('123x@x.com');
+  expect(mapEmail('x@x.f123')).toBe('x@x.f123');
+  expect(mapEmail('Testi..Teppo@vayla.fi')).toBe('Testi..Teppo@vayla.fi');
+  expect(mapEmail('x@x.f1234')).toBe('x@x.f1234');
+  expect(mapEmail('x@x')).toBe('x@x');
+  expect(mapEmail('x@x.f')).toBe('x@x.f');
+  expect(mapEmail('Testi.Teppo@vayla')).toBe('Testi.Teppo@vayla');
+  expect(mapEmail('x..x@x.f.x')).toBe('x..x@x.f.x');
+  expect(() => mapEmail('x..x@x.f.')).toThrow(OperationError.InvalidInput);
+  expect(() => mapEmail('Testi.Teppo@vayla.')).toThrow(OperationError.InvalidInput);
+  expect(() => mapEmail('Testi.Teppo@vayla..fi')).toThrow(OperationError.InvalidInput);
+  expect(() => mapEmail(' ')).toThrow(OperationError.InvalidInput);
+  expect(() => mapEmail('x')).toThrow(OperationError.InvalidInput);
+  let text = 'x@';
+  for (let i = 0; i < 63; i++) {
+    text += 'x';
+  }
+  expect(mapEmail(text)).toBe(text);
+  expect(() => mapEmail(text + 'x')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapEmails', () => {
+  expect(mapEmails(undefined)).toBe(null);
+  expect(mapEmails(null)).toBe(null);
+  expect(mapEmails([''])).toStrictEqual([]);
+  expect(mapEmails(['x@x', 'y@y.fi'])).toStrictEqual(['x@x', 'y@y.fi']);
+  expect(() => mapEmails(['x@x', 'y@y.'])).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapPhoneNumber', () => {
+  expect(mapPhoneNumber(undefined)).toBe(null);
+  expect(mapPhoneNumber(null)).toBe(null);
+  expect(mapPhoneNumber('')).toBe(null);
+  expect(mapPhoneNumber('35812')).toBe('35812');
+  expect(mapPhoneNumber('358123')).toBe('358123');
+  expect(mapPhoneNumber('+358123')).toBe('+358123');
+  expect(mapPhoneNumber('+358 123')).toBe('+358 123');
+  expect(mapPhoneNumber('1 2 3')).toBe('1 2 3');
+  expect(mapPhoneNumber('+3581 ')).toBe('+3581 ');
+  expect(mapPhoneNumber('12345678901234567890')).toBe('12345678901234567890');
+  expect(mapPhoneNumber('+12345678901234567890')).toBe('+12345678901234567890');
+  expect(() => mapPhoneNumber('123456789012345678901')).toThrow(OperationError.InvalidInput);
+  expect(() => mapPhoneNumber('+3581')).toThrow(OperationError.InvalidInput);
+  expect(() => mapPhoneNumber('3581')).toThrow(OperationError.InvalidInput);
+  expect(() => mapPhoneNumber(' +3581 2 ')).toThrow(OperationError.InvalidInput);
+  expect(() => mapPhoneNumber('1+3581 2 ')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapPhoneNumbers', () => {
+  expect(mapPhoneNumbers(undefined)).toBe(null);
+  expect(mapPhoneNumbers(null)).toBe(null);
+  expect(mapPhoneNumbers([''])).toStrictEqual([]);
+  expect(mapPhoneNumbers(['35812'])).toStrictEqual(['35812']);
+  expect(mapPhoneNumbers(['12345678901234567890'])).toStrictEqual(['12345678901234567890']);
+  expect(mapPhoneNumbers(['358123', '+358123'])).toStrictEqual(['358123', '+358123']);
+  expect(() => mapPhoneNumbers(['+358x123'])).toThrow(OperationError.InvalidInput);
+  expect(() => mapPhoneNumbers(['123456789012345678901'])).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapInternetAddress', () => {
+  expect(mapInternetAddress(undefined)).toBe(null);
+  expect(mapInternetAddress(null)).toBe(null);
+  expect(mapInternetAddress('')).toBe(null);
+  expect(mapInternetAddress('www')).toBe('www');
+  expect(mapInternetAddress('www.vayla.fi')).toBe('www.vayla.fi');
+  expect(mapInternetAddress('https://www.vayla.fi')).toBe('https://www.vayla.fi');
+  let text = '';
+  for (let i = 0; i < 200; i++) {
+    text += 'x';
+  }
+  expect(mapInternetAddress(text)).toBe(text);
+  expect(() => mapInternetAddress(text + 'x')).toThrow(OperationError.InvalidInput);
 });

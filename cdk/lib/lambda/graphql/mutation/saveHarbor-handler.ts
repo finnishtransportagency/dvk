@@ -4,13 +4,16 @@ import { auditLog, log } from '../../logger';
 import HarborDBModel from '../../db/harborDBModel';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import {
+  mapEmail,
   mapGeometry,
   mapHarborDBModelToGraphqlType,
   mapId,
+  mapInternetAddress,
   mapMandatoryText,
   mapNumber,
+  mapPhoneNumber,
+  mapPhoneNumbers,
   mapString,
-  mapStringArray,
   mapText,
 } from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
@@ -28,12 +31,12 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
     creationTimestamp: old ? old.creationTimestamp : Date.now(),
     modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
-    email: mapString(harbor.email),
+    email: mapEmail(harbor.email),
     extraInfo: mapText(harbor.extraInfo),
-    fax: mapString(harbor.fax),
+    fax: mapPhoneNumber(harbor.fax),
     harborBasin: mapText(harbor.harborBasin),
-    internet: mapString(harbor.internet),
-    phoneNumber: mapStringArray(harbor.phoneNumber),
+    internet: mapInternetAddress(harbor.internet),
+    phoneNumber: mapPhoneNumbers(harbor.phoneNumber),
     geometry: mapGeometry(harbor.geometry),
     cargo: mapText(harbor.cargo),
     quays:

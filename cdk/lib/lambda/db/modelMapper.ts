@@ -43,15 +43,21 @@ export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBE
 }
 
 export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
-  if (geometry && (geometry.lat || geometry.lon)) {
-    return { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
+  if (geometry && geometry.lat && geometry.lon) {
+    const geom = { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
+    if (geom.coordinates[0] && geom.coordinates[1]) {
+      if (geom.coordinates[0] >= 32 || geom.coordinates[0] < 17 || geom.coordinates[1] >= 70 || geom.coordinates[1] < 58) {
+        throw new Error(OperationError.InvalidInput);
+      }
+    }
+    return geom;
   }
   return null;
 }
 
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
-    const m = text.match(/[a-z]{1,}[0-9]*/); //NOSONAR
+    const m = text.match(/[a-z]+\d*/);
     if (m && m[0].length === text.length) {
       return text;
     }
@@ -93,6 +99,43 @@ export function mapString(text: Maybe<string> | undefined, maxLength = MAX_TEXT_
     return text;
   }
   return null;
+}
+
+export function mapInternetAddress(text: Maybe<string> | undefined): string | null {
+  return mapString(text, 200);
+}
+
+function checkRegExp(regexp: RegExp, text: string) {
+  if (!regexp.test(text)) {
+    throw new Error(OperationError.InvalidInput);
+  }
+}
+
+export function mapEmail(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+      text
+    );
+    return text;
+  }
+  return null;
+}
+
+export function mapEmails(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapEmail(t)).filter((t) => t !== null) as string[]) : null;
+}
+
+export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(/^[+]?[0-9\s]{5,20}$/, text);
+    return text;
+  }
+  return null;
+}
+
+export function mapPhoneNumbers(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapPhoneNumber(t)).filter((t) => t !== null) as string[]) : null;
 }
 
 export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {
