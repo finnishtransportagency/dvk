@@ -386,7 +386,7 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
         const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) || 0) > 0;
 
         return (
-          <li key={idx}>
+          <li key={area?.id || idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
             <em
               key={area?.id}
               className="inlineHoverText"
@@ -448,8 +448,10 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
       {data && (
         <IonText>
           <p>
-            <strong>{t('pilotOrder')}: </strong>
-            {t('email')}: <a href={'mailto:' + data.email}>{data.email}</a>
+            <strong>{t('pilotOrder')}:</strong>
+            <br />
+            {t('email')}: {data.email && <a href={'mailto:' + data.email}>{data.email}</a>}
+            {!data.email && '-'}
             <br />
             {t('orderFrom')}:{' '}
             <a href={'//' + PILOTORDER_URL} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
@@ -508,7 +510,7 @@ const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
 };
 
 type VTSInfoProps = {
-  data?: Vts | null;
+  data?: (Vts | null)[] | null;
 };
 
 const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
@@ -520,21 +522,38 @@ const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
       {data && (
         <IonText>
           <p>
-            <strong>{t('vts')}: </strong>
-            {data.name && data.name[lang]}, {t('vhf')}{' '}
-            {data.vhf?.map((v) => (v?.name ? v.channel + ' (' + v?.name[lang] + ')' : v?.channel)).join(', ')}.{' '}
-            <Phonenumber title={t('phone')} showEmpty number={data.phoneNumber} />,{' '}
-            {data.email &&
-              data.email?.map((email, idx) => {
-                return (
-                  <span key={idx}>
-                    <a href={'mailto:' + email} key={idx}>
-                      {email}
-                    </a>
-                    {Number(data?.email?.length) > idx + 1 ? t('and') : ''}
-                  </span>
-                );
-              })}
+            <strong>{t('vts')}:</strong>
+            {data.map((vts, idx) => {
+              return (
+                <span key={(vts?.name?.fi || '') + idx}>
+                  <br />
+                  {vts?.name && vts.name[lang]}
+                  {vts?.vhf && vts.vhf.length > 0 && (
+                    <>
+                      , {t('vhf')} {vts?.vhf?.map((v) => (v?.name ? v.channel + ' (' + v?.name[lang] + ')' : v?.channel)).join(', ')}
+                    </>
+                  )}
+                  <br />
+                  {vts?.email && (
+                    <>
+                      {t('email')}:{' '}
+                      {vts.email?.map((email, idx2) => {
+                        return (
+                          <span key={email}>
+                            <a href={'mailto:' + email}>{email}</a>
+                            {Number(vts?.email?.length) > idx2 + 1 ? ', ' : ''}
+                          </span>
+                        );
+                      })}
+                      {vts.email.length < 1 && '-'}
+                      <br />
+                    </>
+                  )}
+                  <Phonenumber title={t('phone')} showEmpty number={vts?.phoneNumber} />
+                  <br />
+                </span>
+              );
+            })}
           </p>
         </IonText>
       )}
@@ -554,28 +573,31 @@ const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
     <>
       {data && (
         <IonText>
-          <p>
-            <strong>{t('tugs')}: </strong>
+          <p className="no-margin-bottom">
+            <strong>{t('tugs')}:</strong>
             {data.map((tug, idx) => {
               return (
                 <span key={idx}>
-                  {idx !== 0 && <br />}
+                  <br />
                   {tug?.name && tug.name[lang]}
-                  {tug?.phoneNumber && (
-                    <>
-                      {' '}
-                      {t('phone')}
-                      {': '}
-                      {tug?.phoneNumber.map((phone, jdx) => {
-                        return (
-                          <span key={jdx}>
-                            <Phonenumber number={phone} />
-                            {Number(tug.phoneNumber?.length) > jdx + 1 ? t('and') : ' '}
-                          </span>
-                        );
-                      })}
-                    </>
-                  )}
+                  <br />
+                  {t('email')}: {tug?.email && <a href={'mailto:' + tug?.email}>{tug?.email}</a>}
+                  {!tug?.email && '-'}
+                  <br />
+                  {t('phone')}:{' '}
+                  {tug?.phoneNumber &&
+                    tug?.phoneNumber.map((phone, jdx) => {
+                      return (
+                        <span key={jdx}>
+                          <Phonenumber number={phone} />
+                          {Number(tug.phoneNumber?.length) > jdx + 1 ? ', ' : ' '}
+                        </span>
+                      );
+                    })}
+                  {(!tug?.phoneNumber || (tug?.phoneNumber && tug?.phoneNumber.length < 1)) && '-'}
+                  <br />
+                  <Phonenumber title={t('fax')} showEmpty number={tug?.fax} />
+                  <br />
                 </span>
               );
             })}
@@ -641,9 +663,10 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
 
 type ContactInfoProps = {
   data?: HarborPartsFragment | null;
+  noMargin?: boolean;
 };
 
-const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
+const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
@@ -651,7 +674,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
   return (
     <>
       {data && (
-        <p>
+        <p className={noMargin ? 'no-margin-bottom' : ''}>
           {data.company && (
             <>
               <span>{data.company[lang]}</span>
@@ -672,7 +695,7 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
             return (
               <span key={idx}>
                 <Phonenumber number={phone} />
-                {Number(data.phoneNumber?.length) > idx + 1 ? t('and') : ''}
+                {Number(data.phoneNumber?.length) > idx + 1 ? ', ' : ''}
               </span>
             );
           })}
@@ -692,9 +715,10 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data }) => {
 
 type HarbourInfoProps = {
   data?: HarborPartsFragment | null;
+  isLast?: boolean;
 };
 
-const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
+const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -733,7 +757,7 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data }) => {
           </IonText>
           <IonText>
             <h5>{t('contactDetails')}</h5>
-            <ContactInfo data={data} />
+            <ContactInfo data={data} noMargin={isLast} />
           </IonText>
         </>
       )}
@@ -918,15 +942,13 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               </h4>
             </IonText>
             <PilotInfo data={fairwayCard?.trafficService?.pilot} />
-            {fairwayCard?.trafficService?.vts?.map((vts: Vts | null | undefined, idx: React.Key | null | undefined) => {
-              return <VTSInfo data={vts} key={idx} />;
-            })}
+            <VTSInfo data={fairwayCard?.trafficService?.vts} />
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
 
           <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === '2' ? ' active' : '')}>
-            {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key | null | undefined) => {
-              return <HarbourInfo data={harbour} key={idx} />;
+            {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
+              return <HarbourInfo data={harbour} key={idx} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
             })}
             {(!fairwayCard?.harbors || fairwayCard?.harbors?.length === 0) && (
               <IonText className="no-print">
