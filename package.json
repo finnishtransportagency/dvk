@@ -32,7 +32,6 @@
     "graphql": "^16.6.0",
     "graphql-request": "^5.2.0",
     "i18next": "^22.4.14",
-    "ionicons": "^7.1.0",
     "lodash": "^4.17.21",
     "ol": "^7.3.0",
     "ol-mapbox-style": "^10.4.0",
@@ -62,7 +61,7 @@
     "prestart": "npm run generate",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@ionic/core|@ionic/react-router|@ionic/core|@stencil/core|ionicons)/\"",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@ionic/core|@ionic/react-router|@ionic/core|@stencil/core)/\"",
     "eject": "react-scripts eject",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
     "generate": "graphql-codegen"

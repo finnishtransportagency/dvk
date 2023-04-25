@@ -9,7 +9,7 @@ import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
-import { warningOutline } from 'ionicons/icons';
+import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import './MarineWarnings.css';
@@ -215,7 +215,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
       {alertProps && !isLoading && !isFetching && (
         <Alert
-          icon={warningOutline}
+          icon={alertIcon}
           color={alertProps.color}
           className={'top-margin ' + alertProps.color}
           title={t('lastUpdatedAt', { val: alertProps.duration })}
