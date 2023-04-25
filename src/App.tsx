@@ -201,7 +201,7 @@ const DvkIonApp: React.FC = () => {
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
       <IonReactRouter basename="/vaylakortti">
-        {initDone && <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />}
+        <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
             value={percentDone}
