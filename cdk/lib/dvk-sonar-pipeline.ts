@@ -126,6 +126,10 @@ export class DvkSonarPipelineStack extends Stack {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
             value: 'SonarQubeAccessToken',
           },
+          NODE_OPTIONS: {
+            value: '--max_old_space_size=4096 --max-old-space-size=4096',
+            type: BuildEnvironmentVariableType.PLAINTEXT,
+          },
         },
       },
       grantReportGroupPermissions: true,
