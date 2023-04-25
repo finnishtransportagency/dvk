@@ -120,6 +120,7 @@ test('test mapGeometry', () => {
   expect(mapGeometry({ lat: '60.124', lon: '31.221' })).toMatchObject({ type: 'Point', coordinates: [31.221, 60.124] });
   expect(mapGeometry({ lat: '58', lon: '17' })).toMatchObject({ type: 'Point', coordinates: [17, 58] });
   expect(mapGeometry({ lat: '69.99999', lon: '31.99999' })).toMatchObject({ type: 'Point', coordinates: [31.99999, 69.99999] });
+  expect(() => mapGeometry({ lat: ' ', lon: ' ' })).toThrow(OperationError.InvalidInput);
   expect(() => mapGeometry({ lat: '57.99999', lon: '31' })).toThrow(OperationError.InvalidInput);
   expect(() => mapGeometry({ lat: '58.99999', lon: '32' })).toThrow(OperationError.InvalidInput);
   expect(() => mapGeometry({ lat: '70', lon: '31' })).toThrow(OperationError.InvalidInput);

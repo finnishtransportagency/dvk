@@ -49,8 +49,9 @@ export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MA
       if (geom.coordinates[0] >= 32 || geom.coordinates[0] < 17 || geom.coordinates[1] >= 70 || geom.coordinates[1] < 58) {
         throw new Error(OperationError.InvalidInput);
       }
+      return geom;
     }
-    return geom;
+    throw new Error(OperationError.InvalidInput);
   }
   return null;
 }
