@@ -124,7 +124,7 @@ export class DvkBackendStack extends Stack {
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         bundling: {
           minify: true,
         },
@@ -284,7 +284,7 @@ export class DvkBackendStack extends Stack {
         PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
         SSM_PARAMETER_STORE_TTL: '300',
       },
-      logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+      logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
       bundling: {
         minify: true,
       },
@@ -315,7 +315,7 @@ export class DvkBackendStack extends Stack {
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         bundling: {
           minify: true,
         },

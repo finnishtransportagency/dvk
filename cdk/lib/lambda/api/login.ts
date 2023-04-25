@@ -1,7 +1,7 @@
 import { getCloudFrontPrivateKey, getCloudFrontPublicKeyId, getCognitoUrl, isPermanentEnvironment } from '../environment';
 import { getSignedCookies } from '@aws-sdk/cloudfront-signer';
 import { ALBEvent, ALBResult, AppSyncResolverEvent } from 'aws-lambda';
-import { log } from '../logger';
+import { auditLog, log } from '../logger';
 import JWT, { JwtPayload } from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
 import axios from 'axios';
@@ -95,7 +95,7 @@ export class IllegalAccessError extends Error {
   }
 }
 
-export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>): Promise<CurrentUser | undefined> {
+export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>, checkRoles = true): Promise<CurrentUser | undefined> {
   let jwtDataToken;
   if ('multiValueHeaders' in event && event.multiValueHeaders) {
     log.debug({ headers: event.multiValueHeaders }, 'Request headers');
@@ -114,7 +114,7 @@ export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEv
   }
   log.debug({ jwtDataToken }, 'JwtDataToken');
   const roles = jwtDataToken ? parseRoles(jwtDataToken['custom:rooli']) : [];
-  if (jwtDataToken && roles.length > 0) {
+  if (jwtDataToken && (roles.length > 0 || checkRoles === false)) {
     return {
       uid: jwtDataToken['custom:uid'] as string,
       firstName: jwtDataToken['custom:etunimi'] as string,
@@ -144,8 +144,9 @@ export async function getCurrentUser(event: ALBEvent | AppSyncResolverEvent<unkn
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   try {
-    const currentUser = await getOptionalCurrentUser(event);
-    if (!currentUser) {
+    const currentUser = await getOptionalCurrentUser(event, false);
+    if (!currentUser || currentUser.roles.length === 0) {
+      auditLog.info({ user: currentUser ? currentUser.uid : 'unknown' }, 'Login failed');
       return {
         statusCode: 403,
       };
@@ -183,6 +184,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         ],
       },
     };
+    auditLog.info({ user: currentUser.uid }, 'Login succeeded');
     log.debug(response, 'Login response');
     return response;
   } catch (e) {
