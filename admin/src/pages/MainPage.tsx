@@ -7,6 +7,7 @@ import {
   IonHeader,
   IonInput,
   IonItem,
+  IonLabel,
   IonPage,
   IonRow,
   IonSelect,
@@ -95,11 +96,16 @@ const MainPage: React.FC = () => {
     return 'plainButton' + (sortDescending ? ' desc' : '');
   }, [sortDescending]);
 
+  const selectTypeRef = useRef<HTMLIonSelectElement>(null);
+  const focusTypeSelect = () => {
+    selectTypeRef.current?.click();
+  };
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border">
         <IonGrid className="optionBar">
-          <IonRow>
+          <IonRow className="ion-align-items-end">
             <IonCol size="auto">
               <div className="searchWrapper">
                 <IonInput
@@ -120,8 +126,12 @@ const MainPage: React.FC = () => {
               </div>
             </IonCol>
             <IonCol size="auto">
+              <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
+                {translatedTextOrEmpty('select-type')}
+              </IonLabel>
               <IonItem fill="outline" className="selectInput">
                 <IonSelect
+                  ref={selectTypeRef}
                   placeholder={translatedTextOrEmpty('select-type')}
                   interface="popover"
                   multiple={true}
