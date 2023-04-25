@@ -13,6 +13,7 @@ ion-modal.marinewarning::part(content) {
   font-size: 12px;
   line-height: 1.125rem;
   overflow: auto;
+  color: var(--ion-color-dark);
 }
 ion-app:not(.mobile) ion-modal.marinewarning::part(content) {
   width: auto;
