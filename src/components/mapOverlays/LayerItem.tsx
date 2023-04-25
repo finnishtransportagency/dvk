@@ -10,6 +10,7 @@ import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import { warningOutline } from 'ionicons/icons';
+import { FeatureDataLayerId } from '../../utils/constants';
 
 const LegendDepth = () => {
   return (
@@ -220,7 +221,7 @@ const LegendIce = () => {
 };
 
 interface LayerItemProps {
-  id: string;
+  id: FeatureDataLayerId;
   title: string;
   noOfflineSupport?: boolean;
   layers: string[];
@@ -254,16 +255,19 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
     }, 250);
   };
   let alertProps = undefined;
+  const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
   if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
-    const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
+  const initialized = !!dataUpdatedAt || id === 'ice';
+  const disabled = !initialized || (noOfflineSupport && state.isOffline);
+
   return (
     <IonGrid className="ion-no-padding layerItem">
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonText id={`${title}-label`} className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>
+            <IonText id={`${title}-label`} className={disabled ? 'disabled' : ''}>
               {title}
             </IonText>
             <IonCheckbox
@@ -279,7 +283,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
                   return [...prev, id];
                 })
               }
-              disabled={noOfflineSupport && state.isOffline}
+              disabled={disabled}
             />
             <IonText slot="end" className={'layer ' + id}></IonText>
           </IonItem>
