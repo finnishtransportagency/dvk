@@ -617,7 +617,8 @@ ion-grid.formGrid ion-col.no-border {
 }
 .mainContent .sectionContent {
   transition: all 150ms;
-  max-height: 90vh;
+  max-height: 199vh;
+  overflow: auto;
 }
 .mainContent .sectionContent.closed {
   max-height: 0;
