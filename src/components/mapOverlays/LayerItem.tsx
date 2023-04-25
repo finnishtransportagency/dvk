@@ -9,7 +9,7 @@ import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
-import { warningOutline } from 'ionicons/icons';
+import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
 
 const LegendDepth = () => {
@@ -303,7 +303,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       </IonRow>
       {alertProps && (
         <LayerAlert
-          icon={warningOutline}
+          icon={alertIcon}
           className={'layerAlert'}
           title={t('warnings.lastUpdatedAt2', { val: alertProps.duration })}
           color={alertProps.color}

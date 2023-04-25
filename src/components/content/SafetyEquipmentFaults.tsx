@@ -11,7 +11,7 @@ import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
-import { warningOutline } from 'ionicons/icons';
+import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 
 type FaultGroupProps = {
@@ -145,7 +145,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
 
       {alertProps && !isLoading && !isFetching && (
         <Alert
-          icon={warningOutline}
+          icon={alertIcon}
           color={alertProps.color}
           className={'top-margin ' + alertProps.color}
           title={t('warnings.lastUpdatedAt', { val: alertProps.duration })}
