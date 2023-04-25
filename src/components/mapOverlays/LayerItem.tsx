@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -254,13 +254,23 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       });
     }, 250);
   };
-  let alertProps = undefined;
+  let alertProps:
+    | {
+        duration: number;
+        color: string;
+      }
+    | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
   if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
   const initialized = !!dataUpdatedAt || id === 'ice';
   const disabled = !initialized || (noOfflineSupport && state.isOffline);
+
+  const getLayerItemAlertText = useCallback(() => {
+    if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
+    return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
+  }, [alertProps, t]);
 
   return (
     <IonGrid className="ion-no-padding layerItem">
@@ -301,14 +311,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
           )}
         </IonCol>
       </IonRow>
-      {alertProps && (
-        <LayerAlert
-          icon={alertIcon}
-          className={'layerAlert'}
-          title={t('warnings.lastUpdatedAt2', { val: alertProps.duration })}
-          color={alertProps.color}
-        />
-      )}
+      {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
       {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>

@@ -235,7 +235,8 @@
     "notifier": "Notifier",
     "modified": "Updated",
     "lastUpdatedAt": "Data of this view loaded over {{ val, number}} h ago.",
-    "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago."
+    "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
+    "lastUpdatedUnknown": "The last loading time of this views data is unknown."
   },
   "appUpdateAlert": {
     "title": "Update available",
