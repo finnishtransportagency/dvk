@@ -115,7 +115,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         setMarineWarningLayer={setShowMarineWarningNotification}
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
-      <MobileModal />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <MarineWarningModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
     </>
