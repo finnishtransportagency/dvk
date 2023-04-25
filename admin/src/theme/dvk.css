@@ -213,7 +213,7 @@ ion-button.plainButton.button-disabled {
 }
 .searchWrapper ion-input.searchBar {
   box-sizing: border-box;
-  height: 45px;
+  height: 43px;
   max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
@@ -495,7 +495,7 @@ div.ion-page > ion-header ion-progress-bar {
 }
 
 ion-grid.optionBar {
-  padding: 24px 43px 10px;
+  padding: 10px 43px;
 }
 ion-grid.optionBar em {
   display: block;
