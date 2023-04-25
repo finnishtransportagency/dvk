@@ -12,6 +12,10 @@ import {
   mapEmails,
   mapPhoneNumbers,
   mapInternetAddress,
+  mapQuayDepth,
+  mapPilotJourney,
+  mapQuayLength,
+  mapVhfChannel,
 } from '../lib/lambda/db/modelMapper';
 
 test('test mapText', () => {
@@ -221,4 +225,54 @@ test('test mapInternetAddress', () => {
   }
   expect(mapInternetAddress(text)).toBe(text);
   expect(() => mapInternetAddress(text + 'x')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapQuayDepth', () => {
+  expect(mapQuayDepth(undefined)).toBe(null);
+  expect(mapQuayDepth(null)).toBe(null);
+  expect(mapQuayDepth('999')).toBe(999);
+  expect(mapQuayDepth('999.1')).toBe(999.1);
+  expect(mapQuayDepth('999.99')).toBe(999.99);
+  expect(mapQuayDepth('1')).toBe(1);
+  expect(mapQuayDepth('0')).toBe(0);
+  expect(() => mapQuayDepth('x')).toThrow(OperationError.InvalidInput);
+  expect(() => mapQuayDepth('999.999')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapPilotJourney', () => {
+  expect(mapPilotJourney(undefined)).toBe(null);
+  expect(mapPilotJourney(null)).toBe(null);
+  expect(mapPilotJourney('999')).toBe(999);
+  expect(mapPilotJourney('1')).toBe(1);
+  expect(mapPilotJourney('0')).toBe(0);
+  expect(mapPilotJourney('999.9')).toBe(999.9);
+  expect(() => mapVhfChannel('x')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVhfChannel('999.99')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapQuayLength', () => {
+  expect(mapQuayLength(undefined)).toBe(null);
+  expect(mapQuayLength(null)).toBe(null);
+  expect(mapQuayLength('99')).toBe(99);
+  expect(mapQuayLength('999')).toBe(999);
+  expect(mapQuayLength('999.1')).toBe(999.1);
+  expect(mapQuayLength('9999.9')).toBe(9999.9);
+  expect(mapQuayLength('1')).toBe(1);
+  expect(mapQuayLength('0')).toBe(0);
+  expect(() => mapQuayLength('x')).toThrow(OperationError.InvalidInput);
+  expect(() => mapQuayLength('999.99')).toThrow(OperationError.InvalidInput);
+  expect(() => mapQuayLength('9999.99')).toThrow(OperationError.InvalidInput);
+});
+
+test('test mapVhfChannel', () => {
+  expect(mapVhfChannel(undefined)).toBe(null);
+  expect(mapVhfChannel(null)).toBe(null);
+  expect(mapVhfChannel('999')).toBe(999);
+  expect(mapVhfChannel('1')).toBe(1);
+  expect(mapVhfChannel('0')).toBe(0);
+  expect(mapVhfChannel('01')).toBe(1);
+  expect(() => mapVhfChannel('x')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVhfChannel('0.1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVhfChannel('999.1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVhfChannel('999.99')).toThrow(OperationError.InvalidInput);
 });

@@ -11,11 +11,12 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
-  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
+  mapPilotJourney,
   mapString,
   mapText,
+  mapVhfChannel,
 } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
@@ -64,7 +65,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           card.trafficService?.pilot?.places?.map((p) => {
             return {
               id: p.id,
-              pilotJourney: mapNumber(p.pilotJourney),
+              pilotJourney: mapPilotJourney(p.pilotJourney),
             };
           }) || [],
       },
@@ -86,7 +87,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
             vhf: v?.vhf?.map((v2) => {
               return {
                 name: mapText(v2?.name),
-                channel: mapNumber(v2?.channel),
+                channel: mapVhfChannel(v2?.channel),
               };
             }),
           };

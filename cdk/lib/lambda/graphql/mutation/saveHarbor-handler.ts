@@ -7,10 +7,11 @@ import {
   mapEmail,
   mapGeometry,
   mapHarborDBModelToGraphqlType,
+  mapQuayDepth,
+  mapQuayLength,
   mapId,
   mapInternetAddress,
   mapMandatoryText,
-  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapString,
@@ -43,14 +44,14 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
       harbor.quays?.map((q) => {
         return {
           extraInfo: mapText(q?.extraInfo),
-          length: mapNumber(q?.length),
+          length: mapQuayLength(q?.length),
           name: mapText(q?.name),
           geometry: mapGeometry(q?.geometry),
           sections:
             q?.sections?.map((s) => {
               return {
-                depth: mapNumber(s?.depth),
-                name: mapString(s?.name),
+                depth: mapQuayDepth(s?.depth),
+                name: mapString(s?.name, 200),
                 geometry: mapGeometry(s?.geometry),
               };
             }) || null,

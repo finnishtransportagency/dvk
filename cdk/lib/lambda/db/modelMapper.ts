@@ -58,6 +58,7 @@ export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MA
 
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
+    checkLength(200, text);
     const m = text.match(/[a-z]+\d*/);
     if (m && m[0].length === text.length) {
       return text;
@@ -149,6 +150,43 @@ export function mapIds(ids: number[]) {
 
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return mapIds(dbModel.fairways.map((f) => f.id));
+}
+
+function mapNumberAndMax(text: string, regexp: RegExp, maxValue: number) {
+  checkRegExp(regexp, text);
+  const number = mapNumber(text);
+  if (number && number > maxValue) {
+    throw new Error(OperationError.InvalidInput);
+  }
+  return number;
+}
+
+export function mapPilotJourney(text: Maybe<string> | undefined) {
+  if (text) {
+    return mapNumberAndMax(text, /^\d{1,3}[.]?\d?$/, 999.9);
+  }
+  return null;
+}
+
+export function mapVhfChannel(text: Maybe<string> | undefined) {
+  if (text) {
+    return mapNumberAndMax(text, /^\d{1,3}$/, 999);
+  }
+  return null;
+}
+
+export function mapQuayLength(text: Maybe<string> | undefined) {
+  if (text) {
+    return mapNumberAndMax(text, /^\d{1,4}[.]?\d?$/, 9999.9);
+  }
+  return null;
+}
+
+export function mapQuayDepth(text: Maybe<string> | undefined) {
+  if (text) {
+    return mapNumberAndMax(text, /^\d{1,3}[.]?\d{0,2}$/, 999.99);
+  }
+  return null;
 }
 
 const pilotPlaceMap = new Map<number, PilotPlace>();
