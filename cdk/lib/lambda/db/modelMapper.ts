@@ -155,7 +155,7 @@ export function mapFairwayIds(dbModel: FairwayCardDBModel) {
 function mapNumberAndMax(text: string, regexp: RegExp, maxValue: number) {
   checkRegExp(regexp, text);
   const number = mapNumber(text);
-  if (number && number > maxValue) {
+  if (number && (number > maxValue || number < 0)) {
     throw new Error(OperationError.InvalidInput);
   }
   return number;
