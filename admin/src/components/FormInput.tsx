@@ -121,11 +121,11 @@ const FormInput: React.FC<InputProps> = ({
   };
 
   const getInputPattern = () => {
-    if (actionType === 'primaryId') return '[a-z]+[0-9]*';
-    if (inputType === 'latitude') return '(5[89]|6\\d){1}(.[0-9]{1,5})?'; // lat range 58-70
-    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(.[0-9]{1,5})?'; // lon range 17-32
-    if (inputType === 'tel' && multiple) return '(^$)|(([+]?[0-9\\s]{5,20}){1}(,[+]?[0-9\\s]{5,20}){0,9})';
-    if (inputType === 'tel') return '[+]?[0-9\\s]{5,20}';
+    if (actionType === 'primaryId') return '[a-z]+[a-z\\d]*';
+    if (inputType === 'latitude') return '(5[89]|6\\d){1}(.\\d{1,5})?'; // lat range 58-70
+    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(.\\d{1,5})?'; // lon range 17-32
+    if (inputType === 'tel' && multiple) return '(^$)|(([+]?\\d(\\s?\\d){4,19}){1}(,[+]?\\d(\\s?\\d){4,19}){0,9})';
+    if (inputType === 'tel') return '[+]?\\d(\\s?\\d){4,19}';
     return undefined;
   };
 
