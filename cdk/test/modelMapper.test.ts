@@ -233,6 +233,7 @@ test('test mapQuayDepth', () => {
   expect(mapQuayDepth('999')).toBe(999);
   expect(mapQuayDepth('999.1')).toBe(999.1);
   expect(mapQuayDepth('999.99')).toBe(999.99);
+  expect(mapQuayDepth('999,99')).toBe(999.99);
   expect(mapQuayDepth('1')).toBe(1);
   expect(mapQuayDepth('0')).toBe(0);
   expect(() => mapQuayDepth('-1')).toThrow(OperationError.InvalidInput);
@@ -247,6 +248,7 @@ test('test mapPilotJourney', () => {
   expect(mapPilotJourney('1')).toBe(1);
   expect(mapPilotJourney('0')).toBe(0);
   expect(mapPilotJourney('999.9')).toBe(999.9);
+  expect(mapPilotJourney('999,9')).toBe(999.9);
   expect(() => mapPilotJourney('-1')).toThrow(OperationError.InvalidInput);
   expect(() => mapPilotJourney('x')).toThrow(OperationError.InvalidInput);
   expect(() => mapPilotJourney('999.99')).toThrow(OperationError.InvalidInput);
@@ -259,6 +261,7 @@ test('test mapQuayLength', () => {
   expect(mapQuayLength('999')).toBe(999);
   expect(mapQuayLength('999.1')).toBe(999.1);
   expect(mapQuayLength('9999.9')).toBe(9999.9);
+  expect(mapQuayLength('9999,9')).toBe(9999.9);
   expect(mapQuayLength('1')).toBe(1);
   expect(mapQuayLength('0')).toBe(0);
   expect(() => mapQuayLength('-1')).toThrow(OperationError.InvalidInput);

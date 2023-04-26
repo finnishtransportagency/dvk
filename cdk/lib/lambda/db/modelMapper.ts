@@ -163,7 +163,7 @@ function mapNumberAndMax(text: string, regexp: RegExp, maxValue: number) {
 
 export function mapPilotJourney(text: Maybe<string> | undefined) {
   if (text) {
-    return mapNumberAndMax(text, /^\d{1,3}[.]?\d?$/, 999.9);
+    return mapNumberAndMax(text, /^\d{1,3}[.,]?\d?$/, 999.9);
   }
   return null;
 }
@@ -177,14 +177,14 @@ export function mapVhfChannel(text: Maybe<string> | undefined) {
 
 export function mapQuayLength(text: Maybe<string> | undefined) {
   if (text) {
-    return mapNumberAndMax(text, /^\d{1,4}[.]?\d?$/, 9999.9);
+    return mapNumberAndMax(text, /^\d{1,4}[.,]?\d?$/, 9999.9);
   }
   return null;
 }
 
 export function mapQuayDepth(text: Maybe<string> | undefined) {
   if (text) {
-    return mapNumberAndMax(text, /^\d{1,3}[.]?\d{0,2}$/, 999.99);
+    return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
   }
   return null;
 }
