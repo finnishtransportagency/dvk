@@ -30,9 +30,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.east@finnpilot.fi",
-      "phoneNumber": "+358400907978",
-      "fax": "+358295253011",
+      "email": "pilotdispatch.kotka@finnpilot.fi",
+      "phoneNumber": "+358295253430",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
