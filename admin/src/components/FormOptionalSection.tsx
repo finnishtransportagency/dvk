@@ -415,7 +415,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
-            <IonButton shape="round" size={actionOuterTarget !== undefined ? 'small' : 'default'} onClick={() => addSection()} disabled={disabled}>
+            <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
               {t('general.add-section-' + sectionType)}
             </IonButton>
           </IonCol>
