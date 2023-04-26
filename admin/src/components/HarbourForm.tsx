@@ -211,25 +211,30 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       <IonHeader className="ion-no-border">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
-          <IonRow>
-            <IonCol className="ion-align-self-center align-right">
-              <IonText>
-                <em>
-                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
-                  <br />
-                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
-                  {savedHarbour?.modifier || savedHarbour?.creator || modifier || t('general.unknown')}
-                </em>
-              </IonText>
+          <IonRow className="ion-align-items-end">
+            <IonCol className="align-right">
+              <IonGrid>
+                <IonRow className="ion-align-items-center">
+                  <IonCol>
+                    <IonText>
+                      <em>
+                        {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
+                        <br />
+                        {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
+                        {savedHarbour?.modifier || savedHarbour?.creator || modifier || t('general.unknown')}
+                      </em>
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
             </IonCol>
             <IonCol size="auto">
               <FormSelect
-                label={t('fairwaycard.status')}
+                label={t('general.item-status')}
                 selected={state.status}
                 options={statusOptions}
                 setSelected={updateState}
                 actionType="status"
-                hideLabel={true}
                 disabled={isLoadingMutation}
               />
             </IonCol>
