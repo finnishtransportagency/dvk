@@ -4,14 +4,19 @@ import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import {
   getPilotPlaceMap,
+  mapEmail,
+  mapEmails,
   mapFairwayCardDBModelToGraphqlType,
   mapId,
   mapIds,
+  mapInternetAddress,
   mapMandatoryText,
-  mapNumber,
+  mapPhoneNumber,
+  mapPhoneNumbers,
+  mapPilotJourney,
   mapString,
-  mapStringArray,
   mapText,
+  mapVhfChannel,
 } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
@@ -51,38 +56,38 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     vesselRecommendation: mapText(card.vesselRecommendation),
     trafficService: {
       pilot: {
-        email: mapString(card.trafficService?.pilot?.email),
+        email: mapEmail(card.trafficService?.pilot?.email),
         extraInfo: mapText(card.trafficService?.pilot?.extraInfo),
-        fax: mapString(card.trafficService?.pilot?.fax),
-        internet: mapString(card.trafficService?.pilot?.internet),
-        phoneNumber: mapString(card.trafficService?.pilot?.phoneNumber),
+        fax: mapPhoneNumber(card.trafficService?.pilot?.fax),
+        internet: mapInternetAddress(card.trafficService?.pilot?.internet),
+        phoneNumber: mapPhoneNumber(card.trafficService?.pilot?.phoneNumber),
         places:
           card.trafficService?.pilot?.places?.map((p) => {
             return {
               id: p.id,
-              pilotJourney: mapNumber(p.pilotJourney),
+              pilotJourney: mapPilotJourney(p.pilotJourney),
             };
           }) || [],
       },
       tugs:
         card.trafficService?.tugs?.map((t) => {
           return {
-            email: mapString(t?.email),
-            fax: mapString(t?.fax),
+            email: mapEmail(t?.email),
+            fax: mapPhoneNumber(t?.fax),
             name: mapText(t?.name),
-            phoneNumber: mapStringArray(t?.phoneNumber),
+            phoneNumber: mapPhoneNumbers(t?.phoneNumber),
           };
         }) || null,
       vts:
         card.trafficService?.vts?.map((v) => {
           return {
-            email: mapStringArray(v?.email),
+            email: mapEmails(v?.email),
             name: mapText(v?.name),
-            phoneNumber: mapString(v?.phoneNumber),
+            phoneNumber: mapPhoneNumber(v?.phoneNumber),
             vhf: v?.vhf?.map((v2) => {
               return {
                 name: mapText(v2?.name),
-                channel: mapNumber(v2?.channel),
+                channel: mapVhfChannel(v2?.channel),
               };
             }),
           };

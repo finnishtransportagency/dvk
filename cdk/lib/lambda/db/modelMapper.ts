@@ -43,15 +43,23 @@ export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBE
 }
 
 export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
-  if (geometry && (geometry.lat || geometry.lon)) {
-    return { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
+  if (geometry && geometry.lat && geometry.lon) {
+    const geom = { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
+    if (geom.coordinates[0] && geom.coordinates[1]) {
+      if (geom.coordinates[0] >= 32 || geom.coordinates[0] < 17 || geom.coordinates[1] >= 70 || geom.coordinates[1] < 58) {
+        throw new Error(OperationError.InvalidInput);
+      }
+      return geom;
+    }
+    throw new Error(OperationError.InvalidInput);
   }
   return null;
 }
 
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
-    const m = text.match(/[a-z]{1,}[0-9]*/); //NOSONAR
+    checkLength(200, text);
+    const m = text.match(/^[a-z]+[a-z\d]*$/);
     if (m && m[0].length === text.length) {
       return text;
     }
@@ -95,6 +103,43 @@ export function mapString(text: Maybe<string> | undefined, maxLength = MAX_TEXT_
   return null;
 }
 
+export function mapInternetAddress(text: Maybe<string> | undefined): string | null {
+  return mapString(text, 200);
+}
+
+function checkRegExp(regexp: RegExp, text: string) {
+  if (!regexp.test(text)) {
+    throw new Error(OperationError.InvalidInput);
+  }
+}
+
+export function mapEmail(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+      text
+    );
+    return text;
+  }
+  return null;
+}
+
+export function mapEmails(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapEmail(t)).filter((t) => t !== null) as string[]) : null;
+}
+
+export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(/^[+]?\d(\s?\d){4,19}$/, text);
+    return text;
+  }
+  return null;
+}
+
+export function mapPhoneNumbers(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapPhoneNumber(t)).filter((t) => t !== null) as string[]) : null;
+}
+
 export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {
   return text ? (text.map((t) => mapString(t, maxLength)).filter((t) => t !== null) as string[]) : null;
 }
@@ -105,6 +150,34 @@ export function mapIds(ids: number[]) {
 
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return mapIds(dbModel.fairways.map((f) => f.id));
+}
+
+function mapNumberAndMax(text: Maybe<string> | undefined, regexp: RegExp, maxValue: number) {
+  if (text) {
+    checkRegExp(regexp, text);
+    const number = mapNumber(text);
+    if (number && (number > maxValue || number < 0)) {
+      throw new Error(OperationError.InvalidInput);
+    }
+    return number;
+  }
+  return null;
+}
+
+export function mapPilotJourney(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d?$/, 999.9);
+}
+
+export function mapVhfChannel(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}$/, 999);
+}
+
+export function mapQuayLength(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,4}[.,]?\d?$/, 9999.9);
+}
+
+export function mapQuayDepth(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
 }
 
 const pilotPlaceMap = new Map<number, PilotPlace>();

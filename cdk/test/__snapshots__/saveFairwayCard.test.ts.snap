@@ -82,9 +82,9 @@ exports[`test mapFairwayCardToModel all 1`] = `
         "fi": "extraInfo",
         "sv": "extraInfosv",
       },
-      "fax": "123",
+      "fax": "12345",
       "internet": "www",
-      "phoneNumber": "1234",
+      "phoneNumber": "12345",
       "places": [
         {
           "id": 1,
@@ -95,14 +95,14 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "tugs": [
       {
         "email": "test@fi",
-        "fax": "12",
+        "fax": "12222",
         "name": {
           "en": "nameen",
           "fi": "name",
           "sv": "namesv",
         },
         "phoneNumber": [
-          "+358",
+          "+35812",
         ],
       },
     ],
@@ -116,7 +116,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
           "fi": "name",
           "sv": "namesv",
         },
-        "phoneNumber": "789",
+        "phoneNumber": "78912",
         "vhf": [
           {
             "channel": 0,
