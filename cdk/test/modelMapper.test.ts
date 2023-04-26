@@ -141,7 +141,9 @@ test('test mapId', () => {
   expect(() => mapId(' ')).toThrow(OperationError.InvalidInput);
   expect(() => mapId('1')).toThrow(OperationError.InvalidInput);
   expect(mapId('a1')).toBe('a1');
+  expect(mapId('a1b233a')).toBe('a1b233a');
   expect(() => mapId('abc ')).toThrow(OperationError.InvalidInput);
+  expect(() => mapId('1abc')).toThrow(OperationError.InvalidInput);
   expect(mapId('abc')).toBe('abc');
 });
 

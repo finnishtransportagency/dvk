@@ -59,7 +59,7 @@ export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MA
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
     checkLength(200, text);
-    const m = text.match(/[a-z]+\d*/);
+    const m = text.match(/^[a-z]+[a-z\d]*$/);
     if (m && m[0].length === text.length) {
       return text;
     }
