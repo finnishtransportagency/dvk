@@ -2,7 +2,8 @@
   "header": {
     "mainTitle": "Digital farledskort",
     "appTitle": "[sv] Ylläpitokäyttöliittymä",
-    "logout": "[sv] Kirjaudu ulos"
+    "logout": "[sv] Kirjaudu ulos",
+    "skip-to-content": "Gå till huvudinnehåll"
   },
   "general": {
     "search-placeholder": "[sv] Hae nimellä",
