@@ -142,7 +142,7 @@ const FormSelect: React.FC<SelectProps> = ({
                 );
               })}
           </IonSelect>
-          <IonNote slot="helper">{getHelperText()}</IonNote>
+          {getHelperText() && <IonNote slot="helper">{getHelperText()}</IonNote>}
           <IonNote slot="error" className="input-error">
             <ErrorIcon aria-label={t('error') || ''} />
             {getErrorText()}
