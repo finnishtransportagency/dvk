@@ -682,6 +682,8 @@ ion-modal ion-footer ion-toolbar.buttonBar {
 }
 ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   margin-bottom: 0px;
+  font-size: 20px;
+  min-width: 175px;
 }
 
 ion-modal .closeButton {
