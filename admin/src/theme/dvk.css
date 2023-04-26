@@ -461,6 +461,11 @@ ion-header ion-text h1 {
   font-weight: bold;
   margin: 0 0 0 16px;
 }
+ion-header ion-text small {
+  font-size: 12px;
+  margin: 0 0 0 10px;
+  font-weight: normal;
+}
 ion-header ion-text h2 {
   font-size: 14px;
   text-transform: uppercase;
