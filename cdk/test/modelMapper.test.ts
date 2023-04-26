@@ -192,8 +192,8 @@ test('test mapPhoneNumber', () => {
   expect(mapPhoneNumber('358123')).toBe('358123');
   expect(mapPhoneNumber('+358123')).toBe('+358123');
   expect(mapPhoneNumber('+358 123')).toBe('+358 123');
-  expect(mapPhoneNumber('1 2 3')).toBe('1 2 3');
-  expect(mapPhoneNumber('+3581 ')).toBe('+3581 ');
+  expect(mapPhoneNumber('1 2345')).toBe('1 2345');
+  expect(mapPhoneNumber('+3581 1')).toBe('+3581 1');
   expect(mapPhoneNumber('12345678901234567890')).toBe('12345678901234567890');
   expect(mapPhoneNumber('+12345678901234567890')).toBe('+12345678901234567890');
   expect(() => mapPhoneNumber('123456789012345678901')).toThrow(OperationError.InvalidInput);

@@ -130,7 +130,7 @@ export function mapEmails(text: Maybe<Maybe<string>[]> | undefined): string[] | 
 
 export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
   if (text) {
-    checkRegExp(/^[+]?[0-9\s]{5,20}$/, text);
+    checkRegExp(/^[+]?\d(\s?\d){4,19}$/, text);
     return text;
   }
   return null;
@@ -152,41 +152,32 @@ export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return mapIds(dbModel.fairways.map((f) => f.id));
 }
 
-function mapNumberAndMax(text: string, regexp: RegExp, maxValue: number) {
-  checkRegExp(regexp, text);
-  const number = mapNumber(text);
-  if (number && (number > maxValue || number < 0)) {
-    throw new Error(OperationError.InvalidInput);
+function mapNumberAndMax(text: Maybe<string> | undefined, regexp: RegExp, maxValue: number) {
+  if (text) {
+    checkRegExp(regexp, text);
+    const number = mapNumber(text);
+    if (number && (number > maxValue || number < 0)) {
+      throw new Error(OperationError.InvalidInput);
+    }
+    return number;
   }
-  return number;
+  return null;
 }
 
 export function mapPilotJourney(text: Maybe<string> | undefined) {
-  if (text) {
-    return mapNumberAndMax(text, /^\d{1,3}[.,]?\d?$/, 999.9);
-  }
-  return null;
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d?$/, 999.9);
 }
 
 export function mapVhfChannel(text: Maybe<string> | undefined) {
-  if (text) {
-    return mapNumberAndMax(text, /^\d{1,3}$/, 999);
-  }
-  return null;
+  return mapNumberAndMax(text, /^\d{1,3}$/, 999);
 }
 
 export function mapQuayLength(text: Maybe<string> | undefined) {
-  if (text) {
-    return mapNumberAndMax(text, /^\d{1,4}[.,]?\d?$/, 9999.9);
-  }
-  return null;
+  return mapNumberAndMax(text, /^\d{1,4}[.,]?\d?$/, 9999.9);
 }
 
 export function mapQuayDepth(text: Maybe<string> | undefined) {
-  if (text) {
-    return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
-  }
-  return null;
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
 }
 
 const pilotPlaceMap = new Map<number, PilotPlace>();
