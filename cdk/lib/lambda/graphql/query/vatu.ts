@@ -1,7 +1,7 @@
 import { ALBEvent } from 'aws-lambda';
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
+import { getTimeout, getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
 import { roundGeometry } from '../../util';
 
@@ -211,6 +211,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     .get(url, {
       headers: await getVatuHeaders(),
       params,
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

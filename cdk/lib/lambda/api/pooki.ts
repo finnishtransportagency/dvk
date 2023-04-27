@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getPookiHeaders, getPookiUrl } from '../environment';
+import { getPookiHeaders, getPookiUrl, getTimeout } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
@@ -9,6 +9,7 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
   const response = await axios
     .get(await getPookiUrl(), {
       headers: await getPookiHeaders(),
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

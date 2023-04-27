@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson';
-import { getSOAApiUrl, getTraficomHeaders } from '../environment';
+import { getSOAApiUrl, getTimeout, getTraficomHeaders } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
@@ -11,6 +11,7 @@ async function fetchApi<T>(path: string) {
   const response = await axios
     .get(url, {
       headers: await getTraficomHeaders(),
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
