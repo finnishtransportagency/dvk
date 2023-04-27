@@ -1,5 +1,5 @@
 import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -184,6 +184,12 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
+
+  const getLayerItemAlertText = useCallback(() => {
+    if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
+    return t('lastUpdatedAt', { val: alertProps.duration });
+  }, [alertProps, t]);
+
   return (
     <>
       <Breadcrumb path={path} />
@@ -214,12 +220,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       />
 
       {alertProps && !isLoading && !isFetching && (
-        <Alert
-          icon={alertIcon}
-          color={alertProps.color}
-          className={'top-margin ' + alertProps.color}
-          title={t('lastUpdatedAt', { val: alertProps.duration })}
-        />
+        <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
 
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">

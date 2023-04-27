@@ -235,7 +235,9 @@
     "notifier": "Uppgiftslämnare",
     "modified": "Uppdaterat",
     "lastUpdatedAt": "Vyns uppgifter laddat för över {{ val, number}} h sedan.",
-    "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan."
+    "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan.",
+    "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
+    "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
