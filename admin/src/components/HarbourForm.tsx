@@ -208,7 +208,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         message={saveError ? saveErrorMsg || t('general.fix-errors-try-again') || '' : ''}
         itemList={saveErrorItems}
       />
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border" id="mainPageContent">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">

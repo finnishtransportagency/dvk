@@ -2,7 +2,8 @@
   "header": {
     "mainTitle": "Digital Fairway Card",
     "appTitle": "Admin dashboard",
-    "logout": "Logout"
+    "logout": "Logout",
+    "skip-to-content": "Skip to main content"
   },
   "general": {
     "search-placeholder": "Search",

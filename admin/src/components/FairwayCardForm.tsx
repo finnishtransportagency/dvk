@@ -211,7 +211,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
       />
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border" id="mainPageContent">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">

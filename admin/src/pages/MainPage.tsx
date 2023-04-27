@@ -103,7 +103,7 @@ const MainPage: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border" id="mainPageContent">
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">

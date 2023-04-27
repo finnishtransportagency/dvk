@@ -2,7 +2,8 @@
   "header": {
     "mainTitle": "Digitaalinen väyläkortti",
     "appTitle": "Ylläpitokäyttöliittymä",
-    "logout": "Kirjaudu ulos"
+    "logout": "Kirjaudu ulos",
+    "skip-to-content": "Siirry pääsisältöön"
   },
   "general": {
     "search-placeholder": "Hae nimellä",

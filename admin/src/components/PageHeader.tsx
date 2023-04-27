@@ -102,6 +102,18 @@ const PageHeader: React.FC = () => {
 
   return (
     <IonHeader>
+      <a
+        href="#mainPageContent"
+        onClick={(e) => {
+          e.currentTarget.blur();
+          document.getElementById('mainPageContent')?.setAttribute('tabIndex', '-1');
+          document.getElementById('mainPageContent')?.focus({ preventScroll: false });
+          e.preventDefault();
+        }}
+        className="skip-to-main-content"
+      >
+        {t('header.skip-to-content')}
+      </a>
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-align-items-center">
           <IonCol size="auto">
