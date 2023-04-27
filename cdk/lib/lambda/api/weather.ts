@@ -152,6 +152,7 @@ async function fetchIlmanetApi(): Promise<Mareograph[]> {
         orderId: 165689,
       },
       headers: await getWeatherHeaders(),
+      timeout: 10000,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
