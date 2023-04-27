@@ -186,7 +186,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('lastUpdatedUnknown');
+    if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
     return t('lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
