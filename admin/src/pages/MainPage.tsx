@@ -127,7 +127,7 @@ const MainPage: React.FC = () => {
             </IonCol>
             <IonCol size="auto">
               <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
-                {translatedTextOrEmpty('select-type')}
+                {translatedTextOrEmpty('label-type')}
               </IonLabel>
               <IonItem fill="outline" className="selectInput">
                 <IonSelect
