@@ -211,6 +211,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     .get(url, {
       headers: await getVatuHeaders(),
       params,
+      timeout: 10000,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

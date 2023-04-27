@@ -9,6 +9,7 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
   const response = await axios
     .get(await getPookiUrl(), {
       headers: await getPookiHeaders(),
+      timeout: 10000,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

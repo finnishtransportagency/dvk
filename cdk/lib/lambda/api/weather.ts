@@ -169,6 +169,7 @@ async function fetchApi<T>(path: string) {
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),
+      timeout: 10000,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

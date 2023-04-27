@@ -11,6 +11,7 @@ async function fetchApi<T>(path: string) {
   const response = await axios
     .get(url, {
       headers: await getTraficomHeaders(),
+      timeout: 10000,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
