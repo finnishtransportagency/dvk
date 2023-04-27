@@ -278,7 +278,8 @@
       "speedLimit": " Hastighetsbegränsning {{val}}",
       "speed": "Dimensionerande hastighet",
       "fairways": " Farledsområdet är en del av farledskortet",
-      "extra": "Tilläggsuppgift"
+      "extra": "Tilläggsuppgift",
+      "prohibitionText": "Se noggrannare VTS Master's Guide"
     },
     "line": {
       "info": "Navigationslinjens uppgifter",

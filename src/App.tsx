@@ -231,7 +231,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

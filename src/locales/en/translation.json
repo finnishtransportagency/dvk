@@ -278,7 +278,8 @@
       "speedLimit": "Speed limit {{val}}",
       "speed": "Design speed",
       "fairways": "Fairway area is part of the fairway card",
-      "extra": "Additional information"
+      "extra": "Additional information",
+      "prohibitionText": "Please refer to West Coast VTS Master's Guide"
     },
     "line": {
       "info": "Navigation line information",
