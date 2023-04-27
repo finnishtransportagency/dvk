@@ -188,7 +188,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
             fairwayId: v.jnro,
             name: {
               fi: v.nimiFI,
-              sv: v.nimiSV,
+              sv: v.nimiSV || v.nimiSE,
             },
             fairwayCards: cardMap.get(v.jnro),
             status: v.status,

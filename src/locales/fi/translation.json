@@ -279,7 +279,8 @@
       "speedLimit": "Nopeusrajoitus {{val}}",
       "speed": "Mitoitusnopeus",
       "fairways": "Väyläalue on osa väyläkorttia",
-      "extra": "Lisätieto"
+      "extra": "Lisätieto",
+      "prohibitionText": "Katso tarkemmin Bothnia VTS Master's Guide"
     },
     "line": {
       "info": "Navigointilinjan tiedot",

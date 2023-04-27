@@ -3,7 +3,7 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
-import { Lang } from '../../utils/constants';
+import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
@@ -14,6 +14,7 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
+  isOffline: boolean;
 };
 
 export type AreaProperties = {
@@ -26,7 +27,7 @@ type FairwayCardIdName = {
   name: Text;
 };
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const fairwayCards: FairwayCardIdName[] = [];
@@ -145,13 +146,22 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonRow>
           );
         })}
-        {area.properties.extra && (
+        {area.properties.typeCode === 15 && (
           <>
             <IonRow>
               <IonCol className="header">{t('popup.area.extra')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{area.properties.extra}</IonCol>
+              <IonCol>
+                <>
+                  {t('popup.area.prohibitionText')}{' '}
+                  <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={isOffline ? -1 : undefined}>
+                    {MASTERSGUIDE_URLS[lang]}
+                    <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
+                  </a>
+                  .
+                </>
+              </IonCol>
             </IonRow>
           </>
         )}

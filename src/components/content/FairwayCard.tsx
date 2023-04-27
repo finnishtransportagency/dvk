@@ -246,16 +246,6 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
                 .
-                {prohibitionAreas.map((area, i) => (
-                  <span key={i}>
-                    {area?.additionalInformation && (
-                      <>
-                        <br />
-                        {area?.additionalInformation}
-                      </>
-                    )}
-                  </span>
-                ))}
               </>
             )}
             {prohibitionAreas?.length < 1 && t('noDataSet')}
