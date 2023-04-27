@@ -123,6 +123,7 @@ export class DvkBackendStack extends Stack {
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
+          API_TIMEOUT: '10000',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         bundling: {
@@ -314,6 +315,7 @@ export class DvkBackendStack extends Stack {
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
+          API_TIMEOUT: '10000',
         },
         logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         bundling: {

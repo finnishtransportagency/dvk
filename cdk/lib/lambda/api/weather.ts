@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl } from '../environment';
+import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl, getTimeout } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
@@ -152,7 +152,7 @@ async function fetchIlmanetApi(): Promise<Mareograph[]> {
         orderId: 165689,
       },
       headers: await getWeatherHeaders(),
-      timeout: 10000,
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
@@ -170,7 +170,7 @@ async function fetchApi<T>(path: string) {
   const response = await axios
     .get(url, {
       headers: await getWeatherHeaders(),
-      timeout: 10000,
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
