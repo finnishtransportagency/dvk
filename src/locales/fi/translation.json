@@ -237,7 +237,7 @@
     "modified": "Päivitetty",
     "lastUpdatedAt": "Näkymän tiedot ladattu yli {{ val, number}} h sitten.",
     "lastUpdatedAt2": "Tason tiedot on ladattu yli {{ val, number}} h sitten.",
-    "lastUpdatedUnknown": "Tason tietojen viimeisin latausaika ei tiedossa."
+    "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa."
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",

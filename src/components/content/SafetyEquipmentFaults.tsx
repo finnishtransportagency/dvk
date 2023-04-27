@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
@@ -124,6 +124,12 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
+
+  const getLayerItemAlertText = useCallback(() => {
+    if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
+    return t('warnings.lastUpdatedAt', { val: alertProps.duration });
+  }, [alertProps, t]);
+
   return (
     <>
       <Breadcrumb path={path} />
@@ -144,12 +150,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       </IonText>
 
       {alertProps && !isLoading && !isFetching && (
-        <Alert
-          icon={alertIcon}
-          color={alertProps.color}
-          className={'top-margin ' + alertProps.color}
-          title={t('warnings.lastUpdatedAt', { val: alertProps.duration })}
-        />
+        <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
 
       <div
