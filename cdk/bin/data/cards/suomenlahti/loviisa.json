@@ -35,8 +35,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotdispatch.kotka@finnpilot.fi",
-      "phoneNumber": "+358295253430",
+      "email": "pilotdispatch.emasalo@finnpilot.fi",
+      "phoneNumber": "+358295253470",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
