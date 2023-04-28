@@ -269,6 +269,22 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                     }
                     disabled={disabled}
                   />
+                  <FormTextInputRow
+                    labelKey="harbour.quay-extra-info"
+                    value={(section as QuayInput).extraInfo}
+                    actionType="quayExtraInfo"
+                    updateState={updateState}
+                    actionTarget={idx}
+                    required={
+                      !!((section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en)
+                    }
+                    error={
+                      !(section as QuayInput).extraInfo?.fi || !(section as QuayInput).extraInfo?.sv || !(section as QuayInput).extraInfo?.en
+                        ? validationErrors?.find((error) => error.id === 'quayExtraInfo')?.msg
+                        : undefined
+                    }
+                    disabled={disabled}
+                  />
                   <IonRow>
                     <IonCol>
                       <FormInput
@@ -309,22 +325,6 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       />
                     </IonCol>
                   </IonRow>
-                  <FormTextInputRow
-                    labelKey="harbour.quay-extra-info"
-                    value={(section as QuayInput).extraInfo}
-                    actionType="quayExtraInfo"
-                    updateState={updateState}
-                    actionTarget={idx}
-                    required={
-                      !!((section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en)
-                    }
-                    error={
-                      !(section as QuayInput).extraInfo?.fi || !(section as QuayInput).extraInfo?.sv || !(section as QuayInput).extraInfo?.en
-                        ? validationErrors?.find((error) => error.id === 'quayExtraInfo')?.msg
-                        : undefined
-                    }
-                    disabled={disabled}
-                  />
                 </IonGrid>
                 <FormOptionalSection
                   title={''}
