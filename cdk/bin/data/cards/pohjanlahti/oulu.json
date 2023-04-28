@@ -55,9 +55,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358400907979",
-      "fax": "+358295253012",
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "phoneNumber": "+358295253440",
       "internet": "https://www.pilotonline.fi",
       "extraInfo": {
         "fi": "Luotsipaikka aluksille, joiden syväys on enintään 11,5 m Oulu W 65°05,01’ P, 024°03,30 I. Liitekartassa on kuvattu varmistettu alue (Hs -14,0 m, mitoitusnopeus 14 solmua) jota alukset voivat käyttää liikuttaessa luotsipaikalle ja luotsipaikalta. Varmistettua aluetta on merkitty virtuaaliturvalaitteilla, varmistetun alueen virtuaali AIS merkinnän lähetys käynnistetään tarvittaessa. Yli 11,5 m mitoitussyväydellä kulkeville aluksille luotsin otto- ja jättöpaikka sovitaan tapauskohtaisesti. Luotsi nousee/jättää aluksen luotsipaikalla, ja varsinainen luotsaus alkaa ja päättyy Oulun väylän ulkopäässä (65°20,8940’ P ja 023°58,2420’ I). Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",

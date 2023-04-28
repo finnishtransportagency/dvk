@@ -40,9 +40,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358400907979",
-      "fax": "+358295353012",
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "phoneNumber": "+358295253460",
       "internet": "https://www.pilotorder.fi",
       "extraInfo": {
         "fi": "Huom. kovilla lännenpuoleisilla tuulilla luotsipaikka on sovittava erikseen.",
