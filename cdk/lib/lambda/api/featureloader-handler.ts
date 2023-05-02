@@ -75,6 +75,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             extraInfo: harbor.extraInfo,
           },
         });
+      } else {
+        const harborFeature = features.find((feature) => feature.id === id);
+        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
