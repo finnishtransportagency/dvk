@@ -9,6 +9,11 @@ import { ManagedPolicy, Role, ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 export class BackupServices extends Construct {
   constructor(scope: Construct, id: string) {
     super(scope, id);
+    const backupPlanRole = new Role(this, 'BackupRole' + Config.getEnvironment(), {
+      assumedBy: new ServicePrincipal('backup.amazonaws.com'),
+    });
+    backupPlanRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSBackupServiceRolePolicyForS3Restore'));
+    backupPlanRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSBackupServiceRolePolicyForS3Backup'));
 
     let backupPlanRuleProps: BackupPlanRuleProps;
     // Kaikille yhteinen PITR/jatkuva varmistus
@@ -18,7 +23,7 @@ export class BackupServices extends Construct {
       deleteAfter: Duration.days(35),
       enableContinuousBackup: true,
     };
-    this.addPlan('ContinuousPlan-' + Config.getEnvironment(), 'Vault-' + Config.getEnvironment(), backupPlanRuleProps);
+    this.addPlan('ContinuousPlan-' + Config.getEnvironment(), 'Vault-' + Config.getEnvironment(), backupPlanRuleProps, backupPlanRole);
 
     // Tuotannolle lisaksi pitkan sailytyksen paivittainen varmistus
     if (Config.isProductionEnvironment()) {
@@ -27,11 +32,11 @@ export class BackupServices extends Construct {
         moveToColdStorageAfter: Duration.days(35),
         deleteAfter: Duration.days(365),
       };
-      this.addPlan('LongStoragePlan-prod', 'Vault-Long-prod', backupPlanRuleProps);
+      this.addPlan('LongStoragePlan-prod', 'Vault-Long-prod', backupPlanRuleProps, backupPlanRole);
     }
   }
 
-  private addPlan(backupPlanName: string, backupVaultName: string, props: BackupPlanRuleProps) {
+  private addPlan(backupPlanName: string, backupVaultName: string, props: BackupPlanRuleProps, backupPlanRole: Role) {
     const plan = new backup.BackupPlan(this, backupPlanName, {
       backupPlanName,
       backupVault: new backup.BackupVault(this, backupVaultName, { backupVaultName }),
@@ -51,11 +56,6 @@ export class BackupServices extends Construct {
       ],
     });
 
-    const backupPlanRole = new Role(this, 'BackupRole' + Config.getEnvironment(), {
-      assumedBy: new ServicePrincipal('backup.amazonaws.com'),
-    });
-    backupPlanRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSBackupServiceRolePolicyForS3Restore'));
-    backupPlanRole.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AWSBackupServiceRolePolicyForS3Backup'));
     plan.addSelection('DvkBackupSelection' + Config.getEnvironment(), {
       allowRestores: true,
       resources: [backup.BackupResource.fromTag('Backups-' + Config.getEnvironment(), 'true')],
