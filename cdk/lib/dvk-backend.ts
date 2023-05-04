@@ -248,7 +248,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      lifecycleRules: Config.isProductionEnvironment() ? undefined : lifecycleRules,
+      lifecycleRules,
     });
   }
 
