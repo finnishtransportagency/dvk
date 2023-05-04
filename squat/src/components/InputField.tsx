@@ -120,7 +120,7 @@ const InputField: React.FC<InputProps> = (props) => {
 
   const getErrorText = () => {
     if (value) {
-      if (props.min !== undefined && value < props.min) {
+      if (props.min !== undefined && Number(value) < props.min) {
         const unit = (
           <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })} role="definition">
             {props.unit}
@@ -131,7 +131,7 @@ const InputField: React.FC<InputProps> = (props) => {
             {t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
           </span>
         );
-      } else if (props.max !== undefined && value > props.max) {
+      } else if (props.max !== undefined && Number(value) > props.max) {
         const unit = (
           <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })} role="definition">
             {props.unit}
@@ -186,11 +186,22 @@ const InputField: React.FC<InputProps> = (props) => {
           value={value}
           placeholder={props.placeholder}
           onIonChange={handleChange}
+          onIonInput={handleChange}
           onIonBlur={handleBlur}
           debounce={250}
           inputmode="decimal"
           mode="md"
         />
+        {!props.unit && (
+          <IonLabel slot="end" color="medium" className="unit">
+            <span
+              aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
+                count: Number((value || 0).toLocaleString(i18n.language)),
+              })}
+              role="definition"
+            ></span>
+          </IonLabel>
+        )}
         {props.unit && (
           <IonLabel slot="end" color="medium" className="unit">
             <span
