@@ -185,7 +185,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         n2000draft: getNumberValue(area.n2000MitoitusSyvays),
         n2000depth: getNumberValue(area.n2000HarausSyvyys),
         n2000ReferenceLevel: area.n2000Vertaustaso,
-        extra: area.lisatieto,
+        extra: area.lisatieto?.trim(),
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -287,7 +287,9 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         length: getNumberValue(line.pituus),
         n2000depth: getNumberValue(line.n2000HarausSyvyys),
         n2000draft: getNumberValue(line.n2000MitoitusSyvays),
-        extra: line.lisatieto,
+        referenceLevel: line.vertaustaso,
+        n2000ReferenceLevel: line.n2000Vertaustaso,
+        extra: line.lisatieto?.trim(),
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
