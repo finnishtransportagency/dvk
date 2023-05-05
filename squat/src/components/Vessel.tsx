@@ -43,19 +43,6 @@ const Vessel: React.FC = () => {
   ]);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'displacement',
-          value: ((document.getElementsByName('displacement')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-    }, 250);
-  }, [state.vessel.general.displacement, dispatch]);
-
-  useEffect(() => {
     dispatch({
       type: 'vessel-stability',
       payload: { key: 'KB', value: calculateKB(state.vessel.general.draught) },
@@ -63,6 +50,7 @@ const Vessel: React.FC = () => {
   }, [state.vessel.general.draught, dispatch]);
 
   useEffect(() => {
+    /*
     if (document.getElementsByName('blockCoefficient').length && (document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild) {
       dispatch({
         type: 'validation',
@@ -73,6 +61,7 @@ const Vessel: React.FC = () => {
         },
       });
     }
+    */
   }, [state.status.showBarrass, dispatch]);
 
   // Field validation

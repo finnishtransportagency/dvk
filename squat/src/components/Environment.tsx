@@ -52,6 +52,7 @@ const Environment: React.FC = () => {
   ]);
 
   // Trigger related validations
+  /*
   useEffect(() => {
     if (
       state.environment.fairway.sweptDepth &&
@@ -89,7 +90,7 @@ const Environment: React.FC = () => {
         },
       });
   }, [state.environment.fairway.sweptDepth, dispatch]);
-
+  */
   // Field validation
   const isFieldValid = (name: string) => {
     for (const [k, v] of Object.entries(state.validations)) {
