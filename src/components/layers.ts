@@ -379,7 +379,17 @@ export function addAPILayers(map: Map) {
 
   addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 307);
   addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 308);
-  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, true, 309);
+  addFeatureVectorLayer(
+    map,
+    'mareograph',
+    undefined,
+    91,
+    (feature, resolution) => getMareographStyle(feature, false, resolution),
+    undefined,
+    1,
+    true,
+    309
+  );
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
 
   // VTS linjat ja ilmoituspisteet
