@@ -26,6 +26,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
   const speedLimitGeometries: {
     speedLimit: number;
     geometry: turf.Polygon | turf.helpers.Feature<turf.helpers.Polygon | turf.helpers.MultiPolygon, turf.helpers.Properties>;
+    ids: number[];
   }[] = [];
 
   for (const raf of rafs) {
@@ -39,11 +40,12 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
 
     const index = speedLimitGeometries.findIndex((slg) => slg.speedLimit === speedLimit);
     if (index < 0) {
-      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon });
+      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon, ids: [raf.getId() as number] });
     } else {
       const union = turf.union(speedLimitGeometries[index].geometry, raGeomPoly as turf.Polygon);
       if (union) {
         speedLimitGeometries[index].geometry = union;
+        speedLimitGeometries[index].ids.push(raf.getId() as number);
       }
     }
   }
@@ -81,7 +83,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
       });
-      feat.setProperties({ speedLimit: speedLimit });
+      feat.setProperties({ speedLimit: speedLimit, ids: slg.ids });
       speedLimitFeatures.push(feat);
     }
   }
