@@ -10,7 +10,7 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Quay, Section } from '../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section, Text as QuayText } from '../graphql/generated';
 import { FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
@@ -110,6 +110,9 @@ export function getBoardLineStyle(color: string, width: number) {
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   if (resolution > 3) {
     return undefined;
+  }
+  if (feature.get('hoverStyle')) {
+    selected = true;
   }
   const image = new Icon({
     src: quayIcon,
@@ -616,4 +619,14 @@ export function setSelectedRestrictionArea(id?: number | string) {
     f.set('hoverStyle', id && f.getProperties().ids.includes(id));
   }
   speedSource.dispatchEvent('change');
+}
+
+export function setSelectedQuay(name?: Maybe<QuayText>) {
+  const dvkMap = getMap();
+  const quaySource = dvkMap.getVectorSource('quay');
+
+  for (const f of quaySource.getFeatures()) {
+    f.set('hoverStyle', name && f.get('featureType') === 'quay' && f.get('quay').fi === name.fi);
+  }
+  quaySource.dispatchEvent('change');
 }
