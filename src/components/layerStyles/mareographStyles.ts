@@ -6,7 +6,11 @@ import { MareographFeatureProperties } from '../features';
 let style: Style | undefined = undefined;
 let selectedStyle: Style | undefined = undefined;
 
-export function getMareographStyle(feature: FeatureLike, selected: boolean) {
+export function getMareographStyle(feature: FeatureLike, selected: boolean, resolution: number) {
+  const props = feature.getProperties() as MareographFeatureProperties;
+  if (props.calculated && resolution > 150) {
+    return undefined;
+  }
   let s = selected ? selectedStyle : style;
 
   if (!s) {
@@ -52,7 +56,6 @@ export function getMareographStyle(feature: FeatureLike, selected: boolean) {
       });
     }
   }
-  const props = feature.getProperties() as MareographFeatureProperties;
   s.getText().setText(`${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)} cm`);
   return s;
 }

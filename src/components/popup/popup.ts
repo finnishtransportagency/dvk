@@ -119,7 +119,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'boardline') {
       return getBoardLineStyle('#000000', 2);
     } else if (type === 'mareograph') {
-      return getMareographStyle(feature, true);
+      return getMareographStyle(feature, true, resolution);
     } else if (type === 'observation') {
       return getObservationStyle(true);
     } else if (type === 'buoy') {
