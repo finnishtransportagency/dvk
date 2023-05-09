@@ -43,9 +43,11 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
       speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon, ids: [raf.getId() as number] });
     } else {
       const union = turf.union(speedLimitGeometries[index].geometry, raGeomPoly as turf.Polygon);
-      if (union) {
+      if (union && union.geometry.type === 'Polygon') {
         speedLimitGeometries[index].geometry = union;
         speedLimitGeometries[index].ids.push(raf.getId() as number);
+      } else {
+        speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon, ids: [raf.getId() as number] });
       }
     }
   }
