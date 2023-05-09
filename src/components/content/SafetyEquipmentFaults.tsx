@@ -16,12 +16,10 @@ import './SafetyEquipmentFaults.css';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
-  title: string;
   loading?: boolean;
-  first?: boolean;
 };
 
-const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) => {
+const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -39,11 +37,6 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, title, loading, first }) 
   const equipments = getMap().getVectorSource('safetyequipment');
   return (
     <>
-      <IonText className={first ? 'no-margin-top' : ''}>
-        <h4>
-          <strong>{title}</strong>
-        </h4>
-      </IonText>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
         const equipment = equipments.getFeatureById(faultArray[0].equipmentId)?.getProperties() as EquipmentFeatureProperties | undefined;
@@ -158,12 +151,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup
-          title={t('faults.archipelagoSea') + ', ' + t('faults.gulfOfFinland') + t('faults.and') + t('faults.gulfOfBothnia')}
-          loading={isLoading}
-          data={data?.safetyEquipmentFaults || []}
-          first
-        />
+        <FaultGroup loading={isLoading} data={data?.safetyEquipmentFaults || []} />
       </div>
     </>
   );
