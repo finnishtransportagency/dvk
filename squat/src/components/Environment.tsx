@@ -263,7 +263,9 @@ const Environment: React.FC = () => {
                 title={t('form-of-fairway')}
                 name="fairwayForm"
                 value={state.environment.fairway.fairwayForm}
-                options={fairwayForms}
+                options={[...fairwayForms].sort((a, b) => {
+                  return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                })}
                 actionType="environment-fairway"
                 required
                 translateOptions
@@ -273,29 +275,37 @@ const Environment: React.FC = () => {
                   <>
                     <p>{t('form-of-fairway-info-content')}</p>
                     <IonGrid>
-                      {fairwayForms.map((option) => (
-                        <IonRow key={option.id}>
-                          <IonCol size="4">
-                            <IonLabel>
-                              {option.id}. &nbsp; {tRoot(option.name).toString()}
-                            </IonLabel>
-                          </IonCol>
-                          <IonCol size="8">
-                            <IonLabel className="ion-text-wrap">{tRoot(option.desc).toString()}</IonLabel>
-                          </IonCol>
-                        </IonRow>
-                      ))}
+                      {[...fairwayForms]
+                        .sort((a, b) => {
+                          return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                        })
+                        .map((option) => (
+                          <IonRow key={option.id}>
+                            <IonCol size="4">
+                              <IonLabel>
+                                {option.id === 2 ? '3' : option.id === 3 ? '2' : option.id}. &nbsp; {tRoot(option.name).toString()}
+                              </IonLabel>
+                            </IonCol>
+                            <IonCol size="8">
+                              <IonLabel className="ion-text-wrap">{tRoot(option.desc).toString()}</IonLabel>
+                            </IonCol>
+                          </IonRow>
+                        ))}
                     </IonGrid>
                     <IonGrid>
                       <IonRow>
-                        {fairwayForms.map((option) => (
-                          <IonCol key={option.id} className="align-center">
-                            <IonImg src={option.img} />
-                            <p>
-                              {option.id}. {tRoot(option.name).toString()}
-                            </p>
-                          </IonCol>
-                        ))}
+                        {[...fairwayForms]
+                          .sort((a, b) => {
+                            return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                          })
+                          .map((option) => (
+                            <IonCol key={option.id} className="align-center">
+                              <IonImg src={option.img} />
+                              <p>
+                                {option.id === 2 ? '3' : option.id === 3 ? '2' : option.id}. {tRoot(option.name).toString()}
+                              </p>
+                            </IonCol>
+                          ))}
                       </IonRow>
                     </IonGrid>
                   </>
