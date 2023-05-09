@@ -57,6 +57,7 @@
     "save-successful": "[sv] Tallennus onnistui",
     "save-failed": "[sv] Tallennus epäonnistui",
     "saved-by-id": "[sv] Kohteen \"{{ id }}\" tiedot tallennettu.",
+    "error": "Fel",
     "error-MISSING-INFORMATION": "[sv] Pakollisia tietoja puuttuu tai syötetyissä tiedoissa on virheitä.",
     "error-CARD_ALREADY_EXIST": "[sv] Väyläkortin tunniste on jo käytössä.",
     "error-CARD_NOT_EXIST": "[sv] Väyläkorttia ei löydy annetulla tunnisteella.",
