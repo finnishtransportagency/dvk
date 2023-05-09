@@ -39,7 +39,6 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
   labelStyle.getText().setText('' + speedLimit);
 
   let fillColor = 'rgba(0,0,0,0)';
-
   if (speedLimit > 0 && speedLimit <= 5) {
     fillColor = 'rgba(145,10,163,0.5)';
   } else if (speedLimit > 5 && speedLimit <= 10) {
