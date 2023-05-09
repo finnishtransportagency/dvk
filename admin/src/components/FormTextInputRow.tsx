@@ -40,7 +40,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
 
   return (
     <IonRow>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={fi(labelKey) + ' (fi)'}
@@ -70,7 +70,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={sv(labelKey) + ' (sv)'}
@@ -100,7 +100,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={en(labelKey) + ' (en)'}
