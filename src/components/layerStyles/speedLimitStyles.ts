@@ -39,22 +39,18 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
   labelStyle.getText().setText('' + speedLimit);
 
   let fillColor = 'rgba(0,0,0,0)';
-  let transparency = '0.5';
-  if (feature.get('hoverStyle')) {
-    transparency = '0.75';
-  }
   if (speedLimit > 0 && speedLimit <= 5) {
-    fillColor = `rgba(145,10,163,${transparency})`;
+    fillColor = 'rgba(145,10,163,0.5)';
   } else if (speedLimit > 5 && speedLimit <= 10) {
-    fillColor = `rgba(199,63,0,${transparency})`;
+    fillColor = 'rgba(199,63,0,0.5)';
   } else if (speedLimit > 10 && speedLimit <= 15) {
-    fillColor = `rgba(255,81,0,${transparency})`;
+    fillColor = 'rgba(255,81,0,0.5)';
   } else if (speedLimit > 15 && speedLimit <= 20) {
-    fillColor = `rgba(255,195,0,${transparency})`;
+    fillColor = 'rgba(255,195,0,0.5)';
   } else if (speedLimit > 20 && speedLimit <= 25) {
-    fillColor = `rgba(141,203,109,${transparency})`;
+    fillColor = 'rgba(141,203,109,0.5)';
   } else if (speedLimit > 25) {
-    fillColor = `rgba(0,176,204,${transparency})`;
+    fillColor = 'rgba(0,176,204,0.5)';
   }
 
   fillStyle.getFill().setColor(fillColor);
