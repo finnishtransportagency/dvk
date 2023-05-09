@@ -16,7 +16,8 @@ import { Construct } from 'constructs';
 import Config from './config';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
-
+import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
+import { CodeBuildProject } from 'aws-cdk-lib/aws-events-targets';
 export class DvkScheduledTestsPipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id, {
@@ -28,7 +29,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       tags: Config.tags,
     });
     const env = Config.getEnvironment();
-    const importedCloudFrontURL = cdk.Fn.importValue('CloudFrontDomainName' + env);
+    const importedCloudFrontURL = 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env);
 
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
@@ -46,7 +47,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
     });
     const gitHubSource = Source.gitHub(sourceProps);
     const project = new Project(this, 'DvkScheduledTests', {
-      projectName: 'DvkScheduledTests',
+      projectName: 'DvkScheduledTests-' + env,
       concurrentBuildLimit: 1,
       buildSpec: BuildSpec.fromObject({
         version: '0.2',
@@ -74,12 +75,8 @@ export class DvkScheduledTestsPipelineStack extends Stack {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.0'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
-        environmentVariables: {
-          ENVIRONMENT: { value: env },
-        },
       },
       grantReportGroupPermissions: true,
-      badge: true,
       artifacts: Artifacts.s3({
         bucket: testBucket,
         includeBuildId: false,
@@ -100,5 +97,13 @@ export class DvkScheduledTestsPipelineStack extends Stack {
         resources: [`arn:aws:cloudformation:eu-west-1:${this.account}:stack/DvkBackendStack-${Config.getEnvironment()}*`],
       })
     );
+
+    const projectTarget = new CodeBuildProject(project);
+    const hourlyRule = new Rule(this, 'TestScheduleRule-' + env, {
+      schedule: Schedule.rate(Duration.hours(1)),
+      targets: [projectTarget],
+    });
+
+    cdk.Tags.of(hourlyRule).add('project', 'dvk');
   }
 }
