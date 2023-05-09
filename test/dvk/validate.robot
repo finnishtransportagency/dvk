@@ -8,8 +8,11 @@ Library           DateTime
 Library           Collections
 Resource          resources_dvk.resource
 *** Variables ***
-${BROWSER}        headlesschrome
+${PROTOCOL}       http
+${HOST}           localhost
 ${PORT}           3000
+${URL}            ${PROTOCOL}://${HOST}:${PORT}
+${BROWSER}        headlesschrome
 
 *** Test Cases ***
 Check Scale
@@ -64,7 +67,8 @@ Check Fairway Card In English
 *** Keywords ***
 Open DVK
     [Documentation]    This keyword opens DVK in localhost with port and browser given as variables
-    Open Browser    http://localhost:${PORT}    ${BROWSER}
+    Log To Console    ${URL}
+    Open Browser    ${URL}    ${BROWSER}
     Sleep    5s
     Press Keys    None    ESC
     Wait Until Element Is Not Visible    ${SOVELLUSTA_ALUSTETAAN_POP_UP}    30s
