@@ -107,13 +107,13 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                     required
                     error={
                       !(section as VtsInput).name?.fi || !(section as VtsInput).name.sv || !(section as VtsInput).name.en
-                        ? validationErrors?.find((error) => error.id === 'vtsName')?.msg
+                        ? validationErrors?.find((error) => error.id === 'vtsName-' + idx)?.msg
                         : undefined
                     }
                     disabled={disabled}
                   />
                   <IonRow>
-                    <IonCol>
+                    <IonCol sizeMd="6">
                       <FormInput
                         label={t('general.email')}
                         val={(section as VtsInput).email?.join(',')}
@@ -126,7 +126,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         disabled={disabled}
                       />
                     </IonCol>
-                    <IonCol>
+                    <IonCol sizeMd="6">
                       <FormInput
                         label={t('general.phone-number')}
                         val={(section as VtsInput).phoneNumber}
@@ -161,10 +161,15 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                   actionTarget={idx}
                   actionOuterTarget={actionOuterTarget}
                   required={!!((section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en)}
+                  error={
+                    (section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en
+                      ? validationErrors?.find((error) => error.id === 'vhfName-' + actionOuterTarget + '-' + idx)?.msg
+                      : undefined
+                  }
                   disabled={disabled}
                 />
                 <IonRow className="ion-justify-content-between">
-                  <IonCol size="4">
+                  <IonCol sizeMd="4">
                     <FormInput
                       label={t('fairwaycard.vhf-channel')}
                       val={(section as VhfInput).channel}
@@ -173,7 +178,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       required
-                      error={!(section as VhfInput).channel ? validationErrors?.find((error) => error.id === 'vhfChannel')?.msg : undefined}
+                      error={
+                        !(section as VhfInput).channel
+                          ? validationErrors?.find((error) => error.id === 'vhfChannel-' + actionOuterTarget + '-' + idx)?.msg
+                          : undefined
+                      }
                       inputType="number"
                       max={999}
                       decimalCount={0}
@@ -206,14 +215,14 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                   actionTarget={idx}
                   required
                   error={
-                    !(section as TugInput).name?.fi || !(section as TugInput).name.sv || !(section as TugInput).name.en
-                      ? validationErrors?.find((error) => error.id === 'tugName')?.msg
+                    !(section as TugInput).name?.fi || !(section as TugInput).name?.sv || !(section as TugInput).name?.en
+                      ? validationErrors?.find((error) => error.id === 'tugName-' + idx)?.msg
                       : undefined
                   }
                   disabled={disabled}
                 />
                 <IonRow>
-                  <IonCol>
+                  <IonCol sizeMd="4">
                     <FormInput
                       label={t('general.email')}
                       val={(section as TugInput).email}
@@ -224,7 +233,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       disabled={disabled}
                     />
                   </IonCol>
-                  <IonCol>
+                  <IonCol sizeMd="4">
                     <FormInput
                       label={t('general.phone-number')}
                       val={(section as TugInput).phoneNumber?.join(',')}
@@ -237,7 +246,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       disabled={disabled}
                     />
                   </IonCol>
-                  <IonCol>
+                  <IonCol sizeMd="4">
                     <FormInput
                       label={t('general.fax')}
                       val={(section as TugInput).fax}
@@ -263,8 +272,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                     actionTarget={idx}
                     required={!!((section as QuayInput).name?.fi || (section as QuayInput).name?.sv || (section as QuayInput).name?.en)}
                     error={
-                      !(section as QuayInput).name?.fi || !(section as QuayInput).name?.sv || !(section as QuayInput).name?.en
-                        ? validationErrors?.find((error) => error.id === 'quayName')?.msg
+                      (section as QuayInput).name?.fi || (section as QuayInput).name?.sv || (section as QuayInput).name?.en
+                        ? validationErrors?.find((error) => error.id === 'quayName-' + idx)?.msg
                         : undefined
                     }
                     disabled={disabled}
@@ -279,14 +288,14 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       !!((section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en)
                     }
                     error={
-                      !(section as QuayInput).extraInfo?.fi || !(section as QuayInput).extraInfo?.sv || !(section as QuayInput).extraInfo?.en
-                        ? validationErrors?.find((error) => error.id === 'quayExtraInfo')?.msg
+                      (section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en
+                        ? validationErrors?.find((error) => error.id === 'quayExtraInfo-' + idx)?.msg
                         : undefined
                     }
                     disabled={disabled}
                   />
                   <IonRow>
-                    <IonCol>
+                    <IonCol sizeMd="4">
                       <FormInput
                         label={t('harbour.length')}
                         val={(section as QuayInput).length}
@@ -300,7 +309,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         disabled={disabled}
                       />
                     </IonCol>
-                    <IonCol>
+                    <IonCol sizeMd="4">
                       <FormInput
                         label={t('harbour.lat')}
                         val={(section as QuayInput).geometry?.lat}
@@ -309,10 +318,15 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         actionTarget={idx}
                         inputType="latitude"
                         required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
+                        error={
+                          !(section as QuayInput).geometry?.lat && (section as QuayInput).geometry?.lon
+                            ? validationErrors?.find((error) => error.id === 'quayGeometry-' + idx)?.msg
+                            : undefined
+                        }
                         disabled={disabled}
                       />
                     </IonCol>
-                    <IonCol>
+                    <IonCol sizeMd="4">
                       <FormInput
                         label={t('harbour.lon')}
                         val={(section as QuayInput).geometry?.lon}
@@ -321,6 +335,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         actionTarget={idx}
                         inputType="longitude"
                         required={!!(section as QuayInput).geometry?.lat || !!(section as QuayInput).geometry?.lon}
+                        error={
+                          (section as QuayInput).geometry?.lat && !(section as QuayInput).geometry?.lon
+                            ? validationErrors?.find((error) => error.id === 'quayGeometry-' + idx)?.msg
+                            : undefined
+                        }
                         disabled={disabled}
                       />
                     </IonCol>
@@ -377,6 +396,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       actionOuterTarget={actionOuterTarget}
                       required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
                       inputType="latitude"
+                      error={
+                        !(section as SectionInput).geometry?.lat && (section as SectionInput).geometry?.lon
+                          ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
+                          : undefined
+                      }
                       disabled={disabled}
                     />
                   </IonCol>
@@ -390,6 +414,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       actionOuterTarget={actionOuterTarget}
                       required={!!(section as SectionInput).geometry?.lat || !!(section as SectionInput).geometry?.lon}
                       inputType="longitude"
+                      error={
+                        (section as SectionInput).geometry?.lat && !(section as SectionInput).geometry?.lon
+                          ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
+                          : undefined
+                      }
                       disabled={disabled}
                     />
                   </IonCol>
