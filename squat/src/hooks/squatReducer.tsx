@@ -55,13 +55,13 @@ export const fairwayForms = [
     desc: 'homePage.squat.environment.open-water-description',
     img: 'assets/open_water_small.svg',
   },
+  { id: 2, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/channel_small.svg' },
   {
-    id: 2,
+    id: 3,
     name: 'homePage.squat.environment.sloped-channel',
     desc: 'homePage.squat.environment.sloped-channel-description',
     img: 'assets/sloped_channel_small.svg',
   },
-  { id: 3, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/channel_small.svg' },
 ];
 
 // Set up reducer and state properties
