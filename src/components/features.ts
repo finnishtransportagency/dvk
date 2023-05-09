@@ -41,10 +41,10 @@ export type AreaFeatureProperties = {
   typeCode: number;
   type: string;
   name?: string;
-  referenceLevel: string;
+  referenceLevel?: string;
   draft?: number;
   depth?: number;
-  n2000ReferenceLevel: string;
+  n2000ReferenceLevel?: string;
   n2000depth?: number;
   n2000draft?: number;
   n2000HeightSystem?: boolean;
@@ -76,6 +76,8 @@ export type LineFeatureProperties = {
   n2000depth?: number;
   n2000draft?: number;
   n2000HeightSystem?: boolean;
+  referenceLevel?: string;
+  n2000ReferenceLevel?: string;
   direction?: number;
   extra?: string;
   fairways?: LineFairway[];

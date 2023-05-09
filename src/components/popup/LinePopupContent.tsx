@@ -66,7 +66,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
             </IonRow>
           );
         })}
-        {showN2000HeightSystem !== undefined && (
+        {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
           <IonRow>
             <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
           </IonRow>
@@ -77,9 +77,11 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000draft || line.properties.draft) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}{' '}
+              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft || line.properties.draft : line.properties.draft })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? line.properties.n2000draft : line.properties.draft })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? line.properties.n2000draft || line.properties.draft : line.properties.draft,
+                })}
                 role="definition"
               >
                 m
@@ -90,9 +92,11 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000depth || line.properties.depth) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}{' '}
+              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth || line.properties.depth : line.properties.depth })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? line.properties.n2000depth : line.properties.depth })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? line.properties.n2000depth || line.properties.depth : line.properties.depth,
+                })}
                 role="definition"
               >
                 m
