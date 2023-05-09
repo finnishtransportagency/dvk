@@ -6,7 +6,14 @@ import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
-import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor } from '../layers';
+import {
+  setSelectedFairwayCard,
+  setSelectedPilotPlace,
+  setSelectedFairwayArea,
+  setSelectedHarbor,
+  setSelectedRestrictionArea,
+  setSelectedQuay,
+} from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -274,7 +281,14 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
       <p>
         {inlineLabel && speedLimits.length > 0 && <strong>{t('speedLimit')}: </strong>}
         {speedLimits.map((area, idx) => (
-          <span key={'limit-' + area?.id}>
+          <span
+            key={'limit-' + area?.id}
+            className="inlineHoverText"
+            onMouseOver={() => setSelectedRestrictionArea(area?.id)}
+            onFocus={() => setSelectedRestrictionArea(area?.id)}
+            onMouseOut={() => setSelectedRestrictionArea(0)}
+            onBlur={() => setSelectedRestrictionArea(0)}
+          >
             {(inlineLabel || idx > 0) && <br />}
             {t('speedLimitAt')} {area?.location}: {area?.value}{' '}
             <span aria-label={t('unit.kmhDesc', { count: area?.value || 0 })} role="definition">
@@ -611,7 +625,14 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
       {data &&
         data.map((quay, jdx) => {
           return (
-            <p key={jdx}>
+            <p
+              key={jdx}
+              className="inlineHoverText"
+              onMouseOver={() => setSelectedQuay(quay?.name)}
+              onFocus={() => setSelectedQuay(quay?.name)}
+              onMouseOut={() => setSelectedQuay(null)}
+              onBlur={() => setSelectedQuay(null)}
+            >
               {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
               {quay?.name && quay.name[lang]?.slice(1)}
               {!quay?.name && t('quay')}
