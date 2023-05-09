@@ -197,7 +197,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         }) || [];
     const sectionGeometryErrors =
       state.quays
-        ?.map((quay, i) =>
+        ?.map((quay) =>
           quay?.sections
             ?.flatMap((section, j) => (section?.geometry?.lat.trim() || section?.geometry?.lon.trim() ? j : null))
             .filter((val) => Number.isInteger(val))

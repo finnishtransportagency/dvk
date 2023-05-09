@@ -374,7 +374,7 @@ export const harbourReducer = (
           error.id.startsWith('quayGeometry-') ||
           error.id.startsWith('sectionGeometry-')
       )
-      .map((error) => {
+      .forEach((error) => {
         const errorSplitted = error.id.split('-');
         if (errorSplitted[1] < actionTarget) quayFieldErrors.push(error);
         if (errorSplitted[1] > actionTarget) {
@@ -383,6 +383,7 @@ export const harbourReducer = (
             msg: error.msg,
           });
         }
+        return error;
       });
     setValidationErrors(
       validationErrors
@@ -445,7 +446,7 @@ export const harbourReducer = (
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors
       .filter((error) => error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-'))
-      .map((error) => {
+      .forEach((error) => {
         const errorIndex = error.id.split('sectionGeometry-' + actionOuterTarget + '-')[1];
         if (errorIndex < actionTarget) sectionFieldErrors.push(error);
         if (errorIndex > actionTarget) {
@@ -454,6 +455,7 @@ export const harbourReducer = (
             msg: error.msg,
           });
         }
+        return error;
       });
     setValidationErrors(
       validationErrors.filter((error) => !error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-')).concat(sectionFieldErrors)

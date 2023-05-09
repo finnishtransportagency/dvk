@@ -700,7 +700,7 @@ export const fairwayCardReducer = (
     const vtsFieldErrors: ValidationType[] = [];
     validationErrors
       .filter((error) => error.id.startsWith('vtsName-') || error.id.startsWith('vhfName-') || error.id.startsWith('vhfChannel-'))
-      .map((error) => {
+      .forEach((error) => {
         const errorSplitted = error.id.split('-');
         if (errorSplitted[1] < actionTarget) vtsFieldErrors.push(error);
         if (errorSplitted[1] > actionTarget) {
@@ -709,6 +709,7 @@ export const fairwayCardReducer = (
             msg: error.msg,
           });
         }
+        return error;
       });
     setValidationErrors(
       validationErrors
@@ -733,7 +734,7 @@ export const fairwayCardReducer = (
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors
       .filter((error) => error.id.startsWith('vhfName-' + actionOuterTarget + '-') || error.id.startsWith('vhfChannel-' + actionOuterTarget + '-'))
-      .map((error) => {
+      .forEach((error) => {
         const errorSplitted = error.id.split('-' + actionOuterTarget + '-');
         if (errorSplitted[1] < actionTarget) sectionFieldErrors.push(error);
         if (errorSplitted[1] > actionTarget) {
@@ -742,6 +743,7 @@ export const fairwayCardReducer = (
             msg: error.msg,
           });
         }
+        return error;
       });
     setValidationErrors(
       validationErrors
@@ -786,7 +788,7 @@ export const fairwayCardReducer = (
     const tugFieldErrors: ValidationType[] = [];
     validationErrors
       .filter((error) => error.id.startsWith('tugName-'))
-      .map((error) => {
+      .forEach((error) => {
         const errorIndex = error.id.split('tugName-')[1];
         if (errorIndex < actionTarget) tugFieldErrors.push(error);
         if (errorIndex > actionTarget) {
@@ -795,6 +797,7 @@ export const fairwayCardReducer = (
             msg: error.msg,
           });
         }
+        return error;
       });
     setValidationErrors(validationErrors.filter((error) => !error.id.startsWith('tugName-')).concat(tugFieldErrors));
   } else if (
