@@ -39,7 +39,6 @@ export const harbourReducer = (
         .concat({ id: 'lon', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   }
-  // TODO: Add coordinate validation check for quays and quay sections
 
   let newState;
   switch (actionType) {
@@ -120,7 +119,7 @@ export const harbourReducer = (
             {
               name: { fi: '', sv: '', en: '' },
               length: undefined,
-              geometry: undefined,
+              geometry: { lat: '', lon: '' },
             },
           ]),
         };
@@ -211,7 +210,7 @@ export const harbourReducer = (
             i === actionOuterTarget
               ? {
                   ...quayItem,
-                  sections: (quayItem?.sections || []).concat([{ name: '', depth: undefined, geometry: undefined }]),
+                  sections: (quayItem?.sections || []).concat([{ name: '', depth: undefined, geometry: { lat: '', lon: '' } }]),
                 }
               : quayItem
           ),
@@ -219,11 +218,15 @@ export const harbourReducer = (
       } else if (!value && actionTarget !== undefined) {
         newState = {
           ...state,
-          quays: state.quays?.map((quayItem) => {
-            return {
-              ...quayItem,
-              sections: quayItem?.sections?.filter((sectionItem, idx) => idx !== actionTarget),
-            };
+          quays: state.quays?.map((quayItem, i) => {
+            if (i === actionOuterTarget) {
+              return {
+                ...quayItem,
+                sections: quayItem?.sections?.filter((sectionItem, idx) => idx !== actionTarget),
+              };
+            } else {
+              return { ...quayItem };
+            }
           }),
         };
       } else {
@@ -317,5 +320,161 @@ export const harbourReducer = (
       console.warn(`Unknown action type, state not updated.`);
       return state;
   }
+
+  // More manual validations for text row inputs
+  if (actionType === 'extraInfo' && validationErrors.find((error) => error.id === 'extraInfo')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'extraInfo')
+        .concat({
+          id: 'extraInfo',
+          msg:
+            newState.extraInfo?.fi.trim() || newState.extraInfo?.sv.trim() || newState.extraInfo?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'cargo' && validationErrors.find((error) => error.id === 'cargo')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'cargo')
+        .concat({
+          id: 'cargo',
+          msg: newState.cargo?.fi.trim() || newState.cargo?.sv.trim() || newState.cargo?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'harbourBasin' && validationErrors.find((error) => error.id === 'harbourBasin')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'harbourBasin')
+        .concat({
+          id: 'harbourBasin',
+          msg:
+            newState.harborBasin?.fi.trim() || newState.harborBasin?.sv.trim() || newState.harborBasin?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'companyName' && validationErrors.find((error) => error.id === 'companyName')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'companyName')
+        .concat({
+          id: 'companyName',
+          msg: newState.company?.fi.trim() || newState.company?.sv.trim() || newState.company?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'quay' && actionTarget !== undefined) {
+    const quayFieldErrors: ValidationType[] = [];
+    validationErrors
+      .filter(
+        (error) =>
+          error.id.startsWith('quayName-') ||
+          error.id.startsWith('quayExtraInfo-') ||
+          error.id.startsWith('quayGeometry-') ||
+          error.id.startsWith('sectionGeometry-')
+      )
+      .map((error) => {
+        const errorSplitted = error.id.split('-');
+        if (errorSplitted[1] < actionTarget) quayFieldErrors.push(error);
+        if (errorSplitted[1] > actionTarget) {
+          quayFieldErrors.push({
+            id: errorSplitted[0] + '-' + (Number(errorSplitted[1]) - 1) + (errorSplitted[2] !== undefined ? '-' + errorSplitted[2] : ''),
+            msg: error.msg,
+          });
+        }
+      });
+    setValidationErrors(
+      validationErrors
+        .filter(
+          (error) =>
+            !error.id.startsWith('quayName-') &&
+            !error.id.startsWith('quayExtraInfo-') &&
+            !error.id.startsWith('quayGeometry-') &&
+            !error.id.startsWith('sectionGeometry-')
+        )
+        .concat(quayFieldErrors)
+    );
+  } else if (
+    actionType === 'quayName' &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'quayName-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayName-' + actionTarget)
+        .concat({
+          id: 'quayName-' + actionTarget,
+          msg:
+            currentQuay?.name?.fi.trim() || currentQuay?.name?.sv.trim() || currentQuay?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (
+    actionType === 'quayExtraInfo' &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'quayExtraInfo-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayExtraInfo-' + actionTarget)
+        .concat({
+          id: 'quayExtraInfo-' + actionTarget,
+          msg:
+            currentQuay?.extraInfo?.fi.trim() || currentQuay?.extraInfo?.sv.trim() || currentQuay?.extraInfo?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (
+    (actionType === 'quayLat' || actionType === 'quayLon') &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'quayGeometry-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayGeometry-' + actionTarget)
+        .concat({
+          id: 'quayGeometry-' + actionTarget,
+          msg: currentQuay?.geometry?.lat.trim() || currentQuay?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
+    const sectionFieldErrors: ValidationType[] = [];
+    validationErrors
+      .filter((error) => error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-'))
+      .map((error) => {
+        const errorIndex = error.id.split('sectionGeometry-' + actionOuterTarget + '-')[1];
+        if (errorIndex < actionTarget) sectionFieldErrors.push(error);
+        if (errorIndex > actionTarget) {
+          sectionFieldErrors.push({
+            id: 'sectionGeometry-' + actionOuterTarget + '-' + (Number(errorIndex) - 1),
+            msg: error.msg,
+          });
+        }
+      });
+    setValidationErrors(
+      validationErrors.filter((error) => !error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-')).concat(sectionFieldErrors)
+    );
+  } else if (
+    (actionType === 'sectionLat' || actionType === 'sectionLon') &&
+    actionTarget !== undefined &&
+    actionOuterTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
+    const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)
+        .concat({
+          id: 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget,
+          msg: currentSection?.geometry?.lat.trim() || currentSection?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  }
+
   return newState;
 };
