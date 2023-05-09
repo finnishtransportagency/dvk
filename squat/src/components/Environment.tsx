@@ -207,7 +207,7 @@ const Environment: React.FC = () => {
             isFieldValid('sweptDepth') &&
             isFieldValid('waterDepth') &&
             (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth') : true) &&
-            (state.environment.fairway.fairwayForm === fairwayForms[2] ? isFieldValid('slopeScale') && isFieldValid('slopeHeight') : true)
+            (state.environment.fairway.fairwayForm === fairwayForms[1] ? isFieldValid('slopeScale') && isFieldValid('slopeHeight') : true)
           }
         />
         <IonGrid className="no-padding">
@@ -323,13 +323,13 @@ const Environment: React.FC = () => {
                 />
               </IonCol>
             )}
-            {state.environment.fairway.fairwayForm === fairwayForms[1] && ( // form == Channel
+            {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Channel
               <>
                 <IonCol size="6" className="hide-landscape"></IonCol>
                 <IonCol size="6" className="hide-landscape"></IonCol>
               </>
             )}
-            {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
+            {state.environment.fairway.fairwayForm === fairwayForms[1] && ( // form == Sloped Channel
               <>
                 <IonCol size="6">
                   <InputField
