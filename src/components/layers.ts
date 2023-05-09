@@ -622,15 +622,6 @@ export function setSelectedHarbor(id?: string) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedRestrictionArea(id?: number | string) {
-  const dvkMap = getMap();
-  const speedSource = dvkMap.getVectorSource('speedlimit');
-  for (const f of speedSource.getFeatures()) {
-    f.set('hoverStyle', id && f.getProperties().ids.includes(id));
-  }
-  speedSource.dispatchEvent('change');
-}
-
 export function setSelectedQuay(name?: Maybe<QuayText>) {
   const dvkMap = getMap();
   const quaySource = dvkMap.getVectorSource('quay');
