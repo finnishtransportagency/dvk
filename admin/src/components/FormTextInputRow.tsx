@@ -33,7 +33,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   inputType,
   actionTarget,
   actionOuterTarget,
-  focused
+  focused,
 }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
