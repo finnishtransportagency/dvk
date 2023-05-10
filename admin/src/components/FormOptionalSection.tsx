@@ -36,6 +36,8 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
   const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
+  const [focused, setFocused] = useState<boolean>(false);
+
   const toggleSection = (position: number) => {
     const opened = openSections.map((s, idx) => (idx === position ? !s : s));
     setOpenSections(opened);
@@ -48,6 +50,11 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
       updateState(true, sectionType, undefined, undefined, actionOuterTarget);
     }
     setOpenSections(openSections.concat(true));
+    // Trigger setting focus on last section's first input
+    setFocused(true);
+    setTimeout(() => {
+      setFocused(false);
+    }, 150);
   };
   const deleteSection = (idx: number) => {
     updateState(false, sectionType, undefined, idx, actionOuterTarget);
@@ -111,6 +118,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         : undefined
                     }
                     disabled={disabled}
+                    focused={idx === sections.length - 1 ? focused : undefined}
                   />
                   <IonRow>
                     <IonCol sizeMd="6">
@@ -167,6 +175,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       : undefined
                   }
                   disabled={disabled}
+                  focused={idx === sections.length - 1 ? focused : undefined}
                 />
                 <IonRow className="ion-justify-content-between">
                   <IonCol sizeMd="4">
@@ -220,6 +229,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       : undefined
                   }
                   disabled={disabled}
+                  focused={idx === sections.length - 1 ? focused : undefined}
                 />
                 <IonRow>
                   <IonCol sizeMd="4">
@@ -277,6 +287,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                         : undefined
                     }
                     disabled={disabled}
+                    focused={idx === sections.length - 1 ? focused : undefined}
                   />
                   <FormTextInputRow
                     labelKey="harbour.quay-extra-info"
@@ -369,6 +380,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                       actionTarget={idx}
                       actionOuterTarget={actionOuterTarget}
                       disabled={disabled}
+                      focused={idx === sections.length - 1 ? focused : undefined}
                     />
                   </IonCol>
                   <IonCol>
