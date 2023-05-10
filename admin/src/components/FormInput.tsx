@@ -23,6 +23,7 @@ interface InputProps {
   min?: number;
   max?: number;
   decimalCount?: number;
+  focused?: boolean;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -43,6 +44,7 @@ const FormInput: React.FC<InputProps> = ({
   min,
   max,
   decimalCount,
+  focused,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -139,6 +141,14 @@ const FormInput: React.FC<InputProps> = ({
       setIsValid(true);
     }
   }, [required, error, isTouched, val]);
+
+  useEffect(() => {
+    if (focused) {
+      setTimeout(() => {
+        focusInput();
+      }, 150);
+    }
+  }, [focused]);
 
   return (
     <>
