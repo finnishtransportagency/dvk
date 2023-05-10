@@ -31,7 +31,8 @@ export type FeatureDataId =
   | 'mml_meri'
   | 'mml_jarvi'
   | 'mml_laiturit'
-  | 'vts';
+  | 'vtsline'
+  | 'vtspoint';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -74,7 +75,8 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
   { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
-  { id: 'vts', url: new URL(featureLoaderUrl + '?type=vts'), staticUrl: new URL(staticUrl + '/vts.json.gz') },
+  { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
+  { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
 ];
 
 export type FeatureDataLayerId =
@@ -96,7 +98,8 @@ export type FeatureDataLayerId =
   | 'ice'
   | 'observation'
   | 'buoy'
-  | 'vts';
+  | 'vtsline'
+  | 'vtspoint';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -138,7 +141,8 @@ export const MAP: MapType = {
     { id: 'ice', noOfflineSupport: true },
     { id: 'observation', noOfflineSupport: true },
     { id: 'buoy', noOfflineSupport: true },
-    { id: 'vts' },
+    { id: 'vtsline' },
+    { id: 'vtspoint' },
   ],
 };
 

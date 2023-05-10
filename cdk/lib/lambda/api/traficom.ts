@@ -39,14 +39,22 @@ function roundGeometryAnd2D(row: Feature<Geometry, GeoJsonProperties>) {
   roundGeometry(row.geometry);
 }
 
-export async function fetchVTSPointsAndLines() {
+async function fetchVTSByType(type: string) {
   const data = await fetchApi<FeatureCollection>(
-    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:Rdocal_L,avoin:Rdocal_P&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258'
+    `trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=${type}&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258`
   );
   return data.features.filter((row) => {
     roundGeometryAnd2D(row);
     return row.properties?.OBJNAM !== 'GOFREP' && row.properties?.OBJNAM !== 'Reporting wintertime 60N';
   });
+}
+
+export async function fetchVTSPoints() {
+  return fetchVTSByType('avoin:Rdocal_P');
+}
+
+export async function fetchVTSLines() {
+  return fetchVTSByType('avoin:Rdocal_L');
 }
 
 export async function fetchPilotPoints(): Promise<PilotPlace[]> {

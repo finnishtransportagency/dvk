@@ -41,7 +41,8 @@
           "weatherStation": "Weather stations",
           "ice": "Ice map",
           "buoys": "Wave buoys",
-          "vts": "VTS reporting lines and points",
+          "vtsline": "VTS areas",
+          "vtspoint": "VTS reporting points",
           "general": "General",
           "mapStyle": {
             "header": "Map style",

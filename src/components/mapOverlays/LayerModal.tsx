@@ -75,7 +75,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                     </IonListHeader>
                     <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} layers={layers} setLayers={setLayers} />
-                    <LayerItem id="vts" title={t('homePage.map.controls.layer.vts')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="vtsline" title={t('homePage.map.controls.layer.vtsline')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="vtspoint" title={t('homePage.map.controls.layer.vtspoint')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="boardline12" title={t('homePage.map.controls.layer.boardLines')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} layers={layers} setLayers={setLayers} />
