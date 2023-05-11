@@ -44,6 +44,7 @@
           "buoys": "Aaltopoijut",
           "vts": "VTS-ilmoituslinjat ja -pisteet",
           "general": "Yleiset",
+          "name": "Karttanimistö",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

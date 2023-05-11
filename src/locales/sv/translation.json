@@ -9,7 +9,8 @@
       "squat": "Squat beräkning",
       "squat-url": "/squat/index.html?lang=sv",
       "customer-service": "Trafikens kundtjänst",
-      "source": "Informationskällor och användningsvillkor"
+      "source": "Informationskällor och användningsvillkor",
+      "opens-in-a-new-tab": "Öppnas i en ny flik"
     },
     "map": {
       "controls": {
@@ -43,6 +44,7 @@
           "buoys": "Vågbojar",
           "vts": "VTS-trafikrapporteringslinjer och -punkter",
           "general": "Allmänt",
+          "name": "Kartnamn",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
