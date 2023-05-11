@@ -614,8 +614,8 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
             <p
               key={jdx}
               className="inlineHoverText"
-              onMouseOver={() => setSelectedQuay(quay?.name)}
-              onFocus={() => setSelectedQuay(quay?.name)}
+              onMouseOver={() => setSelectedQuay(quay)}
+              onFocus={() => setSelectedQuay(quay)}
               onMouseOut={() => setSelectedQuay(null)}
               onBlur={() => setSelectedQuay(null)}
             >
