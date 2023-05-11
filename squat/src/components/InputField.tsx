@@ -39,15 +39,17 @@ const InputField: React.FC<InputProps> = (props) => {
     if (props.value !== null) {
       inputRef?.current?.classList.add('ion-touched');
       inputRef?.current?.getInputElement().then((inputElem) => {
-        setValue(inputElem.value);
-        dispatch({
-          type: 'validation',
-          payload: {
-            key: inputElem.name,
-            value: inputElem.checkValidity(),
-            elType: 'boolean',
-          },
-        });
+        if (inputElem) {
+          setValue(inputElem.value);
+          dispatch({
+            type: 'validation',
+            payload: {
+              key: inputElem.name,
+              value: inputElem.checkValidity(),
+              elType: 'boolean',
+            },
+          });
+        }
       });
     }
   }, [props.value, dispatch]);

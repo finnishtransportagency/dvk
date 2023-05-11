@@ -50,18 +50,20 @@ const Vessel: React.FC = () => {
   }, [state.vessel.general.draught, dispatch]);
 
   useEffect(() => {
-    /*
-    if (document.getElementsByName('blockCoefficient').length && (document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild) {
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'blockCoefficient',
-          value: ((document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
+    const bcElems = document.getElementsByName('blockCoefficient');
+    if (bcElems.length) {
+      const inputElems = bcElems[0].getElementsByTagName('input');
+      if (inputElems.length) {
+        dispatch({
+          type: 'validation',
+          payload: {
+            key: 'blockCoefficient',
+            value: inputElems[0].checkValidity(),
+            elType: 'boolean',
+          },
+        });
+      }
     }
-    */
   }, [state.status.showBarrass, dispatch]);
 
   // Field validation
