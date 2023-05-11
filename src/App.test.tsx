@@ -103,7 +103,10 @@ jest.mock('./components/FeatureLoader', () => ({
   useBackgroundMmllaituritLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useVtsLayer: () => {
+  useVtsLineLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useVtsPointLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
 }));

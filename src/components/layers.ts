@@ -10,7 +10,7 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section, Text as QuayText } from '../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
 import { FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
@@ -397,9 +397,10 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
 
   // VTS linjat ja ilmoituspisteet
-  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 312);
+  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
 }
 
 export function unsetSelectedFairwayCard() {
@@ -452,6 +453,7 @@ export function unsetSelectedFairwayCard() {
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
   const depth = quay.sections?.map((s) => s?.depth || 0).filter((v) => v !== undefined && v > 0);
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
     harbor: harbor.id,
@@ -469,6 +471,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: Vecto
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
     harbor: harbor.id,
@@ -623,12 +626,25 @@ export function setSelectedHarbor(id?: string) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedQuay(name?: Maybe<QuayText>) {
+export function setSelectedQuay(quay: Maybe<Quay>) {
   const dvkMap = getMap();
   const quaySource = dvkMap.getVectorSource('quay');
-
+  const ids = [];
+  if (quay?.geometry?.coordinates) {
+    ids.push(quay.geometry.coordinates.join(';'));
+  } else if (quay?.sections) {
+    quay.sections.forEach((s) => {
+      if (s?.geometry?.coordinates) {
+        ids.push(s.geometry.coordinates.join(';'));
+      }
+    });
+  }
   for (const f of quaySource.getFeatures()) {
-    f.set('hoverStyle', name && f.get('featureType') === 'quay' && f.get('quay').fi === name.fi);
+    if (f.get('featureType') === 'quay') {
+      f.set('hoverStyle', ids.includes(f.getId() as string), true);
+    } else {
+      f.set('hoverStyle', false, true);
+    }
   }
   quaySource.dispatchEvent('change');
 }

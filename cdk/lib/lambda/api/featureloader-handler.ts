@@ -18,7 +18,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
-import { fetchPilotPoints, fetchVTSPointsAndLines } from './traficom';
+import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
 
 function getNumberValue(value: number | undefined): number | undefined {
@@ -390,8 +390,8 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addVTSPointsAndLines(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const resp = await fetchVTSPointsAndLines();
+async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties>[], isPoint: boolean) {
+  const resp = isPoint ? await fetchVTSPoints() : await fetchVTSLines();
   for (const feature of resp) {
     features.push({
       type: feature.type,
@@ -507,8 +507,10 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFaultFeatures(features);
   } else if (type === 'marinewarning') {
     await addMarineWarnings(features);
-  } else if (type === 'vts') {
-    await addVTSPointsAndLines(features);
+  } else if (type === 'vtspoint') {
+    await addVTSPointsOrLines(features, true);
+  } else if (type === 'vtsline') {
+    await addVTSPointsOrLines(features, false);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {
