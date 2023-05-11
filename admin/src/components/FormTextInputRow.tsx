@@ -18,6 +18,7 @@ interface InputRowProps {
   inputType?: '' | 'input' | 'textarea';
   actionTarget?: string | number;
   actionOuterTarget?: string | number;
+  focused?: boolean;
 }
 
 const FormTextInputRow: React.FC<InputRowProps> = ({
@@ -32,6 +33,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   inputType,
   actionTarget,
   actionOuterTarget,
+  focused,
 }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
@@ -40,7 +42,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
 
   return (
     <IonRow>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={fi(labelKey) + ' (fi)'}
@@ -54,6 +56,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
+            focused={focused}
           />
         )}
         {inputType === 'textarea' && (
@@ -70,7 +73,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={sv(labelKey) + ' (sv)'}
@@ -100,7 +103,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={en(labelKey) + ' (en)'}

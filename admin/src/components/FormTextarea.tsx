@@ -26,12 +26,14 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
+  const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = (event: IonTextareaCustomEvent<TextareaChangeEventDetail> | IonTextareaCustomEvent<FocusEvent>) => {
     setIsValid(error ? false : (event.target.querySelector('textarea') as HTMLTextAreaElement)?.checkValidity());
+    setIsTouched(true);
   };
   const handleChange = (event: IonTextareaCustomEvent<TextareaChangeEventDetail>) => {
-    checkValidity(event);
+    if (isTouched) checkValidity(event);
     setValue(event.detail.value as string, actionType, actionLang);
   };
 
@@ -42,8 +44,13 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   useEffect(() => {
-    inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
-  }, [required, error]);
+    if (isTouched) {
+      inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
+      setIsTouched(false);
+    } else if (!required && !val.trim() && !error) {
+      setIsValid(true);
+    }
+  }, [required, error, isTouched, val]);
 
   return (
     <>
@@ -51,7 +58,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         {label} {required ? '*' : ''}
       </IonLabel>
       <IonItem
-        className={'formInput' + (isValid ? '' : ' invalid')}
+        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
         lines="none"
         fill="outline"
         counter={true}

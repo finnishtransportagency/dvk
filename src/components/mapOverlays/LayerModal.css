@@ -78,9 +78,16 @@ ion-modal#layerModalContainer::part(content) {
   height: 1px;
 }
 
-#layerModalContainer ion-item .vts {
+#layerModalContainer ion-item .vtsline {
   border-top: 2px dashed var(--ion-color-layer-vts);
   height: 1px;
+}
+
+#layerModalContainer ion-item .vtspoint {
+  width: 16px;
+  height: 16px;
+  background: url('../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
+  background-size: cover;
 }
 
 #layerModalContainer ion-item .safetyequipment {

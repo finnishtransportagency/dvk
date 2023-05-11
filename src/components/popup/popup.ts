@@ -117,7 +117,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'marinewarning') {
       return getMarineWarningStyle(feature, true);
     } else if (type === 'boardline') {
-      return getBoardLineStyle('#000000', 2);
+      return getBoardLineStyle('#000000', 1);
     } else if (type === 'mareograph') {
       return getMareographStyle(feature, true, resolution);
     } else if (type === 'observation') {
@@ -149,7 +149,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),
       dvkMap.getFeatureLayer('harbor'),
-      dvkMap.getFeatureLayer('vts'),
+      dvkMap.getFeatureLayer('vtsline'),
+      dvkMap.getFeatureLayer('vtspoint'),
     ],
     hitTolerance: 3,
     multi: true,

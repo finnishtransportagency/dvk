@@ -104,6 +104,7 @@ export function getBoardLineStyle(color: string, width: number) {
       width,
       lineDash: [15, 10],
     }),
+    zIndex: 202,
   });
 }
 
@@ -238,7 +239,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, false);
     }
   } else if (ds === 'boardline12') {
-    return getBoardLineStyle('#000000', 2);
+    return getBoardLineStyle('#000000', 1);
   } else {
     return undefined;
   }
@@ -336,8 +337,8 @@ export function addAPILayers(map: Map) {
 
   // Kauppamerenkulku
   addFeatureVectorImageLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'), undefined, 1, false, 201);
-  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 202);
-  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 1), undefined, 1, false, 203);
+  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 0.5), undefined, 1, false, 202);
+  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 203);
   // Muu vesiliikenne
   addFeatureVectorImageLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'), undefined, 1, false, 204);
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
@@ -396,9 +397,10 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
 
   // VTS linjat ja ilmoituspisteet
-  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 312);
+  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
 }
 
 export function unsetSelectedFairwayCard() {

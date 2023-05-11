@@ -265,7 +265,7 @@ const Environment: React.FC = () => {
                 name="fairwayForm"
                 value={state.environment.fairway.fairwayForm}
                 options={[...fairwayForms].sort((a, b) => {
-                  return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                  return a.id === 1 || b.id === 1 ? a.id - b.id : b.id - a.id;
                 })}
                 actionType="environment-fairway"
                 required
@@ -278,7 +278,7 @@ const Environment: React.FC = () => {
                     <IonGrid>
                       {[...fairwayForms]
                         .sort((a, b) => {
-                          return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                          return a.id === 1 || b.id === 1 ? a.id - b.id : b.id - a.id;
                         })
                         .map((option) => (
                           <IonRow key={option.id}>
@@ -297,7 +297,7 @@ const Environment: React.FC = () => {
                       <IonRow>
                         {[...fairwayForms]
                           .sort((a, b) => {
-                            return a.id === 1 ? -1 : a.id < b.id ? 1 : -1;
+                            return a.id === 1 || b.id === 1 ? a.id - b.id : b.id - a.id;
                           })
                           .map((option) => (
                             <IonCol key={option.id} className="align-center">

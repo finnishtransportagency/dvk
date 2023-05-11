@@ -41,7 +41,8 @@
           "weatherStation": "Kustväderstationerna",
           "ice": "Iskarta",
           "buoys": "Vågbojar",
-          "vts": "VTS-trafikrapporteringslinjer och -punkter",
+          "vtsline": "VTS-områden",
+          "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "mapStyle": {
             "header": "Kartans stil",
