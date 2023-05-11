@@ -397,9 +397,10 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
 
   // VTS linjat ja ilmoituspisteet
-  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 312);
+  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
 }
 
 export function unsetSelectedFairwayCard() {

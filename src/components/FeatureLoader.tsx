@@ -200,8 +200,12 @@ export function useBuoyLayer() {
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
-export function useVtsLayer() {
-  return useDataLayer('vts', 'vts', 'EPSG:4258');
+export function useVtsLineLayer() {
+  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
+}
+
+export function useVtsPointLayer() {
+  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {

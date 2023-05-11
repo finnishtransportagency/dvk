@@ -33,7 +33,8 @@ const OfflineSupport: React.FC = () => {
   const bgLayerSea = useFeatureData('mml_meri');
   const bgLayerLake = useFeatureData('mml_jarvi');
   const bgLayerQuay = useFeatureData('mml_laiturit');
-  const vtsLayer = useFeatureData('vts');
+  const vtsLineLayer = useFeatureData('vtsline');
+  const vtsPointLayer = useFeatureData('vtspoint');
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -61,7 +62,8 @@ const OfflineSupport: React.FC = () => {
     bgLayerSea.dataUpdatedAt,
     bgLayerLake.dataUpdatedAt,
     bgLayerQuay.dataUpdatedAt,
-    vtsLayer.dataUpdatedAt,
+    vtsLineLayer.dataUpdatedAt,
+    vtsPointLayer.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -89,7 +91,8 @@ const OfflineSupport: React.FC = () => {
     bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
     bgLayerLake.isError ? bgLayerLake.errorUpdatedAt : 0,
     bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
-    vtsLayer.isError ? vtsLayer.errorUpdatedAt : 0,
+    vtsLineLayer.isError ? vtsLineLayer.errorUpdatedAt : 0,
+    vtsPointLayer.isError ? vtsPointLayer.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);
