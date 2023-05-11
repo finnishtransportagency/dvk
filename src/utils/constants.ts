@@ -143,6 +143,7 @@ export const MAP: MapType = {
     { id: 'buoy', noOfflineSupport: true },
     { id: 'vtsline' },
     { id: 'vtspoint' },
+    { id: 'name' },
   ],
 };
 

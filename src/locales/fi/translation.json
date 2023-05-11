@@ -45,6 +45,7 @@
           "vtsline": "VTS-alueet",
           "vtspoint": "VTS-ilmoituspisteet",
           "general": "Yleiset",
+          "name": "Karttanimistö",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

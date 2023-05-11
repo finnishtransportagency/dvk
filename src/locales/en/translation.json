@@ -9,7 +9,8 @@
       "squat": "Squat calculator",
       "squat-url": "/squat/index.html?lang=en",
       "customer-service": "Traffic customer service",
-      "source": "Data sources and terms of use"
+      "source": "Data sources and terms of use",
+      "opens-in-a-new-tab": "Opens in a new tab"
     },
     "map": {
       "controls": {
@@ -44,6 +45,7 @@
           "vtsline": "VTS areas",
           "vtspoint": "VTS reporting points",
           "general": "General",
+          "name": "Map names",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
