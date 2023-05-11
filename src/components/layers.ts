@@ -641,9 +641,9 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   }
   for (const f of quaySource.getFeatures()) {
     if (f.get('featureType') === 'quay') {
-      f.set('hoverStyle', ids.includes(f.getId() as string), false);
+      f.set('hoverStyle', ids.includes(f.getId() as string), true);
     } else {
-      f.set('hoverStyle', false, false);
+      f.set('hoverStyle', false, true);
     }
   }
   quaySource.dispatchEvent('change');
