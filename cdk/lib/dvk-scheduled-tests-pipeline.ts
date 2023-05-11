@@ -34,8 +34,8 @@ export class DvkScheduledTestsPipelineStack extends Stack {
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
-      branchOrRef: 'feature/DVK-795-ajastetut-testit',
-      reportBuildStatus: true,
+      branchOrRef: 'prod',
+      reportBuildStatus: false,
       webhook: false,
     };
     const testBucket = new Bucket(this, 'ScheduledTestsBucket', {
