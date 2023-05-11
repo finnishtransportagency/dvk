@@ -92,6 +92,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
@@ -104,6 +107,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
@@ -116,6 +122,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
