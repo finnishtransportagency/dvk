@@ -67,7 +67,6 @@ Check Fairway Card In English
 *** Keywords ***
 Open DVK
     [Documentation]    This keyword opens DVK in localhost with port and browser given as variables
-    Log To Console    ${URL}
     Open Browser    ${URL}    ${BROWSER}
     Sleep    5s
     Press Keys    None    ESC
