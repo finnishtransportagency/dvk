@@ -139,6 +139,7 @@ export const MAP: MapType = {
     { id: 'observation', noOfflineSupport: true },
     { id: 'buoy', noOfflineSupport: true },
     { id: 'vts' },
+    { id: 'name' },
   ],
 };
 
