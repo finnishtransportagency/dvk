@@ -14,3 +14,8 @@
 #safetyEquipmentFaultList ion-grid.table ion-row > ion-col p {
   margin: 0;
 }
+
+#safetyEquipmentFaultList ion-grid.table .header:hover {
+  background-color: var(--ion-color-light);
+  cursor: pointer;
+}

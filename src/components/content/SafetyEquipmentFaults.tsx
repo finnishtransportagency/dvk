@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
@@ -13,11 +13,38 @@ import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
+import { Geometry } from 'ol/geom';
+import { Feature } from 'ol';
+import * as olExtent from 'ol/extent';
+import VectorSource from 'ol/source/Vector';
+import VectorLayer from 'ol/layer/Vector';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
 };
+
+function getLayerSource() {
+  const dvkMap = getMap();
+  const layer = dvkMap.getFeatureLayer('selectedfairwaycard') as VectorLayer<VectorSource>;
+  return layer.getSource() as VectorSource<Geometry>;
+}
+
+function goto(feature: Feature<Geometry> | null) {
+  const geometry = feature?.getGeometry();
+  if (feature && geometry) {
+    const source = getLayerSource();
+    const copy = feature.clone();
+    copy.set('safetyEquipmentFaultList', true, true);
+    source.addFeature(copy);
+    source.dispatchEvent('change');
+    const extent = olExtent.createEmpty();
+    olExtent.extend(extent, geometry.getExtent());
+    getMap()
+      .olMap?.getView()
+      .fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+  }
+}
 
 const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
@@ -39,7 +66,8 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        const equipment = equipments.getFeatureById(faultArray[0].equipmentId)?.getProperties() as EquipmentFeatureProperties | undefined;
+        const feature = equipments.getFeatureById(faultArray[0].equipmentId);
+        const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
           if (f.fairwayCards) {
@@ -51,7 +79,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
         const cards = Array.from(cardMap.values());
         return (
           <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
-            <IonRow className="header">
+            <IonRow className="header" onClick={() => goto(feature)}>
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
@@ -122,6 +150,12 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
     return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
+
+  useEffect(() => {
+    return () => {
+      getLayerSource().clear();
+    };
+  });
 
   return (
     <>

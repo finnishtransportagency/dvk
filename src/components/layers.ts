@@ -240,6 +240,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     }
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
+  } else if (ds === 'safetyequipment') {
+    return getSafetyEquipmentStyle(feature, 1, false);
   } else {
     return undefined;
   }
