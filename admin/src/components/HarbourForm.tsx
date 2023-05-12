@@ -359,7 +359,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol sizeMd="6" className="no-border"></IonCol>
+                <IonCol sizeMd="6"></IonCol>
               </IonRow>
             </IonGrid>
             <IonText>
