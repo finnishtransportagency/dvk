@@ -16,33 +16,23 @@ import './SafetyEquipmentFaults.css';
 import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
 import * as olExtent from 'ol/extent';
-import VectorSource from 'ol/source/Vector';
-import VectorLayer from 'ol/layer/Vector';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
 };
 
-function getLayerSource() {
-  const dvkMap = getMap();
-  const layer = dvkMap.getFeatureLayer('selectedfairwaycard') as VectorLayer<VectorSource>;
-  return layer.getSource() as VectorSource<Geometry>;
-}
-
 function goto(feature: Feature<Geometry> | null) {
   const geometry = feature?.getGeometry();
   if (feature && geometry) {
-    const source = getLayerSource();
-    const copy = feature.clone();
-    copy.set('safetyEquipmentFaultList', true, true);
-    source.addFeature(copy);
-    source.dispatchEvent('change');
+    const dvkMap = getMap();
+    const source = dvkMap.getVectorSource('selectedfairwaycard');
+    feature.set('safetyEquipmentFaultList', true, true);
+    source.addFeature(feature);
+    dvkMap.getVectorSource('safetyequipment').removeFeature(feature);
     const extent = olExtent.createEmpty();
     olExtent.extend(extent, geometry.getExtent());
-    getMap()
-      .olMap?.getView()
-      .fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
   }
 }
 
@@ -153,7 +143,14 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
 
   useEffect(() => {
     return () => {
-      getLayerSource().clear();
+      const dvkMap = getMap();
+      const source = dvkMap.getVectorSource('selectedfairwaycard');
+      const target = dvkMap.getVectorSource('safetyequipment');
+      source.forEachFeature((f) => {
+        f.set('safetyEquipmentFaultList', false, true);
+        target.addFeature(f);
+      });
+      source.clear();
     };
   });
 
