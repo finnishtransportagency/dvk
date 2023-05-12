@@ -118,7 +118,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         },
       },
     };
-    console.log(currentCard);
     saveFairwayCard({ card: currentCard as FairwayCardInput });
   }, [state, saveFairwayCard]);
 

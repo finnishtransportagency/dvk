@@ -112,7 +112,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         };
       }),
     };
-    console.log(currentHarbour);
     saveHarbourMutation({ harbor: currentHarbour as HarborInput });
   }, [state, saveHarbourMutation]);
 
