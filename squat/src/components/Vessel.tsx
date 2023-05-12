@@ -49,23 +49,6 @@ const Vessel: React.FC = () => {
     });
   }, [state.vessel.general.draught, dispatch]);
 
-  useEffect(() => {
-    const bcElems = document.getElementsByName('blockCoefficient');
-    if (bcElems.length) {
-      const inputElems = bcElems[0].getElementsByTagName('input');
-      if (inputElems.length) {
-        dispatch({
-          type: 'validation',
-          payload: {
-            key: 'blockCoefficient',
-            value: inputElems[0].checkValidity(),
-            elType: 'boolean',
-          },
-        });
-      }
-    }
-  }, [state.status.showBarrass, dispatch]);
-
   // Field validation
   const isFieldValid = (name: string) => {
     for (const [k, v] of Object.entries(state.validations)) {

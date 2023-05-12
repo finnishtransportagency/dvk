@@ -51,58 +51,6 @@ const Environment: React.FC = () => {
     dispatch,
   ]);
 
-  // Trigger related validations
-
-  useEffect(() => {
-    if (state.environment.fairway.sweptDepth) {
-      const sdElems = document.getElementsByName('sweptDepth');
-      if (sdElems.length) {
-        const inputElems = sdElems[0].getElementsByTagName('input');
-        if (inputElems.length) {
-          dispatch({
-            type: 'validation',
-            payload: {
-              key: 'sweptDepth',
-              value: inputElems[0].checkValidity(),
-              elType: 'boolean',
-            },
-          });
-        }
-      }
-    }
-  }, [state.vessel.general.draught, state.environment.fairway.sweptDepth, dispatch]);
-
-  useEffect(() => {
-    const wdElems = document.getElementsByName('waterDepth');
-    if (wdElems.length) {
-      const inputElems = wdElems[0].getElementsByTagName('input');
-      if (inputElems.length) {
-        dispatch({
-          type: 'validation',
-          payload: {
-            key: 'waterDepth',
-            value: inputElems[0].checkValidity(),
-            elType: 'boolean',
-          },
-        });
-      }
-    }
-    const shElems = document.getElementsByName('slopeHeight');
-    if (shElems.length) {
-      const inputElems = shElems[0].getElementsByTagName('input');
-      if (inputElems.length) {
-        dispatch({
-          type: 'validation',
-          payload: {
-            key: 'slopeHeight',
-            value: inputElems[0].checkValidity(),
-            elType: 'boolean',
-          },
-        });
-      }
-    }
-  }, [state.environment.fairway.sweptDepth, dispatch]);
-
   // Field validation
   const isFieldValid = (name: string) => {
     for (const [k, v] of Object.entries(state.validations)) {

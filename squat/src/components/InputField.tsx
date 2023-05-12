@@ -38,21 +38,23 @@ const InputField: React.FC<InputProps> = (props) => {
     setValue(props.value);
     if (props.value !== null) {
       inputRef?.current?.classList.add('ion-touched');
-      inputRef?.current?.getInputElement().then((inputElem) => {
-        if (inputElem) {
-          setValue(inputElem.value);
-          dispatch({
-            type: 'validation',
-            payload: {
-              key: inputElem.name,
-              value: inputElem.checkValidity(),
-              elType: 'boolean',
-            },
-          });
-        }
-      });
+      /* Set timeout to make sure ionic has rendered/modified native input element before validating */
+      setTimeout(() => {
+        inputRef?.current?.getInputElement().then((inputElem) => {
+          if (inputElem) {
+            dispatch({
+              type: 'validation',
+              payload: {
+                key: inputElem.name,
+                value: inputElem.checkValidity(),
+                elType: 'boolean',
+              },
+            });
+          }
+        });
+      }, 100);
     }
-  }, [props.value, dispatch]);
+  }, [props.value, props.min, props.max, dispatch]);
 
   const innerUpdateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
