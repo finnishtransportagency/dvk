@@ -8,8 +8,11 @@ Library           DateTime
 Library           Collections
 Resource          resources_dvk.resource
 *** Variables ***
-${BROWSER}        headlesschrome
+${PROTOCOL}       http
+${HOST}           localhost
 ${PORT}           3000
+${URL}            ${PROTOCOL}://${HOST}:${PORT}
+${BROWSER}        headlesschrome
 
 *** Test Cases ***
 Check Scale
@@ -64,7 +67,7 @@ Check Fairway Card In English
 *** Keywords ***
 Open DVK
     [Documentation]    This keyword opens DVK in localhost with port and browser given as variables
-    Open Browser    http://localhost:${PORT}    ${BROWSER}
+    Open Browser    ${URL}    ${BROWSER}
     Sleep    5s
     Press Keys    None    ESC
     Wait Until Element Is Not Visible    ${SOVELLUSTA_ALUSTETAAN_POP_UP}    30s
@@ -89,6 +92,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Card Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_CARD_TAB_CONTENT_WIDE}
@@ -101,6 +107,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Harbours Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_HARBOURS_TAB_CONTENT_WIDE}
@@ -113,6 +122,9 @@ Check That Toggle Wide Button Works Correctly For Fairway Areas Tab
     Click Element    ${EXPAND_WIDE_BUTTON}
     Wait Until Element Is Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
     Element Should Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
+    Wait Until Element Is Visible    ${REVERT_WIDE_BUTTON}
+    Element Should Be Visible    ${REVERT_WIDE_BUTTON}
+    Scroll Element Into View    ${REVERT_WIDE_BUTTON}
     Click Element    ${REVERT_WIDE_BUTTON}
     Wait Until Element Is Not Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}
     Element Should Not Be Visible    ${FAIRWAY_AREAS_TAB_CONTENT_WIDE}

@@ -19,7 +19,7 @@ interface ModalProps {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
@@ -120,6 +120,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                     />
                     <LayerItem id="buoy" noOfflineSupport title={t('homePage.map.controls.layer.buoys')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="ice" noOfflineSupport title={t('homePage.map.controls.layer.ice')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="name" title={t('homePage.map.controls.layer.name')} layers={layers} setLayers={setLayers} />
                   </IonList>
                 </IonCol>
               </IonRow>
