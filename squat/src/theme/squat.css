@@ -185,6 +185,10 @@ ion-item.item.align-center ion-radio {
 }
 
 ion-note.input-helper {
+  display: inline-block;
+  font-size: 12px;
+  padding-left: 16px;
+  padding-right: 16px;
   min-height: 19px;
 }
 

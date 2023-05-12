@@ -40,10 +40,8 @@ const LabelField: React.FC<LabelProps> = (props) => {
             </span>
           </IonLabel>
         )}
-        <IonNote slot="helper" className="input-helper">
-          {props.helper}
-        </IonNote>
       </IonItem>
+      <IonNote className="input-helper">{props.helper}</IonNote>
     </>
   );
 };
