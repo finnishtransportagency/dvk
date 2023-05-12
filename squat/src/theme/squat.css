@@ -184,12 +184,31 @@ ion-item.item.align-center ion-radio {
   width: 100%;
 }
 
+.sc-ion-input-md-h {
+  min-height: 42px !important;
+}
+
+.sc-ion-input-md-h .input-wrapper {
+  padding-left: 0;
+}
+
+.sc-ion-input-md-h .label-text {
+  color: var(--ion-color-medium);
+}
+
+.sc-ion-input-md-h .input-bottom {
+  padding-left: 0;
+}
+
+.input-fill-outline.sc-ion-input-md-h {
+  --border-color: var(--ion-color-dark) !important;
+}
+
 ion-note.input-helper {
   display: inline-block;
   font-size: 12px;
   padding-left: 16px;
   padding-right: 16px;
-  min-height: 19px;
 }
 
 ion-item.item-interactive.ion-invalid ion-note.input-error,
