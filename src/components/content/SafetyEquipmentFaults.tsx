@@ -13,8 +13,6 @@ import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
-import { Geometry } from 'ol/geom';
-import { Feature } from 'ol';
 import * as olExtent from 'ol/extent';
 
 type FaultGroupProps = {
@@ -22,14 +20,20 @@ type FaultGroupProps = {
   loading?: boolean;
 };
 
-function goto(feature: Feature<Geometry> | null) {
+function goto(id: number) {
+  const dvkMap = getMap();
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
+  let feature = safetyEquipmentSource.getFeatureById(id);
+  if (feature) {
+    feature.set('safetyEquipmentFaultList', true, true);
+    selectedFairwayCardSource.addFeature(feature);
+    safetyEquipmentSource.removeFeature(feature);
+  } else {
+    feature = selectedFairwayCardSource.getFeatureById(id);
+  }
   const geometry = feature?.getGeometry();
   if (feature && geometry) {
-    const dvkMap = getMap();
-    const source = dvkMap.getVectorSource('selectedfairwaycard');
-    feature.set('safetyEquipmentFaultList', true, true);
-    source.addFeature(feature);
-    dvkMap.getVectorSource('safetyequipment').removeFeature(feature);
     const extent = olExtent.createEmpty();
     olExtent.extend(extent, geometry.getExtent());
     dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
@@ -52,11 +56,15 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
   const equipments = getMap().getVectorSource('safetyequipment');
+  const equipments2 = getMap().getVectorSource('selectedfairwaycard');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        const feature = equipments.getFeatureById(faultArray[0].equipmentId);
+        let feature = equipments.getFeatureById(faultArray[0].equipmentId);
+        if (!feature) {
+          feature = equipments2.getFeatureById(faultArray[0].equipmentId);
+        }
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
@@ -69,7 +77,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
         const cards = Array.from(cardMap.values());
         return (
           <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
-            <IonRow className="header" onClick={() => goto(feature)}>
+            <IonRow className="header" onClick={() => goto(faultArray[0].equipmentId)}>
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>

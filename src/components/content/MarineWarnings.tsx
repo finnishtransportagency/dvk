@@ -1,5 +1,5 @@
 import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -13,11 +13,30 @@ import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import './MarineWarnings.css';
+import * as olExtent from 'ol/extent';
 
 type WarningListProps = {
   data: MarineWarning[];
   loading?: boolean;
 };
+
+function goto(id: number) {
+  const marineWarningSource = dvkMap.getVectorSource('marinewarning');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  let feature = marineWarningSource.getFeatureById(id);
+  if (feature) {
+    selectedFairwayCardSource.addFeature(feature);
+    marineWarningSource.removeFeature(feature);
+  } else {
+    feature = selectedFairwayCardSource.getFeatureById(id);
+  }
+  const geometry = feature?.getGeometry();
+  if (feature && geometry) {
+    const extent = olExtent.createEmpty();
+    olExtent.extend(extent, geometry.getExtent());
+    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+  }
+}
 
 const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
@@ -32,7 +51,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
       {sortedWarnings.map((warning) => {
         return (
           <IonGrid className="table light group ion-no-padding" key={warning.id}>
-            <IonRow className="header">
+            <IonRow className="header" onClick={() => goto(warning.id)}>
               <IonCol>
                 <IonText>
                   <h3 className="h5">
@@ -189,6 +208,17 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
     return t('lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
+
+  useEffect(() => {
+    return () => {
+      const source = dvkMap.getVectorSource('selectedfairwaycard');
+      const target = dvkMap.getVectorSource('marinewarning');
+      source.forEachFeature((f) => {
+        target.addFeature(f);
+      });
+      source.clear();
+    };
+  });
 
   return (
     <>
