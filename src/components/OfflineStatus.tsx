@@ -1,5 +1,5 @@
 import { IonText } from '@ionic/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDvkContext } from '../hooks/dvkContext';
 import { getDuration, refreshPrintableMap } from '../utils/common';
