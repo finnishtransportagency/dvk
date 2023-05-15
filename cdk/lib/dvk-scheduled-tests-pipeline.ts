@@ -29,12 +29,14 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       tags: Config.tags,
     });
     const env = Config.getEnvironment();
-    const importedCloudFrontURL = 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env);
+    const importedCertificateARN = cdk.Fn.importValue('DvkCertificateARN' + env); // Kehittajaymparistoista ei loydy certia, jolloin kaytetaan cloudfrontin dns-tietoa
+    const importedSiteURL = cdk.Fn.importValue('DvkSiteUrl' + env);
+    const importedCloudFrontURL = importedCertificateARN ? importedSiteURL : 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env);
 
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
-      branchOrRef: 'prod',
+      branchOrRef: 'feature/DVK-795-automaattitestit-korjaus',
       reportBuildStatus: false,
       webhook: false,
     };
