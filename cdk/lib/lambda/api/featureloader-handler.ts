@@ -319,7 +319,6 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
       properties: {
         id: equipment.turvalaitenumero,
         featureType: 'safetyequipment',
-        subType: equipment.alityyppi,
         navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
         navigationCode: equipment.navigointilajiKoodi,
         name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
