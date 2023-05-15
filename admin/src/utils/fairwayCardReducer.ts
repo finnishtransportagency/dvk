@@ -13,7 +13,6 @@ export const fairwayCardReducer = (
   actionOuterTarget?: string | number,
   reservedIds?: string[]
 ) => {
-  console.log('updateState... for input ' + actionType, actionLang);
   // Check manual validations and clear triggered validations by save
   if (actionType === 'primaryId' && state.operation === Operation.Create) {
     let primaryIdErrorMsg = '';

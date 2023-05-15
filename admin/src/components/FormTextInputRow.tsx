@@ -41,7 +41,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   const en = i18n.getFixedT('en');
 
   return (
-    <IonRow>
+    <IonRow className="bordered">
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
