@@ -201,7 +201,7 @@ ion-item.item.align-center ion-radio {
 }
 
 .input-fill-outline.sc-ion-input-md-h {
-  --border-color: var(--ion-color-dark) !important;
+  --border-color: var(--ion-color-dark);
 }
 
 ion-note.input-helper {
