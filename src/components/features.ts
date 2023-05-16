@@ -97,7 +97,6 @@ type EquipmentDistance = {
 export type EquipmentFeatureProperties = {
   id: number;
   featureType: string;
-  subType?: string;
   navigation?: Text;
   navigationCode?: string;
   name?: Text;

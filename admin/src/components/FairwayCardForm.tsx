@@ -118,7 +118,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         },
       },
     };
-    console.log(currentCard);
     saveFairwayCard({ card: currentCard as FairwayCardInput });
   }, [state, saveFairwayCard]);
 
@@ -476,7 +475,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol sizeMd="3" className="no-border"></IonCol>
+                <IonCol sizeMd="3"></IonCol>
               </IonRow>
             </IonGrid>
 
