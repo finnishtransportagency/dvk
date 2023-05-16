@@ -135,6 +135,24 @@ ion-modal#layerModalContainer::part(content) {
 .en #layerModalContainer ion-item .depth12::before {
   content: '10.2';
 }
+
+#layerModalContainer ion-item .soundingpoint {
+  width: 30px;
+  height: 12px;
+  text-align: right;
+}
+
+#layerModalContainer ion-item .soundingpoint::before {
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 16px;
+  content: '28';
+  color: var(--ion-color-layer-soundingpoint-text);
+  vertical-align: text-top;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+
 #layerModalContainer ion-item .specialarea {
   width: 15px;
   height: 15px;

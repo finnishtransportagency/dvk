@@ -46,6 +46,7 @@
           "vtspoint": "VTS reporting points",
           "general": "General",
           "name": "Map names",
+          "soundingpoint": "Soundings",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",

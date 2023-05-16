@@ -59,6 +59,10 @@ export function useNameLayer() {
   return useDataLayer('name', 'name', MAP.EPSG);
 }
 
+export function useSoundingPointLayer() {
+  return useDataLayer('soundingpoint', 'soundingpoint', MAP.EPSG);
+}
+
 export function useBackgroundFinlandLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const fiQuery = useFeatureData('finland', true, false);

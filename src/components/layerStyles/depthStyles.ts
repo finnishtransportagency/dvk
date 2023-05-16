@@ -56,3 +56,20 @@ export function getDepthStyle(feature: FeatureLike) {
     }),
   ];
 }
+
+export function getSoundingPointStyle(feature: FeatureLike) {
+  return new Style({
+    text: new Text({
+      font: '10px "Exo2"',
+      placement: 'point',
+      text: String(feature.getProperties().DEPTH),
+      fill: new Fill({
+        color: '#000000',
+      }),
+      stroke: new Stroke({
+        width: 1,
+        color: '#FFFFFF',
+      }),
+    }),
+  });
+}

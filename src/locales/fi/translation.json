@@ -46,6 +46,7 @@
           "vtspoint": "VTS-ilmoituspisteet",
           "general": "Yleiset",
           "name": "Karttanimistö",
+          "soundingpoint": "Syvyyspisteet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

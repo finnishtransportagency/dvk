@@ -21,7 +21,7 @@ import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { getDepthStyle } from './layerStyles/depthStyles';
+import { getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
@@ -392,6 +392,7 @@ export function addAPILayers(map: Map) {
   // Satamat
   addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 304);
 
+  addFeatureVectorLayer(map, 'soundingpoint', 10, 1, getSoundingPointStyle, undefined, 1, false, 304);
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 305);
 

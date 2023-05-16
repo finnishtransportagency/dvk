@@ -46,6 +46,7 @@
           "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "name": "Kartnamn",
+          "soundingpoint": "Djupangivelser",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
