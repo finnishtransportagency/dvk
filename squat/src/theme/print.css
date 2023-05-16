@@ -13,6 +13,12 @@
   ion-header, .titlebar {
     display: none;
   }
+
+  /* Hide info accordion */
+  .info-accordion {
+    display: none !important;
+  }
+
   .ion-page {
     position: static !important;
     contain: unset !important;
@@ -24,14 +30,10 @@
   ion-content::part(scroll) {
     position: static !important;
   }
+
+  /* Hide footer */
   ion-footer {
-    margin-top: 5px;
-  }
-  ion-footer::before {
-    display: none;
-  }
-  ion-footer.small ion-toolbar {
-    --min-height: 20px;
+    display: none !important;
   }
 
   ion-text {
@@ -115,26 +117,36 @@
     white-space: normal;
     font-size: 12px;
   }
-  ion-item.item-interactive::part(native) {
-    border: none !important;
-    padding-left: 0 !important;
-  }
-  ion-item.item-interactive {
-    --min-height: 20px;
-    --inner-padding-start: 0;
-    --inner-padding-end: 0;
-    --inner-padding-top: 0;
-    --inner-padding-bottom: 0;
-    --padding-start: 0;
-    --padding-end: 0;
-    --padding-top: 0;
-    --padding-bottom: 2px;
-    display: grid;
+
+  /* Input field styles */
+  .sc-ion-input-md-h {
+    --border-width: 0px !important;
+    min-height: 20px !important;
     font-size: 14px;
   }
-  ion-note.input-helper, ion-note.input-error {
+
+  .sc-ion-input-md {
+    padding: 0 !important;
+  }
+
+  /* Hide input field required marker */
+  .input-required-marker {
     display: none !important;
   }
+
+  /* Hide input helper and error texts */
+  ion-input .helper-text, ion-input .error-text {
+    display: none !important;
+  }
+
+  ion-input .input-bottom {
+    display: none !important;
+  }
+
+  ion-note.input-helper {
+    display: none !important;
+  }
+
   ion-label.unit {
     margin: 0;
     font-size: 12px !important;

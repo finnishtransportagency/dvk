@@ -3,8 +3,8 @@ import { IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRadio, IonRadioGroup, Io
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
-import Modal from './Modal';
 import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core';
+import Label from './Label';
 
 export type OptionType = {
   id: number;
@@ -56,23 +56,13 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
 
   return (
     <IonRadioGroup value={props.value} name={props.name} onIonChange={handleChange} aria-label={props.title}>
-      <IonItem lines="none" className="only-label no-focus">
-        <IonItem lines="none" className="only-label no-padding no-focus">
-          <IonLabel color="dark" title={props.title}>
-            {props.title}
-          </IonLabel>
-          {props.required && (
-            <IonLabel slot="end" color="dark" className="left-padding">
-              *
-            </IonLabel>
-          )}
-          {props.infoContent && props.infoContentTitle && (
-            <IonLabel slot="end">
-              <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
-            </IonLabel>
-          )}
-        </IonItem>
-      </IonItem>
+      <Label
+        title={props.title}
+        required={props.required}
+        infoContentTitle={props.infoContentTitle}
+        infoContent={props.infoContent}
+        infoContentSize={props.infoContentSize}
+      />
       <IonGrid className="no-padding" style={{ marginTop: '1px' }}>
         <IonRow>
           {props.options.map((option) => (
