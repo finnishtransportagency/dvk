@@ -35,7 +35,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
-      branchOrRef: 'feature/DVK-795-automaattitestit-korjaus',
+      branchOrRef: 'prod',
       reportBuildStatus: false,
       webhook: false,
     };
