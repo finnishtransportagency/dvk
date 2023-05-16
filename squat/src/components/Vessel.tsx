@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
-
 import { useSquatContext } from '../hooks/squatContext';
 import { fieldParams, vesselProfiles } from '../hooks/squatReducer';
 import { calculateDisplacement, calculateKB } from '../utils/calculations';
