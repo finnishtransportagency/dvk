@@ -77,7 +77,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
         const cards = Array.from(cardMap.values());
         return (
           <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
-            <IonRow className="header" onClick={() => goto(faultArray[0].equipmentId)}>
+            <IonRow className="header">
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
@@ -88,12 +88,17 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
               <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
-                    <>
+                    <Link
+                      to="/turvalaiteviat/"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goto(faultArray[0].equipmentId);
+                      }}
+                    >
                       {faultArray[0].geometry?.coordinates[0] &&
                         faultArray[0].geometry?.coordinates[1] &&
                         coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]])}
-                      .
-                    </>
+                    </Link>
                   )}
                 </IonLabel>
               </IonCol>

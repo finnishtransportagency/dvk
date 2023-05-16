@@ -14,6 +14,7 @@ import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import './MarineWarnings.css';
 import * as olExtent from 'ol/extent';
+import { Link } from 'react-router-dom';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -51,7 +52,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
       {sortedWarnings.map((warning) => {
         return (
           <IonGrid className="table light group ion-no-padding" key={warning.id}>
-            <IonRow className="header" onClick={() => goto(warning.id)}>
+            <IonRow className="header">
               <IonCol>
                 <IonText>
                   <h3 className="h5">
@@ -75,7 +76,17 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
               <IonCol size="6">
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('location')}</h4>
-                  <Paragraph bodyText={warning.location} />
+                  <p>
+                    <Link
+                      to="/merivaroitukset/"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goto(warning.id);
+                      }}
+                    >
+                      {warning.location[lang] || warning.location.fi || t('noObjects')}
+                    </Link>
+                  </p>
                 </IonText>
               </IonCol>
             </IonRow>
