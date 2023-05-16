@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
@@ -13,11 +13,34 @@ import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
+import * as olExtent from 'ol/extent';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
 };
+
+function goto(id: number) {
+  const dvkMap = getMap();
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
+  let feature = safetyEquipmentSource.getFeatureById(id);
+  if (feature) {
+    safetyEquipmentSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    selectedFairwayCardSource.clear();
+    feature.set('safetyEquipmentFaultList', true, true);
+    selectedFairwayCardSource.addFeature(feature);
+    safetyEquipmentSource.removeFeature(feature);
+  } else {
+    feature = selectedFairwayCardSource.getFeatureById(id);
+  }
+  const geometry = feature?.getGeometry();
+  if (feature && geometry) {
+    const extent = olExtent.createEmpty();
+    olExtent.extend(extent, geometry.getExtent());
+    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+  }
+}
 
 const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
@@ -35,11 +58,16 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
   const equipments = getMap().getVectorSource('safetyequipment');
+  const equipments2 = getMap().getVectorSource('selectedfairwaycard');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        const equipment = equipments.getFeatureById(faultArray[0].equipmentId)?.getProperties() as EquipmentFeatureProperties | undefined;
+        let feature = equipments.getFeatureById(faultArray[0].equipmentId);
+        if (!feature) {
+          feature = equipments2.getFeatureById(faultArray[0].equipmentId);
+        }
+        const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
           if (f.fairwayCards) {
@@ -62,12 +90,17 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
               <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
-                    <>
+                    <Link
+                      to="/turvalaiteviat/"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goto(faultArray[0].equipmentId);
+                      }}
+                    >
                       {faultArray[0].geometry?.coordinates[0] &&
                         faultArray[0].geometry?.coordinates[1] &&
                         coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]])}
-                      .
-                    </>
+                    </Link>
                   )}
                 </IonLabel>
               </IonCol>
@@ -122,6 +155,19 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
     return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
+
+  useEffect(() => {
+    return () => {
+      const dvkMap = getMap();
+      const source = dvkMap.getVectorSource('selectedfairwaycard');
+      const target = dvkMap.getVectorSource('safetyequipment');
+      source.forEachFeature((f) => {
+        f.set('safetyEquipmentFaultList', false, true);
+        target.addFeature(f);
+      });
+      source.clear();
+    };
+  }, []);
 
   return (
     <>
