@@ -26,6 +26,8 @@ function goto(id: number) {
   const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
   let feature = safetyEquipmentSource.getFeatureById(id);
   if (feature) {
+    safetyEquipmentSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    selectedFairwayCardSource.clear();
     feature.set('safetyEquipmentFaultList', true, true);
     selectedFairwayCardSource.addFeature(feature);
     safetyEquipmentSource.removeFeature(feature);
@@ -165,7 +167,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       });
       source.clear();
     };
-  });
+  }, []);
 
   return (
     <>

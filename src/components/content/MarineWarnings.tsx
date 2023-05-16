@@ -26,6 +26,8 @@ function goto(id: number) {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   let feature = marineWarningSource.getFeatureById(id);
   if (feature) {
+    marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    selectedFairwayCardSource.clear();
     selectedFairwayCardSource.addFeature(feature);
     marineWarningSource.removeFeature(feature);
   } else {
@@ -229,7 +231,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       });
       source.clear();
     };
-  });
+  }, []);
 
   return (
     <>
