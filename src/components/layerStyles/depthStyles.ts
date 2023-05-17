@@ -73,3 +73,12 @@ export function getSoundingPointStyle(feature: FeatureLike) {
     }),
   });
 }
+
+export function getDepthContourStyle() {
+  return new Style({
+    stroke: new Stroke({
+      color: 'FFFFFF',
+      width: 1,
+    }),
+  });
+}

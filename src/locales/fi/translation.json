@@ -47,6 +47,7 @@
           "general": "Yleiset",
           "name": "Karttanimistö",
           "soundingpoint": "Syvyyspisteet",
+          "depthcontour": "Syvyyskäyrät",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

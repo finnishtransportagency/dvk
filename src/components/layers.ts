@@ -21,7 +21,7 @@ import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
+import { getDepthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
@@ -34,6 +34,7 @@ import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
+import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -336,9 +337,42 @@ function addIceLayer(map: Map) {
   );
 }
 
+function addDepthContourLayer(map: Map) {
+  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
+  const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
+  let tileUrl: string;
+  if (cloudFrontUrl) {
+    tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/wfs`;
+  } else if (traficomMapApiUrl) {
+    tileUrl = `https://${traficomMapApiUrl}/inspirepalvelu/rajoitettu/wfs`;
+  } else {
+    tileUrl = '/trafiaineistot/inspirepalvelu/rajoitettu/wfs';
+  }
+  const vectorSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+      return (
+        `${tileUrl}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        extent.join(',') +
+        `,urn:ogc:def:crs:${MAP.EPSG}`
+      );
+    },
+    strategy: bboxStrategy,
+  });
+  const layer = new VectorLayer({
+    properties: { id: 'depthcontour' },
+    source: vectorSource,
+    style: getDepthContourStyle,
+    maxResolution: 15,
+    zIndex: 102,
+  });
+  map.addLayer(layer);
+}
+
 export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
+  addDepthContourLayer(map);
   // Kartan nimistö
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
