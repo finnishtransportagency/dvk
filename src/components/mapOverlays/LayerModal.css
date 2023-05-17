@@ -143,7 +143,7 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-item .soundingpoint::before {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: bold;
   line-height: 16px;
   content: '28';
@@ -151,6 +151,11 @@ ion-modal#layerModalContainer::part(content) {
   vertical-align: text-top;
   text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
     1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+
+#layerModalContainer ion-item .depthcontour {
+  border-top: 2px solid var(--ion-color-layer-depthcontour);
+  height: 1px;
 }
 
 #layerModalContainer ion-item .specialarea {

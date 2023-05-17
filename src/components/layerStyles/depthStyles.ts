@@ -57,28 +57,29 @@ export function getDepthStyle(feature: FeatureLike) {
   ];
 }
 
-export function getSoundingPointStyle(feature: FeatureLike) {
-  return new Style({
-    text: new Text({
-      font: '10px "Exo2"',
-      placement: 'point',
-      text: String(feature.getProperties().DEPTH),
-      fill: new Fill({
-        color: '#000000',
-      }),
-      stroke: new Stroke({
-        width: 1,
-        color: '#FFFFFF',
-      }),
+const soundingPointStyle = new Style({
+  text: new Text({
+    font: 'bold 12px "Exo2"',
+    placement: 'point',
+    text: '',
+    fill: new Fill({
+      color: '#000000',
     }),
-  });
+    stroke: new Stroke({
+      width: 1,
+      color: '#FFFFFF',
+    }),
+  }),
+});
+
+export function getSoundingPointStyle(feature: FeatureLike) {
+  soundingPointStyle.getText().setText(String(feature.getProperties().DEPTH));
+  return soundingPointStyle;
 }
 
-export function getDepthContourStyle() {
-  return new Style({
-    stroke: new Stroke({
-      color: 'FFFFFF',
-      width: 1,
-    }),
-  });
-}
+export const depthContourStyle = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+  }),
+});
