@@ -176,7 +176,6 @@ const InputField: React.FC<InputProps> = (props) => {
         onIonFocus={handleFocus}
         debounce={250}
         inputmode="decimal"
-        mode="md"
         label={props.unit}
         labelPlacement="end"
         helperText={getHelperText()}

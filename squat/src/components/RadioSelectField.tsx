@@ -82,7 +82,6 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                 lines="none"
                 className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center no-background-focused'}
                 onClick={() => (props.value !== option ? handleClick(option) : null)}
-                mode="md"
               >
                 <IonGrid className="no-padding">
                   <IonRow>
@@ -101,7 +100,6 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                         aria-label={props.translateOptions ? t(option.name) : option.name}
                         value={option}
                         className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
-                        mode="md"
                       />
                     </IonCol>
                   </IonRow>
