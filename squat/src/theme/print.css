@@ -109,6 +109,27 @@
     align-items: flex-end;
   }
 
+  ion-col ion-radio-group ion-img {
+    display: none !important;
+  }
+
+  ion-col ion-radio-group ion-radio {
+    display: none !important;
+  }
+
+  ion-col ion-radio-group ion-item {
+    --min-height: 20px !important;
+  }
+
+  ion-col ion-radio-group p {
+    margin: 0 !important;
+    font-size: 14px !important;
+  }
+
+  ion-radio-group ion-grid ion-item::part(native) {
+    padding: 0 !important;
+  }
+
   ion-item.item.only-label {
     --min-height: 20px;
     --padding-top: 2px;
