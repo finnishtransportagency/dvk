@@ -21,7 +21,7 @@ import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { depthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
+import { depthContourStyle, getDepthAreaStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
@@ -337,7 +337,7 @@ function addIceLayer(map: Map) {
   );
 }
 
-function addDepthContourLayer(map: Map) {
+function getTileUrl() {
   const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
   const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
   let tileUrl: string;
@@ -348,11 +348,15 @@ function addDepthContourLayer(map: Map) {
   } else {
     tileUrl = '/trafiaineistot/inspirepalvelu/rajoitettu/wfs';
   }
+  return tileUrl;
+}
+
+function addDepthContourLayer(map: Map) {
   const vectorSource = new VectorSource({
     format: new GeoJSON(),
     url: function (extent) {
       return (
-        `${tileUrl}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        `${getTileUrl()}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
         extent.join(',') +
         `,urn:ogc:def:crs:${MAP.EPSG}`
       );
@@ -364,6 +368,28 @@ function addDepthContourLayer(map: Map) {
     source: vectorSource,
     style: depthContourStyle,
     maxResolution: 10,
+    zIndex: 103,
+  });
+  map.addLayer(layer);
+}
+
+function addDepthAreaLayer(map: Map) {
+  const vectorSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+      return (
+        `${getTileUrl()}?request=getFeature&typename=DepthArea_A&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        extent.join(',') +
+        `,urn:ogc:def:crs:${MAP.EPSG}`
+      );
+    },
+    strategy: bboxStrategy,
+  });
+  const layer = new VectorLayer({
+    properties: { id: 'deptharea' },
+    source: vectorSource,
+    style: getDepthAreaStyle,
+    maxResolution: 20,
     zIndex: 102,
   });
   map.addLayer(layer);
@@ -373,6 +399,7 @@ export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
   addDepthContourLayer(map);
+  addDepthAreaLayer(map);
   // Kartan nimistö
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 

@@ -83,3 +83,23 @@ export const depthContourStyle = new Style({
     width: 1,
   }),
 });
+
+const depthAreaStyle1 = new Style({
+  fill: new Fill({ color: '#91CAF3' }),
+});
+const depthAreaStyle2 = new Style({
+  fill: new Fill({ color: '#B5DAF7' }),
+});
+const depthAreaStyle3 = new Style({
+  fill: new Fill({ color: '#D3EAE7' }),
+});
+
+export function getDepthAreaStyle(feature: FeatureLike) {
+  if (feature.getProperties().DRVAL1 === '0') {
+    return depthAreaStyle1;
+  } else if (feature.getProperties().DRVAL1 === '10') {
+    return depthAreaStyle2;
+  } else {
+    return depthAreaStyle3;
+  }
+}

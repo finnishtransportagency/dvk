@@ -48,6 +48,7 @@
           "name": "Map names",
           "soundingpoint": "Soundings",
           "depthcontour": "Depth contours",
+          "deptharea": "Depth areas",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",

@@ -103,7 +103,8 @@ export type FeatureDataLayerId =
   | 'vtsline'
   | 'vtspoint'
   | 'soundingpoint'
-  | 'depthcontour';
+  | 'depthcontour'
+  | 'deptharea';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -150,6 +151,7 @@ export const MAP: MapType = {
     { id: 'name' },
     { id: 'soundingpoint' },
     { id: 'depthcontour', noOfflineSupport: true },
+    { id: 'deptharea', noOfflineSupport: true },
   ],
 };
 

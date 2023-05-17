@@ -48,6 +48,7 @@
           "name": "Kartnamn",
           "soundingpoint": "Djupangivelser",
           "depthcontour": "Djupkurvor",
+          "deptharea": "Djupzoner",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",

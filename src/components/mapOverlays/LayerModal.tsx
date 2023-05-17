@@ -111,6 +111,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                       layers={layers}
                       setLayers={setLayers}
                     />
+                    <LayerItem
+                      id="deptharea"
+                      noOfflineSupport
+                      title={t('homePage.map.controls.layer.deptharea')}
+                      layers={layers}
+                      setLayers={setLayers}
+                    />
                     <LayerItem id="marinewarning" title={t('homePage.map.controls.layer.marineWarnings')} layers={layers} setLayers={setLayers} />
                     <LayerItem
                       id="mareograph"

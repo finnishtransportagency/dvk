@@ -264,7 +264,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
   if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
-  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour';
+  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea';
   const disabled = !initialized || (noOfflineSupport && state.isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
