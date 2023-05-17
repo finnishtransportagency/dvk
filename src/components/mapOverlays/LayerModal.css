@@ -158,6 +158,22 @@ ion-modal#layerModalContainer::part(content) {
   height: 1px;
 }
 
+#layerModalContainer ion-item .deptharea {
+  background: #D3EAE7;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area1 {
+  background: #91CAF3;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area2 {
+  background: #B5DAF7;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area3 {
+  background: #D3EAE7;
+}
+
 #layerModalContainer ion-item .specialarea {
   width: 15px;
   height: 15px;

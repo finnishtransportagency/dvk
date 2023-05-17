@@ -65,7 +65,10 @@
             "openice": "Harva ajojää",
             "closeice": "Tiheä ajojää",
             "verycloseice": "Hyvin tiheä ajojää",
-            "consolidatedice": "Yhteenjäätynyt ajojää"
+            "consolidatedice": "Yhteenjäätynyt ajojää",
+            "depth1": "Syvyys alle 10m",
+            "depth2": "Syvyys 10 - 20m",
+            "depth3": "Syvyys yli 20m"
           }
         },
         "mapDetails": {

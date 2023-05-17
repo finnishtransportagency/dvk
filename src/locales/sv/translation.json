@@ -65,7 +65,10 @@
             "openice": "Spridd drivis",
             "closeice": "Tät drivis",
             "verycloseice": "Mycket tät / kompakt drivis",
-            "consolidatedice": "Sammanfrusen drivis"
+            "consolidatedice": "Sammanfrusen drivis",
+            "depth1": "Djup under 10m",
+            "depth2": "Djup 10 - 20m",
+            "depth3": "Djup över 20m"
           }
         },
         "mapDetails": {

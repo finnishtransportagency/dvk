@@ -65,7 +65,10 @@
             "openice": "Open ice",
             "closeice": "Close ice",
             "verycloseice": "Very close or compact ice",
-            "consolidatedice": "Consolidated ice"
+            "consolidatedice": "Consolidated ice",
+            "depth1": "Depth below 10m",
+            "depth2": "Depth 10 - 20m",
+            "depth3": "Depth over 20m"
           }
         },
         "mapDetails": {

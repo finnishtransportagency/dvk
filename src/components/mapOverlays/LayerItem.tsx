@@ -41,6 +41,36 @@ const LegendDepth = () => {
   );
 };
 
+const LegendArea = () => {
+  const { t } = useTranslation();
+  return (
+    <IonGrid className="legend deptharea ion-no-padding">
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth1')}</IonText>
+            <IonText slot="start" className="def area1"></IonText>
+          </IonItem>
+        </IonCol>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth2')}</IonText>
+            <IonText slot="start" className="def area2"></IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth3')}</IonText>
+            <IonText slot="start" className="def area3"></IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
 const LegendSpeedlimits = () => {
   const { t } = useTranslation();
   return (
@@ -299,7 +329,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
           </IonItem>
         </IonCol>
         <IonCol size="auto">
-          {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
+          {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea') && (
             <IonButton
               fill="clear"
               className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
@@ -312,12 +342,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
         </IonCol>
       </IonRow>
       {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
-      {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
+      {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || 'deptharea') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>
             {id === 'speedlimit' && <LegendSpeedlimits />}
             {id === 'ice' && <LegendIce />}
             {id === 'depth12' && <LegendDepth />}
+            {id === 'deptharea' && <LegendArea />}
           </IonCol>
         </IonRow>
       )}
