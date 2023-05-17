@@ -4,7 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
 import { PilotPlace, Text } from '../graphql/generated';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { SelectChangeEventDetail, IonSelectCustomEvent } from '@ionic/core';
+import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
+
+interface SelectChangeEventDetail<ValueType> {
+  value: ValueType;
+}
 
 interface SelectOption {
   id: number | string | boolean;
