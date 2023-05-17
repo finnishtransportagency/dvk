@@ -3,7 +3,6 @@ import { IonCol, IonGrid, IonImg, IonItem, IonRadio, IonRadioGroup, IonRow, IonT
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
-import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core/dist/types/components';
 import Label from './Label';
 import { debounce } from 'lodash';
 
@@ -54,9 +53,8 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
   ).current;
 
   const handleChange = useCallback(
-    (e: IonRadioGroupCustomEvent<RadioGroupChangeEventDetail<any>>) => {
-      const inputEl = e.target as HTMLIonRadioGroupElement;
-      debouncedUpdateAction(inputEl.value, inputEl.tagName);
+    (e: { target: HTMLIonRadioGroupElement }) => {
+      debouncedUpdateAction(e.target.value, e.target.tagName);
     },
     [debouncedUpdateAction]
   );
