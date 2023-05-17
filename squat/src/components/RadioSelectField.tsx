@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonImg, IonItem, IonRadio, IonRadioGroup, IonRow, IonT
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
-import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core';
+import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core/dist/types/components';
 import Label from './Label';
 import { debounce } from 'lodash';
 

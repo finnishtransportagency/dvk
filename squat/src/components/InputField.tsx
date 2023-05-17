@@ -6,7 +6,7 @@ import { Action } from '../hooks/squatReducer';
 import Label from './Label';
 import i18n from '../i18n';
 import { countDecimals } from '../utils/helpers';
-import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
+import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core/dist/types/components';
 
 interface InputProps {
   title: string;
