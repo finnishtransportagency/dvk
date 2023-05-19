@@ -15,7 +15,7 @@ import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import Config from './config';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
-import { BlockPublicAccess, Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { CodeBuildProject } from 'aws-cdk-lib/aws-events-targets';
 export class DvkScheduledTestsPipelineStack extends Stack {
@@ -29,7 +29,8 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       tags: Config.tags,
     });
     const env = Config.getEnvironment();
-    const importedCloudFrontURL = 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env);
+    const importedSiteURL = cdk.Fn.importValue('DvkSiteUrl' + env);
+    const importedCloudFrontURL = Config.isDeveloperEnvironment() ? 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env) : importedSiteURL; // Kehittajaymparistoista ei loydy certia, jolloin kaytetaan cloudfrontin dns-tietoa
 
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
@@ -38,12 +39,18 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       reportBuildStatus: false,
       webhook: false,
     };
+
+    const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
+    };
     const testBucket = new Bucket(this, 'ScheduledTestsBucket', {
       bucketName: `dvkscheduledtests-` + env,
       publicReadAccess: false,
       blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       lifecycleRules: [{ expiration: Duration.days(7) }],
+      ...s3DeletePolicy,
     });
     const gitHubSource = Source.gitHub(sourceProps);
     const project = new Project(this, 'DvkScheduledTests', {

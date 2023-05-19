@@ -360,6 +360,9 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        efs.forEach((f) => {
+          f.set('dataSource', 'safetyequipment', true);
+        });
         const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();

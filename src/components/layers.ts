@@ -11,7 +11,7 @@ import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
-import { FeatureLayerId, Lang, MAP } from '../utils/constants';
+import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
@@ -222,7 +222,7 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
 }
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource;
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId;
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'line3456') {
@@ -243,6 +243,10 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     }
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
+  } else if (ds === 'safetyequipment') {
+    return getSafetyEquipmentStyle(feature, 1, false);
+  } else if (ds === 'marinewarning') {
+    return getMarineWarningStyle(feature, false);
   } else {
     return undefined;
   }
