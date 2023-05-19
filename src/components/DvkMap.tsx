@@ -217,8 +217,9 @@ class DvkMap {
         overlaps: false,
       }),
       maxResolution: 4,
-      zIndex: 5,
+      zIndex: 105,
       imageRatio: 3,
+      visible: true,
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
@@ -390,8 +391,6 @@ class DvkMap {
           layer.setVisible(isOffline ? false : true);
         } else if (layer.get('id') === 'mml-meri' || layer.get('id') === 'mml-jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
-        } else if (layer.get('id') === 'mml-laiturit') {
-          layer.setVisible(isOffline ? true : false);
         }
       });
     }
