@@ -95,9 +95,10 @@ const depthAreaStyle3 = new Style({
 });
 
 export function getDepthAreaStyle(feature: FeatureLike) {
-  if (feature.getProperties().DRVAL1 === '0') {
+  const value = Number(feature.getProperties().DRVAL1);
+  if (value < 10) {
     return depthAreaStyle1;
-  } else if (feature.getProperties().DRVAL1 === '10') {
+  } else if (value < 20) {
     return depthAreaStyle2;
   } else {
     return depthAreaStyle3;
