@@ -368,6 +368,7 @@ function addDepthContourLayer(map: Map) {
     source: vectorSource,
     style: depthContourStyle,
     maxResolution: 10,
+    renderBuffer: 1,
     zIndex: 103,
   });
   map.addLayer(layer);
@@ -389,7 +390,8 @@ function addDepthAreaLayer(map: Map) {
     properties: { id: 'deptharea' },
     source: vectorSource,
     style: getDepthAreaStyle,
-    maxResolution: 20,
+    maxResolution: 10,
+    renderBuffer: 1,
     zIndex: 102,
   });
   map.addLayer(layer);
