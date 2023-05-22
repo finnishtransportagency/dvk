@@ -22,7 +22,7 @@ export async function cacheResponse(key: string, response: object | string) {
   await s3Client.send(command);
 }
 
-type CacheResponse = {
+export type CacheResponse = {
   expired: boolean;
   data?: string;
   lastModified?: string;
