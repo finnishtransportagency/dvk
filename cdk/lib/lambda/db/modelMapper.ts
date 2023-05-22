@@ -188,9 +188,9 @@ const pilotCacheKey = 'pilotplaces';
 export async function getPilotPlaceMap() {
   if (pilotPlaceMap.size === 0) {
     let response: CacheResponse | undefined;
+    let data: PilotPlace[] | undefined;
     try {
       response = await getFromCache(pilotCacheKey);
-      let data: PilotPlace[] | undefined;
       if (response.expired) {
         log.debug('fetching pilot places from api');
         data = await fetchPilotPoints();
@@ -199,16 +199,13 @@ export async function getPilotPlaceMap() {
         log.debug('parsing pilot places from cache');
         data = JSON.parse(response.data) as PilotPlace[];
       }
-      data?.forEach((p) => pilotPlaceMap.set(p.id, p));
     } catch (e) {
-      if (response?.data) {
+      if (!data && response?.data) {
         log.warn('parsing expired pilot places from cache');
-        const data = JSON.parse(response.data) as PilotPlace[];
-        data.forEach((p) => pilotPlaceMap.set(p.id, p));
-      } else {
-        log.warn('Pilot places not found from cache');
+        data = JSON.parse(response.data) as PilotPlace[];
       }
     }
+    data?.forEach((p) => pilotPlaceMap.set(p.id, p));
   }
   return pilotPlaceMap;
 }
