@@ -3,7 +3,11 @@ import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
+import { IonTextareaCustomEvent } from '@ionic/core/dist/types/components';
+
+interface TextareaChangeEventDetail {
+  value?: string | null;
+}
 
 interface InputProps {
   label: string;

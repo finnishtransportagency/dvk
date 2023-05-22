@@ -132,7 +132,7 @@ const MainPage: React.FC = () => {
               <IonItem fill="outline" className="selectInput">
                 <IonSelect
                   ref={selectTypeRef}
-                  placeholder={translatedTextOrEmpty('select-type')}
+                  placeholder={translatedTextOrEmpty('choose')}
                   interface="popover"
                   multiple={true}
                   onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
