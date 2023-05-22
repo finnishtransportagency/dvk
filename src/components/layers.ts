@@ -367,7 +367,7 @@ function addDepthContourLayer(map: Map) {
     properties: { id: 'depthcontour' },
     source: vectorSource,
     style: depthContourStyle,
-    maxResolution: 10,
+    maxResolution: 7,
     renderBuffer: 1,
     zIndex: 103,
   });
