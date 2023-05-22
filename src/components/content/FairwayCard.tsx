@@ -351,15 +351,17 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   };
 
   const fairwayAreas =
-    data?.flatMap((fairway) =>
-      fairway.areas?.sort((a, b) => {
-        const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
-        const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
-        const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
-        const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
-        return sequenceNumberA - sequenceNumberB;
-      })
-    ) || [];
+    data
+      ?.flatMap((fairway) =>
+        fairway.areas?.sort((a, b) => {
+          const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
+          const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
+          const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
+          const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
+          return sequenceNumberA - sequenceNumberB;
+        })
+      )
+      .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) || [];
 
   return (
     <ol>
@@ -378,7 +380,6 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
         return (
           <li key={area?.id || idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
             <em
-              key={area?.id}
               className="inlineHoverText"
               onMouseOver={() => highlightArea(area?.id)}
               onFocus={() => highlightArea(area?.id)}
