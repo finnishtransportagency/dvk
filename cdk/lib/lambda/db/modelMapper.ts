@@ -12,6 +12,8 @@ import {
 } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
+import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
+import { log } from '../logger';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 
@@ -181,10 +183,32 @@ export function mapQuayDepth(text: Maybe<string> | undefined) {
 }
 
 const pilotPlaceMap = new Map<number, PilotPlace>();
+const pilotCacheKey = 'pilotplaces';
 
 export async function getPilotPlaceMap() {
   if (pilotPlaceMap.size === 0) {
-    (await fetchPilotPoints()).forEach((p) => pilotPlaceMap.set(p.id, p));
+    let response: CacheResponse | undefined;
+    try {
+      response = await getFromCache(pilotCacheKey);
+      let data: PilotPlace[] | undefined;
+      if (response.expired) {
+        log.debug('fetching pilot places from api');
+        data = await fetchPilotPoints();
+        await cacheResponse(pilotCacheKey, data);
+      } else if (response.data) {
+        log.debug('parsing pilot places from cache');
+        data = JSON.parse(response.data) as PilotPlace[];
+      }
+      data?.forEach((p) => pilotPlaceMap.set(p.id, p));
+    } catch (e) {
+      if (response?.data) {
+        log.warn('parsing expired pilot places from cache');
+        const data = JSON.parse(response.data) as PilotPlace[];
+        data.forEach((p) => pilotPlaceMap.set(p.id, p));
+      } else {
+        log.warn('Pilot places not found from cache');
+      }
+    }
   }
   return pilotPlaceMap;
 }
