@@ -30,13 +30,15 @@ type FairwayCardIdName = {
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  const fairwayCards: FairwayCardIdName[] = [];
 
+  let fairwayCards: FairwayCardIdName[] = [];
   area.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
       fairwayCards.push(...f.fairwayCards);
     }
   });
+  fairwayCards = fairwayCards.filter((card, index, self) => self.findIndex((inner) => inner?.id === card?.id) === index);
+
   const sizingSpeeds = [
     ...Array.from(
       new Set(
