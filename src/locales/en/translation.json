@@ -356,7 +356,7 @@
     "vts": {
       "coordinates": "Coordinates",
       "point": "VTS point information",
-      "line": "VTS line information",
+      "line": "VTS area information",
       "channel": "VHF channel"
     }
   },
