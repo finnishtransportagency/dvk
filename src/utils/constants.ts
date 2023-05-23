@@ -170,5 +170,7 @@ export const OFFLINE_STORAGE = {
   name: 'DVK',
   storeName: 'react-query-data',
   staleTime: 2 * 60 * 60 * 1000, // 2 hours
-  cacheTime: 48 * 60 * 60 * 1000, // 48 hours
+  cacheTime: 30 * 24 * 60 * 60 * 1000, // 30 days
+  staleTimeStatic: 83 * 24 * 60 * 60 * 1000, // 83 days for static s3 resources
+  cacheTimeStatic: 90 * 24 * 60 * 60 * 1000, // 90 days for static s3 resources
 };
