@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
-
 import { useSquatContext } from '../hooks/squatContext';
 import { fieldParams, vesselProfiles } from '../hooks/squatReducer';
 import { calculateDisplacement, calculateKB } from '../utils/calculations';
@@ -48,19 +47,6 @@ const Vessel: React.FC = () => {
       payload: { key: 'KB', value: calculateKB(state.vessel.general.draught) },
     });
   }, [state.vessel.general.draught, dispatch]);
-
-  useEffect(() => {
-    if (document.getElementsByName('blockCoefficient').length && (document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild) {
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'blockCoefficient',
-          value: ((document.getElementsByName('blockCoefficient')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-    }
-  }, [state.status.showBarrass, dispatch]);
 
   // Field validation
   const isFieldValid = (name: string) => {

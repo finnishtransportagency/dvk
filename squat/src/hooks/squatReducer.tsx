@@ -1,4 +1,3 @@
-import React, { ReactElement } from 'react';
 import { countDecimals, createShareableLink } from '../utils/helpers';
 
 // Common types
@@ -27,7 +26,7 @@ type FieldParam = {
   default: number;
   min: number;
   max: number;
-  unit?: string | ReactElement;
+  unit?: string;
   unitId?: string;
   step?: string;
 };
@@ -152,17 +151,6 @@ export type State = {
   validations: Record<string, unknown>;
 };
 
-const mSquared = (
-  <>
-    m<sup>2</sup>
-  </>
-);
-const kgPerCubicM = (
-  <>
-    kg/m<sup>3</sup>
-  </>
-);
-
 // Declare field parameters
 export const fieldParams: Record<string, FieldParam> = {
   lengthBPP: { default: 0, min: 0, max: 350, unit: 'm', step: '0.01' },
@@ -170,8 +158,8 @@ export const fieldParams: Record<string, FieldParam> = {
   draught: { default: 0, min: 0, max: 20, unit: 'm', step: '0.01' },
   blockCoefficient: { default: 0.75, min: 0.4, max: 1, step: '0.01' },
   displacement: { default: 0, min: 0, max: 250000, unit: 'mt' },
-  windSurface: { default: 0, min: 0, max: 25000, unit: mSquared, unitId: 'm2' },
-  deckCargo: { default: 0, min: 0, max: 20000, unit: mSquared, unitId: 'm2' },
+  windSurface: { default: 0, min: 0, max: 25000, unit: 'm\u00B2', unitId: 'm2' },
+  deckCargo: { default: 0, min: 0, max: 20000, unit: 'm\u00B2', unitId: 'm2' },
   bowThruster: { default: 0, min: 0, max: 5500, unit: 'kW' },
   bowThrusterEfficiency: { default: 100, min: 0, max: 100, unit: '%' },
   profileSelected: { default: 0, min: 0, max: 3 },
@@ -192,8 +180,8 @@ export const fieldParams: Record<string, FieldParam> = {
   vesselCourse: { default: 0, min: 0, max: 359, unit: '°', unitId: 'deg' },
   vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
   turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm', step: '0.01' },
-  airDensity: { default: 1.3, min: 1, max: 1.5, unit: kgPerCubicM, unitId: 'kg/m3', step: '0.1' },
-  waterDensity: { default: 1005, min: 1000, max: 1025, unit: kgPerCubicM, unitId: 'kg/m3' },
+  airDensity: { default: 1.3, min: 1, max: 1.5, unit: 'kg/m\u00B3', unitId: 'kg/m3', step: '0.1' },
+  waterDensity: { default: 1005, min: 1000, max: 1025, unit: 'kg/m\u00B3', unitId: 'kg/m3' },
   requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm', step: '0.01' },
   safetyMarginWindForce: { default: 25, min: 0, max: 25, unit: '%', step: '0.01' },
   motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm', step: '0.01' },

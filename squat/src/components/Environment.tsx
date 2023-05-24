@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonImg } from '@ionic/react';
-
 import { useSquatContext } from '../hooks/squatContext';
 import { fairwayForms, fieldParams } from '../hooks/squatReducer';
 import { calculateWaveAmplitudeProperties, calculateWaveLengthProperties } from '../utils/calculations';
@@ -50,45 +49,6 @@ const Environment: React.FC = () => {
     state.environment.weather.waveLength,
     dispatch,
   ]);
-
-  // Trigger related validations
-  useEffect(() => {
-    if (
-      state.environment.fairway.sweptDepth &&
-      document.getElementsByName('sweptDepth').length &&
-      (document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild
-    ) {
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'sweptDepth',
-          value: ((document.getElementsByName('sweptDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-    }
-  }, [state.vessel.general.draught, state.environment.fairway.sweptDepth, dispatch]);
-
-  useEffect(() => {
-    if (document.getElementsByName('waterDepth').length && (document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild)
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'waterDepth',
-          value: ((document.getElementsByName('waterDepth')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-    if (document.getElementsByName('slopeHeight').length && (document.getElementsByName('slopeHeight')[0] as HTMLInputElement).firstChild)
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: 'slopeHeight',
-          value: ((document.getElementsByName('slopeHeight')[0] as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-  }, [state.environment.fairway.sweptDepth, dispatch]);
 
   // Field validation
   const isFieldValid = (name: string) => {
