@@ -21,7 +21,7 @@ import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { depthContourStyle, getDepthAreaStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
+import { depthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
@@ -329,6 +329,7 @@ function addIceLayer(map: Map) {
         url: tileUrl,
         params: { layers: 'fmi:ice:icechart_iceareas' },
         transition: 0,
+        crossOrigin: 'Anonymous',
       }),
       zIndex: 101,
       preload: 10,
@@ -337,16 +338,16 @@ function addIceLayer(map: Map) {
   );
 }
 
-function getTileUrl() {
+function getTileUrl(service: 'wfs' | 'wms') {
   const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
   const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
   let tileUrl: string;
   if (cloudFrontUrl) {
-    tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/wfs`;
+    tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
   } else if (traficomMapApiUrl) {
-    tileUrl = `https://${traficomMapApiUrl}/inspirepalvelu/rajoitettu/wfs`;
+    tileUrl = `https://${traficomMapApiUrl}/inspirepalvelu/rajoitettu/${service}`;
   } else {
-    tileUrl = '/trafiaineistot/inspirepalvelu/rajoitettu/wfs';
+    tileUrl = `/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
   }
   return tileUrl;
 }
@@ -356,7 +357,7 @@ function addDepthContourLayer(map: Map) {
     format: new GeoJSON(),
     url: function (extent) {
       return (
-        `${getTileUrl()}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        `${getTileUrl('wfs')}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
         extent.join(',') +
         `,urn:ogc:def:crs:${MAP.EPSG}`
       );
@@ -375,26 +376,20 @@ function addDepthContourLayer(map: Map) {
 }
 
 function addDepthAreaLayer(map: Map) {
-  const vectorSource = new VectorSource({
-    format: new GeoJSON(),
-    url: function (extent) {
-      return (
-        `${getTileUrl()}?request=getFeature&typename=DepthArea_A&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
-        extent.join(',') +
-        `,urn:ogc:def:crs:${MAP.EPSG}`
-      );
-    },
-    strategy: bboxStrategy,
-  });
-  const layer = new VectorLayer({
-    properties: { id: 'deptharea' },
-    source: vectorSource,
-    style: getDepthAreaStyle,
-    maxResolution: 10,
-    renderBuffer: 1,
-    zIndex: 102,
-  });
-  map.addLayer(layer);
+  map.addLayer(
+    new TileLayer({
+      properties: { id: 'deptharea' },
+      source: new TileWMS({
+        url: getTileUrl('wms'),
+        params: { layers: 'DepthArea_A' },
+        transition: 0,
+        crossOrigin: 'Anonymous',
+      }),
+      maxResolution: 10,
+      zIndex: 102,
+      preload: 10,
+    })
+  );
 }
 
 export function addAPILayers(map: Map) {
