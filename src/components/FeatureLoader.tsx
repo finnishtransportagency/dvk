@@ -56,7 +56,28 @@ export function useLine3456Layer() {
 }
 
 export function useNameLayer() {
-  return useDataLayer('name', 'name', MAP.EPSG);
+  const [ready, setReady] = useState(false);
+  const nameQuery = useStaticFeatureData('name', true, false);
+  const dataUpdatedAt = Math.max(nameQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(nameQuery.errorUpdatedAt);
+  const isPaused = nameQuery.isPaused;
+  const isError = nameQuery.isError;
+
+  useEffect(() => {
+    if (nameQuery.data) {
+      const layer = dvkMap.getFeatureLayer('name') as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        const features = format.readFeatures(nameQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [nameQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
