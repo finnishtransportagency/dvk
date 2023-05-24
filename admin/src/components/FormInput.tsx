@@ -3,7 +3,11 @@ import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
+import { IonInputCustomEvent } from '@ionic/core/dist/types/components';
+
+interface InputChangeEventDetail {
+  value: string | undefined | null;
+}
 
 interface InputProps {
   label: string;
