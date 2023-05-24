@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Label from './Label';
-import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 
 type OptionType = {
   id: number;

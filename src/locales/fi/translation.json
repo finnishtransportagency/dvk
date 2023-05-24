@@ -362,7 +362,7 @@
     "vts": {
       "coordinates": "Koordinaatit",
       "point": "VTS-pisteen tiedot",
-      "line": "VTS-linjan tiedot",
+      "line": "VTS-alueen tiedot",
       "channel": "VHF-kanava"
     }
   },

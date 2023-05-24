@@ -8,7 +8,7 @@ const InfoAccordion: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <IonGrid>
+    <IonGrid className="info-accordion">
       <IonRow>
         <IonCol>
           <IonAccordionGroup>
