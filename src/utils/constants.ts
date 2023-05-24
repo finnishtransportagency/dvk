@@ -171,6 +171,6 @@ export const OFFLINE_STORAGE = {
   storeName: 'react-query-data',
   staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
   cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
-  staleTimeStatic: 21 * 24 * 60 * 60 * 1000, // 21 days for static s3 resources
-  cacheTimeStatic: 24 * 24 * 60 * 60 * 1000, // 24 days for static s3 resources
+  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
+  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
