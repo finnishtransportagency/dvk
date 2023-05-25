@@ -1,0 +1,110 @@
+import React, { useEffect, useState } from 'react';
+import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import './LayerModal.css';
+import { useDvkContext } from '../../hooks/dvkContext';
+import arrowDownIcon from '../../theme/img/arrow_down.svg';
+import { LayerType } from './LayerModal';
+import LayerItem from './LayerItem';
+import { FeatureDataLayerId } from '../../utils/constants';
+
+interface LayerMainItemProps {
+  currentLayer: LayerType;
+  layers: string[];
+  setLayers: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, setLayers }) => {
+  const { t } = useTranslation();
+  const { state } = useDvkContext();
+  const [legendOpen, setLegendOpen] = useState(false);
+
+  useEffect(() => {
+    if (currentLayer.noOfflineSupport && layers.includes(currentLayer.id) && state.isOffline) {
+      setLayers((prev) => {
+        return [...prev.filter((p) => p !== currentLayer.id)];
+      });
+    }
+  }, [currentLayer.id, layers, currentLayer.noOfflineSupport, setLayers, state.isOffline]);
+
+  const toggleDetails = () => {
+    setLegendOpen(!legendOpen);
+  };
+
+  const isDisabled = () => {
+    const childLayersWOOfflineSupport = currentLayer.childLayers?.flatMap((child) => child.noOfflineSupport).filter((child) => child) || [];
+    return childLayersWOOfflineSupport.length === (currentLayer.childLayers || []).length && state.isOffline;
+  };
+  const selectedChildLayers =
+    currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
+  const isChecked = () => {
+    return selectedChildLayers?.length === (currentLayer.childLayers || []).length;
+  };
+  const isIndeterminate = () => {
+    return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers || []).length;
+  };
+  const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
+  const handleClick = () => {
+    if (isChecked() || isIndeterminate()) {
+      setLayers(layersWOCurrentChildLayers);
+    } else {
+      setLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
+      setLegendOpen(true);
+    }
+  };
+
+  return (
+    <IonGrid className="ion-no-padding layerItem layerMainItem">
+      <IonRow>
+        <IonCol>
+          <IonItem lines="none">
+            <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'disabled' : ''}>
+              {currentLayer.title}
+            </IonText>
+            <IonCheckbox
+              aria-labelledby={`${currentLayer.title}-label`}
+              value={currentLayer.id}
+              checked={isChecked()}
+              slot="start"
+              onClick={() => handleClick()}
+              disabled={isDisabled()}
+              indeterminate={isIndeterminate()}
+            />
+            <IonText slot="end" className={'layer ' + currentLayer.id}></IonText>
+          </IonItem>
+        </IonCol>
+        <IonCol size="auto">
+          {currentLayer.childLayers && currentLayer.childLayers?.length > 0 && (
+            <IonButton
+              fill="clear"
+              className={'toggleButton' + (legendOpen ? ' close' : ' open')}
+              aria-label={legendOpen ? t('common.close') : t('common.open')}
+              onClick={() => toggleDetails()}
+            >
+              <IonIcon icon={arrowDownIcon} />
+            </IonButton>
+          )}
+        </IonCol>
+      </IonRow>
+      <IonRow className={'toggle mainToggle ' + (legendOpen ? 'show' : 'hide')}>
+        <IonCol>
+          <IonList lines="none" className="ion-no-padding" aria-label={currentLayer.title}>
+            {currentLayer.childLayers?.map((child) => (
+              <LayerItem
+                key={child.id}
+                id={child.id as FeatureDataLayerId}
+                noOfflineSupport={child.noOfflineSupport || false}
+                title={child.title}
+                layers={layers}
+                setLayers={setLayers}
+                aria-hidden={!legendOpen}
+              />
+            ))}
+          </IonList>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+export default LayerMainItem;
