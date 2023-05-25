@@ -200,8 +200,12 @@ export function useBuoyLayer() {
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
-export function useVtsLayer() {
-  return useDataLayer('vts', 'vts', 'EPSG:4258');
+export function useVtsLineLayer() {
+  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
+}
+
+export function useVtsPointLayer() {
+  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -356,6 +360,9 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        efs.forEach((f) => {
+          f.set('dataSource', 'safetyequipment', true);
+        });
         const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();

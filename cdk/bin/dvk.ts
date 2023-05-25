@@ -16,6 +16,7 @@ import { BackupServices } from '../lib/dvk-backup-services';
 import { MonitoringServices } from '../lib/dvk-monitoring';
 import { DvkUsEast } from '../lib/dvk-us-east';
 import { AdminPipeline } from '../lib/admin-pipeline';
+import { DvkScheduledTestsPipelineStack } from '../lib/dvk-scheduled-tests-pipeline';
 
 class DvkUsEastStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -140,6 +141,9 @@ new DvkBackendStack(
 new DvkFeaturePipelineStack(app, 'DvkFeaturePipelineStack');
 
 new DvkSonarPipelineStack(app, 'DvkSonarPipelineStack');
+
+new DvkScheduledTestsPipelineStack(app, 'DvkScheduledTestsPipelineStack');
+
 new DvkPipelineMessagingStack(app, 'DvkPipelineMessagingStack', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,

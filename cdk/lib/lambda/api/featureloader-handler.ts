@@ -18,7 +18,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
-import { fetchPilotPoints, fetchVTSPointsAndLines } from './traficom';
+import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
 
 function getNumberValue(value: number | undefined): number | undefined {
@@ -75,6 +75,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             extraInfo: harbor.extraInfo,
           },
         });
+      } else {
+        const harborFeature = features.find((feature) => feature.id === id);
+        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
@@ -182,7 +185,7 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         n2000draft: getNumberValue(area.n2000MitoitusSyvays),
         n2000depth: getNumberValue(area.n2000HarausSyvyys),
         n2000ReferenceLevel: area.n2000Vertaustaso,
-        extra: area.lisatieto,
+        extra: area.lisatieto?.trim(),
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -284,7 +287,9 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         length: getNumberValue(line.pituus),
         n2000depth: getNumberValue(line.n2000HarausSyvyys),
         n2000draft: getNumberValue(line.n2000MitoitusSyvays),
-        extra: line.lisatieto,
+        referenceLevel: line.vertaustaso,
+        n2000ReferenceLevel: line.n2000Vertaustaso,
+        extra: line.lisatieto?.trim(),
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -314,7 +319,6 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
       properties: {
         id: equipment.turvalaitenumero,
         featureType: 'safetyequipment',
-        subType: equipment.alityyppi,
         navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
         navigationCode: equipment.navigointilajiKoodi,
         name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
@@ -385,8 +389,8 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addVTSPointsAndLines(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const resp = await fetchVTSPointsAndLines();
+async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties>[], isPoint: boolean) {
+  const resp = isPoint ? await fetchVTSPoints() : await fetchVTSLines();
   for (const feature of resp) {
     features.push({
       type: feature.type,
@@ -502,8 +506,10 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFaultFeatures(features);
   } else if (type === 'marinewarning') {
     await addMarineWarnings(features);
-  } else if (type === 'vts') {
-    await addVTSPointsAndLines(features);
+  } else if (type === 'vtspoint') {
+    await addVTSPointsOrLines(features, true);
+  } else if (type === 'vtsline') {
+    await addVTSPointsOrLines(features, false);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {

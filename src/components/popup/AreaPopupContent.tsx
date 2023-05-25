@@ -30,13 +30,15 @@ type FairwayCardIdName = {
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  const fairwayCards: FairwayCardIdName[] = [];
 
+  let fairwayCards: FairwayCardIdName[] = [];
   area.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
       fairwayCards.push(...f.fairwayCards);
     }
   });
+  fairwayCards = fairwayCards.filter((card, index, self) => self.findIndex((inner) => inner?.id === card?.id) === index);
+
   const sizingSpeeds = [
     ...Array.from(
       new Set(
@@ -68,9 +70,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonButton>
           </IonCol>
         </IonRow>
-        {showN2000HeightSystem !== undefined && (
+        {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
-            <IonCol>{showN2000HeightSystem && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+            <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
           </IonRow>
         )}
         {area.properties.typeCode === 15 && (
@@ -89,9 +91,11 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         {(area.properties.n2000draft || area.properties.draft) && (
           <IonRow>
             <IonCol>
-              {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}{' '}
+              {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft || area.properties.draft : area.properties.draft })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? area.properties.n2000draft || area.properties.draft : area.properties.draft,
+                })}
                 role="definition"
               >
                 m
@@ -102,9 +106,11 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         {(area.properties.n2000depth || area.properties.depth) && (
           <IonRow>
             <IonCol>
-              {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}{' '}
+              {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth || area.properties.depth : area.properties.depth })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? area.properties.n2000depth || area.properties.depth : area.properties.depth,
+                })}
                 role="definition"
               >
                 m

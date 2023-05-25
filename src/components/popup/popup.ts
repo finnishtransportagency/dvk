@@ -113,13 +113,13 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
-      return getSafetyEquipmentStyle(feature, resolution, true);
+      return getSafetyEquipmentStyle(feature, feature.get('safetyEquipmentFaultList') ? 1 : resolution, true);
     } else if (type === 'marinewarning') {
       return getMarineWarningStyle(feature, true);
     } else if (type === 'boardline') {
-      return getBoardLineStyle('#000000', 2);
+      return getBoardLineStyle('#000000', 1);
     } else if (type === 'mareograph') {
-      return getMareographStyle(feature, true);
+      return getMareographStyle(feature, true, resolution);
     } else if (type === 'observation') {
       return getObservationStyle(true);
     } else if (type === 'buoy') {
@@ -149,7 +149,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),
       dvkMap.getFeatureLayer('harbor'),
-      dvkMap.getFeatureLayer('vts'),
+      dvkMap.getFeatureLayer('vtsline'),
+      dvkMap.getFeatureLayer('vtspoint'),
     ],
     hitTolerance: 3,
     multi: true,

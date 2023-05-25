@@ -112,7 +112,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         };
       }),
     };
-    console.log(currentHarbour);
     saveHarbourMutation({ harbor: currentHarbour as HarborInput });
   }, [state, saveHarbourMutation]);
 
@@ -145,11 +144,76 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
+      {
+        id: 'extraInfo',
+        msg: state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+      },
+      {
+        id: 'cargo',
+        msg: state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+      },
+      {
+        id: 'harbourBasin',
+        msg: state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+      },
+      {
+        id: 'companyName',
+        msg: state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+      },
       { id: 'primaryId', msg: primaryIdErrorMsg },
       { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
       { id: 'lon', msg: !state.geometry.lon ? t(ErrorMessageKeys?.required) : '' },
     ];
-    setValidationErrors(manualValidations);
+    const quayNameErrors =
+      state.quays
+        ?.flatMap((quay, i) => (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim() ? i : null))
+        .filter((val) => Number.isInteger(val))
+        .map((qIndex) => {
+          return {
+            id: 'quayName-' + qIndex,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        }) || [];
+    const quayExtraInfoErrors =
+      state.quays
+        ?.flatMap((quay, i) => (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim() ? i : null))
+        .filter((val) => Number.isInteger(val))
+        .map((qIndex) => {
+          return {
+            id: 'quayExtraInfo-' + qIndex,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        }) || [];
+    const quayGeometryErrors =
+      state.quays
+        ?.flatMap((quay, i) => (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim() ? i : null))
+        .filter((val) => Number.isInteger(val))
+        .map((qIndex) => {
+          return {
+            id: 'quayGeometry-' + qIndex,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        }) || [];
+    const sectionGeometryErrors =
+      state.quays
+        ?.map((quay) =>
+          quay?.sections
+            ?.flatMap((section, j) => (section?.geometry?.lat.trim() || section?.geometry?.lon.trim() ? j : null))
+            .filter((val) => Number.isInteger(val))
+        )
+        .flatMap((sIndices, qIndex) => {
+          return (
+            sIndices?.map((sIndex) => {
+              return {
+                id: 'sectionGeometry-' + qIndex + '-' + sIndex,
+                msg: t(ErrorMessageKeys?.required),
+              };
+            }) || []
+          );
+        }) || [];
+    setValidationErrors(
+      manualValidations.concat(quayNameErrors).concat(quayExtraInfoErrors).concat(quayGeometryErrors).concat(sectionGeometryErrors)
+    );
 
     if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
       if (
@@ -269,7 +333,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
           <form ref={formRef}>
             <IonGrid className="formGrid">
               <IonRow>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormInput
                     label={t('harbour.primary-id')}
                     val={state.id}
@@ -281,7 +345,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     helperText={t('harbour.primary-id-help-text')}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('general.item-referencelevel')}
                     selected={state.n2000HeightSystem}
@@ -294,7 +358,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol size="6" className="no-border"></IonCol>
+                <IonCol sizeMd="6"></IonCol>
               </IonRow>
             </IonGrid>
             <IonText>
@@ -317,6 +381,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 actionType="extraInfo"
                 required={!!(state.extraInfo?.fi || state.extraInfo?.sv || state.extraInfo?.en)}
                 disabled={harbour.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -326,6 +391,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 actionType="cargo"
                 required={!!(state.cargo?.fi || state.cargo?.sv || state.cargo?.en)}
                 disabled={harbour.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'cargo')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -335,6 +401,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 actionType="harbourBasin"
                 required={!!(state.harborBasin?.fi || state.harborBasin?.sv || state.harborBasin?.en)}
                 disabled={harbour.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
                 inputType="textarea"
               />
             </IonGrid>
@@ -349,9 +416,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 actionType="companyName"
                 required={!!(state.company?.fi || state.company?.sv || state.company?.en)}
                 disabled={harbour.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'companyName')?.msg}
               />
               <IonRow>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.email')}
                     val={state.email || ''}
@@ -361,7 +429,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.phone-number')}
                     val={state.phoneNumber?.join(',')}
@@ -373,7 +441,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.fax')}
                     val={state.fax || ''}
@@ -385,7 +453,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('harbour.internet')}
                     val={state.internet || ''}
@@ -394,7 +462,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('harbour.lat')}
                     val={state.geometry.lat || ''}
@@ -406,7 +474,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     disabled={harbour.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('harbour.lon')}
                     val={state.geometry.lon || ''}

@@ -3,7 +3,11 @@ import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
+import { IonTextareaCustomEvent } from '@ionic/core/dist/types/components';
+
+interface TextareaChangeEventDetail {
+  value?: string | null;
+}
 
 interface InputProps {
   label: string;
@@ -26,12 +30,14 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
+  const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = (event: IonTextareaCustomEvent<TextareaChangeEventDetail> | IonTextareaCustomEvent<FocusEvent>) => {
     setIsValid(error ? false : (event.target.querySelector('textarea') as HTMLTextAreaElement)?.checkValidity());
+    setIsTouched(true);
   };
   const handleChange = (event: IonTextareaCustomEvent<TextareaChangeEventDetail>) => {
-    checkValidity(event);
+    if (isTouched) checkValidity(event);
     setValue(event.detail.value as string, actionType, actionLang);
   };
 
@@ -42,8 +48,13 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   useEffect(() => {
-    inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
-  }, [required, error]);
+    if (isTouched) {
+      inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
+      setIsTouched(false);
+    } else if (!required && !val.trim() && !error) {
+      setIsValid(true);
+    }
+  }, [required, error, isTouched, val]);
 
   return (
     <>
@@ -51,7 +62,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         {label} {required ? '*' : ''}
       </IonLabel>
       <IonItem
-        className={'formInput' + (isValid ? '' : ' invalid')}
+        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
         lines="none"
         fill="outline"
         counter={true}

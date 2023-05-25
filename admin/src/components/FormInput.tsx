@@ -3,7 +3,11 @@ import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
+import { IonInputCustomEvent } from '@ionic/core/dist/types/components';
+
+interface InputChangeEventDetail {
+  value: string | undefined | null;
+}
 
 interface InputProps {
   label: string;
@@ -23,6 +27,7 @@ interface InputProps {
   min?: number;
   max?: number;
   decimalCount?: number;
+  focused?: boolean;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -43,6 +48,7 @@ const FormInput: React.FC<InputProps> = ({
   min,
   max,
   decimalCount,
+  focused,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -52,12 +58,14 @@ const FormInput: React.FC<InputProps> = ({
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
+  const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = (event: IonInputCustomEvent<InputChangeEventDetail> | IonInputCustomEvent<FocusEvent>) => {
     setIsValid(error ? false : (event.target.firstChild as HTMLInputElement)?.checkValidity());
+    setIsTouched(true);
   };
   const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
-    checkValidity(event);
+    if (isTouched) checkValidity(event);
     setValue(event.detail.value as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
@@ -122,16 +130,29 @@ const FormInput: React.FC<InputProps> = ({
 
   const getInputPattern = () => {
     if (actionType === 'primaryId') return '[a-z]+[a-z\\d]*';
-    if (inputType === 'latitude') return '(5[89]|6\\d){1}(.\\d{1,5})?'; // lat range 58-70
-    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(.\\d{1,5})?'; // lon range 17-32
+    if (inputType === 'latitude') return '(5[89]|6\\d){1}(\\.\\d{1,5})?'; // lat range 58-70
+    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(\\.\\d{1,5})?'; // lon range 17-32
     if (inputType === 'tel' && multiple) return '(^$)|(([+]?\\d(\\s?\\d){4,19}){1}(,[+]?\\d(\\s?\\d){4,19}){0,9})';
     if (inputType === 'tel') return '[+]?\\d(\\s?\\d){4,19}';
     return undefined;
   };
 
   useEffect(() => {
-    inputRef.current?.getInputElement().then((textinput) => (textinput ? setIsValid(error ? false : textinput.checkValidity()) : null));
-  }, [required, error]);
+    if (isTouched) {
+      inputRef.current?.getInputElement().then((textinput) => (textinput ? setIsValid(error ? false : textinput.checkValidity()) : null));
+      setIsTouched(false);
+    } else if (!required && !val && !error) {
+      setIsValid(true);
+    }
+  }, [required, error, isTouched, val]);
+
+  useEffect(() => {
+    if (focused) {
+      setTimeout(() => {
+        focusInput();
+      }, 150);
+    }
+  }, [focused]);
 
   return (
     <>

@@ -35,7 +35,8 @@ import {
   useBackgroundMmllaituritLayer,
   useBackgroundBalticseaLayer,
   DvkLayerState,
-  useVtsLayer,
+  useVtsLineLayer,
+  useVtsPointLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -118,7 +119,8 @@ const DvkIonApp: React.FC = () => {
   useMareographLayer();
   useObservationLayer();
   useBuoyLayer();
-  useVtsLayer();
+  useVtsLineLayer();
+  useVtsPointLayer();
   useLine3456Layer();
   useArea3456Layer();
   useBackgroundBalticseaLayer();

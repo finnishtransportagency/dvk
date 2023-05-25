@@ -10,8 +10,8 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Quay, Section } from '../graphql/generated';
-import { FeatureLayerId, Lang, MAP } from '../utils/constants';
+import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
+import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
@@ -76,11 +76,14 @@ export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: 
   ];
 }
 
-export function getAreaStyle(color: string, width: number, fillColor: string) {
+export function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
+  let strokeWidth = width;
+  if (resolution && resolution > 15) strokeWidth = 0.5;
+  if (resolution && resolution > 30) strokeWidth = 0;
   return new Style({
     stroke: new Stroke({
-      color,
-      width,
+      color: strokeWidth > 0 ? color : fillColor,
+      width: strokeWidth,
     }),
     fill: new Fill({
       color: fillColor,
@@ -104,12 +107,16 @@ export function getBoardLineStyle(color: string, width: number) {
       width,
       lineDash: [15, 10],
     }),
+    zIndex: 202,
   });
 }
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   if (resolution > 3) {
     return undefined;
+  }
+  if (feature.get('hoverStyle')) {
+    selected = true;
   }
   const image = new Icon({
     src: quayIcon,
@@ -215,7 +222,7 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
 }
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource;
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId;
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'line3456') {
@@ -235,7 +242,11 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, false);
     }
   } else if (ds === 'boardline12') {
-    return getBoardLineStyle('#000000', 2);
+    return getBoardLineStyle('#000000', 1);
+  } else if (ds === 'safetyequipment') {
+    return getSafetyEquipmentStyle(feature, 1, false);
+  } else if (ds === 'marinewarning') {
+    return getMarineWarningStyle(feature, false);
   } else {
     return undefined;
   }
@@ -332,14 +343,34 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
   // Kauppamerenkulku
-  addFeatureVectorImageLayer(map, 'area12', 75, 1, getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)'), undefined, 1, false, 201);
-  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 202);
-  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 1), undefined, 1, false, 203);
+  addFeatureVectorImageLayer(
+    map,
+    'area12',
+    75,
+    1,
+    (feature, resolution) => getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)', resolution),
+    undefined,
+    1,
+    false,
+    201
+  );
+  addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 0.5), undefined, 1, false, 202);
+  addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 203);
   // Muu vesiliikenne
-  addFeatureVectorImageLayer(map, 'area3456', 30, 1, getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)'), undefined, 1, false, 204);
+  addFeatureVectorImageLayer(
+    map,
+    'area3456',
+    30,
+    1,
+    (feature, resolution) => getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)', resolution),
+    undefined,
+    1,
+    false,
+    204
+  );
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
   // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, false, 206);
+  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 206);
 
   // Nopeusrajoitus
   addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
@@ -379,13 +410,24 @@ export function addAPILayers(map: Map) {
 
   addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 307);
   addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 308);
-  addFeatureVectorLayer(map, 'mareograph', undefined, 91, (feature) => getMareographStyle(feature, false), undefined, 1, true, 309);
+  addFeatureVectorLayer(
+    map,
+    'mareograph',
+    undefined,
+    91,
+    (feature, resolution) => getMareographStyle(feature, false, resolution),
+    undefined,
+    1,
+    true,
+    309
+  );
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
 
   // VTS linjat ja ilmoituspisteet
-  addFeatureVectorLayer(map, 'vts', undefined, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
+  addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 312);
+  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
 }
 
 export function unsetSelectedFairwayCard() {
@@ -438,6 +480,7 @@ export function unsetSelectedFairwayCard() {
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
   const depth = quay.sections?.map((s) => s?.depth || 0).filter((v) => v !== undefined && v > 0);
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
     harbor: harbor.id,
@@ -455,6 +498,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: Vecto
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
     harbor: harbor.id,
@@ -605,6 +649,29 @@ export function setSelectedHarbor(id?: string) {
 
   for (const f of quaySource.getFeatures()) {
     f.set('hoverStyle', id && ['harbor'].includes(f.get('featureType')) && f.get('harborId') === id);
+  }
+  quaySource.dispatchEvent('change');
+}
+
+export function setSelectedQuay(quay: Maybe<Quay>) {
+  const dvkMap = getMap();
+  const quaySource = dvkMap.getVectorSource('quay');
+  const ids = [];
+  if (quay?.geometry?.coordinates) {
+    ids.push(quay.geometry.coordinates.join(';'));
+  } else if (quay?.sections) {
+    quay.sections.forEach((s) => {
+      if (s?.geometry?.coordinates) {
+        ids.push(s.geometry.coordinates.join(';'));
+      }
+    });
+  }
+  for (const f of quaySource.getFeatures()) {
+    if (f.get('featureType') === 'quay') {
+      f.set('hoverStyle', ids.includes(f.getId() as string), true);
+    } else {
+      f.set('hoverStyle', false, true);
+    }
   }
   quaySource.dispatchEvent('change');
 }

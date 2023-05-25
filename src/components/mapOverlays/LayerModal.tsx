@@ -19,7 +19,7 @@ interface ModalProps {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
@@ -75,7 +75,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                     </IonListHeader>
                     <LayerItem id="area12" title={t('homePage.map.controls.layer.fairwayAreas')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="line12" title={t('homePage.map.controls.layer.lines')} layers={layers} setLayers={setLayers} />
-                    <LayerItem id="vts" title={t('homePage.map.controls.layer.vts')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="vtsline" title={t('homePage.map.controls.layer.vtsline')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="vtspoint" title={t('homePage.map.controls.layer.vtspoint')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="boardline12" title={t('homePage.map.controls.layer.boardLines')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="safetyequipment" title={t('homePage.map.controls.layer.safetyEquipments')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="speedlimit" title={t('homePage.map.controls.layer.speedLimits')} layers={layers} setLayers={setLayers} />
@@ -119,6 +120,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                     />
                     <LayerItem id="buoy" noOfflineSupport title={t('homePage.map.controls.layer.buoys')} layers={layers} setLayers={setLayers} />
                     <LayerItem id="ice" noOfflineSupport title={t('homePage.map.controls.layer.ice')} layers={layers} setLayers={setLayers} />
+                    <LayerItem id="name" title={t('homePage.map.controls.layer.name')} layers={layers} setLayers={setLayers} />
                   </IonList>
                 </IonCol>
               </IonRow>

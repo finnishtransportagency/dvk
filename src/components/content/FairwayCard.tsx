@@ -6,7 +6,7 @@ import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
-import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor } from '../layers';
+import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor, setSelectedQuay } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -351,15 +351,17 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
   };
 
   const fairwayAreas =
-    data?.flatMap((fairway) =>
-      fairway.areas?.sort((a, b) => {
-        const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
-        const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
-        const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
-        const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
-        return sequenceNumberA - sequenceNumberB;
-      })
-    ) || [];
+    data
+      ?.flatMap((fairway) =>
+        fairway.areas?.sort((a, b) => {
+          const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
+          const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
+          const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
+          const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
+          return sequenceNumberA - sequenceNumberB;
+        })
+      )
+      .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) || [];
 
   return (
     <ol>
@@ -378,7 +380,6 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
         return (
           <li key={area?.id || idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
             <em
-              key={area?.id}
               className="inlineHoverText"
               onMouseOver={() => highlightArea(area?.id)}
               onFocus={() => highlightArea(area?.id)}
@@ -611,7 +612,14 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
       {data &&
         data.map((quay, jdx) => {
           return (
-            <p key={jdx}>
+            <p
+              key={jdx}
+              className="inlineHoverText"
+              onMouseOver={() => setSelectedQuay(quay)}
+              onFocus={() => setSelectedQuay(quay)}
+              onMouseOut={() => setSelectedQuay(null)}
+              onBlur={() => setSelectedQuay(null)}
+            >
               {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
               {quay?.name && quay.name[lang]?.slice(1)}
               {!quay?.name && t('quay')}
