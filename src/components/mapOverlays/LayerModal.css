@@ -328,6 +328,11 @@ ion-modal#layerModalContainer::part(content) {
   color: #000000;
 }
 
+#layerModalContainer .bgMapButtonSea:hover,
+#layerModalContainer .bgMapButtonLand:hover {
+  font-weight: bold;
+}
+
 #layerModalContainer .bgMapButtonSea:disabled,
 #layerModalContainer .bgMapButtonLand:disabled {
   font-weight: bold;
@@ -341,6 +346,16 @@ ion-modal#layerModalContainer::part(content) {
   background-size: 64px 64px;
   border: 1px solid #e5e5e5;
   margin-bottom: 4px;
+}
+
+#layerModalContainer .bgMapButtonSea:focus-visible,
+#layerModalContainer .bgMapButtonLand:focus-visible {
+  outline: none;
+}
+#layerModalContainer .bgMapButtonSea:focus-visible .mapImage,
+#layerModalContainer .bgMapButtonLand:focus-visible .mapImage {
+  border: 1px solid var(--ion-color-primary);
+  outline: 1px solid var(--ion-color-primary);
 }
 
 #layerModalContainer .bgMapButtonSea .mapImage {
