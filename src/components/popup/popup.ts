@@ -1,4 +1,4 @@
-import { Point, SimpleGeometry } from 'ol/geom';
+import { Point, SimpleGeometry, Geometry } from 'ol/geom';
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
@@ -16,6 +16,8 @@ import { getMareographStyle } from '../layerStyles/mareographStyles';
 import { getObservationStyle } from '../layerStyles/observationStyles';
 import { getBuoyStyle } from '../layerStyles/buoyStyles';
 import { getVtsStyle } from '../layerStyles/vtsStyles';
+import { GeoJSON } from 'ol/format';
+import * as turf from '@turf/turf';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -78,6 +80,88 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         overlay.setOffset([20, 0]);
       }
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+
+      /* --> */
+      const sTs = performance.now();
+
+      /* If selected feature is navigation line start "fairway width calculation process" */
+      if (feature.getProperties().featureType === 'line') {
+        let areaFeatures = features.filter((f) => {
+          return f.getProperties().featureType === 'area';
+        });
+
+        /* Continue only if clicked point is inside area polygon (area layer must be visible) */
+        if (areaFeatures.length > 0) {
+          const format = new GeoJSON();
+          const turfLine = format.writeGeometryObject(feature.getGeometry() as Geometry, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: MAP.EPSG,
+          }) as turf.LineString;
+          const turfPoint = format.writeGeometryObject(new Point(evt.coordinate) as Geometry, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: MAP.EPSG,
+          }) as turf.Point;
+
+          const pointOnLine = turf.nearestPointOnLine(turfLine, turfPoint);
+          if (
+            pointOnLine.properties.index !== undefined &&
+            pointOnLine.properties.dist !== undefined &&
+            pointOnLine.properties.location !== undefined
+          ) {
+            /* The point on line nearest to the clicked point */
+            const turfSnapPoint = turf.along(turfLine, pointOnLine.properties.location);
+
+            /* Filter areas containing snap point */
+            areaFeatures = areaFeatures.filter((f) => {
+              const turfArea = format.writeGeometryObject(f.getGeometry() as Geometry, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: MAP.EPSG,
+              }) as turf.Polygon;
+              return turf.booleanPointInPolygon(turfSnapPoint, turfArea);
+            });
+
+            /* Continue only if we have only one area polygon that contains snap point */
+            if (areaFeatures.length === 1) {
+              const turfArea = format.writeGeometryObject(areaFeatures[0].getGeometry() as Geometry, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: MAP.EPSG,
+              }) as turf.Polygon;
+              /* Get line azimuth at snap point */
+              const azimuth = turf.bearingToAzimuth(
+                turf.bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
+              );
+              /* Create line perpendicular navigation line and length of 10km to both direction from snap point */
+              const startPoint = turf.transformTranslate(turfSnapPoint, 10, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
+              const endPoint = turf.transformTranslate(turfSnapPoint, 10, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
+              const turfPerpendicularLine = turf.lineString([startPoint.geometry.coordinates, endPoint.geometry.coordinates]);
+              /* Find line part that intersects area polygon */
+              const interSectionPoints = turf.lineIntersect(turfPerpendicularLine, turfArea);
+              const intersectionPointsArray = interSectionPoints.features.map((d) => {
+                return d.geometry.coordinates;
+              });
+              const turfFairwayWidthLine = turf.lineSlice(
+                turf.point(intersectionPointsArray[0]),
+                turf.point(intersectionPointsArray[1]),
+                turfPerpendicularLine
+              );
+              const fairwayWidth = turf.length(turfFairwayWidthLine) * 1000;
+              console.log(turfArea);
+              console.log(turfLine);
+              console.log(turfPoint);
+              console.log(pointOnLine);
+              console.log(turfSnapPoint);
+              console.log(azimuth);
+              console.log(turfPerpendicularLine);
+              console.log(interSectionPoints);
+              console.log(turfFairwayWidthLine);
+              console.log('FAIRWAY WIDTH: ' + turf.round(fairwayWidth, 0) + 'm');
+            }
+          }
+        }
+      }
+      console.log('DURATION: ' + (performance.now() - sTs) + 'ms');
+      /* <-- */
+
       setPopupProperties({
         [feature.getProperties().featureType]: {
           coordinates: geom.getCoordinates() as number[],
