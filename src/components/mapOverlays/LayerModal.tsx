@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon, IonListHeader } from '@ionic/react';
+import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
