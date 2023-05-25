@@ -77,9 +77,34 @@ export function getSoundingPointStyle(feature: FeatureLike) {
   return soundingPointStyle;
 }
 
-export const depthContourStyle = new Style({
+const depthContourStyle1 = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+    lineDash: [2, 2],
+  }),
+});
+const depthContourStyle2 = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+    lineDash: [5, 5],
+  }),
+});
+const depthContourStyle3 = new Style({
   stroke: new Stroke({
     color: '#3B6683',
     width: 1,
   }),
 });
+
+export function getDepthContourStyle(feature: FeatureLike) {
+  const level = feature.getProperties().VALDCO as number;
+  if (level === 3) {
+    return depthContourStyle1;
+  } else if (level === 6) {
+    return depthContourStyle2;
+  } else {
+    return depthContourStyle3;
+  }
+}
