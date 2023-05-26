@@ -34,7 +34,7 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = this.buildProject(account, imageRepoName, '1.0.3', '.', 'ImageBuild');
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.4', '.', 'ImageBuild');
     const actions: IAction[] = [];
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
@@ -43,20 +43,18 @@ export class DvkBuildImageStack extends Stack {
         input: sourceOutput,
       })
     );
-    if (env !== 'prod') {
-      const robotImageRepoName = 'dvk-robotimage';
-      new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
-        repositoryName: robotImageRepoName,
-      });
-      const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.0', 'test', 'RobotImageBuild');
-      actions.push(
-        new cdk.aws_codepipeline_actions.CodeBuildAction({
-          actionName: 'BuildRobotImage',
-          project: robotBuildProject,
-          input: sourceOutput,
-        })
-      );
-    }
+    const robotImageRepoName = 'dvk-robotimage';
+    new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
+      repositoryName: robotImageRepoName,
+    });
+    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.1', 'test', 'RobotImageBuild');
+    actions.push(
+      new cdk.aws_codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildRobotImage',
+        project: robotBuildProject,
+        input: sourceOutput,
+      })
+    );
     pipeline.addStage({
       stageName: 'Build',
       actions,

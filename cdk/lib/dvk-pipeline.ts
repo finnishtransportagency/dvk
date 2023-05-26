@@ -43,7 +43,7 @@ export class DvkPipeline extends Construct {
     // Create the build project for DVK app
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
           REACT_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
@@ -91,7 +91,7 @@ export class DvkPipeline extends Construct {
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, 'InvalidateProject', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.4'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -122,7 +122,7 @@ export class DvkPipeline extends Construct {
 
     const dvkCdkProject = new codebuild.PipelineProject(this, 'DvkCdkBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkCdkBuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkCdkBuildImage', 'dvk-buildimage'), '1.0.4'),
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           ENVIRONMENT: { value: props.env },
@@ -159,7 +159,7 @@ export class DvkPipeline extends Construct {
     // Create the build project that will delete files from s3 before deploy
     const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.4'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({

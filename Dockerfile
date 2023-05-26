@@ -1,4 +1,4 @@
-FROM public.ecr.aws/docker/library/node:16.15.1-alpine
+FROM public.ecr.aws/docker/library/node:18.16.0-alpine
 ENV WORK /opt/dvk
 WORKDIR ${WORK}
 RUN mkdir -p ${WORK}
