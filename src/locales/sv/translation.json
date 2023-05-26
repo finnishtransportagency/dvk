@@ -48,9 +48,10 @@
           "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "name": "Kartnamn",
-          "soundingpoint": "Djupangivelser",
-          "depthcontour": "Djupkurvor",
-          "deptharea": "Djupzoner",
+          "depthinfo": "Djup information",
+          "soundingpoint": "Nummers",
+          "depthcontour": "Kurvor",
+          "deptharea": "Zoner",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -70,7 +71,10 @@
             "consolidatedice": "Sammanfrusen drivis",
             "depth1": "Djup under 10m",
             "depth2": "Djup 10 - 20m",
-            "depth3": "Djup över 20m"
+            "depth3": "Djup över 20m",
+            "depth4": "Djup 0 - 3m",
+            "depth5": "Djup 3 - 6m",
+            "depth6": "Djup över 10m"
           }
         },
         "mapDetails": {

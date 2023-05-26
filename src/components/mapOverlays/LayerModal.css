@@ -158,6 +158,21 @@ ion-modal#layerModalContainer::part(content) {
   height: 1px;
 }
 
+#layerModalContainer ion-grid.legend.depthcontour .def.line1 {
+  border-top: 2px dotted var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-grid.legend.depthcontour .def.line2 {
+  border-top: 2px dashed var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-grid.legend.depthcontour .def.line3 {
+  border-top: 2px solid var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
 #layerModalContainer ion-item .deptharea {
   background: #D3EAE7;
   border: 1px solid #757575;

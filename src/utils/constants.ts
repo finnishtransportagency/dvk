@@ -81,7 +81,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths';
 
 export type FeatureDataLayerId =
   | 'area12'

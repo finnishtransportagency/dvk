@@ -48,9 +48,10 @@
           "vtspoint": "VTS reporting points",
           "general": "General",
           "name": "Map names",
-          "soundingpoint": "Soundings",
-          "depthcontour": "Depth contours",
-          "deptharea": "Depth areas",
+          "depthinfo": "Depth information",
+          "soundingpoint": "Numbers",
+          "depthcontour": "Contours",
+          "deptharea": "Areas",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -70,7 +71,10 @@
             "consolidatedice": "Consolidated ice",
             "depth1": "Depth below 10m",
             "depth2": "Depth 10 - 20m",
-            "depth3": "Depth over 20m"
+            "depth3": "Depth over 20m",
+            "depth4": "Depth 0 - 3m",
+            "depth5": "Depth 3 - 6m",
+            "depth6": "Depth over 10m"
           }
         },
         "mapDetails": {
