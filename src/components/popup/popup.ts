@@ -84,9 +84,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       }
       const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
 
-      /* --> */
-      const sTs = performance.now();
-
       /* If selected feature is navigation line start "fairway width calculation process" */
       if (feature.getProperties().featureType === 'line') {
         let areaFeatures = features.filter((f) => {
@@ -133,31 +130,25 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               const azimuth = turf.bearingToAzimuth(
                 turf.bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
               );
-              /* Create line perpendicular navigation line and length of 3km to both direction from snap point */
-              const startPoint = turf.transformTranslate(turfSnapPoint, 3, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
-              const endPoint = turf.transformTranslate(turfSnapPoint, 3, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
-              const turfPerpendicularLine = turf.lineString([startPoint.geometry.coordinates, endPoint.geometry.coordinates]);
-              /* Find line part that intersects area polygon */
-              const interSectionPoints = turf.lineIntersect(turfPerpendicularLine, turfArea);
-              const intersectionPointsArray = interSectionPoints.features.map((d) => {
+              /* Create lines perpendicular navigation to line and length of 5km to both direction from snap point */
+              const startPoint = turf.transformTranslate(turfSnapPoint, 5, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
+              const endPoint = turf.transformTranslate(turfSnapPoint, 5, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
+
+              const turfStartPerpendicularLine = turf.lineString([turfSnapPoint.geometry.coordinates, startPoint.geometry.coordinates]);
+              const turfEndPerpendicularLine = turf.lineString([turfSnapPoint.geometry.coordinates, endPoint.geometry.coordinates]);
+
+              /* Find perpendicular lines and fairway area polygon intersections */
+              const startInterSectionPoints = turf.lineIntersect(turfStartPerpendicularLine, turfArea);
+              const startIntersectionPointsArray = startInterSectionPoints.features.map((d) => {
                 return d.geometry.coordinates;
               });
-              const turfFairwayWidthLine = turf.lineSlice(
-                turf.point(intersectionPointsArray[0]),
-                turf.point(intersectionPointsArray[1]),
-                turfPerpendicularLine
-              );
+              const endInterSectionPoints = turf.lineIntersect(turfEndPerpendicularLine, turfArea);
+              const endIntersectionPointsArray = endInterSectionPoints.features.map((d) => {
+                return d.geometry.coordinates;
+              });
+              /* TODO: Find nearest intersection points, do not use index 0 */
+              const turfFairwayWidthLine = turf.lineString([startIntersectionPointsArray[0], endIntersectionPointsArray[0]]);
               const fairwayWidth = turf.length(turfFairwayWidthLine) * 1000;
-              console.log(turfArea);
-              console.log(turfLine);
-              console.log(turfPoint);
-              console.log(pointOnLine);
-              console.log(turfSnapPoint);
-              console.log(azimuth);
-              console.log(turfPerpendicularLine);
-              console.log(interSectionPoints);
-              console.log(turfFairwayWidthLine);
-              console.log('FAIRWAY WIDTH: ' + turf.round(fairwayWidth, 0) + 'm');
 
               const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
                 dataProjection: 'EPSG:4326',
@@ -172,8 +163,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           }
         }
       }
-      console.log('DURATION: ' + (performance.now() - sTs) + 'ms');
-      /* <-- */
 
       setPopupProperties({
         [feature.getProperties().featureType]: {
