@@ -29,6 +29,7 @@ import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
 import { getMareographStyle } from './layerStyles/mareographStyles';
 import { getObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
+import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -428,6 +429,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
+  addFeatureVectorLayer(map, 'fairwaywidth', 30, 20, getFairwayWidthStyle, undefined, 1, true, 314);
 }
 
 export function unsetSelectedFairwayCard() {

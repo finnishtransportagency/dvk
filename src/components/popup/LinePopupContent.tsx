@@ -9,6 +9,7 @@ import { Text } from '../../graphql/generated';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import dvkMap from '../DvkMap';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -38,6 +39,8 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
   const showN2000HeightSystem = isShowN2000HeightSystem(line.properties);
 
   const closePopup = () => {
+    /* Remove fairway width features */
+    dvkMap.getVectorSource('fairwaywidth').clear();
     if (setPopupProperties) setPopupProperties({});
   };
 

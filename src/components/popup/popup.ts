@@ -55,6 +55,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
 
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
+    /* Remove fairway width features */
+    dvkMap.getVectorSource('fairwaywidth').clear();
+
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
       evt.pixel,
@@ -130,9 +133,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               const azimuth = turf.bearingToAzimuth(
                 turf.bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
               );
-              /* Create line perpendicular navigation line and length of 10km to both direction from snap point */
-              const startPoint = turf.transformTranslate(turfSnapPoint, 10, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
-              const endPoint = turf.transformTranslate(turfSnapPoint, 10, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
+              /* Create line perpendicular navigation line and length of 3km to both direction from snap point */
+              const startPoint = turf.transformTranslate(turfSnapPoint, 3, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
+              const endPoint = turf.transformTranslate(turfSnapPoint, 3, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
               const turfPerpendicularLine = turf.lineString([startPoint.geometry.coordinates, endPoint.geometry.coordinates]);
               /* Find line part that intersects area polygon */
               const interSectionPoints = turf.lineIntersect(turfPerpendicularLine, turfArea);
@@ -155,6 +158,16 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               console.log(interSectionPoints);
               console.log(turfFairwayWidthLine);
               console.log('FAIRWAY WIDTH: ' + turf.round(fairwayWidth, 0) + 'm');
+
+              const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
+                dataProjection: 'EPSG:4326',
+                featureProjection: MAP.EPSG,
+              });
+              fairwayWidthLineFeat.setProperties({ width: fairwayWidth });
+
+              const source = dvkMap.getVectorSource('fairwaywidth');
+              source.clear();
+              source.addFeature(fairwayWidthLineFeat);
             }
           }
         }
