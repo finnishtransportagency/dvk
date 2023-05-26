@@ -441,7 +441,7 @@ export function addAPILayers(map: Map) {
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 305);
 
-  addFeatureVectorLayer(map, 'soundingpoint', 7, 1, getSoundingPointStyle, undefined, 1, false, 304);
+  addFeatureVectorLayer(map, 'soundingpoint', 7, 1, getSoundingPointStyle, undefined, 1, false, 305);
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 305);
 
