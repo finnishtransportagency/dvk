@@ -247,6 +247,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getSafetyEquipmentStyle(feature, 1, false);
   } else if (ds === 'marinewarning') {
     return getMarineWarningStyle(feature, false);
+  } else if (ds === 'harbor') {
+    return getHarborStyle(feature, resolution, 3);
   } else {
     return undefined;
   }
@@ -369,28 +371,17 @@ export function addAPILayers(map: Map) {
     204
   );
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 206);
 
   // Nopeusrajoitus
   addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
   // Laiturit
-  addFeatureVectorLayer(
-    map,
-    'quay',
-    300,
-    50,
-    (feature, resolution) =>
-      feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getHarborStyle(feature, resolution, 3),
-    undefined,
-    1,
-    false,
-    303
-  );
+  addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 303);
   // Satamat
   addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 304);
+  // Valitun väyläkortin navigointilinjat ja väyläalueet
+  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 305);
 
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 305);
@@ -530,15 +521,6 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   }
 }
 
-function addHarbor(harbor: HarborPartsFragment, harbors: VectorSource, quays: VectorSource) {
-  const id = harbor.geometry?.coordinates?.join(';');
-  const feature = id ? harbors.getFeatureById(id) : undefined;
-  if (feature) {
-    quays.addFeature(feature);
-    harbors.removeFeature(feature);
-  }
-}
-
 export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
   const dvkMap = getMap();
   if (fairwayCard) {
@@ -604,7 +586,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     }
 
     for (const harbor of fairwayCard?.harbors || []) {
-      addHarbor(harbor, harborSource, quaySource);
+      const id = harbor.geometry?.coordinates?.join(';');
+      const feature = id ? harborSource.getFeatureById(id) : undefined;
+      if (feature) {
+        harborSource.removeFeature(feature);
+        fairwayFeatures.push(feature);
+      }
       addQuay(harbor, quaySource);
     }
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
