@@ -225,7 +225,12 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-checkbox {
   --size: 20px;
   --border-width: 1px;
+  --checkmark-width: 3px;
   margin: 5px 5px 5px 0;
+}
+#layerModalContainer ion-checkbox.checkbox-checked,
+#layerModalContainer ion-checkbox.checkbox-indeterminate {
+  --border-width: 3px;
 }
 #layerModalContainer ion-checkbox.checkbox-disabled {
   opacity: 1;
@@ -236,10 +241,7 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-col {
-  padding-right: 0;
-  padding-left: 0;
-  padding-bottom: 5px;
-  padding-top: 0;
+  padding: 0;
 }
 #layerModalContainer .section ion-col,
 #layerModalContainer .layerItem ion-col {
@@ -280,16 +282,21 @@ ion-modal#layerModalContainer::part(content) {
   transition: all 250ms;
   border-top: 1px solid var(--ion-color-lighter);
 }
+#layerModalContainer ion-row.mainToggle {
+  border-top: none;
+  padding-left: 24px;
+}
 #layerModalContainer ion-row.hide {
   max-height: 0;
   overflow: hidden;
+  visibility: hidden;
 }
 #layerModalContainer ion-row.show {
-  max-height: 200px;
+  max-height: 500px;
 }
 
 #layerModalContainer ion-grid.legend {
-  max-height: 200px;
+  max-height: 500px;
 }
 #layerModalContainer ion-grid.legend ion-item {
   font-size: 12px;
@@ -364,6 +371,11 @@ ion-modal#layerModalContainer::part(content) {
   color: #000000;
 }
 
+#layerModalContainer .bgMapButtonSea:hover,
+#layerModalContainer .bgMapButtonLand:hover {
+  font-weight: bold;
+}
+
 #layerModalContainer .bgMapButtonSea:disabled,
 #layerModalContainer .bgMapButtonLand:disabled {
   font-weight: bold;
@@ -377,6 +389,16 @@ ion-modal#layerModalContainer::part(content) {
   background-size: 64px 64px;
   border: 1px solid #e5e5e5;
   margin-bottom: 4px;
+}
+
+#layerModalContainer .bgMapButtonSea:focus-visible,
+#layerModalContainer .bgMapButtonLand:focus-visible {
+  outline: none;
+}
+#layerModalContainer .bgMapButtonSea:focus-visible .mapImage,
+#layerModalContainer .bgMapButtonLand:focus-visible .mapImage {
+  border: 1px solid var(--ion-color-primary);
+  outline: 1px solid var(--ion-color-primary);
 }
 
 #layerModalContainer .bgMapButtonSea .mapImage {
