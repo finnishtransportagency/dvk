@@ -69,7 +69,7 @@ export class DvkFeaturePipelineStack extends Stack {
             ],
           },
         },
-        cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
+        cache: { paths: ['/root/.cache/**/*', '/root/.npm/**/*'] },
         reports: {
           'dvk-tests': { files: 'junit.xml' },
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
