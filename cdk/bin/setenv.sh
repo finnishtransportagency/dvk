@@ -6,6 +6,8 @@ then
   echo "  environment name - name of AWS environment, for example dev"
 else
   export ENVIRONMENT=$1
+  export NODE_OPTIONS="--max_old_space_size=4096 --max-old-space-size=4096"
   echo "Following environment variables set:"
   echo "export ENVIRONMENT=$1"
+  echo "export NODE_OPTIONS=$NODE_OPTIONS"
 fi
