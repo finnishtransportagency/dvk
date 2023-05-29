@@ -7,7 +7,9 @@ then
 else
   export ENVIRONMENT=$1
   export NODE_OPTIONS="--max_old_space_size=4096 --max-old-space-size=4096"
+  export AWS_DEFAULT_REGION=eu-west-1
   echo "Following environment variables set:"
   echo "export ENVIRONMENT=$1"
   echo "export NODE_OPTIONS=$NODE_OPTIONS"
+  echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
 fi
