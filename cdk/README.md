@@ -50,7 +50,7 @@ npm run generate
 export AWS_PROFILE=your_aws_profile
 npm run login
 . ./bin/setenv.sh myenv
-npm run deploy:backend
+npm run deploy:backend:hotswap
 // optional since only backend stack is mandatory for local development
 npm run deploy:frontend
 npm run setup
