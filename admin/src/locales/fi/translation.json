@@ -9,6 +9,7 @@
     "search-placeholder": "Hae nimellä",
     "search-title": "Hae nimellä",
     "search-clear-title": "Tyhjennä",
+    "no-results": "Haku '{{query}}' ei palauttanut yhtään osumaa.",
     "label-type": "Tyyppi",
     "type-fairwaycard": "Väyläkortti",
     "type-harbour": "Satama",

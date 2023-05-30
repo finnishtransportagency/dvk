@@ -13,7 +13,7 @@ interface DropdownProps {
 }
 
 const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, selected, setSelectedItem }) => {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'general.search' });
+  const { t, i18n } = useTranslation('', { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const checkSelected = (idx: number) => {
