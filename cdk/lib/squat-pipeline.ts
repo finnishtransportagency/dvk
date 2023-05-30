@@ -43,7 +43,7 @@ export class SquatPipeline extends Construct {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
         environmentVariables: {
           CI: { value: true },
-        }
+        },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
