@@ -20,7 +20,7 @@ export class PipelineLambda extends Construct {
     const storedGithubWebhookSecret = ssm.StringParameter.valueForStringParameter(this, '/github/WebhookSecret', 1);
 
     const handler = new nodejsfunction.NodejsFunction(this, 'WebhookHandler', {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       entry: 'lib/lambda/webhook-handler.ts',
       handler: 'handler',
       environment: {

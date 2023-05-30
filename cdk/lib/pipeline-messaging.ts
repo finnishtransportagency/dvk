@@ -18,7 +18,7 @@ export class PipelineMessaging extends Construct {
       'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
     );
     const messageHandler = new nodejsfunction.NodejsFunction(this, 'WebhookHandler', {
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       entry: 'lib/lambda/message-handler.ts',
       handler: 'handler',
       layers: [layer],

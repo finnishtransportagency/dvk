@@ -34,7 +34,8 @@
     "vatu": "ts-node bin/vatu.ts",
     "mapname": "ts-node bin/mapname.ts",
     "featuresync": "ts-node bin/featuresync.ts",
-    "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive"
+    "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive",
+    "ecr:login": "cross-env-shell aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.3.0",
@@ -79,5 +80,9 @@
     "pino": "^8.11.0",
     "proj4": "^2.9.0",
     "source-map-support": "^0.5.21"
+  },
+  "engines": {
+    "node": ">=18.16.0",
+    "npm": ">=9.6.7"
   }
 }

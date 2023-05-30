@@ -40,7 +40,10 @@ export class SquatPipeline extends Construct {
     // Create the build project for Squat app
     const squatBuildProject = new codebuild.PipelineProject(this, 'SquatBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
+        environmentVariables: {
+          CI: { value: true },
+        },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
@@ -83,7 +86,7 @@ export class SquatPipeline extends Construct {
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, 'InvalidateProject', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.4'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -117,7 +120,7 @@ export class SquatPipeline extends Construct {
     // Create the build project that will delete files from s3 before deploy
     const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.4'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
