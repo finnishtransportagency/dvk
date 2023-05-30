@@ -86,6 +86,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
 
       /* If selected feature is navigation line start "fairway width calculation process" */
       if (feature.getProperties().featureType === 'line') {
+        let fairwayWidth: number | undefined = undefined;
         let areaFeatures = features.filter((f) => {
           return f.getProperties().featureType === 'area';
         });
@@ -168,7 +169,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
 
               if (startCoord && endCoord) {
                 const turfFairwayWidthLine = turf.lineString([startCoord, endCoord]);
-                const fairwayWidth = turf.length(turfFairwayWidthLine) * 1000;
+                fairwayWidth = turf.length(turfFairwayWidthLine) * 1000;
 
                 const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
                   dataProjection: 'EPSG:4326',
@@ -183,14 +184,21 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
             }
           }
         }
+        setPopupProperties({
+          [feature.getProperties().featureType]: {
+            coordinates: geom.getCoordinates() as number[],
+            properties: feature.getProperties(),
+            width: fairwayWidth,
+          },
+        });
+      } else {
+        setPopupProperties({
+          [feature.getProperties().featureType]: {
+            coordinates: geom.getCoordinates() as number[],
+            properties: feature.getProperties(),
+          },
+        });
       }
-
-      setPopupProperties({
-        [feature.getProperties().featureType]: {
-          coordinates: geom.getCoordinates() as number[],
-          properties: feature.getProperties(),
-        },
-      });
       /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
       setTimeout(() => {
         if (feature.getGeometry()?.getType() === 'Point') {

@@ -289,6 +289,7 @@
       "length": "Length {{val}}",
       "direction": "True bearing {{val, number}}",
       "fairways": "Navigation line is part of the fairway card",
+      "width": "[en] Väyläleveys valitussa kohdassa",
       "extra": "Additional information"
     },
     "equipment": {

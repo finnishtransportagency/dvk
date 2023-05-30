@@ -29,7 +29,7 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
       }),
     });
   } else {
-    lineStyle.getText().setText(Math.round(width) + 'm');
+    lineStyle.getText().setText(Math.floor(width) + 'm');
   }
   return lineStyle;
 }

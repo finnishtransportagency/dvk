@@ -19,6 +19,7 @@ type LinePopupContentProps = {
 export type LineProperties = {
   coordinates: number[];
   properties: LineFeatureProperties;
+  width: number | undefined;
 };
 
 type FairwayCardIdName = {
@@ -141,6 +142,23 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
             </IonRow>
           );
         })}
+
+        {line.width && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.line.width')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                {Math.floor(line.width)}
+                <span aria-label={t('fairwayCards.unit.mDesc', { count: line.width })} role="definition">
+                  m
+                </span>
+              </IonCol>
+            </IonRow>
+          </>
+        )}
+
         {line.properties.extra && (
           <>
             <IonRow>
