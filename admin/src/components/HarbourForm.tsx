@@ -146,19 +146,35 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
       {
         id: 'extraInfo',
-        msg: state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim()) &&
+          (!state.extraInfo?.fi.trim() || !state.extraInfo?.sv.trim() || !state.extraInfo?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'cargo',
-        msg: state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim()) &&
+          (!state.cargo?.fi.trim() || !state.cargo?.sv.trim() || !state.cargo?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'harbourBasin',
-        msg: state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim()) &&
+          (!state.harborBasin?.fi.trim() || !state.harborBasin?.sv.trim() || !state.harborBasin?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'companyName',
-        msg: state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim()) &&
+          (!state.company?.fi.trim() || !state.company?.sv.trim() || !state.company?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       { id: 'primaryId', msg: primaryIdErrorMsg },
       { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
@@ -166,7 +182,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     ];
     const quayNameErrors =
       state.quays
-        ?.flatMap((quay, i) => (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim() ? i : null))
+        ?.flatMap((quay, i) =>
+          (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim()) &&
+          (!quay?.name?.fi.trim() || !quay?.name?.sv.trim() || !quay?.name?.en.trim())
+            ? i
+            : null
+        )
         .filter((val) => Number.isInteger(val))
         .map((qIndex) => {
           return {
@@ -176,7 +197,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         }) || [];
     const quayExtraInfoErrors =
       state.quays
-        ?.flatMap((quay, i) => (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim() ? i : null))
+        ?.flatMap((quay, i) =>
+          (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim()) &&
+          (!quay?.extraInfo?.fi.trim() || !quay?.extraInfo?.sv.trim() || !quay?.extraInfo?.en.trim())
+            ? i
+            : null
+        )
         .filter((val) => Number.isInteger(val))
         .map((qIndex) => {
           return {
@@ -186,7 +212,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         }) || [];
     const quayGeometryErrors =
       state.quays
-        ?.flatMap((quay, i) => (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim() ? i : null))
+        ?.flatMap((quay, i) =>
+          (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim()) && (!quay?.geometry?.lat.trim() || !quay?.geometry?.lon.trim()) ? i : null
+        )
         .filter((val) => Number.isInteger(val))
         .map((qIndex) => {
           return {
@@ -198,7 +226,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       state.quays
         ?.map((quay) =>
           quay?.sections
-            ?.flatMap((section, j) => (section?.geometry?.lat.trim() || section?.geometry?.lon.trim() ? j : null))
+            ?.flatMap((section, j) =>
+              (section?.geometry?.lat.trim() || section?.geometry?.lon.trim()) && (!section?.geometry?.lat.trim() || !section?.geometry?.lon.trim())
+                ? j
+                : null
+            )
             .filter((val) => Number.isInteger(val))
         )
         .flatMap((sIndices, qIndex) => {
@@ -211,11 +243,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
             }) || []
           );
         }) || [];
-    setValidationErrors(
-      manualValidations.concat(quayNameErrors).concat(quayExtraInfoErrors).concat(quayGeometryErrors).concat(sectionGeometryErrors)
-    );
+    const allValidations = manualValidations
+      .concat(quayNameErrors)
+      .concat(quayExtraInfoErrors)
+      .concat(quayGeometryErrors)
+      .concat(sectionGeometryErrors);
+    setValidationErrors(allValidations);
 
-    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
+    if (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1) {
       if (
         (state.operation === Operation.Create && state.status === Status.Draft) ||
         (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)

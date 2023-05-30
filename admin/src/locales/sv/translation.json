@@ -9,6 +9,7 @@
     "search-placeholder": "[sv] Hae nimellä",
     "search-title": "[sv] Hae nimellä",
     "search-clear-title": "Töm",
+    "no-results": "[sv] Haku '{{query}}' ei palauttanut yhtään osumaa.",
     "label-type": "[sv] Tyyppi",
     "type-fairwaycard": "Farledskort",
     "type-harbour": "[sv] Satama",
