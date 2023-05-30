@@ -12,4 +12,9 @@ else
   echo "export ENVIRONMENT=$1"
   echo "export NODE_OPTIONS=\"$NODE_OPTIONS\""
   echo "export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
+  if [ ! -z $AWS_PROFILE ]
+  then
+    export AWS_ACCOUNT_ID=`echo $AWS_PROFILE | sed "s/[^0-9]//g"`
+    echo "export AWS_ACCOUNT_ID=$AWS_ACCOUNT_ID"
+  fi
 fi
