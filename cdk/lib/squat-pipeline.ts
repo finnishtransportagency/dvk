@@ -41,6 +41,9 @@ export class SquatPipeline extends Construct {
     const squatBuildProject = new codebuild.PipelineProject(this, 'SquatBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
+        environmentVariables: {
+          CI: { value: true },
+        }
       },
       buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',

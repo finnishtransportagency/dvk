@@ -43,6 +43,7 @@ export class AdminPipeline extends Construct {
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
           REACT_APP_ENV: { value: props.env },
+          CI: { value: true },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({

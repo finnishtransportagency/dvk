@@ -47,6 +47,7 @@ export class DvkPipeline extends Construct {
         environmentVariables: {
           REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
           REACT_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
+          CI: { value: true },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
