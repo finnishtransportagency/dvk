@@ -85,5 +85,9 @@
     "jest-junit": "^16.0.0",
     "jest-sonar": "^0.2.16"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "engines": {
+    "node": ">=18.16.0",
+    "npm": ">=9.6.7"
+  }
 }
