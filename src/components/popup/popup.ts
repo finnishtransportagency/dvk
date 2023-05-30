@@ -191,6 +191,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
             width: fairwayWidth,
           },
         });
+        overlay.setOffset([50, 0]);
       } else {
         setPopupProperties({
           [feature.getProperties().featureType]: {

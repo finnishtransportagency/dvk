@@ -1,5 +1,7 @@
 import { FeatureLike } from 'ol/Feature';
-import { Style, Stroke, Fill, Text } from 'ol/style';
+import { LineString, Point } from 'ol/geom';
+import { Style, Stroke, Fill, Text, Icon } from 'ol/style';
+import arrowIcon from '../../theme/img/arrow-right.svg';
 
 let lineStyle: Style | undefined = undefined;
 
@@ -29,7 +31,37 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
       }),
     });
   } else {
-    lineStyle.getText().setText(Math.floor(width) + 'm');
+    lineStyle.getText().setText(' ' + Math.floor(width) + 'm');
   }
-  return lineStyle;
+
+  const styles = [lineStyle];
+
+  const geometry = feature.getGeometry() as LineString;
+  const start = geometry.getFirstCoordinate();
+  const end = geometry.getLastCoordinate();
+  const dx = end[0] - start[0];
+  const dy = end[1] - start[1];
+  const rotation = Math.atan2(dy, dx);
+  const startStyle = new Style({
+    geometry: new Point(start),
+    image: new Icon({
+      src: arrowIcon,
+      anchor: [1, 0.5],
+      rotateWithView: true,
+      rotation: -rotation - Math.PI,
+    }),
+  });
+  styles.push(startStyle);
+  const endStyle = new Style({
+    geometry: new Point(end),
+    image: new Icon({
+      src: arrowIcon,
+      anchor: [1, 0.5],
+      rotateWithView: true,
+      rotation: -rotation,
+    }),
+  });
+  styles.push(endStyle);
+
+  return styles;
 }
