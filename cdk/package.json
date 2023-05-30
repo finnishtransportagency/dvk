@@ -35,7 +35,7 @@
     "mapname": "ts-node bin/mapname.ts",
     "featuresync": "ts-node bin/featuresync.ts",
     "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive",
-    "ecr:login": "aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
+    "ecr:login": "cross-env-shell aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^3.3.0",
