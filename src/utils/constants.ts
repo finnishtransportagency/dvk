@@ -177,6 +177,8 @@ export const PILOTORDER_URL = 'www.pilotonline.fi';
 export const OFFLINE_STORAGE = {
   name: 'DVK',
   storeName: 'react-query-data',
-  staleTime: 2 * 60 * 60 * 1000, // 2 hours
-  cacheTime: 5 * 60 * 60 * 1000, // 5 hours
+  staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
+  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
+  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
+  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };

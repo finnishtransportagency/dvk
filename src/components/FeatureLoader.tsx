@@ -5,7 +5,7 @@ import * as turf from '@turf/turf';
 import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData } from '../utils/dataLoader';
+import { useFeatureData, useStaticFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
@@ -56,7 +56,28 @@ export function useLine3456Layer() {
 }
 
 export function useNameLayer() {
-  return useDataLayer('name', 'name', MAP.EPSG);
+  const [ready, setReady] = useState(false);
+  const nameQuery = useStaticFeatureData('name', true, false);
+  const dataUpdatedAt = Math.max(nameQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(nameQuery.errorUpdatedAt);
+  const isPaused = nameQuery.isPaused;
+  const isError = nameQuery.isError;
+
+  useEffect(() => {
+    if (nameQuery.data) {
+      const layer = dvkMap.getFeatureLayer('name') as Layer;
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        const features = format.readFeatures(nameQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [nameQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useSoundingPointLayer() {
@@ -65,7 +86,7 @@ export function useSoundingPointLayer() {
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const fiQuery = useFeatureData('finland', true, false);
+  const fiQuery = useStaticFeatureData('finland', true, false);
   const dataUpdatedAt = Math.max(fiQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(fiQuery.errorUpdatedAt);
   const isPaused = fiQuery.isPaused;
@@ -90,7 +111,7 @@ export function useBackgroundFinlandLayer(): DvkLayerState {
 
 export function useBackgroundMmlmeriLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const mmlmeriQuery = useFeatureData('mml_meri', true, false);
+  const mmlmeriQuery = useStaticFeatureData('mml_meri', true, false);
   const dataUpdatedAt = Math.max(mmlmeriQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(mmlmeriQuery.errorUpdatedAt);
   const isPaused = mmlmeriQuery.isPaused;
@@ -115,7 +136,7 @@ export function useBackgroundMmlmeriLayer(): DvkLayerState {
 
 export function useBackgroundMmljarviLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const mmljarviQuery = useFeatureData('mml_jarvi', true, false);
+  const mmljarviQuery = useStaticFeatureData('mml_jarvi', true, false);
   const dataUpdatedAt = Math.max(mmljarviQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(mmljarviQuery.errorUpdatedAt);
   const isPaused = mmljarviQuery.isPaused;
@@ -140,7 +161,7 @@ export function useBackgroundMmljarviLayer(): DvkLayerState {
 
 export function useBackgroundMmllaituritLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const mmllaituritQuery = useFeatureData('mml_laiturit', true, false);
+  const mmllaituritQuery = useStaticFeatureData('mml_laiturit', true, false);
   const dataUpdatedAt = Math.max(mmllaituritQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(mmllaituritQuery.errorUpdatedAt);
   const isPaused = mmllaituritQuery.isPaused;
@@ -165,7 +186,7 @@ export function useBackgroundMmllaituritLayer(): DvkLayerState {
 
 export function useBackgroundBalticseaLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const baQuery = useFeatureData('balticsea', true, false);
+  const baQuery = useStaticFeatureData('balticsea', true, false);
   const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt);
   const isPaused = baQuery.isPaused;

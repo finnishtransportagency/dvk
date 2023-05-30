@@ -407,7 +407,8 @@
     "marine-warnings": "Merivaroitukset",
     "fairway-cards": "Väyläkortit",
     "skip-to-content": "Siirry pääsisältöön",
-    "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
+    "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
+    "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten."
   },
   "mobile": {
     "title": "Digitaalisen väyläkortin käyttö",
