@@ -7,6 +7,7 @@ import { LinuxBuildImage } from 'aws-cdk-lib/aws-codebuild';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { GitHubTrigger } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { IAction } from 'aws-cdk-lib/aws-codepipeline';
+import { TagStatus } from 'aws-cdk-lib/aws-ecr';
 
 export class DvkBuildImageStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
@@ -14,6 +15,14 @@ export class DvkBuildImageStack extends Stack {
     const imageRepoName = 'dvk-buildimage';
     new cdk.aws_ecr.Repository(this, 'BuildImageRepository', {
       repositoryName: imageRepoName,
+      lifecycleRules: [
+        {
+          rulePriority: 1,
+          description: 'Remove untagged images over 30 days old',
+          maxImageAge: cdk.Duration.days(30),
+          tagStatus: TagStatus.UNTAGGED,
+        },
+      ],
     });
     const pipeline = new codepipeline.Pipeline(this, 'BuildImagePipeline', {
       crossAccountKeys: false,
@@ -34,7 +43,7 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = this.buildProject(account, imageRepoName, '1.0.3', '.', 'ImageBuild');
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.4', '.', 'ImageBuild');
     const actions: IAction[] = [];
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
@@ -43,20 +52,26 @@ export class DvkBuildImageStack extends Stack {
         input: sourceOutput,
       })
     );
-    if (env !== 'prod') {
-      const robotImageRepoName = 'dvk-robotimage';
-      new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
-        repositoryName: robotImageRepoName,
-      });
-      const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.0', 'test', 'RobotImageBuild');
-      actions.push(
-        new cdk.aws_codepipeline_actions.CodeBuildAction({
-          actionName: 'BuildRobotImage',
-          project: robotBuildProject,
-          input: sourceOutput,
-        })
-      );
-    }
+    const robotImageRepoName = 'dvk-robotimage';
+    new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
+      repositoryName: robotImageRepoName,
+      lifecycleRules: [
+        {
+          rulePriority: 1,
+          description: 'Remove untagged images over 30 days old',
+          maxImageAge: cdk.Duration.days(30),
+          tagStatus: TagStatus.UNTAGGED,
+        },
+      ],
+    });
+    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.1', 'test', 'RobotImageBuild');
+    actions.push(
+      new cdk.aws_codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildRobotImage',
+        project: robotBuildProject,
+        input: sourceOutput,
+      })
+    );
     pipeline.addStage({
       stageName: 'Build',
       actions,

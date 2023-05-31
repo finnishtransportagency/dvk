@@ -398,7 +398,8 @@
     "marine-warnings": "Navigationsvarningar",
     "fairway-cards": "Farledskort",
     "skip-to-content": "Gå till huvudinnehåll",
-    "opens-in-a-new-tab": "Öppnas i en ny flik"
+    "opens-in-a-new-tab": "Öppnas i en ny flik",
+    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan."
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",

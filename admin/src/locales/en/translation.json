@@ -9,6 +9,7 @@
     "search-placeholder": "Search",
     "search-title": "Search",
     "search-clear-title": "Clear",
+    "no-results": "Query '{{query}}' did not give any results.",
     "label-type": "Type",
     "type-fairwaycard": "Fairway card",
     "type-harbour": "Harbour",
