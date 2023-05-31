@@ -1,4 +1,4 @@
-import { Point, SimpleGeometry, Geometry } from 'ol/geom';
+import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
@@ -18,6 +18,7 @@ import { getBuoyStyle } from '../layerStyles/buoyStyles';
 import { getVtsStyle } from '../layerStyles/vtsStyles';
 import { GeoJSON } from 'ol/format';
 import * as turf from '@turf/turf';
+import { Coordinate } from 'ol/coordinate';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -75,6 +76,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     setPopupProperties({});
 
     if (feature) {
+      let popupPositioningCoordinate: Coordinate | undefined = undefined;
+
       if (feature.getProperties().featureType === 'mareograph') {
         overlay.setPositioning('center-right');
         overlay.setOffset([-20, 0]);
@@ -180,6 +183,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
                 const source = dvkMap.getVectorSource('fairwaywidth');
                 source.clear();
                 source.addFeature(fairwayWidthLineFeat);
+
+                /* Set popup position right to the fairway width line */
+                const geometry = fairwayWidthLineFeat.getGeometry() as LineString;
+                const s = geometry.getFirstCoordinate();
+                const e = geometry.getLastCoordinate();
+                popupPositioningCoordinate = s[0] > e[0] ? s : e;
               }
             }
           }
@@ -191,7 +200,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
             width: fairwayWidth,
           },
         });
-        overlay.setOffset([50, 0]);
       } else {
         setPopupProperties({
           [feature.getProperties().featureType]: {
@@ -202,7 +210,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       }
       /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
       setTimeout(() => {
-        if (feature.getGeometry()?.getType() === 'Point') {
+        if (popupPositioningCoordinate) {
+          overlay.setPosition(popupPositioningCoordinate);
+        } else if (feature.getGeometry()?.getType() === 'Point') {
           overlay.setPosition((feature.getGeometry() as Point).getCoordinates());
         } else {
           overlay.setPosition(evt.coordinate);
