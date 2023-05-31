@@ -1,4 +1,4 @@
-import { GraphqlApi } from '@aws-cdk/aws-appsync-alpha';
+import { GraphqlApi } from 'aws-cdk-lib/aws-appsync';
 import { CfnIPSet, CfnWebACL, CfnWebACLAssociation, CfnWebACLProps } from 'aws-cdk-lib/aws-wafv2';
 import { Construct } from 'constructs';
 import Config from './config';
