@@ -3,7 +3,6 @@ import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
 import { PilotPlace, Text } from '../graphql/generated';
-import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 
 interface SelectChangeEventDetail<ValueType> {
@@ -109,51 +108,52 @@ const FormSelect: React.FC<SelectProps> = ({
   }, [required, error, selected, isTouched]);
 
   return (
-    <>
+    <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       {!hideLabel && (
         <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
           {label} {required ? '*' : ''}
         </IonLabel>
       )}
-      {isLoading && <IonSkeletonText animated={true} style={{ width: '100%', height: '41px' }} />}
+      {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
       {!isLoading && (
-        <IonItem fill="outline" className={'selectInput' + (isValid && (!error || error === '') ? '' : ' invalid')}>
-          <IonSelect
-            ref={selectRef}
-            placeholder={t('choose') || ''}
-            interface="popover"
-            onIonChange={(ev) => handleChange(ev)}
-            onIonBlur={() => checkValidity()}
-            interfaceOptions={{
-              size: 'cover',
-              className: 'multiSelect',
-            }}
-            value={selected}
-            multiple={Array.isArray(selected) || multiple}
-            compareWith={Array.isArray(selected) ? compareOptions : undefined}
-            disabled={disabled}
-          >
-            {sortedOptions &&
-              sortedOptions.map((item) => {
-                const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                const coordinates = (item as PilotPlace).geometry?.coordinates;
-                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
-                return (
-                  <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
-                    {showId ? '[' + item.id + '] ' : ''}
-                    {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
-                  </IonSelectOption>
-                );
-              })}
-          </IonSelect>
-          {getHelperText() && <IonNote slot="helper">{getHelperText()}</IonNote>}
-          <IonNote slot="error" className="input-error">
-            <ErrorIcon aria-label={t('error') || ''} />
-            {getErrorText()}
-          </IonNote>
-        </IonItem>
+        <>
+          <IonItem className="selectInput">
+            <IonSelect
+              ref={selectRef}
+              placeholder={t('choose') || ''}
+              interface="popover"
+              onIonChange={(ev) => handleChange(ev)}
+              onIonBlur={() => checkValidity()}
+              interfaceOptions={{
+                size: 'cover',
+                className: 'multiSelect',
+              }}
+              value={selected}
+              multiple={Array.isArray(selected) || multiple}
+              compareWith={Array.isArray(selected) ? compareOptions : undefined}
+              disabled={disabled}
+              fill="outline"
+              labelPlacement="stacked"
+            >
+              {sortedOptions &&
+                sortedOptions.map((item) => {
+                  const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+                  const coordinates = (item as PilotPlace).geometry?.coordinates;
+                  const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
+                  return (
+                    <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
+                      {showId ? '[' + item.id + '] ' : ''}
+                      {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
+                    </IonSelectOption>
+                  );
+                })}
+            </IonSelect>
+          </IonItem>
+          {getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          <IonNote className="input-error">{getErrorText()}</IonNote>
+        </>
       )}
-    </>
+    </div>
   );
 };
 
