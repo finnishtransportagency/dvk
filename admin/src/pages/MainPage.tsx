@@ -129,7 +129,7 @@ const MainPage: React.FC = () => {
               <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
                 {translatedTextOrEmpty('label-type')}
               </IonLabel>
-              <IonItem fill="outline" className="selectInput">
+              <IonItem className="selectInput">
                 <IonSelect
                   ref={selectTypeRef}
                   placeholder={translatedTextOrEmpty('choose')}
@@ -140,6 +140,7 @@ const MainPage: React.FC = () => {
                     size: 'cover',
                     className: 'multiSelect',
                   }}
+                  labelPlacement="stacked"
                 >
                   <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
                   <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>

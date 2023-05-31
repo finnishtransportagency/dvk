@@ -26,7 +26,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
-    inputRef.current?.setBlur();
+    inputRef.current?.getInputElement().then((textinput) => textinput.blur());
   };
   const openDropdown = () => {
     setSearchQuery('');
@@ -78,7 +78,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
         title={t('search-title') || ''}
         value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] || selectedItem?.name.fi || ''}
         onIonFocus={openDropdown}
-        onIonChange={(e) => changeAction(e.detail.value)}
+        onIonInput={(e) => changeAction(e.detail.value)}
         onIonBlur={blurAction}
         onKeyDown={(e) => keyDownAction(e)}
         readonly={!isDropdownOpen}
