@@ -4,6 +4,8 @@ import { Style, Stroke, Fill, Text, Icon } from 'ol/style';
 import arrowIcon from '../../theme/img/arrow-right.svg';
 
 let lineStyle: Style | undefined = undefined;
+let startStyle: Style | undefined = undefined;
+let endStyle: Style | undefined = undefined;
 
 export function getFairwayWidthStyle(feature: FeatureLike) {
   const width = feature.getProperties().width;
@@ -19,22 +21,21 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
         placement: 'line',
         textAlign: 'center',
         textBaseline: 'bottom',
-        offsetY: -3,
-        text: Math.round(width) + 'm',
+        offsetY: -8,
+        overflow: true,
+        text: Math.floor(width) + 'm',
         fill: new Fill({
           color: '#000000',
         }),
         stroke: new Stroke({
-          width: 5,
+          width: 3,
           color: '#ffffff',
         }),
       }),
     });
   } else {
-    lineStyle.getText().setText(' ' + Math.floor(width) + 'm');
+    lineStyle.getText().setText(Math.floor(width) + 'm');
   }
-
-  const styles = [lineStyle];
 
   const geometry = feature.getGeometry() as LineString;
   const start = geometry.getFirstCoordinate();
@@ -42,26 +43,36 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
   const dx = end[0] - start[0];
   const dy = end[1] - start[1];
   const rotation = Math.atan2(dy, dx);
-  const startStyle = new Style({
-    geometry: new Point(start),
-    image: new Icon({
-      src: arrowIcon,
-      anchor: [1, 0.5],
-      rotateWithView: true,
-      rotation: -rotation - Math.PI,
-    }),
-  });
-  styles.push(startStyle);
-  const endStyle = new Style({
-    geometry: new Point(end),
-    image: new Icon({
-      src: arrowIcon,
-      anchor: [1, 0.5],
-      rotateWithView: true,
-      rotation: -rotation,
-    }),
-  });
-  styles.push(endStyle);
 
-  return styles;
+  if (!startStyle) {
+    startStyle = new Style({
+      geometry: new Point(start),
+      image: new Icon({
+        src: arrowIcon,
+        anchor: [1, 0.5],
+        rotateWithView: true,
+        rotation: Math.PI - rotation,
+      }),
+    });
+  } else {
+    startStyle.setGeometry(new Point(start));
+    startStyle.getImage().setRotation(Math.PI - rotation);
+  }
+
+  if (!endStyle) {
+    endStyle = new Style({
+      geometry: new Point(end),
+      image: new Icon({
+        src: arrowIcon,
+        anchor: [1, 0.5],
+        rotateWithView: true,
+        rotation: -rotation,
+      }),
+    });
+  } else {
+    endStyle.setGeometry(new Point(end));
+    endStyle.getImage().setRotation(-rotation);
+  }
+
+  return [lineStyle, startStyle, endStyle];
 }
