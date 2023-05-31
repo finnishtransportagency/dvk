@@ -299,6 +299,7 @@
       "length": "Pituus {{val}}",
       "direction": "Tosisuunta {{val, number}}",
       "fairways": "Navigointilinja on osa väyläkorttia",
+      "width": "Väyläleveys valitussa kohdassa",
       "extra": "Lisätieto"
     },
     "equipment": {

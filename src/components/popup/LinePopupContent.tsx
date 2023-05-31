@@ -9,6 +9,7 @@ import { Text } from '../../graphql/generated';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import dvkMap from '../DvkMap';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -18,6 +19,7 @@ type LinePopupContentProps = {
 export type LineProperties = {
   coordinates: number[];
   properties: LineFeatureProperties;
+  width: number | undefined;
 };
 
 type FairwayCardIdName = {
@@ -38,6 +40,8 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
   const showN2000HeightSystem = isShowN2000HeightSystem(line.properties);
 
   const closePopup = () => {
+    /* Remove fairway width features */
+    dvkMap.getVectorSource('fairwaywidth').clear();
     if (setPopupProperties) setPopupProperties({});
   };
 
@@ -138,6 +142,23 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
             </IonRow>
           );
         })}
+
+        {line.width && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.line.width')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                {Math.floor(line.width)}
+                <span aria-label={t('fairwayCards.unit.mDesc', { count: line.width })} role="definition">
+                  m
+                </span>
+              </IonCol>
+            </IonRow>
+          </>
+        )}
+
         {line.properties.extra && (
           <>
             <IonRow>

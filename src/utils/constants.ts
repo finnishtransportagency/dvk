@@ -109,8 +109,9 @@ export type FeatureDataLayerId =
   | 'deptharea';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
+export type FairwayWidthLayerId = 'fairwaywidth';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 

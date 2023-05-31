@@ -137,63 +137,101 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
       {
         id: 'line',
-        msg: state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim()) &&
+          (!state.lineText?.fi.trim() || !state.lineText?.sv.trim() || !state.lineText?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'designSpeed',
-        msg: state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim()) &&
+          (!state.designSpeed?.fi.trim() || !state.designSpeed?.sv.trim() || !state.designSpeed?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'speedLimit',
-        msg: state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim()) &&
+          (!state.speedLimit?.fi.trim() || !state.speedLimit?.sv.trim() || !state.speedLimit?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'anchorage',
-        msg: state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim()) &&
+          (!state.anchorage?.fi.trim() || !state.anchorage?.sv.trim() || !state.anchorage?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'navigationCondition',
         msg:
-          state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()
+          (state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()) &&
+          (!state.navigationCondition?.fi.trim() || !state.navigationCondition?.sv.trim() || !state.navigationCondition?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
         id: 'iceCondition',
-        msg: state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim()) &&
+          (!state.iceCondition?.fi.trim() || !state.iceCondition?.sv.trim() || !state.iceCondition?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'windRecommendation',
         msg:
-          state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()
+          (state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()) &&
+          (!state.windRecommendation?.fi.trim() || !state.windRecommendation?.sv.trim() || !state.windRecommendation?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
         id: 'vesselRecommendation',
         msg:
-          state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()
+          (state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()) &&
+          (!state.vesselRecommendation?.fi.trim() || !state.vesselRecommendation?.sv.trim() || !state.vesselRecommendation?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
         id: 'visibility',
-        msg: state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim()) &&
+          (!state.visibility?.fi.trim() || !state.visibility?.sv.trim() || !state.visibility?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'windGauge',
-        msg: state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim()) &&
+          (!state.windGauge?.fi.trim() || !state.windGauge?.sv.trim() || !state.windGauge?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'seaLevel',
-        msg: state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim() ? t(ErrorMessageKeys?.required) : '',
+        msg:
+          (state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim()) &&
+          (!state.seaLevel?.fi.trim() || !state.seaLevel?.sv.trim() || !state.seaLevel?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
       },
       {
         id: 'pilotExtraInfo',
         msg:
-          state.trafficService?.pilot?.extraInfo?.fi.trim() ||
-          state.trafficService?.pilot?.extraInfo?.sv.trim() ||
-          state.trafficService?.pilot?.extraInfo?.en.trim()
+          (state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+            state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+            state.trafficService?.pilot?.extraInfo?.en.trim()) &&
+          (!state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+            !state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+            !state.trafficService?.pilot?.extraInfo?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
@@ -212,7 +250,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       state.trafficService?.vts
         ?.map((vts) =>
           vts?.vhf
-            ?.flatMap((vhf, j) => (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim() ? j : null))
+            ?.flatMap((vhf, j) =>
+              (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
+              (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
+                ? j
+                : null
+            )
             .filter((val) => Number.isInteger(val))
         )
         .flatMap((vhfIndices, vtsIndex) => {
@@ -248,9 +291,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             msg: t(ErrorMessageKeys?.required),
           };
         }) || [];
-    setValidationErrors(manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors));
+    const allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors);
+    setValidationErrors(allValidations);
 
-    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
+    if (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1) {
       if (
         (state.operation === Operation.Create && state.status === Status.Draft) ||
         (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)

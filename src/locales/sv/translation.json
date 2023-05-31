@@ -299,6 +299,7 @@
       "length": "Längd {{val}}",
       "direction": "Rättvisande kurs {{val, number}}",
       "fairways": "Navigationslinje är en del av farledskortet",
+      "width": "[sv] Väyläleveys valitussa kohdassa",
       "extra": "Tilläggsuppgift"
     },
     "equipment": {
