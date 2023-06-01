@@ -53,6 +53,15 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'line3456', title: t('homePage.map.controls.layer.lines') },
       ],
     },
+    {
+      id: 'depths',
+      title: t('homePage.map.controls.layer.depthinfo'),
+      childLayers: [
+        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint') },
+        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour'), noOfflineSupport: true },
+        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea'), noOfflineSupport: true },
+      ],
+    },
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
     { id: 'specialarea', title: t('homePage.map.controls.layer.specialAreas') },
     { id: 'depth12', title: t('homePage.map.controls.layer.depths') },

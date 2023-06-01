@@ -48,6 +48,10 @@
           "vtspoint": "VTS-ilmoituspisteet",
           "general": "Yleiset",
           "name": "Karttanimistö",
+          "depthinfo": "Syvyystiedot",
+          "soundingpoint": "Luvut",
+          "depthcontour": "Käyrät",
+          "deptharea": "Alueet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -64,7 +68,13 @@
             "openice": "Harva ajojää",
             "closeice": "Tiheä ajojää",
             "verycloseice": "Hyvin tiheä ajojää",
-            "consolidatedice": "Yhteenjäätynyt ajojää"
+            "consolidatedice": "Yhteenjäätynyt ajojää",
+            "depth1": "Syvyys alle 10m",
+            "depth2": "Syvyys 10 - 20m",
+            "depth3": "Syvyys yli 20m",
+            "depth4": "Syvyys 0 - 3m",
+            "depth5": "Syvyys 3 - 6m",
+            "depth6": "Syvyys yli 10m"
           }
         },
         "mapDetails": {
