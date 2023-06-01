@@ -302,6 +302,7 @@ type Fairway {
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
   boardLines: [Boardline!]
+  turningCircles: [TurningCircle!]
 }
 
 type Classification {
@@ -384,6 +385,17 @@ type Boardline {
   direction: Float
   geometry: GeometryLine
   fairways: [BoardlineFairway!]
+}
+
+type TurningCircleFairway {
+  fairwayId: Int!
+}
+
+type TurningCircle {
+  id: Int!
+  geometry: GeometryLine
+  diameter: Int
+  fairways: [TurningCircleFairway!]
 }
 
 type SizingVessel {

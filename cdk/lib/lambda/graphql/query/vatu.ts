@@ -205,6 +205,22 @@ export type TaululinjaAPIModel = {
   vayla: TaululinjaVaylaAPIModel[];
 } & GeometryModel;
 
+export type KaantoympyraVaylaAPIModel = {
+  jnro: number;
+  nimiFI: string;
+  nimiSV?: string;
+  luokitus: number;
+};
+
+export type KaantoympyraAPIModel = {
+  kaantoympyraID: number;
+  halkaisija: number;
+  haraussyvyys?: number;
+  vertaustaso?: string;
+  lisatieto?: string;
+  vayla?: KaantoympyraVaylaAPIModel[];
+} & GeometryModel;
+
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();

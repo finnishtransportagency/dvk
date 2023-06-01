@@ -43,6 +43,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'area12', title: t('homePage.map.controls.layer.fairwayAreas') },
         { id: 'line12', title: t('homePage.map.controls.layer.lines') },
         { id: 'boardline12', title: t('homePage.map.controls.layer.boardLines') },
+        { id: 'circle', title: t('homePage.map.controls.layer.circles') },
       ],
     },
     {

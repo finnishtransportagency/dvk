@@ -8,6 +8,7 @@ import {
   AlueAPIModel,
   fetchVATUByApi,
   fetchVATUByFairwayClass,
+  KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
@@ -467,6 +468,22 @@ async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
   }
 }
 
+async function addTurningCircleFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const circles = await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat');
+  log.debug('circles: %d', circles.length);
+  for (const circle of circles) {
+    features.push({
+      type: 'Feature',
+      id: circle.kaantoympyraID,
+      geometry: circle.geometria as Geometry,
+      properties: {
+        featureType: 'circle',
+        diameter: circle.halkaisija,
+      },
+    });
+  }
+}
+
 function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined) {
   if (queryString) {
     const key = (queryString.type?.join(',') || '') + (queryString.vaylaluokka ? queryString.vaylaluokka.join(',') : '');
@@ -520,6 +537,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addWeatherObservations(features);
   } else if (type === 'buoy') {
     await addBuoys(features);
+  } else if (type === 'circle') {
+    await addTurningCircleFeatures(features);
   } else {
     return false;
   }

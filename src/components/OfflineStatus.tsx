@@ -39,6 +39,7 @@ const OfflineStatus: React.FC = () => {
   const bgLayerQuay = useFeatureData('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
+  const circleLayer = useFeatureData('circle');
 
   const allData = [
     fairwayCardList,
@@ -68,6 +69,7 @@ const OfflineStatus: React.FC = () => {
     bgLayerQuay,
     vtsLineLayer,
     vtsPointLayer,
+    circleLayer,
   ];
 
   const statusOffline = !navigator.onLine || allData.every((data) => data.isPaused);

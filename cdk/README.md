@@ -51,8 +51,9 @@ export AWS_PROFILE=your_aws_profile
 npm run login
 . ./bin/setenv.sh myenv
 npm run deploy:backend:hotswap
-// optional since only backend stack is mandatory for local development
-npm run deploy:frontend
+./bin/bastion.sh
 npm run setup
 npm run datasync
+// optional since only backend stack is mandatory for local development
+npm run deploy:frontend
 ```

@@ -1,7 +1,24 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda';
-import { Area, Boardline, Fairway, FairwayCard, NavigationLine, QueryFairwayCardArgs, RestrictionArea } from '../../../../graphql/generated';
+import {
+  Area,
+  Boardline,
+  Fairway,
+  FairwayCard,
+  NavigationLine,
+  QueryFairwayCardArgs,
+  RestrictionArea,
+  TurningCircle,
+} from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { AlueAPIModel, fetchVATUByFairwayId, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel, VaylaAPIModel } from './vatu';
+import {
+  AlueAPIModel,
+  fetchVATUByFairwayId,
+  KaantoympyraAPIModel,
+  NavigointiLinjaAPIModel,
+  RajoitusAlueAPIModel,
+  TaululinjaAPIModel,
+  VaylaAPIModel,
+} from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
@@ -246,6 +263,37 @@ async function getBoardLineMap(fairwayIds: number[]) {
   return lineMap;
 }
 
+function mapTurningCircles(circles: KaantoympyraAPIModel[]): TurningCircle[] {
+  return circles.map((circle) => {
+    const turningCircle: TurningCircle = {
+      id: circle.kaantoympyraID,
+      geometry: circle.geometria,
+      diameter: circle.halkaisija,
+    };
+    turningCircle.fairways = circle.vayla?.map((apiFairway) => {
+      return {
+        fairwayId: apiFairway.jnro,
+      };
+    });
+    return turningCircle;
+  });
+}
+
+async function getCircleMap(fairwayIds: number[]) {
+  const circles = await fetchVATUByFairwayId<KaantoympyraAPIModel>(fairwayIds, 'kaantoympyrat');
+  log.debug('circles: %d', circles.length);
+  const circleMap = new Map<number, KaantoympyraAPIModel[]>();
+  for (const circle of circles) {
+    for (const circleFairway of circle.vayla || []) {
+      if (!circleMap.has(circleFairway.jnro)) {
+        circleMap.set(circleFairway.jnro, []);
+      }
+      circleMap.get(circleFairway.jnro)?.push(circle);
+    }
+  }
+  return circleMap;
+}
+
 function getKey(fairwayIds: number[]) {
   return 'fairways:' + fairwayIds.join(':');
 }
@@ -271,6 +319,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
       const areaMap = await getAreaMap(fairwayIds);
       const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
       const boardLineMap = await getBoardLineMap(fairwayIds);
+      const circleMap = await getCircleMap(fairwayIds);
       const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
       const response = fairways.map((apiFairway) => {
         const fairway = fairwayMap.get(apiFairway.jnro);
@@ -278,10 +327,11 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
         return {
           ...mapAPIModelToFairway(apiFairway),
           ...fairway,
-          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) || []),
-          areas: mapAreas(areaMap.get(apiFairway.jnro) || []),
-          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) || []),
-          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) || []),
+          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) ?? []),
+          areas: mapAreas(areaMap.get(apiFairway.jnro) ?? []),
+          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) ?? []),
+          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) ?? []),
+          turningCircles: mapTurningCircles(circleMap.get(apiFairway.jnro) ?? []),
         };
       });
       await cacheResponse(key, response);
