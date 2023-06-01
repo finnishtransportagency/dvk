@@ -21,7 +21,7 @@ import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { getDepthStyle } from './layerStyles/depthStyles';
+import { getDepthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
@@ -29,11 +29,13 @@ import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
 import { getMareographStyle } from './layerStyles/mareographStyles';
 import { getObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
+import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
+import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -330,6 +332,7 @@ function addIceLayer(map: Map) {
         url: tileUrl,
         params: { layers: 'fmi:ice:icechart_iceareas' },
         transition: 0,
+        crossOrigin: 'Anonymous',
       }),
       zIndex: 101,
       preload: 10,
@@ -338,9 +341,65 @@ function addIceLayer(map: Map) {
   );
 }
 
+function getTileUrl(service: 'wfs' | 'wms') {
+  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
+  const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
+  let tileUrl: string;
+  if (cloudFrontUrl) {
+    tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
+  } else if (traficomMapApiUrl) {
+    tileUrl = `https://${traficomMapApiUrl}/inspirepalvelu/rajoitettu/${service}`;
+  } else {
+    tileUrl = `/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
+  }
+  return tileUrl;
+}
+
+function addDepthContourLayer(map: Map) {
+  const vectorSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+      return (
+        `${getTileUrl('wfs')}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        extent.join(',') +
+        `,urn:ogc:def:crs:${MAP.EPSG}`
+      );
+    },
+    strategy: bboxStrategy,
+  });
+  const layer = new VectorLayer({
+    properties: { id: 'depthcontour' },
+    source: vectorSource,
+    style: getDepthContourStyle,
+    maxResolution: 7,
+    renderBuffer: 1,
+    zIndex: 103,
+  });
+  map.addLayer(layer);
+}
+
+function addDepthAreaLayer(map: Map) {
+  map.addLayer(
+    new TileLayer({
+      properties: { id: 'deptharea' },
+      source: new TileWMS({
+        url: getTileUrl('wms'),
+        params: { layers: 'DepthArea_A' },
+        transition: 0,
+        crossOrigin: 'Anonymous',
+      }),
+      maxResolution: 10,
+      zIndex: 102,
+      preload: 10,
+    })
+  );
+}
+
 export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
+  addDepthContourLayer(map);
+  addDepthAreaLayer(map);
   // Kartan nimistö
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
@@ -383,6 +442,7 @@ export function addAPILayers(map: Map) {
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 305);
 
+  addFeatureVectorLayer(map, 'soundingpoint', 7, 1, getSoundingPointStyle, undefined, 1, false, 305);
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 305);
 
@@ -419,6 +479,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
+  addFeatureVectorLayer(map, 'fairwaywidth', 30, 20, getFairwayWidthStyle, undefined, 1, true, 314);
 }
 
 export function unsetSelectedFairwayCard() {

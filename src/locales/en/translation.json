@@ -48,6 +48,10 @@
           "vtspoint": "VTS reporting points",
           "general": "General",
           "name": "Map names",
+          "depthinfo": "Depth information",
+          "soundingpoint": "Numbers",
+          "depthcontour": "Contours",
+          "deptharea": "Areas",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -64,7 +68,13 @@
             "openice": "Open ice",
             "closeice": "Close ice",
             "verycloseice": "Very close or compact ice",
-            "consolidatedice": "Consolidated ice"
+            "consolidatedice": "Consolidated ice",
+            "depth1": "Depth below 10m",
+            "depth2": "Depth 10 - 20m",
+            "depth3": "Depth over 20m",
+            "depth4": "Depth 0 - 3m",
+            "depth5": "Depth 3 - 6m",
+            "depth6": "Depth over 10m"
           }
         },
         "mapDetails": {
@@ -289,6 +299,7 @@
       "length": "Length {{val}}",
       "direction": "True bearing {{val, number}}",
       "fairways": "Navigation line is part of the fairway card",
+      "width": "[en] Väyläleveys valitussa kohdassa",
       "extra": "Additional information"
     },
     "equipment": {

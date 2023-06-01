@@ -48,6 +48,10 @@
           "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "name": "Kartnamn",
+          "depthinfo": "Djup information",
+          "soundingpoint": "Nummers",
+          "depthcontour": "Kurvor",
+          "deptharea": "Zoner",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -64,7 +68,13 @@
             "openice": "Spridd drivis",
             "closeice": "Tät drivis",
             "verycloseice": "Mycket tät / kompakt drivis",
-            "consolidatedice": "Sammanfrusen drivis"
+            "consolidatedice": "Sammanfrusen drivis",
+            "depth1": "Djup under 10m",
+            "depth2": "Djup 10 - 20m",
+            "depth3": "Djup över 20m",
+            "depth4": "Djup 0 - 3m",
+            "depth5": "Djup 3 - 6m",
+            "depth6": "Djup över 10m"
           }
         },
         "mapDetails": {
@@ -289,6 +299,7 @@
       "length": "Längd {{val}}",
       "direction": "Rättvisande kurs {{val, number}}",
       "fairways": "Navigationslinje är en del av farledskortet",
+      "width": "[sv] Väyläleveys valitussa kohdassa",
       "extra": "Tilläggsuppgift"
     },
     "equipment": {

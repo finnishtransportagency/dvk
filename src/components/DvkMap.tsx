@@ -178,7 +178,7 @@ class DvkMap {
     this.olMap.addLayer(bgFinlandLayer);
 
     const bgMmlmeriLayer = new VectorImageLayer({
-      properties: { id: 'mml-meri' },
+      properties: { id: 'mml_meri' },
       source: new VectorSource({
         features: [],
         overlaps: false,
@@ -189,7 +189,7 @@ class DvkMap {
     this.olMap.addLayer(bgMmlmeriLayer);
 
     const bgMmljarviLayer = new VectorImageLayer({
-      properties: { id: 'mml-jarvi' },
+      properties: { id: 'mml_jarvi' },
       source: new VectorSource({
         features: [],
         overlaps: false,
@@ -211,14 +211,15 @@ class DvkMap {
     this.olMap.addLayer(bgBalticseaLayer);
 
     const bgMmllaituritLayer = new VectorImageLayer({
-      properties: { id: 'mml-laiturit' },
+      properties: { id: 'mml_laiturit' },
       source: new VectorSource({
         features: [],
         overlaps: false,
       }),
       maxResolution: 4,
-      zIndex: 5,
+      zIndex: 105,
       imageRatio: 3,
+      visible: true,
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
@@ -288,7 +289,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const bgFiLayer = this.getBackgroundLayer('finland') as VectorLayer<VectorSource>;
+    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<VectorSource>;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -297,7 +298,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmeriLayer = this.getBackgroundLayer('mml-meri') as VectorLayer<VectorSource>;
+    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource>;
     bgMmlmeriLayer.setStyle((feature: FeatureLike, resolution: number) => {
       if (resolution < 32) {
         return new Style({
@@ -318,7 +319,7 @@ class DvkMap {
       }
     });
 
-    const bgMmljarviLayer = this.getBackgroundLayer('mml-jarvi') as VectorLayer<VectorSource>;
+    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<VectorSource>;
     bgMmljarviLayer.setStyle((feature: FeatureLike, resolution: number) => {
       if (resolution < 32) {
         return new Style({
@@ -339,7 +340,7 @@ class DvkMap {
       }
     });
 
-    const bgBsLayer = this.getBackgroundLayer('balticsea') as VectorLayer<VectorSource>;
+    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -348,7 +349,7 @@ class DvkMap {
       })
     );
 
-    const bgMmllaituritLayer = this.getBackgroundLayer('mml-laiturit') as VectorLayer<VectorSource>;
+    const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer<VectorSource>;
     bgMmllaituritLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -388,10 +389,8 @@ class DvkMap {
             (layer as Layer).getSource()?.refresh();
           }
           layer.setVisible(isOffline ? false : true);
-        } else if (layer.get('id') === 'mml-meri' || layer.get('id') === 'mml-jarvi') {
+        } else if (layer.get('id') === 'mml_meri' || layer.get('id') === 'mml_jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
-        } else if (layer.get('id') === 'mml-laiturit') {
-          layer.setVisible(isOffline ? true : false);
         }
       });
     }
@@ -492,20 +491,11 @@ class DvkMap {
     return this.searchbarControl;
   };
 
-  public getFeatureLayer(layerId: FeatureLayerId) {
+  public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
 
-  public getVectorSource(layerId: FeatureLayerId) {
-    const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
-    return layer.getSource() as VectorSource;
-  }
-
-  public getBackgroundLayer(layerId: BackgroundLayerId) {
-    return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
-  }
-
-  public getBackgroundSource(layerId: BackgroundLayerId) {
+  public getVectorSource(layerId: FeatureLayerId | BackgroundLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
   }

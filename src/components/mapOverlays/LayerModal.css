@@ -135,6 +135,64 @@ ion-modal#layerModalContainer::part(content) {
 .en #layerModalContainer ion-item .depth12::before {
   content: '10.2';
 }
+
+#layerModalContainer ion-item .soundingpoint {
+  width: 30px;
+  height: 12px;
+  text-align: right;
+}
+
+#layerModalContainer ion-item .soundingpoint::before {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  content: '28';
+  color: var(--ion-color-layer-soundingpoint-text);
+  vertical-align: text-top;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+
+#layerModalContainer ion-item .depthcontour {
+  border-top: 2px solid var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-grid.legend.depthcontour .def.line1 {
+  border-top: 2px dotted var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-grid.legend.depthcontour .def.line2 {
+  border-top: 2px dashed var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-grid.legend.depthcontour .def.line3 {
+  border-top: 2px solid var(--ion-color-layer-depthcontour);
+  height: 1px;
+}
+
+#layerModalContainer ion-item .deptharea {
+  background: #D3EAE7;
+  border: 1px solid #757575;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area1 {
+  background: #91CAF3;
+  border: 1px solid #757575;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area2 {
+  background: #B5DAF7;
+  border: 1px solid #757575;
+}
+
+#layerModalContainer ion-grid.legend.deptharea .def.area3 {
+  background: #D3EAE7;
+  border: 1px solid #757575;
+}
+
 #layerModalContainer ion-item .specialarea {
   width: 15px;
   height: 15px;

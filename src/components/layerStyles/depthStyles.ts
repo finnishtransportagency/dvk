@@ -56,3 +56,55 @@ export function getDepthStyle(feature: FeatureLike) {
     }),
   ];
 }
+
+const soundingPointStyle = new Style({
+  text: new Text({
+    font: 'bold 12px "Exo2"',
+    placement: 'point',
+    text: '',
+    fill: new Fill({
+      color: '#000000',
+    }),
+    stroke: new Stroke({
+      width: 1,
+      color: '#FFFFFF',
+    }),
+  }),
+});
+
+export function getSoundingPointStyle(feature: FeatureLike) {
+  soundingPointStyle.getText().setText(String(feature.getProperties().DEPTH));
+  return soundingPointStyle;
+}
+
+const depthContourStyle1 = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+    lineDash: [2, 2],
+  }),
+});
+const depthContourStyle2 = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+    lineDash: [5, 5],
+  }),
+});
+const depthContourStyle3 = new Style({
+  stroke: new Stroke({
+    color: '#3B6683',
+    width: 1,
+  }),
+});
+
+export function getDepthContourStyle(feature: FeatureLike) {
+  const level = feature.getProperties().VALDCO as number;
+  if (level === 3) {
+    return depthContourStyle1;
+  } else if (level === 6) {
+    return depthContourStyle2;
+  } else {
+    return depthContourStyle3;
+  }
+}
