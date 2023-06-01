@@ -1,12 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonItem, IonLabel, IonTextarea } from '@ionic/react';
+import { IonLabel, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { IonTextareaCustomEvent } from '@ionic/core/dist/types/components';
-
-interface TextareaChangeEventDetail {
-  value?: string | null;
-}
 
 interface InputProps {
   label: string;
