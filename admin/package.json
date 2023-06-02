@@ -4,9 +4,9 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@ionic/core": "^7.0.9",
-    "@ionic/react": "^7.0.9",
-    "@ionic/react-router": "^7.0.9",
+    "@ionic/core": "^7.0.10",
+    "@ionic/react": "^7.0.10",
+    "@ionic/react-router": "^7.0.10",
     "@tanstack/react-query": "^4.29.7",
     "@tanstack/react-query-persist-client": "^4.29.7",
     "@testing-library/jest-dom": "^5.16.5",
