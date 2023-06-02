@@ -435,12 +435,12 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
   // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
   addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
-  // Laiturit
-  addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 303);
-  // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 304);
   // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 305);
+  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 303);
+  // Laiturit
+  addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 304);
+  // Satamat
+  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
 
   addFeatureVectorLayer(map, 'soundingpoint', 7, 1, getSoundingPointStyle, undefined, 1, false, 305);
   // Haraussyvyydet
