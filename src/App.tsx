@@ -19,7 +19,6 @@ import {
   useArea3456Layer,
   useDepth12Layer,
   useSpeedLimitLayer,
-  useSpecialAreaLayer,
   usePilotLayer,
   useHarborLayer,
   useSafetyEquipmentLayer,
@@ -38,6 +37,9 @@ import {
   useVtsLineLayer,
   useVtsPointLayer,
   useCircleLayer,
+  useSoundingPointLayer,
+  useSpecialArea2Layer,
+  useSpecialArea15Layer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -104,7 +106,8 @@ const DvkIonApp: React.FC = () => {
   const fairwayCardList = useFairwayCardList();
   const line12Layer = useLine12Layer();
   const area12Layer = useArea12Layer();
-  const specialAreaLayer = useSpecialAreaLayer();
+  const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
@@ -138,7 +141,8 @@ const DvkIonApp: React.FC = () => {
       fairwayCardList,
       line12Layer,
       area12Layer,
-      specialAreaLayer,
+      specialArea2Layer,
+      specialArea15Layer,
       pilotLayer,
       harborLayer,
       boardLine12Layer,
@@ -164,7 +168,6 @@ const DvkIonApp: React.FC = () => {
     fairwayCardList,
     line12Layer,
     area12Layer,
-    specialAreaLayer,
     pilotLayer,
     harborLayer,
     boardLine12Layer,
@@ -172,6 +175,8 @@ const DvkIonApp: React.FC = () => {
     bgMmlmeriLayer,
     bgMmljarviLayer,
     circleLayer,
+    specialArea2Layer,
+    specialArea15Layer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);

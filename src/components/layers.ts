@@ -464,8 +464,14 @@ export function addAPILayers(map: Map) {
 
   // Nopeusrajoitus
   addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
-  // Ankkurointialue, Kohtaamis- ja ohittamiskieltoalue
-  addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
+  // Ankkurointialue
+  addFeatureVectorLayer(map, 'specialarea2', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
+  // Kohtaamis- ja ohittamiskieltoalue
+  addFeatureVectorLayer(map, 'specialarea15', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
+  // Laiturit
+  addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 303);
+  // Satamat
+  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 304);
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 303);
   addFeatureVectorLayer(map, 'circle', 30, 2, (feature, resolution) => getCircleStyle(feature, resolution), undefined, 1, false, 303);
@@ -521,7 +527,8 @@ export function unsetSelectedFairwayCard() {
   const quaySource = dvkMap.getVectorSource('quay');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const depthSource = dvkMap.getVectorSource('depth12');
-  const specialAreaSource = dvkMap.getVectorSource('specialarea');
+  const specialArea2Source = dvkMap.getVectorSource('specialarea2');
+  const specialArea15Source = dvkMap.getVectorSource('specialarea15');
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const harborSource = dvkMap.getVectorSource('harbor');
   const circleSource = dvkMap.getVectorSource('circle');
@@ -543,8 +550,12 @@ export function unsetSelectedFairwayCard() {
       case 'area3456':
         area3456Source.addFeature(feature);
         break;
-      case 'specialarea':
-        specialAreaSource.addFeature(feature);
+      case 'specialarea2':
+        specialArea2Source.addFeature(feature);
+        feature.unset('n2000HeightSystem');
+        break;
+      case 'specialarea15':
+        specialArea15Source.addFeature(feature);
         feature.unset('n2000HeightSystem');
         break;
       case 'boardline12':
@@ -626,7 +637,8 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const quaySource = dvkMap.getVectorSource('quay');
     const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
     const depthSource = dvkMap.getVectorSource('depth12');
-    const specialAreaSource = dvkMap.getVectorSource('specialarea');
+    const specialArea2Source = dvkMap.getVectorSource('specialarea2');
+    const specialArea15Source = dvkMap.getVectorSource('specialarea15');
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
     const harborSource = dvkMap.getVectorSource('harbor');
     const circleSource = dvkMap.getVectorSource('circle');
@@ -664,9 +676,17 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
           }
         }
         if (!feature) {
-          feature = specialAreaSource.getFeatureById(area.id);
+          feature = specialArea2Source.getFeatureById(area.id);
           if (feature) {
-            specialAreaSource.removeFeature(feature);
+            specialArea2Source.removeFeature(feature);
+            fairwayFeatures.push(feature);
+            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
+          }
+        }
+        if (!feature) {
+          feature = specialArea15Source.getFeatureById(area.id);
+          if (feature) {
+            specialArea15Source.removeFeature(feature);
             fairwayFeatures.push(feature);
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
@@ -728,7 +748,7 @@ export function setSelectedFairwayArea(id?: number | string) {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', id && ['area', 'specialarea'].includes(f.get('featureType')) && f.getId() === id);
+    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
 }
