@@ -56,13 +56,13 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
     description = t(`modal.publish-${saveType}-description`);
   }
   const closeModal = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       setConfirmationType('');
     }, 150);
   };
   const buttonAction = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
     action();
   };
 
@@ -79,8 +79,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
             onClick={() => closeModal()}
             fill="clear"
             className="closeButton"
-            title={t('general.close') || ''}
-            aria-label={t('general.close') || ''}
+            title={t('general.close') ?? ''}
+            aria-label={t('general.close') ?? ''}
           >
             <CloseIcon />
           </IonButton>

@@ -18,7 +18,7 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, header, 
   const modal = useRef<HTMLIonModalElement>(null);
 
   const closeModal = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       closeAction();
     }, 150);
@@ -37,8 +37,8 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, header, 
             onClick={() => closeModal()}
             fill="clear"
             className="closeButton"
-            title={t('general.close') || ''}
-            aria-label={t('general.close') || ''}
+            title={t('general.close') ?? ''}
+            aria-label={t('general.close') ?? ''}
           >
             <CloseIcon />
           </IonButton>
