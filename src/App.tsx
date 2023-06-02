@@ -289,7 +289,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister, buster: process.env.REACT_APP_VERSION }}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>
