@@ -95,7 +95,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         lineText: {
-          ...(state.lineText || { fi: '', sv: '', en: '' }),
+          ...(state.lineText ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -105,7 +105,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         speedLimit: {
-          ...(state.speedLimit || { fi: '', sv: '', en: '' }),
+          ...(state.speedLimit ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -115,7 +115,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         designSpeed: {
-          ...(state.designSpeed || { fi: '', sv: '', en: '' }),
+          ...(state.designSpeed ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -125,7 +125,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         anchorage: {
-          ...(state.anchorage || { fi: '', sv: '', en: '' }),
+          ...(state.anchorage ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -135,7 +135,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         navigationCondition: {
-          ...(state.navigationCondition || { fi: '', sv: '', en: '' }),
+          ...(state.navigationCondition ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -145,7 +145,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         iceCondition: {
-          ...(state.iceCondition || { fi: '', sv: '', en: '' }),
+          ...(state.iceCondition ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -155,7 +155,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         windRecommendation: {
-          ...(state.windRecommendation || { fi: '', sv: '', en: '' }),
+          ...(state.windRecommendation ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -165,7 +165,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         vesselRecommendation: {
-          ...(state.vesselRecommendation || { fi: '', sv: '', en: '' }),
+          ...(state.vesselRecommendation ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -175,7 +175,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         visibility: {
-          ...(state.visibility || { fi: '', sv: '', en: '' }),
+          ...(state.visibility ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -185,7 +185,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         windGauge: {
-          ...(state.windGauge || { fi: '', sv: '', en: '' }),
+          ...(state.windGauge ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -195,7 +195,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         seaLevel: {
-          ...(state.seaLevel || { fi: '', sv: '', en: '' }),
+          ...(state.seaLevel ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -244,7 +244,7 @@ export const fairwayCardReducer = (
           pilot: {
             ...state.trafficService?.pilot,
             extraInfo: {
-              ...(state.trafficService?.pilot?.extraInfo || { fi: '', sv: '', en: '' }),
+              ...(state.trafficService?.pilot?.extraInfo ?? { fi: '', sv: '', en: '' }),
               [actionLang as string]: value as string,
             },
           },
@@ -314,7 +314,7 @@ export const fairwayCardReducer = (
               ? {
                   ...vtsItem,
                   name: {
-                    ...(vtsItem?.name || { fi: '', sv: '', en: '' }),
+                    ...(vtsItem?.name ?? { fi: '', sv: '', en: '' }),
                     [actionLang as string]: value as string,
                   },
                 }
@@ -332,7 +332,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   email: (value as string).split(',').map((item) => item.trim()),
                 }
               : vtsItem
@@ -349,7 +349,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   phoneNumber: ((value as string) || '').trim(),
                 }
               : vtsItem
@@ -368,7 +368,7 @@ export const fairwayCardReducer = (
               i === actionOuterTarget
                 ? {
                     ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                     vhf: vtsItem?.vhf?.concat([{ channel: '', name: { fi: '', sv: '', en: '' } }]),
                   }
                 : vtsItem
@@ -384,11 +384,11 @@ export const fairwayCardReducer = (
               if (i === actionOuterTarget) {
                 return {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
                 };
               } else {
-                return { ...vtsItem, name: vtsItem?.name || { fi: '', sv: '', en: '' } };
+                return { ...vtsItem, name: vtsItem?.name ?? { fi: '', sv: '', en: '' } };
               }
             }),
           },
@@ -407,15 +407,15 @@ export const fairwayCardReducer = (
             idx === actionOuterTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   vhf: vtsItem?.vhf?.map((vhfItem, j) =>
                     j === actionTarget
                       ? {
                           name: {
-                            ...(vhfItem?.name || { fi: '', sv: '', en: '' }),
+                            ...(vhfItem?.name ?? { fi: '', sv: '', en: '' }),
                             [actionLang as string]: value as string,
                           },
-                          channel: vhfItem?.channel?.toString() || '',
+                          channel: vhfItem?.channel?.toString() ?? '',
                         }
                       : vhfItem
                   ),
@@ -435,11 +435,11 @@ export const fairwayCardReducer = (
             idx === actionOuterTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   vhf: vtsItem?.vhf?.map((vhfItem, j) =>
                     j === actionTarget
                       ? {
-                          name: vhfItem?.name || { fi: '', sv: '', en: '' },
+                          name: vhfItem?.name ?? { fi: '', sv: '', en: '' },
                           channel: value as string,
                         }
                       : vhfItem
@@ -487,7 +487,7 @@ export const fairwayCardReducer = (
               ? {
                   ...tugItem,
                   name: {
-                    ...(tugItem?.name || { fi: '', sv: '', en: '' }),
+                    ...(tugItem?.name ?? { fi: '', sv: '', en: '' }),
                     [actionLang as string]: value as string,
                   },
                 }
@@ -505,7 +505,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   email: ((value as string) || '').trim(),
                 }
               : tugItem
@@ -522,7 +522,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   phoneNumber: (value as string).split(',').map((item) => item.trim()),
                 }
               : tugItem
@@ -539,7 +539,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   fax: ((value as string) || '').trim(),
                 }
               : tugItem
