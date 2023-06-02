@@ -52,8 +52,8 @@ npm run login
 . ./bin/setenv.sh myenv
 npm run deploy:backend:hotswap
 ./bin/bastion.sh
-npm run setup
-npm run datasync
 // optional since only backend stack is mandatory for local development
 npm run deploy:frontend
+npm run setup
+npm run datasync
 ```
