@@ -44,7 +44,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'vtsline',
     'line',
     'area',
-    'specialarea',
+    'specialarea2',
+    'specialarea15',
   ];
   if (container) {
     container.addEventListener('pointercancel', (e) => {
@@ -268,7 +269,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('quay'),
       dvkMap.getFeatureLayer('area12'),
       dvkMap.getFeatureLayer('area3456'),
-      dvkMap.getFeatureLayer('specialarea'),
+      dvkMap.getFeatureLayer('specialarea2'),
+      dvkMap.getFeatureLayer('specialarea15'),
       dvkMap.getFeatureLayer('selectedfairwaycard'),
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),

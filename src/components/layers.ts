@@ -238,7 +238,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     }
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
-  } else if (ds === 'specialarea') {
+  } else if (ds === 'specialarea2' || ds === 'specialarea15') {
     if (feature.get('hoverStyle')) {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, true);
     } else {
