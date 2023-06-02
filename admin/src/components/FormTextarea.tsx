@@ -20,7 +20,9 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const focusInput = () => {
-    inputRef.current?.setFocus();
+    inputRef.current?.setFocus().catch((err) => {
+      console.error(err.message);
+    });
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
@@ -30,7 +32,12 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
     if (error) {
       setIsValid(false);
     } else {
-      inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(textarea.checkValidity()) : null));
+      inputRef.current
+        ?.getInputElement()
+        .then((textarea) => (textarea ? setIsValid(textarea.checkValidity()) : null))
+        .catch((err) => {
+          console.error(err.message);
+        });
     }
     setIsTouched(true);
   };
@@ -47,7 +54,15 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
 
   useEffect(() => {
     if (isTouched) {
-      inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
+      inputRef.current
+        ?.getInputElement()
+        .then((textarea) => {
+          if (error) setIsValid(false);
+          if (textarea) setIsValid(textarea.checkValidity());
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
       setIsTouched(false);
     } else if (!required && !val.trim() && !error) {
       setIsValid(true);
@@ -71,7 +86,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
         className={'ion-align-self-center formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={helperText || ''}
+        helperText={helperText ?? ''}
         errorText={getErrorText()}
         labelPlacement="fixed"
         counter={true}

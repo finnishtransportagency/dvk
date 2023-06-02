@@ -26,7 +26,10 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
-    inputRef.current?.getInputElement().then((textinput) => textinput.blur());
+    inputRef.current
+      ?.getInputElement()
+      .then((textinput) => textinput.blur())
+      .catch((err) => console.error(err));
   };
   const openDropdown = () => {
     setSearchQuery('');
@@ -74,9 +77,9 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
     <div className="dropdownWrapper">
       <IonInput
         className="searchBar"
-        placeholder={t('search-placeholder') || ''}
-        title={t('search-title') || ''}
-        value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] || selectedItem?.name.fi || ''}
+        placeholder={t('search-placeholder') ?? ''}
+        title={t('search-title') ?? ''}
+        value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
         onIonFocus={openDropdown}
         onIonInput={(e) => changeAction(e.detail.value)}
         onIonBlur={blurAction}
@@ -87,8 +90,8 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
       <button
         type="button"
         className="input-clear-icon"
-        title={t('search-clear-title') || ''}
-        aria-label={t('search-clear-title') || ''}
+        title={t('search-clear-title') ?? ''}
+        aria-label={t('search-clear-title') ?? ''}
         onClick={clearInput}
       ></button>
       <SearchDropdown

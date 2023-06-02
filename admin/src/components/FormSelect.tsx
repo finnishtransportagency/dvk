@@ -50,8 +50,8 @@ const FormSelect: React.FC<SelectProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
   const sortedOptions = options?.sort((a, b) => {
-    const nameA = (typeof a.name === 'string' ? a.name : a.name && a.name[lang]) || '';
-    const nameB = (typeof b.name === 'string' ? b.name : b.name && b.name[lang]) || '';
+    const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
+    const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
     return nameA.localeCompare(nameB);
   });
 
@@ -97,7 +97,7 @@ const FormSelect: React.FC<SelectProps> = ({
   const getErrorText = () => {
     if (error) return error;
     if (!isValid) return t('required-field');
-    return;
+    return '';
   };
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const FormSelect: React.FC<SelectProps> = ({
           <IonItem className="selectInput">
             <IonSelect
               ref={selectRef}
-              placeholder={t('choose') || ''}
+              placeholder={t('choose') ?? ''}
               interface="popover"
               onIonChange={(ev) => handleChange(ev)}
               onIonBlur={() => checkValidity()}
@@ -135,18 +135,17 @@ const FormSelect: React.FC<SelectProps> = ({
               fill="outline"
               labelPlacement="stacked"
             >
-              {sortedOptions &&
-                sortedOptions.map((item) => {
-                  const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                  const coordinates = (item as PilotPlace).geometry?.coordinates;
-                  const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
-                  return (
-                    <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
-                      {showId ? '[' + item.id + '] ' : ''}
-                      {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
-                    </IonSelectOption>
-                  );
-                })}
+              {sortedOptions?.map((item) => {
+                const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+                const coordinates = (item as PilotPlace).geometry?.coordinates;
+                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
+                return (
+                  <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
+                    {showId ? '[' + item.id + '] ' : ''}
+                    {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
+                  </IonSelectOption>
+                );
+              })}
             </IonSelect>
           </IonItem>
           {getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}

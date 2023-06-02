@@ -27,7 +27,7 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, s
           {items.map((item, idx) => {
             return (
               <IonItem key={item.id} className={'item' + checkSelected(idx + 1)} button onClick={() => setSelectedItem(item)}>
-                <IonLabel>{item.name[lang] || item.name.fi}</IonLabel>
+                <IonLabel>{item.name[lang] ?? item.name.fi}</IonLabel>
               </IonItem>
             );
           })}
