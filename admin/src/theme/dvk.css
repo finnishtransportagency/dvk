@@ -286,6 +286,9 @@ ion-item.selectInput:has(.select-expanded) {
 .selectWrapper.invalid ion-item.selectInput {
   --background: var(--ion-color-danger);
 }
+.selectWrapper.invalid ion-item.selectInput:has(.select-expanded) {
+  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+}
 ion-item.selectInput.item-select-disabled {
   opacity: 0.5;
 }
@@ -332,6 +335,9 @@ ion-item.selectInput.ion-focused ion-select.has-value::part(text),
 ion-item.selectInput ion-select.select-expanded.has-value::part(text) {
   padding: 13px 0 11px;
 }
+ion-item.selectInput.ion-focused ion-select::part(icon) {
+  margin-top: 1px;
+}
 .selectWrapper ion-note.helper {
   display: block;
   color: var(--ion-color-medium);
@@ -343,7 +349,7 @@ ion-item.selectInput ion-select.select-expanded.has-value::part(text) {
   color: var(--ion-color-danger);
   font-size: 12px;
   line-height: 1rem;
-  background: url('./img/error_icon.svg') no-repeat 0 center;
+  background: url('./img/error_icon.svg') no-repeat 1px center;
   background-size: 14px;
   padding-left: 18px;
 }
@@ -436,7 +442,7 @@ ion-label.formLabel.disabled {
 }
 .formGrid .formInput.invalid .error-text {
   display: block;
-  background: url('./img/error_icon.svg') no-repeat 0 center;
+  background: url('./img/error_icon.svg') no-repeat 1px center;
   background-size: 14px;
   padding-left: 18px;
 }
@@ -548,6 +554,9 @@ ion-grid.optionBar ion-grid {
 }
 ion-grid.optionBar ion-grid ion-row {
   min-height: 43px;
+}
+ion-grid.optionBar .selectInput {
+  min-width: 200px;
 }
 ion-grid.optionBar em {
   display: block;
