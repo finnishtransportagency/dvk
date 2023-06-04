@@ -53,6 +53,8 @@
           "soundingpoint": "Nummers",
           "depthcontour": "Kurvor",
           "deptharea": "Zoner",
+          "specialarea2": "Ankringsområden",
+          "specialarea15": "Områden med mötes- och omkörningsförbud",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",

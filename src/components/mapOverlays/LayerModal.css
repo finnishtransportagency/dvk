@@ -193,11 +193,16 @@ ion-modal#layerModalContainer::part(content) {
   border: 1px solid #757575;
 }
 
-#layerModalContainer ion-item .specialarea {
-  width: 15px;
-  height: 15px;
-  border: 2px solid var(--ion-color-warning);
-  background: url('../../theme/img/erityisalue_tausta.svg') no-repeat center;
+#layerModalContainer ion-item .specialarea2 {
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/ankkurointialue.svg') no-repeat center;
+  background-size: cover;
+}
+#layerModalContainer ion-item .specialarea15 {
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/kohtaamiskielto_ikoni.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .pilot {

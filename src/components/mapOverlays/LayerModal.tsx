@@ -68,8 +68,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'specialarea',
       title: t('homePage.map.controls.layer.specialAreas'),
       childLayers: [
-        { id: 'specialarea2', title: 'specialarea2' },
-        { id: 'specialarea15', title: 'specialarea15' },
+        { id: 'specialarea2', title: t('homePage.map.controls.layer.specialarea2') },
+        { id: 'specialarea15', title: t('homePage.map.controls.layer.specialarea15') },
       ],
     },
     { id: 'depth12', title: t('homePage.map.controls.layer.depths') },
