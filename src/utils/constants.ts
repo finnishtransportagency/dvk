@@ -33,7 +33,6 @@ export type FeatureDataId =
   | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
-  | 'soundingpoint'
   | 'circle';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
@@ -73,7 +72,6 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
   { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
-  { id: 'soundingpoint', url: new URL(staticUrl + '/soundingpoint-20230516.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
@@ -155,7 +153,7 @@ export const MAP: MapType = {
     { id: 'vtsline' },
     { id: 'vtspoint' },
     { id: 'name' },
-    { id: 'soundingpoint' },
+    { id: 'soundingpoint', noOfflineSupport: true },
     { id: 'depthcontour', noOfflineSupport: true },
     { id: 'deptharea', noOfflineSupport: true },
     { id: 'circle' },

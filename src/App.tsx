@@ -37,7 +37,6 @@ import {
   DvkLayerState,
   useVtsLineLayer,
   useVtsPointLayer,
-  useSoundingPointLayer,
   useCircleLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
@@ -128,7 +127,6 @@ const DvkIonApp: React.FC = () => {
   useArea3456Layer();
   useBackgroundBalticseaLayer();
   useBackgroundMmllaituritLayer();
-  useSoundingPointLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);

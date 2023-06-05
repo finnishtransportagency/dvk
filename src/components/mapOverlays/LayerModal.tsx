@@ -58,7 +58,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'depths',
       title: t('homePage.map.controls.layer.depthinfo'),
       childLayers: [
-        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint') },
+        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint'), noOfflineSupport: true },
         { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour'), noOfflineSupport: true },
         { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea'), noOfflineSupport: true },
       ],
