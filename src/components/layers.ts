@@ -395,11 +395,35 @@ function addDepthAreaLayer(map: Map) {
   );
 }
 
+function addSoundingPointLayer(map: Map) {
+  const vectorSource = new VectorSource({
+    format: new GeoJSON(),
+    url: function (extent) {
+      return (
+        `${getTileUrl('wfs')}?request=getFeature&typename=Sounding_P&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
+        extent.join(',') +
+        `,urn:ogc:def:crs:${MAP.EPSG}`
+      );
+    },
+    strategy: bboxStrategy,
+  });
+  const layer = new VectorLayer({
+    properties: { id: 'soundingpoint' },
+    source: vectorSource,
+    style: getSoundingPointStyle,
+    maxResolution: 7,
+    renderBuffer: 1,
+    zIndex: 305,
+  });
+  map.addLayer(layer);
+}
+
 export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
   addDepthContourLayer(map);
   addDepthAreaLayer(map);
+  addSoundingPointLayer(map);
   // Kartan nimistö
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
@@ -443,8 +467,6 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 304);
   // Satamat
   addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
-
-  addFeatureVectorLayer(map, 'soundingpoint', 7, 1, getSoundingPointStyle, undefined, 1, false, 305);
 
   // Turvalaitteet
   addFeatureVectorLayer(
