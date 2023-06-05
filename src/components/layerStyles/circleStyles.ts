@@ -9,7 +9,7 @@ const lineDashStyle = new Style({
   stroke: new Stroke({
     color: '#000000',
     width: 1,
-    lineDash: [5, 5],
+    lineDash: [10, 5],
   }),
 });
 const textStyle = new Style({
@@ -28,9 +28,10 @@ const textStyle = new Style({
       color: '#000000',
     }),
     stroke: new Stroke({
-      width: 1,
+      width: 3,
       color: '#FFFFFF',
     }),
+    rotateWithView: true,
   }),
 });
 
@@ -65,7 +66,7 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
     stroke: new Stroke({
       color: '#000000',
       width: 1,
-      lineDash: [5, 5],
+      lineDash: [10, 5],
     }),
   });
   if (!startStyle) {
