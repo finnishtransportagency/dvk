@@ -40,17 +40,17 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'merchant',
       title: t('homePage.map.controls.layer.class1'),
       childLayers: [
-        { id: 'area12', title: t('homePage.map.controls.layer.fairwayAreas') },
         { id: 'line12', title: t('homePage.map.controls.layer.lines') },
         { id: 'boardline12', title: t('homePage.map.controls.layer.boardLines') },
+        { id: 'area12', title: t('homePage.map.controls.layer.fairwayAreas') },
       ],
     },
     {
       id: 'othertraffic',
       title: t('homePage.map.controls.layer.class2'),
       childLayers: [
-        { id: 'area3456', title: t('homePage.map.controls.layer.fairwayAreas') },
         { id: 'line3456', title: t('homePage.map.controls.layer.lines') },
+        { id: 'area3456', title: t('homePage.map.controls.layer.fairwayAreas') },
       ],
     },
     {
@@ -81,8 +81,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'vts',
       title: t('homePage.map.controls.layer.vts'),
       childLayers: [
-        { id: 'vtsline', title: t('homePage.map.controls.layer.vtsline') },
         { id: 'vtspoint', title: t('homePage.map.controls.layer.vtspoint') },
+        { id: 'vtsline', title: t('homePage.map.controls.layer.vtsline') },
       ],
     },
     { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
