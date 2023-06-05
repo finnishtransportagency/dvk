@@ -35,6 +35,7 @@ const OfflineSupport: React.FC = () => {
   const bgLayerQuay = useFeatureData('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
+  const circleLayer = useFeatureData('circle');
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -64,6 +65,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerQuay.dataUpdatedAt,
     vtsLineLayer.dataUpdatedAt,
     vtsPointLayer.dataUpdatedAt,
+    circleLayer.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -93,6 +95,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
     vtsLineLayer.isError ? vtsLineLayer.errorUpdatedAt : 0,
     vtsPointLayer.isError ? vtsPointLayer.errorUpdatedAt : 0,
+    circleLayer.isError ? circleLayer.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);

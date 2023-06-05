@@ -55,6 +55,7 @@ async function main() {
     { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy') },
     { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline') },
     { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint') },
+    { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle') },
   ];
   for (const source of sources) {
     const response = await axios.get(source.url.toString(), {

@@ -237,6 +237,13 @@ ion-modal#layerModalContainer::part(content) {
   background: var(--ion-color-layer-ice);
 }
 
+#layerModalContainer ion-item .circle {
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/circle.svg') no-repeat center;
+  background-size: cover;
+}
+
 #layerModalContainer ion-checkbox {
   --size: 20px;
   --border-width: 1px;

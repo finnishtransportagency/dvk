@@ -37,6 +37,7 @@ import {
   DvkLayerState,
   useVtsLineLayer,
   useVtsPointLayer,
+  useCircleLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -110,6 +111,7 @@ const DvkIonApp: React.FC = () => {
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
@@ -143,6 +145,7 @@ const DvkIonApp: React.FC = () => {
       bgFinlandLayer,
       bgMmlmeriLayer,
       bgMmljarviLayer,
+      circleLayer,
     ];
 
     let percent = 0;
@@ -168,6 +171,7 @@ const DvkIonApp: React.FC = () => {
     bgFinlandLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
+    circleLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);

@@ -9,6 +9,7 @@ import {
   useArea12Layer,
   useArea3456Layer,
   useBoardLine12Layer,
+  useCircleLayer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
@@ -42,6 +43,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   const specialAreaLayer = useSpecialAreaLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
+  const circleLayer = useCircleLayer();
 
   const [initDone, setInitDone] = useState(false);
   const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
@@ -55,7 +57,8 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
       depth12Layer.ready &&
       specialAreaLayer.ready &&
       harborLayer.ready &&
-      boardLine12Layer.ready
+      boardLine12Layer.ready &&
+      circleLayer.ready
     ) {
       setInitDone(true);
     }
@@ -68,6 +71,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     specialAreaLayer.ready,
     harborLayer.ready,
     boardLine12Layer.ready,
+    circleLayer.ready,
   ]);
 
   useEffect(() => {

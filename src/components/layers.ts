@@ -36,6 +36,7 @@ import TileWMS from 'ol/source/TileWMS';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
+import { getCircleStyle } from './layerStyles/circleStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -251,6 +252,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'harbor') {
     return getHarborStyle(feature, resolution, 3);
+  } else if (ds === 'circle') {
+    return getCircleStyle(feature, resolution);
   } else {
     return undefined;
   }
@@ -461,6 +464,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'specialarea', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 303);
+  addFeatureVectorLayer(map, 'circle', 30, 2, (feature, resolution) => getCircleStyle(feature, resolution), undefined, 1, false, 303);
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 304);
   // Laiturit
@@ -516,6 +520,7 @@ export function unsetSelectedFairwayCard() {
   const specialAreaSource = dvkMap.getVectorSource('specialarea');
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const harborSource = dvkMap.getVectorSource('harbor');
+  const circleSource = dvkMap.getVectorSource('circle');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
@@ -543,6 +548,9 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'harbor':
         harborSource.addFeature(feature);
+        break;
+      case 'circle':
+        circleSource.addFeature(feature);
         break;
     }
   }
@@ -617,6 +625,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const specialAreaSource = dvkMap.getVectorSource('specialarea');
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
     const harborSource = dvkMap.getVectorSource('harbor');
+    const circleSource = dvkMap.getVectorSource('circle');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -663,6 +672,13 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         const feature = boardLine12Source.getFeatureById(line.id);
         if (feature) {
           boardLine12Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
+        }
+      }
+      for (const circle of fairway.turningCircles || []) {
+        const feature = circleSource.getFeatureById(circle.id);
+        if (feature) {
+          circleSource.removeFeature(feature);
           fairwayFeatures.push(feature);
         }
       }

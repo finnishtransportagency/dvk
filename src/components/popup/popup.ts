@@ -19,6 +19,7 @@ import { getVtsStyle } from '../layerStyles/vtsStyles';
 import { GeoJSON } from 'ol/format';
 import * as turf from '@turf/turf';
 import { Coordinate } from 'ol/coordinate';
+import { getCircleStyle } from '../layerStyles/circleStyles';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -252,6 +253,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getBuoyStyle(true);
     } else if (type === 'vtsline' || type === 'vtspoint') {
       return getVtsStyle(feature, true);
+    } else if (type === 'circle') {
+      return getCircleStyle(feature, resolution);
     } else {
       return undefined;
     }

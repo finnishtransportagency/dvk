@@ -54,6 +54,10 @@ export function useLine3456Layer() {
   return useDataLayer('line3456', 'line3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
 }
 
+export function useCircleLayer() {
+  return useDataLayer('circle', 'circle');
+}
+
 function useStaticDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,

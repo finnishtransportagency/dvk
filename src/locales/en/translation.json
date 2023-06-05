@@ -38,6 +38,7 @@
           "pilotPlaces": "Pilot boarding position",
           "marineWarnings": "Navigational warnings",
           "boardLines": "Leading lines",
+          "circles": "Turning circles",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",

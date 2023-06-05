@@ -32,7 +32,8 @@ export type FeatureDataId =
   | 'mml_jarvi'
   | 'mml_laiturit'
   | 'vtsline'
-  | 'vtspoint';
+  | 'vtspoint'
+  | 'circle';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -77,6 +78,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
   { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
+  { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
 ];
 
 export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths';
@@ -104,7 +106,8 @@ export type FeatureDataLayerId =
   | 'vtspoint'
   | 'soundingpoint'
   | 'depthcontour'
-  | 'deptharea';
+  | 'deptharea'
+  | 'circle';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -153,6 +156,7 @@ export const MAP: MapType = {
     { id: 'soundingpoint', noOfflineSupport: true },
     { id: 'depthcontour', noOfflineSupport: true },
     { id: 'deptharea', noOfflineSupport: true },
+    { id: 'circle' },
   ],
 };
 
