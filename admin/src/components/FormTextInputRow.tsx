@@ -46,7 +46,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={fi(labelKey) + ' (fi)'}
-            val={value?.fi || ''}
+            val={value?.fi ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="fi"
@@ -62,7 +62,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {inputType === 'textarea' && (
           <FormTextarea
             label={fi(labelKey) + ' (fi)'}
-            val={value?.fi || ''}
+            val={value?.fi ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="fi"
@@ -77,7 +77,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={sv(labelKey) + ' (sv)'}
-            val={value?.sv || ''}
+            val={value?.sv ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="sv"
@@ -92,7 +92,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {inputType === 'textarea' && (
           <FormTextarea
             label={sv(labelKey) + ' (sv)'}
-            val={value?.sv || ''}
+            val={value?.sv ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="sv"
@@ -107,7 +107,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={en(labelKey) + ' (en)'}
-            val={value?.en || ''}
+            val={value?.en ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="en"
@@ -122,7 +122,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {inputType === 'textarea' && (
           <FormTextarea
             label={en(labelKey) + ' (en)'}
-            val={value?.en || ''}
+            val={value?.en ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="en"

@@ -214,12 +214,16 @@ ion-button.plainButton.button-disabled {
 .searchWrapper ion-input.searchBar {
   box-sizing: border-box;
   height: 43px;
+  min-height: 0;
   max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
   font-size: 14px;
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
+}
+.searchWrapper ion-input.searchBar > label {
+  height: 100%;
 }
 .searchWrapper ion-input.searchBar input {
   height: 100%;
@@ -274,8 +278,15 @@ ion-item.selectInput {
   --background: var(--ion-color-dark);
 }
 ion-item.selectInput.item-has-focus,
-ion-item.selectInput.ion-focused {
+ion-item.selectInput.ion-focused,
+ion-item.selectInput:has(.select-expanded) {
   --highlight-background: transparent;
+  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+}
+.selectWrapper.invalid ion-item.selectInput {
+  --background: var(--ion-color-danger);
+}
+.selectWrapper.invalid ion-item.selectInput:has(.select-expanded) {
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
 ion-item.selectInput.item-select-disabled {
@@ -286,32 +297,73 @@ ion-item.selectInput::part(native) {
   overflow: hidden;
 }
 ion-item.selectInput ion-select {
-  width: 100%;
-  height: calc(100% - 2px);
-  margin: 0 1px;
+  min-height: 0;
+  height: calc(100% - 1px);
+  margin: 0 auto;
   font-size: 14px;
   background-color: var(--ion-color-primary-contrast);
+  width: calc(100% - 2px);
   --padding-start: 13px;
   --padding-end: 13px;
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
+  --border-radius: 0;
+  --border-width: 0;
 }
-ion-item.selectInput.item-has-focus ion-select,
-ion-item.selectInput.ion-focused ion-select {
-  height: calc(100% - 4px);
-  margin: 0 2px;
+ion-item.selectInput.ion-focused ion-select,
+ion-item.selectInput ion-select.select-expanded {
+  height: calc(100% - 3px);
+  width: calc(100% - 4px);
   --padding-start: 12px;
   --padding-end: 12px;
 }
-ion-item.selectInput.item-select-disabled ion-select.select-disabled {
+.selectWrapper.disabled ion-item.selectInput {
+  opacity: 0.5;
+}
+.selectWrapper.disabled ion-item.selectInput ion-select.select-disabled {
   opacity: 1;
 }
-ion-item.selectInput.item-has-value ion-select::part(text) {
+ion-item.selectInput ion-select::part(placeholder),
+ion-item.selectInput ion-select.has-value::part(text) {
   overflow: auto;
   white-space: normal;
+  padding: 12px 0;
 }
-ion-item.selectInput ion-note[slot="helper"] {
+ion-item.selectInput.ion-focused ion-select::part(placeholder),
+ion-item.selectInput ion-select.select-expanded::part(placeholder),
+ion-item.selectInput.ion-focused ion-select.has-value::part(text),
+ion-item.selectInput ion-select.select-expanded.has-value::part(text) {
+  padding: 13px 0 11px;
+}
+ion-item.selectInput.ion-focused ion-select::part(icon) {
+  margin-top: 1px;
+}
+.selectWrapper ion-note.helper {
+  display: block;
   color: var(--ion-color-medium);
+  font-size: 12px;
+  line-height: 1rem;
+}
+.selectWrapper ion-note.input-error {
+  display: none;
+  color: var(--ion-color-danger);
+  font-size: 12px;
+  line-height: 1rem;
+  background: url('./img/error_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
+}
+.selectWrapper.invalid ion-note.input-error {
+  display: block;
+}
+.selectWrapper.disabled ion-note.helper,
+.selectWrapper.disabled ion-note.input-error {
+  opacity: 0.5;
+}
+.selectWrapper .select-skeleton {
+  height: 43px;
+  margin: 0;
+  border: 1px solid var(--ion-color-light);
 }
 ion-popover.multiSelect {
   margin-top: 2px;
@@ -335,83 +387,69 @@ ion-label.formLabel {
   font-weight: bold;
   display: block;
   padding-bottom: 2px;
+  cursor: pointer;
 }
 ion-label.formLabel.disabled {
   opacity: 0.5;
+  cursor: default;
 }
-ion-item.formInput {
+.formGrid .formInput {
   font-size: 14px;
-  --min-height: 43px;
-  --padding-start: 0;
-  --inner-padding-start: 1px;
-  --inner-padding-end: 1px;
-  --border-width: 0;
-  --background: var(--ion-color-dark);
-}
-ion-item.formInput.item-has-focus {
+  min-height: 43px;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  --inner-padding-start: 2px;
-  --inner-padding-end: 2px;
+  --padding-start: 14px;
+  --padding-end: 14px;
+  --padding-top: 13px;
+  --padding-bottom: 13px;
+  --border-color: var(--ion-color-dark);
+  --border-radius: 0;
 }
-ion-item.formInput.item-interactive-disabled {
-  opacity: 0.5;
+.formGrid .formInput label .input-outline-container .input-outline-start,
+.formGrid .formInput label .input-outline-container .input-outline-notch,
+.formGrid .formInput label .input-outline-container .input-outline-end,
+.formGrid .formInput label .textarea-outline-container .textarea-outline-start,
+.formGrid .formInput label .textarea-outline-container .textarea-outline-notch,
+.formGrid .formInput label .textarea-outline-container .textarea-outline-end {
+  background: var(--ion-color-primary-contrast);
 }
-ion-item.formInput::part(native) {
-  border-radius: 0;
-  border-color: var(--ion-color-dark);
+.formGrid .formInput.has-focus label .input-outline-container .input-outline-start,
+.formGrid .formInput.has-focus label .textarea-outline-container .textarea-outline-start {
+  border: none !important;
+  margin: 2px 0 2px 2px;
 }
-ion-item.formInput ion-input {
-  background-color: var(--ion-color-primary-contrast);
-  height: calc(100% - 2px);
-  --padding-start: 13px !important;
-  --padding-end: 13px;
+.formGrid .formInput.has-focus label .input-outline-container .input-outline-notch,
+.formGrid .formInput.has-focus label .textarea-outline-container .textarea-outline-notch {
+  border: none !important;
+  margin: 2px 0;
 }
-ion-item.formInput.item-has-focus ion-input {
-  height: calc(100% - 4px);
-  --padding-start: 12px !important;
-  --padding-end: 12px;
+.formGrid .formInput.has-focus label .input-outline-container .input-outline-end,
+.formGrid .formInput.has-focus label .textarea-outline-container .textarea-outline-end {
+  border: none !important;
+  margin: 2px 2px 2px 0;
 }
-ion-item.formInput ion-label.unit {
-  background-color: var(--ion-color-primary-contrast);
-  height: calc(100% - 2px);
-  padding: 0 13px 0 0;
-  margin: 0;
-  align-items: center;
-  opacity: 1 !important;
+.formGrid .formInput .input-bottom,
+.formGrid .formInput .textarea-bottom {
+  padding: 0;
+  line-height: 1rem;
 }
-ion-item.formInput.item-has-focus ion-label.unit {
-  height: calc(100% - 4px);
-  padding-right: 12px;
+.formGrid .formInput.invalid .input-bottom,
+.formGrid .formInput.invalid .textarea-bottom {
+  flex-direction: column-reverse;
 }
-ion-item.formInput input.native-input[disabled] {
-  opacity: 1 !important;
+.formGrid .formInput.invalid {
+  --border-color: var(--ion-color-danger);
+  --background: var(--ion-color-danger);
 }
-ion-item.formInput ion-textarea {
-  display: flex;
-  margin: 0;
-  background-color: var(--ion-color-primary-contrast);
-  height: calc(100% - 2px);
-  --padding-start: 13px !important;
-  --padding-end: 13px;
+.formGrid .formInput.invalid .error-text {
+  display: block;
+  background: url('./img/error_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
 }
-ion-item.formInput.item-has-focus ion-textarea {
-  height: calc(100% - 4px);
-  --padding-start: 12px !important;
-  --padding-end: 12px;
+.formGrid .formInput.invalid .helper-text {
+  font-style: italic;
 }
-ion-item.formInput ion-textarea .textarea-wrapper {
-  width: 100%;
-  align-self: center;
-}
-ion-item.formInput ion-textarea .textarea-wrapper::after {
-  --padding-top: 10px;
-  --padding-bottom: 10px;
-}
-ion-item.formInput ion-textarea textarea {
-  overflow: hidden;
-  --padding-top: 10px;
-  --padding-bottom: 10px;
-}
+
 ion-item.invalid {
   --background: var(--ion-color-danger);
 }
@@ -419,14 +457,8 @@ ion-item.invalid ion-note.input-error {
   display: flex;
   align-items: center;
 }
-ion-item.invalid ion-note[slot="helper"] {
+ion-item.invalid ion-note.helper {
   display: none;
-}
-ion-note.input-error svg {
-  margin: 0 4px 0 2px;
-  width: 14px;
-  height: 14px;
-  display: inline-block;
 }
 
 input::-webkit-outer-spin-button,
@@ -523,6 +555,9 @@ ion-grid.optionBar ion-grid {
 ion-grid.optionBar ion-grid ion-row {
   min-height: 43px;
 }
+ion-grid.optionBar .selectInput {
+  min-width: 200px;
+}
 ion-grid.optionBar em {
   display: block;
   font-size: 12px;
@@ -584,11 +619,11 @@ ion-grid.itemList .header ion-button.desc svg {
 
 /* Form grid */
 ion-grid.formGrid ion-col {
-  padding: 5px 8px;
+  padding: 5px 8px 10px;
 }
 ion-grid.formGrid .bordered ion-col {
   border-left: 1px solid var(--ion-color-lighter);
-  padding: 5px 15px;
+  padding: 5px 15px 10px;
 }
 ion-grid.formGrid ion-col:first-of-type {
   border-left: none;
@@ -732,6 +767,10 @@ ion-modal.prompt {
 
 ion-modal.prompt::part(content) {
   height: fit-content;
+  overflow: visible;
+}
+
+ion-modal.prompt .ion-page {
   overflow: visible;
 }
 

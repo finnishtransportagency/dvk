@@ -56,7 +56,7 @@ export const harbourReducer = (
       newState = {
         ...state,
         extraInfo: {
-          ...(state.extraInfo || { fi: '', sv: '', en: '' }),
+          ...(state.extraInfo ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -66,7 +66,7 @@ export const harbourReducer = (
       newState = {
         ...state,
         cargo: {
-          ...(state.cargo || { fi: '', sv: '', en: '' }),
+          ...(state.cargo ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -76,7 +76,7 @@ export const harbourReducer = (
       newState = {
         ...state,
         harborBasin: {
-          ...(state.harborBasin || { fi: '', sv: '', en: '' }),
+          ...(state.harborBasin ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -86,7 +86,7 @@ export const harbourReducer = (
       newState = {
         ...state,
         company: {
-          ...(state.company || { fi: '', sv: '', en: '' }),
+          ...(state.company ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -137,7 +137,7 @@ export const harbourReducer = (
             ? {
                 ...quayItem,
                 name: {
-                  ...(quayItem?.name || { fi: '', sv: '', en: '' }),
+                  ...(quayItem?.name ?? { fi: '', sv: '', en: '' }),
                   [actionLang as string]: value as string,
                 },
               }
@@ -165,7 +165,7 @@ export const harbourReducer = (
           idx === actionTarget
             ? {
                 ...quayItem,
-                geometry: { lat: (value as string) || '', lon: quayItem?.geometry?.lon || '' },
+                geometry: { lat: (value as string) || '', lon: quayItem?.geometry?.lon ?? '' },
               }
             : quayItem
         ),
@@ -178,7 +178,7 @@ export const harbourReducer = (
           idx === actionTarget
             ? {
                 ...quayItem,
-                geometry: { lat: quayItem?.geometry?.lat || '', lon: (value as string) || '' },
+                geometry: { lat: quayItem?.geometry?.lat ?? '', lon: (value as string) || '' },
               }
             : quayItem
         ),
@@ -192,7 +192,7 @@ export const harbourReducer = (
             ? {
                 ...quayItem,
                 extraInfo: {
-                  ...(quayItem?.extraInfo || { fi: '', sv: '', en: '' }),
+                  ...(quayItem?.extraInfo ?? { fi: '', sv: '', en: '' }),
                   [actionLang as string]: value as string,
                 },
               }
@@ -209,7 +209,7 @@ export const harbourReducer = (
             i === actionOuterTarget
               ? {
                   ...quayItem,
-                  sections: (quayItem?.sections || []).concat([{ name: '', depth: undefined, geometry: { lat: '', lon: '' } }]),
+                  sections: (quayItem?.sections ?? []).concat([{ name: '', depth: undefined, geometry: { lat: '', lon: '' } }]),
                 }
               : quayItem
           ),
@@ -283,7 +283,7 @@ export const harbourReducer = (
                   j === actionTarget
                     ? {
                         ...sectionItem,
-                        geometry: { lat: (value as string) || '', lon: sectionItem?.geometry?.lon || '' },
+                        geometry: { lat: (value as string) || '', lon: sectionItem?.geometry?.lon ?? '' },
                       }
                     : sectionItem
                 ),
@@ -303,7 +303,7 @@ export const harbourReducer = (
                   j === actionTarget
                     ? {
                         ...sectionItem,
-                        geometry: { lat: sectionItem?.geometry?.lat || '', lon: (value as string) || '' },
+                        geometry: { lat: sectionItem?.geometry?.lat ?? '', lon: (value as string) || '' },
                       }
                     : sectionItem
                 ),
