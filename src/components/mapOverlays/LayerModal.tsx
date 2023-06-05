@@ -42,8 +42,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       childLayers: [
         { id: 'line12', title: t('homePage.map.controls.layer.lines') },
         { id: 'boardline12', title: t('homePage.map.controls.layer.boardLines') },
-        { id: 'circle', title: t('homePage.map.controls.layer.circles') },
         { id: 'area12', title: t('homePage.map.controls.layer.fairwayAreas') },
+        { id: 'circle', title: t('homePage.map.controls.layer.circles') },
       ],
     },
     {
