@@ -259,6 +259,10 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   }
 }
 
+function getSelectedStyle(feature: FeatureLike, resolution: number) {
+  return feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getSafetyEquipmentStyle(feature, 1, false);
+}
+
 function addFeatureVectorLayer(
   map: Map,
   id: FeatureLayerId,
@@ -468,7 +472,7 @@ export function addAPILayers(map: Map) {
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 304);
   // Laiturit
-  addFeatureVectorLayer(map, 'quay', 300, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 304);
+  addFeatureVectorLayer(map, 'quay', undefined, 50, getSelectedStyle, undefined, 1, false, 304);
   // Satamat
   addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
 
