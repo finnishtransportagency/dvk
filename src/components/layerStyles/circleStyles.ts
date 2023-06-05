@@ -12,28 +12,6 @@ const lineDashStyle = new Style({
     lineDash: [10, 5],
   }),
 });
-const textStyle = new Style({
-  geometry: function (feat) {
-    const polygon = feat.getGeometry() as Polygon;
-    return polygon.getInteriorPoint();
-  },
-  text: new Text({
-    font: '12px "Exo2"',
-    placement: 'line',
-    textBaseline: 'bottom',
-    textAlign: 'center',
-    offsetY: -8,
-    text: '',
-    fill: new Fill({
-      color: '#000000',
-    }),
-    stroke: new Stroke({
-      width: 3,
-      color: '#FFFFFF',
-    }),
-    rotateWithView: true,
-  }),
-});
 
 export function getCircleStyle(feature: FeatureLike, resolution: number) {
   if (resolution > 5) {
@@ -68,6 +46,23 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
       width: 1,
       lineDash: [10, 5],
     }),
+    text: new Text({
+      font: '12px "Exo2"',
+      placement: 'line',
+      textBaseline: 'bottom',
+      textAlign: 'center',
+      offsetY: -8,
+      text: diameter,
+      overflow: true,
+      fill: new Fill({
+        color: '#000000',
+      }),
+      stroke: new Stroke({
+        width: 3,
+        color: '#FFFFFF',
+      }),
+      rotateWithView: true,
+    }),
   });
   if (!startStyle) {
     startStyle = new Style({
@@ -97,6 +92,5 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
     endStyle.setGeometry(new Point(end));
     endStyle.getImage().setRotation(-rotation);
   }
-  textStyle.getText().setText(diameter);
-  return [lineDashStyle, textStyle, lineStyle, startStyle, endStyle];
+  return [lineDashStyle, lineStyle, startStyle, endStyle];
 }
