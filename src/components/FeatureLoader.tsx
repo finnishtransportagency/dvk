@@ -84,10 +84,6 @@ export function useNameLayer() {
   return useStaticDataLayer('name', 'name');
 }
 
-export function useSoundingPointLayer() {
-  return useStaticDataLayer('soundingpoint', 'soundingpoint');
-}
-
 export function useBackgroundFinlandLayer(): DvkLayerState {
   return useStaticDataLayer('finland', 'finland');
 }
