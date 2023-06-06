@@ -33,10 +33,10 @@ ${KALLISTUMA_TUULI_FERRY}    0,36
 ${KALLISTUMA_KAANNOS_FERRY}    8,64
 ${ALUKSEN_TODELLINEN_SYVAYS_FERRY}    8,1
 ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_FERRY}    10,24
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_FERRY}    2,13
-${KOLIVARA_SUORALLA_KURSSILLA_FERRY}    2,13
-${KOLIVARA_KAANNOKSESSA_FERRY}    −2,25
-${PAINUMA_LUISKA_FERRY}    2,37
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_FERRY_SLOPED}    2,13
+${KOLIVARA_SUORALLA_KURSSILLA_FERRY_SLOPED}    2,13
+${KOLIVARA_KAANNOKSESSA_FERRY_SLOPED}    −2,25
+${PAINUMA_FERRY_SLOPED}    2,37
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_FERRY}    27
 ${SUHTEELLINEN_TUULEN_NOPEUS_1_FERRY}    11
 ${TUULEN_VOIMA_FERRY}    1,7
@@ -73,10 +73,10 @@ ${KALLISTUMA_TUULI_LNG}    1,27
 ${KALLISTUMA_KAANNOS_LNG}    7,64
 ${ALUKSEN_TODELLINEN_SYVAYS_LNG}    8,33
 ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_LNG}    9,89
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_LNG}    2,01
-${KOLIVARA_SUORALLA_KURSSILLA_LNG}    2,01
-${KOLIVARA_KAANNOKSESSA_LNG}    −1,45
-${PAINUMA_LUISKA_LNG}    2,26
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_LNG_SLOPED}    2,01
+${KOLIVARA_SUORALLA_KURSSILLA_LNG_SLOPED}    2,01
+${KOLIVARA_KAANNOKSESSA_LNG_SLOPED}    −1,45
+${PAINUMA_LNG_SLOPED}    2,26
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_LNG}    39
 ${SUHTEELLINEN_TUULEN_NOPEUS_1_LNG}    12
 ${TUULEN_VOIMA_LNG}    7,7
@@ -113,10 +113,10 @@ ${KALLISTUMA_TUULI_CONTAINER}    0,06
 ${KALLISTUMA_KAANNOS_CONTAINER}    3,34
 ${ALUKSEN_TODELLINEN_SYVAYS_CONTAINER}    11,04
 ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_CONTAINER}    12,03
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_CONTAINER}    0,52
-${KOLIVARA_SUORALLA_KURSSILLA_CONTAINER}    0,52
-${KOLIVARA_KAANNOKSESSA_CONTAINER}    −1,47
-${PAINUMA_LUISKA_CONTAINER}    1,04
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_CONTAINER_SLOPED}    0,52
+${KOLIVARA_SUORALLA_KURSSILLA_CONTAINER_SLOPED}    0,52
+${KOLIVARA_KAANNOKSESSA_CONTAINER_SLOPED}    −1,47
+${PAINUMA_CONTAINER_SLOPED}    1,04
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_CONTAINER}    20
 ${SUHTEELLINEN_TUULEN_NOPEUS_1_CONTAINER}    6
 ${TUULEN_VOIMA_CONTAINER}    0,3
@@ -153,10 +153,18 @@ ${KALLISTUMA_TUULI_BULKER}    0,54
 ${KALLISTUMA_KAANNOS_BULKER}    2,12
 ${ALUKSEN_TODELLINEN_SYVAYS_BULKER}    12,19
 ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_BULKER}    12,63
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_BULKER}    −1,27
-${KOLIVARA_SUORALLA_KURSSILLA_BULKER}    −1,27
-${KOLIVARA_KAANNOKSESSA_BULKER}    −2,3
-${PAINUMA_LUISKA_BULKER}    1,68
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_BULKER_SLOPED}    −1,27
+${KOLIVARA_SUORALLA_KURSSILLA_BULKER_SLOPED}    −1,27
+${KOLIVARA_KAANNOKSESSA_BULKER_SLOPED}    −2,3
+${PAINUMA_BULKER_SLOPED}    1,68
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_BULKER_CHANNEL}    −1,58
+${KOLIVARA_SUORALLA_KURSSILLA_BULKER_CHANNEL}    −1,58
+${KOLIVARA_KAANNOKSESSA_BULKER_CHANNEL}    −2,61
+${PAINUMA_BULKER_CHANNEL}    1,99
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_BULKER_OPEN}    −0,96
+${KOLIVARA_SUORALLA_KURSSILLA_BULKER_OPEN}    −0,96
+${KOLIVARA_KAANNOKSESSA_BULKER_OPEN}    −1,98
+${PAINUMA_BULKER_OPEN}    1,37
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_BULKER}    35
 ${SUHTEELLINEN_TUULEN_NOPEUS_1_BULKER}    9
 ${TUULEN_VOIMA_BULKER}    2,7
@@ -267,7 +275,7 @@ Calculate Squat For Container
 	Check The Calculation Values    CONTAINER
 
 Calculate Squat For Bulker
-	[Documentation]    This test case inputs valid values to Squat calculator for Bulker and checks the result
+	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in sloped channel and checks the result
 	Set Input Values To General Section    BULKER
 	Set Input Values To Weather Section    BULKER
 	Set Input Values To Detailed Section    BULKER
@@ -278,6 +286,32 @@ Calculate Squat For Bulker
 	Get Tuulen Voima Calculation Values
 	Get Sorto Calculation Values
 	Check The Calculation Values    BULKER
+
+Calculate Squat For Bulker Channel
+	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in channel and checks the result
+	Set Input Values To General Section    BULKER
+	Set Input Values To Weather Section    BULKER
+	Set Input Values To Detailed Section    BULKER
+	Set Input Values To Fairway Section    BULKER    CHANNEL
+	Set Input Values To Stability Section    BULKER
+	Set Input Values To Vessel Section    BULKER
+	Get Squat Calculation Values    CHANNEL
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Calculation Values    BULKER    CHANNEL
+
+Calculate Squat For Bulker Open Water
+	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in open water and checks the result
+	Set Input Values To General Section    BULKER
+	Set Input Values To Weather Section    BULKER
+	Set Input Values To Detailed Section    BULKER
+	Set Input Values To Fairway Section    BULKER    OPEN
+	Set Input Values To Stability Section    BULKER
+	Set Input Values To Vessel Section    BULKER
+	Get Squat Calculation Values    OPEN
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Calculation Values    BULKER    OPEN
 
 *** Keywords ***
 Change Squat Calculator Language To
@@ -387,7 +421,7 @@ Set Input Values To Detailed Section
 	Capture Page Screenshot
 
 Set Input Values To Fairway Section
-	[Arguments]    ${vessel_type}
+	[Arguments]    ${vessel_type}    ${fairway_type}=SLOPED
 	[Documentation]    This keyword sets input values in Fairway section in Squat calculator for vessel type given in keyword arguments
 	Press Keys    ${SWEPTDEPTH_INPUT}    RETURN
 	Press Keys    ${SWEPTDEPTH_INPUT}    ${SWEPTDEPTH_INPUT_${vessel_type}}
@@ -395,6 +429,16 @@ Set Input Values To Fairway Section
 	Press Keys    ${WATERLEVEL_INPUT}    ${WATERLEVEL_INPUT_${vessel_type}}
 	Press Keys    ${WATERDEPTH_INPUT}    RETURN
 	Press Keys    ${WATERDEPTH_INPUT}    ${WATERDEPTH_INPUT_${vessel_type}}
+	Run Keyword If    '${fairway_type}' == 'SLOPED'
+	...    Set Input Values To Sloped Channel    ${vessel_type}
+	...  ELSE IF    '${fairway_type}' == 'CHANNEL'
+	...    Set Input Values To Channel    ${vessel_type}
+	...  ELSE
+	...    Set Input Values To Open Water
+
+Set Input Values To Sloped Channel
+  [Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Form of Fairway section in Squat calculator for vessel type given in keyword arguments
 	Click Element    ${LUISKA_RADIOBUTTON}
 	Sleep    2 seconds
 	Scroll Element Into View    ${SLOPESCALE_INPUT}
@@ -402,6 +446,22 @@ Set Input Values To Fairway Section
 	Press Keys    ${CHANNELWIDTH_INPUT}    ${CHANNELWIDTH_INPUT_${vessel_type}}
 	Press Keys    ${SLOPEHEIGHT_INPUT}    RETURN
 	Press Keys    ${SLOPEHEIGHT_INPUT}    ${SLOPEHEIGHT_INPUT_${vessel_type}}
+	Capture Page Screenshot
+
+Set Input Values To Channel
+  [Arguments]    ${vessel_type}
+	[Documentation]    This keyword sets input values in Form of Fairway section in Squat calculator for vessel type given in keyword arguments
+	Click Element    ${KANAVA_RADIOBUTTON}
+	Sleep    2 seconds
+	Scroll Element Into View    ${CHANNELWIDTH_INPUT}
+	Press Keys    ${CHANNELWIDTH_INPUT}    RETURN
+	Press Keys    ${CHANNELWIDTH_INPUT}    ${CHANNELWIDTH_INPUT_${vessel_type}}
+	Capture Page Screenshot
+
+Set Input Values To Open Water
+  [Documentation]    This keyword sets input values in Form of Fairway section in Squat calculator for vessel type given in keyword arguments
+	Click Element    ${AVOVESI_RADIOBUTTON}
+	Sleep    2 seconds
 	Capture Page Screenshot
 
 Set Input Values To Stability Section
@@ -423,6 +483,7 @@ Set Input Values To Vessel Section
 	Capture Page Screenshot
 
 Get Squat Calculation Values
+  [Arguments]    ${fairway_type}=SLOPED
 	[Documentation]    This keyword gets squat calculation values from Squat calculator and sets them as test variables
 	${KALLISTUMA_TUULI}=    Get Text    ${KALLISTUMA_TUULI_VALUE}
 	${KALLISTUMA_KAANNOS}=    Get Text    ${KALLISTUMA_KAANNOS_VALUE}
@@ -431,7 +492,7 @@ Get Squat Calculation Values
 	${KOLIVARA_JA_ALUKSEN_LIIKKEET}=    Get Text    ${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}
 	${KOLIVARA_SUORALLA_KURSSILLA}=    Get Text    ${KOLIVARA_SUORALLA_KURSSILLA_VALUE}
 	${KOLIVARA_KAANNOKSESSA}=    Get Text    ${KOLIVARA_KAANNOKSESSA_VALUE}
-	${PAINUMA_LUISKA}=    Get Text    ${PAINUMA_LUISKA_VALUE}
+	${PAINUMA}=    Get Text    ${PAINUMA_${fairway_type}_VALUE}
 	Set Test Variable    ${KALLISTUMA_TUULI}
 	Set Test Variable    ${KALLISTUMA_KAANNOS}
 	Set Test Variable    ${ALUKSEN_TODELLINEN_SYVAYS}
@@ -439,7 +500,7 @@ Get Squat Calculation Values
 	Set Test Variable    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}
 	Set Test Variable    ${KOLIVARA_SUORALLA_KURSSILLA}
 	Set Test Variable    ${KOLIVARA_KAANNOKSESSA}
-	Set Test Variable    ${PAINUMA_LUISKA}
+	Set Test Variable    ${PAINUMA}
 
 Get Tuulen Voima Calculation Values
 	[Documentation]    This keyword gets tuulen voima calculation values from Squat calculator and sets them as test variables
@@ -470,16 +531,16 @@ Get Sorto Calculation Values
 	Set Test Variable    ${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN}
 
 Check The Calculation Values
-	[Arguments]    ${vessel_type}
+	[Arguments]    ${vessel_type}    ${fairway_type}=SLOPED
 	[Documentation]    This keyword compares actual calculation values with calculation value variables for vessel type given in keyword arguments
 	Should Be Equal    ${KALLISTUMA_TUULI}    ${KALLISTUMA_TUULI_${vessel_type}}
 	Should Be Equal    ${KALLISTUMA_KAANNOS}    ${KALLISTUMA_KAANNOS_${vessel_type}}
 	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS}    ${ALUKSEN_TODELLINEN_SYVAYS_${vessel_type}}
 	Should Be Equal    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA}    ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_${vessel_type}}
-	Should Be Equal    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}    ${KOLIVARA_JA_ALUKSEN_LIIKKEET_${vessel_type}}
-	Should Be Equal    ${KOLIVARA_SUORALLA_KURSSILLA}    ${KOLIVARA_SUORALLA_KURSSILLA_${vessel_type}}
-	Should Be Equal    ${KOLIVARA_KAANNOKSESSA}    ${KOLIVARA_KAANNOKSESSA_${vessel_type}}
-	Should Be Equal    ${PAINUMA_LUISKA}    ${PAINUMA_LUISKA_${vessel_type}}
+	Should Be Equal    ${KOLIVARA_JA_ALUKSEN_LIIKKEET}    ${KOLIVARA_JA_ALUKSEN_LIIKKEET_${vessel_type}_${fairway_type}}
+	Should Be Equal    ${KOLIVARA_SUORALLA_KURSSILLA}    ${KOLIVARA_SUORALLA_KURSSILLA_${vessel_type}_${fairway_type}}
+	Should Be Equal    ${KOLIVARA_KAANNOKSESSA}    ${KOLIVARA_KAANNOKSESSA_${vessel_type}_${fairway_type}}
+	Should Be Equal    ${PAINUMA}    ${PAINUMA_${vessel_type}_${fairway_type}}
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_SUUNTA_1}    ${SUHTEELLINEN_TUULEN_SUUNTA_1_${vessel_type}}
 	Should Be Equal    ${SUHTEELLINEN_TUULEN_NOPEUS_1}    ${SUHTEELLINEN_TUULEN_NOPEUS_1_${vessel_type}}
 	Should Be Equal    ${TUULEN_VOIMA}    ${TUULEN_VOIMA_${vessel_type}}
