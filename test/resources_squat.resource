@@ -61,9 +61,9 @@ ${SWEPTDEPTH_INPUT}    //input[@name = "sweptDepth"]
 ${WATERLEVEL_INPUT}    //input[@name = "waterLevel"]
 ${WATERDEPTH_INPUT}    //input[@name = "waterDepth"]
 ${CHANNELWIDTH_INPUT}    //input[@name = "channelWidth"]
-${AVOVESI_RADIOBUTTON}    //*[text() = "Avovesi"]/following-sibling::ion-radio
-${KANAVA_RADIOBUTTON}    //*[text() = "Kanava"]/following-sibling::ion-radio
-${LUISKA_RADIOBUTTON}    //*[text() = "Luiska"]/following-sibling::ion-radio
+${AVOVESI_RADIOBUTTON}    //ion-radio[@id="Open Water"]
+${KANAVA_RADIOBUTTON}    //ion-radio[@id="Channel"]
+${LUISKA_RADIOBUTTON}    //ion-radio[@id="Sloped Channel"]
 ${SLOPESCALE_INPUT}    //input[@name = "slopeScale"]
 ${SLOPEHEIGHT_INPUT}    //input[@name = "slopeHeight"]
 
