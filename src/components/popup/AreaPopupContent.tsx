@@ -87,9 +87,16 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonCol>
           </IonRow>
         )}
-        <IonRow>
-          <IonCol className="header">{t('popup.area.info')}</IonCol>
-        </IonRow>
+        {(area.properties.n2000draft ||
+          area.properties.draft ||
+          area.properties.n2000depth ||
+          area.properties.depth ||
+          speedLimits.length > 0 ||
+          sizingSpeeds.length > 0) && (
+          <IonRow>
+            <IonCol className="header">{t('popup.area.info')}</IonCol>
+          </IonRow>
+        )}
         {(area.properties.n2000draft || area.properties.draft) && (
           <IonRow>
             <IonCol>
