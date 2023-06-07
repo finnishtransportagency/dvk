@@ -62,7 +62,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       <IonGrid class="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
-            {area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}
+            {area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)} {area.properties.id}
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
@@ -72,7 +72,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         </IonRow>
         {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
-            <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+            <IonCol>
+              <em>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</em>
+            </IonCol>
           </IonRow>
         )}
         {area.properties.typeCode === 15 && (
