@@ -196,7 +196,7 @@ async function addAreaFeatures(
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
-        featureType: featureType, //navigationArea ? 'area' : 'specialarea',
+        featureType: featureType,
         name: area.nimi,
         depth: getNumberValue(area.harausSyvyys),
         typeCode: area.tyyppiKoodi,
