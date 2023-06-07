@@ -244,8 +244,12 @@ export function useSpeedLimitLayer(): DvkLayerState {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useSpecialAreaLayer() {
-  return useDataLayer('specialarea', 'specialarea');
+export function useSpecialArea2Layer() {
+  return useDataLayer('specialarea2', 'specialarea2');
+}
+
+export function useSpecialArea15Layer() {
+  return useDataLayer('specialarea15', 'specialarea15');
 }
 
 export function usePilotLayer() {

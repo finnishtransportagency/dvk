@@ -26,7 +26,8 @@ export type PopupProperties = {
   pilot?: PilotProperties;
   quay?: QuayProperties;
   area?: AreaProperties;
-  specialarea?: AreaProperties;
+  specialarea2?: AreaProperties;
+  specialarea15?: AreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
   marinewarning?: MarineWarningProperties;
@@ -97,7 +98,12 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} setPopupProperties={setPopupProperties} />}
         {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} setPopupProperties={setPopupProperties} />}
         {popupProps?.area && <AreaPopupContent area={popupProps.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
-        {popupProps?.specialarea && <AreaPopupContent area={popupProps.specialarea} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
+        {popupProps?.specialarea2 && (
+          <AreaPopupContent area={popupProps.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+        )}
+        {popupProps?.specialarea15 && (
+          <AreaPopupContent area={popupProps.specialarea15} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+        )}
         {popupProps?.line && <LinePopupContent line={popupProps.line} setPopupProperties={setPopupProperties} />}
         {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} setPopupProperties={setPopupProperties} />}
         {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} setPopupProperties={setPopupProperties} />}

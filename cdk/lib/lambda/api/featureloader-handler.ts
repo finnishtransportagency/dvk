@@ -159,24 +159,44 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+// 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
+// 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
+const navigationAreaFilter = (a: AlueAPIModel) =>
+  a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11;
+const specialAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15;
+const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
+const meetRestrictionAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 15;
+function getAreaFilter(type: string) {
+  if (type === 'area') {
+    return navigationAreaFilter;
+  } else if (type === 'specialarea2') {
+    return anchoringAreaFilter;
+  } else if (type === 'specialarea15') {
+    return meetRestrictionAreaFilter;
+  } else if (type === 'specialarea') {
+    return specialAreaFilter;
+  }
+  return;
+}
+
+async function addAreaFeatures(
+  features: Feature<Geometry, GeoJsonProperties>[],
+  event: ALBEvent,
+  featureType: string,
+  areaFilter: (a: AlueAPIModel) => boolean
+) {
   const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
-  // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
-  for (const area of areas.filter((a) =>
-    navigationArea
-      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11
-      : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
-  )) {
+
+  for (const area of areas.filter(areaFilter)) {
     features.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
-        featureType: navigationArea ? 'area' : 'specialarea',
+        featureType: featureType,
         name: area.nimi,
         depth: getNumberValue(area.harausSyvyys),
         typeCode: area.tyyppiKoodi,
@@ -509,10 +529,10 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addPilotFeatures(features);
   } else if (type === 'harbor') {
     await addHarborFeatures(features);
-  } else if (type === 'area') {
-    await addAreaFeatures(features, true, event);
-  } else if (type === 'specialarea') {
-    await addAreaFeatures(features, false, event);
+  } else if (type === 'area' || type === 'specialarea' || type === 'specialarea2' || type === 'specialarea15') {
+    const areaFilter = getAreaFilter(type);
+    if (!areaFilter) return false;
+    await addAreaFeatures(features, event, type, areaFilter);
   } else if (type === 'restrictionarea') {
     await addRestrictionAreaFeatures(features, event);
   } else if (type === 'line') {
