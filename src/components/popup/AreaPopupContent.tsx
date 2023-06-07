@@ -60,16 +60,28 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)} {area.properties.id}
-          </IonCol>
-          <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
-          </IonCol>
-        </IonRow>
+        {area.properties.fairways?.map((fairway, index) => {
+          return (
+            <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
+              <IonCol size="auto" className="header">
+                {fairway.name[lang] || fairway.name.fi} {fairway.fairwayId}
+              </IonCol>
+              {index === 0 && (
+                <IonCol size="auto">
+                  <IonButton
+                    fill="clear"
+                    className="closeButton"
+                    onClick={() => closePopup()}
+                    title={t('common.close')}
+                    aria-label={t('common.close')}
+                  >
+                    <IonIcon className="otherIconLarge" src={closeIcon} />
+                  </IonButton>
+                </IonCol>
+              )}
+            </IonRow>
+          );
+        })}
         {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
             <IonCol>
@@ -77,6 +89,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonCol>
           </IonRow>
         )}
+        <IonRow>
+          <IonCol size="auto">{area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        </IonRow>
         {area.properties.typeCode === 15 && (
           <IonRow>
             <IonCol>
