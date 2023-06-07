@@ -44,7 +44,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
     return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers || []).length;
   };
   const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
-  const handleClick = () => {
+  const handleChange = () => {
     if (isChecked() || isIndeterminate()) {
       setLayers(layersWOCurrentChildLayers);
     } else {
@@ -66,7 +66,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
               value={currentLayer.id}
               checked={isChecked()}
               slot="start"
-              onClick={() => handleClick()}
+              onIonChange={handleChange}
               disabled={isDisabled()}
               indeterminate={isIndeterminate()}
             />

@@ -345,7 +345,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onClick={() =>
+              onIonChange={() =>
                 setLayers((prev) => {
                   if (prev.includes(id)) {
                     return [...prev.filter((p) => p !== id)];
