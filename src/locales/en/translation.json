@@ -53,6 +53,8 @@
           "soundingpoint": "Numbers",
           "depthcontour": "Contours",
           "deptharea": "Areas",
+          "specialarea2": "Anchoring areas",
+          "specialarea15": "Meeting and overtaking prohibition areas",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",

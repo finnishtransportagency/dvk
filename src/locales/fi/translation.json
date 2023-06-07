@@ -53,6 +53,8 @@
           "soundingpoint": "Luvut",
           "depthcontour": "Käyrät",
           "deptharea": "Alueet",
+          "specialarea2": "Ankkurointialueet",
+          "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

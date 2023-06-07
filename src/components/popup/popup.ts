@@ -44,7 +44,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'vtsline',
     'line',
     'area',
-    'specialarea',
+    'specialarea2',
+    'specialarea15',
   ];
   if (container) {
     container.addEventListener('pointercancel', (e) => {
@@ -235,7 +236,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
     } else if (type === 'area' && dataSource === 'area3456') {
       return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
-    } else if (type === 'specialarea') {
+    } else if (type === 'specialarea2' || type === 'specialarea15') {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
@@ -268,7 +269,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('quay'),
       dvkMap.getFeatureLayer('area12'),
       dvkMap.getFeatureLayer('area3456'),
-      dvkMap.getFeatureLayer('specialarea'),
+      dvkMap.getFeatureLayer('specialarea2'),
+      dvkMap.getFeatureLayer('specialarea15'),
       dvkMap.getFeatureLayer('selectedfairwaycard'),
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
