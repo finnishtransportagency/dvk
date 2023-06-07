@@ -93,7 +93,7 @@ button.icon:focus-visible:hover {
 }
 .dropdownWrapper ion-input.searchBar {
   box-sizing: border-box;
-  height: 45px;
+  min-height: 43px;
   max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
@@ -107,6 +107,7 @@ button.icon:focus-visible:hover {
 }
 .dropdownWrapper ion-input.searchBar.has-focus {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  min-height: 41px;
   padding: 2px !important;
 }
 .dropdownWrapper ion-input.searchBar.has-focus input {

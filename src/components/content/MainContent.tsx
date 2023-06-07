@@ -141,6 +141,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
       setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
     }
     if (event.key === 'Enter' && isSearchbarOpen) {
+      event.preventDefault();
       closeDropdown();
       let targetPath = undefined;
       if (activeSelection) {
@@ -227,6 +228,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                           value={searchQuery}
                           onIonFocus={openDropdown}
                           onIonChange={(e) => changeAction(e.detail.value)}
+                          onIonInput={(e) => changeAction(e.detail.value)}
                           onIonBlur={blurAction}
                           onKeyDown={(e) => keyDownAction(e)}
                           ref={inputRef}
