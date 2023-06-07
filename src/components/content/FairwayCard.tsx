@@ -386,7 +386,7 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
               onMouseOut={() => highlightArea(0)}
               onBlur={() => highlightArea(0)}
             >
-              {area?.name || <>{t('areaType' + area?.typeCode)}</>} {area?.id ?? ''}
+              {area?.name || <>{t('areaType' + area?.typeCode)}</>}
             </em>
             {isDraftAvailable && (
               <>
