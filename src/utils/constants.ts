@@ -14,7 +14,6 @@ export type FeatureDataId =
   | 'line12'
   | 'line3456'
   | 'restrictionarea'
-  | 'specialarea'
   | 'pilot'
   | 'harbor'
   | 'safetyequipment'
@@ -33,7 +32,10 @@ export type FeatureDataId =
   | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
-  | 'circle';
+  | 'circle'
+  | 'soundingpoint'
+  | 'specialarea2'
+  | 'specialarea15';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -48,9 +50,14 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
   },
   {
-    id: 'specialarea',
-    url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6'),
-    staticUrl: new URL(staticUrl + '/specialarea.json.gz'),
+    id: 'specialarea2',
+    url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+  },
+  {
+    id: 'specialarea15',
+    url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
   },
   { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
   { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
@@ -107,7 +114,9 @@ export type FeatureDataLayerId =
   | 'soundingpoint'
   | 'depthcontour'
   | 'deptharea'
-  | 'circle';
+  | 'circle'
+  | 'specialarea2'
+  | 'specialarea15';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -139,7 +148,8 @@ export const MAP: MapType = {
     { id: 'line12' },
     { id: 'line3456' },
     { id: 'speedlimit' },
-    { id: 'specialarea' },
+    { id: 'specialarea2' },
+    { id: 'specialarea15' },
     { id: 'pilot' },
     { id: 'harbor' },
     { id: 'safetyequipment' },

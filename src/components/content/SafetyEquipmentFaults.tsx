@@ -22,17 +22,17 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const quaySource = dvkMap.getVectorSource('quay');
   const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
   let feature = safetyEquipmentSource.getFeatureById(id);
   if (feature) {
-    safetyEquipmentSource.addFeatures(selectedFairwayCardSource.getFeatures());
-    selectedFairwayCardSource.clear();
+    safetyEquipmentSource.addFeatures(quaySource.getFeatures());
+    quaySource.clear();
     feature.set('safetyEquipmentFaultList', true, true);
-    selectedFairwayCardSource.addFeature(feature);
+    quaySource.addFeature(feature);
     safetyEquipmentSource.removeFeature(feature);
   } else {
-    feature = selectedFairwayCardSource.getFeatureById(id);
+    feature = quaySource.getFeatureById(id);
   }
   const geometry = feature?.getGeometry();
   if (feature && geometry) {
@@ -58,7 +58,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
   const equipments = getMap().getVectorSource('safetyequipment');
-  const equipments2 = getMap().getVectorSource('selectedfairwaycard');
+  const equipments2 = getMap().getVectorSource('quay');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -159,7 +159,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   useEffect(() => {
     return () => {
       const dvkMap = getMap();
-      const source = dvkMap.getVectorSource('selectedfairwaycard');
+      const source = dvkMap.getVectorSource('quay');
       const target = dvkMap.getVectorSource('safetyequipment');
       source.forEachFeature((f) => {
         f.set('safetyEquipmentFaultList', false, true);

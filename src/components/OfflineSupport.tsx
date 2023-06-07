@@ -17,7 +17,8 @@ const OfflineSupport: React.FC = () => {
   const area3456Layer = useFeatureData('area3456');
   const depth12Layer = useFeatureData('depth12');
   const speedLimitLayer = useFeatureData('restrictionarea');
-  const specialAreaLayer = useFeatureData('specialarea');
+  const specialArea2Layer = useFeatureData('specialarea2');
+  const specialArea15Layer = useFeatureData('specialarea15');
   const pilotLayer = useFeatureData('pilot');
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
@@ -47,7 +48,8 @@ const OfflineSupport: React.FC = () => {
     area3456Layer.dataUpdatedAt,
     depth12Layer.dataUpdatedAt,
     speedLimitLayer.dataUpdatedAt,
-    specialAreaLayer.dataUpdatedAt,
+    specialArea2Layer.dataUpdatedAt,
+    specialArea15Layer.dataUpdatedAt,
     pilotLayer.dataUpdatedAt,
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
@@ -77,7 +79,8 @@ const OfflineSupport: React.FC = () => {
     area3456Layer.isError ? area3456Layer.errorUpdatedAt : 0,
     depth12Layer.isError ? depth12Layer.errorUpdatedAt : 0,
     speedLimitLayer.isError ? speedLimitLayer.errorUpdatedAt : 0,
-    specialAreaLayer.isError ? specialAreaLayer.errorUpdatedAt : 0,
+    specialArea2Layer.isError ? specialArea2Layer.errorUpdatedAt : 0,
+    specialArea15Layer.isError ? specialArea15Layer.errorUpdatedAt : 0,
     pilotLayer.isError ? pilotLayer.errorUpdatedAt : 0,
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,

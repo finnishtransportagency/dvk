@@ -14,7 +14,8 @@ import {
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
-  useSpecialAreaLayer,
+  useSpecialArea15Layer,
+  useSpecialArea2Layer,
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
@@ -40,7 +41,8 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   const area12Layer = useArea12Layer();
   const area3456Layer = useArea3456Layer();
   const depth12Layer = useDepth12Layer();
-  const specialAreaLayer = useSpecialAreaLayer();
+  const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea15Layer = useSpecialArea15Layer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const circleLayer = useCircleLayer();
@@ -55,7 +57,8 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
       area12Layer.ready &&
       area3456Layer.ready &&
       depth12Layer.ready &&
-      specialAreaLayer.ready &&
+      specialArea2Layer.ready &&
+      specialArea15Layer.ready &&
       harborLayer.ready &&
       boardLine12Layer.ready &&
       circleLayer.ready
@@ -68,10 +71,11 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     area12Layer.ready,
     area3456Layer.ready,
     depth12Layer.ready,
-    specialAreaLayer.ready,
     harborLayer.ready,
     boardLine12Layer.ready,
     circleLayer.ready,
+    specialArea2Layer.ready,
+    specialArea15Layer.ready,
   ]);
 
   useEffect(() => {

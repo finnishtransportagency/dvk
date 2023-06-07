@@ -53,6 +53,8 @@
           "soundingpoint": "Luvut",
           "depthcontour": "Käyrät",
           "deptharea": "Alueet",
+          "specialarea2": "Ankkurointialueet",
+          "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -150,8 +152,8 @@
     "attention": "Huom.",
     "n2000Info": "Tässä väyläkortissa esitettyjen syvyystietojen vertaustaso on N2000 (BSCD).",
     "prohibitionAreas": "Kohtaamis- ja ohittamiskieltoalueet",
-    "prohibitionText_one": "Väylällä on yksi pysyvä kohtaamis- ja ohittamiskieltoalue, katso tarkemmin Bothnia VTS Master's Guide",
-    "prohibitionText_other": "Väylällä on pysyviä kohtaamis- ja ohittamiskieltoalueita, katso tarkemmin Bothnia VTS Master's Guide",
+    "prohibitionText_one": "Väylällä on yksi pysyvä kohtaamis- ja ohittamiskieltoalue, katso tarkemmin VTS Master's Guide",
+    "prohibitionText_other": "Väylällä on pysyviä kohtaamis- ja ohittamiskieltoalueita, katso tarkemmin VTS Master's Guide",
     "anchorage": "Ankkurointi- ym. erityisalueet",
     "navigation": "Väylän navigoitavuus",
     "navigationCondition": "Navigointiolosuhteet",
@@ -291,7 +293,7 @@
       "speed": "Mitoitusnopeus",
       "fairways": "Väyläalue on osa väyläkorttia",
       "extra": "Lisätieto",
-      "prohibitionText": "Katso tarkemmin Bothnia VTS Master's Guide"
+      "prohibitionText": "Katso tarkemmin VTS Master's Guide"
     },
     "line": {
       "info": "Navigointilinjan tiedot",
