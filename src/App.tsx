@@ -37,7 +37,6 @@ import {
   useVtsLineLayer,
   useVtsPointLayer,
   useCircleLayer,
-  useSoundingPointLayer,
   useSpecialArea2Layer,
   useSpecialArea15Layer,
 } from './components/FeatureLoader';
