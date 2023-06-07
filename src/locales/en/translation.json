@@ -150,8 +150,8 @@
     "attention": "Note:",
     "n2000Info": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Meeting and overtaking prohibition areas",
-    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to West Coast VTS Master's Guide",
-    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions, please refer to West Coast VTS Master's Guide",
+    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to VTS Master's Guide",
+    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions, please refer to VTS Master's Guide",
     "anchorage": "Anchorage and special areas",
     "navigation": "Fairway navigability",
     "navigationCondition": "Navigation conditions",
@@ -291,7 +291,7 @@
       "speed": "Design speed",
       "fairways": "Fairway area is part of the fairway card",
       "extra": "Additional information",
-      "prohibitionText": "Please refer to West Coast VTS Master's Guide"
+      "prohibitionText": "Please refer to VTS Master's Guide"
     },
     "line": {
       "info": "Navigation line information",
