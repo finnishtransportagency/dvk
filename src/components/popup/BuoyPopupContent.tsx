@@ -77,7 +77,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
         </IonRow>
         <IonRow>
           <IonCol>
-            {(((buoy.properties.temperature && typeof buoy.properties.temperature === 'number') || buoy.properties.temperature === 0) && (
+            {(typeof buoy.properties.temperature === 'number' && (
               <>
                 {Math.round(buoy.properties.temperature)}{' '}
                 <span
