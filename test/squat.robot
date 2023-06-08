@@ -235,85 +235,36 @@ Check UI Elements In English Language
 	Check Input Fields In Vessel Section
 	Check Input Fields Attribute Section
 
-Calculate Squat For Ferry
-	[Documentation]    This test case inputs valid values to Squat calculator for Ferry and checks the result
-	Set Input Values To General Section    FERRY
-	Set Input Values To Weather Section    FERRY
-	Set Input Values To Detailed Section    FERRY
-	Set Input Values To Fairway Section    FERRY
-	Set Input Values To Stability Section    FERRY
-	Set Input Values To Vessel Section    FERRY
-	Get Squat Calculation Values
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    FERRY
-
-Calculate Squat For LNG
-	[Documentation]    This test case inputs valid values to Squat calculator for LNG and checks the result
-	Set Input Values To General Section    LNG
-	Set Input Values To Weather Section    LNG
-	Set Input Values To Detailed Section    LNG
-	Set Input Values To Fairway Section    LNG
-	Set Input Values To Stability Section    LNG
-	Set Input Values To Vessel Section    LNG
-	Get Squat Calculation Values
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    LNG
-
-Calculate Squat For Container
-	[Documentation]    This test case inputs valid values to Squat calculator for Container and checks the result
-	Set Input Values To General Section    CONTAINER
-	Set Input Values To Weather Section    CONTAINER
-	Set Input Values To Detailed Section    CONTAINER
-	Set Input Values To Fairway Section    CONTAINER
-	Set Input Values To Stability Section    CONTAINER
-	Set Input Values To Vessel Section    CONTAINER
-	Get Squat Calculation Values
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    CONTAINER
-
-Calculate Squat For Bulker
-	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in sloped channel and checks the result
-	Set Input Values To General Section    BULKER
-	Set Input Values To Weather Section    BULKER
-	Set Input Values To Detailed Section    BULKER
-	Set Input Values To Fairway Section    BULKER
-	Set Input Values To Stability Section    BULKER
-	Set Input Values To Vessel Section    BULKER
-	Get Squat Calculation Values
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    BULKER
-
-Calculate Squat For Bulker Channel
-	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in channel and checks the result
-	Set Input Values To General Section    BULKER
-	Set Input Values To Weather Section    BULKER
-	Set Input Values To Detailed Section    BULKER
-	Set Input Values To Fairway Section    BULKER    CHANNEL
-	Set Input Values To Stability Section    BULKER
-	Set Input Values To Vessel Section    BULKER
-	Get Squat Calculation Values    CHANNEL
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    BULKER    CHANNEL
-
-Calculate Squat For Bulker Open Water
-	[Documentation]    This test case inputs valid values to Squat calculator for Bulker in open water and checks the result
-	Set Input Values To General Section    BULKER
-	Set Input Values To Weather Section    BULKER
-	Set Input Values To Detailed Section    BULKER
-	Set Input Values To Fairway Section    BULKER    OPEN
-	Set Input Values To Stability Section    BULKER
-	Set Input Values To Vessel Section    BULKER
-	Get Squat Calculation Values    OPEN
-	Get Tuulen Voima Calculation Values
-	Get Sorto Calculation Values
-	Check The Calculation Values    BULKER    OPEN
+Calculate Squat And Verify Results
+	[Documentation]    This test case inputs valid values to Squat calculator and checks the result
+	[Template]    Calculate Squat
+	[Setup]    None
+	[Teardown]    None
+	FERRY    SLOPED
+	LNG    SLOPED
+	CONTAINER    SLOPED
+	BULKER    SLOPED
+	BULKER    CHANNEL
+	BULKER    OPEN
 
 *** Keywords ***
+
+Calculate Squat
+  [Arguments]    ${vessel_type}    ${fairway_type}
+	[Documentation]    This test case inputs valid values to Squat calculator and checks the result
+	[Teardown]    Close All Browsers
+  Open Browser    http://localhost:${PORT}    ${BROWSER}
+	Set Input Values To General Section    ${vessel_type}
+	Set Input Values To Weather Section    ${vessel_type}
+	Set Input Values To Detailed Section    ${vessel_type}
+	Set Input Values To Fairway Section    ${vessel_type}    ${fairway_type}
+	Set Input Values To Stability Section    ${vessel_type}
+	Set Input Values To Vessel Section    ${vessel_type}
+	Get Squat Calculation Values    ${fairway_type}
+	Get Tuulen Voima Calculation Values
+	Get Sorto Calculation Values
+	Check The Calculation Values    ${vessel_type}    ${fairway_type}
+
 Change Squat Calculator Language To
 	[Arguments]    ${language}
 	[Documentation]    This keyword changes language in Squat calculator to language given in keyword arguments
