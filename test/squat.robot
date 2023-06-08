@@ -236,7 +236,7 @@ Check UI Elements In English Language
 	Check Input Fields Attribute Section
 
 Calculate Squat And Verify Results
-	[Documentation]    This test case inputs valid values to Squat calculator and checks the result
+	[Documentation]    This test case inputs valid values to Squat calculator for different vessel and fairway types and verify the result
 	[Template]    Calculate Squat
 	[Setup]    None
 	[Teardown]    None
@@ -251,7 +251,7 @@ Calculate Squat And Verify Results
 
 Calculate Squat
   [Arguments]    ${vessel_type}    ${fairway_type}
-	[Documentation]    This test case inputs valid values to Squat calculator and checks the result
+	[Documentation]    This keyword inputs valid values to Squat calculator and checks the result
 	[Teardown]    Close All Browsers
   Open Browser    http://localhost:${PORT}    ${BROWSER}
 	Set Input Values To General Section    ${vessel_type}
