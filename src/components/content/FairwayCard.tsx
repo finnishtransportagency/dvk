@@ -30,18 +30,16 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
   const lang = i18n.resolvedLanguage as Lang;
 
   const primaryFairway = data?.find((fairway) => fairway.primary);
-  const secondaryFairway = data?.find((fairway) => fairway.secondary) || primaryFairway;
+  const secondaryFairway = data?.find((fairway) => fairway.secondary) ?? primaryFairway;
 
   // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
   const extractNavigationLinesLength = () => {
     const totalLength = data?.reduce((sum, card) => {
       return (
         sum +
-        ((card.navigationLines &&
-          card.navigationLines.reduce((acc, line) => {
-            return acc + ((line.typeCode !== '4' && line.length) || 0);
-          }, 0)) ||
-          0)
+        (card.navigationLines?.reduce((acc, line) => {
+          return acc + ((line.typeCode !== '4' && line.length) || 0);
+        }, 0) ?? 0)
       );
     }, 0);
     return totalLength;
@@ -85,7 +83,7 @@ const LiningInfo: React.FC<FairwaysProps> = ({ data, lineText }) => {
             <strong>{t('liningAndMarking')}: </strong>
             {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)}{' '}
             {lineText && formatSentence(lineText[lang], true)} {t('length')}:{' '}
-            {((extractNavigationLinesLength() || 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+            {((extractNavigationLinesLength() ?? 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
             <span aria-label={t('unit.kmDesc', { count: 3 })} role="definition">
               km
             </span>{' '}
@@ -109,7 +107,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
   const sizingVessels =
     data
       ?.flatMap((fairway) => (fairway.sizingVessels ? fairway.sizingVessels : []))
-      .filter((value, index, self) => self.findIndex((inner) => inner.type === value.type) === index) || [];
+      .filter((value, index, self) => self.findIndex((inner) => inner.type === value.type) === index) ?? [];
   const minimumWidths = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.minimumWidth).filter((val) => val)))];
   const minimumTurningCircles = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.minimumTurningCircle).filter((val) => val)))];
   const additionalTexts = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.additionalInformation).filter((val) => val)))];
@@ -199,7 +197,7 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
                 </span>
               </>
             )}
-            . {designSpeedText && designSpeedText[lang]}
+            . {designSpeedText?.[lang]}
             {isN2000HeightSystem && (
               <>
                 <br />
@@ -229,7 +227,7 @@ const ProhibitionInfo: React.FC<FairwaysProps> = ({ data, inlineLabel }) => {
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
-  const prohibitionAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 15)) || [];
+  const prohibitionAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 15)) ?? [];
 
   return (
     <>
@@ -262,12 +260,12 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
   const speedLimits =
     data
       ?.flatMap((fairway) =>
-        fairway.restrictionAreas?.filter((area) => (area.types?.filter((type) => type.code === '01') || []).length > 0 && area.location && area.value)
+        fairway.restrictionAreas?.filter((area) => (area.types?.filter((type) => type.code === '01') ?? []).length > 0 && area.location && area.value)
       )
       .filter(
         (value, index, self) =>
           self.findIndex((inner) => inner?.id === value?.id || (inner?.location === value?.location && inner?.value === value?.value)) === index
-      ) || [];
+      ) ?? [];
 
   return (
     <>
@@ -277,7 +275,7 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
           <span key={'limit-' + area?.id}>
             {(inlineLabel || idx > 0) && <br />}
             {t('speedLimitAt')} {area?.location}: {area?.value}{' '}
-            <span aria-label={t('unit.kmhDesc', { count: area?.value || 0 })} role="definition">
+            <span aria-label={t('unit.kmhDesc', { count: area?.value ?? 0 })} role="definition">
               km/h
             </span>
           </span>
@@ -285,7 +283,7 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
       </p>
       <Paragraph
         title={inlineLabel && speedLimits.length < 1 ? t('speedLimit') : ''}
-        bodyText={speedLimitText || undefined}
+        bodyText={speedLimitText ?? undefined}
         showNoData={speedLimits.length < 1}
       />
     </>
@@ -295,14 +293,14 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
 const AnchorageInfo: React.FC<FairwaysProps> = ({ data, inlineLabel, anchorageText }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
-  const anchorageAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 2)) || [];
+  const anchorageAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 2)) ?? [];
 
   return (
     <>
-      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyText={anchorageText || undefined} showNoData={anchorageAreas.length > 0} />
+      <Paragraph title={inlineLabel ? t('anchorage') : ''} bodyText={anchorageText ?? undefined} showNoData={anchorageAreas.length > 0} />
       <p>
-        {anchorageAreas.map((area, i) => (
-          <span key={i}>
+        {anchorageAreas.map((area) => (
+          <span key={'anchorage' + area?.id}>
             {area?.additionalInformation && (
               <>
                 {area?.additionalInformation}
@@ -361,7 +359,7 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
           return sequenceNumberA - sequenceNumberB;
         })
       )
-      .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) || [];
+      .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) ?? [];
 
   return (
     <ol>
@@ -375,10 +373,10 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
             )
           ),
         ];
-        const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) || 0) > 0;
+        const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) ?? 0) > 0;
 
         return (
-          <li key={area?.id || idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
+          <li key={area?.id ?? idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
             <em
               className="inlineHoverText"
               onMouseOver={() => highlightArea(area?.id)}
@@ -386,19 +384,19 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
               onMouseOut={() => highlightArea(0)}
               onBlur={() => highlightArea(0)}
             >
-              {area?.name || <>{t('areaType' + area?.typeCode)}</>}
+              {area?.name ?? <>{t('areaType' + area?.typeCode)}</>}
             </em>
             {isDraftAvailable && (
               <>
                 <br />
-                {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() || '-'}&nbsp;
+                {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
                 <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
                   m
                 </span>
               </>
             )}
             <br />
-            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() || '-'}&nbsp;
+            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
             <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })} role="definition">
               m
             </span>
@@ -516,7 +514,7 @@ const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
             <strong>{t('vts')}:</strong>
             {data.map((vts, idx) => {
               return (
-                <span key={(vts?.name?.fi || '') + idx}>
+                <span key={(vts?.name?.fi ?? '') + idx}>
                   <br />
                   {vts?.name && vts.name[lang]}
                   {vts?.vhf && vts.vhf.length > 0 && (
@@ -609,52 +607,51 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
 
   return (
     <>
-      {data &&
-        data.map((quay, jdx) => {
-          return (
-            <p
-              key={jdx}
-              className="inlineHoverText"
-              onMouseOver={() => setSelectedQuay(quay)}
-              onFocus={() => setSelectedQuay(quay)}
-              onMouseOut={() => setSelectedQuay(null)}
-              onBlur={() => setSelectedQuay(null)}
-            >
-              {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
-              {quay?.name && quay.name[lang]?.slice(1)}
-              {!quay?.name && t('quay')}
-              {quay?.length && (
-                <>
-                  {' - '}
-                  <em>
-                    {t('length')} {quay?.length?.toLocaleString()}&nbsp;
-                    <span aria-label={t('unit.mDesc', { count: Number(quay?.length) })} role="definition">
-                      m
-                    </span>
-                  </em>
-                </>
-              )}
-              {quay?.sections?.map((section, kdx) => {
-                return (
-                  <span key={kdx}>
-                    <br />
-                    {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
-                    <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })} role="definition">
-                      m
-                    </span>
+      {data?.map((quay, jdx) => {
+        return (
+          <p
+            key={jdx}
+            className="inlineHoverText"
+            onMouseOver={() => setSelectedQuay(quay)}
+            onFocus={() => setSelectedQuay(quay)}
+            onMouseOut={() => setSelectedQuay(null)}
+            onBlur={() => setSelectedQuay(null)}
+          >
+            {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
+            {quay?.name && quay.name[lang]?.slice(1)}
+            {!quay?.name && t('quay')}
+            {quay?.length && (
+              <>
+                {' - '}
+                <em>
+                  {t('length')} {quay?.length?.toLocaleString()}&nbsp;
+                  <span aria-label={t('unit.mDesc', { count: Number(quay?.length) })} role="definition">
+                    m
                   </span>
-                );
-              })}
-              {quay?.extraInfo && (
-                <>
+                </em>
+              </>
+            )}
+            {quay?.sections?.map((section, kdx) => {
+              return (
+                <span key={kdx}>
                   <br />
-                  {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
-                  {quay.extraInfo[lang]?.slice(1)}.
-                </>
-              )}
-            </p>
-          );
-        })}
+                  {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
+                  <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })} role="definition">
+                    m
+                  </span>
+                </span>
+              );
+            })}
+            {quay?.extraInfo && (
+              <>
+                <br />
+                {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
+                {quay.extraInfo[lang]?.slice(1)}.
+              </>
+            )}
+          </p>
+        );
+      })}
     </>
   );
 };
@@ -736,7 +733,7 @@ const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
               onMouseOut={() => highlightHarbor(undefined)}
               onBlur={() => highlightHarbor(undefined)}
             >
-              <strong>{data.name && data.name[lang]}</strong>
+              <strong>{data.name?.[lang]}</strong>
             </h4>
             <h5>{t('restrictions')}</h5>
             {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
@@ -798,7 +795,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
       route: '/kortit/',
     },
     {
-      title: fairwayCard?.name[lang] || fairwayCard?.name.fi || '',
+      title: fairwayCard?.name[lang] ?? fairwayCard?.name.fi ?? '',
       route: '/kortit/' + id,
       onClick: () => {
         setSelectedFairwayCard(fairwayCard);
@@ -887,7 +884,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonRow>
           </IonGrid>
 
-          <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value || '1')} value={tab} data-testid="tabChange">
+          <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value ?? '1')} value={tab} data-testid="tabChange">
             {['1', '2', '3'].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
                 <IonLabel>
@@ -906,7 +903,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <LiningInfo data={fairwayCard?.fairways} lineText={fairwayCard?.lineText} />
             <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
             <IonText>
-              <Paragraph title={t('attention')} bodyText={fairwayCard?.attention || undefined} />
+              <Paragraph title={t('attention')} bodyText={fairwayCard?.attention ?? undefined} />
               <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel />
               <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel />
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
@@ -916,9 +913,9 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
               <h4>
                 <strong>{t('navigation')}</strong>
               </h4>
-              <Paragraph bodyText={fairwayCard?.generalInfo || undefined} />
-              <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition || undefined} showNoData />
-              <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition || undefined} showNoData />
+              <Paragraph bodyText={fairwayCard?.generalInfo ?? undefined} />
+              <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition ?? undefined} showNoData />
+              <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
             </IonText>
 
             <IonText>
@@ -927,11 +924,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
                 </strong>
               </h4>
-              <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation || undefined} showNoData />
-              <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation || undefined} showNoData />
-              <Paragraph title={t('visibilityRecommendation')} bodyText={fairwayCard?.visibility || undefined} showNoData />
-              <Paragraph title={t('windGauge')} bodyText={fairwayCard?.windGauge || undefined} showNoData />
-              <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel || undefined} showNoData />
+              <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation ?? undefined} showNoData />
+              <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation ?? undefined} showNoData />
+              <Paragraph title={t('visibilityRecommendation')} bodyText={fairwayCard?.visibility ?? undefined} showNoData />
+              <Paragraph title={t('windGauge')} bodyText={fairwayCard?.windGauge ?? undefined} showNoData />
+              <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel ?? undefined} showNoData />
             </IonText>
 
             <IonText>
@@ -946,7 +943,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
           <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === '2' ? ' active' : '')}>
             {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
-              return <HarbourInfo data={harbour} key={idx} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
+              return <HarbourInfo data={harbour} key={harbour?.id} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
             })}
             {(!fairwayCard?.harbors || fairwayCard?.harbors?.length === 0) && (
               <IonText className="no-print">
@@ -972,8 +969,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <>
               <div className="pagebreak" />
               <PrintMap
-                name={fairwayCard?.name || undefined}
-                modified={fairwayCard?.modificationTimestamp || undefined}
+                name={fairwayCard?.name ?? undefined}
+                modified={fairwayCard?.modificationTimestamp ?? undefined}
                 isN2000={isN2000HeightSystem}
               />
             </>
