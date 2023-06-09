@@ -86,8 +86,8 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
         </IonRow>
         <IonRow>
           <IonCol>
-            <a href="http://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
-              http://creativecommons.org/licenses/by/4.0/deed.fi
+            <a href="https://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
+              https://creativecommons.org/licenses/by/4.0/deed.fi
               <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
             </a>{' '}
             {t('source.content3')}

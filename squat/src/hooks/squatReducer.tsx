@@ -32,15 +32,6 @@ type FieldParam = {
 };
 
 // Initialize data
-
-// TODO: Load vessels from indexedDB / LocalStorage
-export const vessels = [
-  { id: 0, name: 'None', lengthBPP: 0, breadth: 0, depth: 0 },
-  { id: 1, name: 'Big rig', lengthBPP: 1, breadth: 1, depth: 1 },
-  { id: 2, name: 'My Yacht', lengthBPP: 2, breadth: 2, depth: 2 },
-  { id: 3, name: "Neighbour's fishing boat", lengthBPP: 3, breadth: 3, depth: 3 },
-  { id: 4, name: 'Row boat', lengthBPP: 4, breadth: 4, depth: 4 },
-];
 export const vesselProfiles = [
   { id: 1, name: 'homePage.squat.vessel.bulker', img: 'assets/tanker.svg', opaque: true },
   { id: 2, name: 'homePage.squat.vessel.container', img: 'assets/container_ship.svg', opaque: true },
