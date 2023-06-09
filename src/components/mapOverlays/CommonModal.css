@@ -3,6 +3,14 @@ ion-modal .gradient-top {
   background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
 }
 
+ion-modal ion-header {
+  box-shadow: none !important;
+}
+
+ion-modal ion-footer {
+  box-shadow: none !important;
+}
+
 ion-modal ion-header.header-md::after {
   content: none;
 }
@@ -85,6 +93,8 @@ ion-modal.large {
 ion-modal.large::part(content) {
   height: fit-content;
   color: var(--ion-color-dark);
+  max-height: calc(100vh - 96px);
+  overflow: auto;
 }
 
 ion-modal ion-button.languageSelection {

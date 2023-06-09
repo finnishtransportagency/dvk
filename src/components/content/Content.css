@@ -413,19 +413,6 @@ ion-segment.tabs ion-label h3 {
 }
 
 /* Modals */
-#ion-react-wrapper {
-  height: fit-content !important;
-  max-height: calc(100vh - 96px);
-  overflow: auto;
-}
-.mobile #ion-react-wrapper {
-  max-height: calc(90vh - 96px);
-}
-.contentModal #ion-react-wrapper {
-  height: 100% !important;
-  max-height: none;
-}
-
 .contentModal .closeButton {
   margin: 0;
 }
