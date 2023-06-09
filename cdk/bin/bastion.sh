@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-aws ssm start-session --target i-0cbddb944359c553d --document-name AWS-StartPortForwardingSession --parameters "portNumber"=["22"],"localPortNumber"=["9999"] > /dev/null &
-while curl localhost:9999 > /dev/null 2>&1; [ $? -ne 1 ]; do
-    sleep 1
-done
-ssh dvk -fT "while true; do uptime; sleep 30; done" > /dev/null 2>&1
+if [ -z $ENVIRONMENT ]
+then
+  echo "Environment variable ENVIRONMENT missing. Use setenv.sh script to set it."
+else
+    PORT=${PORT:-8080}
+    ALB=`aws cloudformation list-exports --output json 2> /dev/null | grep DvkALB-$ENVIRONMENT | awk -F \" '{print $4}'`
+    if [ "$ALB" != "" ]
+    then
+        aws ssm start-session --target i-0cbddb944359c553d --document-name AWS-StartPortForwardingSessionToRemoteHost --parameters "host=$ALB,portNumber"=["80"],"localPortNumber"=["$PORT"] > /dev/null &
+        echo "Port forwarding to $ALB started on port $PORT"
+    else
+        echo "Make sure you have logged in your aws account or environment $ENVIRONMENT exists."
+    fi
+fi
