@@ -62,7 +62,7 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
     const turfBBox = bbox as turf.BBox;
     const turfBBoxPolygon = turf.bboxPolygon(turfBBox);
     const geomPoly = format.writeGeometryObject(feature.getGeometry() as Geometry);
-    const intersected = turf.intersect(geomPoly as turf.Polygon, turfBBoxPolygon.geometry as turf.Polygon);
+    const intersected = turf.intersect(geomPoly as turf.Polygon, turfBBoxPolygon.geometry);
 
     if (intersected) {
       const flattened = turf.flatten(intersected);

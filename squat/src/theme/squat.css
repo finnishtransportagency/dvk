@@ -387,6 +387,7 @@ ion-footer.small ion-toolbar {
 ion-modal ion-content {
   --padding-start: 28px;
   --padding-end: 28px;
+  height: fit-content;
 }
 
 @media (min-width: 768px) {
@@ -421,10 +422,6 @@ ion-modal ion-header ion-title {
   padding-inline: 28px;
   margin-top: 28px;
   margin-bottom: 28px;
-}
-
-ion-modal ion-content {
-  height: fit-content;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {
