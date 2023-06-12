@@ -390,6 +390,14 @@ ion-modal ion-content {
   height: fit-content;
 }
 
+ion-modal ion-header {
+  box-shadow: none !important;
+}
+
+ion-modal ion-footer {
+  box-shadow: none !important;
+}
+
 @media (min-width: 768px) {
   ion-modal.medium {
     --height: 350px;

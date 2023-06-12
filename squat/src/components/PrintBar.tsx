@@ -36,7 +36,7 @@ const PrintBar: React.FC = () => {
                 <>
                   <p>{t('header.shareable-link-body')}</p>
                   <IonItem lines="none">
-                    <IonItem fill="outline">
+                    <IonItem fill="outline" lines="none">
                       <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
                     </IonItem>
                     <IonButton
