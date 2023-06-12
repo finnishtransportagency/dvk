@@ -10,6 +10,7 @@ import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import dvkMap from '../DvkMap';
+import { deselectClickSelection } from './popup';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -43,6 +44,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (

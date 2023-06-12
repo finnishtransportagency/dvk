@@ -9,6 +9,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { Link } from 'react-router-dom';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type HarborPopupContentProps = {
   harbor: HarborProperties;
@@ -27,6 +28,7 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
