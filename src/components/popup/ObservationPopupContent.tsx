@@ -7,6 +7,7 @@ import { ObservationFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type ObservationPopupContentProps = {
   observation: ObservationProperties;
@@ -23,6 +24,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (

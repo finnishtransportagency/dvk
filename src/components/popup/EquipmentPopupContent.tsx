@@ -9,6 +9,7 @@ import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -39,6 +40,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
