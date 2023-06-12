@@ -479,7 +479,10 @@ input[type='number'] {
 
 /* Header */
 ion-header {
-  box-shadow: 4px 0 8px 0 rgba(var(--ion-color-dark), 0.5);
+  box-shadow: none !important;
+}
+ion-header.page-header {
+  box-shadow: 4px 0 8px 0 rgba(var(--ion-color-dark-rgb), 0.5) !important;
 }
 ion-header > ion-grid.ion-no-padding {
   padding: 0 48px;
@@ -686,6 +689,9 @@ ion-grid.formGrid ion-col:last-of-type {
 }
 
 /* Footer */
+ion-footer {
+  box-shadow: none !important;
+}
 ion-footer.small ion-toolbar {
   --min-height: 30px;
 }
