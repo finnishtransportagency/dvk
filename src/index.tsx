@@ -30,13 +30,13 @@ export function getUrlParam(param: string) {
       window.history.replaceState(
         null,
         '',
-        'index.html' + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang) + window.location.hash
+        window.location.pathname + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang) + window.location.hash
       );
     } else {
       window.history.replaceState(
         null,
         '',
-        'index.html' + window.location.search.replace('lang=' + currentLang, 'lang=' + lang) + window.location.hash
+        window.location.pathname + window.location.search.replace('lang=' + currentLang, 'lang=' + lang) + window.location.hash
       );
     }
   });
