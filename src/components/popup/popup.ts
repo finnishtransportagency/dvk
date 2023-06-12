@@ -51,9 +51,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'mareograph',
     'vtsline',
     'line',
-    'area',
     'specialarea2',
     'specialarea15',
+    'area',
   ];
   if (container) {
     container.addEventListener('pointercancel', (e) => {
