@@ -4,7 +4,7 @@ import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { MAP } from '../../utils/constants';
-import { pointerMove } from 'ol/events/condition';
+import { never, pointerMove } from 'ol/events/condition';
 // eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
@@ -312,6 +312,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
 
   // Select interaction for keeping track of selected feature
   const pointerClickSelect = new Select({
+    condition: never,
     style,
     layers: [
       dvkMap.getFeatureLayer('pilot'),
