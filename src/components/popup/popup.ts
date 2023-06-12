@@ -6,7 +6,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { MAP } from '../../utils/constants';
 import { pointerMove } from 'ol/events/condition';
 // eslint-disable-next-line import/named
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import { getQuayStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
 import dvkMap from '../DvkMap';
 import { getPilotStyle } from '../layerStyles/pilotStyles';
@@ -20,6 +20,14 @@ import { GeoJSON } from 'ol/format';
 import * as turf from '@turf/turf';
 import { Coordinate } from 'ol/coordinate';
 import { getCircleStyle } from '../layerStyles/circleStyles';
+
+export function deselectClickSelection() {
+  dvkMap.olMap?.getInteractions()?.forEach((int) => {
+    if (int.get('name') === 'clickSelection') {
+      (int as Select).getFeatures().clear();
+    }
+  });
+}
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -76,8 +84,16 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
 
     overlay.setPosition(undefined);
     setPopupProperties({});
+    deselectClickSelection();
 
     if (feature) {
+      // Add prioritized feature to clickSelection
+      map?.getInteractions()?.forEach((int) => {
+        if (int.get('name') === 'clickSelection') {
+          (int as Select).getFeatures().push(feature as Feature<Geometry>);
+        }
+      });
+
       let popupPositioningCoordinate: Coordinate | undefined = undefined;
 
       if (feature.getProperties().featureType === 'mareograph') {
@@ -222,6 +238,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       }, 100);
     }
   });
+
   const style = function (feature: FeatureLike, resolution: number) {
     const type = feature.getProperties().featureType;
     const dataSource = feature.getProperties().dataSource;
@@ -292,4 +309,31 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     target.style.cursor = hit ? 'pointer' : '';
   });
   map.addInteraction(pointerMoveSelect);
+
+  // Select interaction for keeping track of selected feature
+  const pointerClickSelect = new Select({
+    style,
+    layers: [
+      dvkMap.getFeatureLayer('pilot'),
+      dvkMap.getFeatureLayer('quay'),
+      dvkMap.getFeatureLayer('area12'),
+      dvkMap.getFeatureLayer('area3456'),
+      dvkMap.getFeatureLayer('specialarea2'),
+      dvkMap.getFeatureLayer('specialarea15'),
+      dvkMap.getFeatureLayer('selectedfairwaycard'),
+      dvkMap.getFeatureLayer('line12'),
+      dvkMap.getFeatureLayer('line3456'),
+      dvkMap.getFeatureLayer('safetyequipment'),
+      dvkMap.getFeatureLayer('marinewarning'),
+      dvkMap.getFeatureLayer('mareograph'),
+      dvkMap.getFeatureLayer('observation'),
+      dvkMap.getFeatureLayer('buoy'),
+      dvkMap.getFeatureLayer('harbor'),
+      dvkMap.getFeatureLayer('vtsline'),
+      dvkMap.getFeatureLayer('vtspoint'),
+    ],
+    hitTolerance: 3,
+  });
+  pointerClickSelect.set('name', 'clickSelection');
+  map.addInteraction(pointerClickSelect);
 }
