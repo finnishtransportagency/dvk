@@ -261,17 +261,15 @@
 
   .squatChartTitle {
     margin-top: 0;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
   }
 
   .printable {
     display: block;
   }
 
-  .squatChartTitle {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1;
-  }
   .dataTableRow {
     font-size: 12px;
   }

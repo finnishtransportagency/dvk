@@ -45,7 +45,7 @@ export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBE
 }
 
 export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
-  if (geometry && geometry.lat && geometry.lon) {
+  if (geometry?.lat && geometry.lon) {
     const geom = { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
     if (geom.coordinates[0] && geom.coordinates[1]) {
       if (geom.coordinates[0] >= 32 || geom.coordinates[0] < 17 || geom.coordinates[1] >= 70 || geom.coordinates[1] < 58) {
@@ -61,7 +61,7 @@ export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MA
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
     checkLength(200, text);
-    const m = text.match(/^[a-z]+[a-z\d]*$/);
+    const m = /^[a-z]+[a-z\d]*$/.exec(text);
     if (m && m[0].length === text.length) {
       return text;
     }
@@ -70,7 +70,7 @@ export function mapId(text?: Maybe<string>) {
 }
 
 export function mapText(text?: Maybe<TextInput>, maxLength = MAX_TEXT_LENGTH) {
-  if (text && text.fi && text.sv && text.en) {
+  if (text?.fi && text.sv && text.en) {
     checkLength(maxLength, text.fi, text.sv, text.en);
     return {
       fi: text.fi,
@@ -232,13 +232,13 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
           return {
             id: p.id,
             pilotJourney: p.pilotJourney,
-            name: pilotMap.get(p.id)?.name || { fi: '', sv: '', en: '' },
-            geometry: pilotMap.get(p.id)?.geometry || { type: 'Point', coordinates: [] },
+            name: pilotMap.get(p.id)?.name ?? { fi: '', sv: '', en: '' },
+            geometry: pilotMap.get(p.id)?.geometry ?? { type: 'Point', coordinates: [] },
           };
-        }) || [],
+        }) ?? [],
     },
-    tugs: service?.tugs || null,
-    vts: service?.vts || null,
+    tugs: service?.tugs ?? null,
+    vts: service?.vts ?? null,
   };
 }
 

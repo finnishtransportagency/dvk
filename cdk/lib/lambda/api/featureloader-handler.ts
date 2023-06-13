@@ -166,17 +166,16 @@ const navigationAreaFilter = (a: AlueAPIModel) =>
 const specialAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15;
 const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
 const meetRestrictionAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 15;
-function getAreaFilter(type: string) {
+function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'specialarea15') {
   if (type === 'area') {
     return navigationAreaFilter;
   } else if (type === 'specialarea2') {
     return anchoringAreaFilter;
   } else if (type === 'specialarea15') {
     return meetRestrictionAreaFilter;
-  } else if (type === 'specialarea') {
+  } else {
     return specialAreaFilter;
   }
-  return;
 }
 
 async function addAreaFeatures(
@@ -422,8 +421,7 @@ async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties
         identifier: feature.properties?.IDENTIFIER,
         name: feature.properties?.OBJNAM,
         information: feature.properties?.INFORM,
-        // eslint-disable-next-line no-useless-escape
-        channel: feature.properties?.COMCHA?.replace(/[\[\]]/g, ''),
+        channel: feature.properties?.COMCHA?.replace(/[[\]]/g, ''),
       },
     });
   }
@@ -531,7 +529,6 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addHarborFeatures(features);
   } else if (type === 'area' || type === 'specialarea' || type === 'specialarea2' || type === 'specialarea15') {
     const areaFilter = getAreaFilter(type);
-    if (!areaFilter) return false;
     await addAreaFeatures(features, event, type, areaFilter);
   } else if (type === 'restrictionarea') {
     await addRestrictionAreaFeatures(features, event);

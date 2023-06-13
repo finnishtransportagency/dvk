@@ -1,6 +1,6 @@
 {
   "name": "squat",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -9,8 +9,8 @@
     "@capacitor/haptics": "5.0.2",
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/status-bar": "5.0.2",
-    "@ionic/core": "^7.0.11",
-    "@ionic/react": "^7.0.11",
+    "@ionic/core": "^7.0.12",
+    "@ionic/react": "^7.0.12",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",

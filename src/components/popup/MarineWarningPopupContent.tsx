@@ -8,6 +8,7 @@ import { getMap } from '../DvkMap';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
@@ -39,6 +40,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (

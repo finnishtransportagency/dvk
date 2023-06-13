@@ -79,7 +79,7 @@ export class DvkSonarPipelineStack extends Stack {
               'sed -i "s/file path=\\"/file path=\\"squat\\//g" squat/coverage/sonar-report.xml',
               'sed -i "s/file path=\\"/file path=\\"admin\\//g" admin/coverage/sonar-report.xml',
               'sed -i "s/file path=\\"/file path=\\"cdk\\//g" cdk/coverage/sonar-report.xml',
-              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
+              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.token=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
               'cd cdk',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync',

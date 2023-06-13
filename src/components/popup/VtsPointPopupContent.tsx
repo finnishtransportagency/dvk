@@ -7,6 +7,7 @@ import { VtsFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 export type VtsPopupContentProps = {
   vts: VtsProperties;
@@ -20,8 +21,10 @@ export type VtsProperties = {
 
 const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProperties }) => {
   const { t } = useTranslation();
+
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (

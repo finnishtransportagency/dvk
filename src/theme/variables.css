@@ -19,6 +19,13 @@
   src: url("./font/static/Exo2-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Exo2";
+  font-weight: 400;
+  font-style: italic;
+  src: url("./font/static/Exo2-Italic.ttf") format("truetype");
+}
+
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 

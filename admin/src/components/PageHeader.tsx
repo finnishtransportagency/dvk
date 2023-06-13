@@ -101,7 +101,7 @@ const PageHeader: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <IonHeader>
+    <IonHeader className="page-header">
       <a
         href="#mainPageContent"
         onClick={(e) => {

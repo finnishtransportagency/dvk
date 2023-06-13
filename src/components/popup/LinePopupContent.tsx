@@ -10,6 +10,7 @@ import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import dvkMap from '../DvkMap';
+import { deselectClickSelection } from './popup';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -43,6 +44,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -52,7 +54,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
           return (
             <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
               <IonCol size="auto" className="header">
-                {fairway.name[lang] || fairway.name.fi} {fairway.fairwayId}
+                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
               </IonCol>
               {index === 0 && (
                 <IonCol size="auto">
@@ -72,7 +74,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         })}
         {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
           <IonRow>
-            <IonCol>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+            <IonCol>
+              <em>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</em>
+            </IonCol>
           </IonRow>
         )}
         <IonRow>
@@ -81,10 +85,10 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000draft || line.properties.draft) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft || line.properties.draft : line.properties.draft })}{' '}
+              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft ?? line.properties.draft : line.properties.draft })}{' '}
               <span
                 aria-label={t('fairwayCards.unit.mDesc', {
-                  count: showN2000HeightSystem ? line.properties.n2000draft || line.properties.draft : line.properties.draft,
+                  count: showN2000HeightSystem ? line.properties.n2000draft ?? line.properties.draft : line.properties.draft,
                 })}
                 role="definition"
               >
@@ -96,10 +100,10 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000depth || line.properties.depth) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth || line.properties.depth : line.properties.depth })}{' '}
+              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth ?? line.properties.depth : line.properties.depth })}{' '}
               <span
                 aria-label={t('fairwayCards.unit.mDesc', {
-                  count: showN2000HeightSystem ? line.properties.n2000depth || line.properties.depth : line.properties.depth,
+                  count: showN2000HeightSystem ? line.properties.n2000depth ?? line.properties.depth : line.properties.depth,
                 })}
                 role="definition"
               >
@@ -133,9 +137,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
             <IonCol className="header">{t('popup.line.fairways')}</IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card, index) => {
+        {fairwayCards?.map((card) => {
           return (
-            <IonRow key={index}>
+            <IonRow key={'cardlink' + card.id}>
               <IonCol>
                 <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>

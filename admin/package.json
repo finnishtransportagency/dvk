@@ -1,12 +1,12 @@
 {
   "name": "admin",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "@ionic/core": "^7.0.11",
-    "@ionic/react": "^7.0.11",
-    "@ionic/react-router": "^7.0.11",
+    "@ionic/core": "^7.0.12",
+    "@ionic/react": "^7.0.12",
+    "@ionic/react-router": "^7.0.12",
     "@tanstack/react-query": "^4.29.12",
     "@tanstack/react-query-persist-client": "^4.29.12",
     "@testing-library/jest-dom": "^5.16.5",
@@ -49,6 +49,7 @@
     "graphql-request": "^6.1.0"
   },
   "scripts": {
+    "prestart": "npm run generate",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!@ionic/core|@ionic/react-router|@ionic/core|@stencil/core)/\"",
