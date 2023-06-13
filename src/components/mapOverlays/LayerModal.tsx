@@ -115,7 +115,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         setIsOpen(false);
       }}
     >
-      <IonList lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
+      <IonList id="layerModalContent" lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
         <IonGrid className="mainGrid">
           <IonRow className="section ion-align-items-center">
             <IonCol>
