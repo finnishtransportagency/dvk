@@ -11,12 +11,14 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
 
 #layerModalContent {
   max-height: calc(100vh - 96px);
+  min-width: 400px;
   overflow: auto;
 }
 
 .mobile #layerModalContent {
   max-height: none;
   height: 100% !important;
+  min-width: auto !important;
 }
 
 ion-modal#layerModalContainer .divider {
@@ -255,11 +257,29 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-checkbox {
+  display: block;
+  width: 100%;
   --size: 20px;
   --border-width: 1px;
   --checkmark-width: 3px;
   margin: 5px 5px 5px 0;
 }
+
+#layerModalContainer ion-checkbox .labelText {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-left: 25px;
+  padding-right: 50px;
+}
+
+#layerModalContainer ion-checkbox .layerLegend {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: inline-block;
+}
+
 #layerModalContainer ion-checkbox.checkbox-checked,
 #layerModalContainer ion-checkbox.checkbox-indeterminate {
   --border-width: 3px;

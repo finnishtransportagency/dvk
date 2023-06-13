@@ -58,9 +58,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
       <IonRow>
         <IonCol>
           <IonItem lines="none">
-            <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'disabled' : ''}>
-              {currentLayer.title}
-            </IonText>
             <IonCheckbox
               aria-labelledby={`${currentLayer.title}-label`}
               value={currentLayer.id}
@@ -69,8 +66,13 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
               onIonChange={handleChange}
               disabled={isDisabled()}
               indeterminate={isIndeterminate()}
-            />
-            <IonText slot="end" className={'layer ' + currentLayer.id}></IonText>
+              labelPlacement="end"
+            >
+              <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'labelText disabled' : 'labelText'}>
+                {currentLayer.title}
+              </IonText>
+              <IonText className={'layerLegend layer ' + currentLayer.id}></IonText>
+            </IonCheckbox>
           </IonItem>
         </IonCol>
         <IonCol size="auto">

@@ -337,9 +337,6 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonText id={`${title}-label`} className={disabled ? 'disabled' : ''}>
-              {title}
-            </IonText>
             <IonCheckbox
               aria-labelledby={`${title}-label`}
               value={id}
@@ -354,8 +351,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
                 })
               }
               disabled={disabled}
-            />
-            <IonText slot="end" className={'layer ' + id}></IonText>
+              labelPlacement="end"
+            >
+              <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                {title}
+              </IonText>
+              <IonText className={'layerLegend layer ' + id}></IonText>
+            </IonCheckbox>
           </IonItem>
         </IonCol>
         <IonCol size="auto">
