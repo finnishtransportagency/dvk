@@ -1,5 +1,15 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
-import { FairwayCard, FairwayCardInput, MutationSaveFairwayCardArgs, Operation, OperationError, Status } from '../../../../graphql/generated';
+import {
+  FairwayCard,
+  FairwayCardInput,
+  InputMaybe,
+  Maybe,
+  MutationSaveFairwayCardArgs,
+  Operation,
+  OperationError,
+  PictureInput,
+  Status,
+} from '../../../../graphql/generated';
 import { auditLog, log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import {
@@ -21,7 +31,8 @@ import {
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { getExpires } from '../../environment';
+import { getExpires, getStaticBucketName } from '../../environment';
+import { PutObjectCommand, PutObjectCommandOutput, PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
@@ -67,7 +78,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
               id: p.id,
               pilotJourney: mapPilotJourney(p.pilotJourney),
             };
-          }) || [],
+          }) ?? [],
       },
       tugs:
         card.trafficService?.tugs?.map((t) => {
@@ -77,7 +88,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
             name: mapText(t?.name),
             phoneNumber: mapPhoneNumbers(t?.phoneNumber),
           };
-        }) || null,
+        }) ?? null,
       vts:
         card.trafficService?.vts?.map((v) => {
           return {
@@ -91,7 +102,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
               };
             }),
           };
-        }) || null,
+        }) ?? null,
     },
     harbors:
       card.harbors?.map((id) => {
@@ -99,7 +110,35 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
       }) || null,
     fairwayIds: mapIds(card.fairwayIds),
     expires: card.status === Status.Removed ? getExpires() : null,
+    pictures: card.pictures?.map((p) => p.id) ?? null,
   };
+}
+
+const s3Client = new S3Client({ region: 'eu-west-1' });
+
+async function savePictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<string[]> | undefined) {
+  const promises: Promise<PutObjectCommandOutput>[] = [];
+  for (const picture of pictures ?? []) {
+    const command = new PutObjectCommand({
+      Key: `${cardId}/${picture.id}`,
+      Bucket: getStaticBucketName(),
+      Body: Buffer.from(picture.base64Data, 'base64'),
+    });
+    promises.push(s3Client.send(command));
+  }
+  for (const oldPicture of oldPictures ?? []) {
+    if (!pictures?.find((p) => p.id === oldPicture)) {
+      const command = new PutObjectTaggingCommand({
+        Key: `${cardId}/${oldPicture}`,
+        Bucket: getStaticBucketName(),
+        Tagging: { TagSet: [{ Key: 'Expire', Value: 'true' }] },
+      });
+      promises.push(s3Client.send(command));
+      log.debug(`expiring ${oldPicture}`);
+    }
+  }
+  await Promise.all(promises);
+  log.debug('saved %d pictures', pictures?.length ?? 0);
 }
 
 export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, FairwayCard> = async (
@@ -111,6 +150,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
+    await savePictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
     try {
       await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
     } catch (e) {

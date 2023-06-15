@@ -125,6 +125,8 @@ class FairwayCardDBModel {
 
   expires?: Maybe<number>;
 
+  pictures?: Maybe<string[]>;
+
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;

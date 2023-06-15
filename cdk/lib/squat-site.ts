@@ -107,6 +107,7 @@ export class SquatSite extends Construct {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
+      lifecycleRules: [{ tagFilters: { Expire: 'true' }, expiration: Duration.days(30) }],
     });
     staticBucket.addToResourcePolicy(
       new iam.PolicyStatement({
