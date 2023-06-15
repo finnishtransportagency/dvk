@@ -64,7 +64,7 @@ export class DvkBuildImageStack extends Stack {
         },
       ],
     });
-    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.1', 'test', 'RobotImageBuild');
+    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.2', 'test', 'RobotImageBuild');
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
         actionName: 'BuildRobotImage',
