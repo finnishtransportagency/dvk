@@ -67,7 +67,7 @@ const PrintBar: React.FC = () => {
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only large"
+              className="icon-only large no-background-focused"
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}

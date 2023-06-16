@@ -160,6 +160,10 @@ ion-item.item.only-label ion-label {
   margin: 0;
 }
 
+ion-item.item.only-label ion-label ion-button.no-background-focused {
+  margin: 1px;
+}
+
 @media screen and (max-width: 575px) {
   ion-item.item.only-label ion-label {
     white-space: normal;
