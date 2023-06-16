@@ -8,7 +8,9 @@ interface ModalProps {
   content: string | ReactElement;
   trigger?: ReactElement;
   triggerTitle?: string;
+  triggerClassName?: string;
   size?: 'medium' | 'large';
+  handleDismiss?: () => void;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -21,13 +23,14 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const handleClickClose = useCallback(() => {
     setIsOpen(false);
-  }, []);
+    if (props.handleDismiss) props.handleDismiss();
+  }, [props]);
 
   return (
     <>
       <IonButton
         fill="clear"
-        className="icon-only no-background-focused"
+        className={'icon-only no-background-focused' + (props.triggerClassName ? ' ' + props.triggerClassName : '')}
         style={{ marginTop: '1px', marginRight: '1px', marginBottom: '1px' }}
         onClick={handleClickOpen}
         title={props.triggerTitle || t('more-info')}

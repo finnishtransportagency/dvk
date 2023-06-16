@@ -35,13 +35,11 @@ const PrintBar: React.FC = () => {
               content={
                 <>
                   <p>{t('header.shareable-link-body')}</p>
-                  <IonItem lines="none">
-                    <IonItem fill="outline" lines="none">
-                      <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
-                    </IonItem>
+                  <IonItem lines="none" className="readonly-wrapper">
+                    <IonTextarea value={createShareableLink(state, true)} autoGrow readonly rows={1} className="small-text" fill="outline" />
                     <IonButton
                       fill="clear"
-                      className="icon-only"
+                      className="icon-only large"
                       onClick={handleCopyClick}
                       id="hover-trigger_"
                       title={t('header.copy-to-clipboard')}
@@ -62,12 +60,14 @@ const PrintBar: React.FC = () => {
               }
               trigger={<IonIcon src="assets/share_icon.svg" size="medium" />}
               triggerTitle={t('header.shareable-link-title')}
+              triggerClassName="large"
+              handleDismiss={handleToastDismiss}
             />
           </IonCol>
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only"
+              className="icon-only large"
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
