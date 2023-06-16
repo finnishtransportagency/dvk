@@ -46,7 +46,12 @@ const Modal: React.FC<ModalProps> = (props) => {
               <div className="wrappable-title">{props.title}</div>
             </IonTitle>
             <IonButtons slot="end" style={{ marginRight: '16px' }}>
-              <IonButton onClick={handleClickClose} className="icon-only" title={t('close-dialog')} aria-label={t('close-dialog')}>
+              <IonButton
+                onClick={handleClickClose}
+                className="icon-only no-background-focused"
+                title={t('close-dialog')}
+                aria-label={t('close-dialog')}
+              >
                 <IonIcon slot="icon-only" icon={closeOutline} />
               </IonButton>
             </IonButtons>
