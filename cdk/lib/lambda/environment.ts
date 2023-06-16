@@ -184,10 +184,10 @@ export function getTimeout() {
   return process.env.API_TIMEOUT ? Number.parseInt(process.env.API_TIMEOUT, 10) : 10000;
 }
 
-export function getStaticBucketName() {
+export function getNewStaticBucketName() {
   if (isProductionEnvironment()) {
-    return 'static.dvk.vaylapilvi.fi';
+    return 'static2.dvk.vaylapilvi.fi';
   } else {
-    return `static.dvk${getEnvironment()}.testivaylapilvi.fi`;
+    return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
   }
 }

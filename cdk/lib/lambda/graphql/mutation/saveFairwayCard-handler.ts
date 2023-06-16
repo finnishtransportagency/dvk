@@ -31,7 +31,7 @@ import {
 import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
-import { getExpires, getStaticBucketName } from '../../environment';
+import { getExpires, getNewStaticBucketName } from '../../environment';
 import { PutObjectCommand, PutObjectCommandOutput, PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
@@ -118,10 +118,11 @@ const s3Client = new S3Client({ region: 'eu-west-1' });
 
 async function savePictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<string[]> | undefined) {
   const promises: Promise<PutObjectCommandOutput>[] = [];
+  const bucketName = getNewStaticBucketName();
   for (const picture of pictures ?? []) {
     const command = new PutObjectCommand({
       Key: `${cardId}/${picture.id}`,
-      Bucket: getStaticBucketName(),
+      Bucket: bucketName,
       Body: Buffer.from(picture.base64Data, 'base64'),
     });
     promises.push(s3Client.send(command));
@@ -130,8 +131,8 @@ async function savePictures(cardId: string, pictures: InputMaybe<PictureInput[]>
     if (!pictures?.find((p) => p.id === oldPicture)) {
       const command = new PutObjectTaggingCommand({
         Key: `${cardId}/${oldPicture}`,
-        Bucket: getStaticBucketName(),
-        Tagging: { TagSet: [{ Key: 'Expire', Value: 'true' }] },
+        Bucket: bucketName,
+        Tagging: { TagSet: [{ Key: 'Removed', Value: 'true' }] },
       });
       promises.push(s3Client.send(command));
       log.debug(`expiring ${oldPicture}`);
