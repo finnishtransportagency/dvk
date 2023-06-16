@@ -11,7 +11,7 @@ import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
-import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
+import { FeatureDataLayerId, FeatureDataSources, FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';

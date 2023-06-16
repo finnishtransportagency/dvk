@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { OFFLINE_STORAGE } from '../utils/constants';
 import { useFairwayCardListData, useFeatureData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 import alertIcon from '../theme/img/alert_icon.svg';
+import { useStaticDataLayer } from './FeatureLoader';
 
 const OfflineSupport: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
@@ -24,16 +25,16 @@ const OfflineSupport: React.FC = () => {
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
   const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
   const marineWarningLayer = useFeatureData('marinewarning');
-  const nameLayer = useFeatureData('name');
+  const nameLayer = useStaticDataLayer('name');
   const boardLine12Layer = useFeatureData('boardline12');
   const mareographLayer = useFeatureData('mareograph');
   const observationLayer = useFeatureData('observation');
   const buoyLayer = useFeatureData('buoy');
-  const bgLayerBa = useFeatureData('balticsea');
-  const bgLayerFi = useFeatureData('finland');
-  const bgLayerSea = useFeatureData('mml_meri');
-  const bgLayerLake = useFeatureData('mml_jarvi');
-  const bgLayerQuay = useFeatureData('mml_laiturit');
+  const bgLayerBa = useStaticDataLayer('balticsea');
+  const bgLayerFi = useStaticDataLayer('finland');
+  const bgLayerSea = useStaticDataLayer('mml_meri');
+  const bgLayerLake = useStaticDataLayer('mml_jarvi');
+  const bgLayerQuay = useStaticDataLayer('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
   const circleLayer = useFeatureData('circle');
@@ -86,16 +87,16 @@ const OfflineSupport: React.FC = () => {
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
     safetyEquipmentFaultLayer.isError ? safetyEquipmentFaultLayer.errorUpdatedAt : 0,
     marineWarningLayer.isError ? marineWarningLayer.errorUpdatedAt : 0,
-    nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
+    //nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
     boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
     mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
     observationLayer.isError ? observationLayer.errorUpdatedAt : 0,
     buoyLayer.isError ? buoyLayer.errorUpdatedAt : 0,
-    bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
+    //bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
     bgLayerFi.isError ? bgLayerFi.errorUpdatedAt : 0,
-    bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
-    bgLayerLake.isError ? bgLayerLake.errorUpdatedAt : 0,
-    bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
+    //bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
+    //bgLayerLake.isError ? bgLayerLake.errorUpdatedAt : 0,
+    //bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
     vtsLineLayer.isError ? vtsLineLayer.errorUpdatedAt : 0,
     vtsPointLayer.isError ? vtsPointLayer.errorUpdatedAt : 0,
     circleLayer.isError ? circleLayer.errorUpdatedAt : 0,

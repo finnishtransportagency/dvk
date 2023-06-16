@@ -58,18 +58,49 @@ export function useCircleLayer() {
   return useDataLayer('circle', 'circle');
 }
 
-function useStaticDataLayer(
+export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | BackgroundLayerId) {
+  const [ready, setReady] = useState(false);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState(0);
+  const isPaused = false;
+  const errorUpdatedAt = 0;
+  const isError = false;
+
+  useEffect(() => {
+    console.log('---- CHECK LAYER: ' + featureLayerId);
+    const layer = dvkMap.getFeatureLayer(featureLayerId);
+    let layerStatus = layer.get('status');
+    if (layerStatus === 'ready') {
+      setDataUpdatedAt(layer.get('dataUpdatedAt'));
+      setReady(true);
+    } else {
+      const fp = () => {
+        layerStatus = layer.get('status');
+        console.log('---- LAYER STATUS ' + featureLayerId + ': ' + layerStatus);
+        if (layerStatus === 'ready') {
+          setDataUpdatedAt(layer.get('dataUpdatedAt'));
+          setReady(true);
+          layer.un('propertychange', fp);
+        }
+      };
+      console.log('---- LISTEN LAYER CHANGE: ' + featureLayerId);
+      layer.on('propertychange', fp);
+    }
+  }, [featureLayerId]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useInitStaticDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,
-  dataProjection = MAP.EPSG,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
+  dataProjection = MAP.EPSG
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId);
+
   useEffect(() => {
+    const layer = dvkMap.getFeatureLayer(featureLayerId);
+    layer.set('status', 'loading');
     if (data) {
-      const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const source = layer.getSource() as VectorSource;
@@ -77,6 +108,8 @@ function useStaticDataLayer(
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
+        console.log('SET LAYER STATUS ready: ' + featureLayerId);
+        layer.set('status', 'ready');
       }
       setReady(true);
     }
@@ -85,27 +118,27 @@ function useStaticDataLayer(
 }
 
 export function useNameLayer() {
-  return useStaticDataLayer('name', 'name');
+  return useStaticDataLayer('name');
 }
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
-  return useStaticDataLayer('finland', 'finland');
+  return useStaticDataLayer('finland');
 }
 
 export function useBackgroundMmlmeriLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_meri', 'mml_meri');
+  return useStaticDataLayer('mml_meri');
 }
 
 export function useBackgroundMmljarviLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_jarvi', 'mml_jarvi');
+  return useStaticDataLayer('mml_jarvi');
 }
 
 export function useBackgroundMmllaituritLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_laiturit', 'mml_laiturit');
+  return useStaticDataLayer('mml_laiturit');
 }
 
 export function useBackgroundBalticseaLayer(): DvkLayerState {
-  return useStaticDataLayer('balticsea', 'balticsea');
+  return useStaticDataLayer('balticsea');
 }
 
 export function useBoardLine12Layer() {
