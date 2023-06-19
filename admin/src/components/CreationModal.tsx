@@ -23,14 +23,14 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [origin, setOrigin] = useState<FairwayCardOrHarbor | undefined>();
 
   const createNewItem = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
     if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
   };
 
   const closeModal = () => {
     setIsOpen(false);
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       if (!isDropdownOpen) setOrigin(undefined);
     }, 150);
@@ -49,8 +49,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             onClick={() => closeModal()}
             fill="clear"
             className="closeButton"
-            title={t('general.close') || ''}
-            aria-label={t('general.close') || ''}
+            title={t('general.close') ?? ''}
+            aria-label={t('general.close') ?? ''}
           >
             <CloseIcon />
           </IonButton>

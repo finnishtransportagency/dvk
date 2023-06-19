@@ -7,6 +7,7 @@ import {
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
+  useFairwayCardsQuery,
   useFairwaysQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
@@ -19,7 +20,7 @@ const datasourceClient = {
   endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/yllapito/graphql',
   fetchParams: {
     headers: {
-      'x-api-key': process.env.REACT_APP_API_KEY || 'key missing',
+      'x-api-key': process.env.REACT_APP_API_KEY ?? 'key missing',
     },
   },
 };
@@ -38,6 +39,10 @@ export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: b
 
 export function useFairwaysQueryData() {
   return useFairwaysQuery(datasourceClient);
+}
+
+export function useFairwayCardsQueryData() {
+  return useFairwayCardsQuery(datasourceClient);
 }
 
 export function useHarboursQueryData() {

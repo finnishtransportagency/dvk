@@ -43,6 +43,8 @@ async function main() {
     { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6') },
     { id: 'restrictionarea', url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2') },
     { id: 'specialarea', url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6') },
+    { id: 'specialarea2', url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6') },
+    { id: 'specialarea15', url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6') },
     { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot') },
     { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor') },
     { id: 'safetyequipment', url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99') },
@@ -53,7 +55,9 @@ async function main() {
     { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph') },
     { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation') },
     { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy') },
-    { id: 'vts', url: new URL(featureLoaderUrl + '?type=vts') },
+    { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline') },
+    { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint') },
+    { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle') },
   ];
   for (const source of sources) {
     const response = await axios.get(source.url.toString(), {

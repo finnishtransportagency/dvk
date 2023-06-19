@@ -10,7 +10,7 @@ test('test mapHarborToModel minimal', () => {
     name: { fi: 'test', sv: 'testsv', en: 'testen' },
     n2000HeightSystem: false,
     operation: Operation.Create,
-    geometry: { lat: '1', lon: '2' },
+    geometry: { lat: '60', lon: '20' },
     status: Status.Draft,
   };
   expect(mapHarborToModel(input, undefined, currentUser)).toMatchSnapshot({
@@ -25,7 +25,7 @@ test('test mapHarborToModel all', () => {
     name: { fi: 'test2', sv: 'testsv2', en: 'testen2' },
     n2000HeightSystem: true,
     operation: Operation.Update,
-    geometry: { lat: '11', lon: '22' },
+    geometry: { lat: '62', lon: '18' },
     status: Status.Public,
     cargo: {
       fi: 'cargofi',
@@ -43,9 +43,9 @@ test('test mapHarborToModel all', () => {
       sv: 'extrasv',
       en: 'extraen',
     },
-    fax: '323',
+    fax: '32321',
     internet: 'www.fi',
-    phoneNumber: ['1', '22'],
+    phoneNumber: ['12345', '22222'],
     harborBasin: {
       fi: 'basinfi',
       sv: 'basinsv',
@@ -63,12 +63,12 @@ test('test mapHarborToModel all', () => {
           sv: 'cargosv',
           en: 'cargoen',
         },
-        geometry: { lat: '222.1', lon: '33.2' },
+        geometry: { lat: '63.2', lon: '22.1' },
         length: '123',
         sections: [
           {
             depth: '10',
-            geometry: { lat: '123', lon: '62.2' },
+            geometry: { lat: '62.2', lon: '17' },
             name: 'stest',
           },
         ],

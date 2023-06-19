@@ -1,5 +1,5 @@
 import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -9,15 +9,37 @@ import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
-import { warningOutline } from 'ionicons/icons';
+import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
 import { getAlertProperties } from '../../utils/common';
 import './MarineWarnings.css';
+import * as olExtent from 'ol/extent';
+import { Link } from 'react-router-dom';
 
 type WarningListProps = {
   data: MarineWarning[];
   loading?: boolean;
 };
+
+function goto(id: number) {
+  const marineWarningSource = dvkMap.getVectorSource('marinewarning');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  let feature = marineWarningSource.getFeatureById(id);
+  if (feature) {
+    marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    selectedFairwayCardSource.clear();
+    selectedFairwayCardSource.addFeature(feature);
+    marineWarningSource.removeFeature(feature);
+  } else {
+    feature = selectedFairwayCardSource.getFeatureById(id);
+  }
+  const geometry = feature?.getGeometry();
+  if (feature && geometry) {
+    const extent = olExtent.createEmpty();
+    olExtent.extend(extent, geometry.getExtent());
+    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+  }
+}
 
 const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
@@ -56,7 +78,17 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
               <IonCol size="6">
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('location')}</h4>
-                  <Paragraph bodyText={warning.location} />
+                  <p>
+                    <Link
+                      to="/merivaroitukset/"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        goto(warning.id);
+                      }}
+                    >
+                      {warning.location[lang] || warning.location.fi || t('noObjects')}
+                    </Link>
+                  </p>
                 </IonText>
               </IonCol>
             </IonRow>
@@ -183,7 +215,24 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt);
+  const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
+
+  const getLayerItemAlertText = useCallback(() => {
+    if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
+    return t('lastUpdatedAt', { val: alertProps.duration });
+  }, [alertProps, t]);
+
+  useEffect(() => {
+    return () => {
+      const source = dvkMap.getVectorSource('selectedfairwaycard');
+      const target = dvkMap.getVectorSource('marinewarning');
+      source.forEachFeature((f) => {
+        target.addFeature(f);
+      });
+      source.clear();
+    };
+  }, []);
+
   return (
     <>
       <Breadcrumb path={path} />
@@ -214,12 +263,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       />
 
       {alertProps && !isLoading && !isFetching && (
-        <Alert
-          icon={warningOutline}
-          color={alertProps.color}
-          className={'top-margin ' + alertProps.color}
-          title={t('lastUpdatedAt', { val: alertProps.duration })}
-        />
+        <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
 
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">

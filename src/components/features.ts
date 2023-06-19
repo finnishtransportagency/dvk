@@ -41,10 +41,10 @@ export type AreaFeatureProperties = {
   typeCode: number;
   type: string;
   name?: string;
-  referenceLevel: string;
+  referenceLevel?: string;
   draft?: number;
   depth?: number;
-  n2000ReferenceLevel: string;
+  n2000ReferenceLevel?: string;
   n2000depth?: number;
   n2000draft?: number;
   n2000HeightSystem?: boolean;
@@ -76,6 +76,8 @@ export type LineFeatureProperties = {
   n2000depth?: number;
   n2000draft?: number;
   n2000HeightSystem?: boolean;
+  referenceLevel?: string;
+  n2000ReferenceLevel?: string;
   direction?: number;
   extra?: string;
   fairways?: LineFairway[];
@@ -87,10 +89,14 @@ type EquipmentFairway = {
   fairwayCards?: Card[];
 };
 
+type EquipmentDistance = {
+  areaId: number;
+  distance: number;
+};
+
 export type EquipmentFeatureProperties = {
   id: number;
   featureType: string;
-  subType?: string;
   navigation?: Text;
   navigationCode?: string;
   name?: Text;
@@ -102,6 +108,7 @@ export type EquipmentFeatureProperties = {
   remoteControl?: number;
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
+  distances?: EquipmentDistance[];
 };
 
 export type MarineWarningFeatureProperties = {

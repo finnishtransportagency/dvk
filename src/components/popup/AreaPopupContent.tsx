@@ -3,16 +3,19 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
-import { Lang } from '../../utils/constants';
+import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
+  isOffline: boolean;
 };
 
 export type AreaProperties = {
@@ -25,16 +28,18 @@ type FairwayCardIdName = {
   name: Text;
 };
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  const fairwayCards: FairwayCardIdName[] = [];
 
+  let fairwayCards: FairwayCardIdName[] = [];
   area.properties?.fairways?.forEach((f) => {
     if (f.fairwayCards) {
       fairwayCards.push(...f.fairwayCards);
     }
   });
+  fairwayCards = fairwayCards.filter((card, index, self) => self.findIndex((inner) => inner?.id === card?.id) === index);
+
   const sizingSpeeds = [
     ...Array.from(
       new Set(
@@ -45,32 +50,50 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
     ),
   ];
   const speedLimits = Array.from(
-    new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit || 0]).filter((val) => val > 0))
+    new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit ?? 0]).filter((val) => val > 0))
   ).sort((a, b) => a - b);
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
     <IonGrid id="areaPopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {area.properties.name || t('fairwayCards.areaType' + area.properties.typeCode)}
-          </IonCol>
-          <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
-            </IonButton>
-          </IonCol>
-        </IonRow>
-        {showN2000HeightSystem !== undefined && (
+        {area.properties.fairways?.map((fairway, index) => {
+          return (
+            <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
+              <IonCol size="auto" className="header">
+                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
+              </IonCol>
+              {index === 0 && (
+                <IonCol size="auto">
+                  <IonButton
+                    fill="clear"
+                    className="closeButton"
+                    onClick={() => closePopup()}
+                    title={t('common.close')}
+                    aria-label={t('common.close')}
+                  >
+                    <IonIcon className="otherIconLarge" src={closeIcon} />
+                  </IonButton>
+                </IonCol>
+              )}
+            </IonRow>
+          );
+        })}
+        {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
-            <IonCol>{showN2000HeightSystem && area.properties.n2000ReferenceLevel ? 'N2000 (BSCD2000)' : 'MW'}</IonCol>
+            <IonCol>
+              <em>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</em>
+            </IonCol>
           </IonRow>
         )}
+        <IonRow>
+          <IonCol size="auto">{area.properties.name ?? t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        </IonRow>
         {area.properties.typeCode === 15 && (
           <IonRow>
             <IonCol>
@@ -81,15 +104,24 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonCol>
           </IonRow>
         )}
-        <IonRow>
-          <IonCol className="header">{t('popup.area.info')}</IonCol>
-        </IonRow>
+        {(area.properties.n2000draft ||
+          area.properties.draft ||
+          area.properties.n2000depth ||
+          area.properties.depth ||
+          speedLimits.length > 0 ||
+          sizingSpeeds.length > 0) && (
+          <IonRow>
+            <IonCol className="header">{t('popup.area.info')}</IonCol>
+          </IonRow>
+        )}
         {(area.properties.n2000draft || area.properties.draft) && (
           <IonRow>
             <IonCol>
-              {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}{' '}
+              {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000draft : area.properties.draft })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft,
+                })}
                 role="definition"
               >
                 m
@@ -100,9 +132,11 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         {(area.properties.n2000depth || area.properties.depth) && (
           <IonRow>
             <IonCol>
-              {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}{' '}
+              {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth })}{' '}
               <span
-                aria-label={t('fairwayCards.unit.mDesc', { count: showN2000HeightSystem ? area.properties.n2000depth : area.properties.depth })}
+                aria-label={t('fairwayCards.unit.mDesc', {
+                  count: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth,
+                })}
                 role="definition"
               >
                 m
@@ -135,22 +169,31 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             <IonCol className="header">{t('popup.area.fairways')}</IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card, index) => {
+        {fairwayCards?.map((card) => {
           return (
-            <IonRow key={index}>
+            <IonRow key={'cardlink' + card.id}>
               <IonCol>
                 <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
               </IonCol>
             </IonRow>
           );
         })}
-        {area.properties.extra && (
+        {area.properties.typeCode === 15 && (
           <>
             <IonRow>
               <IonCol className="header">{t('popup.area.extra')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{area.properties.extra}</IonCol>
+              <IonCol>
+                <>
+                  {t('popup.area.prohibitionText')}{' '}
+                  <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={isOffline ? -1 : undefined}>
+                    {MASTERSGUIDE_URLS[lang]}
+                    <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
+                  </a>
+                  .
+                </>
+              </IonCol>
             </IonRow>
           </>
         )}

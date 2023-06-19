@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -9,7 +9,8 @@ import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
-import { warningOutline } from 'ionicons/icons';
+import alertIcon from '../../theme/img/alert_icon.svg';
+import { FeatureDataLayerId } from '../../utils/constants';
 
 const LegendDepth = () => {
   return (
@@ -33,6 +34,66 @@ const LegendDepth = () => {
         <IonCol>
           <IonItem>
             <IonText>MW</IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+const LegendArea = () => {
+  const { t } = useTranslation();
+  return (
+    <IonGrid className="legend deptharea ion-no-padding">
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth1')}</IonText>
+            <IonText slot="start" className="def area1"></IonText>
+          </IonItem>
+        </IonCol>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth2')}</IonText>
+            <IonText slot="start" className="def area2"></IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth3')}</IonText>
+            <IonText slot="start" className="def area3"></IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+const LegendContour = () => {
+  const { t } = useTranslation();
+  return (
+    <IonGrid className="legend depthcontour ion-no-padding">
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth4')}</IonText>
+            <IonText slot="start" className="def line1"></IonText>
+          </IonItem>
+        </IonCol>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth5')}</IonText>
+            <IonText slot="start" className="def line2"></IonText>
+          </IonItem>
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          <IonItem>
+            <IonText>{t('homePage.map.controls.layer.legend.depth6')}</IonText>
+            <IonText slot="start" className="def line3"></IonText>
           </IonItem>
         </IonCol>
       </IonRow>
@@ -220,7 +281,7 @@ const LegendIce = () => {
 };
 
 interface LayerItemProps {
-  id: string;
+  id: FeatureDataLayerId;
   title: string;
   noOfflineSupport?: boolean;
   layers: string[];
@@ -253,25 +314,35 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       });
     }, 250);
   };
-  let alertProps = undefined;
+  let alertProps:
+    | {
+        duration: number;
+        color: string;
+      }
+    | undefined = undefined;
+  const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
   if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
-    const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-    alertProps = getAlertProperties(dataUpdatedAt);
+    alertProps = getAlertProperties(dataUpdatedAt, id);
   }
+  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
+  const disabled = !initialized || (noOfflineSupport && state.isOffline);
+
+  const getLayerItemAlertText = useCallback(() => {
+    if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
+    return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
+  }, [alertProps, t]);
+
   return (
     <IonGrid className="ion-no-padding layerItem">
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonText id={`${title}-label`} className={noOfflineSupport && state.isOffline ? 'disabled' : ''}>
-              {title}
-            </IonText>
             <IonCheckbox
               aria-labelledby={`${title}-label`}
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onClick={() =>
+              onIonChange={() =>
                 setLayers((prev) => {
                   if (prev.includes(id)) {
                     return [...prev.filter((p) => p !== id)];
@@ -279,13 +350,18 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
                   return [...prev, id];
                 })
               }
-              disabled={noOfflineSupport && state.isOffline}
-            />
-            <IonText slot="end" className={'layer ' + id}></IonText>
+              disabled={disabled}
+              labelPlacement="end"
+            >
+              <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                {title}
+              </IonText>
+              <IonText className={'layerLegend layer ' + id}></IonText>
+            </IonCheckbox>
           </IonItem>
         </IonCol>
         <IonCol size="auto">
-          {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
+          {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
             <IonButton
               fill="clear"
               className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
@@ -297,20 +373,15 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
           )}
         </IonCol>
       </IonRow>
-      {alertProps && (
-        <LayerAlert
-          icon={warningOutline}
-          className={'layerAlert'}
-          title={t('warnings.lastUpdatedAt2', { val: alertProps.duration })}
-          color={alertProps.color}
-        />
-      )}
-      {(id === 'speedlimit' || id === 'ice' || id === 'depth12') && (
+      {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
+      {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>
             {id === 'speedlimit' && <LegendSpeedlimits />}
             {id === 'ice' && <LegendIce />}
             {id === 'depth12' && <LegendDepth />}
+            {id === 'deptharea' && <LegendArea />}
+            {id === 'depthcontour' && <LegendContour />}
           </IonCol>
         </IonRow>
       )}

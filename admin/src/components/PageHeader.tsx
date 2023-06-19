@@ -17,10 +17,10 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
 
   const closeModal = () => {
     setIsOpen(false);
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
   };
   const logoutAction = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
   };
 
   return (
@@ -36,8 +36,8 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
             onClick={() => closeModal()}
             fill="clear"
             className="closeButton"
-            title={t('general.close') || ''}
-            aria-label={t('general.close') || ''}
+            title={t('general.close') ?? ''}
+            aria-label={t('general.close') ?? ''}
           >
             <CloseIcon />
           </IonButton>
@@ -101,7 +101,19 @@ const PageHeader: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <IonHeader>
+    <IonHeader className="page-header">
+      <a
+        href="#mainPageContent"
+        onClick={(e) => {
+          e.currentTarget.blur();
+          document.getElementById('mainPageContent')?.setAttribute('tabIndex', '-1');
+          document.getElementById('mainPageContent')?.focus({ preventScroll: false });
+          e.preventDefault();
+        }}
+        className="skip-to-main-content"
+      >
+        {t('header.skip-to-content')}
+      </a>
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-align-items-center">
           <IonCol size="auto">
@@ -110,7 +122,7 @@ const PageHeader: React.FC = () => {
           <IonCol>
             <IonText>
               <h1>
-                {t('header.mainTitle')} - {t('header.appTitle')} <small>(v{`${process.env.REACT_APP_VERSION}`})</small>
+                {t('header.mainTitle')} - {t('header.appTitle')} <small>v{`${process.env.REACT_APP_VERSION}`}</small>
               </h1>
               {process.env.REACT_APP_ENV !== 'prod' && <h2>{t('general.environment-' + process.env.REACT_APP_ENV)}</h2>}
             </IonText>

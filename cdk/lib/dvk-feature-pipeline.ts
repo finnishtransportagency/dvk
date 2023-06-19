@@ -69,7 +69,7 @@ export class DvkFeaturePipelineStack extends Stack {
             ],
           },
         },
-        cache: { paths: ['/opt/robotframework/temp/.npm/**/*'] },
+        cache: { paths: ['/root/.cache/**/*', '/root/.npm/**/*'] },
         reports: {
           'dvk-tests': { files: 'junit.xml' },
           'dvk-coverage': { files: 'coverage/clover.xml', 'file-format': 'CLOVERXML' },
@@ -84,7 +84,7 @@ export class DvkFeaturePipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.0'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-buildimage'), '1.0.4'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
@@ -96,6 +96,10 @@ export class DvkFeaturePipelineStack extends Stack {
           REACT_APP_BG_MAP_API_URL: {
             type: BuildEnvironmentVariableType.PARAMETER_STORE,
             value: 'BGMapApiUrl',
+          },
+          NODE_OPTIONS: {
+            value: '--max_old_space_size=4096 --max-old-space-size=4096',
+            type: BuildEnvironmentVariableType.PLAINTEXT,
           },
         },
       },

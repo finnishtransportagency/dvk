@@ -35,8 +35,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358400907979",
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "phoneNumber": "+358295253450",
       "internet": "https://www.pilotonline.fi",
       "extraInfo": {
         "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
@@ -45,7 +45,7 @@
       },
       "places": [
         {
-          "id": 13,
+          "id": 509000599,
           "pilotJourney": 4
         }
       ]

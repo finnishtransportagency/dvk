@@ -74,5 +74,9 @@ mutation saveHarbor($harbor: HarborInput!) {
       en
     }
     status
+    creator
+    creationTimestamp
+    modifier
+    modificationTimestamp
   }
 }

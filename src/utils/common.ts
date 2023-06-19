@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { FairwayCardPartsFragment } from '../graphql/generated';
-import { MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -83,16 +83,20 @@ export const refreshPrintableMap = () => {
   }
 };
 
-function getDuration(dataUpdatedAt: number, decimals = 1) {
+export function getDuration(dataUpdatedAt: number, decimals = 1) {
   const power = Math.pow(10, decimals);
   const now = Date.now(); // for testing warning vs danger + 1000 * 60 * 60 * 11;
-  const duration = Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60;
+  const duration = Math.floor(Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60);
   return Math.round(duration * power) / power;
 }
 
-export function getAlertProperties(dataUpdatedAt: number) {
+export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLayerId) {
   const duration = getDuration(dataUpdatedAt);
-  if (duration < 2) {
+  let warningDurationHours = 2;
+  if (layer === 'buoy' || layer === 'mareograph' || layer === 'observation') {
+    warningDurationHours = 1;
+  }
+  if (duration < warningDurationHours) {
     return undefined;
   } else if (duration < 12) {
     return { duration, color: 'warning' };

@@ -6,6 +6,8 @@ import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { MareographFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type MareographPopupContentProps = {
   mareograph: MareographProperties;
@@ -22,6 +24,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -33,7 +36,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

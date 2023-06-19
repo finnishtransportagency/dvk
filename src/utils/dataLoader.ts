@@ -1,10 +1,16 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { FeatureDataId, FeatureDataSources } from './constants';
+import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
 import { Status, useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
 import { useEffect } from 'react';
 
-export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true, refetchInterval: number | false = false) {
+export function useFeatureData(
+  featureDataId: FeatureDataId,
+  refetchOnMount: 'always' | boolean = true,
+  refetchInterval: number | false = false,
+  staleTime: number = OFFLINE_STORAGE.staleTime,
+  cacheTime: number = OFFLINE_STORAGE.cacheTime
+) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
@@ -12,15 +18,29 @@ export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'al
   } else {
     urlStr = fds?.url ? fds.url.toString() : '';
   }
-  return useQuery({
+  const response = useQuery({
     queryKey: [fds?.id],
     refetchOnMount,
     refetchInterval,
+    staleTime,
+    cacheTime,
     queryFn: async () => {
       const { data } = await axios.get(urlStr);
       return data;
     },
   });
+  return {
+    ...response,
+    data: response.data?.data ? response.data.data : response.data,
+  };
+}
+
+export function useStaticFeatureData(
+  featureDataId: FeatureDataId,
+  refetchOnMount: 'always' | boolean = true,
+  refetchInterval: number | false = false
+) {
+  return useFeatureData(featureDataId, refetchOnMount, refetchInterval, OFFLINE_STORAGE.staleTimeStatic, OFFLINE_STORAGE.cacheTimeStatic);
 }
 
 const datasourceClient = {

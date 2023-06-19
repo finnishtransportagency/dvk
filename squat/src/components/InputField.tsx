@@ -1,13 +1,12 @@
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
-import { IonIcon, IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
-import { warningOutline } from 'ionicons/icons';
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import { IonInput } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Label from './Label';
 import i18n from '../i18n';
 import { countDecimals } from '../utils/helpers';
-import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core';
+import { InputChangeEventDetail, IonInputCustomEvent } from '@ionic/core/dist/types/components';
 
 interface InputProps {
   title: string;
@@ -19,7 +18,7 @@ interface InputProps {
   min?: number;
   max?: number;
   step?: string;
-  unit?: string | ReactElement;
+  unit?: string;
   unitId?: string;
   helper?: string | ReactElement;
   fieldClass?: string;
@@ -32,30 +31,51 @@ const InputField: React.FC<InputProps> = (props) => {
   const { t } = useTranslation('', { keyPrefix: 'common' });
   const { dispatch } = useSquatContext();
   const [value, setValue] = useState<string | number | null>(props.value);
+  const inputRef = useRef<HTMLIonInputElement>(null);
 
   useEffect(() => {
     setValue(props.value);
-  }, [props.value]);
+    if (props.value !== null) {
+      inputRef?.current?.classList.add('ion-touched');
+      /* Set timeout to make sure ionic has rendered/modified native input element before validating */
+      setTimeout(() => {
+        inputRef?.current?.getInputElement().then((inputElem) => {
+          if (inputElem) {
+            dispatch({
+              type: 'validation',
+              payload: {
+                key: inputElem.name,
+                value: inputElem.checkValidity(),
+                elType: 'boolean',
+              },
+            });
+          }
+        });
+      }, 100);
+    }
+  }, [props.value, props.min, props.max, dispatch]);
 
   const innerUpdateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
-      setValue((event.target as HTMLInputElement).value);
-      dispatch({
-        type: 'validation',
-        payload: {
-          key: (event.target as HTMLInputElement).name,
-          value: ((event.target as HTMLInputElement).firstChild as HTMLInputElement).checkValidity(),
-          elType: 'boolean',
-        },
-      });
-      dispatch({
-        type: actionType,
-        payload: {
-          key: (event.target as HTMLInputElement).name,
-          value: (event.target as HTMLInputElement).value,
-          elType: (event.target as HTMLInputElement).tagName,
-          fallThrough: true,
-        },
+      inputRef?.current?.getInputElement().then((inputElem) => {
+        setValue(inputElem.value);
+        dispatch({
+          type: 'validation',
+          payload: {
+            key: inputElem.name,
+            value: inputElem.checkValidity(),
+            elType: 'boolean',
+          },
+        });
+        dispatch({
+          type: actionType,
+          payload: {
+            key: inputElem.name,
+            value: inputElem.value,
+            elType: inputElem.tagName,
+            fallThrough: true,
+          },
+        });
       });
     },
     [dispatch]
@@ -63,6 +83,7 @@ const InputField: React.FC<InputProps> = (props) => {
 
   const updateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
+      inputRef?.current?.classList.add('ion-touched');
       dispatch({
         type: actionType,
         payload: {
@@ -76,79 +97,37 @@ const InputField: React.FC<InputProps> = (props) => {
   );
 
   const getHelperText = () => {
-    let helper;
+    let helper = '';
     if (props.min !== undefined)
-      helper = (
-        <>
-          <span aria-label={t('minimum-value')} role="definition">
-            {Number(props.min).toLocaleString(i18n.language, {
-              minimumFractionDigits: countDecimals(Number(props.step)),
-              maximumFractionDigits: countDecimals(Number(props.step)),
-            })}
-          </span>
-          {' – '}
-        </>
-      );
+      helper =
+        Number(props.min).toLocaleString(i18n.language, {
+          minimumFractionDigits: countDecimals(Number(props.step)),
+          maximumFractionDigits: countDecimals(Number(props.step)),
+        }) + ' - ';
     if (props.max !== undefined)
-      helper = (
-        <>
-          {helper}
-          <span aria-label={t('maximum-value')} role="definition">
-            {Number(props.max).toLocaleString(i18n.language, {
-              minimumFractionDigits: countDecimals(Number(props.step)),
-              maximumFractionDigits: countDecimals(Number(props.step)),
-            })}
-          </span>
-        </>
-      );
-    if (props.unit)
-      helper = (
-        <>
-          {helper}
-          <span
-            aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
-              count: Number((value || 0).toLocaleString(i18n.language)),
-            })}
-            role="definition"
-          >
-            &nbsp;{props.unit}
-          </span>
-        </>
-      );
+      helper += Number(props.max).toLocaleString(i18n.language, {
+        minimumFractionDigits: countDecimals(Number(props.step)),
+        maximumFractionDigits: countDecimals(Number(props.step)),
+      });
+    if (props.unit) helper += ' ' + props.unit;
     return helper;
   };
 
   const getErrorText = () => {
+    const errorSign = '\u26A0 ';
     if (value) {
-      if (props.min !== undefined && value < props.min) {
-        const unit = (
-          <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.min })} role="definition">
-            {props.unit}
-          </span>
-        );
-        return (
-          <span>
-            {t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) })}&nbsp;{unit}
-          </span>
-        );
-      } else if (props.max !== undefined && value > props.max) {
-        const unit = (
-          <span aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), { count: props.max })} role="definition">
-            {props.unit}
-          </span>
-        );
-        return (
-          <span>
-            {t('value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) })}&nbsp;{unit}
-          </span>
-        );
+      const unit = props.unit || '';
+      if (props.min !== undefined && Number(value) < props.min) {
+        return errorSign + t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) }) + ' ' + unit;
+      } else if (props.max !== undefined && Number(value) > props.max) {
+        return errorSign + t('value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) }) + ' ' + unit;
       } else if (countDecimals(Number(value)) > countDecimals(Number(props.step))) {
-        return t('maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
+        return errorSign + t('maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
       } else {
-        return t('value-invalid');
+        return errorSign + t('value-invalid');
       }
     }
-    return t('required');
+    return errorSign + t('required');
   };
 
   const handleChange = useCallback(
@@ -165,6 +144,10 @@ const InputField: React.FC<InputProps> = (props) => {
     [updateAction, props.actionType]
   );
 
+  const handleFocus = () => {
+    inputRef?.current?.classList.add('ion-touched');
+  };
+
   return (
     <>
       <Label
@@ -175,44 +158,29 @@ const InputField: React.FC<InputProps> = (props) => {
         infoContent={props.infoContent}
       />
 
-      <IonItem fill="outline" className={props.fieldClass + ' input-item'} mode="md">
-        <IonInput
-          type="number"
-          min={props.min}
-          max={props.max}
-          step={props.step}
-          name={props.name}
-          required={props.required}
-          value={value}
-          placeholder={props.placeholder}
-          onIonChange={handleChange}
-          onIonBlur={handleBlur}
-          debounce={250}
-          inputmode="decimal"
-          mode="md"
-        />
-        {props.unit && (
-          <IonLabel slot="end" color="medium" className="unit">
-            <span
-              aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
-                count: Number((value || 0).toLocaleString(i18n.language)),
-              })}
-              role="definition"
-            >
-              {props.unit}
-            </span>
-          </IonLabel>
-        )}
-        <IonNote slot="helper" className="input-helper">
-          {props.helper ? props.helper : getHelperText()}
-        </IonNote>
-        <IonNote slot="error" className="input-error">
-          <div title={t('error')}>
-            <IonIcon icon={warningOutline} color="danger" aria-label={t('error')} />
-          </div>
-          {getErrorText()}
-        </IonNote>
-      </IonItem>
+      <IonInput
+        ref={inputRef}
+        fill="outline"
+        className={props.fieldClass + ' input-item'}
+        type="number"
+        min={props.min}
+        max={props.max}
+        step={props.step}
+        name={props.name}
+        required={props.required}
+        value={value}
+        placeholder={props.placeholder}
+        onIonChange={handleChange}
+        onIonInput={handleChange}
+        onIonBlur={handleBlur}
+        onIonFocus={handleFocus}
+        debounce={250}
+        inputmode="decimal"
+        label={props.unit}
+        labelPlacement="end"
+        helperText={getHelperText()}
+        errorText={getErrorText()}
+      />
     </>
   );
 };

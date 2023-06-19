@@ -13,7 +13,6 @@ export const fairwayCardReducer = (
   actionOuterTarget?: string | number,
   reservedIds?: string[]
 ) => {
-  console.log('updateState... for input ' + actionType, actionLang);
   // Check manual validations and clear triggered validations by save
   if (actionType === 'primaryId' && state.operation === Operation.Create) {
     let primaryIdErrorMsg = '';
@@ -96,7 +95,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         lineText: {
-          ...(state.lineText || { fi: '', sv: '', en: '' }),
+          ...(state.lineText ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -106,7 +105,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         speedLimit: {
-          ...(state.speedLimit || { fi: '', sv: '', en: '' }),
+          ...(state.speedLimit ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -116,7 +115,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         designSpeed: {
-          ...(state.designSpeed || { fi: '', sv: '', en: '' }),
+          ...(state.designSpeed ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -126,7 +125,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         anchorage: {
-          ...(state.anchorage || { fi: '', sv: '', en: '' }),
+          ...(state.anchorage ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -136,7 +135,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         navigationCondition: {
-          ...(state.navigationCondition || { fi: '', sv: '', en: '' }),
+          ...(state.navigationCondition ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -146,7 +145,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         iceCondition: {
-          ...(state.iceCondition || { fi: '', sv: '', en: '' }),
+          ...(state.iceCondition ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -156,7 +155,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         windRecommendation: {
-          ...(state.windRecommendation || { fi: '', sv: '', en: '' }),
+          ...(state.windRecommendation ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -166,7 +165,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         vesselRecommendation: {
-          ...(state.vesselRecommendation || { fi: '', sv: '', en: '' }),
+          ...(state.vesselRecommendation ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -176,7 +175,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         visibility: {
-          ...(state.visibility || { fi: '', sv: '', en: '' }),
+          ...(state.visibility ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -186,7 +185,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         windGauge: {
-          ...(state.windGauge || { fi: '', sv: '', en: '' }),
+          ...(state.windGauge ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -196,7 +195,7 @@ export const fairwayCardReducer = (
       newState = {
         ...state,
         seaLevel: {
-          ...(state.seaLevel || { fi: '', sv: '', en: '' }),
+          ...(state.seaLevel ?? { fi: '', sv: '', en: '' }),
           [actionLang as string]: value as string,
         },
       };
@@ -245,7 +244,7 @@ export const fairwayCardReducer = (
           pilot: {
             ...state.trafficService?.pilot,
             extraInfo: {
-              ...(state.trafficService?.pilot?.extraInfo || { fi: '', sv: '', en: '' }),
+              ...(state.trafficService?.pilot?.extraInfo ?? { fi: '', sv: '', en: '' }),
               [actionLang as string]: value as string,
             },
           },
@@ -315,7 +314,7 @@ export const fairwayCardReducer = (
               ? {
                   ...vtsItem,
                   name: {
-                    ...(vtsItem?.name || { fi: '', sv: '', en: '' }),
+                    ...(vtsItem?.name ?? { fi: '', sv: '', en: '' }),
                     [actionLang as string]: value as string,
                   },
                 }
@@ -333,7 +332,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   email: (value as string).split(',').map((item) => item.trim()),
                 }
               : vtsItem
@@ -350,7 +349,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   phoneNumber: ((value as string) || '').trim(),
                 }
               : vtsItem
@@ -369,7 +368,7 @@ export const fairwayCardReducer = (
               i === actionOuterTarget
                 ? {
                     ...vtsItem,
-                    name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                    name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                     vhf: vtsItem?.vhf?.concat([{ channel: '', name: { fi: '', sv: '', en: '' } }]),
                   }
                 : vtsItem
@@ -381,12 +380,16 @@ export const fairwayCardReducer = (
           ...state,
           trafficService: {
             ...state.trafficService,
-            vts: state.trafficService?.vts?.map((vtsItem) => {
-              return {
-                ...vtsItem,
-                name: vtsItem?.name || { fi: '', sv: '', en: '' },
-                vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
-              };
+            vts: state.trafficService?.vts?.map((vtsItem, i) => {
+              if (i === actionOuterTarget) {
+                return {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
+                };
+              } else {
+                return { ...vtsItem, name: vtsItem?.name ?? { fi: '', sv: '', en: '' } };
+              }
             }),
           },
         };
@@ -404,15 +407,15 @@ export const fairwayCardReducer = (
             idx === actionOuterTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   vhf: vtsItem?.vhf?.map((vhfItem, j) =>
                     j === actionTarget
                       ? {
                           name: {
-                            ...(vhfItem?.name || { fi: '', sv: '', en: '' }),
+                            ...(vhfItem?.name ?? { fi: '', sv: '', en: '' }),
                             [actionLang as string]: value as string,
                           },
-                          channel: vhfItem?.channel?.toString() || '',
+                          channel: vhfItem?.channel?.toString() ?? '',
                         }
                       : vhfItem
                   ),
@@ -432,11 +435,11 @@ export const fairwayCardReducer = (
             idx === actionOuterTarget
               ? {
                   ...vtsItem,
-                  name: vtsItem?.name || { fi: '', sv: '', en: '' },
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
                   vhf: vtsItem?.vhf?.map((vhfItem, j) =>
                     j === actionTarget
                       ? {
-                          name: vhfItem?.name || { fi: '', sv: '', en: '' },
+                          name: vhfItem?.name ?? { fi: '', sv: '', en: '' },
                           channel: value as string,
                         }
                       : vhfItem
@@ -484,7 +487,7 @@ export const fairwayCardReducer = (
               ? {
                   ...tugItem,
                   name: {
-                    ...(tugItem?.name || { fi: '', sv: '', en: '' }),
+                    ...(tugItem?.name ?? { fi: '', sv: '', en: '' }),
                     [actionLang as string]: value as string,
                   },
                 }
@@ -502,7 +505,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   email: ((value as string) || '').trim(),
                 }
               : tugItem
@@ -519,7 +522,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   phoneNumber: (value as string).split(',').map((item) => item.trim()),
                 }
               : tugItem
@@ -536,7 +539,7 @@ export const fairwayCardReducer = (
             idx === actionTarget
               ? {
                   ...tugItem,
-                  name: tugItem?.name || { fi: '', sv: '', en: '' },
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
                   fax: ((value as string) || '').trim(),
                 }
               : tugItem
@@ -548,5 +551,269 @@ export const fairwayCardReducer = (
       console.warn(`Unknown action type, state not updated.`);
       return state;
   }
+
+  // More manual validations for text row inputs
+  if (actionType === 'line' && validationErrors.find((error) => error.id === 'line')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'line')
+        .concat({
+          id: 'line',
+          msg:
+            newState.lineText?.fi.trim() || newState.lineText?.sv.trim() || newState.lineText?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'designSpeed' && validationErrors.find((error) => error.id === 'designSpeed')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'designSpeed')
+        .concat({
+          id: 'designSpeed',
+          msg:
+            newState.designSpeed?.fi.trim() || newState.designSpeed?.sv.trim() || newState.designSpeed?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'speedLimit' && validationErrors.find((error) => error.id === 'speedLimit')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'speedLimit')
+        .concat({
+          id: 'speedLimit',
+          msg:
+            newState.speedLimit?.fi.trim() || newState.speedLimit?.sv.trim() || newState.speedLimit?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'anchorage' && validationErrors.find((error) => error.id === 'anchorage')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'anchorage')
+        .concat({
+          id: 'anchorage',
+          msg:
+            newState.anchorage?.fi.trim() || newState.anchorage?.sv.trim() || newState.anchorage?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'navigationCondition' && validationErrors.find((error) => error.id === 'navigationCondition')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'navigationCondition')
+        .concat({
+          id: 'navigationCondition',
+          msg:
+            newState.navigationCondition?.fi.trim() || newState.navigationCondition?.sv.trim() || newState.navigationCondition?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'iceCondition' && validationErrors.find((error) => error.id === 'iceCondition')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'iceCondition')
+        .concat({
+          id: 'iceCondition',
+          msg:
+            newState.iceCondition?.fi.trim() || newState.iceCondition?.sv.trim() || newState.iceCondition?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'windRecommendation' && validationErrors.find((error) => error.id === 'windRecommendation')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'windRecommendation')
+        .concat({
+          id: 'windRecommendation',
+          msg:
+            newState.windRecommendation?.fi.trim() || newState.windRecommendation?.sv.trim() || newState.windRecommendation?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'vesselRecommendation' && validationErrors.find((error) => error.id === 'vesselRecommendation')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'vesselRecommendation')
+        .concat({
+          id: 'vesselRecommendation',
+          msg:
+            newState.vesselRecommendation?.fi.trim() || newState.vesselRecommendation?.sv.trim() || newState.vesselRecommendation?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'visibility' && validationErrors.find((error) => error.id === 'visibility')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'visibility')
+        .concat({
+          id: 'visibility',
+          msg:
+            newState.visibility?.fi.trim() || newState.visibility?.sv.trim() || newState.visibility?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'windGauge' && validationErrors.find((error) => error.id === 'windGauge')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'windGauge')
+        .concat({
+          id: 'windGauge',
+          msg:
+            newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'seaLevel' && validationErrors.find((error) => error.id === 'seaLevel')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'seaLevel')
+        .concat({
+          id: 'seaLevel',
+          msg:
+            newState.seaLevel?.fi.trim() || newState.seaLevel?.sv.trim() || newState.seaLevel?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'pilotExtraInfo' && validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'pilotExtraInfo')
+        .concat({
+          id: 'pilotExtraInfo',
+          msg:
+            newState.trafficService?.pilot?.extraInfo?.fi.trim() ||
+            newState.trafficService?.pilot?.extraInfo?.sv.trim() ||
+            newState.trafficService?.pilot?.extraInfo?.en.trim()
+              ? t(ErrorMessageKeys?.required) || ''
+              : '',
+        })
+    );
+  } else if (actionType === 'vts' && actionTarget !== undefined) {
+    const vtsFieldErrors: ValidationType[] = [];
+    validationErrors
+      .filter((error) => error.id.startsWith('vtsName-') || error.id.startsWith('vhfName-') || error.id.startsWith('vhfChannel-'))
+      .forEach((error) => {
+        const errorSplitted = error.id.split('-');
+        if (errorSplitted[1] < actionTarget) vtsFieldErrors.push(error);
+        if (errorSplitted[1] > actionTarget) {
+          vtsFieldErrors.push({
+            id: errorSplitted[0] + '-' + (Number(errorSplitted[1]) - 1) + (errorSplitted[2] !== undefined ? '-' + errorSplitted[2] : ''),
+            msg: error.msg,
+          });
+        }
+        return error;
+      });
+    setValidationErrors(
+      validationErrors
+        .filter((error) => !error.id.startsWith('vtsName-') && !error.id.startsWith('vhfName-') && !error.id.startsWith('vhfChannel-'))
+        .concat(vtsFieldErrors)
+    );
+  } else if (
+    actionType === 'vtsName' &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'vtsName-' + actionTarget)?.msg
+  ) {
+    const currentVts = newState.trafficService?.vts?.find((vtsItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'vtsName-' + actionTarget)
+        .concat({
+          id: 'vtsName-' + actionTarget,
+          msg: currentVts?.name?.fi.trim() || currentVts?.name?.sv.trim() || currentVts?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'vhf' && actionTarget !== undefined && actionOuterTarget !== undefined) {
+    const sectionFieldErrors: ValidationType[] = [];
+    validationErrors
+      .filter((error) => error.id.startsWith('vhfName-' + actionOuterTarget + '-') || error.id.startsWith('vhfChannel-' + actionOuterTarget + '-'))
+      .forEach((error) => {
+        const errorSplitted = error.id.split('-' + actionOuterTarget + '-');
+        if (errorSplitted[1] < actionTarget) sectionFieldErrors.push(error);
+        if (errorSplitted[1] > actionTarget) {
+          sectionFieldErrors.push({
+            id: errorSplitted[0] + '-' + actionOuterTarget + '-' + (Number(errorSplitted[1]) - 1),
+            msg: error.msg,
+          });
+        }
+        return error;
+      });
+    setValidationErrors(
+      validationErrors
+        .filter(
+          (error) => !error.id.startsWith('vhfName-' + actionOuterTarget + '-') && !error.id.startsWith('vhfChannel-' + actionOuterTarget + '-')
+        )
+        .concat(sectionFieldErrors)
+    );
+  } else if (
+    actionType === 'vhfName' &&
+    actionTarget !== undefined &&
+    actionOuterTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'vhfName-' + actionOuterTarget + '-' + actionTarget)?.msg
+  ) {
+    const currentVts = newState.trafficService?.vts?.find((vtsItem, idx) => idx === actionOuterTarget);
+    const currentVhf = currentVts?.vhf?.find((vhfItem, jdx) => jdx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'vhfName-' + actionOuterTarget + '-' + actionTarget)
+        .concat({
+          id: 'vhfName-' + actionOuterTarget + '-' + actionTarget,
+          msg: currentVhf?.name?.fi.trim() || currentVhf?.name?.sv.trim() || currentVhf?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (
+    actionType === 'vhfChannel' &&
+    actionTarget !== undefined &&
+    actionOuterTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'vhfChannel-' + actionOuterTarget + '-' + actionTarget)?.msg
+  ) {
+    const currentVts = newState.trafficService?.vts?.find((vtsItem, idx) => idx === actionOuterTarget);
+    const currentVhf = currentVts?.vhf?.find((vhfItem, jdx) => jdx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'vhfChannel-' + actionOuterTarget + '-' + actionTarget)
+        .concat({
+          id: 'vhfChannel-' + actionOuterTarget + '-' + actionTarget,
+          msg: !currentVhf?.channel ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (actionType === 'tug' && actionTarget !== undefined) {
+    const tugFieldErrors: ValidationType[] = [];
+    validationErrors
+      .filter((error) => error.id.startsWith('tugName-'))
+      .forEach((error) => {
+        const errorIndex = error.id.split('tugName-')[1];
+        if (errorIndex < actionTarget) tugFieldErrors.push(error);
+        if (errorIndex > actionTarget) {
+          tugFieldErrors.push({
+            id: 'tugName-' + (Number(errorIndex) - 1),
+            msg: error.msg,
+          });
+        }
+        return error;
+      });
+    setValidationErrors(validationErrors.filter((error) => !error.id.startsWith('tugName-')).concat(tugFieldErrors));
+  } else if (
+    actionType === 'tugName' &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'tugName-' + actionTarget)?.msg
+  ) {
+    const currentTug = newState.trafficService?.tugs?.find((tugItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'tugName-' + actionTarget)
+        .concat({
+          id: 'tugName-' + actionTarget,
+          msg: currentTug?.name?.fi.trim() || currentTug?.name?.sv.trim() || currentTug?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  }
+
   return newState;
 };

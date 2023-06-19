@@ -8,6 +8,8 @@ import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -38,6 +40,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -51,7 +54,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>
@@ -91,9 +94,6 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             <IonRow>
               <IonCol>
                 {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
-                {equipment.properties.subType && (equipment.properties.aisType === undefined || equipment.properties.aisType === 1)
-                  ? `${', ' + equipment.properties.subType.toLowerCase()}`
-                  : ''}
                 {equipment.properties.aisType !== undefined && equipment.properties.aisType !== 1
                   ? `${', ' + t('popup.equipment.type' + equipment.properties.aisType)}`
                   : ''}
@@ -121,12 +121,31 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             </IonRow>
           </>
         )}
+        {equipment.properties.distances && equipment.properties.distances.length > 0 && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.equipment.distances', { count: equipment.properties.distances.length })}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>
+                {equipment.properties.distances.map((d, idx) => {
+                  return (
+                    <span key={d.areaId}>
+                      {d.distance}
+                      {idx < (equipment.properties.distances?.length || 0) - 1 ? 'm, ' : 'm'}
+                    </span>
+                  );
+                })}
+              </IonCol>
+            </IonRow>
+          </>
+        )}
         {fairwayCards.length > 0 && (
           <IonRow>
             <IonCol className="header">{t('popup.equipment.fairways')}</IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card) => {
+        {fairwayCards.map((card) => {
           return (
             <IonRow key={card.id}>
               <IonCol>

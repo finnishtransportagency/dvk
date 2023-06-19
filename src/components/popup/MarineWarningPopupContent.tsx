@@ -7,6 +7,8 @@ import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../fea
 import { getMap } from '../DvkMap';
 import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
@@ -38,6 +40,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -51,7 +54,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>

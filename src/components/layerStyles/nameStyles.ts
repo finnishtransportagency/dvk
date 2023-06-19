@@ -8,10 +8,10 @@ const styles: Style[] = [];
 export function getNameStyle(feature: FeatureLike, resolution: number) {
   const priority = feature.get('priority') as number;
   const visible =
-    (priority === 6 && resolution < 20) ||
-    (priority === 5 && resolution < 35) ||
-    (priority === 4 && resolution < 45) ||
-    (priority === 3 && resolution < 75) ||
+    (priority === 6 && resolution < 10) ||
+    (priority === 5 && resolution < 25) ||
+    (priority === 4 && resolution < 35) ||
+    (priority === 3 && resolution < 65) ||
     priority === 2;
 
   if (visible) {

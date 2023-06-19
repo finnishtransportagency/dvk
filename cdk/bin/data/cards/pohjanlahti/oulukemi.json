@@ -45,19 +45,18 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358400907979",
-      "fax": "+358295253012",
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "phoneNumber": "+358295253440",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 3
+          "id": 7711725400
         },
         {
-          "id": 4
+          "id": 7711825400
         },
         {
-          "id": 1
+          "id": 35910600403
         }
       ]
     },

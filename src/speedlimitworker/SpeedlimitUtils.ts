@@ -5,6 +5,7 @@ import { MAP } from '../utils/constants';
 import * as turf from '@turf/turf';
 import { intersects } from 'ol/extent';
 
+/* Input projection EPSG:4326, output projection MAP.EPSG */
 export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]) {
   const speedLimitFeatures: Feature<Geometry>[] = [];
   const format = new GeoJSON();
@@ -34,7 +35,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
       continue;
     }
 
-    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
 
     const index = speedLimitGeometries.findIndex((slg) => slg.speedLimit === speedLimit);
     if (index < 0) {
@@ -53,7 +54,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
     const intersectionPolygons = [];
 
     for (const faf of speedLimitFafs) {
-      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
       if (intersection) {
         intersectionPolygons.push(turf.truncate(intersection));

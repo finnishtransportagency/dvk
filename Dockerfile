@@ -1,9 +1,10 @@
-FROM public.ecr.aws/docker/library/node:16.15.1-alpine
+FROM public.ecr.aws/docker/library/node:18.16.0-alpine
 ENV WORK /opt/dvk
 WORKDIR ${WORK}
 RUN mkdir -p ${WORK}
-RUN npm install --location=global esbuild && apk add bash
+RUN npm install -g npm@latest
 RUN apk add --no-cache \
+        bash \
         python3 \
         py3-pip \
         pkgconfig \

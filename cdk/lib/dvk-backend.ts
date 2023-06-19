@@ -3,11 +3,11 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from 'aws-cdk-lib';
-import * as appsync from '@aws-cdk/aws-appsync-alpha';
-import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
+import * as appsync from 'aws-cdk-lib/aws-appsync';
+import { FieldLogLevel } from 'aws-cdk-lib/aws-appsync';
 import * as path from 'path';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
-import { Table, AttributeType, BillingMode, ProjectionType } from 'aws-cdk-lib/aws-dynamodb';
+import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } from 'aws-cdk-lib/aws-dynamodb';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
@@ -19,7 +19,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps, LifecycleRule } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
-import { StreamViewType } from '@aws-sdk/client-dynamodb';
+
 export class DvkBackendStack extends Stack {
   private domainName: string;
 
@@ -31,7 +31,7 @@ export class DvkBackendStack extends Stack {
     this.siteSubDomain = env === 'prod' ? 'dvk' : 'dvk' + env;
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
       name: 'dvk-graphql-api-' + env,
-      schema: appsync.Schema.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
+      schema: appsync.SchemaFile.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
@@ -58,7 +58,6 @@ export class DvkBackendStack extends Stack {
     }
     const fairwayCardTable = this.createFairwayCardTable();
     const harborTable = this.createHarborTable();
-    const pilotPlaceTable = this.createPilotPlaceTable();
 
     const layer = LayerVersion.fromLayerVersionArn(
       this,
@@ -68,19 +67,20 @@ export class DvkBackendStack extends Stack {
 
     const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
     const harborVersioningBucket = this.createVersioningBucket('harbor', env);
-    const pilotVersioningBucket = this.createVersioningBucket('pilot', env);
 
     const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
       functionName: `db-stream-handler-${env}`,
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'handler',
       entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
       environment: {
         FAIRWAYCARD_VERSIONING_BUCKET: fairwayCardVersioningBucket.bucketName,
         HARBOR_VERSIONING_BUCKET: harborVersioningBucket.bucketName,
-        PILOT_VERSIONING_BUCKET: pilotVersioningBucket.bucketName,
         ENVIRONMENT: Config.getEnvironment(),
         LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+      },
+      bundling: {
+        minify: true,
       },
     });
 
@@ -94,26 +94,19 @@ export class DvkBackendStack extends Stack {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
-    dbStreamHandler.addEventSource(
-      new DynamoEventSource(pilotPlaceTable, {
-        startingPosition: lambda.StartingPosition.LATEST,
-      })
-    );
 
     fairwayCardVersioningBucket.grantPut(dbStreamHandler);
     fairwayCardVersioningBucket.grantRead(dbStreamHandler);
     harborVersioningBucket.grantPut(dbStreamHandler);
     harborVersioningBucket.grantRead(dbStreamHandler);
-    pilotVersioningBucket.grantPut(dbStreamHandler);
-    pilotVersioningBucket.grantRead(dbStreamHandler);
-
+    const bucket = this.createCacheBucket(env);
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         timeout: Duration.seconds(30),
@@ -122,7 +115,6 @@ export class DvkBackendStack extends Stack {
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
-          PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
@@ -131,11 +123,15 @@ export class DvkBackendStack extends Stack {
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
+          API_TIMEOUT: '10000',
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        bundling: {
+          minify: true,
+        },
       });
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
-      lambdaDataSource.createResolver({
+      lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
       });
@@ -146,14 +142,13 @@ export class DvkBackendStack extends Stack {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
-      pilotPlaceTable.grantReadData(backendLambda);
+      bucket.grantPut(backendLambda);
+      bucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    Tags.of(pilotPlaceTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const bucket = this.createCacheBucket(env);
-    const alb = this.createALB(env, fairwayCardTable, harborTable, pilotPlaceTable, bucket, layer, vpc);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -210,20 +205,6 @@ export class DvkBackendStack extends Stack {
     });
   }
 
-  private createPilotPlaceTable(): Table {
-    return new Table(this, 'PilotPlaceTable', {
-      billingMode: BillingMode.PAY_PER_REQUEST,
-      tableName: Config.getPilotPlaceTableName(),
-      partitionKey: {
-        name: 'id',
-        type: AttributeType.NUMBER,
-      },
-      pointInTimeRecovery: true,
-      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
-      stream: StreamViewType.NEW_AND_OLD_IMAGES,
-    });
-  }
-
   private createApiKeyExpiration() {
     const now = new Date();
     now.setDate(now.getDate() + 365);
@@ -267,7 +248,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      lifecycleRules: Config.isProductionEnvironment() ? undefined : lifecycleRules,
+      lifecycleRules,
     });
   }
 
@@ -275,7 +256,6 @@ export class DvkBackendStack extends Stack {
     env: string,
     fairwayCardTable: Table,
     harborTable: Table,
-    pilotPlaceTable: Table,
     cacheBucket: Bucket,
     layer: ILayerVersion,
     vpc: IVpc
@@ -294,7 +274,7 @@ export class DvkBackendStack extends Stack {
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
       functionName: `cors-${env}`.toLocaleLowerCase(),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       layers: [layer],
@@ -304,7 +284,10 @@ export class DvkBackendStack extends Stack {
         PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
         SSM_PARAMETER_STORE_TTL: '300',
       },
-      logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+      logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
     });
     httpListener.addTargets('HTTPListenerTarget-CORS', {
       targets: [new LambdaTarget(corsLambda)],
@@ -315,7 +298,7 @@ export class DvkBackendStack extends Stack {
       const functionName = lambdaFunc.functionName;
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
         functionName: `${functionName}-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         layers: [layer],
@@ -326,14 +309,17 @@ export class DvkBackendStack extends Stack {
           ENVIRONMENT: Config.getEnvironment(),
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
-          PILOTPLACE_TABLE: Config.getPilotPlaceTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
           SSM_PARAMETER_STORE_TTL: '300',
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
+          API_TIMEOUT: '10000',
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.ONE_WEEK : RetentionDays.ONE_DAY,
+        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        bundling: {
+          minify: true,
+        },
       });
       const target = httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
         targets: [new LambdaTarget(backendLambda)],
@@ -343,7 +329,6 @@ export class DvkBackendStack extends Stack {
       target.setAttribute('lambda.multi_value_headers.enabled', 'true');
       fairwayCardTable.grantReadData(backendLambda);
       harborTable.grantReadData(backendLambda);
-      pilotPlaceTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));

@@ -39,7 +39,7 @@ enum OperationError {
 }
 
 input FairwayCardInput {
-  id: ID!
+  id: String!
   operation: Operation!
   name: TextInput!
   n2000HeightSystem: Boolean!
@@ -62,7 +62,7 @@ input FairwayCardInput {
   seaLevel: TextInput
   windRecommendation: TextInput
   trafficService: TrafficServiceInput
-  harbors: [ID!]
+  harbors: [String!]
 }
 
 input TrafficServiceInput {
@@ -100,12 +100,12 @@ input PilotInput {
 }
 
 input PilotPlaceInput {
-  id: Int!
+  id: Float!
   pilotJourney: String
 }
 
 input HarborInput {
-  id: ID!
+  id: String!
   n2000HeightSystem: Boolean!
   operation: Operation!
   status: Status!
@@ -154,7 +154,7 @@ input SectionInput {
 }
 
 type FairwayCardOrHarbor {
-  id: ID!
+  id: String!
   type: ContentType!
   name: Text!
   group: String
@@ -178,7 +178,7 @@ type CurrentUser {
 }
 
 type FairwayCard {
-  id: ID!
+  id: String!
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
@@ -302,6 +302,7 @@ type Fairway {
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
   boardLines: [Boardline!]
+  turningCircles: [TurningCircle!]
 }
 
 type Classification {
@@ -384,6 +385,17 @@ type Boardline {
   direction: Float
   geometry: GeometryLine
   fairways: [BoardlineFairway!]
+}
+
+type TurningCircleFairway {
+  fairwayId: Int!
+}
+
+type TurningCircle {
+  id: Int!
+  geometry: GeometryLine
+  diameter: Int
+  fairways: [TurningCircleFairway!]
 }
 
 type SizingVessel {

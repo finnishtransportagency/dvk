@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonAlert, IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCard, FairwayCardInput, Operation, PilotPlace, PilotPlaceInput, Status, TugInput, VtsInput } from '../graphql/generated';
@@ -18,6 +18,7 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
+import NotificationModal from './NofiticationModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -37,13 +38,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
-  const harborSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
-  const modifiedInfo = modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  const harbourSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem && item.status === Status.Public);
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
   ];
-  if (fairwayCard.status !== Status.Draft) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+  if (state.operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
@@ -113,61 +113,211 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         pilot: {
           ...state.trafficService?.pilot,
           places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: place.pilotJourney || undefined };
+            return { id: place.id, pilotJourney: place.pilotJourney };
           }),
         },
       },
     };
-    console.log(currentCard);
     saveFairwayCard({ card: currentCard as FairwayCardInput });
   }, [state, saveFairwayCard]);
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
+    if (isRemove) updateState(Status.Removed, 'status');
     // Manual validations for required fields
     let primaryIdErrorMsg = '';
-    if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
-    if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
+    if (state.operation === Operation.Create) {
+      if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
+      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+    }
     const manualValidations = [
       { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
       { id: 'primaryId', msg: primaryIdErrorMsg },
       { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t(ErrorMessageKeys?.required) : '' },
       { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
       {
-        id: 'vtsName',
+        id: 'line',
         msg:
-          (state.trafficService?.vts?.filter((vtsItem) => !vtsItem?.name.fi.trim() || !vtsItem?.name.sv.trim() || !vtsItem?.name.en.trim()) || [])
-            .length > 0
+          (state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim()) &&
+          (!state.lineText?.fi.trim() || !state.lineText?.sv.trim() || !state.lineText?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
-        id: 'vhfChannel',
+        id: 'designSpeed',
         msg:
-          (state.trafficService?.vts?.filter((vtsItem) => (vtsItem?.vhf?.filter((vhfItem) => !vhfItem?.channel.trim()) || []).length > 0) || [])
-            .length > 0
+          (state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim()) &&
+          (!state.designSpeed?.fi.trim() || !state.designSpeed?.sv.trim() || !state.designSpeed?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
       {
-        id: 'tugName',
+        id: 'speedLimit',
         msg:
-          (state.trafficService?.tugs?.filter((tugItem) => !tugItem?.name.fi.trim() || !tugItem?.name.sv.trim() || !tugItem?.name.en.trim()) || [])
-            .length > 0
+          (state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim()) &&
+          (!state.speedLimit?.fi.trim() || !state.speedLimit?.sv.trim() || !state.speedLimit?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'anchorage',
+        msg:
+          (state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim()) &&
+          (!state.anchorage?.fi.trim() || !state.anchorage?.sv.trim() || !state.anchorage?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'navigationCondition',
+        msg:
+          (state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()) &&
+          (!state.navigationCondition?.fi.trim() || !state.navigationCondition?.sv.trim() || !state.navigationCondition?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'iceCondition',
+        msg:
+          (state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim()) &&
+          (!state.iceCondition?.fi.trim() || !state.iceCondition?.sv.trim() || !state.iceCondition?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'windRecommendation',
+        msg:
+          (state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()) &&
+          (!state.windRecommendation?.fi.trim() || !state.windRecommendation?.sv.trim() || !state.windRecommendation?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'vesselRecommendation',
+        msg:
+          (state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()) &&
+          (!state.vesselRecommendation?.fi.trim() || !state.vesselRecommendation?.sv.trim() || !state.vesselRecommendation?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'visibility',
+        msg:
+          (state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim()) &&
+          (!state.visibility?.fi.trim() || !state.visibility?.sv.trim() || !state.visibility?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'windGauge',
+        msg:
+          (state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim()) &&
+          (!state.windGauge?.fi.trim() || !state.windGauge?.sv.trim() || !state.windGauge?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'seaLevel',
+        msg:
+          (state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim()) &&
+          (!state.seaLevel?.fi.trim() || !state.seaLevel?.sv.trim() || !state.seaLevel?.en.trim())
+            ? t(ErrorMessageKeys?.required)
+            : '',
+      },
+      {
+        id: 'pilotExtraInfo',
+        msg:
+          (state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+            state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+            state.trafficService?.pilot?.extraInfo?.en.trim()) &&
+          (!state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+            !state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+            !state.trafficService?.pilot?.extraInfo?.en.trim())
             ? t(ErrorMessageKeys?.required)
             : '',
       },
     ];
-    setValidationErrors(manualValidations);
+    const vtsNameErrors =
+      state.trafficService?.vts
+        ?.flatMap((vts, i) => (!vts?.name?.fi.trim() || !vts?.name?.sv.trim() || !vts?.name?.en.trim() ? i : null))
+        .filter((val) => Number.isInteger(val))
+        .map((vIndex) => {
+          return {
+            id: 'vtsName-' + vIndex,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        }) ?? [];
+    const vhfNameErrors =
+      state.trafficService?.vts
+        ?.map((vts) =>
+          vts?.vhf
+            ?.flatMap((vhf, j) =>
+              (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
+              (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
+                ? j
+                : null
+            )
+            .filter((val) => Number.isInteger(val))
+        )
+        .flatMap((vhfIndices, vtsIndex) => {
+          return (
+            vhfIndices?.map((vhfIndex) => {
+              return {
+                id: 'vhfName-' + vtsIndex + '-' + vhfIndex,
+                msg: t(ErrorMessageKeys?.required),
+              };
+            }) ?? []
+          );
+        }) ?? [];
+    const vhfChannelErrors =
+      state.trafficService?.vts
+        ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel.trim() ? j : null)).filter((val) => Number.isInteger(val)))
+        .flatMap((vhfIndices, vtsIndex) => {
+          return (
+            vhfIndices?.map((vhfIndex) => {
+              return {
+                id: 'vhfChannel-' + vtsIndex + '-' + vhfIndex,
+                msg: t(ErrorMessageKeys?.required),
+              };
+            }) ?? []
+          );
+        }) ?? [];
+    const tugNameErrors =
+      state.trafficService?.tugs
+        ?.flatMap((tug, i) => (!tug?.name?.fi.trim() || !tug?.name?.sv.trim() || !tug?.name?.en.trim() ? i : null))
+        .filter((val) => Number.isInteger(val))
+        .map((tIndex) => {
+          return {
+            id: 'tugName-' + tIndex,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        }) ?? [];
+    const allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors);
+    setValidationErrors(allValidations);
 
-    if (formRef.current?.checkValidity() && manualValidations.filter((error) => error.msg.length > 0).length < 1) {
-      if (state.operation === Operation.Create || (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)) {
+    if (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1) {
+      if (
+        (state.operation === Operation.Create && state.status === Status.Draft) ||
+        (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)
+      ) {
         saveCard();
       } else {
         setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const getModifiedInfo = () => {
+    if (savedCard) return t('general.datetimeFormat', { val: savedCard.modificationTimestamp ?? savedCard.creationTimestamp });
+    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  };
+
+  const closeNotification = () => {
+    setSaveError('');
+    if (!saveError && !!savedCard) {
+      if (state.operation === Operation.Update) history.go(0);
+      if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
     }
   };
 
@@ -181,52 +331,62 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
-      <IonAlert
+      <NotificationModal
         isOpen={!!saveError || !!savedCard}
-        onDidDismiss={() => {
-          setSaveError('');
-          setSavedCard(null);
-        }}
+        closeAction={closeNotification}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
-        subHeader={(saveError ? t('general.error-' + saveError) : t('general.saved-by-id', { id: savedCard?.id })) || ''}
+        subHeader={
+          (saveError
+            ? t('general.error-' + saveError)
+            : t('modal.saved-fairwaycard-by-name', { name: savedCard?.name[lang] ?? savedCard?.name.fi })) ?? ''
+        }
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
-        buttons={[t('general.button-ok') || '']}
-        cssClass={saveError ? 'error' : 'success'}
       />
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border" id="mainPageContent">
         {isLoadingMutation && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
-          <IonRow>
-            <IonCol className="ion-align-self-center align-right">
-              <IonText>
-                <em>
-                  {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {modifiedInfo}
-                  <br />
-                  {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifier || t('general.unknown')}
-                </em>
-              </IonText>
+          <IonRow className="ion-align-items-end">
+            <IonCol className="align-right">
+              <IonGrid>
+                <IonRow className="ion-align-items-center">
+                  <IonCol>
+                    <IonText>
+                      <em>
+                        {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
+                        <br />
+                        {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
+                        {savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
+                      </em>
+                    </IonText>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
             </IonCol>
             <IonCol size="auto">
               <FormSelect
-                label={t('fairwaycard.status')}
+                label={t('general.item-status')}
                 selected={state.status}
                 options={statusOptions}
                 setSelected={updateState}
                 actionType="status"
-                hideLabel={true}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
               />
             </IonCol>
             <IonCol size="auto">
-              <IonButton shape="round" className="invert" onClick={() => handleCancel()}>
+              <IonButton
+                shape="round"
+                className="invert"
+                onClick={() => handleCancel()}
+                disabled={isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
+              >
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && (
+              {state.operation === Operation.Update && fairwayCard.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
-                  disabled={isError}
+                  disabled={isError ?? (isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces)}
                   onClick={() => {
-                    updateState(Status.Removed, 'status');
                     handleSubmit(true);
                   }}
                 >
@@ -235,7 +395,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               )}
               <IonButton
                 shape="round"
-                disabled={isError || isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces}
+                disabled={isError ?? (isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces)}
                 onClick={() => handleSubmit()}
               >
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
@@ -257,10 +417,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 actionType="name"
                 required
+                disabled={fairwayCard.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
               <IonRow>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormInput
                     label={t('fairwaycard.primary-id')}
                     val={state.id}
@@ -272,51 +433,52 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     helperText={t('fairwaycard.primary-id-help-text')}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('fairwaycard.linked-fairways')}
                     selected={state.fairwayIds || []}
-                    options={fairwayList?.fairways || []}
+                    options={fairwayList?.fairways ?? []}
                     setSelected={updateState}
                     actionType="fairwayIds"
                     multiple
                     required
                     showId
+                    disabled={fairwayCard.status === Status.Removed}
                     error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
                     isLoading={isLoadingFairways}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('fairwaycard.starting-fairway')}
-                    selected={state.primaryFairwayId || ''}
-                    options={fairwaySelection || []}
+                    selected={state.primaryFairwayId ?? ''}
+                    options={fairwaySelection ?? []}
                     setSelected={updateState}
                     actionType="fairwayPrimary"
                     required
                     showId
-                    disabled={state.fairwayIds.length < 2}
+                    disabled={state.fairwayIds.length < 2 || fairwayCard.status === Status.Removed}
                     helperText={t('fairwaycard.fairway-order-help-text')}
                     isLoading={isLoadingFairways}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('fairwaycard.ending-fairway')}
-                    selected={state.secondaryFairwayId || ''}
-                    options={fairwaySelection || []}
+                    selected={state.secondaryFairwayId ?? ''}
+                    options={fairwaySelection ?? []}
                     setSelected={updateState}
                     actionType="fairwaySecondary"
                     required
                     showId
-                    disabled={state.fairwayIds.length < 2}
+                    disabled={state.fairwayIds.length < 2 || fairwayCard.status === Status.Removed}
                     helperText={t('fairwaycard.fairway-order-help-text')}
                     isLoading={isLoadingFairways}
                   />
                 </IonCol>
               </IonRow>
               <IonRow>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('general.item-area')}
                     selected={state.group}
@@ -328,10 +490,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     setSelected={updateState}
                     actionType="group"
                     required
+                    disabled={fairwayCard.status === Status.Removed}
                     error={validationErrors.find((error) => error.id === 'group')?.msg}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('general.item-referencelevel')}
                     selected={state.n2000HeightSystem}
@@ -341,20 +504,22 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol size="3">
+                <IonCol sizeMd="3">
                   <FormSelect
                     label={t('fairwaycard.linked-harbours')}
-                    selected={state.harbors || []}
-                    options={harborSelection || []}
+                    selected={state.harbors ?? []}
+                    options={harbourSelection ?? []}
                     setSelected={updateState}
                     actionType="harbours"
                     multiple
                     isLoading={isLoadingHarbours}
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
-                <IonCol size="3" className="no-border"></IonCol>
+                <IonCol sizeMd="3"></IonCol>
               </IonRow>
             </IonGrid>
 
@@ -367,7 +532,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.lineText}
                 updateState={updateState}
                 actionType="line"
-                required={!!(state.lineText?.fi || state.lineText?.sv || state.lineText?.en)}
+                required={!!(state.lineText?.fi ?? state.lineText?.sv ?? state.lineText?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'line')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -375,7 +542,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.designSpeed}
                 updateState={updateState}
                 actionType="designSpeed"
-                required={!!(state.designSpeed?.fi || state.designSpeed?.sv || state.designSpeed?.en)}
+                required={!!(state.designSpeed?.fi ?? state.designSpeed?.sv ?? state.designSpeed?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'designSpeed')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -383,7 +552,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.speedLimit}
                 updateState={updateState}
                 actionType="speedLimit"
-                required={!!(state.speedLimit?.fi || state.speedLimit?.sv || state.speedLimit?.en)}
+                required={!!(state.speedLimit?.fi ?? state.speedLimit?.sv ?? state.speedLimit?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'speedLimit')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -391,7 +562,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.anchorage}
                 updateState={updateState}
                 actionType="anchorage"
-                required={!!(state.anchorage?.fi || state.anchorage?.sv || state.anchorage?.en)}
+                required={!!(state.anchorage?.fi ?? state.anchorage?.sv ?? state.anchorage?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'anchorage')?.msg}
                 inputType="textarea"
               />
             </IonGrid>
@@ -405,7 +578,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.navigationCondition}
                 updateState={updateState}
                 actionType="navigationCondition"
-                required={!!(state.navigationCondition?.fi || state.navigationCondition?.sv || state.navigationCondition?.en)}
+                required={!!(state.navigationCondition?.fi ?? state.navigationCondition?.sv ?? state.navigationCondition?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'navigationCondition')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -413,7 +588,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.iceCondition}
                 updateState={updateState}
                 actionType="iceCondition"
-                required={!!(state.iceCondition?.fi || state.iceCondition?.sv || state.iceCondition?.en)}
+                required={!!(state.iceCondition?.fi ?? state.iceCondition?.sv ?? state.iceCondition?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'iceCondition')?.msg}
                 inputType="textarea"
               />
             </IonGrid>
@@ -427,7 +604,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.windRecommendation}
                 updateState={updateState}
                 actionType="windRecommendation"
-                required={!!(state.windRecommendation?.fi || state.windRecommendation?.sv || state.windRecommendation?.en)}
+                required={!!(state.windRecommendation?.fi ?? state.windRecommendation?.sv ?? state.windRecommendation?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'windRecommendation')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -435,7 +614,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.vesselRecommendation}
                 updateState={updateState}
                 actionType="vesselRecommendation"
-                required={!!(state.vesselRecommendation?.fi || state.vesselRecommendation?.sv || state.vesselRecommendation?.en)}
+                required={!!(state.vesselRecommendation?.fi ?? state.vesselRecommendation?.sv ?? state.vesselRecommendation?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'vesselRecommendation')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -443,7 +624,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.visibility}
                 updateState={updateState}
                 actionType="visibility"
-                required={!!(state.visibility?.fi || state.visibility?.sv || state.visibility?.en)}
+                required={!!(state.visibility?.fi ?? state.visibility?.sv ?? state.visibility?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'visibility')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -451,7 +634,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.windGauge}
                 updateState={updateState}
                 actionType="windGauge"
-                required={!!(state.windGauge?.fi || state.windGauge?.sv || state.windGauge?.en)}
+                required={!!(state.windGauge?.fi ?? state.windGauge?.sv ?? state.windGauge?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
                 inputType="textarea"
               />
               <FormTextInputRow
@@ -459,7 +644,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.seaLevel}
                 updateState={updateState}
                 actionType="seaLevel"
-                required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
+                required={!!(state.seaLevel?.fi ?? state.seaLevel?.sv ?? state.seaLevel?.en)}
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'seaLevel')?.msg}
                 inputType="textarea"
               />
             </IonGrid>
@@ -470,30 +657,33 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             </IonText>
             <IonGrid className="formGrid">
               <IonRow>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.email')}
-                    val={state.trafficService?.pilot?.email || ''}
+                    val={state.trafficService?.pilot?.email ?? ''}
                     setValue={updateState}
                     actionType="pilotEmail"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="email"
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.phone-number')}
-                    val={state.trafficService?.pilot?.phoneNumber || ''}
+                    val={state.trafficService?.pilot?.phoneNumber ?? ''}
                     setValue={updateState}
                     actionType="pilotPhone"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="tel"
                   />
                 </IonCol>
-                <IonCol>
+                <IonCol sizeMd="4">
                   <FormInput
                     label={t('general.fax')}
-                    val={state.trafficService?.pilot?.fax || ''}
+                    val={state.trafficService?.pilot?.fax ?? ''}
                     setValue={updateState}
                     actionType="pilotFax"
+                    disabled={fairwayCard.status === Status.Removed}
                     inputType="tel"
                   />
                 </IonCol>
@@ -505,24 +695,27 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 actionType="pilotExtraInfo"
                 required={
                   !!(
-                    state.trafficService?.pilot?.extraInfo?.fi ||
-                    state.trafficService?.pilot?.extraInfo?.sv ||
+                    state.trafficService?.pilot?.extraInfo?.fi ??
+                    state.trafficService?.pilot?.extraInfo?.sv ??
                     state.trafficService?.pilot?.extraInfo?.en
                   )
                 }
+                disabled={fairwayCard.status === Status.Removed}
+                error={validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg}
                 inputType="textarea"
               />
               <IonRow>
-                <IonCol size="6">
+                <IonCol sizeMd="6">
                   <FormSelect
                     label={t('fairwaycard.linked-pilot-places')}
                     selected={(state.trafficService?.pilot?.places as PilotPlaceInput[]) || []}
-                    options={pilotPlaceList?.pilotPlaces || []}
+                    options={pilotPlaceList?.pilotPlaces ?? []}
                     setSelected={updateState}
                     actionType="pilotPlaces"
                     multiple
                     compareObjects
                     isLoading={isLoadingPilotPlaces}
+                    disabled={fairwayCard.status === Status.Removed}
                   />
                 </IonCol>
                 {state.trafficService?.pilot?.places?.map((place) => {
@@ -540,6 +733,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                         inputType="number"
                         max={999.9}
                         decimalCount={1}
+                        disabled={fairwayCard.status === Status.Removed}
                       />
                     </IonCol>
                   );
@@ -553,6 +747,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               updateState={updateState}
               sectionType="vts"
               validationErrors={validationErrors}
+              disabled={fairwayCard.status === Status.Removed}
             />
 
             <FormOptionalSection
@@ -561,6 +756,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               updateState={updateState}
               sectionType="tug"
               validationErrors={validationErrors}
+              disabled={fairwayCard.status === Status.Removed}
             />
           </form>
         )}

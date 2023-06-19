@@ -82,6 +82,7 @@ async function main() {
     REACT_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName || 'dvkdev.testivaylapilvi.fi',
     REACT_APP_FMI_MAP_API_KEY: envParameters.WeatherApiKey,
     REACT_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
+    REACT_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
   });
   writeEnvFile('../admin/.env.local', {
     REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,

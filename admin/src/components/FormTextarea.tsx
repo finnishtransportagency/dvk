@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonItem, IonLabel, IonNote, IonTextarea } from '@ionic/react';
+import { IonLabel, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { IonTextareaCustomEvent, TextareaChangeEventDetail } from '@ionic/core';
 
 interface InputProps {
   label: string;
@@ -22,17 +20,30 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const focusInput = () => {
-    inputRef.current?.setFocus();
+    inputRef.current?.setFocus().catch((err) => {
+      console.error(err.message);
+    });
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
+  const [isTouched, setIsTouched] = useState(false);
 
-  const checkValidity = (event: IonTextareaCustomEvent<TextareaChangeEventDetail> | IonTextareaCustomEvent<FocusEvent>) => {
-    setIsValid(error ? false : (event.target.querySelector('textarea') as HTMLTextAreaElement)?.checkValidity());
+  const checkValidity = () => {
+    if (error) {
+      setIsValid(false);
+    } else {
+      inputRef.current
+        ?.getInputElement()
+        .then((textarea) => (textarea ? setIsValid(textarea.checkValidity()) : null))
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
+    setIsTouched(true);
   };
-  const handleChange = (event: IonTextareaCustomEvent<TextareaChangeEventDetail>) => {
-    checkValidity(event);
-    setValue(event.detail.value as string, actionType, actionLang);
+  const handleChange = (newVal: string | null | undefined) => {
+    if (isTouched) checkValidity();
+    setValue(newVal as string, actionType, actionLang);
   };
 
   const getErrorText = () => {
@@ -42,39 +53,45 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   };
 
   useEffect(() => {
-    inputRef.current?.getInputElement().then((textarea) => (textarea ? setIsValid(error ? false : textarea.checkValidity()) : null));
-  }, [required, error]);
+    if (isTouched) {
+      inputRef.current
+        ?.getInputElement()
+        .then((textarea) => {
+          if (error) setIsValid(false);
+          if (textarea) setIsValid(textarea.checkValidity());
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+      setIsTouched(false);
+    } else if (!required && !val.trim() && !error) {
+      setIsValid(true);
+    }
+  }, [required, error, isTouched, val]);
 
   return (
     <>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem
-        className={'formInput' + (isValid ? '' : ' invalid')}
-        lines="none"
+      <IonTextarea
+        ref={inputRef}
+        value={val}
+        required={required}
+        onIonInput={(ev) => handleChange(ev.target.value)}
+        onIonBlur={() => checkValidity()}
+        disabled={disabled}
+        autoGrow
+        rows={1}
+        maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
+        className={'ion-align-self-center formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
+        helperText={helperText ?? ''}
+        errorText={getErrorText()}
+        labelPlacement="fixed"
         counter={true}
         counterFormatter={(inputLength, maxLength) => (inputLength > TEXTAREA_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
-      >
-        <IonTextarea
-          ref={inputRef}
-          value={val}
-          required={required}
-          onIonChange={(ev) => handleChange(ev)}
-          onIonBlur={(ev) => checkValidity(ev)}
-          disabled={disabled}
-          autoGrow
-          rows={1}
-          maxlength={TEXTAREA_MAXLENGTH}
-          className="ion-align-self-center"
-        />
-        <IonNote slot="helper">{helperText}</IonNote>
-        <IonNote slot="error" className="input-error">
-          <ErrorIcon aria-label={t('error') || ''} />
-          {getErrorText()}
-        </IonNote>
-      </IonItem>
+      />
     </>
   );
 };

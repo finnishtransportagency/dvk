@@ -8,6 +8,7 @@ interface LabelProps {
   required?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
+  infoContentSize?: 'medium' | 'large';
 }
 
 const Label: React.FC<LabelProps> = (props) => {
@@ -18,13 +19,13 @@ const Label: React.FC<LabelProps> = (props) => {
           {props.title}
         </IonLabel>
         {props.required && (
-          <IonLabel slot="end" color="dark" className="left-padding">
+          <IonLabel slot="end" color="dark" className="input-required-marker left-padding">
             *
           </IonLabel>
         )}
         {props.infoContent && props.infoContentTitle && (
           <IonLabel slot="end">
-            <Modal title={props.infoContentTitle} content={props.infoContent} />
+            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
           </IonLabel>
         )}
       </IonItem>

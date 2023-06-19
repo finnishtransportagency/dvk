@@ -7,6 +7,7 @@ import {
   IonHeader,
   IonInput,
   IonItem,
+  IonLabel,
   IonPage,
   IonRow,
   IonSelect,
@@ -61,7 +62,7 @@ const MainPage: React.FC = () => {
   };
   const clearInput = () => {
     setSearchQuery('');
-    searchRef.current?.setFocus();
+    searchRef.current?.setFocus().catch((err) => console.error(err));
   };
   const itemTypeSelection = (value: ItemType[]) => {
     setItemTypes(value);
@@ -95,11 +96,16 @@ const MainPage: React.FC = () => {
     return 'plainButton' + (sortDescending ? ' desc' : '');
   }, [sortDescending]);
 
+  const selectTypeRef = useRef<HTMLIonSelectElement>(null);
+  const focusTypeSelect = () => {
+    selectTypeRef.current?.click();
+  };
+
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border" id="mainPageContent">
         <IonGrid className="optionBar">
-          <IonRow>
+          <IonRow className="ion-align-items-end">
             <IonCol size="auto">
               <div className="searchWrapper">
                 <IonInput
@@ -120,9 +126,13 @@ const MainPage: React.FC = () => {
               </div>
             </IonCol>
             <IonCol size="auto">
-              <IonItem fill="outline" className="selectInput">
+              <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
+                {translatedTextOrEmpty('label-type')}
+              </IonLabel>
+              <IonItem className="selectInput">
                 <IonSelect
-                  placeholder={translatedTextOrEmpty('select-type')}
+                  ref={selectTypeRef}
+                  placeholder={translatedTextOrEmpty('choose')}
                   interface="popover"
                   multiple={true}
                   onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
@@ -130,6 +140,7 @@ const MainPage: React.FC = () => {
                     size: 'cover',
                     className: 'multiSelect',
                   }}
+                  labelPlacement="stacked"
                 >
                   <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
                   <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
@@ -242,9 +253,9 @@ const MainPage: React.FC = () => {
                   onClick={() => selectItem(item.id, item.type)}
                   onKeyDown={(e) => keyDownAction(e, item.id, item.type)}
                 >
-                  <IonCol size="2.5">{item.name[lang] || item.name.fi}</IonCol>
+                  <IonCol size="2.5">{item.name[lang] ?? item.name.fi}</IonCol>
                   <IonCol size="1.5">{t('item-type-' + item.type)}</IonCol>
-                  <IonCol size="1.5">{groups[Number(item.group || 0)]}</IonCol>
+                  <IonCol size="1.5">{groups[Number(item.group ?? 0)]}</IonCol>
                   <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
                   <IonCol size="1">{t('item-status-' + item.status)}</IonCol>
                   <IonCol size="1.5">{item.creator}</IonCol>
@@ -255,7 +266,7 @@ const MainPage: React.FC = () => {
             })}
         </IonGrid>
 
-        <CreationModal itemList={data?.fairwayCardsAndHarbors || []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CreationModal itemList={data?.fairwayCardsAndHarbors ?? []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
       </IonContent>
     </IonPage>
   );

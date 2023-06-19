@@ -60,17 +60,16 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.south@finnpilot.fi",
-      "phoneNumber": "+358400907977",
-      "fax": "+358295253010",
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "phoneNumber": "+358295253420",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 25,
+          "id": 27529222400,
           "pilotJourney": 13
         },
         {
-          "id": 44,
+          "id": 457800602,
           "pilotJourney": 10.5
         }
       ]

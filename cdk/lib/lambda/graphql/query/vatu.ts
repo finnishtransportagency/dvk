@@ -1,7 +1,7 @@
 import { ALBEvent } from 'aws-lambda';
 import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getVatuHeaders, getVatuUrl } from '../../environment';
+import { getTimeout, getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
 import { roundGeometry } from '../../util';
 
@@ -18,6 +18,7 @@ export type AlueVaylaAPIModel = {
   vaylaalueenJarjestysNro?: number;
   nimiFI?: string;
   nimiSV?: string;
+  nimiSE?: string;
 };
 
 export type AlueAPIModel = {
@@ -161,6 +162,11 @@ export type TurvalaiteVikatiedotAPIModel = {
   kirjausAika: string;
 } & GeometryModel;
 
+export type TurvalaiteReunaetaisyysAPIModel = {
+  vaylaalueID: number;
+  etaisyys: number;
+};
+
 export type TurvalaiteAPIModel = {
   turvalaitenumero: number;
   nimiFI?: string;
@@ -181,6 +187,7 @@ export type TurvalaiteAPIModel = {
   AISTyyppiSeliteFI?: string;
   AISTyyppiSeliteSV?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
+  reunaetaisyys?: TurvalaiteReunaetaisyysAPIModel[];
 } & GeometryModel;
 
 export type TaululinjaVaylaAPIModel = {
@@ -198,6 +205,22 @@ export type TaululinjaAPIModel = {
   vayla: TaululinjaVaylaAPIModel[];
 } & GeometryModel;
 
+export type KaantoympyraVaylaAPIModel = {
+  jnro: number;
+  nimiFI: string;
+  nimiSV?: string;
+  luokitus: number;
+};
+
+export type KaantoympyraAPIModel = {
+  kaantoympyraID: number;
+  halkaisija: number;
+  haraussyvyys?: number;
+  vertaustaso?: string;
+  lisatieto?: string;
+  vayla?: KaantoympyraVaylaAPIModel[];
+} & GeometryModel;
+
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
   const start = Date.now();
@@ -205,6 +228,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     .get(url, {
       headers: await getVatuHeaders(),
       params,
+      timeout: getTimeout(),
     })
     .catch(function (error) {
       const errorObj = error.toJSON();

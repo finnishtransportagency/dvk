@@ -40,9 +40,8 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358400907979",
-      "fax": "+358295253012",
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "phoneNumber": "+358295253450",
       "internet": "https://www.pilotonline.fi",
       "extraInfo": {
         "fi": "Jäänmurtajat eivät avusta väylällä liikennöiviä aluksia.",
@@ -51,7 +50,7 @@
       },
       "places": [
         {
-          "id": 15,
+          "id": 42930622400,
           "pilotJourney": 10
         }
       ]

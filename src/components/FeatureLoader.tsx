@@ -2,14 +2,13 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
+import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData } from '../utils/dataLoader';
+import { useFeatureData, useStaticFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
-import Layer from 'ol/layer/Layer';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 
 export type DvkLayerState = {
@@ -55,133 +54,58 @@ export function useLine3456Layer() {
   return useDataLayer('line3456', 'line3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
 }
 
+export function useCircleLayer() {
+  return useDataLayer('circle', 'circle');
+}
+
+function useStaticDataLayer(
+  featureDataId: FeatureDataId,
+  featureLayerId: FeatureDataLayerId | BackgroundLayerId,
+  dataProjection = MAP.EPSG,
+  refetchOnMount: 'always' | boolean = true,
+  refetchInterval: number | false = false
+): DvkLayerState {
+  const [ready, setReady] = useState(false);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  useEffect(() => {
+    if (data) {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const source = layer.getSource() as VectorSource;
+        source.clear();
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        source.addFeatures(features);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
 export function useNameLayer() {
-  return useDataLayer('name', 'name', MAP.EPSG);
+  return useStaticDataLayer('name', 'name');
 }
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const fiQuery = useFeatureData('finland', true, false);
-  const dataUpdatedAt = Math.max(fiQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(fiQuery.errorUpdatedAt);
-  const isPaused = fiQuery.isPaused;
-  const isError = fiQuery.isError;
-
-  useEffect(() => {
-    if (fiQuery.data) {
-      const layer = dvkMap.getBackgroundLayer('finland') as Layer;
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        const features = format.readFeatures(fiQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [fiQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useStaticDataLayer('finland', 'finland');
 }
 
 export function useBackgroundMmlmeriLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const mmlmeriQuery = useFeatureData('mml_meri', true, false);
-  const dataUpdatedAt = Math.max(mmlmeriQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(mmlmeriQuery.errorUpdatedAt);
-  const isPaused = mmlmeriQuery.isPaused;
-  const isError = mmlmeriQuery.isError;
-
-  useEffect(() => {
-    if (mmlmeriQuery.data) {
-      const layer = dvkMap.getBackgroundLayer('mml-meri') as Layer;
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(mmlmeriQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [mmlmeriQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useStaticDataLayer('mml_meri', 'mml_meri');
 }
 
 export function useBackgroundMmljarviLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const mmljarviQuery = useFeatureData('mml_jarvi', true, false);
-  const dataUpdatedAt = Math.max(mmljarviQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(mmljarviQuery.errorUpdatedAt);
-  const isPaused = mmljarviQuery.isPaused;
-  const isError = mmljarviQuery.isError;
-
-  useEffect(() => {
-    if (mmljarviQuery.data) {
-      const layer = dvkMap.getBackgroundLayer('mml-jarvi') as Layer;
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(mmljarviQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [mmljarviQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useStaticDataLayer('mml_jarvi', 'mml_jarvi');
 }
 
 export function useBackgroundMmllaituritLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const mmllaituritQuery = useFeatureData('mml_laiturit', true, false);
-  const dataUpdatedAt = Math.max(mmllaituritQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(mmllaituritQuery.errorUpdatedAt);
-  const isPaused = mmllaituritQuery.isPaused;
-  const isError = mmllaituritQuery.isError;
-
-  useEffect(() => {
-    if (mmllaituritQuery.data) {
-      const layer = dvkMap.getBackgroundLayer('mml-laiturit') as Layer;
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(mmllaituritQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [mmllaituritQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useStaticDataLayer('mml_laiturit', 'mml_laiturit');
 }
 
 export function useBackgroundBalticseaLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const baQuery = useFeatureData('balticsea', true, false);
-  const dataUpdatedAt = Math.max(baQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(baQuery.errorUpdatedAt);
-  const isPaused = baQuery.isPaused;
-  const isError = baQuery.isError;
-
-  useEffect(() => {
-    if (baQuery.data) {
-      const layer = dvkMap.getBackgroundLayer('balticsea') as Layer;
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(baQuery.data, { dataProjection: MAP.EPSG, featureProjection: MAP.EPSG });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [baQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useStaticDataLayer('balticsea', 'balticsea');
 }
 
 export function useBoardLine12Layer() {
@@ -200,8 +124,12 @@ export function useBuoyLayer() {
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
-export function useVtsLayer() {
-  return useDataLayer('vts', 'vts', 'EPSG:4258');
+export function useVtsLineLayer() {
+  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
+}
+
+export function useVtsPointLayer() {
+  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -213,7 +141,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
       continue;
     }
     const rafExtent = raf.getGeometry()?.getExtent();
-    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
 
     for (const faf of fafs) {
       const fafExtent = faf.getGeometry()?.getExtent();
@@ -222,7 +150,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
         continue;
       }
 
-      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       // Check if fairway area polygone intersects restriction area polygone
       if (!turf.booleanDisjoint(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
         const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
@@ -302,8 +230,8 @@ export function useSpeedLimitLayer(): DvkLayerState {
           };
           slWorker.postMessage({ raData: JSON.stringify(raData), aData: JSON.stringify(aData) });
         } else {
-          const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-          const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+          const afs = format.readFeatures(aData);
+          const rafs = format.readFeatures(raData);
           const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
           const source = dvkMap.getVectorSource('speedlimit');
           source.clear();
@@ -316,12 +244,16 @@ export function useSpeedLimitLayer(): DvkLayerState {
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useSpecialAreaLayer() {
-  return useDataLayer('specialarea', 'specialarea');
+export function useSpecialArea2Layer() {
+  return useDataLayer('specialarea2', 'specialarea2');
+}
+
+export function useSpecialArea15Layer() {
+  return useDataLayer('specialarea15', 'specialarea15');
 }
 
 export function usePilotLayer() {
-  return useDataLayer('pilot', 'pilot');
+  return useDataLayer('pilot', 'pilot', 'EPSG:4258');
 }
 
 export function useHarborLayer() {
@@ -356,6 +288,9 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        efs.forEach((f) => {
+          f.set('dataSource', 'safetyequipment', true);
+        });
         const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();

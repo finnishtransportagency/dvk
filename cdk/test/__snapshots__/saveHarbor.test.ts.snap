@@ -21,11 +21,11 @@ exports[`test mapHarborToModel all 1`] = `
     "fi": "extrafi",
     "sv": "extrasv",
   },
-  "fax": "323",
+  "fax": "32321",
   "geometry": {
     "coordinates": [
-      11,
-      22,
+      18,
+      62,
     ],
     "type": "Point",
   },
@@ -45,8 +45,8 @@ exports[`test mapHarborToModel all 1`] = `
     "sv": "testsv2",
   },
   "phoneNumber": [
-    "1",
-    "22",
+    "12345",
+    "22222",
   ],
   "quays": [
     {
@@ -57,8 +57,8 @@ exports[`test mapHarborToModel all 1`] = `
       },
       "geometry": {
         "coordinates": [
-          222.1,
-          33.2,
+          22.1,
+          63.2,
         ],
         "type": "Point",
       },
@@ -73,7 +73,7 @@ exports[`test mapHarborToModel all 1`] = `
           "depth": 10,
           "geometry": {
             "coordinates": [
-              123,
+              17,
               62.2,
             ],
             "type": "Point",
@@ -99,8 +99,8 @@ exports[`test mapHarborToModel minimal 1`] = `
   "fax": null,
   "geometry": {
     "coordinates": [
-      1,
-      2,
+      20,
+      60,
     ],
     "type": "Point",
   },

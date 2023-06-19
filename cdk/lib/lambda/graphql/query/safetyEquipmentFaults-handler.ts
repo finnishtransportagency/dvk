@@ -2,27 +2,46 @@ import { SafetyEquipmentFault } from '../../../../graphql/generated';
 import { AppSyncResolverEvent } from 'aws-lambda';
 import { fetchVATUByApi, TurvalaiteVikatiedotAPIModel } from './vatu';
 import { log } from '../../logger';
+import { cacheResponse, getFromCache } from '../cache';
+
+function getKey() {
+  return 'safetyequipmentfault-graphql';
+}
 
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<SafetyEquipmentFault[]> => {
   log.info(`safetyEquipmentFaults(${event.identity})`);
-  const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
-  log.debug('faults: %d', faults.length);
-  return faults.map((apiFault) => {
-    const fault: SafetyEquipmentFault = {
-      id: apiFault.vikaId,
-      name: {
-        fi: apiFault.turvalaiteNimiFI,
-        sv: apiFault.turvalaiteNimiSV,
-      },
-      equipmentId: apiFault.turvalaiteNumero,
-      typeCode: apiFault.vikatyyppiKoodi,
-      type: {
-        fi: apiFault.vikatyyppiFI,
-        sv: apiFault.vikatyyppiSV,
-      },
-      recordTime: Date.parse(apiFault.kirjausAika),
-      geometry: apiFault.geometria,
-    };
-    return fault;
-  });
+  const key = getKey();
+  try {
+    const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+    log.debug('faults: %d', faults.length);
+    const response = faults.map((apiFault) => {
+      const fault: SafetyEquipmentFault = {
+        id: apiFault.vikaId,
+        name: {
+          fi: apiFault.turvalaiteNimiFI,
+          sv: apiFault.turvalaiteNimiSV,
+        },
+        equipmentId: apiFault.turvalaiteNumero,
+        typeCode: apiFault.vikatyyppiKoodi,
+        type: {
+          fi: apiFault.vikatyyppiFI,
+          sv: apiFault.vikatyyppiSV,
+        },
+        recordTime: Date.parse(apiFault.kirjausAika),
+        geometry: apiFault.geometria,
+      };
+      return fault;
+    });
+    await cacheResponse(key, response);
+    return response;
+  } catch (e) {
+    log.error('Getting safety equipment faults failed: %s', e);
+    const cacheResponseData = await getFromCache(key);
+    if (cacheResponseData.data) {
+      log.warn('Returning expired response from s3 cache');
+      return JSON.parse(cacheResponseData.data);
+    } else {
+      throw e;
+    }
+  }
 };

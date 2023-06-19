@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getEnvironment, getFeatureCacheDurationHours, getHeaders } from '../environment';
+import { getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
@@ -8,22 +8,19 @@ import {
   AlueAPIModel,
   fetchVATUByApi,
   fetchVATUByFairwayClass,
+  KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   TurvalaiteAPIModel,
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
 import HarborDBModel from '../db/harborDBModel';
 import { fetchMarineWarnings, parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import PilotPlaceDBModel from '../db/pilotPlaceDBModel';
 import { GeometryPoint, Text } from '../../../graphql/generated';
-import { fetchVTSPointsAndLines } from './traficom';
-
-const s3Client = new S3Client({ region: 'eu-west-1' });
+import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
+import { cacheResponse, getFromCache } from '../graphql/cache';
 
 function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
@@ -42,12 +39,12 @@ const gzipString = async (input: string): Promise<Buffer> => {
 };
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const harbors = await HarborDBModel.getAll();
+  const harbors = await HarborDBModel.getAllPublic();
   const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
   for (const harbor of harbors) {
     harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
   }
-  const cards = await FairwayCardDBModel.getAll();
+  const cards = await FairwayCardDBModel.getAllPublic();
   for (const card of cards) {
     for (const h of card.harbors || []) {
       harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
@@ -55,7 +52,8 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
   }
   const ids: string[] = [];
   for (const harbor of harborMap.values()) {
-    if (harbor?.geometry?.coordinates?.length === 2) {
+    const cardHarbor = harborMap.get(harbor.id);
+    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor && cardHarbor.fairwayCards.length > 0) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
@@ -78,6 +76,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             extraInfo: harbor.extraInfo,
           },
         });
+      } else {
+        const harborFeature = features.find((feature) => feature.id === id);
+        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
@@ -92,8 +93,8 @@ type PilotPlace = {
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAll();
-  const pilots = await PilotPlaceDBModel.getAll();
+  const cards = await FairwayCardDBModel.getAllPublic();
+  const pilots = await fetchPilotPoints();
   for (const pilot of pilots) {
     placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
   }
@@ -121,7 +122,7 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 
 async function getCardMap() {
   const cardMap = new Map<number, FairwayCardIdName[]>();
-  const cards = await FairwayCardDBModel.getAll();
+  const cards = await FairwayCardDBModel.getAllPublic();
   for (const card of cards) {
     for (const id of card.fairways.map((f) => f.id)) {
       if (!cardMap.has(id)) {
@@ -158,24 +159,43 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], navigationArea: boolean, event: ALBEvent) {
+// 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
+// 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
+const navigationAreaFilter = (a: AlueAPIModel) =>
+  a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11;
+const specialAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15;
+const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
+const meetRestrictionAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 15;
+function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'specialarea15') {
+  if (type === 'area') {
+    return navigationAreaFilter;
+  } else if (type === 'specialarea2') {
+    return anchoringAreaFilter;
+  } else if (type === 'specialarea15') {
+    return meetRestrictionAreaFilter;
+  } else {
+    return specialAreaFilter;
+  }
+}
+
+async function addAreaFeatures(
+  features: Feature<Geometry, GeoJsonProperties>[],
+  event: ALBEvent,
+  featureType: string,
+  areaFilter: (a: AlueAPIModel) => boolean
+) {
   const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
-  // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
-  // 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
-  for (const area of areas.filter((a) =>
-    navigationArea
-      ? a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11
-      : a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15
-  )) {
+
+  for (const area of areas.filter(areaFilter)) {
     features.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
       properties: {
         id: area.id,
-        featureType: navigationArea ? 'area' : 'specialarea',
+        featureType: featureType,
         name: area.nimi,
         depth: getNumberValue(area.harausSyvyys),
         typeCode: area.tyyppiKoodi,
@@ -185,13 +205,13 @@ async function addAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         n2000draft: getNumberValue(area.n2000MitoitusSyvays),
         n2000depth: getNumberValue(area.n2000HarausSyvyys),
         n2000ReferenceLevel: area.n2000Vertaustaso,
-        extra: area.lisatieto,
+        extra: area.lisatieto?.trim(),
         fairways: area.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
             name: {
               fi: v.nimiFI,
-              sv: v.nimiSV,
+              sv: v.nimiSV || v.nimiSE,
             },
             fairwayCards: cardMap.get(v.jnro),
             status: v.status,
@@ -287,7 +307,9 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         length: getNumberValue(line.pituus),
         n2000depth: getNumberValue(line.n2000HarausSyvyys),
         n2000draft: getNumberValue(line.n2000MitoitusSyvays),
-        extra: line.lisatieto,
+        referenceLevel: line.vertaustaso,
+        n2000ReferenceLevel: line.n2000Vertaustaso,
+        extra: line.lisatieto?.trim(),
         fairways: line.vayla?.map((v) => {
           return {
             fairwayId: v.jnro,
@@ -317,7 +339,6 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
       properties: {
         id: equipment.turvalaitenumero,
         featureType: 'safetyequipment',
-        subType: equipment.alityyppi,
         navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
         navigationCode: equipment.navigointilajiKoodi,
         name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
@@ -329,6 +350,9 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         remoteControl: equipment.kaukohallinta,
         fairways: equipment.vayla?.map((v) => {
           return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
+        }),
+        distances: equipment.reunaetaisyys?.map((v) => {
+          return { areaId: v.vaylaalueID, distance: v.etaisyys };
         }),
       },
     });
@@ -385,8 +409,8 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addVTSPointsAndLines(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const resp = await fetchVTSPointsAndLines();
+async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties>[], isPoint: boolean) {
+  const resp = isPoint ? await fetchVTSPoints() : await fetchVTSLines();
   for (const feature of resp) {
     features.push({
       type: feature.type,
@@ -397,8 +421,7 @@ async function addVTSPointsAndLines(features: Feature<Geometry, GeoJsonPropertie
         identifier: feature.properties?.IDENTIFIER,
         name: feature.properties?.OBJNAM,
         information: feature.properties?.INFORM,
-        // eslint-disable-next-line no-useless-escape
-        channel: feature.properties?.COMCHA?.replace(/[\[\]]/g, ''),
+        channel: feature.properties?.COMCHA?.replace(/[[\]]/g, ''),
       },
     });
   }
@@ -463,8 +486,20 @@ async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
   }
 }
 
-function getCacheBucketName() {
-  return `featurecache-${getEnvironment()}`;
+async function addTurningCircleFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+  const circles = await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat');
+  log.debug('circles: %d', circles.length);
+  for (const circle of circles) {
+    features.push({
+      type: 'Feature',
+      id: circle.kaantoympyraID,
+      geometry: circle.geometria as Geometry,
+      properties: {
+        featureType: 'circle',
+        diameter: circle.halkaisija,
+      },
+    });
+  }
 }
 
 function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined) {
@@ -477,50 +512,7 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
   return 'noquerystring';
 }
 
-async function cacheResponse(key: string, response: string) {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
-  const expires = new Date();
-  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
-  const command = new PutObjectCommand({
-    Key: key,
-    Bucket: getCacheBucketName(),
-    Expires: expires,
-    Body: response,
-  });
-  await s3Client.send(command);
-}
-
-type CacheResponse = {
-  expired: boolean;
-  data?: string;
-};
-
-async function getFromCache(key: string): Promise<CacheResponse> {
-  try {
-    const data = await s3Client.send(
-      new GetObjectCommand({
-        Key: key,
-        Bucket: getCacheBucketName(),
-      })
-    );
-    if (data.Body) {
-      log.debug(`returning ${key} from cache`);
-      const streamToString = (stream: Readable): Promise<string> =>
-        new Promise((resolve, reject) => {
-          const chunks: Uint8Array[] = [];
-          stream.on('data', (chunk: Uint8Array) => chunks.push(chunk));
-          stream.on('error', reject);
-          stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
-        });
-      return { expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(), data: await streamToString(data.Body as Readable) };
-    }
-  } catch (e) {
-    // errors ignored also not found
-  }
-  return { expired: true };
-}
-
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy'];
+const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
 
 async function isCacheEnabled(type: string): Promise<boolean> {
   const cacheDurationHours = await getFeatureCacheDurationHours();
@@ -535,10 +527,9 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addPilotFeatures(features);
   } else if (type === 'harbor') {
     await addHarborFeatures(features);
-  } else if (type === 'area') {
-    await addAreaFeatures(features, true, event);
-  } else if (type === 'specialarea') {
-    await addAreaFeatures(features, false, event);
+  } else if (type === 'area' || type === 'specialarea' || type === 'specialarea2' || type === 'specialarea15') {
+    const areaFilter = getAreaFilter(type);
+    await addAreaFeatures(features, event, type, areaFilter);
   } else if (type === 'restrictionarea') {
     await addRestrictionAreaFeatures(features, event);
   } else if (type === 'line') {
@@ -549,8 +540,10 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addSafetyEquipmentFaultFeatures(features);
   } else if (type === 'marinewarning') {
     await addMarineWarnings(features);
-  } else if (type === 'vts') {
-    await addVTSPointsAndLines(features);
+  } else if (type === 'vtspoint') {
+    await addVTSPointsOrLines(features, true);
+  } else if (type === 'vtsline') {
+    await addVTSPointsOrLines(features, false);
   } else if (type === 'depth') {
     await addDepthFeatures(features, event);
   } else if (type === 'boardline') {
@@ -561,6 +554,8 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
     await addWeatherObservations(features);
   } else if (type === 'buoy') {
     await addBuoys(features);
+  } else if (type === 'circle') {
+    await addTurningCircleFeatures(features);
   } else {
     return false;
   }
@@ -574,8 +569,8 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);
-  const response = cacheEnabled ? await getFromCache(key) : { expired: true };
-  if (!response.expired && response.data) {
+  const response = await getFromCache(key);
+  if (cacheEnabled && !response.expired && response.data) {
     base64Response = response.data;
   } else {
     try {
@@ -599,14 +594,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         start = Date.now();
         base64Response = gzippedResponse.toString('base64');
         log.debug('base64 duration: %d ms', Date.now() - start);
-        if (cacheEnabled) {
-          await cacheResponse(key, base64Response);
-        }
+        await cacheResponse(key, base64Response);
       }
     } catch (e) {
       log.error('Getting features failed: %s', e);
       if (response.data) {
-        log.warn('Returning expired response from s3 cache');
+        log.warn('Returning possibly expired response from s3 cache');
         base64Response = response.data;
       } else {
         base64Response = undefined;

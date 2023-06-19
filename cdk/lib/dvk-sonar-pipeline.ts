@@ -79,7 +79,7 @@ export class DvkSonarPipelineStack extends Stack {
               'sed -i "s/file path=\\"/file path=\\"squat\\//g" squat/coverage/sonar-report.xml',
               'sed -i "s/file path=\\"/file path=\\"admin\\//g" admin/coverage/sonar-report.xml',
               'sed -i "s/file path=\\"/file path=\\"cdk\\//g" cdk/coverage/sonar-report.xml',
-              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.login=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
+              `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.token=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
               'cd cdk',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync',
@@ -115,7 +115,7 @@ export class DvkSonarPipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.0'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.1'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
@@ -125,6 +125,10 @@ export class DvkSonarPipelineStack extends Stack {
           SONARQUBE_ACCESS_TOKEN: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
             value: 'SonarQubeAccessToken',
+          },
+          NODE_OPTIONS: {
+            value: '--max_old_space_size=4096 --max-old-space-size=4096',
+            type: BuildEnvironmentVariableType.PLAINTEXT,
           },
         },
       },
@@ -166,14 +170,6 @@ export class DvkSonarPipelineStack extends Stack {
       })
     );
     table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName() + '*');
-    project.addToRolePolicy(
-      new PolicyStatement({
-        effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
-        resources: [table.tableArn],
-      })
-    );
-    table = Table.fromTableName(this, 'PilotPlaceTable', Config.getPilotPlaceTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

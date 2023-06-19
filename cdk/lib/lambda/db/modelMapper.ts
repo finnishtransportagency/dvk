@@ -6,13 +6,16 @@ import {
   InputMaybe,
   Maybe,
   OperationError,
+  PilotPlace,
   TextInput,
   TrafficService,
 } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
+import { fetchPilotPoints } from '../api/traficom';
+import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
+import { log } from '../logger';
 import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
-import PilotPlaceDBModel from './pilotPlaceDBModel';
 
 const MAX_TEXT_LENGTH = 2000;
 const MAX_NUMBER_LENGTH = 10;
@@ -42,15 +45,23 @@ export function mapNumber(text: Maybe<string> | undefined, maxLength = MAX_NUMBE
 }
 
 export function mapGeometry(geometry?: InputMaybe<GeometryInput>, maxLength = MAX_GEOMETRY_NUMBER_LENGTH) {
-  if (geometry && (geometry.lat || geometry.lon)) {
-    return { type: 'Point', coordinates: [mapNumber(geometry.lat, maxLength), mapNumber(geometry.lon, maxLength)] };
+  if (geometry?.lat && geometry.lon) {
+    const geom = { type: 'Point', coordinates: [mapNumber(geometry.lon, maxLength), mapNumber(geometry.lat, maxLength)] };
+    if (geom.coordinates[0] && geom.coordinates[1]) {
+      if (geom.coordinates[0] >= 32 || geom.coordinates[0] < 17 || geom.coordinates[1] >= 70 || geom.coordinates[1] < 58) {
+        throw new Error(OperationError.InvalidInput);
+      }
+      return geom;
+    }
+    throw new Error(OperationError.InvalidInput);
   }
   return null;
 }
 
 export function mapId(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
-    const m = text.match(/[a-z]{1,}[0-9]*/); //NOSONAR
+    checkLength(200, text);
+    const m = /^[a-z]+[a-z\d]*$/.exec(text);
     if (m && m[0].length === text.length) {
       return text;
     }
@@ -59,7 +70,7 @@ export function mapId(text?: Maybe<string>) {
 }
 
 export function mapText(text?: Maybe<TextInput>, maxLength = MAX_TEXT_LENGTH) {
-  if (text && text.fi && text.sv && text.en) {
+  if (text?.fi && text.sv && text.en) {
     checkLength(maxLength, text.fi, text.sv, text.en);
     return {
       fi: text.fi,
@@ -94,6 +105,43 @@ export function mapString(text: Maybe<string> | undefined, maxLength = MAX_TEXT_
   return null;
 }
 
+export function mapInternetAddress(text: Maybe<string> | undefined): string | null {
+  return mapString(text, 200);
+}
+
+function checkRegExp(regexp: RegExp, text: string) {
+  if (!regexp.test(text)) {
+    throw new Error(OperationError.InvalidInput);
+  }
+}
+
+export function mapEmail(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+      text
+    );
+    return text;
+  }
+  return null;
+}
+
+export function mapEmails(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapEmail(t)).filter((t) => t !== null) as string[]) : null;
+}
+
+export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
+  if (text) {
+    checkRegExp(/^[+]?\d(\s?\d){4,19}$/, text);
+    return text;
+  }
+  return null;
+}
+
+export function mapPhoneNumbers(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
+  return text ? (text.map((t) => mapPhoneNumber(t)).filter((t) => t !== null) as string[]) : null;
+}
+
 export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {
   return text ? (text.map((t) => mapString(t, maxLength)).filter((t) => t !== null) as string[]) : null;
 }
@@ -106,11 +154,58 @@ export function mapFairwayIds(dbModel: FairwayCardDBModel) {
   return mapIds(dbModel.fairways.map((f) => f.id));
 }
 
-const pilotPlaceMap = new Map<number, PilotPlaceDBModel>();
+function mapNumberAndMax(text: Maybe<string> | undefined, regexp: RegExp, maxValue: number) {
+  if (text) {
+    checkRegExp(regexp, text);
+    const number = mapNumber(text);
+    if (number && (number > maxValue || number < 0)) {
+      throw new Error(OperationError.InvalidInput);
+    }
+    return number;
+  }
+  return null;
+}
+
+export function mapPilotJourney(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d?$/, 999.9);
+}
+
+export function mapVhfChannel(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}$/, 999);
+}
+
+export function mapQuayLength(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,4}[.,]?\d?$/, 9999.9);
+}
+
+export function mapQuayDepth(text: Maybe<string> | undefined) {
+  return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
+}
+
+const pilotPlaceMap = new Map<number, PilotPlace>();
+const pilotCacheKey = 'pilotplaces';
 
 export async function getPilotPlaceMap() {
   if (pilotPlaceMap.size === 0) {
-    (await PilotPlaceDBModel.getAll()).forEach((p) => pilotPlaceMap.set(p.id, p));
+    let response: CacheResponse | undefined;
+    let data: PilotPlace[] | undefined;
+    try {
+      response = await getFromCache(pilotCacheKey);
+      if (response.expired) {
+        log.debug('fetching pilot places from api');
+        data = await fetchPilotPoints();
+        await cacheResponse(pilotCacheKey, data);
+      } else if (response.data) {
+        log.debug('parsing pilot places from cache');
+        data = JSON.parse(response.data) as PilotPlace[];
+      }
+    } catch (e) {
+      if (!data && response?.data) {
+        log.warn('parsing expired pilot places from cache');
+        data = JSON.parse(response.data) as PilotPlace[];
+      }
+    }
+    data?.forEach((p) => pilotPlaceMap.set(p.id, p));
   }
   return pilotPlaceMap;
 }
@@ -124,7 +219,7 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   return fairway;
 }
 
-function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pilotMap: Map<number, PilotPlaceDBModel>): TrafficService {
+function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pilotMap: Map<number, PilotPlace>): TrafficService {
   return {
     pilot: {
       email: service?.pilot?.email,
@@ -137,21 +232,17 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
           return {
             id: p.id,
             pilotJourney: p.pilotJourney,
-            name: pilotMap.get(p.id)?.name || { fi: '', sv: '', en: '' },
-            geometry: pilotMap.get(p.id)?.geometry || { type: 'Point', coordinates: [] },
+            name: pilotMap.get(p.id)?.name ?? { fi: '', sv: '', en: '' },
+            geometry: pilotMap.get(p.id)?.geometry ?? { type: 'Point', coordinates: [] },
           };
-        }) || [],
+        }) ?? [],
     },
-    tugs: service?.tugs || null,
-    vts: service?.vts || null,
+    tugs: service?.tugs ?? null,
+    vts: service?.vts ?? null,
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(
-  dbModel: FairwayCardDBModel,
-  pilotMap: Map<number, PilotPlaceDBModel>,
-  user: CurrentUser | undefined
-) {
+export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {

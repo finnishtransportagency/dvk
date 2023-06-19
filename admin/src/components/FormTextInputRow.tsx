@@ -18,6 +18,7 @@ interface InputRowProps {
   inputType?: '' | 'input' | 'textarea';
   actionTarget?: string | number;
   actionOuterTarget?: string | number;
+  focused?: boolean;
 }
 
 const FormTextInputRow: React.FC<InputRowProps> = ({
@@ -32,6 +33,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   inputType,
   actionTarget,
   actionOuterTarget,
+  focused,
 }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
@@ -39,12 +41,12 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   const en = i18n.getFixedT('en');
 
   return (
-    <IonRow>
-      <IonCol>
+    <IonRow className="bordered">
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={fi(labelKey) + ' (fi)'}
-            val={value?.fi || ''}
+            val={value?.fi ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="fi"
@@ -54,12 +56,13 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
+            focused={focused}
           />
         )}
         {inputType === 'textarea' && (
           <FormTextarea
             label={fi(labelKey) + ' (fi)'}
-            val={value?.fi || ''}
+            val={value?.fi ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="fi"
@@ -70,11 +73,11 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={sv(labelKey) + ' (sv)'}
-            val={value?.sv || ''}
+            val={value?.sv ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="sv"
@@ -89,7 +92,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {inputType === 'textarea' && (
           <FormTextarea
             label={sv(labelKey) + ' (sv)'}
-            val={value?.sv || ''}
+            val={value?.sv ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="sv"
@@ -100,11 +103,11 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
       </IonCol>
-      <IonCol>
+      <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
           <FormInput
             label={en(labelKey) + ' (en)'}
-            val={value?.en || ''}
+            val={value?.en ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="en"
@@ -119,7 +122,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
         {inputType === 'textarea' && (
           <FormTextarea
             label={en(labelKey) + ' (en)'}
-            val={value?.en || ''}
+            val={value?.en ?? ''}
             setValue={updateState}
             actionType={actionType}
             actionLang="en"

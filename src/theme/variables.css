@@ -19,6 +19,13 @@
   src: url("./font/static/Exo2-Bold.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "Exo2";
+  font-weight: 400;
+  font-style: italic;
+  src: url("./font/static/Exo2-Italic.ttf") format("truetype");
+}
+
 /* Ionic Variables and Theming. For more info, please see:
 http://ionicframework.com/docs/theming/ */
 
@@ -147,6 +154,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-layer-depth: #ff00ff;
   --ion-color-layer-speedlimit-border: #d72416;
   --ion-color-layer-speedlimit-text: #000000;
+  --ion-color-layer-soundingpoint-text: #000000;
+  --ion-color-layer-depthcontour: #3b6683;
   --ion-color-layer-ice: #969696;
   --ion-color-speedlimit-30: #00b0cc;
   --ion-color-speedlimit-25: #8dcb6d;

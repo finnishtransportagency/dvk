@@ -35,13 +35,12 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.south@finnpilot.fi",
-      "phoneNumber": "+358400907977",
-      "fax": " +358295253010",
+      "email": "pilotdispatch.emasalo@finnpilot.fi",
+      "phoneNumber": "+358295253470",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 29,
+          "id": 7762322400,
           "pilotJourney": 21
         }
       ]

@@ -61,9 +61,9 @@ ${SWEPTDEPTH_INPUT}    //input[@name = "sweptDepth"]
 ${WATERLEVEL_INPUT}    //input[@name = "waterLevel"]
 ${WATERDEPTH_INPUT}    //input[@name = "waterDepth"]
 ${CHANNELWIDTH_INPUT}    //input[@name = "channelWidth"]
-${AVOVESI_RADIOBUTTON}    //*[text() = "Avovesi"]/following-sibling::ion-radio
-${KANAVA_RADIOBUTTON}    //*[text() = "Kanava"]/following-sibling::ion-radio
-${LUISKA_RADIOBUTTON}    //*[text() = "Luiska"]/following-sibling::ion-radio
+${AVOVESI_RADIOBUTTON}    //ion-radio[@id="Open Water"]
+${KANAVA_RADIOBUTTON}    //ion-radio[@id="Channel"]
+${LUISKA_RADIOBUTTON}    //ion-radio[@id="Sloped Channel"]
 ${SLOPESCALE_INPUT}    //input[@name = "slopeScale"]
 ${SLOPEHEIGHT_INPUT}    //input[@name = "slopeHeight"]
 
@@ -98,7 +98,9 @@ ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}    //ion-label[@title = "Aluksen
 ${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}    //ion-label[@title = "Kölivara ja aluksen liikkeet"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 ${KOLIVARA_SUORALLA_KURSSILLA_VALUE}    //ion-label[@title = "Kölivara suoralla kurssilla"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 ${KOLIVARA_KAANNOKSESSA_VALUE}    //ion-label[@title = "Kölivara käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_LUISKA_VALUE}    //ion-label[@title = "Painuma (Squat), Luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_SLOPED_VALUE}    //ion-label[@title = "Painuma (Squat), Luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_CHANNEL_VALUE}    //ion-label[@title = "Painuma (Squat), Kanava"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_OPEN_VALUE}    //ion-label[@title = "Painuma (Squat), Avovesi"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 
 #Tuulen voima -calculation
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text

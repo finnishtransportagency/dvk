@@ -45,17 +45,16 @@
   },
   "trafficService": {
     "pilot": {
-      "email": "pilotorder.west@finnpilot.fi",
-      "phoneNumber": "+358907979",
-      "fax": "+358295253012",
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "phoneNumber": "+358295253460",
       "internet": "https://www.pilotonline.fi",
       "places": [
         {
-          "id": 18,
+          "id": 20869821100,
           "pilotJourney": 5.7
         },
         {
-          "id": 19,
+          "id": 8412720700,
           "pilotJourney": 10
         }
       ]

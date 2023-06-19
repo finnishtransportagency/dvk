@@ -8,9 +8,11 @@ import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type PilotPopupContentProps = {
-  pilot?: PilotProperties;
+  pilot: PilotProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
 };
 
@@ -25,6 +27,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -36,7 +39,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
           </IonCol>
           <IonCol size="auto">
             <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src="assets/icon/close_black_24dp.svg" />
+              <IonIcon className="otherIconLarge" src={closeIcon} />
             </IonButton>
           </IonCol>
         </IonRow>
@@ -46,18 +49,22 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
         <IonRow>
           <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
-        </IonRow>
-        {pilot?.properties.fairwayCards.map((card) => {
-          return (
-            <IonRow key={card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-              </IonCol>
+        {pilot.properties.fairwayCards && pilot.properties.fairwayCards.length > 0 && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
             </IonRow>
-          );
-        })}
+            {pilot.properties.fairwayCards.map((card) => {
+              return (
+                <IonRow key={card.id}>
+                  <IonCol>
+                    <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                  </IonCol>
+                </IonRow>
+              );
+            })}
+          </>
+        )}
       </IonGrid>
     </IonGrid>
   );

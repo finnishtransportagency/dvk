@@ -77,6 +77,24 @@ class HarborDBModel {
     return [];
   }
 
+  static async getAllPublic(): Promise<HarborDBModel[]> {
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: harborTable,
+        FilterExpression: '#status = :vStatus',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: { ':vStatus': Status.Public },
+      })
+    );
+    const harbors = response.Items as HarborDBModel[] | undefined;
+    if (harbors) {
+      log.debug('%d public harbor(s) found', harbors.length);
+      return harbors;
+    }
+    log.debug('No public harbors found');
+    return [];
+  }
+
   static async save(data: HarborDBModel, operation: Operation) {
     const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
     await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data, ConditionExpression: expr }));

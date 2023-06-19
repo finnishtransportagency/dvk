@@ -6,19 +6,19 @@
       "src": "assets/icon/vayla_v_rgb_144x144.png",
       "type": "image/png",
       "sizes": "144x144",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "assets/icon/vayla_v_rgb_192x192.png",
       "type": "image/png",
       "sizes": "192x192",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "assets/icon/vayla_v_rgb_512x512.png",
       "type": "image/png",
       "sizes": "512x512",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "start_url": ".",

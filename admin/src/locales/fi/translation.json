@@ -2,13 +2,15 @@
   "header": {
     "mainTitle": "Digitaalinen väyläkortti",
     "appTitle": "Ylläpitokäyttöliittymä",
-    "logout": "Kirjaudu ulos"
+    "logout": "Kirjaudu ulos",
+    "skip-to-content": "Siirry pääsisältöön"
   },
   "general": {
     "search-placeholder": "Hae nimellä",
     "search-title": "Hae nimellä",
     "search-clear-title": "Tyhjennä",
-    "select-type": "Valitse tyyppi",
+    "no-results": "Haku '{{query}}' ei palauttanut yhtään osumaa.",
+    "label-type": "Tyyppi",
     "type-fairwaycard": "Väyläkortti",
     "type-harbour": "Satama",
     "new-harbour": "Luo satama",
@@ -47,7 +49,7 @@
     "multiple-values-supported": "Voit valita tarvittaessa useita kohteita.",
     "required-field": "Pakollinen tieto",
     "check-input": "Tarkista syöte",
-    "use-comma-separated-values": "Käytä pilkkua erottimena jos haluat lisätä useamman",
+    "use-comma-separated-values": "Käytä pilkkua erottimena, jos haluat lisätä useamman.",
     "email": "Sähköposti",
     "phone-number": "Puhelinnumero",
     "fax": "Faksin numero",
@@ -55,6 +57,7 @@
     "save-successful": "Tallennus onnistui",
     "save-failed": "Tallennus epäonnistui",
     "saved-by-id": "Kohteen \"{{ id }}\" tiedot tallennettu.",
+    "error": "Virhe",
     "error-MISSING-INFORMATION": "Pakollisia tietoja puuttuu tai syötetyissä tiedoissa on virheitä.",
     "error-CARD_ALREADY_EXIST": "Väyläkortin tunniste on jo käytössä.",
     "error-CARD_NOT_EXIST": "Väyläkorttia ei löydy annetulla tunnisteella.",
@@ -64,6 +67,7 @@
     "error-HARBOR_ID_MISSING": "Sataman tunniste puuttuu.",
     "error-NO_PERMISSIONS": "Ei tarvittavia käyttöoikeuksia.",
     "error-INVALID_INPUT": "Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
+    "error-OPERATION-BLOCKED": "Toiminto estetty",
     "fix-errors-try-again": "Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
     "add-section-vts": "Lisää alusliikennepalvelija",
@@ -96,7 +100,7 @@
     "cancel-fairwaycard-title": "Poistu tallentamatta",
     "cancel-fairwaycard-description": "Väyläkortti sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "save-fairwaycard-title": "Väyläkortin muutosten tallentaminen",
-    "save-fairwaycard-description": "Olet tallentamassa muutoksia julki olevaan väyläkorttiin. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat jatkaa?",
+    "save-fairwaycard-description": "Olet tallentamassa muutoksia julki olevaan väyläkorttiin. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat tallentaa muutokset?",
     "delete-fairwaycard-title": "Väyläkortin poisto",
     "delete-fairwaycard-description": "Olet poistamassa väyläkorttia \"{{name}}\". Oletko varma, että haluat poistaa väyläkortin?",
     "update-fairwaycard-title": "Väyläkortin tilamuutos",
@@ -108,7 +112,7 @@
     "cancel-harbor-title": "Poistu tallentamatta",
     "cancel-harbor-description": "Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "save-harbor-title": "Sataman muutosten tallentaminen",
-    "save-harbor-description": "Olet tallentamassa muutoksia julki olevaan satamaan. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat jatkaa?",
+    "save-harbor-description": "Olet tallentamassa muutoksia julki olevaan satamaan. Muutokset tulevat näkyviin Digitaalinen väyläkortti -palveluun. Oletko varma, että haluat tallentaa muutokset?",
     "delete-harbor-title": "Sataman poisto",
     "delete-harbor-description": "Olet poistamassa satamaa \"{{name}}\". Oletko varma, että haluat poistaa sataman?",
     "update-harbor-title": "Sataman tilamuutos",
@@ -116,17 +120,19 @@
     "update2-harbor-description": "Olet muuttamassa poistetun sataman tilan takaisin \"Luonnos\"-tilaan. Oletko varma, että haluat muuttaa sataman tilaa?",
     "update3-harbor-description": "Olet muuttamassa poistetun sataman tilan takaisin \"Julkaistu\"-tilaan. Oletko varma, että haluat muuttaa sataman tilaa?",
     "publish-harbor-title": "Sataman julkaiseminen",
-    "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?"
+    "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?",
+    "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
+    "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu."
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
     "primary-id": "Väyläkortin tunniste",
-    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9)",
+    "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9).",
     "linked-fairways": "Liitetyt väylät",
     "starting-fairway": "Aloittava väylä",
     "ending-fairway": "Päättävä väylä",
     "linked-harbours": "Liitetyt satamat",
-    "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan",
+    "fairway-order-help-text": "Väyläkortin suunta avomereltä rantaan.",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "fairway-info": "Väylätiedot",
     "lining-and-marking": "Linjaus ja merkintä",
@@ -155,7 +161,7 @@
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
-    "primary-id-help-text": "Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9)",
+    "primary-id-help-text": "Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9).",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "harbour-info": "Satamatiedot",
     "name": "Sataman nimi",
@@ -172,6 +178,10 @@
     "quay-heading": "Laituri",
     "quay-name": "Laiturin nimi",
     "quay-extra-info": "Lisätiedot",
-    "section-name": "Osion nimi"
+    "section-name": "Osion nimi",
+    "linked-fairwaycards-exist-cannot-remove-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-remove-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
+    "linked-fairwaycards-exist-cannot-draft-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
   }
 }

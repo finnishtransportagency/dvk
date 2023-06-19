@@ -19,7 +19,6 @@ import {
   useArea3456Layer,
   useDepth12Layer,
   useSpeedLimitLayer,
-  useSpecialAreaLayer,
   usePilotLayer,
   useHarborLayer,
   useSafetyEquipmentLayer,
@@ -35,7 +34,11 @@ import {
   useBackgroundMmllaituritLayer,
   useBackgroundBalticseaLayer,
   DvkLayerState,
-  useVtsLayer,
+  useVtsLineLayer,
+  useVtsPointLayer,
+  useCircleLayer,
+  useSpecialArea2Layer,
+  useSpecialArea15Layer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -98,30 +101,34 @@ const DvkIonApp: React.FC = () => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
+  /* Start initializing layers that are required at ap start first */
+  const fairwayCardList = useFairwayCardList();
   const line12Layer = useLine12Layer();
-  const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
-  const area3456Layer = useArea3456Layer();
-  const depth12Layer = useDepth12Layer();
-  const speedLimitLayer = useSpeedLimitLayer();
-  const specialAreaLayer = useSpecialAreaLayer();
+  const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
-  const safetyEquipmentLayer = useSafetyEquipmentLayer();
-  const marineWarningLayer = useMarineWarningLayer();
-  const fairwayCardList = useFairwayCardList();
-  const nameLayer = useNameLayer();
   const boardLine12Layer = useBoardLine12Layer();
-  const mareographLayer = useMareographLayer();
-  const observationLayer = useObservationLayer();
-  const buoyLayer = useBuoyLayer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
-  const bgBalticseaLayer = useBackgroundBalticseaLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
-  const bgMmllaituritLayer = useBackgroundMmllaituritLayer();
-  const vtsLayer = useVtsLayer();
-
+  const circleLayer = useCircleLayer();
+  /* Start initializing other layers */
+  useDepth12Layer();
+  useSpeedLimitLayer();
+  useSafetyEquipmentLayer();
+  useMarineWarningLayer();
+  useNameLayer();
+  useMareographLayer();
+  useObservationLayer();
+  useBuoyLayer();
+  useVtsLineLayer();
+  useVtsPointLayer();
+  useLine3456Layer();
+  useArea3456Layer();
+  useBackgroundBalticseaLayer();
+  useBackgroundMmllaituritLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -130,29 +137,18 @@ const DvkIonApp: React.FC = () => {
 
   useEffect(() => {
     const allLayers: DvkLayerState[] = [
+      fairwayCardList,
       line12Layer,
-      line3456Layer,
       area12Layer,
-      area3456Layer,
-      depth12Layer,
-      speedLimitLayer,
-      specialAreaLayer,
+      specialArea2Layer,
+      specialArea15Layer,
       pilotLayer,
       harborLayer,
-      safetyEquipmentLayer,
-      marineWarningLayer,
-      fairwayCardList,
-      nameLayer,
       boardLine12Layer,
-      mareographLayer,
-      observationLayer,
-      buoyLayer,
       bgFinlandLayer,
-      bgBalticseaLayer,
       bgMmlmeriLayer,
       bgMmljarviLayer,
-      bgMmllaituritLayer,
-      vtsLayer,
+      circleLayer,
     ];
 
     let percent = 0;
@@ -168,29 +164,18 @@ const DvkIonApp: React.FC = () => {
 
     setInitDone(allLayers.every((layer) => layer.ready));
   }, [
+    fairwayCardList,
     line12Layer,
-    line3456Layer,
     area12Layer,
-    area3456Layer,
-    depth12Layer,
-    speedLimitLayer,
-    specialAreaLayer,
     pilotLayer,
     harborLayer,
-    safetyEquipmentLayer,
-    marineWarningLayer,
-    fairwayCardList,
-    nameLayer,
     boardLine12Layer,
-    mareographLayer,
-    observationLayer,
-    buoyLayer,
     bgFinlandLayer,
-    bgBalticseaLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
-    bgMmllaituritLayer,
-    vtsLayer,
+    circleLayer,
+    specialArea2Layer,
+    specialArea15Layer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -223,7 +208,7 @@ const DvkIonApp: React.FC = () => {
   const [isSourceOpen, setIsSourceOpen] = useState(false);
   return (
     <IonApp className={appClasses.join(' ')}>
-      <OfflineStatus />
+      {initDone && <OfflineStatus />}
       <IonReactRouter basename="/vaylakortti">
         <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
@@ -255,7 +240,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (
@@ -310,7 +295,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister, buster: process.env.REACT_APP_VERSION }}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>

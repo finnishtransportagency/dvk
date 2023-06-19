@@ -46,7 +46,11 @@ export class SquatSite extends Construct {
       comment: `OAI for ${id}-${props.env}`,
     });
 
-    new CfnOutput(this, 'Site', { value: 'https://' + siteDomain });
+    new CfnOutput(this, 'Site', {
+      value: 'https://' + siteDomain,
+      description: 'Site URL',
+      exportName: 'DvkSiteUrl' + props.env,
+    });
 
     const s3DeletePolicy: Pick<s3.BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
       removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
@@ -137,7 +141,11 @@ export class SquatSite extends Construct {
     if (props.cloudfrontCertificateArn) {
       certificate = acm.Certificate.fromCertificateArn(this, 'certificate', props.cloudfrontCertificateArn);
       domainNames = [siteDomain];
-      new CfnOutput(parent, 'Certificate', { value: certificate.certificateArn });
+      new CfnOutput(parent, 'Certificate', {
+        value: certificate.certificateArn,
+        description: 'Cloudfront certificate ARN',
+        exportName: 'DvkCertificateARN' + props.env,
+      });
     }
 
     // Cloudfront function suorittamaan basic autentikaatiota
@@ -334,6 +342,7 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
+      'trafiaineistot/*': iceMapBehavior,
       'yllapito/graphql': graphqlProxyBehavior,
       'yllapito/kirjaudu.html': apiProxyBehavior,
       'yllapito/api/*': apiProxyBehavior,

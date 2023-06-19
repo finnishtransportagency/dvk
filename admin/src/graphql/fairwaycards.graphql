@@ -1,0 +1,13 @@
+query fairwayCards {
+  fairwayCards {
+    id
+    name {
+      fi
+      sv
+      en
+    }
+    harbors {
+      id
+    }
+  }
+}

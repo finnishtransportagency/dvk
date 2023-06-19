@@ -1,6 +1,5 @@
 *** Settings ***
-Documentation    This file contains resources for DVK test cases
-
+Documentation     This file contains resources for DVK test cases
 *** Variables ***
 #DVK main screen locators
 ${INPUT_FAIRWAY}    //div[contains(@class, "searchbarControlContainer")]/input
@@ -12,7 +11,6 @@ ${CENTER_TO_OWN_LOCATION_BUTTON}    //button[@class = "centerToOwnLocationContro
 ${ZOOM_IN_BUTTON}    //button[@class = "ol-zoom-in"]
 ${ZOOM_OUT_BUTTON}    //button[@class = "ol-zoom-out"]
 ${SIDEBAR_MENU_CONTROL_BUTTON}    //button[@class = "openSidebarMenuControl"]
-${COPYRIGHT_ELEMENT}    //div[@class = "copyrightElem"]
 ${SCALE_ELEMENT}    //div[@class = "ol-scale-line-inner"]
 ${SOVELLUSTA_ALUSTETAAN_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Sovellusta alustetaan"]
 ${LATAUSVIRHE_POP_UP}    //div[contains(@class, "alert")]/h2[contains(@id, "alert") and text() = "Latausvirhe"]
@@ -116,13 +114,13 @@ ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_FINNISH}    //div[@class = "t
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_FINNISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Nopeusrajoitukset"]
 ${FAIRWAY_DATA_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Farledsdata"]
 ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledsdragning och utmärkning"]
-${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledens dimensionerande fartyg"]
+${FAIRWAY_DESIGN_SHIP_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Farledens dimensionerande fartyg" or text() = "Dimensionerande fartygen för farleden"]
 ${FAIRWAY_DIMENSIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Dimensionering"]
 ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Områden med mötes- och omkörningsförbud"]
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_SWEDISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fartbegränsningar och -rekommendationer"]
 ${FAIRWAY_DATA_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/h4/strong[text() = "Fairway data"]
 ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Channel alignment and marking"]
-${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway design ship"]
+${FAIRWAY_DESIGN_SHIP_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway design ship" or text() = "Fairway design ships"]
 ${FAIRWAY_DIMENSIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Fairway dimensions"]
 ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Meeting and overtaking prohibition areas"]
 ${SPEED_LIMITS_AND_RECOMMENDATIONS_HEADING_ENGLISH}    //div[@class = "tabContent tab1 active"]/ion-text/p/strong[text() = "Speed limits and recommendations"]

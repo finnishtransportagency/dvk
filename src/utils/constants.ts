@@ -6,7 +6,7 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
   ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
-export type BackgroundLayerId = 'finland' | 'mml-meri' | 'mml-jarvi' | 'mml-laiturit' | 'balticsea';
+export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
 
 export type FeatureDataId =
   | 'area12'
@@ -14,7 +14,6 @@ export type FeatureDataId =
   | 'line12'
   | 'line3456'
   | 'restrictionarea'
-  | 'specialarea'
   | 'pilot'
   | 'harbor'
   | 'safetyequipment'
@@ -31,7 +30,12 @@ export type FeatureDataId =
   | 'mml_meri'
   | 'mml_jarvi'
   | 'mml_laiturit'
-  | 'vts';
+  | 'vtsline'
+  | 'vtspoint'
+  | 'circle'
+  | 'soundingpoint'
+  | 'specialarea2'
+  | 'specialarea15';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -46,9 +50,14 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
   },
   {
-    id: 'specialarea',
-    url: new URL(featureLoaderUrl + '?type=specialarea&vaylaluokka=1,2,3,4,5,6'),
-    staticUrl: new URL(staticUrl + '/specialarea.json.gz'),
+    id: 'specialarea2',
+    url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+  },
+  {
+    id: 'specialarea15',
+    url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
   },
   { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
   { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
@@ -68,14 +77,18 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
   { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
-  { id: 'vts', url: new URL(featureLoaderUrl + '?type=vts'), staticUrl: new URL(staticUrl + '/vts.json.gz') },
+  { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
+  { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
+  { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
 ];
+
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -96,11 +109,19 @@ export type FeatureDataLayerId =
   | 'ice'
   | 'observation'
   | 'buoy'
-  | 'vts';
+  | 'vtsline'
+  | 'vtspoint'
+  | 'soundingpoint'
+  | 'depthcontour'
+  | 'deptharea'
+  | 'circle'
+  | 'specialarea2'
+  | 'specialarea15';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
+export type FairwayWidthLayerId = 'fairwaywidth';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -127,7 +148,8 @@ export const MAP: MapType = {
     { id: 'line12' },
     { id: 'line3456' },
     { id: 'speedlimit' },
-    { id: 'specialarea' },
+    { id: 'specialarea2' },
+    { id: 'specialarea15' },
     { id: 'pilot' },
     { id: 'harbor' },
     { id: 'safetyequipment' },
@@ -138,7 +160,13 @@ export const MAP: MapType = {
     { id: 'ice', noOfflineSupport: true },
     { id: 'observation', noOfflineSupport: true },
     { id: 'buoy', noOfflineSupport: true },
-    { id: 'vts' },
+    { id: 'vtsline' },
+    { id: 'vtspoint' },
+    { id: 'name' },
+    { id: 'soundingpoint', noOfflineSupport: true },
+    { id: 'depthcontour', noOfflineSupport: true },
+    { id: 'deptharea', noOfflineSupport: true },
+    { id: 'circle' },
   ],
 };
 
@@ -162,6 +190,8 @@ export const PILOTORDER_URL = 'www.pilotonline.fi';
 export const OFFLINE_STORAGE = {
   name: 'DVK',
   storeName: 'react-query-data',
-  staleTime: 2 * 60 * 60 * 1000, // 2 hours
-  cacheTime: 5 * 60 * 60 * 1000, // 5 hours
+  staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
+  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
+  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
+  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };

@@ -85,9 +85,9 @@ test('test mapFairwayCardToModel all', () => {
           sv: 'extraInfosv',
           en: 'extraInfoen',
         },
-        fax: '123',
+        fax: '12345',
         internet: 'www',
-        phoneNumber: '1234',
+        phoneNumber: '12345',
         places: [{ id: 1, pilotJourney: '0' }],
       },
       tugs: [
@@ -98,8 +98,8 @@ test('test mapFairwayCardToModel all', () => {
             en: 'nameen',
           },
           email: 'test@fi',
-          fax: '12',
-          phoneNumber: ['+358'],
+          fax: '12222',
+          phoneNumber: ['+35812'],
         },
       ],
       vts: [
@@ -110,7 +110,7 @@ test('test mapFairwayCardToModel all', () => {
             en: 'nameen',
           },
           email: ['email@fi'],
-          phoneNumber: '789',
+          phoneNumber: '78912',
           vhf: [
             {
               name: {

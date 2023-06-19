@@ -69,13 +69,12 @@ ion-row.input-row > ion-col {
   display: none;
 }
 
-
 /* Links */
 a {
   color: var(--ion-color-dark);
   text-decoration: underline;
 }
-a[target="_blank"] {
+a[target='_blank'] {
   color: var(--ion-color-primary);
   padding-right: 14px;
   background: url('./img/externalLink.svg') no-repeat right center;
@@ -87,15 +86,15 @@ a:focus-visible {
   outline: 1px solid var(--ion-color-dark);
   outline-offset: 1px;
 }
-a[target="_blank"]:focus-visible {
+a[target='_blank']:focus-visible {
   outline: 1px solid var(--ion-color-primary);
 }
-.offline a[target="_blank"] {
+.offline a[target='_blank'] {
   pointer-events: none;
   cursor: default;
   opacity: 0.5;
 }
-.offline a[target="_blank"]:focus-visible {
+.offline a[target='_blank']:focus-visible {
   outline: none;
 }
 
@@ -118,7 +117,7 @@ ion-button.icon-only {
   --padding-start: 0;
   --padding-end: 0;
   --border-radius: 20px;
-  --box-shadow: 0 2px 8px 2px rgba(0,0,0,0.2);
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
   margin: 0;
   height: 40px;
   width: 40px;
@@ -262,4 +261,12 @@ ion-grid.info ion-icon {
 
 ion-grid.info ion-text {
   color: rgb(36, 34, 34);
+}
+
+span.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  white-space: nowrap;
 }
