@@ -243,7 +243,7 @@ export class DvkBackendStack extends Stack {
       encryption: BucketEncryption.S3_MANAGED,
       versioned: true,
       ...s3DeletePolicy,
-      lifecycleRules: [{ tagFilters: { Removed: 'true' }, expiration: Duration.days(30) }],
+      lifecycleRules: [{ tagFilters: { InUse: 'false' }, expiration: Config.isPermanentEnvironment() ? Duration.days(30) : Duration.days(1) }],
     });
     const cloudfrontOAI = new OriginAccessIdentity(this, 'StaticCloudfrontOAI', {
       comment: `Static OAI for ${Config.getEnvironment()}`,

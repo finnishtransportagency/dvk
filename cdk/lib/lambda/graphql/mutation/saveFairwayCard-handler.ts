@@ -32,7 +32,7 @@ import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
-import { PutObjectCommand, PutObjectCommandOutput, PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
+import { PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
@@ -116,15 +116,16 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-async function savePictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<string[]> | undefined) {
-  const promises: Promise<PutObjectCommandOutput>[] = [];
+async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<string[]> | undefined) {
+  const promises = [];
   const bucketName = getNewStaticBucketName();
   for (const picture of pictures ?? []) {
-    const command = new PutObjectCommand({
+    const command = new PutObjectTaggingCommand({
       Key: `${cardId}/${picture.id}`,
       Bucket: bucketName,
-      Body: Buffer.from(picture.base64Data, 'base64'),
+      Tagging: { TagSet: [{ Key: 'InUse', Value: 'true' }] },
     });
+    log.debug(`setting InUse to true for ${picture.id}`);
     promises.push(s3Client.send(command));
   }
   for (const oldPicture of oldPictures ?? []) {
@@ -132,14 +133,13 @@ async function savePictures(cardId: string, pictures: InputMaybe<PictureInput[]>
       const command = new PutObjectTaggingCommand({
         Key: `${cardId}/${oldPicture}`,
         Bucket: bucketName,
-        Tagging: { TagSet: [{ Key: 'Removed', Value: 'true' }] },
+        Tagging: { TagSet: [{ Key: 'InUse', Value: 'false' }] },
       });
       promises.push(s3Client.send(command));
-      log.debug(`expiring ${oldPicture}`);
+      log.debug(`setting InUse to false for ${oldPicture}`);
     }
   }
   await Promise.all(promises);
-  log.debug('saved %d pictures', pictures?.length ?? 0);
 }
 
 export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, FairwayCard> = async (
@@ -151,7 +151,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
     const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
     log.debug('card: %o', newModel);
-    await savePictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
+    await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
     try {
       await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
     } catch (e) {

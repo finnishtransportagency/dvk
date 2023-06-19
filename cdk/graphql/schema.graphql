@@ -20,6 +20,13 @@ type Query {
 type Mutation {
   saveFairwayCard(card: FairwayCardInput): FairwayCard
   saveHarbor(harbor: HarborInput): Harbor
+  uploadPicture(picture: PictureUploadInput!): Float
+}
+
+input PictureUploadInput {
+  cardId: String!
+  id: String!
+  base64Data: String!
 }
 
 enum Operation {
@@ -68,7 +75,7 @@ input FairwayCardInput {
 
 input PictureInput {
   id: String!
-  base64Data: String!
+  sequenceNumber: Int!
 }
 
 input TrafficServiceInput {
