@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonInput, IonItem, IonLabel, IonNote } from '@ionic/react';
+import { IonInput, IonLabel } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as ErrorIcon } from '../theme/img/error_icon.svg';
-import { IonInputCustomEvent } from '@ionic/core/dist/types/components';
-
-interface InputChangeEventDetail {
-  value: string | undefined | null;
-}
 
 interface InputProps {
   label: string;
@@ -54,24 +48,35 @@ const FormInput: React.FC<InputProps> = ({
 
   const inputRef = useRef<HTMLIonInputElement>(null);
   const focusInput = () => {
-    inputRef.current?.setFocus();
+    inputRef.current?.setFocus().catch((err) => {
+      console.error(err.message);
+    });
   };
 
   const [isValid, setIsValid] = useState(error ? false : true);
   const [isTouched, setIsTouched] = useState(false);
 
-  const checkValidity = (event: IonInputCustomEvent<InputChangeEventDetail> | IonInputCustomEvent<FocusEvent>) => {
-    setIsValid(error ? false : (event.target.firstChild as HTMLInputElement)?.checkValidity());
+  const checkValidity = () => {
+    if (error) {
+      setIsValid(false);
+    } else {
+      inputRef.current
+        ?.getInputElement()
+        .then((textinput) => (textinput ? setIsValid(textinput.checkValidity()) : null))
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
     setIsTouched(true);
   };
-  const handleChange = (event: IonInputCustomEvent<InputChangeEventDetail>) => {
-    if (isTouched) checkValidity(event);
-    setValue(event.detail.value as string, actionType, actionLang, actionTarget, actionOuterTarget);
+  const handleChange = (newVal: string | number | null | undefined) => {
+    if (isTouched) checkValidity();
+    setValue(newVal as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
   const getErrorText = () => {
     if (error) return error;
-    if (!isValid && required && (val || '').toString().trim().length < 1) return t('required-field');
+    if (!isValid && required && (val ?? '').toString().trim().length < 1) return t('required-field');
     if (!isValid) return t('check-input');
     return '';
   };
@@ -82,33 +87,16 @@ const FormInput: React.FC<InputProps> = ({
     if (inputType === 'longitude') return '17.00000 - 31.99999';
     if (inputType === 'number' && max) {
       return (
-        <>
-          <span aria-label={t('general.minimum-value') || ''} role="definition">
-            {Number(min || 0).toLocaleString(i18n.language, {
-              minimumFractionDigits: decimalCount || 0,
-              maximumFractionDigits: decimalCount || 0,
-            })}
-          </span>{' '}
-          -{' '}
-          <span aria-label={t('general.maximum-value') || ''} role="definition">
-            {Number(max).toLocaleString(i18n.language, {
-              minimumFractionDigits: decimalCount || 0,
-              maximumFractionDigits: decimalCount || 0,
-            })}
-          </span>{' '}
-          {unit && (
-            <span
-              aria-label={
-                t('unit.' + unit + 'Desc', {
-                  count: Number(val),
-                }) || ''
-              }
-              role="definition"
-            >
-              {t('unit.' + unit)}
-            </span>
-          )}
-        </>
+        Number(min ?? 0).toLocaleString(i18n.language, {
+          minimumFractionDigits: decimalCount ?? 0,
+          maximumFractionDigits: decimalCount ?? 0,
+        }) +
+        ' - ' +
+        Number(max).toLocaleString(i18n.language, {
+          minimumFractionDigits: decimalCount ?? 0,
+          maximumFractionDigits: decimalCount ?? 0,
+        }) +
+        (unit ? ' ' + t('unit.' + unit) : '')
       );
     }
     return '';
@@ -139,7 +127,15 @@ const FormInput: React.FC<InputProps> = ({
 
   useEffect(() => {
     if (isTouched) {
-      inputRef.current?.getInputElement().then((textinput) => (textinput ? setIsValid(error ? false : textinput.checkValidity()) : null));
+      inputRef.current
+        ?.getInputElement()
+        .then((textinput) => {
+          if (error) setIsValid(false);
+          if (textinput) setIsValid(textinput.checkValidity());
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
       setIsTouched(false);
     } else if (!required && !val && !error) {
       setIsValid(true);
@@ -159,49 +155,30 @@ const FormInput: React.FC<InputProps> = ({
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem
-        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        lines="none"
+      <IonInput
+        ref={inputRef}
+        value={val}
+        min={inputType === 'number' ? min ?? 0 : undefined}
+        max={inputType === 'number' ? max ?? 9999999 : undefined}
+        step={inputType === 'number' ? (1 / Math.pow(10, decimalCount ?? 0)).toString() || '0.1' : undefined}
+        required={required}
+        onIonChange={(ev) => handleChange(ev.target.value)}
+        onIonBlur={() => checkValidity()}
+        disabled={disabled}
+        type={getInputType()}
+        inputMode={getInputMode()}
+        maxlength={INPUT_MAXLENGTH}
+        pattern={getInputPattern()}
+        multiple={inputType === 'email' && multiple}
         fill="outline"
+        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
+        helperText={getHelperText()}
+        errorText={getErrorText()}
+        label={unit ? t('unit.' + unit) ?? '' : ''}
+        labelPlacement="end"
         counter={true}
         counterFormatter={(inputLength, maxLength) => (inputLength > INPUT_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
-      >
-        <IonInput
-          ref={inputRef}
-          value={val}
-          min={inputType === 'number' ? min || 0 : undefined}
-          max={inputType === 'number' ? max || 9999999 : undefined}
-          step={inputType === 'number' ? (1 / Math.pow(10, decimalCount || 0)).toString() || '0.1' : undefined}
-          required={required}
-          onIonChange={(ev) => handleChange(ev)}
-          onIonBlur={(ev) => checkValidity(ev)}
-          disabled={disabled}
-          type={getInputType()}
-          inputMode={getInputMode()}
-          maxlength={INPUT_MAXLENGTH}
-          pattern={getInputPattern()}
-          multiple={inputType === 'email' && multiple}
-        />
-        {unit && (
-          <IonLabel slot="end" color="medium" className="unit use-flex">
-            <span
-              aria-label={
-                t('unit.' + unit + 'Desc', {
-                  count: Number(val),
-                }) || ''
-              }
-              role="definition"
-            >
-              {t('unit.' + unit)}
-            </span>
-          </IonLabel>
-        )}
-        <IonNote slot="helper">{getHelperText()}</IonNote>
-        <IonNote slot="error" className="input-error">
-          <ErrorIcon aria-label={t('error') || ''} />
-          {getErrorText()}
-        </IonNote>
-      </IonItem>
+      />
     </>
   );
 };

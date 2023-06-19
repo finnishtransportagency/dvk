@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
   const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
+    i18n.changeLanguage(lang).catch((err) => console.error(err));
   };
 
   return (

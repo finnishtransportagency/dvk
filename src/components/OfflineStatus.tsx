@@ -2,7 +2,7 @@ import { IonText } from '@ionic/react';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDvkContext } from '../hooks/dvkContext';
-import { refreshPrintableMap } from '../utils/common';
+import { getDuration, refreshPrintableMap } from '../utils/common';
 import { MAP } from '../utils/constants';
 import { useFairwayCardListData, useFeatureData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 import { getMap } from './DvkMap';
@@ -21,7 +21,8 @@ const OfflineStatus: React.FC = () => {
   const area3456Layer = useFeatureData('area3456');
   const depth12Layer = useFeatureData('depth12');
   const speedLimitLayer = useFeatureData('restrictionarea');
-  const specialAreaLayer = useFeatureData('specialarea');
+  const specialArea2Layer = useFeatureData('specialarea2');
+  const specialArea15Layer = useFeatureData('specialarea15');
   const pilotLayer = useFeatureData('pilot');
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
@@ -39,36 +40,47 @@ const OfflineStatus: React.FC = () => {
   const bgLayerQuay = useFeatureData('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
+  const circleLayer = useFeatureData('circle');
 
-  const statusOffline =
-    !navigator.onLine ||
-    (fairwayCardList.isPaused &&
-      equipmentFaultList.isPaused &&
-      marineWarningList.isPaused &&
-      line12Layer.isPaused &&
-      line3456Layer.isPaused &&
-      area12Layer.isPaused &&
-      area3456Layer.isPaused &&
-      depth12Layer.isPaused &&
-      speedLimitLayer.isPaused &&
-      specialAreaLayer.isPaused &&
-      pilotLayer.isPaused &&
-      harborLayer.isPaused &&
-      safetyEquipmentLayer.isPaused &&
-      safetyEquipmentFaultLayer.isPaused &&
-      marineWarningLayer.isPaused &&
-      nameLayer.isPaused &&
-      boardLine12Layer.isPaused &&
-      mareographLayer.isPaused &&
-      observationLayer.isPaused &&
-      buoyLayer.isPaused &&
-      bgLayerBa.isPaused &&
-      bgLayerFi.isPaused &&
-      bgLayerSea.isPaused &&
-      bgLayerLake.isPaused &&
-      bgLayerQuay.isPaused &&
-      vtsLineLayer.isPaused &&
-      vtsPointLayer.isPaused);
+  const allData = [
+    fairwayCardList,
+    equipmentFaultList,
+    marineWarningList,
+    line12Layer,
+    line3456Layer,
+    area12Layer,
+    area3456Layer,
+    depth12Layer,
+    speedLimitLayer,
+    specialArea2Layer,
+    specialArea15Layer,
+    pilotLayer,
+    harborLayer,
+    safetyEquipmentLayer,
+    safetyEquipmentFaultLayer,
+    marineWarningLayer,
+    nameLayer,
+    boardLine12Layer,
+    mareographLayer,
+    observationLayer,
+    buoyLayer,
+    bgLayerBa,
+    bgLayerFi,
+    bgLayerSea,
+    bgLayerLake,
+    bgLayerQuay,
+    vtsLineLayer,
+    vtsPointLayer,
+    circleLayer,
+  ];
+
+  const statusOffline = !navigator.onLine || allData.every((data) => data.isPaused);
+
+  const lastUpdatedDuration = () => {
+    const lastUpdatedTimes = allData.map((data) => data.dataUpdatedAt);
+    const lastUpdate = Math.max(...lastUpdatedTimes);
+    return getDuration(lastUpdate);
+  };
 
   useEffect(() => {
     dispatch({
@@ -125,7 +137,10 @@ const OfflineStatus: React.FC = () => {
     <>
       {state.isOffline && (
         <IonText className="offlineStatus">
-          <strong>{t('serviceOffline')}</strong>
+          <strong>
+            {t('serviceOffline')}
+            {lastUpdatedDuration() >= 12 ? '. ' + t('lastUpdatedDuration', { duration: lastUpdatedDuration() }) : undefined}
+          </strong>
         </IonText>
       )}
     </>

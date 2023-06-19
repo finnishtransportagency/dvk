@@ -38,14 +38,23 @@
           "pilotPlaces": "Pilot boarding position",
           "marineWarnings": "Navigational warnings",
           "boardLines": "Leading lines",
+          "circles": "Turning circles",
+          "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
           "ice": "Ice map",
           "buoys": "Wave buoys",
+          "vts": "VTS",
           "vtsline": "VTS areas",
           "vtspoint": "VTS reporting points",
           "general": "General",
           "name": "Map names",
+          "depthinfo": "Depth information",
+          "soundingpoint": "Numbers",
+          "depthcontour": "Contours",
+          "deptharea": "Areas",
+          "specialarea2": "Anchoring areas",
+          "specialarea15": "Meeting and overtaking prohibition areas",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -62,7 +71,13 @@
             "openice": "Open ice",
             "closeice": "Close ice",
             "verycloseice": "Very close or compact ice",
-            "consolidatedice": "Consolidated ice"
+            "consolidatedice": "Consolidated ice",
+            "depth1": "Depth below 10m",
+            "depth2": "Depth 10 - 20m",
+            "depth3": "Depth over 20m",
+            "depth4": "Depth 0 - 3m",
+            "depth5": "Depth 3 - 6m",
+            "depth6": "Depth over 10m"
           }
         },
         "mapDetails": {
@@ -137,8 +152,8 @@
     "attention": "Note:",
     "n2000Info": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Meeting and overtaking prohibition areas",
-    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to West Coast VTS Master's Guide",
-    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions, please refer to West Coast VTS Master's Guide",
+    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to VTS Master's Guide",
+    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions, please refer to VTS Master's Guide",
     "anchorage": "Anchorage and special areas",
     "navigation": "Fairway navigability",
     "navigationCondition": "Navigation conditions",
@@ -278,7 +293,7 @@
       "speed": "Design speed",
       "fairways": "Fairway area is part of the fairway card",
       "extra": "Additional information",
-      "prohibitionText": "Please refer to West Coast VTS Master's Guide"
+      "prohibitionText": "Please refer to VTS Master's Guide"
     },
     "line": {
       "info": "Navigation line information",
@@ -287,6 +302,7 @@
       "length": "Length {{val}}",
       "direction": "True bearing {{val, number}}",
       "fairways": "Navigation line is part of the fairway card",
+      "width": "[en] Väyläleveys valitussa kohdassa",
       "extra": "Additional information"
     },
     "equipment": {

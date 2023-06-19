@@ -38,14 +38,23 @@
           "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
           "boardLines": "Enslinjer",
+          "circles": "Vändcirklar",
+          "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
           "ice": "Iskarta",
           "buoys": "Vågbojar",
+          "vts": "VTS",
           "vtsline": "VTS-områden",
           "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "name": "Kartnamn",
+          "depthinfo": "Djup information",
+          "soundingpoint": "Nummers",
+          "depthcontour": "Kurvor",
+          "deptharea": "Zoner",
+          "specialarea2": "Ankringsområden",
+          "specialarea15": "Områden med mötes- och omkörningsförbud",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -62,7 +71,13 @@
             "openice": "Spridd drivis",
             "closeice": "Tät drivis",
             "verycloseice": "Mycket tät / kompakt drivis",
-            "consolidatedice": "Sammanfrusen drivis"
+            "consolidatedice": "Sammanfrusen drivis",
+            "depth1": "Djup under 10m",
+            "depth2": "Djup 10 - 20m",
+            "depth3": "Djup över 20m",
+            "depth4": "Djup 0 - 3m",
+            "depth5": "Djup 3 - 6m",
+            "depth6": "Djup över 10m"
           }
         },
         "mapDetails": {
@@ -108,7 +123,7 @@
     "fairwayUnlit": "Farled är obelyst",
     "lightingUnknown": "Farledens belysning okänd",
     "fairwayDesignVessel_one": "Farledens dimensionerande fartyg",
-    "fairwayDesignVessel_other": " Dimensionerande fartygen för farleden",
+    "fairwayDesignVessel_other": "Dimensionerande fartygen för farleden",
     "designVessel": "Dimensionerande fartyg",
     "vesselType1": "Tankfartyg",
     "vesselType2": "Bulklastfartyg",
@@ -287,6 +302,7 @@
       "length": "Längd {{val}}",
       "direction": "Rättvisande kurs {{val, number}}",
       "fairways": "Navigationslinje är en del av farledskortet",
+      "width": "[sv] Väyläleveys valitussa kohdassa",
       "extra": "Tilläggsuppgift"
     },
     "equipment": {
@@ -395,7 +411,8 @@
     "marine-warnings": "Navigationsvarningar",
     "fairway-cards": "Farledskort",
     "skip-to-content": "Gå till huvudinnehåll",
-    "opens-in-a-new-tab": "Öppnas i en ny flik"
+    "opens-in-a-new-tab": "Öppnas i en ny flik",
+    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan."
   },
   "mobile": {
     "title": "Digital farledskort med mobila enheter",

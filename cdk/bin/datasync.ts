@@ -58,7 +58,7 @@ async function updateTable(tableName: string, directoryPath: string, card: boole
 
 async function deleteTableData(tableName: string) {
   const items = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: tableName }));
-  for (const item of items.Items || []) {
+  for (const item of items.Items ?? []) {
     await getDynamoDBDocumentClient().send(new DeleteCommand({ TableName: tableName, Key: { id: item.id } }));
     console.log(`${item.id} deleted`);
   }

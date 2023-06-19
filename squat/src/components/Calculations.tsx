@@ -40,7 +40,7 @@ import {
   isUKCUnderMinimum,
 } from '../utils/validations';
 import Modal from './Modal';
-import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core';
+import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
 

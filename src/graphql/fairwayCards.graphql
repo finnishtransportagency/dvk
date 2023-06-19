@@ -143,6 +143,9 @@ fragment FairwayCardParts on FairwayCard {
       location
       exception
     }
+    turningCircles {
+      id
+    }
   }
   lineText {
     fi

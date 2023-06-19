@@ -19,7 +19,6 @@ import {
   useArea3456Layer,
   useDepth12Layer,
   useSpeedLimitLayer,
-  useSpecialAreaLayer,
   usePilotLayer,
   useHarborLayer,
   useSafetyEquipmentLayer,
@@ -37,6 +36,9 @@ import {
   DvkLayerState,
   useVtsLineLayer,
   useVtsPointLayer,
+  useCircleLayer,
+  useSpecialArea2Layer,
+  useSpecialArea15Layer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -103,13 +105,15 @@ const DvkIonApp: React.FC = () => {
   const fairwayCardList = useFairwayCardList();
   const line12Layer = useLine12Layer();
   const area12Layer = useArea12Layer();
-  const specialAreaLayer = useSpecialAreaLayer();
+  const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
   const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
@@ -125,7 +129,6 @@ const DvkIonApp: React.FC = () => {
   useArea3456Layer();
   useBackgroundBalticseaLayer();
   useBackgroundMmllaituritLayer();
-
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -137,13 +140,15 @@ const DvkIonApp: React.FC = () => {
       fairwayCardList,
       line12Layer,
       area12Layer,
-      specialAreaLayer,
+      specialArea2Layer,
+      specialArea15Layer,
       pilotLayer,
       harborLayer,
       boardLine12Layer,
       bgFinlandLayer,
       bgMmlmeriLayer,
       bgMmljarviLayer,
+      circleLayer,
     ];
 
     let percent = 0;
@@ -162,13 +167,15 @@ const DvkIonApp: React.FC = () => {
     fairwayCardList,
     line12Layer,
     area12Layer,
-    specialAreaLayer,
     pilotLayer,
     harborLayer,
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlmeriLayer,
     bgMmljarviLayer,
+    circleLayer,
+    specialArea2Layer,
+    specialArea15Layer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -288,7 +295,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister }}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister, buster: process.env.REACT_APP_VERSION }}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>

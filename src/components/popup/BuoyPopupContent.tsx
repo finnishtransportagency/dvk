@@ -7,6 +7,7 @@ import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type BuoyPopupContentProps = {
   buoy: BuoyProperties;
@@ -23,6 +24,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (
@@ -77,11 +79,11 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
         </IonRow>
         <IonRow>
           <IonCol>
-            {(typeof null === 'number' && (
+            {(typeof buoy.properties.temperature === 'number' && (
               <>
-                {Math.round(buoy.properties.temperature || 0)}{' '}
+                {Math.round(buoy.properties.temperature)}{' '}
                 <span
-                  aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.temperature || 0)) }) + ' (Celsius)'}
+                  aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.temperature)) }) + ' (Celsius)'}
                   role="definition"
                 >
                   °C

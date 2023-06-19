@@ -342,6 +342,7 @@ export class SquatSite extends Construct {
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
+      'trafiaineistot/*': iceMapBehavior,
       'yllapito/graphql': graphqlProxyBehavior,
       'yllapito/kirjaudu.html': apiProxyBehavior,
       'yllapito/api/*': apiProxyBehavior,

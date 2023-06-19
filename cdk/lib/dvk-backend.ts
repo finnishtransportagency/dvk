@@ -3,8 +3,8 @@ import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as cdk from 'aws-cdk-lib';
-import * as appsync from '@aws-cdk/aws-appsync-alpha';
-import { FieldLogLevel } from '@aws-cdk/aws-appsync-alpha';
+import * as appsync from 'aws-cdk-lib/aws-appsync';
+import { FieldLogLevel } from 'aws-cdk-lib/aws-appsync';
 import * as path from 'path';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } from 'aws-cdk-lib/aws-dynamodb';
@@ -70,7 +70,7 @@ export class DvkBackendStack extends Stack {
 
     const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
       functionName: `db-stream-handler-${env}`,
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       handler: 'handler',
       entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
       environment: {
@@ -106,7 +106,7 @@ export class DvkBackendStack extends Stack {
       const fieldName = lambdaFunc.fieldName;
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         timeout: Duration.seconds(30),
@@ -274,7 +274,7 @@ export class DvkBackendStack extends Stack {
     // add CORS config
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
       functionName: `cors-${env}`.toLocaleLowerCase(),
-      runtime: lambda.Runtime.NODEJS_16_X,
+      runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       layers: [layer],
@@ -299,7 +299,7 @@ export class DvkBackendStack extends Stack {
       const functionName = lambdaFunc.functionName;
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
         functionName: `${functionName}-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_16_X,
+        runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         layers: [layer],

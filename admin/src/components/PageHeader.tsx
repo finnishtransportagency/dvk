@@ -17,10 +17,10 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
 
   const closeModal = () => {
     setIsOpen(false);
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
   };
   const logoutAction = () => {
-    modal.current?.dismiss();
+    modal.current?.dismiss().catch((err) => console.error(err));
   };
 
   return (
@@ -36,8 +36,8 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
             onClick={() => closeModal()}
             fill="clear"
             className="closeButton"
-            title={t('general.close') || ''}
-            aria-label={t('general.close') || ''}
+            title={t('general.close') ?? ''}
+            aria-label={t('general.close') ?? ''}
           >
             <CloseIcon />
           </IonButton>
@@ -101,7 +101,7 @@ const PageHeader: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <IonHeader>
+    <IonHeader className="page-header">
       <a
         href="#mainPageContent"
         onClick={(e) => {

@@ -58,9 +58,6 @@ jest.mock('./components/FeatureLoader', () => ({
   usePilotLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useSpecialAreaLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
-  },
   useSpeedLimitLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
@@ -107,6 +104,15 @@ jest.mock('./components/FeatureLoader', () => ({
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useVtsPointLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useCircleLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useSpecialArea2Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useSpecialArea15Layer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
 }));

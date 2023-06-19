@@ -8,6 +8,7 @@ import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { deselectClickSelection } from './popup';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -26,6 +27,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
+    deselectClickSelection();
   };
 
   return (

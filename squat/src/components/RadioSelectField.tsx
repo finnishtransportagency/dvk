@@ -1,10 +1,10 @@
 import React, { ReactElement, useCallback } from 'react';
-import { IonCol, IonGrid, IonImg, IonItem, IonLabel, IonRadio, IonRadioGroup, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonImg, IonItem, IonRadio, IonRadioGroup, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
-import Modal from './Modal';
-import { IonRadioGroupCustomEvent, RadioGroupChangeEventDetail } from '@ionic/core';
+import Label from './Label';
+import { debounce } from 'lodash';
 
 export type OptionType = {
   id: number;
@@ -33,66 +33,75 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
   const { dispatch } = useSquatContext();
 
   const updateAction = useCallback(
-    (event: CustomEvent, actionType: Action['type']) => {
+    (value: OptionType, tagName: string) => {
       dispatch({
-        type: actionType,
+        type: props.actionType,
         payload: {
           key: props.name,
-          value: (event.target as HTMLInputElement).value,
-          elType: (event.target as HTMLInputElement).tagName,
+          value: value,
+          elType: tagName,
         },
       });
     },
-    [dispatch, props.name]
+    [dispatch, props.actionType, props.name]
   );
 
+  const debouncedUpdateAction = React.useRef(
+    debounce((value: OptionType, tagName: string) => {
+      updateAction(value, tagName);
+    }, 100)
+  ).current;
+
   const handleChange = useCallback(
-    // eslint-disable-next-line
-    (e: IonRadioGroupCustomEvent<RadioGroupChangeEventDetail<any>>) => {
-      updateAction(e, props.actionType);
+    (e: { target: HTMLIonRadioGroupElement }) => {
+      debouncedUpdateAction(e.target.value, e.target.tagName);
     },
-    [updateAction, props.actionType]
+    [debouncedUpdateAction]
   );
+
+  const handleClick = (option: OptionType) => {
+    debouncedUpdateAction(option, 'ion-radio-group');
+  };
 
   return (
     <IonRadioGroup value={props.value} name={props.name} onIonChange={handleChange} aria-label={props.title}>
-      <IonItem lines="none" className="only-label no-focus">
-        <IonItem lines="none" className="only-label no-padding no-focus">
-          <IonLabel color="dark" title={props.title}>
-            {props.title}
-          </IonLabel>
-          {props.required && (
-            <IonLabel slot="end" color="dark" className="left-padding">
-              *
-            </IonLabel>
-          )}
-          {props.infoContent && props.infoContentTitle && (
-            <IonLabel slot="end">
-              <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
-            </IonLabel>
-          )}
-        </IonItem>
-      </IonItem>
+      <Label
+        title={props.title}
+        required={props.required}
+        infoContentTitle={props.infoContentTitle}
+        infoContent={props.infoContent}
+        infoContentSize={props.infoContentSize}
+      />
       <IonGrid className="no-padding" style={{ marginTop: '1px' }}>
         <IonRow>
           {props.options.map((option) => (
-            <IonCol key={option.id} className={props.value === option ? 'col-radio' : 'col-radio-unchecked '} size={props.columnSize}>
+            <IonCol key={option.id} className={'col-radio' + (props.value !== option ? ' col-radio-unchecked' : '')} size={props.columnSize}>
               <IonItem
                 lines="none"
                 className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center no-background-focused'}
-                mode="md"
+                onClick={() => (props.value !== option ? handleClick(option) : null)}
               >
-                <IonLabel className="ion-text-wrap radio">
-                  {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
-                  <p>{props.translateOptions ? t(option.name) : option.name}</p>
-                  <IonRadio
-                    id={t(option.name, { lng: 'en' })}
-                    name={t(option.name, { lng: 'en' })}
-                    value={option}
-                    className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
-                    mode="md"
-                  />
-                </IonLabel>
+                <IonGrid className="no-padding">
+                  <IonRow>
+                    <IonCol>
+                      <IonText className="ion-text-wrap radio">
+                        {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
+                        <p>{props.translateOptions ? t(option.name) : option.name}</p>
+                      </IonText>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      <IonRadio
+                        id={t(option.name, { lng: 'en' })}
+                        name={t(option.name, { lng: 'en' })}
+                        aria-label={props.translateOptions ? t(option.name) : option.name}
+                        value={option}
+                        className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                      />
+                    </IonCol>
+                  </IonRow>
+                </IonGrid>
               </IonItem>
             </IonCol>
           ))}

@@ -13,7 +13,7 @@ interface DropdownProps {
 }
 
 const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, selected, setSelectedItem }) => {
-  const { t, i18n } = useTranslation('', { keyPrefix: 'general.search' });
+  const { t, i18n } = useTranslation('', { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const checkSelected = (idx: number) => {
@@ -27,7 +27,7 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, s
           {items.map((item, idx) => {
             return (
               <IonItem key={item.id} className={'item' + checkSelected(idx + 1)} button onClick={() => setSelectedItem(item)}>
-                <IonLabel>{item.name[lang] || item.name.fi}</IonLabel>
+                <IonLabel>{item.name[lang] ?? item.name.fi}</IonLabel>
               </IonItem>
             );
           })}

@@ -17,7 +17,8 @@ const OfflineSupport: React.FC = () => {
   const area3456Layer = useFeatureData('area3456');
   const depth12Layer = useFeatureData('depth12');
   const speedLimitLayer = useFeatureData('restrictionarea');
-  const specialAreaLayer = useFeatureData('specialarea');
+  const specialArea2Layer = useFeatureData('specialarea2');
+  const specialArea15Layer = useFeatureData('specialarea15');
   const pilotLayer = useFeatureData('pilot');
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
@@ -35,6 +36,7 @@ const OfflineSupport: React.FC = () => {
   const bgLayerQuay = useFeatureData('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
+  const circleLayer = useFeatureData('circle');
 
   const offlineUpdates = [
     fairwayCardList.dataUpdatedAt,
@@ -46,7 +48,8 @@ const OfflineSupport: React.FC = () => {
     area3456Layer.dataUpdatedAt,
     depth12Layer.dataUpdatedAt,
     speedLimitLayer.dataUpdatedAt,
-    specialAreaLayer.dataUpdatedAt,
+    specialArea2Layer.dataUpdatedAt,
+    specialArea15Layer.dataUpdatedAt,
     pilotLayer.dataUpdatedAt,
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
@@ -64,6 +67,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerQuay.dataUpdatedAt,
     vtsLineLayer.dataUpdatedAt,
     vtsPointLayer.dataUpdatedAt,
+    circleLayer.dataUpdatedAt,
   ];
   const offlineErrors = [
     fairwayCardList.isError ? fairwayCardList.errorUpdatedAt : 0,
@@ -75,7 +79,8 @@ const OfflineSupport: React.FC = () => {
     area3456Layer.isError ? area3456Layer.errorUpdatedAt : 0,
     depth12Layer.isError ? depth12Layer.errorUpdatedAt : 0,
     speedLimitLayer.isError ? speedLimitLayer.errorUpdatedAt : 0,
-    specialAreaLayer.isError ? specialAreaLayer.errorUpdatedAt : 0,
+    specialArea2Layer.isError ? specialArea2Layer.errorUpdatedAt : 0,
+    specialArea15Layer.isError ? specialArea15Layer.errorUpdatedAt : 0,
     pilotLayer.isError ? pilotLayer.errorUpdatedAt : 0,
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
@@ -93,6 +98,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
     vtsLineLayer.isError ? vtsLineLayer.errorUpdatedAt : 0,
     vtsPointLayer.isError ? vtsPointLayer.errorUpdatedAt : 0,
+    circleLayer.isError ? circleLayer.errorUpdatedAt : 0,
   ];
   const offlineLatestError = Math.max(...offlineErrors.filter((x) => !!x), 0);
   const offlineLatestUpdate = Math.max(...offlineUpdates.filter((x) => !!x), 0);
