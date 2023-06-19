@@ -12,25 +12,19 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'query/fairwayCards-handler.ts'),
     typeName: 'Query',
     fieldName: 'fairwayCards',
-    useVpc: false,
+    useVpc: true,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCard-handler.ts'),
     typeName: 'Query',
     fieldName: 'fairwayCard',
-    useVpc: false,
+    useVpc: true,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCardFairways-handler.ts'),
     typeName: 'FairwayCard',
     fieldName: 'fairways',
     useVpc: true,
-  },
-  {
-    entry: path.join(__dirname, 'query/fairwayCardsByFairwayId-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'fairwayCardsByFairwayId',
-    useVpc: false,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCardHarbors-handler.ts'),
@@ -66,7 +60,7 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'query/pilotPlaces-handler.ts'),
     typeName: 'Query',
     fieldName: 'pilotPlaces',
-    useVpc: false,
+    useVpc: true,
   },
   {
     entry: path.join(__dirname, 'query/harbors-handler.ts'),
@@ -90,7 +84,7 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'mutation/saveFairwayCard-handler.ts'),
     typeName: 'Mutation',
     fieldName: 'saveFairwayCard',
-    useVpc: false,
+    useVpc: true,
   },
   {
     entry: path.join(__dirname, 'mutation/saveHarbor-handler.ts'),
