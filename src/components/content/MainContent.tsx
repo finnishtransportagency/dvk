@@ -12,6 +12,7 @@ import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
+import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 import MarineWarnings from './MarineWarnings';
@@ -276,7 +277,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     </IonCol>
                   </IonRow>
                 </IonGrid>
-                <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
+                <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt="Väylävirasto" />
 
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
