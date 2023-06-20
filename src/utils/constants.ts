@@ -8,7 +8,12 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
 
 export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
 
+export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'name';
+
+export const StaticCacheFeatureDataIds: Array<StaticFeatureDataId> = ['balticsea', 'finland', 'mml_meri', 'mml_jarvi', 'mml_laiturit', 'name'];
+
 export type FeatureDataId =
+  | StaticFeatureDataId
   | 'area12'
   | 'area3456'
   | 'line12'
@@ -20,16 +25,10 @@ export type FeatureDataId =
   | 'depth12'
   | 'safetyequipmentfault'
   | 'marinewarning'
-  | 'name'
   | 'boardline12'
   | 'mareograph'
   | 'observation'
   | 'buoy'
-  | 'balticsea'
-  | 'finland'
-  | 'mml_meri'
-  | 'mml_jarvi'
-  | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
   | 'circle'

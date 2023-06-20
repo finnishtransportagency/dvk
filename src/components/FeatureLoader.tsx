@@ -2,7 +2,7 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, FeatureDataSources, MAP } from '../utils/constants';
+import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, FeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
@@ -11,7 +11,7 @@ import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
-import { get, set } from 'idb-keyval';
+import { get, setMany, delMany } from 'idb-keyval';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -88,8 +88,31 @@ export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | Backgrou
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
+function useStaticFeatureDataCacheBusting(featureDataId: StaticFeatureDataId, busterKey: string, busterValue: string) {
+  const [status, setStatus] = useState<'notStarted' | 'inProgress' | 'done'>('notStarted');
+
+  useEffect(() => {
+    if (status === 'notStarted') {
+      setStatus('inProgress');
+      (async () => {
+        get(busterKey).then(async (data) => {
+          if (data === busterValue) {
+            setStatus('done');
+          } else {
+            delMany([featureDataId, busterKey]).then(() => {
+              setStatus('done');
+            });
+          }
+        });
+      })();
+    }
+  }, [featureDataId, busterKey, busterValue, status]);
+
+  return status;
+}
+
 export function useInitStaticDataLayer(
-  featureDataId: FeatureDataId,
+  featureDataId: StaticFeatureDataId,
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,
   dataProjection = MAP.EPSG
 ): DvkLayerState {
@@ -105,38 +128,44 @@ export function useInitStaticDataLayer(
   const [dataUpdatedAt, setDataUpdatedAt] = useState<number>(0);
   const [errorUpdatedAt, setErrorUpdatedAt] = useState<number>(0);
   const isPaused = false;
-
   const [ready, setReady] = useState(false);
+  const busterKey = featureDataId + '-buster';
+  const cacheBustingStatus = useStaticFeatureDataCacheBusting(featureDataId, busterKey, urlStr);
 
   useEffect(() => {
-    const layer = dvkMap.getFeatureLayer(featureLayerId);
-    if (!['ready', 'loading'].includes(layer.get('status'))) {
-      layer.set('status', 'loading');
-      (async () => {
-        try {
-          get(featureLayerId).then(async (data) => {
-            if (!data) {
-              const response = await axios.get(urlStr);
-              data = response.data;
-              set(featureLayerId, response.data).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
-            }
-            const format = new GeoJSON();
-            const source = layer.getSource() as VectorSource;
-            source.clear();
-            const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-            source.addFeatures(features);
-            setDataUpdatedAt(Date.now());
-            layer.set('dataUpdatedAt', Date.now());
-            layer.set('status', 'ready');
-            setReady(true);
-          });
-        } catch (e) {
-          setIsError(true);
-          setErrorUpdatedAt(Date.now());
-        }
-      })();
+    if (cacheBustingStatus === 'done') {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (!['ready', 'loading'].includes(layer.get('status'))) {
+        layer.set('status', 'loading');
+        (async () => {
+          try {
+            get(featureDataId).then(async (data) => {
+              if (!data) {
+                const response = await axios.get(urlStr);
+                data = response.data;
+                setMany([
+                  [featureDataId, response.data],
+                  [busterKey, urlStr],
+                ]).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
+              }
+              const format = new GeoJSON();
+              const source = layer.getSource() as VectorSource;
+              source.clear();
+              const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+              source.addFeatures(features);
+              setDataUpdatedAt(Date.now());
+              layer.set('dataUpdatedAt', Date.now());
+              layer.set('status', 'ready');
+              setReady(true);
+            });
+          } catch (e) {
+            setIsError(true);
+            setErrorUpdatedAt(Date.now());
+          }
+        })();
+      }
     }
-  }, [urlStr, dataProjection, featureLayerId]);
+  }, [cacheBustingStatus, urlStr, dataProjection, featureLayerId, featureDataId, busterKey]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
