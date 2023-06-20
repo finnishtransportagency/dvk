@@ -2,14 +2,15 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
+import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, FeatureDataSources, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData, useStaticFeatureData } from '../utils/dataLoader';
+import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
+import axios from 'axios';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -66,9 +67,9 @@ export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | Backgrou
   const isError = false;
 
   useEffect(() => {
-    console.log('---- CHECK LAYER: ' + featureLayerId);
     const layer = dvkMap.getFeatureLayer(featureLayerId);
     let layerStatus = layer.get('status');
+    console.log('---- CHECK LAYER ' + featureLayerId + ': ' + layerStatus);
     if (layerStatus === 'ready') {
       setDataUpdatedAt(layer.get('dataUpdatedAt'));
       setReady(true);
@@ -94,26 +95,46 @@ export function useInitStaticDataLayer(
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,
   dataProjection = MAP.EPSG
 ): DvkLayerState {
+  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
+  let urlStr: string;
+  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
+    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
+  } else {
+    urlStr = fds?.url ? fds.url.toString() : '';
+  }
+
+  const [isError, setIsError] = useState(false);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState<number>(0);
+  const [errorUpdatedAt, setErrorUpdatedAt] = useState<number>(0);
+  const isPaused = false;
+
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId);
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
-    layer.set('status', 'loading');
-    if (data) {
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-        console.log('SET LAYER STATUS ready: ' + featureLayerId);
-        layer.set('status', 'ready');
-      }
-      setReady(true);
+    const status = layer.get('status');
+    if (status !== 'ready' && status !== 'loading') {
+      layer.set('status', 'loading');
+      (async () => {
+        try {
+          const response = await axios.get(urlStr);
+          const format = new GeoJSON();
+          const source = layer.getSource() as VectorSource;
+          source.clear();
+          const features = format.readFeatures(response.data, { dataProjection, featureProjection: MAP.EPSG });
+          source.addFeatures(features);
+          setDataUpdatedAt(Date.now());
+          layer.set('dataUpdatedAt', dataUpdatedAt);
+          layer.set('status', 'ready');
+          setReady(true);
+        } catch (e) {
+          setIsError(true);
+          setErrorUpdatedAt(Date.now());
+        }
+      })();
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [urlStr, dataProjection, featureLayerId, dataUpdatedAt]);
+
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 

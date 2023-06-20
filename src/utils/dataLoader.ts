@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
 import { Status, useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export function useFeatureData(
   featureDataId: FeatureDataId,
@@ -36,42 +36,6 @@ export function useFeatureData(
     ...response,
     data: response.data?.data ? response.data.data : response.data,
   };
-}
-
-export function useStaticFeatureData(featureDataId: FeatureDataId) {
-  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
-  let urlStr: string;
-  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
-    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
-  } else {
-    urlStr = fds?.url ? fds.url.toString() : '';
-  }
-
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [dataUpdatedAt, setDataUpdatedAt] = useState<number>(0);
-  const [errorUpdatedAt, setErrorUpdatedAt] = useState<number>(0);
-  const isPaused = false;
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        console.log('##### FETCH DATA ##### ' + urlStr);
-        const response = await axios.get(urlStr);
-        setData(response.data);
-        setDataUpdatedAt(Date.now());
-      } catch (e) {
-        setIsError(true);
-        setErrorUpdatedAt(Date.now());
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [urlStr]);
-
-  return { data, dataUpdatedAt, isError, errorUpdatedAt, loading, isPaused };
 }
 
 const datasourceClient = {
