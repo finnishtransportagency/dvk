@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { FairwayCardPartsFragment } from '../graphql/generated';
-import { FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH, imageUrl } from './constants';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -18,7 +18,7 @@ export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lan
   return (data && data.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS)) || [];
 };
 
-export const refreshPrintableMap = () => {
+export const refreshPrintableMap = (pictures?: string[]) => {
   const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
   const rotation = dvkMap.olMap?.getView().getRotation();
 
@@ -79,7 +79,12 @@ export const refreshPrintableMap = () => {
   const mapExport = document.getElementById('mapExport');
   if (mapExport) {
     mapExport.innerHTML = '';
-    mapExport?.appendChild(img);
+    mapExport.appendChild(img);
+    for (const picture of pictures ?? []) {
+      const img2 = new Image();
+      img2.src = imageUrl + picture;
+      mapExport.appendChild(img2);
+    }
   }
 };
 

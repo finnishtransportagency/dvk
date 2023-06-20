@@ -11,7 +11,13 @@ import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } fro
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import {
+  ApplicationListener,
+  ApplicationLoadBalancer,
+  ApplicationProtocol,
+  ListenerAction,
+  ListenerCondition,
+} from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
@@ -160,17 +166,58 @@ export class DvkBackendStack extends Stack {
         exportName: 'LoadBalancerDnsName' + env,
       });
       new cdk.CfnOutput(this, 'AppSyncAPIKey', {
-        value: api.apiKey || '',
+        value: api.apiKey ?? '',
         exportName: 'AppSyncAPIKey' + env,
       });
       new cdk.CfnOutput(this, 'AppSyncAPIURL', {
-        value: api.graphqlUrl || '',
+        value: api.graphqlUrl ?? '',
         exportName: 'AppSyncAPIURL' + env,
       });
     } catch (e) {
       // to keep SonarLint happy CfnOutput created inside try catch
       console.log('CloudFormation output failed: %s', e);
     }
+  }
+
+  private addDevelopmentLambdas(httpListener: ApplicationListener, env: string, staticBucket: Bucket) {
+    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
+      functionName: `cors-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: 'debug',
+      },
+      logRetention: RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
+    });
+    httpListener.addTargets('HTTPListenerTarget-CORS', {
+      targets: [new LambdaTarget(corsLambda)],
+      priority: 1,
+      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
+    });
+    const imgLambda = new NodejsFunction(this, `APIHandler-Image-${env}`, {
+      functionName: `image-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'lambda/api/image-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: 'debug',
+        ENVIRONMENT: env,
+      },
+      logRetention: RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
+    });
+    httpListener.addTargets('HTTPListenerTarget-Image', {
+      targets: [new LambdaTarget(imgLambda)],
+      priority: 2,
+      conditions: [ListenerCondition.pathPatterns(['/api/image'])],
+    });
+    staticBucket.grantRead(imgLambda);
   }
 
   private createFairwayCardTable(): Table {
@@ -312,28 +359,7 @@ export class DvkBackendStack extends Stack {
     });
     // add CORS config if needed
     if (Config.isDeveloperEnvironment() || Config.isFeatureEnvironment()) {
-      const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
-        functionName: `cors-${env}`.toLocaleLowerCase(),
-        runtime: lambda.Runtime.NODEJS_18_X,
-        entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
-        handler: 'handler',
-        layers: [layer],
-        environment: {
-          LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
-          PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-          PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
-          SSM_PARAMETER_STORE_TTL: '300',
-        },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
-        bundling: {
-          minify: true,
-        },
-      });
-      httpListener.addTargets('HTTPListenerTarget-CORS', {
-        targets: [new LambdaTarget(corsLambda)],
-        priority: 1,
-        conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
-      });
+      this.addDevelopmentLambdas(httpListener, env, staticBucket);
     }
     for (const lambdaFunc of apiLambdaFunctions) {
       const functionName = lambdaFunc.functionName;

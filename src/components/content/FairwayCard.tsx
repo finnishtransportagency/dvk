@@ -969,6 +969,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <>
               <div className="pagebreak" />
               <PrintMap
+                pictures={fairwayCard?.pictures?.sort((a, b) => a.sequenceNumber - b.sequenceNumber).map((p) => fairwayCard?.id + '/' + p.id)}
                 name={fairwayCard?.name ?? undefined}
                 modified={fairwayCard?.modificationTimestamp ?? undefined}
                 isN2000={isN2000HeightSystem}

@@ -6,6 +6,8 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
   ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
+export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
+
 export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
 
 export type FeatureDataId =

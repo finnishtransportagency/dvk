@@ -9,18 +9,19 @@ import dvkMap from './DvkMap';
 import { IonText } from '@ionic/react';
 
 type FairwayCardProps = {
+  pictures?: string[];
   name?: Text;
   modified?: number;
   isN2000?: boolean;
 };
 
-const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
+const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, pictures }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const debouncedPrintImageRefresh = React.useRef(
     debounce(() => {
-      refreshPrintableMap();
+      refreshPrintableMap(pictures);
     }, 500)
   ).current;
 
@@ -48,7 +49,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
             </div>
             <div className="cardInfo">
               <IonText>
-                <h3 id="exportFairwayName">{name ? name[lang] || name.fi : t('documentTitle')}</h3>
+                <h3 id="exportFairwayName">{name ? name[lang] ?? name.fi : t('documentTitle')}</h3>
               </IonText>
               {modified && (
                 <em>
