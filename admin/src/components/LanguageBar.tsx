@@ -4,48 +4,25 @@ import { useTranslation } from 'react-i18next';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang).catch((err) => console.error(err));
+  const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
+    i18n
+      .changeLanguage(lang)
+      .then(() => localStorage.setItem('adminLang', lang))
+      .catch((err) => console.error(err));
+    e.preventDefault();
   };
 
   return (
     <IonGrid className="languageBar">
       <IonRow>
         <IonCol>
-          <IonButton
-            id="language_fi"
-            fill="clear"
-            className="plainButton"
-            onClick={(e) => {
-              changeLanguage('fi');
-              e.preventDefault();
-            }}
-            disabled={i18n.language === 'fi'}
-          >
+          <IonButton id="language_fi" fill="clear" className="plainButton" onClick={(e) => changeLanguage(e, 'fi')} disabled={i18n.language === 'fi'}>
             Suomeksi
           </IonButton>
-          <IonButton
-            id="language_sv"
-            fill="clear"
-            className="plainButton"
-            onClick={(e) => {
-              changeLanguage('sv');
-              e.preventDefault();
-            }}
-            disabled={i18n.language === 'sv'}
-          >
+          <IonButton id="language_sv" fill="clear" className="plainButton" onClick={(e) => changeLanguage(e, 'sv')} disabled={i18n.language === 'sv'}>
             På svenska
           </IonButton>
-          <IonButton
-            id="language_en"
-            fill="clear"
-            className="plainButton"
-            onClick={(e) => {
-              changeLanguage('en');
-              e.preventDefault();
-            }}
-            disabled={i18n.language === 'en'}
-          >
+          <IonButton id="language_en" fill="clear" className="plainButton" onClick={(e) => changeLanguage(e, 'en')} disabled={i18n.language === 'en'}>
             In English
           </IonButton>
         </IonCol>
