@@ -17,8 +17,8 @@ type Query {
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput): FairwayCard
-  saveHarbor(harbor: HarborInput): Harbor
+  saveFairwayCard(card: FairwayCardInput!): FairwayCard
+  saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
 }
 
@@ -216,7 +216,12 @@ type FairwayCard {
   windRecommendation: Text
   trafficService: TrafficService
   harbors: [Harbor!]
-  pictures: [String!]
+  pictures: [Picture!]
+}
+
+type Picture {
+  id: String!
+  sequenceNumber: Int!
 }
 
 type TrafficService {

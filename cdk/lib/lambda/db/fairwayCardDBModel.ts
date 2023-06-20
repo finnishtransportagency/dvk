@@ -70,6 +70,11 @@ type FairwayCardByFairwayIdIndex = {
   fairwayIds: string;
 };
 
+export type Picture = {
+  id: string;
+  sequenceNumber: number;
+};
+
 class FairwayCardDBModel {
   id: string;
 
@@ -125,7 +130,7 @@ class FairwayCardDBModel {
 
   expires?: Maybe<number>;
 
-  pictures?: Maybe<string[]>;
+  pictures?: Maybe<Picture[]>;
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
