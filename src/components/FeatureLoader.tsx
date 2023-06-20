@@ -11,6 +11,7 @@ import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
+import { get, set } from 'idb-keyval';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -69,21 +70,18 @@ export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | Backgrou
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
     let layerStatus = layer.get('status');
-    console.log('---- CHECK LAYER ' + featureLayerId + ': ' + layerStatus);
     if (layerStatus === 'ready') {
       setDataUpdatedAt(layer.get('dataUpdatedAt'));
       setReady(true);
     } else {
       const fp = () => {
         layerStatus = layer.get('status');
-        console.log('---- LAYER STATUS ' + featureLayerId + ': ' + layerStatus);
         if (layerStatus === 'ready') {
           setDataUpdatedAt(layer.get('dataUpdatedAt'));
           setReady(true);
           layer.un('propertychange', fp);
         }
       };
-      console.log('---- LISTEN LAYER CHANGE: ' + featureLayerId);
       layer.on('propertychange', fp);
     }
   }, [featureLayerId]);
@@ -112,28 +110,33 @@ export function useInitStaticDataLayer(
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
-    const status = layer.get('status');
-    if (status !== 'ready' && status !== 'loading') {
+    if (!['ready', 'loading'].includes(layer.get('status'))) {
       layer.set('status', 'loading');
       (async () => {
         try {
-          const response = await axios.get(urlStr);
-          const format = new GeoJSON();
-          const source = layer.getSource() as VectorSource;
-          source.clear();
-          const features = format.readFeatures(response.data, { dataProjection, featureProjection: MAP.EPSG });
-          source.addFeatures(features);
-          setDataUpdatedAt(Date.now());
-          layer.set('dataUpdatedAt', dataUpdatedAt);
-          layer.set('status', 'ready');
-          setReady(true);
+          get(featureLayerId).then(async (data) => {
+            if (!data) {
+              const response = await axios.get(urlStr);
+              data = response.data;
+              set(featureLayerId, response.data).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
+            }
+            const format = new GeoJSON();
+            const source = layer.getSource() as VectorSource;
+            source.clear();
+            const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+            source.addFeatures(features);
+            setDataUpdatedAt(Date.now());
+            layer.set('dataUpdatedAt', Date.now());
+            layer.set('status', 'ready');
+            setReady(true);
+          });
         } catch (e) {
           setIsError(true);
           setErrorUpdatedAt(Date.now());
         }
       })();
     }
-  }, [urlStr, dataProjection, featureLayerId, dataUpdatedAt]);
+  }, [urlStr, dataProjection, featureLayerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
