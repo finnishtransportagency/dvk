@@ -9,10 +9,8 @@ export function useFeatureData(
   refetchOnMount: 'always' | boolean = true,
   refetchInterval: number | false = false,
   staleTime: number = OFFLINE_STORAGE.staleTime,
-  cacheTime: number = OFFLINE_STORAGE.cacheTime,
-  persist = true
+  cacheTime: number = OFFLINE_STORAGE.cacheTime
 ) {
-  //console.log(featureDataId + ' ' + persist);
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
@@ -22,7 +20,6 @@ export function useFeatureData(
   }
   const response = useQuery({
     queryKey: [fds?.id],
-    meta: { persist: persist },
     refetchOnMount,
     refetchInterval,
     staleTime,

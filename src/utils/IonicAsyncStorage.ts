@@ -14,9 +14,7 @@ const IonicAsyncStorage = (storage: IonicStorage): AsyncStorage => {
     },
 
     setItem: async (key: string, value: string) => {
-      console.log('SET ITEM: ' + value.length);
       await storage.set(key, value);
-      console.log('SET ITEM DONE');
     },
 
     removeItem: async (key: string) => {

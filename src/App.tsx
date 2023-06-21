@@ -93,34 +93,11 @@ store.create();
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: IonicAsyncStorage(store),
   throttleTime: 10000,
-  serialize: (client) => {
-    console.log('SERIALIZE START');
-    const rv = JSON.stringify(client);
-    console.log('SERIALIZE DONE: ' + rv.length);
-    return rv;
-  },
-  deserialize: (s: string) => {
-    console.log('PARSE: ' + s.length);
-    const rv = JSON.parse(s);
-    console.log('PARSE DONE');
-    return rv;
-  },
 });
 
 const persistOptions = {
   persister: asyncStoragePersister,
   buster: process.env.REACT_APP_VERSION,
-  dehydrateOptions: {
-    shouldDehydrateQuery: (query: any) => {
-      if (query.state.status === 'success') {
-        if (query.meta?.persist === true) {
-          return true;
-        }
-        return false;
-      }
-      return false;
-    },
-  },
 };
 
 const DvkIonApp: React.FC = () => {
