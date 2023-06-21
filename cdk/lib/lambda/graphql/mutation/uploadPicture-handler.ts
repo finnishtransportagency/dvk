@@ -7,7 +7,7 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-async function savePictures(picture: PictureUploadInput) {
+async function savePicture(picture: PictureUploadInput) {
   const bucketName = getNewStaticBucketName();
   const key = `${picture.cardId}/${picture.id}`;
   const command = new PutObjectCommand({
@@ -27,7 +27,7 @@ export const handler: AppSyncResolverHandler<MutationUploadPictureArgs, boolean>
   const user = await getCurrentUser(event);
   log.info(`uploadPicture(${event.arguments.picture.id}, ${user.uid})`);
   try {
-    await savePictures(event.arguments.picture);
+    await savePicture(event.arguments.picture);
     auditLog.info({ cardId: event.arguments.picture.cardId, id: event.arguments.picture.id, user: user.uid }, 'Picture uploaded');
     return true;
   } catch (e) {
