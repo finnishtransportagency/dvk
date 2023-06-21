@@ -6,7 +6,6 @@ schema {
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
-  fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser

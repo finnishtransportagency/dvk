@@ -5,6 +5,7 @@ interface BackendAPILambda {
   pathPattern: string;
   functionName: string;
   priority: number;
+  useVpc?: boolean;
 }
 
 const apiLambdaFunctions: BackendAPILambda[] = [
@@ -13,18 +14,21 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     pathPattern: '/api/featureloader',
     functionName: 'featureloader',
     priority: 10,
+    useVpc: true,
   },
   {
     entry: path.join(__dirname, 'login.ts'),
     pathPattern: '/yllapito/kirjaudu.html',
     functionName: 'login',
     priority: 20,
+    useVpc: false,
   },
   {
     entry: path.join(__dirname, 'logout.ts'),
     pathPattern: '/yllapito/api/logout',
     functionName: 'logout',
     priority: 30,
+    useVpc: false,
   },
 ];
 
