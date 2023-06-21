@@ -18,7 +18,6 @@ export type AlueVaylaAPIModel = {
   vaylaalueenJarjestysNro?: number;
   nimiFI?: string;
   nimiSV?: string;
-  nimiSE?: string;
 };
 
 export type AlueAPIModel = {
