@@ -2,7 +2,7 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, FeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
+import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
@@ -116,13 +116,8 @@ export function useInitStaticDataLayer(
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,
   dataProjection = MAP.EPSG
 ): DvkLayerState {
-  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
-  let urlStr: string;
-  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
-    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
-  } else {
-    urlStr = fds?.url ? fds.url.toString() : '';
-  }
+  const fds = StaticFeatureDataSources.find((fda) => fda.id === featureDataId);
+  const urlStr: string = fds?.url ? fds.url.toString() : '';
 
   const [isError, setIsError] = useState(false);
   const [dataUpdatedAt, setDataUpdatedAt] = useState<number>(0);
