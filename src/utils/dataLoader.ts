@@ -35,14 +35,6 @@ export function useFeatureData(
   };
 }
 
-export function useStaticFeatureData(
-  featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
-) {
-  return useFeatureData(featureDataId, refetchOnMount, refetchInterval, OFFLINE_STORAGE.staleTimeStatic, OFFLINE_STORAGE.cacheTimeStatic);
-}
-
 const datasourceClient = {
   endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql',
   fetchParams: {
