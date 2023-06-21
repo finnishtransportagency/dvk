@@ -80,12 +80,16 @@ export const refreshPrintableMap = (pictures?: string[]) => {
   if (mapExport) {
     mapExport.innerHTML = '';
     mapExport.appendChild(img);
-    for (const picture of pictures ?? []) {
+  }
+  pictures?.forEach((picture, index) => {
+    const mapExport2 = document.getElementById('mapExport' + index);
+    if (mapExport2) {
+      mapExport2.innerHTML = '';
       const img2 = new Image();
       img2.src = imageUrl + picture;
-      mapExport.appendChild(img2);
+      mapExport2.appendChild(img2);
     }
-  }
+  });
 };
 
 export function getDuration(dataUpdatedAt: number, decimals = 1) {

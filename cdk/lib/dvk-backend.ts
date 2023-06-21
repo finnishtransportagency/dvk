@@ -357,8 +357,7 @@ export class DvkBackendStack extends Stack {
       defaultAction: ListenerAction.fixedResponse(404),
       open: true,
     });
-    // add CORS config if needed
-    if (Config.isDeveloperEnvironment() || Config.isFeatureEnvironment()) {
+    if (!Config.isPermanentEnvironment()) {
       this.addDevelopmentLambdas(httpListener, env, staticBucket);
     }
     for (const lambdaFunc of apiLambdaFunctions) {

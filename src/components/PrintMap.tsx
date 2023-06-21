@@ -39,7 +39,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, picture
     <>
       <div className="mapWrapper">
         <div className="mapContent">
-          <div id="mapExport"></div>
+          <div className="mapExport" id="mapExport"></div>
           <div className="mapLegend">
             <div className="bg"></div>
             <div id="compassInfo">
@@ -64,6 +64,18 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, picture
           </div>
         </div>
       </div>
+      {pictures?.map((_, index) => {
+        return (
+          <>
+            <div className="pagebreak"></div>
+            <div className="mapWrapper">
+              <div className="mapContent">
+                <div className="mapExport" id={`mapExport${index}`}></div>
+              </div>
+            </div>
+          </>
+        );
+      })}
     </>
   );
 };

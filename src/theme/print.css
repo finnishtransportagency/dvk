@@ -158,14 +158,14 @@
     overflow: hidden;
     border: 1px solid var(--ion-color-dark);
   }
-  #mapExport img {
+  .mapExport img {
     vertical-align: middle;
   }
   @media (orientation: portrait) {
-    #mapExport img {max-height: 27.5cm !important;}
+    .mapExport img {max-height: 27.5cm !important;}
   }
   @media (orientation: landscape) {
-    #mapExport img {max-height: 18.8cm !important;}
+    .mapExport img {max-height: 18.8cm !important;}
   }
 
   .mapLegend {
