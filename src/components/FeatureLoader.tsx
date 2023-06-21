@@ -165,30 +165,6 @@ export function useInitStaticDataLayer(
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useNameLayer() {
-  return useStaticDataLayer('name');
-}
-
-export function useBackgroundFinlandLayer(): DvkLayerState {
-  return useStaticDataLayer('finland');
-}
-
-export function useBackgroundMmlmeriLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_meri');
-}
-
-export function useBackgroundMmljarviLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_jarvi');
-}
-
-export function useBackgroundMmllaituritLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_laiturit');
-}
-
-export function useBackgroundBalticseaLayer(): DvkLayerState {
-  return useStaticDataLayer('balticsea');
-}
-
 export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
