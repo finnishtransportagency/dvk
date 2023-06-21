@@ -9,7 +9,7 @@ import SquatHeader from './SquatHeader';
 
 const TitleBar: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage' });
-  const logoSource = i18n.language === 'en' ? 'assets/icon/vayla_alla_en_rgb.png' : 'assets/icon/vayla_alla_fi_sv_rgb.png';
+  const logoSource = i18n.language === 'en' ? 'assets/icon/vayla_alla_en.png' : 'assets/icon/vayla_alla_fi_sv.png';
 
   return (
     <IonGrid className="titlebar ion-no-padding">
