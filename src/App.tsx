@@ -23,22 +23,17 @@ import {
   useHarborLayer,
   useSafetyEquipmentLayer,
   useMarineWarningLayer,
-  useNameLayer,
   useBoardLine12Layer,
   useMareographLayer,
   useObservationLayer,
   useBuoyLayer,
-  useBackgroundFinlandLayer,
-  useBackgroundMmlmeriLayer,
-  useBackgroundMmljarviLayer,
-  useBackgroundMmllaituritLayer,
-  useBackgroundBalticseaLayer,
   DvkLayerState,
   useVtsLineLayer,
   useVtsPointLayer,
   useCircleLayer,
   useSpecialArea2Layer,
   useSpecialArea15Layer,
+  useInitStaticDataLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -95,7 +90,15 @@ const store = new Storage({
 });
 store.create();
 
-const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
+const asyncStoragePersister = createAsyncStoragePersister({
+  storage: IonicAsyncStorage(store),
+  throttleTime: 10000,
+});
+
+const persistOptions = {
+  persister: asyncStoragePersister,
+  buster: process.env.REACT_APP_VERSION,
+};
 
 const DvkIonApp: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -110,16 +113,16 @@ const DvkIonApp: React.FC = () => {
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
-  const bgFinlandLayer = useBackgroundFinlandLayer();
-  const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
-  const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
+  const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
+  const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentLayer();
   useMarineWarningLayer();
-  useNameLayer();
+  useInitStaticDataLayer('name', 'name');
   useMareographLayer();
   useObservationLayer();
   useBuoyLayer();
@@ -127,8 +130,9 @@ const DvkIonApp: React.FC = () => {
   useVtsPointLayer();
   useLine3456Layer();
   useArea3456Layer();
-  useBackgroundBalticseaLayer();
-  useBackgroundMmllaituritLayer();
+  useInitStaticDataLayer('balticsea', 'balticsea');
+  useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
+
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -295,7 +299,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister, buster: process.env.REACT_APP_VERSION }}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>
