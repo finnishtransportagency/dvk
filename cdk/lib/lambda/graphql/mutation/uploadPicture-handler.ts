@@ -14,6 +14,7 @@ async function savePictures(picture: PictureUploadInput) {
     Key: key,
     Bucket: bucketName,
     Body: Buffer.from(picture.base64Data, 'base64'),
+    ContentType: picture.contentType,
     Tagging: 'InUse=false',
   });
   await s3Client.send(command);

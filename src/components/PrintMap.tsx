@@ -19,11 +19,9 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, picture
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const debouncedPrintImageRefresh = React.useRef(
-    debounce(() => {
-      refreshPrintableMap(pictures);
-    }, 500)
-  ).current;
+  const debouncedPrintImageRefresh = debounce(() => {
+    refreshPrintableMap(pictures);
+  }, 500);
 
   useEffect(() => {
     dvkMap.olMap?.on('moveend', debouncedPrintImageRefresh);

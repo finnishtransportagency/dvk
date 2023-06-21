@@ -84,7 +84,7 @@ async function main() {
     REACT_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
     REACT_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
     REACT_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
-      ? `${frontendStackOutputs.CloudFrontDomainName}/s3static/`
+      ? `https://${frontendStackOutputs.CloudFrontDomainName}/s3static/`
       : `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api/image?id=`,
   });
   writeEnvFile('../admin/.env.local', {

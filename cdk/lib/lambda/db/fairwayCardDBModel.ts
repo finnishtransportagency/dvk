@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation } from '../../../graphql/generated';
+import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -73,6 +73,7 @@ type FairwayCardByFairwayIdIndex = {
 export type Picture = {
   id: string;
   sequenceNumber: number;
+  orientation: Orientation;
 };
 
 class FairwayCardDBModel {

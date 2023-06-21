@@ -1,9 +1,9 @@
 import axios from 'axios';
 import fs from 'fs';
 import { gzip } from 'zlib';
-import Config from '../lib/config';
 // eslint-disable-next-line import/named
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getNewStaticBucketName } from '../lib/lambda/environment';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -19,14 +19,10 @@ const gzipString = async (input: string): Promise<Buffer> => {
   );
 };
 
-function getBucketName() {
-  return `static.dvk${Config.getEnvironment()}.testivaylapilvi.fi`;
-}
-
 async function saveToS3(filename: string, data: Buffer) {
   const command = new PutObjectCommand({
     Key: filename,
-    Bucket: getBucketName(),
+    Bucket: getNewStaticBucketName(),
     Body: data,
     ContentType: 'application/json',
     ContentEncoding: 'gzip',
@@ -71,7 +67,7 @@ async function main() {
     const filename = source.id + '.json.gz';
     fs.writeFileSync(filename, data);
     await saveToS3(filename, data);
-    console.log(`${filename} uploaded to S3 bucket ${getBucketName()}`);
+    console.log(`${filename} uploaded to S3 bucket ${getNewStaticBucketName()}`);
   }
 }
 

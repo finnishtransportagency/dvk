@@ -26,6 +26,7 @@ input PictureUploadInput {
   cardId: String!
   id: String!
   base64Data: String!
+  contentType: String!
 }
 
 enum Operation {
@@ -75,6 +76,12 @@ input FairwayCardInput {
 input PictureInput {
   id: String!
   sequenceNumber: Int!
+  orientation: Orientation!
+}
+
+enum Orientation {
+  PORTRAIT
+  LANDSCAPE
 }
 
 input TrafficServiceInput {
@@ -222,6 +229,7 @@ type FairwayCard {
 type Picture {
   id: String!
   sequenceNumber: Int!
+  orientation: Orientation!
 }
 
 type TrafficService {

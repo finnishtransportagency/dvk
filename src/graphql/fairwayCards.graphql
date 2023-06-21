@@ -270,6 +270,7 @@ fragment FairwayCardParts on FairwayCard {
   pictures {
     id
     sequenceNumber
+    orientation
   }
 }
 
