@@ -15,7 +15,7 @@ const LanguageBar: React.FC = () => {
         <IonCol>
           <IonButton
             id="language_fi"
-            className="languageSelection"
+            className="languageSelection no-background-focused"
             fill="clear"
             onClick={(e) => changeLanguage(e, 'fi')}
             disabled={i18n.language === 'fi'}
@@ -24,7 +24,7 @@ const LanguageBar: React.FC = () => {
           </IonButton>
           <IonButton
             id="language_sv"
-            className="languageSelection"
+            className="languageSelection no-background-focused"
             fill="clear"
             onClick={(e) => changeLanguage(e, 'sv')}
             disabled={i18n.language === 'sv'}
@@ -33,7 +33,7 @@ const LanguageBar: React.FC = () => {
           </IonButton>
           <IonButton
             id="language_en"
-            className="languageSelection"
+            className="languageSelection no-background-focused"
             fill="clear"
             onClick={(e) => changeLanguage(e, 'en')}
             disabled={i18n.language === 'en'}

@@ -26,9 +26,17 @@ ion-accordion .tabContent {
   font-weight: bold;
   line-height: 24px;
   --padding-start: 0;
-  --inner-padding-start: 2px;
+  --inner-padding-start: 1px;
   --inner-padding-end: 5px;
   --min-height: 24px;
+  --border-width: 1px !important;
+  --border-color: transparent;
+}
+.accItem.ion-focused {
+  --background-focused: none;
+  --inner-border-width: 0;
+  --show-full-highlight: 0;
+  --border-color: var(--ion-color-dark);
 }
 .accItem ion-label {
   margin: 0;
