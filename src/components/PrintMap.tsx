@@ -9,20 +9,19 @@ import dvkMap from './DvkMap';
 import { IonText } from '@ionic/react';
 
 type FairwayCardProps = {
+  pictures?: string[];
   name?: Text;
   modified?: number;
   isN2000?: boolean;
 };
 
-const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
+const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, pictures }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const debouncedPrintImageRefresh = React.useRef(
-    debounce(() => {
-      refreshPrintableMap();
-    }, 500)
-  ).current;
+  const debouncedPrintImageRefresh = debounce(() => {
+    refreshPrintableMap(pictures);
+  }, 500);
 
   useEffect(() => {
     dvkMap.olMap?.on('moveend', debouncedPrintImageRefresh);
@@ -40,7 +39,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
     <>
       <div className="mapWrapper">
         <div className="mapContent">
-          <div id="mapExport"></div>
+          <div className="mapExport" id="mapExport"></div>
           <div className="mapLegend">
             <div className="bg"></div>
             <div id="compassInfo">
@@ -48,7 +47,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
             </div>
             <div className="cardInfo">
               <IonText>
-                <h3 id="exportFairwayName">{name ? name[lang] || name.fi : t('documentTitle')}</h3>
+                <h3 id="exportFairwayName">{name ? name[lang] ?? name.fi : t('documentTitle')}</h3>
               </IonText>
               {modified && (
                 <em>
@@ -65,6 +64,18 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000 }) => {
           </div>
         </div>
       </div>
+      {pictures?.map((_, index) => {
+        return (
+          <>
+            <div className="pagebreak"></div>
+            <div className="mapWrapper">
+              <div className="mapContent">
+                <div className="mapExport" id={`mapExport${index}`}></div>
+              </div>
+            </div>
+          </>
+        );
+      })}
     </>
   );
 };

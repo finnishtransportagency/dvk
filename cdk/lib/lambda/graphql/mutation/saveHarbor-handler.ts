@@ -54,9 +54,9 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
                 name: mapString(s?.name, 200),
                 geometry: mapGeometry(s?.geometry),
               };
-            }) || null,
+            }) ?? null,
         };
-      }) || null,
+      }) ?? null,
     expires: harbor.status === Status.Removed ? getExpires() : null,
   };
 }
@@ -66,26 +66,22 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
 ): Promise<Harbor> => {
   const user = await getCurrentUser(event);
   log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
-  if (event.arguments.harbor?.id) {
-    const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
-    const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
-    log.debug('harbor: %o', newModel);
-    try {
-      await HarborDBModel.save(newModel, event.arguments.harbor.operation);
-    } catch (e) {
-      if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
-        throw new Error(event.arguments.harbor.operation === Operation.Create ? OperationError.HarborAlreadyExist : OperationError.HarborNotExist);
-      }
-      throw e;
+  const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
+  const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
+  log.debug('harbor: %o', newModel);
+  try {
+    await HarborDBModel.save(newModel, event.arguments.harbor.operation);
+  } catch (e) {
+    if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
+      throw new Error(event.arguments.harbor.operation === Operation.Create ? OperationError.HarborAlreadyExist : OperationError.HarborNotExist);
     }
-    if (event.arguments.harbor.operation === Operation.Update) {
-      const changes = dbModel ? diff(dbModel, newModel) : null;
-      auditLog.info({ changes, harbor: newModel, user: user.uid }, 'Harbor updated');
-    } else {
-      auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');
-    }
-    return mapHarborDBModelToGraphqlType(newModel, user);
+    throw e;
   }
-  log.warn({ input: event.arguments.harbor }, 'Harbor id missing');
-  throw new Error(OperationError.HarborIdMissing);
+  if (event.arguments.harbor.operation === Operation.Update) {
+    const changes = dbModel ? diff(dbModel, newModel) : null;
+    auditLog.info({ changes, harbor: newModel, user: user.uid }, 'Harbor updated');
+  } else {
+    auditLog.info({ harbor: newModel, user: user.uid }, 'Harbor added');
+  }
+  return mapHarborDBModelToGraphqlType(newModel, user);
 };

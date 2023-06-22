@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation } from '../../../graphql/generated';
+import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -70,6 +70,15 @@ type FairwayCardByFairwayIdIndex = {
   fairwayIds: string;
 };
 
+export type Picture = {
+  id: string;
+  sequenceNumber?: Maybe<number>;
+  orientation: Orientation;
+  rotation?: Maybe<number>;
+  harborId?: Maybe<string>;
+  modificationTimestamp?: Maybe<number>;
+};
+
 class FairwayCardDBModel {
   id: string;
 
@@ -124,6 +133,8 @@ class FairwayCardDBModel {
   fairways: FairwayDBModel[];
 
   expires?: Maybe<number>;
+
+  pictures?: Maybe<Picture[]>;
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));

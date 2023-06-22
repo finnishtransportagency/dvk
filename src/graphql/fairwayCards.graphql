@@ -267,6 +267,14 @@ fragment FairwayCardParts on FairwayCard {
   harbors {
     ...HarborParts
   }
+  pictures {
+    id
+    sequenceNumber
+    orientation
+    rotation
+    harborId
+    modificationTimestamp
+  }
 }
 
 query findAllFairwayCards($status: [Status!]) {
