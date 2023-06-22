@@ -1,6 +1,7 @@
 {
   "homePage": {
     "sidebarMenu": {
+      "logo": "Väylävirasto",
       "closeMenu": "Sulje",
       "title": "Digitaalinen väyläkortti",
       "fairway-cards": "Väyläkortit",
@@ -379,6 +380,7 @@
   "common": {
     "documentTitle": "Digitaalinen väyläkortti",
     "home": "Digitaalinen väyläkortti",
+    "logo": "Väylävirasto",
     "openMenu": "Avaa valikko",
     "general": "Yleistä",
     "openDescription": "Avaa",

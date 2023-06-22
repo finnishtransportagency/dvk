@@ -3,6 +3,7 @@ import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonImg, IonModal, Ion
 import { useTranslation } from 'react-i18next';
 import { useCurrentUserQueryData } from '../graphql/api';
 import vayla_logo from '../theme/img/vayla_logo.png';
+import vayla_logo_en from '../theme/img/vayla_logo_en.png';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 
 interface ModalProps {
@@ -98,7 +99,7 @@ const UserInfo = () => {
 };
 
 const PageHeader: React.FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   return (
     <IonHeader className="page-header">
@@ -117,7 +118,7 @@ const PageHeader: React.FC = () => {
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-align-items-center">
           <IonCol size="auto">
-            <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
+            <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('header.logo')} />
           </IonCol>
           <IonCol>
             <IonText>
