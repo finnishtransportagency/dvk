@@ -112,7 +112,13 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     expires: card.status === Status.Removed ? getExpires() : null,
     pictures:
       card.pictures?.map((p) => {
-        return { id: p.id, sequenceNumber: p.sequenceNumber ?? null, orientation: p.orientation };
+        return {
+          id: p.id,
+          sequenceNumber: p.sequenceNumber ?? null,
+          orientation: p.orientation,
+          rotation: p.rotation ?? null,
+          harborId: mapString(p.harborId, 200),
+        };
       }) ?? null,
   };
 }

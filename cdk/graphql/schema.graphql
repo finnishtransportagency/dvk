@@ -77,6 +77,8 @@ input PictureInput {
   id: String!
   sequenceNumber: Int
   orientation: Orientation!
+  rotation: Float
+  harborId: String
 }
 
 enum Orientation {
@@ -230,6 +232,8 @@ type Picture {
   id: String!
   sequenceNumber: Int
   orientation: Orientation!
+  rotation: Float
+  harborId: String
 }
 
 type TrafficService {

@@ -74,6 +74,8 @@ export type Picture = {
   id: string;
   sequenceNumber?: Maybe<number>;
   orientation: Orientation;
+  rotation?: Maybe<number>;
+  harborId?: Maybe<string>;
 };
 
 class FairwayCardDBModel {

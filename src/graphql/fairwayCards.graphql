@@ -271,6 +271,8 @@ fragment FairwayCardParts on FairwayCard {
     id
     sequenceNumber
     orientation
+    rotation
+    harborId
   }
 }
 
