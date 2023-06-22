@@ -19,6 +19,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
+import vayla_logo_en from '../theme/img/vayla_logo_en.png';
 import './SidebarMenu.css';
 import OfflineSupport from './OfflineSupport';
 import { useDvkContext } from '../hooks/dvkContext';
@@ -58,7 +59,7 @@ type SidebarMenuProps = {
 };
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
   const { state } = useDvkContext();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
@@ -107,7 +108,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
               <IonGrid className="contentGrid ion-no-padding">
                 <IonRow className="header ion-align-items-end">
                   <IonCol>
-                    <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
+                    <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
                   </IonCol>
                   <IonCol size="auto">
                     <IonButton

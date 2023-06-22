@@ -8,7 +8,8 @@ import PrintBar from './PrintBar';
 import SquatHeader from './SquatHeader';
 
 const TitleBar: React.FC = () => {
-  const { t } = useTranslation('', { keyPrefix: 'homePage' });
+  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage' });
+  const logoSource = i18n.language === 'en' ? 'assets/icon/vayla_alla_en.png' : 'assets/icon/vayla_alla_fi_sv.png';
 
   return (
     <IonGrid className="titlebar ion-no-padding">
@@ -19,9 +20,7 @@ const TitleBar: React.FC = () => {
           </IonText>
         </IonCol>
         <IonCol class="ion-align-self-center mobile-logo" size="auto">
-          {showLogo() && (
-            <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
-          )}
+          {showLogo() && <IonImg className="logo" src={logoSource} alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />}
         </IonCol>
         <IonCol className="langbar" style={{ textAlign: 'end' }}>
           {showLanguages() && <LanguageBar />}
@@ -34,7 +33,7 @@ const TitleBar: React.FC = () => {
               </IonCol>
               {showLogo() && (
                 <IonCol className="ion-align-self-center desktop-logo" size="auto">
-                  <IonImg className="logo" src="assets/icon/vayla_alla_fi_sv_rgb.png" alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
+                  <IonImg className="logo" src={logoSource} alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />
                 </IonCol>
               )}
             </IonRow>

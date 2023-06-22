@@ -5,7 +5,7 @@ import { getTimeout, getVatuHeaders, getVatuUrl } from '../../environment';
 import { log } from '../../logger';
 import { roundGeometry } from '../../util';
 
-type GeometryModel = {
+export type GeometryModel = {
   geometria: object;
 };
 
@@ -18,7 +18,6 @@ export type AlueVaylaAPIModel = {
   vaylaalueenJarjestysNro?: number;
   nimiFI?: string;
   nimiSV?: string;
-  nimiSE?: string;
 };
 
 export type AlueAPIModel = {

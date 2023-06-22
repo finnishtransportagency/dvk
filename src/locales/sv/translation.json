@@ -1,6 +1,7 @@
 {
   "homePage": {
     "sidebarMenu": {
+      "logo": "Trafikledsverket",
       "closeMenu": "Stäng",
       "title": "Digital farledskort",
       "fairway-cards": "Farledskort",
@@ -379,6 +380,7 @@
   "common": {
     "documentTitle": "Digital farledskort",
     "home": "Digital farledskort",
+    "logo": "Trafikledsverket",
     "openMenu": "Öppna meny",
     "general": "Allmänt",
     "openDescription": "Öppna",

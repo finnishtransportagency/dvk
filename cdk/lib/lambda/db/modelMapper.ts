@@ -274,6 +274,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     trafficService: mapTrafficService(dbModel.trafficService, pilotMap),
     harbors: dbModel.harbors,
     fairwayIds: mapFairwayIds(dbModel),
+    pictures: dbModel.pictures,
   };
   for (const fairway of dbModel.fairways || []) {
     card.fairways.push(mapFairwayDBModelToFairway(fairway));

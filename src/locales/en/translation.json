@@ -1,6 +1,7 @@
 {
   "homePage": {
     "sidebarMenu": {
+      "logo": "Finnish Transport Infrastructure Agency",
       "closeMenu": "Close",
       "title": "Digital Fairway Card",
       "fairway-cards": "Fairway Cards",
@@ -379,6 +380,7 @@
   "common": {
     "documentTitle": "Digital Fairway Card",
     "home": "Digital fairway card",
+    "logo": "Finnish Transport Infrastructure Agency",
     "openMenu": "Open menu",
     "general": "General",
     "openDescription": "Open",

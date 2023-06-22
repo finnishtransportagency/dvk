@@ -33,17 +33,13 @@ export function isFeatureEnvironment() {
   return getEnvironment().startsWith('feature');
 }
 
-export function getAllowOrigin() {
-  return `http://localhost:${isFeatureEnvironment() ? '3001' : '3000'}`;
-}
-
 export function getHeaders(): Record<string, string[]> {
   if (isPermanentEnvironment()) {
     return { 'Content-Type': ['application/json'], 'Content-Encoding': ['gzip'] };
   }
   return {
     'Content-Type': ['application/json'],
-    'Access-Control-Allow-Origin': [getAllowOrigin()],
+    'Access-Control-Allow-Origin': ['*'],
     'Access-Control-Allow-Methods': ['*'],
     'Access-Control-Allow-Headers': ['*'],
     'Content-Encoding': ['gzip'],
@@ -182,4 +178,12 @@ export function getExpires() {
 
 export function getTimeout() {
   return process.env.API_TIMEOUT ? Number.parseInt(process.env.API_TIMEOUT, 10) : 10000;
+}
+
+export function getNewStaticBucketName() {
+  if (isProductionEnvironment()) {
+    return 'static2.dvk.vaylapilvi.fi';
+  } else {
+    return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
+  }
 }
