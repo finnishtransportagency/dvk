@@ -1,6 +1,48 @@
 query fairways {
   fairways {
     id
-    name {fi sv en}
+    name {
+      fi
+      sv
+      en
+    }
+    navigationLines {
+      id
+      geometry {
+        type
+        coordinates
+      }
+      depth
+      type
+      typeCode
+    }
+    areas {
+      id
+      geometry {
+        type
+        coordinates
+      }
+    }
+    boardLines {
+      id
+      geometry {
+        type
+        coordinates
+      }
+    }
+    restrictionAreas {
+      id
+      geometry {
+        type
+        coordinates
+      }
+    }
+    turningCircles {
+      id
+      geometry {
+        type
+        coordinates
+      }
+    }
   }
 }
