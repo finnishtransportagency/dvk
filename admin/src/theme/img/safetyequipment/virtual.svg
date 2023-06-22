@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>35CF963A-00C8-4B50-81BF-6A490BBCB831</title>
+    <defs>
+        <path d="M16,7.74801648 C16,12.1662945 12.418278,15.7480165 8,15.7480165 C3.581722,15.7480165 0,12.1662945 0,7.74801648 C0,4.02026563 2.54964405,0.888016055 6.00019992,3.37790579e-14 L6,1.18703739 C6.66666667,0.989594879 7.33333333,0.890873624 8,0.890873624 C8.66666667,0.890873624 9.33333333,0.989594879 10,1.18703739 L10.0009436,0.000294384193 C13.4509192,0.888708112 16,4.02067744 16,7.74801648 Z M8,0.890873624 C7.61018389,0.890873624 7.22796502,0.923401234 6.85590952,0.9858903 C3.6134154,1.53048764 1.14285714,4.35073716 1.14285714,7.74801648 C1.14285714,11.5351119 4.21290457,14.6051593 8,14.6051593 C11.7870954,14.6051593 14.8571429,11.5351119 14.8571429,7.74801648 C14.8571429,4.35081228 12.3866939,1.53061236 9.14430557,0.985926431 C8.7721823,0.923413772 8.38989123,0.890873624 8,0.890873624 Z" id="path-1"></path>
+        <filter x="-4.7%" y="-5.6%" width="109.4%" height="110.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feMorphology radius="0.25" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"></feMorphology>
+            <feOffset dx="0" dy="0" in="shadowSpreadOuter1" result="shadowOffsetOuter1"></feOffset>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="colors_and_typography" transform="translate(-1370.000000, -1351.000000)" fill-rule="nonzero">
+            <g id="Oval" transform="translate(1371.000000, 1352.227963)">
+                <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                <use fill="#FF00FF" xlink:href="#path-1"></use>
+            </g>
+        </g>
+    </g>
+</svg>

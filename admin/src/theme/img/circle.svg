@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M9,16 C12.8659932,16 16,12.8659932 16,9 C16,5.13400675 12.8659932,2 9,2 C5.13400675,2 2,5.13400675 2,9 C2,12.8659932 5.13400675,16 9,16 Z" id="path-1"></path>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="14" height="14" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="turning_circle" transform="translate(-1354.000000, -417.000000)">
+            <g id="kauppamerenkulku_auki" transform="translate(1112.000000, 214.000000)">
+                <g id="taululinjat-copy" transform="translate(52.000000, 202.000000)">
+                    <g id="symbol_wrapper" transform="translate(190.000000, 1.000000)">
+                        <use id="Oval" stroke="#333333" mask="url(#mask-2)" stroke-width="2" stroke-dasharray="6,3" xlink:href="#path-1"></use>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
