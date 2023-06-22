@@ -8,6 +8,8 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
 
 export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
 
+export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'name';
+
 export type FeatureDataId =
   | 'area12'
   | 'area3456'
@@ -20,16 +22,10 @@ export type FeatureDataId =
   | 'depth12'
   | 'safetyequipmentfault'
   | 'marinewarning'
-  | 'name'
   | 'boardline12'
   | 'mareograph'
   | 'observation'
   | 'buoy'
-  | 'balticsea'
-  | 'finland'
-  | 'mml_meri'
-  | 'mml_jarvi'
-  | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
   | 'circle'
@@ -37,7 +33,18 @@ export type FeatureDataId =
   | 'specialarea2'
   | 'specialarea15';
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
+export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
+
+export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
+  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
+  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
+  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
+];
+
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/area12.json.gz') },
@@ -73,12 +80,6 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
   },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning'), staticUrl: new URL(staticUrl + '/marinewarning.json.gz') },
-  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
-  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
-  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },

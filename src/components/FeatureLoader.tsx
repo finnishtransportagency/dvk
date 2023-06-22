@@ -2,14 +2,16 @@ import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import * as turf from '@turf/turf';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
+import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData, useStaticFeatureData } from '../utils/dataLoader';
+import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
+import axios from 'axios';
+import { get, setMany, delMany } from 'idb-keyval';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -58,54 +60,109 @@ export function useCircleLayer() {
   return useDataLayer('circle', 'circle');
 }
 
-function useStaticDataLayer(
-  featureDataId: FeatureDataId,
-  featureLayerId: FeatureDataLayerId | BackgroundLayerId,
-  dataProjection = MAP.EPSG,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
-): DvkLayerState {
+export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | BackgroundLayerId) {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState(0);
+  const isPaused = false;
+  const errorUpdatedAt = 0;
+  const isError = false;
+
   useEffect(() => {
-    if (data) {
-      const layer = dvkMap.getFeatureLayer(featureLayerId);
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-        source.addFeatures(features);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
+    const layer = dvkMap.getFeatureLayer(featureLayerId);
+    let layerStatus = layer.get('status');
+    if (layerStatus === 'ready') {
+      setDataUpdatedAt(layer.get('dataUpdatedAt'));
       setReady(true);
+    } else {
+      const fp = () => {
+        layerStatus = layer.get('status');
+        if (layerStatus === 'ready') {
+          setDataUpdatedAt(layer.get('dataUpdatedAt'));
+          setReady(true);
+          layer.un('propertychange', fp);
+        }
+      };
+      layer.on('propertychange', fp);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureLayerId]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useNameLayer() {
-  return useStaticDataLayer('name', 'name');
+function useStaticFeatureDataCacheBusting(featureDataId: StaticFeatureDataId, busterKey: string, busterValue: string) {
+  const [status, setStatus] = useState<'notStarted' | 'inProgress' | 'done'>('notStarted');
+
+  useEffect(() => {
+    if (status === 'notStarted') {
+      setStatus('inProgress');
+      (async () => {
+        get(busterKey).then(async (data) => {
+          if (data === busterValue) {
+            setStatus('done');
+          } else {
+            delMany([featureDataId, busterKey]).then(() => {
+              setStatus('done');
+            });
+          }
+        });
+      })();
+    }
+  }, [featureDataId, busterKey, busterValue, status]);
+
+  return status;
 }
 
-export function useBackgroundFinlandLayer(): DvkLayerState {
-  return useStaticDataLayer('finland', 'finland');
-}
+export function useInitStaticDataLayer(
+  featureDataId: StaticFeatureDataId,
+  featureLayerId: FeatureDataLayerId | BackgroundLayerId,
+  dataProjection = MAP.EPSG
+): DvkLayerState {
+  const fds = StaticFeatureDataSources.find((fda) => fda.id === featureDataId);
+  const urlStr: string = fds?.url ? fds.url.toString() : '';
 
-export function useBackgroundMmlmeriLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_meri', 'mml_meri');
-}
+  const [isError, setIsError] = useState(false);
+  const [dataUpdatedAt, setDataUpdatedAt] = useState<number>(0);
+  const [errorUpdatedAt, setErrorUpdatedAt] = useState<number>(0);
+  const isPaused = false;
+  const [ready, setReady] = useState(false);
+  const busterKey = featureDataId + '-buster';
+  const cacheBustingStatus = useStaticFeatureDataCacheBusting(featureDataId, busterKey, urlStr);
 
-export function useBackgroundMmljarviLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_jarvi', 'mml_jarvi');
-}
+  useEffect(() => {
+    if (cacheBustingStatus === 'done') {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (!['ready', 'loading'].includes(layer.get('status'))) {
+        layer.set('status', 'loading');
+        (async () => {
+          try {
+            get(featureDataId).then(async (data) => {
+              if (!data) {
+                const response = await axios.get(urlStr);
+                data = response.data;
+                setMany([
+                  [featureDataId, response.data],
+                  [busterKey, urlStr],
+                ]).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
+              }
+              const format = new GeoJSON();
+              const source = layer.getSource() as VectorSource;
+              source.clear();
+              const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+              source.addFeatures(features);
+              setDataUpdatedAt(Date.now());
+              layer.set('dataUpdatedAt', Date.now());
+              layer.set('status', 'ready');
+              setReady(true);
+            });
+          } catch (e) {
+            setIsError(true);
+            setErrorUpdatedAt(Date.now());
+          }
+        })();
+      }
+    }
+  }, [cacheBustingStatus, urlStr, dataProjection, featureLayerId, featureDataId, busterKey]);
 
-export function useBackgroundMmllaituritLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_laiturit', 'mml_laiturit');
-}
-
-export function useBackgroundBalticseaLayer(): DvkLayerState {
-  return useStaticDataLayer('balticsea', 'balticsea');
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useBoardLine12Layer() {
