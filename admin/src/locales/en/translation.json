@@ -156,9 +156,9 @@
     "vts-name": "Name",
     "vhf-name": "VHF channel name",
     "vhf-channel": "VHF channel number",
-    "add-section-vhf": "Add VHF channel",
     "tug-heading": "Tug",
-    "tug-name": "Tugboat name"
+    "tug-name": "Tugboat name",
+    "print-images": "Fairwaycard print"
   },
   "harbour": {
     "primary-id": "Harbour ID",
@@ -184,5 +184,89 @@
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "[en] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-draft-harbour_one": "[en] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
     "linked-fairwaycards-exist-cannot-draft-harbour_other": "[en] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
+  },
+  "homePage": {
+    "map": {
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "Zoom in",
+          "zoomOutTipLabel": "Zoom out"
+        },
+        "ownLocation": {
+          "tipLabel": "Center to own location"
+        },
+        "openMenu": {
+          "tipLabel": "Open menu"
+        },
+        "layer": {
+          "tipLabel": "Select layers",
+          "header": "Map layers",
+          "class1": "Merchant shipping",
+          "class2": "Other waterborne traffic",
+          "lines": "Navigation lines",
+          "fairwayAreas": "Fairway areas",
+          "depths": "Depths",
+          "safetyEquipments": "Navigational aids",
+          "speedLimits": "Speed limits",
+          "specialAreas": "Special areas",
+          "pilotPlaces": "Pilot boarding position",
+          "marineWarnings": "Navigational warnings",
+          "boardLines": "Leading lines",
+          "circles": "Turning circles",
+          "conditions": "Conditions",
+          "seaLevel": "Sea level",
+          "weatherStation": "Weather stations",
+          "ice": "Ice map",
+          "buoys": "Wave buoys",
+          "vts": "VTS",
+          "vtsline": "VTS areas",
+          "vtspoint": "VTS reporting points",
+          "general": "General",
+          "name": "Map names",
+          "depthinfo": "Depth information",
+          "soundingpoint": "Numbers",
+          "depthcontour": "Contours",
+          "deptharea": "Areas",
+          "specialarea2": "Anchoring areas",
+          "specialarea15": "Meeting and overtaking prohibition areas",
+          "mapStyle": {
+            "header": "Map style",
+            "landButtonLabel": "Land",
+            "seaButtonLabel": "Sea"
+          },
+          "legend": {
+            "icefree": "Ice free",
+            "newice": "New ice",
+            "thinice": "Thin level ice",
+            "fastice": "Fast ice",
+            "rottenice": "Rotten fast ice",
+            "openwater": "Open water",
+            "veryopenice": "Very open ice",
+            "openice": "Open ice",
+            "closeice": "Close ice",
+            "verycloseice": "Very close or compact ice",
+            "consolidatedice": "Consolidated ice",
+            "depth1": "Depth below 10m",
+            "depth2": "Depth 10 - 20m",
+            "depth3": "Depth over 20m",
+            "depth4": "Depth 0 - 3m",
+            "depth5": "Depth 3 - 6m",
+            "depth6": "Depth over 10m"
+          }
+        },
+        "mapDetails": {
+          "mousePositionLabel": "Mouse coordinates:"
+        },
+        "searchbar": {
+          "placeholder": "Search fairway by name",
+          "title": "Fairway search",
+          "clearTitle": "Clear",
+          "no-search-results": "Search '{{query}}' did not match any fairway"
+        },
+        "resetRotation": "Reset rotation",
+        "infoText": "Not for navigational use"
+      },
+      "numberFormat": "{{val, number}}"
+    }
   }
 }

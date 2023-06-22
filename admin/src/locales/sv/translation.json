@@ -157,7 +157,8 @@
     "vhf-name": "VHF-kanalens namn",
     "vhf-channel": "[sv] VHF-kanavan numero",
     "tug-heading": "Bogserbåt",
-    "tug-name": "Bogserbåt namn"
+    "tug-name": "Bogserbåt namn",
+    "print-images": "[sv] Väyläkortin tuloste"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
@@ -183,5 +184,89 @@
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-draft-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
     "linked-fairwaycards-exist-cannot-draft-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
+  },
+  "homePage": {
+    "map": {
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "Zooma in",
+          "zoomOutTipLabel": "Zooma ut"
+        },
+        "ownLocation": {
+          "tipLabel": "Centrera på din egen position"
+        },
+        "openMenu": {
+          "tipLabel": "Öppna meny"
+        },
+        "layer": {
+          "tipLabel": "Välj lager",
+          "header": "Kartlager",
+          "class1": "Handelssjöfart",
+          "class2": "Annan vattentrafik",
+          "lines": "Navigationslinjer",
+          "fairwayAreas": "Farledsområden",
+          "depths": "Djupen",
+          "safetyEquipments": "Säkerhetsanordningar",
+          "speedLimits": "Hastighetsbegränsningar",
+          "specialAreas": "Specialområden",
+          "pilotPlaces": "Lotsplatser",
+          "marineWarnings": "Navigationsvarningar",
+          "boardLines": "Enslinjer",
+          "circles": "Vändcirklar",
+          "conditions": "Förhållanden",
+          "seaLevel": "Vattenståndet",
+          "weatherStation": "Kustväderstationerna",
+          "ice": "Iskarta",
+          "buoys": "Vågbojar",
+          "vts": "VTS",
+          "vtsline": "VTS-områden",
+          "vtspoint": "VTS-trafikrapporteringspunkter",
+          "general": "Allmänt",
+          "name": "Kartnamn",
+          "depthinfo": "Djup information",
+          "soundingpoint": "Nummers",
+          "depthcontour": "Kurvor",
+          "deptharea": "Zoner",
+          "specialarea2": "Ankringsområden",
+          "specialarea15": "Områden med mötes- och omkörningsförbud",
+          "mapStyle": {
+            "header": "Kartans stil",
+            "landButtonLabel": "Fastland",
+            "seaButtonLabel": "Hav"
+          },
+          "legend": {
+            "icefree": "Isfritt",
+            "newice": "Nyis",
+            "thinice": "Tunn jämn is",
+            "fastice": "Fastis",
+            "rottenice": "Rutten fastis",
+            "openwater": "Öppet vatten",
+            "veryopenice": "Mycket spridd drivis",
+            "openice": "Spridd drivis",
+            "closeice": "Tät drivis",
+            "verycloseice": "Mycket tät / kompakt drivis",
+            "consolidatedice": "Sammanfrusen drivis",
+            "depth1": "Djup under 10m",
+            "depth2": "Djup 10 - 20m",
+            "depth3": "Djup över 20m",
+            "depth4": "Djup 0 - 3m",
+            "depth5": "Djup 3 - 6m",
+            "depth6": "Djup över 10m"
+          }
+        },
+        "mapDetails": {
+          "mousePositionLabel": "Kursorns koordinat:"
+        },
+        "searchbar": {
+          "placeholder": "Sök med farledsnamn",
+          "title": "Farledssökning",
+          "clearTitle": "Töm",
+          "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
+        },
+        "resetRotation": "Återställ kartriktning",
+        "infoText": "Ej för navigation"
+      },
+      "numberFormat": "{{val, number}}"
+    }
   }
 }
