@@ -21,9 +21,9 @@ Based on docker image https://github.com/ppodgorsek/docker-robot-framework. You 
 Use [setenv.sh](../cdk/bin/setenv.sh) script to set environment variables.
 ```
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com
-docker pull $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.1
+docker pull $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.2
 # DVK suite
-docker run --rm -v `pwd`:/opt/robotframework/reports:Z -v `pwd`:/opt/robotframework/tests:Z -e ROBOT_OPTIONS="-v BROWSER:chrome -s dvk" --network host $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.1
+docker run --rm -v `pwd`:/opt/robotframework/reports:Z -v `pwd`:/opt/robotframework/tests:Z -e ROBOT_OPTIONS="-v BROWSER:chrome -s dvk" --network host $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.2
 # Squat suite
-docker run --rm -v `pwd`:/opt/robotframework/reports:Z -v `pwd`:/opt/robotframework/tests:Z -e ROBOT_OPTIONS="-v BROWSER:chrome -s squat" --network host $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.1
+docker run --rm -v `pwd`:/opt/robotframework/reports:Z -v `pwd`:/opt/robotframework/tests:Z -e ROBOT_OPTIONS="-v BROWSER:chrome -s squat" --network host $AWS_ACCOUNT_ID.dkr.ecr.eu-west-1.amazonaws.com/dvk-robotimage:1.0.2
 ```
