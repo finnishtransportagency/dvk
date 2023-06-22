@@ -273,6 +273,7 @@ fragment FairwayCardParts on FairwayCard {
     orientation
     rotation
     harborId
+    modificationTimestamp
   }
 }
 

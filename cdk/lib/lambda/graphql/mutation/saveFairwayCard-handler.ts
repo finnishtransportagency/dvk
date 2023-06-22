@@ -118,6 +118,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           orientation: p.orientation,
           rotation: p.rotation ?? null,
           harborId: mapString(p.harborId, 200),
+          modificationTimestamp: p.modificationTimestamp ?? null,
         };
       }) ?? null,
   };

@@ -79,6 +79,7 @@ input PictureInput {
   orientation: Orientation!
   rotation: Float
   harborId: String
+  modificationTimestamp: Float
 }
 
 enum Orientation {
@@ -234,6 +235,7 @@ type Picture {
   orientation: Orientation!
   rotation: Float
   harborId: String
+  modificationTimestamp: Float
 }
 
 type TrafficService {
