@@ -16,12 +16,17 @@ export function getUrlParam(param: string) {
 
 (async () => {
   const paramLang = getUrlParam('lang');
-  if (paramLang === 'sv') {
-    await changeLanguage('sv');
+  if (paramLang === 'fi') {
+    await changeLanguage('fi', () => localStorage.setItem('dvkLang', 'fi'));
+  } else if (paramLang === 'sv') {
+    await changeLanguage('sv', () => localStorage.setItem('dvkLang', 'sv'));
   } else if (paramLang === 'en') {
-    await changeLanguage('en');
+    await changeLanguage('en', () => localStorage.setItem('dvkLang', 'en'));
   } else {
-    await changeLanguage('fi');
+    const storageLang = localStorage.getItem('dvkLang');
+    if (storageLang) {
+      await changeLanguage(storageLang);
+    }
   }
 
   i18next.on('languageChanged', (lang: string) => {
