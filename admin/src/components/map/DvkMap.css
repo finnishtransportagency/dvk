@@ -1,0 +1,406 @@
+.dvkMap {
+  width: 100%;
+  min-width: 890px;
+  height: 100%;
+  min-height: 892px;
+  background: #cccccc;
+}
+
+.ios .dvkMap .ol-layers {
+  z-index: -1 !important;
+}
+
+.dvkMap .maskTopLeft {
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-bottom: 2px solid var(--ion-color-medium);
+  border-right: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskTop {
+  top: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-bottom: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskTopRight {
+  top: 0;
+  right: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-bottom: 2px solid var(--ion-color-medium);
+  border-left: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskBottomLeft {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-top: 2px solid var(--ion-color-medium);
+  border-right: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskBottom {
+  bottom: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-top: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskBottomRight {
+  bottom: 0;
+  right: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-top: 2px solid var(--ion-color-medium);
+  border-left: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskLeft {
+  left: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-right: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.dvkMap .maskRight {
+  right: 0;
+  position: absolute;
+  background-color: var(--ion-color-primary-contrast);
+  border-left: 2px solid var(--ion-color-medium);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.dvkMap.portrait .maskTopLeft {
+  width: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskTop {
+  left: calc((100% - 643px) / 2);
+  right: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskTopRight {
+  width: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskBottomLeft {
+  width: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskBottom {
+  left: calc((100% - 643px) / 2);
+  right: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskBottomRight {
+  width: calc((100% - 643px) / 2);
+  height: 25px;
+}
+.dvkMap.portrait .maskLeft {
+  top: 25px;
+  bottom: 25px;
+  width: calc((100% - 643px) / 2);
+}
+.dvkMap.portrait .maskRight {
+  top: 25px;
+  bottom: 25px;
+  width: calc((100% - 643px) / 2);
+}
+
+.dvkMap.landscape .maskTopLeft {
+  width: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskTop {
+  left: 24px;
+  right: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskTopRight {
+  width: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskBottomLeft {
+  width: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskBottom {
+  left: 24px;
+  right: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskBottomRight {
+  width: 24px;
+  height: calc((100% - 643px) / 2);
+}
+.dvkMap.landscape .maskLeft {
+  top: calc((100% - 643px) / 2);
+  bottom: calc((100% - 643px) / 2);
+  width: 24px;
+}
+.dvkMap.landscape .maskRight {
+  top: calc((100% - 643px) / 2);
+  bottom: calc((100% - 643px) / 2);
+  width: 24px;
+}
+
+.dvkMap .ol-zoom {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 24px;
+  background: transparent;
+}
+
+.dvkMap.mobile .ol-zoom {
+  display: none;
+}
+
+.dvkMap .centerToOwnLocationControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 136px;
+  background: transparent;
+}
+
+.dvkMap.mobile .centerToOwnLocationControlContainer {
+  top: auto;
+  left: auto;
+  right: 16px;
+  bottom: 48px;
+  background: transparent;
+}
+
+.dvkMap .openSidebarMenuControlContainer {
+  left: 48px;
+  top: 48px;
+  background: transparent;
+}
+.dvkMap.mobile .openSidebarMenuControlContainer {
+  left: 16px;
+  top: 24px;
+}
+
+.dvkMap .layerControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 192px;
+  background: transparent;
+}
+
+.dvkMap.mobile .layerControlContainer {
+  top: auto;
+  left: auto;
+  right: 16px;
+  bottom: 104px;
+  background: transparent;
+}
+
+.dvkMap .takeScreenshotControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 248px;
+  background: transparent;
+}
+
+.dvkMap .selectPortraitControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 360px;
+  background: transparent;
+}
+
+.dvkMap .selectLandscapeControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 304px;
+  background: transparent;
+}
+
+.dvkMap .ol-control > button {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ion-color-primary);
+  background-color: var(--ion-color-primary-contrast);
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+}
+
+.dvkMap .ol-zoom-in {
+  background-image: url('../../theme/img/zoomIn.svg');
+  background-size: 18px 18px;
+  margin-bottom: 16px;
+}
+.dvkMap .ol-control > button.ol-zoom-out {
+  background-image: url('../../theme/img/zoomOut.svg');
+  background-size: 18px 4px;
+}
+.dvkMap .centerToOwnLocationControl {
+  background-image: url('../../theme/img/ownLocation.svg');
+  background-size: 26px 26px;
+}
+.dvkMap .openSidebarMenuControl {
+  background-image: url('../../theme/img/menu.svg');
+  background-size: 22px 15px;
+}
+.dvkMap .layerControl {
+  background-image: url('../../theme/img/layers.svg');
+  background-size: 22px 22px;
+}
+.dvkMap .ol-control .layerControlOpen {
+  background-color: var(--ion-color-primary);
+  background-image: url('../../theme/img/layersOpen.svg');
+  background-size: 22px 22px;
+}
+.dvkMap .takeScreenshotControl {
+  background-image: url('../../theme/img/take_screenshot_icon.svg');
+}
+.dvkMap .selectPortraitControl {
+  background-image: url('../../theme/img/crop_portrait_icon.svg');
+}
+.dvkMap .selectLandscapeControl {
+  background-image: url('../../theme/img/crop_landscape_icon.svg');
+}
+.dvkMap .ol-control > button:hover {
+  background-color: var(--ion-color-lighter);
+  outline: none;
+}
+.dvkMap .ol-control > button:focus {
+  outline: none;
+}
+.dvkMap .ol-control > button:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 1px;
+}
+.dvkMap .ol-control > button:focus-visible:hover {
+  outline: 2px solid var(--ion-color-primary-shade);
+}
+.dvkMap .ol-control > button:disabled {
+  opacity: 0.5;
+  background-color: var(--ion-color-primary-contrast);
+}
+
+.dvkMap .mapDetailsControl {
+  top: auto;
+  left: auto;
+  right: 0px;
+  bottom: 0px;
+  font-size: 10px;
+  color: var(--ion-color-dark);
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 0;
+  padding: 2px 16px;
+}
+
+.dvkMap.mobile .mapDetailsControl {
+  width: 100%;
+}
+
+.dvkMap .mapDetailsControl .ol-mouse-position {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: 0px;
+  padding-left: 5px;
+  padding-right: 10px;
+  background: none;
+  min-width: 14em;
+}
+
+.dvkMap .mapDetailsControl .ol-scale-line {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: 0px;
+  background: none;
+}
+
+.dvkMap.mobile .mapDetailsControl .ol-scale-line {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dvkMap .ol-rotate {
+  bottom: 24px;
+  left: 24px;
+  top: auto;
+  right: auto;
+  background: none;
+}
+
+.dvkMap.mobile .ol-rotate {
+  left: 16px;
+}
+
+.dvkMap .ol-rotate > button {
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  background: none;
+  box-shadow: none;
+}
+.dvkMap .ol-rotate > button img {
+  height: 34px;
+  transition: all 50ms;
+}
+.dvkMap .ol-rotate > button:hover {
+  background-color: transparent;
+  outline: none;
+}
+.dvkMap .ol-rotate > button:hover img {
+  height: 42px;
+}
+
+.dvkMap.mobile .ol-rotate > button {
+  width: 22px;
+  height: 22px;
+}
+.dvkMap.mobile .ol-rotate > button img {
+  height: 22px;
+}
+.dvkMap.mobile .ol-rotate > button:hover img {
+  height: 28px;
+}
+
+.dvkMap .infoTextControl {
+  position: absolute;
+  bottom: calc(24px + ((34px - 16px) / 2));
+  left: calc(24px + 34px + 6px);
+  font-size: 12px;
+  line-height: 1rem;
+  color: var(--ion-color-dark);
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  font-style: italic;
+}
+
+.dvkMap.mobile .infoTextControl {
+  bottom: calc(24px + ((22px - 16px) / 2));
+  left: calc(16px + 22px + 4px);
+  font-size: 10px;
+}
