@@ -26,11 +26,11 @@ const datasourceClient = {
 };
 
 export function useCurrentUserQueryData() {
-  return useCurrentUserQuery(datasourceClient);
+  return useCurrentUserQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardsAndHarborsQueryData() {
-  return useFairwayCardsAndHarborsQuery(datasourceClient);
+  return useFairwayCardsAndHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
@@ -38,15 +38,15 @@ export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: b
 }
 
 export function useFairwaysQueryData() {
-  return useFairwaysQuery(datasourceClient);
+  return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardsQueryData() {
-  return useFairwayCardsQuery(datasourceClient);
+  return useFairwayCardsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useHarboursQueryData() {
-  return useHarborsQuery(datasourceClient);
+  return useHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
@@ -54,7 +54,7 @@ export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boole
 }
 
 export function usePilotPlacesQueryData() {
-  return usePilotPlacesQuery(datasourceClient);
+  return usePilotPlacesQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(
