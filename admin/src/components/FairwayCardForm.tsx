@@ -19,6 +19,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
+import MapExportTool from './MapExportTool';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -39,6 +40,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harbourSelection = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem && item.status === Status.Public);
+  const harbourSelectionFiltered = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
@@ -758,6 +760,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               validationErrors={validationErrors}
               disabled={fairwayCard.status === Status.Removed}
             />
+
+            <IonText>
+              <h2>{t('fairwaycard.print-images')}</h2>
+            </IonText>
+            <MapExportTool fairwayCardInput={state} fairways={fairwaySelection} harbours={harbourSelectionFiltered} />
           </form>
         )}
       </IonContent>
