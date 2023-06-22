@@ -460,7 +460,7 @@ type NavigationLine {
   additionalInformation: String
   type: String
   typeCode: String
-  geometry: GeometryLine!
+  geometry: GeometryLine
   fairways: [NavigationLineFairway!]
 }
 
