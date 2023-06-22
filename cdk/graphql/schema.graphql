@@ -75,7 +75,7 @@ input FairwayCardInput {
 
 input PictureInput {
   id: String!
-  sequenceNumber: Int!
+  sequenceNumber: Int
   orientation: Orientation!
 }
 
@@ -228,7 +228,7 @@ type FairwayCard {
 
 type Picture {
   id: String!
-  sequenceNumber: Int!
+  sequenceNumber: Int
   orientation: Orientation!
 }
 

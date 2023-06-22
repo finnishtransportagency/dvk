@@ -72,7 +72,7 @@ type FairwayCardByFairwayIdIndex = {
 
 export type Picture = {
   id: string;
-  sequenceNumber: number;
+  sequenceNumber?: Maybe<number>;
   orientation: Orientation;
 };
 
