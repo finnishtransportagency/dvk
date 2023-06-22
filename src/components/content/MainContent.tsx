@@ -277,7 +277,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     </IonCol>
                   </IonRow>
                 </IonGrid>
-                <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt="Väylävirasto" />
+                <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
 
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}

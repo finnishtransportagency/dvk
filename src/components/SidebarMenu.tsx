@@ -108,7 +108,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
               <IonGrid className="contentGrid ion-no-padding">
                 <IonRow className="header ion-align-items-end">
                   <IonCol>
-                    <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt="Väylävirasto" />
+                    <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
                   </IonCol>
                   <IonCol size="auto">
                     <IonButton

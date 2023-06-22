@@ -118,7 +118,7 @@ const PageHeader: React.FC = () => {
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-align-items-center">
           <IonCol size="auto">
-            <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt="Väylävirasto" />
+            <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('header.logo')} />
           </IonCol>
           <IonCol>
             <IonText>

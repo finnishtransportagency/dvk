@@ -278,7 +278,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
             </IonCol>
           </IonRow>
         </IonGrid>
-        <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt="Väylävirasto" />
+        <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
 
         {fairwayCardId && <FairwayCard id={fairwayCardId} />}
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
