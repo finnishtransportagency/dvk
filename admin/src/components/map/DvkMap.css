@@ -288,9 +288,24 @@
 .dvkMap .selectPortraitControl {
   background-image: url('../../theme/img/crop_portrait_icon.svg');
 }
+.dvkMap.portrait .selectPortraitControl {
+  background-image: url('../../theme/img/crop_portrait_icon_selected.svg');
+  background-color: var(--ion-color-primary);
+}
+.dvkMap.portrait .ol-control > button.selectPortraitControl:hover {
+  background-color: var(--ion-color-primary-shade);
+}
 .dvkMap .selectLandscapeControl {
   background-image: url('../../theme/img/crop_landscape_icon.svg');
 }
+.dvkMap.landscape .selectLandscapeControl {
+  background-image: url('../../theme/img/crop_landscape_icon_selected.svg');
+  background-color: var(--ion-color-primary);
+}
+.dvkMap.landscape .ol-control > button.selectLandscapeControl:hover {
+  background-color: var(--ion-color-primary-shade);
+}
+
 .dvkMap .ol-control > button:hover {
   background-color: var(--ion-color-lighter);
   outline: none;
