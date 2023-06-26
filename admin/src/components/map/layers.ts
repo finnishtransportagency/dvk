@@ -514,6 +514,22 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'fairwaywidth', 30, 20, getFairwayWidthStyle, undefined, 1, true, 314);
 }
 
+function getFittingPadding() {
+  const dvkMap = getMap();
+  const fitPadding = [100, 50, 50, 50];
+  const size = dvkMap.olMap?.getSize() || [0, 0];
+  const orientationType = dvkMap.getOrientationType();
+  if (size[0] && orientationType === 'portrait') {
+    fitPadding[1] = (size[0] - 643) / 2 + 25;
+    fitPadding[3] = (size[0] - 643) / 2 + 25;
+  }
+  if (size[1] && orientationType === 'landscape') {
+    fitPadding[0] = (size[0] - 643) / 2 + 75;
+    fitPadding[2] = (size[0] - 643) / 2 + 25;
+  }
+  return fitPadding;
+}
+
 export function fitSelectedFairwayCardOnMap() {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
@@ -528,7 +544,7 @@ export function fitSelectedFairwayCardOnMap() {
     }
   }
   if (!olExtent.isEmpty(extent)) {
-    dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+    dvkMap.olMap?.getView().fit(extent, { padding: getFittingPadding(), duration: 1000 });
   }
 }
 
@@ -743,7 +759,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
     if (!olExtent.isEmpty(extent)) {
-      dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+      dvkMap.olMap?.getView().fit(extent, { padding: getFittingPadding(), duration: 1000 });
     }
   }
 }
