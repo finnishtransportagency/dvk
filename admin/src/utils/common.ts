@@ -1,5 +1,5 @@
-import { FairwayCardOrHarbor, FairwayCardPartsFragment } from '../graphql/generated';
-import { ItemType, Lang, FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FairwayCardOrHarbor } from '../graphql/generated';
+import { ItemType, Lang, FeatureDataLayerId } from './constants';
 
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,

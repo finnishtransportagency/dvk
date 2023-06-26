@@ -263,23 +263,6 @@ export const MAP: MapType = {
   ],
 };
 
-export const MINIMUM_QUERYLENGTH = 3;
-export const MAX_HITS = 20;
-
-export const N2000_URLS = {
-  fi: 'www.traficom.fi/fi/liikenne/merenkulku/n2000-vayla-ja-merikarttauudistus',
-  sv: 'www.traficom.fi/sv/transport/sjofart/farleds-och-sjokortsreformen-n2000',
-  en: 'www.traficom.fi/en/transport/maritime/n2000-fairway-and-nautical-chart-reform-improved',
-};
-
-export const MASTERSGUIDE_URLS = {
-  fi: 'www.fintraffic.fi/fi/vts/masters-guide',
-  sv: 'www.fintraffic.fi/sv/vts/masters-guide',
-  en: 'www.fintraffic.fi/en/vts/masters-guide',
-};
-
-export const PILOTORDER_URL = 'www.pilotonline.fi';
-
 export const OFFLINE_STORAGE = {
   name: 'DVK-admin',
   storeName: 'react-query-data',
