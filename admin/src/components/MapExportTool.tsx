@@ -34,6 +34,7 @@ import MapOverlays from './map/mapOverlays/MapOverlays';
 import { Fairway, FairwayCardInput, Harbor } from '../graphql/generated';
 import { setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
+import './MapExportTool.css';
 
 interface MapProps {
   fairwayCardInput: FairwayCardInput;
@@ -156,7 +157,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   }, [fairwayCardInput, fairways, harbours]);
 
   return (
-    <IonGrid className="ion-no-padding">
+    <IonGrid className="mapExportTool">
       <IonRow>
         <IonCol>
           <MapOverlays />

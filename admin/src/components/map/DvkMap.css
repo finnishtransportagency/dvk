@@ -10,6 +10,13 @@
   z-index: -1 !important;
 }
 
+.dvkMap .mapMaskControlContainer > div {
+  display: none;
+}
+.dvkMap.portrait .mapMaskControlContainer > div,
+.dvkMap.landscape .mapMaskControlContainer > div {
+  display: block;
+}
 .dvkMap .maskTopLeft {
   top: 0;
   left: 0;
