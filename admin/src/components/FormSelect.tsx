@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
-import { PilotPlace, Text } from '../graphql/generated';
+import { GeometryPoint, PilotPlace, Text } from '../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 
 interface SelectChangeEventDetail<ValueType> {
@@ -12,6 +12,7 @@ interface SelectChangeEventDetail<ValueType> {
 interface SelectOption {
   id: number | string | boolean;
   name?: Text | null;
+  geometry?: GeometryPoint | null;
 }
 
 interface SelectProps {
@@ -29,6 +30,7 @@ interface SelectProps {
   error?: string;
   compareObjects?: boolean;
   isLoading?: boolean;
+  showCoords?: boolean;
 }
 
 const FormSelect: React.FC<SelectProps> = ({
@@ -46,6 +48,7 @@ const FormSelect: React.FC<SelectProps> = ({
   error,
   compareObjects,
   isLoading,
+  showCoords,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
@@ -137,8 +140,8 @@ const FormSelect: React.FC<SelectProps> = ({
             >
               {sortedOptions?.map((item) => {
                 const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                const coordinates = (item as PilotPlace).geometry?.coordinates;
-                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
+                const coordinates = item.geometry?.coordinates;
+                const additionalLabel = coordinates && showCoords ? [coordinates[1], coordinates[0]].join(', ') : '';
                 return (
                   <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
                     {showId ? '[' + item.id + '] ' : ''}

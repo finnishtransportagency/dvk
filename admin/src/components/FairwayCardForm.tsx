@@ -718,6 +718,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     compareObjects
                     isLoading={isLoadingPilotPlaces}
                     disabled={fairwayCard.status === Status.Removed}
+                    showCoords
                   />
                 </IonCol>
                 {state.trafficService?.pilot?.places?.map((place) => {
