@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../../utils/constants';
-import { refreshPrintableMap } from '../../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../../graphql/generated';
@@ -101,7 +100,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       layer.setVisible(layers.includes(dataLayer.id));
     });
-    setTimeout(refreshPrintableMap, 100);
   }, [layers, dvkMap]);
 
   return (
