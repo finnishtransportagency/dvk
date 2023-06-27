@@ -92,6 +92,12 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'saveHarbor',
     useVpc: false,
   },
+  {
+    entry: path.join(__dirname, 'mutation/uploadPicture-handler.ts'),
+    typeName: 'Mutation',
+    fieldName: 'uploadPicture',
+    useVpc: false,
+  },
 ];
 
 export default lambdaFunctions;

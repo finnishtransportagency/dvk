@@ -47,8 +47,8 @@ const SelectField: React.FC<SelectProps> = (props) => {
     <>
       <Label title={props.title} required={props.required} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
-      <IonItem fill="outline" className={props.fieldClass}>
-        <IonSelect value={props.value} name={props.name} onIonChange={handleChange} className="full-width">
+      <IonItem className={props.fieldClass}>
+        <IonSelect value={props.value} name={props.name} onIonChange={handleChange} className="full-width" fill="outline">
           {props.options.map((option) => (
             <IonSelectOption key={option.id} value={option}>
               {props.translateOptions ? t(option.name) : option.name}

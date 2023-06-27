@@ -2,7 +2,7 @@ import { Construct } from 'constructs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import { CfnOutput, Duration, Stack, Tags } from 'aws-cdk-lib';
+import { CfnOutput, Duration, Stack } from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as cdk from 'aws-cdk-lib';
@@ -27,6 +27,7 @@ import Config from './config';
 import * as fs from 'fs';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { SSMParameterReader } from './ssm-parameter-reader';
+import { getNewStaticBucketName } from './lambda/environment';
 
 interface SquatSiteProps {
   domainName: string;
@@ -99,23 +100,6 @@ export class SquatSite extends Construct {
       description: 'The name of DVK app S3',
       exportName: 'DVKBucket' + props.env,
     });
-
-    const staticBucket = new s3.Bucket(this, 'StaticBucket', {
-      bucketName: `static.${siteDomain}`,
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-      encryption: BucketEncryption.S3_MANAGED,
-      versioned: true,
-      ...s3DeletePolicy,
-    });
-    staticBucket.addToResourcePolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: [staticBucket.arnForObjects('*')],
-        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
-      })
-    );
-    Tags.of(staticBucket).add('Backups-' + Config.getEnvironment(), 'true');
 
     const adminBucket = new s3.Bucket(this, 'AdminSiteBucket', {
       bucketName: `admin.${siteDomain}`,
@@ -277,8 +261,12 @@ export class SquatSite extends Construct {
     const staticCfFunction = new cloudfront.Function(this, 'StaticRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(staticFunctionCode),
     });
+    const staticBucket = s3.Bucket.fromBucketName(this, 'NewStaticBucket', getNewStaticBucketName());
+    const originAccessIdentityId = cdk.Fn.importValue('OriginAccessIdentityId' + props.env);
     const staticBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(staticBucket, { originAccessIdentity: cloudfrontOAI }),
+      origin: new cloudfront_origins.S3Origin(staticBucket, {
+        originAccessIdentity: cloudfront.OriginAccessIdentity.fromOriginAccessIdentityId(this, 'StaticOAI', originAccessIdentityId),
+      }),
       originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
       responseHeadersPolicy: Config.isDeveloperOrDevEnvironment() ? corsResponsePolicy : strictTransportSecurityResponsePolicy,
       compress: true,

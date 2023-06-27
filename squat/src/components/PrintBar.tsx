@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonTextarea, IonToast } from '@ionic/react';
 import { checkmarkCircleOutline, clipboardOutline } from 'ionicons/icons';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { copyToClipboard, createShareableLink } from '../utils/helpers';
@@ -12,10 +12,21 @@ const PrintBar: React.FC = () => {
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
+  const inputRef = useRef<HTMLIonTextareaElement>(null);
+  const selectText = useCallback(() => {
+    inputRef.current
+      ?.getInputElement()
+      .then((textarea) => (textarea ? textarea.select() : null))
+      .catch((err) => {
+        console.error(err.message);
+      });
+  }, []);
+
   const handleCopyClick = useCallback(() => {
     copyToClipboard(createShareableLink(state, true));
+    selectText();
     setShowCopyToast(true);
-  }, [state]);
+  }, [state, selectText]);
 
   const handlePrintClick = useCallback(() => {
     window.print();
@@ -35,13 +46,20 @@ const PrintBar: React.FC = () => {
               content={
                 <>
                   <p>{t('header.shareable-link-body')}</p>
-                  <IonItem lines="none">
-                    <IonItem fill="outline" lines="none">
-                      <IonTextarea value={createShareableLink(state, true)} autoGrow readonly className="small-text" />
-                    </IonItem>
+                  <IonItem lines="none" className="readonly-wrapper">
+                    <IonTextarea
+                      value={createShareableLink(state, true)}
+                      autoGrow
+                      readonly
+                      rows={1}
+                      onIonFocus={selectText}
+                      className="small-text"
+                      fill="outline"
+                      ref={inputRef}
+                    />
                     <IonButton
                       fill="clear"
-                      className="icon-only"
+                      className="icon-only large no-background-focused"
                       onClick={handleCopyClick}
                       id="hover-trigger_"
                       title={t('header.copy-to-clipboard')}
@@ -62,12 +80,14 @@ const PrintBar: React.FC = () => {
               }
               trigger={<IonIcon src="assets/share_icon.svg" size="medium" />}
               triggerTitle={t('header.shareable-link-title')}
+              triggerClassName="large"
+              handleDismiss={handleToastDismiss}
             />
           </IonCol>
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only"
+              className="icon-only large no-background-focused"
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
