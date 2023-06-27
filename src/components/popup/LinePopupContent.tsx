@@ -75,7 +75,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
           <IonRow>
             <IonCol>
-              <em>{showN2000HeightSystem ? line.properties.n2000ReferenceLevel : line.properties.referenceLevel}</em>
+              <em>
+                {showN2000HeightSystem ? line.properties.n2000ReferenceLevel ?? line.properties.referenceLevel : line.properties.referenceLevel}
+              </em>
             </IonCol>
           </IonRow>
         )}

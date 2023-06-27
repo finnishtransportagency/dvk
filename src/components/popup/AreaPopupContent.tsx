@@ -87,7 +87,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
             <IonCol>
-              <em>{showN2000HeightSystem ? area.properties.n2000ReferenceLevel : area.properties.referenceLevel}</em>
+              <em>
+                {showN2000HeightSystem ? area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel : area.properties.referenceLevel}
+              </em>
             </IonCol>
           </IonRow>
         )}
