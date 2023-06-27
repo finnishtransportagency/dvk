@@ -268,6 +268,9 @@
     "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen."
   },
   "popup": {
+    "common": {
+      "noFairwayCards": "Inget farledskort"
+    },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
       "coordinates": "Koordinater",
@@ -287,12 +290,12 @@
     },
     "area": {
       "info": "Farledsområdets uppgifter",
-      "overtake": " Farledsområdet har ett kontinuerligt omkörningsförbud.",
+      "overtake": "Farledsområdet har ett kontinuerligt omkörningsförbud.",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerande djup {{val, number}}",
-      "speedLimit": " Hastighetsbegränsning {{val}}",
+      "speedLimit": "Hastighetsbegränsning {{val}}",
       "speed": "Dimensionerande hastighet",
-      "fairways": " Farledsområdet är en del av farledskortet",
+      "fairways": "Farledsområdet är en del av farledskortet",
       "extra": "Tilläggsuppgift",
       "prohibitionText": "Se noggrannare VTS Master's Guide"
     },
