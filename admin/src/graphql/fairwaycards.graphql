@@ -282,9 +282,3 @@ fragment FairwayCardParts on FairwayCard {
     ...HarborParts
   }
 }
-
-query findAllFairwayCards($status: [Status!]) {
-  fairwayCards(status: $status) {
-    ...FairwayCardParts
-  }
-}
