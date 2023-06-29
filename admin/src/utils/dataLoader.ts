@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
-import { Status, useFindAllFairwayCardsQuery } from '../graphql/generated';
 
 export function useFeatureData(
   featureDataId: FeatureDataId,
@@ -40,17 +39,4 @@ export function useStaticFeatureData(
   refetchInterval: number | false = false
 ) {
   return useFeatureData(featureDataId, refetchOnMount, refetchInterval, OFFLINE_STORAGE.staleTimeStatic, OFFLINE_STORAGE.cacheTimeStatic);
-}
-
-const datasourceClient = {
-  endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql',
-  fetchParams: {
-    headers: {
-      'x-api-key': process.env.REACT_APP_API_KEY || 'key missing',
-    },
-  },
-};
-
-export function useFairwayCardListData() {
-  return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] }, { refetchOnWindowFocus: false });
 }

@@ -40,10 +40,6 @@ export const filterItemList = (
   );
 };
 
-export const refreshPrintableMap = () => {
-  console.log('DEPRECATED');
-};
-
 export function getDuration(dataUpdatedAt: number, decimals = 1) {
   const power = Math.pow(10, decimals);
   const now = Date.now(); // for testing warning vs danger + 1000 * 60 * 60 * 11;
