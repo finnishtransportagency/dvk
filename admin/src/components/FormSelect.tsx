@@ -151,8 +151,8 @@ const FormSelect: React.FC<SelectProps> = ({
               })}
             </IonSelect>
           </IonItem>
-          {getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getErrorText()}</IonNote>
+          {getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
         </>
       )}
     </div>

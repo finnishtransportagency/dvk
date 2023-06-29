@@ -344,6 +344,9 @@ ion-item.selectInput.ion-focused ion-select::part(icon) {
   font-size: 12px;
   line-height: 1rem;
 }
+.selectWrapper.invalid ion-note.helper {
+  font-style: italic;
+}
 .selectWrapper ion-note.input-error {
   display: none;
   color: var(--ion-color-danger);
