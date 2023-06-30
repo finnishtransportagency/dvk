@@ -126,7 +126,9 @@
     "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
     "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu.",
     "help-title-PORTRAIT": "Väyläkortin pystytulosteiden asettaminen",
-    "help-title-LANDSCAPE": "Väyläkortin vaakatulosteiden asettaminen"
+    "help-title-LANDSCAPE": "Väyläkortin vaakatulosteiden asettaminen",
+    "help-title-picture-PORTRAIT": "Väyläkortin pystytulosteen esikatselu",
+    "help-title-picture-LANDSCAPE": "Väyläkortin vaakatulosteen esikatselu"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
@@ -172,7 +174,9 @@
     "print-images-info-select-LANDSCAPE": "Vaakatila päälle kartalla.",
     "print-images-info-position-map": "Siirrä kartta haluaamasi kohtaan.",
     "print-images-info-take-image": "Ota kuva tulostusalueesta",
-    "print-images-info-set-image-button": "Aseta kuva -painikkeella."
+    "print-images-info-set-image-button": "Aseta kuva -painikkeella.",
+    "print-images-modified": "Kuva luotu",
+    "notForNavigation": "Ei navigointikäyttöön"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
