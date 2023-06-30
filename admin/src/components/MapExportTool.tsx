@@ -286,6 +286,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   });
 
   const uploadPicture = (base64Data: string, orientation: Orientation, rotation: number, scaleWidth?: string, scaleLabel?: string) => {
+    // TODO: Set also scaleWidth and scaleLabel
+    console.log('TODO: Set also scale variables: ', scaleWidth, scaleLabel);
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
       cardId: fairwayCardInput.id,

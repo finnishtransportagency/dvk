@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonImg, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useRef } from 'react';
+import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import { Orientation } from '../graphql/generated';
