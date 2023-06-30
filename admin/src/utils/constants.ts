@@ -17,7 +17,7 @@ export type ErrorMessageType = {
 };
 export const ErrorMessageKeys = { required: 'general.required-field', duplicateId: 'fairwaycard.error-duplicate-id' } as ErrorMessageType;
 
-export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput;
+export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
 
 export type HarbourActionType =
   | 'name'

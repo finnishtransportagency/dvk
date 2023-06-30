@@ -158,6 +158,12 @@ ion-button.icon-only.small {
 }
 ion-button.icon-only.x-small {
   --box-shadow: none;
+  height: 24px;
+  width: 24px;
+  vertical-align: top;
+}
+ion-button.icon-only.xx-small {
+  --box-shadow: none;
   height: 16px;
   width: 16px;
   vertical-align: top;
@@ -803,26 +809,71 @@ ion-modal ion-button.button-disabled {
 }
 
 /* Map export tool */
-.mapExportTool ion-grid.print-images {
-  padding: 5px 0;
-}
-.mapExportTool .portraits img,
-.mapExportTool .portraits ion-skeleton-text {
-  width: 143px;
-  height: 202px;
-}
-.mapExportTool .landscapes img,
-.mapExportTool .landscapes ion-skeleton-text {
-  width: 202px;
-  height: 143px;
-}
-
-.mapExportTool h4 ion-button.x-small {
+.mapExportTool h4 ion-button.icon-only {
   vertical-align: sub;
   margin-left: 4px;
 }
 .mapExportTool h4 ion-button:disabled {
   opacity: 0.5;
+}
+
+.mapExportTool ion-grid.print-images {
+  padding: 5px 0;
+}
+.mapExportTool ion-grid.print-images p {
+  font-size: 12px;
+}
+.mapExportTool ion-grid.print-images a.imageWrapper {
+  position: relative;
+  display: inline-block;
+}
+.mapExportTool ion-grid.print-images a.imageWrapper:not(.selected) img {
+  filter: grayscale(1);
+}
+.mapExportTool ion-grid.print-images a.imageWrapper:hover img {
+  filter: brightness(1.04);
+}
+.mapExportTool ion-grid.print-images a.imageWrapper:not(.selected):hover img {
+  filter: grayscale(1) brightness(1.04);
+}
+.mapExportTool ion-grid.print-images a.imageWrapper:focus-visible {
+  outline: 2px solid var(--ion-color-primary);
+  outline-offset: 0;
+}
+.mapExportTool .portraits img,
+.mapExportTool .portraits ion-skeleton-text {
+  width: 143px;
+  height: 202px;
+  vertical-align: top;
+  margin: 0;
+}
+.mapExportTool .landscapes img,
+.mapExportTool .landscapes ion-skeleton-text {
+  width: 202px;
+  height: 143px;
+  vertical-align: top;
+  margin: 0;
+}
+.mapExportTool ion-grid.print-images ion-button.sequenceButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  --background: transparent;
+  --color: transparent;
+  --border-color: var(--ion-color-primary);
+  --border-style: solid;
+  --border-width: 1px;
+}
+.mapExportTool ion-grid.print-images ion-button.sequenceButton.selected {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+}
+.mapExportTool ion-grid.print-images ion-button.deletePicture {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 
 ion-grid.printInfo {
@@ -872,4 +923,71 @@ ion-grid.printInfo ol span.icon.orientation-LANDSCAPE {
 }
 ion-grid.printInfo ol span.icon.takeScreenshot {
   background-image: url('./img/take_screenshot_icon.svg');
+}
+
+ion-modal.image {
+  --max-height: 90%;
+  --max-width: 95%;
+}
+ion-modal.image.PORTRAIT {
+  --width: 645px;
+  --height: 1060px;
+}
+ion-modal.image.LANDSCAPE {
+  --width: 880px;
+  --height: 820px;
+}
+ion-modal.image ion-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+ion-modal.image ion-content .imageWrapper img {
+  vertical-align: top;
+}
+
+.mapLegend {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+}
+.mapLegend .bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--ion-color-primary-contrast);
+  opacity: 0.25;
+}
+.mapLegend .compassInfo {
+  padding: 4px;
+  width: auto;
+}
+.mapLegend .cardInfo {
+  padding: 4px 8px;
+}
+.mapLegend .cardInfo h3 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5rem;
+  font-weight: bold;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+.mapLegend .cardInfo em {
+  font-size: 12px;
+  line-height: 1rem;
+  display: block;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+.mapLegend .cardInfo em.danger {
+  color: var(--ion-color-danger);
+}
+.mapLegend .mapScale {
+  border: 1px solid var(--ion-color-dark);
+  border-top: none;
+  color: var(--ion-color-dark);
+  font-size: 10px;
+  line-height: 1rem;
+  text-align: center;
+  margin: 6px auto 0 0;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  transition: all 0.25s;
 }

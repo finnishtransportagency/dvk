@@ -38,8 +38,10 @@ import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
+import ImageModal from './ImageModal';
 import infoIcon from '../theme/img/info-circle-solid.svg';
 import helpIcon from '../theme/img/help_icon.svg';
+import binIcon from '../theme/img/bin.svg';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -73,12 +75,12 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
   );
 };
 
-interface ExtButtonProps {
+interface ExtMapControlProps {
   printCurrentMapView: () => void;
   printDisabled?: boolean;
 }
 
-const ExtButtons: React.FC<ExtButtonProps> = ({ printCurrentMapView, printDisabled }) => {
+const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>();
@@ -133,12 +135,236 @@ const ExtButtons: React.FC<ExtButtonProps> = ({ printCurrentMapView, printDisabl
   );
 };
 
+interface PrintImageProps {
+  fairwayCardInput: FairwayCardInput;
+  setPicture: (
+    val: PictureInput[],
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => void;
+  isLoading?: boolean;
+}
+
+const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading }) => {
+  const { t } = useTranslation();
+  const dvkMap = getMap();
+  const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
+  const [showPicture, setShowPicture] = useState<PictureInput | ''>('');
+
+  const savedPicturesPortrait = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Portrait);
+  const savedPicturesLandscape = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Landscape);
+
+  const toggleSequence = (picture: PictureInput, orientation: Orientation) => {
+    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation);
+    const currentOtherPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation !== orientation) ?? [];
+    // Check if we need to add or remove the picture from sequence
+    let newSequencedPictures: PictureInput[] = [];
+    const currentSequenceNumber = picture.sequenceNumber;
+    if (currentSequenceNumber) {
+      newSequencedPictures =
+        currentPicturesByOrientation?.map((pic) => {
+          if (pic.id === picture.id) {
+            pic.sequenceNumber = undefined;
+          } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
+            pic.sequenceNumber--;
+          }
+          return pic;
+        }) ?? [];
+    } else {
+      const sequencedPictures = currentPicturesByOrientation?.filter((pic) => !!pic.sequenceNumber);
+      newSequencedPictures =
+        currentPicturesByOrientation?.map((pic) => {
+          if (pic.id === picture.id) pic.sequenceNumber = (sequencedPictures?.length ?? 0) + 1;
+          return pic;
+        }) ?? [];
+    }
+    setPicture(newSequencedPictures.concat(currentOtherPictures), 'picture');
+  };
+
+  const deletePicture = (picture: PictureInput) => {
+    const picturesExcludingSelected = fairwayCardInput.pictures?.filter((pic) => pic.id !== picture.id) ?? [];
+    // If removed picture has a sequence number, reset also the sequence
+    const currentSequenceNumber = picture.sequenceNumber;
+    const currentOrientation = picture.orientation;
+    if (currentSequenceNumber) {
+      const newSequencedPictures =
+        picturesExcludingSelected?.map((pic) => {
+          if (pic.orientation === currentOrientation && pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
+            pic.sequenceNumber--;
+          }
+          return pic;
+        }) ?? [];
+      setPicture(newSequencedPictures, 'picture');
+    } else {
+      setPicture(picturesExcludingSelected, 'picture');
+    }
+  };
+
+  return (
+    <>
+      <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
+      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} />
+
+      <IonText>
+        <h4>
+          {t('fairwaycard.print-images-portrait')}{' '}
+          <IonButton
+            slot="end"
+            fill="clear"
+            className="icon-only xx-small"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setShowOrientationHelp(Orientation.Portrait);
+            }}
+            title={t('general.show-help') ?? ''}
+            aria-label={t('general.show-help') ?? ''}
+            disabled={!savedPicturesPortrait?.length}
+          >
+            <IonIcon icon={helpIcon} />
+          </IonButton>
+        </h4>
+      </IonText>
+      <IonGrid className="print-images portraits">
+        <IonRow>
+          {savedPicturesPortrait?.map((pic) => (
+            <IonCol key={pic.id} size="auto">
+              <a
+                className={'imageWrapper' + (pic.sequenceNumber ? ' selected' : '')}
+                href={imageUrl + fairwayCardInput.id + '/' + pic.id}
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  setShowPicture(pic);
+                }}
+              >
+                <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
+                <IonButton
+                  slot="end"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    toggleSequence(pic, Orientation.Portrait);
+                  }}
+                  fill="clear"
+                  className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
+                  title={t('fairwaycard.toggle-sequence') ?? ''}
+                  aria-label={t('fairwaycard.toggle-sequence') ?? ''}
+                >
+                  {pic.sequenceNumber}
+                </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  className="icon-only x-small deletePicture"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    deletePicture(pic);
+                  }}
+                  title={t('general.delete') ?? ''}
+                  aria-label={t('general.delete') ?? ''}
+                >
+                  <IonIcon icon={binIcon} />
+                </IonButton>
+              </a>
+              <p>
+                <strong>{t('fairwaycard.print-images-modified')}</strong>
+                <br />
+                {t('general.datetimeFormat', { val: pic.modificationTimestamp })}
+              </p>
+            </IonCol>
+          ))}
+          <IonCol size="auto">
+            {isLoading && dvkMap.getOrientationType() === Orientation.Portrait && <IonSkeletonText animated={true} />}
+            {!savedPicturesPortrait?.length && <PrintInfo orientation={Orientation.Landscape} />}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <IonText>
+        <h4>
+          {t('fairwaycard.print-images-landscape')}{' '}
+          <IonButton
+            slot="end"
+            fill="clear"
+            className="icon-only xx-small"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setShowOrientationHelp(Orientation.Landscape);
+            }}
+            title={t('general.show-help') ?? ''}
+            aria-label={t('general.show-help') ?? ''}
+            disabled={!savedPicturesLandscape?.length}
+          >
+            <IonIcon icon={helpIcon} />
+          </IonButton>
+        </h4>
+      </IonText>
+      <IonGrid className="print-images landscapes">
+        <IonRow>
+          {savedPicturesLandscape?.map((pic) => (
+            <IonCol key={pic.id} size="auto">
+              <a
+                className={'imageWrapper' + (pic.sequenceNumber ? ' selected' : '')}
+                href={imageUrl + fairwayCardInput.id + '/' + pic.id}
+                onClick={(ev) => {
+                  ev.preventDefault();
+                  setShowPicture(pic);
+                }}
+              >
+                <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
+                <IonButton
+                  slot="end"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    toggleSequence(pic, Orientation.Landscape);
+                  }}
+                  fill="clear"
+                  className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
+                  title={t('fairwaycard.toggle-sequence') ?? ''}
+                  aria-label={t('fairwaycard.toggle-sequence') ?? ''}
+                >
+                  {pic.sequenceNumber}
+                </IonButton>
+                <IonButton
+                  slot="end"
+                  fill="clear"
+                  className="icon-only x-small deletePicture"
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    deletePicture(pic);
+                  }}
+                  title={t('general.delete') ?? ''}
+                  aria-label={t('general.delete') ?? ''}
+                >
+                  <IonIcon icon={binIcon} />
+                </IonButton>
+              </a>
+              <p>
+                <strong>{t('fairwaycard.print-images-modified')}</strong>
+                <br />
+                {t('general.datetimeFormat', { val: pic.modificationTimestamp })}
+              </p>
+            </IonCol>
+          ))}
+          <IonCol size="auto">
+            {isLoading && dvkMap.getOrientationType() === Orientation.Landscape && <IonSkeletonText animated={true} />}
+            {!savedPicturesLandscape?.length && <PrintInfo orientation={Orientation.Landscape} />}
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </>
+  );
+};
+
 interface MapProps {
   fairwayCardInput: FairwayCardInput;
   fairways?: Fairway[];
   harbours?: Harbor[];
   setPicture: (
-    val: PictureInput,
+    val: PictureInput[],
     actionType: ActionType,
     actionLang?: Lang,
     actionTarget?: string | number,
@@ -255,10 +481,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       harbors: harbours ?? [],
     };
     setSelectedFairwayCard(fairwayCard);
-  }, [fairwayCardInput, fairways, harbours, dvkMap]);
-
-  const savedPicturesPortrait = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Portrait);
-  const savedPicturesLandscape = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Landscape);
+  }, [fairwayCardInput, fairways, harbours]);
 
   // Upload map picture
   const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
@@ -274,7 +497,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           modificationTimestamp: Date.now(),
         };
         // Update fairwayCard state
-        setPicture(newPictureInput, 'picture');
+        setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
       }
     },
     onError: (error: Error) => {
@@ -372,8 +595,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     }
   };
 
-  const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
-
   return (
     <IonGrid className="mapExportTool">
       <IonRow>
@@ -387,91 +608,14 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
               className={fetchError ? 'danger' : ''}
             />
           )}
-          <ExtButtons
+          <ExtMapControls
             printCurrentMapView={printCurrentMapView}
             printDisabled={isLoadingMutation || !fairwayCardInput.id || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg}
           />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>
         <IonCol>
-          <IonText>
-            <h4>
-              {t('fairwaycard.print-images-portrait')}{' '}
-              <IonButton
-                slot="end"
-                fill="clear"
-                className="icon-only x-small"
-                onClick={() => setShowOrientationHelp(Orientation.Portrait)}
-                title={t('general.show-help') ?? ''}
-                aria-label={t('general.show-help') ?? ''}
-                disabled={!savedPicturesPortrait?.length}
-              >
-                <IonIcon icon={helpIcon} />
-              </IonButton>
-            </h4>
-          </IonText>
-          <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
-
-          <IonGrid className="print-images portraits">
-            <IonRow>
-              {savedPicturesPortrait?.map((pic) => (
-                <IonCol key={pic.id}>
-                  <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
-                  Orientation: {pic.orientation}
-                  <br />
-                  Rotation: {pic.rotation}
-                  <br />
-                  modified: {pic.modificationTimestamp}
-                  <br />
-                  harborId: {pic.harborId}
-                  <br />
-                  sequence#: {pic.sequenceNumber}
-                </IonCol>
-              ))}
-              <IonCol>
-                {isLoadingMutation && dvkMap.getOrientationType() === Orientation.Portrait && <IonSkeletonText animated={true} />}
-                {!savedPicturesPortrait?.length && <PrintInfo orientation={Orientation.Landscape} />}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
-          <IonText>
-            <h4>
-              {t('fairwaycard.print-images-landscape')}{' '}
-              <IonButton
-                slot="end"
-                fill="clear"
-                className="icon-only x-small"
-                onClick={() => setShowOrientationHelp(Orientation.Landscape)}
-                title={t('general.show-help') ?? ''}
-                aria-label={t('general.show-help') ?? ''}
-                disabled={!savedPicturesLandscape?.length}
-              >
-                <IonIcon icon={helpIcon} />
-              </IonButton>
-            </h4>
-          </IonText>
-          <IonGrid className="print-images landscapes">
-            <IonRow>
-              {savedPicturesLandscape?.map((pic) => (
-                <IonCol key={pic.id}>
-                  <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
-                  Orientation: {pic.orientation}
-                  <br />
-                  Rotation: {pic.rotation}
-                  <br />
-                  modified: {pic.modificationTimestamp}
-                  <br />
-                  harborId: {pic.harborId}
-                  <br />
-                  sequence#: {pic.sequenceNumber}
-                </IonCol>
-              ))}
-              <IonCol>
-                {isLoadingMutation && dvkMap.getOrientationType() === Orientation.Landscape && <IonSkeletonText animated={true} />}
-                {!savedPicturesLandscape?.length && <PrintInfo orientation={Orientation.Landscape} />}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <PrintImages fairwayCardInput={fairwayCardInput} setPicture={setPicture} isLoading={isLoadingMutation} />
         </IonCol>
       </IonRow>
     </IonGrid>

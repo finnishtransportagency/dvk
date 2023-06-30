@@ -550,16 +550,7 @@ export const fairwayCardReducer = (
     case 'picture':
       newState = {
         ...state,
-        pictures: state.pictures?.concat([
-          {
-            harborId: (value as PictureInput).harborId,
-            id: (value as PictureInput).id,
-            modificationTimestamp: (value as PictureInput).modificationTimestamp,
-            orientation: (value as PictureInput).orientation,
-            rotation: (value as PictureInput).rotation,
-            sequenceNumber: (value as PictureInput).sequenceNumber,
-          },
-        ]),
+        pictures: value as PictureInput[],
       };
       break;
     default:
