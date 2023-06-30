@@ -4,6 +4,8 @@ import {
   SaveFairwayCardMutationVariables,
   SaveHarborMutation,
   SaveHarborMutationVariables,
+  UploadMapPictureMutation,
+  UploadMapPictureMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
@@ -14,6 +16,7 @@ import {
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
   useSaveHarborMutation,
+  useUploadMapPictureMutation,
 } from './generated';
 
 const datasourceClient = {
@@ -67,4 +70,10 @@ export function useSaveHarborMutationQuery<TError = unknown, TContext = unknown>
   options?: UseMutationOptions<SaveHarborMutation, TError, SaveHarborMutationVariables, TContext>
 ) {
   return useSaveHarborMutation(datasourceClient, options);
+}
+
+export function useUploadMapPictureMutationQuery<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<UploadMapPictureMutation, TError, UploadMapPictureMutationVariables, TContext>
+) {
+  return useUploadMapPictureMutation(datasourceClient, options);
 }
