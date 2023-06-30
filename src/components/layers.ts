@@ -37,6 +37,9 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
+import { Geometry } from 'ol/geom';
+import { intersects } from 'ol/extent';
+import * as turf from '@turf/turf';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -224,8 +227,24 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   });
 }
 
+function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
+  const props = feature.getProperties();
+  const a1Props = props.area1Properties;
+  const a2Props = props.area2Properties;
+  if (resolution <= 100) {
+    if (!a1Props || !a2Props) {
+      return getLineStyle('#EC0E0E', 1);
+    } else if (a1Props.typeCode === 1 && a2Props.typeCode === 1 && a1Props.depth === a2Props.depth) {
+      return undefined;
+    } else {
+      return getLineStyle('#EC0E0E', 0.25);
+    }
+  }
+  return undefined;
+}
+
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource as FeatureDataLayerId;
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'line3456') {
@@ -234,8 +253,14 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     if (feature.get('hoverStyle')) {
       return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
     } else {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+      return new Style({
+        fill: new Fill({
+          color: 'rgba(236,14,14,0.3)',
+        }),
+      });
     }
+  } else if (ds === 'area12Borderline' && resolution <= 100) {
+    return getArea12BorderLineStyle(feature, resolution);
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea2' || ds === 'specialarea15') {
@@ -623,6 +648,62 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   }
 }
 
+function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
+  const borderLineFeatures: Feature<Geometry>[] = [];
+  const format = new GeoJSON();
+
+  const turfPolygons: Array<turf.Polygon> = [];
+  const turfPolygonsLineSegments: Array<turf.FeatureCollection> = [];
+  for (let i = 0; i < areas.length; i++) {
+    turfPolygons[i] = format.writeGeometryObject(areas[i].getGeometry() as Geometry, {
+      dataProjection: 'EPSG:4326',
+      featureProjection: MAP.EPSG,
+    }) as turf.Polygon;
+    turfPolygonsLineSegments[i] = turf.lineSegment(turfPolygons[i]);
+  }
+
+  for (let i = 0; i < areas.length; i++) {
+    const intersectedSegmenIndices: Array<number> = [];
+    const area1 = areas[i];
+    const area1Extent = area1.getGeometry()?.getExtent();
+    for (let j = 0; j < areas.length; j++) {
+      if (i === j) continue;
+      const area2 = areas[j];
+      const area2Extent = area2.getGeometry()?.getExtent();
+      if (!area1Extent || !area2Extent || !intersects(area1Extent, area2Extent)) {
+        continue;
+      }
+      for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
+        if (intersectedSegmenIndices.includes(k)) continue;
+        const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
+        const turfOverlappingSegment = turf.lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
+        if (turfOverlappingSegment.features.length > 0) {
+          intersectedSegmenIndices.push(k);
+          const feat = format.readFeature(turfOverlappingSegment.features[0].geometry, {
+            dataProjection: 'EPSG:4326',
+            featureProjection: MAP.EPSG,
+          });
+          feat.setProperties({ area1Properties: area1.getProperties() });
+          feat.setProperties({ area2Properties: area2.getProperties() });
+          borderLineFeatures.push(feat);
+        }
+      }
+    }
+    for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
+      if (intersectedSegmenIndices.includes(k)) continue;
+      const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
+      const feat = format.readFeature(segmentLineString, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: MAP.EPSG,
+      });
+      feat.setProperties({ area1Properties: area1.getProperties() });
+      feat.setProperties({ area2Properties: null });
+      borderLineFeatures.push(feat);
+    }
+  }
+  return borderLineFeatures;
+}
+
 export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
   const dvkMap = getMap();
   if (fairwayCard) {
@@ -688,6 +769,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
           }
         }
       }
+
       for (const line of fairway.boardLines || []) {
         const feature = boardLine12Source.getFeatureById(line.id);
         if (feature) {
@@ -713,6 +795,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
       addQuay(harbor, quaySource);
     }
+
+    const area12Features = fairwayFeatures.filter((f) => f.get('dataSource') === 'area12');
+    const borderLineFeatures = getArea12BorderFeatures(area12Features);
+    borderLineFeatures.forEach((f) => {
+      f.set('dataSource', 'area12Borderline', true);
+      fairwayFeatures.push(f);
+    });
+
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
