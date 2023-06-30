@@ -82,7 +82,7 @@ export class DvkSonarPipelineStack extends Stack {
               `npx sonarqube-scanner -Dsonar.host.url=$SONARQUBE_HOST_URL -Dsonar.token=$SONARQUBE_ACCESS_TOKEN -Dsonar.projectKey=DVK-main -Dsonar.projectVersion=$DVK_VERSION`,
               'cd cdk',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
-              'npm run datasync',
+              'npm run datasync -- --reset',
               'npm run setup',
               'cd ..',
               'cd squat',
@@ -98,6 +98,13 @@ export class DvkSonarPipelineStack extends Stack {
               'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
               'cd test',
               'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
+              'cd ..',
+              'cd admin',
+              'npm run build',
+              'npx serve -p 3002 -s build &',
+              'until curl -s http://localhost:3002 > /dev/null; do sleep 1; done',
+              'cd ../test',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3002 --outputdir report/admin --xunit xunit.xml admin',
             ],
           },
         },
@@ -105,6 +112,7 @@ export class DvkSonarPipelineStack extends Stack {
         reports: {
           'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
           'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
+          'admin-robot-tests': { files: 'test/report/admin/xunit.xml' },
         },
         artifacts: {
           'base-directory': 'test/report',
@@ -165,7 +173,7 @@ export class DvkSonarPipelineStack extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
+        actions: ['dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Scan'],
         resources: [table.tableArn],
       })
     );
@@ -173,7 +181,7 @@ export class DvkSonarPipelineStack extends Stack {
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,
-        actions: ['dynamodb:PutItem'],
+        actions: ['dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Scan'],
         resources: [table.tableArn],
       })
     );

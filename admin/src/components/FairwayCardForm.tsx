@@ -416,6 +416,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.name}
                 updateState={updateState}
                 actionType="name"
+                name="fairwayCardName"
                 required
                 disabled={fairwayCard.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
@@ -427,6 +428,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     val={state.id}
                     setValue={updateState}
                     actionType="primaryId"
+                    name="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
                     error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
