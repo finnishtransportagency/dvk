@@ -34,9 +34,10 @@ import TakeScreenshotControl from './mapControls/TakeScreenshotControl';
 import SelectPortraitControl from './mapControls/SelectPortraitControl';
 import SelectLandscapeControl from './mapControls/SelectLandscapeControl';
 import MapMaskControl from './mapControls/MapMaskControl';
+import { Orientation } from '../../graphql/generated';
 
 export type BackgroundMapType = 'sea' | 'land';
-export type OrientationType = 'portrait' | 'landscape' | '';
+export type OrientationType = Orientation | '';
 
 class DvkMap {
   public olMap: Map | null = null;
@@ -143,9 +144,9 @@ class DvkMap {
       controls: [
         this.zoomControl,
         this.fitFeaturesOnMapControl,
-        this.takeScreenshotControl,
-        this.selectPortraitControl,
-        this.selectLandscapeControl,
+        //this.takeScreenshotControl,
+        //this.selectPortraitControl,
+        //this.selectLandscapeControl,
         this.mapMaskControl,
         this.mapDetailsControl,
         new ScaleLine({
@@ -394,8 +395,95 @@ class DvkMap {
       this.takeScreenshotControl.setDisabled(!orientationType);
 
       const targetElement = this.olMap?.getTargetElement();
-      targetElement?.classList.remove('portrait', 'landscape');
+      targetElement?.classList.remove(Orientation.Portrait, Orientation.Landscape);
       if (orientationType) targetElement?.classList.add(orientationType);
+    }
+  };
+
+  public getCanvasDimensions = () => {
+    let canvasSize = [0, 0];
+    if (this.olMap) {
+      const orientationType = this.getOrientationType();
+      if (orientationType === Orientation.Portrait) {
+        canvasSize = [595, 842];
+      }
+      if (orientationType === Orientation.Landscape) {
+        canvasSize = [842, 595];
+      }
+    }
+    return canvasSize;
+  };
+
+  public printCurrentMapView = () => {
+    if (this.olMap) {
+      const mapScale = this.olMap?.getViewport().querySelector('.ol-scale-line-inner');
+      const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
+      const rotation = this.olMap?.getView().getRotation();
+
+      console.log(mapScale, rotation, mapScaleWidth, mapScale?.innerHTML);
+
+      // Merge canvases to one canvas
+      const mapCanvas = document.createElement('canvas');
+      const mapSize = this.olMap?.getSize() || [0, 0];
+      mapCanvas.width = mapSize[0];
+      mapCanvas.height = mapSize[1];
+      const mapContext = mapCanvas.getContext('2d');
+      Array.prototype.forEach.call(this.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+        if (canvas.width > 0) {
+          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+          if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+          let matrix;
+          const transform = canvas.style.transform;
+          if (transform) {
+            // Get the transform parameters from the style's transform matrix
+            matrix = transform
+              .match(/^matrix\(([^(]*)\)$/)[1]
+              .split(',')
+              .map(Number);
+          } else {
+            matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+          }
+          // Apply the transform to the export map context
+          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+          const backgroundColor = canvas.parentNode.style.backgroundColor;
+          if (backgroundColor && mapContext) {
+            mapContext.fillStyle = backgroundColor;
+            mapContext.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          if (mapContext) mapContext.drawImage(canvas, 0, 0);
+        }
+      });
+      if (mapContext) {
+        mapContext.globalAlpha = 1;
+        mapContext.setTransform(1, 0, 0, 1, 0, 0);
+      }
+
+      // Crop the canvas and create image
+      const mapCanvasCropped = document.createElement('canvas');
+      const canvasSize = this.getCanvasDimensions();
+      mapCanvasCropped.width = canvasSize[0];
+      mapCanvasCropped.height = canvasSize[1];
+      const mapContextCropped = mapCanvasCropped.getContext('2d');
+      if (mapContextCropped)
+        mapContextCropped.drawImage(
+          mapCanvas,
+          (mapSize[0] - mapCanvasCropped.width) / 2,
+          (mapSize[1] - mapCanvasCropped.height) / 2,
+          mapCanvasCropped.width,
+          mapCanvasCropped.height,
+          0,
+          0,
+          mapCanvasCropped.width,
+          mapCanvasCropped.height
+        );
+
+      const img = new Image();
+      img.src = mapCanvasCropped.toDataURL('image/png');
+      const mapExport = document.getElementById('mapExport');
+      if (mapExport) {
+        mapExport.innerHTML = '';
+        mapExport.appendChild(img);
+      }
     }
   };
 
