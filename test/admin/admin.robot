@@ -26,14 +26,12 @@ Open Existing Public Harbor And Save It
     ${harbour}=    Get Random Item From List    Satama
     Select Row From List    ${harbour}
     Save Public Harbor
-    Return Back To List View
 
 Open Existing Public Fairway Card And Save It
     [Documentation]    Open card and save it. Verify that saving it as is succeed.
     ${fairwayCard}=    Get Random Item From List    Väyläkortti
     Select Row From List    ${fairwayCard}
     Save Public Fairway Card
-    Return Back To List View
 
 Create New Harbor From Existing One
     [Documentation]    Create new harbour based on existing harbour. After creation remove it.
