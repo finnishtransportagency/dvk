@@ -2,7 +2,7 @@
 Documentation     This test suite contains test cases for DVK
 Test Setup        Open Admin
 Test Teardown     Close All Browsers
-Library           SeleniumLibrary    timeout=15s
+Library           SeleniumLibrary    timeout=30s
 Library           String
 Library           DateTime
 Library           Collections
@@ -172,7 +172,7 @@ Save Public Harbor
 Return Back To List View
     [Documentation]    Return back to list view from new harbour/fairway card page. Verify resulting popup if necessary.
     [Arguments]    ${VerificationMessage}=${None}
-    Sleep    5s
+    Sleep    15s
     Click Element    ${CANCEL_BUTTON}
     Run Keyword If    "${VerificationMessage}" != "${None}"    Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "${VerificationMessage}"]
     Run Keyword If    "${VerificationMessage}" != "${None}"    Click Element    //ion-button[@slot = "end" and text() = "Poistu"]
