@@ -143,6 +143,8 @@ export class DvkPipeline extends Construct {
               'npm ci',
               'npm run generate',
               'npm run cdk deploy DvkBackendStack DvkUsEastStack SquatSiteStack DvkBackupServicesStack -- --require-approval never',
+              'npm run deploy:stackpolicy:backend',
+              'npm run deploy:stackpolicy:frontend',
             ],
           },
         },
