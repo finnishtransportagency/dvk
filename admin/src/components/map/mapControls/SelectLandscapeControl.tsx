@@ -1,5 +1,6 @@
 import Control from 'ol/control/Control';
 import { getMap } from '../DvkMap';
+import { Orientation } from '../../../graphql/generated';
 
 class SelectLandscapeControl extends Control {
   private buttonElement = document.createElement('button');
@@ -18,8 +19,8 @@ class SelectLandscapeControl extends Control {
     this.buttonElement.addEventListener('click', (e) => {
       e.preventDefault();
       const dvkMap = getMap();
-      if (dvkMap.getOrientationType() !== 'landscape') {
-        dvkMap.setOrientationType('landscape');
+      if (dvkMap.getOrientationType() !== Orientation.Landscape) {
+        dvkMap.setOrientationType(Orientation.Landscape);
       } else {
         dvkMap.setOrientationType('');
       }

@@ -1,4 +1,5 @@
 import Control from 'ol/control/Control';
+import { getMap } from '../DvkMap';
 
 class TakeScreenshotControl extends Control {
   private buttonElement = document.createElement('button');
@@ -17,7 +18,7 @@ class TakeScreenshotControl extends Control {
 
     this.buttonElement.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Say cheese! Click!');
+      getMap().printCurrentMapView();
     });
   }
 
