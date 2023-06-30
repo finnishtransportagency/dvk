@@ -170,7 +170,7 @@ Save Public Harbor
 Return Back To List View
     [Documentation]    Return back to list view from new harbour/fairway card page. Verify resulting popup if necessary.
     [Arguments]    ${VerificationMessage}=${None}
-    Sleep    15s
+    Sleep    5s
     Click Element    ${CANCEL_BUTTON}
     Run Keyword If    "${VerificationMessage}" != "${None}"    Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "${VerificationMessage}"]
     Run Keyword If    "${VerificationMessage}" != "${None}"    Click Element    //ion-button[@slot = "end" and text() = "Poistu"]
