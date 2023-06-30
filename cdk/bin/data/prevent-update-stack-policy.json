@@ -7,7 +7,12 @@
       "Resource": "*",
       "Condition": {
         "StringEquals": {
-          "ResourceType": ["AWS::DynamoDB::Table", "AWS::CloudFront::Distribution", "AWS::AppSync::GraphQLApi"]
+          "ResourceType": [
+            "AWS::DynamoDB::Table",
+            "AWS::CloudFront::Distribution",
+            "AWS::AppSync::GraphQLApi",
+            "AWS::ElasticLoadBalancingV2::LoadBalancer"
+          ]
         }
       }
     },
