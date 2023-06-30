@@ -6,9 +6,11 @@ else
     case "$ENVIRONMENT" in
     *dev* | *test* | *prod*)
         POLICYFILE="./bin/data/prevent-update-stack-policy.json"
+        IS_PERMANENT_ENVIRONMENT=true
         ;;
     *)
         POLICYFILE="./bin/data/allow-all-stack-policy.json"
+        IS_PERMANENT_ENVIRONMENT=false
         ;;
     esac
 
@@ -22,4 +24,16 @@ else
     else
         echo "Stack policy on $STACKNAME has been set"
     fi
+
+    if $IS_PERMANENT_ENVIRONMENT; then
+        echo "Activating termination protection"
+        OUTPUT=$(aws cloudformation update-termination-protection --stack-name $STACKNAME --enable-termination-protection)
+        echo "Termination protection activated"
+    else
+        echo "Deactivating termination protection"
+        OUTPUT=$(aws cloudformation update-termination-protection --stack-name $STACKNAME --no-enable-termination-protection)
+        echo "Termination protection deactivated"
+    fi
+
+    echo "Done."
 fi
