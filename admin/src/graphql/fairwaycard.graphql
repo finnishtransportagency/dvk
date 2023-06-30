@@ -147,6 +147,14 @@ query fairwayCardById($id: String!) {
         en
       }
     }
+    pictures {
+      id
+      harborId
+      orientation
+      rotation
+      modificationTimestamp
+      sequenceNumber
+    }
   }
 }
 
@@ -169,4 +177,8 @@ mutation saveFairwayCard($card: FairwayCardInput!) {
     }
     n2000HeightSystem
   }
+}
+
+mutation uploadMapPicture($picture: PictureUploadInput!) {
+  uploadPicture(picture: $picture)
 }
