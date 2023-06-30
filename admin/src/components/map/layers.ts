@@ -10,7 +10,7 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Orientation, Quay, Section } from '../../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
@@ -519,13 +519,13 @@ function getFittingPadding() {
   const fitPadding = [100, 50, 50, 50];
   const size = dvkMap.olMap?.getSize() || [0, 0];
   const orientationType = dvkMap.getOrientationType();
-  if (size[0] && orientationType === 'portrait') {
-    fitPadding[1] = (size[0] - 643) / 2 + 25;
-    fitPadding[3] = (size[0] - 643) / 2 + 25;
+  if (size[0] && orientationType === Orientation.Portrait) {
+    fitPadding[1] = (size[0] - 595) / 2 + 25;
+    fitPadding[3] = (size[0] - 595) / 2 + 25;
   }
-  if (size[1] && orientationType === 'landscape') {
-    fitPadding[0] = (size[0] - 643) / 2 + 75;
-    fitPadding[2] = (size[0] - 643) / 2 + 25;
+  if (size[1] && orientationType === Orientation.Landscape) {
+    fitPadding[0] = (size[0] - 595) / 2 + 75;
+    fitPadding[2] = (size[0] - 595) / 2 + 25;
   }
   return fitPadding;
 }
@@ -748,7 +748,6 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       addQuay(harbor, quaySource);
     }
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
-    console.log('setSelectedFairwayCard', fairwayFeatures);
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
     const extent = olExtent.createEmpty();
