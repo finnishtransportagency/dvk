@@ -80,6 +80,7 @@
     "environment-dev": "[sv] Kehitysympäristö",
     "environment-test": "[sv] Testiympäristö",
     "environment-undefined": "",
+    "show-help": "[sv] Näytä ohje",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",
@@ -123,7 +124,9 @@
     "publish-harbor-title": "[sv] Sataman julkaiseminen",
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?",
     "saved-fairwaycard-by-name": "[sv] Väyläkortin \"{{ name }}\" tiedot tallennettu.",
-    "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu."
+    "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu.",
+    "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
+    "help-title-LANDSCAPE": "[sv] Väyläkortin vaakatulosteiden asettaminen"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",
@@ -159,7 +162,17 @@
     "vhf-channel": "[sv] VHF-kanavan numero",
     "tug-heading": "Bogserbåt",
     "tug-name": "Bogserbåt namn",
-    "print-images": "[sv] Väyläkortin tuloste"
+    "print-images": "[sv] Väyläkortin tuloste",
+    "print-images-portrait": "[sv] Väyläkortin tulosteet, pysty",
+    "print-images-landscape": "[sv] Väyläkortin tulosteet, vaaka",
+    "print-images-info-ingress-PORTRAIT": "[sv] Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa. Pystykuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan pystysuunnassa.",
+    "print-images-info-ingress-LANDSCAPE": "[sv] Et ole asettanut väyläkortille vielä yhtään vaakasuuntaista tulostekuvaa. Vaakakuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan vaakasuunnassa.",
+    "print-images-info-switch": "[sv] Kytke",
+    "print-images-info-select-PORTRAIT": "[sv] Pystytila päälle kartalla.",
+    "print-images-info-select-LANDSCAPE": "[sv] Vaakatila päälle kartalla.",
+    "print-images-info-position-map": "[sv] Siirrä kartta haluaamasi kohtaan.",
+    "print-images-info-take-image": "[sv] Ota kuva tulostusalueesta",
+    "print-images-info-set-image-button": "[sv] Aseta kuva -painikkeella."
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
@@ -247,12 +260,12 @@
             "closeice": "Tät drivis",
             "verycloseice": "Mycket tät / kompakt drivis",
             "consolidatedice": "Sammanfrusen drivis",
-            "depth1": "Djup under 10m",
-            "depth2": "Djup 10 - 20m",
-            "depth3": "Djup över 20m",
-            "depth4": "Djup 0 - 3m",
-            "depth5": "Djup 3 - 6m",
-            "depth6": "Djup över 10m"
+            "depth1": "Djup under 10 m",
+            "depth2": "Djup 10 - 20 m",
+            "depth3": "Djup över 20 m",
+            "depth4": "Djup 0 - 3 m",
+            "depth5": "Djup 3 - 6 m",
+            "depth6": "Djup över 10 m"
           }
         },
         "mapDetails": {
@@ -263,6 +276,16 @@
           "title": "Farledssökning",
           "clearTitle": "Töm",
           "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
+        },
+        "orientation": {
+          "selectPortrait": "[sv] Pystytila",
+          "selectLandscape": "[sv] Vaakatila"
+        },
+        "screenshot": {
+          "tipLabel": "[sv] Aseta kuva"
+        },
+        "features": {
+          "tipLabel": "[sv] Kohdista kartta"
         },
         "resetRotation": "Återställ kartriktning",
         "infoText": "Ej för navigation"

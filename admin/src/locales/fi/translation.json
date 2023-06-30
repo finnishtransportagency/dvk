@@ -80,6 +80,7 @@
     "environment-dev": "Kehitysympäristö",
     "environment-test": "Testiympäristö",
     "environment-undefined": "",
+    "show-help": "Näytä ohje",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",
@@ -123,7 +124,9 @@
     "publish-harbor-title": "Sataman julkaiseminen",
     "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?",
     "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
-    "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu."
+    "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu.",
+    "help-title-PORTRAIT": "Väyläkortin pystytulosteiden asettaminen",
+    "help-title-LANDSCAPE": "Väyläkortin vaakatulosteiden asettaminen"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
@@ -159,7 +162,17 @@
     "vhf-channel": "VHF-kanavan numero",
     "tug-heading": "Hinaaja",
     "tug-name": "Hinaajan nimi",
-    "print-images": "Väyläkortin tuloste"
+    "print-images": "Väyläkortin tuloste",
+    "print-images-portrait": "Väyläkortin tulosteet, pysty",
+    "print-images-landscape": "Väyläkortin tulosteet, vaaka",
+    "print-images-info-ingress-PORTRAIT": "Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa. Pystykuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan pystysuunnassa.",
+    "print-images-info-ingress-LANDSCAPE": "Et ole asettanut väyläkortille vielä yhtään vaakasuuntaista tulostekuvaa. Vaakakuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan vaakasuunnassa.",
+    "print-images-info-switch": "Kytke",
+    "print-images-info-select-PORTRAIT": "Pystytila päälle kartalla.",
+    "print-images-info-select-LANDSCAPE": "Vaakatila päälle kartalla.",
+    "print-images-info-position-map": "Siirrä kartta haluaamasi kohtaan.",
+    "print-images-info-take-image": "Ota kuva tulostusalueesta",
+    "print-images-info-set-image-button": "Aseta kuva -painikkeella."
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
@@ -247,12 +260,12 @@
             "closeice": "Tiheä ajojää",
             "verycloseice": "Hyvin tiheä ajojää",
             "consolidatedice": "Yhteenjäätynyt ajojää",
-            "depth1": "Syvyys alle 10m",
-            "depth2": "Syvyys 10 - 20m",
-            "depth3": "Syvyys yli 20m",
-            "depth4": "Syvyys 0 - 3m",
-            "depth5": "Syvyys 3 - 6m",
-            "depth6": "Syvyys yli 10m"
+            "depth1": "Syvyys alle 10 m",
+            "depth2": "Syvyys 10 - 20 m",
+            "depth3": "Syvyys yli 20 m",
+            "depth4": "Syvyys 0 - 3 m",
+            "depth5": "Syvyys 3 - 6 m",
+            "depth6": "Syvyys yli 10 m"
           }
         },
         "mapDetails": {
@@ -263,6 +276,16 @@
           "title": "Väylähaku",
           "clearTitle": "Tyhjennä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
+        },
+        "orientation": {
+          "selectPortrait": "Pystytila",
+          "selectLandscape": "Vaakatila"
+        },
+        "screenshot": {
+          "tipLabel": "Aseta kuva"
+        },
+        "features": {
+          "tipLabel": "Kohdista kartta"
         },
         "resetRotation": "Palauta oletusorientaatio",
         "infoText": "Ei navigointikäyttöön"

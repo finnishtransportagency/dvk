@@ -156,6 +156,12 @@ ion-button.icon-only.small {
   width: 30px;
   vertical-align: top;
 }
+ion-button.icon-only.x-small {
+  --box-shadow: none;
+  height: 16px;
+  width: 16px;
+  vertical-align: top;
+}
 ion-button.icon-only:hover {
   --background-hover: none;
   --color: var(--ion-color-primary-shade);
@@ -653,6 +659,12 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 5px 0;
   border-bottom: 1px solid var(--ion-color-lighter);
 }
+.mainContent form ion-text h4 {
+  font-size: 14px;
+  line-height: 1.25rem;
+  font-weight: bold;
+  margin: 10px 5px 0;
+}
 
 .mainContent .formSection hr {
   border-top: 1px solid var(--ion-color-lighter);
@@ -788,4 +800,76 @@ ion-modal ion-button.button-disabled {
   font-weight: bold;
   color: var(--ion-color-dark);
   opacity: 1;
+}
+
+/* Map export tool */
+.mapExportTool ion-grid.print-images {
+  padding: 5px 0;
+}
+.mapExportTool .portraits img,
+.mapExportTool .portraits ion-skeleton-text {
+  width: 143px;
+  height: 202px;
+}
+.mapExportTool .landscapes img,
+.mapExportTool .landscapes ion-skeleton-text {
+  width: 202px;
+  height: 143px;
+}
+
+.mapExportTool h4 ion-button.x-small {
+  vertical-align: sub;
+  margin-left: 4px;
+}
+.mapExportTool h4 ion-button:disabled {
+  opacity: 0.5;
+}
+
+ion-grid.printInfo {
+  font-size: 14px;
+  padding: 14px;
+  background-color: var(--ion-color-lightest);
+  border: 1px solid var(--ion-color-light);
+}
+ion-modal ion-grid.printInfo {
+  padding: 0;
+  background-color: unset;
+  border: none;
+}
+ion-grid.printInfo .infoIcon {
+  font-size: 24px !important;
+  margin: 16px 16px 0 0;
+}
+ion-grid.printInfo ol {
+  margin-top: 14px;
+}
+ion-grid.printInfo ol li {
+  font-size: 14px;
+  list-style-position: outside;
+  margin-left: 1em;
+}
+ion-grid.printInfo ol li:last-child {
+  margin-bottom: 0;
+}
+ion-grid.printInfo ol span.icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin: 0 2px;
+  background-color: var(--ion-color-primary-contrast);
+  background-size: 14px;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+  vertical-align: sub;
+  box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.2);
+}
+ion-grid.printInfo ol span.icon.orientation-PORTRAIT {
+  background-image: url('./img/crop_portrait_icon.svg');
+}
+ion-grid.printInfo ol span.icon.orientation-LANDSCAPE {
+  background-image: url('./img/crop_landscape_icon.svg');
+}
+ion-grid.printInfo ol span.icon.takeScreenshot {
+  background-image: url('./img/take_screenshot_icon.svg');
 }
