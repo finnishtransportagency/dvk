@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCol, IonGrid, IonProgressBar, IonRow, useIonViewWillEnter } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonProgressBar, IonRow, IonSkeletonText, IonText, useIonViewWillEnter } from '@ionic/react';
 import { InitDvkMap, getMap } from './map/DvkMap';
 import {
   DvkLayerState,
@@ -29,24 +29,130 @@ import {
   useVtsLineLayer,
   useVtsPointLayer,
 } from './map/FeatureLoader';
-import { useFairwayCardList } from './map/FairwayDataLoader';
 import MapOverlays from './map/mapOverlays/MapOverlays';
-import { Fairway, FairwayCardInput, Harbor } from '../graphql/generated';
+import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
 import { setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
+import { useUploadMapPictureMutationQuery } from '../graphql/api';
+import { useTranslation } from 'react-i18next';
+import { ActionType, Lang, ValidationType, imageUrl } from '../utils/constants';
+import HelpModal from './HelpModal';
+import infoIcon from '../theme/img/info-circle-solid.svg';
+import helpIcon from '../theme/img/help_icon.svg';
+
+interface PrintInfoProps {
+  orientation: Orientation;
+}
+
+export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
+  const { t } = useTranslation();
+
+  return (
+    <IonGrid className="printInfo ion-no-padding">
+      <IonRow>
+        <IonCol size="auto">
+          <IonIcon className="infoIcon" icon={infoIcon} />
+        </IonCol>
+        <IonCol>
+          <IonText>{t('fairwaycard.print-images-info-ingress-' + orientation)}</IonText>
+          <ol>
+            <li>
+              {t('fairwaycard.print-images-info-switch')} <span className={'icon orientation-' + orientation} />{' '}
+              {t('fairwaycard.print-images-info-select-' + orientation)}
+            </li>
+            <li>{t('fairwaycard.print-images-info-position-map')}</li>
+            <li>
+              {t('fairwaycard.print-images-info-take-image')} <span className="icon takeScreenshot" />{' '}
+              {t('fairwaycard.print-images-info-set-image-button')}
+            </li>
+          </ol>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+interface ExtButtonProps {
+  printCurrentMapView: () => void;
+  printDisabled?: boolean;
+}
+
+const ExtButtons: React.FC<ExtButtonProps> = ({ printCurrentMapView, printDisabled }) => {
+  const { t } = useTranslation();
+  const dvkMap = getMap();
+  const [orientationType, setOrientationType] = useState<Orientation | ''>();
+
+  const handleOrientationChange = (orientation: Orientation) => {
+    if (orientation === dvkMap.getOrientationType()) {
+      setOrientationType('');
+      dvkMap.setOrientationType('');
+    } else {
+      setOrientationType(orientation);
+      dvkMap.setOrientationType(orientation);
+    }
+  };
+
+  return (
+    <div className={'extControls ' + orientationType}>
+      <div className="extControl selectPortraitControlContainer">
+        <button
+          className="selectPortraitControl"
+          onClick={(ev) => {
+            ev.preventDefault();
+            handleOrientationChange(Orientation.Portrait);
+          }}
+          title={t('homePage.map.controls.orientation.selectPortrait')}
+          aria-label={t('homePage.map.controls.orientation.selectPortrait')}
+        />
+      </div>
+      <div className="extControl selectLandscapeControlContainer">
+        <button
+          className="selectLandscapeControl"
+          onClick={(ev) => {
+            ev.preventDefault();
+            handleOrientationChange(Orientation.Landscape);
+          }}
+          title={t('homePage.map.controls.orientation.selectLandscape')}
+          aria-label={t('homePage.map.controls.orientation.selectLandscape')}
+        />
+      </div>
+      <div className="extControl takeScreenshotControlContainer">
+        <button
+          className="takeScreenshotControl"
+          disabled={!dvkMap.getOrientationType() || printDisabled}
+          onClick={(ev) => {
+            ev.preventDefault();
+            printCurrentMapView();
+          }}
+          title={t('homePage.map.controls.screenshot.tipLabel')}
+          aria-label={t('homePage.map.controls.screenshot.tipLabel')}
+        />
+      </div>
+    </div>
+  );
+};
 
 interface MapProps {
   fairwayCardInput: FairwayCardInput;
   fairways?: Fairway[];
   harbours?: Harbor[];
+  setPicture: (
+    val: PictureInput,
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => void;
+  validationErrors?: ValidationType[];
 }
 
-const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours }) => {
+const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors }) => {
+  const { t } = useTranslation();
+
   InitDvkMap();
 
   /* Start initializing layers that are required at ap start first */
-  const fairwayCardList = useFairwayCardList();
   const line12Layer = useLine12Layer();
   const area12Layer = useArea12Layer();
   const specialArea2Layer = useSpecialArea2Layer();
@@ -79,7 +185,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
   useEffect(() => {
     const allLayers: DvkLayerState[] = [
-      fairwayCardList,
       line12Layer,
       area12Layer,
       specialArea2Layer,
@@ -106,7 +211,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
     setInitDone(allLayers.every((layer) => layer.ready));
   }, [
-    fairwayCardList,
     line12Layer,
     area12Layer,
     pilotLayer,
@@ -128,9 +232,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const mapElement = useRef<HTMLDivElement | null>(null);
   useIonViewWillEnter(() => {
     if (mapElement?.current) {
-      dvkMap.addSelectPortraitControl();
-      dvkMap.addSelectLandscapeControl();
-      dvkMap.addTakeScreenshotControl();
       dvkMap.addLayerPopupControl();
       dvkMap.addFitFeaturesOnMapControl();
       dvkMap.addZoomControl();
@@ -154,7 +255,122 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       harbors: harbours ?? [],
     };
     setSelectedFairwayCard(fairwayCard);
-  }, [fairwayCardInput, fairways, harbours]);
+  }, [fairwayCardInput, fairways, harbours, dvkMap]);
+
+  const savedPicturesPortrait = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Portrait);
+  const savedPicturesLandscape = fairwayCardInput.pictures?.filter((pic) => pic.orientation === Orientation.Landscape);
+
+  // Upload map picture
+  const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
+
+  const { mutate: uploadMapPictureMutation, isLoading: isLoadingMutation } = useUploadMapPictureMutationQuery({
+    onSuccess: () => {
+      if (toBeSavedPicture) {
+        const newPictureInput = {
+          id: toBeSavedPicture.id,
+          orientation: dvkMap.getOrientationType() || Orientation.Portrait,
+          rotation: toBeSavedPicture.rotation,
+          harborId: toBeSavedPicture.harborId,
+          modificationTimestamp: Date.now(),
+        };
+        // Update fairwayCard state
+        setPicture(newPictureInput, 'picture');
+      }
+    },
+    onError: (error: Error) => {
+      console.error(error.message);
+    },
+    onSettled: () => {
+      setToBeSavedPicture(undefined);
+    },
+  });
+
+  const uploadPicture = (base64Data: string, orientation: Orientation, rotation: number, scaleWidth?: string, scaleLabel?: string) => {
+    const picUploadObject = {
+      base64Data: base64Data.replace('data:image/png;base64,', ''),
+      cardId: fairwayCardInput.id,
+      contentType: 'image/png',
+      id: fairwayCardInput.id + Date.now(),
+    };
+    const picInputObject = {
+      harborId: undefined,
+      orientation: orientation,
+      rotation: rotation,
+    };
+    setToBeSavedPicture({ ...picUploadObject, ...picInputObject });
+    uploadMapPictureMutation({
+      picture: picUploadObject,
+    });
+  };
+
+  // Create uploadable image
+  const printCurrentMapView = () => {
+    if (dvkMap.olMap && dvkMap.getOrientationType()) {
+      const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
+      const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
+      const rotation = dvkMap.olMap?.getView().getRotation();
+
+      // Merge canvases to one canvas
+      const mapCanvas = document.createElement('canvas');
+      const mapSize = dvkMap.olMap?.getSize() || [0, 0];
+      mapCanvas.width = mapSize[0];
+      mapCanvas.height = mapSize[1];
+      const mapContext = mapCanvas.getContext('2d');
+      Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+        if (canvas.width > 0) {
+          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+          if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+          let matrix;
+          const transform = canvas.style.transform;
+          if (transform) {
+            // Get the transform parameters from the style's transform matrix
+            matrix = transform
+              .match(/^matrix\(([^(]*)\)$/)[1]
+              .split(',')
+              .map(Number);
+          } else {
+            matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+          }
+          // Apply the transform to the export map context
+          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+          const backgroundColor = canvas.parentNode.style.backgroundColor;
+          if (backgroundColor && mapContext) {
+            mapContext.fillStyle = backgroundColor;
+            mapContext.fillRect(0, 0, canvas.width, canvas.height);
+          }
+          if (mapContext) mapContext.drawImage(canvas, 0, 0);
+        }
+      });
+      if (mapContext) {
+        mapContext.globalAlpha = 1;
+        mapContext.setTransform(1, 0, 0, 1, 0, 0);
+      }
+
+      // Crop the canvas and create image
+      const mapCanvasCropped = document.createElement('canvas');
+      const canvasSize = dvkMap.getCanvasDimensions();
+      mapCanvasCropped.width = canvasSize[0];
+      mapCanvasCropped.height = canvasSize[1];
+      const mapContextCropped = mapCanvasCropped.getContext('2d');
+      if (mapContextCropped)
+        mapContextCropped.drawImage(
+          mapCanvas,
+          (mapSize[0] - mapCanvasCropped.width) / 2,
+          (mapSize[1] - mapCanvasCropped.height) / 2,
+          mapCanvasCropped.width,
+          mapCanvasCropped.height,
+          0,
+          0,
+          mapCanvasCropped.width,
+          mapCanvasCropped.height
+        );
+
+      const base64Data = mapCanvasCropped.toDataURL('image/png');
+      uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML);
+    }
+  };
+
+  const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
 
   return (
     <IonGrid className="mapExportTool">
@@ -169,9 +385,92 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
               className={fetchError ? 'danger' : ''}
             />
           )}
+          <ExtButtons
+            printCurrentMapView={printCurrentMapView}
+            printDisabled={isLoadingMutation || !fairwayCardInput.id || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg}
+          />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>
-        <IonCol>Tallennetut kuvat tänne</IonCol>
+        <IonCol>
+          <IonText>
+            <h4>
+              {t('fairwaycard.print-images-portrait')}{' '}
+              <IonButton
+                slot="end"
+                fill="clear"
+                className="icon-only x-small"
+                onClick={() => setShowOrientationHelp(Orientation.Portrait)}
+                title={t('general.show-help') ?? ''}
+                aria-label={t('general.show-help') ?? ''}
+                disabled={!savedPicturesPortrait?.length}
+              >
+                <IonIcon icon={helpIcon} />
+              </IonButton>
+            </h4>
+          </IonText>
+          <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
+
+          <IonGrid className="print-images portraits">
+            <IonRow>
+              {savedPicturesPortrait?.map((pic) => (
+                <IonCol key={pic.id}>
+                  <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
+                  Orientation: {pic.orientation}
+                  <br />
+                  Rotation: {pic.rotation}
+                  <br />
+                  modified: {pic.modificationTimestamp}
+                  <br />
+                  harborId: {pic.harborId}
+                  <br />
+                  sequence#: {pic.sequenceNumber}
+                </IonCol>
+              ))}
+              <IonCol>
+                {isLoadingMutation && dvkMap.getOrientationType() === Orientation.Portrait && <IonSkeletonText animated={true} />}
+                {!savedPicturesPortrait?.length && <PrintInfo orientation={Orientation.Landscape} />}
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+          <IonText>
+            <h4>
+              {t('fairwaycard.print-images-landscape')}{' '}
+              <IonButton
+                slot="end"
+                fill="clear"
+                className="icon-only x-small"
+                onClick={() => setShowOrientationHelp(Orientation.Landscape)}
+                title={t('general.show-help') ?? ''}
+                aria-label={t('general.show-help') ?? ''}
+                disabled={!savedPicturesLandscape?.length}
+              >
+                <IonIcon icon={helpIcon} />
+              </IonButton>
+            </h4>
+          </IonText>
+          <IonGrid className="print-images landscapes">
+            <IonRow>
+              {savedPicturesLandscape?.map((pic) => (
+                <IonCol key={pic.id}>
+                  <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
+                  Orientation: {pic.orientation}
+                  <br />
+                  Rotation: {pic.rotation}
+                  <br />
+                  modified: {pic.modificationTimestamp}
+                  <br />
+                  harborId: {pic.harborId}
+                  <br />
+                  sequence#: {pic.sequenceNumber}
+                </IonCol>
+              ))}
+              <IonCol>
+                {isLoadingMutation && dvkMap.getOrientationType() === Orientation.Landscape && <IonSkeletonText animated={true} />}
+                {!savedPicturesLandscape?.length && <PrintInfo orientation={Orientation.Landscape} />}
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </IonCol>
       </IonRow>
     </IonGrid>
   );

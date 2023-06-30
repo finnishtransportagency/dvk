@@ -430,7 +430,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     setValue={updateState}
                     actionType="primaryId"
                     required
-                    disabled={state.operation === Operation.Update}
+                    disabled={state.operation === Operation.Update || !!state.pictures?.length}
                     error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('fairwaycard.primary-id-help-text')}
                   />
@@ -765,7 +765,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <IonText>
               <h2>{t('fairwaycard.print-images')}</h2>
             </IonText>
-            <MapExportTool fairwayCardInput={state} fairways={fairwaySelection} harbours={harbourSelectionFiltered} />
+            <MapExportTool
+              fairwayCardInput={state}
+              validationErrors={validationErrors}
+              setPicture={updateState}
+              fairways={fairwaySelection}
+              harbours={harbourSelectionFiltered}
+            />
           </form>
         )}
       </IonContent>
