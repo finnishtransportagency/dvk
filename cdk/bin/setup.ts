@@ -97,6 +97,9 @@ async function main() {
     REACT_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName || 'dvkdev.testivaylapilvi.fi',
     REACT_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
     REACT_APP_ENV: 'local',
+    REACT_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
+      ? `https://${frontendStackOutputs.CloudFrontDomainName}/s3static/`
+      : `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api/image?id=`,
   });
 }
 
