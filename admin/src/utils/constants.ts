@@ -1,4 +1,4 @@
-import { PilotPlaceInput } from '../graphql/generated';
+import { PictureInput, PilotPlaceInput } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -17,7 +17,7 @@ export type ErrorMessageType = {
 };
 export const ErrorMessageKeys = { required: 'general.required-field', duplicateId: 'fairwaycard.error-duplicate-id' } as ErrorMessageType;
 
-export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[];
+export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput;
 
 export type HarbourActionType =
   | 'name'
@@ -74,7 +74,8 @@ export type FairwayCardActionType =
   | 'tugFax'
   | 'vhf'
   | 'vhfName'
-  | 'vhfChannel';
+  | 'vhfChannel'
+  | 'picture';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -100,6 +101,8 @@ const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
 const staticUrl = process.env.REACT_APP_STATIC_URL
   ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
+
+export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
 export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
 
