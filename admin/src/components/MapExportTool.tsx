@@ -374,8 +374,6 @@ interface MapProps {
 }
 
 const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors }) => {
-  const { t } = useTranslation();
-
   InitDvkMap();
 
   /* Start initializing layers that are required at ap start first */
