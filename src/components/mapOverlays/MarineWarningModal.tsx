@@ -4,16 +4,17 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from '../../utils/common';
 import dvkMap from '../DvkMap';
-import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningModal.css';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  className: string;
+  children: React.ReactNode;
 }
 
-export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
+export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, className, children }) => {
   const { t } = useTranslation();
   const [size, setSize] = useState(dvkMap.olMap?.getSize() || [0, 0]);
 
@@ -36,7 +37,7 @@ export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) 
   return (
     <IonModal
       isOpen={isOpen}
-      className={'marinewarning' + (isMobile() ? ' small' : '')}
+      className={'marinewarning ' + className + (isMobile() ? ' small' : '')}
       showBackdrop={isMobile()}
       onDidDismiss={() => setIsOpen(false)}
       backdropBreakpoint={isMobile() ? undefined : 1}
@@ -47,12 +48,7 @@ export const MarineWarningModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) 
     >
       <IonGrid className="ion-no-padding">
         <IonRow>
-          <IonCol size="auto" className="ion-align-self-center">
-            <IonIcon className="infoIcon" icon={infoIcon} />
-          </IonCol>
-          <IonCol>
-            <strong>{t('warnings.note')}</strong> {t('warnings.notification')}
-          </IonCol>
+          {children}
           <IonCol size="auto">
             <IonButton
               onClick={() => setIsOpen(false)}

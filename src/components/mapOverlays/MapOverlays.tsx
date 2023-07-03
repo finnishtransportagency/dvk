@@ -17,10 +17,11 @@ import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/Mar
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
 import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
-import { MarineWarningModal } from './MarineWarningModal';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
+import { MarineWarningInfoModal } from './MarineWarningInfoModal';
+import { CoastalWarningModal } from './CoastalWarningModal';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -56,6 +57,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [activeSelection, setActiveSelection] = useState(0);
   const { data } = useFairwayCardListData();
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
+  const [showCoastalWarningNotification, setShowCoastalWarningNotification] = useState(false);
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
@@ -66,8 +68,13 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
     setIsOpen(false);
     lpc?.modalClosed();
   };
+
   const dismissMarineWarningNotificationModal = () => {
     setShowMarineWarningNotification(false);
+  };
+
+  const dismissCoastalWarningNotificationModal = () => {
+    setShowCoastalWarningNotification(false);
   };
 
   const setBgMapType = (bgMapType: BackgroundMapType) => {
@@ -119,11 +126,17 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         setIsOpen={dismissMapLayersModal}
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
-        setMarineWarningLayer={setShowMarineWarningNotification}
+        setMarineWarningInfoLayer={setShowMarineWarningNotification}
+        setCoastalWarningLayer={setShowCoastalWarningNotification}
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      <MarineWarningModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
+      <CoastalWarningModal
+        isOpen={showCoastalWarningNotification}
+        setIsOpen={dismissCoastalWarningNotificationModal}
+        features={dvkMap.getVectorSource('marinewarning').getFeatures()}
+      />
+      <MarineWarningInfoModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
     </>
   );
 };
