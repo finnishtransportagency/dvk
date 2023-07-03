@@ -8,41 +8,18 @@ query fairways {
     }
     navigationLines {
       id
-      geometry {
-        type
-        coordinates
-      }
-      depth
-      type
-      typeCode
     }
     areas {
       id
-      geometry {
-        type
-        coordinates
-      }
     }
     boardLines {
       id
-      geometry {
-        type
-        coordinates
-      }
     }
     restrictionAreas {
       id
-      geometry {
-        type
-        coordinates
-      }
     }
     turningCircles {
       id
-      geometry {
-        type
-        coordinates
-      }
     }
   }
 }

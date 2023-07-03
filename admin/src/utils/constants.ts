@@ -104,7 +104,7 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
 
 export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
-export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
+export type BackgroundLayerId = 'finland' | 'balticsea';
 
 export type FeatureDataId =
   | 'area12'
@@ -116,22 +116,13 @@ export type FeatureDataId =
   | 'harbor'
   | 'safetyequipment'
   | 'depth12'
-  | 'safetyequipmentfault'
-  | 'marinewarning'
   | 'name'
   | 'boardline12'
-  | 'mareograph'
-  | 'observation'
-  | 'buoy'
   | 'balticsea'
   | 'finland'
-  | 'mml_meri'
-  | 'mml_jarvi'
-  | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
   | 'circle'
-  | 'soundingpoint'
   | 'specialarea2'
   | 'specialarea15';
 
@@ -165,28 +156,16 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
   },
   { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/depth12.json.gz') },
-  {
-    id: 'safetyequipmentfault',
-    url: new URL(featureLoaderUrl + '?type=safetyequipmentfault'),
-    staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
-  },
-  { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning'), staticUrl: new URL(staticUrl + '/marinewarning.json.gz') },
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
-  { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
-  { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
-  { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
   { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
   { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -200,26 +179,17 @@ export type FeatureDataLayerId =
   | 'quay'
   | 'safetyequipment'
   | 'depth12'
-  | 'marinewarning'
   | 'name'
   | 'boardline12'
-  | 'mareograph'
-  | 'ice'
-  | 'observation'
-  | 'buoy'
   | 'vtsline'
   | 'vtspoint'
-  | 'soundingpoint'
-  | 'depthcontour'
-  | 'deptharea'
   | 'circle'
   | 'specialarea2'
   | 'specialarea15';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
-export type FairwayWidthLayerId = 'fairwaywidth';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 type DataLayer = { id: FeatureDataLayerId; noOfflineSupport?: boolean };
 
@@ -250,18 +220,10 @@ export const MAP: MapType = {
     { id: 'harbor' },
     { id: 'safetyequipment' },
     { id: 'depth12' },
-    { id: 'marinewarning' },
     { id: 'boardline12' },
-    { id: 'mareograph', noOfflineSupport: true },
-    { id: 'ice', noOfflineSupport: true },
-    { id: 'observation', noOfflineSupport: true },
-    { id: 'buoy', noOfflineSupport: true },
     { id: 'vtsline' },
     { id: 'vtspoint' },
     { id: 'name' },
-    { id: 'soundingpoint', noOfflineSupport: true },
-    { id: 'depthcontour', noOfflineSupport: true },
-    { id: 'deptharea', noOfflineSupport: true },
     { id: 'circle' },
   ],
 };

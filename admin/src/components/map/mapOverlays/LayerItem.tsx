@@ -1,14 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties } from '../../../utils/common';
 import arrowDownIcon from '../../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../../theme/img/syvyys_n2000.svg';
-import { LayerAlert } from '../Alert';
-import alertIcon from '../../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../../utils/constants';
 
 const LegendDepth = () => {
@@ -33,66 +30,6 @@ const LegendDepth = () => {
         <IonCol>
           <IonItem>
             <IonText>MW</IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendArea = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend deptharea ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth1')}</IonText>
-            <IonText slot="start" className="def area1"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth2')}</IonText>
-            <IonText slot="start" className="def area2"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth3')}</IonText>
-            <IonText slot="start" className="def area3"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendContour = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend depthcontour ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth4')}</IonText>
-            <IonText slot="start" className="def line1"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth5')}</IonText>
-            <IonText slot="start" className="def line2"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth6')}</IonText>
-            <IonText slot="start" className="def line3"></IonText>
           </IonItem>
         </IonCol>
       </IonRow>
@@ -180,105 +117,6 @@ const LegendSpeedlimits = () => {
   );
 };
 
-const LegendIce = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend ice ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.icefree')}</IonText>
-            <IonText slot="start" className="def icefree"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              {t('homePage.map.controls.layer.legend.newice')} (&lt; 5{' '}
-              <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 }) || ''} role="definition">
-                cm
-              </span>
-              )
-            </IonText>
-            <IonText slot="start" className="def newice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              {t('homePage.map.controls.layer.legend.thinice')} (5-15{' '}
-              <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 }) || ''} role="definition">
-                cm
-              </span>
-              )
-            </IonText>
-            <IonText slot="start" className="def thinice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.fastice')}</IonText>
-            <IonText slot="start" className="def fastice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.rottenice')}</IonText>
-            <IonText slot="start" className="def rottenice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.openwater')}</IonText>
-            <IonText slot="start" className="def openwater"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.veryopenice')}</IonText>
-            <IonText slot="start" className="def veryopenice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.openice')}</IonText>
-            <IonText slot="start" className="def openice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.closeice')}</IonText>
-            <IonText slot="start" className="def closeice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.verycloseice')}</IonText>
-            <IonText slot="start" className="def verycloseice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.consolidatedice')}</IonText>
-            <IonText slot="start" className="def consolidatedice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol></IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
@@ -304,23 +142,9 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
       });
     }, 250);
   };
-  let alertProps:
-    | {
-        duration: number;
-        color: string;
-      }
-    | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
-    alertProps = getAlertProperties(dataUpdatedAt, id);
-  }
-  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
+  const initialized = !!dataUpdatedAt;
   const disabled = !initialized;
-
-  const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
-    return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
-  }, [alertProps, t]);
 
   return (
     <IonGrid className="ion-no-padding layerItem">
@@ -351,7 +175,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
           </IonItem>
         </IonCol>
         <IonCol size="auto">
-          {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
+          {(id === 'speedlimit' || id === 'depth12') && (
             <IonButton
               fill="clear"
               className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
@@ -363,15 +187,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
           )}
         </IonCol>
       </IonRow>
-      {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
-      {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
+      {(id === 'speedlimit' || id === 'depth12') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>
             {id === 'speedlimit' && <LegendSpeedlimits />}
-            {id === 'ice' && <LegendIce />}
             {id === 'depth12' && <LegendDepth />}
-            {id === 'deptharea' && <LegendArea />}
-            {id === 'depthcontour' && <LegendContour />}
           </IonCol>
         </IonRow>
       )}

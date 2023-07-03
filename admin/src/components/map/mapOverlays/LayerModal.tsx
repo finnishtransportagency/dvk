@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { BackgroundMapType, getMap } from '../DvkMap';
+import { getMap } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../../utils/constants';
 import LayerItem from './LayerItem';
@@ -12,8 +12,6 @@ import LayerMainItem from './LayerMainItem';
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  bgMapType: BackgroundMapType;
-  setBgMapType: (bgMapType: BackgroundMapType) => void;
 }
 
 export type LayerType = {
@@ -23,14 +21,9 @@ export type LayerType = {
   noOfflineSupport?: Maybe<boolean>;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
-  const setBackgroundMap = (type: BackgroundMapType) => {
-    setBgMapType(type);
-    setBgMap(type);
-  };
   const dvkMap = getMap();
 
   const layerStructure: LayerType[] = [
@@ -52,15 +45,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'line3456', title: t('homePage.map.controls.layer.lines') },
       ],
     },
-    {
-      id: 'depths',
-      title: t('homePage.map.controls.layer.depthinfo'),
-      childLayers: [
-        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint'), noOfflineSupport: true },
-        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour'), noOfflineSupport: true },
-        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea'), noOfflineSupport: true },
-      ],
-    },
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
     {
       id: 'specialarea',
@@ -72,17 +56,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     },
     { id: 'depth12', title: t('homePage.map.controls.layer.depths') },
     { id: 'safetyequipment', title: t('homePage.map.controls.layer.safetyEquipments') },
-    {
-      id: 'conditions',
-      title: t('homePage.map.controls.layer.conditions'),
-      childLayers: [
-        { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel'), noOfflineSupport: true },
-        { id: 'observation', title: t('homePage.map.controls.layer.weatherStation'), noOfflineSupport: true },
-        { id: 'buoy', title: t('homePage.map.controls.layer.buoys'), noOfflineSupport: true },
-        { id: 'ice', title: t('homePage.map.controls.layer.ice'), noOfflineSupport: true },
-      ],
-    },
-    { id: 'marinewarning', title: t('homePage.map.controls.layer.marineWarnings') },
     {
       id: 'vts',
       title: t('homePage.map.controls.layer.vts'),
@@ -147,28 +120,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               </IonCol>
             </IonRow>
           ))}
-
-          <IonRow>
-            <IonCol>
-              <IonText>
-                <h6>{t('homePage.map.controls.layer.mapStyle.header')}</h6>
-              </IonText>
-            </IonCol>
-          </IonRow>
-          <IonRow className="ion-justify-content-evenly">
-            <IonCol size="auto">
-              <button color="none" className="ion-button bgMapButtonLand" disabled={bgMap === 'land'} onClick={() => setBackgroundMap('land')}>
-                <div className="mapImage"></div>
-                {t('homePage.map.controls.layer.mapStyle.landButtonLabel')}
-              </button>
-            </IonCol>
-            <IonCol size="auto">
-              <button color="none" className="ion-button bgMapButtonSea" disabled={bgMap === 'sea'} onClick={() => setBackgroundMap('sea')}>
-                <div className="mapImage"></div>
-                {t('homePage.map.controls.layer.mapStyle.seaButtonLabel')}
-              </button>
-            </IonCol>
-          </IonRow>
         </IonGrid>
       </IonList>
     </IonModal>

@@ -184,29 +184,6 @@ class DvkMap {
       imageRatio: 3,
     });
     this.olMap.addLayer(bgFinlandLayer);
-
-    /*const bgMmlmeriLayer = new VectorImageLayer({
-      properties: { id: 'mml_meri' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
-      zIndex: 2,
-      imageRatio: 3,
-    });
-    this.olMap.addLayer(bgMmlmeriLayer);
-
-    const bgMmljarviLayer = new VectorImageLayer({
-      properties: { id: 'mml_jarvi' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
-      zIndex: 3,
-      imageRatio: 3,
-    });
-    this.olMap.addLayer(bgMmljarviLayer);*/
-
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
       source: new VectorSource({
@@ -217,20 +194,6 @@ class DvkMap {
       imageRatio: 3,
     });
     this.olMap.addLayer(bgBalticseaLayer);
-
-    /*const bgMmllaituritLayer = new VectorImageLayer({
-      properties: { id: 'mml_laiturit' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
-      maxResolution: 4,
-      zIndex: 105,
-      imageRatio: 3,
-      visible: true,
-    });
-    this.olMap.addLayer(bgMmllaituritLayer);*/
-
     this.setBackgroundMapType(this.backgroundMapType);
     this.setOrientationType(this.orientationType);
     this.translate();
@@ -307,48 +270,6 @@ class DvkMap {
       })
     );
 
-    /*const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource>;
-    bgMmlmeriLayer.setStyle((feature: FeatureLike, resolution: number) => {
-      if (resolution < 32) {
-        return new Style({
-          fill: new Fill({
-            color: waterColor,
-          }),
-          stroke: new Stroke({
-            color: '#222222',
-            width: 0.5,
-          }),
-        });
-      } else {
-        return new Style({
-          fill: new Fill({
-            color: waterColor,
-          }),
-        });
-      }
-    });
-
-    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<VectorSource>;
-    bgMmljarviLayer.setStyle((feature: FeatureLike, resolution: number) => {
-      if (resolution < 32) {
-        return new Style({
-          fill: new Fill({
-            color: waterColor,
-          }),
-          stroke: new Stroke({
-            color: '#222222',
-            width: 0.5,
-          }),
-        });
-      } else {
-        return new Style({
-          fill: new Fill({
-            color: waterColor,
-          }),
-        });
-      }
-    });*/
-
     const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
     bgBsLayer.setStyle(
       new Style({
@@ -357,16 +278,6 @@ class DvkMap {
         }),
       })
     );
-
-    /*const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer<VectorSource>;
-    bgMmllaituritLayer.setStyle(
-      new Style({
-        stroke: new Stroke({
-          color: '#918a8c',
-          width: 1,
-        }),
-      })
-    );*/
 
     olMap
       .getLayers()
@@ -486,22 +397,6 @@ class DvkMap {
       }
     }
   };
-
-  public setOfflineMode(isOffline: boolean) {
-    if (this.olMap) {
-      const mapLayers = this.olMap.getLayers();
-      mapLayers.forEach((layer) => {
-        if (layer.get('type') === 'backgroundTile') {
-          if (!isOffline) {
-            (layer as Layer).getSource()?.refresh();
-          }
-          layer.setVisible(isOffline ? false : true);
-        } else if (layer.get('id') === 'mml_meri' || layer.get('id') === 'mml_jarvi') {
-          layer.setMinResolution(isOffline ? 0.5 : 4);
-        }
-      });
-    }
-  }
 
   public translate = () => {
     this.olMap?.removeControl(this.zoomControl);

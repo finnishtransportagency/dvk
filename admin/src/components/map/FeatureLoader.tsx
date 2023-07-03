@@ -92,36 +92,12 @@ export function useBackgroundFinlandLayer(): DvkLayerState {
   return useStaticDataLayer('finland', 'finland');
 }
 
-/*export function useBackgroundMmlmeriLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_meri', 'mml_meri');
-}
-
-export function useBackgroundMmljarviLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_jarvi', 'mml_jarvi');
-}*/
-
-/*export function useBackgroundMmllaituritLayer(): DvkLayerState {
-  return useStaticDataLayer('mml_laiturit', 'mml_laiturit');
-}*/
-
 export function useBackgroundBalticseaLayer(): DvkLayerState {
   return useStaticDataLayer('balticsea', 'balticsea');
 }
 
 export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12', 'EPSG:4326', 'always');
-}
-
-export function useMareographLayer() {
-  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5);
-}
-
-export function useObservationLayer() {
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10);
-}
-
-export function useBuoyLayer() {
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
 }
 
 export function useVtsLineLayer() {
@@ -260,10 +236,6 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor', 'EPSG:4326', 'always');
 }
 
-export function useMarineWarningLayer() {
-  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
-}
-
 export type EquipmentFault = {
   faultId: number;
   faultType: Text;
@@ -272,57 +244,5 @@ export type EquipmentFault = {
 };
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const eQuery = useFeatureData('safetyequipment');
-  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
-  const isPaused = eQuery.isPaused || fQuery.isPaused;
-  const isError = eQuery.isError || fQuery.isError;
-
-  useEffect(() => {
-    const eData = eQuery.data;
-    const fData = fQuery.data;
-    if (eData && fData) {
-      const layer = dvkMap.getFeatureLayer('safetyequipment');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        efs.forEach((f) => {
-          f.set('dataSource', 'safetyequipment', true);
-        });
-        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        const source = dvkMap.getVectorSource('safetyequipment');
-        source.clear();
-        source.addFeatures(efs);
-        const faultMap = new Map<number, EquipmentFault[]>();
-        for (const ff of ffs) {
-          const id = ff.getProperties().equipmentId as number;
-          const feature = source.getFeatureById(id);
-          if (feature) {
-            const fault: EquipmentFault = {
-              faultId: ff.getId() as number,
-              faultType: ff.getProperties().type,
-              faultTypeCode: ff.getProperties().typeCode,
-              recordTime: ff.getProperties().recordTime,
-            };
-            if (!faultMap.has(id)) {
-              faultMap.set(id, []);
-            }
-            faultMap.get(id)?.push(fault);
-          }
-        }
-        faultMap.forEach((faults, equipmentId) => {
-          const feature = source.getFeatureById(equipmentId);
-          if (feature) {
-            faults.sort((a, b) => b.recordTime - a.recordTime);
-            feature.set('faults', faults, true);
-          }
-        });
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [eQuery.data, fQuery.data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useDataLayer('safetyequipment', 'safetyequipment', 'EPSG:4326', 'always');
 }

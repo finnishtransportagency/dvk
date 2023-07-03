@@ -21,21 +21,13 @@ import specialareaSelected from '../../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
 import { getPilotStyle } from './layerStyles/pilotStyles';
-import { getDepthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
+import { getDepthStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
-import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
-import { getMareographStyle } from './layerStyles/mareographStyles';
-import { getObservationStyle } from './layerStyles/observationStyles';
-import { getBuoyStyle } from './layerStyles/buoyStyles';
-import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
 import { GeoJSON } from 'ol/format';
-import TileLayer from 'ol/layer/Tile';
-import TileWMS from 'ol/source/TileWMS';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
-import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 
 const specialAreaImage = new Image();
@@ -248,8 +240,6 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
     return getSafetyEquipmentStyle(feature, 1, false);
-  } else if (ds === 'marinewarning') {
-    return getMarineWarningStyle(feature, false);
   } else if (ds === 'harbor') {
     return getHarborStyle(feature, resolution, 3);
   } else if (ds === 'circle') {
@@ -320,117 +310,7 @@ function addFeatureVectorImageLayer(
   );
 }
 
-function addIceLayer(map: Map) {
-  const apiKey = process.env.REACT_APP_FMI_MAP_API_KEY;
-  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
-  const fmiMapApiUrl = process.env.REACT_APP_FMI_MAP_API_URL;
-  let tileUrl;
-  if (cloudFrontUrl) {
-    tileUrl = `https://${cloudFrontUrl}/fmi/wms`;
-  } else if (fmiMapApiUrl) {
-    tileUrl = `https://${fmiMapApiUrl}/fmi-apikey/${apiKey}/wms`;
-  } else {
-    tileUrl = `/fmi/wms`;
-  }
-  map.addLayer(
-    new TileLayer({
-      properties: { id: 'ice' },
-      source: new TileWMS({
-        url: tileUrl,
-        params: { layers: 'fmi:ice:icechart_iceareas' },
-        transition: 0,
-        crossOrigin: 'Anonymous',
-      }),
-      zIndex: 101,
-      preload: 10,
-      opacity: 0.4,
-    })
-  );
-}
-
-function getTileUrl(service: 'wfs' | 'wms') {
-  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
-  const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
-  let tileUrl: string;
-  if (cloudFrontUrl) {
-    tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
-  } else if (traficomMapApiUrl) {
-    tileUrl = `https://${traficomMapApiUrl}/inspirepalvelu/rajoitettu/${service}`;
-  } else {
-    tileUrl = `/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;
-  }
-  return tileUrl;
-}
-
-function addDepthContourLayer(map: Map) {
-  const vectorSource = new VectorSource({
-    format: new GeoJSON(),
-    url: function (extent) {
-      return (
-        `${getTileUrl('wfs')}?request=getFeature&typename=DepthContour_L&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
-        extent.join(',') +
-        `,urn:ogc:def:crs:${MAP.EPSG}`
-      );
-    },
-    strategy: bboxStrategy,
-  });
-  const layer = new VectorLayer({
-    properties: { id: 'depthcontour' },
-    source: vectorSource,
-    style: getDepthContourStyle,
-    maxResolution: 7,
-    renderBuffer: 1,
-    zIndex: 103,
-  });
-  map.addLayer(layer);
-}
-
-function addDepthAreaLayer(map: Map) {
-  map.addLayer(
-    new TileLayer({
-      properties: { id: 'deptharea' },
-      source: new TileWMS({
-        url: getTileUrl('wms'),
-        params: { layers: 'DepthArea_A' },
-        transition: 0,
-        crossOrigin: 'Anonymous',
-      }),
-      maxResolution: 10,
-      zIndex: 102,
-      preload: 10,
-    })
-  );
-}
-
-function addSoundingPointLayer(map: Map) {
-  const vectorSource = new VectorSource({
-    format: new GeoJSON(),
-    url: function (extent) {
-      return (
-        `${getTileUrl('wfs')}?request=getFeature&typename=Sounding_P&outputFormat=json&srsName=${MAP.EPSG}&bbox=` +
-        extent.join(',') +
-        `,urn:ogc:def:crs:${MAP.EPSG}`
-      );
-    },
-    strategy: bboxStrategy,
-  });
-  const layer = new VectorLayer({
-    properties: { id: 'soundingpoint' },
-    source: vectorSource,
-    style: getSoundingPointStyle,
-    maxResolution: 7,
-    renderBuffer: 1,
-    zIndex: 305,
-  });
-  map.addLayer(layer);
-}
-
 export function addAPILayers(map: Map) {
-  // Jääkartta
-  addIceLayer(map);
-  addDepthContourLayer(map);
-  addDepthAreaLayer(map);
-  addSoundingPointLayer(map);
   // Kartan nimistö
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
@@ -491,27 +371,11 @@ export function addAPILayers(map: Map) {
     306
   );
 
-  addFeatureVectorLayer(map, 'buoy', undefined, 50, () => getBuoyStyle(false), undefined, 1, true, 307);
-  addFeatureVectorLayer(map, 'observation', undefined, 50, () => getObservationStyle(false), undefined, 1, true, 308);
-  addFeatureVectorLayer(
-    map,
-    'mareograph',
-    undefined,
-    91,
-    (feature, resolution) => getMareographStyle(feature, false, resolution),
-    undefined,
-    1,
-    true,
-    309
-  );
-  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
-
   // VTS linjat ja ilmoituspisteet
   addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
   addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
-  addFeatureVectorLayer(map, 'fairwaywidth', 30, 20, getFairwayWidthStyle, undefined, 1, true, 314);
 }
 
 function getFittingPadding() {
@@ -645,7 +509,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
 function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   const format = new GeoJSON();
   for (const quay of harbor.quays || []) {
-    if (quay && quay.geometry) {
+    if (quay?.geometry) {
       addQuayFeature(harbor, quay, features, format);
     } else {
       for (const section of quay?.sections || []) {

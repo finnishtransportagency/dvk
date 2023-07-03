@@ -1,5 +1,5 @@
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType, Lang, FeatureDataLayerId } from './constants';
+import { ItemType, Lang } from './constants';
 
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
@@ -45,19 +45,4 @@ export function getDuration(dataUpdatedAt: number, decimals = 1) {
   const now = Date.now(); // for testing warning vs danger + 1000 * 60 * 60 * 11;
   const duration = Math.floor(Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60);
   return Math.round(duration * power) / power;
-}
-
-export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLayerId) {
-  const duration = getDuration(dataUpdatedAt);
-  let warningDurationHours = 2;
-  if (layer === 'buoy' || layer === 'mareograph' || layer === 'observation') {
-    warningDurationHours = 1;
-  }
-  if (duration < warningDurationHours) {
-    return undefined;
-  } else if (duration < 12) {
-    return { duration, color: 'warning' };
-  } else {
-    return { duration, color: 'danger' };
-  }
 }

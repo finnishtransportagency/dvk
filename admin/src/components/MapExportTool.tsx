@@ -7,20 +7,13 @@ import {
   useArea3456Layer,
   useBackgroundBalticseaLayer,
   useBackgroundFinlandLayer,
-  //useBackgroundMmljarviLayer,
-  //useBackgroundMmllaituritLayer,
-  //useBackgroundMmlmeriLayer,
   useBoardLine12Layer,
-  useBuoyLayer,
   useCircleLayer,
   useDepth12Layer,
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
-  useMareographLayer,
-  useMarineWarningLayer,
   useNameLayer,
-  useObservationLayer,
   usePilotLayer,
   useSafetyEquipmentLayer,
   useSpecialArea15Layer,
@@ -385,24 +378,17 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
-  //const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
-  //const bgMmljarviLayer = useBackgroundMmljarviLayer();
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentLayer();
-  useMarineWarningLayer();
   useNameLayer();
-  useMareographLayer();
-  useObservationLayer();
-  useBuoyLayer();
   useVtsLineLayer();
   useVtsPointLayer();
   useLine3456Layer();
   useArea3456Layer();
   useBackgroundBalticseaLayer();
-  //useBackgroundMmllaituritLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
@@ -417,8 +403,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       harborLayer,
       boardLine12Layer,
       bgFinlandLayer,
-      //bgMmlmeriLayer,
-      //bgMmljarviLayer,
       circleLayer,
     ];
 
@@ -434,24 +418,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     setFetchError(allLayers.some((layer) => layer.isError));
 
     setInitDone(allLayers.every((layer) => layer.ready));
-  }, [
-    line12Layer,
-    area12Layer,
-    pilotLayer,
-    harborLayer,
-    boardLine12Layer,
-    bgFinlandLayer,
-    //bgMmlmeriLayer,
-    //bgMmljarviLayer,
-    circleLayer,
-    specialArea2Layer,
-    specialArea15Layer,
-  ]);
+  }, [line12Layer, area12Layer, pilotLayer, harborLayer, boardLine12Layer, bgFinlandLayer, circleLayer, specialArea2Layer, specialArea15Layer]);
 
   const isFetching = useIsFetching();
 
   const dvkMap = getMap();
-  dvkMap.setOfflineMode(false);
 
   const mapElement = useRef<HTMLDivElement | null>(null);
   useIonViewWillEnter(() => {
