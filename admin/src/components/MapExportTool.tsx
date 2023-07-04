@@ -450,7 +450,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       harbors: harbours ?? [],
     };
     setSelectedFairwayCard(fairwayCard);
-  }, [fairwayCardInput, fairways, harbours]);
+  }, [fairwayCardInput, fairways, harbours, initDone]);
 
   // Upload map picture
   const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();

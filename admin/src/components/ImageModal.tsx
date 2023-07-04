@@ -74,7 +74,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                           src={north_arrow}
                           alt=""
                           ref={compassNeedle}
-                          onLoad={setBoundingBox}
+                          onLoad={() => setTimeout(() => setBoundingBox(), 50)}
                           style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
                         />
                       </div>
