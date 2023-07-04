@@ -234,7 +234,7 @@ function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
   if (resolution <= 100) {
     if (!a1Props || !a2Props) {
       return getLineStyle('#EC0E0E', 1);
-    } else if (a1Props.typeCode === 1 && a2Props.typeCode === 1 && a1Props.depth === a2Props.depth) {
+    } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
       return undefined;
     } else {
       return getLineStyle('#EC0E0E', 0.5);
