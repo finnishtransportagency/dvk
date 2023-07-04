@@ -649,9 +649,18 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
 }
 
 function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
-  const borderLineFeatures: Feature<Geometry>[] = [];
   const format = new GeoJSON();
+  const createFeature = (featCoords: Array<turf.Position>, area1Properties: object | null, area2Properties: object | null) => {
+    const feat = format.readFeature(turf.lineString(featCoords), {
+      dataProjection: 'EPSG:4326',
+      featureProjection: MAP.EPSG,
+    });
+    feat.setProperties({ area1Properties: area1Properties }, true);
+    feat.setProperties({ area2Properties: area2Properties }, true);
+    return feat;
+  };
 
+  const borderLineFeatures: Feature<Geometry>[] = [];
   const turfPolygons: Array<turf.Polygon> = [];
   const turfPolygonsLineSegments: Array<turf.FeatureCollection> = [];
   for (let i = 0; i < areas.length; i++) {
@@ -673,32 +682,51 @@ function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
       if (!area1Extent || !area2Extent || !intersects(area1Extent, area2Extent)) {
         continue;
       }
+
+      let featCoords: Array<turf.Position> = [];
       for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
-        if (intersectedSegmenIndices.includes(k)) continue;
+        if (intersectedSegmenIndices.includes(k)) {
+          if (featCoords.length > 1) {
+            borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
+          }
+          featCoords = [];
+          continue;
+        }
         const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
         const turfOverlappingSegment = turf.lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
         if (turfOverlappingSegment.features.length > 0) {
           intersectedSegmenIndices.push(k);
-          const feat = format.readFeature(turfOverlappingSegment.features[0].geometry, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: MAP.EPSG,
-          });
-          feat.setProperties({ area1Properties: area1.getProperties() });
-          feat.setProperties({ area2Properties: area2.getProperties() });
-          borderLineFeatures.push(feat);
+          if (featCoords.length < 1) {
+            featCoords.push(segmentLineString.coordinates[0]);
+          }
+          featCoords.push(segmentLineString.coordinates[1]);
+        } else if (featCoords.length > 1) {
+          borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
+          featCoords = [];
         }
       }
+      if (featCoords.length > 1) {
+        borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
+      }
     }
+
+    let featCoords: Array<turf.Position> = [];
     for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
-      if (intersectedSegmenIndices.includes(k)) continue;
+      if (intersectedSegmenIndices.includes(k)) {
+        if (featCoords.length > 1) {
+          borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), null));
+        }
+        featCoords = [];
+        continue;
+      }
       const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
-      const feat = format.readFeature(segmentLineString, {
-        dataProjection: 'EPSG:4326',
-        featureProjection: MAP.EPSG,
-      });
-      feat.setProperties({ area1Properties: area1.getProperties() });
-      feat.setProperties({ area2Properties: null });
-      borderLineFeatures.push(feat);
+      if (featCoords.length < 1) {
+        featCoords.push(segmentLineString.coordinates[0]);
+      }
+      featCoords.push(segmentLineString.coordinates[1]);
+    }
+    if (featCoords.length > 1) {
+      borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), null));
     }
   }
   return borderLineFeatures;
