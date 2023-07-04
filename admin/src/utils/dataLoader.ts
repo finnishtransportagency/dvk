@@ -4,7 +4,7 @@ import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants'
 
 export function useFeatureData(
   featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = true,
+  refetchOnMount: 'always' | boolean = false,
   refetchInterval: number | false = false,
   staleTime: number = OFFLINE_STORAGE.staleTime,
   cacheTime: number = OFFLINE_STORAGE.cacheTime

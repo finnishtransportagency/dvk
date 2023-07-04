@@ -41,7 +41,7 @@ export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: b
 }
 
 export function useFairwaysQueryData() {
-  return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
+  return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false, refetchOnMount: false });
 }
 
 export function useFairwayCardsQueryData() {

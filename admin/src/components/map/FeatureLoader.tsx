@@ -23,7 +23,7 @@ function useDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
-  refetchOnMount: 'always' | boolean = true,
+  refetchOnMount: 'always' | boolean = false,
   refetchInterval: number | false = false
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
@@ -47,22 +47,22 @@ function useDataLayer(
 }
 
 export function useLine12Layer() {
-  return useDataLayer('line12', 'line12', 'EPSG:4326', 'always');
+  return useDataLayer('line12', 'line12');
 }
 
 export function useLine3456Layer() {
-  return useDataLayer('line3456', 'line3456', 'EPSG:4326', 'always', 1000 * 60 * 60 * 6);
+  return useDataLayer('line3456', 'line3456');
 }
 
 export function useCircleLayer() {
-  return useDataLayer('circle', 'circle', 'EPSG:4326', 'always');
+  return useDataLayer('circle', 'circle');
 }
 
 function useStaticDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId | BackgroundLayerId,
   dataProjection = MAP.EPSG,
-  refetchOnMount: 'always' | boolean = true,
+  refetchOnMount: 'always' | boolean = false,
   refetchInterval: number | false = false
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
@@ -97,15 +97,15 @@ export function useBackgroundBalticseaLayer(): DvkLayerState {
 }
 
 export function useBoardLine12Layer() {
-  return useDataLayer('boardline12', 'boardline12', 'EPSG:4326', 'always');
+  return useDataLayer('boardline12', 'boardline12');
 }
 
 export function useVtsLineLayer() {
-  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258', 'always');
+  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
 }
 
 export function useVtsPointLayer() {
-  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258', 'always');
+  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -172,11 +172,11 @@ export function useArea12Layer(): DvkLayerState {
 }
 
 export function useArea3456Layer() {
-  return useDataLayer('area3456', 'area3456', 'EPSG:4326', 'always', 1000 * 60 * 60 * 6);
+  return useDataLayer('area3456', 'area3456');
 }
 
 export function useDepth12Layer() {
-  return useDataLayer('depth12', 'depth12', 'EPSG:4326', 'always');
+  return useDataLayer('depth12', 'depth12');
 }
 
 export function useSpeedLimitLayer(): DvkLayerState {
@@ -221,19 +221,19 @@ export function useSpeedLimitLayer(): DvkLayerState {
 }
 
 export function useSpecialArea2Layer() {
-  return useDataLayer('specialarea2', 'specialarea2', 'EPSG:4326', 'always');
+  return useDataLayer('specialarea2', 'specialarea2');
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:4326', 'always');
+  return useDataLayer('specialarea15', 'specialarea15');
 }
 
 export function usePilotLayer() {
-  return useDataLayer('pilot', 'pilot', 'EPSG:4258', 'always');
+  return useDataLayer('pilot', 'pilot', 'EPSG:4258');
 }
 
 export function useHarborLayer() {
-  return useDataLayer('harbor', 'harbor', 'EPSG:4326', 'always');
+  return useDataLayer('harbor', 'harbor');
 }
 
 export type EquipmentFault = {
@@ -244,5 +244,5 @@ export type EquipmentFault = {
 };
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
-  return useDataLayer('safetyequipment', 'safetyequipment', 'EPSG:4326', 'always');
+  return useDataLayer('safetyequipment', 'safetyequipment');
 }
