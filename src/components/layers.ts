@@ -237,7 +237,7 @@ function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
     } else if (a1Props.typeCode === 1 && a2Props.typeCode === 1 && a1Props.depth === a2Props.depth) {
       return undefined;
     } else {
-      return getLineStyle('#EC0E0E', 0.25);
+      return getLineStyle('#EC0E0E', 0.5);
     }
   }
   return undefined;
@@ -696,6 +696,7 @@ function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
         const turfOverlappingSegment = turf.lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
         if (turfOverlappingSegment.features.length > 0) {
           intersectedSegmenIndices.push(k);
+          if (i > j) continue;
           if (featCoords.length < 1) {
             featCoords.push(segmentLineString.coordinates[0]);
           }
