@@ -78,7 +78,9 @@ input PictureInput {
   sequenceNumber: Int
   orientation: Orientation!
   rotation: Float
-  harborId: String
+  scaleWidth: String
+  scaleLabel: String
+  name: TextInput
   modificationTimestamp: Float
 }
 
@@ -234,8 +236,16 @@ type Picture {
   sequenceNumber: Int
   orientation: Orientation!
   rotation: Float
-  harborId: String
+  name: PictureText
+  scaleLabel: String
+  scaleWidth: String
   modificationTimestamp: Float
+}
+
+type PictureText {
+  fi: String!
+  sv: String!
+  en: String!
 }
 
 type TrafficService {

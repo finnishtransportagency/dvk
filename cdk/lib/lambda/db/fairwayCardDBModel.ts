@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
+import { Maybe, Status, Operation, Orientation, TextInput } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 
@@ -75,7 +75,9 @@ export type Picture = {
   sequenceNumber?: Maybe<number>;
   orientation: Orientation;
   rotation?: Maybe<number>;
-  harborId?: Maybe<string>;
+  scaleWidth?: Maybe<string>;
+  scaleLabel?: Maybe<string>;
+  name?: Maybe<TextInput>;
   modificationTimestamp?: Maybe<number>;
 };
 

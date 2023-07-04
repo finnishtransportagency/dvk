@@ -621,8 +621,9 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         olExtent.extend(extent, geom.getExtent());
       }
     }
-    if (!olExtent.isEmpty(extent)) {
+    if (!olExtent.isEmpty(extent) && (dvkMap.currentExtent === null || !dvkMap.currentExtent.every((n, i) => n === extent[i]))) {
       dvkMap.olMap?.getView().fit(extent, { padding: getFittingPadding(), duration: 1000 });
+      dvkMap.currentExtent = extent;
     }
   }
 }

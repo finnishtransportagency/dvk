@@ -92,8 +92,8 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                           </em>
                         )}
                         <em className="danger">{t('fairwaycard.notForNavigation')}</em>
-                        <div className="mapScale" style={{ width: /*picture.scaleWidth*/ 100 + 'px' }}>
-                          {/*picture.scaleLabel*/}
+                        <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
+                          {picture.scaleLabel}
                         </div>
                       </div>
                     </div>

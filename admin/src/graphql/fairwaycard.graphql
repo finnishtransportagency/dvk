@@ -149,11 +149,17 @@ query fairwayCardById($id: String!) {
     }
     pictures {
       id
-      harborId
+      name {
+        fi
+        sv
+        en
+      }
       orientation
       rotation
       modificationTimestamp
       sequenceNumber
+      scaleLabel
+      scaleWidth
     }
   }
 }

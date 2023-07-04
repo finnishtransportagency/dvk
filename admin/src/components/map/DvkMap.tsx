@@ -30,11 +30,9 @@ import { defaults } from 'ol/interaction/defaults';
 import north_arrow_small from '../../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
 import VectorImageLayer from 'ol/layer/VectorImage';
-import TakeScreenshotControl from './mapControls/TakeScreenshotControl';
-import SelectPortraitControl from './mapControls/SelectPortraitControl';
-import SelectLandscapeControl from './mapControls/SelectLandscapeControl';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
+import { Extent } from 'ol/extent';
 
 export type BackgroundMapType = 'sea' | 'land';
 export type OrientationType = Orientation | '';
@@ -57,12 +55,6 @@ class DvkMap {
   private readonly infoTextControl: InfoTextControl = new InfoTextControl();
 
   private readonly fitFeaturesOnMapControl: FitFeaturesOnMapControl = new FitFeaturesOnMapControl();
-
-  private readonly takeScreenshotControl: TakeScreenshotControl = new TakeScreenshotControl();
-
-  private readonly selectPortraitControl: SelectPortraitControl = new SelectPortraitControl();
-
-  private readonly selectLandscapeControl: SelectLandscapeControl = new SelectLandscapeControl();
 
   private readonly mapMaskControl: MapMaskControl = new MapMaskControl();
 
@@ -88,6 +80,7 @@ class DvkMap {
 
   public onTileStatusChange: () => void = () => {};
 
+  public currentExtent: Extent | null = null;
   // eslint-disable-next-line
   init(t: any, i18n: any) {
     if (this.initialized) {
@@ -303,8 +296,6 @@ class DvkMap {
   public setOrientationType = (orientationType: OrientationType) => {
     if (this.olMap) {
       this.orientationType = orientationType;
-      this.takeScreenshotControl.setDisabled(!orientationType);
-
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.remove(Orientation.Portrait, Orientation.Landscape);
       if (orientationType) targetElement?.classList.add(orientationType);
@@ -419,9 +410,6 @@ class DvkMap {
     this.olMap?.addControl(this.rotateControl);
 
     this.fitFeaturesOnMapControl.setTipLabel(this.t('homePage.map.controls.features.tipLabel'));
-    this.takeScreenshotControl.setTipLabel(this.t('homePage.map.controls.screenshot.tipLabel'));
-    this.selectPortraitControl.setTipLabel(this.t('homePage.map.controls.orientation.selectPortrait'));
-    this.selectLandscapeControl.setTipLabel(this.t('homePage.map.controls.orientation.selectLandscape'));
     this.mapDetailsControl.setMousePositionLabel(this.t('homePage.map.controls.mapDetails.mousePositionLabel'));
     this.layerPopupControl.setTipLabel(this.t('homePage.map.controls.layer.tipLabel'));
     this.infoTextControl.setText(this.t('homePage.map.controls.infoText'));
@@ -441,18 +429,6 @@ class DvkMap {
 
   public addFitFeaturesOnMapControl = () => {
     this.fitFeaturesOnMapControl?.setMap(this.olMap);
-  };
-
-  public addTakeScreenshotControl = () => {
-    this.takeScreenshotControl?.setMap(this.olMap);
-  };
-
-  public addSelectPortraitControl = () => {
-    this.selectPortraitControl?.setMap(this.olMap);
-  };
-
-  public addSelectLandscapeControl = () => {
-    this.selectLandscapeControl?.setMap(this.olMap);
   };
 
   public addZoomControl = () => {

@@ -462,8 +462,9 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           id: toBeSavedPicture.id,
           orientation: dvkMap.getOrientationType() || Orientation.Portrait,
           rotation: toBeSavedPicture.rotation,
-          harborId: toBeSavedPicture.harborId,
           modificationTimestamp: Date.now(),
+          scaleWidth: toBeSavedPicture.scaleWidth,
+          scaleLabel: toBeSavedPicture.scaleLabel,
         };
         // Update fairwayCard state
         setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
@@ -478,8 +479,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   });
 
   const uploadPicture = (base64Data: string, orientation: Orientation, rotation: number, scaleWidth?: string, scaleLabel?: string) => {
-    // TODO: Set also scaleWidth and scaleLabel
-    console.log('TODO: Set also scale variables: ', scaleWidth, scaleLabel);
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
       cardId: fairwayCardInput.id,
@@ -487,9 +486,10 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       id: fairwayCardInput.id + Date.now(),
     };
     const picInputObject = {
-      harborId: undefined,
-      orientation: orientation,
-      rotation: rotation,
+      orientation,
+      rotation,
+      scaleWidth,
+      scaleLabel,
     };
     setToBeSavedPicture({ ...picUploadObject, ...picInputObject });
     uploadMapPictureMutation({
