@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { QueryClient, useIsFetching } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { Drivers, Storage } from '@ionic/storage';
-import IonicAsyncStorage from './utils/IonicAsyncStorage';
+import IdbAsyncStorage from './utils/IdbAsyncStorage';
 import { getMap, InitDvkMap } from './components/DvkMap';
 import { Lang, OFFLINE_STORAGE } from './utils/constants';
 
@@ -83,15 +82,11 @@ const queryClient = new QueryClient({
   },
 });
 
-const store = new Storage({
-  name: OFFLINE_STORAGE.name,
-  storeName: OFFLINE_STORAGE.storeName,
-  driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
-});
-store.create();
+/* Delete old react query ionic storage database "DVK", if still exist */
+window.indexedDB.deleteDatabase('DVK');
 
 const asyncStoragePersister = createAsyncStoragePersister({
-  storage: IonicAsyncStorage(store),
+  storage: IdbAsyncStorage(),
   throttleTime: 10000,
 });
 
