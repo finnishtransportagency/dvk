@@ -60,6 +60,21 @@ fragment HarborParts on Harbor {
   }
 }
 
+fragment PictureParts on Picture {
+  id
+  sequenceNumber
+  orientation
+  rotation
+  name {
+    fi
+    sv
+    en
+  }
+  scaleLabel
+  scaleWidth
+  modificationTimestamp
+}
+
 fragment FairwayCardParts on FairwayCard {
   id
   name {
@@ -268,18 +283,7 @@ fragment FairwayCardParts on FairwayCard {
     ...HarborParts
   }
   pictures {
-    id
-    sequenceNumber
-    orientation
-    rotation
-    name {
-      fi
-      sv
-      en
-    }
-    scaleLabel
-    scaleWidth
-    modificationTimestamp
+    ...PictureParts
   }
 }
 

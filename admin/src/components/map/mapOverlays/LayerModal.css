@@ -25,11 +25,6 @@ ion-modal#layerModalContainer .divider {
   border-bottom: 1px solid var(--ion-color-light);
 }
 
-ion-modal#layerModalContainer::part(content) {
-  right: 100px;
-  bottom: 48px;
-  position: absolute;
-}
 .mobile ion-modal#layerModalContainer::part(content) {
   position: static;
 }

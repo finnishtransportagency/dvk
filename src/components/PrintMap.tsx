@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text } from '../graphql/generated';
-import { Lang } from '../utils/constants';
+import { PicturePartsFragment, Text } from '../graphql/generated';
+import { Lang, imageUrl } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 import { debounce } from 'lodash';
 import { refreshPrintableMap } from '../utils/common';
@@ -9,18 +9,19 @@ import dvkMap from './DvkMap';
 import { IonText } from '@ionic/react';
 
 type FairwayCardProps = {
-  pictures?: string[];
+  pictures?: PicturePartsFragment[];
+  id?: string;
   name?: Text;
   modified?: number;
   isN2000?: boolean;
 };
 
-const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, pictures }) => {
+const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pictures }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const debouncedPrintImageRefresh = debounce(() => {
-    refreshPrintableMap(pictures);
+    refreshPrintableMap();
   }, 500);
 
   useEffect(() => {
@@ -35,6 +36,17 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, picture
     };
   }, [debouncedPrintImageRefresh]);
 
+  const setBoundingBox = (pictureId: string) => {
+    const compassInfo = document.getElementById('compassInfo' + pictureId);
+    const compassNeedle = document.getElementById('compassNeedle' + pictureId);
+    if (compassInfo && compassNeedle) {
+      const bbox = compassNeedle.getBoundingClientRect();
+      const sidePadding = 8;
+      compassNeedle.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
+      compassInfo.style.minWidth = (bbox.width + sidePadding).toString() + 'px';
+      compassInfo.style.minHeight = (bbox.height + sidePadding).toString() + 'px';
+    }
+  };
   return (
     <>
       <div className="mapWrapper">
@@ -59,18 +71,52 @@ const PrintMap: React.FC<FairwayCardProps> = ({ name, modified, isN2000, picture
                 </em>
               )}
               <em className="danger">{t('notForNavigation')}</em>
-              <div id="mapScale"></div>
+              <div id="mapScale" className="mapScale"></div>
             </div>
           </div>
         </div>
       </div>
-      {pictures?.map((_, index) => {
+      {pictures?.map((picture, index) => {
         return (
           <>
             <div className="pagebreak"></div>
             <div className="mapWrapper">
               <div className="mapContent">
-                <div className="mapExport" id={`mapExport${index}`}></div>
+                <div className="imageWrapper">
+                  <div className="mapExport" id={`mapExport${index}`}>
+                    <img src={imageUrl + id + '/' + picture.id} alt={picture.id} />
+                  </div>
+                  <div className="mapLegend">
+                    <div className="bg"></div>
+                    <div className="compassInfo" id={'compassInfo' + picture.id}>
+                      <img
+                        src={north_arrow}
+                        alt=""
+                        id={'compassNeedle' + picture.id}
+                        onLoad={() => setTimeout(() => setBoundingBox(picture.id), 250)}
+                        style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                      />
+                    </div>
+                    <div className="cardInfo">
+                      <IonText>
+                        <h3>{name ? name[lang] ?? name.fi : t('fairwaycard.documentTitle')}</h3>
+                      </IonText>
+                      {picture.modificationTimestamp && (
+                        <em>
+                          {t('modified')}{' '}
+                          {t('modifiedDate', {
+                            val: picture.modificationTimestamp ?? '-',
+                          })}
+                          {isN2000 ? ' - N2000 (BSCD2000)' : ' - MW'}
+                        </em>
+                      )}
+                      <em className="danger">{t('notForNavigation')}</em>
+                      <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
+                        {picture.scaleLabel}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </>
