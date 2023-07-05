@@ -22,6 +22,7 @@ interface InputProps {
   max?: number;
   decimalCount?: number;
   focused?: boolean;
+  name?: string;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -43,6 +44,7 @@ const FormInput: React.FC<InputProps> = ({
   max,
   decimalCount,
   focused,
+  name,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -157,6 +159,7 @@ const FormInput: React.FC<InputProps> = ({
       </IonLabel>
       <IonInput
         ref={inputRef}
+        name={name ? name + (actionLang ?? '') : undefined}
         value={val}
         min={inputType === 'number' ? min ?? 0 : undefined}
         max={inputType === 'number' ? max ?? 9999999 : undefined}

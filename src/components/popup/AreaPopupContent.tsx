@@ -87,7 +87,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
           <IonRow>
             <IonCol>
-              <em>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</em>
+              <em>
+                {showN2000HeightSystem ? area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel : area.properties.referenceLevel}
+              </em>
             </IonCol>
           </IonRow>
         )}
@@ -164,20 +166,29 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </IonCol>
           </IonRow>
         )}
-        {fairwayCards.length > 0 && (
+        <IonRow>
+          <IonCol className="header">{t('popup.area.fairways')}</IonCol>
+        </IonRow>
+        {fairwayCards.length > 0 ? (
+          fairwayCards.map((card) => {
+            return (
+              <IonRow key={'cardlink' + card.id}>
+                <IonCol>
+                  <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                </IonCol>
+              </IonRow>
+            );
+          })
+        ) : (
           <IonRow>
-            <IonCol className="header">{t('popup.area.fairways')}</IonCol>
+            <IonCol>
+              <p className="info use-flex ion-align-items-center">
+                <InfoIcon />
+                {t('popup.common.noFairwayCards')}
+              </p>
+            </IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card) => {
-          return (
-            <IonRow key={'cardlink' + card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-              </IonCol>
-            </IonRow>
-          );
-        })}
         {area.properties.typeCode === 15 && (
           <>
             <IonRow>
