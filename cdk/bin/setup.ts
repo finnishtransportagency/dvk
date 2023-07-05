@@ -95,7 +95,6 @@ async function main() {
     REACT_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
     REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
     REACT_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName || 'dvkdev.testivaylapilvi.fi',
-    REACT_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
     REACT_APP_ENV: 'local',
     REACT_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
       ? `https://${frontendStackOutputs.CloudFrontDomainName}/s3static/`
