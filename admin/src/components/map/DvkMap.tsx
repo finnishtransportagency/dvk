@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
-import bgLandMapStyles from './normikartta_nls_basemap_v1.json';
 import FitFeaturesOnMapControl from './mapControls/FitFeaturesOnMapControl';
 import MapDetailsControl from './mapControls/MapDetailsControl';
 import LayerPopupControl from './mapControls/LayerPopupControl';
@@ -34,7 +33,6 @@ import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
 
-export type BackgroundMapType = 'sea' | 'land';
 export type OrientationType = Orientation | '';
 
 class DvkMap {
@@ -62,8 +60,6 @@ class DvkMap {
 
   private readonly layerPopupControl: LayerPopupControl = new LayerPopupControl();
 
-  private backgroundMapType: BackgroundMapType = 'sea';
-
   private orientationType: OrientationType = '';
 
   private source: VectorTileSource | null = null;
@@ -75,10 +71,6 @@ class DvkMap {
   public i18n: any;
 
   public initialized = false;
-
-  public tileStatus: 'ok' | 'error' = 'ok';
-
-  public onTileStatusChange: () => void = () => {};
 
   public currentExtent: Extent | null = null;
   // eslint-disable-next-line
@@ -137,9 +129,6 @@ class DvkMap {
       controls: [
         this.zoomControl,
         this.fitFeaturesOnMapControl,
-        //this.takeScreenshotControl,
-        //this.selectPortraitControl,
-        //this.selectLandscapeControl,
         this.mapMaskControl,
         this.mapDetailsControl,
         new ScaleLine({
@@ -187,7 +176,7 @@ class DvkMap {
       imageRatio: 3,
     });
     this.olMap.addLayer(bgBalticseaLayer);
-    this.setBackgroundMapType(this.backgroundMapType);
+    this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
     this.setOrientationType(this.orientationType);
     this.translate();
   }
@@ -225,20 +214,6 @@ class DvkMap {
       if (!source) {
         return;
       }
-
-      source.on('tileloadend', () => {
-        if (this.tileStatus !== 'ok') {
-          this.tileStatus = 'ok';
-          this.onTileStatusChange();
-        }
-      });
-
-      source.on('tileloaderror', () => {
-        if (this.tileStatus !== 'error') {
-          this.tileStatus = 'error';
-          this.onTileStatusChange();
-        }
-      });
 
       const layer = new VectorTileLayer({
         declutter: false,
@@ -285,14 +260,6 @@ class DvkMap {
     });
   };
 
-  public setBackgroundMapType = (bgMapType: BackgroundMapType) => {
-    if (this.olMap && bgMapType === 'sea') {
-      this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
-    } else if (this.olMap && bgMapType === 'land') {
-      this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)');
-    }
-  };
-
   public setOrientationType = (orientationType: OrientationType) => {
     if (this.olMap) {
       this.orientationType = orientationType;
@@ -314,79 +281,6 @@ class DvkMap {
       }
     }
     return canvasSize;
-  };
-
-  public printCurrentMapView = () => {
-    if (this.olMap) {
-      const mapScale = this.olMap?.getViewport().querySelector('.ol-scale-line-inner');
-      const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
-      const rotation = this.olMap?.getView().getRotation();
-
-      console.log(mapScale, rotation, mapScaleWidth, mapScale?.innerHTML);
-
-      // Merge canvases to one canvas
-      const mapCanvas = document.createElement('canvas');
-      const mapSize = this.olMap?.getSize() || [0, 0];
-      mapCanvas.width = mapSize[0];
-      mapCanvas.height = mapSize[1];
-      const mapContext = mapCanvas.getContext('2d');
-      Array.prototype.forEach.call(this.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-          if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-          let matrix;
-          const transform = canvas.style.transform;
-          if (transform) {
-            // Get the transform parameters from the style's transform matrix
-            matrix = transform
-              .match(/^matrix\(([^(]*)\)$/)[1]
-              .split(',')
-              .map(Number);
-          } else {
-            matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
-          }
-          // Apply the transform to the export map context
-          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-          const backgroundColor = canvas.parentNode.style.backgroundColor;
-          if (backgroundColor && mapContext) {
-            mapContext.fillStyle = backgroundColor;
-            mapContext.fillRect(0, 0, canvas.width, canvas.height);
-          }
-          if (mapContext) mapContext.drawImage(canvas, 0, 0);
-        }
-      });
-      if (mapContext) {
-        mapContext.globalAlpha = 1;
-        mapContext.setTransform(1, 0, 0, 1, 0, 0);
-      }
-
-      // Crop the canvas and create image
-      const mapCanvasCropped = document.createElement('canvas');
-      const canvasSize = this.getCanvasDimensions();
-      mapCanvasCropped.width = canvasSize[0];
-      mapCanvasCropped.height = canvasSize[1];
-      const mapContextCropped = mapCanvasCropped.getContext('2d');
-      if (mapContextCropped)
-        mapContextCropped.drawImage(
-          mapCanvas,
-          (mapSize[0] - mapCanvasCropped.width) / 2,
-          (mapSize[1] - mapCanvasCropped.height) / 2,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height,
-          0,
-          0,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height
-        );
-
-      const img = new Image();
-      img.src = mapCanvasCropped.toDataURL('image/png');
-      const mapExport = document.getElementById('mapExport');
-      if (mapExport) {
-        mapExport.innerHTML = '';
-        mapExport.appendChild(img);
-      }
-    }
   };
 
   public translate = () => {
@@ -445,10 +339,6 @@ class DvkMap {
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.add('dvkMap');
     }
-  };
-
-  public getBackgroundMapType = () => {
-    return this.backgroundMapType;
   };
 
   public getOrientationType = () => {

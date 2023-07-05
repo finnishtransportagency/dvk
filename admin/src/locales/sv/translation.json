@@ -176,7 +176,8 @@
     "print-images-info-take-image": "[sv] Ota kuva tulostusalueesta",
     "print-images-info-set-image-button": "[sv] Aseta kuva -painikkeella.",
     "print-images-modified": "[sv] Kuva luotu",
-    "notForNavigation": "Ej för navigation"
+    "notForNavigation": "Ej för navigation",
+    "toggle-sequence": "[sv] Aseta järjestysnumero"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
@@ -210,9 +211,6 @@
           "zoomInTipLabel": "Zooma in",
           "zoomOutTipLabel": "Zooma ut"
         },
-        "ownLocation": {
-          "tipLabel": "Centrera på din egen position"
-        },
         "openMenu": {
           "tipLabel": "Öppna meny"
         },
@@ -228,58 +226,18 @@
           "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
-          "marineWarnings": "Navigationsvarningar",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
-          "conditions": "Förhållanden",
-          "seaLevel": "Vattenståndet",
-          "weatherStation": "Kustväderstationerna",
-          "ice": "Iskarta",
-          "buoys": "Vågbojar",
           "vts": "VTS",
           "vtsline": "VTS-områden",
           "vtspoint": "VTS-trafikrapporteringspunkter",
           "general": "Allmänt",
           "name": "Kartnamn",
-          "depthinfo": "Djup information",
-          "soundingpoint": "Nummers",
-          "depthcontour": "Kurvor",
-          "deptharea": "Zoner",
           "specialarea2": "Ankringsområden",
-          "specialarea15": "Områden med mötes- och omkörningsförbud",
-          "mapStyle": {
-            "header": "Kartans stil",
-            "landButtonLabel": "Fastland",
-            "seaButtonLabel": "Hav"
-          },
-          "legend": {
-            "icefree": "Isfritt",
-            "newice": "Nyis",
-            "thinice": "Tunn jämn is",
-            "fastice": "Fastis",
-            "rottenice": "Rutten fastis",
-            "openwater": "Öppet vatten",
-            "veryopenice": "Mycket spridd drivis",
-            "openice": "Spridd drivis",
-            "closeice": "Tät drivis",
-            "verycloseice": "Mycket tät / kompakt drivis",
-            "consolidatedice": "Sammanfrusen drivis",
-            "depth1": "Djup under 10 m",
-            "depth2": "Djup 10 - 20 m",
-            "depth3": "Djup över 20 m",
-            "depth4": "Djup 0 - 3 m",
-            "depth5": "Djup 3 - 6 m",
-            "depth6": "Djup över 10 m"
-          }
+          "specialarea15": "Områden med mötes- och omkörningsförbud"
         },
         "mapDetails": {
           "mousePositionLabel": "Kursorns koordinat:"
-        },
-        "searchbar": {
-          "placeholder": "Sök med farledsnamn",
-          "title": "Farledssökning",
-          "clearTitle": "Töm",
-          "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
         },
         "orientation": {
           "selectPortrait": "[sv] Pystytila",

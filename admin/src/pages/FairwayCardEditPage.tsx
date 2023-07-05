@@ -123,7 +123,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
       }),
     },
     operation: origin ? Operation.Create : Operation.Update,
-    pictures: data?.fairwayCard?.pictures ?? [],
+    pictures: origin ? [] : data?.fairwayCard?.pictures ?? [],
   };
 
   return (

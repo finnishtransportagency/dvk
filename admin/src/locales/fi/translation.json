@@ -176,7 +176,8 @@
     "print-images-info-take-image": "Ota kuva tulostusalueesta",
     "print-images-info-set-image-button": "Aseta kuva -painikkeella.",
     "print-images-modified": "Kuva luotu",
-    "notForNavigation": "Ei navigointikäyttöön"
+    "notForNavigation": "Ei navigointikäyttöön",
+    "toggle-sequence": "Aseta järjestysnumero"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
@@ -210,9 +211,6 @@
           "zoomInTipLabel": "Lähennä",
           "zoomOutTipLabel": "Loitonna"
         },
-        "ownLocation": {
-          "tipLabel": "Keskitä omaan sijaintiin"
-        },
         "openMenu": {
           "tipLabel": "Avaa valikko"
         },
@@ -228,58 +226,18 @@
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
-          "marineWarnings": "Merivaroitukset",
           "boardLines": "Taululinjat",
           "circles": "Kääntöympyrät",
-          "conditions": "Olosuhteet",
-          "seaLevel": "Merivedenkorkeus",
-          "weatherStation": "Säähavaintoasemat",
-          "ice": "Jääkartta",
-          "buoys": "Aaltopoijut",
           "vts": "VTS",
           "vtsline": "VTS-alueet",
           "vtspoint": "VTS-ilmoituspisteet",
           "general": "Yleiset",
           "name": "Karttanimistö",
-          "depthinfo": "Syvyystiedot",
-          "soundingpoint": "Luvut",
-          "depthcontour": "Käyrät",
-          "deptharea": "Alueet",
           "specialarea2": "Ankkurointialueet",
-          "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
-          "mapStyle": {
-            "header": "Kartan tyyli",
-            "landButtonLabel": "Maa",
-            "seaButtonLabel": "Meri"
-          },
-          "legend": {
-            "icefree": "Jäätön",
-            "newice": "Uusi jää",
-            "thinice": "Ohut tasainen jää",
-            "fastice": "Kiintojää",
-            "rottenice": "Hauras kiintojää",
-            "openwater": "Avovesi",
-            "veryopenice": "Hyvin harva ajojää",
-            "openice": "Harva ajojää",
-            "closeice": "Tiheä ajojää",
-            "verycloseice": "Hyvin tiheä ajojää",
-            "consolidatedice": "Yhteenjäätynyt ajojää",
-            "depth1": "Syvyys alle 10 m",
-            "depth2": "Syvyys 10 - 20 m",
-            "depth3": "Syvyys yli 20 m",
-            "depth4": "Syvyys 0 - 3 m",
-            "depth5": "Syvyys 3 - 6 m",
-            "depth6": "Syvyys yli 10 m"
-          }
+          "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet"
         },
         "mapDetails": {
           "mousePositionLabel": "Hiiren koordinaatti:"
-        },
-        "searchbar": {
-          "placeholder": "Hae väylän nimellä",
-          "title": "Väylähaku",
-          "clearTitle": "Tyhjennä",
-          "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
         },
         "orientation": {
           "selectPortrait": "Pystytila",
