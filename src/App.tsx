@@ -83,7 +83,9 @@ const queryClient = new QueryClient({
 });
 
 /* Delete old react query ionic storage database "DVK", if still exist */
-window.indexedDB.deleteDatabase('DVK');
+if (window.indexedDB) {
+  window.indexedDB.deleteDatabase('DVK');
+}
 
 const asyncStoragePersister = createAsyncStoragePersister({
   storage: IdbAsyncStorage(),
