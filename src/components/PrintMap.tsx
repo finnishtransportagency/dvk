@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PicturePartsFragment, Text } from '../graphql/generated';
+import { Orientation, PicturePartsFragment, Text } from '../graphql/generated';
 import { Lang, imageUrl } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 import { debounce } from 'lodash';
@@ -36,17 +36,24 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
     };
   }, [debouncedPrintImageRefresh]);
 
-  const setBoundingBox = (pictureId: string) => {
+  const setBoundingBox = useCallback((pictureId: string) => {
     const compassInfo = document.getElementById('compassInfo' + pictureId);
     const compassNeedle = document.getElementById('compassNeedle' + pictureId);
     if (compassInfo && compassNeedle) {
       const bbox = compassNeedle.getBoundingClientRect();
       const sidePadding = 8;
-      compassNeedle.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
+      compassNeedle.style.marginLeft = bbox.width / 2 - sidePadding / 2 + 'px';
       compassInfo.style.minWidth = (bbox.width + sidePadding).toString() + 'px';
       compassInfo.style.minHeight = (bbox.height + sidePadding).toString() + 'px';
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    for (const picture of pictures ?? []) {
+      setBoundingBox(picture.id);
+    }
+  }, [pictures, setBoundingBox]);
+
   return (
     <>
       <div className="mapWrapper">
@@ -78,48 +85,45 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
       </div>
       {pictures?.map((picture, index) => {
         return (
-          <>
+          <div className={'imageWrapper ' + (picture.orientation === Orientation.Portrait ? 'hide-landscape' : 'hide-portrait')} key={picture.id}>
             <div className="pagebreak"></div>
             <div className="mapWrapper">
               <div className="mapContent">
-                <div className="imageWrapper">
-                  <div className="mapExport" id={`mapExport${index}`}>
-                    <img src={imageUrl + id + '/' + picture.id} alt={picture.id} />
+                <div className="mapExport" id={`mapExport${index}`}>
+                  <img src={imageUrl + id + '/' + picture.id} alt={picture.id} />
+                </div>
+                <div className="mapLegend">
+                  <div className="bg"></div>
+                  <div className="compassInfo" id={'compassInfo' + picture.id}>
+                    <img
+                      src={north_arrow}
+                      alt=""
+                      id={'compassNeedle' + picture.id}
+                      style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                    />
                   </div>
-                  <div className="mapLegend">
-                    <div className="bg"></div>
-                    <div className="compassInfo" id={'compassInfo' + picture.id}>
-                      <img
-                        src={north_arrow}
-                        alt=""
-                        id={'compassNeedle' + picture.id}
-                        onLoad={() => setTimeout(() => setBoundingBox(picture.id), 250)}
-                        style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
-                      />
-                    </div>
-                    <div className="cardInfo">
-                      <IonText>
-                        <h3>{name ? name[lang] ?? name.fi : t('fairwaycard.documentTitle')}</h3>
-                      </IonText>
-                      {picture.modificationTimestamp && (
-                        <em>
-                          {t('modified')}{' '}
-                          {t('modifiedDate', {
-                            val: picture.modificationTimestamp ?? '-',
-                          })}
-                          {isN2000 ? ' - N2000 (BSCD2000)' : ' - MW'}
-                        </em>
-                      )}
-                      <em className="danger">{t('notForNavigation')}</em>
-                      <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
-                        {picture.scaleLabel}
-                      </div>
+                  <div className="cardInfo">
+                    <IonText>
+                      <h3>{name ? name[lang] ?? name.fi : t('fairwaycard.documentTitle')}</h3>
+                    </IonText>
+                    {picture.modificationTimestamp && (
+                      <em>
+                        {t('modified')}{' '}
+                        {t('modifiedDate', {
+                          val: picture.modificationTimestamp ?? '-',
+                        })}
+                        {isN2000 ? ' - N2000 (BSCD2000)' : ' - MW'}
+                      </em>
+                    )}
+                    <em className="danger">{t('notForNavigation')}</em>
+                    <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
+                      {picture.scaleLabel}
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </>
+          </div>
         );
       })}
     </>
