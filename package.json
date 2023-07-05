@@ -13,7 +13,6 @@
     "@ionic/react": "^7.0.12",
     "@ionic/react-router": "^7.0.12",
     "@ionic/react-test-utils": "^0.4.0",
-    "@ionic/storage": "^4.0.0",
     "@tanstack/query-async-storage-persister": "^4.29.11",
     "@tanstack/react-query": "^4.29.12",
     "@tanstack/react-query-persist-client": "^4.29.12",
@@ -106,6 +105,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "fake-indexeddb": "^4.0.1",
     "jest-junit": "^16.0.0",
     "jest-sonar": "^0.2.16"
   },

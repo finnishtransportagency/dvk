@@ -1,4 +1,4 @@
-import { Storage as IonicStorage } from '@ionic/storage';
+import { get, set, del } from 'idb-keyval';
 
 // Note: the interface definition is copied from the react-query source code '/src/createAsyncStoragePersistor-experimental/index.ts'
 interface AsyncStorage {
@@ -7,20 +7,20 @@ interface AsyncStorage {
   removeItem: (key: string) => Promise<void>;
 }
 
-const IonicAsyncStorage = (storage: IonicStorage): AsyncStorage => {
+const IdbAsyncStorage = (): AsyncStorage => {
   return {
     getItem: async (key: string) => {
-      return storage.get(key) as Promise<string>;
+      return get(key) as Promise<string | null>;
     },
 
     setItem: async (key: string, value: string) => {
-      await storage.set(key, value);
+      await set(key, value);
     },
 
     removeItem: async (key: string) => {
-      await storage.remove(key);
+      await del(key);
     },
   };
 };
 
-export default IonicAsyncStorage;
+export default IdbAsyncStorage;

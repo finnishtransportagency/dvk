@@ -4,6 +4,7 @@ import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
+import 'fake-indexeddb/auto';
 
 class ResizeObserver {
   observe() {
