@@ -23,7 +23,7 @@ import {
   useVtsPointLayer,
 } from './map/FeatureLoader';
 import MapOverlays from './map/mapOverlays/MapOverlays';
-import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
+import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput, Status } from '../graphql/generated';
 import { setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
@@ -240,6 +240,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                     toggleSequence(pic, Orientation.Portrait);
                   }}
                   fill="clear"
+                  disabled={fairwayCardInput.status === Status.Removed}
                   className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                   title={t('fairwaycard.toggle-sequence') ?? ''}
                   aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -249,6 +250,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                 <IonButton
                   slot="end"
                   fill="clear"
+                  disabled={fairwayCardInput.status === Status.Removed}
                   className="icon-only x-small deletePicture"
                   onClick={(ev) => {
                     ev.preventDefault();
@@ -314,6 +316,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                     toggleSequence(pic, Orientation.Landscape);
                   }}
                   fill="clear"
+                  disabled={fairwayCardInput.status === Status.Removed}
                   className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                   title={t('fairwaycard.toggle-sequence') ?? ''}
                   aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -323,6 +326,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                 <IonButton
                   slot="end"
                   fill="clear"
+                  disabled={fairwayCardInput.status === Status.Removed}
                   className="icon-only x-small deletePicture"
                   onClick={(ev) => {
                     ev.preventDefault();
@@ -579,7 +583,12 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           )}
           <ExtMapControls
             printCurrentMapView={printCurrentMapView}
-            printDisabled={isLoadingMutation || !fairwayCardInput.id || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg}
+            printDisabled={
+              isLoadingMutation ||
+              !fairwayCardInput.id ||
+              fairwayCardInput.status === Status.Removed ||
+              !!validationErrors?.find((error) => error.id === 'primaryId')?.msg
+            }
           />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>

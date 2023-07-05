@@ -2,7 +2,9 @@ import { DynamoDBStreamEvent, DynamoDBRecord, DynamoDBStreamHandler } from 'aws-
 import { AttributeValue } from '@aws-sdk/client-dynamodb';
 import { unmarshall } from '@aws-sdk/util-dynamodb';
 import { auditLog, log } from '../logger';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import FairwayCardDBModel from './fairwayCardDBModel';
+import { getNewStaticBucketName } from '../environment';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
@@ -63,7 +65,19 @@ async function handleRemove(record: DynamoDBRecord) {
     return;
   }
 
-  const data = unmarshall(record.dynamodb.OldImage as { [key: string]: AttributeValue });
+  const data = unmarshall(record.dynamodb.OldImage as { [key: string]: AttributeValue }) as FairwayCardDBModel;
+  for (const picture of data.pictures ?? []) {
+    const command = new DeleteObjectCommand({
+      Key: data.id + '/' + picture.id,
+      Bucket: getNewStaticBucketName(),
+    });
+    try {
+      await s3Client.send(command);
+    } catch (e) {
+      log.error('removing picture %s failed: %s', picture.id, e);
+    }
+  }
+
   auditLog.info({ data, user: 'system' }, `${bucket.table} removed`);
 }
 
