@@ -1,0 +1,58 @@
+.marine-warning-container {
+  position: fixed;
+  /* TODO mobile placement */
+  width: 80%;
+  opacity: 1;
+  bottom: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.marine-warning-overlay {
+  visibility: hidden;
+  opacity: 0;
+  position: relative;
+  display: block;
+  border-radius: 4px;
+  margin: 12px auto 12px auto;
+  padding: 16px;
+  background-color: var(--ion-background-color, #fff);
+  color: var(--ion-color-dark);
+  font-size: 12px;
+  line-height: 1.125rem;
+  overflow: auto;
+  transition: opacity 500ms;
+}
+
+ion-app:not(.mobile) div.marine-warning-overlay {
+  width: min(718px, 70%);
+  height: auto;
+  max-width: min(718px, 70%);
+  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+div.marine-warning-overlay ion-grid {
+  min-width: 250px;
+}
+
+div.marine-warning-overlay .infoIcon {
+  margin-right: 16px;
+  font-size: 24px;
+  color: var(--ion-color-primary);
+}
+
+div.marine-warning-overlay .closeButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lightest) !important;
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 30px;
+  margin: 0 0 0 6px;
+}
+
+div.marine-warning-overlay .closeButton ion-icon {
+  width: 24px;
+  height: 24px;
+}

@@ -21,7 +21,7 @@ import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupConten
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 import { MarineWarningInfoModal } from './MarineWarningInfoModal';
-import { CoastalWarningModal } from './CoastalWarningModal';
+import { MarineWarningNotifications } from './MarineWarningNotifications';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -71,10 +71,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
 
   const dismissMarineWarningNotificationModal = () => {
     setShowMarineWarningNotification(false);
-  };
-
-  const dismissCoastalWarningNotificationModal = () => {
-    setShowCoastalWarningNotification(false);
   };
 
   const setBgMapType = (bgMapType: BackgroundMapType) => {
@@ -131,12 +127,11 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      <CoastalWarningModal
-        isOpen={showCoastalWarningNotification}
-        setIsOpen={dismissCoastalWarningNotificationModal}
-        features={dvkMap.getVectorSource('marinewarning').getFeatures()}
-      />
       <MarineWarningInfoModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
+      <MarineWarningNotifications
+        showMarineWarnings={showCoastalWarningNotification}
+        features={dvkMap.getVectorSource('marinewarning').getFeatures()}
+      ></MarineWarningNotifications>
     </>
   );
 };
