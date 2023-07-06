@@ -1,7 +1,6 @@
 import { IonButton, IonButtons, IonCol, IonFooter, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
-import React, { ReactElement, useState } from 'react';
+import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { LanguageBar } from '../SidebarMenu';
 import './CommonModal.css';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 
@@ -46,25 +45,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, s
         </IonToolbar>
       </IonFooter>
     </IonModal>
-  );
-};
-
-export const MobileModal: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(process.env.NODE_ENV === 'production' ? true : false);
-  const { t } = useTranslation();
-  return (
-    <Modal size="small" showBackdrop={true} isOpen={isOpen} setIsOpen={setIsOpen} title={t('mobile.title')}>
-      <IonGrid>
-        <IonRow className="content">
-          <IonCol>{t('mobile.content')}</IonCol>
-        </IonRow>
-        <IonRow className="languageBar">
-          <IonCol>
-            <LanguageBar />
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </Modal>
   );
 };
 

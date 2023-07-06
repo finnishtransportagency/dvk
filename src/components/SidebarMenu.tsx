@@ -30,7 +30,7 @@ import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import extLinkIcon from '../theme/img/ext_link.svg';
 
-export const LanguageBar: React.FC = () => {
+const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {

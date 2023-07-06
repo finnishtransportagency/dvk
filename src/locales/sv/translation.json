@@ -419,10 +419,6 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan."
   },
-  "mobile": {
-    "title": "Digital farledskort med mobila enheter",
-    "content": "Digital farledskort tjänst är för tillfället ännu under utveckling. I första steget tjänsten stöder inte mobilanvändning officiellt, därför rekommenderas att Digital farledskort används med en dator eller en surfplatta."
-  },
   "source": {
     "title": "Informationskällor och användningsvillkor",
     "content1": "Trafikledsverket",
