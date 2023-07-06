@@ -61,7 +61,6 @@ import W from '../../../theme/img/safetyequipment/big/W.svg';
 import X from '../../../theme/img/safetyequipment/big/X.svg';
 import Y from '../../../theme/img/safetyequipment/big/Y.svg';
 import virtual from '../../../theme/img/safetyequipment/virtual.svg';
-import errorIcon from '../../../theme/img/safetyequipment/error_icon.svg';
 import Text from 'ol/style/Text';
 import { EquipmentFeatureProperties } from '../features';
 
@@ -139,13 +138,13 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
     if (center) {
       image = new Icon({
         src: icon,
-        color: props.faults ? '#EC0E0E' : '#231F20',
+        color: '#231F20',
         scale: selected ? 1.2 : 1,
       });
     } else {
       image = new Icon({
         src: icon,
-        color: props.faults ? '#EC0E0E' : '#231F20',
+        color: '#231F20',
         anchor: [0.5, anchorY],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
@@ -165,28 +164,6 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
         }),
       }),
     ];
-    if (props.faults) {
-      styles.push(
-        new Style({
-          image: new Icon({
-            src: errorIcon,
-            anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-        }),
-        new Style({
-          image: new Icon({
-            src: errorIcon,
-            anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-        })
-      );
-    }
     if (props.aisType !== undefined && props.aisType !== 1) {
       let text;
       if (props.aisType === 2 || props.aisType === 3) {

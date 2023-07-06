@@ -240,31 +240,31 @@
 }
 
 .mapExportTool .extControl.takeScreenshotControlContainer {
-  bottom: calc(248px + 5px);
+  bottom: calc(272px + 5px);
 }
 
 .mapExportTool .extControl.selectPortraitControlContainer {
-  bottom: calc(360px + 5px);
+  bottom: calc(384px + 5px);
 }
 
 .mapExportTool .extControl.selectLandscapeControlContainer {
-  bottom: calc(304px + 5px);
+  bottom: calc(328px + 5px);
 }
 
 .mapExportTool .extControl.layerControlContainer {
-  bottom: calc(192px + 5px);
+  bottom: calc(216px + 5px);
 }
 
 .mapExportTool .extControl.centerToOwnLocationControlContainer {
-  bottom: calc(136px + 5px);
+  bottom: calc(160px + 5px);
 }
 
 .mapExportTool .extControl.zoomInControlContainer {
-  bottom: calc(80px + 5px);
+  bottom: calc(104px + 5px);
 }
 
 .mapExportTool .extControl.zoomOutControlContainer {
-  bottom: calc(24px + 5px);
+  bottom: calc(48px + 5px);
 }
 
 .dvkMap .ol-control > button,
