@@ -80,7 +80,8 @@ input PictureInput {
   rotation: Float
   scaleWidth: String
   scaleLabel: String
-  name: TextInput
+  text: String
+  lang: String
   modificationTimestamp: Float
 }
 
@@ -236,16 +237,11 @@ type Picture {
   sequenceNumber: Int
   orientation: Orientation!
   rotation: Float
-  name: PictureText
+  text: String
+  lang: String
   scaleLabel: String
   scaleWidth: String
   modificationTimestamp: Float
-}
-
-type PictureText {
-  fi: String!
-  sv: String!
-  en: String!
 }
 
 type TrafficService {

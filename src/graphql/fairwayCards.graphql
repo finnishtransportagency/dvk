@@ -65,11 +65,8 @@ fragment PictureParts on Picture {
   sequenceNumber
   orientation
   rotation
-  name {
-    fi
-    sv
-    en
-  }
+  text
+  lang
   scaleLabel
   scaleWidth
   modificationTimestamp

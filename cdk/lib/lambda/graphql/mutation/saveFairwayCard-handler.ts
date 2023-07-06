@@ -120,7 +120,8 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           modificationTimestamp: p.modificationTimestamp ?? null,
           scaleLabel: mapString(p.scaleLabel, 20),
           scaleWidth: mapString(p.scaleWidth, 20),
-          name: mapText(p.name),
+          text: mapString(p.text, 100),
+          lang: mapString(p.lang, 2),
         };
       }) ?? null,
   };

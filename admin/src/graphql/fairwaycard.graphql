@@ -149,11 +149,8 @@ query fairwayCardById($id: String!) {
     }
     pictures {
       id
-      name {
-        fi
-        sv
-        en
-      }
+      text
+      lang
       orientation
       rotation
       modificationTimestamp
