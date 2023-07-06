@@ -769,6 +769,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             </IonText>
             <MapExportTool
               fairwayCardInput={state}
+              disabled={fairwayCard.status === Status.Removed}
               validationErrors={validationErrors}
               setPicture={updateState}
               fairways={fairwaySelection}

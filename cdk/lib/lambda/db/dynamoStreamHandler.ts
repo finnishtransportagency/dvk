@@ -72,6 +72,7 @@ async function handleRemove(record: DynamoDBRecord) {
       Bucket: getNewStaticBucketName(),
     });
     try {
+      log.debug('removing picture %s', picture.id);
       await s3Client.send(command);
     } catch (e) {
       log.error('removing picture %s failed: %s', picture.id, e);

@@ -23,7 +23,7 @@ import {
   useVtsPointLayer,
 } from './map/FeatureLoader';
 import MapOverlays from './map/mapOverlays/MapOverlays';
-import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput, Status } from '../graphql/generated';
+import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
 import { setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
@@ -130,6 +130,7 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, pri
 
 interface PrintImageProps {
   fairwayCardInput: FairwayCardInput;
+  disabled: boolean;
   setPicture: (
     val: PictureInput[],
     actionType: ActionType,
@@ -140,7 +141,7 @@ interface PrintImageProps {
   isLoading?: boolean;
 }
 
-const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading }) => {
+const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading, disabled }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
@@ -240,7 +241,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                     toggleSequence(pic, Orientation.Portrait);
                   }}
                   fill="clear"
-                  disabled={fairwayCardInput.status === Status.Removed}
+                  disabled={disabled}
                   className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                   title={t('fairwaycard.toggle-sequence') ?? ''}
                   aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -250,7 +251,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                 <IonButton
                   slot="end"
                   fill="clear"
-                  disabled={fairwayCardInput.status === Status.Removed}
+                  disabled={disabled}
                   className="icon-only x-small deletePicture"
                   onClick={(ev) => {
                     ev.preventDefault();
@@ -316,7 +317,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                     toggleSequence(pic, Orientation.Landscape);
                   }}
                   fill="clear"
-                  disabled={fairwayCardInput.status === Status.Removed}
+                  disabled={disabled}
                   className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                   title={t('fairwaycard.toggle-sequence') ?? ''}
                   aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -326,7 +327,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
                 <IonButton
                   slot="end"
                   fill="clear"
-                  disabled={fairwayCardInput.status === Status.Removed}
+                  disabled={disabled}
                   className="icon-only x-small deletePicture"
                   onClick={(ev) => {
                     ev.preventDefault();
@@ -358,6 +359,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
 
 interface MapProps {
   fairwayCardInput: FairwayCardInput;
+  disabled: boolean;
   fairways?: Fairway[];
   harbours?: Harbor[];
   setPicture: (
@@ -370,7 +372,7 @@ interface MapProps {
   validationErrors?: ValidationType[];
 }
 
-const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors }) => {
+const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled }) => {
   InitDvkMap();
 
   /* Start initializing layers that are required at ap start first */
@@ -469,6 +471,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           modificationTimestamp: Date.now(),
           scaleWidth: toBeSavedPicture.scaleWidth,
           scaleLabel: toBeSavedPicture.scaleLabel,
+          lang: toBeSavedPicture.lang,
         };
         // Update fairwayCard state
         setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
@@ -482,7 +485,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     },
   });
 
-  const uploadPicture = (base64Data: string, orientation: Orientation, rotation: number, scaleWidth?: string, scaleLabel?: string) => {
+  const uploadPicture = (base64Data: string, orientation: Orientation, rotation: number, scaleWidth?: string, scaleLabel?: string, lang?: string) => {
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
       cardId: fairwayCardInput.id,
@@ -494,6 +497,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       rotation,
       scaleWidth,
       scaleLabel,
+      lang,
     };
     setToBeSavedPicture({ ...picUploadObject, ...picInputObject });
     uploadMapPictureMutation({
@@ -564,7 +568,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
         );
 
       const base64Data = mapCanvasCropped.toDataURL('image/png');
-      uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML);
+      uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
     }
   };
 
@@ -584,16 +588,13 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           <ExtMapControls
             printCurrentMapView={printCurrentMapView}
             printDisabled={
-              isLoadingMutation ||
-              !fairwayCardInput.id ||
-              fairwayCardInput.status === Status.Removed ||
-              !!validationErrors?.find((error) => error.id === 'primaryId')?.msg
+              isLoadingMutation || !fairwayCardInput.id || disabled || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg
             }
           />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>
         <IonCol>
-          <PrintImages fairwayCardInput={fairwayCardInput} setPicture={setPicture} isLoading={isLoadingMutation} />
+          <PrintImages fairwayCardInput={fairwayCardInput} setPicture={setPicture} isLoading={isLoadingMutation} disabled={disabled} />
         </IonCol>
       </IonRow>
     </IonGrid>
