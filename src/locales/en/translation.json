@@ -418,10 +418,6 @@
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab"
   },
-  "mobile": {
-    "title": "Use of digital fairway card in mobile devices",
-    "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
-  },
   "source": {
     "title": "Data sources and terms of use",
     "content1": "Finnish Transport Infrastructure Agency",

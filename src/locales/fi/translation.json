@@ -419,10 +419,6 @@
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten."
   },
-  "mobile": {
-    "title": "Digitaalisen väyläkortin käyttö",
-    "content": "Digitaalinen väyläkortti on vielä kehitteillä. Tämä palvelu ei alkuvaiheessa tue virallisesti esim. mobiililaitteiden käyttöä, joten suosittelemme pöytäkoneen tai tabletin selaimen käyttöä."
-  },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",
     "content1": "Väylävirasto",
