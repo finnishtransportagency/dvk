@@ -6,16 +6,14 @@ import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
 import { BackgroundLayerId, FeatureLayerId, MAP } from '../../utils/constants';
-import { MousePosition, ScaleLine, Zoom, Rotate } from 'ol/control';
+import { MousePosition, ScaleLine, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
 import { useTranslation } from 'react-i18next';
 import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
-import FitFeaturesOnMapControl from './mapControls/FitFeaturesOnMapControl';
 import MapDetailsControl from './mapControls/MapDetailsControl';
-import LayerPopupControl from './mapControls/LayerPopupControl';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import 'ol/ol.css';
 import './DvkMap.css';
@@ -32,18 +30,10 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
-
 export type OrientationType = Orientation | '';
 
 class DvkMap {
   public olMap: Map | null = null;
-
-  private zoomControl: Zoom = new Zoom({
-    zoomInLabel: '',
-    zoomOutLabel: '',
-    zoomInTipLabel: '',
-    zoomOutTipLabel: '',
-  });
 
   private rotateControl: Rotate = new Rotate({
     autoHide: false,
@@ -52,13 +42,9 @@ class DvkMap {
 
   private readonly infoTextControl: InfoTextControl = new InfoTextControl();
 
-  private readonly fitFeaturesOnMapControl: FitFeaturesOnMapControl = new FitFeaturesOnMapControl();
-
   private readonly mapMaskControl: MapMaskControl = new MapMaskControl();
 
   private readonly mapDetailsControl: MapDetailsControl = new MapDetailsControl();
-
-  private readonly layerPopupControl: LayerPopupControl = new LayerPopupControl();
 
   private orientationType: OrientationType = '';
 
@@ -127,8 +113,6 @@ class DvkMap {
         constrainOnlyCenter: true,
       }),
       controls: [
-        this.zoomControl,
-        this.fitFeaturesOnMapControl,
         this.mapMaskControl,
         this.mapDetailsControl,
         new ScaleLine({
@@ -140,7 +124,6 @@ class DvkMap {
           projection: 'EPSG:4326',
           target: this.mapDetailsControl.getMousePositionElement(),
         }),
-        this.layerPopupControl,
         this.rotateControl,
         this.infoTextControl,
       ],
@@ -284,15 +267,6 @@ class DvkMap {
   };
 
   public translate = () => {
-    this.olMap?.removeControl(this.zoomControl);
-    this.zoomControl = new Zoom({
-      zoomInLabel: '',
-      zoomOutLabel: '',
-      zoomInTipLabel: this.t('homePage.map.controls.zoom.zoomInTipLabel'),
-      zoomOutTipLabel: this.t('homePage.map.controls.zoom.zoomOutTipLabel'),
-    });
-    this.olMap?.addControl(this.zoomControl);
-
     const span = document.createElement('span');
     span.innerHTML = '<img src="' + north_arrow_small + '">';
     this.olMap?.removeControl(this.rotateControl);
@@ -303,30 +277,12 @@ class DvkMap {
     });
     this.olMap?.addControl(this.rotateControl);
 
-    this.fitFeaturesOnMapControl.setTipLabel(this.t('homePage.map.controls.features.tipLabel'));
     this.mapDetailsControl.setMousePositionLabel(this.t('homePage.map.controls.mapDetails.mousePositionLabel'));
-    this.layerPopupControl.setTipLabel(this.t('homePage.map.controls.layer.tipLabel'));
     this.infoTextControl.setText(this.t('homePage.map.controls.infoText'));
 
     // Workaround to add aria-labels for Zoom control (no support OOTB)
-    const zoomInButton = this.olMap?.getViewport().querySelector('.ol-zoom-in') as HTMLButtonElement;
-    zoomInButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomInTipLabel');
-    const zoomOutButton = this.olMap?.getViewport().querySelector('.ol-zoom-out') as HTMLButtonElement;
-    zoomOutButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomOutTipLabel');
     const rotationResetButton = this.olMap?.getViewport().querySelector('.ol-rotate') as HTMLButtonElement;
     rotationResetButton.ariaLabel = this.t('homePage.map.controls.resetRotation');
-  };
-
-  public addLayerPopupControl = () => {
-    this.layerPopupControl?.setMap(this.olMap);
-  };
-
-  public addFitFeaturesOnMapControl = () => {
-    this.fitFeaturesOnMapControl?.setMap(this.olMap);
-  };
-
-  public addZoomControl = () => {
-    this.zoomControl?.setMap(this.olMap);
   };
 
   public addRotationControl = () => {
@@ -343,10 +299,6 @@ class DvkMap {
 
   public getOrientationType = () => {
     return this.orientationType;
-  };
-
-  public getLayerPopupControl = () => {
-    return this.layerPopupControl;
   };
 
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {

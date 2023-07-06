@@ -251,6 +251,22 @@
   bottom: calc(304px + 5px);
 }
 
+.mapExportTool .extControl.layerControlContainer {
+  bottom: calc(192px + 5px);
+}
+
+.mapExportTool .extControl.centerToOwnLocationControlContainer {
+  bottom: calc(136px + 5px);
+}
+
+.mapExportTool .extControl.zoomInControlContainer {
+  bottom: calc(80px + 5px);
+}
+
+.mapExportTool .extControl.zoomOutControlContainer {
+  bottom: calc(24px + 5px);
+}
+
 .dvkMap .ol-control > button,
 .mapExportTool .extControl > button {
   width: 40px;
@@ -290,16 +306,18 @@
   background-color: var(--ion-color-primary-contrast);
 }
 
-.dvkMap .ol-zoom-in {
+.dvkMap .ol-zoom-in,
+.mapExportTool .extControl .zoomInControl {
   background-image: url('../../theme/img/zoomIn.svg');
   background-size: 18px 18px;
-  margin-bottom: 16px !important;
 }
-.dvkMap .ol-control > button.ol-zoom-out {
+.dvkMap .ol-control > button.ol-zoom-out,
+.mapExportTool .extControl .zoomOutControl {
   background-image: url('../../theme/img/zoomOut.svg');
   background-size: 18px 4px;
 }
-.dvkMap .centerToOwnLocationControl {
+.dvkMap .centerToOwnLocationControl,
+.mapExportTool .extControl .centerToOwnLocationControl {
   background-image: url('../../theme/img/ownLocation.svg');
   background-size: 26px 26px;
 }
@@ -307,11 +325,13 @@
   background-image: url('../../theme/img/menu.svg');
   background-size: 22px 15px;
 }
-.dvkMap .layerControl {
+.dvkMap .layerControl,
+.mapExportTool .extControl .layerControl {
   background-image: url('../../theme/img/layers.svg');
   background-size: 22px 22px;
 }
-.dvkMap .ol-control .layerControlOpen {
+.dvkMap .ol-control .layerControlOpen,
+.mapExportTool .extControl .layerControlOpen {
   background-color: var(--ion-color-primary);
   background-image: url('../../theme/img/layersOpen.svg');
   background-size: 22px 22px;

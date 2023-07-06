@@ -22,9 +22,8 @@ import {
   useVtsLineLayer,
   useVtsPointLayer,
 } from './map/FeatureLoader';
-import MapOverlays from './map/mapOverlays/MapOverlays';
 import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
-import { setSelectedFairwayCard } from './map/layers';
+import { fitSelectedFairwayCardOnMap, setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
@@ -35,6 +34,8 @@ import ImageModal from './ImageModal';
 import infoIcon from '../theme/img/info-circle-solid.svg';
 import helpIcon from '../theme/img/help_icon.svg';
 import binIcon from '../theme/img/bin.svg';
+import LayerModal from './map/mapOverlays/LayerModal';
+import { easeOut } from 'ol/easing';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -71,9 +72,11 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
 interface ExtMapControlProps {
   printCurrentMapView: () => void;
   printDisabled?: boolean;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }
 
-const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled }) => {
+const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>();
@@ -88,6 +91,30 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, pri
     }
   };
 
+  const zoomByDelta = (delta: number) => {
+    const map = dvkMap.olMap;
+    if (map) {
+      const view = map.getView();
+      if (!view) {
+        // the map does not have a view, so we can't act
+        // upon it
+        return;
+      }
+      const currentZoom = view.getZoom();
+      if (currentZoom !== undefined) {
+        const newZoom = view.getConstrainedZoom(currentZoom + delta);
+
+        if (view.getAnimating()) {
+          view.cancelAnimations();
+        }
+        view.animate({
+          zoom: newZoom,
+          duration: 250,
+          easing: easeOut,
+        });
+      }
+    }
+  };
   return (
     <div className={'extControls ' + orientationType}>
       <div className="extControl selectPortraitControlContainer">
@@ -122,6 +149,50 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, pri
           }}
           title={t('homePage.map.controls.screenshot.tipLabel')}
           aria-label={t('homePage.map.controls.screenshot.tipLabel')}
+        />
+      </div>
+      <div className="extControl layerControlContainer">
+        <button
+          className={'layerControlContainer ' + (isOpen ? 'layerControlOpen' : 'layerControl')}
+          onClick={(ev) => {
+            ev.preventDefault();
+            setIsOpen(true);
+          }}
+          title={t('homePage.map.controls.layer.tipLabel')}
+          aria-label={t('homePage.map.controls.layer.tipLabel')}
+        />
+      </div>
+      <div className="extControl centerToOwnLocationControlContainer">
+        <button
+          className="centerToOwnLocationControl"
+          onClick={(ev) => {
+            ev.preventDefault();
+            fitSelectedFairwayCardOnMap();
+          }}
+          title={t('homePage.map.controls.features.tipLabel')}
+          aria-label={t('homePage.map.controls.features.tipLabel')}
+        />
+      </div>
+      <div className="extControl zoomInControlContainer">
+        <button
+          className="zoomInControl"
+          onClick={(ev) => {
+            ev.preventDefault();
+            zoomByDelta(1);
+          }}
+          title={t('homePage.map.controls.zoom.zoomInTipLabel')}
+          aria-label={t('homePage.map.controls.zoom.zoomInTipLabel')}
+        />
+      </div>
+      <div className="extControl zoomOutControlContainer">
+        <button
+          className="zoomOutControl"
+          onClick={(ev) => {
+            ev.preventDefault();
+            zoomByDelta(-1);
+          }}
+          title={t('homePage.map.controls.zoom.zoomOutTipLabel')}
+          aria-label={t('homePage.map.controls.zoom.zoomOutTipLabel')}
         />
       </div>
     </div>
@@ -433,9 +504,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const mapElement = useRef<HTMLDivElement | null>(null);
   useIonViewWillEnter(() => {
     if (mapElement?.current) {
-      dvkMap.addLayerPopupControl();
-      dvkMap.addFitFeaturesOnMapControl();
-      dvkMap.addZoomControl();
       dvkMap.addRotationControl();
       dvkMap.setTarget(mapElement.current);
     }
@@ -571,12 +639,12 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
     }
   };
-
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <IonGrid className="mapExportTool">
       <IonRow>
         <IonCol>
-          <MapOverlays />
+          <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
           {(!!isFetching || !initDone) && (
             <IonProgressBar
               value={percentDone}
@@ -587,6 +655,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           )}
           <ExtMapControls
             printCurrentMapView={printCurrentMapView}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
             printDisabled={
               isLoadingMutation || !fairwayCardInput.id || disabled || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg
             }
