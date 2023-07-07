@@ -9,10 +9,10 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 
 interface CoastalWarningItemProps {
   feature: FeatureLike;
-  setShowPopup: (showPopup: boolean) => void;
+  closePopup: () => void;
 }
 
-export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ feature, setShowPopup }) => {
+export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ feature, closePopup }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const properties = feature.getProperties() as MarineWarningFeatureProperties;
@@ -63,7 +63,7 @@ export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ feature,
       </IonCol>
       <IonCol size="auto">
         <IonButton
-          onClick={() => setShowPopup(false)}
+          onClick={() => closePopup()}
           fill="clear"
           className="closeButton ion-no-padding"
           title={t('common.close-dialog')}

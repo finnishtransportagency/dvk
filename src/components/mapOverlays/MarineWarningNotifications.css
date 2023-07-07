@@ -1,9 +1,16 @@
+ion-app.mobile ion-backdrop {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.25);
+}
+
 .marine-warning-container {
   position: fixed;
   width: 100%;
   opacity: 1;
   left: 50%;
   pointer-events: none;
+  /* ion-backdrop has default z-index: 2, must be higher than that */
+  z-index: 3;
 }
 
 ion-app.mobile div.marine-warning-container {
@@ -44,7 +51,7 @@ ion-app:not(.mobile) div.marine-warning-overlay {
   height: auto;
   max-width: min(718px, 70%);
   margin: 12px auto 12px auto;
-  box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 div.marine-warning-overlay ion-grid {

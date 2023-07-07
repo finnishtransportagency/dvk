@@ -57,7 +57,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [activeSelection, setActiveSelection] = useState(0);
   const { data } = useFairwayCardListData();
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
-  const [showCoastalWarningNotification, setShowCoastalWarningNotification] = useState(false);
 
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
@@ -122,16 +121,15 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         setIsOpen={dismissMapLayersModal}
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
-        setMarineWarningInfoLayer={setShowMarineWarningNotification}
-        setCoastalWarningLayer={setShowCoastalWarningNotification}
+        setMarineWarningNotificationLayer={setShowMarineWarningNotification}
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      <MarineWarningInfoModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} />
+      {/* <MarineWarningInfoModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} /> */}
       <MarineWarningNotifications
-        showMarineWarnings={showCoastalWarningNotification}
+        showMarineWarnings={showMarineWarningNotification}
         features={dvkMap.getVectorSource('marinewarning').getFeatures()}
-      ></MarineWarningNotifications>
+      />
     </>
   );
 };

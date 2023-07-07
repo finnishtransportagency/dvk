@@ -4,20 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
-import { isCoastalWarning, refreshPrintableMap } from '../../utils/common';
+import { refreshPrintableMap } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
-import VectorSource from 'ol/source/Vector';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
-  setMarineWarningInfoLayer: (marineWarningLayer: boolean) => void;
-  setCoastalWarningLayer: (coastalWarningLayer: boolean) => void;
+  setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
 }
 
 export type LayerType = {
@@ -27,7 +25,7 @@ export type LayerType = {
   noOfflineSupport?: Maybe<boolean>;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningInfoLayer, setCoastalWarningLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
@@ -103,16 +101,12 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id)) {
-        const layerIncluded = layers.includes(dataLayer.id);
-        const layerSource = layer.getSource() as VectorSource;
-        const includesCoastalWarning = layerSource.getFeatures().some((feature) => isCoastalWarning(feature));
-        setMarineWarningInfoLayer(layerIncluded);
-        setCoastalWarningLayer(layerIncluded && includesCoastalWarning);
+        setMarineWarningNotificationLayer(layers.includes(dataLayer.id));
       }
       layer.setVisible(layers.includes(dataLayer.id));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningInfoLayer, setCoastalWarningLayer, dvkMap]);
+  }, [layers, setMarineWarningNotificationLayer, dvkMap]);
 
   return (
     <IonModal
