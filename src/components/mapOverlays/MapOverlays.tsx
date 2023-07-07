@@ -20,7 +20,6 @@ import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
-import { MarineWarningInfoModal } from './MarineWarningInfoModal';
 import { MarineWarningNotifications } from './MarineWarningNotifications';
 
 export type PopupProperties = {
@@ -125,7 +124,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      {/* <MarineWarningInfoModal isOpen={showMarineWarningNotification} setIsOpen={dismissMarineWarningNotificationModal} /> */}
       <MarineWarningNotifications
         showMarineWarnings={showMarineWarningNotification}
         features={dvkMap.getVectorSource('marinewarning').getFeatures()}

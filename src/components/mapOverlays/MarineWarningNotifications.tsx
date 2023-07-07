@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { FeatureLike } from 'ol/Feature';
 import { isCoastalWarning } from '../../utils/common';
-import { IonBackdrop, IonGrid } from '@ionic/react';
+import { IonBackdrop, IonCol } from '@ionic/react';
+import { CustomPopup } from './CustomPopup';
 import { CoastalWarningItem } from './CoastalWarningItem';
+import { useTranslation } from 'react-i18next';
+import marineWarningIcon from '../../theme/img/merivaroitus_ikoni_plain.svg';
+import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningNotifications.css';
 
 interface MarineWarningNotificationsProps {
@@ -10,64 +14,88 @@ interface MarineWarningNotificationsProps {
   features: FeatureLike[];
 }
 
-interface MarineWarningNotificationProps {
-  showMarineWarnings: boolean;
-  featurePopup: CoastalWarningPopupProps;
-  featurePopups: CoastalWarningPopupProps[];
-  setFeaturePopups: (popups: CoastalWarningPopupProps[]) => void;
+interface MarineWarningInfoProps {
+  visible: boolean;
+  setVisible: (visible: boolean) => void;
 }
 
-interface CoastalWarningPopupProps {
+interface CoastalWarningNotificationProps {
+  featureNotification: FeatureNotification;
+  featureNotifications: FeatureNotification[];
+  setFeatureNotifications: (notifications: FeatureNotification[]) => void;
+}
+
+interface FeatureNotification {
   feature: FeatureLike;
   visible: boolean;
 }
 
-const MarineWarningNotification: React.FC<MarineWarningNotificationProps> = ({ featurePopup, featurePopups, setFeaturePopups }) => {
-  const { feature, visible } = featurePopup;
+const MarineWarningInfo: React.FC<MarineWarningInfoProps> = ({ visible, setVisible }) => {
+  const { t } = useTranslation();
+  const handlePopupClose = () => setVisible(false);
+
+  return (
+    <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={infoIcon}>
+      <IonCol>
+        <strong>{t('warnings.note')}</strong> {t('warnings.notification')}
+      </IonCol>
+    </CustomPopup>
+  );
+};
+
+const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
+  featureNotification,
+  featureNotifications,
+  setFeatureNotifications,
+}) => {
+  const { feature, visible } = featureNotification;
 
   const handlePopupClose = () => {
-    const updatedFeaturePopups = featurePopups.map((popup) => {
-      if (popup.feature.getId() === feature.getId()) {
-        return { ...popup, visible: false };
+    const updatedFeaturePopups = featureNotifications.map((notification) => {
+      if (notification.feature.getId() === feature.getId()) {
+        return { ...notification, visible: false };
       } else {
-        return popup;
+        return notification;
       }
     });
-    setFeaturePopups(updatedFeaturePopups);
+    setFeatureNotifications(updatedFeaturePopups);
   };
 
   return (
-    <div style={{ visibility: visible ? 'visible' : 'hidden', opacity: visible ? '1' : '0' }} className="marine-warning-overlay">
-      <IonGrid className="ion-no-margin ion-no-padding">
-        <CoastalWarningItem feature={feature} closePopup={handlePopupClose}></CoastalWarningItem>
-      </IonGrid>
-    </div>
+    <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={marineWarningIcon}>
+      <CoastalWarningItem feature={feature}></CoastalWarningItem>
+    </CustomPopup>
   );
 };
 
 export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProps> = ({ showMarineWarnings, features = [] }) => {
-  const [featurePopups, setFeaturePopups] = useState<CoastalWarningPopupProps[]>([]);
+  const [featureNotifications, setFeatureNotifications] = useState<FeatureNotification[]>([]);
+  const [infoVisible, setInfoVisible] = useState(false);
 
   useEffect(() => {
     const coastalWarningFeatures = features.filter((feature) => isCoastalWarning(feature));
-    const initialFeaturePopups = coastalWarningFeatures.map((feature) => ({ feature: feature, visible: true }));
-    setFeaturePopups(initialFeaturePopups);
+    const initialFeatureNotifications = coastalWarningFeatures.map((feature) => ({ feature: feature, visible: true }));
+    setFeatureNotifications(initialFeatureNotifications);
   }, [features]);
+
+  useEffect(() => {
+    setInfoVisible(showMarineWarnings);
+  }, [showMarineWarnings]);
 
   return (
     <>
-      {showMarineWarnings && featurePopups.some((popup) => popup.visible) && <IonBackdrop tappable={false} />}
+      {showMarineWarnings && (infoVisible || featureNotifications.some((notification) => notification.visible)) && <IonBackdrop tappable={false} />}
       <div className="marine-warning-container">
         {showMarineWarnings &&
-          featurePopups.map((featurePopup) => (
-            <MarineWarningNotification
-              key={'coastalWarning' + featurePopup.feature.getId()}
-              showMarineWarnings={showMarineWarnings}
-              featurePopup={featurePopup}
-              featurePopups={featurePopups}
-              setFeaturePopups={setFeaturePopups}
+          featureNotifications.map((notification) => (
+            <CoastalWarningNotification
+              key={'coastalWarning' + notification.feature.getId()}
+              featureNotification={notification}
+              featureNotifications={featureNotifications}
+              setFeatureNotifications={setFeatureNotifications}
             />
           ))}
+        {showMarineWarnings && <MarineWarningInfo visible={infoVisible} setVisible={setInfoVisible} />}
       </div>
     </>
   );
