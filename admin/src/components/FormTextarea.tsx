@@ -13,9 +13,10 @@ interface InputProps {
   disabled?: boolean;
   error?: string;
   helperText?: string | null;
+  name?: string;
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
+const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText, name }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
@@ -77,6 +78,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
       <IonTextarea
         ref={inputRef}
         value={val}
+        name={name ? name + (actionLang ?? '') : undefined}
         required={required}
         onIonInput={(ev) => handleChange(ev.target.value)}
         onIonBlur={() => checkValidity()}

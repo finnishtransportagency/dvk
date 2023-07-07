@@ -374,6 +374,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     val={state.id}
                     setValue={updateState}
                     actionType="primaryId"
+                    name="primaryId"
                     required
                     disabled={state.operation === Operation.Update}
                     error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
@@ -403,6 +404,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <FormTextInputRow
                 labelKey="harbour.name"
                 value={state.name}
+                name="harbourName"
                 updateState={updateState}
                 actionType="name"
                 required
@@ -500,6 +502,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 <IonCol sizeMd="4">
                   <FormInput
                     label={t('harbour.lat')}
+                    name="lat"
                     val={state.geometry.lat ?? ''}
                     setValue={updateState}
                     actionType="lat"
@@ -512,6 +515,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 <IonCol sizeMd="4">
                   <FormInput
                     label={t('harbour.lon')}
+                    name="lon"
                     val={state.geometry.lon ?? ''}
                     setValue={updateState}
                     actionType="lon"

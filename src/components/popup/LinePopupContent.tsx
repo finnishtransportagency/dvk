@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { LineFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
+import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
@@ -75,7 +76,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
           <IonRow>
             <IonCol>
-              <em>{showN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW'}</em>
+              <em>
+                {showN2000HeightSystem ? line.properties.n2000ReferenceLevel ?? line.properties.referenceLevel : line.properties.referenceLevel}
+              </em>
             </IonCol>
           </IonRow>
         )}
@@ -132,20 +135,29 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
             </IonCol>
           </IonRow>
         )}
-        {fairwayCards.length > 0 && (
+        <IonRow>
+          <IonCol className="header">{t('popup.line.fairways')}</IonCol>
+        </IonRow>
+        {fairwayCards.length > 0 ? (
+          fairwayCards?.map((card) => {
+            return (
+              <IonRow key={'cardlink' + card.id}>
+                <IonCol>
+                  <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                </IonCol>
+              </IonRow>
+            );
+          })
+        ) : (
           <IonRow>
-            <IonCol className="header">{t('popup.line.fairways')}</IonCol>
+            <IonCol>
+              <p className="info use-flex ion-align-items-center">
+                <InfoIcon />
+                {t('popup.common.noFairwayCards')}
+              </p>
+            </IonCol>
           </IonRow>
         )}
-        {fairwayCards?.map((card) => {
-          return (
-            <IonRow key={'cardlink' + card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-              </IonCol>
-            </IonRow>
-          );
-        })}
 
         {line.width && (
           <>
