@@ -10,7 +10,7 @@
   font-size: 12px;
   line-height: 1.125rem;
   overflow: auto;
-  transition: opacity 500ms;
+  transition: all 200ms ease-in-out;
   pointer-events: visible;
 }
 

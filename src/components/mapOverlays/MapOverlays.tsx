@@ -67,10 +67,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
     lpc?.modalClosed();
   };
 
-  const dismissMarineWarningNotificationModal = () => {
-    setShowMarineWarningNotification(false);
-  };
-
   const setBgMapType = (bgMapType: BackgroundMapType) => {
     setBackgroundMapType(bgMapType);
     dvkMap.setBackgroundMapType(bgMapType);
@@ -124,10 +120,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      <MarineWarningNotifications
-        showMarineWarnings={showMarineWarningNotification}
-        features={dvkMap.getVectorSource('marinewarning').getFeatures()}
-      />
+      <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
     </>
   );
 };

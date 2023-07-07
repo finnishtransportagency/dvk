@@ -1,56 +1,54 @@
 import React from 'react';
 import { IonRow, IonCol, IonText } from '@ionic/react';
-import { FeatureLike } from 'ol/Feature';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../utils/constants';
-import { MarineWarningFeatureProperties } from '../features';
+import { MarineWarning } from '../../graphql/generated';
 
 interface CoastalWarningItemProps {
-  feature: FeatureLike;
+  marineWarning: MarineWarning;
 }
 
-export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ feature }) => {
+export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ marineWarning }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  const properties = feature.getProperties() as MarineWarningFeatureProperties;
 
   return (
     <IonCol>
       <IonRow>
         <IonCol>
           <strong>
-            {properties.area && (
+            {marineWarning.area && (
               <IonText>
-                {properties.area[lang] || properties.area.fi}
+                {marineWarning.area[lang] || marineWarning.area.fi}
                 {', '}
               </IonText>
             )}
-            {properties.dateTime && (
+            {marineWarning.dateTime && (
               <IonText>
                 {t('popup.marine.datetimeFormat', {
-                  val: properties.dateTime,
+                  val: marineWarning.dateTime,
                 })}
               </IonText>
             )}
-            {(properties.startDateTime || properties.endDateTime) && (
+            {(marineWarning.startDateTime || marineWarning.endDateTime) && (
               <IonText>
-                {properties.startDateTime &&
+                {marineWarning.startDateTime &&
                   t('popup.marine.datetimeFormat', {
-                    val: properties.startDateTime,
+                    val: marineWarning.startDateTime,
                   })}
                 {' - '}
-                {properties.endDateTime &&
+                {marineWarning.endDateTime &&
                   t('popup.marine.datetimeFormat', {
-                    val: properties.endDateTime,
+                    val: marineWarning.endDateTime,
                   })}
               </IonText>
             )}
           </strong>
         </IonCol>
       </IonRow>
-      {properties.description && (
+      {marineWarning.description && (
         <IonRow>
-          <IonCol>{properties.description[lang] || properties.description.fi}</IonCol>
+          <IonCol>{marineWarning.description[lang] || marineWarning.description.fi}</IonCol>
         </IonRow>
       )}
     </IonCol>
