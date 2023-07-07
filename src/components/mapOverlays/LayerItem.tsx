@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -294,14 +294,6 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
   const [legendOpen, setLegendOpen] = useState(false);
   const [legends, setLegends] = useState<string[]>([]);
   const dvkMap = getMap();
-
-  useEffect(() => {
-    if (noOfflineSupport && layers.includes(id) && state.isOffline) {
-      setLayers((prev) => {
-        return [...prev.filter((p) => p !== id)];
-      });
-    }
-  }, [id, layers, noOfflineSupport, setLayers, state.isOffline]);
 
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);

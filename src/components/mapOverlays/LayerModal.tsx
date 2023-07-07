@@ -9,6 +9,7 @@ import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 interface ModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export type LayerType = {
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
   const { t } = useTranslation();
+  const { state } = useDvkContext();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
   const setBackgroundMap = (type: BackgroundMapType) => {
@@ -102,10 +104,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id))
         setMarineWarningLayer(layers.includes(dataLayer.id));
-      layer.setVisible(layers.includes(dataLayer.id));
+      layer.setVisible(layers.includes(dataLayer.id) && !state.isOffline);
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningLayer, dvkMap]);
+  }, [layers, setMarineWarningLayer, state.isOffline, dvkMap]);
 
   return (
     <IonModal

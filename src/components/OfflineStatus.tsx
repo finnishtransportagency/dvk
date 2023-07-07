@@ -120,6 +120,7 @@ const OfflineStatus: React.FC = () => {
             value: false,
           },
         });
+        dvkMap.tileStatus = 'ok';
       }
     } catch {
       /* NOTHING TO DO */
