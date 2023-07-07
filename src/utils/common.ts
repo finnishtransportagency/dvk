@@ -114,11 +114,6 @@ export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLaye
   }
 }
 
-export const isCoastalWarning2 = (warning: MarineWarning): boolean => {
-  const warningType = warning.type?.fi || warning.type?.sv || warning.type?.en;
-  return warningType === COASTAL_WARNING;
-};
-
 export const isCoastalWarning = (type: Text | undefined): boolean => {
   const warningType = type?.fi || type?.sv || type?.en;
   return warningType === COASTAL_WARNING;
