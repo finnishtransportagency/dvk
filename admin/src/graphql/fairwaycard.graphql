@@ -1,6 +1,5 @@
-query fairwayCardById($id: String!) {
-  fairwayCard(id: $id) {
-    id
+fragment FairwayCardById on FairwayCard {
+  id
     name {
       fi
       sv
@@ -158,27 +157,17 @@ query fairwayCardById($id: String!) {
       scaleLabel
       scaleWidth
     }
+}
+
+query fairwayCardById($id: String!) {
+  fairwayCard(id: $id) {
+    ...FairwayCardById
   }
 }
 
 mutation saveFairwayCard($card: FairwayCardInput!) {
   saveFairwayCard(card: $card) {
-    id
-    name {
-      fi
-      sv
-      en
-    }
-    status
-    creator
-    creationTimestamp
-    modifier
-    modificationTimestamp
-    fairwayIds
-    fairways {
-      id
-    }
-    n2000HeightSystem
+    ...FairwayCardById
   }
 }
 

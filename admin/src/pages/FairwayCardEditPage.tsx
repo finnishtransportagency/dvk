@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
+import { FairwayCardByIdQuery, FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
@@ -10,11 +10,8 @@ interface FairwayCardEditProps {
   origin?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, origin }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, false);
-  const { data: userData } = useCurrentUserQueryData();
-
-  const fairwayCard = {
+export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
+  return {
     id: origin ? '' : data?.fairwayCard?.id ?? '',
     group: data?.fairwayCard?.group ?? '',
     name: {
@@ -125,6 +122,13 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, or
     operation: origin ? Operation.Create : Operation.Update,
     pictures: origin ? [] : data?.fairwayCard?.pictures ?? [],
   };
+}
+
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, origin }) => {
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, false);
+  const { data: userData } = useCurrentUserQueryData();
+
+  const fairwayCard = mapToFairwayCardInput(origin, data);
 
   return (
     <>
