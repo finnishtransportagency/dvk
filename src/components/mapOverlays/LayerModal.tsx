@@ -104,7 +104,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id))
         setMarineWarningLayer(layers.includes(dataLayer.id));
-      layer.setVisible(layers.includes(dataLayer.id) && !state.isOffline);
+      layer.setVisible(layers.includes(dataLayer.id) && (!dataLayer.noOfflineSupport || !state.isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningLayer, state.isOffline, dvkMap]);
