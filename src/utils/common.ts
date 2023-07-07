@@ -1,6 +1,6 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
-import { FairwayCardPartsFragment, MarineWarning, Text } from '../graphql/generated';
+import { FairwayCardPartsFragment, Text } from '../graphql/generated';
 import { COASTAL_WARNING, FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH, imageUrl } from './constants';
 
 export const isMobile = () => {
