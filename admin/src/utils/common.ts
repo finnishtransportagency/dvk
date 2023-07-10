@@ -39,3 +39,10 @@ export const filterItemList = (
       }) ?? []
   );
 };
+
+export const getCombinedErrorAndHelperText = (helperText: string | null | undefined, errorText: string): string => {
+  if (helperText) {
+    return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
+  }
+  return errorText;
+};
