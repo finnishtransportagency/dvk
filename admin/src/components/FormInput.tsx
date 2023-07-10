@@ -178,7 +178,7 @@ const FormInput: React.FC<InputProps> = ({
         multiple={inputType === 'email' && multiple}
         fill="outline"
         className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={isValid ? getHelperText() : ''}
+        helperText={isValid && (!error || error === '') ? getHelperText() : ''}
         errorText={getCombinedErrorAndHelperText(getHelperText(), getErrorText())}
         label={unit ? t('unit.' + unit) ?? '' : ''}
         labelPlacement="end"

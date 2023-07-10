@@ -89,7 +89,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
         className={'ion-align-self-center formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={isValid ? helperText ?? '' : ''}
+        helperText={isValid && (!error || error === '') ? helperText ?? '' : ''}
         errorText={getCombinedErrorAndHelperText(helperText, getErrorText())}
         labelPlacement="fixed"
         counter={true}
