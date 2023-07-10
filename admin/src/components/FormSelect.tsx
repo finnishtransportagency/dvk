@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
 import { GeometryPoint, PilotPlace, Text } from '../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
+import { getCombinedErrorAndHelperText } from '../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
@@ -94,7 +95,7 @@ const FormSelect: React.FC<SelectProps> = ({
   const getHelperText = () => {
     if (helperText) return helperText;
     if (Array.isArray(selected) || multiple) return t('multiple-values-supported');
-    return false;
+    return '';
   };
 
   const getErrorText = () => {
@@ -151,8 +152,8 @@ const FormSelect: React.FC<SelectProps> = ({
               })}
             </IonSelect>
           </IonItem>
-          <IonNote className="input-error">{getErrorText()}</IonNote>
-          {getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
         </>
       )}
     </div>

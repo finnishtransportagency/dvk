@@ -46,3 +46,10 @@ export function getDuration(dataUpdatedAt: number, decimals = 1) {
   const duration = Math.floor(Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60);
   return Math.round(duration * power) / power;
 }
+
+export const getCombinedErrorAndHelperText = (helperText: string | null | undefined, errorText: string): string => {
+  if (helperText) {
+    return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
+  }
+  return errorText;
+};
