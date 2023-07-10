@@ -1,6 +1,4 @@
 .custom-popup {
-  visibility: hidden;
-  opacity: 0;
   position: relative;
   display: block;
   border-radius: 4px;
@@ -10,7 +8,6 @@
   font-size: 12px;
   line-height: 1.125rem;
   overflow: auto;
-  transition: all 200ms ease-in-out;
   pointer-events: visible;
 }
 

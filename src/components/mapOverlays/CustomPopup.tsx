@@ -15,7 +15,7 @@ export const CustomPopup: React.FC<CustomPopupProps> = ({ isOpen, closePopup, ic
   const { t } = useTranslation();
 
   return (
-    <div style={{ visibility: isOpen ? 'visible' : 'hidden', opacity: isOpen ? '1' : '0' }} className="custom-popup">
+    <div style={{ display: isOpen ? 'block' : 'none' }} className="custom-popup">
       <IonGrid className="ion-no-margin ion-no-padding">
         <IonRow>
           <IonCol size="auto" className="ion-align-self-center">
