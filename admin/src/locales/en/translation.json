@@ -51,6 +51,8 @@
     "required-field": "Required field",
     "check-input": "Check input",
     "use-comma-separated-values": "Use comma to separate multiple values.",
+    "allowed-values": "Allowed values",
+    "coordinate-format": "Coordinate format",
     "email": "Email",
     "phone-number": "Phone number",
     "fax": "Fax number",

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonInput, IonLabel } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
+import { getCombinedErrorAndHelperText } from '../utils/common';
 
 interface InputProps {
   label: string;
@@ -85,10 +86,12 @@ const FormInput: React.FC<InputProps> = ({
 
   const getHelperText = () => {
     if (helperText) return helperText;
-    if (inputType === 'latitude') return '58.00000 - 69.99999';
-    if (inputType === 'longitude') return '17.00000 - 31.99999';
+    if (inputType === 'latitude') return t('coordinate-format') + ': 58.00000 - 69.99999';
+    if (inputType === 'longitude') return t('coordinate-format') + ': 17.00000 - 31.99999';
     if (inputType === 'number' && max) {
       return (
+        t('allowed-values') +
+        ': ' +
         Number(min ?? 0).toLocaleString(i18n.language, {
           minimumFractionDigits: decimalCount ?? 0,
           maximumFractionDigits: decimalCount ?? 0,
@@ -175,8 +178,8 @@ const FormInput: React.FC<InputProps> = ({
         multiple={inputType === 'email' && multiple}
         fill="outline"
         className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={getHelperText()}
-        errorText={getErrorText()}
+        helperText={isValid ? getHelperText() : ''}
+        errorText={getCombinedErrorAndHelperText(getHelperText(), getErrorText())}
         label={unit ? t('unit.' + unit) ?? '' : ''}
         labelPlacement="end"
         counter={true}

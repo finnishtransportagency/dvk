@@ -51,6 +51,8 @@
     "required-field": "Pakollinen tieto",
     "check-input": "Tarkista syöte",
     "use-comma-separated-values": "Käytä pilkkua erottimena, jos haluat lisätä useamman.",
+    "allowed-values": "Sallitut arvot",
+    "coordinate-format": "Koordinaattien muoto",
     "email": "Sähköposti",
     "phone-number": "Puhelinnumero",
     "fax": "Faksin numero",
