@@ -128,7 +128,7 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | F
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId; noOfflineSupport?: boolean };
+type DataLayer = { id: FeatureDataLayerId; offlineSupport: boolean };
 
 type MapType = {
   EPSG: string;
@@ -146,30 +146,30 @@ export const MAP: MapType = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
   FEATURE_DATA_LAYERS: [
-    { id: 'area12' },
-    { id: 'area3456' },
-    { id: 'line12' },
-    { id: 'line3456' },
-    { id: 'speedlimit' },
-    { id: 'specialarea2' },
-    { id: 'specialarea15' },
-    { id: 'pilot' },
-    { id: 'harbor' },
-    { id: 'safetyequipment' },
-    { id: 'depth12' },
-    { id: 'marinewarning' },
-    { id: 'boardline12' },
-    { id: 'mareograph', noOfflineSupport: true },
-    { id: 'ice', noOfflineSupport: true },
-    { id: 'observation', noOfflineSupport: true },
-    { id: 'buoy', noOfflineSupport: true },
-    { id: 'vtsline' },
-    { id: 'vtspoint' },
-    { id: 'name' },
-    { id: 'soundingpoint', noOfflineSupport: true },
-    { id: 'depthcontour', noOfflineSupport: true },
-    { id: 'deptharea', noOfflineSupport: true },
-    { id: 'circle' },
+    { id: 'area12', offlineSupport: true },
+    { id: 'area3456', offlineSupport: true },
+    { id: 'line12', offlineSupport: true },
+    { id: 'line3456', offlineSupport: true },
+    { id: 'speedlimit', offlineSupport: true },
+    { id: 'specialarea2', offlineSupport: true },
+    { id: 'specialarea15', offlineSupport: true },
+    { id: 'pilot', offlineSupport: true },
+    { id: 'harbor', offlineSupport: true },
+    { id: 'safetyequipment', offlineSupport: true },
+    { id: 'depth12', offlineSupport: true },
+    { id: 'marinewarning', offlineSupport: true },
+    { id: 'boardline12', offlineSupport: true },
+    { id: 'mareograph', offlineSupport: false },
+    { id: 'ice', offlineSupport: false },
+    { id: 'observation', offlineSupport: false },
+    { id: 'buoy', offlineSupport: false },
+    { id: 'vtsline', offlineSupport: true },
+    { id: 'vtspoint', offlineSupport: true },
+    { id: 'name', offlineSupport: true },
+    { id: 'soundingpoint', offlineSupport: false },
+    { id: 'depthcontour', offlineSupport: false },
+    { id: 'deptharea', offlineSupport: false },
+    { id: 'circle', offlineSupport: true },
   ],
 };
 
