@@ -10,7 +10,12 @@ import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
-import { FeatureDataLayerId } from '../../utils/constants';
+import { FeatureDataLayerId, MAP } from '../../utils/constants';
+
+const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
+  const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
+  return layer ? layer.offlineSupport : false;
+};
 
 const LegendDepth = () => {
   return (
@@ -283,12 +288,11 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  noOfflineSupport?: boolean;
   layers: string[];
   setLayers: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, layers, setLayers }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
   const [legendOpen, setLegendOpen] = useState(false);
@@ -317,7 +321,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
   const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
-  const disabled = !initialized || (noOfflineSupport && state.isOffline);
+  const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');

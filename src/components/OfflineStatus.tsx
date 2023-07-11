@@ -130,7 +130,7 @@ const OfflineStatus: React.FC = () => {
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      if (dataLayer.noOfflineSupport && state.isOffline) layer.setVisible(false);
+      if (!dataLayer.offlineSupport && state.isOffline) layer.setVisible(false);
     });
     setTimeout(refreshPrintableMap, 100);
   }, [dvkMap, state.isOffline]);

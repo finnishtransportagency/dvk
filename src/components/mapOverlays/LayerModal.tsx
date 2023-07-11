@@ -23,7 +23,6 @@ export type LayerType = {
   id: FeatureDataLayerId | FeatureDataMainLayerId;
   title: string;
   childLayers?: Maybe<Array<LayerType>>;
-  noOfflineSupport?: Maybe<boolean>;
 };
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
@@ -36,6 +35,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setBgMap(type);
   };
   const dvkMap = getMap();
+
+  const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
+    const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
+    return layer ? layer.offlineSupport : false;
+  };
 
   const layerStructure: LayerType[] = [
     {
@@ -60,9 +64,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'depths',
       title: t('homePage.map.controls.layer.depthinfo'),
       childLayers: [
-        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint'), noOfflineSupport: true },
-        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour'), noOfflineSupport: true },
-        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea'), noOfflineSupport: true },
+        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint') },
+        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour') },
+        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea') },
       ],
     },
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
@@ -80,10 +84,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'conditions',
       title: t('homePage.map.controls.layer.conditions'),
       childLayers: [
-        { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel'), noOfflineSupport: true },
-        { id: 'observation', title: t('homePage.map.controls.layer.weatherStation'), noOfflineSupport: true },
-        { id: 'buoy', title: t('homePage.map.controls.layer.buoys'), noOfflineSupport: true },
-        { id: 'ice', title: t('homePage.map.controls.layer.ice'), noOfflineSupport: true },
+        { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel') },
+        { id: 'observation', title: t('homePage.map.controls.layer.weatherStation') },
+        { id: 'buoy', title: t('homePage.map.controls.layer.buoys') },
+        { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },
     { id: 'marinewarning', title: t('homePage.map.controls.layer.marineWarnings') },
@@ -104,7 +108,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
       if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id))
         setMarineWarningLayer(layers.includes(dataLayer.id));
-      layer.setVisible(layers.includes(dataLayer.id) && (!dataLayer.noOfflineSupport || !state.isOffline));
+      layer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !state.isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningLayer, state.isOffline, dvkMap]);
@@ -142,15 +146,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonRow key={layer.id}>
               <IonCol>
                 {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} layers={layers} setLayers={setLayers} />}
-                {!layer.childLayers && (
-                  <LayerItem
-                    id={layer.id as FeatureDataLayerId}
-                    title={layer.title}
-                    noOfflineSupport={layer.noOfflineSupport || false}
-                    layers={layers}
-                    setLayers={setLayers}
-                  />
-                )}
+                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} layers={layers} setLayers={setLayers} />}
               </IonCol>
             </IonRow>
           ))}
