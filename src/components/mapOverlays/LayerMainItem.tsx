@@ -29,7 +29,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
   };
 
   const isDisabled = () => {
-    return state.isOffline && !!currentLayer.childLayers?.find((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
+    return state.isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
   };
   const selectedChildLayers =
     currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
