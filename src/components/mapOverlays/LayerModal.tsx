@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
-import { refreshPrintableMap } from '../../utils/common';
+import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
@@ -35,11 +35,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setBgMap(type);
   };
   const dvkMap = getMap();
-
-  const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
-    const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
-    return layer ? layer.offlineSupport : false;
-  };
 
   const layerStructure: LayerType[] = [
     {

@@ -3,19 +3,14 @@ import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonI
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
 import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
-import { FeatureDataLayerId, MAP } from '../../utils/constants';
-
-const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
-  const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
-  return layer ? layer.offlineSupport : false;
-};
+import { FeatureDataLayerId } from '../../utils/constants';
 
 const LegendDepth = () => {
   return (

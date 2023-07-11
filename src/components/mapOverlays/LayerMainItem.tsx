@@ -6,18 +6,14 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
-import { FeatureDataLayerId, MAP } from '../../utils/constants';
+import { FeatureDataLayerId } from '../../utils/constants';
+import { hasOfflineSupport } from '../../utils/common';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
   layers: string[];
   setLayers: React.Dispatch<React.SetStateAction<string[]>>;
 }
-
-const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
-  const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
-  return layer ? layer.offlineSupport : false;
-};
 
 const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, setLayers }) => {
   const { t } = useTranslation();
