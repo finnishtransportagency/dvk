@@ -49,6 +49,7 @@
     "@types/node": "^18.16.16",
     "@types/prettier": "^2.7.2",
     "aws-cdk": "^2.81.0",
+    "aws-sdk-client-mock": "^3.0.0",
     "cdk-sso-sync": "0.0.6",
     "cross-env": "7.0.3",
     "esbuild": "^0.17.19",
