@@ -6,7 +6,6 @@ import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel'
 import { gzip } from 'zlib';
 import {
   AlueAPIModel,
-  fetchVATUByApi,
   fetchVATUByFairwayClass,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
@@ -21,6 +20,7 @@ import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weathe
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
+import { fetchVATUByApi } from './axios';
 
 function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
