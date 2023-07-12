@@ -141,7 +141,11 @@ jest.mock('./graphql/generated', () => {
 jest.useFakeTimers();
 
 it('renders home page without crashing', () => {
-  const { baseElement } = render(<App />);
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti' } = {}) => {
+    window.history.pushState({}, 'Home', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
   expect(baseElement).toBeDefined();
 
   act(() => {
