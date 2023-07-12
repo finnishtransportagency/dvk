@@ -1,0 +1,2043 @@
+[
+  {
+    "id": 10,
+    "name": {
+      "fi": "Kemi Ajos väylä",
+      "sv": "Kemi Ajos farled"
+    },
+    "sizing": {
+      "additionalInformation": null,
+      "mareograph": null,
+      "minimumTurningCircle": null,
+      "minimumWidth": 200,
+      "normalTurningCircle": null,
+      "normalWidth": null,
+      "reserveWater": null
+    },
+    "typeCode": 1,
+    "type": {
+      "fi": "Meriväylä",
+      "sv": "Havsfarled"
+    },
+    "area": {
+      "fi": "Perämeri",
+      "sv": "Bottenviken"
+    },
+    "lightingCode": 1,
+    "lighting": {
+      "fi": "Valaistu",
+      "sv": "Belyst"
+    },
+    "owner": null,
+    "startText": "Kemi 1 E-puolella.",
+    "endText": "Ajoksen satama. ",
+    "sizingVessels": [
+      {
+        "typeCode": 11,
+        "type": "Muu",
+        "draft": 10,
+        "length": 180,
+        "width": 27,
+        "bodyFactor": null,
+        "size": 30000
+      }
+    ],
+    "classifications": [
+      {
+        "type": "Väyläluokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "VL1: Kauppamerenkulun pääväylä",
+          "sv": "Handelstrafikens farled av 1-kl"
+        }
+      },
+      {
+        "type": "Tekninen luokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "T1",
+          "sv": null
+        }
+      },
+      {
+        "type": "Väylänhoitoluokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "A",
+          "sv": null
+        }
+      }
+    ],
+    "primary": true,
+    "secondary": true,
+    "navigationLines": [
+      {
+        "id": 9309,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 38.8,
+        "length": 6556,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.22575,
+              65.43953
+            ],
+            [
+              24.31437,
+              65.48536
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 115929,
+        "draft": 8.6,
+        "depth": 9.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 39.3,
+        "length": 257,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51335,
+              65.66283
+            ],
+            [
+              24.5169,
+              65.66462
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 115941,
+        "draft": 5.5,
+        "depth": 6.3,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 68.3,
+        "length": 99,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51154,
+              65.66447
+            ],
+            [
+              24.51354,
+              65.6648
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 115949,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 59.6,
+        "length": 181,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51153,
+              65.66533
+            ],
+            [
+              24.51492,
+              65.66615
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 115955,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 30.3,
+        "length": 301,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51153,
+              65.66533
+            ],
+            [
+              24.51483,
+              65.66766
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 115957,
+        "draft": 5,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 353.2,
+        "length": 623,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51125,
+              65.6595
+            ],
+            [
+              24.50964,
+              65.66504
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 118217,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 41.7,
+        "length": 569,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51095,
+              65.65904
+            ],
+            [
+              24.51218,
+              65.6596
+            ],
+            [
+              24.51918,
+              65.66284
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 118220,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 82,
+        "length": 103,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51218,
+              65.6596
+            ],
+            [
+              24.51439,
+              65.65973
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 118223,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 359.6,
+        "length": 586,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51161,
+              65.66008
+            ],
+            [
+              24.51154,
+              65.66447
+            ],
+            [
+              24.51153,
+              65.66533
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 144567,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.6,
+        "length": 120,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51095,
+              65.65904
+            ],
+            [
+              24.51125,
+              65.6595
+            ],
+            [
+              24.51161,
+              65.66008
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 144571,
+        "draft": 8.7,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.6,
+        "length": 317,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51161,
+              65.66008
+            ],
+            [
+              24.51335,
+              65.66283
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 203809,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 38.9,
+        "length": 4216,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.38652,
+              65.52265
+            ],
+            [
+              24.40869,
+              65.53408
+            ],
+            [
+              24.44377,
+              65.55209
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 203881,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 38.8,
+        "length": 5334,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.31437,
+              65.48536
+            ],
+            [
+              24.38003,
+              65.51931
+            ],
+            [
+              24.38652,
+              65.52265
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 226042,
+        "draft": 8.6,
+        "depth": 9.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 54.6,
+        "length": 236,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.51335,
+              65.66283
+            ],
+            [
+              24.51753,
+              65.66406
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 2
+          }
+        ]
+      },
+      {
+        "id": 231635,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 52.1,
+        "length": 15046,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              23.97013,
+              65.35672
+            ],
+            [
+              24.22575,
+              65.43953
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 235628,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 15.1,
+        "length": 449,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.46936,
+              65.59309
+            ],
+            [
+              24.46948,
+              65.59327
+            ],
+            [
+              24.4719,
+              65.59698
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 235671,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.5,
+        "length": 4721,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.44377,
+              65.55209
+            ],
+            [
+              24.45614,
+              65.57186
+            ],
+            [
+              24.45818,
+              65.57509
+            ],
+            [
+              24.46809,
+              65.59104
+            ],
+            [
+              24.46936,
+              65.59309
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 249523,
+        "draft": 10,
+        "depth": 11.3,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.6,
+        "length": 1023,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2021-11-11",
+        "journalNumber": "VÄYLÄ/5848/06.02.02/2021",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.50218,
+              65.64515
+            ],
+            [
+              24.50778,
+              65.65403
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 249527,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.6,
+        "length": 3356,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2021-11-11",
+        "journalNumber": "VÄYLÄ/5848/06.02.02/2021",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.48382,
+              65.61602
+            ],
+            [
+              24.49853,
+              65.63937
+            ],
+            [
+              24.50218,
+              65.64515
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 249531,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.5,
+        "length": 2193,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.4719,
+              65.59698
+            ],
+            [
+              24.48382,
+              65.61602
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      },
+      {
+        "id": 251228,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14.6,
+        "length": 577,
+        "additionalInformation": null,
+        "owner": "Kemin kaupunki",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.50778,
+              65.65403
+            ],
+            [
+              24.51095,
+              65.65904
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      }
+    ],
+    "areas": [
+      {
+        "id": 126509,
+        "name": null,
+        "draft": 10,
+        "depth": 10.6,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 2,
+        "notation": "Kardinaali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51871,
+                65.66272
+              ],
+              [
+                24.52092,
+                65.66376
+              ],
+              [
+                24.52142,
+                65.66357
+              ],
+              [
+                24.52159,
+                65.66366
+              ],
+              [
+                24.52098,
+                65.66388
+              ],
+              [
+                24.51877,
+                65.66285
+              ],
+              [
+                24.51871,
+                65.66282
+              ],
+              [
+                24.51865,
+                65.66281
+              ],
+              [
+                24.51856,
+                65.66278
+              ],
+              [
+                24.51871,
+                65.66272
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 180
+          }
+        ]
+      },
+      {
+        "id": 126511,
+        "name": null,
+        "draft": 5.5,
+        "depth": 6.3,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": null,
+        "notation": null,
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51288,
+                65.66439
+              ],
+              [
+                24.5136,
+                65.66467
+              ],
+              [
+                24.51358,
+                65.66468
+              ],
+              [
+                24.51474,
+                65.66514
+              ],
+              [
+                24.51476,
+                65.66513
+              ],
+              [
+                24.51486,
+                65.66517
+              ],
+              [
+                24.51464,
+                65.66526
+              ],
+              [
+                24.5137,
+                65.66503
+              ],
+              [
+                24.51307,
+                65.66531
+              ],
+              [
+                24.51288,
+                65.66439
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 200
+          }
+        ]
+      },
+      {
+        "id": 167038,
+        "name": null,
+        "draft": 7.5,
+        "depth": 8.3,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": null,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": "Sampo laituri",
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51551,
+                65.65993
+              ],
+              [
+                24.51696,
+                65.66025
+              ],
+              [
+                24.51879,
+                65.66111
+              ],
+              [
+                24.5213,
+                65.66259
+              ],
+              [
+                24.51622,
+                65.6602
+              ],
+              [
+                24.51551,
+                65.65993
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 260
+          }
+        ]
+      },
+      {
+        "id": 235683,
+        "name": null,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 41,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Väylävirasto",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.46915,
+                65.6003
+              ],
+              [
+                24.45848,
+                65.58534
+              ],
+              [
+                24.43594,
+                65.55367
+              ],
+              [
+                24.38618,
+                65.52704
+              ],
+              [
+                24.21152,
+                65.44202
+              ],
+              [
+                23.96088,
+                65.36158
+              ],
+              [
+                23.98115,
+                65.35091
+              ],
+              [
+                24.12459,
+                65.39826
+              ],
+              [
+                24.23431,
+                65.43427
+              ],
+              [
+                24.36864,
+                65.50521
+              ],
+              [
+                24.38363,
+                65.51341
+              ],
+              [
+                24.41017,
+                65.52792
+              ],
+              [
+                24.45141,
+                65.55044
+              ],
+              [
+                24.45583,
+                65.55858
+              ],
+              [
+                24.46697,
+                65.57908
+              ],
+              [
+                24.47624,
+                65.59614
+              ],
+              [
+                24.47707,
+                65.59767
+              ],
+              [
+                24.46915,
+                65.6003
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 20
+          }
+        ]
+      },
+      {
+        "id": 249439,
+        "name": null,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 15,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Väylävirasto",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.46915,
+                65.6003
+              ],
+              [
+                24.47707,
+                65.59767
+              ],
+              [
+                24.48731,
+                65.61648
+              ],
+              [
+                24.48096,
+                65.61691
+              ],
+              [
+                24.48003,
+                65.61561
+              ],
+              [
+                24.47174,
+                65.60394
+              ],
+              [
+                24.46915,
+                65.6003
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 40
+          }
+        ]
+      },
+      {
+        "id": 249455,
+        "name": null,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 15,
+        "journalNumber": "VÄYLÄ/5848/06.02.02/2021",
+        "verificationDate": "2021-11-11",
+        "owner": "Väylävirasto",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.48731,
+                65.61648
+              ],
+              [
+                24.49202,
+                65.62511
+              ],
+              [
+                24.4943,
+                65.62904
+              ],
+              [
+                24.49564,
+                65.63117
+              ],
+              [
+                24.50204,
+                65.64134
+              ],
+              [
+                24.50362,
+                65.64385
+              ],
+              [
+                24.50076,
+                65.64643
+              ],
+              [
+                24.4938,
+                65.63538
+              ],
+              [
+                24.49164,
+                65.63195
+              ],
+              [
+                24.48096,
+                65.61691
+              ],
+              [
+                24.48731,
+                65.61648
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 60
+          }
+        ]
+      },
+      {
+        "id": 250820,
+        "name": null,
+        "draft": 10,
+        "depth": 11.12,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 6,
+        "journalNumber": "VÄYLÄ/7828/06.02.02/2021",
+        "verificationDate": "2021-11-05",
+        "owner": "Kemin Satama Oy",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.50919,
+                65.66449
+              ],
+              [
+                24.50831,
+                65.66328
+              ],
+              [
+                24.50879,
+                65.65919
+              ],
+              [
+                24.50567,
+                65.65426
+              ],
+              [
+                24.50671,
+                65.65415
+              ],
+              [
+                24.50686,
+                65.65435
+              ],
+              [
+                24.51056,
+                65.65986
+              ],
+              [
+                24.50986,
+                65.6622
+              ],
+              [
+                24.50919,
+                65.66449
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 100
+          }
+        ]
+      },
+      {
+        "id": 250828,
+        "name": null,
+        "draft": 10,
+        "depth": 11.12,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 16,
+        "journalNumber": "VÄYLÄ/7828/06.02.02/2021",
+        "verificationDate": "2021-11-05",
+        "owner": "Kemin Satama Oy",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51315,
+                65.65898
+              ],
+              [
+                24.51273,
+                65.65878
+              ],
+              [
+                24.50896,
+                65.65412
+              ],
+              [
+                24.50883,
+                65.65392
+              ],
+              [
+                24.50988,
+                65.65381
+              ],
+              [
+                24.51315,
+                65.65898
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 140
+          }
+        ]
+      },
+      {
+        "id": 250832,
+        "name": null,
+        "draft": 10,
+        "depth": 11.12,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 49,
+        "journalNumber": "VÄYLÄ/7828/06.02.02/2021",
+        "verificationDate": "2021-11-05",
+        "owner": "Kemin Satama Oy",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51728,
+                65.66236
+              ],
+              [
+                24.51758,
+                65.66246
+              ],
+              [
+                24.51583,
+                65.66311
+              ],
+              [
+                24.51466,
+                65.66331
+              ],
+              [
+                24.51557,
+                65.66298
+              ],
+              [
+                24.51728,
+                65.66236
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 160
+          }
+        ]
+      },
+      {
+        "id": 251210,
+        "name": null,
+        "draft": 10,
+        "depth": 11.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.50671,
+                65.65415
+              ],
+              [
+                24.50883,
+                65.65392
+              ],
+              [
+                24.50896,
+                65.65412
+              ],
+              [
+                24.51273,
+                65.65878
+              ],
+              [
+                24.51315,
+                65.65898
+              ],
+              [
+                24.51381,
+                65.6593
+              ],
+              [
+                24.51551,
+                65.65993
+              ],
+              [
+                24.51622,
+                65.6602
+              ],
+              [
+                24.5213,
+                65.66259
+              ],
+              [
+                24.52179,
+                65.66358
+              ],
+              [
+                24.52159,
+                65.66366
+              ],
+              [
+                24.52142,
+                65.66357
+              ],
+              [
+                24.52092,
+                65.66376
+              ],
+              [
+                24.51871,
+                65.66272
+              ],
+              [
+                24.51856,
+                65.66278
+              ],
+              [
+                24.51758,
+                65.66246
+              ],
+              [
+                24.51728,
+                65.66236
+              ],
+              [
+                24.51557,
+                65.66298
+              ],
+              [
+                24.51466,
+                65.66331
+              ],
+              [
+                24.51387,
+                65.6636
+              ],
+              [
+                24.51368,
+                65.66367
+              ],
+              [
+                24.51288,
+                65.66439
+              ],
+              [
+                24.51307,
+                65.66531
+              ],
+              [
+                24.5137,
+                65.66554
+              ],
+              [
+                24.51368,
+                65.66555
+              ],
+              [
+                24.51657,
+                65.6666
+              ],
+              [
+                24.51612,
+                65.66681
+              ],
+              [
+                24.51617,
+                65.66712
+              ],
+              [
+                24.51667,
+                65.66731
+              ],
+              [
+                24.51411,
+                65.6685
+              ],
+              [
+                24.51394,
+                65.66862
+              ],
+              [
+                24.51245,
+                65.66931
+              ],
+              [
+                24.50917,
+                65.66454
+              ],
+              [
+                24.50919,
+                65.66449
+              ],
+              [
+                24.50986,
+                65.6622
+              ],
+              [
+                24.51056,
+                65.65986
+              ],
+              [
+                24.50686,
+                65.65435
+              ],
+              [
+                24.50671,
+                65.65415
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 120
+          }
+        ]
+      },
+      {
+        "id": 251517,
+        "name": null,
+        "draft": 8.6,
+        "depth": 9.2,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 44,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51387,
+                65.6636
+              ],
+              [
+                24.51466,
+                65.66331
+              ],
+              [
+                24.51583,
+                65.66311
+              ],
+              [
+                24.51671,
+                65.66354
+              ],
+              [
+                24.51916,
+                65.66468
+              ],
+              [
+                24.51879,
+                65.66491
+              ],
+              [
+                24.51828,
+                65.66522
+              ],
+              [
+                24.51387,
+                65.6636
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 220
+          }
+        ]
+      },
+      {
+        "id": 264383,
+        "name": null,
+        "draft": 10,
+        "depth": 11.3,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14,
+        "journalNumber": "TRAFICOM/511090/05.01.26.00/2022",
+        "verificationDate": "2022-10-27",
+        "owner": "Väylävirasto",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 1,
+        "notation": "Lateraali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.50567,
+                65.65426
+              ],
+              [
+                24.50382,
+                65.65126
+              ],
+              [
+                24.50259,
+                65.64932
+              ],
+              [
+                24.50076,
+                65.64643
+              ],
+              [
+                24.50362,
+                65.64385
+              ],
+              [
+                24.50988,
+                65.65381
+              ],
+              [
+                24.50883,
+                65.65392
+              ],
+              [
+                24.50671,
+                65.65415
+              ],
+              [
+                24.50567,
+                65.65426
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 80
+          }
+        ]
+      },
+      {
+        "id": 267712,
+        "name": null,
+        "draft": null,
+        "depth": null,
+        "referenceLevel": null,
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": null,
+        "journalNumber": "TRAFICOM/262044/05.01.24/2021",
+        "verificationDate": "2023-01-19",
+        "owner": "Väylävirasto",
+        "additionalInformation": "Bothnia VTS-alue, Kemi: Ajoksen satama - poijupari Inakari 1 ja 2 latitudien 65º39,5’ P ja\n65º38,9’ P välillä 10,0 metrin väylällä. Kiellot eivät koske kohtaamisia ja ohittamisia, joissa ainakin toisena osapuolena on hinaaja tai sellaiseen kooltaan rinnastettava alus.",
+        "typeCode": 15,
+        "type": "Kohtaamis- ja ohittamiskieltoalue",
+        "notationCode": null,
+        "notation": null,
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.50567,
+                65.65426
+              ],
+              [
+                24.50076,
+                65.64643
+              ],
+              [
+                24.50362,
+                65.64385
+              ],
+              [
+                24.50988,
+                65.65381
+              ],
+              [
+                24.50567,
+                65.65426
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": null
+          }
+        ]
+      }
+    ],
+    "restrictionAreas": [],
+    "boardLines": [
+      {
+        "id": 9307,
+        "direction": 14.6,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.52075,
+              65.67455
+            ],
+            [
+              24.51396,
+              65.66379
+            ],
+            [
+              24.44376,
+              65.55208
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10
+          }
+        ]
+      }
+    ],
+    "turningCircles": []
+  }
+]

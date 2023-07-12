@@ -1,9 +1,8 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
-import { AppSyncResolverEvent } from 'aws-lambda';
-import { QueryFairwayCardArgs, Status } from '../graphql/generated';
-import { context } from './mocks';
+import { Status } from '../graphql/generated';
+import { mockContext, mockQueryFairwayCardArgsEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createReadStream } from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
@@ -12,14 +11,6 @@ import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
 
-const event: AppSyncResolverEvent<QueryFairwayCardArgs> = {
-  arguments: { id: 'test' },
-  info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
-  prev: null,
-  request: { domainName: null, headers: {} },
-  source: {},
-  stash: {},
-};
 const card: FairwayCardDBModel = {
   id: 'test',
   name: {
@@ -131,7 +122,7 @@ it('should get card by id from the DynamoDB', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(event, context, () => {});
+  const response = await handler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -150,7 +141,7 @@ it('should get card by id from the DynamoDB when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(event, context, () => {});
+  const response = await handler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
