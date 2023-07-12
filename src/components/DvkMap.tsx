@@ -210,6 +210,19 @@ class DvkMap {
     });
     this.olMap.addLayer(bgBalticseaLayer);
 
+    const bgMmlsatamatLayer = new VectorImageLayer({
+      properties: { id: 'mml_satamat' },
+      source: new VectorSource({
+        features: [],
+        overlaps: false,
+      }),
+      maxResolution: 30,
+      zIndex: 104,
+      imageRatio: 3,
+      visible: true,
+    });
+    this.olMap.addLayer(bgMmlsatamatLayer);
+
     const bgMmllaituritLayer = new VectorImageLayer({
       properties: { id: 'mml_laiturit' },
       source: new VectorSource({
@@ -345,6 +358,19 @@ class DvkMap {
       new Style({
         fill: new Fill({
           color: waterColor,
+        }),
+      })
+    );
+
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource>;
+    bgMmlsatamatLayer.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: '#333333',
+          width: 1,
+        }),
+        fill: new Fill({
+          color: '#d8d8d8',
         }),
       })
     );
