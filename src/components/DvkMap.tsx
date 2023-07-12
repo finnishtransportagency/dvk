@@ -210,29 +210,27 @@ class DvkMap {
     });
     this.olMap.addLayer(bgBalticseaLayer);
 
-    const bgMmlsatamatLayer = new VectorImageLayer({
+    const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
+      source: new VectorSource(),
       maxResolution: 30,
       zIndex: 104,
-      imageRatio: 3,
-      visible: true,
+      renderBuffer: 100,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      renderOrder: undefined,
     });
     this.olMap.addLayer(bgMmlsatamatLayer);
 
-    const bgMmllaituritLayer = new VectorImageLayer({
+    const bgMmllaituritLayer = new VectorLayer({
       properties: { id: 'mml_laiturit' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
+      source: new VectorSource(),
       maxResolution: 4,
       zIndex: 105,
-      imageRatio: 3,
-      visible: true,
+      renderBuffer: 5,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      renderOrder: undefined,
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
