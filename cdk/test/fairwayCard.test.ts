@@ -66,20 +66,41 @@ const card2: FairwayCardDBModel = {
     },
   },
 };
-const points = [
-  {
-    id: 3458100305,
-    name: {
-      fi: 'Puumala2',
-      sv: 'Puumala2',
-      en: 'Puumala2',
+const points = {
+  features: [
+    {
+      type: 'Feature',
+      id: 'PilotBoardingPlace_P.fid--73ae6a7c_18944e5de2b_b6',
+      geometry: { type: 'Point', coordinates: [28.17, 61.5228333, 0] },
+      geometry_name: 'GEOM',
+      properties: {
+        IDENTIFIER: 'FI 0000034581 00305',
+        RWF_ID: '1410492',
+        REP_ID: '2049602',
+        REP_USAGE_ID: '2425332',
+        CATPIL: '3',
+        COMCHA: null,
+        DATEND: null,
+        DATSTA: null,
+        INFORM: 'www.pilotorder.fi',
+        NINFOM: null,
+        NOBJNM: null,
+        NPLDST: null,
+        NTXTDS: null,
+        OBJNAM: 'Puumala2',
+        PEREND: null,
+        PERSTA: null,
+        PILDST: null,
+        SORIND: 'FI,FI,reprt,NtM 24/618/2006',
+        STATUS: null,
+        SPATIAL_ID: null,
+        SYMBOLIZATION: null,
+        ACRONYM: 'PILBOP',
+        PVM: '2023-07-10T06:10:39',
+      },
     },
-    geometry: {
-      type: 'Point',
-      coordinates: [28.17, 61.52283],
-    },
-  },
-];
+  ],
+};
 
 jest.mock('../lib/lambda/environment', () => ({
   getFeatureCacheDurationHours: () => 2,
@@ -87,8 +108,8 @@ jest.mock('../lib/lambda/environment', () => ({
   isPermanentEnvironment: () => false,
 }));
 
-jest.mock('../lib/lambda/api/traficom', () => ({
-  fetchPilotPoints: () => points,
+jest.mock('../lib/lambda/api/axios', () => ({
+  fetchTraficomApi: () => points,
 }));
 
 beforeEach(() => {

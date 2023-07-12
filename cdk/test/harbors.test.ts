@@ -11,6 +11,12 @@ beforeEach(() => {
   ddbMock.reset();
 });
 
+jest.mock('../lib/lambda/environment', () => ({
+  getFeatureCacheDurationHours: () => 2,
+  getEnvironment: () => 'mock',
+  isPermanentEnvironment: () => false,
+}));
+
 it('should get harbors from the DynamoDB', async () => {
   const harbors: HarborDBModel[] = [
     {
