@@ -257,7 +257,7 @@ Calculate Squat
   [Arguments]    ${vessel_type}    ${fairway_type}
 	[Documentation]    This keyword inputs valid values to Squat calculator and checks the result
 	[Teardown]    Close All Browsers
-  Open Browser    http://localhost:${PORT}    ${BROWSER}
+  Open Squat
 	Set Input Values To General Section    ${vessel_type}
 	Set Input Values To Weather Section    ${vessel_type}
 	Set Input Values To Detailed Section    ${vessel_type}
