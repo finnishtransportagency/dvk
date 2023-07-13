@@ -67,7 +67,7 @@ Check Fairway Card In English
 *** Keywords ***
 Open DVK
     [Documentation]    This keyword opens DVK in localhost with port and browser given as variables
-    Open Browser    ${URL}    ${BROWSER}
+    Wait Until Keyword Succeeds    3x    2s    Open Browser    ${URL}    ${BROWSER}
     Sleep    5s
     Press Keys    None    ESC
     Wait Until Element Is Not Visible    ${SOVELLUSTA_ALUSTETAAN_POP_UP}    30s
