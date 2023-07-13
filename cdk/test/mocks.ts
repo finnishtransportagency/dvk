@@ -1,4 +1,4 @@
-import { AppSyncResolverEvent, Context } from 'aws-lambda';
+import { ALBEvent, AppSyncResolverEvent, Context } from 'aws-lambda';
 import { FairwayCard, QueryFairwayCardArgs } from '../graphql/generated';
 
 export const mockContext: Context = {
@@ -32,4 +32,15 @@ export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<Quer
   request: { domainName: null, headers: {} },
   source: { id: 'test', fairways: [{ id: 10 }], name: { fi: 'Testfi', sv: 'Testsv', en: 'Testen' }, n2000HeightSystem: true },
   stash: {},
+};
+
+export const mockALBEvent = (type: string, fairwayClass: string): ALBEvent => {
+  return {
+    requestContext: { elb: { targetGroupArn: 'arn' } },
+    body: null,
+    httpMethod: 'GET',
+    path: '/api/featureloader',
+    isBase64Encoded: false,
+    multiValueQueryStringParameters: { type: [type], vaylaluokka: [fairwayClass] },
+  };
 };

@@ -1,0 +1,143 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 88451,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              28.43471,
+              61.13869
+            ],
+            [
+              28.4407,
+              61.1347
+            ],
+            [
+              28.44561,
+              61.13264
+            ],
+            [
+              28.44754,
+              61.13259
+            ],
+            [
+              28.44826,
+              61.13237
+            ],
+            [
+              28.45069,
+              61.1331
+            ],
+            [
+              28.4504,
+              61.13351
+            ],
+            [
+              28.44322,
+              61.13456
+            ],
+            [
+              28.4401,
+              61.13639
+            ],
+            [
+              28.43471,
+              61.13869
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": 88451,
+        "featureType": "area",
+        "name": null,
+        "depth": 4.8,
+        "typeCode": 4,
+        "type": "Satama-allas",
+        "draft": 4.2,
+        "referenceLevel": "NN+75.10",
+        "n2000draft": 4.2,
+        "n2000depth": 4.8,
+        "n2000ReferenceLevel": "N2000+75.40",
+        "fairways": [
+          {
+            "fairwayId": 6105,
+            "name": {
+              "fi": "Pulpin väylä",
+              "sv": null
+            },
+            "status": 1,
+            "line": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 88459,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              28.44452,
+              61.14401
+            ],
+            [
+              28.45151,
+              61.14367
+            ],
+            [
+              28.45502,
+              61.1435
+            ],
+            [
+              28.45823,
+              61.14484
+            ],
+            [
+              28.45381,
+              61.14615
+            ],
+            [
+              28.44452,
+              61.14401
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": 88459,
+        "featureType": "area",
+        "name": null,
+        "depth": 5.2,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "draft": 4.2,
+        "referenceLevel": "NN+75.10",
+        "n2000draft": 4.2,
+        "n2000depth": 5.2,
+        "n2000ReferenceLevel": "N2000+75.40",
+        "fairways": [
+          {
+            "fairwayId": 6110,
+            "name": {
+              "fi": "Honkalahden väylä",
+              "sv": null
+            },
+            "status": 1,
+            "line": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null
+          }
+        ]
+      }
+    }
+  ]
+}

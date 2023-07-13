@@ -1,0 +1,484 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get areas from api when cache expired 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              26.3684718529,
+              60.3042285176,
+            ],
+            [
+              26.3747757247,
+              60.3006386974,
+            ],
+            [
+              26.3916301723,
+              60.3039381049,
+            ],
+            [
+              26.3838445268,
+              60.3072378752,
+            ],
+            [
+              26.3684718529,
+              60.3042285176,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "id": 193273,
+      "properties": {
+        "depth": 12,
+        "draft": 9.5,
+        "fairways": [
+          {
+            "fairwayId": 5345,
+            "line": 1,
+            "name": {
+              "fi": "Loviisan väylä",
+              "sv": "Farleden till Lovisa",
+            },
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "status": 1,
+          },
+          {
+            "fairwayId": 4865,
+            "line": 1,
+            "name": {
+              "fi": "Etelä-Suomen talviväylä I ",
+              "sv": "Södra Finlands vinterfarled I",
+            },
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "status": 2,
+          },
+        ],
+        "featureType": "area",
+        "id": 193273,
+        "n2000ReferenceLevel": null,
+        "name": null,
+        "referenceLevel": "MW2005",
+        "type": "Navigointialue",
+        "typeCode": 1,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get areas from cache 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              28.43471,
+              61.13869,
+            ],
+            [
+              28.4407,
+              61.1347,
+            ],
+            [
+              28.44561,
+              61.13264,
+            ],
+            [
+              28.44754,
+              61.13259,
+            ],
+            [
+              28.44826,
+              61.13237,
+            ],
+            [
+              28.45069,
+              61.1331,
+            ],
+            [
+              28.4504,
+              61.13351,
+            ],
+            [
+              28.44322,
+              61.13456,
+            ],
+            [
+              28.4401,
+              61.13639,
+            ],
+            [
+              28.43471,
+              61.13869,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "id": 88451,
+      "properties": {
+        "depth": 4.8,
+        "draft": 4.2,
+        "fairways": [
+          {
+            "fairwayId": 6105,
+            "line": 1,
+            "name": {
+              "fi": "Pulpin väylä",
+              "sv": null,
+            },
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "status": 1,
+          },
+        ],
+        "featureType": "area",
+        "id": 88451,
+        "n2000ReferenceLevel": "N2000+75.40",
+        "n2000depth": 4.8,
+        "n2000draft": 4.2,
+        "name": null,
+        "referenceLevel": "NN+75.10",
+        "type": "Satama-allas",
+        "typeCode": 4,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              28.44452,
+              61.14401,
+            ],
+            [
+              28.45151,
+              61.14367,
+            ],
+            [
+              28.45502,
+              61.1435,
+            ],
+            [
+              28.45823,
+              61.14484,
+            ],
+            [
+              28.45381,
+              61.14615,
+            ],
+            [
+              28.44452,
+              61.14401,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "id": 88459,
+      "properties": {
+        "depth": 5.2,
+        "draft": 4.2,
+        "fairways": [
+          {
+            "fairwayId": 6110,
+            "line": 1,
+            "name": {
+              "fi": "Honkalahden väylä",
+              "sv": null,
+            },
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "status": 1,
+          },
+        ],
+        "featureType": "area",
+        "id": 88459,
+        "n2000ReferenceLevel": "N2000+75.40",
+        "n2000depth": 5.2,
+        "n2000draft": 4.2,
+        "name": null,
+        "referenceLevel": "NN+75.10",
+        "type": "Navigointialue",
+        "typeCode": 1,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get navigation lines from api when cache expired 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            23.771884401,
+            61.2984219918,
+          ],
+          [
+            23.7719649967,
+            61.2983296353,
+          ],
+          [
+            23.7720591894,
+            61.2982403049,
+          ],
+          [
+            23.7721664917,
+            61.298154463,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 69883,
+      "properties": {
+        "depth": 2.2,
+        "draft": 1.8,
+        "fairways": [
+          {
+            "fairwayCards": [
+              {
+                "id": "test",
+                "name": {
+                  "en": "Testen",
+                  "fi": "Testfi",
+                  "sv": "Testsv",
+                },
+              },
+            ],
+            "fairwayId": 4710,
+            "line": 1,
+            "name": {
+              "fi": "Tampere - Hämeenlinna väylä",
+              "sv": null,
+            },
+            "status": 1,
+          },
+        ],
+        "featureType": "line",
+        "id": 69883,
+        "length": 33,
+        "n2000ReferenceLevel": null,
+        "referenceLevel": "NN+78.80",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get navigation lines from cache 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            24.89501,
+            60.08965,
+          ],
+          [
+            24.90439,
+            60.11076,
+          ],
+          [
+            24.90495,
+            60.11199,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 264222,
+      "properties": {
+        "depth": 12.5,
+        "draft": 11,
+        "fairways": [
+          {
+            "fairwayCards": [
+              {
+                "id": "lansisatama",
+                "name": {
+                  "en": "Helsinki West Harbour channel",
+                  "fi": "Helsingin Länsisataman väylä",
+                  "sv": "Farleden till Västra hamnen i Helsingfors",
+                },
+              },
+            ],
+            "fairwayId": 4710,
+            "line": 1,
+            "name": {
+              "fi": "Helsingin Länsisataman väylä",
+              "sv": "Farleden till Västhamn",
+            },
+            "status": 1,
+          },
+        ],
+        "featureType": "line",
+        "id": 264222,
+        "length": 2550,
+        "n2000ReferenceLevel": null,
+        "referenceLevel": "MW2018",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            24.90516,
+            60.12494,
+          ],
+          [
+            24.9108,
+            60.12582,
+          ],
+          [
+            24.916,
+            60.12663,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 264272,
+      "properties": {
+        "depth": 10.2,
+        "draft": 8,
+        "fairways": [
+          {
+            "fairwayId": 4610,
+            "line": 1,
+            "name": {
+              "fi": "Rysäkarin väylä",
+              "sv": "Farled till Rysskär",
+            },
+            "status": 1,
+          },
+        ],
+        "featureType": "line",
+        "id": 264272,
+        "length": 631,
+        "n2000ReferenceLevel": null,
+        "referenceLevel": "MW2005",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get navigation lines from cache when api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            24.89501,
+            60.08965,
+          ],
+          [
+            24.90439,
+            60.11076,
+          ],
+          [
+            24.90495,
+            60.11199,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 264222,
+      "properties": {
+        "depth": 12.5,
+        "draft": 11,
+        "fairways": [
+          {
+            "fairwayCards": [
+              {
+                "id": "lansisatama",
+                "name": {
+                  "en": "Helsinki West Harbour channel",
+                  "fi": "Helsingin Länsisataman väylä",
+                  "sv": "Farleden till Västra hamnen i Helsingfors",
+                },
+              },
+            ],
+            "fairwayId": 4710,
+            "line": 1,
+            "name": {
+              "fi": "Helsingin Länsisataman väylä",
+              "sv": "Farleden till Västhamn",
+            },
+            "status": 1,
+          },
+        ],
+        "featureType": "line",
+        "id": 264222,
+        "length": 2550,
+        "n2000ReferenceLevel": null,
+        "referenceLevel": "MW2018",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            24.90516,
+            60.12494,
+          ],
+          [
+            24.9108,
+            60.12582,
+          ],
+          [
+            24.916,
+            60.12663,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 264272,
+      "properties": {
+        "depth": 10.2,
+        "draft": 8,
+        "fairways": [
+          {
+            "fairwayId": 4610,
+            "line": 1,
+            "name": {
+              "fi": "Rysäkarin väylä",
+              "sv": "Farled till Rysskär",
+            },
+            "status": 1,
+          },
+        ],
+        "featureType": "line",
+        "id": 264272,
+        "length": 631,
+        "n2000ReferenceLevel": null,
+        "referenceLevel": "MW2005",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
