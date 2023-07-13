@@ -2,7 +2,7 @@
 Documentation    This test suite contains tests for Squat calculator
 Library    SeleniumLibrary
 Resource    resources_squat.resource
-Test Setup    Open Browser    http://localhost:${PORT}    ${BROWSER}
+Test Setup    Open Squat
 Test Teardown    Close All Browsers
 
 *** Variables ***
@@ -248,6 +248,10 @@ Calculate Squat And Verify Results
 	BULKER    OPEN
 
 *** Keywords ***
+
+Open Squat
+  [Documentation]    This keyword opens Squat in localhost with port and browser given as variables
+  Wait Until Keyword Succeeds    3x    2s    Open Browser    http://localhost:${PORT}    ${BROWSER}
 
 Calculate Squat
   [Arguments]    ${vessel_type}    ${fairway_type}
