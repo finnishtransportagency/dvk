@@ -767,7 +767,7 @@ type FairwayCardProps = {
 
 const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const [tab, setTab] = useState<string>('1');
+  const [tab, setTab] = useState<number>(1);
   const lang = i18n.resolvedLanguage as Lang;
 
   const { data, isLoading, dataUpdatedAt, isFetching } = useFairwayCardListData();
@@ -776,13 +776,13 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
 
-  const getTabLabel = (tabId: string): string => {
+  const getTabLabel = (tabId: number): string => {
     switch (tabId) {
-      case '1':
+      case 1:
         return t('title', { count: 1 });
-      case '2':
+      case 2:
         return t('harboursTitle');
-      case '3':
+      case 3:
         return t('areasTitle');
       default:
         return '-';
@@ -884,8 +884,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             </IonRow>
           </IonGrid>
 
-          <IonSegment className="tabs" onIonChange={(e) => setTab(e.detail.value ?? '1')} value={tab} data-testid="tabChange">
-            {['1', '2', '3'].map((tabId) => (
+          <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
+            {[1, 2, 3].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
                 <IonLabel>
                   <h3>{getTabLabel(tabId)}</h3>
@@ -894,7 +894,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             ))}
           </IonSegment>
 
-          <div className={'tabContent tab1' + (widePane ? ' wide' : '') + (tab === '1' ? ' active' : '')}>
+          <div className={'tabContent tab1' + (widePane ? ' wide' : '') + (tab === 1 ? ' active' : '')}>
             <IonText className="no-margin-top">
               <h4>
                 <strong>{t('information')}</strong>
@@ -941,7 +941,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
 
-          <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === '2' ? ' active' : '')}>
+          <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === 2 ? ' active' : '')}>
             {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
               return <HarbourInfo data={harbour} key={harbour?.id} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
             })}
@@ -952,7 +952,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             )}
           </div>
 
-          <div className={'tabContent tab3' + (widePane ? ' wide' : '') + (tab === '3' ? ' active' : '')}>
+          <div className={'tabContent tab3' + (widePane ? ' wide' : '') + (tab === 3 ? ' active' : '')}>
             <IonText className="no-margin-top">
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />
