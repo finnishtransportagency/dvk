@@ -3,4 +3,5 @@ serviceWorkerRegistration.ts
 service-worker.ts
 build
 capacitor.config.ts
+vite.config.ts
 coverage

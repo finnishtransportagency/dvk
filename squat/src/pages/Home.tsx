@@ -55,7 +55,7 @@ const Home: React.FC = () => {
                   </IonItem>
                 </IonCol>
                 <IonCol size="auto" class="ion-align-self-center">
-                  v{`${process.env.REACT_APP_VERSION}`}
+                  v{import.meta.env.VITE_APP_VERSION}
                 </IonCol>
               </IonRow>
             </IonGrid>
