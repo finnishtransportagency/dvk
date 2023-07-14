@@ -34,6 +34,15 @@ export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<Quer
   stash: {},
 };
 
+export const mockSafetyEquipmentFaultsEvent: AppSyncResolverEvent<void> = {
+  arguments: undefined,
+  info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
+  prev: null,
+  request: { domainName: null, headers: {} },
+  source: {},
+  stash: {},
+};
+
 export const mockALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
   return {
     requestContext: { elb: { targetGroupArn: 'arn' } },
