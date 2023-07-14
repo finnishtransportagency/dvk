@@ -16,7 +16,7 @@ exports[`should get faults from api 1`] = `
       "fi": "Kuusinen ylempi",
       "sv": "Kuusinen övre",
     },
-    "recordTime": 1591543984711,
+    "recordTime": 1591554784711,
     "type": {
       "fi": "Valo pimeä",
       "sv": "Ljuset slocknat",

@@ -326,7 +326,7 @@ exports[`should get mareographs from api 1`] = `
       "id": 134252,
       "properties": {
         "calculated": false,
-        "dateTime": 1689331380000,
+        "dateTime": 1689342180000,
         "featureType": "mareograph",
         "n2000WaterLevel": 166,
         "name": "Föglö Degerby",
@@ -345,7 +345,7 @@ exports[`should get mareographs from api 1`] = `
       "id": 134254,
       "properties": {
         "calculated": false,
-        "dateTime": 1689331380000,
+        "dateTime": 1689342180000,
         "featureType": "mareograph",
         "n2000WaterLevel": 361,
         "name": "Hamina Pitäjänsaari",
@@ -364,7 +364,7 @@ exports[`should get mareographs from api 1`] = `
       "id": "-16777622",
       "properties": {
         "calculated": true,
-        "dateTime": 1689330600000,
+        "dateTime": 1689341400000,
         "featureType": "mareograph",
         "n2000WaterLevel": 350,
         "name": "Kotka kantasatama",
@@ -770,7 +770,7 @@ exports[`should get warnings always from api when cache expired 1`] = `
         },
         "areaId": null,
         "areaText": null,
-        "dateTime": 1689152400000,
+        "dateTime": 1689163200000,
         "description": {
           "en": "
 EDGE MARK KRIISINKIVI NR 11133
@@ -810,7 +810,7 @@ VAYLAN_NIMI:Oulu - Kemi väylä
         },
         "notifier": "FINTRAFFIC/BVTS/OFK/KD",
         "number": 136,
-        "startDateTime": 1689152400000,
+        "startDateTime": 1689163200000,
         "type": {
           "en": "LOCAL WARNING",
           "fi": "LOCAL WARNING",
@@ -854,7 +854,7 @@ VAYLAN_NIMI:Oulu - Kemi väylä
         },
         "areaId": null,
         "areaText": null,
-        "dateTime": 1688808600000,
+        "dateTime": 1688819400000,
         "description": {
           "en": "
 ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
@@ -885,7 +885,7 @@ DATE AND TIME
         },
         "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
         "number": 135,
-        "startDateTime": 1688936400000,
+        "startDateTime": 1688947200000,
         "type": {
           "en": "LOCAL WARNING",
           "fi": "LOCAL WARNING",
@@ -919,7 +919,7 @@ exports[`should get warnings always from api when cache not expired 1`] = `
         },
         "areaId": null,
         "areaText": null,
-        "dateTime": 1689152400000,
+        "dateTime": 1689163200000,
         "description": {
           "en": "
 EDGE MARK KRIISINKIVI NR 11133
@@ -959,7 +959,7 @@ VAYLAN_NIMI:Oulu - Kemi väylä
         },
         "notifier": "FINTRAFFIC/BVTS/OFK/KD",
         "number": 136,
-        "startDateTime": 1689152400000,
+        "startDateTime": 1689163200000,
         "type": {
           "en": "LOCAL WARNING",
           "fi": "LOCAL WARNING",
@@ -1003,7 +1003,7 @@ VAYLAN_NIMI:Oulu - Kemi väylä
         },
         "areaId": null,
         "areaText": null,
-        "dateTime": 1688808600000,
+        "dateTime": 1688819400000,
         "description": {
           "en": "
 ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
@@ -1034,7 +1034,7 @@ DATE AND TIME
         },
         "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
         "number": 135,
-        "startDateTime": 1688936400000,
+        "startDateTime": 1688947200000,
         "type": {
           "en": "LOCAL WARNING",
           "fi": "LOCAL WARNING",

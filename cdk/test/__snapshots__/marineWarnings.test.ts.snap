@@ -9,7 +9,7 @@ exports[`should get warnings from api 1`] = `
       "sv": "BOTTENVIKEN",
     },
     "areaId": NaN,
-    "dateTime": 1689152400000,
+    "dateTime": 1689163200000,
     "description": {
       "en": "
 EDGE MARK KRIISINKIVI NR 11133
@@ -35,7 +35,7 @@ UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
     },
     "notifier": "FINTRAFFIC/BVTS/OFK/KD",
     "number": 136,
-    "startDateTime": 1689152400000,
+    "startDateTime": 1689163200000,
     "type": {
       "en": "LOCAL WARNING",
       "fi": "LOCAL WARNING",
@@ -49,7 +49,7 @@ UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
       "sv": "BOTTENVIKEN",
     },
     "areaId": NaN,
-    "dateTime": 1688808600000,
+    "dateTime": 1688819400000,
     "description": {
       "en": "
 ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
@@ -78,7 +78,7 @@ DATE AND TIME
     },
     "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
     "number": 135,
-    "startDateTime": 1688936400000,
+    "startDateTime": 1688947200000,
     "type": {
       "en": "LOCAL WARNING",
       "fi": "LOCAL WARNING",
