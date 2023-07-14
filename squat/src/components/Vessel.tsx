@@ -17,6 +17,8 @@ const zero = 0;
 const Vessel: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.vessel' });
   const { state, dispatch } = useSquatContext();
+  const { showLimitedView: limitedView } = state.status;
+  const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
     dispatch({
@@ -90,7 +92,7 @@ const Vessel: React.FC = () => {
         />
         <IonGrid className="no-padding">
           <IonRow class="input-row">
-            <IonCol size="6">
+            <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('length-BPP')}
                 name="lengthBPP"
@@ -105,7 +107,7 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('breadth')}
                 name="breadth"
@@ -120,7 +122,7 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('draught')}
                 name="draught"
@@ -135,7 +137,7 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('block-coefficient')}
                 name="blockCoefficient"
@@ -149,7 +151,7 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-            <IonCol size="6">
+            <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('displacement')}
                 name="displacement"
@@ -163,139 +165,147 @@ const Vessel: React.FC = () => {
                 actionType="vessel-general"
               />
             </IonCol>
-            <IonCol size="6"></IonCol>
-            <IonCol size="6" className="hide-landscape"></IonCol>
-            <IonCol size="6" className="hide-landscape"></IonCol>
+            <IonCol size="6" />
+            <IonCol size="6" className="hide-landscape" />
+            <IonCol size="6" className="hide-landscape" />
           </IonRow>
         </IonGrid>
 
-        <SectionTitle
-          title={t('detailed')}
-          valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
-        />
-        <IonGrid className="no-padding">
-          <IonRow class="input-row">
-            <IonCol size="6">
-              <InputField
-                title={t('total-lateral-wind-surface')}
-                name="windSurface"
-                value={state.vessel.detailed.windSurface ? state.vessel.detailed.windSurface : null}
-                placeholder="0"
-                min={fieldParams.windSurface.min}
-                max={fieldParams.windSurface.max}
-                unit={fieldParams.windSurface.unit}
-                unitId={fieldParams.windSurface.unitId}
-                fieldClass={setFieldClass('windSurface')}
-                actionType="vessel-detailed"
-              />
-            </IonCol>
-            <IonCol size="6">
-              <InputField
-                title={t('estimated-deck-cargo')}
-                name="deckCargo"
-                value={state.vessel.detailed.deckCargo ? state.vessel.detailed.deckCargo : null}
-                placeholder="0"
-                min={fieldParams.deckCargo.min}
-                max={fieldParams.deckCargo.max}
-                unit={fieldParams.deckCargo.unit}
-                unitId={fieldParams.deckCargo.unitId}
-                fieldClass={setFieldClass('deckCargo')}
-                actionType="vessel-detailed"
-              />
-            </IonCol>
-            <IonCol size="6">
-              <InputField
-                title={t('bow-thruster')}
-                name="bowThruster"
-                value={state.vessel.detailed.bowThruster ? state.vessel.detailed.bowThruster : null}
-                placeholder="0"
-                min={fieldParams.bowThruster.min}
-                max={fieldParams.bowThruster.max}
-                unit={fieldParams.bowThruster.unit}
-                fieldClass={setFieldClass('bowThruster')}
-                actionType="vessel-detailed"
-              />
-            </IonCol>
-            <IonCol size="6">
-              <InputField
-                title={t('bow-thruster-efficiency')}
-                name="bowThrusterEfficiency"
-                value={state.vessel.detailed.bowThrusterEfficiency ? state.vessel.detailed.bowThrusterEfficiency : null}
-                placeholder="0"
-                min={fieldParams.bowThrusterEfficiency.min}
-                max={fieldParams.bowThrusterEfficiency.max}
-                unit={fieldParams.bowThrusterEfficiency.unit}
-                fieldClass={setFieldClass('bowThrusterEfficiency')}
-                actionType="vessel-detailed"
-              />
-            </IonCol>
-            <IonCol size="12">
-              <RadioSelectField
-                title={t('select-vessel-profile')}
-                name="profileSelected"
-                value={state.vessel.detailed.profileSelected}
-                options={vesselProfiles}
-                actionType="vessel-detailed"
-                required
-                translateOptions
-              />
-            </IonCol>
-            <IonCol size="6"></IonCol>
-            <IonCol size="6" className="hide-landscape"></IonCol>
-            <IonCol size="6" className="hide-landscape"></IonCol>
-          </IonRow>
-        </IonGrid>
+        {!limitedView && (
+          <>
+            <SectionTitle
+              title={t('detailed')}
+              valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
+            />
+            <IonGrid className="no-padding">
+              <IonRow class="input-row">
+                <IonCol size="6">
+                  <InputField
+                    title={t('total-lateral-wind-surface')}
+                    name="windSurface"
+                    value={state.vessel.detailed.windSurface ? state.vessel.detailed.windSurface : null}
+                    placeholder="0"
+                    min={fieldParams.windSurface.min}
+                    max={fieldParams.windSurface.max}
+                    unit={fieldParams.windSurface.unit}
+                    unitId={fieldParams.windSurface.unitId}
+                    fieldClass={setFieldClass('windSurface')}
+                    actionType="vessel-detailed"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('estimated-deck-cargo')}
+                    name="deckCargo"
+                    value={state.vessel.detailed.deckCargo ? state.vessel.detailed.deckCargo : null}
+                    placeholder="0"
+                    min={fieldParams.deckCargo.min}
+                    max={fieldParams.deckCargo.max}
+                    unit={fieldParams.deckCargo.unit}
+                    unitId={fieldParams.deckCargo.unitId}
+                    fieldClass={setFieldClass('deckCargo')}
+                    actionType="vessel-detailed"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('bow-thruster')}
+                    name="bowThruster"
+                    value={state.vessel.detailed.bowThruster ? state.vessel.detailed.bowThruster : null}
+                    placeholder="0"
+                    min={fieldParams.bowThruster.min}
+                    max={fieldParams.bowThruster.max}
+                    unit={fieldParams.bowThruster.unit}
+                    fieldClass={setFieldClass('bowThruster')}
+                    actionType="vessel-detailed"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('bow-thruster-efficiency')}
+                    name="bowThrusterEfficiency"
+                    value={state.vessel.detailed.bowThrusterEfficiency ? state.vessel.detailed.bowThrusterEfficiency : null}
+                    placeholder="0"
+                    min={fieldParams.bowThrusterEfficiency.min}
+                    max={fieldParams.bowThrusterEfficiency.max}
+                    unit={fieldParams.bowThrusterEfficiency.unit}
+                    fieldClass={setFieldClass('bowThrusterEfficiency')}
+                    actionType="vessel-detailed"
+                  />
+                </IonCol>
+                <IonCol size="12">
+                  <RadioSelectField
+                    title={t('select-vessel-profile')}
+                    name="profileSelected"
+                    value={state.vessel.detailed.profileSelected}
+                    options={vesselProfiles}
+                    actionType="vessel-detailed"
+                    required
+                    translateOptions
+                  />
+                </IonCol>
+                <IonCol size="6" />
+                <IonCol size="6" className="hide-landscape" />
+                <IonCol size="6" className="hide-landscape" />
+              </IonRow>
+            </IonGrid>
+          </>
+        )}
 
-        <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
-        <IonGrid className="no-padding">
-          <IonRow class="input-row">
-            <IonCol size="6">
-              <InputField
-                title={t('KG')}
-                description={t('KG-description')}
-                name="KG"
-                value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
-                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min={fieldParams.KG.min}
-                max={fieldParams.KG.max}
-                step={fieldParams.KG.step}
-                fieldClass={setFieldClass('KG')}
-                actionType="vessel-stability"
-              />
-            </IonCol>
-            <IonCol size="6">
-              <InputField
-                title={t('GM')}
-                description={t('GM-description')}
-                name="GM"
-                value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
-                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min={fieldParams.GM.min}
-                max={fieldParams.GM.max}
-                step={fieldParams.GM.step}
-                fieldClass={setFieldClass('GM')}
-                actionType="vessel-stability"
-              />
-            </IonCol>
-            <IonCol size="6">
-              <InputField
-                title={t('KB')}
-                description={t('KB-description')}
-                name="KB"
-                value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
-                placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                min={fieldParams.KB.min}
-                max={fieldParams.KB.max}
-                step={fieldParams.KB.step}
-                fieldClass={setFieldClass('KB')}
-                actionType="vessel-stability"
-              />
-            </IonCol>
-            <IonCol size="6"></IonCol>
-            <IonCol size="6" className="hide-portrait"></IonCol>
-            <IonCol size="6" className="hide-portrait"></IonCol>
-          </IonRow>
-        </IonGrid>
+        {!limitedView && (
+          <>
+            <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
+            <IonGrid className="no-padding">
+              <IonRow class="input-row">
+                <IonCol size="6">
+                  <InputField
+                    title={t('KG')}
+                    description={t('KG-description')}
+                    name="KG"
+                    value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
+                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    min={fieldParams.KG.min}
+                    max={fieldParams.KG.max}
+                    step={fieldParams.KG.step}
+                    fieldClass={setFieldClass('KG')}
+                    actionType="vessel-stability"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('GM')}
+                    description={t('GM-description')}
+                    name="GM"
+                    value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
+                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    min={fieldParams.GM.min}
+                    max={fieldParams.GM.max}
+                    step={fieldParams.GM.step}
+                    fieldClass={setFieldClass('GM')}
+                    actionType="vessel-stability"
+                  />
+                </IonCol>
+                <IonCol size="6">
+                  <InputField
+                    title={t('KB')}
+                    description={t('KB-description')}
+                    name="KB"
+                    value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
+                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    min={fieldParams.KB.min}
+                    max={fieldParams.KB.max}
+                    step={fieldParams.KB.step}
+                    fieldClass={setFieldClass('KB')}
+                    actionType="vessel-stability"
+                  />
+                </IonCol>
+                <IonCol size="6" />
+                <IonCol size="6" className="hide-portrait" />
+                <IonCol size="6" className="hide-portrait" />
+              </IonRow>
+            </IonGrid>
+          </>
+        )}
       </>
     </>
   );
