@@ -5,7 +5,7 @@
   "homepage": ".",
   "dependencies": {
     "@capacitor/app": "5.0.6",
-    "@capacitor/core": "5.2.0",
+    "@capacitor/core": "5.2.1",
     "@capacitor/haptics": "5.0.6",
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
@@ -17,7 +17,7 @@
     "@types/d3": "^7.4.0",
     "@types/jest": "^29.5.3",
     "@types/node": "^20.4.2",
-    "@types/react": "^18.2.14",
+    "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "d3": "^7.8.5",
     "i18next": "^23.2.11",
@@ -68,13 +68,13 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "5.2.0",
+    "@capacitor/cli": "5.2.1",
     "@types/lodash": "^4.14.195",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "eslint": "^8.44.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-import": "^2.27.5",
