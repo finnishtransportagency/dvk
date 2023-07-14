@@ -279,7 +279,7 @@ const Calculations: React.FC = () => {
 
   // Update status to state
   const setStateStatus = useCallback(
-    (key: string, value: string | undefined) => {
+    (key: string, value: string | number | undefined) => {
       dispatch({
         type: 'status',
         payload: { key: key, value: value === 'true', elType: 'boolean' },

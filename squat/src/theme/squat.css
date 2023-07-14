@@ -361,6 +361,7 @@ ion-segment-button ion-label {
   line-height: 1;
   letter-spacing: 0;
   font-size: 16px;
+  overflow: visible;
 }
 ion-segment-button.segment-button-checked {
   background: none;
