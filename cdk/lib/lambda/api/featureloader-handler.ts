@@ -15,12 +15,12 @@ import {
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
-import { fetchMarineWarnings, parseDateTimes } from './pooki';
+import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
-import { fetchVATUByApi } from './axios';
+import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 
 function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;

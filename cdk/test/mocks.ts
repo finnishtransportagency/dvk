@@ -34,13 +34,13 @@ export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<Quer
   stash: {},
 };
 
-export const mockALBEvent = (type: string, fairwayClass: string): ALBEvent => {
+export const mockALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
   return {
     requestContext: { elb: { targetGroupArn: 'arn' } },
     body: null,
     httpMethod: 'GET',
     path: '/api/featureloader',
     isBase64Encoded: false,
-    multiValueQueryStringParameters: { type: [type], vaylaluokka: [fairwayClass] },
+    multiValueQueryStringParameters: { type: [type], vaylaluokka: [fairwayClass ?? ''] },
   };
 };

@@ -220,6 +220,45 @@ exports[`should get areas from cache 1`] = `
 }
 `;
 
+exports[`should get harbors from DynamoDB 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          1,
+          2,
+        ],
+      },
+      "id": "1;2",
+      "properties": {
+        "fairwayCards": [
+          {
+            "id": "test",
+            "name": {
+              "en": "Testen",
+              "fi": "Testfi",
+              "sv": "Testsv",
+            },
+          },
+        ],
+        "featureType": "harbor",
+        "harborId": "test1",
+        "id": "1;2",
+        "name": {
+          "en": "Harboren",
+          "fi": "Harborfi",
+          "sv": "Harborsv",
+        },
+        "quays": 0,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
 exports[`should get navigation lines from api when cache expired 1`] = `
 {
   "features": [
@@ -475,6 +514,466 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
         "length": 631,
         "n2000ReferenceLevel": null,
         "referenceLevel": "MW2005",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get vts lines from api when cache expired 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          2790417,
+          9625463.0051,
+        ],
+        "type": "Point",
+      },
+      "properties": {
+        "featureType": "vtspoint",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get vts lines from cache 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            25.71667,
+            60.09333,
+          ],
+          [
+            26.65,
+            60.17167,
+          ],
+          [
+            26.76466,
+            60.2002,
+          ],
+          [
+            27.29306,
+            60.20021,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": "Rdocal_L.FI 0000359354 00403",
+      "properties": {
+        "featureType": "vtsline",
+        "identifier": "FI 0000359354 00403",
+        "information": "Kotka VTS, VHF 67. See www.fintraffic.fi/en > Maritime Traffic",
+        "name": null,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            24.725,
+            59.925,
+          ],
+          [
+            24.725,
+            60.145,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": "Rdocal_L.FI 0000359372 00403",
+      "properties": {
+        "featureType": "vtsline",
+        "identifier": "FI 0000359372 00403",
+        "information": "Helsinki VTS, VHF 09. See www.fintraffic.fi/en > Maritime Traffic",
+        "name": null,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get warnings always from api when cache expired 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          2790416.9999999967,
+          9625463.005102864,
+        ],
+        "type": "Point",
+      },
+      "id": 24822,
+      "properties": {
+        "area": {
+          "en": "BAY OF BOTHNIA",
+          "fi": "PERÄMERI",
+          "sv": "BOTTENVIKEN",
+        },
+        "areaId": null,
+        "areaText": null,
+        "dateTime": 1689152400000,
+        "description": {
+          "en": "
+EDGE MARK KRIISINKIVI NR 11133
+IN POS 65-12.69N 025-04.00E
+OUT OF ORDER DUE TO MAITENANCE WORK",
+          "fi": "
+REUNAMERKKI KRIISINKIVI NR 11133
+PAIKASSA  65-12.69N 025-04.00E
+EI TOIMINNASSA KORJAUSTÖIDEN VUOKSI",
+          "sv": "
+RANDMÄRKE KRIISINKIVI NR 11133
+I POS 65-12.69N 025-04.00E
+UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
+        },
+        "endDateTime": null,
+        "equipmentId": 11133,
+        "equipmentText": "TLNUMERO:11133
+ALALAJI:Kiinteä
+LAJI:Oikea
+TYYPPI:Reunamerkki
+NIMIS:Kriisinkivi
+VAYLAN_NIMI:Oulu - Kemi väylä
+TLNUMERO:11133
+ALALAJI:Kiinteä
+LAJI:Oikea
+TYYPPI:Reunamerkki
+NIMIS:Kriisinkivi
+VAYLAN_NIMI:Oulu - Kemi väylä
+",
+        "featureType": "marinewarning",
+        "lineId": null,
+        "lineText": null,
+        "location": {
+          "en": "OULU - KEMI FAIRWAY",
+          "fi": "OULU - KEMI VÄYLÄ",
+          "sv": "ULEÅBORG - KEMI FARLED",
+        },
+        "notifier": "FINTRAFFIC/BVTS/OFK/KD",
+        "number": 136,
+        "startDateTime": 1689152400000,
+        "type": {
+          "en": "LOCAL WARNING",
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+        },
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            2665506.999999996,
+            9658753.005071487,
+          ],
+          [
+            2678017.0000000014,
+            9671869.005059116,
+          ],
+          [
+            2696213.000000003,
+            9685819.005045967,
+          ],
+          [
+            2720701.0000000047,
+            9716222.005017307,
+          ],
+          [
+            2728618.999999995,
+            9745420.00498979,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 24803,
+      "properties": {
+        "area": {
+          "en": "BAY OF BOTHNIA",
+          "fi": "PERÄMERI",
+          "sv": "BOTTENVIKEN",
+        },
+        "areaId": null,
+        "areaText": null,
+        "dateTime": 1688808600000,
+        "description": {
+          "en": "
+ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+          "fi": "
+KEMIN AJOKSEN VÄYLÄLLÄ SUORITETAAN KELLUVIEN TURVALAITTEIDEN MUUTOSTÖITÄ 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+          "sv": "
+FÖRÄNDRINGSARBETE AV FLYTANDE NAVIGATIONS ANORDNINGAR UTFÖRS PÅ KEMI AJOS FARLED 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+        },
+        "endDateTime": null,
+        "equipmentId": null,
+        "equipmentText": null,
+        "featureType": "marinewarning",
+        "lineId": null,
+        "lineText": null,
+        "location": {
+          "en": "KEMI AJOS FAIRWAY",
+          "fi": "KEMI AJOS VÄYLÄ",
+          "sv": "KEMI AJOS FARLED",
+        },
+        "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
+        "number": 135,
+        "startDateTime": 1688936400000,
+        "type": {
+          "en": "LOCAL WARNING",
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+        },
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get warnings always from api when cache not expired 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          2790416.9999999967,
+          9625463.005102864,
+        ],
+        "type": "Point",
+      },
+      "id": 24822,
+      "properties": {
+        "area": {
+          "en": "BAY OF BOTHNIA",
+          "fi": "PERÄMERI",
+          "sv": "BOTTENVIKEN",
+        },
+        "areaId": null,
+        "areaText": null,
+        "dateTime": 1689152400000,
+        "description": {
+          "en": "
+EDGE MARK KRIISINKIVI NR 11133
+IN POS 65-12.69N 025-04.00E
+OUT OF ORDER DUE TO MAITENANCE WORK",
+          "fi": "
+REUNAMERKKI KRIISINKIVI NR 11133
+PAIKASSA  65-12.69N 025-04.00E
+EI TOIMINNASSA KORJAUSTÖIDEN VUOKSI",
+          "sv": "
+RANDMÄRKE KRIISINKIVI NR 11133
+I POS 65-12.69N 025-04.00E
+UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
+        },
+        "endDateTime": null,
+        "equipmentId": 11133,
+        "equipmentText": "TLNUMERO:11133
+ALALAJI:Kiinteä
+LAJI:Oikea
+TYYPPI:Reunamerkki
+NIMIS:Kriisinkivi
+VAYLAN_NIMI:Oulu - Kemi väylä
+TLNUMERO:11133
+ALALAJI:Kiinteä
+LAJI:Oikea
+TYYPPI:Reunamerkki
+NIMIS:Kriisinkivi
+VAYLAN_NIMI:Oulu - Kemi väylä
+",
+        "featureType": "marinewarning",
+        "lineId": null,
+        "lineText": null,
+        "location": {
+          "en": "OULU - KEMI FAIRWAY",
+          "fi": "OULU - KEMI VÄYLÄ",
+          "sv": "ULEÅBORG - KEMI FARLED",
+        },
+        "notifier": "FINTRAFFIC/BVTS/OFK/KD",
+        "number": 136,
+        "startDateTime": 1689152400000,
+        "type": {
+          "en": "LOCAL WARNING",
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+        },
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            2665506.999999996,
+            9658753.005071487,
+          ],
+          [
+            2678017.0000000014,
+            9671869.005059116,
+          ],
+          [
+            2696213.000000003,
+            9685819.005045967,
+          ],
+          [
+            2720701.0000000047,
+            9716222.005017307,
+          ],
+          [
+            2728618.999999995,
+            9745420.00498979,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 24803,
+      "properties": {
+        "area": {
+          "en": "BAY OF BOTHNIA",
+          "fi": "PERÄMERI",
+          "sv": "BOTTENVIKEN",
+        },
+        "areaId": null,
+        "areaText": null,
+        "dateTime": 1688808600000,
+        "description": {
+          "en": "
+ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+          "fi": "
+KEMIN AJOKSEN VÄYLÄLLÄ SUORITETAAN KELLUVIEN TURVALAITTEIDEN MUUTOSTÖITÄ 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+          "sv": "
+FÖRÄNDRINGSARBETE AV FLYTANDE NAVIGATIONS ANORDNINGAR UTFÖRS PÅ KEMI AJOS FARLED 10.7-30.7.2023
+
+DATE AND TIME
+080930 UTC OF JUL",
+        },
+        "endDateTime": null,
+        "equipmentId": null,
+        "equipmentText": null,
+        "featureType": "marinewarning",
+        "lineId": null,
+        "lineText": null,
+        "location": {
+          "en": "KEMI AJOS FAIRWAY",
+          "fi": "KEMI AJOS VÄYLÄ",
+          "sv": "KEMI AJOS FARLED",
+        },
+        "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
+        "number": 135,
+        "startDateTime": 1688936400000,
+        "type": {
+          "en": "LOCAL WARNING",
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+        },
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get warnings from cache when api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            [
+              2482853,
+              8428118.00619,
+            ],
+            [
+              2482924,
+              8427960.00619,
+            ],
+            [
+              2482950,
+              8428921.00619,
+            ],
+            [
+              2482916,
+              8428924.00619,
+            ],
+            [
+              2482853,
+              8428118.00619,
+            ],
+          ],
+        ],
+        "type": "Polygon",
+      },
+      "id": 24303,
+      "properties": {
+        "area": {
+          "en": "ARCHIPELAGO SEA",
+          "fi": "SAARISTOMERI",
+          "sv": "SKÄRGÅRDSHAVET",
+        },
+        "areaId": 254254,
+        "areaText": "GDO_GID:254254
+SYVYYS:1,2
+VAYLAN_NIMI:Hessund-Parainen veneväylä
+GDO_GID:254254
+SYVYYS:1,2
+VAYLAN_NIMI:Hessund-Parainen veneväylä
+",
+        "dateTime": 1682629200000,
+        "description": {
+          "en": null,
+          "fi": "DVK testaa",
+          "sv": null,
+        },
+        "endDateTime": 1685480400000,
+        "equipmentId": null,
+        "equipmentText": null,
+        "featureType": "marinewarning",
+        "lineId": null,
+        "lineText": null,
+        "location": {
+          "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+          "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+          "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+        },
+        "notifier": "DVK",
+        "number": 7777,
+        "startDateTime": 1682629200000,
+        "type": {
+          "en": "LOCAL WARNING",
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+        },
       },
       "type": "Feature",
     },

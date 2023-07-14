@@ -6,12 +6,16 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import linesCollection from './data/lines.json';
 import areasCollection from './data/areas.json';
+import warningsCollection from './data/warnings.json';
+import vtsLinesCollection from './data/vtslines.json';
+import harborsCollection from './data/harbors.json';
 import { Readable } from 'stream';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { Status } from '../graphql/generated';
 import { gunzip, gzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
+import HarborDBModel from '../lib/lambda/db/harborDBModel';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -21,6 +25,8 @@ jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},
+  getFairwayCardTableName: () => 'FairwayCard-mock',
+  getHarborTableName: () => 'Harbor-mock',
 }));
 
 const lines = [
@@ -127,6 +133,134 @@ const areas = [
   },
 ];
 
+const warnings: FeatureCollection = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: {
+        ID: 24822,
+        ALUEET_FI: 'PERÄMERI',
+        ALUEET_SV: 'BOTTENVIKEN',
+        ALUEET_EN: 'BAY OF BOTHNIA',
+        NUMERO: 136,
+        SIJAINTI_FI: 'OULU - KEMI VÄYLÄ',
+        SIJAINTI_SV: 'ULEÅBORG - KEMI FARLED',
+        SIJAINTI_EN: 'OULU - KEMI FAIRWAY',
+        SISALTO_FI: '\r\nREUNAMERKKI KRIISINKIVI NR 11133\r\nPAIKASSA  65-12.69N 025-04.00E\r\nEI TOIMINNASSA KORJAUSTÖIDEN VUOKSI',
+        SISALTO_SV: '\r\nRANDMÄRKE KRIISINKIVI NR 11133\r\nI POS 65-12.69N 025-04.00E\r\nUR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE',
+        SISALTO_EN: '\r\nEDGE MARK KRIISINKIVI NR 11133\r\nIN POS 65-12.69N 025-04.00E\r\nOUT OF ORDER DUE TO MAITENANCE WORK',
+        PAIVAYS: '12.7.2023 12:00',
+        TYYPPI_FI: 'LOCAL WARNING',
+        TYYPPI_SV: 'LOCAL WARNING',
+        TYYPPI_EN: 'LOCAL WARNING',
+        VOIMASSA_ALKAA: '2023-07-12 12:00:00',
+        VOIMASSA_PAATTYY: null,
+        VALITTUKOHDE_TOOLTIP: 'TL:11133 Kriisinkivi, Oikeareunamerkki [Vahvistettu]',
+        VIRTUAALINENTURVALAITE: 0,
+        NAVTEX: 0,
+        TALLENNUSPAIVA: '2023-07-12 11:48:32',
+        TURVALAITE_TXT:
+          'TLNUMERO:11133\r\nALALAJI:Kiinteä\r\nLAJI:Oikea\r\nTYYPPI:Reunamerkki\r\nNIMIS:Kriisinkivi\r\nVAYLAN_NIMI:Oulu - Kemi väylä\r\nTLNUMERO:11133\r\nALALAJI:Kiinteä\r\nLAJI:Oikea\r\nTYYPPI:Reunamerkki\r\nNIMIS:Kriisinkivi\r\nVAYLAN_NIMI:Oulu - Kemi väylä\r\n',
+        VAYLAALUE_TXT: null,
+        NAVIGOINTILINJA_TXT: null,
+        ANTOPAIVA: '12.07.2023',
+        TIEDOKSIANTAJA: 'FINTRAFFIC/BVTS/OFK/KD',
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [2790416.9999999967, 9625463.0051028635],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {
+        ID: 24803,
+        ALUEET_FI: 'PERÄMERI',
+        ALUEET_SV: 'BOTTENVIKEN',
+        ALUEET_EN: 'BAY OF BOTHNIA',
+        NUMERO: 135,
+        SIJAINTI_FI: 'KEMI AJOS VÄYLÄ',
+        SIJAINTI_SV: 'KEMI AJOS FARLED',
+        SIJAINTI_EN: 'KEMI AJOS FAIRWAY',
+        SISALTO_FI:
+          '\r\nKEMIN AJOKSEN VÄYLÄLLÄ SUORITETAAN KELLUVIEN TURVALAITTEIDEN MUUTOSTÖITÄ 10.7-30.7.2023\r\n\r\nDATE AND TIME\r\n080930 UTC OF JUL',
+        SISALTO_SV:
+          '\r\nFÖRÄNDRINGSARBETE AV FLYTANDE NAVIGATIONS ANORDNINGAR UTFÖRS PÅ KEMI AJOS FARLED 10.7-30.7.2023\r\n\r\nDATE AND TIME\r\n080930 UTC OF JUL',
+        SISALTO_EN:
+          '\r\nALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023\r\n\r\nDATE AND TIME\r\n080930 UTC OF JUL',
+        PAIVAYS: '8.7.2023 12:30',
+        TYYPPI_FI: 'LOCAL WARNING',
+        TYYPPI_SV: 'LOCAL WARNING',
+        TYYPPI_EN: 'LOCAL WARNING',
+        VOIMASSA_ALKAA: '2023-07-10',
+        VOIMASSA_PAATTYY: null,
+        VALITTUKOHDE_TOOLTIP: null,
+        VIRTUAALINENTURVALAITE: 0,
+        NAVTEX: 0,
+        TALLENNUSPAIVA: '2023-07-08 12:51:30',
+        TURVALAITE_TXT: null,
+        VAYLAALUE_TXT: null,
+        NAVIGOINTILINJA_TXT: null,
+        ANTOPAIVA: '08.07.2023',
+        TIEDOKSIANTAJA: 'LEHTOLA/FINTRAFFIC/OFK/MMH',
+      },
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [2665506.9999999958, 9658753.0050714873],
+          [2678017.0000000014, 9671869.0050591156],
+          [2696213.0000000028, 9685819.0050459672],
+          [2720701.0000000047, 9716222.0050173067],
+          [2728618.9999999949, 9745420.00498979],
+        ],
+      },
+    },
+  ],
+};
+
+const vtsLines = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: {
+        ID: 24822,
+        ALUEET_FI: 'PERÄMERI',
+        ALUEET_SV: 'BOTTENVIKEN',
+        ALUEET_EN: 'BAY OF BOTHNIA',
+        NUMERO: 136,
+        SIJAINTI_FI: 'OULU - KEMI VÄYLÄ',
+        SIJAINTI_SV: 'ULEÅBORG - KEMI FARLED',
+        SIJAINTI_EN: 'OULU - KEMI FAIRWAY',
+        SISALTO_FI: '\r\nREUNAMERKKI KRIISINKIVI NR 11133\r\nPAIKASSA  65-12.69N 025-04.00E\r\nEI TOIMINNASSA KORJAUSTÖIDEN VUOKSI',
+        SISALTO_SV: '\r\nRANDMÄRKE KRIISINKIVI NR 11133\r\nI POS 65-12.69N 025-04.00E\r\nUR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE',
+        SISALTO_EN: '\r\nEDGE MARK KRIISINKIVI NR 11133\r\nIN POS 65-12.69N 025-04.00E\r\nOUT OF ORDER DUE TO MAITENANCE WORK',
+        PAIVAYS: '12.7.2023 12:00',
+        TYYPPI_FI: 'LOCAL WARNING',
+        TYYPPI_SV: 'LOCAL WARNING',
+        TYYPPI_EN: 'LOCAL WARNING',
+        VOIMASSA_ALKAA: '2023-07-12 12:00:00',
+        VOIMASSA_PAATTYY: null,
+        VALITTUKOHDE_TOOLTIP: 'TL:11133 Kriisinkivi, Oikeareunamerkki [Vahvistettu]',
+        VIRTUAALINENTURVALAITE: 0,
+        NAVTEX: 0,
+        TALLENNUSPAIVA: '2023-07-12 11:48:32',
+        TURVALAITE_TXT:
+          'TLNUMERO:11133\r\nALALAJI:Kiinteä\r\nLAJI:Oikea\r\nTYYPPI:Reunamerkki\r\nNIMIS:Kriisinkivi\r\nVAYLAN_NIMI:Oulu - Kemi väylä\r\nTLNUMERO:11133\r\nALALAJI:Kiinteä\r\nLAJI:Oikea\r\nTYYPPI:Reunamerkki\r\nNIMIS:Kriisinkivi\r\nVAYLAN_NIMI:Oulu - Kemi väylä\r\n',
+        VAYLAALUE_TXT: null,
+        NAVIGOINTILINJA_TXT: null,
+        ANTOPAIVA: '12.07.2023',
+        TIEDOKSIANTAJA: 'FINTRAFFIC/BVTS/OFK/KD',
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [2790416.9999999967, 9625463.0051028635],
+      },
+    },
+  ],
+};
+
 const card: FairwayCardDBModel = {
   id: 'test',
   name: {
@@ -149,6 +283,44 @@ const card: FairwayCardDBModel = {
       ],
     },
   },
+  harbors: [{ id: 'test1' }],
+};
+
+const card2: FairwayCardDBModel = {
+  id: 'test2',
+  name: {
+    fi: 'Testfi2',
+    sv: 'Testsv2',
+    en: 'Testen2',
+  },
+  creator: 'test',
+  creationTimestamp: Date.now(),
+  modifier: 'test2',
+  modificationTimestamp: Date.now(),
+  status: Status.Public,
+  fairways: [{ id: 4710, primary: true, secondary: false }],
+  trafficService: {
+    pilot: {
+      places: [
+        {
+          id: 681017200,
+        },
+      ],
+    },
+  },
+  harbors: [{ id: 'kaskinen' }, { id: 'test1' }],
+};
+
+const harbor: HarborDBModel = {
+  id: 'test1',
+  name: { fi: 'Harborfi', sv: 'Harborsv', en: 'Harboren' },
+  geometry: { coordinates: [1, 2] },
+};
+
+const harbor2: HarborDBModel = {
+  id: 'test2',
+  name: { fi: 'Harborfi2', sv: 'Harborsv2', en: 'Harboren2' },
+  geometry: { coordinates: [3, 4] },
 };
 
 async function parseResponse(body: string): Promise<FeatureCollection> {
@@ -183,7 +355,7 @@ let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
     if (throwError) {
-      throw new Error('Fetching from api failed');
+      throw new Error('Fetching from VATU api failed');
     }
     if (api === 'navigointilinjat') {
       return lines;
@@ -191,6 +363,18 @@ jest.mock('../lib/lambda/api/axios', () => ({
       return areas;
     }
     return [];
+  },
+  fetchMarineWarnings: () => {
+    if (throwError) {
+      throw new Error('Fetching from Pooki api failed');
+    }
+    return warnings;
+  },
+  fetchTraficomApi: () => {
+    if (throwError) {
+      throw new Error('Fetching from Traficom api failed');
+    }
+    return vtsLines;
   },
 }));
 
@@ -275,6 +459,85 @@ it('should get areas from api when cache expired', async () => {
     Items: [],
   });
   const response = await handler(mockALBEvent('area', '1,2'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get warnings always from api when cache not expired', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(warningsCollection), Expires: expires });
+  const response = await handler(mockALBEvent('marinewarning'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get warnings always from api when cache expired', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(warningsCollection), Expires: expires });
+  const response = await handler(mockALBEvent('marinewarning'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get warnings from cache when api call fails', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(warningsCollection), Expires: expires });
+  throwError = true;
+  const response = await handler(mockALBEvent('marinewarning'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get vts lines from cache', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(vtsLinesCollection), Expires: expires });
+  const response = await handler(mockALBEvent('vtsline'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get vts lines from api when cache expired', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(vtsLinesCollection), Expires: expires });
+  ddbMock.on(ScanCommand).resolves({
+    Items: [],
+  });
+  const response = await handler(mockALBEvent('vtsline'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get harbors from DynamoDB', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(harborsCollection), Expires: expires });
+  ddbMock
+    .on(ScanCommand, { TableName: 'FairwayCard-mock' })
+    .resolves({
+      Items: [card, card2],
+    })
+    .on(ScanCommand, { TableName: 'Harbor-mock' })
+    .resolves({
+      Items: [harbor, harbor2],
+    });
+  const response = await handler(mockALBEvent('harbor'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(1);
