@@ -122,18 +122,20 @@ parser.addEntity('#229', 'å');
 parser.addEntity('#xC5', 'Å');
 parser.addEntity('#197', 'Å');
 
-export function parseXml(xml: string): Mareograph[] {
+function parseXml(xml: string): Mareograph[] {
   const mareographs: Mareograph[] = [];
   try {
-    const obj = parser.parse(xml);
-    if (Array.isArray(obj.pointweather.location)) {
-      for (const location of obj.pointweather.location) {
-        const mareograph = parseLocation(location);
-        mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+    if (xml) {
+      const obj = parser.parse(xml);
+      if (Array.isArray(obj.pointweather.location)) {
+        for (const location of obj.pointweather.location) {
+          const mareograph = parseLocation(location);
+          mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+        }
+      } else {
+        const mareograph = parseLocation(obj.pointweather.location);
+        mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
       }
-    } else {
-      const mareograph = parseLocation(obj.pointweather.location);
-      mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
     }
   } catch (e) {
     log.fatal('Parsing Ilmanet xml failed: %s', e);
@@ -165,7 +167,7 @@ export async function fetchMareoGraphs(): Promise<Mareograph[]> {
         calculated: false,
       };
     })
-    .concat(await fetchIlmanetApi());
+    .concat(parseXml(await fetchIlmanetApi()));
 }
 
 export async function fetchWeatherObservations(): Promise<Observation[]> {

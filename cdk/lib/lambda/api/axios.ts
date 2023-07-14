@@ -16,7 +16,6 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
-import { Mareograph, parseXml } from './weather';
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -147,7 +146,7 @@ export async function fetchWeatherApi<T>(path: string) {
   return response.data ? (response.data as T[]) : [];
 }
 
-export async function fetchIlmanetApi(): Promise<Mareograph[]> {
+export async function fetchIlmanetApi(): Promise<string> {
   const start = Date.now();
   const response = await axios
     .get(await getIlmanetUrl(), {
@@ -166,7 +165,7 @@ export async function fetchIlmanetApi(): Promise<Mareograph[]> {
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Ilmanet api response time: ${duration} ms`);
-  return response.data ? parseXml(response.data as string) : [];
+  return response.data;
 }
 
 export async function readParameterByPath(path: string): Promise<string | undefined> {

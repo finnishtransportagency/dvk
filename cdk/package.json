@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "cross-env LOG_LEVEL=silent FAIRWAY_CARD_TABLE=FairwayCard-mock HARBOR_TABLE=Harbor-mock jest",
+    "test": "cross-env LOG_LEVEL=silent jest",
     "update:snapshot": "jest --updateSnapshot",
     "cdk": "cdk",
     "login": "cross-env-shell aws sso login --profile $AWS_PROFILE",

@@ -241,6 +241,14 @@ exports[`should get harbors from DynamoDB 1`] = `
               "sv": "Testsv",
             },
           },
+          {
+            "id": "test2",
+            "name": {
+              "en": "Testen2",
+              "fi": "Testfi2",
+              "sv": "Testsv2",
+            },
+          },
         ],
         "featureType": "harbor",
         "harborId": "test1",
@@ -251,6 +259,143 @@ exports[`should get harbors from DynamoDB 1`] = `
           "sv": "Harborsv",
         },
         "quays": 0,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get harbors from cache when DynamoDB api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          21.21676,
+          62.35417,
+        ],
+        "type": "Point",
+      },
+      "id": "21.21676;62.35417",
+      "properties": {
+        "fairwayCards": [
+          {
+            "id": "kaskinen",
+            "name": {
+              "en": "Kaskinen channel",
+              "fi": "Kaskisten väylä",
+              "sv": "Kasköleden",
+            },
+          },
+        ],
+        "fax": "+35862207300",
+        "featureType": "harbor",
+        "harborId": "kaskinen",
+        "id": "21.21676;62.35417",
+        "internet": "https//www.portofkaskinen.fi",
+        "name": {
+          "en": "Port of Kaskinen deep port",
+          "fi": "Kaskisten syväsatama",
+          "sv": "Kaskö djuphamn",
+        },
+        "phoneNumber": [
+          "+358406152848",
+        ],
+        "quays": 5,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get mareographs from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          20.38482,
+          60.03188,
+        ],
+        "type": "Point",
+      },
+      "id": 134252,
+      "properties": {
+        "calculated": false,
+        "dateTime": 1689331380000,
+        "featureType": "mareograph",
+        "n2000WaterLevel": 166,
+        "name": "Föglö Degerby",
+        "waterLevel": 54,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          27.1792,
+          60.56277,
+        ],
+        "type": "Point",
+      },
+      "id": 134254,
+      "properties": {
+        "calculated": false,
+        "dateTime": 1689331380000,
+        "featureType": "mareograph",
+        "n2000WaterLevel": 361,
+        "name": "Hamina Pitäjänsaari",
+        "waterLevel": 147,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          26.945,
+          60.47278,
+        ],
+        "type": "Point",
+      },
+      "id": "-16777622",
+      "properties": {
+        "calculated": true,
+        "dateTime": 1689330600000,
+        "featureType": "mareograph",
+        "n2000WaterLevel": 350,
+        "name": "Kotka kantasatama",
+        "waterLevel": 140,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get mareographs from cache when api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          20.38482,
+          60.03188,
+        ],
+        "type": "Point",
+      },
+      "id": 134252,
+      "properties": {
+        "calculated": false,
+        "dateTime": 1689316080000,
+        "featureType": "mareograph",
+        "n2000WaterLevel": 170,
+        "name": "Föglö Degerby",
+        "waterLevel": 58,
       },
       "type": "Feature",
     },

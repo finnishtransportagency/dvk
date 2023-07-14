@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 134252,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          20.38482,
+          60.03188
+        ]
+      },
+      "properties": {
+        "featureType": "mareograph",
+        "calculated": false,
+        "name": "Föglö Degerby",
+        "waterLevel": 58,
+        "n2000WaterLevel": 170,
+        "dateTime": 1689316080000
+      }
+    }
+  ]
+}

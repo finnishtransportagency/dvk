@@ -8,6 +8,7 @@ import linesCollection from './data/lines.json';
 import areasCollection from './data/areas.json';
 import warningsCollection from './data/warnings.json';
 import vtsLinesCollection from './data/vtslines.json';
+import mareographsCollection from './data/mareographs.json';
 import harborsCollection from './data/harbors.json';
 import { Readable } from 'stream';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
@@ -261,6 +262,72 @@ const vtsLines = {
   ],
 };
 
+const ilmanetXml = `
+  <pointweather xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://services.weatherproof.fi/schemas/pointweather_2.00.xsd">
+    <meta>
+      <updated>2023-07-14T13:38:35</updated>
+    </meta>
+    <location id="-16777622" name="Kotka kantasatama" lat="60.472778" lon="26.945">
+      <observation time="2023-07-14T09:30:00">
+        <param name="InterpolatedSeaLevel" value="13"/>
+        <param name="InterpolatedSeaLevelN2000" value="34"/>
+      </observation>
+      <observation time="2023-07-14T10:00:00">
+        <param name="InterpolatedSeaLevel" value="13"/>
+        <param name="InterpolatedSeaLevelN2000" value="34"/>
+      </observation>
+      <observation time="2023-07-14T10:30:00">
+        <param name="InterpolatedSeaLevel" value="14"/>
+        <param name="InterpolatedSeaLevelN2000" value="36"/>
+      </observation>
+      <observation time="2023-07-14T11:00:00">
+        <param name="InterpolatedSeaLevel" value="16"/>
+        <param name="InterpolatedSeaLevelN2000" value="37"/>
+      </observation>
+      <observation time="2023-07-14T11:30:00">
+        <param name="InterpolatedSeaLevel" value="15"/>
+        <param name="InterpolatedSeaLevelN2000" value="36"/>
+      </observation>
+      <observation time="2023-07-14T12:00:00">
+        <param name="InterpolatedSeaLevel" value="14"/>
+        <param name="InterpolatedSeaLevelN2000" value="36"/>
+      </observation>
+      <observation time="2023-07-14T12:30:00">
+        <param name="InterpolatedSeaLevel" value="16"/>
+        <param name="InterpolatedSeaLevelN2000" value="37"/>
+      </observation>
+      <observation time="2023-07-14T13:00:00">
+        <param name="InterpolatedSeaLevel" value="15"/>
+        <param name="InterpolatedSeaLevelN2000" value="36"/>
+      </observation>
+      <observation time="2023-07-14T13:30:00">
+        <param name="InterpolatedSeaLevel" value="14"/>
+        <param name="InterpolatedSeaLevelN2000" value="35"/>
+      </observation>
+    </location>';
+  </pointweather>`;
+
+const mareograps = [
+  {
+    fmisid: 134252,
+    geoid: -10022821,
+    latlon: '60.0318794, 20.3848209',
+    station_name: 'Föglö Degerby',
+    localtime: '2023-07-14 13:43:00',
+    WLEV_PT1S_INSTANT: 54.0,
+    WLEVN2K_PT1S_INSTANT: 166.0,
+  },
+  {
+    fmisid: 134254,
+    geoid: -10022823,
+    latlon: '60.5627708, 27.1791992',
+    station_name: 'Hamina Pitäjänsaari',
+    localtime: '2023-07-14 13:43:00',
+    WLEV_PT1S_INSTANT: 147.0,
+    WLEVN2K_PT1S_INSTANT: 361.0,
+  },
+];
+
 const card: FairwayCardDBModel = {
   id: 'test',
   name: {
@@ -375,6 +442,13 @@ jest.mock('../lib/lambda/api/axios', () => ({
       throw new Error('Fetching from Traficom api failed');
     }
     return vtsLines;
+  },
+  fetchIlmanetApi: () => ilmanetXml,
+  fetchWeatherApi: () => {
+    if (throwError) {
+      throw new Error('Fetching from Weather api failed');
+    }
+    return mareograps;
   },
 }));
 
@@ -541,5 +615,46 @@ it('should get harbors from DynamoDB', async () => {
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get harbors from cache when DynamoDB api call fails', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(harborsCollection), Expires: expires });
+  ddbMock
+    .on(ScanCommand, { TableName: 'FairwayCard-mock' })
+    .resolves({
+      Items: [card, card2],
+    })
+    .on(ScanCommand, { TableName: 'Harbor-mock' })
+    .rejects();
+  const response = await handler(mockALBEvent('harbor'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get mareographs from cache when api call fails', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(mareographsCollection), Expires: expires });
+  throwError = true;
+  const response = await handler(mockALBEvent('mareograph'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get mareographs from api', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(mareographsCollection), Expires: expires });
+  const response = await handler(mockALBEvent('mareograph'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });
