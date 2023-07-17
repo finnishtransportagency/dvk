@@ -7,6 +7,7 @@ import { calculateFroudeNumber, knotsToMetresPerSecond } from '../utils/calculat
 import DataTableDataColumn, { DATACOLOR } from './DataTableDataColumn';
 import DataTableTitleColumn from './DataTableTitleColumn';
 import './SquatDataTable.css';
+import { fieldParams } from '../hooks/squatReducer';
 
 interface Props {
   huuskaGuliev24?: Array<[number, number]>;
@@ -19,6 +20,10 @@ const SquatDataTable: React.FC<Props> = (props) => {
   const { state } = useSquatContext();
   const stepFactor = 10;
   const [speeds, setSpeeds] = useState(Array<number>);
+
+  const { showLimitedView: limitedView } = state.status;
+  const sweptDepth = state.environment.fairway.sweptDepth;
+  const waterLevel = limitedView ? fieldParams.waterLevel.default : state.environment.fairway.waterLevel;
 
   const getPaddedHuuskaGuliev24Data = useCallback(() => {
     const paddedArray: Array<number> = [];
@@ -79,7 +84,7 @@ const SquatDataTable: React.FC<Props> = (props) => {
             <IonRow className="dataTableRow">
               <DataTableTitleColumn value={t('froude-syvyysluku')} />
               {speeds?.map((speed, i) => {
-                const froudeNumber = calculateFroudeNumber(speed, state.environment.fairway.sweptDepth, state.environment.fairway.waterLevel);
+                const froudeNumber = calculateFroudeNumber(speed, sweptDepth, waterLevel);
                 return (
                   <DataTableDataColumn
                     key={'col' + i}

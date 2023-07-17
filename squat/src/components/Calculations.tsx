@@ -327,7 +327,12 @@ const Calculations: React.FC = () => {
 
   const handleSelectedViewChange = useCallback(
     (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
-      setStateStatus('showLimitedView', e.detail.value);
+      const val = e.detail.value;
+      setStateStatus('showLimitedView', val);
+      if (val === 'true') {
+        setStateStatus('showDeepWaterValues', 'false');
+        setStateStatus('showBarrass', 'false');
+      }
     },
     [setStateStatus]
   );
@@ -372,7 +377,7 @@ const Calculations: React.FC = () => {
           <IonSegment
             onIonChange={handleWaterValuesChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
-            disabled={!state.environment.weather.waveLength[0]}
+            disabled={showLimitedView || !state.environment.weather.waveLength[0]}
             selectOnFocus
           >
             <IonSegmentButton value="false">
@@ -387,7 +392,7 @@ const Calculations: React.FC = () => {
             onIonChange={handleCalculationMethodChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
-            disabled={getSquatValue() === ''}
+            disabled={showLimitedView || getSquatValue() === ''}
             selectOnFocus
           >
             <IonSegmentButton value="false">
