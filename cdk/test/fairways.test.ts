@@ -1,12 +1,10 @@
 import { mockClient } from 'aws-sdk-client-mock';
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { handler } from '../lib/lambda/graphql/query/fairwayCardFairways-handler';
-import { mockContext, mockQueryFairwayCardArgsFairwayCardEvent } from './mocks';
+import { handler } from '../lib/lambda/graphql/query/fairways-handler';
+import { mockVoidEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 
-const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
 
 jest.mock('../lib/lambda/environment', () => ({
@@ -438,25 +436,24 @@ jest.mock('../lib/lambda/api/axios', () => ({
 
 beforeEach(() => {
   jest.resetAllMocks();
-  ddbMock.reset();
   s3Mock.reset();
   pilotPlaceMap.clear();
 });
 
-it('should get fairway card fairways from cache', async () => {
-  const stream = createReadStream('./test/data/fairways.json');
+it('should get fairways from cache', async () => {
+  const stream = createReadStream('./test/data/fairways2.json');
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(mockQueryFairwayCardArgsFairwayCardEvent, mockContext, () => {});
+  const response = await handler(mockVoidEvent);
   expect(response).toMatchSnapshot();
 });
 
-it('should get fairway card fairways from api when cache expired', async () => {
-  const stream = createReadStream('./test/data/fairways.json');
+it('should get fairways from api when cache expired', async () => {
+  const stream = createReadStream('./test/data/fairways2.json');
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(mockQueryFairwayCardArgsFairwayCardEvent, mockContext, () => {});
+  const response = await handler(mockVoidEvent);
   expect(response).toMatchSnapshot();
 });

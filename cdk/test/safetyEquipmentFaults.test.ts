@@ -2,7 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/graphql/query/safetyEquipmentFaults-handler';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createReadStream } from 'fs';
-import { mockSafetyEquipmentFaultsEvent } from './mocks';
+import { mockVoidEvent } from './mocks';
 
 const s3Mock = mockClient(S3Client);
 
@@ -48,7 +48,7 @@ it('should get faults from api', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(mockSafetyEquipmentFaultsEvent);
+  const response = await handler(mockVoidEvent);
   expect(response.length).toBe(1);
   expect(response).toMatchSnapshot();
 });
@@ -59,7 +59,7 @@ it('should get faults from cache when api call fails', async () => {
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
   throwError = true;
-  const response = await handler(mockSafetyEquipmentFaultsEvent);
+  const response = await handler(mockVoidEvent);
   expect(response.length).toBe(2);
   expect(response).toMatchSnapshot();
 });

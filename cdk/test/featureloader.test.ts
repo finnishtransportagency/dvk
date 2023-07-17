@@ -9,6 +9,7 @@ import areasCollection from './data/areas.json';
 import warningsCollection from './data/warnings.json';
 import vtsLinesCollection from './data/vtslines.json';
 import mareographsCollection from './data/mareographs.json';
+import buoysCollection from './data/buoys.json';
 import harborsCollection from './data/harbors.json';
 import { Readable } from 'stream';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
@@ -156,7 +157,7 @@ const warnings: FeatureCollection = {
         TYYPPI_SV: 'LOCAL WARNING',
         TYYPPI_EN: 'LOCAL WARNING',
         VOIMASSA_ALKAA: '2023-07-12 12:00:00',
-        VOIMASSA_PAATTYY: null,
+        VOIMASSA_PAATTYY: '2023-07-13',
         VALITTUKOHDE_TOOLTIP: 'TL:11133 Kriisinkivi, Oikeareunamerkki [Vahvistettu]',
         VIRTUAALINENTURVALAITE: 0,
         NAVTEX: 0,
@@ -328,6 +329,49 @@ const mareograps = [
   },
 ];
 
+const buoys = [
+  {
+    fmisid: 103976,
+    geoid: -103976,
+    latlon: '60.1233292, 24.9724998',
+    station_name: 'Helsinki Suomenlinna aaltopoiju',
+    localtime: '2023-07-17 08:50:00',
+    WH_PT1M_ACC: null,
+    WHD_PT1M_ACC: null,
+    TW_PT1M_AVG: 14.3,
+  },
+  {
+    fmisid: 103976,
+    geoid: -103976,
+    latlon: '60.1233292, 24.9724998',
+    station_name: 'Helsinki Suomenlinna aaltopoiju',
+    localtime: '2023-07-17 08:55:00',
+    WH_PT1M_ACC: 2.3,
+    WHD_PT1M_ACC: 200.0,
+    TW_PT1M_AVG: 15.3,
+  },
+  {
+    fmisid: 134220,
+    geoid: -10022811,
+    latlon: '59.2481689, 20.9983292',
+    station_name: 'Pohjois-Itämeri aaltopoiju',
+    localtime: '2023-07-17 07:30:00',
+    WH_PT1M_ACC: 1.3,
+    WHD_PT1M_ACC: 216.0,
+    TW_PT1M_AVG: 17.5,
+  },
+  {
+    fmisid: 134221,
+    geoid: -10022810,
+    latlon: '59.9650002, 25.2350006',
+    station_name: 'Suomenlahti aaltopoiju',
+    localtime: '2023-07-17 07:30:00',
+    WH_PT1M_ACC: 0.5,
+    WHD_PT1M_ACC: 232.0,
+    TW_PT1M_AVG: 16.6,
+  },
+];
+
 const card: FairwayCardDBModel = {
   id: 'test',
   name: {
@@ -444,11 +488,15 @@ jest.mock('../lib/lambda/api/axios', () => ({
     return vtsLines;
   },
   fetchIlmanetApi: () => ilmanetXml,
-  fetchWeatherApi: () => {
+  fetchWeatherApi: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Weather api failed');
     }
-    return mareograps;
+    if (path.includes('mareografit')) {
+      return mareograps;
+    } else {
+      return buoys;
+    }
   },
 }));
 
@@ -653,6 +701,29 @@ it('should get mareographs from api', async () => {
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(mareographsCollection), Expires: expires });
   const response = await handler(mockALBEvent('mareograph'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(3);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get buoys from cache when api call fails', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(buoysCollection), Expires: expires });
+  throwError = true;
+  const response = await handler(mockALBEvent('buoy'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get buoys from api', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: await createCacheResponse(buoysCollection), Expires: expires });
+  const response = await handler(mockALBEvent('buoy'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);

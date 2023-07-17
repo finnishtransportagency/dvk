@@ -220,6 +220,117 @@ exports[`should get areas from cache 1`] = `
 }
 `;
 
+exports[`should get buoys from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          20.99833,
+          59.24817,
+        ],
+        "type": "Point",
+      },
+      "id": 134220,
+      "properties": {
+        "dateTime": 1689579000000,
+        "featureType": "buoy",
+        "name": "Pohjois-Itämeri aaltopoiju",
+        "temperature": 17.5,
+        "waveDirection": 216,
+        "waveHeight": 1.3,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          25.235,
+          59.965,
+        ],
+        "type": "Point",
+      },
+      "id": 134221,
+      "properties": {
+        "dateTime": 1689579000000,
+        "featureType": "buoy",
+        "name": "Suomenlahti aaltopoiju",
+        "temperature": 16.6,
+        "waveDirection": 232,
+        "waveHeight": 0.5,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          24.9725,
+          60.12333,
+        ],
+        "type": "Point",
+      },
+      "id": 103976,
+      "properties": {
+        "dateTime": 1689584100000,
+        "featureType": "buoy",
+        "name": "Helsinki Suomenlinna aaltopoiju",
+        "temperature": 15.3,
+        "waveDirection": 200,
+        "waveHeight": 2.3,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
+exports[`should get buoys from cache when api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          24.9725,
+          60.12333,
+        ],
+        "type": "Point",
+      },
+      "id": 103976,
+      "properties": {
+        "dateTime": 1689570000000,
+        "featureType": "buoy",
+        "name": "Helsinki Suomenlinna aaltopoiju",
+        "temperature": 14.2,
+        "waveDirection": 213,
+        "waveHeight": 0.3,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          25.235,
+          59.965,
+        ],
+        "type": "Point",
+      },
+      "id": 134221,
+      "properties": {
+        "dateTime": 1689570000000,
+        "featureType": "buoy",
+        "name": "Suomenlahti aaltopoiju",
+        "temperature": 16.7,
+        "waveDirection": 237,
+        "waveHeight": 0.6,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
+
 exports[`should get harbors from DynamoDB 1`] = `
 {
   "features": [
@@ -785,7 +896,7 @@ RANDMÄRKE KRIISINKIVI NR 11133
 I POS 65-12.69N 025-04.00E
 UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
         },
-        "endDateTime": null,
+        "endDateTime": 1689206400000,
         "equipmentId": 11133,
         "equipmentText": "TLNUMERO:11133
 ALALAJI:Kiinteä
@@ -934,7 +1045,7 @@ RANDMÄRKE KRIISINKIVI NR 11133
 I POS 65-12.69N 025-04.00E
 UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
         },
-        "endDateTime": null,
+        "endDateTime": 1689206400000,
         "equipmentId": 11133,
         "equipmentText": "TLNUMERO:11133
 ALALAJI:Kiinteä

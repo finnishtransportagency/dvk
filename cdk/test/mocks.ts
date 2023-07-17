@@ -34,7 +34,7 @@ export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<Quer
   stash: {},
 };
 
-export const mockSafetyEquipmentFaultsEvent: AppSyncResolverEvent<void> = {
+export const mockVoidEvent: AppSyncResolverEvent<void> = {
   arguments: undefined,
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,

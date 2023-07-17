@@ -64,11 +64,6 @@ export type Harbor = {
   id: string;
 };
 
-type FairwayCardByFairwayIdIndex = {
-  id: string;
-  fairwayIds: string;
-};
-
 export type Picture = {
   id: string;
   sequenceNumber?: Maybe<number>;
@@ -169,27 +164,6 @@ class FairwayCardDBModel {
     }
     log.debug('No public fairway cards found');
     return [];
-  }
-
-  static async findByFairwayId(id: number): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getFairwayCardTableName(),
-        IndexName: 'FairwayCardByFairwayIdIndex',
-        FilterExpression: 'contains (fairwayIds, :vId)',
-        ExpressionAttributeValues: { ':vId': `#${id}#` },
-      })
-    );
-    const items = response.Items as FairwayCardByFairwayIdIndex[] | [];
-    log.debug('%d fairway card(s) found', items.length);
-    const fairwayCards: FairwayCardDBModel[] = [];
-    for (const entry of items) {
-      const card = await FairwayCardDBModel.get(entry.id);
-      if (card) {
-        fairwayCards.push(card);
-      }
-    }
-    return fairwayCards;
   }
 
   static async save(data: FairwayCardDBModel, operation: Operation) {
