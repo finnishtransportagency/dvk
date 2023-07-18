@@ -12,6 +12,7 @@ interface SectionProps {
   hideValidity?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
+  disabled?: boolean;
 }
 
 const SectionTitle: React.FC<SectionProps> = (props) => {
@@ -20,9 +21,11 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
     <IonGrid className="no-padding divider margin-top">
       <IonRow>
         <IonCol>
-          <IonText color="dark" className="no-margin">
+          <IonText color={props.disabled ? 'medium' : 'dark'} className="no-margin">
             <SquatHeader level={3} text={props.title} embedded={isEmbedded()}>
-              {props.infoContent && props.infoContentTitle && <Modal title={props.infoContentTitle} content={props.infoContent} />}
+              {props.infoContent && props.infoContentTitle && (
+                <Modal title={props.infoContentTitle} content={props.infoContent} disabled={props.disabled} />
+              )}
             </SquatHeader>
           </IonText>
         </IonCol>
