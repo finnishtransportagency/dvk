@@ -323,7 +323,7 @@ export const initialState: State = {
   status: {
     showDeepWaterValues: getBooleanFieldValue('showDeepWaterValues', false),
     showBarrass: getBooleanFieldValue('showBarrass', false),
-    showLimitedView: false,
+    showLimitedView: getBooleanFieldValue('showLimitedView', false),
   },
   validations: validatedFields,
 };
