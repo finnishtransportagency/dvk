@@ -1,9 +1,10 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
-
+import legacy from '@vitejs/plugin-legacy'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
@@ -11,15 +12,31 @@ export default defineConfig({
   },
   server: {
     open: true,
+    port: 3000,
   },
   plugins: [
     react(),
     viteTsconfigPaths(),
     svgrPlugin(),
-    /*
+    legacy(),
     VitePWA({
-        injectRegister: null
     }),
-    */
   ],
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.ts',
+    reporters: ['basic', 'junit', 'vitest-sonar-reporter'],
+    outputFile: {
+      junit: './junit.xml',
+      'vitest-sonar-reporter': './coverage/sonar-report.xml',
+    },
+    coverage: {
+      reporter: ['text', 'lcov', 'clover'],
+      exclude: [
+        'node_modules/',
+        'src/setupTests.ts',
+      ],
+    },
+  },
 });

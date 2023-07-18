@@ -78,7 +78,7 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src="assets/share_icon.svg" size="medium" />}
+              trigger={<IonIcon src={import.meta.env.NODE_ENV === 'test' ? 'data:image/svg+xml,' : 'assets/share_icon.svg'} size="medium" />}
               triggerTitle={t('header.shareable-link-title')}
               triggerClassName="large"
               handleDismiss={handleToastDismiss}
@@ -93,7 +93,12 @@ const PrintBar: React.FC = () => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src="assets/print_icon.svg" size="medium" />
+              <IonIcon
+                color="primary"
+                slot="icon-only"
+                src={import.meta.env.NODE_ENV === 'test' ? 'data:image/svg+xml,' : 'assets/print_icon.svg'}
+                size="medium"
+              />
             </IonButton>
           </IonCol>
         </IonRow>
