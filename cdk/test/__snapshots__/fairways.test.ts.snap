@@ -1,0 +1,112 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get fairways from api when cache expired 1`] = `
+[
+  {
+    "area": {
+      "fi": "Kymijoen vesistö",
+      "sv": "Kymmene älv vattendrag",
+    },
+    "areas": [
+      {
+        "id": 193273,
+      },
+    ],
+    "boardLines": [
+      {
+        "id": 2917,
+      },
+    ],
+    "classifications": [
+      {
+        "fairwayClass": {
+          "fi": "VL6: Venereitti",
+          "sv": "Båtrutt",
+        },
+        "fairwayClassCode": 6,
+        "type": "Väyläluokitus",
+      },
+      {
+        "fairwayClass": {
+          "fi": "T6",
+          "sv": null,
+        },
+        "fairwayClassCode": 6,
+        "type": "Tekninen luokitus",
+      },
+      {
+        "fairwayClass": {
+          "fi": "C",
+          "sv": undefined,
+        },
+        "fairwayClassCode": 3,
+        "type": "Väylänhoitoluokitus",
+      },
+    ],
+    "endText": "Lietesalmen KA-puolella Virmasvedellä.",
+    "id": 10,
+    "lighting": {
+      "fi": "Valaisematon",
+      "sv": "Samma på svenska",
+    },
+    "lightingCode": 2,
+    "name": {
+      "fi": "Lieteniemi - Lietesalmi venereitti",
+      "sv": "",
+    },
+    "navigationLines": [
+      {
+        "id": 69883,
+      },
+    ],
+    "owner": "Väylävirasto",
+    "restrictionAreas": [
+      {
+        "id": 154814,
+      },
+    ],
+    "sizing": {
+      "additionalInformation": null,
+      "mareograph": null,
+      "minimumTurningCircle": null,
+      "minimumWidth": null,
+      "normalTurningCircle": null,
+      "normalWidth": null,
+      "reserveWater": null,
+    },
+    "sizingVessels": undefined,
+    "startText": "Kivikarin I-puolelta Lieteniemen kärjen P-puolelta.",
+    "turningCircles": [
+      {
+        "id": 5,
+      },
+    ],
+    "type": {
+      "fi": "Sisävesiväylä",
+      "sv": "Insjöfarled",
+    },
+    "typeCode": 2,
+  },
+]
+`;
+
+exports[`should get fairways from cache 1`] = `
+[
+  {
+    "id": 4000,
+    "name": {
+      "en": null,
+      "fi": "Utö-Hanko väylä (itäinen osa)",
+      "sv": "Utö-Hangö farled (östra delen)",
+    },
+  },
+  {
+    "id": 6035,
+    "name": {
+      "en": null,
+      "fi": "Metsä-Saimaan teollisuuslaiturin väylä",
+      "sv": "",
+    },
+  },
+]
+`;

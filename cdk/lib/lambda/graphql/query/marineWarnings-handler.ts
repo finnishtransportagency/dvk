@@ -1,7 +1,8 @@
 import { MarineWarning } from '../../../../graphql/generated';
-import { fetchMarineWarnings, parseDateTimes } from '../../api/pooki';
+import { parseDateTimes } from '../../api/pooki';
 import { log } from '../../logger';
 import { cacheResponse, getFromCache } from '../cache';
+import { fetchMarineWarnings } from '../../api/axios';
 
 function getKey() {
   return 'marinewarning-graphql';

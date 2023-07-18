@@ -1,0 +1,97 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 264222,
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.89501,
+            60.08965
+          ],
+          [
+            24.90439,
+            60.11076
+          ],
+          [
+            24.90495,
+            60.11199
+          ]
+        ]
+      },
+      "properties": {
+        "id": 264222,
+        "featureType": "line",
+        "depth": 12.5,
+        "draft": 11,
+        "length": 2550,
+        "referenceLevel": "MW2018",
+        "n2000ReferenceLevel": null,
+        "fairways": [
+          {
+            "fairwayId": 4710,
+            "name": {
+              "fi": "Helsingin Länsisataman väylä",
+              "sv": "Farleden till Västhamn"
+            },
+            "fairwayCards": [
+              {
+                "id": "lansisatama",
+                "name": {
+                  "en": "Helsinki West Harbour channel",
+                  "fi": "Helsingin Länsisataman väylä",
+                  "sv": "Farleden till Västra hamnen i Helsingfors"
+                }
+              }
+            ],
+            "status": 1,
+            "line": 1
+          }
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 264272,
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            24.90516,
+            60.12494
+          ],
+          [
+            24.9108,
+            60.12582
+          ],
+          [
+            24.916,
+            60.12663
+          ]
+        ]
+      },
+      "properties": {
+        "id": 264272,
+        "featureType": "line",
+        "depth": 10.2,
+        "draft": 8,
+        "length": 631,
+        "referenceLevel": "MW2005",
+        "n2000ReferenceLevel": null,
+        "fairways": [
+          {
+            "fairwayId": 4610,
+            "name": {
+              "fi": "Rysäkarin väylä",
+              "sv": "Farled till Rysskär"
+            },
+            "status": 1,
+            "line": 1
+          }
+        ]
+      }
+    }
+  ]
+}

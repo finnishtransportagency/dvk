@@ -1,0 +1,43 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 103976,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.9725,
+          60.12333
+        ]
+      },
+      "properties": {
+        "featureType": "buoy",
+        "name": "Helsinki Suomenlinna aaltopoiju",
+        "dateTime": 1689570000000,
+        "temperature": 14.2,
+        "waveDirection": 213,
+        "waveHeight": 0.3
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 134221,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.235,
+          59.965
+        ]
+      },
+      "properties": {
+        "featureType": "buoy",
+        "name": "Suomenlahti aaltopoiju",
+        "dateTime": 1689570000000,
+        "temperature": 16.7,
+        "waveDirection": 237,
+        "waveHeight": 0.6
+      }
+    }
+  ]
+}

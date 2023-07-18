@@ -1,0 +1,70 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": 24303,
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              2482853,
+              8428118.00619
+            ],
+            [
+              2482924,
+              8427960.00619
+            ],
+            [
+              2482950,
+              8428921.00619
+            ],
+            [
+              2482916,
+              8428924.00619
+            ],
+            [
+              2482853,
+              8428118.00619
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "featureType": "marinewarning",
+        "number": 7777,
+        "area": {
+          "fi": "SAARISTOMERI",
+          "sv": "SKÄRGÅRDSHAVET",
+          "en": "ARCHIPELAGO SEA"
+        },
+        "type": {
+          "fi": "LOCAL WARNING",
+          "sv": "LOCAL WARNING",
+          "en": "LOCAL WARNING"
+        },
+        "location": {
+          "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+          "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+          "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5"
+        },
+        "description": {
+          "fi": "DVK testaa",
+          "sv": null,
+          "en": null
+        },
+        "startDateTime": 1682629200000,
+        "endDateTime": 1685480400000,
+        "dateTime": 1682629200000,
+        "notifier": "DVK",
+        "equipmentText": null,
+        "equipmentId": null,
+        "lineText": null,
+        "lineId": null,
+        "areaText": "GDO_GID:254254\r\nSYVYYS:1,2\r\nVAYLAN_NIMI:Hessund-Parainen veneväylä\r\nGDO_GID:254254\r\nSYVYYS:1,2\r\nVAYLAN_NIMI:Hessund-Parainen veneväylä\r\n",
+        "areaId": 254254
+      }
+    }
+  ]
+}

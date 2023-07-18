@@ -1,0 +1,227 @@
+[
+  {
+    "id": 10,
+    "name": {
+      "fi": "Kemi Ajos väylä",
+      "sv": "Kemi Ajos farled"
+    },
+    "sizing": {
+      "additionalInformation": null,
+      "mareograph": null,
+      "minimumTurningCircle": null,
+      "minimumWidth": 200,
+      "normalTurningCircle": null,
+      "normalWidth": null,
+      "reserveWater": null
+    },
+    "typeCode": 1,
+    "type": {
+      "fi": "Meriväylä",
+      "sv": "Havsfarled"
+    },
+    "area": {
+      "fi": "Perämeri",
+      "sv": "Bottenviken"
+    },
+    "lightingCode": 1,
+    "lighting": {
+      "fi": "Valaistu",
+      "sv": "Belyst"
+    },
+    "owner": null,
+    "startText": "Kemi 1 E-puolella.",
+    "endText": "Ajoksen satama. ",
+    "sizingVessels": [
+      {
+        "typeCode": 11,
+        "type": "Muu",
+        "draft": 10,
+        "length": 180,
+        "width": 27,
+        "bodyFactor": null,
+        "size": 30000
+      }
+    ],
+    "classifications": [
+      {
+        "type": "Väyläluokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "VL1: Kauppamerenkulun pääväylä",
+          "sv": "Handelstrafikens farled av 1-kl"
+        }
+      },
+      {
+        "type": "Tekninen luokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "T1",
+          "sv": null
+        }
+      },
+      {
+        "type": "Väylänhoitoluokitus",
+        "fairwayClassCode": 1,
+        "fairwayClass": {
+          "fi": "A",
+          "sv": null
+        }
+      }
+    ],
+    "primary": true,
+    "secondary": true,
+    "navigationLines": [
+      {
+        "id": 9309,
+        "draft": 10,
+        "depth": 11.8,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 38.8,
+        "length": 6556,
+        "additionalInformation": null,
+        "owner": "Väylävirasto",
+        "verificationDate": "2020-04-16",
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "type": "Suora linja",
+        "typeCode": 1,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.22575,
+              65.43953
+            ],
+            [
+              24.31437,
+              65.48536
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "status": 1,
+            "line": 1
+          }
+        ]
+      }
+    ],
+    "areas": [
+      {
+        "id": 126509,
+        "name": null,
+        "draft": 10,
+        "depth": 10.6,
+        "referenceLevel": "N2000",
+        "n2000draft": null,
+        "n2000depth": null,
+        "n2000ReferenceLevel": null,
+        "direction": 14,
+        "journalNumber": "VÄYLÄ/2590/06.02.02/2020",
+        "verificationDate": "2020-04-16",
+        "owner": "Kemin kaupunki",
+        "additionalInformation": null,
+        "typeCode": 1,
+        "type": "Navigointialue",
+        "notationCode": 2,
+        "notation": "Kardinaali",
+        "operationStatusCode": null,
+        "operationStatus": null,
+        "operationTypeCode": null,
+        "operationType": null,
+        "operationDirectionCode": 2,
+        "operationDirection": "Kaksisuuntainen liikenne",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                24.51871,
+                65.66272
+              ],
+              [
+                24.52092,
+                65.66376
+              ],
+              [
+                24.52142,
+                65.66357
+              ],
+              [
+                24.52159,
+                65.66366
+              ],
+              [
+                24.52098,
+                65.66388
+              ],
+              [
+                24.51877,
+                65.66285
+              ],
+              [
+                24.51871,
+                65.66282
+              ],
+              [
+                24.51865,
+                65.66281
+              ],
+              [
+                24.51856,
+                65.66278
+              ],
+              [
+                24.51871,
+                65.66272
+              ]
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10,
+            "line": 1,
+            "status": 1,
+            "sizingSpeed": null,
+            "sizingSpeed2": null,
+            "sequenceNumber": 180
+          }
+        ]
+      }
+    ],
+    "restrictionAreas": [],
+    "boardLines": [
+      {
+        "id": 9307,
+        "direction": 14.6,
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [
+              24.52075,
+              65.67455
+            ],
+            [
+              24.51396,
+              65.66379
+            ],
+            [
+              24.44376,
+              65.55208
+            ]
+          ]
+        },
+        "fairways": [
+          {
+            "fairwayId": 10
+          }
+        ]
+      }
+    ],
+    "turningCircles": []
+  }
+]

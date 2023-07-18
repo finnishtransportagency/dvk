@@ -1,30 +1,5 @@
-import axios from 'axios';
-import { getPookiHeaders, getPookiUrl, getTimeout } from '../environment';
 import { log } from '../logger';
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { roundGeometry } from '../util';
-
-export async function fetchMarineWarnings(): Promise<FeatureCollection> {
-  const start = Date.now();
-  const response = await axios
-    .get(await getPookiUrl(), {
-      headers: await getPookiHeaders(),
-      timeout: getTimeout(),
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`Pooki fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Pooki failed');
-    });
-  const duration = Date.now() - start;
-  log.debug({ duration }, `Pooki response time: ${duration} ms`);
-  if (response?.data) {
-    for (const feature of (response.data as FeatureCollection).features) {
-      roundGeometry(feature.geometry);
-    }
-  }
-  return response.data as FeatureCollection;
-}
+import { Feature, GeoJsonProperties, Geometry } from 'geojson';
 
 export type MarineWarningDates = {
   startDateTime?: number;
