@@ -20,7 +20,7 @@ ion-button.languageSelection:hover {
 .titlebar ion-button.icon-only {
   margin: 0 6px 0 0;
 }
-ion-button.button-disabled {
+ion-button.languageSelection.button-disabled {
   opacity: 1;
   color: var(--ion-color-dark);
   font-weight: bold;
