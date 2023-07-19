@@ -87,8 +87,8 @@ export const copyToClipboard = (text: string) => {
 };
 
 export function getAssetUrl(path: string): string {
-  // work around when running tests
   if (import.meta.env.NODE_ENV === 'test') {
+    // workaround for "Failed to parse URL" error when running tests
     return 'data:image/svg+xml,';
   } else if (import.meta.env.DEV || import.meta.env.BASE_URL === '/') {
     return path;
