@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
-import legacy from '@vitejs/plugin-legacy'
+import legacy from '@vitejs/plugin-legacy';
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
@@ -20,7 +20,38 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgrPlugin(),
     legacy(),
-    VitePWA({ registerType: 'autoUpdate' }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      filename: 'service-worker.js',
+      manifest: {
+        name: 'Painumalaskenta (Squat)',
+        short_name: 'Squat',
+        display: 'fullscreen',
+        theme_color: '#0064af',
+        background_color: '#ffffff',
+        icons: [
+          {
+            src: 'assets/icon/vayla_v_rgb_144x144.png',
+            sizes: '144x144',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'assets/icon/vayla_v_rgb_192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: 'assets/icon/vayla_v_rgb_512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any',
+          },
+        ],
+      },
+      useCredentials: true,
+    }),
   ],
   test: {
     globals: true,
@@ -33,10 +64,7 @@ export default defineConfig({
     },
     coverage: {
       reporter: ['text', 'lcov', 'clover'],
-      exclude: [
-        'node_modules/',
-        'src/setupTests.ts',
-      ],
+      exclude: ['node_modules/', 'src/setupTests.ts'],
     },
   },
 });
