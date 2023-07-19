@@ -2,8 +2,9 @@ import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { Boardline, Fairway, TurningCircle } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import { mapAPIModelToFairway } from './fairwayCardFairways-handler';
-import { GeometryModel, VaylaAPIModel, fetchVATUByApi, fetchVATUByFairwayId } from './vatu';
+import { fetchVATUByFairwayId } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
+import { GeometryModel, VaylaAPIModel, fetchVATUByApi } from '../../api/axios';
 
 function mapIdModels(models: APIModel[]) {
   return models.map((model) => {
