@@ -67,7 +67,7 @@ export class DvkSonarPipelineStack extends Stack {
               'cd squat',
               'npm ci',
               'npm run lint',
-              'npm run test -- --coverage --reporters=jest-sonar',
+              'npm run test -- --coverage',
               'cd ..',
               'cd admin',
               'npm ci',

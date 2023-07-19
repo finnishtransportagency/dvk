@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     outDir: 'build'
   },
+  base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/',
   server: {
     open: true,
     port: 3000,
@@ -19,8 +20,7 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgrPlugin(),
     legacy(),
-    VitePWA({
-    }),
+    VitePWA({ registerType: 'autoUpdate' }),
   ],
   test: {
     globals: true,

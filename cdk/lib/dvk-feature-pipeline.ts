@@ -57,7 +57,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'cd squat',
               'npm ci',
               'npm run lint',
-              'npm run test -- --coverage --reporters=jest-junit',
+              'npm run test -- --coverage',
               'npm run build',
               'cd ..',
               'cd admin',
