@@ -85,3 +85,14 @@ export const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
   return true;
 };
+
+export function getAssetUrl(path: string): string {
+  // work around when running tests
+  if (import.meta.env.NODE_ENV === 'test') {
+    return 'data:image/svg+xml,';
+  } else if (import.meta.env.DEV || import.meta.env.BASE_URL === '/') {
+    return path;
+  } else {
+    return import.meta.env.BASE_URL + '/' + path;
+  }
+}
