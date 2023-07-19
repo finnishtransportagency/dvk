@@ -8,7 +8,7 @@ import legacy from '@vitejs/plugin-legacy'
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    outDir: 'build'
+    outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build',
   },
   base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/',
   server: {
