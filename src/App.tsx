@@ -94,7 +94,7 @@ const asyncStoragePersister = createAsyncStoragePersister({
 
 const persistOptions = {
   persister: asyncStoragePersister,
-  buster: process.env.REACT_APP_VERSION,
+  buster: import.meta.env.VITE_APP_VERSION,
 };
 
 const DvkIonApp: React.FC = () => {

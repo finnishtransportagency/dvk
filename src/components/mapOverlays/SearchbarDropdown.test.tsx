@@ -2,8 +2,9 @@ import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import SearchbarDropdown from './SearchbarDropdown';
 import { mockFairwayList } from '../../../__tests__/mockData';
+import { vi } from 'vitest';
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
 }));
 

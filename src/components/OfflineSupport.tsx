@@ -5,6 +5,7 @@ import { OFFLINE_STORAGE } from '../utils/constants';
 import { useFairwayCardListData, useFeatureData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 import alertIcon from '../theme/img/alert_icon.svg';
 import { useStaticDataLayer } from './FeatureLoader';
+import { getAssetUrl } from '../utils/common';
 
 const OfflineSupport: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
@@ -109,7 +110,7 @@ const OfflineSupport: React.FC = () => {
   return (
     <div className="offlineSupport">
       <IonItem detail={false} lines="none" className="ion-no-padding">
-        <IonIcon aria-hidden slot="start" src={alertIcon} className={offlineLatestError > 0 ? 'danger' : 'warning'} />
+        <IonIcon aria-hidden slot="start" src={getAssetUrl(alertIcon)} className={offlineLatestError > 0 ? 'danger' : 'warning'} />
         {offlineLatestError > 0 ? t('offlineSupportImpossible') : t('offlineSupportPartial')}
       </IonItem>
       <IonText>

@@ -91,9 +91,9 @@ class DvkMap {
 
     this.t = t;
     this.i18n = i18n;
-    const apiKey = process.env.REACT_APP_BG_MAP_API_KEY;
-    const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
-    const bgMapApiUrl = process.env.REACT_APP_BG_MAP_API_URL;
+    const apiKey = import.meta.env.VITE_APP_BG_MAP_API_KEY;
+    const cloudFrontUrl = import.meta.env.VITE_APP_FRONTEND_DOMAIN_NAME;
+    const bgMapApiUrl = import.meta.env.VITE_APP_BG_MAP_API_URL;
     let tileUrl;
     if (cloudFrontUrl) {
       tileUrl = `https://${cloudFrontUrl}/mml/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf`;

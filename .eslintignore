@@ -1,6 +1,4 @@
-reportWebVitals.ts
-serviceWorkerRegistration.ts
-service-worker.ts
+vite.config.ts
 capacitor.config.ts
 build
 squat

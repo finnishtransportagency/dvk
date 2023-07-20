@@ -123,3 +123,14 @@ export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
   const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
   return layer ? layer.offlineSupport : false;
 };
+
+export function getAssetUrl(path: string): string {
+  if (import.meta.env.NODE_ENV === 'test') {
+    // workaround for "Failed to parse URL" error when running tests
+    return 'data:image/svg+xml,';
+  } else if (import.meta.env.DEV || import.meta.env.BASE_URL === '/') {
+    return path;
+  } else {
+    return import.meta.env.BASE_URL + '/' + path;
+  }
+}
