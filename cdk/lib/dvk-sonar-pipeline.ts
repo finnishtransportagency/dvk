@@ -55,9 +55,8 @@ export class DvkSonarPipelineStack extends Stack {
         phases: {
           build: {
             commands: [
-              'npm ci',
+              'npm ci --omit=optional',
               'npm run generate',
-              'rm -rf node_modules/canvas',
               'cd cdk',
               'npm ci',
               'npm run generate',
