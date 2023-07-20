@@ -1,4 +1,4 @@
-import { FairwayCardOrHarbor } from '../graphql/generated';
+import { FairwayCardOrHarbor, Text } from '../graphql/generated';
 import { ItemType, Lang } from './constants';
 
 export const filterItemList = (
@@ -45,4 +45,13 @@ export const getCombinedErrorAndHelperText = (helperText: string | null | undefi
     return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
   }
   return errorText;
+};
+
+export const nameIncludesQuery = (name: Text | null | undefined, query: string) => {
+  if (!name) return false;
+  return (
+    (name.fi != null && name.fi.toLowerCase().includes(query)) ||
+    (name.sv != null && name.sv.toLowerCase().includes(query)) ||
+    (name.en != null && name.en.toLowerCase().includes(query))
+  );
 };

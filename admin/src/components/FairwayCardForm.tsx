@@ -443,7 +443,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     options={fairwayList?.fairways ?? []}
                     setSelected={updateState}
                     actionType="fairwayIds"
-                    multiple
                     required
                     showId
                     disabled={fairwayCard.status === Status.Removed}

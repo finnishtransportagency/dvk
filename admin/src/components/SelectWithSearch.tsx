@@ -1,49 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
+import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
-import { PilotPlace, Text } from '../graphql/generated';
-import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import { getCombinedErrorAndHelperText } from '../utils/common';
-
-interface SelectChangeEventDetail<ValueType> {
-  value: ValueType;
-}
+import { Text } from '../graphql/generated';
+import type { CheckboxCustomEvent } from '@ionic/react';
+import { getCombinedErrorAndHelperText, nameIncludesQuery } from '../utils/common';
 
 interface SelectOption {
-  id: number | string | boolean;
+  id: number;
   name?: Text | null;
 }
 
-interface SelectProps {
+interface SelectWithSearchProps {
   label: string;
-  selected?: ValueType;
-  options: SelectOption[] | PilotPlace[] | null;
+  selected: number[];
+  options: SelectOption[] | null;
   setSelected: (value: ValueType, actionType: ActionType) => void;
   actionType: ActionType;
   required?: boolean;
-  multiple?: boolean;
   showId?: boolean;
   disabled?: boolean;
   helperText?: string | null;
   error?: string;
-  compareObjects?: boolean;
   isLoading?: boolean;
 }
 
-const SelectWithSearch: React.FC<SelectProps> = ({
+const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   label,
   selected,
   options,
   setSelected,
   actionType,
   required,
-  multiple,
   showId,
   disabled,
   helperText,
   error,
-  compareObjects,
   isLoading,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
@@ -55,45 +47,39 @@ const SelectWithSearch: React.FC<SelectProps> = ({
     return nameA.localeCompare(nameB);
   });
 
-  const [filteredItems, setFilteredItems] = useState<SelectOption[] | PilotPlace[] | null>([]);
+  const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
+  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isTouched, setIsTouched] = useState(false);
 
   const selectRef = useRef<HTMLIonSelectElement>(null);
+
   const focusInput = () => {
     selectRef.current?.click();
   };
 
-  const compareOptions = (o1: string | number | PilotPlace, o2: string | number | PilotPlace) => {
-    if (!o1 || !o2) {
-      return o1 === o2;
+  const isOptionSelected = (value: number) => {
+    if (value === undefined) {
+      return false;
     }
-    if (compareObjects && typeof o1 === 'object' && typeof o2 === 'object') {
-      return o1.id === o2.id;
-    }
-    return o1 === o2;
+    return selected.includes(value);
   };
 
-  const [isValid, setIsValid] = useState(error ? false : true);
-  const [isTouched, setIsTouched] = useState(false);
-
-  const checkValidity = (event?: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
-    let validity = false;
-    if (event) {
-      validity = Array.isArray(event.detail.value) ? event.detail.value.length > 0 : !!event.detail.value;
-    } else {
-      validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
-    }
+  const checkValidity = (event?: CheckboxCustomEvent) => {
+    const validity = event ? !!event.detail.value : selected.length > 0;
     setIsValid(required ? validity && !error : true);
     setIsTouched(true);
   };
-  const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+
+  const handleChange = (event: CheckboxCustomEvent) => {
+    const { checked, value } = event.detail;
     if (isTouched) checkValidity(event);
-    setSelected(event.detail.value, actionType);
+    const updatedValues = checked ? [...selected, value] : selected.filter((item) => item !== value);
+    setSelected(updatedValues, actionType);
   };
 
   const getHelperText = () => {
     if (helperText) return helperText;
-    if (Array.isArray(selected) || multiple) return t('multiple-values-supported');
-    return '';
+    return t('multiple-values-supported');
   };
 
   const getErrorText = () => {
@@ -102,23 +88,25 @@ const SelectWithSearch: React.FC<SelectProps> = ({
     return '';
   };
 
-  /* const filterList = (searchQuery: string | null | undefined) => {
+  const filterList = (searchQuery: string | null | undefined) => {
+    if (!options) {
+      setFilteredItems([]);
+      return;
+    }
     if (searchQuery === undefined || searchQuery === null) {
-      setFilteredItems([...props.items]);
+      setFilteredItems([...options]);
     } else {
       const normalizedQuery = searchQuery.toLowerCase();
-      setFilteredItems(
-        props.items.filter((item) => {
-          return item.text.toLowerCase().includes(normalizedQuery);
-        })
-      );
+      const filteredOptions = options.filter((item) => {
+        return item.id.toString().includes(searchQuery) || nameIncludesQuery(item.name, searchQuery);
+      });
+      setFilteredItems(filteredOptions);
     }
-  }; */
+  };
 
   useEffect(() => {
     if (isTouched) {
-      const validity = Array.isArray(selected) ? selected.length > 0 : !!selected;
-      setIsValid(required ? validity && !error : true);
+      setIsValid(required ? selected.length > 0 && !error : true);
     }
   }, [required, error, selected, isTouched]);
 
@@ -127,7 +115,7 @@ const SelectWithSearch: React.FC<SelectProps> = ({
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem button={true} detail={false} id="select-with-search" disabled={isLoading}>
+      <IonItem button={true} detail={false} id="select-with-search" disabled={isLoading || disabled}>
         {isLoading ? <IonSkeletonText animated={true} className="select-skeleton" /> : <IonLabel ref={selectRef}></IonLabel>}
         {/* <IonSelect
               ref={selectRef}
@@ -158,14 +146,17 @@ const SelectWithSearch: React.FC<SelectProps> = ({
         <IonList>
           {sortedOptions?.map((item) => {
             const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-            const coordinates = (item as PilotPlace).geometry?.coordinates;
-            const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
             return (
               <IonItem key={item.id.toString()} lines="none">
-                {/* value={compareObjects ? item : item.id} */}
-                <IonCheckbox slot="start" aria-label={'select-' + optionLabel} />
+                <IonCheckbox
+                  slot="start"
+                  aria-label={'select-' + optionLabel}
+                  value={item.id}
+                  checked={isOptionSelected(item.id)}
+                  onIonChange={(e) => handleChange(e)}
+                />
                 {showId ? '[' + item.id + '] ' : ''}
-                {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
+                {optionLabel}
               </IonItem>
             );
           })}
