@@ -21,6 +21,7 @@ import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
 import CreationModal from '../components/CreationModal';
+import ClearButton from '../components/ClearButton';
 
 type HeaderButtonProps = {
   headername: string;
@@ -116,13 +117,7 @@ const MainPage: React.FC = () => {
                   onIonChange={(e) => changeAction(e.detail.value)}
                   ref={searchRef}
                 />
-                <button
-                  type="button"
-                  className="input-clear-icon"
-                  title={translatedTextOrEmpty('search-clear-title')}
-                  aria-label={translatedTextOrEmpty('search-clear-title')}
-                  onClick={clearInput}
-                ></button>
+                <ClearButton clearInput={clearInput} />
               </div>
             </IonCol>
             <IonCol size="auto">

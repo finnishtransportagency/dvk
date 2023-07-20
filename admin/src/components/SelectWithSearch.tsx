@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSkeletonText } from '@ionic/react';
+import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
 import { Text } from '../graphql/generated';
-import type { CheckboxCustomEvent } from '@ionic/react';
 import { getCombinedErrorAndHelperText, nameIncludesQuery } from '../utils/common';
+import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/react';
 
 interface SelectOption {
   id: number;
@@ -41,13 +41,15 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const sortedOptions = options?.sort((a, b) => {
-    const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
-    const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
-    return nameA.localeCompare(nameB);
-  });
+  const sortedOptions = options
+    ? options.sort((a, b) => {
+        const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
+        const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
+        return nameA.localeCompare(nameB);
+      })
+    : [];
 
-  const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
+  const [filteredItems, setFilteredItems] = useState<SelectOption[]>(sortedOptions);
   const [isValid, setIsValid] = useState(error ? false : true);
   const [isTouched, setIsTouched] = useState(false);
 
@@ -89,19 +91,19 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   };
 
   const filterList = (searchQuery: string | null | undefined) => {
-    if (!options) {
-      setFilteredItems([]);
-      return;
-    }
     if (searchQuery === undefined || searchQuery === null) {
-      setFilteredItems([...options]);
+      setFilteredItems([...sortedOptions]);
     } else {
       const normalizedQuery = searchQuery.toLowerCase();
-      const filteredOptions = options.filter((item) => {
-        return item.id.toString().includes(searchQuery) || nameIncludesQuery(item.name, searchQuery);
+      const filteredOptions = sortedOptions.filter((item) => {
+        return item.id.toString().includes(normalizedQuery) || nameIncludesQuery(item.name, normalizedQuery);
       });
       setFilteredItems(filteredOptions);
     }
+  };
+
+  const searchBarInput = (e: SearchbarCustomEvent) => {
+    filterList(e.target.value);
   };
 
   useEffect(() => {
@@ -144,19 +146,24 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
       )}
       <IonPopover trigger="select-with-search" className="multiSelect" showBackdrop={false} size="cover" dismissOnSelect={false} arrow={false}>
         <IonList>
-          {sortedOptions?.map((item) => {
+          <IonItem key="search-input-item" lines="full">
+            <IonSearchbar placeholder={t('search-placeholder') ?? ''} onIonInput={searchBarInput} />
+          </IonItem>
+          {filteredItems.map((item) => {
             const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
             return (
               <IonItem key={item.id.toString()} lines="none">
                 <IonCheckbox
-                  slot="start"
                   aria-label={'select-' + optionLabel}
                   value={item.id}
                   checked={isOptionSelected(item.id)}
-                  onIonChange={(e) => handleChange(e)}
-                />
-                {showId ? '[' + item.id + '] ' : ''}
-                {optionLabel}
+                  onIonChange={handleChange}
+                  justify="start"
+                  labelPlacement="end"
+                >
+                  {showId ? '[' + item.id + '] ' : ''}
+                  {optionLabel}
+                </IonCheckbox>
               </IonItem>
             );
           })}

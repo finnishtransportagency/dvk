@@ -6,6 +6,7 @@ import { FairwayCardOrHarbor } from '../graphql/generated';
 import { filterItemList } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
+import ClearButton from './ClearButton';
 
 interface SearchProps {
   itemList: FairwayCardOrHarbor[];
@@ -87,13 +88,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
         readonly={!isDropdownOpen}
         ref={inputRef}
       />
-      <button
-        type="button"
-        className="input-clear-icon"
-        title={t('search-clear-title') ?? ''}
-        aria-label={t('search-clear-title') ?? ''}
-        onClick={clearInput}
-      ></button>
+      <ClearButton clearInput={clearInput} />
       <SearchDropdown
         isOpen={isDropdownOpen}
         searchQuery={searchQuery.trim()}
