@@ -128,9 +128,7 @@ export function getAssetUrl(path: string): string {
   if (import.meta.env.NODE_ENV === 'test') {
     // workaround for "Failed to parse URL" error when running tests
     return 'data:image/svg+xml,';
-  } else if (import.meta.env.DEV || import.meta.env.BASE_URL === '/') {
-    return path;
   } else {
-    return import.meta.env.BASE_URL + '/' + path;
+    return path;
   }
 }
