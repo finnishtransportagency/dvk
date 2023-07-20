@@ -14,9 +14,6 @@ export default defineConfig({
   server: {
     open: true,
     port: 3000,
-    hmr: {
-      overlay: false,
-    },
   },
   plugins: [
     react(),
@@ -66,6 +63,7 @@ export default defineConfig({
     maxThreads: 1,
     maxConcurrency: 1,
     environment: 'jsdom',
+    isolate: true,
     include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     setupFiles: './src/setupTests.ts',
     reporters: ['basic', 'junit', 'vitest-sonar-reporter'],

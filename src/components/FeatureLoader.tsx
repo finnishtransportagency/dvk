@@ -278,7 +278,7 @@ export function useSpeedLimitLayer(): DvkLayerState {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         layer.set('dataUpdatedAt', dataUpdatedAt);
         if (window.Worker) {
-          const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url));
+          const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
           slWorker.onmessage = (e) => {
             const features = format.readFeatures(e.data as string);
             const source = dvkMap.getVectorSource('speedlimit');

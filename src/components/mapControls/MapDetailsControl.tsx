@@ -21,7 +21,7 @@ class MapDetailsControl extends Control {
       element: element,
     });
 
-    if (!isMobile()) {
+    if (import.meta.env.NODE_ENV === 'test' || !isMobile()) {
       this.mousePositionLabelElement.style.display = 'table-cell';
       this.mousePositionLabelElement.className = 'mousePositionLabelElem';
       rowElem.appendChild(this.mousePositionLabelElement);
