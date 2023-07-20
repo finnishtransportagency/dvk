@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>Digitaalinen väyläkortti</title>
 
-    <base href="%PUBLIC_URL%/" />
+    <base href="/" />
 
     <meta name="description" content="Väylävirasto - Digitaalinen väyläkortti" />
     <meta name="color-scheme" content="light dark" />
@@ -16,10 +16,9 @@
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="theme-color" content="#0064af" />
 
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" crossorigin="use-credentials" />
-
-    <link rel="shortcut icon" type="image/png" href="%PUBLIC_URL%/assets/icon/vayla_v_rgb_192x192.png" />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/assets/icon/vayla_v_rgb_192x192.png" />
+    
+    <link rel="shortcut icon" type="image/png" href="/assets/icon/vayla_v_rgb_192x192.png" />
+    <link rel="apple-touch-icon" href="/assets/icon/vayla_v_rgb_192x192.png" />
 
     <!-- add to homescreen for ios -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -197,6 +196,7 @@
 
   <body>
     <div id="root">
+      <script type="module" src="/src/index.tsx"></script>
       <div role="progressbar" aria-valuemin="0" aria-valuemax="1" class="progress-bar">
         <div class="progress-buffer-bar">
           <div class="indeterminate-bar-primary"><span class="progress-indeterminate"></span></div>
@@ -204,7 +204,7 @@
         </div>
       </div>
       <div class="firstLoadContent">
-        <img src="%PUBLIC_URL%/assets/icon/logo_fi_sv_en.png" alt="logo" />
+        <img src="/assets/icon/logo_fi_sv_en.png" alt="logo" />
         <h1>Digitaalinen väyläkortti</h1>
         <div class="loading">Ladataan... Laddar... Loading...</div>
       </div>

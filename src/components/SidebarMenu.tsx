@@ -246,7 +246,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
               </IonCol>
               <IonCol className="ion-text-end">
                 <IonTitle>
-                  <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+                  <small>v{import.meta.env.VITE_APP_VERSION}</small>
                 </IonTitle>
               </IonCol>
             </IonRow>

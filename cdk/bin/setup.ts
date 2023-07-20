@@ -20,13 +20,16 @@ type FrontendStackOutputs = {
 async function readStackOutputsForRawStackName(stackName: string): Promise<Record<string, string>> {
   const output: DescribeStacksCommandOutput = await euWestCFClient.send(new DescribeStacksCommand({ StackName: stackName }));
   return (
-    output.Stacks?.[0].Outputs?.reduce((params, param) => {
-      // Include only non-null values. Exclude automatically generated outputs by CDK
-      if (param.OutputKey && param.OutputValue && !param.OutputKey.startsWith('ExportsOutput')) {
-        params[param.OutputKey] = param.OutputValue;
-      }
-      return params;
-    }, {} as Record<string, string>) ?? {}
+    output.Stacks?.[0].Outputs?.reduce(
+      (params, param) => {
+        // Include only non-null values. Exclude automatically generated outputs by CDK
+        if (param.OutputKey && param.OutputValue && !param.OutputKey.startsWith('ExportsOutput')) {
+          params[param.OutputKey] = param.OutputValue;
+        }
+        return params;
+      },
+      {} as Record<string, string>
+    ) ?? {}
   );
 }
 
@@ -73,17 +76,17 @@ async function main() {
   const frontendStackOutputs = await readFrontendStackOutputs();
   const envParameters = await readParametersForEnv(Config.getEnvironment());
   writeEnvFile('../.env.local', {
-    REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
-    REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_REST_API_URL: `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api`,
-    REACT_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName ?? '',
-    REACT_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
-    REACT_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
-    REACT_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName ?? 'dvkdev.testivaylapilvi.fi',
-    REACT_APP_FMI_MAP_API_KEY: envParameters.WeatherApiKey,
-    REACT_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
-    REACT_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
-    REACT_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
+    VITE_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
+    VITE_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
+    VITE_APP_REST_API_URL: `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api`,
+    VITE_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName ?? '',
+    VITE_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
+    VITE_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
+    VITE_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName ?? 'dvkdev.testivaylapilvi.fi',
+    VITE_APP_FMI_MAP_API_KEY: envParameters.WeatherApiKey,
+    VITE_APP_FMI_MAP_API_URL: envParameters.WeatherUrl,
+    VITE_APP_TRAFICOM_API_URL: envParameters.TraficomUrl,
+    VITE_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
       ? `https://${frontendStackOutputs.CloudFrontDomainName}/s3static/`
       : `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api/image?id=`,
   });

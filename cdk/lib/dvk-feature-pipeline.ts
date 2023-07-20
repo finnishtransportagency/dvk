@@ -52,7 +52,7 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm run test -- --coverage --reporters=jest-junit',
               'cd ..',
               'npm run lint',
-              'npm run test -- --coveragePathIgnorePatterns FeatureLoader --coverage --reporters=jest-junit --passWithNoTests',
+              'npm run test -- --coverage',
               'npm run build',
               'cd squat',
               'npm ci',
@@ -89,11 +89,11 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
-          REACT_APP_BG_MAP_API_KEY: {
+          VITE_APP_BG_MAP_API_KEY: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
             value: 'BGMapApiKey',
           },
-          REACT_APP_BG_MAP_API_URL: {
+          VITE_APP_BG_MAP_API_URL: {
             type: BuildEnvironmentVariableType.PARAMETER_STORE,
             value: 'BGMapApiUrl',
           },

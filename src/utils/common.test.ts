@@ -1,15 +1,16 @@
 import { mockFairwayList } from '../../__tests__/mockData';
 import { filterFairways } from './common';
 import { MINIMUM_QUERYLENGTH } from './constants';
+import { vi } from 'vitest';
 
-jest.mock('./common', () => {
-  const originalModule = jest.requireActual('./common');
+vi.mock('./common', async () => {
+  const originalModule = await vi.importActual<object>('./common');
 
   //Mock the named export 'isMobile'
   return {
     __esModule: true,
     ...originalModule,
-    isMobile: jest.fn(() => false),
+    isMobile: vi.fn(() => false),
   };
 });
 

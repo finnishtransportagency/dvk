@@ -5,6 +5,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import 'fake-indexeddb/auto';
+import { vi } from 'vitest';
 
 class ResizeObserver {
   observe() {
@@ -24,23 +25,23 @@ global.ResizeObserver = ResizeObserver;
 beforeAll(() => {
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
-      controller: jest.fn().mockImplementation(() => Promise.resolve()),
-      addEventListener: jest.fn().mockImplementation(() => Promise.resolve()),
+      controller: vi.fn().mockImplementation(() => Promise.resolve()),
+      addEventListener: vi.fn().mockImplementation(() => Promise.resolve()),
     },
   });
-  jest.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
-  jest.spyOn(window, 'print').mockImplementation(() => {});
+  vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
+  vi.spyOn(window, 'print').mockImplementation(() => {});
 });
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
 }));
 
-jest.mock('./components/FeatureLoader', () => ({
+vi.mock('./components/FeatureLoader', () => ({
   useLine12Layer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
@@ -106,8 +107,8 @@ jest.mock('./components/FeatureLoader', () => ({
   },
 }));
 
-jest.mock('./graphql/generated', () => {
-  const originalModule = jest.requireActual('./graphql/generated');
+vi.mock('./graphql/generated', async () => {
+  const originalModule = await vi.importActual<object>('./graphql/generated');
   return {
     __esModule: true,
     ...originalModule,
@@ -138,7 +139,7 @@ jest.mock('./graphql/generated', () => {
   };
 });
 
-jest.useFakeTimers();
+vi.useFakeTimers();
 
 it('renders home page without crashing', () => {
   const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti' } = {}) => {
