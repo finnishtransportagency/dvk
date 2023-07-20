@@ -23,12 +23,15 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       filename: 'service-worker.js',
+      manifestFilename: 'manifest.json',
       manifest: {
+        id: '/squat/',
         name: 'Painumalaskenta (Squat)',
         short_name: 'Squat',
         display: 'fullscreen',
         theme_color: '#0064af',
         background_color: '#ffffff',
+        start_url: '.',
         icons: [
           {
             src: 'assets/icon/vayla_v_rgb_144x144.png',
