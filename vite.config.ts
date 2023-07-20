@@ -61,7 +61,7 @@ export default defineConfig({
     minThreads: 0,
     maxThreads: 1,
     environment: 'jsdom',
-    maxConcurrency: 1,
+    silent: true,
     isolate: true,
     include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     setupFiles: './src/setupTests.ts',
