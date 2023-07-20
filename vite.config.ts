@@ -58,10 +58,8 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    threads: false,
     minThreads: 0,
     maxThreads: 1,
-    maxConcurrency: 1,
     environment: 'jsdom',
     isolate: true,
     include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
