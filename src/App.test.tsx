@@ -208,7 +208,7 @@ test('if sidePane header elements are present and working', () => {
     fireEvent.keyDown(searchInput, { key: 'Escape' });
     fireEvent.keyDown(searchInput, { key: 'Tab' });
     fireEvent.ionBlur(searchInput);
-    jest.advanceTimersByTime(250);
+    vi.advanceTimersByTime(250);
 
     // clearInput
     const clearInput = screen.getByTestId('clearInput');
@@ -222,7 +222,7 @@ test('if sidePane header elements are present and working', () => {
     fireEvent.click(toggleWide);
     const listPane = screen.getByTestId('listPane');
     expect(listPane).toBeInTheDocument();
-    jest.advanceTimersByTime(1200);
+    vi.advanceTimersByTime(1200);
     //expect(listPane.className).toBe('wide');
 
     // togglePane
@@ -329,7 +329,7 @@ it('should trigger map hovers successfully', () => {
     fireEvent.ionFocus(pilotPlace);
     fireEvent.focus(pilotPlace);
     fireEvent.mouseOver(pilotPlace);
-    jest.advanceTimersByTime(600);
+    vi.advanceTimersByTime(600);
     fireEvent.ionBlur(pilotPlace);
     fireEvent.blur(pilotPlace);
     fireEvent.mouseOut(pilotPlace);

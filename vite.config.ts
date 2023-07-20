@@ -37,22 +37,22 @@ export default defineConfig({
         start_url: '.',
         icons: [
           {
-            "src": "assets/icon/vayla_v_rgb_144x144.png",
-            "type": "image/png",
-            "sizes": "144x144",
-            "purpose": "any"
+            src: 'assets/icon/vayla_v_rgb_144x144.png',
+            type: 'image/png',
+            sizes: '144x144',
+            purpose: 'any',
           },
           {
-            "src": "assets/icon/vayla_v_rgb_192x192.png",
-            "type": "image/png",
-            "sizes": "192x192",
-            "purpose": "any"
+            src: 'assets/icon/vayla_v_rgb_192x192.png',
+            type: 'image/png',
+            sizes: '192x192',
+            purpose: 'any',
           },
           {
-            "src": "assets/icon/vayla_v_rgb_512x512.png",
-            "type": "image/png",
-            "sizes": "512x512",
-            "purpose": "any"
+            src: 'assets/icon/vayla_v_rgb_512x512.png',
+            type: 'image/png',
+            sizes: '512x512',
+            purpose: 'any',
           },
         ],
       },
@@ -61,7 +61,12 @@ export default defineConfig({
   ],
   test: {
     globals: true,
+    threads: false,
+    minThreads: 0,
+    maxThreads: 1,
+    maxConcurrency: 1,
     environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     setupFiles: './src/setupTests.ts',
     reporters: ['basic', 'junit', 'vitest-sonar-reporter'],
     outputFile: {
@@ -69,6 +74,7 @@ export default defineConfig({
       'vitest-sonar-reporter': './coverage/sonar-report.xml',
     },
     coverage: {
+      include: ['src/**'],
       reporter: ['text', 'lcov', 'clover'],
       exclude: ['node_modules/', 'src/setupTests.ts'],
     },
