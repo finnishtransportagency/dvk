@@ -5,6 +5,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 import legacy from '@vitejs/plugin-legacy';
+import eslintPlugin from 'vite-plugin-eslint';
 // https://vitejs.dev/config/
 export default defineConfig({
   build: {
@@ -54,6 +55,11 @@ export default defineConfig({
         ],
       },
       useCredentials: true,
+    }),
+    eslintPlugin({
+      cache: false,
+      include: ['./src/**/*.ts', './src/**/*.tsx'],
+      exclude: [],
     }),
   ],
   test: {

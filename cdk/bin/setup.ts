@@ -91,9 +91,9 @@ async function main() {
       : `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api/image?id=`,
   });
   writeEnvFile('../admin/.env.local', {
-    REACT_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
-    REACT_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
-    REACT_APP_ENV: 'local',
+    VITE_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
+    VITE_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
+    VITE_APP_ENV: 'local',
   });
 }
 

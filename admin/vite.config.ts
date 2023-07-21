@@ -3,7 +3,6 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgrPlugin from 'vite-plugin-svgr';
-import { VitePWA } from 'vite-plugin-pwa';
 import legacy from '@vitejs/plugin-legacy';
 import eslintPlugin from 'vite-plugin-eslint';
 // https://vitejs.dev/config/
@@ -21,41 +20,6 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgrPlugin(),
     legacy(),
-    VitePWA({
-      registerType: 'autoUpdate',
-      filename: 'service-worker.js',
-      manifestFilename: 'manifest.json',
-      manifest: {
-        id: '/squat/',
-        name: 'Painumalaskenta (Squat)',
-        short_name: 'Squat',
-        display: 'fullscreen',
-        theme_color: '#0064af',
-        background_color: '#ffffff',
-        start_url: '.',
-        icons: [
-          {
-            src: 'assets/icon/vayla_v_rgb_144x144.png',
-            sizes: '144x144',
-            type: 'image/png',
-            purpose: 'any',
-          },
-          {
-            src: 'assets/icon/vayla_v_rgb_192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-            purpose: 'any',
-          },
-          {
-            src: 'assets/icon/vayla_v_rgb_512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-            purpose: 'any',
-          },
-        ],
-      },
-      useCredentials: true,
-    }),
     eslintPlugin({
       cache: false,
       include: ['./src/**/*.ts', './src/**/*.tsx'],
@@ -64,7 +28,12 @@ export default defineConfig({
   ],
   test: {
     globals: true,
+    minThreads: 0,
+    maxThreads: 1,
     environment: 'jsdom',
+    silent: true,
+    isolate: true,
+    include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
     setupFiles: './src/setupTests.ts',
     reporters: ['basic', 'junit', 'vitest-sonar-reporter'],
     outputFile: {
@@ -72,6 +41,7 @@ export default defineConfig({
       'vitest-sonar-reporter': './coverage/sonar-report.xml',
     },
     coverage: {
+      include: ['src/**'],
       reporter: ['text', 'lcov', 'clover'],
       exclude: ['node_modules/', 'src/setupTests.ts'],
     },

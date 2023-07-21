@@ -248,15 +248,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }) ?? [];
     const vhfNameErrors =
       state.trafficService?.vts
-        ?.map((vts) =>
-          vts?.vhf
-            ?.flatMap((vhf, j) =>
-              (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
-              (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
-                ? j
-                : null
-            )
-            .filter((val) => Number.isInteger(val))
+        ?.map(
+          (vts) =>
+            vts?.vhf
+              ?.flatMap((vhf, j) =>
+                (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
+                (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
+                  ? j
+                  : null
+              )
+              .filter((val) => Number.isInteger(val))
         )
         .flatMap((vhfIndices, vtsIndex) => {
           return (

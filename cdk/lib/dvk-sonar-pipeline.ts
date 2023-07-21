@@ -73,7 +73,7 @@ export class DvkSonarPipelineStack extends Stack {
               'npm ci',
               'npm run generate',
               'npm run lint',
-              'npm run test -- --coverage --reporters=jest-sonar',
+              'npm run test -- --coverage',
               'cd ..',
               'export DVK_VERSION=`node -p "require(\'./package.json\').version"`',
               'sed -i "s/file path=\\"/file path=\\"squat\\//g" squat/coverage/sonar-report.xml',

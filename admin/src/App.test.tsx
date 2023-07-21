@@ -2,16 +2,16 @@ import React from 'react';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-
+import { vi } from 'vitest';
 beforeEach(() => {
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
-jest.mock('react-i18next', () => ({
+vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
 }));
 
-jest.mock('./graphql/api', () => ({
+vi.mock('./graphql/api', () => ({
   useCurrentUserQueryData: () => {
     return { data: { currentUser: { name: 'James' } }, dataUpdatedAt: Date.now(), errorUpdatedAt: 0, isPaused: true, isError: false };
   },
