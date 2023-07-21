@@ -1,15 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, ValueType } from '../utils/constants';
-import { Text } from '../graphql/generated';
-import { getCombinedErrorAndHelperText, nameIncludesQuery } from '../utils/common';
+import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
+import { getCombinedErrorAndHelperText, nameIncludesQuery, sortTypeSafeSelectOptions } from '../utils/common';
 import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/react';
-
-interface SelectOption {
-  id: number;
-  name?: Text | null;
-}
 
 interface SelectWithSearchProps {
   label: string;
@@ -41,17 +35,8 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const sortedOptions = options
-    ? options.sort((a, b) => {
-        const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
-        const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
-        return nameA.localeCompare(nameB);
-      })
-    : [];
-
-  const [filteredItems, setFilteredItems] = useState<SelectOption[]>(sortedOptions);
+  const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [isValid, setIsValid] = useState(error ? false : true);
-  const [isTouched, setIsTouched] = useState(false);
 
   const selectRef = useRef<HTMLIonSelectElement>(null);
 
@@ -59,23 +44,20 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
     selectRef.current?.click();
   };
 
-  const isOptionSelected = (value: number) => {
+  const isOptionSelected = (value: SelectOption) => {
     if (value === undefined) {
       return false;
     }
-    return selected.includes(value);
+    return typeof value.id === 'number' && selected.includes(value.id);
   };
 
-  const checkValidity = (event?: CheckboxCustomEvent) => {
-    const validity = event ? !!event.detail.value : selected.length > 0;
-    setIsValid(required ? validity && !error : true);
-    setIsTouched(true);
+  const checkValidity = () => {
+    setIsValid(required ? !error && selected.length > 0 : !error);
   };
 
   const handleChange = (event: CheckboxCustomEvent) => {
     const { checked, value } = event.detail;
-    if (isTouched) checkValidity(event);
-    const updatedValues = checked ? [...selected, value] : selected.filter((item) => item !== value);
+    const updatedValues = checked ? [...selected, value.id] : selected.filter((selectedId) => selectedId !== value.id);
     setSelected(updatedValues, actionType);
   };
 
@@ -91,14 +73,19 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   };
 
   const filterList = (searchQuery: string | null | undefined) => {
-    if (searchQuery === undefined || searchQuery === null) {
-      setFilteredItems([...sortedOptions]);
+    if (options) {
+      const sortedOptions = sortTypeSafeSelectOptions(options, lang);
+      if (searchQuery === undefined || searchQuery === null) {
+        setFilteredItems(sortedOptions);
+      } else {
+        const normalizedQuery = searchQuery.toLowerCase();
+        const filteredOptions = sortedOptions.filter((item) => {
+          return item.id.toString().includes(normalizedQuery) || nameIncludesQuery(item.name, normalizedQuery);
+        });
+        setFilteredItems(filteredOptions);
+      }
     } else {
-      const normalizedQuery = searchQuery.toLowerCase();
-      const filteredOptions = sortedOptions.filter((item) => {
-        return item.id.toString().includes(normalizedQuery) || nameIncludesQuery(item.name, normalizedQuery);
-      });
-      setFilteredItems(filteredOptions);
+      setFilteredItems([]);
     }
   };
 
@@ -107,10 +94,11 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   };
 
   useEffect(() => {
-    if (isTouched) {
-      setIsValid(required ? selected.length > 0 && !error : true);
+    if (options && options.length > 0) {
+      const sortedOptions = sortTypeSafeSelectOptions(options, lang);
+      setFilteredItems(sortedOptions);
     }
-  }, [required, error, selected, isTouched]);
+  }, [options, lang]);
 
   return (
     <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
@@ -144,7 +132,15 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
         </>
       )}
-      <IonPopover trigger="select-with-search" className="multiSelect" showBackdrop={false} size="cover" dismissOnSelect={false} arrow={false}>
+      <IonPopover
+        trigger="select-with-search"
+        className="multiSelect"
+        showBackdrop={false}
+        size="cover"
+        dismissOnSelect={false}
+        arrow={false}
+        onDidDismiss={() => checkValidity()}
+      >
         <IonList>
           <IonItem key="search-input-item" lines="full">
             <IonSearchbar placeholder={t('search-placeholder') ?? ''} onIonInput={searchBarInput} />
@@ -155,8 +151,8 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
               <IonItem key={item.id.toString()} lines="none">
                 <IonCheckbox
                   aria-label={'select-' + optionLabel}
-                  value={item.id}
-                  checked={isOptionSelected(item.id)}
+                  value={item}
+                  checked={isOptionSelected(item)}
                   onIonChange={handleChange}
                   justify="start"
                   labelPlacement="end"
