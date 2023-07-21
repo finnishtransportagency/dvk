@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { getCombinedErrorAndHelperText, nameIncludesQuery, sortTypeSafeSelectOptions } from '../utils/common';
+import {
+  constructSelectDropdownLabel,
+  constructSelectOptionLabel,
+  getCombinedErrorAndHelperText,
+  nameIncludesQuery,
+  sortTypeSafeSelectOptions,
+} from '../utils/common';
 import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/react';
 
 interface SelectWithSearchProps {
@@ -106,7 +112,13 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
         {label} {required ? '*' : ''}
       </IonLabel>
       <IonItem button={true} detail={false} id="select-with-search" disabled={isLoading || disabled}>
-        {isLoading ? <IonSkeletonText animated={true} className="select-skeleton" /> : <IonLabel ref={selectRef}></IonLabel>}
+        {isLoading ? (
+          <IonSkeletonText animated={true} className="select-skeleton" />
+        ) : (
+          <IonLabel ref={selectRef} className="ion-text-wrap">
+            {constructSelectDropdownLabel(selected, options, lang, showId)}
+          </IonLabel>
+        )}
         {/* <IonSelect
               ref={selectRef}
               placeholder={t('choose') ?? ''}
@@ -146,18 +158,17 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
             <IonSearchbar placeholder={t('search-placeholder') ?? ''} onIonInput={searchBarInput} />
           </IonItem>
           {filteredItems.map((item) => {
-            const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+            const optionLabel = constructSelectOptionLabel(item, lang, showId);
             return (
               <IonItem key={item.id.toString()} lines="none">
                 <IonCheckbox
-                  aria-label={'select-' + optionLabel}
+                  aria-label={optionLabel}
                   value={item}
                   checked={isOptionSelected(item)}
                   onIonChange={handleChange}
                   justify="start"
                   labelPlacement="end"
                 >
-                  {showId ? '[' + item.id + '] ' : ''}
                   {optionLabel}
                 </IonCheckbox>
               </IonItem>

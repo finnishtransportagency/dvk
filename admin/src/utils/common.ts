@@ -68,3 +68,17 @@ export const sortTypeSafeSelectOptions = (options: SelectOption[], lang: Lang) =
   const filteredOptions = options.filter((item) => !!item && typeof item.id === 'number');
   return sortSelectOptions(filteredOptions, lang);
 };
+
+export const constructSelectOptionLabel = (item: SelectOption, lang: Lang, showId?: boolean): string => {
+  const nameLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id.toString();
+  return showId ? '[' + item.id + '] ' + nameLabel : nameLabel;
+};
+
+export const constructSelectDropdownLabel = (selected: number[], options: SelectOption[] | null, lang: Lang, showId?: boolean): string => {
+  if (selected.length > 0 && !!options && options.length > 0) {
+    const sortedOptions = sortSelectOptions(options, lang);
+    const selectedOptions = sortedOptions.filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
+    return selectedOptions.map((item) => constructSelectOptionLabel(item, lang, showId)).join(', ');
+  }
+  return '';
+};
