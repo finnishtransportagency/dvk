@@ -20,7 +20,7 @@ class MapDetailsControl extends Control {
     super({
       element: element,
     });
-
+    // workaround for vitest mocking to avoid isMobile is not a function error
     if (import.meta.env.NODE_ENV === 'test' || !isMobile()) {
       this.mousePositionLabelElement.style.display = 'table-cell';
       this.mousePositionLabelElement.className = 'mousePositionLabelElem';
