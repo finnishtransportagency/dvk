@@ -89,14 +89,6 @@ export class DvkFeaturePipelineStack extends Stack {
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
-          VITE_APP_BG_MAP_API_KEY: {
-            type: BuildEnvironmentVariableType.SECRETS_MANAGER,
-            value: 'BGMapApiKey',
-          },
-          VITE_APP_BG_MAP_API_URL: {
-            type: BuildEnvironmentVariableType.PARAMETER_STORE,
-            value: 'BGMapApiUrl',
-          },
           NODE_OPTIONS: {
             value: '--max_old_space_size=4096 --max-old-space-size=4096',
             type: BuildEnvironmentVariableType.PLAINTEXT,
