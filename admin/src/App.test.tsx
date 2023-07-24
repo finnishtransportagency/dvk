@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 beforeEach(() => {
   vi.resetAllMocks();
+  vi.useFakeTimers();
 });
 
 vi.mock('react-i18next', () => ({
