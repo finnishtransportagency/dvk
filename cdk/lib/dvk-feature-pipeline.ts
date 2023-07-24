@@ -44,7 +44,7 @@ export class DvkFeaturePipelineStack extends Stack {
         phases: {
           build: {
             commands: [
-              'npm ci --omit=optional',
+              'npm ci',
               'npm run generate',
               'cd cdk',
               'npm ci',

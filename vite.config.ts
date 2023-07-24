@@ -64,8 +64,7 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    minThreads: 0,
-    maxThreads: 1,
+    threads: false,
     environment: 'jsdom',
     silent: true,
     isolate: true,
