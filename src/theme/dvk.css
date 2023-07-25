@@ -195,6 +195,13 @@ ion-grid.top-margin {
   margin-top: 1em;
   margin-bottom: 0;
 }
+ion-grid.top-margin.alert {
+  margin-top: 3em;
+  margin-bottom: 0;
+}
+.mobile .full ion-grid.top-margin.alert {
+  margin-top: 8em;
+}
 
 ion-grid.danger {
   padding: 16px;

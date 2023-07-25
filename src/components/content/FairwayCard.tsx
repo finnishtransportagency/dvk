@@ -781,7 +781,7 @@ interface AlertProps {
 const Alert: React.FC<AlertProps> = ({ fairwayCardId }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   return (
-    <IonGrid className="top-margin danger">
+    <IonGrid className="top-margin alert danger">
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
           <IonIcon icon={alertIcon} color="danger" />
