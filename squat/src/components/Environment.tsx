@@ -405,6 +405,7 @@ const Environment: React.FC = () => {
               unit={fieldParams.vesselSpeed.unit}
               fieldClass={setFieldClass('vesselSpeed')}
               actionType="environment-vessel"
+              required
             />
           </IonCol>
           {!limitedView && (
