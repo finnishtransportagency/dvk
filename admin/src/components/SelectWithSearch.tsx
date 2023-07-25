@@ -1,5 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCheckbox, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
+import {
+  IonCheckbox,
+  IonCol,
+  IonGrid,
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonNote,
+  IonPopover,
+  IonRow,
+  IonSearchbar,
+  IonSkeletonText,
+} from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
 import {
@@ -10,6 +23,7 @@ import {
   sortTypeSafeSelectOptions,
 } from '../utils/common';
 import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/react';
+import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 
 interface SelectWithSearchProps {
   label: string;
@@ -43,8 +57,9 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
 
   const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [isValid, setIsValid] = useState(error ? false : true);
+  const [expanded, setIsExpanded] = useState(false);
 
-  const selectRef = useRef<HTMLIonSelectElement>(null);
+  const selectRef = useRef<HTMLIonLabelElement>(null);
 
   const focusInput = () => {
     selectRef.current?.click();
@@ -111,32 +126,35 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem button={true} detail={false} id="select-with-search" disabled={isLoading || disabled}>
+      <IonItem
+        id="select-with-search"
+        button={true}
+        className={'custom-select' + (expanded ? ' expanded' : '')}
+        detail={false}
+        disabled={isLoading || disabled}
+        lines="none"
+      >
         {isLoading ? (
           <IonSkeletonText animated={true} className="select-skeleton" />
         ) : (
-          <IonLabel ref={selectRef} className="ion-text-wrap">
-            {constructSelectDropdownLabel(selected, options, lang, showId)}
-          </IonLabel>
+          <IonGrid className="ion-no-margin ion-no-padding">
+            <IonRow className="ion-align-items-baseline ion-justify-content-between">
+              <IonCol>
+                <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
+                  {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
+                </IonLabel>
+              </IonCol>
+              <IonCol>
+                <IonIcon
+                  icon={expanded ? caretUpSharp : caretDownSharp}
+                  aria-hidden={true}
+                  className="custom-select-icon"
+                  color={expanded ? 'primary' : 'medium'}
+                />
+              </IonCol>
+            </IonRow>
+          </IonGrid>
         )}
-        {/* <IonSelect
-              ref={selectRef}
-              placeholder={t('choose') ?? ''}
-              interface="popover"
-              onIonChange={(ev) => handleChange(ev)}
-              onIonBlur={() => checkValidity()}
-              interfaceOptions={{
-                size: 'cover',
-                className: 'multiSelect',
-              }}
-              value={selected}
-              multiple={Array.isArray(selected) || multiple}
-              compareWith={Array.isArray(selected) ? compareOptions : undefined}
-              disabled={disabled}
-              fill="outline"
-              labelPlacement="stacked"
-            >
-            </IonSelect> */}
       </IonItem>
       {!isLoading && (
         <>
@@ -151,6 +169,8 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
         size="cover"
         dismissOnSelect={false}
         arrow={false}
+        onWillPresent={() => setIsExpanded(true)}
+        onWillDismiss={() => setIsExpanded(false)}
         onDidDismiss={() => checkValidity()}
       >
         <IonList>
