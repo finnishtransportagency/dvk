@@ -267,7 +267,7 @@ ion-button.plainButton.button-disabled {
 }
 
 /* Form inputs */
-ion-item.selectInput, ion-item.custom-select {
+ion-item.selectInput, ion-item.custom-select-container {
   font-size: 14px;
   width: auto;
   min-width: 150px;
@@ -279,35 +279,49 @@ ion-item.selectInput, ion-item.custom-select {
   --background: var(--ion-color-dark);
 }
 
-/* ion-item.custom-select {
-  --background-activated: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  --background-activated-opacity: 0;
-  --background-focused: transparent;
-  --background-focuced-opacity: 0;
-  --background-hover: transparent;
-} */
+ion-item.custom-select-container {
+  --background-hover-opacity: 0;
+  --ripple-color: transparent;
+}
+
+ion-item.custom-select-item {
+  font-size: 14px;
+  margin: 1px;
+  width: 100%;
+  --min-height: 41px;
+  --padding-start: 13px;
+  --inner-padding-end: 13px;
+}
+
+.custom-select-item.expanded {
+  margin: 2px;
+}
 
 .custom-select-icon {
   width: 13px;
 }
 
+ion-item.custom-select-option {
+  --ripple-color: var(--ion-color-primary);
+}
+
 ion-item.selectInput.item-has-focus,
 ion-item.selectInput.ion-focused,
 ion-item.selectInput:has(.select-expanded),
-ion-item.custom-select.expanded {
+ion-item.custom-select-container.expanded {
   --highlight-background: transparent;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
-.selectWrapper.invalid ion-item.selectInput, .selectWrapper.invalid ion-item.custom-select {
+.selectWrapper.invalid ion-item.selectInput, .selectWrapper.invalid ion-item.custom-select-container {
   --background: var(--ion-color-danger);
 }
-.selectWrapper.invalid ion-item.selectInput:has(.select-expanded) {
+.selectWrapper.invalid ion-item.selectInput:has(.select-expanded), .selectWrapper.invalid ion-item.custom-select-container.expanded {
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
 ion-item.selectInput.item-select-disabled {
   opacity: 0.5;
 }
-ion-item.selectInput::part(native), ion-item.custom-select::part(native) {
+ion-item.selectInput::part(native), ion-item.custom-select-container::part(native) {
   border-radius: 0;
   overflow: hidden;
 }

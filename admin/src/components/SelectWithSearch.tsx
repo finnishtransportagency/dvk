@@ -1,18 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  IonCheckbox,
-  IonCol,
-  IonGrid,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonNote,
-  IonPopover,
-  IonRow,
-  IonSearchbar,
-  IonSkeletonText,
-} from '@ionic/react';
+import { IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
 import {
@@ -129,7 +116,7 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
       <IonItem
         id="select-with-search"
         button={true}
-        className={'custom-select' + (expanded ? ' expanded' : '')}
+        className={'custom-select-container' + (expanded ? ' expanded' : '')}
         detail={false}
         disabled={isLoading || disabled}
         lines="none"
@@ -137,23 +124,17 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
         {isLoading ? (
           <IonSkeletonText animated={true} className="select-skeleton" />
         ) : (
-          <IonGrid className="ion-no-margin ion-no-padding">
-            <IonRow className="ion-align-items-baseline ion-justify-content-between">
-              <IonCol>
-                <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
-                  {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
-                </IonLabel>
-              </IonCol>
-              <IonCol>
-                <IonIcon
-                  icon={expanded ? caretUpSharp : caretDownSharp}
-                  aria-hidden={true}
-                  className="custom-select-icon"
-                  color={expanded ? 'primary' : 'medium'}
-                />
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={isLoading || disabled} lines="none">
+            <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
+              {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
+            </IonLabel>
+            <IonIcon
+              icon={expanded ? caretUpSharp : caretDownSharp}
+              aria-hidden={true}
+              className="custom-select-icon"
+              color={expanded ? 'primary' : 'medium'}
+            />
+          </IonItem>
         )}
       </IonItem>
       {!isLoading && (
@@ -179,17 +160,18 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
           </IonItem>
           {filteredItems.map((item) => {
             const optionLabel = constructSelectOptionLabel(item, lang, showId);
+            const optionSelected = isOptionSelected(item);
             return (
-              <IonItem key={item.id.toString()} lines="none">
+              <IonItem key={item.id.toString()} className="custom-select-option" lines="none">
                 <IonCheckbox
                   aria-label={optionLabel}
-                  value={item}
-                  checked={isOptionSelected(item)}
-                  onIonChange={handleChange}
+                  checked={optionSelected}
                   justify="start"
                   labelPlacement="end"
+                  onIonChange={handleChange}
+                  value={item}
                 >
-                  {optionLabel}
+                  <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
                 </IonCheckbox>
               </IonItem>
             );
