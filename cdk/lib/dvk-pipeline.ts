@@ -44,11 +44,16 @@ export class DvkPipeline extends Construct {
     const dvkBuildProject = new codebuild.PipelineProject(this, 'DvkBuild', {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
+        computeType: ComputeType.LARGE,
         environmentVariables: {
           VITE_APP_API_KEY: { value: importedAppSyncAPIKey },
           VITE_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
           VITE_APP_ENV: { value: props.env },
           CI: { value: true },
+          NODE_OPTIONS: {
+            value: '--max_old_space_size=4096 --max-old-space-size=4096',
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+          },
         },
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -60,6 +65,10 @@ export class DvkPipeline extends Construct {
           build: {
             commands: [
               'echo build dvk app',
+              'cd squat',
+              'npm ci',
+              'npm run buildlib',
+              'cd ..',
               'npm ci',
               'npm run generate',
               'BUILD_PATH=./build/vaylakortti PUBLIC_URL=/vaylakortti npm run build',

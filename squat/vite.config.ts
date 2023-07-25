@@ -64,6 +64,7 @@ export default defineConfig({
   ],
   test: {
     globals: true,
+    threads: false,
     environment: 'jsdom',
     setupFiles: './src/setupTests.ts',
     reporters: ['basic', 'junit', 'vitest-sonar-reporter'],

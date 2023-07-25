@@ -55,6 +55,9 @@ export default defineConfig({
         ],
       },
       useCredentials: true,
+      workbox: {
+        maximumFileSizeToCacheInBytes: 3000000,
+      },
     }),
     eslintPlugin({
       cache: false,

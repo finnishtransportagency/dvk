@@ -1,5 +1,11 @@
 import { countDecimals, createShareableLink, getAssetUrl } from '../utils/helpers';
-
+import openWater from '../theme/img/open_water_small.svg';
+import slopedChannel from '../theme/img/sloped_channel_small.svg';
+import channel from '../theme/img/channel_small.svg';
+import tanker from '../theme/img/tanker.svg';
+import container from '../theme/img/container_ship.svg';
+import ferry from '../theme/img/ferry.svg';
+import lngTanker from '../theme/img/lng_tanker.svg';
 // Common types
 
 type Vessel = {
@@ -33,29 +39,29 @@ type FieldParam = {
 
 // Initialize data
 export const vesselProfiles = [
-  { id: 1, name: 'homePage.squat.vessel.bulker', img: getAssetUrl('assets/tanker.svg'), opaque: true },
-  { id: 2, name: 'homePage.squat.vessel.container', img: getAssetUrl('assets/container_ship.svg'), opaque: true },
-  { id: 3, name: 'homePage.squat.vessel.ferry', img: getAssetUrl('assets/ferry.svg'), opaque: true },
-  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: getAssetUrl('assets/lng_tanker.svg'), opaque: true },
+  { id: 1, name: 'homePage.squat.vessel.bulker', img: getAssetUrl(tanker), opaque: true },
+  { id: 2, name: 'homePage.squat.vessel.container', img: getAssetUrl(container), opaque: true },
+  { id: 3, name: 'homePage.squat.vessel.ferry', img: getAssetUrl(ferry), opaque: true },
+  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: getAssetUrl(lngTanker), opaque: true },
 ];
 export const fairwayForms = [
   {
     id: 1,
     name: 'homePage.squat.environment.open-water',
     desc: 'homePage.squat.environment.open-water-description',
-    img: getAssetUrl('assets/open_water_small.svg'),
+    img: getAssetUrl(openWater),
   },
   {
     id: 2,
     name: 'homePage.squat.environment.channel',
     desc: 'homePage.squat.environment.channel-description',
-    img: getAssetUrl('assets/channel_small.svg'),
+    img: getAssetUrl(channel),
   },
   {
     id: 3,
     name: 'homePage.squat.environment.sloped-channel',
     desc: 'homePage.squat.environment.sloped-channel-description',
-    img: getAssetUrl('assets/sloped_channel_small.svg'),
+    img: getAssetUrl(slopedChannel),
   },
 ];
 
