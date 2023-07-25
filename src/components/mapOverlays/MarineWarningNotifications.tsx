@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isCoastalWarning } from '../../utils/common';
+import { isCoastalWarning, isMobile } from '../../utils/common';
 import { IonBackdrop, IonCol } from '@ionic/react';
 import { CustomPopup } from './CustomPopup';
 import { CoastalWarningItem } from './CoastalWarningItem';
@@ -90,7 +90,9 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
 
   return (
     <>
-      {showMarineWarnings && (infoVisible || warningNotifications.some((notification) => notification.visible)) && <IonBackdrop tappable={false} />}
+      {isMobile() && showMarineWarnings && (infoVisible || warningNotifications.some((notification) => notification.visible)) && (
+        <IonBackdrop tappable={false} />
+      )}
       <div className="marine-warning-container">
         {showMarineWarnings &&
           warningNotifications.map((notification) => (
