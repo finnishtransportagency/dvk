@@ -5,9 +5,7 @@ ion-backdrop {
 
 .marine-warning-container {
   position: fixed;
-  width: 100%;
   opacity: 1;
-  left: 50%;
   pointer-events: none;
   /* ion-backdrop has default z-index: 2, must be higher than that */
   z-index: 3;
@@ -20,5 +18,4 @@ ion-app.mobile div.marine-warning-container {
 
 ion-app:not(.mobile) div.marine-warning-container {
   bottom: 36px;
-  transform: translateX(-50%);
 }

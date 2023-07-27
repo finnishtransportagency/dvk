@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isCoastalWarning, isMobile } from '../../utils/common';
+import { getMapCanvasWidth, isCoastalWarning, isMobile } from '../../utils/common';
 import { IonBackdrop, IonCol } from '@ionic/react';
 import { CustomPopup } from './CustomPopup';
 import { CoastalWarningItem } from './CoastalWarningItem';
@@ -9,6 +9,8 @@ import { MarineWarning } from '../../graphql/generated';
 import marineWarningIcon from '../../theme/img/merivaroitus_ikoni_plain.svg';
 import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningNotifications.css';
+import dvkMap from '../DvkMap';
+import { debounce } from 'lodash';
 
 interface MarineWarningNotificationsProps {
   showMarineWarnings: boolean;
@@ -71,8 +73,19 @@ const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
 export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProps> = ({ showMarineWarnings }) => {
   const [warningNotifications, setWarningNotifications] = useState<MarineWarningNotification[]>([]);
   const [infoVisible, setInfoVisible] = useState(false);
+  const [backgroundWidth, setBackgroundWidth] = useState<number>(getMapCanvasWidth());
 
   const { data, isLoading, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+
+  const debouncedContainerPositionRefresh = React.useRef(
+    debounce(() => {
+      setBackgroundWidth(getMapCanvasWidth());
+    }, 50)
+  ).current;
+
+  dvkMap.olMap?.on('moveend', () => {
+    debouncedContainerPositionRefresh();
+  });
 
   useEffect(() => {
     if (showMarineWarnings) {
@@ -93,7 +106,10 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
       {isMobile() && showMarineWarnings && (infoVisible || warningNotifications.some((notification) => notification.visible)) && (
         <IonBackdrop tappable={false} />
       )}
-      <div className="marine-warning-container">
+      <div
+        className="marine-warning-container"
+        style={!isMobile() ? { width: backgroundWidth + 'px', left: 'calc(100% - ' + backgroundWidth + 'px)' } : undefined}
+      >
         {showMarineWarnings &&
           warningNotifications.map((notification) => (
             <CoastalWarningNotification
