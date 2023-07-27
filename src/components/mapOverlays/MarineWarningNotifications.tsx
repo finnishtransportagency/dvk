@@ -87,10 +87,11 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
 
   /* Use map canvas size as reference for container width to position container relative to side modal */
   dvkMap.olMap?.on('change:size', (event: ObjectEvent) => {
-    const { target, key } = event;
+    const { target, key, oldValue } = event;
     const newValue = target.get(key);
     // Opening side modal triggers map size changes that have undefined or zero values before calculating final size
-    if (newValue !== undefined && newValue[0] && newValue[1]) {
+    // Ignore changes in height
+    if (newValue !== undefined && newValue[0] && (!oldValue || oldValue[0] !== newValue[0])) {
       debouncedBackgroundWidthRefresh();
     }
   });
