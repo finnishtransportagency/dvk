@@ -60,7 +60,7 @@ const PrintBar: React.FC = () => {
                     />
                     <IonButton
                       fill="clear"
-                      className="icon-only large no-background-focused"
+                      className="icon-only-squat xlarge no-background-focused"
                       onClick={handleCopyClick}
                       id="hover-trigger_"
                       title={t('header.copy-to-clipboard')}
@@ -88,7 +88,7 @@ const PrintBar: React.FC = () => {
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only large no-background-focused"
+              className="icon-only-squat xlarge no-background-focused"
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}

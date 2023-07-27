@@ -1,10 +1,10 @@
-ion-grid.titlebar {
+.squat ion-grid.titlebar {
   padding: 0 10px;
 }
-.logo {
+.squat .logo {
   width: 105px;
 }
-ion-button.languageSelection {
+.squat ion-button.languageSelection {
   font-size: 16px;
   text-transform: none;
   letter-spacing: normal;
@@ -13,52 +13,57 @@ ion-button.languageSelection {
   --padding-start: 14px;
   --padding-end: 14px;
 }
-ion-button.languageSelection:hover {
+.squat ion-button.languageSelection:hover {
   color: var(--ion-color-primary-shade);
   text-decoration: underline;
 }
-.titlebar ion-button.icon-only {
+.squat .titlebar ion-button.icon-only-squat {
   margin: 0 6px 0 0;
 }
-ion-button.languageSelection.button-disabled {
+
+ion-button.icon-only-squat::part(native) {
+  box-shadow: unset;
+}
+
+.squat ion-button.languageSelection.button-disabled {
   opacity: 1;
   color: var(--ion-color-dark);
   font-weight: bold;
 }
 @media (max-width: 991px) {
-  ion-text h1 {
+  .squat ion-text h1 {
     font-size: 1.8rem;
   }
 }
 @media (min-width: 768px) {
-  ion-text h1 {
+  .squat ion-text h1 {
     white-space: nowrap;
   }
-  .mobile-logo {
+  .squat .mobile-logo {
     display: none;
   }
 }
 @media (max-width: 767px) {
-  .mainTitle {
+  .squat .mainTitle {
     flex-basis: 40%;
   }
-  ion-text h1 {
+  .squat ion-text h1 {
     white-space: nowrap;
     font-size: 1.8rem;
   }
-  .desktop-logo {
+  .squat .desktop-logo {
     display: none;
   }
-  .langbar {
+  .squat .langbar {
     flex-basis: 50%;
   }
 }
 @media (max-width: 575px) {
-  ion-text h1 {
+  .squat ion-text h1 {
     font-size: 1.4rem;
     white-space: normal;
   }
-  .logo {
+  .squat .logo {
     width: 95px;
   }
 }

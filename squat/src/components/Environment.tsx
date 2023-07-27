@@ -239,7 +239,7 @@ const Environment: React.FC = () => {
               required
               translateOptions
               infoContentTitle={t('form-of-fairway-info-title')}
-              infoContentSize="large"
+              infoContentSize="xlarge"
               infoContent={
                 <>
                   <p>{t('form-of-fairway-info-content')}</p>

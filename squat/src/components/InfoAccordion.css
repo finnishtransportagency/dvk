@@ -1,27 +1,28 @@
-ion-accordion {
+.squat ion-accordion {
   background-color: #fff;
   border-bottom: 1px solid var(--ion-color-light);
 }
-ion-accordion.accordion-collapsed {
+.squat ion-accordion.accordion-collapsed {
   border-bottom: 1px solid var(--ion-color-light);
 }
-ion-accordion:not(.accordion-collapsed) {
+.squat ion-accordion:not(.accordion-collapsed) {
   border-bottom-color: #fff;
 }
-ion-accordion::part(header) {
+.squat ion-accordion::part(header) {
   min-height: 24px;
   border-bottom: 1px solid #fff;
   width: max-content;
 }
-ion-accordion::part(content) {
+.squat ion-accordion::part(content) {
   background: #fff;
 }
-ion-accordion .tabContent {
+.squat ion-accordion .tabContent {
   padding-top: 10px;
   margin: 0;
   border-top: 1px solid var(--ion-color-light);
+  display: unset;
 }
-.accItem {
+.squat .accItem {
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
@@ -32,17 +33,17 @@ ion-accordion .tabContent {
   --border-width: 1px !important;
   --border-color: transparent;
 }
-.accItem.ion-focused {
+.squat .accItem.ion-focused {
   --background-focused: none;
   --inner-border-width: 0;
   --show-full-highlight: 0;
   --border-color: var(--ion-color-dark);
 }
-.accItem ion-label {
+.squat .accItem ion-label {
   margin: 0;
   color: var(--ion-color-dark) !important;
 }
-.accItem ion-icon {
+.squat .accItem ion-icon {
   width: 14px;
   height: 14px;
   margin: 0;

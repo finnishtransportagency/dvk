@@ -9,7 +9,7 @@ interface ModalProps {
   trigger?: ReactElement;
   triggerTitle?: string;
   triggerClassName?: string;
-  size?: 'medium' | 'large';
+  size?: 'medium' | 'xlarge';
   handleDismiss?: () => void;
   disabled?: boolean;
 }
@@ -31,7 +31,7 @@ const Modal: React.FC<ModalProps> = (props) => {
     <>
       <IonButton
         fill="clear"
-        className={'icon-only no-background-focused' + (props.triggerClassName ? ' ' + props.triggerClassName : '')}
+        className={'icon-only-squat no-background-focused' + (props.triggerClassName ? ' ' + props.triggerClassName : '')}
         onClick={handleClickOpen}
         title={props.triggerTitle || t('more-info')}
         aria-label={props.triggerTitle || t('more-info')}
@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = (props) => {
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
-      <IonModal isOpen={isOpen} className={props.size ? props.size : 'medium'} onDidDismiss={handleClickClose}>
+      <IonModal isOpen={isOpen} className={(props.size ? props.size : 'medium') + ' squatModal'} onDidDismiss={handleClickClose}>
         <IonHeader>
           <div className="gradient-top" />
           <IonToolbar>
@@ -50,7 +50,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             <IonButtons slot="end" style={{ marginRight: '16px' }}>
               <IonButton
                 onClick={handleClickClose}
-                className="icon-only no-background-focused"
+                className="icon-only-squat no-background-focused"
                 title={t('close-dialog')}
                 aria-label={t('close-dialog')}
               >

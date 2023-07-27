@@ -8,7 +8,7 @@ interface LabelProps {
   required?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
-  infoContentSize?: 'medium' | 'large';
+  infoContentSize?: 'medium' | 'xlarge';
 }
 
 const Label: React.FC<LabelProps> = (props) => {

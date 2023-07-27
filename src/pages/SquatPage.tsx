@@ -14,7 +14,7 @@ const SquatPage: React.FC = () => {
   );
   return (
     <IonPage>
-      <IonContent className="ion-no-padding">
+      <IonContent className="squat ion-no-padding">
         <SquatContext.Provider value={providerState}>
           <Squat />
           <SquatChart />

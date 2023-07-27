@@ -215,7 +215,7 @@
     color: var(--ion-color-dark);
   }
 
-  ion-button.icon-only {
+  ion-button.icon-only-squat {
     display: none;
   }
 

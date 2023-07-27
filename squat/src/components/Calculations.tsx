@@ -349,7 +349,7 @@ const Calculations: React.FC = () => {
           </IonCol>
           <IonCol size="auto" className="ion-align-self-center" style={{ paddingLeft: 0, paddingRight: 0 }}>
             <Modal
-              size="large"
+              size="xlarge"
               title={t('info-title')}
               content={
                 <>

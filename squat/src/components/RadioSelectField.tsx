@@ -24,7 +24,7 @@ interface RadioSelectProps {
   translateOptions?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
-  infoContentSize?: 'medium' | 'large';
+  infoContentSize?: 'medium' | 'xlarge';
   columnSize?: string;
 }
 

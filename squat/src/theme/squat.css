@@ -1,82 +1,82 @@
-ion-text h1 {
+.squat ion-text h1 {
   font-size: 2.2rem;
 }
 
-ion-text .h2,
-ion-text h2 {
+.squat ion-text .h2,
+.squat ion-text h2 {
   font-size: 1.5rem;
 }
 
-ion-text .h3,
-ion-text h3 {
+.squat ion-text .h3,
+.squat ion-text h3 {
   font-size: 1rem;
 }
 
-ion-text .h4,
-ion-text h4 {
+.squat ion-text .h4,
+.squat ion-text h4 {
   font-size: 1rem;
 }
 
-ion-text.equal-margin-top > * {
+.squat ion-text.equal-margin-top > * {
   margin-top: 10px;
 }
-ion-text.no-margin > * {
+.squat ion-text.no-margin > * {
   margin: 0;
 }
 
 /* Grid */
-ion-grid.no-padding {
+.squat ion-grid.no-padding {
   padding: 0;
 }
-ion-grid.margin-top {
+.squat ion-grid.margin-top {
   margin-top: 30px;
 }
-ion-grid.no-padding ion-col {
+.squat ion-grid.no-padding ion-col {
   padding-top: 0;
   padding-bottom: 0;
 }
-ion-grid.divider {
+.squat ion-grid.divider {
   border-bottom: 1px solid var(--ion-color-light);
   min-height: 24px;
 }
-ion-row.input-row > ion-col {
+.squat ion-row.input-row > ion-col {
   min-height: 0;
 }
 
-.flipped {
+.squat .flipped {
   transform: rotate(180deg);
 }
-.use-flex {
+.squat .use-flex {
   display: flex;
 }
 
-.align-center {
+.squat .align-center {
   text-align: center;
 }
-.align-right {
+.squat .align-right {
   text-align: right;
 }
-.left-padding {
+.squat .left-padding {
   padding-left: 5px;
 }
-.top-padding {
+.squat .top-padding {
   padding-top: 10px;
 }
-.top-padding.in-print {
+.squat .top-padding.in-print {
   padding-top: 0;
 }
-.bottom-padding {
+.squat .bottom-padding {
   padding-bottom: 10px;
 }
 
-.small-text {
+.squat .small-text {
   font-size: 14px;
 }
-.printable {
+.squat .printable {
   display: none;
 }
 
-ion-toggle.squat-toggle {
+.squat ion-toggle.squat-toggle {
   --track-background: #fff;
   --track-background-checked: #fff;
   --handle-background: var(--ion-color-primary);
@@ -89,14 +89,14 @@ ion-toggle.squat-toggle {
   border-radius: var(--border-radius);
 }
 
-ion-item.readonly-wrapper {
+.squat ion-item.readonly-wrapper {
   --min-height: auto;
   --padding-start: 0;
   --inner-padding-end: 8px;
   --background-focused: none;
 }
 
-ion-textarea {
+.squat ion-textarea {
   word-break: break-all;
   margin-top: 0 !important;
   min-height: 42px !important;
@@ -107,40 +107,40 @@ ion-textarea {
   --border-color: var(--ion-color-medium) !important;
 }
 
-ion-textarea:read-only {
+.squat ion-textarea:read-only {
   --border-width: 1px !important;
 }
 
 /* General alerts */
-ion-grid.danger {
+.squat ion-grid.danger {
   background-color: var(--ion-color-dangerbg);
   border: 1px solid var(--ion-color-danger);
   margin-bottom: 1em;
 }
-ion-grid.danger.top-margin {
+.squat ion-grid.danger.top-margin {
   margin-top: 1em;
   margin-bottom: 0;
 }
 
-ion-grid.danger ion-col.icon {
+.squat ion-grid.danger ion-col.icon {
   height: 22px;
   box-sizing: content-box;
 }
 
-ion-grid.danger ion-icon {
+.squat ion-grid.danger ion-icon {
   font-size: 22px;
 }
 
-ion-grid.danger ion-text {
+.squat ion-grid.danger ion-text {
   color: rgb(36, 34, 34);
 }
 
-ion-icon {
+.squat ion-icon {
   pointer-events: none;
 }
 
 /* Forms */
-ion-item.item.only-label {
+.squat ion-item.item.only-label {
   --min-height: 30px;
   --padding-top: 2px;
   --padding-start: 0;
@@ -148,7 +148,7 @@ ion-item.item.only-label {
   --inner-padding-end: 0;
 }
 
-ion-item.item.no-padding {
+.squat ion-item.item.no-padding {
   --inner-padding-start: 0;
   --padding-start: 0;
   --inner-padding-end: 0;
@@ -156,164 +156,164 @@ ion-item.item.no-padding {
   --padding-top: 0;
 }
 
-ion-item.item.only-label ion-label {
+.squat ion-item.item.only-label ion-label {
   margin: 0;
 }
 
-ion-item.item.only-label ion-label ion-button.no-background-focused {
+.squat ion-item.item.only-label ion-label ion-button.no-background-focused {
   margin: 1px;
 }
 
 @media screen and (max-width: 575px) {
-  ion-item.item.only-label ion-label {
+  .squat ion-item.item.only-label ion-label {
     white-space: normal;
   }
 }
 
-ion-item.item-interactive {
+.squat ion-item.item-interactive {
   --border-color: var(--ion-color-dark);
   --min-height: 40px;
   --padding-start: 0;
 }
-ion-item.item-interactive.item-select {
+.squat ion-item.item-interactive.item-select {
   --padding-start: 10px;
 }
 
-ion-item.item-interactive.ion-invalid {
+.squat ion-item.item-interactive.ion-invalid {
   --border-color: var(--highlight-color-invalid);
 }
 
-ion-item.item-static {
+.squat ion-item.item-static {
   --min-height: 42px;
 }
 
-ion-item.item.align-center .sc-ion-label-md-s p {
+.squat ion-item.item.align-center .sc-ion-label-md-s p {
   margin: 0.25rem 0;
 }
 
-ion-item.item.align-center ion-radio {
+.squat ion-item.item.align-center ion-radio {
   display: inline-block;
   margin: 0;
 }
 
-.item-bottom {
+.squat .item-bottom {
   padding: 0;
 }
 
-.full-width {
+.squat .full-width {
   width: 100%;
 }
 
-.sc-ion-input-md-h {
+.squat .sc-ion-input-md-h {
   min-height: 42px !important;
 }
 
-.sc-ion-input-md-h .input-wrapper {
+.squat .sc-ion-input-md-h .input-wrapper {
   padding-left: 0;
 }
 
-.sc-ion-input-md-h .label-text {
+.squat .sc-ion-input-md-h .label-text {
   color: var(--ion-color-medium);
 }
 
-.sc-ion-input-md-h .input-bottom {
+.squat .sc-ion-input-md-h .input-bottom {
   padding-left: 0;
 }
 
-.input-fill-outline.sc-ion-input-md-h {
+.squat .input-fill-outline.sc-ion-input-md-h {
   --border-color: var(--ion-color-dark);
 }
 
-ion-note.input-helper {
+.squat ion-note.input-helper {
   display: inline-block;
   font-size: 12px;
   padding-left: 16px;
   padding-right: 16px;
 }
 
-ion-item.item-interactive.ion-invalid ion-note.input-error,
-ion-text.input-error {
+.squat ion-item.item-interactive.ion-invalid ion-note.input-error,
+.squat ion-text.input-error {
   display: flex;
   align-items: center;
 }
 
-ion-note.input-error ion-icon,
-ion-text.input-error ion-icon {
+.squat ion-note.input-error ion-icon,
+.squat ion-text.input-error ion-icon {
   padding-right: 4px;
   font-size: 14px;
 }
 
-.item-input.sc-ion-label-md-h,
-.item-input .sc-ion-label-md-h {
+.squat .item-input.sc-ion-label-md-h,
+.squat .item-input .sc-ion-label-md-h {
   max-width: none;
   margin-left: 0;
   overflow: visible;
 }
 
-.native-input.sc-ion-input-md {
+.squat .native-input.sc-ion-input-md {
   -moz-appearance: textfield;
   appearance: textfield;
   padding-inline-start: 10px;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+.squat input::-webkit-outer-spin-button,
+.squat input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   appearance: none;
   margin: 0;
 }
 
-input[type='number'] {
+.squat input[type='number'] {
   -moz-appearance: textfield;
   appearance: none;
 }
 
 @-moz-document url-prefix() {
-  input[type='number'] {
+  .squat input[type='number'] {
     -moz-appearance: textfield !important;
   }
 }
 
-ion-radio-group ion-grid ion-col.col-radio {
+.squat ion-radio-group ion-grid ion-col.col-radio {
   padding: 0;
 }
 
-ion-radio-group ion-grid ion-item::part(native) {
+.squat ion-radio-group ion-grid ion-item::part(native) {
   padding: 10px 0;
   cursor: pointer;
 }
 
-ion-radio-group ion-item ion-text p {
+.squat ion-radio-group ion-item ion-text p {
   margin: 0.25rem 0;
   font-size: 12px;
   line-height: 1rem;
 }
 
-ion-item.item-radio-unchecked ion-text > ion-img {
+.squat ion-item.item-radio-unchecked ion-text > ion-img {
   filter: grayscale(1);
 }
 
-ion-item.item-radio-unchecked ion-text > ion-img.opaque {
+.squat ion-item.item-radio-unchecked ion-text > ion-img.opaque {
   filter: opacity(30%);
 }
 
-ion-radio-group ion-item ion-radio {
+.squat ion-radio-group ion-item ion-radio {
   width: auto;
   --color-checked: var(--ion-color-primary);
 }
 
-ion-radio-group ion-item ion-radio::part(container) {
+.squat ion-radio-group ion-item ion-radio::part(container) {
   width: 17px;
   height: 17px;
   border-width: 2px;
 }
 
-ion-radio-group ion-item ion-radio.radio-unchecked::part(container) {
+.squat ion-radio-group ion-item ion-radio.radio-unchecked::part(container) {
   border-width: 1px;
   border-color: var(--ion-color-dark);
 }
 
-ion-button.icon-only {
+.squat ion-button.icon-only-squat {
   --padding-top: 0;
   --padding-bottom: 0;
   --padding-start: 0;
@@ -322,40 +322,40 @@ ion-button.icon-only {
   margin: 0 0 0 8px;
   vertical-align: top;
 }
-ion-button.icon-only::part(native) {
+.squat ion-button.icon-only-squat::part(native) {
   min-height: 24px;
   min-width: 24px;
 }
-ion-button.icon-only.large::part(native) {
+ion-button.icon-only-squat.xlarge::part(native) {
   min-height: 32px;
   min-width: 32px;
 }
 
-ion-icon.medium {
+.squat ion-icon.medium {
   font-size: 22px;
   --ionicon-stroke-width: 32px;
 }
 
 /* Segment buttons */
-ion-segment {
+.squat ion-segment {
   background: none;
   padding-bottom: 1px;
   padding-right: 1px;
 }
-ion-segment-button {
+.squat ion-segment-button {
   height: 34px;
   min-height: auto;
   flex-basis: 50%;
 }
-ion-segment-button:first-child,
-ion-segment-button:first-child::part(native) {
+.squat ion-segment-button:first-child,
+.squat ion-segment-button:first-child::part(native) {
   border-radius: 20px 0 0 20px;
 }
-ion-segment-button:last-child,
-ion-segment-button:last-child::part(native) {
+.squat ion-segment-button:last-child,
+.squat ion-segment-button:last-child::part(native) {
   border-radius: 0 20px 20px 0;
 }
-ion-segment-button ion-label {
+.squat ion-segment-button ion-label {
   color: var(--ion-color-dark);
   white-space: normal;
   line-height: 1;
@@ -363,97 +363,97 @@ ion-segment-button ion-label {
   font-size: 16px;
   overflow: visible;
 }
-ion-segment-button.segment-button-checked {
+.squat ion-segment-button.segment-button-checked {
   background: none;
 }
-ion-segment-button.segment-button-checked ion-label {
+.squat ion-segment-button.segment-button-checked ion-label {
   color: var(--ion-color-primary-contrast);
 }
-ion-segment-button::part(native) {
+.squat ion-segment-button::part(native) {
   text-transform: none;
 }
-ion-segment-button.segment-button-checked::part(native) {
+.squat ion-segment-button.segment-button-checked::part(native) {
   font-weight: 600;
 }
-ion-segment-button::part(indicator) {
+.squat ion-segment-button::part(indicator) {
   top: 0;
   opacity: 1 !important;
   padding-inline: 0 !important;
 }
-ion-segment-button::part(indicator-background) {
+.squat ion-segment-button::part(indicator-background) {
   height: 100% !important;
   background-color: var(--ion-color-lightest);
   border: 1px solid var(--ion-color-medium);
   border-width: 1px 0 1px 1px;
   box-sizing: border-box;
 }
-ion-segment-button:first-child::part(indicator-background) {
+.squat ion-segment-button:first-child::part(indicator-background) {
   border-radius: 20px 0 0 20px;
 }
-ion-segment-button:last-child::part(indicator-background) {
+.squat ion-segment-button:last-child::part(indicator-background) {
   border-radius: 0 20px 20px 0;
   border-width: 1px 1px 1px 0;
 }
-ion-segment-button.segment-button-checked::part(indicator-background) {
+.squat ion-segment-button.segment-button-checked::part(indicator-background) {
   border-color: var(--ion-color-primary);
   background-color: var(--ion-color-primary);
 }
-ion-segment-button:focus::part(indicator-background) {
+.squat ion-segment-button:focus::part(indicator-background) {
   border: 2px solid var(--ion-color-tertiary);
 }
 
 /* Footer */
-ion-footer.small ion-toolbar {
+.squat ion-footer.small ion-toolbar {
   --min-height: 32px;
 }
 
 /* Modals */
-.gradient-top {
+.squat .gradient-top {
   height: 12px;
   background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
 }
 
-ion-modal ion-content {
+ion-modal.squatModal ion-content {
   --padding-start: 28px;
   --padding-end: 28px;
   height: fit-content;
 }
 
-ion-modal ion-header {
+ion-modal.squatModal ion-header {
   box-shadow: none !important;
 }
 
-ion-modal ion-footer {
+ion-modal.squatModal ion-footer {
   box-shadow: none !important;
 }
 
 @media (min-width: 768px) {
-  ion-modal.medium {
+  ion-modal.squatModal.medium {
     --height: 350px;
     --width: 600px;
   }
-  ion-modal.large {
+  ion-modal.squatModal.xlarge {
     --max-height: 600px;
     --min-height: 350px;
     --width: 768px;
   }
 }
 @media (max-width: 768px) {
-  ion-modal {
+  ion-modal.squatModal {
     --height: 100%;
     --width: 100%;
   }
 }
 
-ion-modal ion-header.header-md::after {
+ion-modal.squatModal ion-header.header-md::after {
   content: none;
 }
 
-ion-modal ion-footer.footer-md::before {
+ion-modal.squatModal ion-footer.footer-md::before {
   content: none;
 }
 
-ion-modal ion-header ion-title {
+ion-modal.squatModal ion-header ion-title {
   font-size: 24px;
   font-weight: bold;
   padding-inline: 28px;
@@ -461,42 +461,46 @@ ion-modal ion-header ion-title {
   margin-bottom: 28px;
 }
 
-ion-modal ion-footer ion-toolbar.buttonBar {
+ion-modal.squatModal ion-footer ion-toolbar.buttonBar {
   --min-height: 60px;
 }
 
-ion-modal ion-footer ion-toolbar.buttonBar ion-button {
+ion-modal.squatModal ion-footer ion-toolbar.buttonBar ion-button {
   height: 48px;
   width: 175px;
   margin-right: 28px;
   margin-bottom: 28px;
 }
 
-.wrappable-title {
+ion-modal.squatModal .buttonBar {
+  padding-bottom: unset !important;
+}
+
+.squat .wrappable-title {
   overflow: visible;
   white-space: normal;
 }
 
-.version-title {
+.squat .version-title {
   font-size: 12px;
 }
 
-.no-background-focused {
+.squat .no-background-focused {
   --background-focused: unset;
 }
 
-.no-background-focused.ion-focused {
+.squat .no-background-focused.ion-focused {
   outline: 1px solid var(--ion-color-dark);
   z-index: 2;
   --background-focused: unset;
 }
 
-.no-focus {
+.squat .no-focus {
   --background-focused: unset;
   outline: none;
 }
 
-ion-item.external-link {
+.squat ion-item.external-link {
   color: var(--ion-color-primary);
   font-size: 12px;
   text-transform: none;
@@ -516,25 +520,25 @@ ion-item.external-link {
   --inner-padding-end: 1px;
 }
 
-ion-item.external-link.ion-focused {
+.squat ion-item.external-link.ion-focused {
   --border-color: var(--ion-color-dark);
 }
 
-ion-item.external-link::part(native) {
+.squat ion-item.external-link::part(native) {
   color: var(--ion-color-primary);
   text-decoration: underline;
   background: url('./img/externalLink.svg') no-repeat right center;
 }
 
-ion-item.external-link:hover::part(native) {
+.squat ion-item.external-link:hover::part(native) {
   text-decoration: none;
 }
 
-ion-content.embedded > ion-grid {
+.squat ion-content.embedded > ion-grid {
   padding-inline-start: 0px !important;
   padding-inline-end: 0px !important;
 }
 
-ion-content.embedded ion-col {
+.squat ion-content.embedded ion-col {
   padding-inline-start: 0px !important;
 }
