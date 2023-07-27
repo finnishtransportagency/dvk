@@ -11,6 +11,7 @@ import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningNotifications.css';
 import dvkMap from '../DvkMap';
 import { debounce } from 'lodash';
+import { ObjectEvent } from 'ol/Object';
 
 interface MarineWarningNotificationsProps {
   showMarineWarnings: boolean;
@@ -73,18 +74,25 @@ const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
 export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProps> = ({ showMarineWarnings }) => {
   const [warningNotifications, setWarningNotifications] = useState<MarineWarningNotification[]>([]);
   const [infoVisible, setInfoVisible] = useState(false);
-  const [backgroundWidth, setBackgroundWidth] = useState<number>(getMapCanvasWidth());
+  const [backgroundWidth, setBackgroundWidth] = useState<number>(0);
 
   const { data, isLoading, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
 
-  const debouncedContainerPositionRefresh = React.useRef(
+  /* Use debounce to reduce events triggered by map size change */
+  const debouncedBackgroundWidthRefresh = React.useRef(
     debounce(() => {
       setBackgroundWidth(getMapCanvasWidth());
-    }, 50)
+    }, 20)
   ).current;
 
-  dvkMap.olMap?.on('moveend', () => {
-    debouncedContainerPositionRefresh();
+  /* Use map canvas size as reference for container width to position container relative to side modal */
+  dvkMap.olMap?.on('change:size', (event: ObjectEvent) => {
+    const { target, key } = event;
+    const newValue = target.get(key);
+    // Opening side modal triggers map size changes that have undefined or zero values before calculating final size
+    if (newValue !== undefined && newValue[0] && newValue[1]) {
+      debouncedBackgroundWidthRefresh();
+    }
   });
 
   useEffect(() => {
