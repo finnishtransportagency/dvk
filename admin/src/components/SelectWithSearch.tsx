@@ -47,9 +47,21 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const [expanded, setIsExpanded] = useState(false);
 
   const selectRef = useRef<HTMLIonLabelElement>(null);
+  const searchRef = useRef<HTMLIonSearchbarElement>(null);
 
-  const focusInput = () => {
+  const focusSelectItem = () => {
     selectRef.current?.click();
+  };
+
+  const focusSearchInput = () => {
+    searchRef.current?.setFocus();
+  };
+
+  const blurSearchInput = () => {
+    searchRef.current
+      ?.getInputElement()
+      .then((input) => input.blur())
+      .catch((err) => console.error(err));
   };
 
   const isOptionSelected = (value: SelectOption) => {
@@ -110,74 +122,80 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
 
   return (
     <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
+      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusSelectItem()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      <IonItem
-        id="select-with-search"
-        button={true}
-        className={'custom-select-container' + (expanded ? ' expanded' : '')}
-        detail={false}
-        disabled={isLoading || disabled}
-        lines="none"
-      >
-        {isLoading ? (
-          <IonSkeletonText animated={true} className="select-skeleton" />
-        ) : (
-          <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={isLoading || disabled} lines="none">
-            <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
-              {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
-            </IonLabel>
-            <IonIcon
-              icon={expanded ? caretUpSharp : caretDownSharp}
-              aria-hidden={true}
-              className="custom-select-icon"
-              color={expanded ? 'primary' : 'medium'}
-            />
-          </IonItem>
-        )}
-      </IonItem>
-      {!isLoading && (
+      {isLoading ? (
+        <IonSkeletonText animated={true} className="select-skeleton" />
+      ) : (
         <>
+          <IonItem
+            id="select-with-search"
+            button={true}
+            className={'custom-select-container' + (expanded ? ' expanded' : '')}
+            detail={false}
+            disabled={isLoading || disabled}
+            lines="none"
+          >
+            <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={isLoading || disabled} lines="none">
+              <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
+                {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
+              </IonLabel>
+              <IonIcon
+                icon={expanded ? caretUpSharp : caretDownSharp}
+                aria-hidden={true}
+                className="custom-select-icon"
+                color={expanded ? 'primary' : 'medium'}
+              />
+            </IonItem>
+          </IonItem>
           {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
+          <IonPopover
+            trigger="select-with-search"
+            className="multiSelect"
+            showBackdrop={false}
+            size="cover"
+            dismissOnSelect={false}
+            arrow={false}
+            onWillPresent={() => setIsExpanded(true)}
+            onWillDismiss={() => setIsExpanded(false)}
+            onDidPresent={() => focusSearchInput()}
+            onDidDismiss={() => checkValidity()}
+          >
+            <IonItem key="search-input-item" lines="full">
+              <IonSearchbar
+                ref={searchRef}
+                className="custom-select-search"
+                color="light"
+                onIonChange={() => blurSearchInput()}
+                onIonInput={searchBarInput}
+                placeholder={t('search-placeholder') ?? ''}
+              />
+            </IonItem>
+            <IonList>
+              {filteredItems.map((item, idx) => {
+                const optionLabel = constructSelectOptionLabel(item, lang, showId);
+                const optionSelected = isOptionSelected(item);
+                return (
+                  <IonItem key={item.id.toString()} className={'custom-select-option' + (idx === 0 ? ' ion-focused' : '')} lines="none">
+                    <IonCheckbox
+                      aria-label={optionLabel}
+                      checked={optionSelected}
+                      justify="start"
+                      labelPlacement="end"
+                      onIonChange={handleChange}
+                      value={item}
+                    >
+                      <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
+                    </IonCheckbox>
+                  </IonItem>
+                );
+              })}
+            </IonList>
+          </IonPopover>
         </>
       )}
-      <IonPopover
-        trigger="select-with-search"
-        className="multiSelect"
-        showBackdrop={false}
-        size="cover"
-        dismissOnSelect={false}
-        arrow={false}
-        onWillPresent={() => setIsExpanded(true)}
-        onWillDismiss={() => setIsExpanded(false)}
-        onDidDismiss={() => checkValidity()}
-      >
-        <IonList>
-          <IonItem key="search-input-item" lines="full">
-            <IonSearchbar placeholder={t('search-placeholder') ?? ''} onIonInput={searchBarInput} />
-          </IonItem>
-          {filteredItems.map((item) => {
-            const optionLabel = constructSelectOptionLabel(item, lang, showId);
-            const optionSelected = isOptionSelected(item);
-            return (
-              <IonItem key={item.id.toString()} className="custom-select-option" lines="none">
-                <IonCheckbox
-                  aria-label={optionLabel}
-                  checked={optionSelected}
-                  justify="start"
-                  labelPlacement="end"
-                  onIonChange={handleChange}
-                  value={item}
-                >
-                  <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
-                </IonCheckbox>
-              </IonItem>
-            );
-          })}
-        </IonList>
-      </IonPopover>
     </div>
   );
 };

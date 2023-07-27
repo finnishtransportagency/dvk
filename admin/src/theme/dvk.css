@@ -305,6 +305,10 @@ ion-item.custom-select-option {
   --ripple-color: var(--ion-color-primary);
 }
 
+.custom-select-search {
+  --box-shadow: none;
+}
+
 ion-item.selectInput.item-has-focus,
 ion-item.selectInput.ion-focused,
 ion-item.selectInput:has(.select-expanded),
