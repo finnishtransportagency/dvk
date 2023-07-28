@@ -28,12 +28,14 @@ import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import { getAssetUrl } from '../utils/common';
+import { changeSquatLanguage } from 'squatlib';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
     i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
+    changeSquatLanguage(lang);
     e.preventDefault();
   };
 

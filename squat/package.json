@@ -56,6 +56,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "postbuild": "npm run buildlib",
     "buildlib": "tsc && vite build --config vite.lib.config.ts",
     "serve": "vite preview",
     "test": "vitest",

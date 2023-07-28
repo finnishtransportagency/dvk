@@ -55,6 +55,12 @@ export class DvkSonarPipelineStack extends Stack {
         phases: {
           build: {
             commands: [
+              'cd squat',
+              'npm ci',
+              'npm run buildlib',
+              'npm run lint',
+              'npm run test -- --coverage',
+              'cd ..',
               'npm ci',
               'npm run generate',
               'cd cdk',
@@ -64,11 +70,6 @@ export class DvkSonarPipelineStack extends Stack {
               'cd ..',
               'npm run lint',
               'npm run test -- --coverage',
-              'cd squat',
-              'npm ci',
-              'npm run lint',
-              'npm run test -- --coverage',
-              'cd ..',
               'cd admin',
               'npm ci',
               'npm run generate',
