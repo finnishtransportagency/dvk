@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import App from './App';
 import { SquatReducer, initialState, Action, getFieldValue, fieldParams, getBooleanFieldValue } from './hooks/squatReducer';
-import { copyToClipboard, countDecimals, createShareableLink } from './utils/helpers';
+import { copyToClipboard, countDecimals } from './utils/helpers';
 import { vi } from 'vitest';
 
 const baseURL = 'http://localhost:8080/';
