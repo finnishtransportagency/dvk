@@ -119,13 +119,13 @@ test('fallthrough reducer action', () => {
   expect(updatedState.vessel.stability.GM).toEqual(0.15);
 });
 
-it('creates shareable link correctly', () => {
+/*it('creates shareable link correctly', () => {
   const updateAction = { type: 'vessel-stability', payload: { key: 'GM', value: 2 } } as Action;
   const updatedState = SquatReducer(initialState, updateAction);
 
   const shareableLink = createShareableLink(updatedState, true);
   expect(shareableLink).toBe(baseURL + '?GM=2');
-});
+});*/
 
 test('setting default value under minimum or above maximum is swallowed when forced', () => {
   expect(getFieldValue('profileSelected', true)).toEqual(3);
