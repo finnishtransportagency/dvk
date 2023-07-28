@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSearchbar, IonSkeletonText } from '@ionic/react';
+import { IonButton, IonCheckbox, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonPopover, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
 import {
@@ -9,8 +9,8 @@ import {
   nameIncludesQuery,
   sortTypeSafeSelectOptions,
 } from '../utils/common';
-import type { CheckboxCustomEvent, SearchbarCustomEvent } from '@ionic/react';
-import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
+import type { CheckboxCustomEvent, InputCustomEvent } from '@ionic/react';
+import { caretDownSharp, caretUpSharp, close, search } from 'ionicons/icons';
 
 interface SelectWithSearchProps {
   label: string;
@@ -45,9 +45,10 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [isValid, setIsValid] = useState(error ? false : true);
   const [expanded, setIsExpanded] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const selectRef = useRef<HTMLIonLabelElement>(null);
-  const searchRef = useRef<HTMLIonSearchbarElement>(null);
+  const searchRef = useRef<HTMLIonInputElement>(null);
 
   const focusSelectItem = () => {
     selectRef.current?.click();
@@ -64,23 +65,6 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
       .catch((err) => console.error(err));
   };
 
-  const isOptionSelected = (value: SelectOption) => {
-    if (value === undefined) {
-      return false;
-    }
-    return typeof value.id === 'number' && selected.includes(value.id);
-  };
-
-  const checkValidity = () => {
-    setIsValid(required ? !error && selected.length > 0 : !error);
-  };
-
-  const handleChange = (event: CheckboxCustomEvent) => {
-    const { checked, value } = event.detail;
-    const updatedValues = checked ? [...selected, value.id] : selected.filter((selectedId) => selectedId !== value.id);
-    setSelected(updatedValues, actionType);
-  };
-
   const getHelperText = () => {
     if (helperText) return helperText;
     return t('multiple-values-supported');
@@ -92,13 +76,35 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
     return '';
   };
 
-  const filterList = (searchQuery: string | null | undefined) => {
+  const checkValidity = () => {
+    setIsValid(required ? !error && selected.length > 0 : !error);
+  };
+
+  const isOptionSelected = (value: SelectOption) => {
+    if (value === undefined) {
+      return false;
+    }
+    return typeof value.id === 'number' && selected.includes(value.id);
+  };
+
+  const handleCheckboxChange = (event: CheckboxCustomEvent) => {
+    const { checked, value } = event.detail;
+    const updatedValues = checked ? [...selected, value.id] : selected.filter((selectedId) => selectedId !== value.id);
+    setSelected(updatedValues, actionType);
+  };
+
+  const handlePopupClose = () => {
+    setSearchQuery('');
+    checkValidity();
+  };
+
+  const filterList = (query: string) => {
     if (options) {
       const sortedOptions = sortTypeSafeSelectOptions(options, lang);
-      if (searchQuery === undefined || searchQuery === null) {
+      if (query === '') {
         setFilteredItems(sortedOptions);
       } else {
-        const normalizedQuery = searchQuery.toLowerCase();
+        const normalizedQuery = query.toLowerCase();
         const filteredOptions = sortedOptions.filter((item) => {
           return item.id.toString().includes(normalizedQuery) || nameIncludesQuery(item.name, normalizedQuery);
         });
@@ -109,8 +115,22 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
     }
   };
 
-  const searchBarInput = (e: SearchbarCustomEvent) => {
-    filterList(e.target.value);
+  const searchBarInput = (e: InputCustomEvent) => {
+    const value = e.target.value ?? '';
+    setSearchQuery(value.toString());
+    filterList(value.toString());
+  };
+
+  const clearInput = () => {
+    setSearchQuery('');
+    setFilteredItems(options ? sortTypeSafeSelectOptions(options, lang) : []);
+  };
+
+  const keyDownAction = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      blurSearchInput();
+    }
   };
 
   useEffect(() => {
@@ -161,30 +181,41 @@ const SelectWithSearch: React.FC<SelectWithSearchProps> = ({
             onWillPresent={() => setIsExpanded(true)}
             onWillDismiss={() => setIsExpanded(false)}
             onDidPresent={() => focusSearchInput()}
-            onDidDismiss={() => checkValidity()}
+            onDidDismiss={handlePopupClose}
           >
             <IonItem key="search-input-item" lines="full">
-              <IonSearchbar
+              <IonInput
                 ref={searchRef}
                 className="custom-select-search"
-                color="light"
-                onIonChange={() => blurSearchInput()}
-                onIonInput={searchBarInput}
+                onIonInput={(e) => searchBarInput(e)}
+                onKeyDown={(e) => keyDownAction(e)}
                 placeholder={t('search-placeholder') ?? ''}
+                title={t('search-title') ?? ''}
+                value={searchQuery}
               />
+              <IonButton
+                className="custom-select-search"
+                disabled={searchQuery.length === 0}
+                fill="clear"
+                onClick={clearInput}
+                size="small"
+                slot="end"
+              >
+                <IonIcon icon={searchQuery.length > 0 ? close : search} slot="icon-only" />
+              </IonButton>
             </IonItem>
-            <IonList>
-              {filteredItems.map((item, idx) => {
+            <IonList className="ion-no-padding">
+              {filteredItems.map((item) => {
                 const optionLabel = constructSelectOptionLabel(item, lang, showId);
                 const optionSelected = isOptionSelected(item);
                 return (
-                  <IonItem key={item.id.toString()} className={'custom-select-option' + (idx === 0 ? ' ion-focused' : '')} lines="none">
+                  <IonItem key={item.id.toString()} className="custom-select-option" lines="none">
                     <IonCheckbox
                       aria-label={optionLabel}
                       checked={optionSelected}
                       justify="start"
                       labelPlacement="end"
-                      onIonChange={handleChange}
+                      onIonChange={handleCheckboxChange}
                       value={item}
                     >
                       <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
