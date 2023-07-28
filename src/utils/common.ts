@@ -123,3 +123,8 @@ export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
   const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
   return layer ? layer.offlineSupport : false;
 };
+
+export const getMapCanvasWidth = (): number => {
+  const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
+  return canvasSize[0];
+};
