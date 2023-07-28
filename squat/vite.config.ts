@@ -64,7 +64,6 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    threads: false,
     environment: 'jsdom',
     isolate: true,
     setupFiles: './src/setupTests.ts',
