@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
-import { COASTAL_WARNING, FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { COASTAL_WARNING, FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -108,4 +108,9 @@ export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLaye
 export const isCoastalWarning = (type: Text | undefined): boolean => {
   const warningType = type?.fi || type?.sv || type?.en;
   return warningType === COASTAL_WARNING;
+};
+
+export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
+  const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
+  return layer ? layer.offlineSupport : false;
 };

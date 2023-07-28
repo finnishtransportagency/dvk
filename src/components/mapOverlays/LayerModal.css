@@ -286,6 +286,9 @@ ion-modal#layerModalContainer::part(content) {
 }
 #layerModalContainer ion-checkbox.checkbox-disabled {
   opacity: 1;
+  --border-width: 1px;
+  --border-color: rgb(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
+  --border-color-checked: rgb(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
 }
 #layerModalContainer ion-checkbox.checkbox-disabled::part(container) {
   opacity: 0.5;

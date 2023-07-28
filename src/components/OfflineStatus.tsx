@@ -38,6 +38,7 @@ const OfflineStatus: React.FC = () => {
   const bgLayerFi = useStaticDataLayer('finland');
   const bgLayerSea = useStaticDataLayer('mml_meri');
   const bgLayerLake = useStaticDataLayer('mml_jarvi');
+  const bgLayerHarbor = useStaticDataLayer('mml_satamat');
   const bgLayerQuay = useStaticDataLayer('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
@@ -69,6 +70,7 @@ const OfflineStatus: React.FC = () => {
     bgLayerFi,
     bgLayerSea,
     bgLayerLake,
+    bgLayerHarbor,
     bgLayerQuay,
     vtsLineLayer,
     vtsPointLayer,
@@ -120,6 +122,7 @@ const OfflineStatus: React.FC = () => {
             value: false,
           },
         });
+        dvkMap.tileStatus = 'ok';
       }
     } catch {
       /* NOTHING TO DO */
@@ -129,7 +132,7 @@ const OfflineStatus: React.FC = () => {
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      if (dataLayer.noOfflineSupport && state.isOffline) layer.setVisible(false);
+      if (!dataLayer.offlineSupport && state.isOffline) layer.setVisible(false);
     });
     setTimeout(refreshPrintableMap, 100);
   }, [dvkMap, state.isOffline]);

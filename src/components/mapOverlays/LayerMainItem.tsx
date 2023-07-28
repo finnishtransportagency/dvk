@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
@@ -7,6 +7,7 @@ import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
 import { FeatureDataLayerId } from '../../utils/constants';
+import { hasOfflineSupport } from '../../utils/common';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -19,21 +20,12 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
   const { state } = useDvkContext();
   const [legendOpen, setLegendOpen] = useState(false);
 
-  useEffect(() => {
-    if (currentLayer.noOfflineSupport && layers.includes(currentLayer.id) && state.isOffline) {
-      setLayers((prev) => {
-        return [...prev.filter((p) => p !== currentLayer.id)];
-      });
-    }
-  }, [currentLayer.id, layers, currentLayer.noOfflineSupport, setLayers, state.isOffline]);
-
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
   };
 
   const isDisabled = () => {
-    const childLayersWOOfflineSupport = currentLayer.childLayers?.flatMap((child) => child.noOfflineSupport).filter((child) => child) || [];
-    return childLayersWOOfflineSupport.length === (currentLayer.childLayers || []).length && state.isOffline;
+    return state.isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
   };
   const selectedChildLayers =
     currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
@@ -95,7 +87,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
               <LayerItem
                 key={child.id}
                 id={child.id as FeatureDataLayerId}
-                noOfflineSupport={child.noOfflineSupport || false}
                 title={child.title}
                 layers={layers}
                 setLayers={setLayers}

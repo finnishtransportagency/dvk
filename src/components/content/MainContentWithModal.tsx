@@ -211,7 +211,19 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
 
   const [fairwayCardId, setFairwayCardId] = useState('');
   useEffect(() => {
-    setFairwayCardId((data?.fairwayCards.filter((card) => card.id === modalContent) || '').length > 0 ? modalContent || '' : '');
+    const card = data?.fairwayCards.find((c) => c.id === modalContent);
+    if (card?.id) {
+      setFairwayCardId(card.id);
+    } else if (
+      modalContent &&
+      modalContent !== 'fairwayCardList' &&
+      modalContent !== 'safetyEquipmentFaultList' &&
+      modalContent !== 'marineWarningList'
+    ) {
+      setFairwayCardId(modalContent);
+    } else {
+      setFairwayCardId('');
+    }
   }, [modalContent, data]);
 
   return (

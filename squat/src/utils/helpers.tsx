@@ -25,6 +25,7 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
   const showLogo = urlParams.get('showLogo');
   const lang = urlParams.get('lang');
   const currentURL = useBaseURL && baseURL ? baseURL : window.location.href.split('?')[0];
+  const limitedView = currentState.status.showLimitedView;
 
   // Build query string based on current state
   let parametres = [];
@@ -34,41 +35,47 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
   parametres.push(getQuerystringForField('blockCoefficient', currentState.vessel.general.blockCoefficient));
   parametres.push(getQuerystringForField('displacement', currentState.vessel.general.displacement));
 
-  parametres.push(getQuerystringForField('windSurface', currentState.vessel.detailed.windSurface));
-  parametres.push(getQuerystringForField('deckCargo', currentState.vessel.detailed.deckCargo));
-  parametres.push(getQuerystringForField('bowThruster', currentState.vessel.detailed.bowThruster));
-  parametres.push(getQuerystringForField('bowThrusterEfficiency', currentState.vessel.detailed.bowThrusterEfficiency));
-  parametres.push(getQuerystringForField('profileSelected', currentState.vessel.detailed.profileSelected.id - 1));
-
-  parametres.push(getQuerystringForField('KG', currentState.vessel.stability.KG));
-  parametres.push(getQuerystringForField('GM', currentState.vessel.stability.GM));
-  parametres.push(getQuerystringForField('KB', currentState.vessel.stability.KB));
-
-  parametres.push(getQuerystringForField('windSpeed', currentState.environment.weather.windSpeed));
-  parametres.push(getQuerystringForField('windDirection', currentState.environment.weather.windDirection));
-  parametres.push(getQuerystringForField('waveHeight', currentState.environment.weather.waveHeight));
-  parametres.push(getQuerystringForField('wavePeriod', currentState.environment.weather.wavePeriod));
-
   parametres.push(getQuerystringForField('sweptDepth', currentState.environment.fairway.sweptDepth));
-  parametres.push(getQuerystringForField('waterLevel', currentState.environment.fairway.waterLevel));
-  parametres.push(getQuerystringForField('waterDepth', currentState.environment.fairway.waterDepth));
   parametres.push(getQuerystringForField('fairwayForm', currentState.environment.fairway.fairwayForm.id - 1));
   parametres.push(getQuerystringForField('channelWidth', currentState.environment.fairway.channelWidth));
   parametres.push(getQuerystringForField('slopeScale', currentState.environment.fairway.slopeScale));
   parametres.push(getQuerystringForField('slopeHeight', currentState.environment.fairway.slopeHeight));
 
-  parametres.push(getQuerystringForField('vesselCourse', currentState.environment.vessel.vesselCourse));
   parametres.push(getQuerystringForField('vesselSpeed', currentState.environment.vessel.vesselSpeed));
-  parametres.push(getQuerystringForField('turningRadius', currentState.environment.vessel.turningRadius));
 
-  parametres.push(getQuerystringForField('airDensity', currentState.environment.attribute.airDensity));
-  parametres.push(getQuerystringForField('waterDensity', currentState.environment.attribute.waterDensity));
   parametres.push(getQuerystringForField('requiredUKC', currentState.environment.attribute.requiredUKC));
-  parametres.push(getQuerystringForField('safetyMarginWindForce', currentState.environment.attribute.safetyMarginWindForce));
   parametres.push(getQuerystringForField('motionClearance', currentState.environment.attribute.motionClearance));
+
+  if (!limitedView) {
+    parametres.push(getQuerystringForField('windSurface', currentState.vessel.detailed.windSurface));
+    parametres.push(getQuerystringForField('deckCargo', currentState.vessel.detailed.deckCargo));
+    parametres.push(getQuerystringForField('bowThruster', currentState.vessel.detailed.bowThruster));
+    parametres.push(getQuerystringForField('bowThrusterEfficiency', currentState.vessel.detailed.bowThrusterEfficiency));
+    parametres.push(getQuerystringForField('profileSelected', currentState.vessel.detailed.profileSelected.id - 1));
+
+    parametres.push(getQuerystringForField('KG', currentState.vessel.stability.KG));
+    parametres.push(getQuerystringForField('GM', currentState.vessel.stability.GM));
+    parametres.push(getQuerystringForField('KB', currentState.vessel.stability.KB));
+
+    parametres.push(getQuerystringForField('windSpeed', currentState.environment.weather.windSpeed));
+    parametres.push(getQuerystringForField('windDirection', currentState.environment.weather.windDirection));
+    parametres.push(getQuerystringForField('waveHeight', currentState.environment.weather.waveHeight));
+    parametres.push(getQuerystringForField('wavePeriod', currentState.environment.weather.wavePeriod));
+
+    parametres.push(getQuerystringForField('waterLevel', currentState.environment.fairway.waterLevel));
+    parametres.push(getQuerystringForField('waterDepth', currentState.environment.fairway.waterDepth));
+
+    parametres.push(getQuerystringForField('vesselCourse', currentState.environment.vessel.vesselCourse));
+    parametres.push(getQuerystringForField('turningRadius', currentState.environment.vessel.turningRadius));
+
+    parametres.push(getQuerystringForField('airDensity', currentState.environment.attribute.airDensity));
+    parametres.push(getQuerystringForField('waterDensity', currentState.environment.attribute.waterDensity));
+    parametres.push(getQuerystringForField('safetyMarginWindForce', currentState.environment.attribute.safetyMarginWindForce));
+  }
 
   parametres.push(getQuerystringForField('showDeepWaterValues', currentState.status.showDeepWaterValues, false));
   parametres.push(getQuerystringForField('showBarrass', currentState.status.showBarrass, false));
+  parametres.push(getQuerystringForField('showLimitedView', currentState.status.showLimitedView, false));
 
   parametres = parametres.filter((param) => {
     return param && param?.length > 0 ? true : false;

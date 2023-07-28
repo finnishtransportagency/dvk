@@ -11,6 +11,7 @@ interface ModalProps {
   triggerClassName?: string;
   size?: 'medium' | 'large';
   handleDismiss?: () => void;
+  disabled?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -35,6 +36,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         title={props.triggerTitle || t('more-info')}
         aria-label={props.triggerTitle || t('more-info')}
         role="button"
+        disabled={props.disabled}
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>

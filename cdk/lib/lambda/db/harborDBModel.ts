@@ -3,8 +3,7 @@ import { GeometryPoint, Maybe, Operation, Status } from '../../../graphql/genera
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
-
-const harborTable = process.env.HARBOR_TABLE;
+import { getHarborTableName } from '../environment';
 
 export type Quay = {
   name?: Maybe<Text>;
@@ -60,14 +59,14 @@ class HarborDBModel {
   expires?: Maybe<number>;
 
   static async get(id: string): Promise<HarborDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: harborTable, Key: { id } }));
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id } }));
     const harbor = response.Item as HarborDBModel | undefined;
     log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
 
   static async getAll(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: harborTable }));
+    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getHarborTableName() }));
     const harbors = response.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
@@ -80,7 +79,7 @@ class HarborDBModel {
   static async getAllPublic(): Promise<HarborDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
-        TableName: harborTable,
+        TableName: getHarborTableName(),
         FilterExpression: '#status = :vStatus',
         ExpressionAttributeNames: { '#status': 'status' },
         ExpressionAttributeValues: { ':vStatus': Status.Public },
@@ -97,7 +96,7 @@ class HarborDBModel {
 
   static async save(data: HarborDBModel, operation: Operation) {
     const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: harborTable, Item: data, ConditionExpression: expr }));
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getHarborTableName(), Item: data, ConditionExpression: expr }));
   }
 }
 

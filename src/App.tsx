@@ -128,6 +128,7 @@ const DvkIonApp: React.FC = () => {
   useLine3456Layer();
   useArea3456Layer();
   useInitStaticDataLayer('balticsea', 'balticsea');
+  useInitStaticDataLayer('mml_satamat', 'mml_satamat');
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
 
   const [initDone, setInitDone] = useState(false);
