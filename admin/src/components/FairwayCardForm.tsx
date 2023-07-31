@@ -12,6 +12,7 @@ import {
 } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
+import FormSelectWithSearch from './FormSelectWithSearch';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
@@ -19,7 +20,6 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
-import SelectWithSearch from './SelectWithSearch';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -437,10 +437,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <SelectWithSearch
+                  <FormSelectWithSearch
                     label={t('fairwaycard.linked-fairways')}
-                    selected={state.fairwayIds || []}
                     options={fairwayList?.fairways ?? []}
+                    selected={state.fairwayIds || []}
                     setSelected={updateState}
                     actionType="fairwayIds"
                     required
