@@ -28,26 +28,22 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
         </h2>
       </IonText>
 
-      <div
-        id="squatCalculatorContainer"
-        className={'tabContent active show-print' + (widePane ? ' wide' : '')}
-        data-testid="squatCalculatorContainer"
-      >
-        <SquatContext.Provider value={providerState}>
+      <SquatContext.Provider value={providerState}>
+        <div id="squatCalculatorContainer" className="show-print" data-testid="squatCalculatorContainer">
           <InfoAccordion />
-          <IonGrid className="content">
+          <IonGrid>
             <IonRow>
-              <IonCol size="12">
+              <IonCol size={widePane ? '6' : '12'}>
                 <Vessel limitedView={true} />
               </IonCol>
-              <IonCol size="12">
+              <IonCol size={widePane ? '6' : '12'}>
                 <Environment limitedView={true} />
               </IonCol>
             </IonRow>
           </IonGrid>
           <SquatChart />
-        </SquatContext.Provider>
-      </div>
+        </div>
+      </SquatContext.Provider>
     </>
   );
 };
