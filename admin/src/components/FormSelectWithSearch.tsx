@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, sortTypeSafeSelectOptions } from '../utils/common';
+import { constructSelectDropdownLabel, getCombinedErrorAndHelperText } from '../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import DropdownPopup from './DropdownPopup';
 
@@ -36,7 +36,6 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [isValid, setIsValid] = useState(error ? false : true);
   const [expanded, setIsExpanded] = useState(false);
 
@@ -64,13 +63,6 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const handleSelect = (updatedValues: number[]) => {
     setSelected(updatedValues, actionType);
   };
-
-  useEffect(() => {
-    if (options && options.length > 0) {
-      const sortedOptions = sortTypeSafeSelectOptions(options, lang);
-      setFilteredItems(sortedOptions);
-    }
-  }, [options, lang]);
 
   return (
     <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
@@ -109,8 +101,6 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
             options={options}
             selected={selected}
             setSelected={handleSelect}
-            filteredItems={filteredItems}
-            setFilteredItems={setFilteredItems}
             setIsExpanded={setIsExpanded}
             checkValidity={checkValidity}
             showId={showId}

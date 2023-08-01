@@ -11,27 +11,16 @@ interface DropdownPopupProps {
   options: SelectOption[] | null;
   selected: number[];
   setSelected: (selected: number[]) => void;
-  filteredItems: SelectOption[];
-  setFilteredItems: (items: SelectOption[]) => void;
   setIsExpanded: (expanded: boolean) => void;
   checkValidity: () => void;
   showId?: boolean;
 }
 
-const DropdownPopup: React.FC<DropdownPopupProps> = ({
-  trigger,
-  options,
-  selected,
-  setSelected,
-  filteredItems,
-  setFilteredItems,
-  setIsExpanded,
-  checkValidity,
-  showId,
-}) => {
+const DropdownPopup: React.FC<DropdownPopupProps> = ({ trigger, options, selected, setSelected, setIsExpanded, checkValidity, showId }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
+  const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const searchRef = useRef<HTMLIonInputElement>(null);
 
@@ -59,6 +48,10 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
     setSelected(updatedValues);
   };
 
+  const handlePopupWillOpen = () => {
+    setFilteredItems(options ? sortTypeSafeSelectOptions(options, lang) : []);
+  };
+
   const handlePopupOpen = () => {
     focusSearchInput();
   };
@@ -78,6 +71,7 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
       size="cover"
       dismissOnSelect={false}
       arrow={false}
+      onWillPresent={handlePopupWillOpen}
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
     >
