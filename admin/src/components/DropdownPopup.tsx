@@ -60,7 +60,6 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
   };
 
   const handlePopupOpen = () => {
-    setIsExpanded(true);
     focusSearchInput();
   };
 
