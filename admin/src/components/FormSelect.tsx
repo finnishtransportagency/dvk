@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValueType } from '../utils/constants';
 import { PilotPlace, Text } from '../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import { getCombinedErrorAndHelperText } from '../utils/common';
+import { getCombinedErrorAndHelperText, sortSelectOptions } from '../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
@@ -50,11 +50,7 @@ const FormSelect: React.FC<SelectProps> = ({
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
-  const sortedOptions = options?.sort((a, b) => {
-    const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
-    const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
-    return nameA.localeCompare(nameB);
-  });
+  const sortedOptions = options ? sortSelectOptions(options, lang) : [];
 
   const selectRef = useRef<HTMLIonSelectElement>(null);
   const focusInput = () => {
