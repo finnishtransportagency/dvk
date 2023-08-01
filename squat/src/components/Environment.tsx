@@ -12,12 +12,14 @@ import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
+interface EnvironmentProps {
+  limitedView: boolean;
+}
 
-const Environment: React.FC = () => {
+const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.environment' });
   const tRoot = i18n.getFixedT(i18n.language);
   const { state, dispatch } = useSquatContext();
-  const { showLimitedView: limitedView } = state.status;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {

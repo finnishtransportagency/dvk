@@ -8,8 +8,12 @@ import Vessel from './Vessel';
 import Environment from './Environment';
 import TitleBar from './TitleBar';
 import InfoAccordion from './InfoAccordion';
+import { useSquatContext } from '../hooks/squatContext';
 
 const Squat: React.FC = () => {
+  const { state } = useSquatContext();
+  const { showLimitedView } = state.status;
+
   return (
     <>
       <TitleBar />
@@ -17,15 +21,15 @@ const Squat: React.FC = () => {
       <IonGrid className="content">
         <IonRow>
           <IonCol size="12" sizeSm="6" sizeLg="4">
-            <Vessel />
+            <Vessel limitedView={showLimitedView} />
           </IonCol>
 
           <IonCol size="12" sizeSm="6" sizeLg="4">
-            <Environment />
+            <Environment limitedView={showLimitedView} />
           </IonCol>
 
           <IonCol size="12" sizeLg="4">
-            <Calculations />
+            <Calculations limitedView={showLimitedView} />
           </IonCol>
         </IonRow>
       </IonGrid>
