@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Lang, SelectOption } from '../utils/constants';
-import { constructSelectOptionLabel } from '../utils/common';
+import { constructSelectOptionLabel, sortTypeSafeSelectOptions } from '../utils/common';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import DropdownSearchInput from './DropdownSearchInput';
 
@@ -66,6 +66,7 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
   const handlePopupClose = () => {
     setIsExpanded(false);
     setSearchQuery('');
+    setFilteredItems(options ? sortTypeSafeSelectOptions(options, lang) : []);
     checkValidity();
   };
 
