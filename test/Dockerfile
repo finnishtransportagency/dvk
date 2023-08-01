@@ -1,4 +1,5 @@
-FROM ppodgorsek/robot-framework:latest
+# NOTE!! When updating base image version update also requirements.txt if needed
+FROM ppodgorsek/robot-framework:6.1.0
 COPY bin/robot.sh /opt/robotframework/bin/
 ENV HOME $ROBOT_WORK_DIR
 ENV PATH=$ROBOT_WORK_DIR/.local/bin:$PATH

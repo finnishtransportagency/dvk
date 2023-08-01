@@ -270,6 +270,10 @@
     display: block;
   }
 
+  .print-hide {
+    display: none;
+  }
+
   .dataTableRow {
     font-size: 12px;
   }

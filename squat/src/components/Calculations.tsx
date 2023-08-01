@@ -372,7 +372,7 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert title={t('UKC-under-required-minimum')} />}
 
-        <div className="in-print top-padding">
+        <div className={'in-print top-padding' + (showLimitedView ? ' print-hide' : '')}>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
             onIonChange={handleWaterValuesChange}
@@ -387,6 +387,7 @@ const Calculations: React.FC = () => {
               <IonLabel>{t('deep-water-values')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
+
           <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
             onIonChange={handleCalculationMethodChange}
@@ -402,8 +403,13 @@ const Calculations: React.FC = () => {
               <IonLabel>{t('squat-barrass')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
-          <span className="printable segment-label">{t('selected-calculation-method')}:</span>
-          <IonSegment onIonChange={handleSelectedViewChange} value={showLimitedView ? 'true' : 'false'} className="top-padding" selectOnFocus>
+
+          <IonSegment
+            onIonChange={handleSelectedViewChange}
+            value={showLimitedView ? 'true' : 'false'}
+            className="top-padding print-hide"
+            selectOnFocus
+          >
             <IonSegmentButton value="false">
               <IonLabel>{t('extensive-calculator')}</IonLabel>
             </IonSegmentButton>
@@ -427,7 +433,7 @@ const Calculations: React.FC = () => {
           />
         )}
 
-        <SectionTitle title={t('squat')} hideValidity disabled={showLimitedView} />
+        <SectionTitle title={t('squat')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
         {!showLimitedView && (
           <IonGrid className="no-padding">
             <IonRow className="input-row">
@@ -561,7 +567,7 @@ const Calculations: React.FC = () => {
           </IonGrid>
         )}
 
-        <SectionTitle title={t('wind-force')} hideValidity disabled={showLimitedView} />
+        <SectionTitle title={t('wind-force')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
         {!showLimitedView && (
           <IonGrid className="no-padding">
             <IonRow className="input-row">
@@ -646,6 +652,7 @@ const Calculations: React.FC = () => {
         <SectionTitle
           title={t('drift')}
           hideValidity
+          className={showLimitedView ? 'print-hide' : ''}
           disabled={showLimitedView}
           infoContentTitle={t('drift-info-title')}
           infoContent={<p>{t('drift-info')}</p>}
