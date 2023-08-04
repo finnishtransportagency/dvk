@@ -13,10 +13,13 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const path = [{ title: t('common.squat') }];
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
-  const providerState = useMemo(() => ({
+  const providerState = useMemo(
+    () => ({
       state,
       dispatch,
-    }), [state]);
+    }),
+    [state]
+  );
 
   return (
     <>
