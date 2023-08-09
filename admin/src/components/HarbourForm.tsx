@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
-import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
+import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
@@ -14,6 +14,7 @@ import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
+import { mapToHarborInput } from '../pages/HarbourEditPage';
 
 interface FormProps {
   harbour: HarborInput;
@@ -62,8 +63,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     history.push({ pathname: '/' });
   };
 
+  const [oldState, setOldState] = useState<HarborInput>(harbour);
   const handleCancel = () => {
-    const diffObj = diff(harbour, state);
+    const diffObj = diff(oldState, state);
     if (JSON.stringify(diffObj) === '{}') {
       backToList();
     } else {
@@ -75,15 +77,24 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [saveError, setSaveError] = useState<string>();
   const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
   const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
-  const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
+  const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
+  const [isOpen, setIsOpen] = useState(false);
   const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
       setSavedHarbour(data.saveHarbor);
+      setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
+      setIsOpen(true);
     },
     onError: (error: Error) => {
       setSaveError(error.message);
+      setIsOpen(true);
     },
   });
+
+  useEffect(() => {
+    setState(harbour);
+    setOldState(harbour);
+  }, [harbour]);
 
   const saveHarbour = useCallback(() => {
     const currentHarbour = {
@@ -273,8 +284,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     setSaveError('');
     setSaveErrorMsg('');
     setSaveErrorItems([]);
+    setIsOpen(false);
     if (!saveError && !!savedHarbour) {
-      if (state.operation === Operation.Update) history.go(0);
       if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
     }
   };
@@ -295,7 +306,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
       <NotificationModal
-        isOpen={!!saveError || !!savedHarbour}
+        isOpen={!!saveError || isOpen}
         closeAction={closeNotification}
         header={getNotificationTitle()}
         subHeader={
@@ -391,7 +402,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="6"></IonCol>
@@ -408,7 +419,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="name"
                 required
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
               <FormTextInputRow
@@ -417,7 +428,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="extraInfo"
                 required={!!(state.extraInfo?.fi ?? state.extraInfo?.sv ?? state.extraInfo?.en)}
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
                 inputType="textarea"
               />
@@ -427,7 +438,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="cargo"
                 required={!!(state.cargo?.fi ?? state.cargo?.sv ?? state.cargo?.en)}
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'cargo')?.msg}
                 inputType="textarea"
               />
@@ -437,7 +448,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="harbourBasin"
                 required={!!(state.harborBasin?.fi ?? state.harborBasin?.sv ?? state.harborBasin?.en)}
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
                 inputType="textarea"
               />
@@ -452,7 +463,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="companyName"
                 required={!!(state.company?.fi ?? state.company?.sv ?? state.company?.en)}
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'companyName')?.msg}
               />
               <IonRow>
@@ -463,7 +474,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     setValue={updateState}
                     actionType="email"
                     inputType="email"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -475,7 +486,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     helperText={t('general.use-comma-separated-values')}
                     inputType="tel"
                     multiple
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -485,7 +496,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     setValue={updateState}
                     actionType="fax"
                     inputType="tel"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
               </IonRow>
@@ -496,7 +507,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     val={state.internet ?? ''}
                     setValue={updateState}
                     actionType="internet"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -509,7 +520,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lat')?.msg}
                     inputType="latitude"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -522,7 +533,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lon')?.msg}
                     inputType="longitude"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
               </IonRow>
@@ -534,7 +545,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               updateState={updateState}
               sectionType="quay"
               validationErrors={validationErrors}
-              disabled={harbour.status === Status.Removed}
+              disabled={state.status === Status.Removed}
             />
           </form>
         )}

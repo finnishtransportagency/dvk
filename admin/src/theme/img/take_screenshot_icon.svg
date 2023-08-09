@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>B137845E-AF2F-475E-9D53-2B4B68989A42</title>
+    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="colors_and_typography" transform="translate(-1154, -1098)">
+            <g id="icons" transform="translate(722, 1004)">
+                <g id="take_screenshot_icon" transform="translate(432, 94)">
+                    <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
+                    <path d="M18.2857143,24 L18.2857143,20 L14.2857143,20 L14.2857143,18.2857143 L18.2857143,18.2857143 L18.2857143,14.2857143 L20,14.2857143 L20,18.2857143 L24,18.2857143 L24,20 L20,20 L20,24 L18.2857143,24 Z M4,20 L4,14.2857143 L5.71428571,14.2857143 L5.71428571,18.2857143 L9.71428571,18.2857143 L9.71428571,20 L4,20 Z M4,9.71428571 L4,4 L9.71428571,4 L9.71428571,5.71428571 L5.71428571,5.71428571 L5.71428571,9.71428571 L4,9.71428571 Z M18.2857143,9.71428571 L18.2857143,5.71428571 L14.2857143,5.71428571 L14.2857143,4 L20,4 L20,9.71428571 L18.2857143,9.71428571 Z" id="take_screenshot" stroke="#0064AF" fill="#0064AF" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
