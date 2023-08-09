@@ -80,7 +80,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                       </div>
                       <div className="cardInfo">
                         <IonText>
-                          <h3>{fairwayCardInput.name ? fairwayCardInput.name[lang] ?? fairwayCardInput.name.fi : t('fairwaycard.documentTitle')}</h3>
+                          <h3>
+                            {fairwayCardInput.name[lang].length || fairwayCardInput.name.fi.length
+                              ? fairwayCardInput.name[lang] ?? fairwayCardInput.name.fi
+                              : '(' + t('fairwaycard.name') + ')'}
+                          </h3>
                         </IonText>
                         {picture.modificationTimestamp && (
                           <em>
@@ -92,7 +96,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                           </em>
                         )}
                         <em className="danger">{t('fairwaycard.notForNavigation')}</em>
-                        <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
+                        <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
                       </div>
