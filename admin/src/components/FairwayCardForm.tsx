@@ -22,6 +22,7 @@ import {
 } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
+import FormSelectWithSearch from './FormSelectWithSearch';
 import FormTextInputRow from './FormTextInputRow';
 import FormOptionalSection from './FormOptionalSection';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
@@ -455,13 +456,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <FormSelectWithSearch
                     label={t('fairwaycard.linked-fairways')}
-                    selected={state.fairwayIds || []}
                     options={fairwayList?.fairways ?? []}
+                    selected={state.fairwayIds || []}
                     setSelected={updateState}
                     actionType="fairwayIds"
-                    multiple
                     required
                     showId
                     disabled={state.status === Status.Removed}
