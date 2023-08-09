@@ -176,7 +176,7 @@ export const fieldParams: Record<string, FieldParam> = {
   slopeHeight: { default: 0, min: 0, max: 20, unit: 'm', step: '0.1' },
   vesselCourse: { default: 0, min: 0, max: 359, unit: '°', unitId: 'deg' },
   vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
-  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm', step: '0.01' },
+  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'M', step: '0.01' },
   airDensity: { default: 1.3, min: 1, max: 1.5, unit: 'kg/m\u00B3', unitId: 'kg/m3', step: '0.1' },
   waterDensity: { default: 1005, min: 1000, max: 1025, unit: 'kg/m\u00B3', unitId: 'kg/m3' },
   requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm', step: '0.01' },
