@@ -1,4 +1,4 @@
-import { PictureInput, PilotPlaceInput, Text } from '../graphql/generated';
+import { GeometryPoint, PictureInput, PilotPlaceInput, Text } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -92,6 +92,7 @@ export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCard
 export type SelectOption = {
   id: number | string | boolean;
   name?: Text | null;
+  geometry?: GeometryPoint | null;
 };
 
 export const INPUT_MAXLENGTH = 200;

@@ -1,19 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, ValueType } from '../utils/constants';
-import { GeometryPoint, PilotPlace, Text } from '../graphql/generated';
+import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
+import { PilotPlace } from '../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 import { getCombinedErrorAndHelperText, sortSelectOptions } from '../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
-}
-
-interface SelectOption {
-  id: number | string | boolean;
-  name?: Text | null;
-  geometry?: GeometryPoint | null;
 }
 
 interface SelectProps {
