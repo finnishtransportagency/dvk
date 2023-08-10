@@ -1,4 +1,4 @@
-import { countDecimals, createShareableLink } from '../utils/helpers';
+import { countDecimals, createShareableLink, getAssetUrl } from '../utils/helpers';
 
 // Common types
 
@@ -33,24 +33,29 @@ type FieldParam = {
 
 // Initialize data
 export const vesselProfiles = [
-  { id: 1, name: 'homePage.squat.vessel.bulker', img: 'assets/tanker.svg', opaque: true },
-  { id: 2, name: 'homePage.squat.vessel.container', img: 'assets/container_ship.svg', opaque: true },
-  { id: 3, name: 'homePage.squat.vessel.ferry', img: 'assets/ferry.svg', opaque: true },
-  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: 'assets/lng_tanker.svg', opaque: true },
+  { id: 1, name: 'homePage.squat.vessel.bulker', img: getAssetUrl('assets/tanker.svg'), opaque: true },
+  { id: 2, name: 'homePage.squat.vessel.container', img: getAssetUrl('assets/container_ship.svg'), opaque: true },
+  { id: 3, name: 'homePage.squat.vessel.ferry', img: getAssetUrl('assets/ferry.svg'), opaque: true },
+  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: getAssetUrl('assets/lng_tanker.svg'), opaque: true },
 ];
 export const fairwayForms = [
   {
     id: 1,
     name: 'homePage.squat.environment.open-water',
     desc: 'homePage.squat.environment.open-water-description',
-    img: 'assets/open_water_small.svg',
+    img: getAssetUrl('assets/open_water_small.svg'),
   },
-  { id: 2, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/channel_small.svg' },
+  {
+    id: 2,
+    name: 'homePage.squat.environment.channel',
+    desc: 'homePage.squat.environment.channel-description',
+    img: getAssetUrl('assets/channel_small.svg'),
+  },
   {
     id: 3,
     name: 'homePage.squat.environment.sloped-channel',
     desc: 'homePage.squat.environment.sloped-channel-description',
-    img: 'assets/sloped_channel_small.svg',
+    img: getAssetUrl('assets/sloped_channel_small.svg'),
   },
 ];
 

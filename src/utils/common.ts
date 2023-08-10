@@ -115,6 +115,14 @@ export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
   return layer ? layer.offlineSupport : false;
 };
 
+export function getAssetUrl(path: string): string {
+  if (import.meta.env.NODE_ENV === 'test') {
+    // workaround for "Failed to parse URL" error when running tests
+    return 'data:image/svg+xml,';
+  } else {
+    return path;
+  }
+}
 export const getMapCanvasWidth = (): number => {
   const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
   return canvasSize[0];

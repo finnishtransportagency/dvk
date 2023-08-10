@@ -6,7 +6,6 @@
     "node": true
   },
   "extends": [
-    "react-app",
     "eslint:recommended",
     "airbnb-typescript",
     "airbnb/hooks",
@@ -16,7 +15,8 @@
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
-    "prettier"
+    "prettier",
+    "eslint-config-prettier"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

@@ -3,7 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
+import '@testing-library/jest-dom';
+import { cleanup } from '@testing-library/react';
 // Mock matchmedia
 window.matchMedia =
   window.matchMedia ||
@@ -14,3 +15,5 @@ window.matchMedia =
       removeListener: function () {},
     };
   };
+
+afterEach(() => cleanup());

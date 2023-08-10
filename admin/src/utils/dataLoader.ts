@@ -11,7 +11,7 @@ export function useFeatureData(
 ) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
-  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
+  if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
     urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
   } else {
     urlStr = fds?.url ? fds.url.toString() : '';

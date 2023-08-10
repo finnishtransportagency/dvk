@@ -29,6 +29,7 @@ import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import extLinkIcon from '../theme/img/ext_link.svg';
+import { getAssetUrl } from '../utils/common';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -120,7 +121,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       title={t('closeMenu')}
                       aria-label={t('closeMenu')}
                     >
-                      <IonIcon className="otherIconLarge" src={closeIcon} />
+                      <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -142,7 +143,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
                     >
-                      <IonIcon slot="start" src={fairwaysIcon} />
+                      <IonIcon slot="start" src={getAssetUrl(fairwaysIcon)} />
                       {t('fairway-cards')}
                     </IonItem>
                   </IonCol>
@@ -156,7 +157,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
                     >
-                      <IonIcon slot="start" src={alertIcon} />
+                      <IonIcon slot="start" src={getAssetUrl(alertIcon)} />
                       {t('safety-equipment-faults')}
                     </IonItem>
                   </IonCol>
@@ -170,7 +171,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
                     >
-                      <IonIcon slot="start" src={weatherIcon} />
+                      <IonIcon slot="start" src={getAssetUrl(weatherIcon)} />
                       {t('marine-warnings')}
                     </IonItem>
                   </IonCol>
@@ -188,9 +189,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={state.isOffline}
                       tabIndex={state.isOffline ? -1 : undefined}
                     >
-                      <IonIcon slot="start" src={calculateIcon} />
+                      <IonIcon slot="start" src={getAssetUrl(calculateIcon)} />
                       {t('squat')}
-                      <IonIcon slot="end" src={extLinkIcon} />
+                      <IonIcon slot="end" src={getAssetUrl(extLinkIcon)} />
                       <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                     </IonItem>
                   </IonCol>
@@ -246,7 +247,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
               </IonCol>
               <IonCol className="ion-text-end">
                 <IonTitle>
-                  <small>v{`${process.env.REACT_APP_VERSION}`}</small>
+                  <small>v{import.meta.env.VITE_APP_VERSION}</small>
                 </IonTitle>
               </IonCol>
             </IonRow>

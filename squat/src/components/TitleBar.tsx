@@ -6,10 +6,11 @@ import LanguageBar from './LanguageBar';
 import { isEmbedded, showLanguages, showLogo } from '../pages/Home';
 import PrintBar from './PrintBar';
 import SquatHeader from './SquatHeader';
+import { getAssetUrl } from '../utils/helpers';
 
 const TitleBar: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage' });
-  const logoSource = i18n.language === 'en' ? 'assets/icon/vayla_alla_en.png' : 'assets/icon/vayla_alla_fi_sv.png';
+  const logoSource = i18n.language === 'en' ? getAssetUrl('assets/icon/vayla_alla_en.png') : getAssetUrl('assets/icon/vayla_alla_fi_sv.png');
 
   return (
     <IonGrid className="titlebar ion-no-padding">

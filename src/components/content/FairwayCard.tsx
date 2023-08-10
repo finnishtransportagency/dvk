@@ -273,8 +273,11 @@ const SpeedLimitInfo: React.FC<FairwaysProps> = ({ data, speedLimitText, inlineL
 
   const speedLimits =
     data
-      ?.flatMap((fairway) =>
-        fairway.restrictionAreas?.filter((area) => (area.types?.filter((type) => type.code === '01') ?? []).length > 0 && area.location && area.value)
+      ?.flatMap(
+        (fairway) =>
+          fairway.restrictionAreas?.filter(
+            (area) => (area.types?.filter((type) => type.code === '01') ?? []).length > 0 && area.location && area.value
+          )
       )
       .filter(
         (value, index, self) =>
@@ -364,14 +367,15 @@ const AreaInfo: React.FC<FairwaysProps> = ({ data, isN2000HeightSystem }) => {
 
   const fairwayAreas =
     data
-      ?.flatMap((fairway) =>
-        fairway.areas?.sort((a, b) => {
-          const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
-          const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
-          const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
-          const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
-          return sequenceNumberA - sequenceNumberB;
-        })
+      ?.flatMap(
+        (fairway) =>
+          fairway.areas?.sort((a, b) => {
+            const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
+            const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
+            const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
+            const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
+            return sequenceNumberA - sequenceNumberB;
+          })
       )
       .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) ?? [];
 
