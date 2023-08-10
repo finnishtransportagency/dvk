@@ -117,8 +117,11 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           sequenceNumber: p.sequenceNumber ?? null,
           orientation: p.orientation,
           rotation: p.rotation ?? null,
-          harborId: mapString(p.harborId, 200),
           modificationTimestamp: p.modificationTimestamp ?? null,
+          scaleLabel: mapString(p.scaleLabel, 20),
+          scaleWidth: mapString(p.scaleWidth, 20),
+          text: mapString(p.text, 100),
+          lang: mapString(p.lang, 2),
         };
       }) ?? null,
   };

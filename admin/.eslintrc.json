@@ -34,7 +34,7 @@
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
     },
-    "import/ignore": ["ionic/core"],
+    "import/ignore": ["ionic/core", "ol"],
     "react": {
       "version": "detect"
     }

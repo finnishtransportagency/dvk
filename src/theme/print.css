@@ -203,7 +203,7 @@
   .mapLegend .cardInfo em.danger {
     color: var(--ion-color-danger);
   }
-  #mapScale {
+  .mapLegend .mapScale {
     border: 1px solid var(--ion-color-dark);
     border-top: none;
     color: var(--ion-color-dark);

@@ -1,0 +1,291 @@
+ion-modal#layerModalContainer {
+  --min-width: 225px;
+  z-index: 21000 !important;
+}
+ion-app:not(.mobile) ion-modal#layerModalContainer {
+  --width: fit-content;
+  --height: fit-content;
+  --border-radius: 4px;
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+}
+
+#layerModalContent {
+  max-height: calc(100vh - 96px);
+  min-width: 400px;
+  overflow: auto;
+}
+
+.mobile #layerModalContent {
+  max-height: none;
+  height: 100% !important;
+  min-width: auto !important;
+}
+
+ion-modal#layerModalContainer .divider {
+  border-bottom: 1px solid var(--ion-color-light);
+}
+
+.mobile ion-modal#layerModalContainer::part(content) {
+  position: static;
+}
+
+#layerModalContainer ion-grid.mainGrid {
+  margin: 0 28px;
+  padding: 12px 0;
+}
+.mobile #layerModalContainer ion-grid.mainGrid {
+  margin: 0 16px;
+  padding: 12px 0;
+}
+@media screen and (orientation: landscape) {
+  .mobile #layerModalContainer ion-grid.mainGrid ion-grid ion-list {
+    column-count: 3;
+    column-gap: 16px;
+  }
+}
+
+#layerModalContainer ion-item {
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --min-height: 30px;
+}
+
+#layerModalContainer ion-list-header {
+  font-size: 1rem;
+  padding-left: 0px;
+  min-height: auto;
+  padding-bottom: 0.25rem;
+}
+
+#layerModalContainer ion-item .layer {
+  width: 14px;
+  height: 14px;
+  margin: 0 3px 0 5px;
+}
+#layerModalContainer ion-item .area12 {
+  border: 1px solid var(--ion-color-danger);
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+}
+#layerModalContainer ion-item .area3456 {
+  border: 1px solid var(--ion-color-success);
+  background: rgba(var(--ion-color-success-rgb), 0.1);
+}
+#layerModalContainer ion-item .line12,
+#layerModalContainer ion-item .line3456 {
+  border-top: 2px solid var(--ion-color-layer-line);
+  height: 1px;
+}
+#layerModalContainer ion-item .boardline12 {
+  border-top: 2px dashed var(--ion-color-layer-boardline);
+  height: 1px;
+}
+
+#layerModalContainer ion-item .vtsline {
+  border-top: 2px dashed var(--ion-color-layer-vts);
+  height: 1px;
+}
+
+#layerModalContainer ion-item .vtspoint {
+  width: 16px;
+  height: 16px;
+  background: url('../../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
+  background-size: cover;
+}
+
+#layerModalContainer ion-item .safetyequipment {
+  -webkit-mask-image: url('../../../theme/img/safetyequipment/a.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  mask-image: url('../../../theme/img/safetyequipment/a.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+  background: var(--ion-color-dark);
+  height: 24px;
+  margin-bottom: 2px;
+}
+#layerModalContainer ion-item .speedlimit {
+  border: 2px solid var(--ion-color-layer-speedlimit-border);
+  width: 18px;
+  height: 18px;
+  text-align: center;
+}
+#layerModalContainer ion-item .speedlimit::before {
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 14px;
+  content: '30';
+  color: var(--ion-color-layer-speedlimit-text);
+  vertical-align: text-top;
+}
+#layerModalContainer ion-item .depth12 {
+  width: 30px;
+  height: 12px;
+  text-align: right;
+}
+#layerModalContainer ion-item .depth12::before {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  content: '10,2';
+  color: var(--ion-color-layer-depth);
+  vertical-align: text-top;
+  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+}
+.en #layerModalContainer ion-item .depth12::before {
+  content: '10.2';
+}
+
+#layerModalContainer ion-item .specialarea2 {
+  width: 18px;
+  height: 18px;
+  background: url('../../../theme/img/ankkurointialue.svg') no-repeat center;
+  background-size: cover;
+}
+#layerModalContainer ion-item .specialarea15 {
+  width: 18px;
+  height: 18px;
+  background: url('../../../theme/img/kohtaamiskielto_ikoni.svg') no-repeat center;
+  background-size: cover;
+}
+#layerModalContainer ion-item .pilot {
+  width: 16px;
+  height: 16px;
+  background: url('../../../theme/img/pilotPlace.svg') no-repeat center;
+  background-size: cover;
+}
+
+#layerModalContainer ion-item .circle {
+  width: 18px;
+  height: 18px;
+  background: url('../../../theme/img/circle.svg') no-repeat center;
+  background-size: cover;
+}
+
+#layerModalContainer ion-checkbox {
+  display: block;
+  width: 100%;
+  --size: 20px;
+  --border-width: 1px;
+  --checkmark-width: 3px;
+  margin: 5px 5px 5px 0;
+}
+
+#layerModalContainer ion-checkbox .labelText {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  padding-left: 25px;
+  padding-right: 50px;
+}
+
+#layerModalContainer ion-checkbox .layerLegend {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: inline-block;
+}
+
+#layerModalContainer ion-checkbox.checkbox-checked,
+#layerModalContainer ion-checkbox.checkbox-indeterminate {
+  --border-width: 3px;
+}
+#layerModalContainer ion-checkbox.checkbox-disabled {
+  opacity: 1;
+}
+#layerModalContainer ion-checkbox.checkbox-disabled::part(container) {
+  opacity: 0.5;
+  background: var(--ion-color-light);
+}
+
+#layerModalContainer ion-col {
+  padding: 0;
+}
+#layerModalContainer .section ion-col,
+#layerModalContainer .layerItem ion-col {
+  padding: 0;
+}
+
+#layerModalContainer h6 {
+  font-weight: bold;
+  margin: 16px 0;
+}
+#layerModalContainer .closeButton {
+  margin: 0;
+}
+
+#layerModalContainer .toggleButton {
+  --color: var(--ion-color-dark);
+  --background-hover: var(--ion-color-lightest);
+  --background-hover-opacity: 1;
+  --background-focused: unset;
+  --padding-end: 3px;
+  --padding-start: 3px;
+  height: 20px;
+  margin: 1px;
+}
+#layerModalContainer .toggleButton.ion-focused {
+  outline: 1px solid var(--ion-color-dark);
+}
+#layerModalContainer .toggleButton ion-icon {
+  width: 14px;
+  height: 14px;
+  transition: all 250ms;
+}
+#layerModalContainer .toggleButton.close ion-icon {
+  transform: rotate(180deg);
+}
+
+#layerModalContainer ion-row.toggle {
+  transition: all 250ms;
+  border-top: 1px solid var(--ion-color-lighter);
+}
+#layerModalContainer ion-row.mainToggle {
+  border-top: none;
+  padding-left: 24px;
+}
+#layerModalContainer ion-row.hide {
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+#layerModalContainer ion-row.show {
+  max-height: 500px;
+}
+
+#layerModalContainer ion-grid.legend {
+  max-height: 500px;
+}
+#layerModalContainer ion-grid.legend ion-item {
+  font-size: 12px;
+  --min-height: 28px;
+}
+#layerModalContainer ion-grid.legend .def {
+  width: 14px;
+  height: 14px;
+  margin-inline-end: 8px;
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit30 {
+  background: var(--ion-color-speedlimit-30);
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit25 {
+  background: var(--ion-color-speedlimit-25);
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit20 {
+  background: var(--ion-color-speedlimit-20);
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit15 {
+  background: var(--ion-color-speedlimit-15);
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit10 {
+  background: var(--ion-color-speedlimit-10);
+}
+#layerModalContainer ion-grid.legend.speedlimit .def.limit5 {
+  background: var(--ion-color-speedlimit-5);
+}
+
+#layerModalContainer ion-item ion-icon {
+  margin-right: 6px;
+}

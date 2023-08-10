@@ -1,5 +1,5 @@
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType, Lang } from './constants';
+import { FairwayCardOrHarbor, Text } from '../graphql/generated';
+import { ItemType, Lang, SelectOption } from './constants';
 
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
@@ -40,9 +40,52 @@ export const filterItemList = (
   );
 };
 
+export function getDuration(dataUpdatedAt: number, decimals = 1) {
+  const power = Math.pow(10, decimals);
+  const now = Date.now(); // for testing warning vs danger + 1000 * 60 * 60 * 11;
+  const duration = Math.floor(Math.abs(now - dataUpdatedAt) / 1000 / 60 / 60);
+  return Math.round(duration * power) / power;
+}
+
 export const getCombinedErrorAndHelperText = (helperText: string | null | undefined, errorText: string): string => {
   if (helperText) {
     return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
   }
   return errorText;
+};
+
+export const nameIncludesQuery = (name: Text | null | undefined, query: string) => {
+  if (!name) return false;
+  return (
+    (name.fi != null && name.fi.toLowerCase().includes(query)) ||
+    (name.sv != null && name.sv.toLowerCase().includes(query)) ||
+    (name.en != null && name.en.toLowerCase().includes(query))
+  );
+};
+
+export const sortSelectOptions = (options: SelectOption[], lang: Lang) => {
+  return options.sort((a, b) => {
+    const nameA = (typeof a.name === 'string' ? a.name : a.name?.[lang]) ?? '';
+    const nameB = (typeof b.name === 'string' ? b.name : b.name?.[lang]) ?? '';
+    return nameA.localeCompare(nameB);
+  });
+};
+
+export const sortTypeSafeSelectOptions = (options: SelectOption[], lang: Lang) => {
+  const filteredOptions = options.filter((item) => !!item && typeof item.id === 'number');
+  return sortSelectOptions(filteredOptions, lang);
+};
+
+export const constructSelectOptionLabel = (item: SelectOption, lang: Lang, showId?: boolean): string => {
+  const nameLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id.toString();
+  return showId ? '[' + item.id + '] ' + nameLabel : nameLabel;
+};
+
+export const constructSelectDropdownLabel = (selected: number[], options: SelectOption[] | null, lang: Lang, showId?: boolean): string => {
+  if (selected.length > 0 && !!options && options.length > 0) {
+    const sortedOptions = sortSelectOptions(options, lang);
+    const selectedOptions = sortedOptions.filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
+    return selectedOptions.map((item) => constructSelectOptionLabel(item, lang, showId)).join(', ');
+  }
+  return '';
 };

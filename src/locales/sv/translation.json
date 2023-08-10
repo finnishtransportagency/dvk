@@ -225,7 +225,8 @@
       "degDesc_one": "grad",
       "degDesc_other": "grader"
     },
-    "opens-in-a-new-tab": "Öppnas i en ny flik"
+    "opens-in-a-new-tab": "Öppnas i en ny flik",
+    "alert": "[sv] Hakemaasi “{{ fairwayCardId }}” väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta. <br/><br/>[sv] Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3> listauksesta."
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

@@ -225,7 +225,8 @@
       "degDesc_one": "degree",
       "degDesc_other": "degrees"
     },
-    "opens-in-a-new-tab": "Opens in a new tab"
+    "opens-in-a-new-tab": "Opens in a new tab",
+    "alert": "The \"{{ fairwayCardId }}\" fairway card you requested was not found. Check the site address for typos. <br/><br/>You can also check if the fairway card you are looking for can be found in the <3>Fairway cards</3> listing."
   },
   "faults": {
     "title": "Defective navigation aids",

@@ -398,13 +398,14 @@ const Environment: React.FC = () => {
             <InputField
               title={t('set-vessel-speed')}
               name="vesselSpeed"
-              value={state.environment.vessel.vesselSpeed}
+              value={state.environment.vessel.vesselSpeed ? state.environment.vessel.vesselSpeed : null}
               placeholder="0"
               min={fieldParams.vesselSpeed.min}
               max={fieldParams.vesselSpeed.max}
               unit={fieldParams.vesselSpeed.unit}
               fieldClass={setFieldClass('vesselSpeed')}
               actionType="environment-vessel"
+              required
             />
           </IonCol>
           {!limitedView && (

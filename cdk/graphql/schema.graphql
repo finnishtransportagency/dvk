@@ -78,7 +78,10 @@ input PictureInput {
   sequenceNumber: Int
   orientation: Orientation!
   rotation: Float
-  harborId: String
+  scaleWidth: String
+  scaleLabel: String
+  text: String
+  lang: String
   modificationTimestamp: Float
 }
 
@@ -234,7 +237,10 @@ type Picture {
   sequenceNumber: Int
   orientation: Orientation!
   rotation: Float
-  harborId: String
+  text: String
+  lang: String
+  scaleLabel: String
+  scaleWidth: String
   modificationTimestamp: Float
 }
 

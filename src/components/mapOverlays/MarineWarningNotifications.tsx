@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { isCoastalWarning } from '../../utils/common';
+import { getMapCanvasWidth, isCoastalWarning, isMobile } from '../../utils/common';
 import { IonBackdrop, IonCol } from '@ionic/react';
 import { CustomPopup } from './CustomPopup';
 import { CoastalWarningItem } from './CoastalWarningItem';
@@ -9,6 +9,9 @@ import { MarineWarning } from '../../graphql/generated';
 import marineWarningIcon from '../../theme/img/merivaroitus_ikoni_plain.svg';
 import infoIcon from '../../theme/img/info.svg';
 import './MarineWarningNotifications.css';
+import dvkMap from '../DvkMap';
+import { debounce } from 'lodash';
+import { ObjectEvent } from 'ol/Object';
 
 interface MarineWarningNotificationsProps {
   showMarineWarnings: boolean;
@@ -71,8 +74,27 @@ const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
 export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProps> = ({ showMarineWarnings }) => {
   const [warningNotifications, setWarningNotifications] = useState<MarineWarningNotification[]>([]);
   const [infoVisible, setInfoVisible] = useState(false);
+  const [backgroundWidth, setBackgroundWidth] = useState<number>(0);
 
   const { data, isLoading, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+
+  /* Use debounce to reduce events triggered by map size change */
+  const debouncedBackgroundWidthRefresh = React.useRef(
+    debounce(() => {
+      setBackgroundWidth(getMapCanvasWidth());
+    }, 20)
+  ).current;
+
+  /* Use map canvas size as reference for container width to position container relative to side modal */
+  dvkMap.olMap?.on('change:size', (event: ObjectEvent) => {
+    const { target, key, oldValue } = event;
+    const newValue = target.get(key);
+    // Opening side modal triggers map size changes that have undefined or zero values before calculating final size
+    // Ignore changes in height
+    if (newValue !== undefined && newValue[0] && (!oldValue || oldValue[0] !== newValue[0])) {
+      debouncedBackgroundWidthRefresh();
+    }
+  });
 
   useEffect(() => {
     if (showMarineWarnings) {
@@ -90,8 +112,13 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
 
   return (
     <>
-      {showMarineWarnings && (infoVisible || warningNotifications.some((notification) => notification.visible)) && <IonBackdrop tappable={false} />}
-      <div className="marine-warning-container">
+      {isMobile() && showMarineWarnings && (infoVisible || warningNotifications.some((notification) => notification.visible)) && (
+        <IonBackdrop tappable={false} />
+      )}
+      <div
+        className="marine-warning-container"
+        style={!isMobile() ? { width: backgroundWidth + 'px', left: 'calc(100% - ' + backgroundWidth + 'px)' } : undefined}
+      >
         {showMarineWarnings &&
           warningNotifications.map((notification) => (
             <CoastalWarningNotification

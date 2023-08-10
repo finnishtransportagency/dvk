@@ -93,7 +93,15 @@ async function main() {
   writeEnvFile('../admin/.env.local', {
     VITE_APP_API_URL: backendStackOutputs.AppSyncAPIURL,
     VITE_APP_API_KEY: backendStackOutputs.AppSyncAPIKey,
+    VITE_APP_REST_API_URL: `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api`,
+    VITE_APP_FRONTEND_DOMAIN_NAME: frontendStackOutputs.CloudFrontDomainName || '',
+    VITE_APP_BG_MAP_API_URL: envParameters.BGMapApiUrl,
+    VITE_APP_BG_MAP_API_KEY: envParameters.BGMapApiKey,
+    VITE_APP_STATIC_URL: frontendStackOutputs.CloudFrontDomainName || 'dvkdev.testivaylapilvi.fi',
     VITE_APP_ENV: 'local',
+    VITE_APP_IMAGE_URL: frontendStackOutputs.CloudFrontDomainName
+      ? `https://${frontendStackOutputs.CloudFrontDomainName}/s3static/`
+      : `http://${Config.isDeveloperEnvironment() ? 'localhost:8080' : backendStackOutputs.LoadBalancerDnsName}/api/image?id=`,
   });
 }
 
