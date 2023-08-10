@@ -582,7 +582,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
       // Merge canvases to one canvas
       const mapCanvas = document.createElement('canvas');
-      const mapSize = dvkMap.olMap?.getSize() || [0, 0];
+      const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
       mapCanvas.width = mapSize[0];
       mapCanvas.height = mapSize[1];
       const mapContext = mapCanvas.getContext('2d');

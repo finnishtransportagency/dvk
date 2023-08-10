@@ -116,7 +116,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                       </em>
                     )}
                     <em className="danger">{t('notForNavigation')}</em>
-                    <div className="mapScale" style={{ width: picture.scaleWidth ?? 100 + 'px' }}>
+                    <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                       {picture.scaleLabel}
                     </div>
                   </div>
