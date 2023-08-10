@@ -100,15 +100,15 @@ export const TEXTAREA_MAXLENGTH = 2000;
 
 // Map export related
 
-const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
-  ? process.env.REACT_APP_REST_API_URL + '/featureloader'
+const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
 
-const staticUrl = process.env.REACT_APP_STATIC_URL
-  ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
+const staticUrl = import.meta.env.VITE_APP_STATIC_URL
+  ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
-export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
+export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
 export type BackgroundLayerId = 'finland' | 'balticsea';
 
