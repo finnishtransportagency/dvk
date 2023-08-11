@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Lang } from '../../utils/constants';
 import { MarineWarning } from '../../graphql/generated';
 
-interface CoastalWarningItemProps {
+interface GeneralMarineWarningItemProps {
   marineWarning: MarineWarning;
 }
 
-export const CoastalWarningItem: React.FC<CoastalWarningItemProps> = ({ marineWarning }) => {
+export const GeneralMarineWarningItem: React.FC<GeneralMarineWarningItemProps> = ({ marineWarning }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
