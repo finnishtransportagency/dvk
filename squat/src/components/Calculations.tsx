@@ -325,6 +325,18 @@ const Calculations: React.FC = () => {
     [setStateStatus]
   );
 
+  const handleSelectedViewChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      const val = e.detail.value;
+      setStateStatus('showLimitedView', val);
+      if (val === 'true') {
+        setStateStatus('showDeepWaterValues', 'false');
+        setStateStatus('showBarrass', 'false');
+      }
+    },
+    [setStateStatus]
+  );
+
   return (
     <>
       <div className="pagebreak"></div>
@@ -389,6 +401,20 @@ const Calculations: React.FC = () => {
             </IonSegmentButton>
             <IonSegmentButton value="true">
               <IonLabel>{t('squat-barrass')}</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
+
+          <IonSegment
+            onIonChange={handleSelectedViewChange}
+            value={showLimitedView ? 'true' : 'false'}
+            className="top-padding print-hide"
+            selectOnFocus
+          >
+            <IonSegmentButton value="false">
+              <IonLabel>{t('extensive-calculator')}</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="true">
+              <IonLabel>{t('limited-calculator')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
         </div>
