@@ -149,6 +149,7 @@ ion-button.icon-only {
   width: 40px;
   vertical-align: top;
   border-radius: 20px;
+  min-height: 0;
 }
 ion-button.icon-only.small {
   --box-shadow: none;
@@ -279,7 +280,8 @@ ion-button.plainButton.button-disabled {
 }
 
 /* Form inputs */
-ion-item.selectInput, ion-item.custom-select-container {
+ion-item.selectInput,
+ion-item.custom-select-container {
   font-size: 14px;
   width: auto;
   min-width: 150px;
@@ -307,10 +309,18 @@ ion-item.custom-select-item {
 
 .custom-select-item.expanded {
   margin: 2px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
 }
 
 .custom-select-icon {
   width: 13px;
+}
+
+ion-item.custom-select-item ion-label ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 ion-item.custom-select-option {
@@ -335,16 +345,19 @@ ion-item.custom-select-container.expanded {
   --highlight-background: transparent;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
-.selectWrapper.invalid ion-item.selectInput, .selectWrapper.invalid ion-item.custom-select-container {
+.selectWrapper.invalid ion-item.selectInput,
+.selectWrapper.invalid ion-item.custom-select-container {
   --background: var(--ion-color-danger);
 }
-.selectWrapper.invalid ion-item.selectInput:has(.select-expanded), .selectWrapper.invalid ion-item.custom-select-container.expanded {
+.selectWrapper.invalid ion-item.selectInput:has(.select-expanded),
+.selectWrapper.invalid ion-item.custom-select-container.expanded {
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
 ion-item.selectInput.item-select-disabled {
   opacity: 0.5;
 }
-ion-item.selectInput::part(native), ion-item.custom-select-container::part(native) {
+ion-item.selectInput::part(native),
+ion-item.custom-select-container::part(native) {
   border-radius: 0;
   overflow: hidden;
 }
@@ -420,10 +433,16 @@ ion-item.selectInput.ion-focused ion-select::part(icon) {
   border: 1px solid var(--ion-color-light);
 }
 ion-popover.multiSelect {
-  margin-top: 2px;
+  --offset-y: 2px;
+}
+ion-popover.multiSelect.custom-select-popover {
+  --offset-y: 0px;
 }
 ion-popover.multiSelect::part(content) {
   border-radius: 0;
+}
+ion-popover.multiSelect.fairwayIds::part(content) {
+  bottom: 0;
 }
 ion-popover.multiSelect ion-item {
   font-size: 14px;
@@ -810,6 +829,7 @@ ion-modal .closeButton {
   --padding-end: 3px;
   --padding-start: 3px;
   height: 30px;
+  min-height: 0;
   margin: 0 calc(24px - 6px) 0 0;
 }
 ion-modal .closeButton.ion-focused {

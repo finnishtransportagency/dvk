@@ -39,7 +39,9 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const [isValid, setIsValid] = useState(error ? false : true);
   const [expanded, setIsExpanded] = useState(false);
 
+  const itemRef = useRef<HTMLIonItemElement>(null);
   const selectRef = useRef<HTMLIonLabelElement>(null);
+  const triggerId = 'select-with-search-' + actionType;
 
   const focusSelectItem = () => {
     selectRef.current?.click();
@@ -74,17 +76,25 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
       ) : (
         <>
           <IonItem
-            id="select-with-search"
+            ref={itemRef}
+            id={triggerId}
             button={true}
             className={'custom-select-container' + (expanded ? ' expanded' : '')}
             detail={false}
-            disabled={isLoading || disabled}
+            disabled={isLoading ?? disabled}
             lines="none"
             onClick={() => setIsExpanded(true)}
           >
             <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={isLoading || disabled} lines="none">
               <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
-                {selected.length > 0 ? constructSelectDropdownLabel(selected, options, lang, showId) : t('choose') ?? ''}
+                {(selected.length > 0 && (
+                  <ul>
+                    {constructSelectDropdownLabel(selected, options, lang, showId).map((opt) => {
+                      return <li key={opt}>{opt}</li>;
+                    })}
+                  </ul>
+                )) ||
+                  t('choose')}
               </IonLabel>
               <IonIcon
                 icon={expanded ? caretUpSharp : caretDownSharp}
@@ -97,13 +107,15 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
           {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
           <DropdownPopup
-            trigger="select-with-search"
+            trigger={triggerId}
+            triggerRef={itemRef}
             options={options}
             selected={selected}
             setSelected={handleSelect}
             setIsExpanded={setIsExpanded}
             checkValidity={checkValidity}
             showId={showId}
+            className={'custom-select-popover ' + actionType}
           />
         </>
       )}

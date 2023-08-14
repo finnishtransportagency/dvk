@@ -217,6 +217,7 @@ ion-modal#layerModalContainer::part(content) {
   height: 16px;
   background: url('../../theme/img/pilotPlace.svg') no-repeat center;
   background-size: cover;
+  margin-top: 2px;
 }
 #layerModalContainer ion-item .marinewarning {
   width: 17px;
