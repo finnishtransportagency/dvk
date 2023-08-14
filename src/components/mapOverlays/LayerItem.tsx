@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
@@ -283,25 +283,16 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  noOfflineSupport?: boolean;
   layers: string[];
   setLayers: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, layers, setLayers }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
   const [legendOpen, setLegendOpen] = useState(false);
   const [legends, setLegends] = useState<string[]>([]);
   const dvkMap = getMap();
-
-  useEffect(() => {
-    if (noOfflineSupport && layers.includes(id) && state.isOffline) {
-      setLayers((prev) => {
-        return [...prev.filter((p) => p !== id)];
-      });
-    }
-  }, [id, layers, noOfflineSupport, setLayers, state.isOffline]);
 
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
@@ -325,7 +316,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
   const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
-  const disabled = !initialized || (noOfflineSupport && state.isOffline);
+  const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
@@ -337,15 +328,12 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
       <IonRow>
         <IonCol>
           <IonItem>
-            <IonText id={`${title}-label`} className={disabled ? 'disabled' : ''}>
-              {title}
-            </IonText>
             <IonCheckbox
               aria-labelledby={`${title}-label`}
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onClick={() =>
+              onIonChange={() =>
                 setLayers((prev) => {
                   if (prev.includes(id)) {
                     return [...prev.filter((p) => p !== id)];
@@ -354,8 +342,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, noOfflineSupport, laye
                 })
               }
               disabled={disabled}
-            />
-            <IonText slot="end" className={'layer ' + id}></IonText>
+              labelPlacement="end"
+            >
+              <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                {title}
+              </IonText>
+              <IonText className={'layerLegend layer ' + id}></IonText>
+            </IonCheckbox>
           </IonItem>
         </IonCol>
         <IonCol size="auto">

@@ -10,6 +10,8 @@ import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
+import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
+
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 import MarineWarnings from './MarineWarnings';
@@ -209,13 +211,24 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
 
   const [fairwayCardId, setFairwayCardId] = useState('');
   useEffect(() => {
-    setFairwayCardId((data?.fairwayCards.filter((card) => card.id === modalContent) || '').length > 0 ? modalContent || '' : '');
+    const card = data?.fairwayCards.find((c) => c.id === modalContent);
+    if (card?.id) {
+      setFairwayCardId(card.id);
+    } else if (
+      modalContent &&
+      modalContent !== 'fairwayCardList' &&
+      modalContent !== 'safetyEquipmentFaultList' &&
+      modalContent !== 'marineWarningList'
+    ) {
+      setFairwayCardId(modalContent);
+    } else {
+      setFairwayCardId('');
+    }
   }, [modalContent, data]);
 
   return (
     <IonModal
       ref={modal}
-      trigger="open-modal"
       isOpen={modalOpen}
       initialBreakpoint={0.5}
       breakpoints={[0, 0.25, 0.5, 1]}
@@ -277,7 +290,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
             </IonCol>
           </IonRow>
         </IonGrid>
-        <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
+        <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
 
         {fairwayCardId && <FairwayCard id={fairwayCardId} />}
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}

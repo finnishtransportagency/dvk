@@ -7,8 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { QueryClient, useIsFetching } from '@tanstack/react-query';
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
-import { Drivers, Storage } from '@ionic/storage';
-import IonicAsyncStorage from './utils/IonicAsyncStorage';
+import IdbAsyncStorage from './utils/IdbAsyncStorage';
 import { getMap, InitDvkMap } from './components/DvkMap';
 import { Lang, OFFLINE_STORAGE } from './utils/constants';
 
@@ -23,22 +22,17 @@ import {
   useHarborLayer,
   useSafetyEquipmentLayer,
   useMarineWarningLayer,
-  useNameLayer,
   useBoardLine12Layer,
   useMareographLayer,
   useObservationLayer,
   useBuoyLayer,
-  useBackgroundFinlandLayer,
-  useBackgroundMmlmeriLayer,
-  useBackgroundMmljarviLayer,
-  useBackgroundMmllaituritLayer,
-  useBackgroundBalticseaLayer,
   DvkLayerState,
   useVtsLineLayer,
   useVtsPointLayer,
   useCircleLayer,
   useSpecialArea2Layer,
   useSpecialArea15Layer,
+  useInitStaticDataLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
@@ -88,14 +82,20 @@ const queryClient = new QueryClient({
   },
 });
 
-const store = new Storage({
-  name: OFFLINE_STORAGE.name,
-  storeName: OFFLINE_STORAGE.storeName,
-  driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage],
-});
-store.create();
+/* Delete old react query ionic storage database "DVK", if still exist */
+if (window.indexedDB) {
+  window.indexedDB.deleteDatabase('DVK');
+}
 
-const asyncStoragePersister = createAsyncStoragePersister({ storage: IonicAsyncStorage(store) });
+const asyncStoragePersister = createAsyncStoragePersister({
+  storage: IdbAsyncStorage(),
+  throttleTime: 10000,
+});
+
+const persistOptions = {
+  persister: asyncStoragePersister,
+  buster: process.env.REACT_APP_VERSION,
+};
 
 const DvkIonApp: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -110,16 +110,16 @@ const DvkIonApp: React.FC = () => {
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
-  const bgFinlandLayer = useBackgroundFinlandLayer();
-  const bgMmlmeriLayer = useBackgroundMmlmeriLayer();
-  const bgMmljarviLayer = useBackgroundMmljarviLayer();
+  const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
+  const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
+  const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentLayer();
   useMarineWarningLayer();
-  useNameLayer();
+  useInitStaticDataLayer('name', 'name');
   useMareographLayer();
   useObservationLayer();
   useBuoyLayer();
@@ -127,11 +127,15 @@ const DvkIonApp: React.FC = () => {
   useVtsPointLayer();
   useLine3456Layer();
   useArea3456Layer();
-  useBackgroundBalticseaLayer();
-  useBackgroundMmllaituritLayer();
+  useInitStaticDataLayer('balticsea', 'balticsea');
+  useInitStaticDataLayer('mml_satamat', 'mml_satamat');
+  useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
+
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
+  const [showLoadingAlert, setShowLoadingAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   const { state } = useDvkContext();
 
@@ -177,6 +181,16 @@ const DvkIonApp: React.FC = () => {
     specialArea2Layer,
     specialArea15Layer,
   ]);
+
+  useEffect(() => {
+    if (fetchError) {
+      setShowLoadingAlert(false);
+      setShowErrorAlert(true);
+    } else {
+      setShowLoadingAlert(!initDone);
+      setShowErrorAlert(false);
+    }
+  }, [initDone, fetchError]);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -243,10 +257,8 @@ const DvkIonApp: React.FC = () => {
         <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
-      {fetchError && (
-        <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
-      )}
-      {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
+      <IonAlert isOpen={showErrorAlert} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
+      <IonAlert isOpen={showLoadingAlert} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
     </IonApp>
   );
 };
@@ -295,7 +307,7 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={{ persister: asyncStoragePersister, buster: process.env.REACT_APP_VERSION }}>
+    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>

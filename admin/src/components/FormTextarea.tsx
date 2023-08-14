@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonLabel, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
+import { getCombinedErrorAndHelperText } from '../utils/common';
 
 interface InputProps {
   label: string;
@@ -13,9 +14,10 @@ interface InputProps {
   disabled?: boolean;
   error?: string;
   helperText?: string | null;
+  name?: string;
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
+const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText, name }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
@@ -77,6 +79,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
       <IonTextarea
         ref={inputRef}
         value={val}
+        name={name ? name + (actionLang ?? '') : undefined}
         required={required}
         onIonInput={(ev) => handleChange(ev.target.value)}
         onIonBlur={() => checkValidity()}
@@ -86,8 +89,8 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
         className={'ion-align-self-center formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={helperText ?? ''}
-        errorText={getErrorText()}
+        helperText={isValid && (!error || error === '') ? helperText ?? '' : ''}
+        errorText={getCombinedErrorAndHelperText(helperText, getErrorText())}
         labelPlacement="fixed"
         counter={true}
         counterFormatter={(inputLength, maxLength) => (inputLength > TEXTAREA_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}

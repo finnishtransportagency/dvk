@@ -10,23 +10,16 @@ import {
   TurningCircle,
 } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import {
-  AlueAPIModel,
-  fetchVATUByFairwayId,
-  KaantoympyraAPIModel,
-  NavigointiLinjaAPIModel,
-  RajoitusAlueAPIModel,
-  TaululinjaAPIModel,
-  VaylaAPIModel,
-} from './vatu';
+import { AlueAPIModel, fetchVATUByFairwayId, KaantoympyraAPIModel, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
+import { VaylaAPIModel } from '../../api/axios';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
     id: apiModel.jnro,
     name: {
-      fi: apiModel.nimiFI || '',
-      sv: apiModel.nimiSV || '',
+      fi: apiModel.nimiFI ?? '',
+      sv: apiModel.nimiSV ?? '',
     },
     sizing: {
       additionalInformation: apiModel.lisatieto,
@@ -131,7 +124,7 @@ async function getAreaMap(fairwayIds: number[]) {
   log.debug('areas: %d', areas.length);
   const areaMap = new Map<number, AlueAPIModel[]>();
   for (const area of areas) {
-    for (const areaFairway of area.vayla || []) {
+    for (const areaFairway of area.vayla ?? []) {
       if (!areaMap.has(areaFairway.jnro)) {
         areaMap.set(areaFairway.jnro, []);
       }
@@ -209,7 +202,7 @@ function mapRestrictionAreas(areas: RajoitusAlueAPIModel[]) {
     area.types =
       apiArea.rajoitustyypit?.map((t) => {
         return { code: t.koodi, text: t.rajoitustyyppi };
-      }) || [];
+      }) ?? [];
     if (apiArea.rajoitustyyppi) {
       area.types.push({ text: apiArea.rajoitustyyppi });
     }
@@ -222,7 +215,7 @@ async function getRestrictionAreaMap(fairwayIds: number[]) {
   log.debug('restriction areas: %d', areas.length);
   const areaMap = new Map<number, RajoitusAlueAPIModel[]>();
   for (const area of areas) {
-    for (const areaFairway of area.vayla || []) {
+    for (const areaFairway of area.vayla ?? []) {
       if (!areaMap.has(areaFairway.jnro)) {
         areaMap.set(areaFairway.jnro, []);
       }
@@ -284,7 +277,7 @@ async function getCircleMap(fairwayIds: number[]) {
   log.debug('circles: %d', circles.length);
   const circleMap = new Map<number, KaantoympyraAPIModel[]>();
   for (const circle of circles) {
-    for (const circleFairway of circle.vayla || []) {
+    for (const circleFairway of circle.vayla ?? []) {
       if (!circleMap.has(circleFairway.jnro)) {
         circleMap.set(circleFairway.jnro, []);
       }

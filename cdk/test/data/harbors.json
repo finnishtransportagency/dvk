@@ -1,0 +1,42 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "21.21676;62.35417",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.21676,
+          62.35417
+        ]
+      },
+      "properties": {
+        "featureType": "harbor",
+        "id": "21.21676;62.35417",
+        "harborId": "kaskinen",
+        "name": {
+          "en": "Port of Kaskinen deep port",
+          "fi": "Kaskisten syväsatama",
+          "sv": "Kaskö djuphamn"
+        },
+        "phoneNumber": [
+          "+358406152848"
+        ],
+        "fax": "+35862207300",
+        "internet": "https//www.portofkaskinen.fi",
+        "quays": 5,
+        "fairwayCards": [
+          {
+            "id": "kaskinen",
+            "name": {
+              "en": "Kaskinen channel",
+              "fi": "Kaskisten väylä",
+              "sv": "Kasköleden"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

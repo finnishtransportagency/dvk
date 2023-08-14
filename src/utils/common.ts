@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
-import { FairwayCardPartsFragment } from '../graphql/generated';
-import { FeatureDataLayerId, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FairwayCardPartsFragment, Text } from '../graphql/generated';
+import { COASTAL_WARNING, FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH, imageUrl } from './constants';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -18,7 +18,7 @@ export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lan
   return (data && data.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS)) || [];
 };
 
-export const refreshPrintableMap = () => {
+export const refreshPrintableMap = (pictures?: string[]) => {
   const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
   const rotation = dvkMap.olMap?.getView().getRotation();
 
@@ -79,8 +79,17 @@ export const refreshPrintableMap = () => {
   const mapExport = document.getElementById('mapExport');
   if (mapExport) {
     mapExport.innerHTML = '';
-    mapExport?.appendChild(img);
+    mapExport.appendChild(img);
   }
+  pictures?.forEach((picture, index) => {
+    const mapExport2 = document.getElementById('mapExport' + index);
+    if (mapExport2) {
+      mapExport2.innerHTML = '';
+      const img2 = new Image();
+      img2.src = imageUrl + picture;
+      mapExport2.appendChild(img2);
+    }
+  });
 };
 
 export function getDuration(dataUpdatedAt: number, decimals = 1) {
@@ -104,3 +113,18 @@ export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLaye
     return { duration, color: 'danger' };
   }
 }
+
+export const isCoastalWarning = (type: Text | undefined): boolean => {
+  const warningType = type?.fi || type?.sv || type?.en;
+  return warningType === COASTAL_WARNING;
+};
+
+export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
+  const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
+  return layer ? layer.offlineSupport : false;
+};
+
+export const getMapCanvasWidth = (): number => {
+  const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
+  return canvasSize[0];
+};

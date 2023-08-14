@@ -6,7 +6,6 @@ schema {
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
   fairwayCard(id: String!): FairwayCard
-  fairwayCardsByFairwayId(id: Int!): [FairwayCard]
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
@@ -18,8 +17,16 @@ type Query {
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput): FairwayCard
-  saveHarbor(harbor: HarborInput): Harbor
+  saveFairwayCard(card: FairwayCardInput!): FairwayCard
+  saveHarbor(harbor: HarborInput!): Harbor
+  uploadPicture(picture: PictureUploadInput!): Boolean
+}
+
+input PictureUploadInput {
+  cardId: String!
+  id: String!
+  base64Data: String!
+  contentType: String!
 }
 
 enum Operation {
@@ -63,6 +70,21 @@ input FairwayCardInput {
   windRecommendation: TextInput
   trafficService: TrafficServiceInput
   harbors: [String!]
+  pictures: [PictureInput!]
+}
+
+input PictureInput {
+  id: String!
+  sequenceNumber: Int
+  orientation: Orientation!
+  rotation: Float
+  harborId: String
+  modificationTimestamp: Float
+}
+
+enum Orientation {
+  PORTRAIT
+  LANDSCAPE
 }
 
 input TrafficServiceInput {
@@ -204,6 +226,16 @@ type FairwayCard {
   windRecommendation: Text
   trafficService: TrafficService
   harbors: [Harbor!]
+  pictures: [Picture!]
+}
+
+type Picture {
+  id: String!
+  sequenceNumber: Int
+  orientation: Orientation!
+  rotation: Float
+  harborId: String
+  modificationTimestamp: Float
 }
 
 type TrafficService {
@@ -434,7 +466,7 @@ type NavigationLine {
   additionalInformation: String
   type: String
   typeCode: String
-  geometry: GeometryLine!
+  geometry: GeometryLine
   fairways: [NavigationLineFairway!]
 }
 

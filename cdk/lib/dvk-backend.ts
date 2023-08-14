@@ -11,14 +11,22 @@ import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } fro
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
-import { ApplicationLoadBalancer, ApplicationProtocol, ListenerAction, ListenerCondition } from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import {
+  ApplicationListener,
+  ApplicationLoadBalancer,
+  ApplicationProtocol,
+  ListenerAction,
+  ListenerCondition,
+} from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import { LambdaTarget } from 'aws-cdk-lib/aws-elasticloadbalancingv2-targets';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { WafConfig } from './wafConfig';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
+import { CanonicalUserPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps, LifecycleRule } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { getNewStaticBucketName } from './lambda/environment';
+import { OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
 
 export class DvkBackendStack extends Stack {
   private domainName: string;
@@ -100,6 +108,7 @@ export class DvkBackendStack extends Stack {
     harborVersioningBucket.grantPut(dbStreamHandler);
     harborVersioningBucket.grantRead(dbStreamHandler);
     const bucket = this.createCacheBucket(env);
+    const staticBucket = this.createStaticBucket();
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
@@ -111,7 +120,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         timeout: Duration.seconds(30),
         layers: [layer],
-        vpc,
+        vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
@@ -138,34 +147,77 @@ export class DvkBackendStack extends Stack {
       if (typeName === 'Mutation') {
         fairwayCardTable.grantReadWriteData(backendLambda);
         harborTable.grantReadWriteData(backendLambda);
+        staticBucket.grantPut(backendLambda);
       } else {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
       bucket.grantPut(backendLambda);
       bucket.grantRead(backendLambda);
+      staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, layer, vpc);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, staticBucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
         exportName: 'LoadBalancerDnsName' + env,
       });
       new cdk.CfnOutput(this, 'AppSyncAPIKey', {
-        value: api.apiKey || '',
+        value: api.apiKey ?? '',
         exportName: 'AppSyncAPIKey' + env,
       });
       new cdk.CfnOutput(this, 'AppSyncAPIURL', {
-        value: api.graphqlUrl || '',
+        value: api.graphqlUrl ?? '',
         exportName: 'AppSyncAPIURL' + env,
       });
     } catch (e) {
       // to keep SonarLint happy CfnOutput created inside try catch
       console.log('CloudFormation output failed: %s', e);
     }
+  }
+
+  private addDevelopmentLambdas(httpListener: ApplicationListener, env: string, staticBucket: Bucket) {
+    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
+      functionName: `cors-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: 'debug',
+      },
+      logRetention: RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
+    });
+    httpListener.addTargets('HTTPListenerTarget-CORS', {
+      targets: [new LambdaTarget(corsLambda)],
+      priority: 1,
+      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
+    });
+    const imgLambda = new NodejsFunction(this, `APIHandler-Image-${env}`, {
+      functionName: `image-${env}`.toLocaleLowerCase(),
+      runtime: lambda.Runtime.NODEJS_18_X,
+      entry: path.join(__dirname, 'lambda/api/image-handler.ts'),
+      handler: 'handler',
+      environment: {
+        LOG_LEVEL: 'debug',
+        ENVIRONMENT: env,
+      },
+      logRetention: RetentionDays.ONE_DAY,
+      bundling: {
+        minify: true,
+      },
+    });
+    httpListener.addTargets('HTTPListenerTarget-Image', {
+      targets: [new LambdaTarget(imgLambda)],
+      priority: 2,
+      conditions: [ListenerCondition.pathPatterns(['/api/image'])],
+    });
+    staticBucket.grantRead(imgLambda);
   }
 
   private createFairwayCardTable(): Table {
@@ -226,6 +278,39 @@ export class DvkBackendStack extends Stack {
     });
   }
 
+  private createStaticBucket() {
+    const s3DeletePolicy: Pick<BucketProps, 'removalPolicy' | 'autoDeleteObjects'> = {
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: Config.isPermanentEnvironment() ? undefined : true,
+    };
+    const staticBucket = new Bucket(this, 'NewStaticBucket', {
+      bucketName: getNewStaticBucketName(),
+      publicReadAccess: false,
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      versioned: true,
+      ...s3DeletePolicy,
+      lifecycleRules: [{ tagFilters: { InUse: 'false' }, expiration: Config.isPermanentEnvironment() ? Duration.days(30) : Duration.days(1) }],
+    });
+    const cloudfrontOAI = new OriginAccessIdentity(this, 'StaticCloudfrontOAI', {
+      comment: `Static OAI for ${Config.getEnvironment()}`,
+    });
+    new cdk.CfnOutput(this, 'StaticOAI', {
+      value: cloudfrontOAI.originAccessIdentityId,
+      description: 'OriginAccessIdentityId for static bucket',
+      exportName: `OriginAccessIdentityId${Config.getEnvironment()}`,
+    });
+    staticBucket.addToResourcePolicy(
+      new PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [staticBucket.arnForObjects('*')],
+        principals: [new CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    Tags.of(staticBucket).add('Backups-' + Config.getEnvironment(), 'true');
+    return staticBucket;
+  }
+
   private createVersioningBucket(table: string, env: string): Bucket {
     const duration = Config.isPermanentEnvironment() ? Duration.days(30) : Duration.days(1);
     const numberOfVersionsToKeep = Config.isPermanentEnvironment() ? 5 : 1; // how many versions to keep at expiration point
@@ -257,6 +342,7 @@ export class DvkBackendStack extends Stack {
     fairwayCardTable: Table,
     harborTable: Table,
     cacheBucket: Bucket,
+    staticBucket: Bucket,
     layer: ILayerVersion,
     vpc: IVpc
   ): ApplicationLoadBalancer {
@@ -271,30 +357,9 @@ export class DvkBackendStack extends Stack {
       defaultAction: ListenerAction.fixedResponse(404),
       open: true,
     });
-    // add CORS config
-    const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
-      functionName: `cors-${env}`.toLocaleLowerCase(),
-      runtime: lambda.Runtime.NODEJS_18_X,
-      entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
-      handler: 'handler',
-      layers: [layer],
-      vpc,
-      environment: {
-        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
-        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
-        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
-        SSM_PARAMETER_STORE_TTL: '300',
-      },
-      logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
-      bundling: {
-        minify: true,
-      },
-    });
-    httpListener.addTargets('HTTPListenerTarget-CORS', {
-      targets: [new LambdaTarget(corsLambda)],
-      priority: 1,
-      conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
-    });
+    if (!Config.isPermanentEnvironment()) {
+      this.addDevelopmentLambdas(httpListener, env, staticBucket);
+    }
     for (const lambdaFunc of apiLambdaFunctions) {
       const functionName = lambdaFunc.functionName;
       const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
@@ -304,7 +369,7 @@ export class DvkBackendStack extends Stack {
         handler: 'handler',
         layers: [layer],
         timeout: Duration.seconds(60),
-        vpc,
+        vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
@@ -332,6 +397,7 @@ export class DvkBackendStack extends Stack {
       harborTable.grantReadData(backendLambda);
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
+      staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     return alb;

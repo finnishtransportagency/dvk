@@ -3,6 +3,14 @@ ion-modal .gradient-top {
   background: linear-gradient(to right, var(--ion-color-secondary), var(--ion-color-tertiary));
 }
 
+ion-modal ion-header {
+  box-shadow: none !important;
+}
+
+ion-modal ion-footer {
+  box-shadow: none !important;
+}
+
 ion-modal ion-header.header-md::after {
   content: none;
 }
@@ -85,27 +93,8 @@ ion-modal.large {
 ion-modal.large::part(content) {
   height: fit-content;
   color: var(--ion-color-dark);
-}
-
-ion-modal ion-button.languageSelection {
-  color: var(--ion-color-dark);
-  font-size: 12px;
-  text-transform: none;
-  letter-spacing: normal;
-  margin: 0 2px;
-  text-decoration: underline;
-  --background-hover: unset;
-  --padding-start: 14px;
-  --padding-end: 14px;
-  --background-hover: unset;
-  --background-focused: unset;
-}
-
-ion-modal ion-button.languageSelection:hover {
-  text-decoration: none;
-}
-ion-modal ion-button.languageSelection.ion-focused {
-  outline: 1px solid var(--ion-color-dark);
+  max-height: calc(100vh - 96px);
+  overflow: auto;
 }
 
 ion-modal ion-button.button-disabled {
@@ -113,10 +102,6 @@ ion-modal ion-button.button-disabled {
   font-weight: bold;
   color: var(--ion-color-dark);
   opacity: 1;
-}
-
-ion-modal .languageBar {
-  padding-top: 28px;
 }
 
 ion-modal .buttonBar {

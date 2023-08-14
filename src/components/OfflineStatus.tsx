@@ -6,6 +6,7 @@ import { getDuration, refreshPrintableMap } from '../utils/common';
 import { MAP } from '../utils/constants';
 import { useFairwayCardListData, useFeatureData, useMarineWarningsData, useSafetyEquipmentFaultData } from '../utils/dataLoader';
 import { getMap } from './DvkMap';
+import { useStaticDataLayer } from './FeatureLoader';
 
 const OfflineStatus: React.FC = () => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
@@ -28,16 +29,17 @@ const OfflineStatus: React.FC = () => {
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
   const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
   const marineWarningLayer = useFeatureData('marinewarning');
-  const nameLayer = useFeatureData('name');
+  const nameLayer = useStaticDataLayer('name');
   const boardLine12Layer = useFeatureData('boardline12');
   const mareographLayer = useFeatureData('mareograph');
   const observationLayer = useFeatureData('observation');
   const buoyLayer = useFeatureData('buoy');
-  const bgLayerBa = useFeatureData('balticsea');
-  const bgLayerFi = useFeatureData('finland');
-  const bgLayerSea = useFeatureData('mml_meri');
-  const bgLayerLake = useFeatureData('mml_jarvi');
-  const bgLayerQuay = useFeatureData('mml_laiturit');
+  const bgLayerBa = useStaticDataLayer('balticsea');
+  const bgLayerFi = useStaticDataLayer('finland');
+  const bgLayerSea = useStaticDataLayer('mml_meri');
+  const bgLayerLake = useStaticDataLayer('mml_jarvi');
+  const bgLayerHarbor = useStaticDataLayer('mml_satamat');
+  const bgLayerQuay = useStaticDataLayer('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
   const circleLayer = useFeatureData('circle');
@@ -68,6 +70,7 @@ const OfflineStatus: React.FC = () => {
     bgLayerFi,
     bgLayerSea,
     bgLayerLake,
+    bgLayerHarbor,
     bgLayerQuay,
     vtsLineLayer,
     vtsPointLayer,
@@ -119,6 +122,7 @@ const OfflineStatus: React.FC = () => {
             value: false,
           },
         });
+        dvkMap.tileStatus = 'ok';
       }
     } catch {
       /* NOTHING TO DO */
@@ -128,7 +132,7 @@ const OfflineStatus: React.FC = () => {
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      if (dataLayer.noOfflineSupport && state.isOffline) layer.setVisible(false);
+      if (!dataLayer.offlineSupport && state.isOffline) layer.setVisible(false);
     });
     setTimeout(refreshPrintableMap, 100);
   }, [dvkMap, state.isOffline]);

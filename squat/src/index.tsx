@@ -12,12 +12,17 @@ const root = createRoot(rootElement as Element);
 
 (async () => {
   const paramLang = getUrlParam('lang');
-  if (paramLang === 'sv') {
-    await changeLanguage('sv');
+  if (paramLang === 'fi') {
+    await changeLanguage('fi', () => localStorage.setItem('squatLang', 'fi'));
+  } else if (paramLang === 'sv') {
+    await changeLanguage('sv', () => localStorage.setItem('squatLang', 'sv'));
   } else if (paramLang === 'en') {
-    await changeLanguage('en');
+    await changeLanguage('en', () => localStorage.setItem('squatLang', 'en'));
   } else {
-    await changeLanguage('fi');
+    const storageLang = localStorage.getItem('squatLang');
+    if (storageLang) {
+      await changeLanguage(storageLang);
+    }
   }
 
   i18next.on('languageChanged', (lang: string) => {

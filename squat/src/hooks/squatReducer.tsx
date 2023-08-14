@@ -138,6 +138,7 @@ export type State = {
   status: {
     showDeepWaterValues: boolean;
     showBarrass: boolean;
+    showLimitedView: boolean;
   };
   validations: Record<string, unknown>;
 };
@@ -210,6 +211,7 @@ export const getBooleanFieldValue = (fieldName: string, defaultValue: boolean) =
   const queryParams = new URLSearchParams(window.location.search);
   return queryParams.get(fieldName) ? queryParams.get(fieldName)?.toLowerCase() === 'true' : defaultValue;
 };
+
 export const getFieldValue = (fieldName: string, force?: boolean) => {
   const queryParams = new URLSearchParams(window.location.search);
   const defaultValue = fieldParams[fieldName].default;
@@ -321,6 +323,7 @@ export const initialState: State = {
   status: {
     showDeepWaterValues: getBooleanFieldValue('showDeepWaterValues', false),
     showBarrass: getBooleanFieldValue('showBarrass', false),
+    showLimitedView: getBooleanFieldValue('showLimitedView', false),
   },
   validations: validatedFields,
 };

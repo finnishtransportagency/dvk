@@ -2,6 +2,7 @@
   "header": {
     "mainTitle": "Digital farledskort",
     "appTitle": "[sv] Ylläpitokäyttöliittymä",
+    "logo": "Trafikledsverket",
     "logout": "[sv] Kirjaudu ulos",
     "skip-to-content": "Gå till huvudinnehåll"
   },
@@ -50,6 +51,8 @@
     "required-field": "[sv] Pakollinen tieto",
     "check-input": "[sv] Tarkista syöte",
     "use-comma-separated-values": "[sv] Käytä pilkkua erottimena, jos haluat lisätä useamman.",
+    "allowed-values": "[sv] Sallitut merkit",
+    "coordinate-format": "[sv] Koordinaattien muoto",
     "email": "E-post",
     "phone-number": "Telefonnummer",
     "fax": "Faxnummer",

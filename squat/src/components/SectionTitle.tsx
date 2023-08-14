@@ -12,17 +12,21 @@ interface SectionProps {
   hideValidity?: boolean;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
+  disabled?: boolean;
+  className?: string;
 }
 
 const SectionTitle: React.FC<SectionProps> = (props) => {
   const { t } = useTranslation('', { keyPrefix: 'common' });
   return (
-    <IonGrid className="no-padding divider margin-top">
+    <IonGrid className={'no-padding divider margin-top ' + (props.className ? props.className : '')}>
       <IonRow>
         <IonCol>
-          <IonText color="dark" className="no-margin">
+          <IonText color={props.disabled ? 'medium' : 'dark'} className="no-margin">
             <SquatHeader level={3} text={props.title} embedded={isEmbedded()}>
-              {props.infoContent && props.infoContentTitle && <Modal title={props.infoContentTitle} content={props.infoContent} />}
+              {props.infoContent && props.infoContentTitle && (
+                <Modal title={props.infoContentTitle} content={props.infoContent} disabled={props.disabled} />
+              )}
             </SquatHeader>
           </IonText>
         </IonCol>

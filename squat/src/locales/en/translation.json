@@ -134,7 +134,9 @@
         "wave-force-info-title": "Wave Force Formula",
         "wave-force-info": "F = 0.35 × Density of Seawater × Length BPP × Wave amplitude²",
         "drift-info-title": "Drift",
-        "drift-info": "Drift Angle = (Density of Air ÷ Density of Seawater) × (Apparent wind speed ÷ Ship speed) ² × (Lateral wind surface area ÷ (Draught) ² × Aerodynamic yaw moment coefficient ÷ (ℼ(0.5 + 2.4 × Draught ÷ Length BPP)))"
+        "drift-info": "Drift Angle = (Density of Air ÷ Density of Seawater) × (Apparent wind speed ÷ Ship speed) ² × (Lateral wind surface area ÷ (Draught) ² × Aerodynamic yaw moment coefficient ÷ (ℼ(0.5 + 2.4 × Draught ÷ Length BPP)))",
+        "extensive-calculator": "Extensive calculator",
+        "limited-calculator": "Limited calculator"
       }
     },
     "squatChart": {
@@ -162,7 +164,7 @@
       "froude-varoitus": "Froude number over 0.7",
       "squat-tulokset": "Squat results"
     },
-    "vaylavirasto-logo": "Finnish Transport Infrastructure Agency logo",
+    "vaylavirasto-logo": "Finnish Transport Infrastructure Agency",
     "saavutettavuusseloste": "Accessibility",
     "saavutettavuus-url": "https://vayla.fi/en/about/contact-information/accessibility"
   },

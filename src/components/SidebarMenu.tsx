@@ -19,6 +19,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { menuController } from '@ionic/core/components';
 import vayla_logo from '../theme/img/vayla_logo.png';
+import vayla_logo_en from '../theme/img/vayla_logo_en.png';
 import './SidebarMenu.css';
 import OfflineSupport from './OfflineSupport';
 import { useDvkContext } from '../hooks/dvkContext';
@@ -29,41 +30,23 @@ import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import extLinkIcon from '../theme/img/ext_link.svg';
 
-export const LanguageBar: React.FC = () => {
+const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
+
+  const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
+    i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
+    e.preventDefault();
+  };
+
   return (
     <IonButtons className="ion-justify-content-around">
-      <IonButton
-        className="languageSelection"
-        onClick={(e) => {
-          i18n.changeLanguage('fi');
-          e.preventDefault();
-        }}
-        disabled={i18n.language === 'fi'}
-        data-testid="langFi"
-      >
+      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'fi')} disabled={i18n.language === 'fi'} data-testid="langFi">
         Suomeksi
       </IonButton>
-      <IonButton
-        className="languageSelection"
-        onClick={(e) => {
-          i18n.changeLanguage('sv');
-          e.preventDefault();
-        }}
-        disabled={i18n.language === 'sv'}
-        data-testid="langSv"
-      >
+      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'sv')} disabled={i18n.language === 'sv'} data-testid="langSv">
         På svenska
       </IonButton>
-      <IonButton
-        className="languageSelection"
-        onClick={(e) => {
-          i18n.changeLanguage('en');
-          e.preventDefault();
-        }}
-        disabled={i18n.language === 'en'}
-        data-testid="langEn"
-      >
+      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'en')} disabled={i18n.language === 'en'} data-testid="langEn">
         In English
       </IonButton>
     </IonButtons>
@@ -76,7 +59,7 @@ type SidebarMenuProps = {
 };
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
   const { state } = useDvkContext();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
@@ -125,7 +108,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
               <IonGrid className="contentGrid ion-no-padding">
                 <IonRow className="header ion-align-items-end">
                   <IonCol>
-                    <IonImg className="logo" src={vayla_logo} alt="Väylävirasto" />
+                    <IonImg className="logo" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
                   </IonCol>
                   <IonCol size="auto">
                     <IonButton

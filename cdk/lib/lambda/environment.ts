@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { log } from './logger';
+import { readParameterByPath } from './api/axios';
 
 const envParameters: Record<string, string> = {};
 
@@ -14,7 +13,21 @@ export function getEnvironment(): string {
   throw new Error(errorMessage('ENVIRONMENT'));
 }
 
-function getExtensionPort(): string {
+export function getFairwayCardTableName(): string {
+  if (process.env.FAIRWAY_CARD_TABLE) {
+    return process.env.FAIRWAY_CARD_TABLE;
+  }
+  throw new Error(errorMessage('FAIRWAY_CARD_TABLE'));
+}
+
+export function getHarborTableName(): string {
+  if (process.env.HARBOR_TABLE) {
+    return process.env.HARBOR_TABLE;
+  }
+  throw new Error(errorMessage('HARBOR_TABLE'));
+}
+
+export function getExtensionPort(): string {
   if (process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT) {
     return process.env.PARAMETERS_SECRETS_EXTENSION_HTTP_PORT;
   }
@@ -33,42 +46,17 @@ export function isFeatureEnvironment() {
   return getEnvironment().startsWith('feature');
 }
 
-export function getAllowOrigin() {
-  return `http://localhost:${isFeatureEnvironment() ? '3001' : '3000'}`;
-}
-
 export function getHeaders(): Record<string, string[]> {
   if (isPermanentEnvironment()) {
     return { 'Content-Type': ['application/json'], 'Content-Encoding': ['gzip'] };
   }
   return {
     'Content-Type': ['application/json'],
-    'Access-Control-Allow-Origin': [getAllowOrigin()],
+    'Access-Control-Allow-Origin': ['*'],
     'Access-Control-Allow-Methods': ['*'],
     'Access-Control-Allow-Headers': ['*'],
     'Content-Encoding': ['gzip'],
   };
-}
-
-async function readParameterByPath(path: string): Promise<string | undefined> {
-  const url = `http://localhost:${getExtensionPort()}/systemsmanager/parameters/get/?name=${path}&withDecryption=true`;
-  const start = Date.now();
-  const response = await axios
-    .get(url, {
-      headers: { 'X-Aws-Parameters-Secrets-Token': process.env.AWS_SESSION_TOKEN as string },
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      // ignore parameter not found
-      if (errorObj.status !== 400) {
-        log.fatal(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-      }
-    });
-  log.debug(`Parameter cache response time: ${Date.now() - start} ms`);
-  if (response?.data) {
-    return response.data.Parameter.Value;
-  }
-  return undefined;
 }
 
 async function readParameterForEnv(path: string): Promise<string> {
@@ -182,4 +170,12 @@ export function getExpires() {
 
 export function getTimeout() {
   return process.env.API_TIMEOUT ? Number.parseInt(process.env.API_TIMEOUT, 10) : 10000;
+}
+
+export function getNewStaticBucketName() {
+  if (isProductionEnvironment()) {
+    return 'static2.dvk.vaylapilvi.fi';
+  } else {
+    return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
+  }
 }

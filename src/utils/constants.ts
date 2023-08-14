@@ -6,7 +6,11 @@ const staticUrl = process.env.REACT_APP_STATIC_URL
   ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
-export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_laiturit' | 'balticsea';
+export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
+
+export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
+
+export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'name';
 
 export type FeatureDataId =
   | 'area12'
@@ -20,16 +24,10 @@ export type FeatureDataId =
   | 'depth12'
   | 'safetyequipmentfault'
   | 'marinewarning'
-  | 'name'
   | 'boardline12'
   | 'mareograph'
   | 'observation'
   | 'buoy'
-  | 'balticsea'
-  | 'finland'
-  | 'mml_meri'
-  | 'mml_jarvi'
-  | 'mml_laiturit'
   | 'vtsline'
   | 'vtspoint'
   | 'circle'
@@ -37,7 +35,19 @@ export type FeatureDataId =
   | 'specialarea2'
   | 'specialarea15';
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
+export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
+
+export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
+  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
+  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
+  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
+];
+
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/area12.json.gz') },
@@ -73,12 +83,6 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
   },
   { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning'), staticUrl: new URL(staticUrl + '/marinewarning.json.gz') },
-  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
-  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
-  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
   { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
@@ -125,7 +129,7 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | F
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId; noOfflineSupport?: boolean };
+type DataLayer = { id: FeatureDataLayerId; offlineSupport: boolean };
 
 type MapType = {
   EPSG: string;
@@ -143,30 +147,30 @@ export const MAP: MapType = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
   FEATURE_DATA_LAYERS: [
-    { id: 'area12' },
-    { id: 'area3456' },
-    { id: 'line12' },
-    { id: 'line3456' },
-    { id: 'speedlimit' },
-    { id: 'specialarea2' },
-    { id: 'specialarea15' },
-    { id: 'pilot' },
-    { id: 'harbor' },
-    { id: 'safetyequipment' },
-    { id: 'depth12' },
-    { id: 'marinewarning' },
-    { id: 'boardline12' },
-    { id: 'mareograph', noOfflineSupport: true },
-    { id: 'ice', noOfflineSupport: true },
-    { id: 'observation', noOfflineSupport: true },
-    { id: 'buoy', noOfflineSupport: true },
-    { id: 'vtsline' },
-    { id: 'vtspoint' },
-    { id: 'name' },
-    { id: 'soundingpoint', noOfflineSupport: true },
-    { id: 'depthcontour', noOfflineSupport: true },
-    { id: 'deptharea', noOfflineSupport: true },
-    { id: 'circle' },
+    { id: 'area12', offlineSupport: true },
+    { id: 'area3456', offlineSupport: true },
+    { id: 'line12', offlineSupport: true },
+    { id: 'line3456', offlineSupport: true },
+    { id: 'speedlimit', offlineSupport: true },
+    { id: 'specialarea2', offlineSupport: true },
+    { id: 'specialarea15', offlineSupport: true },
+    { id: 'pilot', offlineSupport: true },
+    { id: 'harbor', offlineSupport: true },
+    { id: 'safetyequipment', offlineSupport: true },
+    { id: 'depth12', offlineSupport: true },
+    { id: 'marinewarning', offlineSupport: true },
+    { id: 'boardline12', offlineSupport: true },
+    { id: 'mareograph', offlineSupport: false },
+    { id: 'ice', offlineSupport: false },
+    { id: 'observation', offlineSupport: false },
+    { id: 'buoy', offlineSupport: false },
+    { id: 'vtsline', offlineSupport: true },
+    { id: 'vtspoint', offlineSupport: true },
+    { id: 'name', offlineSupport: true },
+    { id: 'soundingpoint', offlineSupport: false },
+    { id: 'depthcontour', offlineSupport: false },
+    { id: 'deptharea', offlineSupport: false },
+    { id: 'circle', offlineSupport: true },
   ],
 };
 
@@ -188,10 +192,10 @@ export const MASTERSGUIDE_URLS = {
 export const PILOTORDER_URL = 'www.pilotonline.fi';
 
 export const OFFLINE_STORAGE = {
-  name: 'DVK',
-  storeName: 'react-query-data',
   staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
   cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
   staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
   cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
+
+export const COASTAL_WARNING = 'COASTAL WARNING';

@@ -1,13 +1,5 @@
 import { ALBEvent } from 'aws-lambda';
-import axios from 'axios';
-import { Geometry } from 'geojson';
-import { getTimeout, getVatuHeaders, getVatuUrl } from '../../environment';
-import { log } from '../../logger';
-import { roundGeometry } from '../../util';
-
-type GeometryModel = {
-  geometria: object;
-};
+import { GeometryModel, VaylaAPIModel, fetchVATUByApi } from '../../api/axios';
 
 export type AlueVaylaAPIModel = {
   jnro: number;
@@ -18,7 +10,6 @@ export type AlueVaylaAPIModel = {
   vaylaalueenJarjestysNro?: number;
   nimiFI?: string;
   nimiSV?: string;
-  nimiSE?: string;
 };
 
 export type AlueAPIModel = {
@@ -105,47 +96,6 @@ export type RajoitusVaylaAPIModel = {
   nimiSV?: string;
 };
 
-export type MitoitusAlusAPIModel = {
-  alustyyppiKoodi: string;
-  alustyyppi: string;
-  pituus: number;
-  leveys: number;
-  syvays: number;
-  koko?: number;
-  runkoTaytelaisyysKerroin?: number;
-};
-export type LuokitusAPIModel = {
-  luokitusTyyppi: string;
-  vaylaluokkaKoodi: string;
-  vaylaluokkaFI?: string;
-  vaylaluokkaSV?: string;
-};
-export type VaylaAPIModel = {
-  jnro: number;
-  nimiFI: string;
-  nimiSV?: string;
-  vaylalajiKoodi?: string;
-  vaylaLajiFI?: string;
-  vaylaLajiSV?: string;
-  valaistusKoodi?: string;
-  valaistusFI?: string;
-  valaistusSV?: string;
-  omistaja?: string;
-  merialueFI?: string;
-  merialueSV?: string;
-  alunSeloste?: string;
-  paatepisteenSeloste?: string;
-  normaaliKaantosade?: number;
-  minimiKaantosade?: number;
-  normaaliLeveys?: number;
-  minimiLeveys?: number;
-  varavesi?: string;
-  lisatieto?: string;
-  mareografi?: string;
-  mitoitusalus?: MitoitusAlusAPIModel[];
-  luokitus?: LuokitusAPIModel[];
-};
-
 type TurvalaiteVaylaAPIModel = {
   jnro: number;
   paavayla?: string;
@@ -220,30 +170,6 @@ export type KaantoympyraAPIModel = {
   lisatieto?: string;
   vayla?: KaantoympyraVaylaAPIModel[];
 } & GeometryModel;
-
-export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}/${api}`;
-  const start = Date.now();
-  const response = await axios
-    .get(url, {
-      headers: await getVatuHeaders(),
-      params,
-      timeout: getTimeout(),
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from VATU failed');
-    });
-  log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  const datas = response ? (response.data as T[]) : [];
-  for (const obj of datas) {
-    if ('geometria' in obj) {
-      roundGeometry(obj.geometria as Geometry);
-    }
-  }
-  return datas;
-}
 
 export async function fetchVATUByFairwayId<T extends GeometryModel | VaylaAPIModel>(fairwayId: number | number[], api: string) {
   const ids = Array.isArray(fairwayId) ? fairwayId.join(',') : fairwayId.toString();

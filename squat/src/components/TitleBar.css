@@ -18,9 +18,9 @@ ion-button.languageSelection:hover {
   text-decoration: underline;
 }
 .titlebar ion-button.icon-only {
-  margin: 0 10px;
+  margin: 0 6px 0 0;
 }
-ion-button.button-disabled {
+ion-button.languageSelection.button-disabled {
   opacity: 1;
   color: var(--ion-color-dark);
   font-weight: bold;

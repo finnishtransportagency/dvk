@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
 import { Geometry } from 'geojson';
-import { getIlmanetPassword, getIlmanetUrl, getIlmanetUsername, getWeatherHeaders, getSOAApiUrl, getTimeout } from '../environment';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
+import { fetchIlmanetApi, fetchWeatherApi } from './axios';
 
 type WeatherMareograph = {
   fmisid: number;
@@ -123,63 +122,25 @@ parser.addEntity('#229', 'å');
 parser.addEntity('#xC5', 'Å');
 parser.addEntity('#197', 'Å');
 
-export function parseXml(xml: string): Mareograph[] {
+function parseXml(xml: string): Mareograph[] {
   const mareographs: Mareograph[] = [];
   try {
-    const obj = parser.parse(xml);
-    if (Array.isArray(obj.pointweather.location)) {
-      for (const location of obj.pointweather.location) {
-        const mareograph = parseLocation(location);
-        mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+    if (xml) {
+      const obj = parser.parse(xml);
+      if (Array.isArray(obj.pointweather.location)) {
+        for (const location of obj.pointweather.location) {
+          const mareograph = parseLocation(location);
+          mareographs.push({ ...mareograph, ...parseMeasure(location), calculated: true } as Mareograph);
+        }
+      } else {
+        const mareograph = parseLocation(obj.pointweather.location);
+        mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
       }
-    } else {
-      const mareograph = parseLocation(obj.pointweather.location);
-      mareographs.push({ ...mareograph, ...parseMeasure(obj.pointweather.location), calculated: true } as Mareograph);
     }
   } catch (e) {
     log.fatal('Parsing Ilmanet xml failed: %s', e);
   }
   return mareographs;
-}
-
-async function fetchIlmanetApi(): Promise<Mareograph[]> {
-  const start = Date.now();
-  const response = await axios
-    .get(await getIlmanetUrl(), {
-      params: {
-        username: await getIlmanetUsername(),
-        password: await getIlmanetPassword(),
-        orderId: 165689,
-      },
-      headers: await getWeatherHeaders(),
-      timeout: getTimeout(),
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Ilmanet api failed');
-    });
-  const duration = Date.now() - start;
-  log.debug({ duration }, `Ilmanet api response time: ${duration} ms`);
-  return response.data ? parseXml(response.data as string) : [];
-}
-
-async function fetchApi<T>(path: string) {
-  const url = `https://${await getSOAApiUrl()}/fmi/${path}`;
-  const start = Date.now();
-  const response = await axios
-    .get(url, {
-      headers: await getWeatherHeaders(),
-      timeout: getTimeout(),
-    })
-    .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`Weather api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Weather api failed');
-    });
-  const duration = Date.now() - start;
-  log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
-  return response.data ? (response.data as T[]) : [];
 }
 
 function parseGeometry(latlonString: string): Geometry {
@@ -191,7 +152,7 @@ function parseGeometry(latlonString: string): Geometry {
 
 export async function fetchMareoGraphs(): Promise<Mareograph[]> {
   return (
-    await fetchApi<WeatherMareograph>(
+    await fetchWeatherApi<WeatherMareograph>(
       'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WLEV_PT1S_INSTANT,WLEVN2K_PT1S_INSTANT&precision=double&endtime=now&producer=observations_fmi&timeformat=sql&format=json&keyword=mareografit'
     )
   )
@@ -206,12 +167,12 @@ export async function fetchMareoGraphs(): Promise<Mareograph[]> {
         calculated: false,
       };
     })
-    .concat(await fetchIlmanetApi());
+    .concat(parseXml(await fetchIlmanetApi()));
 }
 
 export async function fetchWeatherObservations(): Promise<Observation[]> {
   return (
-    await fetchApi<WeatherObservation>(
+    await fetchWeatherApi<WeatherObservation>(
       'timeseries?param=fmisid,geoid,latlon,name,localtime,WG_PT10M_MAX,WD_PT10M_AVG,WS_PT10M_AVG,TA_PT1M_AVG,VIS_PT1M_AVG&fmisid=101256,151028,151048,151029,101252,101436,101628,101580,105430&keyword=virpo_sea_all&endtime=now&precision=double&producer=observations_fmi&timeformat=sql&format=json'
     )
   ).map((measure) => {
@@ -231,7 +192,7 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
 
 export async function fetchBuoys(): Promise<Buoy[]> {
   const buoys = (
-    await fetchApi<WeatherBuoy>(
+    await fetchWeatherApi<WeatherBuoy>(
       'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WH_PT1M_ACC,WHD_PT1M_ACC,TW_PT1M_AVG&fmisid=103976,134220,134221,134246,137228&precision=double&starttime=-2h&timestep=data&producer=observations_fmi&timeformat=sql&format=json'
     )
   )

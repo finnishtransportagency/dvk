@@ -1,6 +1,7 @@
 {
   "homePage": {
     "sidebarMenu": {
+      "logo": "Finnish Transport Infrastructure Agency",
       "closeMenu": "Close",
       "title": "Digital Fairway Card",
       "fairway-cards": "Fairway Cards",
@@ -224,7 +225,8 @@
       "degDesc_one": "degree",
       "degDesc_other": "degrees"
     },
-    "opens-in-a-new-tab": "Opens in a new tab"
+    "opens-in-a-new-tab": "Opens in a new tab",
+    "alert": "The \"{{ fairwayCardId }}\" fairway card you requested was not found. Check the site address for typos. <br/><br/>You can also check if the fairway card you are looking for can be found in the <3>Fairway cards</3> listing."
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -267,6 +269,9 @@
     "errorContent": "Error occurred when loading data. Please try again later."
   },
   "popup": {
+    "common": {
+      "noFairwayCards": "No fairway cards"
+    },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
       "coordinates": "Coordinates",
@@ -379,6 +384,7 @@
   "common": {
     "documentTitle": "Digital Fairway Card",
     "home": "Digital fairway card",
+    "logo": "Finnish Transport Infrastructure Agency",
     "openMenu": "Open menu",
     "general": "General",
     "openDescription": "Open",
@@ -412,10 +418,6 @@
     "fairway-cards": "Fairway Cards",
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab"
-  },
-  "mobile": {
-    "title": "Use of digital fairway card in mobile devices",
-    "content": "The digital fairway card is still under development. At first stage, this service does not officially support the use of mobile devices, and therefore we recommend the use of desktop or tablet browser."
   },
   "source": {
     "title": "Data sources and terms of use",

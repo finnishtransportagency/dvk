@@ -1,9 +1,8 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation } from '../../../graphql/generated';
+import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
-
-const fairwayCardTable = process.env.FAIRWAY_CARD_TABLE;
+import { getFairwayCardTableName } from '../environment';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -65,9 +64,13 @@ export type Harbor = {
   id: string;
 };
 
-type FairwayCardByFairwayIdIndex = {
+export type Picture = {
   id: string;
-  fairwayIds: string;
+  sequenceNumber?: Maybe<number>;
+  orientation: Orientation;
+  rotation?: Maybe<number>;
+  harborId?: Maybe<string>;
+  modificationTimestamp?: Maybe<number>;
 };
 
 class FairwayCardDBModel {
@@ -125,15 +128,17 @@ class FairwayCardDBModel {
 
   expires?: Maybe<number>;
 
+  pictures?: Maybe<Picture[]>;
+
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: fairwayCardTable, Key: { id } }));
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
 
   static async getAll(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: fairwayCardTable }));
+    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getFairwayCardTableName() }));
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
@@ -146,7 +151,7 @@ class FairwayCardDBModel {
   static async getAllPublic(): Promise<FairwayCardDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
-        TableName: fairwayCardTable,
+        TableName: getFairwayCardTableName(),
         FilterExpression: '#status = :vStatus',
         ExpressionAttributeNames: { '#status': 'status' },
         ExpressionAttributeValues: { ':vStatus': Status.Public },
@@ -161,30 +166,9 @@ class FairwayCardDBModel {
     return [];
   }
 
-  static async findByFairwayId(id: number): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: fairwayCardTable,
-        IndexName: 'FairwayCardByFairwayIdIndex',
-        FilterExpression: 'contains (fairwayIds, :vId)',
-        ExpressionAttributeValues: { ':vId': `#${id}#` },
-      })
-    );
-    const items = response.Items as FairwayCardByFairwayIdIndex[] | [];
-    log.debug('%d fairway card(s) found', items.length);
-    const fairwayCards: FairwayCardDBModel[] = [];
-    for (const entry of items) {
-      const card = await FairwayCardDBModel.get(entry.id);
-      if (card) {
-        fairwayCards.push(card);
-      }
-    }
-    return fairwayCards;
-  }
-
   static async save(data: FairwayCardDBModel, operation: Operation) {
     const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: fairwayCardTable, Item: data, ConditionExpression: expr }));
+    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getFairwayCardTableName(), Item: data, ConditionExpression: expr }));
   }
 }
 

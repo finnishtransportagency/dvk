@@ -14,11 +14,13 @@ import './SquatChart.css';
 import SquatDataTable from './SquatDataTable';
 import { isEmbedded } from '../pages/Home';
 import SquatHeader from './SquatHeader';
+import { fieldParams } from '../hooks/squatReducer';
 
 const SquatChart: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
   const ref = useRef<SVGSVGElement>(null);
   const { state } = useSquatContext();
+
   const [width, setWidth] = useState(1000);
   const [huuskaGuliev20, setHuuskaGuliev20] = useState(Array<[number, number]>);
   const [huuskaGuliev24, setHuuskaGuliev24] = useState(Array<[number, number]>);
@@ -38,32 +40,43 @@ const SquatChart: React.FC = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const calculateHGSquat = (speed: number, C0Coefficient: number) => {
-      const constantHeelDuringTurn = calculateHeelDuringTurn(
-        state.environment.vessel.vesselSpeed,
-        state.environment.vessel.turningRadius,
-        state.vessel.stability.KG,
-        state.vessel.stability.GM,
-        state.vessel.stability.KB
-      );
+    const { showLimitedView: limitedView } = state.status;
 
-      const correctedDraughtDuringTurn = calculateDraughtDuringTurn(
-        state.vessel.general.breadth,
-        state.vessel.general.draught,
-        constantHeelDuringTurn
-      );
+    const lengthBPP = state.vessel.general.lengthBPP;
+    const breadth = state.vessel.general.breadth;
+    const draught = state.vessel.general.draught;
+    const blockCoefficient = state.vessel.general.blockCoefficient;
+    const KG = limitedView ? fieldParams.KG.default : state.vessel.stability.KG;
+    const GM = limitedView ? fieldParams.GM.default : state.vessel.stability.GM;
+    const KB = limitedView ? fieldParams.KB.default : state.vessel.stability.KB;
+    const sweptDepth = state.environment.fairway.sweptDepth;
+    const waterLevel = limitedView ? fieldParams.waterLevel.default : state.environment.fairway.waterLevel;
+    const waterDepth = limitedView ? fieldParams.waterDepth.default : state.environment.fairway.waterDepth;
+    const fairwayForm = state.environment.fairway.fairwayForm;
+    const channelWidth = state.environment.fairway.channelWidth;
+    const slopeScale = state.environment.fairway.slopeScale;
+    const slopeHeight = state.environment.fairway.slopeHeight;
+    const vesselSpeed = state.environment.vessel.vesselSpeed;
+    const turningRadius = limitedView ? fieldParams.turningRadius.default : state.environment.vessel.turningRadius;
+    const requiredUKC = state.environment.attribute.requiredUKC;
+    const motionClearance = state.environment.attribute.motionClearance;
+
+    const calculateHGSquat = (speed: number, C0Coefficient: number) => {
+      const constantHeelDuringTurn = calculateHeelDuringTurn(vesselSpeed, turningRadius, KG, GM, KB);
+
+      const correctedDraughtDuringTurn = calculateDraughtDuringTurn(breadth, draught, constantHeelDuringTurn);
 
       const [squatHG] = calculateSquatHG(
-        state.vessel.general.lengthBPP,
-        state.vessel.general.breadth,
-        state.vessel.general.draught,
-        state.vessel.general.blockCoefficient,
-        state.environment.fairway.sweptDepth,
-        state.environment.fairway.waterLevel,
-        state.environment.fairway.fairwayForm.id - 1,
-        state.environment.fairway.channelWidth,
-        state.environment.fairway.slopeScale,
-        state.environment.fairway.slopeHeight,
+        lengthBPP,
+        breadth,
+        draught,
+        blockCoefficient,
+        sweptDepth,
+        waterLevel,
+        fairwayForm.id - 1,
+        channelWidth,
+        slopeScale,
+        slopeHeight,
         speed,
         correctedDraughtDuringTurn,
         C0Coefficient
@@ -73,7 +86,7 @@ const SquatChart: React.FC = () => {
     };
 
     const calculateBarrassSquat = (speed: number) => {
-      return calculateSquatBarrass(state.vessel.general.draught, state.vessel.general.blockCoefficient, state.environment.fairway.sweptDepth, speed);
+      return calculateSquatBarrass(draught, blockCoefficient, sweptDepth, speed);
     };
 
     const buildGraph = () => {
@@ -87,40 +100,36 @@ const SquatChart: React.FC = () => {
       const squatHG24Color = '#ff0000';
       const squatBarrassColor = '#BB00BB';
 
-      const minSpeed = state.environment.vessel.vesselSpeed > 5 ? state.environment.vessel.vesselSpeed - 5 : 0;
+      const minSpeed = vesselSpeed > 5 ? vesselSpeed - 5 : 0;
       const maxSpeed = minSpeed + 10;
 
       const paramsValid = (() => {
         const isBetween = (value: number, min: number, max: number) => {
           return value >= min && value <= max;
         };
-        if (state.vessel.general.lengthBPP <= 0) return false;
-        if (state.vessel.general.breadth <= 0) return false;
-        if (state.vessel.general.draught <= 0) return false;
-        if (state.environment.vessel.vesselSpeed < 0) return false;
-        if (state.environment.fairway.sweptDepth <= state.vessel.general.draught) return false;
+        if (lengthBPP <= 0) return false;
+        if (breadth <= 0) return false;
+        if (draught <= 0) return false;
+        if (vesselSpeed < 0) return false;
+        if (sweptDepth <= draught) return false;
         if (state.status.showBarrass) return true;
-        if (!isBetween(state.vessel.general.blockCoefficient, 0.6, 0.8)) return false;
-        if (!isBetween(state.vessel.general.breadth / state.vessel.general.draught, 2.19, 3.5)) return false;
-        if (!isBetween(state.vessel.general.lengthBPP / state.vessel.general.breadth, 5.5, 8.5)) return false;
-        const fn = calculateFroudeNumber(
-          state.environment.vessel.vesselSpeed,
-          state.environment.fairway.sweptDepth,
-          state.environment.fairway.waterLevel
-        );
+        if (!isBetween(blockCoefficient, 0.6, 0.8)) return false;
+        if (!isBetween(breadth / draught, 2.19, 3.5)) return false;
+        if (!isBetween(lengthBPP / breadth, 5.5, 8.5)) return false;
+        const fn = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
         if (fn > 0.7) return false;
         return true;
       })();
 
-      const yDomainSweptDepth = state.environment.fairway.sweptDepth + state.environment.fairway.waterLevel / 100 - state.vessel.general.draught;
+      const yDomainSweptDepth = sweptDepth + waterLevel / 100 - draught;
 
-      let yDomainWaterDepth = state.environment.fairway.waterDepth - state.vessel.general.draught;
+      let yDomainWaterDepth = waterDepth - draught;
 
       if (Number.isNaN(yDomainWaterDepth) || yDomainWaterDepth < yDomainSweptDepth) {
         yDomainWaterDepth = yDomainSweptDepth;
       }
 
-      const yDomainOtherMovementHeight = state.environment.attribute.motionClearance;
+      const yDomainOtherMovementHeight = motionClearance;
 
       const bottomLayerHeightPx = 20;
 
@@ -201,8 +210,8 @@ const SquatChart: React.FC = () => {
       }
 
       if (yDomainSweptDepth > 0) {
-        const yDomainUKCh = Math.min(yDomainSweptDepth, state.environment.attribute.requiredUKC);
-        const yDomainUKCy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC);
+        const yDomainUKCh = Math.min(yDomainSweptDepth, requiredUKC);
+        const yDomainUKCy = Math.max(0, yDomainSweptDepth - requiredUKC);
         addChartLayer({
           y: marginTop + yScale(yDomainUKCy),
           height: yScale(yDomainUKCh),
@@ -212,9 +221,9 @@ const SquatChart: React.FC = () => {
         });
       }
 
-      if (yDomainSweptDepth - state.environment.attribute.requiredUKC > 0) {
-        const yDomainOMh = Math.min(yDomainOtherMovementHeight, yDomainSweptDepth - state.environment.attribute.requiredUKC);
-        const yDomainOMy = Math.max(0, yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight);
+      if (yDomainSweptDepth - requiredUKC > 0) {
+        const yDomainOMh = Math.min(yDomainOtherMovementHeight, yDomainSweptDepth - requiredUKC);
+        const yDomainOMy = Math.max(0, yDomainSweptDepth - requiredUKC - yDomainOtherMovementHeight);
         addChartLayer({
           y: marginTop + yScale(yDomainOMy),
           height: yScale(yDomainOMh),
@@ -224,10 +233,10 @@ const SquatChart: React.FC = () => {
         });
       }
 
-      if (yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight > 0) {
+      if (yDomainSweptDepth - requiredUKC - yDomainOtherMovementHeight > 0) {
         addChartLayer({
           y: marginTop,
-          height: yScale(yDomainSweptDepth - state.environment.attribute.requiredUKC - yDomainOtherMovementHeight),
+          height: yScale(yDomainSweptDepth - requiredUKC - yDomainOtherMovementHeight),
           fillColor: '#ccffff',
           label: t('levels.squat'),
           labelColor: '#000000',
@@ -245,7 +254,7 @@ const SquatChart: React.FC = () => {
         .selectAll('.tick')
         // eslint-disable-next-line
         .filter((elem: any) => {
-          return elem === state.environment.vessel.vesselSpeed;
+          return elem === vesselSpeed;
         })
         .attr('font-weight', 'bold')
         .attr('font-style', 'italic');

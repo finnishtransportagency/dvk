@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>42459CDB-F404-484B-A4A6-E05E22D4C0C8</title>
+    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="dvk_sea_merivaroitukset_popup_warning" transform="translate(-405, -847)">
+            <g id="Notifikaatiot/Positive-Copy-2" transform="translate(391, 818)">
+                <g id="merivaroitus_ikoni" transform="translate(14, 29)">
+                    <rect id="Combined-Shape" stroke="#D72416" stroke-width="2" fill="#FFFFFF" x="1" y="1" width="22" height="22"></rect>
+                    <path d="M10.2051631,20 L11.1032335,13.7333333 L7.90522686,13.7333333 C7.7445964,13.7333333 7.62777424,13.6592593 7.55476039,13.5111111 C7.48174654,13.362963 7.48174654,13.2222222 7.55476039,13.0888889 L12.9212783,4 L13.8193487,4 L12.9212783,10.2444444 L16.0754766,10.2444444 C16.2361071,10.2444444 16.3565799,10.3185185 16.4368952,10.4666667 C16.5172104,10.6148148 16.5208611,10.7555556 16.4478473,10.8888889 L11.1032335,20 L10.2051631,20 Z" id="Path" fill="#D72416" fill-rule="nonzero"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

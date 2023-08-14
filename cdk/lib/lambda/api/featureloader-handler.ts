@@ -6,7 +6,6 @@ import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel'
 import { gzip } from 'zlib';
 import {
   AlueAPIModel,
-  fetchVATUByApi,
   fetchVATUByFairwayClass,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
@@ -16,11 +15,12 @@ import {
   TurvalaiteVikatiedotAPIModel,
 } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
-import { fetchMarineWarnings, parseDateTimes } from './pooki';
+import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
+import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 
 function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
@@ -46,7 +46,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
   }
   const cards = await FairwayCardDBModel.getAllPublic();
   for (const card of cards) {
-    for (const h of card.harbors || []) {
+    for (const h of card.harbors ?? []) {
       harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
     }
   }
@@ -71,7 +71,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             phoneNumber: harbor.phoneNumber,
             fax: harbor.fax,
             internet: harbor.internet,
-            quays: harbor.quays?.length || 0,
+            quays: harbor.quays?.length ?? 0,
             fairwayCards: harbor.fairwayCards,
             extraInfo: harbor.extraInfo,
           },
@@ -99,11 +99,8 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
     placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
   }
   for (const card of cards) {
-    const pilot = card.trafficService?.pilot;
-    if (pilot && pilot.places) {
-      for (const place of pilot.places) {
-        placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
-      }
+    for (const place of card.trafficService?.pilot?.places ?? []) {
+      placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
     }
   }
   for (const place of placeMap.values()) {
@@ -211,7 +208,7 @@ async function addAreaFeatures(
             fairwayId: v.jnro,
             name: {
               fi: v.nimiFI,
-              sv: v.nimiSV || v.nimiSE,
+              sv: v.nimiSV,
             },
             fairwayCards: cardMap.get(v.jnro),
             status: v.status,
@@ -229,7 +226,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
   const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
-    (a) => a.rajoitustyyppi === 'Nopeusrajoitus' || (a.rajoitustyypit?.filter((b) => b.rajoitustyyppi === 'Nopeusrajoitus')?.length || 0) > 0
+    (a) => a.rajoitustyyppi === 'Nopeusrajoitus' || (a.rajoitustyypit?.filter((b) => b.rajoitustyyppi === 'Nopeusrajoitus')?.length ?? 0) > 0
   )) {
     const feature: Feature<Geometry, GeoJsonProperties> = {
       type: 'Feature',
@@ -242,7 +239,7 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
         types:
           area.rajoitustyypit?.map((t) => {
             return { code: t.koodi, text: t.rajoitustyyppi };
-          }) || [],
+          }) ?? [],
         exception: area.poikkeus,
         fairways: area.vayla?.map((v) => {
           return {
@@ -504,7 +501,7 @@ async function addTurningCircleFeatures(features: Feature<Geometry, GeoJsonPrope
 
 function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined) {
   if (queryString) {
-    const key = (queryString.type?.join(',') || '') + (queryString.vaylaluokka ? queryString.vaylaluokka.join(',') : '');
+    const key = (queryString.type?.join(',') ?? '') + (queryString.vaylaluokka ? queryString.vaylaluokka.join(',') : '');
     if (key !== '') {
       return key;
     }
@@ -565,7 +562,7 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `featureloader()`);
   const key = getKey(event.multiValueQueryStringParameters);
-  const type = event.multiValueQueryStringParameters?.type?.join(',') || '';
+  const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheEnabled = await isCacheEnabled(type);

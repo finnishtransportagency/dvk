@@ -182,7 +182,7 @@ export function mapQuayDepth(text: Maybe<string> | undefined) {
   return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
 }
 
-const pilotPlaceMap = new Map<number, PilotPlace>();
+export const pilotPlaceMap = new Map<number, PilotPlace>();
 const pilotCacheKey = 'pilotplaces';
 
 export async function getPilotPlaceMap() {
@@ -274,6 +274,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     trafficService: mapTrafficService(dbModel.trafficService, pilotMap),
     harbors: dbModel.harbors,
     fairwayIds: mapFairwayIds(dbModel),
+    pictures: dbModel.pictures,
   };
   for (const fairway of dbModel.fairways || []) {
     card.fairways.push(mapFairwayDBModelToFairway(fairway));

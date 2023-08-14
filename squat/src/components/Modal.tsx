@@ -8,7 +8,10 @@ interface ModalProps {
   content: string | ReactElement;
   trigger?: ReactElement;
   triggerTitle?: string;
+  triggerClassName?: string;
   size?: 'medium' | 'large';
+  handleDismiss?: () => void;
+  disabled?: boolean;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -21,18 +24,19 @@ const Modal: React.FC<ModalProps> = (props) => {
 
   const handleClickClose = useCallback(() => {
     setIsOpen(false);
-  }, []);
+    if (props.handleDismiss) props.handleDismiss();
+  }, [props]);
 
   return (
     <>
       <IonButton
         fill="clear"
-        className="icon-only no-background-focused"
-        style={{ marginTop: '1px', marginRight: '1px', marginBottom: '1px' }}
+        className={'icon-only no-background-focused' + (props.triggerClassName ? ' ' + props.triggerClassName : '')}
         onClick={handleClickOpen}
         title={props.triggerTitle || t('more-info')}
         aria-label={props.triggerTitle || t('more-info')}
         role="button"
+        disabled={props.disabled}
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
@@ -44,7 +48,12 @@ const Modal: React.FC<ModalProps> = (props) => {
               <div className="wrappable-title">{props.title}</div>
             </IonTitle>
             <IonButtons slot="end" style={{ marginRight: '16px' }}>
-              <IonButton onClick={handleClickClose} className="icon-only" title={t('close-dialog')} aria-label={t('close-dialog')}>
+              <IonButton
+                onClick={handleClickClose}
+                className="icon-only no-background-focused"
+                title={t('close-dialog')}
+                aria-label={t('close-dialog')}
+              >
                 <IonIcon slot="icon-only" icon={closeOutline} />
               </IonButton>
             </IonButtons>

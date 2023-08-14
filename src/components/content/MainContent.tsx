@@ -12,6 +12,7 @@ import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
+import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import SafetyEquipmentFaults from './SafetyEquipmentFaults';
 import MarineWarnings from './MarineWarnings';
@@ -141,6 +142,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
       setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
     }
     if (event.key === 'Enter' && isSearchbarOpen) {
+      event.preventDefault();
       closeDropdown();
       let targetPath = undefined;
       if (activeSelection) {
@@ -227,6 +229,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                           value={searchQuery}
                           onIonFocus={openDropdown}
                           onIonChange={(e) => changeAction(e.detail.value)}
+                          onIonInput={(e) => changeAction(e.detail.value)}
                           onIonBlur={blurAction}
                           onKeyDown={(e) => keyDownAction(e)}
                           ref={inputRef}
@@ -274,7 +277,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     </IonCol>
                   </IonRow>
                 </IonGrid>
-                <img className="logo printable" src={vayla_logo} alt="Väylävirasto" />
+                <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
 
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}

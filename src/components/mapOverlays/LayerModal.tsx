@@ -4,29 +4,30 @@ import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
-import { refreshPrintableMap } from '../../utils/common';
+import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
-  setMarineWarningLayer: (marineWarningLayer: boolean) => void;
+  setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
 }
 
 export type LayerType = {
   id: FeatureDataLayerId | FeatureDataMainLayerId;
   title: string;
   childLayers?: Maybe<Array<LayerType>>;
-  noOfflineSupport?: Maybe<boolean>;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
+  const { state } = useDvkContext();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
   const setBackgroundMap = (type: BackgroundMapType) => {
@@ -58,9 +59,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'depths',
       title: t('homePage.map.controls.layer.depthinfo'),
       childLayers: [
-        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint'), noOfflineSupport: true },
-        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour'), noOfflineSupport: true },
-        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea'), noOfflineSupport: true },
+        { id: 'soundingpoint', title: t('homePage.map.controls.layer.soundingpoint') },
+        { id: 'depthcontour', title: t('homePage.map.controls.layer.depthcontour') },
+        { id: 'deptharea', title: t('homePage.map.controls.layer.deptharea') },
       ],
     },
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
@@ -78,10 +79,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       id: 'conditions',
       title: t('homePage.map.controls.layer.conditions'),
       childLayers: [
-        { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel'), noOfflineSupport: true },
-        { id: 'observation', title: t('homePage.map.controls.layer.weatherStation'), noOfflineSupport: true },
-        { id: 'buoy', title: t('homePage.map.controls.layer.buoys'), noOfflineSupport: true },
-        { id: 'ice', title: t('homePage.map.controls.layer.ice'), noOfflineSupport: true },
+        { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel') },
+        { id: 'observation', title: t('homePage.map.controls.layer.weatherStation') },
+        { id: 'buoy', title: t('homePage.map.controls.layer.buoys') },
+        { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },
     { id: 'marinewarning', title: t('homePage.map.controls.layer.marineWarnings') },
@@ -100,12 +101,13 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id))
-        setMarineWarningLayer(layers.includes(dataLayer.id));
-      layer.setVisible(layers.includes(dataLayer.id));
+      if (dataLayer.id === 'marinewarning' && layer.getVisible() !== layers.includes(dataLayer.id)) {
+        setMarineWarningNotificationLayer(layers.includes(dataLayer.id));
+      }
+      layer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !state.isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningLayer, dvkMap]);
+  }, [layers, setMarineWarningNotificationLayer, state.isOffline, dvkMap]);
 
   return (
     <IonModal
@@ -115,7 +117,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         setIsOpen(false);
       }}
     >
-      <IonList lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
+      <IonList id="layerModalContent" lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
         <IonGrid className="mainGrid">
           <IonRow className="section ion-align-items-center">
             <IonCol>
@@ -140,15 +142,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
             <IonRow key={layer.id}>
               <IonCol>
                 {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} layers={layers} setLayers={setLayers} />}
-                {!layer.childLayers && (
-                  <LayerItem
-                    id={layer.id as FeatureDataLayerId}
-                    title={layer.title}
-                    noOfflineSupport={layer.noOfflineSupport || false}
-                    layers={layers}
-                    setLayers={setLayers}
-                  />
-                )}
+                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} layers={layers} setLayers={setLayers} />}
               </IonCol>
             </IonRow>
           ))}

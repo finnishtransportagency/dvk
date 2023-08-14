@@ -1,0 +1,23 @@
+ion-backdrop {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.marine-warning-container {
+  position: fixed;
+  opacity: 1;
+  pointer-events: none;
+  /* ion-backdrop has default z-index: 2, must be higher than that */
+  z-index: 3;
+}
+
+ion-app.mobile div.marine-warning-container {
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-app:not(.mobile) div.marine-warning-container {
+  bottom: 36px;
+}
