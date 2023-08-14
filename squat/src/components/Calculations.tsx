@@ -393,7 +393,7 @@ const Calculations: React.FC = () => {
             onIonChange={handleCalculationMethodChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
-            disabled={showLimitedView || getSquatValue() === ''}
+            disabled={getSquatValue() === ''}
             selectOnFocus
           >
             <IonSegmentButton value="false">
