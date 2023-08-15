@@ -231,7 +231,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
       newSequencedPictures =
         currentPicturesByOrientation?.map((pic) => {
           if (pic.id === picture.id) {
-            pic.sequenceNumber = undefined;
+            pic.sequenceNumber = null;
           } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
             pic.sequenceNumber--;
           }
@@ -539,6 +539,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           modificationTimestamp: Date.now(),
           scaleWidth: toBeSavedPicture.scaleWidth,
           scaleLabel: toBeSavedPicture.scaleLabel,
+          sequenceNumber: null,
+          text: null,
           lang: toBeSavedPicture.lang,
         };
         // Update fairwayCard state
@@ -639,7 +641,9 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
     }
   };
+
   const [isOpen, setIsOpen] = useState(false);
+
   return (
     <IonGrid className="mapExportTool">
       <IonRow>
