@@ -429,7 +429,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonButton
                 shape="round"
                 disabled={isError ?? (isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces)}
-                onClick={() => handleSubmit()}
+                onClick={() => handleSubmit(state.status === Status.Removed)}
               >
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
