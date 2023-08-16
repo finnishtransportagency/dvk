@@ -68,7 +68,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
 
   return (
     <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={focusSelectItem}>
+      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={disabled ? undefined : focusSelectItem}>
         {label} {required ? '*' : ''}
       </IonLabel>
       {isLoading ? (
@@ -81,11 +81,11 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
             button={true}
             className={'custom-select-container' + (expanded ? ' expanded' : '')}
             detail={false}
-            disabled={isLoading ?? disabled}
+            disabled={disabled}
             lines="none"
             onClick={() => setIsExpanded(true)}
           >
-            <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={isLoading || disabled} lines="none">
+            <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={disabled} lines="none">
               <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
                 {(selected.length > 0 && (
                   <ul>
