@@ -69,7 +69,7 @@
     "error-HARBOR_NOT_EXIST": "[sv] Satamaa ei löydy annetulla tunnisteella.",
     "error-HARBOR_ID_MISSING": "[sv] Sataman tunniste puuttuu.",
     "error-NO_PERMISSIONS": "[sv] Ei tarvittavia käyttöoikeuksia.",
-    "error-INVALID_INPUT": "Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
+    "error-INVALID_INPUT": "[sv] Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
     "error-OPERATION-BLOCKED": "[sv] Toiminto estetty",
     "fix-errors-try-again": "[sv] Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
