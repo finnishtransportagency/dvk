@@ -226,7 +226,7 @@
       "degDesc_other": "degrees"
     },
     "opens-in-a-new-tab": "Opens in a new tab",
-    "alert": "The \"{{ fairwayCardId }}\" fairway card you requested was not found. Check the site address for typos. <br/><br/>You can also check if the fairway card you are looking for can be found in the <3>Fairway cards</3> listing."
+    "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list."
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -307,7 +307,7 @@
       "length": "Length {{val}}",
       "direction": "True bearing {{val, number}}",
       "fairways": "Navigation line is part of the fairway card",
-      "width": "[en] Väyläleveys valitussa kohdassa",
+      "width": "Fairway width in chosen place",
       "extra": "Additional information"
     },
     "equipment": {
