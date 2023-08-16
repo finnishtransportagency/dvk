@@ -414,7 +414,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               >
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && state.status !== Status.Removed && (
+              {state.operation === Operation.Update && oldState.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
