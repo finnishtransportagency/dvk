@@ -125,204 +125,216 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     },
   });
 
-  const saveCard = useCallback(() => {
-    const currentCard = {
-      ...state,
-      trafficService: {
-        ...state.trafficService,
-        pilot: {
-          ...state.trafficService?.pilot,
-          places: state.trafficService?.pilot?.places?.map((place) => {
-            return { id: place.id, pilotJourney: place.pilotJourney };
-          }),
-        },
-      },
-    };
-    saveFairwayCard({ card: currentCard as FairwayCardInput });
-  }, [state, saveFairwayCard]);
+  const saveCard = useCallback(
+    (isRemove?: boolean) => {
+      if (isRemove) {
+        const oldCard = { ...fairwayCard, status: Status.Removed };
+        setState(oldCard);
+        saveFairwayCard({ card: oldCard as FairwayCardInput });
+      } else {
+        const currentCard = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            pilot: {
+              ...state.trafficService?.pilot,
+              places: state.trafficService?.pilot?.places?.map((place) => {
+                return { id: place.id, pilotJourney: place.pilotJourney };
+              }),
+            },
+          },
+        };
+        saveFairwayCard({ card: currentCard as FairwayCardInput });
+      }
+    },
+    [state, fairwayCard, saveFairwayCard]
+  );
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
-    if (isRemove) updateState(Status.Removed, 'status');
-    // Manual validations for required fields
-    let primaryIdErrorMsg = '';
-    if (state.operation === Operation.Create) {
-      if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+    let allValidations: ValidationType[] = [];
+    if (!isRemove) {
+      // Manual validations for required fields
+      let primaryIdErrorMsg = '';
+      if (state.operation === Operation.Create) {
+        if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
+        if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+      }
+      const manualValidations = [
+        { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
+        { id: 'primaryId', msg: primaryIdErrorMsg },
+        { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t(ErrorMessageKeys?.required) : '' },
+        { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
+        {
+          id: 'line',
+          msg:
+            (state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim()) &&
+            (!state.lineText?.fi.trim() || !state.lineText?.sv.trim() || !state.lineText?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'designSpeed',
+          msg:
+            (state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim()) &&
+            (!state.designSpeed?.fi.trim() || !state.designSpeed?.sv.trim() || !state.designSpeed?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'speedLimit',
+          msg:
+            (state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim()) &&
+            (!state.speedLimit?.fi.trim() || !state.speedLimit?.sv.trim() || !state.speedLimit?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'anchorage',
+          msg:
+            (state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim()) &&
+            (!state.anchorage?.fi.trim() || !state.anchorage?.sv.trim() || !state.anchorage?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'navigationCondition',
+          msg:
+            (state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()) &&
+            (!state.navigationCondition?.fi.trim() || !state.navigationCondition?.sv.trim() || !state.navigationCondition?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'iceCondition',
+          msg:
+            (state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim()) &&
+            (!state.iceCondition?.fi.trim() || !state.iceCondition?.sv.trim() || !state.iceCondition?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'windRecommendation',
+          msg:
+            (state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()) &&
+            (!state.windRecommendation?.fi.trim() || !state.windRecommendation?.sv.trim() || !state.windRecommendation?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'vesselRecommendation',
+          msg:
+            (state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()) &&
+            (!state.vesselRecommendation?.fi.trim() || !state.vesselRecommendation?.sv.trim() || !state.vesselRecommendation?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'visibility',
+          msg:
+            (state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim()) &&
+            (!state.visibility?.fi.trim() || !state.visibility?.sv.trim() || !state.visibility?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'windGauge',
+          msg:
+            (state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim()) &&
+            (!state.windGauge?.fi.trim() || !state.windGauge?.sv.trim() || !state.windGauge?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'seaLevel',
+          msg:
+            (state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim()) &&
+            (!state.seaLevel?.fi.trim() || !state.seaLevel?.sv.trim() || !state.seaLevel?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'pilotExtraInfo',
+          msg:
+            (state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+              state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+              state.trafficService?.pilot?.extraInfo?.en.trim()) &&
+            (!state.trafficService?.pilot?.extraInfo?.fi.trim() ||
+              !state.trafficService?.pilot?.extraInfo?.sv.trim() ||
+              !state.trafficService?.pilot?.extraInfo?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+      ];
+      const vtsNameErrors =
+        state.trafficService?.vts
+          ?.flatMap((vts, i) => (!vts?.name?.fi.trim() || !vts?.name?.sv.trim() || !vts?.name?.en.trim() ? i : null))
+          .filter((val) => Number.isInteger(val))
+          .map((vIndex) => {
+            return {
+              id: 'vtsName-' + vIndex,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      const vhfNameErrors =
+        state.trafficService?.vts
+          ?.map(
+            (vts) =>
+              vts?.vhf
+                ?.flatMap((vhf, j) =>
+                  (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
+                  (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
+                    ? j
+                    : null
+                )
+                .filter((val) => Number.isInteger(val))
+          )
+          .flatMap((vhfIndices, vtsIndex) => {
+            return (
+              vhfIndices?.map((vhfIndex) => {
+                return {
+                  id: 'vhfName-' + vtsIndex + '-' + vhfIndex,
+                  msg: t(ErrorMessageKeys?.required),
+                };
+              }) ?? []
+            );
+          }) ?? [];
+      const vhfChannelErrors =
+        state.trafficService?.vts
+          ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel.trim() ? j : null)).filter((val) => Number.isInteger(val)))
+          .flatMap((vhfIndices, vtsIndex) => {
+            return (
+              vhfIndices?.map((vhfIndex) => {
+                return {
+                  id: 'vhfChannel-' + vtsIndex + '-' + vhfIndex,
+                  msg: t(ErrorMessageKeys?.required),
+                };
+              }) ?? []
+            );
+          }) ?? [];
+      const tugNameErrors =
+        state.trafficService?.tugs
+          ?.flatMap((tug, i) => (!tug?.name?.fi.trim() || !tug?.name?.sv.trim() || !tug?.name?.en.trim() ? i : null))
+          .filter((val) => Number.isInteger(val))
+          .map((tIndex) => {
+            return {
+              id: 'tugName-' + tIndex,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors);
+      setValidationErrors(allValidations);
     }
-    const manualValidations = [
-      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
-      { id: 'primaryId', msg: primaryIdErrorMsg },
-      { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t(ErrorMessageKeys?.required) : '' },
-      { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
-      {
-        id: 'line',
-        msg:
-          (state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim()) &&
-          (!state.lineText?.fi.trim() || !state.lineText?.sv.trim() || !state.lineText?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'designSpeed',
-        msg:
-          (state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim()) &&
-          (!state.designSpeed?.fi.trim() || !state.designSpeed?.sv.trim() || !state.designSpeed?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'speedLimit',
-        msg:
-          (state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim()) &&
-          (!state.speedLimit?.fi.trim() || !state.speedLimit?.sv.trim() || !state.speedLimit?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'anchorage',
-        msg:
-          (state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim()) &&
-          (!state.anchorage?.fi.trim() || !state.anchorage?.sv.trim() || !state.anchorage?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'navigationCondition',
-        msg:
-          (state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()) &&
-          (!state.navigationCondition?.fi.trim() || !state.navigationCondition?.sv.trim() || !state.navigationCondition?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'iceCondition',
-        msg:
-          (state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim()) &&
-          (!state.iceCondition?.fi.trim() || !state.iceCondition?.sv.trim() || !state.iceCondition?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'windRecommendation',
-        msg:
-          (state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()) &&
-          (!state.windRecommendation?.fi.trim() || !state.windRecommendation?.sv.trim() || !state.windRecommendation?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'vesselRecommendation',
-        msg:
-          (state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()) &&
-          (!state.vesselRecommendation?.fi.trim() || !state.vesselRecommendation?.sv.trim() || !state.vesselRecommendation?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'visibility',
-        msg:
-          (state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim()) &&
-          (!state.visibility?.fi.trim() || !state.visibility?.sv.trim() || !state.visibility?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'windGauge',
-        msg:
-          (state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim()) &&
-          (!state.windGauge?.fi.trim() || !state.windGauge?.sv.trim() || !state.windGauge?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'seaLevel',
-        msg:
-          (state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim()) &&
-          (!state.seaLevel?.fi.trim() || !state.seaLevel?.sv.trim() || !state.seaLevel?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'pilotExtraInfo',
-        msg:
-          (state.trafficService?.pilot?.extraInfo?.fi.trim() ||
-            state.trafficService?.pilot?.extraInfo?.sv.trim() ||
-            state.trafficService?.pilot?.extraInfo?.en.trim()) &&
-          (!state.trafficService?.pilot?.extraInfo?.fi.trim() ||
-            !state.trafficService?.pilot?.extraInfo?.sv.trim() ||
-            !state.trafficService?.pilot?.extraInfo?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-    ];
-    const vtsNameErrors =
-      state.trafficService?.vts
-        ?.flatMap((vts, i) => (!vts?.name?.fi.trim() || !vts?.name?.sv.trim() || !vts?.name?.en.trim() ? i : null))
-        .filter((val) => Number.isInteger(val))
-        .map((vIndex) => {
-          return {
-            id: 'vtsName-' + vIndex,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        }) ?? [];
-    const vhfNameErrors =
-      state.trafficService?.vts
-        ?.map(
-          (vts) =>
-            vts?.vhf
-              ?.flatMap((vhf, j) =>
-                (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
-                (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
-                  ? j
-                  : null
-              )
-              .filter((val) => Number.isInteger(val))
-        )
-        .flatMap((vhfIndices, vtsIndex) => {
-          return (
-            vhfIndices?.map((vhfIndex) => {
-              return {
-                id: 'vhfName-' + vtsIndex + '-' + vhfIndex,
-                msg: t(ErrorMessageKeys?.required),
-              };
-            }) ?? []
-          );
-        }) ?? [];
-    const vhfChannelErrors =
-      state.trafficService?.vts
-        ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel.trim() ? j : null)).filter((val) => Number.isInteger(val)))
-        .flatMap((vhfIndices, vtsIndex) => {
-          return (
-            vhfIndices?.map((vhfIndex) => {
-              return {
-                id: 'vhfChannel-' + vtsIndex + '-' + vhfIndex,
-                msg: t(ErrorMessageKeys?.required),
-              };
-            }) ?? []
-          );
-        }) ?? [];
-    const tugNameErrors =
-      state.trafficService?.tugs
-        ?.flatMap((tug, i) => (!tug?.name?.fi.trim() || !tug?.name?.sv.trim() || !tug?.name?.en.trim() ? i : null))
-        .filter((val) => Number.isInteger(val))
-        .map((tIndex) => {
-          return {
-            id: 'tugName-' + tIndex,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        }) ?? [];
-    const allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors);
-    setValidationErrors(allValidations);
 
-    if (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1) {
+    if (isRemove || (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1)) {
       if (
         (state.operation === Operation.Create && state.status === Status.Draft) ||
         (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)
       ) {
-        saveCard();
+        if (isRemove) updateState(Status.Removed, 'status');
+        saveCard(isRemove);
       } else {
-        setConfirmationType('save');
+        setConfirmationType(isRemove ? 'remove' : 'save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -402,7 +414,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               >
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && state.status !== Status.Removed && (
+              {state.operation === Operation.Update && oldState.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
@@ -417,7 +429,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonButton
                 shape="round"
                 disabled={isError ?? (isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces)}
-                onClick={() => handleSubmit()}
+                onClick={() => handleSubmit(state.status === Status.Removed)}
               >
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
