@@ -302,6 +302,7 @@ ion-item.custom-select-item {
   font-size: 14px;
   margin: 1px;
   width: 100%;
+  opacity: 1;
   --min-height: 41px;
   --padding-start: 13px;
   --inner-padding-end: 13px;
@@ -353,7 +354,8 @@ ion-item.custom-select-container.expanded {
 .selectWrapper.invalid ion-item.custom-select-container.expanded {
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
-ion-item.selectInput.item-select-disabled {
+ion-item.selectInput.item-select-disabled,
+ion-item.custom-select-container.item-disabled {
   opacity: 0.5;
 }
 ion-item.selectInput::part(native),
@@ -462,7 +464,8 @@ ion-label.formLabel {
   padding-bottom: 2px;
   cursor: pointer;
 }
-ion-label.formLabel.disabled {
+ion-label.formLabel.disabled,
+.formGrid .formInput.input-disabled {
   opacity: 0.5;
   cursor: default;
 }
