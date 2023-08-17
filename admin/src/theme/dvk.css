@@ -669,6 +669,19 @@ ion-grid.itemList ion-col {
 ion-grid.itemList ion-row ion-col:first-of-type {
   border-left: none;
 }
+ion-grid.itemList ion-col.item-status-PUBLIC {
+  color: var(--ion-color-success);
+  font-weight: bold;
+}
+ion-grid.itemList ion-col.item-status-REMOVED {
+  color: var(--ion-color-danger);
+  opacity: 0.75;
+  text-decoration: line-through;
+}
+ion-grid.itemList ion-col.item-status-DRAFT {
+  color: var(--ion-color-medium);
+  font-style: italic;
+}
 ion-grid.itemList .header ion-col {
   padding: 10px 8px;
   align-items: center !important;
