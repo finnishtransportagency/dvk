@@ -254,7 +254,9 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.5">{t('item-type-' + item.type)}</IonCol>
                   <IonCol size="1.5">{groups[Number(item.group ?? 0)]}</IonCol>
                   <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1">{t('item-status-' + item.status)}</IonCol>
+                  <IonCol size="1" className={'item-status-' + item.status}>
+                    {t('item-status-' + item.status)}
+                  </IonCol>
                   <IonCol size="1.5">{item.creator}</IonCol>
                   <IonCol size="1.5">{item.modifier}</IonCol>
                   <IonCol size="1.5">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
