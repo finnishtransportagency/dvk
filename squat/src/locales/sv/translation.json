@@ -135,8 +135,8 @@
         "wave-force-info": "F = 0,35 × havsvattnets densitet × fartygets längd BPP × vågamplitud²",
         "drift-info-title": "Drift",
         "drift-info": "Avdriftsvinkel = (luftens densitet ÷ havsvattnets densitet) × (relativ vindhastighet ÷ fartygets fart) ² × ( fartygets sidoprofilens vindyta ÷ (djupgående) ² × koefficient för aerodynamisk vridmoment ÷ (ℼ(0,5 + 2,4 × fartygets djupgående ÷ fartygets längd BPP)))",
-        "extensive-calculator": "[sv] Laaja laskin",
-        "limited-calculator": "[sv] Suppea laskin"
+        "extensive-calculator": "Avancerad kalkylator",
+        "limited-calculator": "Normal kalkylator"
       }
     },
     "squatChart": {
