@@ -128,8 +128,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const saveCard = useCallback(
     (isRemove?: boolean) => {
       if (isRemove) {
-        const oldCard = { ...fairwayCard, status: Status.Removed };
-        setState(oldCard);
+        const oldCard = {
+          ...oldState,
+          trafficService: {
+            ...oldState.trafficService,
+            pilot: {
+              ...oldState.trafficService?.pilot,
+              places: oldState.trafficService?.pilot?.places?.map((place) => {
+                return { id: place.id, pilotJourney: place.pilotJourney };
+              }),
+            },
+          },
+          status: Status.Removed,
+        };
+        setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: oldCard as FairwayCardInput });
       } else {
         const currentCard = {
@@ -147,7 +159,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         saveFairwayCard({ card: currentCard as FairwayCardInput });
       }
     },
-    [state, fairwayCard, saveFairwayCard]
+    [state, oldState, saveFairwayCard]
   );
 
   const formRef = useRef<HTMLFormElement>(null);

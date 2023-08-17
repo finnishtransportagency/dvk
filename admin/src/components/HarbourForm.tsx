@@ -99,8 +99,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const saveHarbour = useCallback(
     (isRemove?: boolean) => {
       if (isRemove) {
-        const oldHarbour = { ...harbour, status: Status.Removed };
-        setState(oldHarbour);
+        const oldHarbour = { ...oldState, status: Status.Removed };
+        setState({ ...oldState, status: Status.Removed });
         saveHarbourMutation({ harbor: oldHarbour as HarborInput });
       } else {
         const currentHarbour = {
@@ -132,7 +132,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         saveHarbourMutation({ harbor: currentHarbour as HarborInput });
       }
     },
-    [state, harbour, saveHarbourMutation]
+    [state, oldState, saveHarbourMutation]
   );
 
   const formRef = useRef<HTMLFormElement>(null);
