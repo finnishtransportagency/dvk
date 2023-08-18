@@ -238,6 +238,11 @@
 .mapExportTool {
   overflow: hidden;
 }
+.mapExportTool.disabled .mainMapWrapper {
+  filter: grayscale(1);
+  opacity: 0.5;
+  pointer-events: none;
+}
 
 .mapExportTool .extControl {
   position: absolute;
@@ -246,6 +251,10 @@
   right: calc(24px + 5px);
   background: transparent;
   z-index: 1;
+}
+.mapExportTool.disabled .extControl > button {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 .mapExportTool .extControl.takeScreenshotControlContainer {

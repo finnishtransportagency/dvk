@@ -87,6 +87,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     );
   };
 
+  const [innerValidationErrors, setInnerValidationErrors] = useState<ValidationType[]>([]);
+  const setValidity = (actionType: ActionType, val: boolean) => {
+    setInnerValidationErrors(
+      innerValidationErrors.filter((error) => error.id !== actionType).concat({ id: actionType, msg: !val ? t(ErrorMessageKeys?.invalid) || '' : '' })
+    );
+  };
+
   useEffect(() => {
     setState(fairwayCard);
     setOldState(fairwayCard);
@@ -478,6 +485,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     disabled={state.operation === Operation.Update || !!state.pictures?.length}
                     error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('fairwaycard.primary-id-help-text')}
+                    setValidity={setValidity}
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
@@ -812,7 +820,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <MapExportTool
               fairwayCardInput={state}
               disabled={state.status === Status.Removed}
-              validationErrors={validationErrors}
+              validationErrors={validationErrors.concat(innerValidationErrors)}
               setPicture={updateState}
               fairways={fairwaySelection}
               harbours={harbourSelectionFiltered}
