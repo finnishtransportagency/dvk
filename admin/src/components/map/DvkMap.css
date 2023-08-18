@@ -1,8 +1,17 @@
+/* A4 @ 96 DPI: 794 x 1123 px */
+/* A5 @ 96 DPI: 559 x 794 px */
+:root {
+  --map-width-portrait: 595px;
+  --map-height-portrait: 842px;
+  --map-width-landscape: 842px;
+  --map-height-landscape: 595px;
+}
+
 .dvkMap {
   width: 100%;
-  min-width: 890px;
+  min-width: calc(var(--map-width-landscape) + 50px);
   height: 100%;
-  min-height: 892px;
+  min-height: calc(var(--map-height-portrait) + 50px);
   background: #cccccc;
 }
 
@@ -91,77 +100,77 @@
 }
 
 .dvkMap.PORTRAIT .maskTopLeft {
-  width: calc((100% - 595px) / 2);
-  height: 25px;
+  width: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskTop {
-  left: calc((100% - 595px) / 2);
-  right: calc((100% - 595px) / 2);
-  height: 25px;
+  left: calc((100% - var(--map-width-portrait)) / 2);
+  right: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskTopRight {
-  width: calc((100% - 595px) / 2);
-  height: 25px;
+  width: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskBottomLeft {
-  width: calc((100% - 595px) / 2);
-  height: 25px;
+  width: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskBottom {
-  left: calc((100% - 595px) / 2);
-  right: calc((100% - 595px) / 2);
-  height: 25px;
+  left: calc((100% - var(--map-width-portrait)) / 2);
+  right: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskBottomRight {
-  width: calc((100% - 595px) / 2);
-  height: 25px;
+  width: calc((100% - var(--map-width-portrait)) / 2);
+  height: calc((100% - var(--map-height-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskLeft {
-  top: 25px;
-  bottom: 25px;
-  width: calc((100% - 595px) / 2);
+  top: calc((100% - var(--map-height-portrait)) / 2);
+  bottom: calc((100% - var(--map-height-portrait)) / 2);
+  width: calc((100% - var(--map-width-portrait)) / 2);
 }
 .dvkMap.PORTRAIT .maskRight {
-  top: 25px;
-  bottom: 25px;
-  width: calc((100% - 595px) / 2);
+  top: calc((100% - var(--map-height-portrait)) / 2);
+  bottom: calc((100% - var(--map-height-portrait)) / 2);
+  width: calc((100% - var(--map-width-portrait)) / 2);
 }
 
 .dvkMap.LANDSCAPE .maskTopLeft {
-  width: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskTop {
-  left: calc((100% - 842px) / 2);
-  right: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  left: calc((100% - var(--map-width-landscape)) / 2);
+  right: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskTopRight {
-  width: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskBottomLeft {
-  width: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskBottom {
-  left: calc((100% - 842px) / 2);
-  right: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  left: calc((100% - var(--map-width-landscape)) / 2);
+  right: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskBottomRight {
-  width: calc((100% - 842px) / 2);
-  height: calc((100% - 595px) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
+  height: calc((100% - var(--map-height-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskLeft {
-  top: calc((100% - 595px) / 2);
-  bottom: calc((100% - 595px) / 2);
-  width: calc((100% - 842px) / 2);
+  top: calc((100% - var(--map-height-landscape)) / 2);
+  bottom: calc((100% - var(--map-height-landscape)) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
 }
 .dvkMap.LANDSCAPE .maskRight {
-  top: calc((100% - 595px) / 2);
-  bottom: calc((100% - 595px) / 2);
-  width: calc((100% - 842px) / 2);
+  top: calc((100% - var(--map-height-landscape)) / 2);
+  bottom: calc((100% - var(--map-height-landscape)) / 2);
+  width: calc((100% - var(--map-width-landscape)) / 2);
 }
 
 .dvkMap .ol-zoom {
