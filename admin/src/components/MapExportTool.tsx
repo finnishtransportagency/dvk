@@ -28,7 +28,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, ValidationType, imageUrl } from '../utils/constants';
+import { ActionType, Lang, MAP_PIXEL_RATIO, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import infoIcon from '../theme/img/info-circle-solid.svg';
@@ -581,12 +581,19 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
       const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
       const rotation = dvkMap.olMap?.getView().getRotation();
+      const viewResolution = dvkMap.olMap.getView().getResolution() || 1;
 
       // Merge canvases to one canvas
       const mapCanvas = document.createElement('canvas');
       const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-      mapCanvas.width = mapSize[0];
-      mapCanvas.height = mapSize[1];
+      mapCanvas.width = mapSize[0] * MAP_PIXEL_RATIO;
+      mapCanvas.height = mapSize[1] * MAP_PIXEL_RATIO;
+      const canvasSizeCropped = dvkMap.getCanvasDimensions();
+
+      const scaling = Math.min(mapCanvas.width / canvasSizeCropped[0], mapCanvas.height / canvasSizeCropped[1]);
+      //dvkMap.olMap.getView().setResolution(viewResolution / scaling);
+      console.log(viewResolution, scaling, viewResolution / scaling);
+
       const mapContext = mapCanvas.getContext('2d');
       Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
         if (canvas.width > 0) {
@@ -620,25 +627,27 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
       // Crop the canvas and create image
       const mapCanvasCropped = document.createElement('canvas');
-      const canvasSize = dvkMap.getCanvasDimensions();
-      mapCanvasCropped.width = canvasSize[0];
-      mapCanvasCropped.height = canvasSize[1];
+      mapCanvasCropped.width = canvasSizeCropped[0];
+      mapCanvasCropped.height = canvasSizeCropped[1];
       const mapContextCropped = mapCanvasCropped.getContext('2d');
-      if (mapContextCropped)
+      if (mapContextCropped) {
         mapContextCropped.drawImage(
           mapCanvas,
-          (mapSize[0] - mapCanvasCropped.width) / 2,
-          (mapSize[1] - mapCanvasCropped.height) / 2,
+          (mapSize[0] * MAP_PIXEL_RATIO - mapCanvasCropped.width) / 2,
+          (mapSize[1] * MAP_PIXEL_RATIO - mapCanvasCropped.height) / 2,
           mapCanvasCropped.width,
           mapCanvasCropped.height,
           0,
           0,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height
+          mapCanvasCropped.width * MAP_PIXEL_RATIO,
+          mapCanvasCropped.height * MAP_PIXEL_RATIO
         );
-
+      }
       const base64Data = mapCanvasCropped.toDataURL('image/png');
       uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
+      // Reset original map size
+      //dvkMap.olMap?.setSize(mapSize);
+      //dvkMap.olMap?.getView().setResolution(viewResolution);
     }
   };
 
