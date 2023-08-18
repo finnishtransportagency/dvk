@@ -24,6 +24,7 @@ interface InputProps {
   decimalCount?: number;
   focused?: boolean;
   name?: string;
+  setValidity?: (actionType: ActionType, val: boolean) => void;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -46,6 +47,7 @@ const FormInput: React.FC<InputProps> = ({
   decimalCount,
   focused,
   name,
+  setValidity,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -62,10 +64,16 @@ const FormInput: React.FC<InputProps> = ({
   const checkValidity = () => {
     if (error) {
       setIsValid(false);
+      if (setValidity) setValidity(actionType, false);
     } else {
       inputRef.current
         ?.getInputElement()
-        .then((textinput) => (textinput ? setIsValid(textinput.checkValidity()) : null))
+        .then((textinput) => {
+          if (textinput) {
+            setIsValid(textinput.checkValidity());
+            if (setValidity) setValidity(actionType, textinput.checkValidity());
+          }
+        })
         .catch((err) => {
           console.error(err.message);
         });
@@ -135,8 +143,14 @@ const FormInput: React.FC<InputProps> = ({
       inputRef.current
         ?.getInputElement()
         .then((textinput) => {
-          if (error) setIsValid(false);
-          if (textinput) setIsValid(textinput.checkValidity());
+          if (error) {
+            setIsValid(false);
+            if (setValidity) setValidity(actionType, false);
+          }
+          if (textinput) {
+            setIsValid(textinput.checkValidity());
+            if (setValidity) setValidity(actionType, textinput.checkValidity());
+          }
         })
         .catch((err) => {
           console.error(err.message);
@@ -144,8 +158,9 @@ const FormInput: React.FC<InputProps> = ({
       setIsTouched(false);
     } else if (!required && !val && !error) {
       setIsValid(true);
+      if (setValidity) setValidity(actionType, true);
     }
-  }, [required, error, isTouched, val]);
+  }, [required, error, isTouched, val, setValidity, actionType]);
 
   useEffect(() => {
     if (focused) {
