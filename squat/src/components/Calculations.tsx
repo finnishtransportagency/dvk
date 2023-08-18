@@ -61,6 +61,13 @@ const Calculations: React.FC = () => {
     );
   };
   const checkIsUKCUnderMinimum = () => {
+    if (showLimitedView) {
+      return isUKCStraightUnderRequired(
+        state.environment.attribute.requiredUKC,
+        state.calculations.squat.UKCStraightCourse,
+        state.status.showBarrass
+      );
+    }
     return isUKCUnderMinimum(
       state.environment.fairway.sweptDepth,
       state.environment.attribute.requiredUKC,
