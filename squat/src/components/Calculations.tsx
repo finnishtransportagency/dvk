@@ -331,7 +331,6 @@ const Calculations: React.FC = () => {
       setStateStatus('showLimitedView', val);
       if (val === 'true') {
         setStateStatus('showDeepWaterValues', 'false');
-        setStateStatus('showBarrass', 'false');
       }
     },
     [setStateStatus]
