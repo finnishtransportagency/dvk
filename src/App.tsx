@@ -134,8 +134,6 @@ const DvkIonApp: React.FC = () => {
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
-  const [showLoadingAlert, setShowLoadingAlert] = useState(false);
-  const [showErrorAlert, setShowErrorAlert] = useState(false);
 
   const { state } = useDvkContext();
 
@@ -181,16 +179,6 @@ const DvkIonApp: React.FC = () => {
     specialArea2Layer,
     specialArea15Layer,
   ]);
-
-  useEffect(() => {
-    if (fetchError) {
-      setShowLoadingAlert(false);
-      setShowErrorAlert(true);
-    } else {
-      setShowLoadingAlert(!initDone);
-      setShowErrorAlert(false);
-    }
-  }, [initDone, fetchError]);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -257,8 +245,10 @@ const DvkIonApp: React.FC = () => {
         <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
-      <IonAlert isOpen={showErrorAlert} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
-      <IonAlert isOpen={showLoadingAlert} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />
+      {fetchError && (
+        <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
+      )}
+      {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
     </IonApp>
   );
 };
