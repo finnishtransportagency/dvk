@@ -183,6 +183,8 @@ const FormInput: React.FC<InputProps> = ({
         max={inputType === 'number' ? max ?? 9999999 : undefined}
         step={inputType === 'number' ? (1 / Math.pow(10, decimalCount ?? 0)).toString() || '0.1' : undefined}
         required={required}
+        onIonInput={(ev) => handleChange(ev.target.value)}
+        debounce={500}
         onIonChange={(ev) => handleChange(ev.target.value)}
         onIonBlur={() => checkValidity()}
         disabled={disabled}
