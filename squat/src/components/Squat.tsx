@@ -8,12 +8,17 @@ import Vessel from './Vessel';
 import Environment from './Environment';
 import TitleBar from './TitleBar';
 import InfoAccordion from './InfoAccordion';
+import Alert from './Alert';
+import { useTranslation } from 'react-i18next';
 
 const Squat: React.FC = () => {
+  const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat' });
+
   return (
     <>
       <TitleBar />
       <InfoAccordion />
+      <Alert alertType="info" title={t('pakolliset-kentat-info')} closable />
       <IonGrid className="content">
         <IonRow>
           <IonCol size="12" sizeSm="6" sizeLg="4">
