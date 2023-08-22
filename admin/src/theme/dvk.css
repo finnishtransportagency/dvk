@@ -297,7 +297,6 @@ ion-item.custom-select-container {
   --background-hover-opacity: 0;
   --ripple-color: transparent;
 }
-
 ion-item.custom-select-item {
   font-size: 14px;
   margin: 1px;
@@ -307,8 +306,8 @@ ion-item.custom-select-item {
   --padding-start: 13px;
   --inner-padding-end: 13px;
 }
-
-.custom-select-item.expanded {
+ion-item.custom-select-item.expanded,
+ion-item.custom-select-container.ion-focused ion-item.custom-select-item {
   margin: 2px;
   --padding-start: 12px;
   --inner-padding-end: 12px;
@@ -342,7 +341,8 @@ ion-button.custom-select-search.button-disabled {
 ion-item.selectInput.item-has-focus,
 ion-item.selectInput.ion-focused,
 ion-item.selectInput:has(.select-expanded),
-ion-item.custom-select-container.expanded {
+ion-item.custom-select-container.expanded,
+ion-item.custom-select-container.ion-focused {
   --highlight-background: transparent;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
