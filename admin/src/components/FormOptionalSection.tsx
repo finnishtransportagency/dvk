@@ -168,7 +168,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                   updateState={updateState}
                   actionTarget={idx}
                   actionOuterTarget={actionOuterTarget}
-                  required={!!((section as VhfInput).name?.fi ?? (section as VhfInput).name?.sv ?? (section as VhfInput).name?.en)}
+                  required={!!((section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en)}
                   error={
                     (section as VhfInput).name?.fi || (section as VhfInput).name?.sv || (section as VhfInput).name?.en
                       ? validationErrors?.find((error) => error.id === 'vhfName-' + actionOuterTarget + '-' + idx)?.msg
@@ -280,7 +280,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                     actionType="quayName"
                     updateState={updateState}
                     actionTarget={idx}
-                    required={!!((section as QuayInput).name?.fi ?? (section as QuayInput).name?.sv ?? (section as QuayInput).name?.en)}
+                    required={!!((section as QuayInput).name?.fi || (section as QuayInput).name?.sv || (section as QuayInput).name?.en)}
                     error={
                       (section as QuayInput).name?.fi || (section as QuayInput).name?.sv || (section as QuayInput).name?.en
                         ? validationErrors?.find((error) => error.id === 'quayName-' + idx)?.msg
@@ -296,7 +296,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
                     updateState={updateState}
                     actionTarget={idx}
                     required={
-                      !!((section as QuayInput).extraInfo?.fi ?? (section as QuayInput).extraInfo?.sv ?? (section as QuayInput).extraInfo?.en)
+                      !!((section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en)
                     }
                     error={
                       (section as QuayInput).extraInfo?.fi || (section as QuayInput).extraInfo?.sv || (section as QuayInput).extraInfo?.en
