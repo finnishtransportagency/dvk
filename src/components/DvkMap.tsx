@@ -35,7 +35,8 @@ import InfoTextControl from './mapControls/InfoTextControl';
 import { FeatureLike } from 'ol/Feature';
 import { isMobile } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
-import { Stroke } from 'ol/style';
+import { Icon, Stroke } from 'ol/style';
+import locationIcon from '../theme/img/user_location_indicator.svg';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -234,6 +235,15 @@ class DvkMap {
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
+    const ownLocationLayer = new VectorLayer({
+      properties: { id: 'ownlocation' },
+      source: new VectorSource({
+        features: [],
+      }),
+      zIndex: 1000,
+    });
+    this.olMap.addLayer(ownLocationLayer);
+
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
   }
@@ -383,6 +393,14 @@ class DvkMap {
       })
     );
 
+    const ownLocationLayer = this.getFeatureLayer('ownlocation') as VectorLayer<VectorSource>;
+    ownLocationLayer.setStyle(
+      new Style({
+        image: new Icon({
+          src: locationIcon,
+        }),
+      })
+    );
     olMap
       .getLayers()
       .getArray()

@@ -1,6 +1,10 @@
 import Geolocation from 'ol/Geolocation';
 import Control from 'ol/control/Control';
 import Coordinate from 'ol/coordinate';
+import { getMap } from '../DvkMap';
+import VectorSource from 'ol/source/Vector';
+import Point from 'ol/geom/Point';
+import Feature from 'ol/Feature';
 
 class CenterToOwnLocationControl extends Control {
   private buttonElement = document.createElement('button');
@@ -34,18 +38,38 @@ class CenterToOwnLocationControl extends Control {
     this.buttonElement.ariaLabel = label;
   }
 
+  //searches right layer and places marker to current position
+  private placeOwnLocationMarker(coordinates: Coordinate.Coordinate) {
+    const layer = getMap()?.getFeatureLayer('ownlocation');
+    const source = layer.getSource() as VectorSource;
+    source.clear();
+    source.addFeature(
+      new Feature({
+        geometry: new Point([coordinates[0], coordinates[1]]),
+      })
+    );
+  }
+
   centerToOwnLocation = () => {
     this.geolocation.setProjection(this.getMap()?.getView().getProjection());
-    this.position = this.geolocation.getPosition();
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      if (result.state === 'granted') {
+        this.position = this.geolocation.getPosition();
+      }
+    });
+
     if (this.position) {
       this.getMap()?.getView().setCenter(this.position);
     }
+
     this.geolocation.setTracking(true);
     this.geolocation.once('change:position', () => {
       this.geolocation.setTracking(false);
       this.position = this.geolocation.getPosition();
       if (this.position) {
+        this.placeOwnLocationMarker(this.position);
         this.getMap()?.getView().setCenter(this.position);
+        this.getMap()?.getView().setZoom(5);
       }
     });
   };
