@@ -245,6 +245,7 @@ class DvkMap {
     this.olMap.addLayer(ownLocationLayer);
 
     this.setBackgroundMapType(this.backgroundMapType);
+    this.setInitLocationMarker();
     this.translate();
   }
   // eslint-disable-next-line
@@ -541,6 +542,24 @@ class DvkMap {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
   }
+
+  //set marker indicating initial user location if user location tracking is enabled
+  public setInitLocationMarker = () => {
+    this.centerToOwnLocationControl.geolocation.setProjection(this.olMap?.getView().getProjection());
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      if (result.state === 'granted') {
+        this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
+      }
+    });
+    this.centerToOwnLocationControl.geolocation.setTracking(true);
+    this.centerToOwnLocationControl.geolocation.once('change:position', () => {
+      this.centerToOwnLocationControl.geolocation.setTracking(false);
+      this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
+      if (this.centerToOwnLocationControl.position) {
+        this.centerToOwnLocationControl.placeOwnLocationMarker(this.centerToOwnLocationControl.position);
+      }
+    });
+  };
 }
 
 const dvkMap = new DvkMap();

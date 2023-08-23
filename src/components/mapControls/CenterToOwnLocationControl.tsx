@@ -39,15 +39,18 @@ class CenterToOwnLocationControl extends Control {
   }
 
   //searches right layer and places marker to current position
-  private placeOwnLocationMarker(coordinates: Coordinate.Coordinate) {
-    const layer = getMap()?.getFeatureLayer('ownlocation');
-    const source = layer.getSource() as VectorSource;
-    source.clear();
-    source.addFeature(
+  public placeOwnLocationMarker(coordinates: Coordinate.Coordinate) {
+    const source = this.getOwnLocationFeatureLayer().getSource() as VectorSource;
+    source?.clear();
+    source?.addFeature(
       new Feature({
         geometry: new Point([coordinates[0], coordinates[1]]),
       })
     );
+  }
+
+  private getOwnLocationFeatureLayer() {
+    return getMap()?.getFeatureLayer('ownlocation');
   }
 
   centerToOwnLocation = () => {
@@ -55,12 +58,15 @@ class CenterToOwnLocationControl extends Control {
     navigator.permissions.query({ name: 'geolocation' }).then((result) => {
       if (result.state === 'granted') {
         this.position = this.geolocation.getPosition();
+        if (this.position) {
+          this.getMap()?.getView().setCenter(this.position);
+        }
+      }
+      if (result.state === 'denied') {
+        const source = this.getOwnLocationFeatureLayer().getSource() as VectorSource;
+        source?.clear();
       }
     });
-
-    if (this.position) {
-      this.getMap()?.getView().setCenter(this.position);
-    }
 
     this.geolocation.setTracking(true);
     this.geolocation.once('change:position', () => {
@@ -68,8 +74,7 @@ class CenterToOwnLocationControl extends Control {
       this.position = this.geolocation.getPosition();
       if (this.position) {
         this.placeOwnLocationMarker(this.position);
-        this.getMap()?.getView().setCenter(this.position);
-        this.getMap()?.getView().setZoom(5);
+        this.getMap()?.getView().animate({ center: this.position, zoom: 5 });
       }
     });
   };
