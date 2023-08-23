@@ -399,6 +399,10 @@ class DvkMap {
       new Style({
         image: new Icon({
           src: locationIcon,
+          imgSize: [32, 40],
+          anchor: [0.5, 40],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
         }),
       })
     );
