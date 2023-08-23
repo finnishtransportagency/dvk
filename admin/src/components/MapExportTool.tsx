@@ -660,7 +660,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
       <IonRow>
         <IonCol>
-          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} />}
+          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
           <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
           {(!!isFetching || !initDone) && (
             <IonProgressBar
