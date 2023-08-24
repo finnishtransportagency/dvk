@@ -297,7 +297,6 @@ ion-item.custom-select-container {
   --background-hover-opacity: 0;
   --ripple-color: transparent;
 }
-
 ion-item.custom-select-item {
   font-size: 14px;
   margin: 1px;
@@ -307,8 +306,8 @@ ion-item.custom-select-item {
   --padding-start: 13px;
   --inner-padding-end: 13px;
 }
-
-.custom-select-item.expanded {
+ion-item.custom-select-item.expanded,
+ion-item.custom-select-container.ion-focused ion-item.custom-select-item {
   margin: 2px;
   --padding-start: 12px;
   --inner-padding-end: 12px;
@@ -342,7 +341,8 @@ ion-button.custom-select-search.button-disabled {
 ion-item.selectInput.item-has-focus,
 ion-item.selectInput.ion-focused,
 ion-item.selectInput:has(.select-expanded),
-ion-item.custom-select-container.expanded {
+ion-item.custom-select-container.expanded,
+ion-item.custom-select-container.ion-focused {
   --highlight-background: transparent;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
@@ -669,6 +669,19 @@ ion-grid.itemList ion-col {
 ion-grid.itemList ion-row ion-col:first-of-type {
   border-left: none;
 }
+ion-grid.itemList ion-col.item-status-PUBLIC {
+  color: var(--ion-color-success);
+  font-weight: bold;
+}
+ion-grid.itemList ion-col.item-status-REMOVED {
+  color: var(--ion-color-danger);
+  opacity: 0.75;
+  text-decoration: line-through;
+}
+ion-grid.itemList ion-col.item-status-DRAFT {
+  color: var(--ion-color-medium);
+  font-style: italic;
+}
 ion-grid.itemList .header ion-col {
   padding: 10px 8px;
   align-items: center !important;
@@ -870,6 +883,42 @@ ion-modal ion-button.button-disabled {
   opacity: 1;
 }
 
+/* Alert */
+ion-grid.alert {
+  font-size: 14px;
+  padding: 14px;
+  background-color: var(--ion-color-lightest);
+  border: 1px solid var(--ion-color-light);
+}
+ion-grid.alert.success {
+  background-color: var(--ion-color-successbg);
+  border: 1px solid var(--ion-color-success);
+}
+ion-grid.alert.warning {
+  background-color: var(--ion-color-warningbg);
+  border: 1px solid var(--ion-color-warning);
+}
+ion-grid.alert.error {
+  background-color: var(--ion-color-dangerbg);
+  border: 1px solid var(--ion-color-danger);
+}
+ion-modal ion-grid.alert {
+  padding: 0;
+  background-color: unset;
+  border: none;
+}
+ion-grid.alert ion-row ion-col:first-child {
+  width: calc(24px + 16px) !important;
+}
+ion-grid.alert ion-icon {
+  font-size: 24px !important;
+  margin: 0 16px 0 0;
+  vertical-align: top;
+}
+ion-grid.alert ion-icon.error {
+  color: var(--ion-color-danger);
+}
+
 /* Map export tool */
 .mapExportTool h4 ion-button.icon-only {
   vertical-align: sub;
@@ -938,21 +987,6 @@ ion-modal ion-button.button-disabled {
   right: 10px;
 }
 
-ion-grid.printInfo {
-  font-size: 14px;
-  padding: 14px;
-  background-color: var(--ion-color-lightest);
-  border: 1px solid var(--ion-color-light);
-}
-ion-modal ion-grid.printInfo {
-  padding: 0;
-  background-color: unset;
-  border: none;
-}
-ion-grid.printInfo .infoIcon {
-  font-size: 24px !important;
-  margin: 16px 16px 0 0;
-}
 ion-grid.printInfo ol {
   margin-top: 14px;
 }
@@ -982,6 +1016,12 @@ ion-grid.printInfo ol span.icon.orientation-PORTRAIT {
 }
 ion-grid.printInfo ol span.icon.orientation-LANDSCAPE {
   background-image: url('./img/crop_landscape_icon.svg');
+}
+ion-grid.printInfo ol span.icon.layers {
+  background-image: url('./img/layers.svg');
+}
+ion-grid.printInfo ol span.icon.target {
+  background-image: url('./img/ownLocation.svg');
 }
 ion-grid.printInfo ol span.icon.takeScreenshot {
   background-image: url('./img/take_screenshot_icon.svg');

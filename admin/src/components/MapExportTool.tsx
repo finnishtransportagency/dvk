@@ -31,11 +31,11 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
-import infoIcon from '../theme/img/info-circle-solid.svg';
 import helpIcon from '../theme/img/help_icon.svg';
 import binIcon from '../theme/img/bin.svg';
 import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
+import Alert from './Alert';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -45,27 +45,26 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
   const { t } = useTranslation();
 
   return (
-    <IonGrid className="printInfo ion-no-padding">
-      <IonRow>
-        <IonCol size="auto">
-          <IonIcon className="infoIcon" icon={infoIcon} />
-        </IonCol>
-        <IonCol>
-          <IonText>{t('fairwaycard.print-images-info-ingress-' + orientation)}</IonText>
-          <ol>
-            <li>
-              {t('fairwaycard.print-images-info-switch')} <span className={'icon orientation-' + orientation} />{' '}
-              {t('fairwaycard.print-images-info-select-' + orientation)}
-            </li>
-            <li>{t('fairwaycard.print-images-info-position-map')}</li>
-            <li>
-              {t('fairwaycard.print-images-info-take-image')} <span className="icon takeScreenshot" />{' '}
-              {t('fairwaycard.print-images-info-set-image-button')}
-            </li>
-          </ol>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <Alert alertType="info" text={t('fairwaycard.print-images-info-ingress-' + orientation)} extraClass="printInfo">
+      <ol>
+        <li>
+          {t('fairwaycard.print-images-info-switch')} <span className={'icon orientation-' + orientation} />{' '}
+          {t('fairwaycard.print-images-info-select-' + orientation)}
+        </li>
+        <li>
+          {t('fairwaycard.print-images-info-select-layers')} <span className="icon layers" />{' '}
+          {t('fairwaycard.print-images-info-select-layers-button')}
+        </li>
+        <li>
+          {t('fairwaycard.print-images-info-position-map')} {t('fairwaycard.print-images-info-target-by-features')} <span className="icon target" />{' '}
+          {t('fairwaycard.print-images-info-target-by-features-button')}
+        </li>
+        <li>
+          {t('fairwaycard.print-images-info-take-image')} <span className="icon takeScreenshot" />{' '}
+          {t('fairwaycard.print-images-info-set-image-button')}
+        </li>
+      </ol>
+    </Alert>
   );
 };
 
@@ -444,6 +443,8 @@ interface MapProps {
 }
 
 const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled }) => {
+  const { t } = useTranslation();
+
   InitDvkMap();
 
   /* Start initializing layers that are required at ap start first */
@@ -498,6 +499,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   }, [line12Layer, area12Layer, pilotLayer, harborLayer, boardLine12Layer, bgFinlandLayer, circleLayer, specialArea2Layer, specialArea15Layer]);
 
   const isFetching = useIsFetching();
+  const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
+  const isMapDisabled = hasPrimaryIdError || disabled;
 
   const dvkMap = getMap();
 
@@ -645,9 +648,10 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <IonGrid className="mapExportTool">
+    <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
       <IonRow>
         <IonCol>
+          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
           <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
           {(!!isFetching || !initDone) && (
             <IonProgressBar
@@ -661,9 +665,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
             printCurrentMapView={printCurrentMapView}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
-            printDisabled={
-              isLoadingMutation || !fairwayCardInput.id || disabled || !!validationErrors?.find((error) => error.id === 'primaryId')?.msg
-            }
+            printDisabled={isLoadingMutation || isMapDisabled}
           />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>

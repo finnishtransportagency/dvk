@@ -84,6 +84,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
             disabled={disabled}
             lines="none"
             onClick={() => setIsExpanded(true)}
+            onBlur={() => checkValidity()}
           >
             <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={disabled} lines="none">
               <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>

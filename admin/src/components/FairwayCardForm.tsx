@@ -87,6 +87,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     );
   };
 
+  const [innerValidationErrors, setInnerValidationErrors] = useState<ValidationType[]>([]);
+  const setValidity = (actionType: ActionType, val: boolean) => {
+    setInnerValidationErrors(
+      innerValidationErrors.filter((error) => error.id !== actionType).concat({ id: actionType, msg: !val ? t(ErrorMessageKeys?.invalid) || '' : '' })
+    );
+  };
+
   useEffect(() => {
     setState(fairwayCard);
     setOldState(fairwayCard);
@@ -128,8 +135,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const saveCard = useCallback(
     (isRemove?: boolean) => {
       if (isRemove) {
-        const oldCard = { ...fairwayCard, status: Status.Removed };
-        setState(oldCard);
+        const oldCard = {
+          ...oldState,
+          trafficService: {
+            ...oldState.trafficService,
+            pilot: {
+              ...oldState.trafficService?.pilot,
+              places: oldState.trafficService?.pilot?.places?.map((place) => {
+                return { id: place.id, pilotJourney: place.pilotJourney };
+              }),
+            },
+          },
+          status: Status.Removed,
+        };
+        setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: oldCard as FairwayCardInput });
       } else {
         const currentCard = {
@@ -147,7 +166,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         saveFairwayCard({ card: currentCard as FairwayCardInput });
       }
     },
-    [state, fairwayCard, saveFairwayCard]
+    [state, oldState, saveFairwayCard]
   );
 
   const formRef = useRef<HTMLFormElement>(null);
@@ -466,6 +485,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                     disabled={state.operation === Operation.Update || !!state.pictures?.length}
                     error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
                     helperText={t('fairwaycard.primary-id-help-text')}
+                    setValidity={setValidity}
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
@@ -566,7 +586,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.lineText}
                 updateState={updateState}
                 actionType="line"
-                required={!!(state.lineText?.fi ?? state.lineText?.sv ?? state.lineText?.en)}
+                required={!!(state.lineText?.fi || state.lineText?.sv || state.lineText?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'line')?.msg}
                 inputType="textarea"
@@ -576,7 +596,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.designSpeed}
                 updateState={updateState}
                 actionType="designSpeed"
-                required={!!(state.designSpeed?.fi ?? state.designSpeed?.sv ?? state.designSpeed?.en)}
+                required={!!(state.designSpeed?.fi || state.designSpeed?.sv || state.designSpeed?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'designSpeed')?.msg}
                 inputType="textarea"
@@ -586,7 +606,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.speedLimit}
                 updateState={updateState}
                 actionType="speedLimit"
-                required={!!(state.speedLimit?.fi ?? state.speedLimit?.sv ?? state.speedLimit?.en)}
+                required={!!(state.speedLimit?.fi || state.speedLimit?.sv || state.speedLimit?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'speedLimit')?.msg}
                 inputType="textarea"
@@ -596,7 +616,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.anchorage}
                 updateState={updateState}
                 actionType="anchorage"
-                required={!!(state.anchorage?.fi ?? state.anchorage?.sv ?? state.anchorage?.en)}
+                required={!!(state.anchorage?.fi || state.anchorage?.sv || state.anchorage?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'anchorage')?.msg}
                 inputType="textarea"
@@ -612,7 +632,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.navigationCondition}
                 updateState={updateState}
                 actionType="navigationCondition"
-                required={!!(state.navigationCondition?.fi ?? state.navigationCondition?.sv ?? state.navigationCondition?.en)}
+                required={!!(state.navigationCondition?.fi || state.navigationCondition?.sv || state.navigationCondition?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'navigationCondition')?.msg}
                 inputType="textarea"
@@ -622,7 +642,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.iceCondition}
                 updateState={updateState}
                 actionType="iceCondition"
-                required={!!(state.iceCondition?.fi ?? state.iceCondition?.sv ?? state.iceCondition?.en)}
+                required={!!(state.iceCondition?.fi || state.iceCondition?.sv || state.iceCondition?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'iceCondition')?.msg}
                 inputType="textarea"
@@ -638,7 +658,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.windRecommendation}
                 updateState={updateState}
                 actionType="windRecommendation"
-                required={!!(state.windRecommendation?.fi ?? state.windRecommendation?.sv ?? state.windRecommendation?.en)}
+                required={!!(state.windRecommendation?.fi || state.windRecommendation?.sv || state.windRecommendation?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'windRecommendation')?.msg}
                 inputType="textarea"
@@ -648,7 +668,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.vesselRecommendation}
                 updateState={updateState}
                 actionType="vesselRecommendation"
-                required={!!(state.vesselRecommendation?.fi ?? state.vesselRecommendation?.sv ?? state.vesselRecommendation?.en)}
+                required={!!(state.vesselRecommendation?.fi || state.vesselRecommendation?.sv || state.vesselRecommendation?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'vesselRecommendation')?.msg}
                 inputType="textarea"
@@ -658,7 +678,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.visibility}
                 updateState={updateState}
                 actionType="visibility"
-                required={!!(state.visibility?.fi ?? state.visibility?.sv ?? state.visibility?.en)}
+                required={!!(state.visibility?.fi || state.visibility?.sv || state.visibility?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'visibility')?.msg}
                 inputType="textarea"
@@ -668,7 +688,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.windGauge}
                 updateState={updateState}
                 actionType="windGauge"
-                required={!!(state.windGauge?.fi ?? state.windGauge?.sv ?? state.windGauge?.en)}
+                required={!!(state.windGauge?.fi || state.windGauge?.sv || state.windGauge?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
                 inputType="textarea"
@@ -678,7 +698,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 value={state.seaLevel}
                 updateState={updateState}
                 actionType="seaLevel"
-                required={!!(state.seaLevel?.fi ?? state.seaLevel?.sv ?? state.seaLevel?.en)}
+                required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'seaLevel')?.msg}
                 inputType="textarea"
@@ -729,8 +749,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 actionType="pilotExtraInfo"
                 required={
                   !!(
-                    state.trafficService?.pilot?.extraInfo?.fi ??
-                    state.trafficService?.pilot?.extraInfo?.sv ??
+                    state.trafficService?.pilot?.extraInfo?.fi ||
+                    state.trafficService?.pilot?.extraInfo?.sv ||
                     state.trafficService?.pilot?.extraInfo?.en
                   )
                 }
@@ -800,7 +820,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <MapExportTool
               fairwayCardInput={state}
               disabled={state.status === Status.Removed}
-              validationErrors={validationErrors}
+              validationErrors={validationErrors.concat(innerValidationErrors)}
               setPicture={updateState}
               fairways={fairwaySelection}
               harbours={harbourSelectionFiltered}
