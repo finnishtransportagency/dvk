@@ -42,7 +42,12 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
         </IonCol>
         {closable && (
           <IonCol size="auto">
-            <IonButton onClick={handleClickClose} className="icon-only" title={'close-dialog'} aria-label={'close-dialog'}>
+            <IonButton
+              onClick={handleClickClose}
+              className="icon-only button-clear no-background-focused no-box-shadow"
+              title={'close-dialog'}
+              aria-label={'close-dialog'}
+            >
               <IonIcon icon={closeOutline} />
             </IonButton>
           </IonCol>

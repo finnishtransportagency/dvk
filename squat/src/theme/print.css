@@ -63,8 +63,7 @@
     margin-top: 8px;
   }
 
-  /*TODO info, warning etc*/
-  ion-grid.danger {
+  ion-grid.infobox {
     display: none;
   }
 
