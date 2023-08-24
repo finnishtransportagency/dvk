@@ -35,7 +35,8 @@ import InfoTextControl from './mapControls/InfoTextControl';
 import { FeatureLike } from 'ol/Feature';
 import { isMobile } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
-import { Stroke } from 'ol/style';
+import { Icon, Stroke } from 'ol/style';
+import locationIcon from '../theme/img/user_location_indicator.svg';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -234,6 +235,15 @@ class DvkMap {
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
+    const ownLocationLayer = new VectorLayer({
+      properties: { id: 'ownlocation' },
+      source: new VectorSource({
+        features: [],
+      }),
+      zIndex: 1000,
+    });
+    this.olMap.addLayer(ownLocationLayer);
+
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
   }
@@ -383,6 +393,18 @@ class DvkMap {
       })
     );
 
+    const ownLocationLayer = this.getFeatureLayer('ownlocation') as VectorLayer<VectorSource>;
+    ownLocationLayer.setStyle(
+      new Style({
+        image: new Icon({
+          src: locationIcon,
+          imgSize: [32, 40],
+          anchor: [0.5, 40],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+        }),
+      })
+    );
     olMap
       .getLayers()
       .getArray()
@@ -523,6 +545,23 @@ class DvkMap {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;
   }
+
+  //set marker indicating initial user location if user location tracking is enabled
+  public setInitLocationMarker = () => {
+    this.centerToOwnLocationControl.geolocation.setProjection(this.olMap?.getView().getProjection());
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      if (result.state === 'granted') {
+        this.centerToOwnLocationControl.geolocation.setTracking(true);
+        this.centerToOwnLocationControl.geolocation.once('change:position', () => {
+          this.centerToOwnLocationControl.geolocation.setTracking(false);
+          this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
+          if (this.centerToOwnLocationControl.position) {
+            this.centerToOwnLocationControl.placeOwnLocationMarker(this.centerToOwnLocationControl.position);
+          }
+        });
+      }
+    });
+  };
 }
 
 const dvkMap = new DvkMap();
@@ -537,6 +576,7 @@ function InitDvkMap() {
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });
+    dvkMap.setInitLocationMarker();
   }
 }
 
