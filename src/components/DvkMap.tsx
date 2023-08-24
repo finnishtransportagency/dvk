@@ -245,7 +245,6 @@ class DvkMap {
     this.olMap.addLayer(ownLocationLayer);
 
     this.setBackgroundMapType(this.backgroundMapType);
-    this.setInitLocationMarker();
     this.translate();
   }
   // eslint-disable-next-line
@@ -552,15 +551,14 @@ class DvkMap {
     this.centerToOwnLocationControl.geolocation.setProjection(this.olMap?.getView().getProjection());
     navigator.permissions.query({ name: 'geolocation' }).then((result) => {
       if (result.state === 'granted') {
-        this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
-      }
-    });
-    this.centerToOwnLocationControl.geolocation.setTracking(true);
-    this.centerToOwnLocationControl.geolocation.once('change:position', () => {
-      this.centerToOwnLocationControl.geolocation.setTracking(false);
-      this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
-      if (this.centerToOwnLocationControl.position) {
-        this.centerToOwnLocationControl.placeOwnLocationMarker(this.centerToOwnLocationControl.position);
+        this.centerToOwnLocationControl.geolocation.setTracking(true);
+        this.centerToOwnLocationControl.geolocation.once('change:position', () => {
+          this.centerToOwnLocationControl.geolocation.setTracking(false);
+          this.centerToOwnLocationControl.position = this.centerToOwnLocationControl.geolocation.getPosition();
+          if (this.centerToOwnLocationControl.position) {
+            this.centerToOwnLocationControl.placeOwnLocationMarker(this.centerToOwnLocationControl.position);
+          }
+        });
       }
     });
   };
@@ -578,6 +576,7 @@ function InitDvkMap() {
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });
+    dvkMap.setInitLocationMarker();
   }
 }
 
