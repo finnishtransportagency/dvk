@@ -5,6 +5,7 @@ import infoIcon from '../theme/img/info-circle-solid.svg';
 import successIcon from '../theme/img/green_info_icon.svg';
 import warningIcon from '../theme/img/warning_icon.svg';
 import errorIcon from '../theme/img/alert_icon.svg';
+import { getAssetUrl } from '../utils/helpers';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -21,10 +22,10 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
   }, []);
 
   const iconByType = () => {
-    if (alertType === 'info') return infoIcon;
-    if (alertType === 'success') return successIcon;
-    if (alertType === 'warning') return warningIcon;
-    if (alertType === 'error') return errorIcon;
+    if (alertType === 'info') return getAssetUrl(infoIcon);
+    if (alertType === 'success') return getAssetUrl(successIcon);
+    if (alertType === 'warning') return getAssetUrl(warningIcon);
+    if (alertType === 'error') return getAssetUrl(errorIcon);
   };
 
   if (!isOpen) {
