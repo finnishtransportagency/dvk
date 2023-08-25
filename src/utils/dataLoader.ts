@@ -20,6 +20,7 @@ export function useFeatureData(
   }
   const response = useQuery({
     queryKey: [fds?.id],
+    meta: { persist: fds?.persist },
     refetchOnMount,
     refetchInterval,
     staleTime,
