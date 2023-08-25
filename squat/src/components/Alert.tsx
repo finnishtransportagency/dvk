@@ -33,10 +33,10 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
   }
 
   return (
-    <IonGrid className={className ? 'infobox ' + alertType + ' ' + className : 'infobox ' + alertType}>
+    <IonGrid className={'infobox ' + alertType + ' ' + className ?? ''}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
-          <IonIcon icon={iconByType()} color="danger" />
+          <IonIcon icon={iconByType()} />
         </IonCol>
         <IonCol>
           <IonText>{title}</IonText>
