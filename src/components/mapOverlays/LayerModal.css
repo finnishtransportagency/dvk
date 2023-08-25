@@ -4,7 +4,7 @@ ion-modal#layerModalContainer {
 }
 ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;
-  --height: fit-content;
+  --height: auto;
   --border-radius: 4px;
   --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
 }
