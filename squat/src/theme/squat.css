@@ -147,7 +147,7 @@ ion-grid.infobox ion-icon {
 }
 
 ion-grid.infobox ion-text {
-  color: rgb(36, 34, 34);
+  color: var(--ion-color-dark);
 }
 
 ion-icon {
