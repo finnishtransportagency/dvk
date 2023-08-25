@@ -70,7 +70,7 @@ const Vessel: React.FC = () => {
 
       <>
         {isTugUseRecommended(state.calculations.forces.bowThrusterForce, state.calculations.forces.externalForceRequired) && (
-          <Alert title={t('tug-use-recommended')} />
+          <Alert alertType="error" title={t('tug-use-recommended')} />
         )}
         {isThrusterUnableToLiftBow(
           state.vessel.general.lengthBPP,
@@ -78,7 +78,7 @@ const Vessel: React.FC = () => {
           state.calculations.forces.bowThrusterForce,
           state.calculations.forces.windForce,
           state.calculations.forces.waveForce
-        ) && <Alert title={t('thruster-unable-to-lift-bow')} />}
+        ) && <Alert alertType="error" title={t('thruster-unable-to-lift-bow')} />}
 
         <SectionTitle
           title={t('general')}
