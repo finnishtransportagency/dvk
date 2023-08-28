@@ -28,7 +28,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP_PIXEL_RATIO, ValidationType, imageUrl } from '../utils/constants';
+import { ActionType, Lang, MAP_PRINTSCALE, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -584,73 +584,74 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
       const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
       const rotation = dvkMap.olMap?.getView().getRotation();
-      const viewResolution = dvkMap.olMap.getView().getResolution() || 1;
+      const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
 
       // Merge canvases to one canvas
       const mapCanvas = document.createElement('canvas');
       const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-      mapCanvas.width = mapSize[0] * MAP_PIXEL_RATIO;
-      mapCanvas.height = mapSize[1] * MAP_PIXEL_RATIO;
+      mapCanvas.width = mapSize[0] * MAP_PRINTSCALE;
+      mapCanvas.height = mapSize[1] * MAP_PRINTSCALE;
       const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-      const scaling = Math.min(mapCanvas.width / canvasSizeCropped[0], mapCanvas.height / canvasSizeCropped[1]);
-      //dvkMap.olMap.getView().setResolution(viewResolution / scaling);
-      console.log(viewResolution, scaling, viewResolution / scaling);
+      dvkMap.olMap.getView().setResolution(viewResolution / MAP_PRINTSCALE);
+      dvkMap.olMap.setSize([mapSize[0] * MAP_PRINTSCALE, mapSize[1] * MAP_PRINTSCALE]);
 
-      const mapContext = mapCanvas.getContext('2d');
-      Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-          if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-          let matrix;
-          const transform = canvas.style.transform;
-          if (transform) {
-            // Get the transform parameters from the style's transform matrix
-            matrix = transform
-              .match(/^matrix\(([^(]*)\)$/)[1]
-              .split(',')
-              .map(Number);
-          } else {
-            matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+      dvkMap.olMap.once('rendercomplete', function () {
+        const mapContext = mapCanvas.getContext('2d');
+        Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+          if (canvas.width > 0) {
+            const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+            if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+            let matrix;
+            const transform = canvas.style.transform;
+            if (transform) {
+              // Get the transform parameters from the style's transform matrix
+              matrix = transform
+                .match(/^matrix\(([^(]*)\)$/)[1]
+                .split(',')
+                .map(Number);
+            } else {
+              matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+            }
+            // Apply the transform to the export map context
+            CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+            const backgroundColor = canvas.parentNode.style.backgroundColor;
+            if (backgroundColor && mapContext) {
+              mapContext.fillStyle = backgroundColor;
+              mapContext.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            if (mapContext) mapContext.drawImage(canvas, 0, 0);
           }
-          // Apply the transform to the export map context
-          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-          const backgroundColor = canvas.parentNode.style.backgroundColor;
-          if (backgroundColor && mapContext) {
-            mapContext.fillStyle = backgroundColor;
-            mapContext.fillRect(0, 0, canvas.width, canvas.height);
-          }
-          if (mapContext) mapContext.drawImage(canvas, 0, 0);
+        });
+        if (mapContext) {
+          mapContext.globalAlpha = 1;
+          mapContext.setTransform(1, 0, 0, 1, 0, 0);
         }
-      });
-      if (mapContext) {
-        mapContext.globalAlpha = 1;
-        mapContext.setTransform(1, 0, 0, 1, 0, 0);
-      }
 
-      // Crop the canvas and create image
-      const mapCanvasCropped = document.createElement('canvas');
-      mapCanvasCropped.width = canvasSizeCropped[0];
-      mapCanvasCropped.height = canvasSizeCropped[1];
-      const mapContextCropped = mapCanvasCropped.getContext('2d');
-      if (mapContextCropped) {
-        mapContextCropped.drawImage(
-          mapCanvas,
-          (mapSize[0] * MAP_PIXEL_RATIO - mapCanvasCropped.width) / 2,
-          (mapSize[1] * MAP_PIXEL_RATIO - mapCanvasCropped.height) / 2,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height,
-          0,
-          0,
-          mapCanvasCropped.width * MAP_PIXEL_RATIO,
-          mapCanvasCropped.height * MAP_PIXEL_RATIO
-        );
-      }
-      const base64Data = mapCanvasCropped.toDataURL('image/png');
-      uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
-      // Reset original map size
-      //dvkMap.olMap?.setSize(mapSize);
-      //dvkMap.olMap?.getView().setResolution(viewResolution);
+        // Crop the canvas and create image
+        const mapCanvasCropped = document.createElement('canvas');
+        mapCanvasCropped.width = canvasSizeCropped[0];
+        mapCanvasCropped.height = canvasSizeCropped[1];
+        const mapContextCropped = mapCanvasCropped.getContext('2d');
+        if (mapContextCropped) {
+          mapContextCropped.drawImage(
+            mapCanvas,
+            (mapSize[0] * MAP_PRINTSCALE - mapCanvasCropped.width) / 2,
+            (mapSize[1] * MAP_PRINTSCALE - mapCanvasCropped.height) / 2,
+            mapCanvasCropped.width,
+            mapCanvasCropped.height,
+            0,
+            0,
+            mapCanvasCropped.width,
+            mapCanvasCropped.height
+          );
+        }
+        const base64Data = mapCanvasCropped.toDataURL('image/png');
+        uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
+        // Reset original map size
+        dvkMap.olMap?.setSize(mapSize);
+        dvkMap.olMap?.getView().setResolution(viewResolution);
+      });
     }
   };
 

@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { BackgroundLayerId, FeatureLayerId, MAP, MAP_PIXEL_RATIO } from '../../utils/constants';
+import { BackgroundLayerId, FeatureLayerId, MAP, MAP_PRINTSCALE } from '../../utils/constants';
 import { MousePosition, ScaleLine, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -103,7 +103,7 @@ class DvkMap {
     }
 
     this.olMap = new Map({
-      pixelRatio: MAP_PIXEL_RATIO,
+      pixelRatio: 1,
       view: new View({
         projection: projection,
         resolutions: MAP.RESOLUTIONS,
@@ -257,14 +257,10 @@ class DvkMap {
     if (this.olMap) {
       const orientationType = this.getOrientationType();
       if (orientationType === Orientation.Portrait) {
-        canvasSize = [794, 1123];
-        //canvasSize = [595, 842];
-        //canvasSize = [595 * MAP_PIXEL_RATIO 842 * MAP_PIXEL_RATIO];
+        canvasSize = [595 * MAP_PRINTSCALE, 842 * MAP_PRINTSCALE];
       }
       if (orientationType === Orientation.Landscape) {
-        canvasSize = [1123, 794];
-        //canvasSize = [842, 595];
-        //canvasSize = [842 * MAP_PIXEL_RATIO, 595 * MAP_PIXEL_RATIO];
+        canvasSize = [842 * MAP_PRINTSCALE, 595 * MAP_PRINTSCALE];
       }
     }
     return canvasSize;
