@@ -240,7 +240,7 @@ class DvkMap {
       source: new VectorSource({
         features: [],
       }),
-      zIndex: 1000,
+      zIndex: 300,
     });
     this.olMap.addLayer(ownLocationLayer);
 
@@ -398,8 +398,7 @@ class DvkMap {
       new Style({
         image: new Icon({
           src: locationIcon,
-          imgSize: [32, 40],
-          anchor: [0.5, 40],
+          anchor: [0.5, 41],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
         }),
