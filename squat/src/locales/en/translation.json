@@ -137,7 +137,8 @@
         "drift-info": "Drift Angle = (Density of Air ÷ Density of Seawater) × (Apparent wind speed ÷ Ship speed) ² × (Lateral wind surface area ÷ (Draught) ² × Aerodynamic yaw moment coefficient ÷ (ℼ(0.5 + 2.4 × Draught ÷ Length BPP)))",
         "extensive-calculator": "Extensive calculator",
         "limited-calculator": "Limited calculator"
-      }
+      },
+      "pakolliset-kentat-info": "* marked fields are mandatory data to perform the calculation"
     },
     "squatChart": {
       "heading": "Squat as a Function of Speed",
