@@ -58,7 +58,8 @@ const InputField: React.FC<InputProps> = (props) => {
   const innerUpdateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
       inputRef?.current?.getInputElement().then((inputElem) => {
-        setValue(inputElem.value);
+        const trimmedValue = inputElem.value.replace(/^0+(?=[0-9])/, '');
+        setValue(trimmedValue);
         dispatch({
           type: 'validation',
           payload: {
@@ -122,6 +123,8 @@ const InputField: React.FC<InputProps> = (props) => {
       } else if (props.max !== undefined && Number(value) > props.max) {
         return errorSign + t('value-cannot-be-over', { value: props.max.toLocaleString(i18n.language) }) + ' ' + unit;
       } else if (countDecimals(Number(value)) > countDecimals(Number(props.step))) {
+        console.log('count decimals number value', countDecimals(Number(value)));
+        console.log('count decimals ');
         return errorSign + t('maximum-precision-is-X-decimals', { count: countDecimals(Number(props.step)) });
       } else {
         return errorSign + t('value-invalid');
