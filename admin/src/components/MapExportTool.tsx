@@ -28,7 +28,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP_PRINTSCALE, ValidationType, imageUrl } from '../utils/constants';
+import { ActionType, Lang, MAP, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -589,12 +589,12 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       // Merge canvases to one canvas
       const mapCanvas = document.createElement('canvas');
       const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-      mapCanvas.width = mapSize[0] * MAP_PRINTSCALE;
-      mapCanvas.height = mapSize[1] * MAP_PRINTSCALE;
+      mapCanvas.width = mapSize[0] * MAP.PRINT.SCALE;
+      mapCanvas.height = mapSize[1] * MAP.PRINT.SCALE;
       const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-      dvkMap.olMap.getView().setResolution(viewResolution / MAP_PRINTSCALE);
-      dvkMap.olMap.setSize([mapSize[0] * MAP_PRINTSCALE, mapSize[1] * MAP_PRINTSCALE]);
+      dvkMap.olMap.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
+      dvkMap.olMap.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
 
       dvkMap.olMap.once('rendercomplete', function () {
         const mapContext = mapCanvas.getContext('2d');
@@ -636,8 +636,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
         if (mapContextCropped) {
           mapContextCropped.drawImage(
             mapCanvas,
-            (mapSize[0] * MAP_PRINTSCALE - mapCanvasCropped.width) / 2,
-            (mapSize[1] * MAP_PRINTSCALE - mapCanvasCropped.height) / 2,
+            (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
+            (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
             mapCanvasCropped.width,
             mapCanvasCropped.height,
             0,

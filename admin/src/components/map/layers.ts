@@ -384,16 +384,16 @@ function getFittingPadding() {
   const size = dvkMap.olMap?.getSize() || [0, 0];
   const orientationType = dvkMap.getOrientationType();
   if (size[0] && orientationType === Orientation.Portrait) {
-    fitPadding[0] = (size[1] - 842) / 2 + 75;
-    fitPadding[1] = (size[0] - 595) / 2 + 25;
-    fitPadding[2] = (size[1] - 842) / 2 + 25;
-    fitPadding[3] = (size[0] - 595) / 2 + 25;
+    fitPadding[0] = (size[1] - MAP.PRINT.EXPORT_HEIGHT / MAP.PRINT.SCALE) / 2 + 50;
+    fitPadding[1] = (size[0] - MAP.PRINT.EXPORT_WIDTH / MAP.PRINT.SCALE) / 2 + 25;
+    fitPadding[2] = (size[1] - MAP.PRINT.EXPORT_HEIGHT / MAP.PRINT.SCALE) / 2 + 25;
+    fitPadding[3] = (size[0] - MAP.PRINT.EXPORT_WIDTH / MAP.PRINT.SCALE) / 2 + 25;
   }
   if (size[1] && orientationType === Orientation.Landscape) {
-    fitPadding[0] = (size[1] - 595) / 2 + 75;
-    fitPadding[1] = (size[0] - 892) / 2 + 25;
-    fitPadding[2] = (size[1] - 595) / 2 + 25;
-    fitPadding[3] = (size[0] - 892) / 2 + 25;
+    fitPadding[0] = (size[1] - MAP.PRINT.EXPORT_WIDTH / MAP.PRINT.SCALE) / 2 + 50;
+    fitPadding[1] = (size[0] - MAP.PRINT.EXPORT_HEIGHT / MAP.PRINT.SCALE) / 2 + 25;
+    fitPadding[2] = (size[1] - MAP.PRINT.EXPORT_WIDTH / MAP.PRINT.SCALE) / 2 + 25;
+    fitPadding[3] = (size[0] - MAP.PRINT.EXPORT_HEIGHT / MAP.PRINT.SCALE) / 2 + 25;
   }
   return fitPadding;
 }

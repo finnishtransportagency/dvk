@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { BackgroundLayerId, FeatureLayerId, MAP, MAP_PRINTSCALE } from '../../utils/constants';
+import { BackgroundLayerId, FeatureLayerId, MAP } from '../../utils/constants';
 import { MousePosition, ScaleLine, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -257,10 +257,10 @@ class DvkMap {
     if (this.olMap) {
       const orientationType = this.getOrientationType();
       if (orientationType === Orientation.Portrait) {
-        canvasSize = [595 * MAP_PRINTSCALE, 842 * MAP_PRINTSCALE];
+        canvasSize = [MAP.PRINT.EXPORT_WIDTH, MAP.PRINT.EXPORT_HEIGHT];
       }
       if (orientationType === Orientation.Landscape) {
-        canvasSize = [842 * MAP_PRINTSCALE, 595 * MAP_PRINTSCALE];
+        canvasSize = [MAP.PRINT.EXPORT_HEIGHT, MAP.PRINT.EXPORT_WIDTH];
       }
     }
     return canvasSize;
