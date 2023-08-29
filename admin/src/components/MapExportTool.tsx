@@ -78,7 +78,7 @@ interface ExtMapControlProps {
 const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
-  const [orientationType, setOrientationType] = useState<Orientation | ''>();
+  const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
 
   const handleOrientationChange = (orientation: Orientation) => {
     if (orientation === dvkMap.getOrientationType()) {

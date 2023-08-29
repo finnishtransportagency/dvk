@@ -294,6 +294,7 @@ class DvkMap {
     if (target !== undefined) {
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.add('dvkMap');
+      if (this.getOrientationType()) targetElement?.classList.add(this.getOrientationType());
     }
   };
 
