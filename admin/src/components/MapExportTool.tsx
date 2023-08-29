@@ -28,7 +28,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, ValidationType, imageUrl } from '../utils/constants';
+import { ActionType, Lang, MAP, ValidationType, imageUrl } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -78,7 +78,7 @@ interface ExtMapControlProps {
 const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
-  const [orientationType, setOrientationType] = useState<Orientation | ''>();
+  const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
 
   const handleOrientationChange = (orientation: Orientation) => {
     if (orientation === dvkMap.getOrientationType()) {
@@ -584,64 +584,74 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
       const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
       const rotation = dvkMap.olMap?.getView().getRotation();
+      const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
 
       // Merge canvases to one canvas
       const mapCanvas = document.createElement('canvas');
       const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-      mapCanvas.width = mapSize[0];
-      mapCanvas.height = mapSize[1];
-      const mapContext = mapCanvas.getContext('2d');
-      Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-          if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-          let matrix;
-          const transform = canvas.style.transform;
-          if (transform) {
-            // Get the transform parameters from the style's transform matrix
-            matrix = transform
-              .match(/^matrix\(([^(]*)\)$/)[1]
-              .split(',')
-              .map(Number);
-          } else {
-            matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+      mapCanvas.width = mapSize[0] * MAP.PRINT.SCALE;
+      mapCanvas.height = mapSize[1] * MAP.PRINT.SCALE;
+      const canvasSizeCropped = dvkMap.getCanvasDimensions();
+
+      dvkMap.olMap.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
+      dvkMap.olMap.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
+
+      dvkMap.olMap.once('rendercomplete', function () {
+        const mapContext = mapCanvas.getContext('2d');
+        Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+          if (canvas.width > 0) {
+            const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+            if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+            let matrix;
+            const transform = canvas.style.transform;
+            if (transform) {
+              // Get the transform parameters from the style's transform matrix
+              matrix = transform
+                .match(/^matrix\(([^(]*)\)$/)[1]
+                .split(',')
+                .map(Number);
+            } else {
+              matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+            }
+            // Apply the transform to the export map context
+            CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+            const backgroundColor = canvas.parentNode.style.backgroundColor;
+            if (backgroundColor && mapContext) {
+              mapContext.fillStyle = backgroundColor;
+              mapContext.fillRect(0, 0, canvas.width, canvas.height);
+            }
+            if (mapContext) mapContext.drawImage(canvas, 0, 0);
           }
-          // Apply the transform to the export map context
-          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-          const backgroundColor = canvas.parentNode.style.backgroundColor;
-          if (backgroundColor && mapContext) {
-            mapContext.fillStyle = backgroundColor;
-            mapContext.fillRect(0, 0, canvas.width, canvas.height);
-          }
-          if (mapContext) mapContext.drawImage(canvas, 0, 0);
+        });
+        if (mapContext) {
+          mapContext.globalAlpha = 1;
+          mapContext.setTransform(1, 0, 0, 1, 0, 0);
         }
+
+        // Crop the canvas and create image
+        const mapCanvasCropped = document.createElement('canvas');
+        mapCanvasCropped.width = canvasSizeCropped[0];
+        mapCanvasCropped.height = canvasSizeCropped[1];
+        const mapContextCropped = mapCanvasCropped.getContext('2d');
+        if (mapContextCropped) {
+          mapContextCropped.drawImage(
+            mapCanvas,
+            (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
+            (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
+            mapCanvasCropped.width,
+            mapCanvasCropped.height,
+            0,
+            0,
+            mapCanvasCropped.width,
+            mapCanvasCropped.height
+          );
+        }
+        const base64Data = mapCanvasCropped.toDataURL('image/png');
+        uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
+        // Reset original map size
+        dvkMap.olMap?.setSize(mapSize);
+        dvkMap.olMap?.getView().setResolution(viewResolution);
       });
-      if (mapContext) {
-        mapContext.globalAlpha = 1;
-        mapContext.setTransform(1, 0, 0, 1, 0, 0);
-      }
-
-      // Crop the canvas and create image
-      const mapCanvasCropped = document.createElement('canvas');
-      const canvasSize = dvkMap.getCanvasDimensions();
-      mapCanvasCropped.width = canvasSize[0];
-      mapCanvasCropped.height = canvasSize[1];
-      const mapContextCropped = mapCanvasCropped.getContext('2d');
-      if (mapContextCropped)
-        mapContextCropped.drawImage(
-          mapCanvas,
-          (mapSize[0] - mapCanvasCropped.width) / 2,
-          (mapSize[1] - mapCanvasCropped.height) / 2,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height,
-          0,
-          0,
-          mapCanvasCropped.width,
-          mapCanvasCropped.height
-        );
-
-      const base64Data = mapCanvasCropped.toDataURL('image/png');
-      uploadPicture(base64Data, dvkMap.getOrientationType() || Orientation.Portrait, rotation, mapScaleWidth, mapScale?.innerHTML, 'fi');
     }
   };
 

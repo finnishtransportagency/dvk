@@ -204,6 +204,14 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId;
 
 type DataLayer = { id: FeatureDataLayerId; noOfflineSupport?: boolean };
 
+type MapPrintOptType = {
+  SCALE: number;
+  EXPORT_WIDTH: number;
+  EXPORT_HEIGHT: number;
+  VIEW_WIDTH: number;
+  VIEW_HEIGHT: number;
+};
+
 type MapType = {
   EPSG: string;
   EXTENT: number[];
@@ -211,6 +219,7 @@ type MapType = {
   INIT_CENTER: number[];
   INIT_RESOLUTION: number;
   FEATURE_DATA_LAYERS: Array<DataLayer>;
+  PRINT: MapPrintOptType;
 };
 
 export const MAP: MapType = {
@@ -237,6 +246,7 @@ export const MAP: MapType = {
     { id: 'name' },
     { id: 'circle' },
   ],
+  PRINT: { SCALE: 1.7, EXPORT_WIDTH: 794, EXPORT_HEIGHT: 1123, VIEW_WIDTH: 794 / 1.7 + 53, VIEW_HEIGHT: 1123 / 1.7 + 59.5 }, // A4 @ 96 DPI: 794 x 1123
 };
 
 export const OFFLINE_STORAGE = {

@@ -257,10 +257,10 @@ class DvkMap {
     if (this.olMap) {
       const orientationType = this.getOrientationType();
       if (orientationType === Orientation.Portrait) {
-        canvasSize = [595, 842];
+        canvasSize = [MAP.PRINT.EXPORT_WIDTH, MAP.PRINT.EXPORT_HEIGHT];
       }
       if (orientationType === Orientation.Landscape) {
-        canvasSize = [842, 595];
+        canvasSize = [MAP.PRINT.EXPORT_HEIGHT, MAP.PRINT.EXPORT_WIDTH];
       }
     }
     return canvasSize;
@@ -294,6 +294,7 @@ class DvkMap {
     if (target !== undefined) {
       const targetElement = this.olMap?.getTargetElement();
       targetElement?.classList.add('dvkMap');
+      if (this.getOrientationType()) targetElement?.classList.add(this.getOrientationType());
     }
   };
 
