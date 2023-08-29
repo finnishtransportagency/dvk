@@ -22,6 +22,10 @@ export default defineConfig({
     svgrPlugin(),
     legacy(),
     VitePWA({
+      /* Cache all imports */
+      workbox: {
+        globPatterns: ['**/*'],
+      },
       registerType: 'autoUpdate',
       filename: 'service-worker.js',
       manifestFilename: 'manifest.json',
