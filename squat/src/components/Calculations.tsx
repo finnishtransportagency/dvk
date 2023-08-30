@@ -44,11 +44,14 @@ import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/dis
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
 
-const Calculations: React.FC = () => {
+interface CalculationProps {
+  limitedView: boolean;
+}
+
+const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
   const tRoot = i18n.getFixedT(i18n.language);
-  const { showLimitedView } = state.status;
 
   // Validations
   const checkIsReliabilityAnIssue = () => {
@@ -61,7 +64,7 @@ const Calculations: React.FC = () => {
     );
   };
   const checkIsUKCUnderMinimum = () => {
-    if (showLimitedView) {
+    if (limitedView) {
       return isUKCStraightUnderRequired(
         state.environment.attribute.requiredUKC,
         state.calculations.squat.UKCStraightCourse,
@@ -378,12 +381,12 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert alertType="error" title={t('UKC-under-required-minimum')} />}
 
-        <div className={'in-print top-padding' + (showLimitedView ? ' print-hide' : '')}>
+        <div className={'in-print top-padding' + (limitedView ? ' print-hide' : '')}>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
             onIonChange={handleWaterValuesChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
-            disabled={showLimitedView || !state.environment.weather.waveLength[0]}
+            disabled={limitedView || !state.environment.weather.waveLength[0]}
             selectOnFocus
           >
             <IonSegmentButton value="false">
@@ -410,12 +413,7 @@ const Calculations: React.FC = () => {
             </IonSegmentButton>
           </IonSegment>
 
-          <IonSegment
-            onIonChange={handleSelectedViewChange}
-            value={showLimitedView ? 'true' : 'false'}
-            className="top-padding print-hide"
-            selectOnFocus
-          >
+          <IonSegment onIonChange={handleSelectedViewChange} value={limitedView ? 'true' : 'false'} className="top-padding print-hide" selectOnFocus>
             <IonSegmentButton value="false">
               <IonLabel>{t('extensive-calculator')}</IonLabel>
             </IonSegmentButton>
@@ -441,8 +439,8 @@ const Calculations: React.FC = () => {
           />
         )}
 
-        <SectionTitle title={t('squat')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
-        {!showLimitedView && (
+        <SectionTitle title={t('squat')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
+        {!limitedView && (
           <IonGrid className="no-padding">
             <IonRow className="input-row">
               <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -575,8 +573,8 @@ const Calculations: React.FC = () => {
           </IonGrid>
         )}
 
-        <SectionTitle title={t('wind-force')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
-        {!showLimitedView && (
+        <SectionTitle title={t('wind-force')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
+        {!limitedView && (
           <IonGrid className="no-padding">
             <IonRow className="input-row">
               <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -660,12 +658,12 @@ const Calculations: React.FC = () => {
         <SectionTitle
           title={t('drift')}
           hideValidity
-          className={showLimitedView ? 'print-hide' : ''}
-          disabled={showLimitedView}
+          className={limitedView ? 'print-hide' : ''}
+          disabled={limitedView}
           infoContentTitle={t('drift-info-title')}
           infoContent={<p>{t('drift-info')}</p>}
         />
-        {!showLimitedView && (
+        {!limitedView && (
           <IonGrid className="no-padding">
             <IonRow className="input-row">
               <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">

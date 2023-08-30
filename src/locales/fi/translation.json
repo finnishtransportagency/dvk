@@ -8,7 +8,6 @@
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
-      "squat-url": "/squat/index.html?lang=fi",
       "customer-service": "Liikenteen asiakaspalvelu",
       "source": "Tietolähteet ja käyttöehdot",
       "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
@@ -415,6 +414,7 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
+    "squat": "Squat-laskuri",
     "fairway-cards": "Väyläkortit",
     "skip-to-content": "Siirry pääsisältöön",
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",

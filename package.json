@@ -56,7 +56,8 @@
     "workbox-range-requests": "^7.0.0",
     "workbox-routing": "^7.0.0",
     "workbox-strategies": "^7.0.0",
-    "workbox-streams": "^7.0.0"
+    "workbox-streams": "^7.0.0",
+    "squatlib": "file:./squat"
   },
   "scripts": {
     "prestart": "npm run generate",

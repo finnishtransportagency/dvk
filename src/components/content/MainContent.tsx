@@ -19,11 +19,12 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import SquatCalculator from './SquatCalculator';
 
 interface MainContentProps {
   fairwayCardId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings';
+  target?: 'faults' | 'warnings' | 'squat';
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
@@ -283,6 +284,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
+                {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">

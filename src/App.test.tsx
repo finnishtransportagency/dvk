@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
@@ -23,6 +24,11 @@ class ResizeObserver {
 global.ResizeObserver = ResizeObserver;
 
 beforeAll(() => {
+  // @ts-ignore
+  window.SVGElement.prototype.getBBox = () => ({
+    x: 0,
+    y: 0,
+  });
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
       controller: vi.fn().mockImplementation(() => Promise.resolve()),
@@ -31,6 +37,11 @@ beforeAll(() => {
   });
   vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   vi.spyOn(window, 'print').mockImplementation(() => {});
+});
+
+afterAll(() => {
+  // @ts-ignore
+  delete window.SVGElement.prototype.getBBox;
 });
 
 beforeEach(() => {
