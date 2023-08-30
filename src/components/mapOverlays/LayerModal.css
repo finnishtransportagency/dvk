@@ -4,7 +4,7 @@ ion-modal#layerModalContainer {
 }
 ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;
-  --height: fit-content;
+  --height: auto;
   --border-radius: 4px;
   --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
 }
@@ -217,6 +217,7 @@ ion-modal#layerModalContainer::part(content) {
   height: 16px;
   background: url('../../theme/img/pilotPlace.svg') no-repeat center;
   background-size: cover;
+  margin-top: 2px;
 }
 #layerModalContainer ion-item .marinewarning {
   width: 17px;
@@ -318,7 +319,8 @@ ion-modal#layerModalContainer::part(content) {
   --background-focused: unset;
   --padding-end: 3px;
   --padding-start: 3px;
-  height: 20px;
+  height: 28px;
+  min-height: 28px;
   margin: 1px;
 }
 #layerModalContainer .toggleButton.ion-focused {

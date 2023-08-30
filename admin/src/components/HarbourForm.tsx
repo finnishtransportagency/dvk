@@ -1,8 +1,8 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
-import { ContentType, Harbor, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
+import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
 import FormInput from './FormInput';
 import FormSelect from './FormSelect';
@@ -14,6 +14,7 @@ import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
+import { mapToHarborInput } from '../pages/HarbourEditPage';
 
 interface FormProps {
   harbour: HarborInput;
@@ -62,8 +63,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     history.push({ pathname: '/' });
   };
 
+  const [oldState, setOldState] = useState<HarborInput>(harbour);
   const handleCancel = () => {
-    const diffObj = diff(harbour, state);
+    const diffObj = diff(oldState, state);
     if (JSON.stringify(diffObj) === '{}') {
       backToList();
     } else {
@@ -75,45 +77,63 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [saveError, setSaveError] = useState<string>();
   const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
   const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
-  const [savedHarbour, setSavedHarbour] = useState<Harbor | null>();
+  const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
+  const [isOpen, setIsOpen] = useState(false);
   const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
       setSavedHarbour(data.saveHarbor);
+      setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
+      setIsOpen(true);
     },
     onError: (error: Error) => {
       setSaveError(error.message);
+      setIsOpen(true);
     },
   });
 
-  const saveHarbour = useCallback(() => {
-    const currentHarbour = {
-      ...state,
-      quays: state.quays?.map((quay) => {
-        return {
-          ...quay,
-          geometry:
-            !quay?.geometry?.lat || !quay?.geometry?.lon
-              ? undefined
-              : {
-                  lat: quay?.geometry?.lat,
-                  lon: quay?.geometry?.lon,
-                },
-          length: quay?.length ?? undefined,
-          sections: quay?.sections?.map((quaySection) => {
+  useEffect(() => {
+    setState(harbour);
+    setOldState(harbour);
+  }, [harbour]);
+
+  const saveHarbour = useCallback(
+    (isRemove?: boolean) => {
+      if (isRemove) {
+        const oldHarbour = { ...oldState, status: Status.Removed };
+        setState({ ...oldState, status: Status.Removed });
+        saveHarbourMutation({ harbor: oldHarbour as HarborInput });
+      } else {
+        const currentHarbour = {
+          ...state,
+          quays: state.quays?.map((quay) => {
             return {
-              ...quaySection,
+              ...quay,
               geometry:
-                !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
+                !quay?.geometry?.lat || !quay?.geometry?.lon
                   ? undefined
-                  : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-              depth: quaySection?.depth ?? undefined,
+                  : {
+                      lat: quay?.geometry?.lat,
+                      lon: quay?.geometry?.lon,
+                    },
+              length: quay?.length ?? undefined,
+              sections: quay?.sections?.map((quaySection) => {
+                return {
+                  ...quaySection,
+                  geometry:
+                    !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
+                      ? undefined
+                      : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
+                  depth: quaySection?.depth ?? undefined,
+                };
+              }),
             };
           }),
         };
-      }),
-    };
-    saveHarbourMutation({ harbor: currentHarbour as HarborInput });
-  }, [state, saveHarbourMutation]);
+        saveHarbourMutation({ harbor: currentHarbour as HarborInput });
+      }
+    },
+    [state, oldState, saveHarbourMutation]
+  );
 
   const formRef = useRef<HTMLFormElement>(null);
   const handleSubmit = (isRemove = false) => {
@@ -134,130 +154,131 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         return;
       }
     }
-    if (isRemove) updateState(Status.Removed, 'status');
 
-    // Manual validations for required fields
-    let primaryIdErrorMsg = '';
-    if (state.operation === Operation.Create) {
-      if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+    let allValidations: ValidationType[] = [];
+    if (!isToBeRemoved) {
+      // Manual validations for required fields
+      let primaryIdErrorMsg = '';
+      if (state.operation === Operation.Create) {
+        if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
+        if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+      }
+      const manualValidations = [
+        { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
+        {
+          id: 'extraInfo',
+          msg:
+            (state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim()) &&
+            (!state.extraInfo?.fi.trim() || !state.extraInfo?.sv.trim() || !state.extraInfo?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'cargo',
+          msg:
+            (state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim()) &&
+            (!state.cargo?.fi.trim() || !state.cargo?.sv.trim() || !state.cargo?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'harbourBasin',
+          msg:
+            (state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim()) &&
+            (!state.harborBasin?.fi.trim() || !state.harborBasin?.sv.trim() || !state.harborBasin?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        {
+          id: 'companyName',
+          msg:
+            (state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim()) &&
+            (!state.company?.fi.trim() || !state.company?.sv.trim() || !state.company?.en.trim())
+              ? t(ErrorMessageKeys?.required)
+              : '',
+        },
+        { id: 'primaryId', msg: primaryIdErrorMsg },
+        { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
+        { id: 'lon', msg: !state.geometry.lon ? t(ErrorMessageKeys?.required) : '' },
+      ];
+      const quayNameErrors =
+        state.quays
+          ?.flatMap((quay, i) =>
+            (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim()) &&
+            (!quay?.name?.fi.trim() || !quay?.name?.sv.trim() || !quay?.name?.en.trim())
+              ? i
+              : null
+          )
+          .filter((val) => Number.isInteger(val))
+          .map((qIndex) => {
+            return {
+              id: 'quayName-' + qIndex,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      const quayExtraInfoErrors =
+        state.quays
+          ?.flatMap((quay, i) =>
+            (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim()) &&
+            (!quay?.extraInfo?.fi.trim() || !quay?.extraInfo?.sv.trim() || !quay?.extraInfo?.en.trim())
+              ? i
+              : null
+          )
+          .filter((val) => Number.isInteger(val))
+          .map((qIndex) => {
+            return {
+              id: 'quayExtraInfo-' + qIndex,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      const quayGeometryErrors =
+        state.quays
+          ?.flatMap((quay, i) =>
+            (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim()) && (!quay?.geometry?.lat.trim() || !quay?.geometry?.lon.trim()) ? i : null
+          )
+          .filter((val) => Number.isInteger(val))
+          .map((qIndex) => {
+            return {
+              id: 'quayGeometry-' + qIndex,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      const sectionGeometryErrors =
+        state.quays
+          ?.map(
+            (quay) =>
+              quay?.sections
+                ?.flatMap((section, j) =>
+                  (section?.geometry?.lat.trim() || section?.geometry?.lon.trim()) &&
+                  (!section?.geometry?.lat.trim() || !section?.geometry?.lon.trim())
+                    ? j
+                    : null
+                )
+                .filter((val) => Number.isInteger(val))
+          )
+          .flatMap((sIndices, qIndex) => {
+            return (
+              sIndices?.map((sIndex) => {
+                return {
+                  id: 'sectionGeometry-' + qIndex + '-' + sIndex,
+                  msg: t(ErrorMessageKeys?.required),
+                };
+              }) ?? []
+            );
+          }) ?? [];
+      allValidations = manualValidations.concat(quayNameErrors).concat(quayExtraInfoErrors).concat(quayGeometryErrors).concat(sectionGeometryErrors);
+      setValidationErrors(allValidations);
     }
-    const manualValidations = [
-      { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
-      {
-        id: 'extraInfo',
-        msg:
-          (state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim()) &&
-          (!state.extraInfo?.fi.trim() || !state.extraInfo?.sv.trim() || !state.extraInfo?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'cargo',
-        msg:
-          (state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim()) &&
-          (!state.cargo?.fi.trim() || !state.cargo?.sv.trim() || !state.cargo?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'harbourBasin',
-        msg:
-          (state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim()) &&
-          (!state.harborBasin?.fi.trim() || !state.harborBasin?.sv.trim() || !state.harborBasin?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      {
-        id: 'companyName',
-        msg:
-          (state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim()) &&
-          (!state.company?.fi.trim() || !state.company?.sv.trim() || !state.company?.en.trim())
-            ? t(ErrorMessageKeys?.required)
-            : '',
-      },
-      { id: 'primaryId', msg: primaryIdErrorMsg },
-      { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
-      { id: 'lon', msg: !state.geometry.lon ? t(ErrorMessageKeys?.required) : '' },
-    ];
-    const quayNameErrors =
-      state.quays
-        ?.flatMap((quay, i) =>
-          (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim()) &&
-          (!quay?.name?.fi.trim() || !quay?.name?.sv.trim() || !quay?.name?.en.trim())
-            ? i
-            : null
-        )
-        .filter((val) => Number.isInteger(val))
-        .map((qIndex) => {
-          return {
-            id: 'quayName-' + qIndex,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        }) ?? [];
-    const quayExtraInfoErrors =
-      state.quays
-        ?.flatMap((quay, i) =>
-          (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim()) &&
-          (!quay?.extraInfo?.fi.trim() || !quay?.extraInfo?.sv.trim() || !quay?.extraInfo?.en.trim())
-            ? i
-            : null
-        )
-        .filter((val) => Number.isInteger(val))
-        .map((qIndex) => {
-          return {
-            id: 'quayExtraInfo-' + qIndex,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        }) ?? [];
-    const quayGeometryErrors =
-      state.quays
-        ?.flatMap((quay, i) =>
-          (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim()) && (!quay?.geometry?.lat.trim() || !quay?.geometry?.lon.trim()) ? i : null
-        )
-        .filter((val) => Number.isInteger(val))
-        .map((qIndex) => {
-          return {
-            id: 'quayGeometry-' + qIndex,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        }) ?? [];
-    const sectionGeometryErrors =
-      state.quays
-        ?.map((quay) =>
-          quay?.sections
-            ?.flatMap((section, j) =>
-              (section?.geometry?.lat.trim() || section?.geometry?.lon.trim()) && (!section?.geometry?.lat.trim() || !section?.geometry?.lon.trim())
-                ? j
-                : null
-            )
-            .filter((val) => Number.isInteger(val))
-        )
-        .flatMap((sIndices, qIndex) => {
-          return (
-            sIndices?.map((sIndex) => {
-              return {
-                id: 'sectionGeometry-' + qIndex + '-' + sIndex,
-                msg: t(ErrorMessageKeys?.required),
-              };
-            }) ?? []
-          );
-        }) ?? [];
-    const allValidations = manualValidations
-      .concat(quayNameErrors)
-      .concat(quayExtraInfoErrors)
-      .concat(quayGeometryErrors)
-      .concat(sectionGeometryErrors);
-    setValidationErrors(allValidations);
 
-    if (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1) {
+    if (isToBeRemoved || (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1)) {
       if (
         (state.operation === Operation.Create && state.status === Status.Draft) ||
         (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)
       ) {
-        saveHarbour();
+        if (isToBeRemoved) updateState(Status.Removed, 'status');
+        saveHarbour(isToBeRemoved);
       } else {
-        setConfirmationType('save');
+        setConfirmationType(isToBeRemoved ? 'remove' : 'save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -273,8 +294,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     setSaveError('');
     setSaveErrorMsg('');
     setSaveErrorItems([]);
+    setIsOpen(false);
     if (!saveError && !!savedHarbour) {
-      if (state.operation === Operation.Update) history.go(0);
       if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
     }
   };
@@ -295,7 +316,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
       <NotificationModal
-        isOpen={!!saveError || !!savedHarbour}
+        isOpen={!!saveError || isOpen}
         closeAction={closeNotification}
         header={getNotificationTitle()}
         subHeader={
@@ -341,7 +362,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <IonButton shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoadingMutation}>
                 {t('general.cancel')}
               </IonButton>
-              {state.operation === Operation.Update && harbour.status !== Status.Removed && (
+              {state.operation === Operation.Update && oldState.status !== Status.Removed && (
                 <IonButton
                   shape="round"
                   color="danger"
@@ -353,7 +374,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   {t('general.delete')}
                 </IonButton>
               )}
-              <IonButton shape="round" disabled={isError ?? isLoadingMutation} onClick={() => handleSubmit()}>
+              <IonButton shape="round" disabled={isError ?? isLoadingMutation} onClick={() => handleSubmit(state.status === Status.Removed)}>
                 {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
               </IonButton>
             </IonCol>
@@ -391,7 +412,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     ]}
                     setSelected={updateState}
                     actionType="referenceLevel"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="6"></IonCol>
@@ -408,7 +429,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 updateState={updateState}
                 actionType="name"
                 required
-                disabled={harbour.status === Status.Removed}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
               <FormTextInputRow
@@ -416,8 +437,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.extraInfo}
                 updateState={updateState}
                 actionType="extraInfo"
-                required={!!(state.extraInfo?.fi ?? state.extraInfo?.sv ?? state.extraInfo?.en)}
-                disabled={harbour.status === Status.Removed}
+                required={!!(state.extraInfo?.fi || state.extraInfo?.sv || state.extraInfo?.en)}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
                 inputType="textarea"
               />
@@ -426,8 +447,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.cargo}
                 updateState={updateState}
                 actionType="cargo"
-                required={!!(state.cargo?.fi ?? state.cargo?.sv ?? state.cargo?.en)}
-                disabled={harbour.status === Status.Removed}
+                required={!!(state.cargo?.fi || state.cargo?.sv || state.cargo?.en)}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'cargo')?.msg}
                 inputType="textarea"
               />
@@ -436,8 +457,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.harborBasin}
                 updateState={updateState}
                 actionType="harbourBasin"
-                required={!!(state.harborBasin?.fi ?? state.harborBasin?.sv ?? state.harborBasin?.en)}
-                disabled={harbour.status === Status.Removed}
+                required={!!(state.harborBasin?.fi || state.harborBasin?.sv || state.harborBasin?.en)}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
                 inputType="textarea"
               />
@@ -451,8 +472,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.company}
                 updateState={updateState}
                 actionType="companyName"
-                required={!!(state.company?.fi ?? state.company?.sv ?? state.company?.en)}
-                disabled={harbour.status === Status.Removed}
+                required={!!(state.company?.fi || state.company?.sv || state.company?.en)}
+                disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'companyName')?.msg}
               />
               <IonRow>
@@ -463,7 +484,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     setValue={updateState}
                     actionType="email"
                     inputType="email"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -475,7 +496,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     helperText={t('general.use-comma-separated-values')}
                     inputType="tel"
                     multiple
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -485,7 +506,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     setValue={updateState}
                     actionType="fax"
                     inputType="tel"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
               </IonRow>
@@ -496,7 +517,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     val={state.internet ?? ''}
                     setValue={updateState}
                     actionType="internet"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -509,7 +530,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lat')?.msg}
                     inputType="latitude"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
@@ -522,7 +543,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                     required
                     error={validationErrors.find((error) => error.id === 'lon')?.msg}
                     inputType="longitude"
-                    disabled={harbour.status === Status.Removed}
+                    disabled={state.status === Status.Removed}
                   />
                 </IonCol>
               </IonRow>
@@ -534,7 +555,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               updateState={updateState}
               sectionType="quay"
               validationErrors={validationErrors}
-              disabled={harbour.status === Status.Removed}
+              disabled={state.status === Status.Removed}
             />
           </form>
         )}

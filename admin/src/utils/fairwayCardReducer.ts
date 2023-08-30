@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PilotPlaceInput, Status } from '../graphql/generated';
+import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 
 export const fairwayCardReducer = (
@@ -545,6 +545,12 @@ export const fairwayCardReducer = (
               : tugItem
           ),
         },
+      };
+      break;
+    case 'picture':
+      newState = {
+        ...state,
+        pictures: value as PictureInput[],
       };
       break;
     default:

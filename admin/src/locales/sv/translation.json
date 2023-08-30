@@ -69,7 +69,7 @@
     "error-HARBOR_NOT_EXIST": "[sv] Satamaa ei löydy annetulla tunnisteella.",
     "error-HARBOR_ID_MISSING": "[sv] Sataman tunniste puuttuu.",
     "error-NO_PERMISSIONS": "[sv] Ei tarvittavia käyttöoikeuksia.",
-    "error-INVALID_INPUT": "Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
+    "error-INVALID_INPUT": "[sv] Virheellinen syöte, tietojen käsittely ei ole mahdollista.",
     "error-OPERATION-BLOCKED": "[sv] Toiminto estetty",
     "fix-errors-try-again": "[sv] Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
@@ -82,6 +82,7 @@
     "environment-dev": "[sv] Kehitysympäristö",
     "environment-test": "[sv] Testiympäristö",
     "environment-undefined": "",
+    "show-help": "[sv] Näytä ohje",
     "unit": {
       "nm": "M",
       "nmDesc_one": "sjömil",
@@ -125,7 +126,11 @@
     "publish-harbor-title": "[sv] Sataman julkaiseminen",
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?",
     "saved-fairwaycard-by-name": "[sv] Väyläkortin \"{{ name }}\" tiedot tallennettu.",
-    "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu."
+    "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu.",
+    "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
+    "help-title-LANDSCAPE": "[sv] Väyläkortin vaakatulosteiden asettaminen",
+    "help-title-picture-PORTRAIT": "[sv] Väyläkortin pystytulosteen esikatselu",
+    "help-title-picture-LANDSCAPE": "[sv] Väyläkortin vaakatulosteen esikatselu"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",
@@ -160,7 +165,26 @@
     "vhf-name": "VHF-kanalens namn",
     "vhf-channel": "[sv] VHF-kanavan numero",
     "tug-heading": "Bogserbåt",
-    "tug-name": "Bogserbåt namn"
+    "tug-name": "Bogserbåt namn",
+    "print-images": "[sv] Väyläkortin tuloste",
+    "print-images-portrait": "[sv] Väyläkortin tulosteet, pysty",
+    "print-images-landscape": "[sv] Väyläkortin tulosteet, vaaka",
+    "print-images-info-ingress-PORTRAIT": "[sv] Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa. Pystykuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan pystysuunnassa.",
+    "print-images-info-ingress-LANDSCAPE": "[sv] Et ole asettanut väyläkortille vielä yhtään vaakasuuntaista tulostekuvaa. Vaakakuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan vaakasuunnassa.",
+    "print-images-info-switch": "[sv] Kytke",
+    "print-images-info-select-PORTRAIT": "[sv] Pystytila päälle kartalla.",
+    "print-images-info-select-LANDSCAPE": "[sv] Vaakatila päälle kartalla.",
+    "print-images-info-select-layers": "[sv] Valitse haluamasi karttatasot",
+    "print-images-info-select-layers-button": "[sv] Tasot-painikkeella.",
+    "print-images-info-position-map": "[sv] Siirrä kartta haluaamasi kohtaan.",
+    "print-images-info-target-by-features": "[sv] Voit käyttää apuna",
+    "print-images-info-target-by-features-button": "[sv] Kohdista kartta -painiketta kartan automaattiseen kohdistamiseen.",
+    "print-images-info-take-image": "[sv] Ota kuva tulostusalueesta",
+    "print-images-info-set-image-button": "[sv] Aseta kuva -painikkeella.",
+    "print-images-modified": "[sv] Kuva luotu",
+    "print-images-card-id-required": "[sv] Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
+    "notForNavigation": "Ej för navigation",
+    "toggle-sequence": "[sv] Aseta järjestysnumero"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
@@ -186,5 +210,56 @@
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-draft-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
     "linked-fairwaycards-exist-cannot-draft-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
+  },
+  "homePage": {
+    "map": {
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "Zooma in",
+          "zoomOutTipLabel": "Zooma ut"
+        },
+        "openMenu": {
+          "tipLabel": "Öppna meny"
+        },
+        "layer": {
+          "tipLabel": "Välj lager",
+          "header": "Kartlager",
+          "class1": "Handelssjöfart",
+          "class2": "Annan vattentrafik",
+          "lines": "Navigationslinjer",
+          "fairwayAreas": "Farledsområden",
+          "depths": "Djupen",
+          "safetyEquipments": "Säkerhetsanordningar",
+          "speedLimits": "Hastighetsbegränsningar",
+          "specialAreas": "Specialområden",
+          "pilotPlaces": "Lotsplatser",
+          "boardLines": "Enslinjer",
+          "circles": "Vändcirklar",
+          "vts": "VTS",
+          "vtsline": "VTS-områden",
+          "vtspoint": "VTS-trafikrapporteringspunkter",
+          "general": "Allmänt",
+          "name": "Kartnamn",
+          "specialarea2": "Ankringsområden",
+          "specialarea15": "Områden med mötes- och omkörningsförbud"
+        },
+        "mapDetails": {
+          "mousePositionLabel": "Kursorns koordinat:"
+        },
+        "orientation": {
+          "selectPortrait": "[sv] Pystytila",
+          "selectLandscape": "[sv] Vaakatila"
+        },
+        "screenshot": {
+          "tipLabel": "[sv] Aseta kuva"
+        },
+        "features": {
+          "tipLabel": "[sv] Kohdista kartta"
+        },
+        "resetRotation": "Återställ kartriktning",
+        "infoText": "Ej för navigation"
+      },
+      "numberFormat": "{{val, number}}"
+    }
   }
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { getMapCanvasWidth, isCoastalWarning, isMobile } from '../../utils/common';
+import { getMapCanvasWidth, isGeneralMarineWarning, isMobile } from '../../utils/common';
 import { IonBackdrop, IonCol } from '@ionic/react';
 import { CustomPopup } from './CustomPopup';
-import { CoastalWarningItem } from './CoastalWarningItem';
+import { GeneralMarineWarningItem } from './GeneralMarineWarningItem';
 import { useTranslation } from 'react-i18next';
 import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import { MarineWarning } from '../../graphql/generated';
@@ -22,7 +22,7 @@ interface MarineWarningInfoProps {
   setVisible: (visible: boolean) => void;
 }
 
-interface CoastalWarningNotificationProps {
+interface GeneralMarineWarningNotificationProps {
   warningNotification: MarineWarningNotification;
   warningNotifications: MarineWarningNotification[];
   setWarningNotifications: (notifications: MarineWarningNotification[]) => void;
@@ -46,7 +46,7 @@ const MarineWarningInfo: React.FC<MarineWarningInfoProps> = ({ visible, setVisib
   );
 };
 
-const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
+const GeneralMarineWarningNotification: React.FC<GeneralMarineWarningNotificationProps> = ({
   warningNotification,
   warningNotifications,
   setWarningNotifications,
@@ -66,7 +66,7 @@ const CoastalWarningNotification: React.FC<CoastalWarningNotificationProps> = ({
 
   return (
     <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={marineWarningIcon}>
-      <CoastalWarningItem marineWarning={marineWarning}></CoastalWarningItem>
+      <GeneralMarineWarningItem marineWarning={marineWarning}></GeneralMarineWarningItem>
     </CustomPopup>
   );
 };
@@ -102,8 +102,8 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
 
       if (!isFetching && !isLoading && data) {
         const { marineWarnings } = data;
-        const coastalWarnings = marineWarnings.filter((warning) => isCoastalWarning(warning.type));
-        const initialWarnings = coastalWarnings.map((warning) => ({ marineWarning: warning, visible: true }));
+        const generalWarnings = marineWarnings.filter((warning) => isGeneralMarineWarning(warning.area));
+        const initialWarnings = generalWarnings.map((warning) => ({ marineWarning: warning, visible: true }));
 
         setWarningNotifications(initialWarnings);
       }
@@ -121,8 +121,8 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
       >
         {showMarineWarnings &&
           warningNotifications.map((notification) => (
-            <CoastalWarningNotification
-              key={'coastalWarning' + notification.marineWarning.id}
+            <GeneralMarineWarningNotification
+              key={'generalMarineWarning' + notification.marineWarning.id}
               warningNotification={notification}
               warningNotifications={warningNotifications}
               setWarningNotifications={setWarningNotifications}

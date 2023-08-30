@@ -1,4 +1,4 @@
-import { countDecimals, createShareableLink } from '../utils/helpers';
+import { countDecimals, createShareableLink, getAssetUrl } from '../utils/helpers';
 
 // Common types
 
@@ -33,24 +33,29 @@ type FieldParam = {
 
 // Initialize data
 export const vesselProfiles = [
-  { id: 1, name: 'homePage.squat.vessel.bulker', img: 'assets/tanker.svg', opaque: true },
-  { id: 2, name: 'homePage.squat.vessel.container', img: 'assets/container_ship.svg', opaque: true },
-  { id: 3, name: 'homePage.squat.vessel.ferry', img: 'assets/ferry.svg', opaque: true },
-  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: 'assets/lng_tanker.svg', opaque: true },
+  { id: 1, name: 'homePage.squat.vessel.bulker', img: getAssetUrl('assets/tanker.svg'), opaque: true },
+  { id: 2, name: 'homePage.squat.vessel.container', img: getAssetUrl('assets/container_ship.svg'), opaque: true },
+  { id: 3, name: 'homePage.squat.vessel.ferry', img: getAssetUrl('assets/ferry.svg'), opaque: true },
+  { id: 4, name: 'homePage.squat.vessel.LNG-tanker', img: getAssetUrl('assets/lng_tanker.svg'), opaque: true },
 ];
 export const fairwayForms = [
   {
     id: 1,
     name: 'homePage.squat.environment.open-water',
     desc: 'homePage.squat.environment.open-water-description',
-    img: 'assets/open_water_small.svg',
+    img: getAssetUrl('assets/open_water_small.svg'),
   },
-  { id: 2, name: 'homePage.squat.environment.channel', desc: 'homePage.squat.environment.channel-description', img: 'assets/channel_small.svg' },
+  {
+    id: 2,
+    name: 'homePage.squat.environment.channel',
+    desc: 'homePage.squat.environment.channel-description',
+    img: getAssetUrl('assets/channel_small.svg'),
+  },
   {
     id: 3,
     name: 'homePage.squat.environment.sloped-channel',
     desc: 'homePage.squat.environment.sloped-channel-description',
-    img: 'assets/sloped_channel_small.svg',
+    img: getAssetUrl('assets/sloped_channel_small.svg'),
   },
 ];
 
@@ -171,7 +176,7 @@ export const fieldParams: Record<string, FieldParam> = {
   slopeHeight: { default: 0, min: 0, max: 20, unit: 'm', step: '0.1' },
   vesselCourse: { default: 0, min: 0, max: 359, unit: '°', unitId: 'deg' },
   vesselSpeed: { default: 0, min: 0, max: 35, unit: 'kts' },
-  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'nm', step: '0.01' },
+  turningRadius: { default: 0.75, min: 0.1, max: 2, unit: 'M', step: '0.01' },
   airDensity: { default: 1.3, min: 1, max: 1.5, unit: 'kg/m\u00B3', unitId: 'kg/m3', step: '0.1' },
   waterDensity: { default: 1005, min: 1000, max: 1025, unit: 'kg/m\u00B3', unitId: 'kg/m3' },
   requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm', step: '0.01' },

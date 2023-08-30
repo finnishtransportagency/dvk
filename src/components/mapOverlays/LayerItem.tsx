@@ -3,7 +3,7 @@ import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonI
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
+import { getAlertProperties, getAssetUrl, hasOfflineSupport } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
@@ -359,7 +359,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               aria-label={legendOpen || legends.includes(id) ? t('common.close') : t('common.open')}
               onClick={() => toggleDetails()}
             >
-              <IonIcon icon={arrowDownIcon} />
+              <IonIcon icon={getAssetUrl(arrowDownIcon)} />
             </IonButton>
           )}
         </IonCol>

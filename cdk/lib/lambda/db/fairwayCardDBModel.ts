@@ -69,7 +69,10 @@ export type Picture = {
   sequenceNumber?: Maybe<number>;
   orientation: Orientation;
   rotation?: Maybe<number>;
-  harborId?: Maybe<string>;
+  scaleWidth?: Maybe<string>;
+  scaleLabel?: Maybe<string>;
+  text?: Maybe<string>;
+  lang?: Maybe<string>;
   modificationTimestamp?: Maybe<number>;
 };
 

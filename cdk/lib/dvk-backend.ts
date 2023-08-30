@@ -109,6 +109,7 @@ export class DvkBackendStack extends Stack {
     harborVersioningBucket.grantRead(dbStreamHandler);
     const bucket = this.createCacheBucket(env);
     const staticBucket = this.createStaticBucket();
+    staticBucket.grantDelete(dbStreamHandler);
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;

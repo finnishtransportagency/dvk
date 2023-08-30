@@ -32,7 +32,7 @@ export class DvkUsEast extends Construct {
             managedRuleGroupStatement: {
               vendorName: 'AWS',
               name: 'AWSManagedRulesCommonRuleSet',
-              excludedRules: [],
+              excludedRules: [{ name: 'SizeRestrictions_BODY' }],
             },
           },
           visibilityConfig: {

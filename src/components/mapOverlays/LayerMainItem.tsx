@@ -7,7 +7,7 @@ import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
 import { FeatureDataLayerId } from '../../utils/constants';
-import { hasOfflineSupport } from '../../utils/common';
+import { getAssetUrl, hasOfflineSupport } from '../../utils/common';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -75,7 +75,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
               aria-label={legendOpen ? t('common.close') : t('common.open')}
               onClick={() => toggleDetails()}
             >
-              <IonIcon icon={arrowDownIcon} />
+              <IonIcon icon={getAssetUrl(arrowDownIcon)} />
             </IonButton>
           )}
         </IonCol>

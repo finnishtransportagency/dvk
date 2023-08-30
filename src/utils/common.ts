@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
-import { COASTAL_WARNING, FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH, imageUrl } from './constants';
+import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -18,7 +18,7 @@ export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lan
   return (data && data.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS)) || [];
 };
 
-export const refreshPrintableMap = (pictures?: string[]) => {
+export const refreshPrintableMap = () => {
   const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
   const rotation = dvkMap.olMap?.getView().getRotation();
 
@@ -81,15 +81,6 @@ export const refreshPrintableMap = (pictures?: string[]) => {
     mapExport.innerHTML = '';
     mapExport.appendChild(img);
   }
-  pictures?.forEach((picture, index) => {
-    const mapExport2 = document.getElementById('mapExport' + index);
-    if (mapExport2) {
-      mapExport2.innerHTML = '';
-      const img2 = new Image();
-      img2.src = imageUrl + picture;
-      mapExport2.appendChild(img2);
-    }
-  });
 };
 
 export function getDuration(dataUpdatedAt: number, decimals = 1) {
@@ -114,9 +105,8 @@ export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLaye
   }
 }
 
-export const isCoastalWarning = (type: Text | undefined): boolean => {
-  const warningType = type?.fi || type?.sv || type?.en;
-  return warningType === COASTAL_WARNING;
+export const isGeneralMarineWarning = (area: Text | undefined): boolean => {
+  return ['KAIKKI MERIALUEET', 'SUOMEN_MERIALUEET', 'SUOMEN MERIALUEET JA SISÄVESISTÖT'].includes(area?.fi || '');
 };
 
 export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
@@ -124,6 +114,14 @@ export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
   return layer ? layer.offlineSupport : false;
 };
 
+export function getAssetUrl(path: string): string {
+  if (import.meta.env.NODE_ENV === 'test') {
+    // workaround for "Failed to parse URL" error when running tests
+    return 'data:image/svg+xml,';
+  } else {
+    return path;
+  }
+}
 export const getMapCanvasWidth = (): number => {
   const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
   return canvasSize[0];

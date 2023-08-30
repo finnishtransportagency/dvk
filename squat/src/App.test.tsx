@@ -4,6 +4,7 @@ import { render } from '@testing-library/react';
 import App from './App';
 import { SquatReducer, initialState, Action, getFieldValue, fieldParams, getBooleanFieldValue } from './hooks/squatReducer';
 import { copyToClipboard, countDecimals, createShareableLink } from './utils/helpers';
+import { vi } from 'vitest';
 
 const baseURL = 'http://localhost:8080/';
 
@@ -25,7 +26,7 @@ beforeAll(() => {
 
   Object.defineProperty(navigator, 'clipboard', {
     value: {
-      writeText: jest.fn().mockImplementation(() => Promise.resolve()),
+      writeText: vi.fn().mockImplementation(() => Promise.resolve()),
     },
   });
 });
@@ -104,7 +105,7 @@ test('all reducer actions are working', () => {
   expect(state.validations.lengthBPP).toEqual(true);
 
   // Test also unknown action type
-  const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {
+  const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
     return null;
   });
   // @ts-ignore
@@ -143,7 +144,7 @@ it('counts decimals correctly for values', () => {
 });
 
 it('should call clipboard.writeText', () => {
-  jest.spyOn(navigator.clipboard, 'writeText');
+  vi.spyOn(navigator.clipboard, 'writeText');
 
   copyToClipboard('copyTextToClipboard');
 

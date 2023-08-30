@@ -1,0 +1,11 @@
+.mapExportTool {
+  padding: 0;
+}
+
+.mapExportTool ion-progress-bar {
+  position: absolute;
+  z-index: 1;
+  left: 5px;
+  right: 5px;
+  width: auto;
+}

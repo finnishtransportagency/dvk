@@ -82,6 +82,8 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         name={name ? name + (actionLang ?? '') : undefined}
         required={required}
         onIonInput={(ev) => handleChange(ev.target.value)}
+        debounce={500}
+        onIonChange={(ev) => handleChange(ev.target.value)}
         onIonBlur={() => checkValidity()}
         disabled={disabled}
         autoGrow

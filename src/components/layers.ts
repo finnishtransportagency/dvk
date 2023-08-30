@@ -346,9 +346,9 @@ function addFeatureVectorImageLayer(
 }
 
 function addIceLayer(map: Map) {
-  const apiKey = process.env.REACT_APP_FMI_MAP_API_KEY;
-  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
-  const fmiMapApiUrl = process.env.REACT_APP_FMI_MAP_API_URL;
+  const apiKey = import.meta.env.VITE_APP_FMI_MAP_API_KEY;
+  const cloudFrontUrl = import.meta.env.VITE_APP_FRONTEND_DOMAIN_NAME;
+  const fmiMapApiUrl = import.meta.env.VITE_APP_FMI_MAP_API_URL;
   let tileUrl;
   if (cloudFrontUrl) {
     tileUrl = `https://${cloudFrontUrl}/fmi/wms`;
@@ -374,8 +374,8 @@ function addIceLayer(map: Map) {
 }
 
 function getTileUrl(service: 'wfs' | 'wms') {
-  const cloudFrontUrl = process.env.REACT_APP_FRONTEND_DOMAIN_NAME;
-  const traficomMapApiUrl = process.env.REACT_APP_TRAFICOM_API_URL;
+  const cloudFrontUrl = import.meta.env.VITE_APP_FRONTEND_DOMAIN_NAME;
+  const traficomMapApiUrl = import.meta.env.VITE_APP_TRAFICOM_API_URL;
   let tileUrl: string;
   if (cloudFrontUrl) {
     tileUrl = `https://${cloudFrontUrl}/trafiaineistot/inspirepalvelu/rajoitettu/${service}`;

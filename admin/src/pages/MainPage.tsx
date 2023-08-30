@@ -22,6 +22,7 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
 import CreationModal from '../components/CreationModal';
 import ClearButton from '../components/ClearButton';
+import { getMap } from '../components/map/DvkMap';
 
 type HeaderButtonProps = {
   headername: string;
@@ -41,6 +42,7 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({ headername, text, sortBy, h
 };
 
 const MainPage: React.FC = () => {
+  getMap().currentExtent = null;
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.language as Lang;
   const history = useHistory();
@@ -252,7 +254,9 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.5">{t('item-type-' + item.type)}</IonCol>
                   <IonCol size="1.5">{groups[Number(item.group ?? 0)]}</IonCol>
                   <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1">{t('item-status-' + item.status)}</IonCol>
+                  <IonCol size="1" className={'item-status-' + item.status}>
+                    {t('item-status-' + item.status)}
+                  </IonCol>
                   <IonCol size="1.5">{item.creator}</IonCol>
                   <IonCol size="1.5">{item.modifier}</IonCol>
                   <IonCol size="1.5">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>

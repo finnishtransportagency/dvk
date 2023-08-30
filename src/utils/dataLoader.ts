@@ -13,7 +13,7 @@ export function useFeatureData(
 ) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
-  if (process.env.REACT_APP_USE_STATIC_FEATURES === 'true') {
+  if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
     urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
   } else {
     urlStr = fds?.url ? fds.url.toString() : '';
@@ -36,10 +36,10 @@ export function useFeatureData(
 }
 
 const datasourceClient = {
-  endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/graphql',
+  endpoint: import.meta.env.VITE_APP_API_URL ? import.meta.env.VITE_APP_API_URL : '/graphql',
   fetchParams: {
     headers: {
-      'x-api-key': process.env.REACT_APP_API_KEY || 'key missing',
+      'x-api-key': import.meta.env.VITE_APP_API_KEY || 'key missing',
     },
   },
 };

@@ -162,10 +162,10 @@
     vertical-align: middle;
   }
   @media (orientation: portrait) {
-    .mapExport img {max-height: 27.5cm !important;}
+    .mapExport img {max-height: calc(100vh - 2.5px) !important;}
   }
   @media (orientation: landscape) {
-    .mapExport img {max-height: 18.8cm !important;}
+    .mapExport img {max-height: calc(100vh - 2.5px) !important;}
   }
 
   .mapLegend {
@@ -203,7 +203,7 @@
   .mapLegend .cardInfo em.danger {
     color: var(--ion-color-danger);
   }
-  #mapScale {
+  .mapLegend .mapScale {
     border: 1px solid var(--ion-color-dark);
     border-top: none;
     color: var(--ion-color-dark);
