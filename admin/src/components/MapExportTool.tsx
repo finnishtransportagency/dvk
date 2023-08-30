@@ -343,7 +343,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
           ))}
           <IonCol size="auto">
             {isLoading && dvkMap.getOrientationType() === Orientation.Portrait && <IonSkeletonText animated={true} />}
-            {!savedPicturesPortrait?.length && <PrintInfo orientation={Orientation.Landscape} />}
+            {!savedPicturesPortrait?.length && <PrintInfo orientation={Orientation.Portrait} />}
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -661,8 +661,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
       <IonRow>
         <IonCol>
-          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
           <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
+          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
           {(!!isFetching || !initDone) && (
             <IonProgressBar
               value={percentDone}
