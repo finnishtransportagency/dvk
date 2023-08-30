@@ -13,6 +13,9 @@
   min-height: calc(var(--map-height-portrait) + 59.5px);
   background: #cccccc;
 }
+.mapExportTool > ion-row > ion-col:first-of-type {
+  min-height: calc(var(--map-height-portrait) + 59.5px);
+}
 
 .ios .dvkMap .ol-layers {
   z-index: -1 !important;
