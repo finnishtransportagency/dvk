@@ -58,7 +58,9 @@ const InputField: React.FC<InputProps> = (props) => {
   const innerUpdateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
       inputRef?.current?.getInputElement().then((inputElem) => {
-        setValue(inputElem.value);
+        //checks if zeros preceding other numbers and same thing if there's - symbol preceding
+        const trimmedValue = inputElem.value.replace(/(^0+(?=[0-9]))|((?<=-)0+(?=[0-9]))/g, '');
+        setValue(trimmedValue);
         dispatch({
           type: 'validation',
           payload: {

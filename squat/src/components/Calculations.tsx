@@ -376,7 +376,7 @@ const Calculations: React.FC = () => {
       </IonGrid>
 
       <>
-        {checkIsUKCUnderMinimum() && <Alert title={t('UKC-under-required-minimum')} />}
+        {checkIsUKCUnderMinimum() && <Alert alertType="error" title={t('UKC-under-required-minimum')} />}
 
         <div className={'in-print top-padding' + (showLimitedView ? ' print-hide' : '')}>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
@@ -425,15 +425,17 @@ const Calculations: React.FC = () => {
           </IonSegment>
         </div>
 
-        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
+        {checkIsReliabilityAnIssue() && <Alert alertType="error" title={checkIsReliabilityAnIssue()} className="top-margin" />}
         {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
           <Alert
+            alertType="error"
             title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass)}
             className="top-margin"
           />
         )}
         {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass) && (
           <Alert
+            alertType="error"
             title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass)}
             className="top-margin"
           />

@@ -137,7 +137,8 @@
         "drift-info": "Sortokulma = (ilman tiheys ÷ meriveden tiheys) × (tuulen suhteellinen nopeus ÷ aluksen nopeus) ² × (Aluksen tuulipinta-ala÷ (syväys) ² × aerodynaamisen vääntömomentin kerroin ÷ (ℼ(0,5 + 2,4 × aluksen syväys ÷ pituus BPP)))",
         "extensive-calculator": "Laaja laskin",
         "limited-calculator": "Suppea laskin"
-      }
+      },
+      "pakolliset-kentat-info": "* merkityt kentät ovat pakollisia tietoja laskennan suorittamiseksi"
     },
     "squatChart": {
       "heading": "Aluksen painuma nopeuden funktiona",
