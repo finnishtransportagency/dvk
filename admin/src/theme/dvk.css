@@ -929,6 +929,7 @@ ion-grid.alert ion-icon.error {
 }
 .mapExportTool ion-col:first-of-type {
   max-height: calc(100vh - 75px - 100px);
+  box-sizing: content-box;
 }
 
 .mapExportTool ion-grid.print-images {
