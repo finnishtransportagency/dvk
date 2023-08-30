@@ -927,7 +927,7 @@ ion-grid.alert ion-icon.error {
 .mapExportTool h4 ion-button:disabled {
   opacity: 0.5;
 }
-.mapExportTool ion-col:first-of-type {
+.mapExportTool > ion-row > ion-col:first-of-type {
   max-height: calc(100vh - 75px - 100px);
   box-sizing: content-box;
 }
