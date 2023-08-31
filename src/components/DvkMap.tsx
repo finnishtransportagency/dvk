@@ -88,7 +88,6 @@ class DvkMap {
     if (this.initialized) {
       return;
     }
-    this.initialized = true;
 
     this.t = t;
     this.i18n = i18n;
@@ -235,6 +234,8 @@ class DvkMap {
     });
     this.olMap.addLayer(bgMmllaituritLayer);
 
+    addAPILayers(this.olMap);
+
     const ownLocationLayer = new VectorLayer({
       properties: { id: 'ownlocation' },
       source: new VectorSource({
@@ -246,6 +247,7 @@ class DvkMap {
 
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
+    this.initialized = true;
   }
   // eslint-disable-next-line
   private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
@@ -477,6 +479,15 @@ class DvkMap {
     zoomOutButton.ariaLabel = this.t('homePage.map.controls.zoom.zoomOutTipLabel');
     const rotationResetButton = this.olMap?.getViewport().querySelector('.ol-rotate') as HTMLButtonElement;
     rotationResetButton.ariaLabel = this.t('homePage.map.controls.resetRotation');
+
+    if (this.initialized) {
+      MAP.FEATURE_DATA_LAYERS.forEach((fdl) => {
+        if (fdl.localizedStyle) {
+          this.getFeatureLayer(fdl.id).changed();
+        }
+      });
+      this.olMap?.render();
+    }
   };
 
   public addShowSidebarMenuControl = () => {
@@ -569,9 +580,6 @@ function InitDvkMap() {
   const { t, i18n } = useTranslation();
   if (!dvkMap.initialized) {
     dvkMap.init(t, i18n);
-    if (dvkMap.olMap) {
-      addAPILayers(dvkMap.olMap);
-    }
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });
