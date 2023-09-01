@@ -38,20 +38,9 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
   const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
   const handleChange = () => {
     if (isChecked() || isIndeterminate()) {
-      if (currentLayer.id === 'marinewarning') {
-        // Remove also parent layer from selection
-        setLayers(layersWOCurrentChildLayers.filter((layer) => layer !== currentLayer.id));
-      } else {
-        setLayers(layersWOCurrentChildLayers);
-      }
+      setLayers(layersWOCurrentChildLayers);
     } else {
-      const updatedLayers = layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []);
-      if (currentLayer.id === 'marinewarning') {
-        // Add also parent layer, if not already included in layer selection
-        setLayers(updatedLayers.includes(currentLayer.id) ? updatedLayers : updatedLayers.concat(currentLayer.id));
-      } else {
-        setLayers(updatedLayers);
-      }
+      setLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
       setLegendOpen(true);
     }
   };
@@ -101,7 +90,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
                 title={child.title}
                 layers={layers}
                 setLayers={setLayers}
-                parentLayer={currentLayer}
                 aria-hidden={!legendOpen}
               />
             ))}

@@ -11,7 +11,6 @@ import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
-import { LayerType } from './LayerModal';
 
 const LegendDepth = () => {
   return (
@@ -286,10 +285,9 @@ interface LayerItemProps {
   title: string;
   layers: string[];
   setLayers: React.Dispatch<React.SetStateAction<string[]>>;
-  parentLayer?: LayerType;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers, parentLayer }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
   const [legendOpen, setLegendOpen] = useState(false);
@@ -307,45 +305,18 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers, par
       });
     }, 250);
   };
-
-  const handleChange = () => {
-    setLayers((prev) => {
-      if (prev.includes(id)) {
-        // Item was checked, remove from layers
-        const reducedLayers = [...prev.filter((p) => p !== id)];
-        if (parentLayer?.id === 'marinewarning') {
-          // If unchecked layer is the only child layer that was checked, remove also parent layer from selection
-          const otherChildLayers = parentLayer.childLayers?.filter((child) => child.id !== id);
-          const otherChildrenSelected = otherChildLayers?.some((child) => prev.includes(child.id));
-          if (!otherChildrenSelected) return reducedLayers.filter((l) => l !== parentLayer.id);
-        }
-        return reducedLayers;
-      } else {
-        // Item was unchecked, add to layers
-        const updatedLayers = [...prev, id];
-        if (parentLayer?.id === 'marinewarning' && !prev.includes(parentLayer.id)) {
-          // Add also parent layer to layers, if not already in selection
-          return updatedLayers.concat(parentLayer.id);
-        }
-        return updatedLayers;
-      }
-    });
-  };
-
   let alertProps:
     | {
         duration: number;
         color: string;
       }
     | undefined = undefined;
-  // Marine warnings are all on the same parent layer, child layers have no data - use parent feature layer id
-  const dataId = !!parentLayer && parentLayer.id === 'marinewarning' ? parentLayer.id : id;
-  const dataUpdatedAt = dvkMap.getFeatureLayer(dataId).get('dataUpdatedAt');
-  if (dataId === 'mareograph' || dataId === 'buoy' || dataId === 'observation' || dataId === 'marinewarning') {
-    alertProps = getAlertProperties(dataUpdatedAt, dataId);
+  const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
+  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
+    alertProps = getAlertProperties(dataUpdatedAt, id);
   }
-  const initialized = !!dataUpdatedAt || dataId === 'ice' || dataId === 'depthcontour' || dataId === 'deptharea' || dataId === 'soundingpoint';
-  const disabled = !initialized || (!hasOfflineSupport(dataId) && state.isOffline);
+  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
+  const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
@@ -362,7 +333,14 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers, par
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onIonChange={handleChange}
+              onIonChange={() =>
+                setLayers((prev) => {
+                  if (prev.includes(id)) {
+                    return [...prev.filter((p) => p !== id)];
+                  }
+                  return [...prev, id];
+                })
+              }
               disabled={disabled}
               labelPlacement="end"
             >

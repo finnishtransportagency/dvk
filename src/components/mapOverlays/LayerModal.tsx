@@ -85,15 +85,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },
-    {
-      id: 'marinewarning',
-      title: t('homePage.map.controls.layer.marineWarnings'),
-      childLayers: [
-        { id: 'coastalwarning', title: t('homePage.map.controls.layer.coastalWarning') },
-        { id: 'localwarning', title: t('homePage.map.controls.layer.localWarning') },
-        { id: 'boaterwarning', title: t('homePage.map.controls.layer.boaterWarning') },
-      ],
-    },
+    { id: 'marinewarning', title: t('homePage.map.controls.layer.marineWarnings') },
     {
       id: 'vts',
       title: t('homePage.map.controls.layer.vts'),
