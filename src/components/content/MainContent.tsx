@@ -10,7 +10,7 @@ import FairwayCard from './FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
-import { filterFairways, getAssetUrl } from '../../utils/common';
+import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -272,7 +272,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                         title={t('closePane')}
                         aria-label={t('closePane')}
                       >
-                        <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
+                        <IonIcon className="otherIconLarge" src={closeIcon} />
                       </IonButton>
                     </IonCol>
                   </IonRow>
