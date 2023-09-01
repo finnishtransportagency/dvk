@@ -37,7 +37,6 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  // @ts-ignore
   global.fetch = fetch;
 });
 
