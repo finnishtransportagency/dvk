@@ -133,30 +133,31 @@ export function useInitStaticDataLayer(
       if (!['ready', 'loading'].includes(layer.get('status'))) {
         layer.set('status', 'loading');
         (async () => {
-          try {
-            get(featureDataId).then(async (data) => {
-              if (!data) {
-                const response = await axios.get(urlStr);
+          get(featureDataId).then(async (data) => {
+            if (!data) {
+              const response = await axios.get(urlStr).catch(() => {
+                setIsError(true);
+                setErrorUpdatedAt(Date.now());
+              });
+              if (response) {
                 data = response.data;
                 setMany([
                   [featureDataId, response.data],
                   [busterKey, urlStr],
                 ]).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
+
+                const format = new GeoJSON();
+                const source = layer.getSource() as VectorSource;
+                source.clear();
+                const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+                source.addFeatures(features);
+                setDataUpdatedAt(Date.now());
+                layer.set('dataUpdatedAt', Date.now());
+                layer.set('status', 'ready');
+                setReady(true);
               }
-              const format = new GeoJSON();
-              const source = layer.getSource() as VectorSource;
-              source.clear();
-              const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-              source.addFeatures(features);
-              setDataUpdatedAt(Date.now());
-              layer.set('dataUpdatedAt', Date.now());
-              layer.set('status', 'ready');
-              setReady(true);
-            });
-          } catch (e) {
-            setIsError(true);
-            setErrorUpdatedAt(Date.now());
-          }
+            }
+          });
         })();
       }
     }
