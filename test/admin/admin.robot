@@ -102,7 +102,7 @@ Get Random Item From List
 
 Open Admin
     [Documentation]    This keyword opens admin application in localhost with port and browser given as variables
-    Wait Until Keyword Succeeds    3x    2s    Open Browser    ${URL}    ${BROWSER}
+    Wait Until Keyword Succeeds    3x    2s    Open Browser    ${URL}    ${BROWSER}    options=add_experimental_option("excludeSwitches", ["enable-logging"])
     Sleep    2s
 
 Fill Multi Input Field
