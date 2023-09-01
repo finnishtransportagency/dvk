@@ -3,7 +3,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-import { getAssetUrl } from '../../utils/common';
 
 type PathItem = {
   title?: string;
@@ -52,7 +51,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
         </IonCol>
         <IonCol size="auto">
           <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
-            <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
+            <IonIcon className="otherIconLarge" src={closeIcon} />
           </IonButton>
         </IonCol>
       </IonRow>

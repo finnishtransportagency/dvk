@@ -2,7 +2,6 @@ import { IonLabel, IonText, IonAccordionGroup, IonAccordion, IonItem } from '@io
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import arrow_down from '../../theme/img/arrow_down.svg';
-import { getAssetUrl } from '../../utils/common';
 
 type GeneralInfoAccordionProps = {
   description: string;
@@ -17,7 +16,7 @@ const GeneralInfoAccordion: React.FC<GeneralInfoAccordionProps> = ({ description
 
   return (
     <IonAccordionGroup onIonChange={(e) => setShowDescription(e.detail.value)}>
-      <IonAccordion toggleIcon={getAssetUrl(arrow_down)} color="lightest" value="1">
+      <IonAccordion toggleIcon={arrow_down} color="lightest" value="1">
         <IonItem
           slot="header"
           color="lightest"
