@@ -251,7 +251,7 @@ Calculate Squat And Verify Results
 
 Open Squat
   [Documentation]    This keyword opens Squat in localhost with port and browser given as variables
-  Wait Until Keyword Succeeds    3x    2s    Open Browser    http://localhost:${PORT}    ${BROWSER}
+  Wait Until Keyword Succeeds    3x    2s    Open Browser    http://localhost:${PORT}    ${BROWSER}    options=add_experimental_option("excludeSwitches", ["enable-logging"])
 
 Calculate Squat
   [Arguments]    ${vessel_type}    ${fairway_type}

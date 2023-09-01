@@ -19,11 +19,11 @@ export const GeneralMarineWarningItem: React.FC<GeneralMarineWarningItemProps> =
           <strong>
             {marineWarning.area && (
               <IonText>
-                {marineWarning.area[lang] || marineWarning.area.fi}
+                {marineWarning.area[lang] ?? marineWarning.area.fi}
                 {', '}
               </IonText>
             )}
-            {marineWarning.dateTime && (
+            {marineWarning.dateTime > 0 && (
               <IonText>
                 {t('popup.marine.datetimeFormat', {
                   val: marineWarning.dateTime,
@@ -48,7 +48,7 @@ export const GeneralMarineWarningItem: React.FC<GeneralMarineWarningItemProps> =
       </IonRow>
       {marineWarning.description && (
         <IonRow>
-          <IonCol>{marineWarning.description[lang] || marineWarning.description.fi}</IonCol>
+          <IonCol>{marineWarning.description[lang] ?? marineWarning.description.fi}</IonCol>
         </IonRow>
       )}
     </IonCol>

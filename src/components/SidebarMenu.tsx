@@ -27,7 +27,6 @@ import fairwaysIcon from '../theme/img/fairways_icon.svg';
 import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
-import { getAssetUrl } from '../utils/common';
 import { changeSquatLanguage } from 'squatlib';
 
 const LanguageBar: React.FC = () => {
@@ -120,7 +119,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       title={t('closeMenu')}
                       aria-label={t('closeMenu')}
                     >
-                      <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
+                      <IonIcon className="otherIconLarge" src={closeIcon} />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -142,7 +141,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(fairwaysIcon)} />
+                      <IonIcon slot="start" src={fairwaysIcon} />
                       {t('fairway-cards')}
                     </IonItem>
                   </IonCol>
@@ -156,7 +155,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(alertIcon)} />
+                      <IonIcon slot="start" src={alertIcon} />
                       {t('safety-equipment-faults')}
                     </IonItem>
                   </IonCol>
@@ -170,7 +169,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(weatherIcon)} />
+                      <IonIcon slot="start" src={weatherIcon} />
                       {t('marine-warnings')}
                     </IonItem>
                   </IonCol>
@@ -185,7 +184,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       data-testid="squatLink"
                       disabled={router.routeInfo.pathname === '/squat/'}
                     >
-                      <IonIcon slot="start" src={getAssetUrl(calculateIcon)} />
+                      <IonIcon slot="start" src={calculateIcon} />
                       {t('squat')}
                     </IonItem>
                   </IonCol>

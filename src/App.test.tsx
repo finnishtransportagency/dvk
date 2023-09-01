@@ -22,7 +22,7 @@ class ResizeObserver {
   }
 }
 global.ResizeObserver = ResizeObserver;
-
+const fetch = global.fetch;
 beforeAll(() => {
   // @ts-ignore
   window.SVGElement.prototype.getBBox = () => ({
@@ -37,6 +37,12 @@ beforeAll(() => {
   });
   vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   vi.spyOn(window, 'print').mockImplementation(() => {});
+  // @ts-ignore
+  global.fetch = undefined;
+});
+
+afterAll(() => {
+  global.fetch = fetch;
 });
 
 afterAll(() => {
