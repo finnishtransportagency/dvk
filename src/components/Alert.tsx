@@ -1,6 +1,5 @@
 import React, { ReactElement } from 'react';
 import { IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from '@ionic/react';
-import { getAssetUrl } from '../utils/common';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -14,7 +13,7 @@ const Alert: React.FC<AlertProps> = (props) => {
     <IonGrid className={props.className ? props.className : undefined}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
-          <IonIcon icon={getAssetUrl(props.icon)} color={props.color} />
+          <IonIcon icon={props.icon} color={props.color} />
         </IonCol>
         <IonCol>
           <IonText>{props.title}</IonText>
@@ -29,7 +28,7 @@ export const LayerAlert: React.FC<AlertProps> = (props) => {
     <IonRow>
       <IonCol>
         <IonItem>
-          <IonIcon className="icon" size="small" icon={getAssetUrl(props.icon)} color={props.color} />
+          <IonIcon className="icon" size="small" icon={props.icon} color={props.color} />
           <IonText className={props.className ? props.color + ' ' + props.className : props.color}>{props.title}</IonText>
         </IonItem>
       </IonCol>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
 import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
@@ -21,7 +22,7 @@ class ResizeObserver {
   }
 }
 global.ResizeObserver = ResizeObserver;
-
+const fetch = global.fetch;
 beforeAll(() => {
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
@@ -31,6 +32,12 @@ beforeAll(() => {
   });
   vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   vi.spyOn(window, 'print').mockImplementation(() => {});
+  // @ts-ignore
+  global.fetch = undefined;
+});
+
+afterAll(() => {
+  global.fetch = fetch;
 });
 
 beforeEach(() => {
