@@ -1,7 +1,10 @@
 import React, { ReactElement, useCallback, useState } from 'react';
 import { IonButton, IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { closeOutline } from 'ionicons/icons';
-import { getAssetUrl } from '../utils/helpers';
+import info from '../theme/img/info-circle-solid.svg';
+import green from '../theme/img/green_info_icon.svg';
+import warning from '../theme/img/warning_icon.svg';
+import alert from '../theme/img/alert_icon.svg';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -18,10 +21,10 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
   }, []);
 
   const iconByType = () => {
-    if (alertType === 'info') return getAssetUrl('assets/info-circle-solid.svg');
-    if (alertType === 'success') return getAssetUrl('assets/green_info_icon.svg');
-    if (alertType === 'warning') return getAssetUrl('assets/warning_icon.svg');
-    if (alertType === 'error') return getAssetUrl('assets/alert_icon.svg');
+    if (alertType === 'info') return info;
+    if (alertType === 'success') return green;
+    if (alertType === 'warning') return warning;
+    if (alertType === 'error') return alert;
   };
 
   if (!isOpen) {

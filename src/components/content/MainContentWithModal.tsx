@@ -219,7 +219,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       modalContent &&
       modalContent !== 'fairwayCardList' &&
       modalContent !== 'safetyEquipmentFaultList' &&
-      modalContent !== 'marineWarningList'
+      modalContent !== 'marineWarningList' &&
+      modalContent !== 'squatCalculator'
     ) {
       setFairwayCardId(modalContent);
     } else {
