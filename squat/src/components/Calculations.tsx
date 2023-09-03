@@ -115,17 +115,17 @@ const Calculations: React.FC = () => {
     const minExternalForce = calculateMinimumExternalForce(bowThrusterForce, windForce, waveForce);
 
     // 3.1 Calculate drift angle for current vessel type
-    const estimatedDriftAngle = calculateEstimatedDriftAngle(
-      state.vessel.general.lengthBPP,
-      state.vessel.general.draught,
-      state.vessel.detailed.profileSelected.id - 1,
-      state.environment.vessel.vesselSpeed,
-      state.vessel.detailed.windSurface,
-      state.environment.attribute.airDensity,
-      state.environment.attribute.waterDensity,
+    const estimatedDriftAngle = calculateEstimatedDriftAngle({
+      lengthBPP: state.vessel.general.lengthBPP,
+      draught: state.vessel.general.draught,
+      profileIndex: state.vessel.detailed.profileSelected.id - 1,
+      vesselSpeed: state.environment.vessel.vesselSpeed,
+      windSurface: state.vessel.detailed.windSurface,
+      airDensity: state.environment.attribute.airDensity,
+      waterDensity: state.environment.attribute.waterDensity,
       apparentWindAngleDrift,
-      apparentWindVelocityDrift
-    );
+      apparentWindVelocityDrift,
+    });
 
     // 3.2 Estimated breadth due to drift
     const estimatedBreadth = calculateEstimatedBreadth(state.vessel.general.lengthBPP, state.vessel.general.breadth, estimatedDriftAngle);
@@ -201,20 +201,20 @@ const Calculations: React.FC = () => {
       state.environment.fairway.sweptDepth,
       state.environment.vessel.vesselSpeed
     );
-    const [squatHG, squatHGListed] = calculateSquatHG(
-      state.vessel.general.lengthBPP,
-      state.vessel.general.breadth,
-      state.vessel.general.draught,
-      state.vessel.general.blockCoefficient,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel,
-      state.environment.fairway.fairwayForm.id - 1,
-      state.environment.fairway.channelWidth,
-      state.environment.fairway.slopeScale,
-      state.environment.fairway.slopeHeight,
-      state.environment.vessel.vesselSpeed,
-      correctedDraughtDuringTurn
-    );
+    const [squatHG, squatHGListed] = calculateSquatHG({
+      lengthBPP: state.vessel.general.lengthBPP,
+      breadth: state.vessel.general.breadth,
+      draught: state.vessel.general.draught,
+      blockCoefficient: state.vessel.general.blockCoefficient,
+      sweptDepth: state.environment.fairway.sweptDepth,
+      waterLevel: state.environment.fairway.waterLevel,
+      fairwayFormIndex: state.environment.fairway.fairwayForm.id - 1,
+      channelWidth: state.environment.fairway.channelWidth,
+      slopeScale: state.environment.fairway.slopeScale,
+      slopeHeight: state.environment.fairway.slopeHeight,
+      vesselSpeed: state.environment.vessel.vesselSpeed,
+      draughtDuringTurn: correctedDraughtDuringTurn,
+    });
 
     // 2.6 UKC Straight Course
     const [UKCStraightCourseBarrass, UKCStraightCourseHG] = calculateUKCStraightCourse(
