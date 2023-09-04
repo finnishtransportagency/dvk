@@ -32,6 +32,7 @@ import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
 
 type OrientationType = Orientation | '';
+type LangType = Lang | '';
 
 class DvkMap {
   public olMap: Map | null = null;
@@ -49,7 +50,7 @@ class DvkMap {
 
   private orientationType: OrientationType = '';
 
-  private mapLanguage: Lang = 'fi';
+  private mapLanguage: LangType = '';
 
   private source: VectorTileSource | null = null;
 
@@ -256,7 +257,7 @@ class DvkMap {
     }
   };
 
-  public setMapLanguage = (lang: Lang) => {
+  public setMapLanguage = (lang: LangType) => {
     this.mapLanguage = lang;
   };
 
