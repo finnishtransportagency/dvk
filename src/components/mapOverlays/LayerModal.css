@@ -136,8 +136,11 @@ ion-modal#layerModalContainer::part(content) {
   content: '10,2';
   color: var(--ion-color-layer-depth);
   vertical-align: text-top;
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
-    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
 }
 .en #layerModalContainer ion-item .depth12::before {
   content: '10.2';
@@ -156,8 +159,11 @@ ion-modal#layerModalContainer::part(content) {
   content: '28';
   color: var(--ion-color-layer-soundingpoint-text);
   vertical-align: text-top;
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
-    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
 }
 
 #layerModalContainer ion-item .depthcontour {
@@ -181,22 +187,22 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-item .deptharea {
-  background: #D3EAE7;
+  background: #d3eae7;
   border: 1px solid #757575;
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area1 {
-  background: #91CAF3;
+  background: #91caf3;
   border: 1px solid #757575;
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area2 {
-  background: #B5DAF7;
+  background: #b5daf7;
   border: 1px solid #757575;
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area3 {
-  background: #D3EAE7;
+  background: #d3eae7;
   border: 1px solid #757575;
 }
 
@@ -219,10 +225,22 @@ ion-modal#layerModalContainer::part(content) {
   background-size: cover;
   margin-top: 2px;
 }
-#layerModalContainer ion-item .marinewarning {
+#layerModalContainer ion-item .coastalwarning {
   width: 17px;
   height: 20px;
-  background: url('../../theme/img/merivaroitus_ikoni.svg') no-repeat center;
+  background: url('../../theme/img/coastal_warning_icon.svg') no-repeat center;
+  background-size: cover;
+}
+#layerModalContainer ion-item .localwarning {
+  width: 17px;
+  height: 20px;
+  background: url('../../theme/img/local_warning_icon.svg') no-repeat center;
+  background-size: cover;
+}
+#layerModalContainer ion-item .boaterwarning {
+  width: 17px;
+  height: 20px;
+  background: url('../../theme/img/warning_to_boaters_icon.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .mareograph {
