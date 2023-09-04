@@ -89,3 +89,7 @@ export const constructSelectDropdownLabel = (selected: number[], options: Select
   }
   return [];
 };
+
+export const radiansToDegrees = (rads: number) => {
+  return Math.round(rads * (180 / Math.PI) + (rads < 0 ? 360 : 0));
+};
