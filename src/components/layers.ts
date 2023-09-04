@@ -534,7 +534,6 @@ export function addAPILayers(map: Map) {
     309
   );
   // Merivaroitukset
-  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
   addFeatureVectorLayer(map, 'coastalwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
   addFeatureVectorLayer(map, 'localwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
   addFeatureVectorLayer(map, 'boaterwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);

@@ -11,7 +11,7 @@ import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, getMarineWarningDataLayerId } from '../../utils/common';
 import './MarineWarnings.css';
 import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
@@ -21,17 +21,18 @@ type WarningListProps = {
   loading?: boolean;
 };
 
-function goto(id: number) {
-  const marineWarningSource = dvkMap.getVectorSource('marinewarning');
+function goto(warning: MarineWarning) {
+  const dataLayerId = getMarineWarningDataLayerId(warning.type);
+  const marineWarningSource = dvkMap.getVectorSource(dataLayerId);
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  let feature = marineWarningSource.getFeatureById(id);
+  let feature = marineWarningSource.getFeatureById(warning.id);
   if (feature) {
     marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
     selectedFairwayCardSource.clear();
     selectedFairwayCardSource.addFeature(feature);
     marineWarningSource.removeFeature(feature);
   } else {
-    feature = selectedFairwayCardSource.getFeatureById(id);
+    feature = selectedFairwayCardSource.getFeatureById(warning.id);
   }
   const geometry = feature?.getGeometry();
   if (feature && geometry) {
@@ -83,7 +84,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                       to="/merivaroitukset/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(warning.id);
+                        goto(warning);
                       }}
                     >
                       {warning.location[lang] || warning.location.fi || t('noObjects')}
@@ -215,7 +216,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
+  // Use any of the marine warning layers as they have the same data source
+  const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
@@ -225,9 +227,13 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   useEffect(() => {
     return () => {
       const source = dvkMap.getVectorSource('selectedfairwaycard');
-      const target = dvkMap.getVectorSource('marinewarning');
+      const target1 = dvkMap.getVectorSource('coastalwarning');
+      const target2 = dvkMap.getVectorSource('localwarning');
+      const target3 = dvkMap.getVectorSource('boaterwarning');
       source.forEachFeature((f) => {
-        target.addFeature(f);
+        target1.addFeature(f);
+        target2.addFeature(f);
+        target3.addFeature(f);
       });
       source.clear();
     };

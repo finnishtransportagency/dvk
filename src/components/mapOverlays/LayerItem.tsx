@@ -312,7 +312,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
+  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'coastalwarning' || id === 'localwarning' || id === 'boaterwarning') {
     alertProps = getAlertProperties(dataUpdatedAt, id);
   }
   const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';

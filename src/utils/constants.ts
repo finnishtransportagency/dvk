@@ -106,7 +106,6 @@ export type FeatureDataLayerId =
   | 'quay'
   | 'safetyequipment'
   | 'depth12'
-  | 'marinewarning'
   | 'coastalwarning'
   | 'localwarning'
   | 'boaterwarning'
@@ -163,7 +162,6 @@ export const MAP: MapType = {
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
     { id: 'depth12', offlineSupport: true, localizedStyle: false },
-    { id: 'marinewarning', offlineSupport: true, localizedStyle: false },
     { id: 'coastalwarning', offlineSupport: true, localizedStyle: false },
     { id: 'localwarning', offlineSupport: true, localizedStyle: false },
     { id: 'boaterwarning', offlineSupport: true, localizedStyle: false },

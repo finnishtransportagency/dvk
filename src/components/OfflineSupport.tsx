@@ -24,7 +24,6 @@ const OfflineSupport: React.FC = () => {
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
   const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
-  const marineWarningLayer = useFeatureData('marinewarning');
   const coastalWarningLayer = useFeatureData('marinewarning');
   const localWarningLayer = useFeatureData('marinewarning');
   const boaterWarningLayer = useFeatureData('marinewarning');
@@ -58,7 +57,6 @@ const OfflineSupport: React.FC = () => {
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
     safetyEquipmentFaultLayer.dataUpdatedAt,
-    marineWarningLayer.dataUpdatedAt,
     coastalWarningLayer.dataUpdatedAt,
     localWarningLayer.dataUpdatedAt,
     boaterWarningLayer.dataUpdatedAt,
@@ -92,7 +90,6 @@ const OfflineSupport: React.FC = () => {
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
     safetyEquipmentFaultLayer.isError ? safetyEquipmentFaultLayer.errorUpdatedAt : 0,
-    marineWarningLayer.isError ? marineWarningLayer.errorUpdatedAt : 0,
     coastalWarningLayer.isError ? coastalWarningLayer.errorUpdatedAt : 0,
     localWarningLayer.isError ? localWarningLayer.errorUpdatedAt : 0,
     boaterWarningLayer.isError ? boaterWarningLayer.errorUpdatedAt : 0,

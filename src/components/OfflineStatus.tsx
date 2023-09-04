@@ -28,7 +28,6 @@ const OfflineStatus: React.FC = () => {
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
   const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
-  const marineWarningLayer = useFeatureData('marinewarning');
   const coastalWarningLayer = useFeatureData('marinewarning');
   const localWarningLayer = useFeatureData('marinewarning');
   const boaterWarningLayer = useFeatureData('marinewarning');
@@ -63,7 +62,6 @@ const OfflineStatus: React.FC = () => {
     harborLayer,
     safetyEquipmentLayer,
     safetyEquipmentFaultLayer,
-    marineWarningLayer,
     coastalWarningLayer,
     localWarningLayer,
     boaterWarningLayer,

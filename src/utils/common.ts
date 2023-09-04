@@ -118,3 +118,16 @@ export const getMapCanvasWidth = (): number => {
   const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
   return canvasSize[0];
 };
+
+export const getMarineWarningDataLayerId = (type: Text): FeatureDataLayerId => {
+  switch (type?.fi) {
+    case 'COASTAL WARNING':
+      return 'coastalwarning';
+    case 'LOCAL WARNING':
+      return 'localwarning';
+    case 'VAROITUKSIA VENEILIJÖILLE':
+      return 'boaterwarning';
+    default:
+      return 'coastalwarning';
+  }
+};
