@@ -21,7 +21,9 @@ import {
   usePilotLayer,
   useHarborLayer,
   useSafetyEquipmentLayer,
-  useMarineWarningLayer,
+  useCoastalWarningLayer,
+  useLocalWarningLayer,
+  useBoaterWarningLayer,
   useBoardLine12Layer,
   useMareographLayer,
   useObservationLayer,
@@ -118,7 +120,9 @@ const DvkIonApp: React.FC = () => {
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentLayer();
-  useMarineWarningLayer();
+  useCoastalWarningLayer();
+  useLocalWarningLayer();
+  useBoaterWarningLayer();
   useInitStaticDataLayer('name', 'name');
   useMareographLayer();
   useObservationLayer();

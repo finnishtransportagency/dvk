@@ -273,7 +273,11 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
     return getSafetyEquipmentStyle(feature, 1, false);
-  } else if (ds === 'marinewarning') {
+  } else if (ds === 'coastalwarning') {
+    return getMarineWarningStyle(feature, false);
+  } else if (ds === 'localwarning') {
+    return getMarineWarningStyle(feature, false);
+  } else if (ds === 'boaterwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'harbor') {
     return getHarborStyle(feature, resolution, 3);
@@ -529,8 +533,11 @@ export function addAPILayers(map: Map) {
     true,
     309
   );
+  // Merivaroitukset
   addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
-
+  addFeatureVectorLayer(map, 'coastalwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
+  addFeatureVectorLayer(map, 'localwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
+  addFeatureVectorLayer(map, 'boaterwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
   // VTS linjat ja ilmoituspisteet
   addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
   addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);

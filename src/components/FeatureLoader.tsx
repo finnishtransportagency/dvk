@@ -326,8 +326,16 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
 
-export function useMarineWarningLayer() {
-  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+export function useCoastalWarningLayer() {
+  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+}
+
+export function useLocalWarningLayer() {
+  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+}
+
+export function useBoaterWarningLayer() {
+  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
 }
 
 export type EquipmentFault = {

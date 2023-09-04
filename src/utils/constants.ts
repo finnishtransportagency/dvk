@@ -92,7 +92,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -107,6 +107,9 @@ export type FeatureDataLayerId =
   | 'safetyequipment'
   | 'depth12'
   | 'marinewarning'
+  | 'coastalwarning'
+  | 'localwarning'
+  | 'boaterwarning'
   | 'name'
   | 'boardline12'
   | 'mareograph'
@@ -161,6 +164,9 @@ export const MAP: MapType = {
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
     { id: 'depth12', offlineSupport: true, localizedStyle: false },
     { id: 'marinewarning', offlineSupport: true, localizedStyle: false },
+    { id: 'coastalwarning', offlineSupport: true, localizedStyle: false },
+    { id: 'localwarning', offlineSupport: true, localizedStyle: false },
+    { id: 'boaterwarning', offlineSupport: true, localizedStyle: false },
     { id: 'boardline12', offlineSupport: true, localizedStyle: false },
     { id: 'mareograph', offlineSupport: false, localizedStyle: false },
     { id: 'ice', offlineSupport: false, localizedStyle: false },
