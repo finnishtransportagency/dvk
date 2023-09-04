@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/generated';
+import { FairwayCardOrHarbor, HarborInput, HarbourByIdQuery, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
@@ -10,13 +10,9 @@ interface HarbourEditProps {
   origin?: boolean;
 }
 
-const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
-  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
-  const { data: userData } = useCurrentUserQueryData();
-
+export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQuery | undefined) {
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
-
-  const harbour = {
+  return {
     id: origin ? '' : data?.harbor?.id ?? '',
     name: {
       fi: data?.harbor?.name?.fi ?? '',
@@ -73,6 +69,13 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
     status: origin ? Status.Draft : data?.harbor?.status ?? Status.Draft,
     operation: origin ? Operation.Create : Operation.Update,
   };
+}
+
+const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
+  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
+  const { data: userData } = useCurrentUserQueryData();
+
+  const harbour = mapToHarborInput(origin, data);
 
   return (
     <>

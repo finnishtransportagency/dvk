@@ -226,7 +226,7 @@
       "degDesc_other": "grader"
     },
     "opens-in-a-new-tab": "Öppnas i en ny flik",
-    "alert": "[sv] Hakemaasi “{{ fairwayCardId }}” väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta. <br/><br/>[sv] Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3> listauksesta."
+    "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>."
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -307,7 +307,7 @@
       "length": "Längd {{val}}",
       "direction": "Rättvisande kurs {{val, number}}",
       "fairways": "Navigationslinje är en del av farledskortet",
-      "width": "[sv] Väyläleveys valitussa kohdassa",
+      "width": "Farledsbredd på det valda stället",
       "extra": "Tilläggsuppgift"
     },
     "equipment": {

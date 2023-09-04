@@ -41,8 +41,8 @@ export class AdminPipeline extends Construct {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
         environmentVariables: {
-          REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
-          REACT_APP_ENV: { value: props.env },
+          VITE_APP_API_KEY: { value: importedAppSyncAPIKey },
+          VITE_APP_ENV: { value: props.env },
           CI: { value: true },
         },
       },

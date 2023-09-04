@@ -1,6 +1,25 @@
 query fairways {
   fairways {
     id
-    name {fi sv en}
+    name {
+      fi
+      sv
+      en
+    }
+    navigationLines {
+      id
+    }
+    areas {
+      id
+    }
+    boardLines {
+      id
+    }
+    restrictionAreas {
+      id
+    }
+    turningCircles {
+      id
+    }
   }
 }

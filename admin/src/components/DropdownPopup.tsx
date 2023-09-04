@@ -8,20 +8,33 @@ import DropdownSearchInput from './DropdownSearchInput';
 
 interface DropdownPopupProps {
   trigger: string;
+  triggerRef: React.RefObject<HTMLIonItemElement>;
   options: SelectOption[] | null;
   selected: number[];
   setSelected: (selected: number[]) => void;
   setIsExpanded: (expanded: boolean) => void;
   checkValidity: () => void;
   showId?: boolean;
+  className?: string;
 }
 
-const DropdownPopup: React.FC<DropdownPopupProps> = ({ trigger, options, selected, setSelected, setIsExpanded, checkValidity, showId }) => {
+const DropdownPopup: React.FC<DropdownPopupProps> = ({
+  trigger,
+  triggerRef,
+  options,
+  selected,
+  setSelected,
+  setIsExpanded,
+  checkValidity,
+  showId,
+  className,
+}) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const [filteredItems, setFilteredItems] = useState<SelectOption[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const popover = useRef<HTMLIonPopoverElement>(null);
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const focusSearchInput = () => {
@@ -46,6 +59,11 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({ trigger, options, selecte
     const { checked, value } = event.detail;
     const updatedValues = checked ? [...selected, value.id] : selected.filter((selectedId) => selectedId !== value.id);
     setSelected(updatedValues);
+    // Set popover position by force based on mocked select field dimensions
+    setTimeout(() => {
+      (popover.current?.shadowRoot?.childNodes[1].childNodes[0] as HTMLElement).style.top =
+        (triggerRef.current?.getBoundingClientRect().top ?? 0) + (triggerRef.current?.getBoundingClientRect().height ?? 0) + 'px';
+    }, 0);
   };
 
   const handlePopupWillOpen = () => {
@@ -65,8 +83,9 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({ trigger, options, selecte
 
   return (
     <IonPopover
+      ref={popover}
       trigger={trigger}
-      className="multiSelect"
+      className={'multiSelect' + (className ? ' ' + className : '')}
       showBackdrop={false}
       size="cover"
       dismissOnSelect={false}

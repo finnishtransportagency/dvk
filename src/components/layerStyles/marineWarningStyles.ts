@@ -3,8 +3,10 @@ import { Style, Icon, Fill, Stroke } from 'ol/style';
 import { LineString, Point, Polygon } from 'ol/geom';
 import marinearea from '../../theme/img/merivaroitus_tausta.svg';
 import marineareaSelected from '../../theme/img/merivaroitus_tausta_valittu.svg';
-import marine from '../../theme/img/merivaroitus_ikoni.svg';
-import { isCoastalWarning } from '../../utils/common';
+import coastal from '../../theme/img/coastal_warning_icon.svg';
+import local from '../../theme/img/local_warning_icon.svg';
+import boaters from '../../theme/img/warning_to_boaters_icon.svg';
+import { isGeneralMarineWarning } from '../../utils/common';
 import { MarineWarningFeatureProperties } from '../features';
 
 const marineAreaImage = new Image();
@@ -13,10 +15,24 @@ marineAreaImage.src = marinearea;
 const marineAreaSelectedImage = new Image();
 marineAreaSelectedImage.src = marineareaSelected;
 
+function getImgSource(featureProperties: MarineWarningFeatureProperties) {
+  const type = featureProperties.type?.fi;
+  switch (type) {
+    case 'LOCAL WARNING':
+      return local;
+    case 'COASTAL WARNING':
+      return coastal;
+    case 'VAROITUKSIA VENEILIJÖILLE':
+      return boaters;
+    default:
+      return coastal;
+  }
+}
+
 export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   const featureProperties = feature.getProperties() as MarineWarningFeatureProperties;
   const selectedScale = selected ? 1.2 : 1;
-  const iconScale = isCoastalWarning(featureProperties.type) ? 1.5 * selectedScale : 1 * selectedScale;
+  const iconScale = isGeneralMarineWarning(featureProperties.area) ? 1.5 * selectedScale : 1 * selectedScale;
 
   if (feature.getGeometry()?.getType() === 'Polygon') {
     const canvas = document.createElement('canvas');
@@ -35,7 +51,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
       }),
       new Style({
         image: new Icon({
-          src: marine,
+          src: getImgSource(featureProperties),
           opacity: 1,
           scale: iconScale,
         }),
@@ -49,7 +65,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
     return [
       new Style({
         image: new Icon({
-          src: marine,
+          src: getImgSource(featureProperties),
           opacity: 1,
           anchor: [0.5, 28],
           anchorXUnits: 'fraction',
@@ -68,7 +84,7 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
       }),
       new Style({
         image: new Icon({
-          src: marine,
+          src: getImgSource(featureProperties),
           opacity: 1,
           scale: iconScale,
         }),

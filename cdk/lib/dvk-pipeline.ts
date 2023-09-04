@@ -45,9 +45,9 @@ export class DvkPipeline extends Construct {
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.4'),
         environmentVariables: {
-          REACT_APP_API_KEY: { value: importedAppSyncAPIKey },
-          REACT_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
-          REACT_APP_ENV: { value: props.env },
+          VITE_APP_API_KEY: { value: importedAppSyncAPIKey },
+          VITE_APP_USE_STATIC_FEATURES: { value: Config.isDeveloperEnvironment(props.env) },
+          VITE_APP_ENV: { value: props.env },
           CI: { value: true },
         },
       },
@@ -63,7 +63,7 @@ export class DvkPipeline extends Construct {
               'npm ci',
               'npm run generate',
               'BUILD_PATH=./build/vaylakortti PUBLIC_URL=/vaylakortti npm run build',
-              'mv ./build/vaylakortti/root/* ./build/',
+              'cp ./root/* ./build/',
             ],
           },
         },

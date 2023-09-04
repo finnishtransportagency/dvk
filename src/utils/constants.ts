@@ -1,12 +1,12 @@
-const featureLoaderUrl = process.env.REACT_APP_REST_API_URL
-  ? process.env.REACT_APP_REST_API_URL + '/featureloader'
+const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
 
-const staticUrl = process.env.REACT_APP_STATIC_URL
-  ? `https://${process.env.REACT_APP_STATIC_URL}/s3static`
+const staticUrl = import.meta.env.VITE_APP_STATIC_URL
+  ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
-export const imageUrl = process.env.REACT_APP_IMAGE_URL ? process.env.REACT_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
+export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
 export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
 
@@ -125,7 +125,9 @@ export type FeatureDataLayerId =
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId;
+export type OwnLocationLayerId = 'ownlocation';
+
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | OwnLocationLayerId;
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -197,5 +199,3 @@ export const OFFLINE_STORAGE = {
   staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
   cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
-
-export const COASTAL_WARNING = 'COASTAL WARNING';

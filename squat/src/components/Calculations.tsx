@@ -61,6 +61,13 @@ const Calculations: React.FC = () => {
     );
   };
   const checkIsUKCUnderMinimum = () => {
+    if (showLimitedView) {
+      return isUKCStraightUnderRequired(
+        state.environment.attribute.requiredUKC,
+        state.calculations.squat.UKCStraightCourse,
+        state.status.showBarrass
+      );
+    }
     return isUKCUnderMinimum(
       state.environment.fairway.sweptDepth,
       state.environment.attribute.requiredUKC,
@@ -325,6 +332,17 @@ const Calculations: React.FC = () => {
     [setStateStatus]
   );
 
+  const handleSelectedViewChange = useCallback(
+    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
+      const val = e.detail.value;
+      setStateStatus('showLimitedView', val);
+      if (val === 'true') {
+        setStateStatus('showDeepWaterValues', 'false');
+      }
+    },
+    [setStateStatus]
+  );
+
   return (
     <>
       <div className="pagebreak"></div>
@@ -358,7 +376,7 @@ const Calculations: React.FC = () => {
       </IonGrid>
 
       <>
-        {checkIsUKCUnderMinimum() && <Alert title={t('UKC-under-required-minimum')} />}
+        {checkIsUKCUnderMinimum() && <Alert alertType="error" title={t('UKC-under-required-minimum')} />}
 
         <div className={'in-print top-padding' + (showLimitedView ? ' print-hide' : '')}>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
@@ -381,7 +399,7 @@ const Calculations: React.FC = () => {
             onIonChange={handleCalculationMethodChange}
             value={state.status.showBarrass ? 'true' : 'false'}
             className="top-padding"
-            disabled={showLimitedView || getSquatValue() === ''}
+            disabled={getSquatValue() === ''}
             selectOnFocus
           >
             <IonSegmentButton value="false">
@@ -391,17 +409,33 @@ const Calculations: React.FC = () => {
               <IonLabel>{t('squat-barrass')}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
+
+          <IonSegment
+            onIonChange={handleSelectedViewChange}
+            value={showLimitedView ? 'true' : 'false'}
+            className="top-padding print-hide"
+            selectOnFocus
+          >
+            <IonSegmentButton value="false">
+              <IonLabel>{t('extensive-calculator')}</IonLabel>
+            </IonSegmentButton>
+            <IonSegmentButton value="true">
+              <IonLabel>{t('limited-calculator')}</IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
         </div>
 
-        {checkIsReliabilityAnIssue() && <Alert title={checkIsReliabilityAnIssue()} className="top-margin" />}
+        {checkIsReliabilityAnIssue() && <Alert alertType="error" title={checkIsReliabilityAnIssue()} className="top-margin" />}
         {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
           <Alert
+            alertType="error"
             title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass)}
             className="top-margin"
           />
         )}
         {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass) && (
           <Alert
+            alertType="error"
             title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass)}
             className="top-margin"
           />

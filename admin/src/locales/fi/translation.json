@@ -82,6 +82,7 @@
     "environment-dev": "Kehitysympäristö",
     "environment-test": "Testiympäristö",
     "environment-undefined": "",
+    "show-help": "Näytä ohje",
     "unit": {
       "nm": "M",
       "nmDesc_one": "meripeninkulma",
@@ -125,7 +126,11 @@
     "publish-harbor-title": "Sataman julkaiseminen",
     "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Oletko varma, että haluat jatkaa?",
     "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
-    "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu."
+    "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu.",
+    "help-title-PORTRAIT": "Väyläkortin pystytulosteiden asettaminen",
+    "help-title-LANDSCAPE": "Väyläkortin vaakatulosteiden asettaminen",
+    "help-title-picture-PORTRAIT": "Väyläkortin pystytulosteen esikatselu",
+    "help-title-picture-LANDSCAPE": "Väyläkortin vaakatulosteen esikatselu"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
@@ -160,7 +165,26 @@
     "vhf-name": "VHF-kanavan nimi",
     "vhf-channel": "VHF-kanavan numero",
     "tug-heading": "Hinaaja",
-    "tug-name": "Hinaajan nimi"
+    "tug-name": "Hinaajan nimi",
+    "print-images": "Väyläkortin tuloste",
+    "print-images-portrait": "Väyläkortin tulosteet, pysty",
+    "print-images-landscape": "Väyläkortin tulosteet, vaaka",
+    "print-images-info-ingress-PORTRAIT": "Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa. Pystykuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan pystysuunnassa.",
+    "print-images-info-ingress-LANDSCAPE": "Et ole asettanut väyläkortille vielä yhtään vaakasuuntaista tulostekuvaa. Vaakakuvia käytetään osana väyläkorttia, kun väyläkortti tulostetaan vaakasuunnassa.",
+    "print-images-info-switch": "Kytke",
+    "print-images-info-select-PORTRAIT": "Pystytila päälle kartalla.",
+    "print-images-info-select-LANDSCAPE": "Vaakatila päälle kartalla.",
+    "print-images-info-select-layers": "Valitse haluamasi karttatasot",
+    "print-images-info-select-layers-button": "Tasot-painikkeella.",
+    "print-images-info-position-map": "Siirrä kartta haluaamasi kohtaan.",
+    "print-images-info-target-by-features": "Voit käyttää apuna",
+    "print-images-info-target-by-features-button": "Kohdista kartta -painiketta kartan automaattiseen kohdistamiseen.",
+    "print-images-info-take-image": "Ota kuva tulostusalueesta",
+    "print-images-info-set-image-button": "Aseta kuva -painikkeella.",
+    "print-images-modified": "Kuva luotu",
+    "print-images-card-id-required": "Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
+    "notForNavigation": "Ei navigointikäyttöön",
+    "toggle-sequence": "Aseta järjestysnumero"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
@@ -186,5 +210,56 @@
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-draft-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
     "linked-fairwaycards-exist-cannot-draft-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
+  },
+  "homePage": {
+    "map": {
+      "controls": {
+        "zoom": {
+          "zoomInTipLabel": "Lähennä",
+          "zoomOutTipLabel": "Loitonna"
+        },
+        "openMenu": {
+          "tipLabel": "Avaa valikko"
+        },
+        "layer": {
+          "tipLabel": "Valitse tasot",
+          "header": "Kartan tasot",
+          "class1": "Kauppamerenkulku",
+          "class2": "Muu vesiliikenne",
+          "lines": "Navigointilinjat",
+          "fairwayAreas": "Väyläalueet",
+          "depths": "Haraussyvyydet",
+          "safetyEquipments": "Turvalaitteet",
+          "speedLimits": "Nopeusrajoitukset",
+          "specialAreas": "Erityisalueet",
+          "pilotPlaces": "Luotsipaikat",
+          "boardLines": "Taululinjat",
+          "circles": "Kääntöympyrät",
+          "vts": "VTS",
+          "vtsline": "VTS-alueet",
+          "vtspoint": "VTS-ilmoituspisteet",
+          "general": "Yleiset",
+          "name": "Karttanimistö",
+          "specialarea2": "Ankkurointialueet",
+          "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet"
+        },
+        "mapDetails": {
+          "mousePositionLabel": "Hiiren koordinaatti:"
+        },
+        "orientation": {
+          "selectPortrait": "Pystytila",
+          "selectLandscape": "Vaakatila"
+        },
+        "screenshot": {
+          "tipLabel": "Aseta kuva"
+        },
+        "features": {
+          "tipLabel": "Kohdista kartta"
+        },
+        "resetRotation": "Palauta oletusorientaatio",
+        "infoText": "Ei navigointikäyttöön"
+      },
+      "numberFormat": "{{val, number}}"
+    }
   }
 }

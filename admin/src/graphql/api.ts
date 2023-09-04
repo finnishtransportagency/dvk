@@ -4,6 +4,8 @@ import {
   SaveFairwayCardMutationVariables,
   SaveHarborMutation,
   SaveHarborMutationVariables,
+  UploadMapPictureMutation,
+  UploadMapPictureMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
@@ -14,23 +16,24 @@ import {
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
   useSaveHarborMutation,
+  useUploadMapPictureMutation,
 } from './generated';
 
 const datasourceClient = {
-  endpoint: process.env.REACT_APP_API_URL ? process.env.REACT_APP_API_URL : '/yllapito/graphql',
+  endpoint: import.meta.env.VITE_APP_API_URL ? import.meta.env.VITE_APP_API_URL : '/yllapito/graphql',
   fetchParams: {
     headers: {
-      'x-api-key': process.env.REACT_APP_API_KEY ?? 'key missing',
+      'x-api-key': import.meta.env.VITE_APP_API_KEY ?? 'key missing',
     },
   },
 };
 
 export function useCurrentUserQueryData() {
-  return useCurrentUserQuery(datasourceClient);
+  return useCurrentUserQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardsAndHarborsQueryData() {
-  return useFairwayCardsAndHarborsQuery(datasourceClient);
+  return useFairwayCardsAndHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
@@ -38,15 +41,15 @@ export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: b
 }
 
 export function useFairwaysQueryData() {
-  return useFairwaysQuery(datasourceClient);
+  return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false, refetchOnMount: false });
 }
 
 export function useFairwayCardsQueryData() {
-  return useFairwayCardsQuery(datasourceClient);
+  return useFairwayCardsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useHarboursQueryData() {
-  return useHarborsQuery(datasourceClient);
+  return useHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
@@ -54,7 +57,7 @@ export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boole
 }
 
 export function usePilotPlacesQueryData() {
-  return usePilotPlacesQuery(datasourceClient);
+  return usePilotPlacesQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(
@@ -67,4 +70,10 @@ export function useSaveHarborMutationQuery<TError = unknown, TContext = unknown>
   options?: UseMutationOptions<SaveHarborMutation, TError, SaveHarborMutationVariables, TContext>
 ) {
   return useSaveHarborMutation(datasourceClient, options);
+}
+
+export function useUploadMapPictureMutationQuery<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<UploadMapPictureMutation, TError, UploadMapPictureMutationVariables, TContext>
+) {
+  return useUploadMapPictureMutation(datasourceClient, options);
 }

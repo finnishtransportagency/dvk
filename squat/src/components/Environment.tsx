@@ -194,23 +194,21 @@ const Environment: React.FC = () => {
               infoContent={t('swept-depth-info')}
             />
           </IonCol>
-          {!limitedView && (
-            <IonCol size="6">
-              <InputField
-                title={t('water-level')}
-                name="waterLevel"
-                value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
-                placeholder="0"
-                min={fieldParams.waterLevel.min}
-                max={fieldParams.waterLevel.max}
-                unit={fieldParams.waterLevel.unit}
-                fieldClass={setFieldClass('waterLevel')}
-                actionType="environment-fairway"
-                infoContentTitle={t('swept-depth-info-title')}
-                infoContent={t('swept-depth-info')}
-              />
-            </IonCol>
-          )}
+          <IonCol size={defaultColumnSize}>
+            <InputField
+              title={t('water-level')}
+              name="waterLevel"
+              value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
+              placeholder="0"
+              min={fieldParams.waterLevel.min}
+              max={fieldParams.waterLevel.max}
+              unit={fieldParams.waterLevel.unit}
+              fieldClass={setFieldClass('waterLevel')}
+              actionType="environment-fairway"
+              infoContentTitle={t('swept-depth-info-title')}
+              infoContent={t('swept-depth-info')}
+            />
+          </IonCol>
           {!limitedView && (
             <IonCol size="6">
               <InputField
