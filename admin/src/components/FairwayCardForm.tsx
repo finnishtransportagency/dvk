@@ -341,7 +341,22 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               msg: t(ErrorMessageKeys?.required),
             };
           }) ?? [];
-      allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors);
+      const pictureTextErrors =
+        state.pictures
+          ?.flatMap((pic) =>
+            (pic.lang === 'fi' && !pic?.text?.trim()) || (pic.lang === 'sv' && !pic?.text?.trim()) || (pic.lang === 'en' && !pic?.text?.trim())
+              ? pic.groupId
+              : null
+          )
+          .filter((value, index, self) => self.findIndex((inner) => inner === value) === index)
+          .filter((val) => Number.isInteger(val))
+          .map((groupId) => {
+            return {
+              id: 'pictureText-' + groupId,
+              msg: t(ErrorMessageKeys?.required),
+            };
+          }) ?? [];
+      allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors);
       setValidationErrors(allValidations);
     }
 

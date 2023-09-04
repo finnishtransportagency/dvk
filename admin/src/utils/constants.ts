@@ -80,7 +80,8 @@ export type FairwayCardActionType =
   | 'vhf'
   | 'vhfName'
   | 'vhfChannel'
-  | 'picture';
+  | 'picture'
+  | 'pictureDescription';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -99,6 +100,8 @@ export type SelectOption = {
   name?: Text | null;
   geometry?: GeometryPoint | null;
 };
+
+export const locales = ['fi', 'sv', 'en'];
 
 export const INPUT_MAXLENGTH = 200;
 export const TEXTAREA_MAXLENGTH = 2000;
