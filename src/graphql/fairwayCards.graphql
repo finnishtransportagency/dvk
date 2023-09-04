@@ -67,6 +67,7 @@ fragment PictureParts on Picture {
   rotation
   scaleLabel
   scaleWidth
+  groupId
   modificationTimestamp
 }
 
