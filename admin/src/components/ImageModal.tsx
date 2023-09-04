@@ -15,12 +15,38 @@ interface ModalProps {
 const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const fi = i18n.getFixedT('fi');
+  const sv = i18n.getFixedT('sv');
+  const en = i18n.getFixedT('en');
 
   const [isLoading, setIsLoading] = useState(true);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
   const compassNeedle = useRef<HTMLImageElement>(null);
+
+  const getPictureTitle = () => {
+    if ((picture as PictureInput)?.text) {
+      return (picture as PictureInput).text;
+    } else if (fairwayCardInput.name[lang].length || fairwayCardInput.name.fi.length) {
+      return fairwayCardInput.name[lang] ?? fairwayCardInput.name.fi;
+    } else {
+      return '(' + t('fairwaycard.name') + ')';
+    }
+  };
+
+  const getTranslatedText = (key: string, opts?: { val: number | string }) => {
+    const pictureLang = (picture as PictureInput)?.lang;
+    if (pictureLang === 'fi') {
+      return fi(key, opts ?? {});
+    } else if (pictureLang === 'sv') {
+      return sv(key, opts ?? {});
+    } else if (pictureLang === 'en') {
+      return en(key, opts ?? {});
+    } else {
+      return t(key, opts ?? {});
+    }
+  };
 
   const setBoundingBox = () => {
     if (compassInfo.current && compassNeedle.current) {
@@ -80,22 +106,18 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                       </div>
                       <div className="cardInfo">
                         <IonText>
-                          <h3>
-                            {fairwayCardInput.name[lang].length || fairwayCardInput.name.fi.length
-                              ? fairwayCardInput.name[lang] ?? fairwayCardInput.name.fi
-                              : '(' + t('fairwaycard.name') + ')'}
-                          </h3>
+                          <h3>{getPictureTitle()}</h3>
                         </IonText>
                         {picture.modificationTimestamp && (
                           <em>
-                            {t('general.item-modified')}{' '}
-                            {t('general.datetimeFormat', {
+                            {getTranslatedText('general.item-modified')}{' '}
+                            {getTranslatedText('general.datetimeFormat', {
                               val: picture.modificationTimestamp ?? '-',
                             })}
                             {fairwayCardInput.n2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
                           </em>
                         )}
-                        <em className="danger">{t('fairwaycard.notForNavigation')}</em>
+                        <em className="danger">{getTranslatedText('fairwaycard.notForNavigation')}</em>
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
