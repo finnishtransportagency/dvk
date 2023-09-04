@@ -182,6 +182,13 @@
     "print-images-info-take-image": "Ota kuva tulostusalueesta",
     "print-images-info-set-image-button": "Aseta kuva -painikkeella.",
     "print-images-modified": "Kuva luotu",
+    "print-images-language": "Kuvan kieli",
+    "print-images-language-fi": "suomi",
+    "print-images-language-sv": "ruotsi",
+    "print-images-language-en": "englanti",
+    "print-images-language-null": "ei asetettu",
+    "print-images-rotation": "Kuvan kierto",
+    "print-images-description": "Kuvateksti",
     "print-images-card-id-required": "Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Ei navigointikäyttöön",
     "toggle-sequence": "Aseta järjestysnumero"
