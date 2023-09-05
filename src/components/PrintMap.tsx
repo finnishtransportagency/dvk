@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Orientation, PicturePartsFragment, Text } from '../graphql/generated';
+import { Orientation, Picture, PicturePartsFragment, Text } from '../graphql/generated';
 import { Lang, imageUrl } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 import { debounce } from 'lodash';
@@ -20,6 +20,8 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
+  const picturesByLang = pictures?.filter((pic) => pic.lang === lang || !pic.lang || (lang !== 'fi' && !pic.groupId));
+
   const debouncedPrintImageRefresh = debounce(() => {
     refreshPrintableMap();
   }, 500);
@@ -36,6 +38,16 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
     };
   }, [debouncedPrintImageRefresh]);
 
+  const getPictureTitle = (picture: Picture) => {
+    if (picture.text) {
+      return picture.text;
+    } else if (name) {
+      return name[lang] ?? name.fi;
+    } else {
+      return '(' + t('documentTitle') + ')';
+    }
+  };
+
   const setBoundingBox = useCallback((pictureId: string) => {
     const compassInfo = document.getElementById('compassInfo' + pictureId);
     const compassNeedle = document.getElementById('compassNeedle' + pictureId);
@@ -49,10 +61,10 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
   }, []);
 
   useEffect(() => {
-    for (const picture of pictures ?? []) {
+    for (const picture of picturesByLang ?? []) {
       setBoundingBox(picture.id);
     }
-  }, [pictures, setBoundingBox]);
+  }, [picturesByLang, setBoundingBox]);
 
   return (
     <>
@@ -83,7 +95,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
           </div>
         </div>
       </div>
-      {pictures?.map((picture, index) => {
+      {picturesByLang?.map((picture, index) => {
         return (
           <div className={'imageWrapper ' + (picture.orientation === Orientation.Portrait ? 'hide-landscape' : 'hide-portrait')} key={picture.id}>
             <div className="pagebreak"></div>
@@ -104,7 +116,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                   </div>
                   <div className="cardInfo">
                     <IonText>
-                      <h3>{name ? name[lang] ?? name.fi : t('fairwaycard.documentTitle')}</h3>
+                      <h3>{getPictureTitle(picture)}</h3>
                     </IonText>
                     {picture.modificationTimestamp && (
                       <em>
