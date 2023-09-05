@@ -8,6 +8,7 @@ export function useFeatureData(
   featureDataId: FeatureDataId,
   refetchOnMount: 'always' | boolean = true,
   refetchInterval: number | false = false,
+  enabled: boolean = true,
   staleTime: number = OFFLINE_STORAGE.staleTime,
   cacheTime: number = OFFLINE_STORAGE.cacheTime
 ) {
@@ -29,6 +30,7 @@ export function useFeatureData(
       const { data } = await axios.get(urlStr);
       return data;
     },
+    enabled,
   });
   return {
     ...response,

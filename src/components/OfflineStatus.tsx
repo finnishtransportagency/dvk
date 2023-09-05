@@ -31,9 +31,6 @@ const OfflineStatus: React.FC = () => {
   const marineWarningLayer = useFeatureData('marinewarning');
   const nameLayer = useStaticDataLayer('name');
   const boardLine12Layer = useFeatureData('boardline12');
-  const mareographLayer = useFeatureData('mareograph');
-  const observationLayer = useFeatureData('observation');
-  const buoyLayer = useFeatureData('buoy');
   const bgLayerBa = useStaticDataLayer('balticsea');
   const bgLayerFi = useStaticDataLayer('finland');
   const bgLayerSea = useStaticDataLayer('mml_meri');
@@ -63,9 +60,6 @@ const OfflineStatus: React.FC = () => {
     marineWarningLayer,
     nameLayer,
     boardLine12Layer,
-    mareographLayer,
-    observationLayer,
-    buoyLayer,
     bgLayerBa,
     bgLayerFi,
     bgLayerSea,

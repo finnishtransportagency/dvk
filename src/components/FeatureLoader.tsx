@@ -26,10 +26,11 @@ function useDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
+  refetchInterval: number | false = false,
+  enabled: boolean = true
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
   useEffect(() => {
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
@@ -170,15 +171,45 @@ export function useBoardLine12Layer() {
 }
 
 export function useMareographLayer() {
-  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('mareograph');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useObservationLayer() {
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('observation');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
 }
 
 export function useBuoyLayer() {
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('buoy');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
 }
 
 export function useVtsLineLayer() {
