@@ -12,6 +12,7 @@ import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
+import { filterMarineWarnings } from '../utils/common';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -26,7 +27,8 @@ function useDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
+  refetchInterval: number | false = false,
+  filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
   const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
@@ -39,12 +41,12 @@ function useDataLayer(
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
-        source.addFeatures(features);
+        source.addFeatures(filterMethod !== undefined ? filterMethod(features) : features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection, filterMethod]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -327,15 +329,15 @@ export function useHarborLayer() {
 }
 
 export function useCoastalWarningLayer() {
-  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, filterMarineWarnings('coastalwarning'));
 }
 
 export function useLocalWarningLayer() {
-  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, filterMarineWarnings('localwarning'));
 }
 
 export function useBoaterWarningLayer() {
-  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, filterMarineWarnings('boaterwarning'));
 }
 
 export type EquipmentFault = {

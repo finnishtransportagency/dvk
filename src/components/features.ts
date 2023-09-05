@@ -113,7 +113,6 @@ export type EquipmentFeatureProperties = {
 };
 
 export type MarineWarningFeatureProperties = {
-  dataSource: FeatureDataLayerId;
   number?: number;
   area?: Text;
   type?: Text;
