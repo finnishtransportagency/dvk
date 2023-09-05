@@ -255,7 +255,6 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   });
 
   const toggleSequence = (picture: PictureInput) => {
-    i18n.changeLanguage('sv');
     const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation);
     const currentOtherPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation !== orientation) ?? [];
     // Check if we need to add or remove the picture from sequence
