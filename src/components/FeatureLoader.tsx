@@ -129,35 +129,44 @@ export function useInitStaticDataLayer(
   const cacheBustingStatus = useStaticFeatureDataCacheBusting(featureDataId, busterKey, urlStr);
 
   useEffect(() => {
+    const initLayer = (data: unknown) => {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      const format = new GeoJSON();
+      const source = layer.getSource() as VectorSource;
+      source.clear();
+      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+      source.addFeatures(features);
+      setDataUpdatedAt(Date.now());
+      layer.set('dataUpdatedAt', Date.now());
+      layer.set('status', 'ready');
+      setReady(true);
+    };
+
     if (cacheBustingStatus === 'done') {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (!['ready', 'loading'].includes(layer.get('status'))) {
         layer.set('status', 'loading');
         (async () => {
-          try {
-            get(featureDataId).then(async (data) => {
-              if (!data) {
-                const response = await axios.get(urlStr);
-                data = response.data;
-                setMany([
-                  [featureDataId, response.data],
-                  [busterKey, urlStr],
-                ]).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
-              }
-              const format = new GeoJSON();
-              const source = layer.getSource() as VectorSource;
-              source.clear();
-              const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-              source.addFeatures(features);
-              setDataUpdatedAt(Date.now());
-              layer.set('dataUpdatedAt', Date.now());
-              layer.set('status', 'ready');
-              setReady(true);
-            });
-          } catch (e) {
-            setIsError(true);
-            setErrorUpdatedAt(Date.now());
-          }
+          get(featureDataId).then(async (data) => {
+            if (data) {
+              initLayer(data);
+            } else {
+              await axios
+                .get(urlStr)
+                .then((response) => {
+                  data = response.data;
+                  setMany([
+                    [featureDataId, response.data],
+                    [busterKey, urlStr],
+                  ]).catch((err) => console.warn('Caching ' + featureLayerId + 'failed: ' + err));
+                  initLayer(data);
+                })
+                .catch(() => {
+                  setIsError(true);
+                  setErrorUpdatedAt(Date.now());
+                });
+            }
+          });
         })();
       }
     }

@@ -211,7 +211,7 @@ export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | F
 
 export type Lang = 'fi' | 'sv' | 'en';
 
-type DataLayer = { id: FeatureDataLayerId; offlineSupport: boolean };
+type DataLayer = { id: FeatureDataLayerId; offlineSupport: boolean; localizedStyle: boolean };
 
 type MapType = {
   EPSG: string;
@@ -229,30 +229,30 @@ export const MAP: MapType = {
   INIT_CENTER: [384920, 6671856],
   INIT_RESOLUTION: 128,
   FEATURE_DATA_LAYERS: [
-    { id: 'area12', offlineSupport: true },
-    { id: 'area3456', offlineSupport: true },
-    { id: 'line12', offlineSupport: true },
-    { id: 'line3456', offlineSupport: true },
-    { id: 'speedlimit', offlineSupport: true },
-    { id: 'specialarea2', offlineSupport: true },
-    { id: 'specialarea15', offlineSupport: true },
-    { id: 'pilot', offlineSupport: true },
-    { id: 'harbor', offlineSupport: true },
-    { id: 'safetyequipment', offlineSupport: true },
-    { id: 'depth12', offlineSupport: true },
-    { id: 'marinewarning', offlineSupport: true },
-    { id: 'boardline12', offlineSupport: true },
-    { id: 'mareograph', offlineSupport: false },
-    { id: 'ice', offlineSupport: false },
-    { id: 'observation', offlineSupport: false },
-    { id: 'buoy', offlineSupport: false },
-    { id: 'vtsline', offlineSupport: true },
-    { id: 'vtspoint', offlineSupport: true },
-    { id: 'name', offlineSupport: true },
-    { id: 'soundingpoint', offlineSupport: false },
-    { id: 'depthcontour', offlineSupport: false },
-    { id: 'deptharea', offlineSupport: false },
-    { id: 'circle', offlineSupport: true },
+    { id: 'area12', offlineSupport: true, localizedStyle: false },
+    { id: 'area3456', offlineSupport: true, localizedStyle: false },
+    { id: 'line12', offlineSupport: true, localizedStyle: false },
+    { id: 'line3456', offlineSupport: true, localizedStyle: false },
+    { id: 'speedlimit', offlineSupport: true, localizedStyle: false },
+    { id: 'specialarea2', offlineSupport: true, localizedStyle: false },
+    { id: 'specialarea15', offlineSupport: true, localizedStyle: false },
+    { id: 'pilot', offlineSupport: true, localizedStyle: false },
+    { id: 'harbor', offlineSupport: true, localizedStyle: true },
+    { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
+    { id: 'depth12', offlineSupport: true, localizedStyle: false },
+    { id: 'marinewarning', offlineSupport: true, localizedStyle: false },
+    { id: 'boardline12', offlineSupport: true, localizedStyle: false },
+    { id: 'mareograph', offlineSupport: false, localizedStyle: false },
+    { id: 'ice', offlineSupport: false, localizedStyle: false },
+    { id: 'observation', offlineSupport: false, localizedStyle: false },
+    { id: 'buoy', offlineSupport: false, localizedStyle: false },
+    { id: 'vtsline', offlineSupport: true, localizedStyle: false },
+    { id: 'vtspoint', offlineSupport: true, localizedStyle: false },
+    { id: 'name', offlineSupport: true, localizedStyle: true },
+    { id: 'soundingpoint', offlineSupport: false, localizedStyle: false },
+    { id: 'depthcontour', offlineSupport: false, localizedStyle: false },
+    { id: 'deptharea', offlineSupport: false, localizedStyle: false },
+    { id: 'circle', offlineSupport: true, localizedStyle: false },
   ],
 };
 
