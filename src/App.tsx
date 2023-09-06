@@ -4,8 +4,8 @@ import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonA
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
 /* React query offline cache */
-import { QueryClient, useIsFetching } from '@tanstack/react-query';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { Query, QueryClient, useIsFetching } from '@tanstack/react-query';
+import { PersistQueryClientProvider, persistQueryClient } from '@tanstack/react-query-persist-client';
 import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
 import IdbAsyncStorage from './utils/IdbAsyncStorage';
 import { getMap, InitDvkMap } from './components/DvkMap';
@@ -96,6 +96,22 @@ const persistOptions = {
   persister: asyncStoragePersister,
   buster: import.meta.env.VITE_APP_VERSION,
 };
+
+persistQueryClient({
+  queryClient: queryClient,
+  persister: asyncStoragePersister,
+  hydrateOptions: {},
+  dehydrateOptions: {
+    shouldDehydrateQuery: (query: Query) => {
+      /* Defaults to true. Do not persist only if meta.persist === false */
+      const persist = !(query.meta && query.meta.persist === false);
+      if (query.state.status === 'success' && persist) {
+        return true;
+      }
+      return false;
+    },
+  },
+});
 
 const DvkIonApp: React.FC = () => {
   const { t, i18n } = useTranslation();

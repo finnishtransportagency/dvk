@@ -313,6 +313,7 @@ function addFeatureVectorLayer(
       opacity,
       renderOrder: undefined,
       zIndex,
+      visible: false,
     })
   );
 }
