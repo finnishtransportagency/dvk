@@ -506,7 +506,7 @@ export function addAPILayers(map: Map) {
   // Laiturit
   addFeatureVectorLayer(map, 'quay', undefined, 50, getSelectedStyle, undefined, 1, false, 304);
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
+  addFeatureVectorLayer(map, 'harbor', 300, 100, getHarborStyle, undefined, 1, true, 305);
 
   // Turvalaitteet
   addFeatureVectorLayer(
