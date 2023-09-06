@@ -66,21 +66,21 @@ const SquatChart: React.FC = () => {
 
       const correctedDraughtDuringTurn = calculateDraughtDuringTurn(breadth, draught, constantHeelDuringTurn);
 
-      const [squatHG] = calculateSquatHG(
+      const [squatHG] = calculateSquatHG({
         lengthBPP,
         breadth,
         draught,
         blockCoefficient,
         sweptDepth,
         waterLevel,
-        fairwayForm.id - 1,
+        fairwayFormIndex: fairwayForm.id - 1,
         channelWidth,
         slopeScale,
         slopeHeight,
-        speed,
-        correctedDraughtDuringTurn,
-        C0Coefficient
-      );
+        vesselSpeed: speed,
+        draughtDuringTurn: correctedDraughtDuringTurn,
+        C0Coefficient,
+      });
 
       return squatHG;
     };
