@@ -46,6 +46,8 @@ function useDataLayer(
       setReady(true);
     }
   }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  const layer = dvkMap.getFeatureLayer(featureLayerId);
+  layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
