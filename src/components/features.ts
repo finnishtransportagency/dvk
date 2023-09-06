@@ -1,5 +1,4 @@
 import { Text } from '../graphql/generated';
-import { FeatureDataLayerId } from '../utils/constants';
 import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
