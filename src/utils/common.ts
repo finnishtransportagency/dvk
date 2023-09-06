@@ -122,7 +122,7 @@ export const getMapCanvasWidth = (): number => {
   return canvasSize[0];
 };
 
-export const getMarineWarningDataLayerId = (type: Text): FeatureDataLayerId => {
+export const getMarineWarningDataLayerId = (type: Text | undefined): FeatureDataLayerId => {
   switch (type?.fi) {
     case 'COASTAL WARNING':
       return 'coastalwarning';

@@ -5,7 +5,7 @@ import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
-import { AreaFairway, LineFairway } from '../features';
+import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
@@ -22,15 +22,19 @@ type WarningListProps = {
 };
 
 function goto(warning: MarineWarning) {
-  const dataLayerId = getMarineWarningDataLayerId(warning.type);
-  const marineWarningSource = dvkMap.getVectorSource(dataLayerId);
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  let feature = marineWarningSource.getFeatureById(warning.id);
+  const nextMarineWarningSource = dvkMap.getVectorSource(getMarineWarningDataLayerId(warning.type));
+  let feature = nextMarineWarningSource.getFeatureById(warning.id);
   if (feature) {
-    marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    // Put previous feature(s) from temporary layer back to their correct layer
+    selectedFairwayCardSource.forEachFeature((f) => {
+      const featureProps = f.getProperties() as MarineWarningFeatureProperties;
+      dvkMap.getVectorSource(getMarineWarningDataLayerId(featureProps.type)).addFeature(f);
+    });
     selectedFairwayCardSource.clear();
+    // Add clicked warning feature to temporary layer and remove it from original layer
     selectedFairwayCardSource.addFeature(feature);
-    marineWarningSource.removeFeature(feature);
+    nextMarineWarningSource.removeFeature(feature);
   } else {
     feature = selectedFairwayCardSource.getFeatureById(warning.id);
   }
@@ -226,14 +230,11 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
   useEffect(() => {
     return () => {
+      // Cleanup: put feature(s) from temporary layer back to correct marine warning layer
       const source = dvkMap.getVectorSource('selectedfairwaycard');
-      const target1 = dvkMap.getVectorSource('coastalwarning');
-      const target2 = dvkMap.getVectorSource('localwarning');
-      const target3 = dvkMap.getVectorSource('boaterwarning');
       source.forEachFeature((f) => {
-        target1.addFeature(f);
-        target2.addFeature(f);
-        target3.addFeature(f);
+        const featureProps = f.getProperties() as MarineWarningFeatureProperties;
+        dvkMap.getVectorSource(getMarineWarningDataLayerId(featureProps.type)).addFeature(f);
       });
       source.clear();
     };
