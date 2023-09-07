@@ -198,6 +198,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
                 });
                 fairwayWidthLineFeat.setProperties({ width: fairwayWidth });
 
+                dvkMap.getFeatureLayer('fairwaywidth').setVisible(true);
                 const source = dvkMap.getVectorSource('fairwaywidth');
                 source.clear();
                 source.addFeature(fairwayWidthLineFeat);
