@@ -853,6 +853,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
     }
   }
+  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(true);
 }
 
 export function setSelectedPilotPlace(id?: number | string) {
