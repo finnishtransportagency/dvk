@@ -47,49 +47,129 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
 ];
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL };
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
-  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/area12.json.gz') },
-  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/area3456.json.gz') },
-  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/line12.json.gz') },
-  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/line3456.json.gz') },
+  {
+    id: 'area12',
+    url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/area12.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'area3456',
+    url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/area3456.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'line12',
+    url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/line12.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'line3456',
+    url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/line3456.json.gz'),
+    persist: true,
+  },
   {
     id: 'restrictionarea',
     url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
+    persist: true,
   },
   {
     id: 'specialarea2',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+    persist: true,
   },
   {
     id: 'specialarea15',
     url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
+    persist: true,
   },
-  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
-  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
+  {
+    id: 'pilot',
+    url: new URL(featureLoaderUrl + '?type=pilot'),
+    staticUrl: new URL(staticUrl + '/pilot.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'harbor',
+    url: new URL(featureLoaderUrl + '?type=harbor'),
+    staticUrl: new URL(staticUrl + '/harbor.json.gz'),
+    persist: true,
+  },
   {
     id: 'safetyequipment',
     url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99'),
     staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
+    persist: true,
   },
-  { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/depth12.json.gz') },
+  {
+    id: 'depth12',
+    url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/depth12.json.gz'),
+    persist: true,
+  },
   {
     id: 'safetyequipmentfault',
     url: new URL(featureLoaderUrl + '?type=safetyequipmentfault'),
     staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
+    persist: true,
   },
-  { id: 'marinewarning', url: new URL(featureLoaderUrl + '?type=marinewarning'), staticUrl: new URL(staticUrl + '/marinewarning.json.gz') },
-  { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
-  { id: 'mareograph', url: new URL(featureLoaderUrl + '?type=mareograph'), staticUrl: new URL(staticUrl + '/mareograph.json.gz') },
-  { id: 'observation', url: new URL(featureLoaderUrl + '?type=observation'), staticUrl: new URL(staticUrl + '/observation.json.gz') },
-  { id: 'buoy', url: new URL(featureLoaderUrl + '?type=buoy'), staticUrl: new URL(staticUrl + '/buoy.json.gz') },
-  { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
-  { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
-  { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
+  {
+    id: 'marinewarning',
+    url: new URL(featureLoaderUrl + '?type=marinewarning'),
+    staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'boardline12',
+    url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/boardline12.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'mareograph',
+    url: new URL(featureLoaderUrl + '?type=mareograph'),
+    staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
+    persist: false,
+  },
+  {
+    id: 'observation',
+    url: new URL(featureLoaderUrl + '?type=observation'),
+    staticUrl: new URL(staticUrl + '/observation.json.gz'),
+    persist: false,
+  },
+  {
+    id: 'buoy',
+    url: new URL(featureLoaderUrl + '?type=buoy'),
+    staticUrl: new URL(staticUrl + '/buoy.json.gz'),
+    persist: false,
+  },
+  {
+    id: 'vtsline',
+    url: new URL(featureLoaderUrl + '?type=vtsline'),
+    staticUrl: new URL(staticUrl + '/vtsline.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'vtspoint',
+    url: new URL(featureLoaderUrl + '?type=vtspoint'),
+    staticUrl: new URL(staticUrl + '/vtspoint.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'circle',
+    url: new URL(featureLoaderUrl + '?type=circle'),
+    staticUrl: new URL(staticUrl + '/circle.json.gz'),
+    persist: true,
+  },
 ];
 
 export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning';

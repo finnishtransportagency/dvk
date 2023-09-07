@@ -29,9 +29,6 @@ const OfflineSupport: React.FC = () => {
   const boaterWarningLayer = useFeatureData('marinewarning');
   const nameLayer = useStaticDataLayer('name');
   const boardLine12Layer = useFeatureData('boardline12');
-  const mareographLayer = useFeatureData('mareograph');
-  const observationLayer = useFeatureData('observation');
-  const buoyLayer = useFeatureData('buoy');
   const bgLayerBa = useStaticDataLayer('balticsea');
   const bgLayerFi = useStaticDataLayer('finland');
   const bgLayerSea = useStaticDataLayer('mml_meri');
@@ -62,9 +59,6 @@ const OfflineSupport: React.FC = () => {
     boaterWarningLayer.dataUpdatedAt,
     nameLayer.dataUpdatedAt,
     boardLine12Layer.dataUpdatedAt,
-    mareographLayer.dataUpdatedAt,
-    observationLayer.dataUpdatedAt,
-    buoyLayer.dataUpdatedAt,
     bgLayerBa.dataUpdatedAt,
     bgLayerFi.dataUpdatedAt,
     bgLayerSea.dataUpdatedAt,
@@ -95,9 +89,6 @@ const OfflineSupport: React.FC = () => {
     boaterWarningLayer.isError ? boaterWarningLayer.errorUpdatedAt : 0,
     nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
     boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
-    mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
-    observationLayer.isError ? observationLayer.errorUpdatedAt : 0,
-    buoyLayer.isError ? buoyLayer.errorUpdatedAt : 0,
     bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
     bgLayerFi.isError ? bgLayerFi.errorUpdatedAt : 0,
     bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,

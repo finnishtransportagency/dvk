@@ -312,10 +312,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'coastalwarning' || id === 'localwarning' || id === 'boaterwarning') {
-    alertProps = getAlertProperties(dataUpdatedAt, id);
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning'].includes(id)) {
+    const errorUpdatedAt = dvkMap.getFeatureLayer(id).get('errorUpdatedAt');
+    if (errorUpdatedAt) {
+      alertProps = getAlertProperties(dataUpdatedAt, id);
+    }
   }
-  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
+  const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'depthArea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
   const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
