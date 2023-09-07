@@ -317,7 +317,7 @@ function addFeatureVectorLayer(
       opacity,
       renderOrder: undefined,
       zIndex,
-      visible: false,
+      visible: id !== 'mareograph' && id !== 'observation' && id !== 'buoy',
     })
   );
 }
