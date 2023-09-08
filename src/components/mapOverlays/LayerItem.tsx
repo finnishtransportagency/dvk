@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -11,6 +11,7 @@ import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
+import type { CheckboxCustomEvent } from '@ionic/react';
 
 const LegendDepth = () => {
   return (
@@ -284,7 +285,7 @@ interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
   layers: string[];
-  setLayers: React.Dispatch<React.SetStateAction<string[]>>;
+  setLayers: Dispatch<SetStateAction<string[]>>;
 }
 
 const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
@@ -326,6 +327,12 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
     return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
   }, [alertProps, t]);
 
+  const handleChange = (event: CheckboxCustomEvent) => {
+    const { checked } = event.detail;
+    const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
+    setLayers(updatedLayers);
+  };
+
   return (
     <IonGrid className="ion-no-padding layerItem">
       <IonRow>
@@ -336,14 +343,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onIonChange={() =>
-                setLayers((prev) => {
-                  if (prev.includes(id)) {
-                    return [...prev.filter((p) => p !== id)];
-                  }
-                  return [...prev, id];
-                })
-              }
+              onIonChange={handleChange}
               disabled={disabled}
               labelPlacement="end"
             >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import LayerModal from './LayerModal';
 import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
@@ -42,10 +42,12 @@ export type PopupProperties = {
 type MapOverlaysProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  layers: string[];
+  setLayers: Dispatch<SetStateAction<string[]>>;
   isOffline: boolean;
 };
 
-const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isOffline }) => {
+const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, layers, setLayers, isOffline }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const [isOpen, setIsOpen] = useState(false);
@@ -114,6 +116,8 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <LayerModal
         isOpen={isOpen}
         setIsOpen={dismissMapLayersModal}
+        layers={layers}
+        setLayers={setLayers}
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
         setMarineWarningNotificationLayer={setShowMarineWarningNotification}

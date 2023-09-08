@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
@@ -14,6 +14,8 @@ import { useDvkContext } from '../../hooks/dvkContext';
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  layers: string[];
+  setLayers: Dispatch<SetStateAction<string[]>>;
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
   setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
@@ -25,11 +27,10 @@ export type LayerType = {
   childLayers?: Maybe<Array<LayerType>>;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layers, setLayers, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);

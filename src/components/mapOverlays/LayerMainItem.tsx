@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
@@ -12,7 +12,7 @@ import { hasOfflineSupport } from '../../utils/common';
 interface LayerMainItemProps {
   currentLayer: LayerType;
   layers: string[];
-  setLayers: React.Dispatch<React.SetStateAction<string[]>>;
+  setLayers: Dispatch<SetStateAction<string[]>>;
 }
 
 const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, setLayers }) => {
