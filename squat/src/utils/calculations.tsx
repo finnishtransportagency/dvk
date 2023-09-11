@@ -99,86 +99,74 @@ export function calculateMinimumExternalForce(bowThrusterForce: number, windForc
   return minExternalForce;
 }
 
-export function calculateEstimatedDriftAngle(
-  lengthBPP: number,
-  draught: number,
-  profileIndex: number,
-  vesselSpeed: number,
-  windSurface: number,
-  airDensity: number,
-  waterDensity: number,
-  apparentWindAngleDrift: number,
-  apparentWindVelocityDrift: number
-) {
-  let driftIndex = 0;
+function getDriftIndex(apparentWindAngleDrift: number) {
   switch (true) {
     case apparentWindAngleDrift <= 10:
-      break;
+      return 0;
     case apparentWindAngleDrift <= 20:
-      driftIndex = 1;
-      break;
+      return 1;
     case apparentWindAngleDrift <= 30:
-      driftIndex = 2;
-      break;
+      return 2;
     case apparentWindAngleDrift <= 40:
-      driftIndex = 3;
-      break;
+      return 3;
     case apparentWindAngleDrift <= 50:
-      driftIndex = 4;
-      break;
+      return 4;
     case apparentWindAngleDrift <= 60:
-      driftIndex = 5;
-      break;
+      return 5;
     case apparentWindAngleDrift <= 70:
-      driftIndex = 6;
-      break;
+      return 6;
     case apparentWindAngleDrift <= 80:
-      driftIndex = 7;
-      break;
+      return 7;
     case apparentWindAngleDrift <= 90:
-      driftIndex = 8;
-      break;
+      return 8;
     case apparentWindAngleDrift <= 100:
-      driftIndex = 9;
-      break;
+      return 9;
     case apparentWindAngleDrift < 110:
-      driftIndex = 10;
-      break;
+      return 10;
     case apparentWindAngleDrift < 120:
-      driftIndex = 11;
-      break;
+      return 11;
     case apparentWindAngleDrift < 130:
-      driftIndex = 12;
-      break;
+      return 12;
     case apparentWindAngleDrift < 140:
-      driftIndex = 13;
-      break;
+      return 13;
     case apparentWindAngleDrift < 150:
-      driftIndex = 14;
-      break;
+      return 14;
     case apparentWindAngleDrift < 160:
-      driftIndex = 15;
-      break;
+      return 15;
     case apparentWindAngleDrift <= 170:
-      driftIndex = 16;
-      break;
+      return 16;
     default:
-      driftIndex = 17;
-      break;
+      return 17;
   }
+}
+
+export interface DriftAngleCalcParameters {
+  lengthBPP: number;
+  draught: number;
+  profileIndex: number;
+  vesselSpeed: number;
+  windSurface: number;
+  airDensity: number;
+  waterDensity: number;
+  apparentWindAngleDrift: number;
+  apparentWindVelocityDrift: number;
+}
+
+export function calculateEstimatedDriftAngle(params: DriftAngleCalcParameters) {
+  const driftIndex = getDriftIndex(params.apparentWindAngleDrift);
 
   // ((Apparent_Wind_Angle_Deg-(Nro_Drift_Cal_1*10))*(('Cn_ Bulker_Drift_Cal_20'-'Cn_ Bulker_Drift_Cal_19')/10)) + 'Cn_ Bulker_Drift_Cal_19'
   const driftCoefficient =
-    (apparentWindAngleDrift - driftIndex * 10) *
-      ((DRIFT_COEFFICIENTS[profileIndex][driftIndex + 1] - DRIFT_COEFFICIENTS[profileIndex][driftIndex]) / 10) +
-    DRIFT_COEFFICIENTS[profileIndex][driftIndex];
+    (params.apparentWindAngleDrift - driftIndex * 10) *
+      ((DRIFT_COEFFICIENTS[params.profileIndex][driftIndex + 1] - DRIFT_COEFFICIENTS[params.profileIndex][driftIndex]) / 10) +
+    DRIFT_COEFFICIENTS[params.profileIndex][driftIndex];
   // (Air_Density_Drift_Cal/Sea_Density_Drift_Cal)*((Apparent_Wind_Velocity_Drift_Cal/Ship_Speed_Drift_Cal)*(Apparent_Wind_Velocity_Drift_Cal/Ship_Speed_Drift_Cal))
   // *(Total_Lateral_Surface_Area_Drift_Cal /((Vessel_Draught_Drift_Cal*Vessel_Draught_Drift_Cal))*Cn_Drift_Cal)/ (Pi()*(0.5+(2.4*Vessel_Draught_Drift_Cal/'Length_ BPP_Drift_Cal')))
   return (
-    ((airDensity / waterDensity) *
-      Math.pow(apparentWindVelocityDrift / knotsToMetresPerSecond(vesselSpeed), 2) *
-      ((Math.abs(windSurface) / Math.pow(draught, 2)) * driftCoefficient)) /
-    (Math.PI * (0.5 + (2.4 * draught) / lengthBPP))
+    ((params.airDensity / params.waterDensity) *
+      Math.pow(params.apparentWindVelocityDrift / knotsToMetresPerSecond(params.vesselSpeed), 2) *
+      ((Math.abs(params.windSurface) / Math.pow(params.draught, 2)) * driftCoefficient)) /
+    (Math.PI * (0.5 + (2.4 * params.draught) / params.lengthBPP))
   );
 }
 
@@ -218,32 +206,7 @@ export function calculateSquatBarrass(draught: number, blockCoefficient: number,
   return (((Math.pow(vesselSpeed, 2) * draught) / sweptDepth) * blockCoefficient) / 100;
 }
 
-export function calculateSquatHG(
-  lengthBPP: number,
-  breadth: number,
-  draught: number,
-  blockCoefficient: number,
-  sweptDepth: number,
-  waterLevel: number,
-  fairwayFormIndex: number,
-  channelWidth: number,
-  slopeScale: number,
-  slopeHeight: number,
-  vesselSpeed: number,
-  draughtDuringTurn: number,
-  C0Coefficient?: number
-) {
-  if (!C0Coefficient) {
-    C0Coefficient = 2.4;
-  }
-  // Ship_m2_HG_Cal | 0.98*Breadth_HG_Cal*Vessel_Draught
-  const shipM2 = 0.98 * breadth * draught;
-  // Channel_m2_HG_Cal | Channel_Width*Swept_Depth+Swept_Depth*Swept_Depth/Slope_Scale
-  const channelM2 = channelWidth * sweptDepth + Math.pow(sweptDepth, 2) / slopeScale;
-  // S_HG_Cal | Ship_m2_HG_Cal/Channel_m2_HG_Cal
-  const s = shipM2 / channelM2;
-  // h1/h_HG_Cal | Slope_Height/Swept_Depth
-  const slopeRatio = slopeHeight / sweptDepth;
+function getACofficients(slopeRatio: number): number[] {
   // a0_HG_Cal | If(Value('h1/h_HG_Cal'.Text)<=0.3,0.46, If(Value('h1/h_HG_Cal'.Text)<=0.5,0.21, If(Value('h1/h_HG_Cal'.Text)<=0.7, 1.1, If(Value('h1/h_HG_Cal'.Text)<=1.0, 0.82, 1))))
   // a1_HG_Cal | If(Value('h1/h_HG_Cal'.Text)<=0.3,15.85, If(Value('h1/h_HG_Cal'.Text)<=0.5,28.20, If(Value('h1/h_HG_Cal'.Text)<=0.7, -5.55, If(Value('h1/h_HG_Cal'.Text)<=1.0, 6.11, 0))))
   // a2_HG_Cal | If(Value('h1/h_HG_Cal'.Text)<=0.3,124.06, If(Value('h1/h_HG_Cal'.Text)<=0.5,-53.17, If(Value('h1/h_HG_Cal'.Text)<=0.7, 167.76, If(Value('h1/h_HG_Cal'.Text)<=1.0, 16.9, 0))))
@@ -258,12 +221,44 @@ export function calculateSquatHG(
   } else if (slopeRatio <= 1.0) {
     aCoefficients = [0.82, 6.11, 16.9, -70.86];
   }
+  return aCoefficients;
+}
+
+export interface SquatHGCalcParameters {
+  lengthBPP: number;
+  breadth: number;
+  draught: number;
+  blockCoefficient: number;
+  sweptDepth: number;
+  waterLevel: number;
+  fairwayFormIndex: number;
+  channelWidth: number;
+  slopeScale: number;
+  slopeHeight: number;
+  vesselSpeed: number;
+  draughtDuringTurn: number;
+  C0Coefficient?: number;
+}
+export function calculateSquatHG(params: SquatHGCalcParameters) {
+  const c0Coefficient = params.C0Coefficient ? params.C0Coefficient : 2.4;
+
+  // Ship_m2_HG_Cal | 0.98*Breadth_HG_Cal*Vessel_Draught
+  const shipM2 = 0.98 * params.breadth * params.draught;
+  // Channel_m2_HG_Cal | Channel_Width*Swept_Depth+Swept_Depth*Swept_Depth/Slope_Scale
+  const channelM2 = params.channelWidth * params.sweptDepth + Math.pow(params.sweptDepth, 2) / params.slopeScale;
+  // S_HG_Cal | Ship_m2_HG_Cal/Channel_m2_HG_Cal
+  const s = shipM2 / channelM2;
+  // h1/h_HG_Cal | Slope_Height/Swept_Depth
+  const slopeRatio = params.slopeHeight / params.sweptDepth;
+
+  const aCoefficients = getACofficients(slopeRatio);
+
   // K1_HG_Cal | a0_HG_Cal+a1_HG_Cal*S_HG_Cal+a2_HG_Cal*S_HG_Cal*S_HG_Cal+a3_HG_Cal*S_HG_Cal*S_HG_Cal*S_HG_Cal
   const k1 = aCoefficients[0] + aCoefficients[1] * s + aCoefficients[2] * Math.pow(s, 2) + aCoefficients[3] * Math.pow(s, 3);
   // s1_Multiplier_From_Curve_HG_Cal
   // If(Select_Fairway_Form.SelectedText.Value ="Open Water", 0.03, If(Select_Fairway_Form.SelectedText.Value = "Sloped Channel", Text(S_HG_Cal/K1_HG_Cal), Text(S_HG_Cal)))
   let s1Multiplier = 0.03;
-  switch (fairwayFormIndex) {
+  switch (params.fairwayFormIndex) {
     case 1:
       s1Multiplier = s;
       break;
@@ -274,17 +269,20 @@ export function calculateSquatHG(
   // Ks_HG_Cal
   // If(Value(s1_Multiplier_From_Curve_HG_Cal.Text) > 0.03, Value(s1_Multiplier_From_Curve_HG_Cal.Text)*7.45+0.76 , 1)
   const Ks = s1Multiplier > 0.03 ? s1Multiplier * 7.45 + 0.76 : 1;
-  const froudeNumber = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
+  const froudeNumber = calculateFroudeNumber(params.vesselSpeed, params.sweptDepth, params.waterLevel);
   // Froude_Nro1_HG_Cal | 1-Froude_Nro_HG_Cal^2
   const froudeNumber1 = 1 - Math.pow(froudeNumber, 2);
 
   // Final squat HG value (Squat_HG_Cal)
   // (2.4*Ks_HG_Cal*Block_Coefficient*Breadth*Vessel_Draught*Froude_Nro_HG_Cal*Froude_Nro_HG_Cal)/(Length_BPP*Sqrt(Froude_Nro1_HG_Cal))
-  const squatHG = (C0Coefficient * Ks * blockCoefficient * breadth * draught * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
+  const squatHG =
+    (c0Coefficient * Ks * params.blockCoefficient * params.breadth * params.draught * Math.pow(froudeNumber, 2)) /
+    (params.lengthBPP * Math.sqrt(froudeNumber1));
   // Final squat HG Listed value (Squat_Listed_HG_Cal)
   // (2.4*Ks_HG_Cal*Block_Coefficient*Breadth*'Draught_during turn_HG_Cal'*Froude_Nro_HG_Cal*Froude_Nro_HG_Cal)/(Length_BPP*Sqrt(Froude_Nro1_HG_Cal))
   const squatHGListed =
-    (C0Coefficient * Ks * blockCoefficient * breadth * draughtDuringTurn * Math.pow(froudeNumber, 2)) / (lengthBPP * Math.sqrt(froudeNumber1));
+    (c0Coefficient * Ks * params.blockCoefficient * params.breadth * params.draughtDuringTurn * Math.pow(froudeNumber, 2)) /
+    (params.lengthBPP * Math.sqrt(froudeNumber1));
 
   return [squatHG, squatHGListed];
 }
