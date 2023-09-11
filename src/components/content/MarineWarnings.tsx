@@ -5,7 +5,7 @@ import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
-import { AreaFairway, LineFairway } from '../features';
+import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
@@ -219,6 +219,7 @@ type MarineWarningsProps = {
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+  const { state } = useDvkContext();
   const path = [{ title: t('title') }];
   // Use any of the marine warning layers as they have the same data source
   const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
@@ -234,6 +235,21 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       dvkMap.getVectorSource('selectedfairwaycard').clear();
     };
   }, []);
+
+  useEffect(() => {
+    const source = dvkMap.getVectorSource('selectedfairwaycard');
+    const features = source.getFeatures();
+    // Check if corresponding layer is now visible and remove feature(s) from temp layer
+    if (features.length > 0) {
+      features.forEach((f) => {
+        const featureProperties = f.getProperties() as MarineWarningFeatureProperties;
+        const layerDataId = getMarineWarningDataLayerId(featureProperties.type);
+        if (state.layers.includes(layerDataId)) {
+          source.removeFeature(f);
+        }
+      });
+    }
+  }, [state.layers]);
 
   return (
     <>
