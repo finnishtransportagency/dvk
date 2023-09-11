@@ -43,7 +43,7 @@ export const DvkReducer = (state: State, action: Action) => {
       newState = { ...state, modalBreakpoint: Number(inputValue) };
       break;
     case 'setLayers':
-      newState = { ...state, layers: action.payload.value };
+      newState = { ...state, layers: inputValue as string[] };
       break;
     case 'reset':
       return initialState;
