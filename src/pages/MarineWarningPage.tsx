@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
@@ -17,14 +17,14 @@ const MarineWarningPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const title = t('documentTitle') + ' - ' + t('marine-warnings');
   const [, setDocumentTitle] = useDocumentTitle(title);
   const { state, dispatch } = useDvkContext();
+  const [initialLayers] = useState<string[]>(state.layers);
 
   useEffect(() => {
-    const hiddenMarineWarningLayers = marineWarningLayers.filter((l) => !state.layers.includes(l));
+    const hiddenMarineWarningLayers = marineWarningLayers.filter((l) => !initialLayers.includes(l));
     if (hiddenMarineWarningLayers.length > 0) {
-      dispatch({ type: 'setLayers', payload: { value: [...state.layers, ...hiddenMarineWarningLayers] } });
+      dispatch({ type: 'setLayers', payload: { value: [...initialLayers, ...hiddenMarineWarningLayers] } });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
+  }, [initialLayers, dispatch]);
 
   useEffect(() => {
     setDocumentTitle(title);
