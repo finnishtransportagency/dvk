@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { BackgroundMapType, getMap } from '../DvkMap';
@@ -14,8 +14,6 @@ import { useDvkContext } from '../../hooks/dvkContext';
 interface ModalProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  layers: string[];
-  setLayers: Dispatch<SetStateAction<string[]>>;
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
   setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
@@ -27,9 +25,10 @@ export type LayerType = {
   childLayers?: Maybe<Array<LayerType>>;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layers, setLayers, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
+  const { isOffline, layers } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
@@ -112,10 +111,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layers, setLayers
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
-      featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !state.isOffline));
+      featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningNotificationLayer, state.isOffline, dvkMap]);
+  }, [layers, setMarineWarningNotificationLayer, isOffline, dvkMap]);
 
   return (
     <IonModal
@@ -149,8 +148,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, layers, setLayers
           {layerStructure.map((layer) => (
             <IonRow key={layer.id}>
               <IonCol>
-                {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} layers={layers} setLayers={setLayers} />}
-                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} layers={layers} setLayers={setLayers} />}
+                {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
+                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
               </IonCol>
             </IonRow>
           ))}

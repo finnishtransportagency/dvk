@@ -2,12 +2,14 @@
 export type State = {
   isOffline: boolean;
   modalBreakpoint: number;
+  layers: string[];
 };
 
 // Set initial state
 export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
+  layers: ['pilot', 'line12', 'harbor', 'name'],
 };
 
 export type Action =
@@ -17,11 +19,17 @@ export type Action =
         value: boolean | number;
       };
     }
+  | {
+      type: 'setLayers';
+      payload: {
+        value: string[];
+      };
+    }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
   // Sort out correct value type from input element
-  let inputValue: boolean | number = false;
+  let inputValue: boolean | number | string[] = false;
   if (action.type !== 'reset') {
     inputValue = action.payload.value;
   }
@@ -33,6 +41,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'setBreakpoint':
       newState = { ...state, modalBreakpoint: Number(inputValue) };
+      break;
+    case 'setLayers':
+      newState = { ...state, layers: action.payload.value };
       break;
     case 'reset':
       return initialState;

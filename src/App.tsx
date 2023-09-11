@@ -203,7 +203,6 @@ const DvkIonApp: React.FC = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
 
   const isFetching = useIsFetching();
   const appClasses = [];
@@ -255,7 +254,7 @@ const DvkIonApp: React.FC = () => {
                 <SafetyEquipmentFaultPage setModalContent={setModalContent} />
               </Route>
               <Route path="/merivaroitukset">
-                <MarineWarningPage setModalContent={setModalContent} layers={layers} setLayers={setLayers} />
+                <MarineWarningPage setModalContent={setModalContent} />
               </Route>
               <Route path="/">
                 <HomePage setModalContent={setModalContent} />
@@ -263,7 +262,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} layers={layers} setLayers={setLayers} isOffline={state.isOffline} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

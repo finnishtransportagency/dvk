@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
@@ -11,21 +11,22 @@ import { hasOfflineSupport } from '../../utils/common';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
-  layers: string[];
-  setLayers: Dispatch<SetStateAction<string[]>>;
 }
 
-const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, setLayers }) => {
+const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
   const { t } = useTranslation();
-  const { state } = useDvkContext();
+  const { state, dispatch } = useDvkContext();
+  const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
 
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
   };
 
+  const updateLayers = (updatedLayers: string[]) => dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+
   const isDisabled = () => {
-    return state.isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
+    return isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
   };
   const selectedChildLayers =
     currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
@@ -38,9 +39,9 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
   const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
   const handleChange = () => {
     if (isChecked() || isIndeterminate()) {
-      setLayers(layersWOCurrentChildLayers);
+      updateLayers(layersWOCurrentChildLayers);
     } else {
-      setLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
+      updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
       setLegendOpen(true);
     }
   };
@@ -84,14 +85,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
         <IonCol>
           <IonList lines="none" className="ion-no-padding" aria-label={currentLayer.title}>
             {currentLayer.childLayers?.map((child) => (
-              <LayerItem
-                key={child.id}
-                id={child.id as FeatureDataLayerId}
-                title={child.title}
-                layers={layers}
-                setLayers={setLayers}
-                aria-hidden={!legendOpen}
-              />
+              <LayerItem key={child.id} id={child.id as FeatureDataLayerId} title={child.title} aria-hidden={!legendOpen} />
             ))}
           </IonList>
         </IonCol>

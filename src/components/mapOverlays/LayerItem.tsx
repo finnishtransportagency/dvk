@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -284,13 +284,12 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  layers: string[];
-  setLayers: Dispatch<SetStateAction<string[]>>;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   const { t } = useTranslation();
-  const { state } = useDvkContext();
+  const { state, dispatch } = useDvkContext();
+  const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
   const [legends, setLegends] = useState<string[]>([]);
   const dvkMap = getMap();
@@ -320,7 +319,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
     }
   }
   const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'depthArea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
-  const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
+  const disabled = !initialized || (!hasOfflineSupport(id) && isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
@@ -330,7 +329,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
   const handleChange = (event: CheckboxCustomEvent) => {
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
-    setLayers(updatedLayers);
+    dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
   };
 
   return (
