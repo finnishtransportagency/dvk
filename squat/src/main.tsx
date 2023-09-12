@@ -6,4 +6,19 @@ import { changeLanguage as changeSquatLanguage } from 'i18next';
 import Vessel from './components/Vessel';
 import Environment from './components/Environment';
 import InfoAccordion from './components/InfoAccordion';
-export { Squat, SquatChart, SquatReducer, useSquatContext, initialState, SquatContext, changeSquatLanguage, InfoAccordion, Vessel, Environment };
+import CalculationOptions from './components/CalculationOptions';
+import CalculationChecks from './components/CalculationChecks';
+export {
+  Squat,
+  SquatChart,
+  SquatReducer,
+  useSquatContext,
+  initialState,
+  SquatContext,
+  changeSquatLanguage,
+  InfoAccordion,
+  Vessel,
+  Environment,
+  CalculationOptions,
+  CalculationChecks,
+};
