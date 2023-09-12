@@ -323,7 +323,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
           )}
           {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
             <>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column first">
                 <InputField
                   title={t('scale-of-slope')}
                   name="slopeScale"
@@ -336,7 +336,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
                   actionType="environment-fairway"
                 />
               </IonCol>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column last">
                 <InputField
                   title={t('height-of-slope')}
                   name="slopeHeight"

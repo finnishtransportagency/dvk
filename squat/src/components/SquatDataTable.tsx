@@ -55,8 +55,8 @@ const SquatDataTable: React.FC<Props> = (props) => {
   }, [getSpeedData]);
 
   return (
-    <IonGrid className="dataTableGrid">
-      <IonRow className="ion-align-items-center" style={isEmbedded() ? { paddingLeft: '1px' } : undefined}>
+    <IonGrid className={'dataTableGrid' + (speeds.length < 1 ? ' no-data' : '')}>
+      <IonRow className="ion-align-items-center dataTableLegend" style={isEmbedded() ? { paddingLeft: '1px' } : undefined}>
         <IonCol size="auto">
           <div className="squatSquare" />
         </IonCol>
