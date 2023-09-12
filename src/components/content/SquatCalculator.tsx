@@ -2,8 +2,19 @@ import React, { useMemo } from 'react';
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
-import { SquatChart, SquatReducer, initialState, SquatContext, InfoAccordion, Vessel, Environment } from 'squatlib';
+import {
+  SquatChart,
+  SquatReducer,
+  initialState,
+  SquatContext,
+  InfoAccordion,
+  Vessel,
+  Environment,
+  CalculationOptions,
+  CalculationChecks,
+} from 'squatlib';
 import 'squatlib/dist/style.css';
+import './SquatCalculator.css';
 
 type SquatCalculatorProps = {
   widePane?: boolean;
@@ -32,14 +43,20 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
       </IonText>
 
       <SquatContext.Provider value={providerState}>
-        <div id="squatCalculatorContainer" className="show-print" data-testid="squatCalculatorContainer">
+        <div id="squatCalculatorContainer" className="squatCalculatorContainer show-print" data-testid="squatCalculatorContainer">
           <InfoAccordion />
-          <IonGrid>
+          <IonGrid className="ion-no-padding">
             <IonRow>
-              <IonCol size={widePane ? '6' : '12'}>
+              <IonCol className="squat-checks">
+                <CalculationChecks limitedView={true} embeddedView={true} doChecks={['ukc', 'reliability', 'LBratio', 'BDratio']} />
+              </IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol size={widePane ? '6' : '12'} className="squatColumn first squat">
+                <CalculationOptions limitedView={true} embeddedView={true} />
                 <Vessel limitedView={true} />
               </IonCol>
-              <IonCol size={widePane ? '6' : '12'}>
+              <IonCol size={widePane ? '6' : '12'} className="squatColumn last">
                 <Environment limitedView={true} />
               </IonCol>
             </IonRow>
