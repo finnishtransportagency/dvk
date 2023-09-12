@@ -69,20 +69,20 @@ const CalculationChecks: React.FC<CalculationChecksProps> = ({ limitedView, embe
         state.environment.fairway.sweptDepth,
         state.environment.vessel.vesselSpeed
       );
-      const [squatHG, squatHGListed] = calculateSquatHG(
-        state.vessel.general.lengthBPP,
-        state.vessel.general.breadth,
-        state.vessel.general.draught,
-        state.vessel.general.blockCoefficient,
-        state.environment.fairway.sweptDepth,
-        state.environment.fairway.waterLevel,
-        state.environment.fairway.fairwayForm.id - 1,
-        state.environment.fairway.channelWidth,
-        state.environment.fairway.slopeScale,
-        state.environment.fairway.slopeHeight,
-        state.environment.vessel.vesselSpeed,
-        correctedDraughtDuringTurn
-      );
+      const [squatHG, squatHGListed] = calculateSquatHG({
+        lengthBPP: state.vessel.general.lengthBPP,
+        breadth: state.vessel.general.breadth,
+        draught: state.vessel.general.draught,
+        blockCoefficient: state.vessel.general.blockCoefficient,
+        sweptDepth: state.environment.fairway.sweptDepth,
+        waterLevel: state.environment.fairway.waterLevel,
+        fairwayFormIndex: state.environment.fairway.fairwayForm.id - 1,
+        channelWidth: state.environment.fairway.channelWidth,
+        slopeScale: state.environment.fairway.slopeScale,
+        slopeHeight: state.environment.fairway.slopeHeight,
+        vesselSpeed: state.environment.vessel.vesselSpeed,
+        draughtDuringTurn: correctedDraughtDuringTurn,
+      });
 
       // 2.6 UKC Straight Course
       const [UKCStraightCourseBarrass, UKCStraightCourseHG] = calculateUKCStraightCourse(
