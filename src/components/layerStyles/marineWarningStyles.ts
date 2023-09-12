@@ -18,10 +18,10 @@ marineAreaSelectedImage.src = marineareaSelected;
 function getImgSource(featureProperties: MarineWarningFeatureProperties) {
   const type = featureProperties.type?.fi;
   switch (type) {
-    case 'LOCAL WARNING':
-      return local;
     case 'COASTAL WARNING':
       return coastal;
+    case 'LOCAL WARNING':
+      return local;
     case 'VAROITUKSIA VENEILIJÖILLE':
       return boaters;
     default:

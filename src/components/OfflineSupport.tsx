@@ -24,12 +24,11 @@ const OfflineSupport: React.FC = () => {
   const harborLayer = useFeatureData('harbor');
   const safetyEquipmentLayer = useFeatureData('safetyequipment');
   const safetyEquipmentFaultLayer = useFeatureData('safetyequipmentfault');
-  const marineWarningLayer = useFeatureData('marinewarning');
+  const coastalWarningLayer = useFeatureData('marinewarning');
+  const localWarningLayer = useFeatureData('marinewarning');
+  const boaterWarningLayer = useFeatureData('marinewarning');
   const nameLayer = useStaticDataLayer('name');
   const boardLine12Layer = useFeatureData('boardline12');
-  const mareographLayer = useFeatureData('mareograph');
-  const observationLayer = useFeatureData('observation');
-  const buoyLayer = useFeatureData('buoy');
   const bgLayerBa = useStaticDataLayer('balticsea');
   const bgLayerFi = useStaticDataLayer('finland');
   const bgLayerSea = useStaticDataLayer('mml_meri');
@@ -55,12 +54,11 @@ const OfflineSupport: React.FC = () => {
     harborLayer.dataUpdatedAt,
     safetyEquipmentLayer.dataUpdatedAt,
     safetyEquipmentFaultLayer.dataUpdatedAt,
-    marineWarningLayer.dataUpdatedAt,
+    coastalWarningLayer.dataUpdatedAt,
+    localWarningLayer.dataUpdatedAt,
+    boaterWarningLayer.dataUpdatedAt,
     nameLayer.dataUpdatedAt,
     boardLine12Layer.dataUpdatedAt,
-    mareographLayer.dataUpdatedAt,
-    observationLayer.dataUpdatedAt,
-    buoyLayer.dataUpdatedAt,
     bgLayerBa.dataUpdatedAt,
     bgLayerFi.dataUpdatedAt,
     bgLayerSea.dataUpdatedAt,
@@ -86,12 +84,11 @@ const OfflineSupport: React.FC = () => {
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,
     safetyEquipmentLayer.isError ? safetyEquipmentLayer.errorUpdatedAt : 0,
     safetyEquipmentFaultLayer.isError ? safetyEquipmentFaultLayer.errorUpdatedAt : 0,
-    marineWarningLayer.isError ? marineWarningLayer.errorUpdatedAt : 0,
+    coastalWarningLayer.isError ? coastalWarningLayer.errorUpdatedAt : 0,
+    localWarningLayer.isError ? localWarningLayer.errorUpdatedAt : 0,
+    boaterWarningLayer.isError ? boaterWarningLayer.errorUpdatedAt : 0,
     nameLayer.isError ? nameLayer.errorUpdatedAt : 0,
     boardLine12Layer.isError ? boardLine12Layer.errorUpdatedAt : 0,
-    mareographLayer.isError ? mareographLayer.errorUpdatedAt : 0,
-    observationLayer.isError ? observationLayer.errorUpdatedAt : 0,
-    buoyLayer.isError ? buoyLayer.errorUpdatedAt : 0,
     bgLayerBa.isError ? bgLayerBa.errorUpdatedAt : 0,
     bgLayerFi.isError ? bgLayerFi.errorUpdatedAt : 0,
     bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,

@@ -198,6 +198,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
                 });
                 fairwayWidthLineFeat.setProperties({ width: fairwayWidth });
 
+                dvkMap.getFeatureLayer('fairwaywidth').setVisible(true);
                 const source = dvkMap.getVectorSource('fairwaywidth');
                 source.clear();
                 source.addFeature(fairwayWidthLineFeat);
@@ -292,7 +293,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
-      dvkMap.getFeatureLayer('marinewarning'),
+      dvkMap.getFeatureLayer('coastalwarning'),
+      dvkMap.getFeatureLayer('localwarning'),
+      dvkMap.getFeatureLayer('boaterwarning'),
       dvkMap.getFeatureLayer('mareograph'),
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),
@@ -325,7 +328,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
-      dvkMap.getFeatureLayer('marinewarning'),
+      dvkMap.getFeatureLayer('coastalwarning'),
+      dvkMap.getFeatureLayer('localwarning'),
+      dvkMap.getFeatureLayer('boaterwarning'),
       dvkMap.getFeatureLayer('mareograph'),
       dvkMap.getFeatureLayer('observation'),
       dvkMap.getFeatureLayer('buoy'),

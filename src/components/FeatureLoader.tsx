@@ -12,6 +12,7 @@ import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
+import { filterMarineWarnings } from '../utils/common';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -26,10 +27,12 @@ function useDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
+  refetchInterval: number | false = false,
+  enabled: boolean = true,
+  filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
   useEffect(() => {
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
@@ -39,12 +42,14 @@ function useDataLayer(
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
-        source.addFeatures(features);
+        source.addFeatures(filterMethod !== undefined ? filterMethod(features) : features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection, filterMethod]);
+  const layer = dvkMap.getFeatureLayer(featureLayerId);
+  layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -179,15 +184,45 @@ export function useBoardLine12Layer() {
 }
 
 export function useMareographLayer() {
-  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('mareograph');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useObservationLayer() {
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('observation');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
 }
 
 export function useBuoyLayer() {
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30);
+  const [initialized, init] = useState(false);
+  const [visible, setVisible] = useState(false);
+  if (!initialized) {
+    const layer = dvkMap.getFeatureLayer('buoy');
+    setVisible(layer.isVisible());
+    layer.on('change:visible', () => {
+      setVisible(layer.isVisible());
+    });
+    init(true);
+  }
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
 }
 
 export function useVtsLineLayer() {
@@ -326,8 +361,16 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
 
-export function useMarineWarningLayer() {
-  return useDataLayer('marinewarning', 'marinewarning', 'EPSG:3395', 'always', 1000 * 60 * 15);
+export function useCoastalWarningLayer() {
+  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('coastalwarning'));
+}
+
+export function useLocalWarningLayer() {
+  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('localwarning'));
+}
+
+export function useBoaterWarningLayer() {
+  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('boaterwarning'));
 }
 
 export type EquipmentFault = {
