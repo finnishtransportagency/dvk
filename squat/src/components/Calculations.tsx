@@ -345,7 +345,7 @@ const Calculations: React.FC = () => {
 
   return (
     <>
-      <div className="pagebreak"></div>
+      <div className={'pagebreak' + (showLimitedView ? ' hide-portrait' : '')}></div>
       <IonGrid className="ion-no-padding ion-no-margin">
         <IonRow>
           <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -378,21 +378,23 @@ const Calculations: React.FC = () => {
       <>
         {checkIsUKCUnderMinimum() && <Alert alertType="error" title={t('UKC-under-required-minimum')} />}
 
-        <div className={'in-print top-padding' + (showLimitedView ? ' print-hide' : '')}>
-          <span className="printable segment-label">{t('selected-water-values')}:</span>
-          <IonSegment
-            onIonChange={handleWaterValuesChange}
-            value={state.status.showDeepWaterValues ? 'true' : 'false'}
-            disabled={showLimitedView || !state.environment.weather.waveLength[0]}
-            selectOnFocus
-          >
-            <IonSegmentButton value="false">
-              <IonLabel>{t('shallow-water-values')}</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="true">
-              <IonLabel>{t('deep-water-values')}</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
+        <div className="in-print top-padding">
+          <span className={'printable segment-label' + (showLimitedView ? ' print-hide' : '')}>{t('selected-water-values')}:</span>
+          {!showLimitedView && (
+            <IonSegment
+              onIonChange={handleWaterValuesChange}
+              value={state.status.showDeepWaterValues ? 'true' : 'false'}
+              disabled={showLimitedView || !state.environment.weather.waveLength[0]}
+              selectOnFocus
+            >
+              <IonSegmentButton value="false">
+                <IonLabel>{t('shallow-water-values')}</IonLabel>
+              </IonSegmentButton>
+              <IonSegmentButton value="true">
+                <IonLabel>{t('deep-water-values')}</IonLabel>
+              </IonSegmentButton>
+            </IonSegment>
+          )}
 
           <span className="printable segment-label">{t('selected-calculation-method')}:</span>
           <IonSegment
