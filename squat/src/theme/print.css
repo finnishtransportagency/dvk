@@ -81,6 +81,7 @@
     flex-direction: column;
     justify-content: space-between;
     min-height: 52px;
+    padding: 1px 5px;
   }
   ion-row.input-row > ion-col:nth-child(4n) {
     border-right-width: 0;
@@ -252,6 +253,9 @@
     padding: 0;
     border-radius: 0 !important;
   }
+  ion-segment-button.segment-button-checked {
+    opacity: 1;
+  }
   ion-segment-button.segment-button-checked ion-label {
     color: var(--ion-color-primary);
   }
@@ -259,11 +263,22 @@
     display: none !important;
   }
 
+  .squatChartGrid {
+    break-inside: avoid;
+  }
   .squatChartTitle {
     margin-top: 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 1;
+  }
+  .squatChartRow svg {
+    max-height: 58vh;
+  }
+  
+  .dataTableRow .dataCol {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .printable {
@@ -271,7 +286,7 @@
   }
 
   .print-hide {
-    display: none;
+    display: none !important;
   }
 
   .dataTableRow {
