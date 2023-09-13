@@ -1,6 +1,7 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/graphql/query/marineWarnings-handler';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@aws-sdk/util-stream';
 import { FeatureCollection } from 'geojson';
 import { createReadStream } from 'fs';
 
@@ -116,7 +117,7 @@ beforeEach(() => {
 });
 
 it('should get warnings from api', async () => {
-  const stream = createReadStream('./test/data/warningsgraphql.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/warningsgraphql.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
@@ -126,7 +127,7 @@ it('should get warnings from api', async () => {
 });
 
 it('should get warnings from cache when api call fails', async () => {
-  const stream = createReadStream('./test/data/warningsgraphql.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/warningsgraphql.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });

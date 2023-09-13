@@ -2,6 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/graphql/query/fairways-handler';
 import { mockVoidEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@aws-sdk/util-stream';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 
@@ -441,7 +442,7 @@ beforeEach(() => {
 });
 
 it('should get fairways from cache', async () => {
-  const stream = createReadStream('./test/data/fairways2.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
@@ -450,7 +451,7 @@ it('should get fairways from cache', async () => {
 });
 
 it('should get fairways from api when cache expired', async () => {
-  const stream = createReadStream('./test/data/fairways2.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });

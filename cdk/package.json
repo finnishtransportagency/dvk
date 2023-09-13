@@ -71,6 +71,7 @@
     "@aws-sdk/cloudfront-signer": "^3.410.0",
     "@aws-sdk/lib-dynamodb": "^3.410.0",
     "@aws-sdk/util-dynamodb": "^3.410.0",
+    "@aws-sdk/util-stream": "^3.374.0",
     "@types/aws-lambda": "^8.10.120",
     "@types/geojson": "^7946.0.10",
     "aws-cdk-lib": "^2.95.1",
