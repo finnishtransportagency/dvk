@@ -288,10 +288,6 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   }
 }
 
-function getSelectedStyle(feature: FeatureLike, resolution: number) {
-  return feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getSafetyEquipmentStyle(feature, 1, false);
-}
-
 function addFeatureVectorLayer(
   map: Map,
   id: FeatureLayerId,
@@ -504,7 +500,7 @@ export function addAPILayers(map: Map) {
   // Haraussyvyydet
   addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 304);
   // Laiturit
-  addFeatureVectorLayer(map, 'quay', undefined, 50, getSelectedStyle, undefined, 1, false, 304);
+  addFeatureVectorLayer(map, 'quay', undefined, 50, (feature, resolution) => getQuayStyle(feature, resolution, false), undefined, 1, false, 304);
   // Satamat
   addFeatureVectorLayer(map, 'harbor', 300, 100, getHarborStyle, undefined, 1, true, 305);
 
@@ -544,6 +540,19 @@ export function addAPILayers(map: Map) {
   // Luotsipaikat
   addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
   addFeatureVectorLayer(map, 'fairwaywidth', 30, 20, getFairwayWidthStyle, undefined, 1, true, 314);
+
+  // Turvalaiteviat
+  addFeatureVectorLayer(
+    map,
+    'safetyequipmentfault',
+    undefined,
+    50,
+    (feature) => getSafetyEquipmentStyle(feature, 1, false),
+    undefined,
+    1,
+    false,
+    315
+  );
 }
 
 export function unsetSelectedFairwayCard() {

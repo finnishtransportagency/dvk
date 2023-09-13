@@ -14,6 +14,8 @@ import { getAlertProperties } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 import * as olExtent from 'ol/extent';
+import { useDvkContext } from '../../hooks/dvkContext';
+import { useSafetyEquipmentLayer } from '../FeatureLoader';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -22,23 +24,15 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
   const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
-  let feature = safetyEquipmentSource.getFeatureById(id);
+  const feature = safetyEquipmentSource.getFeatureById(id);
   if (feature) {
-    safetyEquipmentSource.addFeatures(quaySource.getFeatures());
-    quaySource.clear();
-    feature.set('safetyEquipmentFaultList', true, true);
-    quaySource.addFeature(feature);
-    safetyEquipmentSource.removeFeature(feature);
-  } else {
-    feature = quaySource.getFeatureById(id);
-  }
-  const geometry = feature?.getGeometry();
-  if (feature && geometry) {
-    const extent = olExtent.createEmpty();
-    olExtent.extend(extent, geometry.getExtent());
-    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    const geometry = feature.getGeometry();
+    if (feature && geometry) {
+      const extent = olExtent.createEmpty();
+      olExtent.extend(extent, geometry.getExtent());
+      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    }
   }
 }
 
@@ -58,7 +52,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
   const equipments = getMap().getVectorSource('safetyequipment');
-  const equipments2 = getMap().getVectorSource('quay');
+  const equipments2 = getMap().getVectorSource('safetyequipmentfault');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -150,6 +144,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
+  const { state } = useDvkContext();
+  const safetyEquipmentLayer = useSafetyEquipmentLayer();
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
@@ -158,16 +154,29 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
 
   useEffect(() => {
     return () => {
-      const dvkMap = getMap();
-      const source = dvkMap.getVectorSource('quay');
-      const target = dvkMap.getVectorSource('safetyequipment');
-      source.forEachFeature((f) => {
-        f.set('safetyEquipmentFaultList', false, true);
-        target.addFeature(f);
-      });
-      source.clear();
+      getMap().getVectorSource('safetyequipmentfault').clear();
     };
   }, []);
+
+  useEffect(() => {
+    if (safetyEquipmentLayer.ready) {
+      const dvkMap = getMap();
+      const tempLayer = dvkMap.getVectorSource('safetyequipmentfault');
+      if (state.layers.includes('safetyequipment')) {
+        tempLayer.clear();
+      } else {
+        // Show equipment faults on separate layer
+        const safetyEquipments = dvkMap.getVectorSource('safetyequipment').getFeatures();
+        const safetyEquipmentFaults = safetyEquipments
+          .filter((feat) => feat.get('faults') && feat.get('faults').length > 0)
+          .map((f) => {
+            f.set('safetyEquipmentFaultList', true, false);
+            return f;
+          });
+        tempLayer.addFeatures(safetyEquipmentFaults);
+      }
+    }
+  }, [state.layers, safetyEquipmentLayer.ready]);
 
   return (
     <>
