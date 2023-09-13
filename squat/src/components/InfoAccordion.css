@@ -1,27 +1,27 @@
-ion-accordion {
+.squat .info-accordion ion-accordion {
   background-color: #fff;
   border-bottom: 1px solid var(--ion-color-light);
 }
-ion-accordion.accordion-collapsed {
+.squat .info-accordion ion-accordion.accordion-collapsed {
   border-bottom: 1px solid var(--ion-color-light);
 }
-ion-accordion:not(.accordion-collapsed) {
+.squat .info-accordion ion-accordion:not(.accordion-collapsed) {
   border-bottom-color: #fff;
 }
-ion-accordion::part(header) {
+.squat .info-accordion ion-accordion::part(header) {
   min-height: 24px;
   border-bottom: 1px solid #fff;
   width: max-content;
 }
-ion-accordion::part(content) {
+.squat .info-accordion ion-accordion::part(content) {
   background: #fff;
 }
-ion-accordion .tabContent {
+.squat .info-accordion ion-accordion .tabContent {
   padding-top: 10px;
   margin: 0;
   border-top: 1px solid var(--ion-color-light);
 }
-.accItem {
+.squat .info-accordion .accItem {
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
@@ -32,19 +32,16 @@ ion-accordion .tabContent {
   --border-width: 1px !important;
   --border-color: transparent;
 }
-.accItem.ion-focused {
+.squat .info-accordion .accItem.ion-focused {
   --background-focused: none;
   --inner-border-width: 0;
   --show-full-highlight: 0;
   --border-color: var(--ion-color-dark);
 }
-.accItem ion-label {
+.squat .info-accordion .accItem ion-label {
   margin: 0;
   color: var(--ion-color-dark) !important;
 }
-.accItem ion-icon {
-  width: 14px;
-  height: 14px;
-  margin: 0;
-  margin: 0 0 0 12px;
+.squat .info-accordion .accItem ion-icon {
+  margin: 0 0 0 6px;
 }

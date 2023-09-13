@@ -7,6 +7,7 @@ import { copyToClipboard, countDecimals, createShareableLink } from './utils/hel
 import { vi } from 'vitest';
 
 const baseURL = 'http://localhost:8080/';
+const fetch = global.fetch;
 
 beforeAll(() => {
   // @ts-ignore
@@ -29,11 +30,14 @@ beforeAll(() => {
       writeText: vi.fn().mockImplementation(() => Promise.resolve()),
     },
   });
+  // @ts-ignore
+  global.fetch = undefined;
 });
 
 afterAll(() => {
   // @ts-ignore
   delete window.SVGElement.prototype.getBBox;
+  global.fetch = fetch;
 });
 
 it('renders without crashing', () => {

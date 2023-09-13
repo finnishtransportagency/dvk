@@ -220,46 +220,46 @@
     display: none;
   }
 
-  ion-segment {
+  .squat ion-segment {
     display: inline-flex;
     width: auto;
     margin-right: 30px;
     padding: 0 !important;
     vertical-align: text-bottom;
   }
-  .segment-label {
+  .squat .segment-label {
     font-size: 12px;
     display: inline-block !important;
     vertical-align: text-bottom;
     padding-right: 4px;
     line-height: 16px;
   }
-  ion-segment-button {
+  .squat ion-segment-button {
     flex: unset;
     height: 16px;
     min-width: 0;
     border-radius: 0 !important;
   }
-  ion-segment-button:last-child {
+  .squat ion-segment-button:last-child {
     border: none;
   }
-  ion-segment-button:not(.segment-button-checked) {
+  .squat ion-segment-button:not(.segment-button-checked) {
     display: none;
   }
-  ion-segment-button ion-label {
+  .squat ion-segment-button ion-label {
     font-size: 12px;
   }
-  ion-segment-button::part(native) {
+  .squat ion-segment-button::part(native) {
     padding: 0;
     border-radius: 0 !important;
   }
-  ion-segment-button.segment-button-checked {
+  .squat ion-segment-button.segment-button-checked {
     opacity: 1;
   }
-  ion-segment-button.segment-button-checked ion-label {
+  .squat ion-segment-button.segment-button-checked ion-label {
     color: var(--ion-color-primary);
   }
-  ion-segment-button::part(indicator) {
+  .squat ion-segment-button::part(indicator) {
     display: none !important;
   }
 
@@ -282,7 +282,7 @@
   }
 
   .printable {
-    display: block;
+    display: block !important;
   }
 
   .print-hide {

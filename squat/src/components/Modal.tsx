@@ -40,7 +40,7 @@ const Modal: React.FC<ModalProps> = (props) => {
       >
         {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
-      <IonModal isOpen={isOpen} className={props.size ? props.size : 'medium'} onDidDismiss={handleClickClose}>
+      <IonModal isOpen={isOpen} className={'squatModal ' + (props.size ? props.size : 'medium')} onDidDismiss={handleClickClose}>
         <IonHeader>
           <div className="gradient-top" />
           <IonToolbar>

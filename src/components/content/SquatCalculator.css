@@ -1,0 +1,152 @@
+ion-item.accItem {
+  --background: var(--ion-color-lightest);
+}
+
+ion-grid.info-accordion,
+.squatCalculatorContainer > ion-grid {
+  --ion-grid-padding: 0;
+}
+
+.squatCalculatorContainer > ion-grid h2,
+.squatCalculatorContainer > ion-grid ion-col.section-validity {
+  display: none;
+}
+
+.squatCalculatorContainer > ion-grid ion-col.inner-column {
+  padding: 0 8px;
+}
+.squatCalculatorContainer > ion-grid ion-col.inner-column.first {
+  padding-left: 0;
+}
+.squatCalculatorContainer > ion-grid ion-col.inner-column.last {
+  padding-right: 0;
+}
+
+.squatCalculatorContainer ion-item.item.only-label {
+  --background: none;
+}
+
+.squatCalculatorContainer .sc-ion-input-md-h {
+  --background: var(--ion-color-primary-contrast);
+  --border-radius: 0;
+}
+
+.squatCalculatorContainer ion-button.icon-only ion-icon {
+  width: 24px;
+  height: 24px;
+}
+.squatCalculatorContainer ion-item.item.only-label ion-label {
+  overflow: visible;
+}
+.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.no-background-focused {
+  margin: 0 2px 0 8px;
+  width: auto;
+  min-height: unset;
+}
+.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.no-background-focused::part(native) {
+  min-height: 24px;
+  min-width: 24px;
+  height: 24px;
+  width: 24px;
+}
+.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.icon-only.ion-focused {
+  border: none;
+}
+
+.squatCalculatorContainer ion-radio-group ion-grid ion-row:has(.col-radio) {
+  gap: 0 16px;
+}
+.squatCalculatorContainer ion-radio-group ion-grid ion-col.col-radio > ion-item {
+  --background: transparent;
+}
+
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow {
+  overflow: auto;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col {
+  min-width: 550px;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col:has(.dataTableGrid.no-data) {
+  min-width: 0;
+}
+
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid {
+  font-size: 12px;
+  padding: 5px 0;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataTableLegend {
+  padding: 5px 0;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataTableLegend > ion-col {
+  padding: 5px;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .titleCol {
+  padding: 6px 3px;
+  min-width: 140px;
+}
+.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataCol {
+  padding: 6px 3px;
+}
+
+#fairwayContent.wide .squatCalculatorContainer ion-col.squatColumn {
+  padding: 0 16px;
+}
+#fairwayContent.wide .squatCalculatorContainer ion-col.squatColumn.first {
+  padding-left: 0;
+}
+#fairwayContent.wide .squatCalculatorContainer ion-col.squatColumn.last {
+  padding-right: 0;
+}
+#fairwayContent .squatCalculatorContainer ion-col.squatColumn .calculation-options {
+  margin-top: 20px;
+}
+
+.squatCalculatorContainer ion-grid.infobox {
+  --ion-grid-padding: 10px;
+  font-size: 14px;
+  margin: 1em 0 0;
+}
+.squatCalculatorContainer .squat-checks ion-grid.infobox:first-child {
+  margin-top: 30px;
+}
+.squatCalculatorContainer ion-grid.infobox ion-col > ion-icon {
+  padding-right: 10px;
+}
+
+ion-modal.squatModal.large {
+  --height: auto;
+  --max-height: 600px;
+  --width: 768px;
+  --max-width: 95%;
+}
+ion-modal.squatModal.large::part(content) {
+  height: 100%;
+  max-height: 600px;
+}
+
+@media (max-width: 768px) {
+  ion-modal.squatModal.large {
+    --height: 100%;
+    --width: 100%;
+    --max-height: unset;
+    --max-width: unset;
+  }
+  ion-modal.squatModal.large::part(content) {
+    max-height: none;
+  }
+}
+
+@media print {
+  #fairwayContent.wide .squatCalculatorContainer ion-col.squatColumn {
+    flex: 0 0 calc(calc(12 / var(--ion-grid-columns, 12)) * 100%) !important;
+    width: calc(calc(12 / var(--ion-grid-columns, 12)) * 100%) !important;
+    max-width: calc(calc(12 / var(--ion-grid-columns, 12)) * 100%) !important;
+    padding: 0;
+  }
+  .squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow {
+    overflow: visible !important;
+  }
+  .squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow > ion-col {
+    min-width: unset;
+  }
+}

@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { IonText, IonGrid, IonRow, IonCol, IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
+import { IonText, IonGrid, IonRow, IonCol } from '@ionic/react';
 
 import { useSquatContext } from '../hooks/squatContext';
 import {
@@ -25,58 +25,29 @@ import {
   toDeg,
 } from '../utils/calculations';
 
-import Alert from './Alert';
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
 import {
-  isBreadthDraughtRatioOutOfRange,
   isExternalForceRequired,
-  isLengthBreadthRatioOutOfRange,
-  isReliabilityAnIssue,
   isSafetyMarginInsufficient,
   isUKCDuringTurnUnderRequired,
   isUKCShipMotionsUnderRequired,
   isUKCStraightUnderRequired,
-  isUKCUnderMinimum,
 } from '../utils/validations';
 import Modal from './Modal';
-import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
+import CalculationOptions from './CalculationOptions';
+import CalculationChecks from './CalculationChecks';
 
-const Calculations: React.FC = () => {
+interface CalculationProps {
+  limitedView: boolean;
+}
+
+const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
   const tRoot = i18n.getFixedT(i18n.language);
-  const { showLimitedView } = state.status;
-
-  // Validations
-  const checkIsReliabilityAnIssue = () => {
-    return isReliabilityAnIssue(
-      state.vessel.general.blockCoefficient,
-      state.environment.vessel.vesselSpeed,
-      state.environment.fairway.sweptDepth,
-      state.environment.fairway.waterLevel,
-      state.status.showBarrass
-    );
-  };
-  const checkIsUKCUnderMinimum = () => {
-    if (showLimitedView) {
-      return isUKCStraightUnderRequired(
-        state.environment.attribute.requiredUKC,
-        state.calculations.squat.UKCStraightCourse,
-        state.status.showBarrass
-      );
-    }
-    return isUKCUnderMinimum(
-      state.environment.fairway.sweptDepth,
-      state.environment.attribute.requiredUKC,
-      state.calculations.squat.UKCDuringTurn,
-      state.calculations.squat.UKCStraightCourse,
-      state.calculations.squat.UKCVesselMotions,
-      state.status.showBarrass
-    );
-  };
 
   // useEffects to calculate results by input value update
   // 1. Wind Force & 3. Drift
@@ -285,17 +256,6 @@ const Calculations: React.FC = () => {
     dispatch,
   ]);
 
-  // Update status to state
-  const setStateStatus = useCallback(
-    (key: string, value: string | number | undefined) => {
-      dispatch({
-        type: 'status',
-        payload: { key: key, value: value === 'true', elType: 'boolean' },
-      });
-    },
-    [dispatch]
-  );
-
   // Determine values to show
   const getUKCVesselMotionValue = () => {
     const currentValue = state.calculations.squat.UKCVesselMotions[state.status.showBarrass ? 0 : 1][state.status.showDeepWaterValues ? 1 : 0];
@@ -318,34 +278,9 @@ const Calculations: React.FC = () => {
     return '';
   };
 
-  const handleWaterValuesChange = useCallback(
-    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
-      setStateStatus('showDeepWaterValues', e.detail.value);
-    },
-    [setStateStatus]
-  );
-
-  const handleCalculationMethodChange = useCallback(
-    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
-      setStateStatus('showBarrass', e.detail.value);
-    },
-    [setStateStatus]
-  );
-
-  const handleSelectedViewChange = useCallback(
-    (e: IonSegmentCustomEvent<SegmentChangeEventDetail>) => {
-      const val = e.detail.value;
-      setStateStatus('showLimitedView', val);
-      if (val === 'true') {
-        setStateStatus('showDeepWaterValues', 'false');
-      }
-    },
-    [setStateStatus]
-  );
-
   return (
     <>
-      <div className={'pagebreak' + (showLimitedView ? ' hide-portrait' : '')}></div>
+      <div className={'pagebreak' + (limitedView ? ' hide-portrait' : '')}></div>
       <IonGrid className="ion-no-padding ion-no-margin">
         <IonRow>
           <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -375,337 +310,272 @@ const Calculations: React.FC = () => {
         </IonRow>
       </IonGrid>
 
-      <>
-        {checkIsUKCUnderMinimum() && <Alert alertType="error" title={t('UKC-under-required-minimum')} />}
+      <CalculationChecks limitedView={limitedView} doChecks={['ukc']} />
+      <CalculationOptions limitedView={limitedView} />
+      <CalculationChecks limitedView={limitedView} doChecks={['reliability', 'LBratio', 'BDratio']} />
 
-        <div className="in-print top-padding">
-          <span className={'printable segment-label' + (showLimitedView ? ' print-hide' : '')}>{t('selected-water-values')}:</span>
-          {!showLimitedView && (
-            <IonSegment
-              onIonChange={handleWaterValuesChange}
-              value={state.status.showDeepWaterValues ? 'true' : 'false'}
-              disabled={showLimitedView || !state.environment.weather.waveLength[0]}
-              selectOnFocus
-            >
-              <IonSegmentButton value="false">
-                <IonLabel>{t('shallow-water-values')}</IonLabel>
-              </IonSegmentButton>
-              <IonSegmentButton value="true">
-                <IonLabel>{t('deep-water-values')}</IonLabel>
-              </IonSegmentButton>
-            </IonSegment>
-          )}
-
-          <span className="printable segment-label">{t('selected-calculation-method')}:</span>
-          <IonSegment
-            onIonChange={handleCalculationMethodChange}
-            value={state.status.showBarrass ? 'true' : 'false'}
-            className="top-padding"
-            disabled={getSquatValue() === ''}
-            selectOnFocus
-          >
-            <IonSegmentButton value="false">
-              <IonLabel>{t('squat-HG')}</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="true">
-              <IonLabel>{t('squat-barrass')}</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-
-          <IonSegment
-            onIonChange={handleSelectedViewChange}
-            value={showLimitedView ? 'true' : 'false'}
-            className="top-padding print-hide"
-            selectOnFocus
-          >
-            <IonSegmentButton value="false">
-              <IonLabel>{t('extensive-calculator')}</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="true">
-              <IonLabel>{t('limited-calculator')}</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </div>
-
-        {checkIsReliabilityAnIssue() && <Alert alertType="error" title={checkIsReliabilityAnIssue()} className="top-margin" />}
-        {isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass) && (
-          <Alert
-            alertType="error"
-            title={isLengthBreadthRatioOutOfRange(state.vessel.general.lengthBPP, state.vessel.general.breadth, state.status.showBarrass)}
-            className="top-margin"
-          />
-        )}
-        {isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass) && (
-          <Alert
-            alertType="error"
-            title={isBreadthDraughtRatioOutOfRange(state.vessel.general.breadth, state.vessel.general.draught, state.status.showBarrass)}
-            className="top-margin"
-          />
-        )}
-
-        <SectionTitle title={t('squat')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
-        {!showLimitedView && (
-          <IonGrid className="no-padding">
-            <IonRow className="input-row">
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('heel-due-wind')}
-                  value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
-                    maximumFractionDigits: 2,
-                  })}
-                  unit="°"
-                  unitId="deg"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('constant-heel-during-turn')}
-                  value={
-                    isNaN(state.calculations.squat.constantHeelDuringTurn)
-                      ? ''
-                      : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                  }
-                  unit="°"
-                  unitId="deg"
-                  infoContentTitle={t('constant-heel-during-turn-info-title')}
-                  infoContent={<p>{t('constant-heel-during-turn-info')}</p>}
-                />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('corrected-draught')}
-                  value={
-                    isNaN(state.calculations.squat.correctedDraught)
-                      ? ''
-                      : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                  }
-                  unit="m"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('corrected-draught-during-turn')}
-                  value={
-                    isNaN(state.calculations.squat.correctedDraughtDuringTurn)
-                      ? ''
-                      : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                  }
-                  unit="m"
-                />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('UKC-vessel-motions')}
-                  value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                  unit="m"
-                  error={
-                    isUKCShipMotionsUnderRequired(
-                      state.environment.attribute.requiredUKC,
-                      state.calculations.squat.UKCVesselMotions,
-                      state.status.showBarrass
-                    )
-                      ? t('UKC-under-required-minimum')
-                      : ''
-                  }
-                  infoContentTitle={t('vessel-motions-assumptions')}
-                  infoContent={
-                    <>
-                      <p>{t('vessel-motions-assumptions')}:</p>
-                      <ul>
-                        <li>{t('vessel-motions-assumption-1')}</li>
-                        <li>{t('vessel-motions-assumption-2')}</li>
-                        <li>{t('vessel-motions-assumption-3')}</li>
-                      </ul>
-                    </>
-                  }
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('UKC-straight-course')}
-                  value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
-                    maximumFractionDigits: 2,
-                  })}
-                  unit="m"
-                  error={
-                    isUKCStraightUnderRequired(
-                      state.environment.attribute.requiredUKC,
-                      state.calculations.squat.UKCStraightCourse,
-                      state.status.showBarrass
-                    )
-                      ? t('UKC-under-required-minimum')
-                      : ''
-                  }
-                />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('UKC-during-turn')}
-                  value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
-                    maximumFractionDigits: 2,
-                  })}
-                  unit="m"
-                  error={
-                    isUKCDuringTurnUnderRequired(
-                      state.environment.attribute.requiredUKC,
-                      state.calculations.squat.UKCDuringTurn,
-                      state.status.showBarrass
-                    )
-                      ? t('UKC-under-required-minimum')
-                      : ''
-                  }
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name)}
-                  value={getSquatValue().toLocaleString(i18n.language, {
-                    maximumFractionDigits: 2,
-                  })}
-                  unit="m"
-                  helper={printSquatHelper()}
-                />
-              </IonCol>
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-            </IonRow>
-          </IonGrid>
-        )}
-
-        <SectionTitle title={t('wind-force')} hideValidity className={showLimitedView ? 'print-hide' : ''} disabled={showLimitedView} />
-        {!showLimitedView && (
-          <IonGrid className="no-padding">
-            <IonRow className="input-row">
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('relative-wind-direction')}
-                  value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
-                  unit="°"
-                  unitId="deg"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('wind-force')}
-                  value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
-                    maximumFractionDigits: 1,
-                  })}
-                  unit="mt"
-                  infoContentTitle={t('wind-force-info-title')}
-                  infoContent={<p>{t('wind-force-info')}</p>}
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('wave-force')}
-                  value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
-                    maximumFractionDigits: 1,
-                  })}
-                  unit="mt"
-                  infoContentTitle={t('wave-force-info-title')}
-                  infoContent={<p>{t('wave-force-info')}</p>}
-                />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('bow-thruster-force')}
-                  value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
-                  unit="mt"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('remaining-safety-margin')}
-                  value={(isNaN(state.calculations.forces.remainingSafetyMargin)
+      <SectionTitle title={t('squat')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
+      {!limitedView && (
+        <IonGrid className="no-padding">
+          <IonRow className="input-row">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('heel-due-wind')}
+                value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="°"
+                unitId="deg"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('constant-heel-during-turn')}
+                value={
+                  isNaN(state.calculations.squat.constantHeelDuringTurn)
                     ? ''
-                    : state.calculations.forces.remainingSafetyMargin * 100
-                  ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
-                  unit="%"
-                  error={
-                    isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin)
-                      ? t('insufficient-safety-margin')
-                      : ''
-                  }
-                />
-              </IonCol>
+                    : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="°"
+                unitId="deg"
+                infoContentTitle={t('constant-heel-during-turn-info-title')}
+                infoContent={<p>{t('constant-heel-during-turn-info')}</p>}
+              />
+            </IonCol>
 
-              <IonCol size="12" sizeSm="6" sizeLg="12">
-                <LabelField
-                  title={t('minimum-external-force-required')}
-                  value={
-                    state.calculations.forces.externalForceRequired > 0
-                      ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
-                      : '-'
-                  }
-                  error={isExternalForceRequired(state.calculations.forces.externalForceRequired) ? t('external-force-required') : ''}
-                />
-              </IonCol>
-              <IonCol size="6" />
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-            </IonRow>
-          </IonGrid>
-        )}
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('corrected-draught')}
+                value={
+                  isNaN(state.calculations.squat.correctedDraught)
+                    ? ''
+                    : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="m"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('corrected-draught-during-turn')}
+                value={
+                  isNaN(state.calculations.squat.correctedDraughtDuringTurn)
+                    ? ''
+                    : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
+                unit="m"
+              />
+            </IonCol>
 
-        <SectionTitle
-          title={t('drift')}
-          hideValidity
-          className={showLimitedView ? 'print-hide' : ''}
-          disabled={showLimitedView}
-          infoContentTitle={t('drift-info-title')}
-          infoContent={<p>{t('drift-info')}</p>}
-        />
-        {!showLimitedView && (
-          <IonGrid className="no-padding">
-            <IonRow className="input-row">
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('relative-wind-direction')}
-                  value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
-                  unit="°"
-                  unitId="deg"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
-              </IonCol>
-
-              <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('estimated-drift-angle')}
-                  value={(isFinite(state.calculations.forces.estimatedDriftAngle)
-                    ? toDeg(state.calculations.forces.estimatedDriftAngle)
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('UKC-vessel-motions')}
+                value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="m"
+                error={
+                  isUKCShipMotionsUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCVesselMotions,
+                    state.status.showBarrass
+                  )
+                    ? t('UKC-under-required-minimum')
                     : ''
-                  ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                  unit="°"
-                  unitId="deg"
-                />
-              </IonCol>
-              <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">
-                <LabelField
-                  title={t('estimated-vessel-breadth-due-drift')}
-                  value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                  unit="m"
-                />
-              </IonCol>
-              <IonCol size="6" className="hide-portrait" />
-              <IonCol size="6" className="hide-portrait" />
-            </IonRow>
-          </IonGrid>
-        )}
-      </>
+                }
+                infoContentTitle={t('vessel-motions-assumptions')}
+                infoContent={
+                  <>
+                    <p>{t('vessel-motions-assumptions')}:</p>
+                    <ul>
+                      <li>{t('vessel-motions-assumption-1')}</li>
+                      <li>{t('vessel-motions-assumption-2')}</li>
+                      <li>{t('vessel-motions-assumption-3')}</li>
+                    </ul>
+                  </>
+                }
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('UKC-straight-course')}
+                value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+                error={
+                  isUKCStraightUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCStraightCourse,
+                    state.status.showBarrass
+                  )
+                    ? t('UKC-under-required-minimum')
+                    : ''
+                }
+              />
+            </IonCol>
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('UKC-during-turn')}
+                value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+                error={
+                  isUKCDuringTurnUnderRequired(
+                    state.environment.attribute.requiredUKC,
+                    state.calculations.squat.UKCDuringTurn,
+                    state.status.showBarrass
+                  )
+                    ? t('UKC-under-required-minimum')
+                    : ''
+                }
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name)}
+                value={getSquatValue().toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
+                unit="m"
+                helper={printSquatHelper()}
+              />
+            </IonCol>
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+          </IonRow>
+        </IonGrid>
+      )}
+
+      <SectionTitle title={t('wind-force')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
+      {!limitedView && (
+        <IonGrid className="no-padding">
+          <IonRow className="input-row">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('relative-wind-direction')}
+                value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
+                unit="°"
+                unitId="deg"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
+            </IonCol>
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('wind-force')}
+                value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
+                unit="mt"
+                infoContentTitle={t('wind-force-info-title')}
+                infoContent={<p>{t('wind-force-info')}</p>}
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('wave-force')}
+                value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
+                unit="mt"
+                infoContentTitle={t('wave-force-info-title')}
+                infoContent={<p>{t('wave-force-info')}</p>}
+              />
+            </IonCol>
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('bow-thruster-force')}
+                value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
+                unit="mt"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('remaining-safety-margin')}
+                value={(isNaN(state.calculations.forces.remainingSafetyMargin)
+                  ? ''
+                  : state.calculations.forces.remainingSafetyMargin * 100
+                ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
+                unit="%"
+                error={
+                  isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin)
+                    ? t('insufficient-safety-margin')
+                    : ''
+                }
+              />
+            </IonCol>
+
+            <IonCol size="12" sizeSm="6" sizeLg="12">
+              <LabelField
+                title={t('minimum-external-force-required')}
+                value={
+                  state.calculations.forces.externalForceRequired > 0
+                    ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
+                    : '-'
+                }
+                error={isExternalForceRequired(state.calculations.forces.externalForceRequired) ? t('external-force-required') : ''}
+              />
+            </IonCol>
+            <IonCol size="6" />
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+          </IonRow>
+        </IonGrid>
+      )}
+
+      <SectionTitle
+        title={t('drift')}
+        hideValidity
+        className={limitedView ? 'print-hide' : ''}
+        disabled={limitedView}
+        infoContentTitle={t('drift-info-title')}
+        infoContent={<p>{t('drift-info')}</p>}
+      />
+      {!limitedView && (
+        <IonGrid className="no-padding">
+          <IonRow className="input-row">
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('relative-wind-direction')}
+                value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
+                unit="°"
+                unitId="deg"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
+            </IonCol>
+
+            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('estimated-drift-angle')}
+                value={(isFinite(state.calculations.forces.estimatedDriftAngle)
+                  ? toDeg(state.calculations.forces.estimatedDriftAngle)
+                  : ''
+                ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="°"
+                unitId="deg"
+              />
+            </IonCol>
+            <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">
+              <LabelField
+                title={t('estimated-vessel-breadth-due-drift')}
+                value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
+                unit="m"
+              />
+            </IonCol>
+            <IonCol size="6" className="hide-portrait" />
+            <IonCol size="6" className="hide-portrait" />
+          </IonRow>
+        </IonGrid>
+      )}
     </>
   );
 };
