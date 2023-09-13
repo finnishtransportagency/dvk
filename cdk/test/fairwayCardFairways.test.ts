@@ -3,6 +3,7 @@ import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCardFairways-handler';
 import { mockContext, mockQueryFairwayCardArgsFairwayCardEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@aws-sdk/util-stream';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 
@@ -444,7 +445,7 @@ beforeEach(() => {
 });
 
 it('should get fairway card fairways from cache', async () => {
-  const stream = createReadStream('./test/data/fairways.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
@@ -453,7 +454,7 @@ it('should get fairway card fairways from cache', async () => {
 });
 
 it('should get fairway card fairways from api when cache expired', async () => {
-  const stream = createReadStream('./test/data/fairways.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
