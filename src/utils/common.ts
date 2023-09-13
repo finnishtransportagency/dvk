@@ -2,6 +2,9 @@ import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
 import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
+import { MarineWarningFeatureProperties } from '../components/features';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -117,4 +120,36 @@ export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
 export const getMapCanvasWidth = (): number => {
   const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
   return canvasSize[0];
+};
+
+export const getMarineWarningDataLayerId = (type: Text | undefined): FeatureDataLayerId => {
+  switch (type?.fi) {
+    case 'COASTAL WARNING':
+      return 'coastalwarning';
+    case 'LOCAL WARNING':
+      return 'localwarning';
+    case 'VAROITUKSIA VENEILIJÖILLE':
+      return 'boaterwarning';
+    default:
+      return 'coastalwarning';
+  }
+};
+
+export const filterMarineWarnings = (layerId: FeatureDataLayerId) => {
+  return (features: Feature<Geometry>[]): Feature<Geometry>[] => {
+    return features.filter((feature) => {
+      const featureProperties = feature.getProperties() as MarineWarningFeatureProperties;
+      const type = featureProperties.type?.fi;
+      switch (layerId) {
+        case 'coastalwarning':
+          return type === 'COASTAL WARNING';
+        case 'localwarning':
+          return type === 'LOCAL WARNING';
+        case 'boaterwarning':
+          return type === 'VAROITUKSIA VENEILIJÖILLE';
+        default:
+          return false;
+      }
+    });
+  };
 };

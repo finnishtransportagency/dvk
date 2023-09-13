@@ -5,13 +5,13 @@ import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
-import { AreaFairway, LineFairway } from '../features';
+import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, getMarineWarningDataLayerId } from '../../utils/common';
 import './MarineWarnings.css';
 import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
@@ -21,17 +21,22 @@ type WarningListProps = {
   loading?: boolean;
 };
 
-function goto(id: number) {
-  const marineWarningSource = dvkMap.getVectorSource('marinewarning');
+function goto(warning: MarineWarning) {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  let feature = marineWarningSource.getFeatureById(id);
+  const nextMarineWarningSource = dvkMap.getVectorSource(getMarineWarningDataLayerId(warning.type));
+  let feature = nextMarineWarningSource.getFeatureById(warning.id);
   if (feature) {
-    marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
+    // Put previous feature(s) from temporary layer back to their correct layer
+    selectedFairwayCardSource.forEachFeature((f) => {
+      const featureProps = f.getProperties() as MarineWarningFeatureProperties;
+      dvkMap.getVectorSource(getMarineWarningDataLayerId(featureProps.type)).addFeature(f);
+    });
     selectedFairwayCardSource.clear();
+    // Add clicked warning feature to temporary layer and remove it from original layer
     selectedFairwayCardSource.addFeature(feature);
-    marineWarningSource.removeFeature(feature);
+    nextMarineWarningSource.removeFeature(feature);
   } else {
-    feature = selectedFairwayCardSource.getFeatureById(id);
+    feature = selectedFairwayCardSource.getFeatureById(warning.id);
   }
   const geometry = feature?.getGeometry();
   if (feature && geometry) {
@@ -83,7 +88,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                       to="/merivaroitukset/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(warning.id);
+                        goto(warning);
                       }}
                     >
                       {warning.location[lang] || warning.location.fi || t('noObjects')}
@@ -215,7 +220,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const path = [{ title: t('title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
+  // Use any of the marine warning layers as they have the same data source
+  const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
@@ -224,10 +230,11 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
   useEffect(() => {
     return () => {
+      // Cleanup: put feature(s) from temporary layer back to correct marine warning layer
       const source = dvkMap.getVectorSource('selectedfairwaycard');
-      const target = dvkMap.getVectorSource('marinewarning');
       source.forEachFeature((f) => {
-        target.addFeature(f);
+        const featureProps = f.getProperties() as MarineWarningFeatureProperties;
+        dvkMap.getVectorSource(getMarineWarningDataLayerId(featureProps.type)).addFeature(f);
       });
       source.clear();
     };

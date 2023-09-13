@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
+import 'fake-indexeddb/auto';
 import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
-import 'fake-indexeddb/auto';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -76,7 +76,13 @@ vi.mock('./components/FeatureLoader', () => ({
   useSafetyEquipmentLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useMarineWarningLayer: () => {
+  useCoastalWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useLocalWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useBoaterWarningLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useBoardLine12Layer: () => {

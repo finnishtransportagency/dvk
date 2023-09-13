@@ -82,24 +82,276 @@ test('calculates correct minimum external force', () => {
 });
 
 test('calculates correct estimated drift angle', () => {
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 9, 23.31).toFixed(4))).toEqual(0.0012);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 19, 23.31).toFixed(4))).toEqual(0.001);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 29, 23.31).toFixed(4))).toEqual(0.001);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 39, 23.31).toFixed(4))).toEqual(0.0023);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 49, 23.31).toFixed(4))).toEqual(0.0029);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 59, 23.31).toFixed(4))).toEqual(0.0038);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 69, 23.31).toFixed(4))).toEqual(0.0048);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 70.67, 23.31).toFixed(4))).toEqual(0.005);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 89, 23.31).toFixed(4))).toEqual(0.0077);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 99, 23.31).toFixed(4))).toEqual(0.0095);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 109, 23.31).toFixed(4))).toEqual(0.0117);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 119, 23.31).toFixed(4))).toEqual(0.0146);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 129, 23.31).toFixed(4))).toEqual(0.0174);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 139, 23.31).toFixed(4))).toEqual(0.0188);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 149, 23.31).toFixed(4))).toEqual(0.0172);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 159, 23.31).toFixed(4))).toEqual(0.0134);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 169, 23.31).toFixed(4))).toEqual(0.0086);
-  expect(Number(calculateEstimatedDriftAngle(200, 20, 0, 15, 8600, 1.3, 1005, 179, 23.31).toFixed(4))).toEqual(0.0008);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 9,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0012);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 19,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.001);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 29,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.001);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 39,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0023);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 49,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0029);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 59,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0038);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 69,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0048);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 70.67,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.005);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 89,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0077);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 99,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0095);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 109,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0117);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 119,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0146);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 129,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0174);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 139,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0188);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 149,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0172);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 159,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0134);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 169,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0086);
+  expect(
+    Number(
+      calculateEstimatedDriftAngle({
+        lengthBPP: 200,
+        draught: 20,
+        profileIndex: 0,
+        vesselSpeed: 15,
+        windSurface: 8600,
+        airDensity: 1.3,
+        waterDensity: 1005,
+        apparentWindAngleDrift: 179,
+        apparentWindVelocityDrift: 23.31,
+      }).toFixed(4)
+    )
+  ).toEqual(0.0008);
 });
 
 test('calculates correct estimated breadth', () => {
@@ -127,19 +379,92 @@ test('calculates correct squat value (Barrass)', () => {
 });
 
 test('calculates correct squat value (Huuska-Guliev)', () => {
-  const [squatHG, squatHGListed] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 5, 15, 20.1, 2.4);
+  const [squatHG, squatHGListed] = calculateSquatHG({
+    lengthBPP: 200,
+    breadth: 20,
+    draught: 20,
+    blockCoefficient: 0.75,
+    sweptDepth: 18,
+    waterLevel: 0,
+    fairwayFormIndex: 2,
+    channelWidth: 30,
+    slopeScale: 10,
+    slopeHeight: 5,
+    vesselSpeed: 15,
+    draughtDuringTurn: 20.1,
+    C0Coefficient: 2.4,
+  });
   expect(Number(squatHG.toFixed(2))).toEqual(1.49);
   expect(Number(squatHGListed.toFixed(2))).toEqual(1.5);
-  const [squatHG2, squatHGListed2] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 8, 15, 20.1, 2.4);
+
+  const [squatHG2, squatHGListed2] = calculateSquatHG({
+    lengthBPP: 200,
+    breadth: 20,
+    draught: 20,
+    blockCoefficient: 0.75,
+    sweptDepth: 18,
+    waterLevel: 0,
+    fairwayFormIndex: 2,
+    channelWidth: 30,
+    slopeScale: 10,
+    slopeHeight: 8,
+    vesselSpeed: 15,
+    draughtDuringTurn: 20.1,
+    C0Coefficient: 2.4,
+  });
   expect(Number(squatHG2.toFixed(2))).toEqual(1.49);
   expect(Number(squatHGListed2.toFixed(2))).toEqual(1.5);
-  const [squatHG3, squatHGListed3] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 10, 15, 20.1, 2.4);
+
+  const [squatHG3, squatHGListed3] = calculateSquatHG({
+    lengthBPP: 200,
+    breadth: 20,
+    draught: 20,
+    blockCoefficient: 0.75,
+    sweptDepth: 18,
+    waterLevel: 0,
+    fairwayFormIndex: 2,
+    channelWidth: 30,
+    slopeScale: 10,
+    slopeHeight: 10,
+    vesselSpeed: 15,
+    draughtDuringTurn: 20.1,
+    C0Coefficient: 2.4,
+  });
   expect(Number(squatHG3.toFixed(2))).toEqual(1.49);
   expect(Number(squatHGListed3.toFixed(2))).toEqual(1.5);
-  const [squatHG4, squatHGListed4] = calculateSquatHG(200, 20, 20, 0.75, 18, 0, 2, 30, 10, 14, 15, 20.1, 2.4);
+
+  const [squatHG4, squatHGListed4] = calculateSquatHG({
+    lengthBPP: 200,
+    breadth: 20,
+    draught: 20,
+    blockCoefficient: 0.75,
+    sweptDepth: 18,
+    waterLevel: 0,
+    fairwayFormIndex: 2,
+    channelWidth: 30,
+    slopeScale: 10,
+    slopeHeight: 14,
+    vesselSpeed: 15,
+    draughtDuringTurn: 20.1,
+    C0Coefficient: 2.4,
+  });
   expect(Number(squatHG4.toFixed(2))).toEqual(1.49);
   expect(Number(squatHGListed4.toFixed(2))).toEqual(1.5);
-  const [squatHG5, squatHGListed5] = calculateSquatHG(200, 15, 15, 0.75, 18, 0, 1, 30, 10, 10, 15, 20.1);
+
+  const [squatHG5, squatHGListed5] = calculateSquatHG({
+    lengthBPP: 200,
+    breadth: 15,
+    draught: 15,
+    blockCoefficient: 0.75,
+    sweptDepth: 18,
+    waterLevel: 0,
+    fairwayFormIndex: 1,
+    channelWidth: 30,
+    slopeScale: 10,
+    slopeHeight: 10,
+    vesselSpeed: 15,
+    draughtDuringTurn: 20.1,
+  });
   expect(Number(squatHG5.toFixed(2))).toEqual(3.05);
   expect(Number(squatHGListed5.toFixed(2))).toEqual(4.08);
 });

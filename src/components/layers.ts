@@ -273,7 +273,11 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
     return getSafetyEquipmentStyle(feature, 1, false);
-  } else if (ds === 'marinewarning') {
+  } else if (ds === 'coastalwarning') {
+    return getMarineWarningStyle(feature, false);
+  } else if (ds === 'localwarning') {
+    return getMarineWarningStyle(feature, false);
+  } else if (ds === 'boaterwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'harbor') {
     return getHarborStyle(feature, resolution, 3);
@@ -313,6 +317,7 @@ function addFeatureVectorLayer(
       opacity,
       renderOrder: undefined,
       zIndex,
+      visible: id !== 'mareograph' && id !== 'observation' && id !== 'buoy',
     })
   );
 }
@@ -501,7 +506,7 @@ export function addAPILayers(map: Map) {
   // Laiturit
   addFeatureVectorLayer(map, 'quay', undefined, 50, getSelectedStyle, undefined, 1, false, 304);
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
+  addFeatureVectorLayer(map, 'harbor', 300, 100, getHarborStyle, undefined, 1, true, 305);
 
   // Turvalaitteet
   addFeatureVectorLayer(
@@ -529,8 +534,10 @@ export function addAPILayers(map: Map) {
     true,
     309
   );
-  addFeatureVectorLayer(map, 'marinewarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
-
+  // Merivaroitukset
+  addFeatureVectorLayer(map, 'coastalwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
+  addFeatureVectorLayer(map, 'localwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
+  addFeatureVectorLayer(map, 'boaterwarning', undefined, 50, (feature) => getMarineWarningStyle(feature, false), undefined, 1, true, 310);
   // VTS linjat ja ilmoituspisteet
   addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
   addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
@@ -846,6 +853,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
     }
   }
+  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(true);
 }
 
 export function setSelectedPilotPlace(id?: number | string) {
