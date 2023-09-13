@@ -19,6 +19,7 @@ import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import SquatCalculator from './SquatCalculator';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -218,7 +219,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       modalContent &&
       modalContent !== 'fairwayCardList' &&
       modalContent !== 'safetyEquipmentFaultList' &&
-      modalContent !== 'marineWarningList'
+      modalContent !== 'marineWarningList' &&
+      modalContent !== 'squatCalculator'
     ) {
       setFairwayCardId(modalContent);
     } else {
@@ -296,6 +298,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
+        {modalContent === 'squatCalculator' && <SquatCalculator />}
       </IonContent>
     </IonModal>
   );

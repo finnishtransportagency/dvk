@@ -5,3 +5,5 @@ build
 capacitor.config.ts
 vite.config.ts
 coverage
+dist
+vite.lib.config.ts

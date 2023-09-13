@@ -8,7 +8,6 @@
       "safety-equipment-faults": "Defective Navigation Aids",
       "marine-warnings": "Navigational Warnings",
       "squat": "Squat calculator",
-      "squat-url": "/squat/index.html?lang=en",
       "customer-service": "Traffic customer service",
       "source": "Data sources and terms of use",
       "opens-in-a-new-tab": "Opens in a new tab"
@@ -418,6 +417,7 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Defective Navigation Aids",
     "marine-warnings": "Navigational Warnings",
+    "squat": "Squat Calculator",
     "fairway-cards": "Fairway Cards",
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab"

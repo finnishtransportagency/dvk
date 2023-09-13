@@ -70,6 +70,7 @@ import OfflineStatus from './components/OfflineStatus';
 import { DvkReducer, initialState } from './hooks/dvkReducer';
 import DvkContext, { useDvkContext } from './hooks/dvkContext';
 import { ContentModal } from './components/content/MainContentWithModal';
+import SquatCalculatorPage from './pages/SquatCalculatorPage';
 
 setupIonicReact({
   mode: 'md',
@@ -255,6 +256,9 @@ const DvkIonApp: React.FC = () => {
               </Route>
               <Route path="/merivaroitukset">
                 <MarineWarningPage setModalContent={setModalContent} />
+              </Route>
+              <Route path="/squat">
+                <SquatCalculatorPage setModalContent={setModalContent} />
               </Route>
               <Route path="/">
                 <HomePage setModalContent={setModalContent} />
