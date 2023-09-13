@@ -283,3 +283,5 @@ export const OFFLINE_STORAGE = {
   staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
   cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
+
+export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
