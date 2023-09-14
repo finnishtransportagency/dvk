@@ -10,6 +10,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { Link } from 'react-router-dom';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import uniqueId from 'lodash/uniqueId';
 
 type HarborPopupContentProps = {
   harbor: HarborProperties;
@@ -72,9 +73,10 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
           <IonRow>
             <IonCol>
               {t('popup.harbor.phoneNumber')}:{' '}
-              {harbor.properties.phoneNumber.map((p, i) => {
+              {harbor.properties.phoneNumber.map((p) => {
+                const uuid = uniqueId('phone_');
                 return (
-                  <span key={i}>
+                  <span key={uuid}>
                     <a href={'tel:' + p}>{p}</a>
                     <br />
                   </span>
