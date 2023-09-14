@@ -432,7 +432,7 @@ const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name)}
+                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name).toLocaleLowerCase()}
                 value={getSquatValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}
