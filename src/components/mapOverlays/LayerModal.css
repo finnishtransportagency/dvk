@@ -79,15 +79,18 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .line3456 {
   border-top: 2px solid var(--ion-color-layer-line);
   height: 1px;
+  top: 9px !important;
 }
 #layerModalContainer ion-item .boardline12 {
   border-top: 2px dashed var(--ion-color-layer-boardline);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-item .vtsline {
   border-top: 2px dashed var(--ion-color-layer-vts);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-item .vtspoint {
@@ -169,21 +172,25 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .depthcontour {
   border-top: 2px solid var(--ion-color-layer-depthcontour);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line1 {
   border-top: 2px dotted var(--ion-color-layer-depthcontour);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line2 {
   border-top: 2px dashed var(--ion-color-layer-depthcontour);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line3 {
   border-top: 2px solid var(--ion-color-layer-depthcontour);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-item .deptharea {
@@ -294,7 +301,7 @@ ion-modal#layerModalContainer::part(content) {
 
 #layerModalContainer ion-checkbox .layerLegend {
   position: absolute;
-  top: 0px;
+  top: 3px;
   right: 0px;
   display: inline-block;
 }
