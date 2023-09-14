@@ -272,7 +272,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, 1, false);
+    return getSafetyEquipmentStyle(feature, resolution, false, true);
   } else if (ds === 'coastalwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'localwarning') {
@@ -510,7 +510,7 @@ export function addAPILayers(map: Map) {
     'safetyequipment',
     undefined,
     50,
-    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
+    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false, feature.get('safetyEquipmentFaultList')),
     undefined,
     1,
     false,
@@ -547,7 +547,7 @@ export function addAPILayers(map: Map) {
     'safetyequipmentfault',
     undefined,
     50,
-    (feature) => getSafetyEquipmentStyle(feature, 1, false),
+    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false, true),
     undefined,
     1,
     false,
