@@ -13,11 +13,14 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-const Environment: React.FC = () => {
+interface EnvironmentProps {
+  limitedView: boolean;
+}
+
+const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.environment' });
   const tRoot = i18n.getFixedT(i18n.language);
   const { state, dispatch } = useSquatContext();
-  const { showLimitedView: limitedView } = state.status;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
@@ -343,7 +346,7 @@ const Environment: React.FC = () => {
           )}
           {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
             <>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column first">
                 <InputField
                   title={t('scale-of-slope')}
                   name="slopeScale"
@@ -356,7 +359,7 @@ const Environment: React.FC = () => {
                   actionType="environment-fairway"
                 />
               </IonCol>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column last">
                 <InputField
                   title={t('height-of-slope')}
                   name="slopeHeight"

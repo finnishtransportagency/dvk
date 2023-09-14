@@ -24,6 +24,11 @@ class ResizeObserver {
 global.ResizeObserver = ResizeObserver;
 const fetch = global.fetch;
 beforeAll(() => {
+  // @ts-ignore
+  window.SVGElement.prototype.getBBox = () => ({
+    x: 0,
+    y: 0,
+  });
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
       controller: vi.fn().mockImplementation(() => Promise.resolve()),
@@ -38,6 +43,11 @@ beforeAll(() => {
 
 afterAll(() => {
   global.fetch = fetch;
+});
+
+afterAll(() => {
+  // @ts-ignore
+  delete window.SVGElement.prototype.getBBox;
 });
 
 beforeEach(() => {
