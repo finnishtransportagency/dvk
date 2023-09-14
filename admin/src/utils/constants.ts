@@ -1,4 +1,4 @@
-import { GeometryPoint, PictureInput, PilotPlaceInput, Text } from '../graphql/generated';
+import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -99,6 +99,11 @@ export type SelectOption = {
   id: number | string | boolean;
   name?: Text | null;
   geometry?: GeometryPoint | null;
+};
+
+export type PictureGroup = {
+  groupId: number;
+  text: TextInput;
 };
 
 export const locales = ['fi', 'sv', 'en'];

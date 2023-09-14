@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, PictureGroup, ValidationType, ValueType } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -341,21 +341,33 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               msg: t(ErrorMessageKeys?.required),
             };
           }) ?? [];
-      const pictureTextErrors =
-        state.pictures
-          ?.flatMap((pic) =>
-            (pic.lang === 'fi' && !pic?.text?.trim()) || (pic.lang === 'sv' && !pic?.text?.trim()) || (pic.lang === 'en' && !pic?.text?.trim())
-              ? pic.groupId
-              : null
-          )
-          .filter((value, index, self) => self.findIndex((inner) => inner === value) === index)
-          .filter((val) => Number.isInteger(val))
-          .map((groupId) => {
-            return {
-              id: 'pictureText-' + groupId,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
+
+      const groupedPicTexts: PictureGroup[] = [];
+      state.pictures?.map((pic) => {
+        if (pic.groupId && !groupedPicTexts.some((p) => p.groupId === pic.groupId)) {
+          const currentGroup = state.pictures?.filter((p) => p.groupId === pic.groupId);
+          groupedPicTexts.push({
+            groupId: pic.groupId,
+            text: {
+              fi: currentGroup?.find((p) => p.lang === 'fi')?.text ?? '',
+              sv: currentGroup?.find((p) => p.lang === 'sv')?.text ?? '',
+              en: currentGroup?.find((p) => p.lang === 'en')?.text ?? '',
+            },
+          });
+        }
+      });
+      const pictureTextErrors = groupedPicTexts
+        .filter(
+          (pic) =>
+            (pic.text.fi.trim() || pic.text.sv.trim() || pic.text.en.trim()) && (!pic.text.fi.trim() || !pic.text.sv.trim() || !pic.text.en.trim())
+        )
+        .map((picGroup) => {
+          return {
+            id: 'pictureText-' + picGroup.groupId,
+            msg: t(ErrorMessageKeys?.required),
+          };
+        });
+
       allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors);
       setValidationErrors(allValidations);
     }

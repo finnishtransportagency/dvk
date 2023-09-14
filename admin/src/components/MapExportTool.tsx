@@ -28,7 +28,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, MAP, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -199,11 +199,6 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, pri
       </div>
     </div>
   );
-};
-
-type PictureGroup = {
-  groupId: number;
-  text: TextInput;
 };
 
 interface PrintImagesByModeProps {
