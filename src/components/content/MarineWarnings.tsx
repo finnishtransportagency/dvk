@@ -16,6 +16,7 @@ import './MarineWarnings.css';
 import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
+import uniqueId from 'lodash/uniqueId';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -125,9 +126,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('line12')
                             .getFeatureById(warning.lineId)
                             ?.getProperties()
-                            .fairways?.map((fairway: LineFairway, index: number) => {
+                            .fairways?.map((fairway: LineFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -136,9 +138,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('line3456')
                             .getFeatureById(warning.lineId)
                             ?.getProperties()
-                            .fairways?.map((fairway: LineFairway, index: number) => {
+                            .fairways?.map((fairway: LineFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -151,9 +154,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('area12')
                             .getFeatureById(warning.areaId)
                             ?.getProperties()
-                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                            .fairways?.map((fairway: AreaFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -162,9 +166,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('area3456')
                             .getFeatureById(warning.areaId)
                             ?.getProperties()
-                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                            .fairways?.map((fairway: AreaFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
