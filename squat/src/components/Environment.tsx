@@ -309,17 +309,11 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
             Extensive view (portrait 0, landscape 2) Limited view (portrait 2, landscape 4) */}
           {state.environment.fairway.fairwayForm === fairwayForms[0] && ( // form == Open Water
             <>
+              {limitedView && <IonCol size="6" />}
               <IonCol size="6" className="hide-portrait" />
               <IonCol size="6" className="hide-portrait" />
             </>
           )}
-          {limitedView &&
-            state.environment.fairway.fairwayForm === fairwayForms[0] && ( // form == Open Water
-              <>
-                <IonCol size="6" />
-                <IonCol size="6" />
-              </>
-            )}
           {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
             <IonCol size="12">
               <InputField
@@ -339,7 +333,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
             Extensive view (portrait 3, landscape 1) Limited view (portrait 1, landscape 3) */}
           {state.environment.fairway.fairwayForm === fairwayForms[1] && ( // form == Channel
             <>
-              <IonCol size="6" />
+              {!limitedView && <IonCol size="6" />}
               <IonCol size="6" className={limitedView ? 'hide-portrait' : 'hide-landscape'} />
               <IonCol size="6" className={limitedView ? 'hide-portrait' : 'hide-landscape'} />
             </>
@@ -379,18 +373,13 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
             Extensive view (portrait 1, landscape 5) Limited view (portrait 3, landscape 1) */}
           {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
             <>
-              <IonCol size="6" />
+              {!limitedView && <IonCol size="6" />}
               <IonCol size="6" className={limitedView ? 'hide-landscape' : 'hide-portrait'} />
               <IonCol size="6" className={limitedView ? 'hide-landscape' : 'hide-portrait'} />
+              {!limitedView && <IonCol size="6" className="hide-portrait" />}
+              {!limitedView && <IonCol size="6" className="hide-portrait" />}
             </>
           )}
-          {!limitedView &&
-            state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
-              <>
-                <IonCol size="6" className="hide-portrait" />
-                <IonCol size="6" className="hide-portrait" />
-              </>
-            )}
         </IonRow>
       </IonGrid>
 
@@ -447,14 +436,14 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
             </IonCol>
           )}
           <IonCol size="6" />
-          <IonCol size="6" className="hide-portrait" />
-          <IonCol size="6" className="hide-portrait" />
           {limitedView && (
             <>
               <IonCol size="6" />
               <IonCol size="6" />
             </>
           )}
+          <IonCol size="6" className="hide-portrait" />
+          <IonCol size="6" className="hide-portrait" />
         </IonRow>
       </IonGrid>
 
@@ -542,8 +531,6 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
               />
             </IonCol>
           )}
-          <IonCol size="6" className="hide-landscape" />
-          <IonCol size="6" className="hide-landscape" />
           {limitedView ? (
             <>
               <IonCol size="6" className="hide-portrait" />
@@ -554,6 +541,8 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
           ) : (
             <IonCol size="6" />
           )}
+          <IonCol size="6" className="hide-landscape" />
+          <IonCol size="6" className="hide-landscape" />
         </IonRow>
       </IonGrid>
     </>

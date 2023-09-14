@@ -7,6 +7,7 @@ import { Lang } from '../../utils/constants';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
+import uniqueId from 'lodash/uniqueId';
 
 type FairwayCardGroupProps = {
   data: FairwayCardPartsFragment[];
@@ -36,9 +37,10 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
           <IonCol>{t('modified')}</IonCol>
         </IonRow>
         {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
-        {sorted.map((fairwayCard, idx) => {
+        {sorted.map((fairwayCard) => {
+          const uuid = uniqueId('row_');
           return (
-            <IonRow key={idx} className="fairwayCards">
+            <IonRow key={uuid} className="fairwayCards">
               <IonCol>
                 <IonLabel>
                   <Link to={'/kortit/' + fairwayCard.id}>{fairwayCard.name[lang]}</Link>
