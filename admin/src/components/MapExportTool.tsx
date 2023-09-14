@@ -286,12 +286,14 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     const currentOrientation = picture.orientation;
     if (currentSequenceNumber) {
       const newSequencedPictures =
-        picturesExcludingSelected?.map((pic) => {
-          if (pic.orientation === currentOrientation && pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-            pic.sequenceNumber--;
-          }
-          return pic;
-        }) ?? [];
+        picturesExcludingSelected
+          ?.filter((pic) => pic.groupId !== picture.groupId && pic.sequenceNumber !== currentSequenceNumber)
+          .map((pic) => {
+            if (pic.orientation === currentOrientation && pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
+              pic.sequenceNumber--;
+            }
+            return pic;
+          }) ?? [];
       setPicture(newSequencedPictures, 'picture');
     } else {
       setPicture(picturesExcludingSelected, 'picture');
