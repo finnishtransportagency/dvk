@@ -29,7 +29,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
           {props.value}
         </IonText>
         {props.unit && (
-          <IonLabel color="medium" className="unit">
+          <IonLabel color={props.error ? 'danger' : 'medium'} className="unit">
             <span
               aria-label={t('unit.' + (props.unitId ? props.unitId : props.unit), {
                 count: Number((props.value || 0).toLocaleString(i18n.language)),

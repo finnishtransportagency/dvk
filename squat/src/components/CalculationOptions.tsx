@@ -57,8 +57,8 @@ const CalculationOptions: React.FC<CalculationOptionsProps> = ({ limitedView, em
   );
 
   return (
-    <div className={'calculation-options in-print top-padding' + (limitedView ? ' print-hide' : '')}>
-      {!embeddedView && (
+    <div className="calculation-options in-print top-padding">
+      {!limitedView && !embeddedView && (
         <>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
@@ -94,16 +94,14 @@ const CalculationOptions: React.FC<CalculationOptionsProps> = ({ limitedView, em
       </IonSegment>
 
       {!embeddedView && (
-        <>
-          <IonSegment onIonChange={handleSelectedViewChange} value={limitedView ? 'true' : 'false'} className="top-padding print-hide" selectOnFocus>
-            <IonSegmentButton value="false">
-              <IonLabel>{t('extensive-calculator')}</IonLabel>
-            </IonSegmentButton>
-            <IonSegmentButton value="true">
-              <IonLabel>{t('limited-calculator')}</IonLabel>
-            </IonSegmentButton>
-          </IonSegment>
-        </>
+        <IonSegment onIonChange={handleSelectedViewChange} value={limitedView ? 'true' : 'false'} className="top-padding print-hide" selectOnFocus>
+          <IonSegmentButton value="false">
+            <IonLabel>{t('extensive-calculator')}</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="true">
+            <IonLabel>{t('limited-calculator')}</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
       )}
     </div>
   );
