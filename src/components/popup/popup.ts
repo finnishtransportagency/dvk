@@ -260,7 +260,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
-      return getSafetyEquipmentStyle(feature, resolution, true, feature.get('safetyEquipmentFaultList'));
+      return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
     } else if (type === 'safetyequipmentfault') {
       return getSafetyEquipmentStyle(feature, resolution, true, true);
     } else if (type === 'marinewarning') {

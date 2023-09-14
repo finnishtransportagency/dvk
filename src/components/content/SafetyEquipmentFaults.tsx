@@ -16,6 +16,7 @@ import './SafetyEquipmentFaults.css';
 import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { useSafetyEquipmentLayer } from '../FeatureLoader';
+import { setSelectedSafetyEquipment } from '../layers';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -26,6 +27,7 @@ function goto(id: number) {
   const dvkMap = getMap();
   const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id);
   if (feature) {
+    setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
     if (feature && geometry) {
       const extent = olExtent.createEmpty();
@@ -150,25 +152,29 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   useEffect(() => {
     return () => {
       const dvkMap = getMap();
-      dvkMap.getVectorSource('safetyequipmentfault').clear();
-      dvkMap.getVectorSource('safetyequipment').forEachFeature((f) => {
-        f.set('safetyEquipmentFaultList', false, false);
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      equipmentSource.forEachFeature((f) => {
+        f.set('faultListStyle', false, true);
+        f.set('hoverStyle', false, true);
       });
+      equipmentSource.dispatchEvent('change');
+      dvkMap.getVectorSource('safetyequipmentfault').clear();
     };
   }, []);
 
   useEffect(() => {
-    console.log('hello dataUpdatedAt', safetyEquipmentLayer.dataUpdatedAt);
     if (safetyEquipmentLayer.ready) {
       const dvkMap = getMap();
-      const faultLayer = dvkMap.getVectorSource('safetyequipmentfault');
-      const safetyEquipments = dvkMap.getVectorSource('safetyequipment').getFeatures();
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+      const safetyEquipments = equipmentSource.getFeatures();
       // Set safetyEquipmentFaultList prop to change feature styling
-      safetyEquipments.forEach((f) => f.set('safetyEquipmentFaultList', !!f.get('faults'), false));
+      safetyEquipments.forEach((f) => f.set('faultListStyle', !!f.get('faults'), true));
+      equipmentSource.dispatchEvent('change');
       // Add equipment faults to separate layer
       const safetyEquipmentFaults = safetyEquipments.filter((feat) => !!feat.get('faults'));
-      faultLayer.clear();
-      faultLayer.addFeatures(safetyEquipmentFaults);
+      faultSource.clear();
+      faultSource.addFeatures(safetyEquipmentFaults);
     }
   }, [safetyEquipmentLayer.ready, safetyEquipmentLayer.dataUpdatedAt]);
 

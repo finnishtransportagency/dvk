@@ -510,7 +510,7 @@ export function addAPILayers(map: Map) {
     'safetyequipment',
     undefined,
     50,
-    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false, feature.get('safetyEquipmentFaultList')),
+    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), feature.get('faultListStyle')),
     undefined,
     1,
     false,
@@ -547,7 +547,7 @@ export function addAPILayers(map: Map) {
     'safetyequipmentfault',
     undefined,
     50,
-    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false, true),
+    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
     undefined,
     1,
     false,
@@ -916,4 +916,19 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
     }
   }
   quaySource.dispatchEvent('change');
+}
+
+export function setSelectedSafetyEquipment(id: number) {
+  const dvkMap = getMap();
+  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+  const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+
+  equipmentSource.forEachFeature((f) => {
+    f.set('hoverStyle', f.getId() === id, true);
+  });
+  faultSource.forEachFeature((f) => {
+    f.set('hoverStyle', f.getId() === id, true);
+  });
+  equipmentSource.dispatchEvent('change');
+  faultSource.dispatchEvent('change');
 }
