@@ -280,20 +280,23 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   };
 
   const deletePicture = (picture: PictureInput) => {
-    const picturesExcludingSelected = fairwayCardInput.pictures?.filter((pic) => pic.id !== picture.id) ?? [];
+    const picturesExcludingSelected =
+      fairwayCardInput.pictures?.filter((pic) => {
+        if (picture.groupId && pic.groupId === picture.groupId) return false;
+        if (pic.id === picture.id) return false;
+        return true;
+      }) ?? [];
     // If removed picture has a sequence number, reset also the sequence
     const currentSequenceNumber = picture.sequenceNumber;
     const currentOrientation = picture.orientation;
     if (currentSequenceNumber) {
       const newSequencedPictures =
-        picturesExcludingSelected
-          ?.filter((pic) => pic.groupId !== picture.groupId && pic.sequenceNumber !== currentSequenceNumber)
-          .map((pic) => {
-            if (pic.orientation === currentOrientation && pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-              pic.sequenceNumber--;
-            }
-            return pic;
-          }) ?? [];
+        picturesExcludingSelected.map((pic) => {
+          if (pic.orientation === currentOrientation && pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
+            pic.sequenceNumber--;
+          }
+          return pic;
+        }) ?? [];
       setPicture(newSequencedPictures, 'picture');
     } else {
       setPicture(picturesExcludingSelected, 'picture');
