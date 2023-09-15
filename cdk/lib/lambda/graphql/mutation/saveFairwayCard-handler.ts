@@ -122,6 +122,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           scaleWidth: mapString(p.scaleWidth, 20),
           text: mapString(p.text, 100),
           lang: mapString(p.lang, 2),
+          groupId: p.groupId ?? null,
         };
       }) ?? null,
   };

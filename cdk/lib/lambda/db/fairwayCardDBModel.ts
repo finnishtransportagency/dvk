@@ -73,6 +73,7 @@ export type Picture = {
   scaleLabel?: Maybe<string>;
   text?: Maybe<string>;
   lang?: Maybe<string>;
+  groupId?: Maybe<number>;
   modificationTimestamp?: Maybe<number>;
 };
 

@@ -82,6 +82,7 @@ input PictureInput {
   scaleLabel: String
   text: String
   lang: String
+  groupId: Float
   modificationTimestamp: Float
 }
 
@@ -241,6 +242,7 @@ type Picture {
   lang: String
   scaleLabel: String
   scaleWidth: String
+  groupId: Float
   modificationTimestamp: Float
 }
 

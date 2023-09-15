@@ -198,7 +198,7 @@ const FormInput: React.FC<InputProps> = ({
         helperText={isValid && (!error || error === '') ? getHelperText() : ''}
         errorText={getCombinedErrorAndHelperText(getHelperText(), getErrorText())}
         label={unit ? t('unit.' + unit) ?? '' : ''}
-        labelPlacement="end"
+        labelPlacement={unit ? 'end' : undefined}
         counter={true}
         counterFormatter={(inputLength, maxLength) => (inputLength > INPUT_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
       />
