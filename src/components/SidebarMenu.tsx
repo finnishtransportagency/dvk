@@ -29,6 +29,7 @@ import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import { changeSquatLanguage } from 'squatlib';
 import ToggleControl from './ToggleControl';
+import { useDvkContext } from '../hooks/dvkContext';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -64,6 +65,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const router = useIonRouter();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
+  const { state, dispatch } = useDvkContext();
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
     const isTabPressed = e.key === 'Tab';
@@ -197,7 +199,12 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 </IonRow>
                 <IonRow>
                   <IonCol size="12">
-                    <ToggleControl labelTitle={t('location-service')} labelText={t('location-description')} handleToggle={(c) => console.log(c)} />
+                    <ToggleControl
+                      checked={state.locationPermission}
+                      labelTitle={t('location-service')}
+                      labelText={t('location-description')}
+                      handleToggle={(val) => dispatch({ type: 'setLocationPermission', payload: { value: val } })}
+                    />
                   </IonCol>
                 </IonRow>
               </IonGrid>
