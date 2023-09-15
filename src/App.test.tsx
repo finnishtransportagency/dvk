@@ -388,3 +388,18 @@ it('should render marine warning page successfully', () => {
     expect(warningList).toBeInTheDocument();
   });
 });
+
+it('should render squat calculator page successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/squat/' } = {}) => {
+    window.history.pushState({}, 'Squat', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // Squat calculator container
+    const squatContainer = screen.getByTestId('squatCalculatorContainer');
+    expect(squatContainer).toBeInTheDocument();
+  });
+});
