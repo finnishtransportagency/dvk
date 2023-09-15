@@ -28,6 +28,7 @@ import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import { changeSquatLanguage } from 'squatlib';
+import ToggleControl from './ToggleControl';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
@@ -192,6 +193,11 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 <IonRow className="languageSelection">
                   <IonCol size="12">
                     <LanguageBar />
+                  </IonCol>
+                </IonRow>
+                <IonRow>
+                  <IonCol size="12">
+                    <ToggleControl labelTitle={t('location-service')} labelText={t('location-description')} handleToggle={(c) => console.log(c)} />
                   </IonCol>
                 </IonRow>
               </IonGrid>
