@@ -46,6 +46,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'harbor',
     'marinewarning',
     'safetyequipment',
+    'safetyequipmentfault',
     'observation',
     'buoy',
     'mareograph',
@@ -259,7 +260,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'line') {
       return getLineStyle('#0000FF', 2);
     } else if (type === 'safetyequipment') {
-      return getSafetyEquipmentStyle(feature, feature.get('safetyEquipmentFaultList') ? 1 : resolution, true);
+      return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
+    } else if (type === 'safetyequipmentfault') {
+      return getSafetyEquipmentStyle(feature, resolution, true, true);
     } else if (type === 'marinewarning') {
       return getMarineWarningStyle(feature, true);
     } else if (type === 'boardline') {
@@ -293,6 +296,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
+      dvkMap.getFeatureLayer('safetyequipmentfault'),
       dvkMap.getFeatureLayer('coastalwarning'),
       dvkMap.getFeatureLayer('localwarning'),
       dvkMap.getFeatureLayer('boaterwarning'),
@@ -328,6 +332,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('line12'),
       dvkMap.getFeatureLayer('line3456'),
       dvkMap.getFeatureLayer('safetyequipment'),
+      dvkMap.getFeatureLayer('safetyequipmentfault'),
       dvkMap.getFeatureLayer('coastalwarning'),
       dvkMap.getFeatureLayer('localwarning'),
       dvkMap.getFeatureLayer('boaterwarning'),
