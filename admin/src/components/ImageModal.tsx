@@ -14,7 +14,6 @@ interface ModalProps {
 
 const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen }) => {
   const { t, i18n } = useTranslation();
-  const lang = i18n.resolvedLanguage as Lang;
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
@@ -26,10 +25,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const compassNeedle = useRef<HTMLImageElement>(null);
 
   const getPictureTitle = () => {
-    if ((picture as PictureInput)?.text) {
-      return (picture as PictureInput).text;
-    } else if (fairwayCardInput.name[lang].length || fairwayCardInput.name.fi.length) {
-      return fairwayCardInput.name[lang] ?? fairwayCardInput.name.fi;
+    const picInput = picture as PictureInput;
+    if (picInput.text) {
+      return picInput.text;
+    } else if (picInput.lang) {
+      return fairwayCardInput.name[picInput.lang as Lang] ?? fairwayCardInput.name.fi;
     } else {
       return '(' + t('fairwaycard.name') + ')';
     }
