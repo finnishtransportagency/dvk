@@ -111,7 +111,7 @@ const SquatChart: React.FC = () => {
         if (breadth <= 0) return false;
         if (draught <= 0) return false;
         if (vesselSpeed < 0) return false;
-        if (sweptDepth <= draught) return false;
+        if (sweptDepth < draught) return false;
         if (state.status.showBarrass) return true;
         if (!isBetween(blockCoefficient, 0.6, 0.8)) return false;
         if (!isBetween(breadth / draught, 2.19, 3.5)) return false;

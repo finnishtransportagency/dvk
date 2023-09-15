@@ -31,7 +31,7 @@ const Squat: React.FC = () => {
             <Environment limitedView={showLimitedView} />
           </IonCol>
 
-          <IonCol size="12" sizeLg="4">
+          <IonCol size="12" sizeLg="4" className="block-in-print">
             <Calculations limitedView={showLimitedView} />
           </IonCol>
         </IonRow>

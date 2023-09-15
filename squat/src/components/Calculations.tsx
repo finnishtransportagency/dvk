@@ -280,7 +280,7 @@ const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
 
   return (
     <>
-      <div className="pagebreak"></div>
+      <div className={'pagebreak' + (limitedView ? ' hide-portrait' : '')}></div>
       <IonGrid className="ion-no-padding ion-no-margin">
         <IonRow>
           <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -432,7 +432,7 @@ const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
-                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name)}
+                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name).toLocaleLowerCase()}
                 value={getSquatValue().toLocaleString(i18n.language, {
                   maximumFractionDigits: 2,
                 })}

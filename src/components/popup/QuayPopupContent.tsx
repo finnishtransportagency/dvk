@@ -9,6 +9,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import uniqueId from 'lodash/uniqueId';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -85,9 +86,10 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
           <IonRow>
             <IonCol>
               {t('popup.quay.phoneNumber')}:{' '}
-              {quay.properties.phoneNumber.map((p, i) => {
+              {quay.properties.phoneNumber.map((p) => {
+                const uuid = uniqueId('phone_');
                 return (
-                  <span key={i}>
+                  <span key={uuid}>
                     <a href={'tel:' + p}>{p}</a>
                     <br />
                   </span>
