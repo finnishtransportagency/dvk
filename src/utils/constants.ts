@@ -185,6 +185,7 @@ export type FeatureDataLayerId =
   | 'harbor'
   | 'quay'
   | 'safetyequipment'
+  | 'safetyequipmentfault'
   | 'depth12'
   | 'coastalwarning'
   | 'localwarning'
