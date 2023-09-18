@@ -1063,7 +1063,7 @@ ion-grid.printInfo ol span.icon {
   background-size: 14px;
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: 12px;
+  border-radius: 50%;
   vertical-align: sub;
   box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.2);
 }
@@ -1081,6 +1081,12 @@ ion-grid.printInfo ol span.icon.target {
 }
 ion-grid.printInfo ol span.icon.takeScreenshot {
   background-image: url('./img/take_screenshot_icon.svg');
+}
+ion-grid.printInfo ol span.icon.select-image {
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: 1px solid var(--ion-color-primary);
 }
 
 ion-modal.image {
