@@ -42,13 +42,21 @@ import { radiansToDegrees } from '../utils/common';
 
 interface PrintInfoProps {
   orientation: Orientation;
+  isFull?: boolean;
 }
 
-export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
+export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation, isFull }) => {
   const { t } = useTranslation();
 
   return (
-    <Alert alertType="info" text={t('fairwaycard.print-images-info-ingress-' + orientation)} extraClass="printInfo">
+    <Alert
+      alertType="info"
+      text={
+        (isFull ? t('fairwaycard.print-images-info-ingress-1-' + orientation) + ' ' : '') +
+        t('fairwaycard.print-images-info-ingress-2-' + orientation)
+      }
+      extraClass="printInfo"
+    >
       <ol>
         <li>
           {t('fairwaycard.print-images-info-switch')} <span className={'icon orientation-' + orientation} />{' '}
@@ -65,6 +73,10 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation }) => {
         <li>
           {t('fairwaycard.print-images-info-take-image')} <span className="icon takeScreenshot" />{' '}
           {t('fairwaycard.print-images-info-set-image-button')}
+        </li>
+        <li>
+          {t('fairwaycard.print-images-info-select-image')} <span className="icon select-image" />{' '}
+          {t('fairwaycard.print-images-info-select-image-button')}
         </li>
       </ol>
     </Alert>
@@ -454,7 +466,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
               </IonRow>
             </IonGrid>
           )}
-          {!mainPictures?.length && !isLoading && <PrintInfo orientation={orientation} />}
+          {!mainPictures?.length && !isLoading && <PrintInfo orientation={orientation} isFull />}
         </IonCol>
       </IonRow>
     </IonGrid>
@@ -478,6 +490,8 @@ interface PrintImageProps {
 const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading, disabled, validationErrors }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
+
+  const dvkMap = getMap();
 
   const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
   const [showPicture, setShowPicture] = useState<PictureInput | ''>('');
@@ -519,7 +533,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
         orientation={Orientation.Portrait}
         disabled={disabled}
         setShowPicture={setShowPicture}
-        isLoading={isLoading}
+        isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
         validationErrors={validationErrors}
       />
 
@@ -548,7 +562,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
         orientation={Orientation.Landscape}
         disabled={disabled}
         setShowPicture={setShowPicture}
-        isLoading={isLoading}
+        isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
         validationErrors={validationErrors}
       />
     </>
