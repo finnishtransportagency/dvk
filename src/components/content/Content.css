@@ -194,7 +194,8 @@ h2 {
 .fairwayTitle h2 {
   line-height: 2rem;
 }
-.fairwayTitle em {
+.fairwayTitle em,
+.fairwayTitle a {
   font-size: 12px;
 }
 ion-text p {
