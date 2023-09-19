@@ -27,33 +27,8 @@ import fairwaysIcon from '../theme/img/fairways_icon.svg';
 import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
-import { changeSquatLanguage } from 'squatlib';
-import ToggleControl from './ToggleControl';
-import { useDvkContext } from '../hooks/dvkContext';
-
-const LanguageBar: React.FC = () => {
-  const { i18n } = useTranslation();
-
-  const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
-    i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
-    changeSquatLanguage(lang);
-    e.preventDefault();
-  };
-
-  return (
-    <IonButtons className="ion-justify-content-around">
-      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'fi')} disabled={i18n.language === 'fi'} data-testid="langFi">
-        Suomeksi
-      </IonButton>
-      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'sv')} disabled={i18n.language === 'sv'} data-testid="langSv">
-        På svenska
-      </IonButton>
-      <IonButton className="languageSelection" onClick={(e) => changeLanguage(e, 'en')} disabled={i18n.language === 'en'} data-testid="langEn">
-        In English
-      </IonButton>
-    </IonButtons>
-  );
-};
+import LocationPermissionControl from './LocationPermissionControl';
+import LanguageBar from './LanguageBar';
 
 type SidebarMenuProps = {
   isSourceOpen: boolean;
@@ -65,7 +40,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const router = useIonRouter();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
-  const { state, dispatch } = useDvkContext();
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
     const isTabPressed = e.key === 'Tab';
@@ -199,12 +173,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 </IonRow>
                 <IonRow>
                   <IonCol size="12">
-                    <ToggleControl
-                      checked={state.locationPermission}
-                      labelTitle={t('location-service')}
-                      labelText={t('location-description')}
-                      handleToggle={(val) => dispatch({ type: 'setLocationPermission', payload: { value: val } })}
-                    />
+                    <LocationPermissionControl />
                   </IonCol>
                 </IonRow>
               </IonGrid>

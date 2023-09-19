@@ -11,8 +11,8 @@
       "customer-service": "Traffic customer service",
       "source": "Data sources and terms of use",
       "opens-in-a-new-tab": "Opens in a new tab",
-      "location-service": "[sv] Sijaintipalvelu",
-      "location-description": "[sv] Mahdollistaa päätelaitteesi paikantamisen."
+      "location-service": "[en] Sijaintipalvelu",
+      "location-description": "[en] Mahdollistaa päätelaitteesi paikantamisen."
     },
     "map": {
       "controls": {
