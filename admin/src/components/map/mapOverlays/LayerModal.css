@@ -74,18 +74,22 @@ ion-modal#layerModalContainer .divider {
 #layerModalContainer ion-item .line3456 {
   border-top: 2px solid var(--ion-color-layer-line);
   height: 1px;
+  top: 9px !important;
 }
 #layerModalContainer ion-item .boardline12 {
   border-top: 2px dashed var(--ion-color-layer-boardline);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-item .vtsline {
   border-top: 2px dashed var(--ion-color-layer-vts);
   height: 1px;
+  top: 9px !important;
 }
 
 #layerModalContainer ion-item .vtspoint {
+  top: 0px !important;
   width: 16px;
   height: 16px;
   background: url('../../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
@@ -104,6 +108,7 @@ ion-modal#layerModalContainer .divider {
   background: var(--ion-color-dark);
   height: 24px;
   margin-bottom: 2px;
+  top: 0px !important;
 }
 #layerModalContainer ion-item .speedlimit {
   border: 2px solid var(--ion-color-layer-speedlimit-border);
@@ -139,18 +144,21 @@ ion-modal#layerModalContainer .divider {
 }
 
 #layerModalContainer ion-item .specialarea2 {
+  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../../theme/img/ankkurointialue.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .specialarea15 {
+  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../../theme/img/kohtaamiskielto_ikoni.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .pilot {
+  top: 0px !important;
   width: 16px;
   height: 16px;
   background: url('../../../theme/img/pilotPlace.svg') no-repeat center;
@@ -184,7 +192,7 @@ ion-modal#layerModalContainer .divider {
 
 #layerModalContainer ion-checkbox .layerLegend {
   position: absolute;
-  top: 0px;
+  top: 3px;
   right: 0px;
   display: inline-block;
 }
