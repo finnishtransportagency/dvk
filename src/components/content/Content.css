@@ -188,6 +188,9 @@ button.icon:focus-visible:hover {
   transform: scaleX(-1);
 }
 
+h2 {
+  margin-top: 16px;
+}
 .fairwayTitle h2 {
   line-height: 2rem;
 }
@@ -475,7 +478,7 @@ ion-segment.tabs ion-label h3 {
   font-size: 12px;
 }
 
-.contentModal .fairwayTitle h2 {
+.contentModal .ion-margin-top {
   margin-top: 10px;
 }
 
