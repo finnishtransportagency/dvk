@@ -156,6 +156,7 @@ ion-button.icon-only.small {
   height: 30px;
   width: 30px;
   vertical-align: top;
+  min-height: 30px;
 }
 ion-button.icon-only.x-small {
   --box-shadow: none;

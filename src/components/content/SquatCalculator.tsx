@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
-import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
+import { ReactComponent as PrintIcon } from '../../theme/img/print.svg';
 import {
   SquatChart,
   SquatReducer,
@@ -36,11 +37,30 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonText className="fairwayTitle" id="mainPageContent">
-        <h2 className="no-margin-bottom">
-          <strong>{t('common.squat')}</strong>
-        </h2>
-      </IonText>
+      <IonGrid className="ion-no-padding ion-margin-top">
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle" id="mainPageContent">
+              <h2 className="ion-no-margin">
+                <strong>{t('common.squat')}</strong>
+              </h2>
+            </IonText>
+          </IonCol>
+          <IonCol size="auto" className="ion-align-self-end">
+            <IonButton
+              fill="clear"
+              className="icon-only small no-mobile no-print"
+              onClick={() => window.print()}
+              title={t('common.print')}
+              aria-label={t('common.print')}
+              role="button"
+              data-testid="printButton"
+            >
+              <PrintIcon />
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
 
       <SquatContext.Provider value={providerState}>
         <div id="squatCalculatorContainer" className="squatCalculatorContainer show-print" data-testid="squatCalculatorContainer">
