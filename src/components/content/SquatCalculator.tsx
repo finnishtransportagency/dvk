@@ -16,13 +16,15 @@ import {
 } from 'squatlib';
 import 'squatlib/dist/style.css';
 import './SquatCalculator.css';
+import { Lang } from '../../utils/constants';
 
 type SquatCalculatorProps = {
   widePane?: boolean;
 };
 
 const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
   const path = [{ title: t('common.squat') }];
   const [state, dispatch] = React.useReducer(SquatReducer, initialState);
   const providerState = useMemo(
@@ -58,6 +60,21 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
             >
               <PrintIcon />
             </IonButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonText className="fairwayTitle">
+              <a
+                href={'/squat/' + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang)}
+                rel="noreferrer"
+                target="_blank"
+                className="ion-no-padding external"
+              >
+                {t('common.extensive-squat')}
+                <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
+              </a>
+            </IonText>
           </IonCol>
         </IonRow>
       </IonGrid>
