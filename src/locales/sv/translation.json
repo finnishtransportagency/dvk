@@ -421,7 +421,8 @@
     "fairway-cards": "Farledskort",
     "skip-to-content": "Gå till huvudinnehåll",
     "opens-in-a-new-tab": "Öppnas i en ny flik",
-    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan."
+    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
+    "print": "Skriva ut sidan"
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

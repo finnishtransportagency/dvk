@@ -51,8 +51,8 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
               fill="clear"
               className="icon-only small no-mobile no-print"
               onClick={() => window.print()}
-              title={t('print')}
-              aria-label={t('print')}
+              title={t('common.print')}
+              aria-label={t('common.print')}
               role="button"
               data-testid="printButton"
             >
