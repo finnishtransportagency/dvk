@@ -37,11 +37,11 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonGrid className="ion-no-padding">
+      <IonGrid className="ion-no-padding ion-margin-top">
         <IonRow>
           <IonCol>
             <IonText className="fairwayTitle" id="mainPageContent">
-              <h2 className="no-margin-bottom">
+              <h2 className="ion-no-margin">
                 <strong>{t('common.squat')}</strong>
               </h2>
             </IonText>

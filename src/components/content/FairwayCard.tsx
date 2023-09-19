@@ -866,7 +866,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonBreadcrumbs>
             <IonSkeletonText animated={true} style={{ width: '100%', height: widePane ? '24px' : '48px', margin: '0' }}></IonSkeletonText>
           </IonBreadcrumbs>
-          <IonText>
+          <IonText className="fairwayTitle">
             <h2 className="no-margin-bottom">
               <IonSkeletonText animated={true} style={{ width: '100%', height: '30px' }}></IonSkeletonText>
             </h2>
@@ -881,11 +881,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
         <>
           <Breadcrumb path={path} />
 
-          <IonGrid className="ion-no-padding">
+          <IonGrid className="ion-no-padding ion-margin-top">
             <IonRow>
               <IonCol>
                 <IonText className="fairwayTitle" id="mainPageContent">
-                  <h2 className="no-margin-bottom">
+                  <h2 className="ion-no-margin">
                     <strong>{fairwayCard?.name[lang]}</strong>
                   </h2>
                 </IonText>
