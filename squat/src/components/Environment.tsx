@@ -13,11 +13,14 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-const Environment: React.FC = () => {
+interface EnvironmentProps {
+  limitedView: boolean;
+}
+
+const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.environment' });
   const tRoot = i18n.getFixedT(i18n.language);
   const { state, dispatch } = useSquatContext();
-  const { showLimitedView: limitedView } = state.status;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
@@ -59,6 +62,15 @@ const Environment: React.FC = () => {
     }
     return undefined;
   };
+  const isAllValid = (fields: string[]) => {
+    for (const field of fields) {
+      if (!isFieldValid(field)) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   const setFieldClass = (name: string) => {
     if (isFieldValid(name) === undefined) return '';
     return isFieldValid(name) ? 'ion-valid' : 'ion-invalid';
@@ -73,6 +85,21 @@ const Environment: React.FC = () => {
     const currentValue = state.environment.weather.waveAmplitude[state.status.showDeepWaterValues ? 1 : 0];
     return isNaN(currentValue) ? 0 : currentValue;
   };
+
+  function getValueOrNull<T>(value: T | undefined | null): T | null {
+    return value !== undefined ? value : null;
+  }
+
+  function getFairwayFormOrderForId(id: number) {
+    switch (id) {
+      case 2:
+        return '3';
+      case 3:
+        return '2';
+      default:
+        return id;
+    }
+  }
 
   return (
     <>
@@ -92,7 +119,7 @@ const Environment: React.FC = () => {
                 <InputField
                   title={t('set-wind-speed')}
                   name="windSpeed"
-                  value={state.environment.weather.windSpeed ? state.environment.weather.windSpeed : null}
+                  value={getValueOrNull(state.environment.weather.windSpeed)}
                   placeholder="0"
                   min={fieldParams.windSpeed.min}
                   max={fieldParams.windSpeed.max}
@@ -105,7 +132,7 @@ const Environment: React.FC = () => {
                 <InputField
                   title={t('set-true-wind-or-wave-direction')}
                   name="windDirection"
-                  value={state.environment.weather.windDirection ? state.environment.weather.windDirection : null}
+                  value={getValueOrNull(state.environment.weather.windDirection)}
                   placeholder={zero.toString().padStart(3, '0')}
                   min={fieldParams.windDirection.min}
                   max={fieldParams.windDirection.max}
@@ -119,7 +146,7 @@ const Environment: React.FC = () => {
                 <InputField
                   title={t('set-wave-height')}
                   name="waveHeight"
-                  value={state.environment.weather.waveHeight ? state.environment.weather.waveHeight : null}
+                  value={getValueOrNull(state.environment.weather.waveHeight)}
                   placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   min={fieldParams.waveHeight.min}
                   max={fieldParams.waveHeight.max}
@@ -133,7 +160,7 @@ const Environment: React.FC = () => {
                 <InputField
                   title={t('set-wave-period')}
                   name="wavePeriod"
-                  value={state.environment.weather.wavePeriod ? state.environment.weather.wavePeriod : null}
+                  value={getValueOrNull(state.environment.weather.wavePeriod)}
                   placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                   min={fieldParams.wavePeriod.min}
                   max={fieldParams.wavePeriod.max}
@@ -169,10 +196,9 @@ const Environment: React.FC = () => {
       <SectionTitle
         title={t('fairway')}
         valid={
-          isFieldValid('sweptDepth') &&
-          isFieldValid('waterDepth') &&
+          isAllValid(['sweptDepth', 'waterDepth']) &&
           (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth') : true) &&
-          (state.environment.fairway.fairwayForm === fairwayForms[2] ? isFieldValid('slopeScale') && isFieldValid('slopeHeight') : true)
+          (state.environment.fairway.fairwayForm === fairwayForms[2] ? isAllValid(['slopeScale', 'slopeHeight']) : true)
         }
       />
       <IonGrid className="no-padding">
@@ -181,7 +207,7 @@ const Environment: React.FC = () => {
             <InputField
               title={t('swept-depth')}
               name="sweptDepth"
-              value={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : null}
+              value={getValueOrNull(state.environment.fairway.sweptDepth)}
               placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
               min={state.vessel.general.draught ? Math.ceil(state.vessel.general.draught * 10) / 10 : fieldParams.sweptDepth.min}
               max={fieldParams.sweptDepth.max}
@@ -198,7 +224,7 @@ const Environment: React.FC = () => {
             <InputField
               title={t('water-level')}
               name="waterLevel"
-              value={state.environment.fairway.waterLevel ? state.environment.fairway.waterLevel : null}
+              value={getValueOrNull(state.environment.fairway.waterLevel)}
               placeholder="0"
               min={fieldParams.waterLevel.min}
               max={fieldParams.waterLevel.max}
@@ -214,7 +240,7 @@ const Environment: React.FC = () => {
               <InputField
                 title={t('estimated-water-depth')}
                 name="waterDepth"
-                value={state.environment.fairway.waterDepth ? state.environment.fairway.waterDepth : null}
+                value={getValueOrNull(state.environment.fairway.waterDepth)}
                 placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}
                 min={state.environment.fairway.sweptDepth ? state.environment.fairway.sweptDepth : fieldParams.waterDepth.min}
                 max={fieldParams.waterDepth.max}
@@ -250,7 +276,7 @@ const Environment: React.FC = () => {
                         <IonRow key={option.id}>
                           <IonCol size="4">
                             <IonLabel>
-                              {option.id === 2 ? '3' : option.id === 3 ? '2' : option.id}. &nbsp; {tRoot(option.name).toString()}
+                              {getFairwayFormOrderForId(option.id)}. &nbsp; {tRoot(option.name).toString()}
                             </IonLabel>
                           </IonCol>
                           <IonCol size="8">
@@ -269,7 +295,7 @@ const Environment: React.FC = () => {
                           <IonCol key={option.id} className="align-center">
                             <IonImg src={option.img} />
                             <p>
-                              {option.id === 2 ? '3' : option.id === 3 ? '2' : option.id}. {tRoot(option.name).toString()}
+                              {getFairwayFormOrderForId(option.id)}. {tRoot(option.name).toString()}
                             </p>
                           </IonCol>
                         ))}
@@ -283,17 +309,11 @@ const Environment: React.FC = () => {
             Extensive view (portrait 0, landscape 2) Limited view (portrait 2, landscape 4) */}
           {state.environment.fairway.fairwayForm === fairwayForms[0] && ( // form == Open Water
             <>
+              {limitedView && <IonCol size="6" />}
               <IonCol size="6" className="hide-portrait" />
               <IonCol size="6" className="hide-portrait" />
             </>
           )}
-          {limitedView &&
-            state.environment.fairway.fairwayForm === fairwayForms[0] && ( // form == Open Water
-              <>
-                <IonCol size="6" />
-                <IonCol size="6" />
-              </>
-            )}
           {state.environment.fairway.fairwayForm !== fairwayForms[0] && ( // form != Open Water
             <IonCol size="12">
               <InputField
@@ -313,14 +333,14 @@ const Environment: React.FC = () => {
             Extensive view (portrait 3, landscape 1) Limited view (portrait 1, landscape 3) */}
           {state.environment.fairway.fairwayForm === fairwayForms[1] && ( // form == Channel
             <>
-              <IonCol size="6" />
+              {!limitedView && <IonCol size="6" />}
               <IonCol size="6" className={limitedView ? 'hide-portrait' : 'hide-landscape'} />
               <IonCol size="6" className={limitedView ? 'hide-portrait' : 'hide-landscape'} />
             </>
           )}
           {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
             <>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column first">
                 <InputField
                   title={t('scale-of-slope')}
                   name="slopeScale"
@@ -333,7 +353,7 @@ const Environment: React.FC = () => {
                   actionType="environment-fairway"
                 />
               </IonCol>
-              <IonCol size="6">
+              <IonCol size="6" className="inner-column last">
                 <InputField
                   title={t('height-of-slope')}
                   name="slopeHeight"
@@ -353,26 +373,19 @@ const Environment: React.FC = () => {
             Extensive view (portrait 1, landscape 5) Limited view (portrait 3, landscape 1) */}
           {state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
             <>
-              <IonCol size="6" />
+              {!limitedView && <IonCol size="6" />}
               <IonCol size="6" className={limitedView ? 'hide-landscape' : 'hide-portrait'} />
               <IonCol size="6" className={limitedView ? 'hide-landscape' : 'hide-portrait'} />
+              {!limitedView && <IonCol size="6" className="hide-portrait" />}
+              {!limitedView && <IonCol size="6" className="hide-portrait" />}
             </>
           )}
-          {!limitedView &&
-            state.environment.fairway.fairwayForm === fairwayForms[2] && ( // form == Sloped Channel
-              <>
-                <IonCol size="6" className="hide-portrait" />
-                <IonCol size="6" className="hide-portrait" />
-              </>
-            )}
         </IonRow>
       </IonGrid>
 
       <SectionTitle
         title={t('vessel')}
-        valid={
-          limitedView ? isFieldValid('vesselSpeed') : isFieldValid('vesselCourse') && isFieldValid('vesselSpeed') && isFieldValid('turningRadius')
-        }
+        valid={limitedView ? isFieldValid('vesselSpeed') : isAllValid(['vesselCourse', 'vesselSpeed', 'turningRadius'])}
       />
       <IonGrid className="no-padding">
         <IonRow class="input-row">
@@ -396,7 +409,7 @@ const Environment: React.FC = () => {
             <InputField
               title={t('set-vessel-speed')}
               name="vesselSpeed"
-              value={state.environment.vessel.vesselSpeed ? state.environment.vessel.vesselSpeed : null}
+              value={getValueOrNull(state.environment.vessel.vesselSpeed)}
               placeholder="0"
               min={fieldParams.vesselSpeed.min}
               max={fieldParams.vesselSpeed.max}
@@ -423,23 +436,21 @@ const Environment: React.FC = () => {
             </IonCol>
           )}
           <IonCol size="6" />
-          <IonCol size="6" className="hide-portrait" />
-          <IonCol size="6" className="hide-portrait" />
           {limitedView && (
             <>
               <IonCol size="6" />
               <IonCol size="6" />
             </>
           )}
+          <IonCol size="6" className="hide-portrait" />
+          <IonCol size="6" className="hide-portrait" />
         </IonRow>
       </IonGrid>
 
       <SectionTitle
         title={t('attribute')}
         valid={
-          limitedView
-            ? isFieldValid('requiredUKC') && isFieldValid('motionClearance')
-            : isFieldValid('airDensity') && isFieldValid('waterDensity') && isFieldValid('requiredUKC') && isFieldValid('motionClearance')
+          limitedView ? isAllValid(['requiredUKC', 'motionClearance']) : isAllValid(['airDensity', 'waterDensity', 'requiredUKC', 'motionClearance'])
         }
       />
       <IonGrid className="no-padding">
@@ -520,8 +531,6 @@ const Environment: React.FC = () => {
               />
             </IonCol>
           )}
-          <IonCol size="6" className="hide-landscape" />
-          <IonCol size="6" className="hide-landscape" />
           {limitedView ? (
             <>
               <IonCol size="6" className="hide-portrait" />
@@ -532,6 +541,8 @@ const Environment: React.FC = () => {
           ) : (
             <IonCol size="6" />
           )}
+          <IonCol size="6" className="hide-landscape" />
+          <IonCol size="6" className="hide-landscape" />
         </IonRow>
       </IonGrid>
     </>

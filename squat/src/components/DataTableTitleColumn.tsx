@@ -6,7 +6,7 @@ interface Props {
 }
 const DataTableTitleColumn: React.FC<Props> = (props) => {
   return (
-    <IonCol size="2" className="titleCol">
+    <IonCol size="3" className="titleCol">
       <IonLabel>{props.value}</IonLabel>
     </IonCol>
   );

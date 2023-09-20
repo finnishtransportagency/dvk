@@ -193,7 +193,11 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   let text;
   const dvkMap = getMap();
   if (props.name) {
-    text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
+    if (dvkMap.getMapLanguage()) {
+      text = props.name[dvkMap.getMapLanguage() as Lang] as string;
+    } else {
+      text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
+    }
   } else {
     text = '';
   }

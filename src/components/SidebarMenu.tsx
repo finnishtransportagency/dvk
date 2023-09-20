@@ -22,20 +22,19 @@ import vayla_logo from '../theme/img/vayla_logo.png';
 import vayla_logo_en from '../theme/img/vayla_logo_en.png';
 import './SidebarMenu.css';
 import OfflineSupport from './OfflineSupport';
-import { useDvkContext } from '../hooks/dvkContext';
 import closeIcon from '../theme/img/close_black_24dp.svg';
 import fairwaysIcon from '../theme/img/fairways_icon.svg';
 import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
-import extLinkIcon from '../theme/img/ext_link.svg';
-import { getAssetUrl } from '../utils/common';
+import { changeSquatLanguage } from 'squatlib';
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
     i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
+    changeSquatLanguage(lang);
     e.preventDefault();
   };
 
@@ -62,7 +61,6 @@ type SidebarMenuProps = {
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const router = useIonRouter();
-  const { state } = useDvkContext();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
 
@@ -121,7 +119,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       title={t('closeMenu')}
                       aria-label={t('closeMenu')}
                     >
-                      <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
+                      <IonIcon className="otherIconLarge" src={closeIcon} />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -143,7 +141,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(fairwaysIcon)} />
+                      <IonIcon slot="start" src={fairwaysIcon} />
                       {t('fairway-cards')}
                     </IonItem>
                   </IonCol>
@@ -157,7 +155,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(alertIcon)} />
+                      <IonIcon slot="start" src={alertIcon} />
                       {t('safety-equipment-faults')}
                     </IonItem>
                   </IonCol>
@@ -171,28 +169,23 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
                     >
-                      <IonIcon slot="start" src={getAssetUrl(weatherIcon)} />
+                      <IonIcon slot="start" src={weatherIcon} />
                       {t('marine-warnings')}
                     </IonItem>
                   </IonCol>
                   <IonCol size="auto">
                     <IonItem
                       id="squatlink"
-                      href={t('squat-url')}
-                      rel="external"
-                      target="_blank"
+                      routerLink="/squat/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding external"
+                      className="ion-no-padding internal"
                       onClick={async () => menuController.close()}
                       data-testid="squatLink"
-                      disabled={state.isOffline}
-                      tabIndex={state.isOffline ? -1 : undefined}
+                      disabled={router.routeInfo.pathname === '/squat/'}
                     >
-                      <IonIcon slot="start" src={getAssetUrl(calculateIcon)} />
+                      <IonIcon slot="start" src={calculateIcon} />
                       {t('squat')}
-                      <IonIcon slot="end" src={getAssetUrl(extLinkIcon)} />
-                      <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                     </IonItem>
                   </IonCol>
                 </IonRow>

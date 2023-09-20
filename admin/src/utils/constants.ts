@@ -1,4 +1,4 @@
-import { GeometryPoint, PictureInput, PilotPlaceInput, Text } from '../graphql/generated';
+import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -80,7 +80,8 @@ export type FairwayCardActionType =
   | 'vhf'
   | 'vhfName'
   | 'vhfChannel'
-  | 'picture';
+  | 'picture'
+  | 'pictureDescription';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -99,6 +100,13 @@ export type SelectOption = {
   name?: Text | null;
   geometry?: GeometryPoint | null;
 };
+
+export type PictureGroup = {
+  groupId: number;
+  text: TextInput;
+};
+
+export const locales = ['fi', 'sv', 'en'];
 
 export const INPUT_MAXLENGTH = 200;
 export const TEXTAREA_MAXLENGTH = 2000;

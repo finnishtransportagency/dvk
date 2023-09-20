@@ -3,7 +3,7 @@ import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonI
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties, getAssetUrl, hasOfflineSupport } from '../../utils/common';
+import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
@@ -11,6 +11,7 @@ import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
+import type { CheckboxCustomEvent } from '@ionic/react';
 
 const LegendDepth = () => {
   return (
@@ -283,13 +284,12 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  layers: string[];
-  setLayers: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   const { t } = useTranslation();
-  const { state } = useDvkContext();
+  const { state, dispatch } = useDvkContext();
+  const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
   const [legends, setLegends] = useState<string[]>([]);
   const dvkMap = getMap();
@@ -312,16 +312,25 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (id === 'mareograph' || id === 'buoy' || id === 'observation' || id === 'marinewarning') {
-    alertProps = getAlertProperties(dataUpdatedAt, id);
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning'].includes(id)) {
+    const errorUpdatedAt = dvkMap.getFeatureLayer(id).get('errorUpdatedAt');
+    if (errorUpdatedAt) {
+      alertProps = getAlertProperties(dataUpdatedAt, id);
+    }
   }
-  const initialized = !!dataUpdatedAt || id === 'ice' || id === 'depthcontour' || id === 'deptharea' || id === 'soundingpoint';
-  const disabled = !initialized || (!hasOfflineSupport(id) && state.isOffline);
+  const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'depthArea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
+  const disabled = !initialized || (!hasOfflineSupport(id) && isOffline);
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
     return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
   }, [alertProps, t]);
+
+  const handleChange = (event: CheckboxCustomEvent) => {
+    const { checked } = event.detail;
+    const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
+    dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+  };
 
   return (
     <IonGrid className="ion-no-padding layerItem">
@@ -333,14 +342,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               value={id}
               checked={layers.includes(id)}
               slot="start"
-              onIonChange={() =>
-                setLayers((prev) => {
-                  if (prev.includes(id)) {
-                    return [...prev.filter((p) => p !== id)];
-                  }
-                  return [...prev, id];
-                })
-              }
+              onIonChange={handleChange}
               disabled={disabled}
               labelPlacement="end"
             >
@@ -359,7 +361,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               aria-label={legendOpen || legends.includes(id) ? t('common.close') : t('common.open')}
               onClick={() => toggleDetails()}
             >
-              <IonIcon icon={getAssetUrl(arrowDownIcon)} />
+              <IonIcon icon={arrowDownIcon} />
             </IonButton>
           )}
         </IonCol>

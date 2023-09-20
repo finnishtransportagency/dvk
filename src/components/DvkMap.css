@@ -38,7 +38,7 @@
 
 .dvkMap .openSidebarMenuControlContainer {
   left: 48px;
-  top: 48px;
+  top: 50px;
   background: transparent;
 }
 .dvkMap.mobile .openSidebarMenuControlContainer {
@@ -47,8 +47,8 @@
 }
 
 .dvkMap .searchbarControlContainer {
-  left: 112px;
-  top: 47px;
+  left: 110px;
+  top: 48px;
   background: var(--ion-color-dark);
   padding: 1px;
   border-radius: 0;
@@ -132,6 +132,7 @@
 .dvkMap .ol-control > button {
   width: 40px;
   height: 40px;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -143,7 +144,7 @@
   border-radius: 20px;
 }
 
-.dvkMap .ol-zoom-in {
+.dvkMap .ol-control > button.ol-zoom-in {
   background-image: url('../theme/img/zoomIn.svg');
   background-size: 18px 18px;
   margin-bottom: 16px;

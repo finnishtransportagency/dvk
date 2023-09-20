@@ -14,6 +14,9 @@ import { getAlertProperties } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 import * as olExtent from 'ol/extent';
+import { useDvkContext } from '../../hooks/dvkContext';
+import { useSafetyEquipmentLayer } from '../FeatureLoader';
+import { setSelectedSafetyEquipment } from '../layers';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -22,23 +25,15 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
-  const safetyEquipmentSource = dvkMap.getVectorSource('safetyequipment');
-  let feature = safetyEquipmentSource.getFeatureById(id);
+  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id);
   if (feature) {
-    safetyEquipmentSource.addFeatures(quaySource.getFeatures());
-    quaySource.clear();
-    feature.set('safetyEquipmentFaultList', true, true);
-    quaySource.addFeature(feature);
-    safetyEquipmentSource.removeFeature(feature);
-  } else {
-    feature = quaySource.getFeatureById(id);
-  }
-  const geometry = feature?.getGeometry();
-  if (feature && geometry) {
-    const extent = olExtent.createEmpty();
-    olExtent.extend(extent, geometry.getExtent());
-    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    setSelectedSafetyEquipment(id);
+    const geometry = feature.getGeometry();
+    if (feature && geometry) {
+      const extent = olExtent.createEmpty();
+      olExtent.extend(extent, geometry.getExtent());
+      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    }
   }
 }
 
@@ -57,16 +52,12 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipments = getMap().getVectorSource('safetyequipment');
-  const equipments2 = getMap().getVectorSource('quay');
+  const equipmentSource = getMap().getVectorSource('safetyequipment');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        let feature = equipments.getFeatureById(faultArray[0].equipmentId);
-        if (!feature) {
-          feature = equipments2.getFeatureById(faultArray[0].equipmentId);
-        }
+        const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId);
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
@@ -150,6 +141,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
+  const { state } = useDvkContext();
+  const safetyEquipmentLayer = useSafetyEquipmentLayer();
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
@@ -159,15 +152,35 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   useEffect(() => {
     return () => {
       const dvkMap = getMap();
-      const source = dvkMap.getVectorSource('quay');
-      const target = dvkMap.getVectorSource('safetyequipment');
-      source.forEachFeature((f) => {
-        f.set('safetyEquipmentFaultList', false, true);
-        target.addFeature(f);
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      equipmentSource.forEachFeature((f) => {
+        f.set('faultListStyle', false, true);
+        f.set('hoverStyle', false, true);
       });
-      source.clear();
+      equipmentSource.dispatchEvent('change');
+      dvkMap.getVectorSource('safetyequipmentfault').clear();
     };
   }, []);
+
+  useEffect(() => {
+    if (safetyEquipmentLayer.ready) {
+      const dvkMap = getMap();
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+      const safetyEquipments = equipmentSource.getFeatures();
+      // Set safetyEquipmentFaultList prop to change feature styling
+      safetyEquipments.forEach((f) => f.set('faultListStyle', !!f.get('faults'), true));
+      equipmentSource.dispatchEvent('change');
+      // Add equipment faults to separate layer
+      const safetyEquipmentFaults = safetyEquipments.filter((feat) => !!feat.get('faults'));
+      faultSource.clear();
+      faultSource.addFeatures(safetyEquipmentFaults);
+    }
+  }, [safetyEquipmentLayer.ready, safetyEquipmentLayer.dataUpdatedAt]);
+
+  useEffect(() => {
+    getMap().getFeatureLayer('safetyequipmentfault').setVisible(!state.layers.includes('safetyequipment'));
+  }, [state.layers]);
 
   return (
     <>

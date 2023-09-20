@@ -1,26 +1,26 @@
-ion-text h1 {
+.squat ion-text h1 {
   font-size: 2.2rem;
 }
 
-ion-text .h2,
-ion-text h2 {
+.squat ion-text .h2,
+.squat ion-text h2 {
   font-size: 1.5rem;
 }
 
-ion-text .h3,
-ion-text h3 {
+.squat ion-text .h3,
+.squat ion-text h3 {
   font-size: 1rem;
 }
 
-ion-text .h4,
-ion-text h4 {
+.squat ion-text .h4,
+.squat ion-text h4 {
   font-size: 1rem;
 }
 
-ion-text.equal-margin-top > * {
+.squat ion-text.equal-margin-top > * {
   margin-top: 10px;
 }
-ion-text.no-margin > * {
+.squat ion-text.no-margin > * {
   margin: 0;
 }
 
@@ -353,25 +353,25 @@ ion-icon.medium {
 }
 
 /* Segment buttons */
-ion-segment {
+.squat ion-segment {
   background: none;
   padding-bottom: 1px;
   padding-right: 1px;
 }
-ion-segment-button {
+.squat ion-segment-button {
   height: 34px;
   min-height: auto;
   flex-basis: 50%;
 }
-ion-segment-button:first-child,
-ion-segment-button:first-child::part(native) {
+.squat ion-segment-button:first-child,
+.squat ion-segment-button:first-child::part(native) {
   border-radius: 20px 0 0 20px;
 }
-ion-segment-button:last-child,
-ion-segment-button:last-child::part(native) {
+.squat ion-segment-button:last-child,
+.squat ion-segment-button:last-child::part(native) {
   border-radius: 0 20px 20px 0;
 }
-ion-segment-button ion-label {
+.squat ion-segment-button ion-label {
   color: var(--ion-color-dark);
   white-space: normal;
   line-height: 1;
@@ -379,42 +379,42 @@ ion-segment-button ion-label {
   font-size: 16px;
   overflow: visible;
 }
-ion-segment-button.segment-button-checked {
+.squat ion-segment-button.segment-button-checked {
   background: none;
 }
-ion-segment-button.segment-button-checked ion-label {
+.squat ion-segment-button.segment-button-checked ion-label {
   color: var(--ion-color-primary-contrast);
 }
-ion-segment-button::part(native) {
+.squat ion-segment-button::part(native) {
   text-transform: none;
 }
-ion-segment-button.segment-button-checked::part(native) {
+.squat ion-segment-button.segment-button-checked::part(native) {
   font-weight: 600;
 }
-ion-segment-button::part(indicator) {
+.squat ion-segment-button::part(indicator) {
   top: 0;
   opacity: 1 !important;
   padding-inline: 0 !important;
 }
-ion-segment-button::part(indicator-background) {
+.squat ion-segment-button::part(indicator-background) {
   height: 100% !important;
   background-color: var(--ion-color-lightest);
   border: 1px solid var(--ion-color-medium);
   border-width: 1px 0 1px 1px;
   box-sizing: border-box;
 }
-ion-segment-button:first-child::part(indicator-background) {
+.squat ion-segment-button:first-child::part(indicator-background) {
   border-radius: 20px 0 0 20px;
 }
-ion-segment-button:last-child::part(indicator-background) {
+.squat ion-segment-button:last-child::part(indicator-background) {
   border-radius: 0 20px 20px 0;
   border-width: 1px 1px 1px 0;
 }
-ion-segment-button.segment-button-checked::part(indicator-background) {
+.squat ion-segment-button.segment-button-checked::part(indicator-background) {
   border-color: var(--ion-color-primary);
   background-color: var(--ion-color-primary);
 }
-ion-segment-button:focus::part(indicator-background) {
+.squat ion-segment-button:focus::part(indicator-background) {
   border: 2px solid var(--ion-color-tertiary);
 }
 

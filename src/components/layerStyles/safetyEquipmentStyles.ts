@@ -127,14 +127,14 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
-export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
+export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean, alwaysVisible: boolean | undefined) => {
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
   const opts = symbol2Icon[key];
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
-  if (props.symbol === '1' || resolution <= 10) {
+  if (props.symbol === '1' || resolution <= 10 || !!alwaysVisible) {
     let image: Icon;
     if (center) {
       image = new Icon({
@@ -165,7 +165,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
         }),
       }),
     ];
-    if (props.faults) {
+    if (props.faults && resolution <= 10) {
       styles.push(
         new Style({
           image: new Icon({

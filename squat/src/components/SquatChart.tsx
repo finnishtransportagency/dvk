@@ -66,21 +66,21 @@ const SquatChart: React.FC = () => {
 
       const correctedDraughtDuringTurn = calculateDraughtDuringTurn(breadth, draught, constantHeelDuringTurn);
 
-      const [squatHG] = calculateSquatHG(
+      const [squatHG] = calculateSquatHG({
         lengthBPP,
         breadth,
         draught,
         blockCoefficient,
         sweptDepth,
         waterLevel,
-        fairwayForm.id - 1,
+        fairwayFormIndex: fairwayForm.id - 1,
         channelWidth,
         slopeScale,
         slopeHeight,
-        speed,
-        correctedDraughtDuringTurn,
-        C0Coefficient
-      );
+        vesselSpeed: speed,
+        draughtDuringTurn: correctedDraughtDuringTurn,
+        C0Coefficient,
+      });
 
       return squatHG;
     };
@@ -111,7 +111,7 @@ const SquatChart: React.FC = () => {
         if (breadth <= 0) return false;
         if (draught <= 0) return false;
         if (vesselSpeed < 0) return false;
-        if (sweptDepth <= draught) return false;
+        if (sweptDepth < draught) return false;
         if (state.status.showBarrass) return true;
         if (!isBetween(blockCoefficient, 0.6, 0.8)) return false;
         if (!isBetween(breadth / draught, 2.19, 3.5)) return false;
@@ -247,7 +247,7 @@ const SquatChart: React.FC = () => {
       xAxisGenerator.tickFormat(d3.format('.1f'));
       xAxisGenerator.tickSize(0 - (height - marginTop - marginBottom));
       const xAxis = container.append('g').call(xAxisGenerator);
-      xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`);
+      xAxis.attr('transform', `translate(${marginLeft}, ${height - marginBottom})`).attr('font-size', '12px');
       xAxis.select('.domain').remove();
       xAxis.selectAll('.tick line').attr('stroke-width', '.5');
       xAxis
@@ -262,20 +262,24 @@ const SquatChart: React.FC = () => {
       container
         .append('text')
         .attr('text-anchor', 'middle')
+        .attr('font-size', '12px')
+        .attr('font-weight', 'bold')
         .attr('x', marginLeft + (width - marginLeft - marginRight) / 2)
         .attr('y', height - 20)
         .text(`${t('xAxisLabel')}`);
 
       yAxisGenerator.tickFormat(d3.format('.1f'));
       const yAxis = container.append('g').call(yAxisGenerator);
-      yAxis.attr('transform', `translate(${marginLeft}, ${marginTop})`);
+      yAxis.attr('transform', `translate(${marginLeft}, ${marginTop})`).attr('font-size', '12px');
 
       container
         .append('text')
         .attr('text-anchor', 'middle')
         .attr('transform', 'rotate(-90)')
+        .attr('font-size', '12px')
+        .attr('font-weight', 'bold')
         .attr('x', -(marginTop + (height - marginTop - marginBottom) / 2))
-        .attr('y', 20)
+        .attr('y', 15)
         .text(`${t('yAxisLabel')}`);
 
       /* Add legends */
@@ -290,7 +294,7 @@ const SquatChart: React.FC = () => {
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
           .attr('y', 10 / 2)
-          .attr('font-size', '10px')
+          .attr('font-size', '12px')
           .attr('fill', '#000000');
 
         const box = legend20.node()?.getBBox();
@@ -305,7 +309,7 @@ const SquatChart: React.FC = () => {
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
           .attr('y', 10 / 2)
-          .attr('font-size', '10px')
+          .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
 
@@ -319,7 +323,7 @@ const SquatChart: React.FC = () => {
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
           .attr('y', 10 / 2)
-          .attr('font-size', '10px')
+          .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
 
@@ -410,13 +414,15 @@ const SquatChart: React.FC = () => {
           </IonText>
         </IonCol>
       </IonRow>
-      <IonRow className="squatChartRow">
+      <IonRow className="squatChartRow wideRow">
         <IonCol>
           <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
         </IonCol>
       </IonRow>
-      <IonRow className="squatChartRow">
-        <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+      <IonRow className="squatChartRow wideRow">
+        <IonCol>
+          <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+        </IonCol>
       </IonRow>
     </IonGrid>
   );

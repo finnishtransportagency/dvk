@@ -8,7 +8,6 @@
       "safety-equipment-faults": "Säkerhetsanordningsfelen",
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
-      "squat-url": "/squat/index.html?lang=sv",
       "customer-service": "Trafikens kundtjänst",
       "source": "Informationskällor och användningsvillkor",
       "opens-in-a-new-tab": "Öppnas i en ny flik"
@@ -38,6 +37,9 @@
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
+          "coastalWarning": "Coastal warning",
+          "localWarning": "Local warning",
+          "boaterWarning": "Navigationsvarningar för båtfarare",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
           "conditions": "Förhållanden",
@@ -415,10 +417,13 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",
+    "squat": "Squat beräkning",
+    "extensive-squat": "Avancerad squat kalkylator",
     "fairway-cards": "Farledskort",
     "skip-to-content": "Gå till huvudinnehåll",
     "opens-in-a-new-tab": "Öppnas i en ny flik",
-    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan."
+    "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
+    "print": "Skriva ut sidan"
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

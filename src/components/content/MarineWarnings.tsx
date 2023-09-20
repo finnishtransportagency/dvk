@@ -5,44 +5,50 @@ import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
 import dvkMap from '../DvkMap';
-import { AreaFairway, LineFairway } from '../features';
+import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Breadcrumb from './Breadcrumb';
 import infoIcon from '../../theme/img/info.svg';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import Alert from '../Alert';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, getMarineWarningDataLayerId } from '../../utils/common';
 import './MarineWarnings.css';
 import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
+import { useDvkContext } from '../../hooks/dvkContext';
+import uniqueId from 'lodash/uniqueId';
 
 type WarningListProps = {
   data: MarineWarning[];
   loading?: boolean;
 };
 
-function goto(id: number) {
-  const marineWarningSource = dvkMap.getVectorSource('marinewarning');
+function goto(warning: MarineWarning, layers: string[]) {
+  // Clear possible previous feature(s) from temporary layer
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  let feature = marineWarningSource.getFeatureById(id);
+  selectedFairwayCardSource.clear();
+
+  const layerDataId = getMarineWarningDataLayerId(warning.type);
+  const warningSource = dvkMap.getVectorSource(layerDataId);
+  const feature = warningSource.getFeatureById(warning.id);
+
   if (feature) {
-    marineWarningSource.addFeatures(selectedFairwayCardSource.getFeatures());
-    selectedFairwayCardSource.clear();
-    selectedFairwayCardSource.addFeature(feature);
-    marineWarningSource.removeFeature(feature);
-  } else {
-    feature = selectedFairwayCardSource.getFeatureById(id);
-  }
-  const geometry = feature?.getGeometry();
-  if (feature && geometry) {
-    const extent = olExtent.createEmpty();
-    olExtent.extend(extent, geometry.getExtent());
-    dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    // If warning layer is not visible, use selectedfairwaycard to show warning on map
+    if (!layers.includes(layerDataId)) {
+      selectedFairwayCardSource.addFeature(feature);
+    }
+    const geometry = feature.getGeometry();
+    if (geometry) {
+      const extent = olExtent.createEmpty();
+      olExtent.extend(extent, geometry.getExtent());
+      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    }
   }
 }
 
 const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
+  const { state } = useDvkContext();
   const lang = i18n.resolvedLanguage as Lang;
   const sortedWarnings = [...data].sort((a, b) => {
     return a.dateTime > b.dateTime ? -1 : 1;
@@ -83,7 +89,7 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                       to="/merivaroitukset/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(warning.id);
+                        goto(warning, state.layers);
                       }}
                     >
                       {warning.location[lang] || warning.location.fi || t('noObjects')}
@@ -120,9 +126,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('line12')
                             .getFeatureById(warning.lineId)
                             ?.getProperties()
-                            .fairways?.map((fairway: LineFairway, index: number) => {
+                            .fairways?.map((fairway: LineFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -131,9 +138,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('line3456')
                             .getFeatureById(warning.lineId)
                             ?.getProperties()
-                            .fairways?.map((fairway: LineFairway, index: number) => {
+                            .fairways?.map((fairway: LineFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -146,9 +154,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('area12')
                             .getFeatureById(warning.areaId)
                             ?.getProperties()
-                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                            .fairways?.map((fairway: AreaFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -157,9 +166,10 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading }) => {
                             .getVectorSource('area3456')
                             .getFeatureById(warning.areaId)
                             ?.getProperties()
-                            .fairways?.map((fairway: AreaFairway, index: number) => {
+                            .fairways?.map((fairway: AreaFairway) => {
+                              const uuid = uniqueId('span_');
                               return (
-                                <span key={index}>
+                                <span key={uuid}>
                                   {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
@@ -214,8 +224,10 @@ type MarineWarningsProps = {
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+  const { state } = useDvkContext();
   const path = [{ title: t('title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'marinewarning');
+  // Use any of the marine warning layers as they have the same data source
+  const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
@@ -224,14 +236,25 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
   useEffect(() => {
     return () => {
-      const source = dvkMap.getVectorSource('selectedfairwaycard');
-      const target = dvkMap.getVectorSource('marinewarning');
-      source.forEachFeature((f) => {
-        target.addFeature(f);
-      });
-      source.clear();
+      // Cleanup: remove feature(s) from temporary layer
+      dvkMap.getVectorSource('selectedfairwaycard').clear();
     };
   }, []);
+
+  useEffect(() => {
+    const source = dvkMap.getVectorSource('selectedfairwaycard');
+    const features = source.getFeatures();
+    // Check if corresponding layer is now visible and remove feature(s) from temp layer
+    if (features.length > 0) {
+      features.forEach((f) => {
+        const featureProperties = f.getProperties() as MarineWarningFeatureProperties;
+        const layerDataId = getMarineWarningDataLayerId(featureProperties.type);
+        if (state.layers.includes(layerDataId)) {
+          source.removeFeature(f);
+        }
+      });
+    }
+  }, [state.layers]);
 
   return (
     <>

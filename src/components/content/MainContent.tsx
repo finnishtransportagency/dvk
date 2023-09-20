@@ -10,7 +10,7 @@ import FairwayCard from './FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
-import { filterFairways, getAssetUrl } from '../../utils/common';
+import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
 import { useFairwayCardListData } from '../../utils/dataLoader';
@@ -19,11 +19,12 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import SquatCalculator from './SquatCalculator';
 
 interface MainContentProps {
   fairwayCardId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings';
+  target?: 'faults' | 'warnings' | 'squat';
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
@@ -272,7 +273,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                         title={t('closePane')}
                         aria-label={t('closePane')}
                       >
-                        <IonIcon className="otherIconLarge" src={getAssetUrl(closeIcon)} />
+                        <IonIcon className="otherIconLarge" src={closeIcon} />
                       </IonButton>
                     </IonCol>
                   </IonRow>
@@ -283,6 +284,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
+                {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">

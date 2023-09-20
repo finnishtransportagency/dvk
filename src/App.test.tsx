@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from 'react';
+import 'fake-indexeddb/auto';
 import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
-import 'fake-indexeddb/auto';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -21,8 +22,13 @@ class ResizeObserver {
   }
 }
 global.ResizeObserver = ResizeObserver;
-
+const fetch = global.fetch;
 beforeAll(() => {
+  // @ts-ignore
+  window.SVGElement.prototype.getBBox = () => ({
+    x: 0,
+    y: 0,
+  });
   Object.defineProperty(navigator, 'serviceWorker', {
     value: {
       controller: vi.fn().mockImplementation(() => Promise.resolve()),
@@ -31,6 +37,17 @@ beforeAll(() => {
   });
   vi.spyOn(navigator, 'onLine', 'get').mockReturnValueOnce(true);
   vi.spyOn(window, 'print').mockImplementation(() => {});
+  // @ts-ignore
+  global.fetch = undefined;
+});
+
+afterAll(() => {
+  global.fetch = fetch;
+});
+
+afterAll(() => {
+  // @ts-ignore
+  delete window.SVGElement.prototype.getBBox;
 });
 
 beforeEach(() => {
@@ -69,7 +86,13 @@ vi.mock('./components/FeatureLoader', () => ({
   useSafetyEquipmentLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useMarineWarningLayer: () => {
+  useCoastalWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useLocalWarningLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useBoaterWarningLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useBoardLine12Layer: () => {
@@ -363,5 +386,20 @@ it('should render marine warning page successfully', () => {
     // Warning list
     const warningList = screen.getByTestId('marineWarningList');
     expect(warningList).toBeInTheDocument();
+  });
+});
+
+it('should render squat calculator page successfully', () => {
+  const renderWithRouter = (ui: JSX.Element, { route = '/vaylakortti/squat/' } = {}) => {
+    window.history.pushState({}, 'Squat', route);
+    return render(ui, { wrapper: BrowserRouter });
+  };
+  const { baseElement } = renderWithRouter(<App />);
+  expect(baseElement).toBeDefined();
+
+  act(() => {
+    // Squat calculator container
+    const squatContainer = screen.getByTestId('squatCalculatorContainer');
+    expect(squatContainer).toBeInTheDocument();
   });
 });

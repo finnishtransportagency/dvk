@@ -3,7 +3,9 @@ import { checkmarkCircleOutline, clipboardOutline } from 'ionicons/icons';
 import React, { useCallback, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
-import { copyToClipboard, createShareableLink, getAssetUrl } from '../utils/helpers';
+import { copyToClipboard, createShareableLink } from '../utils/helpers';
+import shareIcon from '../theme/img/share_icon.svg';
+import printIcon from '../theme/img/print_icon.svg';
 
 import Modal from './Modal';
 
@@ -78,7 +80,7 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src={getAssetUrl('assets/share_icon.svg')} size="medium" />}
+              trigger={<IonIcon src={shareIcon} size="medium" />}
               triggerTitle={t('header.shareable-link-title')}
               triggerClassName="large"
               handleDismiss={handleToastDismiss}
@@ -93,7 +95,7 @@ const PrintBar: React.FC = () => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src={getAssetUrl('assets/print_icon.svg')} size="medium" />
+              <IonIcon color="primary" slot="icon-only" src={printIcon} size="medium" />
             </IonButton>
           </IonCol>
         </IonRow>
