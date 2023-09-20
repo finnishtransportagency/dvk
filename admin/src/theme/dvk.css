@@ -1106,7 +1106,7 @@ ion-modal.image ion-content {
   --padding-top: 0;
   --padding-bottom: 0;
 }
-ion-modal.image ion-content .picLink img {
+ion-modal.image ion-content img {
   vertical-align: top;
 }
 
@@ -1114,6 +1114,7 @@ ion-modal.image ion-content .picLink img {
   display: flex;
   position: absolute;
   bottom: 0;
+  left: 0;
 }
 .mapLegend .bg {
   position: absolute;
@@ -1125,6 +1126,7 @@ ion-modal.image ion-content .picLink img {
 .mapLegend .compassInfo {
   padding: 4px;
   width: auto;
+  min-width: 24px;
 }
 .mapLegend .cardInfo {
   padding: 4px 8px;
