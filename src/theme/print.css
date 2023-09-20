@@ -172,6 +172,9 @@
     display: flex;
     position: absolute;
     bottom: 0;
+    left: 0;
+    max-width: 100%;
+    overflow: hidden;
   }
   .mapLegend .bg {
     position: absolute;
@@ -183,6 +186,7 @@
   .mapLegend #compassInfo {
     padding: 4px;
     width: auto;
+    min-width: 24px;
   }
   .mapLegend .cardInfo {
     padding: 4px 8px;
