@@ -62,7 +62,7 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
             </IonButton>
           </IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="no-print">
           <IonCol>
             <IonText className="fairwayTitle">
               <a
