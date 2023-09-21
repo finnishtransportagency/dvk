@@ -272,7 +272,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, 1, false);
+    return getSafetyEquipmentStyle(feature, resolution, false, true);
   } else if (ds === 'coastalwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'localwarning') {
@@ -288,9 +288,6 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   }
 }
 
-function getSelectedStyle(feature: FeatureLike, resolution: number) {
-  return feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getSafetyEquipmentStyle(feature, 1, false);
-}
 interface FeatureVectorLayerProps {
   map: Map;
   id: FeatureLayerId;
@@ -619,8 +616,8 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'quay',
     maxResolution: undefined,
-    renderBuffer: 50,
-    style: getSelectedStyle,
+    renderBuffer: 100,
+    style: (feature, resolution) => getQuayStyle(feature, resolution, false),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -638,20 +635,19 @@ export function addAPILayers(map: Map) {
     declutter: true,
     zIndex: 305,
   });
-
   // Turvalaitteet
   addFeatureVectorLayer({
     map: map,
     id: 'safetyequipment',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
+    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), feature.get('faultListStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
     zIndex: 306,
   });
-
+  // Olosuhteet
   addFeatureVectorLayer({
     map: map,
     id: 'buoy',
@@ -764,6 +760,19 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: true,
     zIndex: 314,
+  });
+
+  // Turvalaiteviat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'safetyequipmentfault',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 315,
   });
 }
 
@@ -1128,4 +1137,19 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
     }
   }
   quaySource.dispatchEvent('change');
+}
+
+export function setSelectedSafetyEquipment(id: number) {
+  const dvkMap = getMap();
+  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+  const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+
+  equipmentSource.forEachFeature((f) => {
+    f.set('hoverStyle', f.getId() === id, true);
+  });
+  faultSource.forEachFeature((f) => {
+    f.set('hoverStyle', f.getId() === id, true);
+  });
+  equipmentSource.dispatchEvent('change');
+  faultSource.dispatchEvent('change');
 }

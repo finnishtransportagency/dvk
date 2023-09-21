@@ -420,9 +420,11 @@
     "safety-equipment-faults": "Defective Navigation Aids",
     "marine-warnings": "Navigational Warnings",
     "squat": "Squat Calculator",
+    "extensive-squat": "Extensive Squat Calculator",
     "fairway-cards": "Fairway Cards",
     "skip-to-content": "Skip to main content",
-    "opens-in-a-new-tab": "Opens in a new tab"
+    "opens-in-a-new-tab": "Opens in a new tab",
+    "print": "Print page"
   },
   "source": {
     "title": "Data sources and terms of use",
