@@ -165,6 +165,30 @@ class DvkMap {
       format: new MVT(),
       url: tileUrl,
     });
+    // Custom function to load vectortiles in order to get response status code
+    // Overrides tileloaderror
+    // eslint-disable-next-line
+    this.source.setTileLoadFunction( (tile: any, url: string) => {
+      tile.setLoader((usedExtent: Array<number>, usedProjection: string) => {
+        fetch(url).then((response) => {
+          if (new RegExp(/^5\d\d$/).test(response.status.toString())) {
+            if (this.tileStatus !== 'error') {
+              this.tileStatus = 'error';
+              this.onTileStatusChange();
+            }
+          } else {
+            response.arrayBuffer().then(function (data) {
+              const format = tile.getFormat();
+              const features = format.readFeatures(data, {
+                extent: usedExtent,
+                featureProjection: usedProjection,
+              });
+              tile.setFeatures(features);
+            });
+          }
+        });
+      });
+    });
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
@@ -291,13 +315,6 @@ class DvkMap {
         }
       });
 
-      source.on('tileloaderror', () => {
-        if (this.tileStatus !== 'error') {
-          this.tileStatus = 'error';
-          this.onTileStatusChange();
-        }
-      });
-
       const layer = new VectorTileLayer({
         declutter: false,
         source,
@@ -307,6 +324,7 @@ class DvkMap {
         updateWhileInteracting: false,
         useInterimTilesOnError: false,
       });
+
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'backgroundTile');
       backLayers.push(layer);
