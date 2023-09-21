@@ -97,6 +97,22 @@ export function getAreaStyle(color: string, width: number, fillColor: string, re
   });
 }
 
+export function getArea12Style(color: string, width: number, fillColor: string, resolution?: number) {
+  let strokeWidth = width;
+  if (resolution && resolution > 15) strokeWidth = 0.5;
+  if (resolution && resolution > 30) strokeWidth = 0;
+  strokeWidth = 0;
+  return new Style({
+    stroke: new Stroke({
+      color: strokeWidth > 0 ? color : fillColor,
+      width: strokeWidth,
+    }),
+    fill: new Fill({
+      color: '#00ff00',
+    }),
+  });
+}
+
 export function getLineStyle(color: string, width: number) {
   return new Style({
     stroke: new Stroke({
@@ -488,7 +504,18 @@ export function addAPILayers(map: Map) {
     id: 'area12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature, resolution) => getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)', resolution),
+    style: (feature, resolution) => {
+      const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
+      if (ds === 'area12') {
+        return new Style({
+          fill: new Fill({
+            color: 'rgba(236, 14, 14, 0.1)',
+          }),
+        });
+      } else if (ds === 'area12Borderline') {
+        return getArea12BorderLineStyle(feature, resolution);
+      }
+    },
     minResolution: undefined,
     opacity: 1,
     declutter: false,

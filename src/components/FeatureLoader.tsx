@@ -13,6 +13,7 @@ import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
+import { getArea12BorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -289,6 +290,19 @@ export function useArea12Layer(): DvkLayerState {
         source.clear();
         source.addFeatures(afs);
         layer.set('dataUpdatedAt', dataUpdatedAt);
+        if (window.Worker) {
+          const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
+          faWorker.onmessage = (e) => {
+            const borderlineFeatures = format.readFeatures(e.data as string);
+            borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
+            source.addFeatures(borderlineFeatures);
+          };
+          faWorker.postMessage({ faData: JSON.stringify(aData) });
+        } else {
+          const borderlineFeatures = getArea12BorderFeatures(afs);
+          borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
+          source.addFeatures(borderlineFeatures);
+        }
       }
       setReady(true);
     }
