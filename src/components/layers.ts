@@ -37,9 +37,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
-import { Geometry } from 'ol/geom';
-import { intersects } from 'ol/extent';
-import * as turf from '@turf/turf';
+import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -912,91 +910,6 @@ function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   }
 }
 
-function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
-  const format = new GeoJSON();
-  const createFeature = (featCoords: Array<turf.Position>, area1Properties: object | null, area2Properties: object | null) => {
-    const feat = format.readFeature(turf.lineString(featCoords), {
-      dataProjection: 'EPSG:4326',
-      featureProjection: MAP.EPSG,
-    });
-    feat.setProperties({ area1Properties: area1Properties }, true);
-    feat.setProperties({ area2Properties: area2Properties }, true);
-    return feat;
-  };
-
-  const borderLineFeatures: Feature<Geometry>[] = [];
-  const turfPolygons: Array<turf.Polygon> = [];
-  const turfPolygonsLineSegments: Array<turf.FeatureCollection> = [];
-  for (let i = 0; i < areas.length; i++) {
-    turfPolygons[i] = format.writeGeometryObject(areas[i].getGeometry() as Geometry, {
-      dataProjection: 'EPSG:4326',
-      featureProjection: MAP.EPSG,
-    }) as turf.Polygon;
-    turfPolygonsLineSegments[i] = turf.lineSegment(turfPolygons[i]);
-  }
-
-  for (let i = 0; i < areas.length; i++) {
-    const intersectedSegmenIndices: Array<number> = [];
-    const area1 = areas[i];
-    const area1Extent = area1.getGeometry()?.getExtent();
-    for (let j = 0; j < areas.length; j++) {
-      if (i === j) continue;
-      const area2 = areas[j];
-      const area2Extent = area2.getGeometry()?.getExtent();
-      if (!area1Extent || !area2Extent || !intersects(area1Extent, area2Extent)) {
-        continue;
-      }
-
-      let featCoords: Array<turf.Position> = [];
-      for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
-        if (intersectedSegmenIndices.includes(k)) {
-          if (featCoords.length > 1) {
-            borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
-          }
-          featCoords = [];
-          continue;
-        }
-        const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
-        const turfOverlappingSegment = turf.lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
-        if (turfOverlappingSegment.features.length > 0) {
-          intersectedSegmenIndices.push(k);
-          if (i > j) continue;
-          if (featCoords.length < 1) {
-            featCoords.push(segmentLineString.coordinates[0]);
-          }
-          featCoords.push(segmentLineString.coordinates[1]);
-        } else if (featCoords.length > 1) {
-          borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
-          featCoords = [];
-        }
-      }
-      if (featCoords.length > 1) {
-        borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), area2.getProperties()));
-      }
-    }
-
-    let featCoords: Array<turf.Position> = [];
-    for (let k = 0; k < turfPolygonsLineSegments[i].features.length; k++) {
-      if (intersectedSegmenIndices.includes(k)) {
-        if (featCoords.length > 1) {
-          borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), null));
-        }
-        featCoords = [];
-        continue;
-      }
-      const segmentLineString = turfPolygonsLineSegments[i].features[k].geometry as turf.LineString;
-      if (featCoords.length < 1) {
-        featCoords.push(segmentLineString.coordinates[0]);
-      }
-      featCoords.push(segmentLineString.coordinates[1]);
-    }
-    if (featCoords.length > 1) {
-      borderLineFeatures.push(createFeature(featCoords, area1.getProperties(), null));
-    }
-  }
-  return borderLineFeatures;
-}
-
 export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
   const dvkMap = getMap();
   if (fairwayCard) {
@@ -1090,7 +1003,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     }
 
     const area12Features = fairwayFeatures.filter((f) => f.get('dataSource') === 'area12');
-    const borderLineFeatures = getArea12BorderFeatures(area12Features);
+    const borderLineFeatures = getFairwayAreaBorderFeatures(area12Features);
     borderLineFeatures.forEach((f) => {
       f.set('dataSource', 'area12Borderline', true);
       fairwayFeatures.push(f);

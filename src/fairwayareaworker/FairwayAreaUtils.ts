@@ -16,7 +16,7 @@ const createFeature = (featCoords: Array<turf.Position>, area1Properties: object
   return feat;
 };
 
-export function getArea12BorderFeatures(areas: Feature<Geometry>[]) {
+export function getFairwayAreaBorderFeatures(areas: Feature<Geometry>[]) {
   const format = new GeoJSON();
   const borderLineFeatures: Feature<Geometry>[] = [];
   const turfPolygons: Array<turf.Polygon> = [];

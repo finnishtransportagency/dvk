@@ -13,7 +13,7 @@ import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
-import { getArea12BorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
+import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -299,7 +299,7 @@ export function useArea12Layer(): DvkLayerState {
           };
           faWorker.postMessage({ faData: JSON.stringify(aData) });
         } else {
-          const borderlineFeatures = getArea12BorderFeatures(afs);
+          const borderlineFeatures = getFairwayAreaBorderFeatures(afs);
           borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
           source.addFeatures(borderlineFeatures);
         }
