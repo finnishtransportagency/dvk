@@ -165,28 +165,36 @@ class DvkMap {
       format: new MVT(),
       url: tileUrl,
     });
-    // Custom function to load vectortiles in order to get response status code
-    // Overrides tileloaderror
+    // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
+    // Error is catched and status set to offline if not getting a response
     // eslint-disable-next-line
     this.source.setTileLoadFunction( (tile: any, url: string) => {
-      tile.setLoader((usedExtent: Array<number>, usedProjection: string) => {
-        fetch(url).then((response) => {
-          if (new RegExp(/^4\d\d$/).test(response.status.toString())) {
-            if (this.tileStatus !== 'error') {
-              this.tileStatus = 'error';
-              this.onTileStatusChange();
-            }
-          } else {
-            response.arrayBuffer().then(function (data) {
-              const format = tile.getFormat();
-              const features = format.readFeatures(data, {
-                extent: usedExtent,
-                featureProjection: usedProjection,
-              });
-              tile.setFeatures(features);
+      // eslint-disable-next-line
+      tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        try {
+          const response = await fetch(url, {
+            signal: controller.signal,
+          }).then((res) => res);
+          response.arrayBuffer().then(function (data) {
+            const format = tile.getFormat();
+            const features = format.readFeatures(data, {
+              extent: usedExtent,
+              featureProjection: usedProjection,
             });
+            tile.setFeatures(features);
+          });
+        } catch (error) {
+          console.log(error);
+          if (this.tileStatus !== 'error') {
+            this.tileStatus = 'error';
+            this.onTileStatusChange();
           }
-        });
+        } finally {
+          clearTimeout(timeoutId);
+        }
       });
     });
 
