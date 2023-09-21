@@ -171,7 +171,7 @@ class DvkMap {
     this.source.setTileLoadFunction( (tile: any, url: string) => {
       tile.setLoader((usedExtent: Array<number>, usedProjection: string) => {
         fetch(url).then((response) => {
-          if (new RegExp(/^5\d\d$/).test(response.status.toString())) {
+          if (new RegExp(/^4\d\d$/).test(response.status.toString())) {
             if (this.tileStatus !== 'error') {
               this.tileStatus = 'error';
               this.onTileStatusChange();
