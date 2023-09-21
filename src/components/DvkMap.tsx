@@ -187,7 +187,6 @@ class DvkMap {
             tile.setFeatures(features);
           });
         } catch (error) {
-          console.log(error);
           if (this.tileStatus !== 'error') {
             this.tileStatus = 'error';
             this.onTileStatusChange();
