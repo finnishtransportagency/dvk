@@ -616,7 +616,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'quay',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 100,
     style: (feature, resolution) => getQuayStyle(feature, resolution, false),
     minResolution: undefined,
     opacity: 1,

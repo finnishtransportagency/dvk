@@ -418,10 +418,12 @@
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
     "squat": "Squat-laskuri",
+    "extensive-squat": "Laaja squat-laskuri",
     "fairway-cards": "Väyläkortit",
     "skip-to-content": "Siirry pääsisältöön",
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
-    "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten."
+    "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten.",
+    "print": "Tulosta sivu"
   },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",
