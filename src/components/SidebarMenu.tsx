@@ -205,22 +205,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
       <IonFooter collapse="fade" className="small ion-no-border dvkFooter">
         <IonToolbar className="ion-no-border">
           <IonGrid className="ion-no-padding">
-            <IonRow>
-              <IonCol>
-                <IonTitle>
-                  <a
-                    href="https://www.palautevayla.fi/aspa"
-                    rel="noreferrer"
-                    target="_blank"
-                    className="ion-no-padding external"
-                    onClick={() => menuController.close()}
-                  >
-                    {t('customer-service')}
-                    <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
-                  </a>
-                </IonTitle>
-              </IonCol>
-            </IonRow>
             <IonRow className="ion-align-items-center">
               <IonCol>
                 <IonTitle>
