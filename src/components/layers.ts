@@ -95,22 +95,6 @@ export function getAreaStyle(color: string, width: number, fillColor: string, re
   });
 }
 
-export function getArea12Style(color: string, width: number, fillColor: string, resolution?: number) {
-  let strokeWidth = width;
-  if (resolution && resolution > 15) strokeWidth = 0.5;
-  if (resolution && resolution > 30) strokeWidth = 0;
-  strokeWidth = 0;
-  return new Style({
-    stroke: new Stroke({
-      color: strokeWidth > 0 ? color : fillColor,
-      width: strokeWidth,
-    }),
-    fill: new Fill({
-      color: '#00ff00',
-    }),
-  });
-}
-
 export function getLineStyle(color: string, width: number) {
   return new Style({
     stroke: new Stroke({
@@ -257,6 +241,43 @@ function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
   return undefined;
 }
 
+function getArea12Style(feature: FeatureLike, resolution: number) {
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
+  if (ds === 'area12') {
+    return new Style({
+      fill: new Fill({
+        color: 'rgba(236, 14, 14, 0.1)',
+      }),
+    });
+  } else if (ds === 'area12Borderline') {
+    const props = feature.getProperties();
+    const a1Props = props.area1Properties;
+    const a2Props = props.area2Properties;
+
+    let strokeWidth = 1;
+    if (resolution && resolution > 15) strokeWidth = 0.5;
+    if (resolution && resolution > 30) strokeWidth = 0;
+
+    const strokeColor = strokeWidth > 0 ? '#EC0E0E' : 'rgba(236, 14, 14, 0.1)';
+
+    if (a1Props && a2Props) {
+      if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+        return undefined;
+      } else {
+        strokeWidth = strokeWidth / 2;
+      }
+    }
+
+    return new Style({
+      stroke: new Stroke({
+        color: strokeColor,
+        width: strokeWidth,
+      }),
+    });
+  }
+  return undefined;
+}
+
 function getArea3456Style(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area3456Borderline';
   if (ds === 'area3456') {
@@ -269,15 +290,27 @@ function getArea3456Style(feature: FeatureLike, resolution: number) {
     const props = feature.getProperties();
     const a1Props = props.area1Properties;
     const a2Props = props.area2Properties;
-    if (resolution <= 100) {
-      if (!a1Props || !a2Props) {
-        return getLineStyle('#207A43', 1);
-      } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+
+    let strokeWidth = 1;
+    if (resolution && resolution > 15) strokeWidth = 0.5;
+    if (resolution && resolution > 30) strokeWidth = 0;
+
+    const strokeColor = strokeWidth > 0 ? '#207A43' : 'rgba(32, 122, 67, 0.1)';
+
+    if (a1Props && a2Props) {
+      if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
         return undefined;
       } else {
-        return getLineStyle('#207A43', 0.5);
+        strokeWidth = strokeWidth / 2;
       }
     }
+
+    return new Style({
+      stroke: new Stroke({
+        color: strokeColor,
+        width: strokeWidth,
+      }),
+    });
   }
   return undefined;
 }
@@ -527,18 +560,7 @@ export function addAPILayers(map: Map) {
     id: 'area12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature, resolution) => {
-      const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
-      if (ds === 'area12') {
-        return new Style({
-          fill: new Fill({
-            color: 'rgba(236, 14, 14, 0.1)',
-          }),
-        });
-      } else if (ds === 'area12Borderline') {
-        return getArea12BorderLineStyle(feature, resolution);
-      }
-    },
+    style: getArea12Style,
     minResolution: undefined,
     opacity: 1,
     declutter: false,
