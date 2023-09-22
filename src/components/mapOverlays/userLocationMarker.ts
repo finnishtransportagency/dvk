@@ -5,30 +5,11 @@ import { Dispatch } from 'react';
 import { Action } from '../../hooks/dvkReducer';
 import { GeolocationError } from 'ol/Geolocation';
 
-export const initUserLocationMarker = (dispatch: Dispatch<Action>) => {
+export const initUserLocation = (dispatch: Dispatch<Action>) => {
   const userLocationControl = dvkMap.getCenterToOwnLocationControl();
   navigator.permissions.query({ name: 'geolocation' }).then((result) => {
     if (result.state === 'granted' || result.state === 'prompt') {
-      userLocationControl.geolocation.setProjection(dvkMap.olMap?.getView().getProjection());
-      userLocationControl.geolocation.setTracking(true);
-
-      // Position changed -> user accepted location permission prompt
-      userLocationControl.geolocation.once('change:position', () => {
-        dispatch({ type: 'setLocationPermission', payload: { value: 'on' } });
-
-        userLocationControl.geolocation.setTracking(false);
-
-        const position = userLocationControl.geolocation.getPosition();
-        if (position) {
-          const source = dvkMap.getVectorSource('userlocation');
-          source.clear();
-          source.addFeature(
-            new Feature({
-              geometry: new Point([position[0], position[1]]),
-            })
-          );
-        }
-      });
+      dispatch({ type: 'setLocationPermission', payload: { value: 'on' } });
     } else if (result.state === 'denied') {
       dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
     }
@@ -63,6 +44,7 @@ export const placeUserLocationMarker = () => {
 
     const position = userLocationControl.geolocation.getPosition();
     if (position) {
+      userLocationControl.setDisabled(false);
       const source = dvkMap.getVectorSource('userlocation');
       source.clear();
       source.addFeature(
@@ -76,4 +58,5 @@ export const placeUserLocationMarker = () => {
 
 export const removeUserLocationMarker = () => {
   dvkMap.getVectorSource('userlocation').clear();
+  dvkMap.getCenterToOwnLocationControl().setDisabled(true);
 };

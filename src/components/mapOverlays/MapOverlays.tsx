@@ -21,7 +21,7 @@ import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupConten
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 import { MarineWarningNotifications } from './MarineWarningNotifications';
-import { initUserLocationMarker, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
+import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
 import { useDvkContext } from '../../hooks/dvkContext';
 
 export type PopupProperties = {
@@ -82,18 +82,15 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   }, []);
 
   useEffect(() => {
-    initUserLocationMarker(dispatch);
+    initUserLocation(dispatch);
   }, [dispatch]);
 
   useEffect(() => {
-    const userLocationControl = dvkMap.getCenterToOwnLocationControl();
     if (state.locationPermission === 'on') {
       console.log('hello place');
-      userLocationControl.setDisabled(false);
       placeUserLocationMarker();
     } else {
       console.log('hello remove');
-      userLocationControl.setDisabled(true);
       removeUserLocationMarker();
     }
   }, [state.locationPermission]);
