@@ -257,6 +257,31 @@ function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
   return undefined;
 }
 
+function getArea3456Style(feature: FeatureLike, resolution: number) {
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area3456Borderline';
+  if (ds === 'area3456') {
+    return new Style({
+      fill: new Fill({
+        color: 'rgba(32, 122, 67, 0.1)',
+      }),
+    });
+  } else if (ds === 'area3456Borderline') {
+    const props = feature.getProperties();
+    const a1Props = props.area1Properties;
+    const a2Props = props.area2Properties;
+    if (resolution <= 100) {
+      if (!a1Props || !a2Props) {
+        return getLineStyle('#207A43', 1);
+      } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+        return undefined;
+      } else {
+        return getLineStyle('#207A43', 0.5);
+      }
+    }
+  }
+  return undefined;
+}
+
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
   if (ds === 'line12') {
@@ -547,7 +572,7 @@ export function addAPILayers(map: Map) {
     id: 'area3456',
     maxResolution: 30,
     renderBuffer: 1,
-    style: (feature, resolution) => getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)', resolution),
+    style: getArea3456Style,
     minResolution: undefined,
     opacity: 1,
     declutter: false,
