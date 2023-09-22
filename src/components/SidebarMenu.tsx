@@ -171,7 +171,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                     <LanguageBar />
                   </IonCol>
                 </IonRow>
-                <IonRow>
+                <IonRow className="locationPermission">
                   <IonCol size="12">
                     <LocationPermissionControl />
                   </IonCol>

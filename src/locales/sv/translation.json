@@ -12,7 +12,8 @@
       "source": "Informationskällor och användningsvillkor",
       "opens-in-a-new-tab": "Öppnas i en ny flik",
       "location-service": "[sv] Sijaintipalvelu",
-      "location-description": "[sv] Mahdollistaa päätelaitteesi paikantamisen."
+      "location-description": "[sv] Mahdollistaa päätelaitteesi paikantamisen.",
+      "location-disabled": "[sv] Sijainnin käyttöoikeus estetty"
     },
     "map": {
       "controls": {

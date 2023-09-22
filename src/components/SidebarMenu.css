@@ -152,6 +152,20 @@
   margin: 0;
   margin-inline-start: 4px;
 }
+.sidebarMenu .contentGrid .locationPermission ion-item {
+  color: var(--ion-color-danger);
+  text-decoration: none;
+  display: block;
+  --min-height: 28px;
+}
+.sidebarMenu .contentGrid .locationPermission ion-item:hover::part(native) {
+  color: var(--ion-color-danger);
+}
+.sidebarMenu .contentGrid .locationPermission ion-item ion-icon[slot='start'] {
+  width: 16px;
+  height: 16px;
+  margin-inline-end: 8px;
+}
 
 .sideBar ion-footer {
   border-top: 1px solid var(--ion-color-lighter);
