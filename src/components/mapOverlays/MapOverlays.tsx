@@ -87,10 +87,8 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
 
   useEffect(() => {
     if (state.locationPermission === 'on') {
-      console.log('hello place');
       placeUserLocationMarker();
     } else {
-      console.log('hello remove');
       removeUserLocationMarker();
     }
   }, [state.locationPermission]);

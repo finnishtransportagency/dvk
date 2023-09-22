@@ -16,7 +16,6 @@ export const initUserLocation = (dispatch: Dispatch<Action>) => {
 
     // Handle permission denied from location prompt
     userLocationControl.geolocation.on('error', (error: GeolocationError) => {
-      console.log('hello geo error', error);
       // PERMISSION_DENIED: 1 | POSITION_UNAVAILABLE: 2 | TIMEOUT: 3
       if (error.code === 1) {
         dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
