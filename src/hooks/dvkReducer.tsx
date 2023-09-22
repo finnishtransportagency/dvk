@@ -1,9 +1,11 @@
+import { UserLocationPermission } from '../utils/constants';
+
 // Set up reducer and state properties
 export type State = {
   isOffline: boolean;
   modalBreakpoint: number;
   layers: string[];
-  locationPermission: boolean;
+  locationPermission: UserLocationPermission;
 };
 
 // Set initial state
@@ -11,7 +13,7 @@ export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
   layers: ['pilot', 'line12', 'harbor', 'name'],
-  locationPermission: false,
+  locationPermission: 'off',
 };
 
 export type Action =
@@ -30,31 +32,26 @@ export type Action =
   | {
       type: 'setLocationPermission';
       payload: {
-        value: boolean;
+        value: UserLocationPermission;
       };
     }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
-  // Sort out correct value type from input element
-  let inputValue: boolean | number | string[] = false;
-  if (action.type !== 'reset') {
-    inputValue = action.payload.value;
-  }
   let newState;
   // Return updated state
   switch (action.type) {
     case 'setOffline':
-      newState = { ...state, isOffline: !!inputValue };
+      newState = { ...state, isOffline: !!action.payload.value };
       break;
     case 'setBreakpoint':
-      newState = { ...state, modalBreakpoint: Number(inputValue) };
+      newState = { ...state, modalBreakpoint: Number(action.payload.value) };
       break;
     case 'setLayers':
-      newState = { ...state, layers: inputValue as string[] };
+      newState = { ...state, layers: action.payload.value };
       break;
     case 'setLocationPermission':
-      newState = { ...state, locationPermission: !!inputValue };
+      newState = { ...state, locationPermission: action.payload.value };
       break;
     case 'reset':
       return initialState;

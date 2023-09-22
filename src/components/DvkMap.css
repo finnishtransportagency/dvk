@@ -184,6 +184,10 @@
 .dvkMap .ol-control > button:focus-visible:hover {
   outline: 2px solid var(--ion-color-primary-shade);
 }
+.dvkMap .ol-control > button:disabled {
+  background-color: var(--ion-color-lighter);
+  opacity: 0.5;
+}
 
 .dvkMap .mapDetailsControl {
   top: auto;
@@ -276,8 +280,11 @@
   font-size: 12px;
   line-height: 1rem;
   color: var(--ion-color-dark);
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast),
-    1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
   font-style: italic;
 }
 
