@@ -196,7 +196,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
       <SectionTitle
         title={t('fairway')}
         valid={
-          isAllValid(['sweptDepth', 'waterDepth']) &&
+          (limitedView ? isAllValid(['sweptDepth', 'waterLevel']) : isAllValid(['sweptDepth', 'waterLevel', 'waterDepth'])) &&
           (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth') : true) &&
           (state.environment.fairway.fairwayForm === fairwayForms[2] ? isAllValid(['slopeScale', 'slopeHeight']) : true)
         }
@@ -450,7 +450,9 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
       <SectionTitle
         title={t('attribute')}
         valid={
-          limitedView ? isAllValid(['requiredUKC', 'motionClearance']) : isAllValid(['airDensity', 'waterDensity', 'requiredUKC', 'motionClearance'])
+          limitedView
+            ? isAllValid(['requiredUKC', 'motionClearance'])
+            : isAllValid(['airDensity', 'waterDensity', 'requiredUKC', 'motionClearance', 'safetyMarginWindForce'])
         }
       />
       <IonGrid className="no-padding">
