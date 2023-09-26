@@ -20,6 +20,8 @@ import specialarea from '../../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
+import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
+import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
@@ -319,31 +321,11 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
   // Kauppamerenkulku
-  addFeatureVectorImageLayer(
-    map,
-    'area12',
-    75,
-    1,
-    (feature, resolution) => getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)', resolution),
-    undefined,
-    1,
-    false,
-    201
-  );
+  addFeatureVectorImageLayer(map, 'area12', 75, 1, getFairwayArea12Style, undefined, 1, false, 201);
   addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 0.5), undefined, 1, false, 202);
   addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 203);
   // Muu vesiliikenne
-  addFeatureVectorImageLayer(
-    map,
-    'area3456',
-    30,
-    1,
-    (feature, resolution) => getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)', resolution),
-    undefined,
-    1,
-    false,
-    204
-  );
+  addFeatureVectorImageLayer(map, 'area3456', 30, 1, getFairwayArea3456Style, undefined, 1, false, 204);
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
 
   // Nopeusrajoitus
