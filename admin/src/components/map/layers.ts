@@ -31,6 +31,7 @@ import { GeoJSON } from 'ol/format';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { getCircleStyle } from './layerStyles/circleStyles';
+import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -222,8 +223,24 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   });
 }
 
+function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
+  const props = feature.getProperties();
+  const a1Props = props.area1Properties;
+  const a2Props = props.area2Properties;
+  if (resolution <= 100) {
+    if (!a1Props || !a2Props) {
+      return getLineStyle('#EC0E0E', 1);
+    } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+      return undefined;
+    } else {
+      return getLineStyle('#EC0E0E', 0.5);
+    }
+  }
+  return undefined;
+}
+
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource as FeatureDataLayerId;
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'line3456') {
@@ -232,8 +249,14 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     if (feature.get('hoverStyle')) {
       return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
     } else {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+      return new Style({
+        fill: new Fill({
+          color: 'rgba(236,14,14,0.3)',
+        }),
+      });
     }
+  } else if (ds === 'area12Borderline' && resolution <= 100) {
+    return getArea12BorderLineStyle(feature, resolution);
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea2' || ds === 'specialarea15') {
@@ -601,6 +624,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
       addQuay(harbor, quaySource);
     }
+
+    const area12Features = fairwayFeatures.filter((f) => f.get('dataSource') === 'area12');
+    const borderLineFeatures = getFairwayAreaBorderFeatures(area12Features);
+    borderLineFeatures.forEach((f) => {
+      f.set('dataSource', 'area12Borderline', true);
+      fairwayFeatures.push(f);
+    });
+
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
