@@ -48,6 +48,24 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     deselectClickSelection();
   };
 
+  function getNumberValue(n2000Value: number | undefined, value: number | undefined) {
+    if (!showN2000HeightSystem || n2000Value === null || n2000Value === undefined) {
+      return value;
+    }
+    return n2000Value;
+  }
+
+  function getStringValue(n2000Value: string | undefined, value: string | undefined) {
+    if (!showN2000HeightSystem || n2000Value === null || n2000Value === undefined) {
+      return value;
+    }
+    return n2000Value;
+  }
+
+  const lineDepth = getNumberValue(line.properties.n2000depth, line.properties.depth);
+  const lineDraft = getNumberValue(line.properties.n2000draft, line.properties.draft);
+  const lineReferenceLevel = getStringValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel);
+
   return (
     <IonGrid id="linePopupContent" class="ion-padding">
       <IonGrid class="ion-no-padding">
@@ -76,9 +94,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
           <IonRow>
             <IonCol>
-              <em>
-                {showN2000HeightSystem ? line.properties.n2000ReferenceLevel ?? line.properties.referenceLevel : line.properties.referenceLevel}
-              </em>
+              <em>{lineReferenceLevel}</em>
             </IonCol>
           </IonRow>
         )}
@@ -88,10 +104,10 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000draft || line.properties.draft) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.draft', { val: showN2000HeightSystem ? line.properties.n2000draft ?? line.properties.draft : line.properties.draft })}{' '}
+              {t('popup.line.draft', { val: lineDraft })}{' '}
               <span
                 aria-label={t('fairwayCards.unit.mDesc', {
-                  count: showN2000HeightSystem ? line.properties.n2000draft ?? line.properties.draft : line.properties.draft,
+                  count: lineDraft,
                 })}
                 role="definition"
               >
@@ -103,10 +119,10 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
         {(line.properties.n2000depth || line.properties.depth) && (
           <IonRow>
             <IonCol>
-              {t('popup.line.depth', { val: showN2000HeightSystem ? line.properties.n2000depth ?? line.properties.depth : line.properties.depth })}{' '}
+              {t('popup.line.depth', { val: lineDepth })}{' '}
               <span
                 aria-label={t('fairwayCards.unit.mDesc', {
-                  count: showN2000HeightSystem ? line.properties.n2000depth ?? line.properties.depth : line.properties.depth,
+                  count: lineDepth,
                 })}
                 role="definition"
               >

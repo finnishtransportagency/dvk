@@ -10,10 +10,12 @@ import TitleBar from './TitleBar';
 import InfoAccordion from './InfoAccordion';
 import Alert from './Alert';
 import { useTranslation } from 'react-i18next';
+import { useSquatContext } from '../hooks/squatContext';
 
 const Squat: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squat' });
-
+  const { state } = useSquatContext();
+  const { showLimitedView } = state.status;
   return (
     <>
       <TitleBar />
@@ -22,15 +24,15 @@ const Squat: React.FC = () => {
       <IonGrid className="content">
         <IonRow>
           <IonCol size="12" sizeSm="6" sizeLg="4">
-            <Vessel />
+            <Vessel limitedView={showLimitedView} />
           </IonCol>
 
           <IonCol size="12" sizeSm="6" sizeLg="4">
-            <Environment />
+            <Environment limitedView={showLimitedView} />
           </IonCol>
 
-          <IonCol size="12" sizeLg="4">
-            <Calculations />
+          <IonCol size="12" sizeLg="4" className="block-in-print">
+            <Calculations limitedView={showLimitedView} />
           </IonCol>
         </IonRow>
       </IonGrid>

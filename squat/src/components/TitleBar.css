@@ -1,10 +1,10 @@
 ion-grid.titlebar {
   padding: 0 10px;
 }
-.logo {
+ion-grid.titlebar .logo {
   width: 105px;
 }
-ion-button.languageSelection {
+ion-grid.titlebar ion-button.languageSelection {
   font-size: 16px;
   text-transform: none;
   letter-spacing: normal;
@@ -13,52 +13,52 @@ ion-button.languageSelection {
   --padding-start: 14px;
   --padding-end: 14px;
 }
-ion-button.languageSelection:hover {
+ion-grid.titlebar ion-button.languageSelection:hover {
   color: var(--ion-color-primary-shade);
   text-decoration: underline;
 }
-.titlebar ion-button.icon-only {
+ion-grid.titlebar  ion-button.icon-only {
   margin: 0 6px 0 0;
 }
-ion-button.languageSelection.button-disabled {
+ion-grid.titlebar ion-button.languageSelection.button-disabled {
   opacity: 1;
   color: var(--ion-color-dark);
   font-weight: bold;
 }
 @media (max-width: 991px) {
-  ion-text h1 {
+  ion-grid.titlebar ion-text h1 {
     font-size: 1.8rem;
   }
 }
 @media (min-width: 768px) {
-  ion-text h1 {
+  ion-grid.titlebar ion-text h1 {
     white-space: nowrap;
   }
-  .mobile-logo {
+  ion-grid.titlebar .mobile-logo {
     display: none;
   }
 }
 @media (max-width: 767px) {
-  .mainTitle {
+  ion-grid.titlebar .mainTitle {
     flex-basis: 40%;
   }
-  ion-text h1 {
+  ion-grid.titlebar ion-text h1 {
     white-space: nowrap;
     font-size: 1.8rem;
   }
-  .desktop-logo {
+  ion-grid.titlebar .desktop-logo {
     display: none;
   }
-  .langbar {
+  ion-grid.titlebar .langbar {
     flex-basis: 50%;
   }
 }
 @media (max-width: 575px) {
-  ion-text h1 {
+  ion-grid.titlebar ion-text h1 {
     font-size: 1.4rem;
     white-space: normal;
   }
-  .logo {
+  ion-grid.titlebar .logo {
     width: 95px;
   }
 }

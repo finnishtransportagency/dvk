@@ -8,7 +8,6 @@
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
-      "squat-url": "/squat/index.html?lang=fi",
       "customer-service": "Liikenteen asiakaspalvelu",
       "source": "Tietolähteet ja käyttöehdot",
       "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
@@ -38,6 +37,9 @@
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
           "marineWarnings": "Merivaroitukset",
+          "coastalWarning": "Coastal warning",
+          "localWarning": "Local warning",
+          "boaterWarning": "Varoituksia veneilijöille",
           "boardLines": "Taululinjat",
           "circles": "Kääntöympyrät",
           "conditions": "Olosuhteet",
@@ -415,10 +417,13 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
+    "squat": "Squat-laskuri",
+    "extensive-squat": "Laaja squat-laskuri",
     "fairway-cards": "Väyläkortit",
     "skip-to-content": "Siirry pääsisältöön",
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
-    "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten."
+    "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten.",
+    "print": "Tulosta sivu"
   },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",

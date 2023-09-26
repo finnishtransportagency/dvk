@@ -93,10 +93,11 @@ button.icon:focus-visible:hover {
 }
 .dropdownWrapper ion-input.searchBar {
   box-sizing: border-box;
-  min-height: 43px;
+  min-height: 43px !important;
   max-width: 100%;
   background-color: var(--ion-color-dark);
   padding: 1px !important;
+  --highlight-color-focused: transparent;
 }
 .dropdownWrapper ion-input.searchBar input {
   height: 100%;
@@ -107,7 +108,7 @@ button.icon:focus-visible:hover {
 }
 .dropdownWrapper ion-input.searchBar.has-focus {
   background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  min-height: 41px;
+  min-height: 41px !important;
   padding: 2px !important;
 }
 .dropdownWrapper ion-input.searchBar.has-focus input {
@@ -187,10 +188,14 @@ button.icon:focus-visible:hover {
   transform: scaleX(-1);
 }
 
+h2 {
+  margin-top: 16px;
+}
 .fairwayTitle h2 {
   line-height: 2rem;
 }
-.fairwayTitle em {
+.fairwayTitle em,
+.fairwayTitle a {
   font-size: 12px;
 }
 ion-text p {
@@ -359,6 +364,10 @@ ion-segment.tabs {
   border-width: 1px 0;
   margin-top: 20px;
 }
+ion-segment.tabs ion-segment-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+}
 ion-segment.tabs ion-segment-button::part(native) {
   font-size: 12px;
   letter-spacing: normal;
@@ -418,6 +427,7 @@ ion-segment.tabs ion-label h3 {
 }
 .contentModal ion-content {
   --padding-top: 0;
+  --background: var(--ion-color-lightest);
 }
 .contentModal::part(handle) {
   height: 22px;
@@ -455,7 +465,7 @@ ion-segment.tabs ion-label h3 {
   left: 0;
   right: 0;
   padding: 24px 16px 16px;
-  background-color: var(--ion-color-primary-contrast);
+  background-color: var(--ion-color-lightest);
 }
 .contentModal .breadcrumbs {
   padding-top: 26px;
@@ -473,7 +483,7 @@ ion-segment.tabs ion-label h3 {
   font-size: 12px;
 }
 
-.contentModal .fairwayTitle h2 {
+.contentModal .ion-margin-top {
   margin-top: 10px;
 }
 

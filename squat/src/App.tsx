@@ -74,7 +74,7 @@ const App: React.FC = () => {
 
   return (
     <SquatContext.Provider value={providerState}>
-      <IonApp>
+      <IonApp className="squat">
         <Home />
       </IonApp>
     </SquatContext.Provider>

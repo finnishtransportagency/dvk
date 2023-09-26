@@ -31,7 +31,7 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
           </IonText>
         </IonCol>
         {!props.hideValidity && (
-          <IonCol size="auto" className="ion-align-self-center" title={props.valid ? t('section-valid') : t('section-invalid')}>
+          <IonCol size="auto" className="ion-align-self-center section-validity" title={props.valid ? t('section-valid') : t('section-invalid')}>
             <IonIcon
               icon={props.valid ? checkmarkCircle : radioButtonOff}
               color={props.valid ? 'success' : 'medium'}

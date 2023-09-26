@@ -44,6 +44,12 @@ export class DvkFeaturePipelineStack extends Stack {
         phases: {
           build: {
             commands: [
+              'cd squat',
+              'npm ci',
+              'npm run lint',
+              'npm run test -- --coverage',
+              'npm run build',
+              'cd ..',
               'npm ci',
               'npm run generate',
               'cd cdk',
@@ -54,12 +60,6 @@ export class DvkFeaturePipelineStack extends Stack {
               'npm run lint',
               'npm run test -- --coverage',
               'npm run build',
-              'cd squat',
-              'npm ci',
-              'npm run lint',
-              'npm run test -- --coverage',
-              'npm run build',
-              'cd ..',
               'cd admin',
               'npm ci',
               'npm run generate',

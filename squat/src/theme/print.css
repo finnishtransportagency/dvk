@@ -39,12 +39,12 @@
   ion-text {
     position: static !important;
   }
-  ion-text h2 {
+  .squat ion-text h2 {
     margin: 0 !important;
     font-size: 16px;
     line-height: 1;
   }
-  ion-text h3 {
+  .squat ion-text h3 {
     font-size: 14px;
     line-height: 1;
   }
@@ -80,7 +80,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 52px;
+    min-height: 50px;
+    padding: 1px 5px;
   }
   ion-row.input-row > ion-col:nth-child(4n) {
     border-right-width: 0;
@@ -104,7 +105,7 @@
     height: 100%;
   }
   ion-col ion-radio-group > ion-grid {
-    margin: 0;
+    margin: 0 !important;
     display: flex;
     align-items: flex-end;
   }
@@ -179,11 +180,14 @@
   }
   ion-item.item-static {
     --min-height: 20px;
-    --padding-bottom: 2px;
     font-size: 14px;
   }
   ion-item.item-static::part(native) {
     --padding-start: 0;
+  }
+  ion-item.item-static ion-text,
+  ion-item.item-static ion-label {
+    line-height: 20px;
   }
 
   ion-select {
@@ -202,6 +206,9 @@
   ion-item.item-radio-checked {
     --min-height: 20px;
   }
+  ion-col.col-radio ion-grid.no-padding ion-col {
+    padding: 0;
+  }
   ion-label.radio {
     margin: 0;
     text-align: left;
@@ -219,59 +226,81 @@
     display: none;
   }
 
-  ion-segment {
+  .squat ion-segment {
     display: inline-flex;
     width: auto;
     margin-right: 30px;
     padding: 0 !important;
     vertical-align: text-bottom;
   }
-  .segment-label {
+  .squat .segment-label {
     font-size: 12px;
     display: inline-block !important;
     vertical-align: text-bottom;
     padding-right: 4px;
     line-height: 16px;
   }
-  ion-segment-button {
+  .squat ion-segment-button {
     flex: unset;
     height: 16px;
     min-width: 0;
     border-radius: 0 !important;
   }
-  ion-segment-button:last-child {
+  .squat ion-segment-button:last-child {
     border: none;
   }
-  ion-segment-button:not(.segment-button-checked) {
+  .squat ion-segment-button:not(.segment-button-checked) {
     display: none;
   }
-  ion-segment-button ion-label {
+  .squat ion-segment-button ion-label {
     font-size: 12px;
   }
-  ion-segment-button::part(native) {
+  .squat ion-segment-button::part(native) {
     padding: 0;
     border-radius: 0 !important;
   }
-  ion-segment-button.segment-button-checked ion-label {
+  .squat ion-segment-button.segment-button-checked {
+    opacity: 1;
+  }
+  .squat ion-segment-button.segment-button-checked ion-label {
     color: var(--ion-color-primary);
   }
-  ion-segment-button::part(indicator) {
+  .squat ion-segment-button::part(indicator) {
     display: none !important;
   }
 
+  .squatChartGrid {
+    break-inside: avoid;
+  }
   .squatChartTitle {
     margin-top: 0;
     font-size: 16px;
     font-weight: 600;
     line-height: 1;
   }
-
-  .printable {
-    display: block;
+  .squatChartRow svg {
+    max-height: 58vh;
+  }
+  
+  .dataTableRow .dataCol {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
-  .print-hide {
-    display: none;
+  .printable {
+    display: block !important;
+  }
+
+  .print-hide,
+  .squat .segment-label.print-hide {
+    display: none !important;
+  }
+
+  .block-in-print {
+    display: block;
+    padding: 0;
+    width: auto !important;
+    max-width: unset !important;
   }
 
   .dataTableRow {

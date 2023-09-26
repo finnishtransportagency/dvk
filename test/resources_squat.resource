@@ -98,9 +98,9 @@ ${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}    //ion-label[@title = "Aluksen
 ${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}    //ion-label[@title = "Kölivara ja aluksen liikkeet"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 ${KOLIVARA_SUORALLA_KURSSILLA_VALUE}    //ion-label[@title = "Kölivara suoralla kurssilla"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 ${KOLIVARA_KAANNOKSESSA_VALUE}    //ion-label[@title = "Kölivara käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_SLOPED_VALUE}    //ion-label[@title = "Painuma (Squat), Luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_CHANNEL_VALUE}    //ion-label[@title = "Painuma (Squat), Kanava"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_OPEN_VALUE}    //ion-label[@title = "Painuma (Squat), Avovesi"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_SLOPED_VALUE}    //ion-label[@title = "Painuma (Squat), luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_CHANNEL_VALUE}    //ion-label[@title = "Painuma (Squat), kanava"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${PAINUMA_OPEN_VALUE}    //ion-label[@title = "Painuma (Squat), avovesi"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
 
 #Tuulen voima -calculation
 ${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text

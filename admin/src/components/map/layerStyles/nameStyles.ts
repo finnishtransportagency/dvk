@@ -34,7 +34,7 @@ export function getNameStyle(feature: FeatureLike, resolution: number) {
     }
     const dvkMap = getMap();
     const featureName = feature.get('name');
-    if ((dvkMap.i18n.resolvedLanguage as Lang) === 'sv') {
+    if ((dvkMap.i18n.resolvedLanguage as Lang) === 'sv' || dvkMap.getMapLanguage() === 'sv') {
       style.getText().setText('' + (featureName.sv || featureName.fi));
     } else {
       style.getText().setText('' + (featureName.fi || featureName.sv));

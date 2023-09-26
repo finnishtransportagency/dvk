@@ -120,7 +120,9 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
-      <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
+      <div className="no-print">
+        <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
+      </div>
     </>
   );
 };

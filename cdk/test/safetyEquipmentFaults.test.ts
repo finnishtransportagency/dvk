@@ -1,6 +1,7 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/graphql/query/safetyEquipmentFaults-handler';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@aws-sdk/util-stream';
 import { createReadStream } from 'fs';
 import { mockVoidEvent } from './mocks';
 
@@ -44,7 +45,7 @@ beforeEach(() => {
 });
 
 it('should get faults from api', async () => {
-  const stream = createReadStream('./test/data/faults.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
@@ -54,7 +55,7 @@ it('should get faults from api', async () => {
 });
 
 it('should get faults from cache when api call fails', async () => {
-  const stream = createReadStream('./test/data/faults.json');
+  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });

@@ -28,6 +28,7 @@ import Phonenumber from './Phonenumber';
 import { useDvkContext } from '../../hooks/dvkContext';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { Link } from 'react-router-dom';
+import uniqueId from 'lodash/uniqueId';
 
 type FairwaysProps = {
   data?: Fairway[] | null;
@@ -152,8 +153,9 @@ const DimensionInfo: React.FC<FairwaysProps> = ({ data, designSpeedText, isN2000
           <p>
             <strong>{t('fairwayDesignVessel', { count: sizingVessels.length || 1 })}: </strong>
             {sizingVessels.map((vessel, idx) => {
+              const uuid = uniqueId('vessel_');
               return (
-                <span key={idx}>
+                <span key={uuid}>
                   {vessel && (
                     <>
                       <br />
@@ -530,9 +532,10 @@ const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
         <IonText>
           <p>
             <strong>{t('vts')}:</strong>
-            {data.map((vts, idx) => {
+            {data.map((vts) => {
+              const uuid = uniqueId();
               return (
-                <span key={(vts?.name?.fi ?? '') + idx}>
+                <span key={(vts?.name?.fi ?? '') + uuid}>
                   <br />
                   {vts?.name && vts.name[lang]}
                   {vts?.vhf && vts.vhf.length > 0 && (
@@ -582,9 +585,10 @@ const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
         <IonText>
           <p className="no-margin-bottom">
             <strong>{t('tugs')}:</strong>
-            {data.map((tug, idx) => {
+            {data.map((tug) => {
+              const uuid = uniqueId('tug_');
               return (
-                <span key={idx}>
+                <span key={uuid}>
                   <br />
                   {tug?.name && tug.name[lang]}
                   <br />
@@ -594,8 +598,9 @@ const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
                   {t('phone')}:{' '}
                   {tug?.phoneNumber &&
                     tug?.phoneNumber.map((phone, jdx) => {
+                      const phoneUuid = uniqueId('phone_');
                       return (
-                        <span key={jdx}>
+                        <span key={phoneUuid}>
                           <Phonenumber number={phone} />
                           {Number(tug.phoneNumber?.length) > jdx + 1 ? ', ' : ' '}
                         </span>
@@ -625,10 +630,11 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
 
   return (
     <>
-      {data?.map((quay, jdx) => {
+      {data?.map((quay) => {
+        const uuid = uniqueId('quay_');
         return (
           <p
-            key={jdx}
+            key={uuid}
             className="inlineHoverText"
             onMouseOver={() => setSelectedQuay(quay)}
             onFocus={() => setSelectedQuay(quay)}
@@ -649,9 +655,10 @@ const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
                 </em>
               </>
             )}
-            {quay?.sections?.map((section, kdx) => {
+            {quay?.sections?.map((section) => {
+              const sectionUuid = uniqueId('section_');
               return (
-                <span key={kdx}>
+                <span key={sectionUuid}>
                   <br />
                   {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
                   <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })} role="definition">
@@ -705,8 +712,9 @@ const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
           )}
           {t('phone')}:{' '}
           {data.phoneNumber?.map((phone, idx) => {
+            const uuid = uniqueId('phone_');
             return (
-              <span key={idx}>
+              <span key={uuid}>
                 <Phonenumber number={phone} />
                 {Number(data.phoneNumber?.length) > idx + 1 ? ', ' : ''}
               </span>
@@ -830,6 +838,10 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     }
   };
 
+  const getTabClassName = (tabId: number): string => {
+    return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
+  };
+
   const path = [
     {
       title: t('title', { count: 0 }),
@@ -854,7 +866,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonBreadcrumbs>
             <IonSkeletonText animated={true} style={{ width: '100%', height: widePane ? '24px' : '48px', margin: '0' }}></IonSkeletonText>
           </IonBreadcrumbs>
-          <IonText>
+          <IonText className="fairwayTitle">
             <h2 className="no-margin-bottom">
               <IonSkeletonText animated={true} style={{ width: '100%', height: '30px' }}></IonSkeletonText>
             </h2>
@@ -869,11 +881,11 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
         <>
           <Breadcrumb path={path} />
 
-          <IonGrid className="ion-no-padding">
+          <IonGrid className="ion-no-padding ion-margin-top">
             <IonRow>
               <IonCol>
                 <IonText className="fairwayTitle" id="mainPageContent">
-                  <h2 className="no-margin-bottom">
+                  <h2 className="ion-no-margin">
                     <strong>{fairwayCard?.name[lang]}</strong>
                   </h2>
                 </IonText>
@@ -935,7 +947,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             ))}
           </IonSegment>
 
-          <div className={'tabContent tab1' + (widePane ? ' wide' : '') + (tab === 1 ? ' active' : '')}>
+          <div className={getTabClassName(1)}>
             <IonText className="no-margin-top">
               <h4>
                 <strong>{t('information')}</strong>
@@ -982,7 +994,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
 
-          <div className={'tabContent tab2' + (widePane ? ' wide' : '') + (tab === 2 ? ' active' : '')}>
+          <div className={getTabClassName(2)}>
             {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
               return <HarbourInfo data={harbour} key={harbour?.id} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
             })}
@@ -993,7 +1005,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             )}
           </div>
 
-          <div className={'tabContent tab3' + (widePane ? ' wide' : '') + (tab === 3 ? ' active' : '')}>
+          <div className={getTabClassName(3)}>
             <IonText className="no-margin-top">
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />

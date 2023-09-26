@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './i18n';
 import i18next, { changeLanguage } from 'i18next';
+import { changeSquatLanguage } from 'squatlib';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement as Element);
@@ -16,14 +17,18 @@ export function getUrlParam(param: string) {
   const paramLang = getUrlParam('lang');
   if (paramLang === 'fi') {
     await changeLanguage('fi', () => localStorage.setItem('dvkLang', 'fi'));
+    await changeSquatLanguage('fi');
   } else if (paramLang === 'sv') {
     await changeLanguage('sv', () => localStorage.setItem('dvkLang', 'sv'));
+    await changeSquatLanguage('sv');
   } else if (paramLang === 'en') {
     await changeLanguage('en', () => localStorage.setItem('dvkLang', 'en'));
+    await changeSquatLanguage('en');
   } else {
     const storageLang = localStorage.getItem('dvkLang');
     if (storageLang) {
       await changeLanguage(storageLang);
+      await changeSquatLanguage(storageLang);
     }
   }
 

@@ -25,6 +25,7 @@ export default defineConfig({
       /* Cache all imports */
       workbox: {
         globPatterns: ['**/*'],
+        maximumFileSizeToCacheInBytes: 3000000,
       },
       registerType: 'autoUpdate',
       filename: 'service-worker.js',

@@ -5,7 +5,7 @@ import TileGrid from 'ol/tilegrid/TileGrid';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { get as getProjection } from 'ol/proj';
-import { BackgroundLayerId, FeatureLayerId, MAP } from '../../utils/constants';
+import { BackgroundLayerId, FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import { MousePosition, ScaleLine, Rotate } from 'ol/control';
 import VectorTileSource from 'ol/source/VectorTile';
 import VectorTileLayer from 'ol/layer/VectorTile';
@@ -30,7 +30,9 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
-export type OrientationType = Orientation | '';
+
+type OrientationType = Orientation | '';
+type LangType = Lang | '';
 
 class DvkMap {
   public olMap: Map | null = null;
@@ -47,6 +49,8 @@ class DvkMap {
   private readonly mapDetailsControl: MapDetailsControl = new MapDetailsControl();
 
   private orientationType: OrientationType = '';
+
+  private mapLanguage: LangType = '';
 
   private source: VectorTileSource | null = null;
 
@@ -161,6 +165,7 @@ class DvkMap {
     this.olMap.addLayer(bgBalticseaLayer);
     this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
     this.setOrientationType(this.orientationType);
+    this.setMapLanguage(this.mapLanguage);
     this.translate();
   }
   // eslint-disable-next-line
@@ -252,6 +257,10 @@ class DvkMap {
     }
   };
 
+  public setMapLanguage = (lang: LangType) => {
+    this.mapLanguage = lang;
+  };
+
   public getCanvasDimensions = () => {
     let canvasSize = [0, 0];
     if (this.olMap) {
@@ -300,6 +309,10 @@ class DvkMap {
 
   public getOrientationType = () => {
     return this.orientationType;
+  };
+
+  public getMapLanguage = () => {
+    return this.mapLanguage;
   };
 
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {
