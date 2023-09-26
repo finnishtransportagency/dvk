@@ -226,6 +226,7 @@ interface PrintImagesByModeProps {
   disabled: boolean;
   setShowPicture: (picture: PictureInput | '') => void;
   isLoading?: boolean;
+  isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
 }
 
@@ -236,6 +237,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   disabled,
   setShowPicture,
   isLoading,
+  isProcessingCurLang,
   validationErrors,
 }) => {
   const { t, i18n } = useTranslation();
@@ -318,7 +320,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   return (
     <IonGrid className={'print-images ' + orientation.toLowerCase()}>
       <IonRow>
-        {mainPictures?.map((pic) => {
+        {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
           return (
             <IonCol key={pic.id} size="auto">
@@ -381,6 +383,11 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                             </a>
                           </IonCol>
                         ))}
+                        {isLoading && !isProcessingCurLang && dvkMap.getOrientationType() === orientation && idx === mainPictures.length - 1 && (
+                          <IonCol size="auto">
+                            <IonSkeletonText animated={true} className="pic small" />
+                          </IonCol>
+                        )}
                       </IonRow>
                     </IonGrid>
                   </IonCol>
@@ -396,6 +403,9 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       {t(`fairwaycard.print-images-language-${pic.lang}`)}
                       {groupedPics && groupedPics?.length > 0 && (
                         <>, {groupedPics.flatMap((gPic) => t(`fairwaycard.print-images-language-${gPic.lang}`)).join(', ')}</>
+                      )}
+                      {isLoading && !isProcessingCurLang && dvkMap.getOrientationType() === orientation && idx === mainPictures.length - 1 && (
+                        <IonSkeletonText animated={true} className="text inline" />
                       )}
                     </p>
                     <p>
@@ -429,7 +439,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
           );
         })}
         <IonCol size="auto">
-          {isLoading && dvkMap.getOrientationType() === orientation && (
+          {isLoading && isProcessingCurLang && dvkMap.getOrientationType() === orientation && (
             <IonGrid className="picWrapper">
               <IonRow>
                 <IonCol>
@@ -485,9 +495,10 @@ interface PrintImageProps {
   ) => void;
   isLoading?: boolean;
   validationErrors?: ValidationType[];
+  isProcessingCurLang?: boolean;
 }
 
-const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading, disabled, validationErrors }) => {
+const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading, disabled, validationErrors, isProcessingCurLang }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
 
@@ -534,6 +545,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
         disabled={disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
+        isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
       />
 
@@ -563,6 +575,7 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
         disabled={disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
+        isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
       />
     </>
@@ -585,7 +598,8 @@ interface MapProps {
 }
 
 const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const curLang = i18n.resolvedLanguage as Lang;
 
   InitDvkMap();
 
@@ -820,17 +834,20 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     });
   };
 
-  // Create uploadable image
+  // Create uploadable images with every locale
+  const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
   const printCurrentMapView = async () => {
     console.time('Export pictures');
     if (dvkMap.olMap && dvkMap.getOrientationType()) {
       setIsMapDisabled(true);
+      setIsProcessingCurLang(true);
 
       const rotation = dvkMap.olMap.getView().getRotation();
       const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
       const picGroupId = Date.now();
 
       for (const locale of locales) {
+        if (locale !== curLang) setIsProcessingCurLang(false);
         await exportMapByLang(viewResolution, rotation, locale as Lang, picGroupId);
       }
 
@@ -868,6 +885,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
             fairwayCardInput={fairwayCardInput}
             setPicture={setPicture}
             isLoading={isLoadingMutation}
+            isProcessingCurLang={isProcessingCurLang}
             disabled={disabled}
             validationErrors={validationErrors}
           />

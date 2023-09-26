@@ -998,6 +998,12 @@ ion-grid.alert ion-icon.error {
   width: 80px;
   height: 14px;
   margin: 0;
+  vertical-align: text-top;
+}
+.mapExportTool ion-skeleton-text.text.inline {
+  width: 50px;
+  margin-left: 4px;
+  display: inline-block;
 }
 .mapExportTool ion-grid.print-images ion-button.sequenceButton {
   position: absolute;
