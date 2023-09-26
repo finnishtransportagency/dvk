@@ -30,11 +30,11 @@ test('checks if UKC is under minimum', () => {
     isUKCUnderMinimum(
       18,
       1,
-      [0.8, 0.8],
-      [0.8, 0.8],
+      [1, 1],
+      [1, 1],
       [
-        [0.8, 0.8],
-        [0.8, 0.8],
+        [1, 1],
+        [0.8, 1],
       ],
       false,
       false
@@ -44,11 +44,11 @@ test('checks if UKC is under minimum', () => {
     isUKCUnderMinimum(
       18,
       1,
-      [0.8, 0.8],
-      [0.8, 0.8],
+      [1, 1],
+      [1, 1],
       [
-        [0.8, 0.8],
-        [0.8, 0.8],
+        [0.8, 1],
+        [1, 1],
       ],
       true,
       false
@@ -61,6 +61,62 @@ test('checks if UKC is under minimum', () => {
       [1, 1],
       [1, 1],
       [
+        [1, 0.8],
+        [1, 1],
+      ],
+      true,
+      true
+    )
+  ).toBeTruthy();
+  expect(
+    isUKCUnderMinimum(
+      18,
+      1,
+      [1, 1],
+      [1, 1],
+      [
+        [1, 1],
+        [1, 0.8],
+      ],
+      false,
+      true
+    )
+  ).toBeTruthy();
+  expect(
+    isUKCUnderMinimum(
+      18,
+      1,
+      [1, 0.9],
+      [1, 1],
+      [
+        [1, 1],
+        [1, 1],
+      ],
+      false,
+      false
+    )
+  ).toBeTruthy();
+  expect(
+    isUKCUnderMinimum(
+      18,
+      1,
+      [1, 1],
+      [0.9, 1],
+      [
+        [1, 1],
+        [1, 1],
+      ],
+      true,
+      false
+    )
+  ).toBeTruthy();
+  expect(
+    isUKCUnderMinimum(
+      18,
+      1,
+      [0.8, 1],
+      [0.8, 1],
+      [
         [1, 1],
         [1, 1],
       ],
@@ -72,8 +128,8 @@ test('checks if UKC is under minimum', () => {
     isUKCUnderMinimum(
       18,
       1,
-      [1, 1],
-      [1, 1],
+      [1, 0.8],
+      [1, 0.8],
       [
         [1, 1],
         [1, 1],
