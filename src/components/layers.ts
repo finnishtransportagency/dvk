@@ -20,6 +20,8 @@ import specialarea from '../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
+import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
+import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
@@ -237,80 +239,6 @@ function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
     } else {
       return getLineStyle('#EC0E0E', 0.5);
     }
-  }
-  return undefined;
-}
-
-function getArea12Style(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
-  if (ds === 'area12') {
-    return new Style({
-      fill: new Fill({
-        color: 'rgba(236, 14, 14, 0.1)',
-      }),
-    });
-  } else if (ds === 'area12Borderline') {
-    const props = feature.getProperties();
-    const a1Props = props.area1Properties;
-    const a2Props = props.area2Properties;
-
-    let strokeWidth = 1;
-    if (resolution && resolution > 15) strokeWidth = 0.5;
-    if (resolution && resolution > 30) strokeWidth = 0;
-
-    const strokeColor = strokeWidth > 0 ? '#EC0E0E' : 'rgba(236, 14, 14, 0.1)';
-
-    if (a1Props && a2Props) {
-      if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
-        return undefined;
-      } else {
-        strokeWidth = strokeWidth / 2;
-      }
-    }
-
-    return new Style({
-      stroke: new Stroke({
-        color: strokeColor,
-        width: strokeWidth,
-      }),
-    });
-  }
-  return undefined;
-}
-
-function getArea3456Style(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area3456Borderline';
-  if (ds === 'area3456') {
-    return new Style({
-      fill: new Fill({
-        color: 'rgba(32, 122, 67, 0.1)',
-      }),
-    });
-  } else if (ds === 'area3456Borderline') {
-    const props = feature.getProperties();
-    const a1Props = props.area1Properties;
-    const a2Props = props.area2Properties;
-
-    let strokeWidth = 1;
-    if (resolution && resolution > 15) strokeWidth = 0.5;
-    if (resolution && resolution > 30) strokeWidth = 0;
-
-    const strokeColor = strokeWidth > 0 ? '#207A43' : 'rgba(32, 122, 67, 0.1)';
-
-    if (a1Props && a2Props) {
-      if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
-        return undefined;
-      } else {
-        strokeWidth = strokeWidth / 2;
-      }
-    }
-
-    return new Style({
-      stroke: new Stroke({
-        color: strokeColor,
-        width: strokeWidth,
-      }),
-    });
   }
   return undefined;
 }
@@ -560,7 +488,7 @@ export function addAPILayers(map: Map) {
     id: 'area12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getArea12Style,
+    style: getFairwayArea12Style,
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -594,7 +522,7 @@ export function addAPILayers(map: Map) {
     id: 'area3456',
     maxResolution: 30,
     renderBuffer: 1,
-    style: getArea3456Style,
+    style: getFairwayArea3456Style,
     minResolution: undefined,
     opacity: 1,
     declutter: false,
