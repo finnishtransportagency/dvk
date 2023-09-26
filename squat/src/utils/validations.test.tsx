@@ -36,6 +36,7 @@ test('checks if UKC is under minimum', () => {
         [0.8, 0.8],
         [0.8, 0.8],
       ],
+      false,
       false
     )
   ).toBeTruthy();
@@ -49,7 +50,8 @@ test('checks if UKC is under minimum', () => {
         [0.8, 0.8],
         [0.8, 0.8],
       ],
-      true
+      true,
+      false
     )
   ).toBeTruthy();
   expect(
@@ -62,6 +64,7 @@ test('checks if UKC is under minimum', () => {
         [1, 1],
         [1, 1],
       ],
+      false,
       false
     )
   ).toBeFalsy();
@@ -75,7 +78,8 @@ test('checks if UKC is under minimum', () => {
         [1, 1],
         [1, 1],
       ],
-      true
+      true,
+      false
     )
   ).toBeFalsy();
 });
@@ -96,6 +100,7 @@ test('checks if UKC ship motions are under required', () => {
         [0.8, 0.8],
         [0.8, 0.8],
       ],
+      false,
       false
     )
   ).toBeTruthy();
@@ -106,7 +111,8 @@ test('checks if UKC ship motions are under required', () => {
         [0.8, 0.8],
         [0.8, 0.8],
       ],
-      true
+      true,
+      false
     )
   ).toBeTruthy();
 });
