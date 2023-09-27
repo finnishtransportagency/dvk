@@ -7,30 +7,33 @@ import { GeolocationError } from 'ol/Geolocation';
 
 export const initUserLocation = (dispatch: Dispatch<Action>) => {
   const userLocationControl = dvkMap.getCenterToOwnLocationControl();
-  navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-    if (result.state === 'granted' || result.state === 'prompt') {
-      dispatch({ type: 'setLocationPermission', payload: { value: 'on' } });
-    } else if (result.state === 'denied') {
-      dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
-    }
-
-    // Handle permission denied from location prompt
-    userLocationControl.geolocation.on('error', (error: GeolocationError) => {
-      // PERMISSION_DENIED: 1 | POSITION_UNAVAILABLE: 2 | TIMEOUT: 3
-      if (error.code === 1) {
-        dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
-      }
-    });
-
-    // Listen to changes in browser permissions (temporary permission changes from prompt do not fire this change event)
-    result.addEventListener('change', () => {
-      if (result.state === 'granted') {
+  // Permissions API is undefined in test framework
+  if (navigator.permissions !== undefined) {
+    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
+      if (result.state === 'granted' || result.state === 'prompt') {
         dispatch({ type: 'setLocationPermission', payload: { value: 'on' } });
       } else if (result.state === 'denied') {
         dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
       }
+
+      // Handle permission denied from location prompt
+      userLocationControl.geolocation.on('error', (error: GeolocationError) => {
+        // PERMISSION_DENIED: 1 | POSITION_UNAVAILABLE: 2 | TIMEOUT: 3
+        if (error.code === 1) {
+          dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
+        }
+      });
+
+      // Listen to changes in browser permissions (temporary permission changes from prompt do not fire this change event)
+      result.addEventListener('change', () => {
+        if (result.state === 'granted') {
+          dispatch({ type: 'setLocationPermission', payload: { value: 'on' } });
+        } else if (result.state === 'denied') {
+          dispatch({ type: 'setLocationPermission', payload: { value: 'disabled' } });
+        }
+      });
     });
-  });
+  }
 };
 
 export const placeUserLocationMarker = () => {
