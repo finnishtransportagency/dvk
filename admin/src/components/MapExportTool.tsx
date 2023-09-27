@@ -419,6 +419,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg
                               : undefined
                           }
+                          maxCharLength={100}
                         />
                       </IonGrid>
                     )}
