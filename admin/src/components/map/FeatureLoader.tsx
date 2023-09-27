@@ -96,6 +96,10 @@ export function useBackgroundBalticseaLayer(): DvkLayerState {
   return useStaticDataLayer('balticsea', 'balticsea');
 }
 
+export function useBackgroundMmlSatamatLayer(): DvkLayerState {
+  return useStaticDataLayer('mml_satamat', 'mml_satamat');
+}
+
 export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
