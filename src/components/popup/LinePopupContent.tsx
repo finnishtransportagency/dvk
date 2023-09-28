@@ -55,9 +55,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     return n2000Value;
   }
 
-  const lineDepth = getValue(line.properties.n2000depth, line.properties.depth);
-  const lineDraft = getValue(line.properties.n2000draft, line.properties.draft);
-  const lineReferenceLevel = getValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel);
+  const lineDepth = getValue(line.properties.n2000depth, line.properties.depth) as number;
+  const lineDraft = getValue(line.properties.n2000draft, line.properties.draft) as number;
+  const lineReferenceLevel = getValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel) as string;
 
   return (
     <IonGrid id="linePopupContent" class="ion-padding">
