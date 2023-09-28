@@ -6,7 +6,7 @@ import { closeOutline, helpCircleOutline } from 'ionicons/icons';
 interface ModalProps {
   title: string;
   content: string | ReactElement;
-  trigger?: ReactElement;
+  triggerIcon?: ReactElement;
   triggerTitle?: string;
   triggerClassName?: string;
   size?: 'medium' | 'large';
@@ -38,7 +38,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         role="button"
         disabled={props.disabled}
       >
-        {props.trigger || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
+        {props.triggerIcon || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
       <IonModal isOpen={isOpen} className={'squatModal ' + (props.size ? props.size : 'medium')} onDidDismiss={handleClickClose}>
         <IonHeader>

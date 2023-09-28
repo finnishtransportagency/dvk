@@ -8,6 +8,7 @@ import Environment from './components/Environment';
 import InfoAccordion from './components/InfoAccordion';
 import CalculationOptions from './components/CalculationOptions';
 import CalculationChecks from './components/CalculationChecks';
+import PrintBar from './components/PrintBar';
 export {
   Squat,
   SquatChart,
@@ -21,4 +22,5 @@ export {
   Environment,
   CalculationOptions,
   CalculationChecks,
+  PrintBar,
 };

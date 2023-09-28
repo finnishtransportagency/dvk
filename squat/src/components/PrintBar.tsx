@@ -9,7 +9,11 @@ import printIcon from '../theme/img/print_icon.svg';
 
 import Modal from './Modal';
 
-const PrintBar: React.FC = () => {
+interface PrintBarProps {
+  embeddedView?: boolean;
+}
+
+const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
   const { state } = useSquatContext();
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
@@ -40,7 +44,7 @@ const PrintBar: React.FC = () => {
 
   return (
     <>
-      <IonGrid>
+      <IonGrid className={embeddedView ? 'ion-no-padding' : ''}>
         <IonRow>
           <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
             <Modal
@@ -49,16 +53,7 @@ const PrintBar: React.FC = () => {
                 <>
                   <p>{t('header.shareable-link-body')}</p>
                   <IonItem lines="none" className="readonly-wrapper">
-                    <IonTextarea
-                      value={createShareableLink(state, true)}
-                      autoGrow
-                      readonly
-                      rows={1}
-                      onIonFocus={selectText}
-                      className="small-text"
-                      fill="outline"
-                      ref={inputRef}
-                    />
+                    <IonTextarea value="" autoGrow readonly rows={1} onIonFocus={selectText} className="small-text" fill="outline" ref={inputRef} />
                     <IonButton
                       fill="clear"
                       className="icon-only large no-background-focused"
@@ -80,22 +75,22 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src={shareIcon} size="medium" />}
+              triggerIcon={<IonIcon src={shareIcon} size={embeddedView ? 'small' : 'medium'} />}
               triggerTitle={t('header.shareable-link-title')}
-              triggerClassName="large"
+              triggerClassName={embeddedView ? 'small no-mobile no-print' : 'large'}
               handleDismiss={handleToastDismiss}
             />
           </IonCol>
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only large no-background-focused"
+              className={'icon-only ' + (embeddedView ? 'small no-mobile no-print' : 'large no-background-focused')}
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src={printIcon} size="medium" />
+              <IonIcon color="primary" slot="icon-only" src={printIcon} size={embeddedView ? 'small' : 'medium'} />
             </IonButton>
           </IonCol>
         </IonRow>
