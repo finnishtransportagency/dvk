@@ -319,7 +319,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   }
 
   const isDisabled = (): boolean => {
-    const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'depthArea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
+    const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'deptharea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };
 
