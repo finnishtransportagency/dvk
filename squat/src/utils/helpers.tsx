@@ -81,7 +81,7 @@ export const createShareableLink = (currentState: State, useBaseURL?: boolean) =
   parametres.push(getQuerystringForField('motionClearance', currentState.environment.attribute.motionClearance));
 
   // Calculations - Status
-  if (!embeddedSquat) parametres.push(getQuerystringForField('showDeepWaterValues', currentState.status.showDeepWaterValues, false));
+  if (!limitedView) parametres.push(getQuerystringForField('showDeepWaterValues', currentState.status.showDeepWaterValues, false));
   parametres.push(getQuerystringForField('showBarrass', currentState.status.showBarrass, false));
   if (!embeddedSquat) parametres.push(getQuerystringForField('showLimitedView', currentState.status.showLimitedView, false));
 

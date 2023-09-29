@@ -75,16 +75,16 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
           <IonGrid className="ion-no-padding">
             <IonRow>
               <IonCol className="squat-checks">
-                <CalculationChecks limitedView={true} embeddedView={true} doChecks={['ukc', 'reliability', 'LBratio', 'BDratio']} />
+                <CalculationChecks doChecks={['ukc', 'reliability', 'LBratio', 'BDratio']} />
               </IonCol>
             </IonRow>
             <IonRow>
               <IonCol size={widePane ? '6' : '12'} className="squatColumn first squat">
-                <CalculationOptions limitedView={true} embeddedView={true} />
-                <Vessel limitedView={true} />
+                <CalculationOptions />
+                <Vessel />
               </IonCol>
               <IonCol size={widePane ? '6' : '12'} className="squatColumn last">
-                <Environment limitedView={true} />
+                <Environment />
               </IonCol>
             </IonRow>
           </IonGrid>

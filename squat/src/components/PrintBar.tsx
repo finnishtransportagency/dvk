@@ -9,14 +9,11 @@ import printIcon from '../theme/img/print_icon.svg';
 
 import Modal from './Modal';
 
-interface PrintBarProps {
-  embeddedView?: boolean;
-}
-
-const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
+const PrintBar: React.FC = () => {
   const { state } = useSquatContext();
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
+  const { embeddedSquat } = state;
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const selectText = useCallback(() => {
@@ -44,7 +41,7 @@ const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
 
   return (
     <>
-      <IonGrid className={embeddedView ? 'ion-no-padding' : ''}>
+      <IonGrid className={embeddedSquat ? 'ion-no-padding' : ''}>
         <IonRow>
           <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
             <Modal
@@ -84,22 +81,22 @@ const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
                   />
                 </>
               }
-              triggerIcon={<IonIcon src={shareIcon} size={embeddedView ? 'small' : 'medium'} slot="icon-only" />}
+              triggerIcon={<IonIcon src={shareIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />}
               triggerTitle={t('header.shareable-link-title')}
-              triggerClassName={embeddedView ? 'small no-mobile no-print' : 'large no-background-focused'}
+              triggerClassName={embeddedSquat ? 'small no-mobile no-print' : 'large no-background-focused'}
               handleDismiss={handleToastDismiss}
             />
           </IonCol>
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className={'icon-only ' + (embeddedView ? 'small no-mobile no-print' : 'large no-background-focused')}
+              className={'icon-only ' + (embeddedSquat ? 'small no-mobile no-print' : 'large no-background-focused')}
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" src={printIcon} size={embeddedView ? 'small' : 'medium'} slot="icon-only" />
+              <IonIcon color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
             </IonButton>
           </IonCol>
         </IonRow>
