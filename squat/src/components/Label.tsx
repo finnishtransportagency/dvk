@@ -25,7 +25,7 @@ const Label: React.FC<LabelProps> = (props) => {
         )}
         {props.infoContent && props.infoContentTitle && (
           <IonLabel slot="end">
-            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} />
+            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} triggerClassName="no-background-focused" />
           </IonLabel>
         )}
       </IonItem>

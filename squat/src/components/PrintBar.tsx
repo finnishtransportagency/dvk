@@ -53,7 +53,16 @@ const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
                 <>
                   <p>{t('header.shareable-link-body')}</p>
                   <IonItem lines="none" className="readonly-wrapper">
-                    <IonTextarea value="" autoGrow readonly rows={1} onIonFocus={selectText} className="small-text" fill="outline" ref={inputRef} />
+                    <IonTextarea
+                      value={createShareableLink(state, true)}
+                      autoGrow
+                      readonly
+                      rows={1}
+                      onIonFocus={selectText}
+                      className="small-text"
+                      fill="outline"
+                      ref={inputRef}
+                    />
                     <IonButton
                       fill="clear"
                       className="icon-only large no-background-focused"
@@ -75,9 +84,9 @@ const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
                   />
                 </>
               }
-              triggerIcon={<IonIcon src={shareIcon} size={embeddedView ? 'small' : 'medium'} />}
+              triggerIcon={<IonIcon src={shareIcon} size={embeddedView ? 'small' : 'medium'} slot="icon-only" />}
               triggerTitle={t('header.shareable-link-title')}
-              triggerClassName={embeddedView ? 'small no-mobile no-print' : 'large'}
+              triggerClassName={embeddedView ? 'small no-mobile no-print' : 'large no-background-focused'}
               handleDismiss={handleToastDismiss}
             />
           </IonCol>
@@ -90,7 +99,7 @@ const PrintBar: React.FC<PrintBarProps> = ({ embeddedView }) => {
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src={printIcon} size={embeddedView ? 'small' : 'medium'} />
+              <IonIcon color="primary" src={printIcon} size={embeddedView ? 'small' : 'medium'} slot="icon-only" />
             </IonButton>
           </IonCol>
         </IonRow>

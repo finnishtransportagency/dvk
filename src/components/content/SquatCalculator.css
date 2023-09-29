@@ -113,6 +113,9 @@ ion-grid.info-accordion,
   padding-right: 10px;
 }
 
+.printBar ion-button {
+  --ripple-color: transparent;
+}
 .printBar ion-button.icon-only ion-icon {
   height: 24px;
   width: 24px;

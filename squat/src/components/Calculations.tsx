@@ -305,6 +305,7 @@ const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
                   </div>
                 </>
               }
+              triggerClassName="no-background-focused"
             />
           </IonCol>
         </IonRow>
