@@ -50,7 +50,7 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
               </IonText>
             </IonCol>
             <IonCol size="auto" className="ion-align-self-end printBar">
-              <PrintBar embeddedView />
+              <PrintBar />
             </IonCol>
           </IonRow>
           <IonRow className="no-print">
