@@ -5,7 +5,7 @@ import Breadcrumb from './Breadcrumb';
 import {
   SquatChart,
   SquatReducer,
-  initialState,
+  initialStateEmbedded,
   SquatContext,
   InfoAccordion,
   Vessel,
@@ -26,7 +26,7 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const path = [{ title: t('common.squat') }];
-  const [state, dispatch] = React.useReducer(SquatReducer, initialState);
+  const [state, dispatch] = React.useReducer(SquatReducer, initialStateEmbedded);
   const providerState = useMemo(
     () => ({
       state,
@@ -39,37 +39,37 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonGrid className="ion-no-padding ion-margin-top">
-        <IonRow>
-          <IonCol>
-            <IonText className="fairwayTitle" id="mainPageContent">
-              <h2 className="ion-no-margin">
-                <strong>{t('common.squat')}</strong>
-              </h2>
-            </IonText>
-          </IonCol>
-          <IonCol size="auto" className="ion-align-self-end printBar">
-            <PrintBar embeddedView />
-          </IonCol>
-        </IonRow>
-        <IonRow className="no-print">
-          <IonCol>
-            <IonText className="fairwayTitle">
-              <a
-                href={'/squat/' + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang)}
-                rel="noreferrer"
-                target="_blank"
-                className="ion-no-padding external"
-              >
-                {t('common.extensive-squat')}
-                <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
-              </a>
-            </IonText>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-
       <SquatContext.Provider value={providerState}>
+        <IonGrid className="ion-no-padding ion-margin-top">
+          <IonRow>
+            <IonCol>
+              <IonText className="fairwayTitle" id="mainPageContent">
+                <h2 className="ion-no-margin">
+                  <strong>{t('common.squat')}</strong>
+                </h2>
+              </IonText>
+            </IonCol>
+            <IonCol size="auto" className="ion-align-self-end printBar">
+              <PrintBar embeddedView />
+            </IonCol>
+          </IonRow>
+          <IonRow className="no-print">
+            <IonCol>
+              <IonText className="fairwayTitle">
+                <a
+                  href={'/squat/' + (window.location.search ? window.location.search + '&lang=' + lang : '?lang=' + lang)}
+                  rel="noreferrer"
+                  target="_blank"
+                  className="ion-no-padding external"
+                >
+                  {t('common.extensive-squat')}
+                  <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
+                </a>
+              </IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+
         <div id="squatCalculatorContainer" className="squatCalculatorContainer show-print" data-testid="squatCalculatorContainer">
           <InfoAccordion />
           <IonGrid className="ion-no-padding">

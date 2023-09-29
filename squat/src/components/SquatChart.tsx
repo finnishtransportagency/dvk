@@ -50,7 +50,7 @@ const SquatChart: React.FC = () => {
     const GM = limitedView ? fieldParams.GM.default : state.vessel.stability.GM;
     const KB = limitedView ? fieldParams.KB.default : state.vessel.stability.KB;
     const sweptDepth = state.environment.fairway.sweptDepth;
-    const waterLevel = limitedView ? fieldParams.waterLevel.default : state.environment.fairway.waterLevel;
+    const waterLevel = state.environment.fairway.waterLevel;
     const waterDepth = limitedView ? fieldParams.waterDepth.default : state.environment.fairway.waterDepth;
     const fairwayForm = state.environment.fairway.fairwayForm;
     const channelWidth = state.environment.fairway.channelWidth;

@@ -1,6 +1,6 @@
 import Squat from './components/Squat';
 import SquatChart from './components/SquatChart';
-import { SquatReducer, initialState } from './hooks/squatReducer';
+import { SquatReducer, initialStateEmbedded } from './hooks/squatReducer';
 import SquatContext, { useSquatContext } from './hooks/squatContext';
 import { changeLanguage as changeSquatLanguage } from 'i18next';
 import Vessel from './components/Vessel';
@@ -14,7 +14,7 @@ export {
   SquatChart,
   SquatReducer,
   useSquatContext,
-  initialState,
+  initialStateEmbedded,
   SquatContext,
   changeSquatLanguage,
   InfoAccordion,
