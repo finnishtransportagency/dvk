@@ -7,6 +7,7 @@ import {
   useArea3456Layer,
   useBackgroundBalticseaLayer,
   useBackgroundFinlandLayer,
+  useBackgroundMmlSatamatLayer,
   useBoardLine12Layer,
   useCircleLayer,
   useDepth12Layer,
@@ -429,6 +430,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg
                               : undefined
                           }
+                          maxCharLength={100}
                         />
                       </IonGrid>
                     )}
@@ -612,6 +614,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
+  const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
@@ -637,6 +640,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       harborLayer,
       boardLine12Layer,
       bgFinlandLayer,
+      bgMmlSatamatLayer,
       circleLayer,
     ];
 
@@ -652,7 +656,18 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     setFetchError(allLayers.some((layer) => layer.isError));
 
     setInitDone(allLayers.every((layer) => layer.ready));
-  }, [line12Layer, area12Layer, pilotLayer, harborLayer, boardLine12Layer, bgFinlandLayer, circleLayer, specialArea2Layer, specialArea15Layer]);
+  }, [
+    line12Layer,
+    area12Layer,
+    pilotLayer,
+    harborLayer,
+    boardLine12Layer,
+    bgFinlandLayer,
+    bgMmlSatamatLayer,
+    circleLayer,
+    specialArea2Layer,
+    specialArea15Layer,
+  ]);
 
   const isFetching = useIsFetching();
   const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;

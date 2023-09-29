@@ -169,7 +169,8 @@ const CalculationChecks: React.FC<CalculationChecksProps> = ({ doChecks }) => {
       state.calculations.squat.UKCDuringTurn,
       state.calculations.squat.UKCStraightCourse,
       state.calculations.squat.UKCVesselMotions,
-      state.status.showBarrass
+      state.status.showBarrass,
+      state.status.showDeepWaterValues
     );
   };
   const checkIsLengthBreadthRatioOutOfRange = () => {

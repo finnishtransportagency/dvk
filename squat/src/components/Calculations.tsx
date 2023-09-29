@@ -375,7 +375,8 @@ const Calculations: React.FC = () => {
                   isUKCShipMotionsUnderRequired(
                     state.environment.attribute.requiredUKC,
                     state.calculations.squat.UKCVesselMotions,
-                    state.status.showBarrass
+                    state.status.showBarrass,
+                    state.status.showDeepWaterValues
                   )
                     ? t('UKC-under-required-minimum')
                     : ''
