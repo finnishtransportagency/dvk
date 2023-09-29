@@ -138,21 +138,19 @@ export const isUKCUnderMinimum = (
   UKCDuringTurn: number[],
   UKCStraightCourse: number[],
   UKCVesselMotions: number[][],
-  showBarrass: boolean
+  showBarrass: boolean,
+  showDeepWaterValues: boolean
 ) => {
   // If(IsBlank(Swept_Depth), false,
   // If(Value(UKC_During_Turn.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), true, If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), true, false))))
   if (!sweptDepth) {
     return false;
   }
-  if (
-    (showBarrass ? UKCDuringTurn[0] : UKCDuringTurn[1]) < requiredUKC ||
-    (showBarrass ? UKCStraightCourse[0] : UKCStraightCourse[1]) < requiredUKC ||
-    (showBarrass ? UKCVesselMotions[0][0] : UKCVesselMotions[0][1]) < requiredUKC
-  ) {
-    return true;
-  }
-  return false;
+  return (
+    UKCDuringTurn[showBarrass ? 0 : 1] < requiredUKC ||
+    UKCStraightCourse[showBarrass ? 0 : 1] < requiredUKC ||
+    UKCVesselMotions[showBarrass ? 0 : 1][showDeepWaterValues ? 1 : 0] < requiredUKC
+  );
 };
 
 // Field validations
@@ -166,9 +164,14 @@ export const isExternalForceRequired = (externalForceRequired: number) => {
   return externalForceRequired > 0;
 };
 
-export const isUKCShipMotionsUnderRequired = (requiredUKC: number, UKCVesselMotions: number[][], showBarrass: boolean) => {
+export const isUKCShipMotionsUnderRequired = (
+  requiredUKC: number,
+  UKCVesselMotions: number[][],
+  showBarrass: boolean,
+  showDeepWaterValues: boolean
+) => {
   // If(Value(UKC_Ship_Motions.Text) < Value(Required_UKC.Text), 5, 0)
-  return UKCVesselMotions[showBarrass ? 0 : 1][0] < requiredUKC;
+  return UKCVesselMotions[showBarrass ? 0 : 1][showDeepWaterValues ? 1 : 0] < requiredUKC;
 };
 export const isUKCStraightUnderRequired = (requiredUKC: number, UKCStraightCourse: number[], showBarrass: boolean) => {
   // If(Value(UKC_Straight.Text) < Value(Required_UKC.Text), 5, 0)
