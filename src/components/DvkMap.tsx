@@ -37,6 +37,8 @@ import { isMobile } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
+import { Dispatch } from 'react';
+import { Action } from '../hooks/dvkReducer';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -84,7 +86,7 @@ class DvkMap {
   public onTileStatusChange: () => void = () => {};
 
   // eslint-disable-next-line
-  init(t: any, i18n: any) {
+  init(t: any, i18n: any, dispatch: Dispatch<Action>) {
     if (this.initialized) {
       return;
     }
@@ -102,6 +104,7 @@ class DvkMap {
     } else {
       tileUrl = '/mml/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf';
     }
+    tileUrl = 'www.hs.fi';
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     const extent = [-548576, 6291456, 1548576, 8388608];
     const tileGrid = new TileGrid({
@@ -165,37 +168,8 @@ class DvkMap {
       format: new MVT(),
       url: tileUrl,
     });
-    // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
-    // Error is catched and status set to offline if not getting a response
-    // eslint-disable-next-line
-    this.source.setTileLoadFunction( (tile: any, url: string) => {
-      // eslint-disable-next-line
-      tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-        try {
-          const response = await fetch(url, {
-            signal: controller.signal,
-          }).then((res) => res);
-          response.arrayBuffer().then(function (data) {
-            const format = tile.getFormat();
-            const features = format.readFeatures(data, {
-              extent: usedExtent,
-              featureProjection: usedProjection,
-            });
-            tile.setFeatures(features);
-          });
-        } catch (error) {
-          if (this.tileStatus !== 'error') {
-            this.tileStatus = 'error';
-            this.onTileStatusChange();
-          }
-        } finally {
-          clearTimeout(timeoutId);
-        }
-      });
-    });
+    this.useCustomVectorTileLoader(this.source, dispatch);
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
@@ -280,6 +254,48 @@ class DvkMap {
     this.translate();
     this.initialized = true;
   }
+
+  // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
+  // Error is catched and status set to offline if not getting a response
+  private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
+    // eslint-disable-next-line
+    source.setTileLoadFunction((tile: any, url: string) => {
+      // eslint-disable-next-line
+      tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        try {
+          const response = await fetch(url, {
+            signal: controller.signal,
+          }).then((res) => res);
+
+          dispatch({
+            type: 'setResponse',
+            payload: {
+              value: response.status === 200 ? '' : `${response.status} ${response.statusText}`,
+            },
+          });
+
+          response.arrayBuffer().then(function (data) {
+            const format = tile.getFormat();
+            const features = format.readFeatures(data, {
+              extent: usedExtent,
+              featureProjection: usedProjection,
+            });
+            tile.setFeatures(features);
+          });
+        } catch (error) {
+          if (this.tileStatus !== 'error') {
+            this.tileStatus = 'error';
+            this.onTileStatusChange();
+          }
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      });
+    });
+  };
   // eslint-disable-next-line
   private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
@@ -601,10 +617,10 @@ class DvkMap {
 
 const dvkMap = new DvkMap();
 
-function InitDvkMap() {
+function InitDvkMap(dispatch: Dispatch<Action>) {
   const { t, i18n } = useTranslation();
   if (!dvkMap.initialized) {
-    dvkMap.init(t, i18n);
+    dvkMap.init(t, i18n, dispatch);
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });
