@@ -31,7 +31,7 @@ import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
 import MapExportTool from './MapExportTool';
-import { mapToFairwayCardInput } from '../pages/FairwayCardEditPage';
+import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;

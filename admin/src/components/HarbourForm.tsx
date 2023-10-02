@@ -14,7 +14,7 @@ import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
-import { mapToHarborInput } from '../pages/HarbourEditPage';
+import { mapToHarborInput } from '../utils/dataMapper';
 
 interface FormProps {
   harbour: HarborInput;
