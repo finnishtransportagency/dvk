@@ -27,7 +27,7 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
     });
   };
 
-  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = () => {

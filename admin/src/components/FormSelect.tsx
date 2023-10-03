@@ -64,7 +64,7 @@ const FormSelect: React.FC<SelectProps> = ({
     return o1 === o2;
   };
 
-  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = (event?: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {

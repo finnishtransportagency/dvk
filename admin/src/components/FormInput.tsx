@@ -60,7 +60,7 @@ const FormInput: React.FC<InputProps> = ({
     });
   };
 
-  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = () => {
@@ -192,7 +192,7 @@ const FormInput: React.FC<InputProps> = ({
         disabled={disabled}
         type={getInputType()}
         inputMode={getInputMode()}
-        maxlength={maxCharLength ? maxCharLength : INPUT_MAXLENGTH}
+        maxlength={maxCharLength ?? INPUT_MAXLENGTH}
         pattern={getInputPattern()}
         multiple={inputType === 'email' && multiple}
         fill="outline"
