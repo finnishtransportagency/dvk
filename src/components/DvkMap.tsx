@@ -104,7 +104,6 @@ class DvkMap {
     } else {
       tileUrl = '/mml/vectortiles/taustakartta/wmts/1.0.0/taustakartta/default/v20/ETRS-TM35FIN/{z}/{y}/{x}.pbf';
     }
-    tileUrl = 'www.hs.fi';
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     const extent = [-548576, 6291456, 1548576, 8388608];
     const tileGrid = new TileGrid({

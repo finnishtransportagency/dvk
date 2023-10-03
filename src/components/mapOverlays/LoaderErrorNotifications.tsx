@@ -6,6 +6,7 @@ import { debounce } from 'lodash';
 import { getMapCanvasWidth, isMobile } from '../../utils/common';
 import dvkMap from '../DvkMap';
 import { ObjectEvent } from 'ol/Object';
+import { IonCol } from '@ionic/react';
 
 export const LoadErrorNotifications: React.FC = () => {
   const { state } = useDvkContext();
@@ -38,15 +39,20 @@ export const LoadErrorNotifications: React.FC = () => {
   }, [state.response]);
 
   return (
+    // uses same style as marine warning container, since display is identical
     <div
       className="marine-warning-container"
       style={!isMobile() ? { width: backgroundWidth + 'px', left: 'calc(100% - ' + backgroundWidth + 'px)' } : undefined}
     >
       <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={errorIcon}>
-        <strong>
-          Error: {state.response[0]} {state.response[1]}.
-        </strong>
-        <p> Karttatiiliä ei voida näyttää</p>
+        <IonCol>
+          <p>
+            <strong>
+              Error: {state.response[0]} {state.response[1]}.&nbsp;
+            </strong>
+            Karttatiiliä ei voida näyttää
+          </p>
+        </IonCol>
       </CustomPopup>
     </div>
   );
