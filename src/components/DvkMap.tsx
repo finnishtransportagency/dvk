@@ -255,7 +255,7 @@ class DvkMap {
   }
 
   // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
-  // Error is catched and status set to offline if not getting a response
+  // Throws error if timeout and sets status code accordingly in case of response
   private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
     // eslint-disable-next-line
     source.setTileLoadFunction((tile: any, url: string) => {

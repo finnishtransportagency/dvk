@@ -50,7 +50,7 @@ export const LoadErrorNotifications: React.FC = () => {
             <strong>
               Error: {state.response[0]} {state.response[1]}.&nbsp;
             </strong>
-            Karttatiiliä ei voida näyttää
+            Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa.
           </p>
         </IonCol>
       </CustomPopup>
