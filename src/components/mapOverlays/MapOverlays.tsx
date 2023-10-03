@@ -122,7 +122,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">
         <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
-        <LoadErrorNotifications showError={true} />
+        <LoadErrorNotifications />
       </div>
     </>
   );
