@@ -260,7 +260,6 @@ class DvkMap {
   private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
     // eslint-disable-next-line
     source.setTileLoadFunction((tile: any, url: string) => {
-      // eslint-disable-next-line
       tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -270,32 +269,33 @@ class DvkMap {
             signal: controller.signal,
           }).then((res) => res);
 
-          dispatch({
-            type: 'setResponse',
-            payload: {
-              value: response.status === 200 ? '' : `${response.status} ${response.statusText}`,
-            },
-          });
-
-          response.arrayBuffer().then(function (data) {
+          response.arrayBuffer().then((data) => {
             const format = tile.getFormat();
             const features = format.readFeatures(data, {
               extent: usedExtent,
               featureProjection: usedProjection,
             });
+            this.setResponseState(dispatch, response.status, response.statusText);
             tile.setFeatures(features);
           });
         } catch (error) {
-          if (this.tileStatus !== 'error') {
-            this.tileStatus = 'error';
-            this.onTileStatusChange();
-          }
+          this.setResponseState(dispatch, 408, 'Connection timeout');
         } finally {
           clearTimeout(timeoutId);
         }
       });
     });
   };
+
+  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string) => {
+    dispatch({
+      type: 'setResponse',
+      payload: {
+        value: [String(statusCode), statusText],
+      },
+    });
+  };
+
   // eslint-disable-next-line
   private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];

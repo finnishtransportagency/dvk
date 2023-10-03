@@ -3,7 +3,7 @@ export type State = {
   isOffline: boolean;
   modalBreakpoint: number;
   layers: string[];
-  response: string;
+  response: string[];
 };
 
 // Set initial state
@@ -11,7 +11,7 @@ export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
   layers: ['pilot', 'line12', 'harbor', 'name'],
-  response: '',
+  response: [],
 };
 
 export type Action =
@@ -30,7 +30,7 @@ export type Action =
   | {
       type: 'setResponse';
       payload: {
-        value: string;
+        value: string[];
       };
     }
   | { type: 'reset' };
@@ -54,7 +54,7 @@ export const DvkReducer = (state: State, action: Action) => {
       newState = { ...state, layers: inputValue as string[] };
       break;
     case 'setResponse':
-      newState = { ...state, response: String(inputValue) };
+      newState = { ...state, response: inputValue as string[] };
       break;
     case 'reset':
       return initialState;
