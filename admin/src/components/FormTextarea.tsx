@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonLabel, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { getCombinedErrorAndHelperText } from '../utils/common';
+import { getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../utils/common';
 
 interface InputProps {
   label: string;
@@ -90,12 +90,12 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
         rows={1}
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
-        className={'ion-align-self-center formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={isValid && (!error || error === '') ? helperText ?? '' : ''}
+        className={'ion-align-self-center formInput' + (isInputOk(isValid, error) ? '' : ' invalid')}
+        helperText={isInputOk(isValid, error) ? helperText ?? '' : ''}
         errorText={getCombinedErrorAndHelperText(helperText, getErrorText())}
         labelPlacement="fixed"
         counter={true}
-        counterFormatter={(inputLength, maxLength) => (inputLength > TEXTAREA_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
+        counterFormatter={(inputLength, maxLength) => getInputCounterText(inputLength, maxLength)}
       />
     </>
   );

@@ -2,7 +2,7 @@ import React, { forwardRef, useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { constructSelectDropdownLabel, getCombinedErrorAndHelperText } from '../utils/common';
+import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import DropdownPopup from './DropdownPopup';
 
@@ -102,7 +102,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   };
 
   return (
-    <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={disabled ? undefined : focusSelectItem}>
         {label} {required ? '*' : ''}
       </IonLabel>
@@ -129,7 +129,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
               disabled={disabled}
             />
           </IonItem>
-          {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
           <DropdownPopup
             trigger={triggerId}

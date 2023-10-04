@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
 import { PilotPlace } from '../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import { getCombinedErrorAndHelperText, sortSelectOptions } from '../utils/common';
+import { getCombinedErrorAndHelperText, isInputOk, sortSelectOptions } from '../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
@@ -102,7 +102,7 @@ const FormSelect: React.FC<SelectProps> = ({
   }, [required, error, selected, isTouched]);
 
   return (
-    <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       {!hideLabel && (
         <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
           {label} {required ? '*' : ''}
@@ -142,7 +142,7 @@ const FormSelect: React.FC<SelectProps> = ({
               })}
             </IonSelect>
           </IonItem>
-          {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
         </>
       )}

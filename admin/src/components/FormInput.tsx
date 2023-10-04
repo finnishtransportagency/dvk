@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonInput, IonLabel } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { getCombinedErrorAndHelperText } from '../utils/common';
+import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../utils/common';
 
 interface InputProps {
   label: string;
@@ -52,38 +52,21 @@ const FormInput: React.FC<InputProps> = ({
   maxCharLength,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
-
   const inputRef = useRef<HTMLIonInputElement>(null);
+
+  const [isValid, setIsValid] = useState(!error);
+  const [isTouched, setIsTouched] = useState(false);
+
   const focusInput = () => {
     inputRef.current?.setFocus().catch((err) => {
       console.error(err.message);
     });
   };
 
-  const [isValid, setIsValid] = useState(!error);
-  const [isTouched, setIsTouched] = useState(false);
-
-  const checkValidity = () => {
-    if (error) {
-      setIsValid(false);
-      if (setValidity) setValidity(actionType, false);
-    } else {
-      inputRef.current
-        ?.getInputElement()
-        .then((textinput) => {
-          if (textinput) {
-            setIsValid(textinput.checkValidity());
-            if (setValidity) setValidity(actionType, textinput.checkValidity());
-          }
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
-    }
-    setIsTouched(true);
-  };
   const handleChange = (newVal: string | number | null | undefined) => {
-    if (isTouched) checkValidity();
+    if (isTouched) {
+      checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
+    }
     setValue(newVal as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
@@ -94,27 +77,30 @@ const FormInput: React.FC<InputProps> = ({
     return '';
   };
 
+  const getNumberInputHelperText = () => {
+    const minVal = Number(min ?? 0).toLocaleString(i18n.language, {
+      minimumFractionDigits: decimalCount ?? 0,
+      maximumFractionDigits: decimalCount ?? 0,
+    });
+    const maxVal = Number(max).toLocaleString(i18n.language, {
+      minimumFractionDigits: decimalCount ?? 0,
+      maximumFractionDigits: decimalCount ?? 0,
+    });
+    return t('allowed-values') + ': ' + minVal + ' - ' + maxVal + (unit ? ' ' + t('unit.' + unit) : '');
+  };
+
   const getHelperText = () => {
     if (helperText) return helperText;
-    if (inputType === 'latitude') return t('coordinate-format') + ': 58.00000 - 69.99999';
-    if (inputType === 'longitude') return t('coordinate-format') + ': 17.00000 - 31.99999';
-    if (inputType === 'number' && max) {
-      return (
-        t('allowed-values') +
-        ': ' +
-        Number(min ?? 0).toLocaleString(i18n.language, {
-          minimumFractionDigits: decimalCount ?? 0,
-          maximumFractionDigits: decimalCount ?? 0,
-        }) +
-        ' - ' +
-        Number(max).toLocaleString(i18n.language, {
-          minimumFractionDigits: decimalCount ?? 0,
-          maximumFractionDigits: decimalCount ?? 0,
-        }) +
-        (unit ? ' ' + t('unit.' + unit) : '')
-      );
+    switch (inputType) {
+      case 'latitude':
+        return t('coordinate-format') + ': 58.00000 - 69.99999';
+      case 'longitude':
+        return t('coordinate-format') + ': 17.00000 - 31.99999';
+      case 'number':
+        return max ? getNumberInputHelperText() : '';
+      default:
+        return '';
     }
-    return '';
   };
 
   const getInputType = () => {
@@ -133,30 +119,25 @@ const FormInput: React.FC<InputProps> = ({
 
   const getInputPattern = () => {
     if (actionType === 'primaryId') return '[a-z]+[a-z\\d]*';
-    if (inputType === 'latitude') return '(5[89]|6\\d){1}(\\.\\d{1,5})?'; // lat range 58-70
-    if (inputType === 'longitude') return '(1[789]|2\\d|3[01]){1}(\\.\\d{1,5})?'; // lon range 17-32
-    if (inputType === 'tel' && multiple) return '(^$)|(([+]?\\d(\\s?\\d){4,19}){1}(,[+]?\\d(\\s?\\d){4,19}){0,9})';
-    if (inputType === 'tel') return '[+]?\\d(\\s?\\d){4,19}';
-    return undefined;
+    switch (inputType) {
+      case 'latitude':
+        return '(5[89]|6\\d){1}(\\.\\d{1,5})?'; // lat range 58-70
+      case 'longitude':
+        return '(1[789]|2\\d|3[01]){1}(\\.\\d{1,5})?'; // lon range 17-32
+      case 'tel':
+        return multiple ? '(^$)|(([+]?\\d(\\s?\\d){4,19}){1}(,[+]?\\d(\\s?\\d){4,19}){0,9})' : '[+]?\\d(\\s?\\d){4,19}';
+      default:
+        return undefined;
+    }
+  };
+
+  const getStep = () => {
+    return (1 / Math.pow(10, decimalCount ?? 0)).toString() || '0.1';
   };
 
   useEffect(() => {
     if (isTouched) {
-      inputRef.current
-        ?.getInputElement()
-        .then((textinput) => {
-          if (error) {
-            setIsValid(false);
-            if (setValidity) setValidity(actionType, false);
-          }
-          if (textinput) {
-            setIsValid(textinput.checkValidity());
-            if (setValidity) setValidity(actionType, textinput.checkValidity());
-          }
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
+      checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
       setIsTouched(false);
     } else if (!required && !val && !error) {
       setIsValid(true);
@@ -179,30 +160,33 @@ const FormInput: React.FC<InputProps> = ({
       </IonLabel>
       <IonInput
         ref={inputRef}
-        name={name ? name + (actionLang ?? '') : undefined}
-        value={val}
-        min={inputType === 'number' ? min ?? 0 : undefined}
-        max={inputType === 'number' ? max ?? 9999999 : undefined}
-        step={inputType === 'number' ? (1 / Math.pow(10, decimalCount ?? 0)).toString() || '0.1' : undefined}
-        required={required}
-        onIonInput={(ev) => handleChange(ev.target.value)}
+        className={'formInput' + (isInputOk(isValid, error) ? '' : ' invalid')}
+        counter={true}
+        counterFormatter={(inputLength, maxLength) => getInputCounterText(inputLength, maxLength)}
         debounce={500}
-        onIonChange={(ev) => handleChange(ev.target.value)}
-        onIonBlur={() => checkValidity()}
         disabled={disabled}
-        type={getInputType()}
-        inputMode={getInputMode()}
-        maxlength={maxCharLength ?? INPUT_MAXLENGTH}
-        pattern={getInputPattern()}
-        multiple={inputType === 'email' && multiple}
-        fill="outline"
-        className={'formInput' + (isValid && (!error || error === '') ? '' : ' invalid')}
-        helperText={isValid && (!error || error === '') ? getHelperText() : ''}
         errorText={getCombinedErrorAndHelperText(getHelperText(), getErrorText())}
+        fill="outline"
+        helperText={isInputOk(isValid, error) ? getHelperText() : ''}
+        inputMode={getInputMode()}
         label={unit ? t('unit.' + unit) ?? '' : ''}
         labelPlacement={unit ? 'end' : undefined}
-        counter={true}
-        counterFormatter={(inputLength, maxLength) => (inputLength > maxLength / 2 ? `${inputLength} / ${maxLength}` : '')}
+        max={inputType === 'number' ? max ?? 9999999 : undefined}
+        maxlength={maxCharLength ?? INPUT_MAXLENGTH}
+        min={inputType === 'number' ? min ?? 0 : undefined}
+        multiple={inputType === 'email' && multiple}
+        name={name ? name + (actionLang ?? '') : undefined}
+        onIonBlur={() => {
+          checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
+          setIsTouched(true);
+        }}
+        onIonChange={(ev) => handleChange(ev.target.value)}
+        onIonInput={(ev) => handleChange(ev.target.value)}
+        pattern={getInputPattern()}
+        required={required}
+        step={inputType === 'number' ? getStep() : undefined}
+        type={getInputType()}
+        value={val}
       />
     </>
   );
