@@ -66,7 +66,8 @@
     "serve": "vite preview",
     "test": "vitest",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
-    "generate": "graphql-codegen"
+    "generate": "graphql-codegen",
+    "updatesquat": "cd squat && npm run buildlib && cd .. && npm install && npm run start"
   },
   "browserslist": {
     "production": [

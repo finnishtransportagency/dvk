@@ -153,6 +153,7 @@ export type State = {
     showLimitedView: boolean;
   };
   validations: Record<string, unknown>;
+  embeddedSquat: boolean;
 };
 
 // Declare field parameters
@@ -338,6 +339,17 @@ export const initialState: State = {
     showLimitedView: getBooleanFieldValue('showLimitedView', false),
   },
   validations: validatedFields,
+  embeddedSquat: false,
+};
+
+export const initialStateEmbedded: State = {
+  ...initialState,
+  embeddedSquat: true,
+  status: {
+    showDeepWaterValues: false,
+    showBarrass: getBooleanFieldValue('showBarrass', false),
+    showLimitedView: true,
+  },
 };
 
 export type Action =
@@ -433,7 +445,7 @@ export const SquatReducer = (state: State, action: Action) => {
       };
       break;
     case 'reset':
-      return initialState;
+      return state.embeddedSquat ? initialStateEmbedded : initialState;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;
