@@ -1,10 +1,9 @@
+import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import Control from 'ol/control/Control';
 import Coordinate from 'ol/coordinate';
+import { Point } from 'ol/geom';
 import { getMap } from '../DvkMap';
-import VectorSource from 'ol/source/Vector';
-import Point from 'ol/geom/Point';
-import Feature from 'ol/Feature';
 
 class CenterToOwnLocationControl extends Control {
   private buttonElement = document.createElement('button');
@@ -16,6 +15,8 @@ class CenterToOwnLocationControl extends Control {
   });
 
   position: Coordinate.Coordinate | undefined = undefined;
+
+  disabled: boolean = false;
 
   constructor() {
     const element = document.createElement('div');
@@ -38,45 +39,35 @@ class CenterToOwnLocationControl extends Control {
     this.buttonElement.ariaLabel = label;
   }
 
-  //searches right layer and places marker to current position
-  public placeOwnLocationMarker(coordinates: Coordinate.Coordinate) {
-    const source = this.getOwnLocationFeatureLayer().getSource() as VectorSource;
-    source?.clear();
-    source?.addFeature(
-      new Feature({
-        geometry: new Point([coordinates[0], coordinates[1]]),
-      })
-    );
-  }
-
-  private getOwnLocationFeatureLayer() {
-    return getMap()?.getFeatureLayer('ownlocation');
+  public setDisabled(disabled: boolean) {
+    this.disabled = disabled;
+    this.buttonElement.disabled = disabled;
   }
 
   centerToOwnLocation = () => {
-    this.geolocation.setProjection(this.getMap()?.getView().getProjection());
-    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-      if (result.state === 'granted') {
+    if (!this.disabled) {
+      this.geolocation.setProjection(this.getMap()?.getView().getProjection());
+      this.geolocation.setTracking(true);
+
+      this.geolocation.once('change:position', () => {
+        this.geolocation.setTracking(false);
         this.position = this.geolocation.getPosition();
         if (this.position) {
-          this.getMap()?.getView().setCenter(this.position);
-        }
-      }
-      if (result.state === 'denied') {
-        const source = this.getOwnLocationFeatureLayer().getSource() as VectorSource;
-        source?.clear();
-      }
-    });
+          // Refresh location marker as tracking is not enabled
+          const source = getMap()?.getVectorSource('userlocation');
+          source.clear();
+          source.addFeature(
+            new Feature({
+              geometry: new Point([this.position[0], this.position[1]]),
+            })
+          );
 
-    this.geolocation.setTracking(true);
-    this.geolocation.once('change:position', () => {
-      this.geolocation.setTracking(false);
-      this.position = this.geolocation.getPosition();
-      if (this.position) {
-        this.placeOwnLocationMarker(this.position);
-        this.getMap()?.getView().animate({ center: this.position, zoom: 5 });
-      }
-    });
+          // Center and zoom
+          this.getMap()?.getView().setCenter(this.position);
+          this.getMap()?.getView().animate({ center: this.position, zoom: 5 });
+        }
+      });
+    }
   };
 }
 

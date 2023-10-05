@@ -208,9 +208,11 @@ export type FeatureDataLayerId =
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
 
-export type OwnLocationLayerId = 'ownlocation';
+export type UserLocationLayerId = 'userlocation';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | OwnLocationLayerId;
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId;
+
+export type UserLocationPermission = 'on' | 'off' | 'disabled';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
