@@ -13,14 +13,13 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-interface EnvironmentProps {
-  limitedView: boolean;
-}
-
-const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
+const Environment: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.environment' });
   const tRoot = i18n.getFixedT(i18n.language);
   const { state, dispatch } = useSquatContext();
+  const {
+    status: { showLimitedView: limitedView },
+  } = state;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {

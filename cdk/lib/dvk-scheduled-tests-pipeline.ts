@@ -80,7 +80,6 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.2'),
-        privileged: true,
         computeType: ComputeType.MEDIUM,
       },
       grantReportGroupPermissions: true,

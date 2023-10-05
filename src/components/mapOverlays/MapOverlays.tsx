@@ -21,6 +21,8 @@ import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupConten
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 import { MarineWarningNotifications } from './MarineWarningNotifications';
+import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -48,6 +50,7 @@ type MapOverlaysProps = {
 const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isOffline }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state, dispatch } = useDvkContext();
   const [isOpen, setIsOpen] = useState(window.location.hash === '#layerModal');
   const [backgroundMapType, setBackgroundMapType] = useState<BackgroundMapType>(dvkMap.getBackgroundMapType());
 
@@ -83,6 +86,18 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       addPopup(dvkMap.olMap, setPopupProperties);
     }
   }, []);
+
+  useEffect(() => {
+    initUserLocation(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (state.locationPermission === 'on') {
+      placeUserLocationMarker();
+    } else {
+      removeUserLocationMarker();
+    }
+  }, [state.locationPermission]);
 
   window.addEventListener(
     'hashchange',

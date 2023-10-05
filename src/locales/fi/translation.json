@@ -10,7 +10,10 @@
       "squat": "Squat-laskuri",
       "customer-service": "Liikenteen asiakaspalvelu",
       "source": "Tietolähteet ja käyttöehdot",
-      "opens-in-a-new-tab": "Aukeaa uuteen välilehteen"
+      "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
+      "location-service": "Sijaintipalvelu",
+      "location-description": "Mahdollistaa päätelaitteesi paikantamisen.",
+      "location-disabled": "Sijainnin käyttöoikeus estetty"
     },
     "map": {
       "controls": {

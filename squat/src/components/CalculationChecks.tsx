@@ -22,17 +22,19 @@ import {
 type CheckType = 'ukc' | 'reliability' | 'LBratio' | 'BDratio';
 
 interface CalculationChecksProps {
-  limitedView: boolean;
-  embeddedView?: boolean;
   doChecks?: CheckType[];
 }
 
-const CalculationChecks: React.FC<CalculationChecksProps> = ({ limitedView, embeddedView, doChecks }) => {
+const CalculationChecks: React.FC<CalculationChecksProps> = ({ doChecks }) => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
+  const {
+    embeddedSquat,
+    status: { showLimitedView },
+  } = state;
 
   useEffect(() => {
-    if (embeddedView) {
+    if (embeddedSquat) {
       // 2.1 Heel Due Wind
       const heelDueWind = calculateHeelDueWind(
         state.vessel.general.lengthBPP,
@@ -118,7 +120,7 @@ const CalculationChecks: React.FC<CalculationChecksProps> = ({ limitedView, embe
       });
     }
   }, [
-    embeddedView,
+    embeddedSquat,
     state.vessel.general.lengthBPP,
     state.vessel.general.breadth,
     state.vessel.general.draught,
@@ -151,7 +153,7 @@ const CalculationChecks: React.FC<CalculationChecksProps> = ({ limitedView, embe
     );
   };
   const checkIsUKCUnderMinimum = () => {
-    if (limitedView) {
+    if (showLimitedView) {
       if (!state.environment.fairway.sweptDepth) {
         return false;
       }
