@@ -19,6 +19,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const en = i18n.getFixedT('en');
 
   const [isLoading, setIsLoading] = useState(true);
+  const [legendPosition, setLegendPosition] = useState('bottomLeft');
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
@@ -93,8 +94,13 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                 <div className="imageWrapper">
                   <img src={imageUrl + fairwayCardInput.id + '/' + picture.id} alt={picture.id} onLoad={() => setIsLoading(false)} />
                   {!isLoading && (
-                    <div className="mapLegend">
+                    <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
+                      //jatka tästä
+                      <IonButton className="legendPositionButton topLeft" onClick={() => setLegendPosition('topLeft')} />
+                      <IonButton className="legendPositionButton topRight" onClick={() => setLegendPosition('topRight')} />
+                      <IonButton className="legendPositionButton bottomRight" onClick={() => setLegendPosition('bottomRight')} />
+                      <IonButton className="legendPositionButton bottomLeft" onClick={() => setLegendPosition('bottomLeft')} />
                       <div className="compassInfo" ref={compassInfo}>
                         <img
                           src={north_arrow}
