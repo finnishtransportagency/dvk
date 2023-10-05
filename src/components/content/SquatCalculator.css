@@ -113,6 +113,22 @@ ion-grid.info-accordion,
   padding-right: 10px;
 }
 
+.printBar ion-button {
+  --ripple-color: transparent;
+}
+.printBar ion-button.icon-only ion-icon,
+.squatModal ion-button.icon-only ion-icon {
+  height: 24px;
+  width: 24px;
+}
+.squatModal ion-button.icon-only {
+  height: 32px;
+  width: 32px;
+}
+
+ion-modal.squatModal .buttonBar {
+  padding-bottom: 0 !important;
+}
 ion-modal.squatModal.large {
   --height: auto;
   --max-height: 600px;

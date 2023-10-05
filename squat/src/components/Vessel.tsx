@@ -14,13 +14,12 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-interface VesselProps {
-  limitedView: boolean;
-}
-
-const Vessel: React.FC<VesselProps> = ({ limitedView }) => {
+const Vessel: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.vessel' });
   const { state, dispatch } = useSquatContext();
+  const {
+    status: { showLimitedView: limitedView },
+  } = state;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
