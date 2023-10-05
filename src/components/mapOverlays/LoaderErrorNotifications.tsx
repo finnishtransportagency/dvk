@@ -7,8 +7,10 @@ import { getMapCanvasWidth, isMobile } from '../../utils/common';
 import dvkMap from '../DvkMap';
 import { ObjectEvent } from 'ol/Object';
 import { IonCol } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
 
 export const LoadErrorNotifications: React.FC = () => {
+  const { t } = useTranslation();
   const { state } = useDvkContext();
   const [visible, setVisible] = useState(false);
   const [backgroundWidth, setBackgroundWidth] = useState<number>(0);
@@ -50,7 +52,7 @@ export const LoadErrorNotifications: React.FC = () => {
             <strong>
               Error: {state.response[0]} {state.response[1]}.&nbsp;
             </strong>
-            Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa.
+            {t('tileLoadWarning.vectorTileError')}
           </p>
         </IonCol>
       </CustomPopup>

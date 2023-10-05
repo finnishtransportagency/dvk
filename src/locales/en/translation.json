@@ -424,6 +424,9 @@
     "opens-in-a-new-tab": "Opens in a new tab",
     "print": "Print page"
   },
+  "tileLoadWarning": {
+    "vectorTileError": "[en] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+  },
   "source": {
     "title": "Data sources and terms of use",
     "content1": "Finnish Transport Infrastructure Agency",

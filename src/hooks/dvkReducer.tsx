@@ -37,7 +37,7 @@ export type Action =
 
 export const DvkReducer = (state: State, action: Action) => {
   // Sort out correct value type from input element
-  let inputValue: boolean | number | string[] | string[] = false;
+  let inputValue: boolean | number | string[] = false;
   if (action.type !== 'reset') {
     inputValue = action.payload.value;
   }

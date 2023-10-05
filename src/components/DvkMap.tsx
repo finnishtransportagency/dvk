@@ -263,22 +263,29 @@ class DvkMap {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 10000);
 
+        let response;
+
         try {
-          const response = await fetch(url, {
+          response = await fetch(url, {
             signal: controller.signal,
           }).then((res) => res);
 
-          response.arrayBuffer().then((data) => {
-            const format = tile.getFormat();
-            const features = format.readFeatures(data, {
-              extent: usedExtent,
-              featureProjection: usedProjection,
-            });
-            this.setResponseState(dispatch, response.status, response.statusText);
-            tile.setFeatures(features);
+          if (response.status !== 200) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+          }
+
+          const data = await response.arrayBuffer();
+          const format = tile.getFormat();
+          const features = format.readFeatures(data, {
+            extent: usedExtent,
+            featureProjection: usedProjection,
           });
+          this.setResponseState(dispatch, response.status, response.statusText);
+          tile.setFeatures(features);
         } catch (error) {
-          this.setResponseState(dispatch, 408, 'Connection timeout');
+          if (response) {
+            this.setResponseState(dispatch, response.status, response.statusText);
+          }
         } finally {
           clearTimeout(timeoutId);
         }
