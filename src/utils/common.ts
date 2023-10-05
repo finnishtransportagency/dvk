@@ -21,6 +21,60 @@ export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lan
   return (data && data.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS)) || [];
 };
 
+export const getMapCanvasWidth = (): number => {
+  const canvasSize = dvkMap.olMap?.getSize() ?? [0, 0];
+  return canvasSize[0];
+};
+
+export const getMapCanvasHeight = (): number => {
+  const canvasSize = dvkMap.olMap?.getSize() ?? [0, 0];
+  return canvasSize[1];
+};
+
+function getOpacityValue(opacity: string) {
+  return opacity === '' ? 1 : Number(opacity);
+}
+
+function mergeCanvasesToImage() {
+  const mapCanvas = document.createElement('canvas');
+  mapCanvas.width = getMapCanvasWidth();
+  mapCanvas.height = getMapCanvasHeight();
+  const mapContext = mapCanvas.getContext('2d');
+
+  if (mapContext) {
+    Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+      if (canvas.width > 0) {
+        mapContext.globalAlpha = getOpacityValue(canvas.parentNode.style.opacity || canvas.style.opacity);
+        let matrix;
+        const transform = canvas.style.transform;
+        if (transform) {
+          // Get the transform parameters from the style's transform matrix
+          matrix = transform
+            .match(/^matrix\(([^(]*)\)$/)[1]
+            .split(',')
+            .map(Number);
+        } else {
+          matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+        }
+        // Apply the transform to the export map context
+        CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+
+        const backgroundColor = canvas.parentNode.style.backgroundColor;
+        if (backgroundColor) {
+          mapContext.fillStyle = backgroundColor;
+          mapContext.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        mapContext.drawImage(canvas, 0, 0);
+      }
+    });
+    mapContext.globalAlpha = 1;
+    mapContext.setTransform(1, 0, 0, 1, 0, 0);
+  }
+  const img = new Image();
+  img.src = mapCanvas.toDataURL('image/png');
+  return img;
+}
+
 export const refreshPrintableMap = () => {
   const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
   const rotation = dvkMap.olMap?.getView().getRotation();
@@ -28,7 +82,7 @@ export const refreshPrintableMap = () => {
   const mapExportScale = document.getElementById('mapScale');
   if (mapScale && mapExportScale) {
     mapExportScale.innerHTML = mapScale.innerHTML;
-    mapExportScale.setAttribute('style', mapScale.getAttribute('style') || '');
+    mapExportScale.setAttribute('style', mapScale.getAttribute('style') ?? '');
   }
 
   const compassInfo = document.getElementById('compassInfo');
@@ -42,43 +96,7 @@ export const refreshPrintableMap = () => {
     compassInfo.style.minHeight = (bbox.height + sidePadding).toString() + 'px';
   }
 
-  // Merge canvases to one image
-  const mapCanvas = document.createElement('canvas');
-  const size = dvkMap.olMap?.getSize() || [0, 0];
-  mapCanvas.width = size[0];
-  mapCanvas.height = size[1];
-  const mapContext = mapCanvas.getContext('2d');
-  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-    if (canvas.width > 0) {
-      const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-      if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-      let matrix;
-      const transform = canvas.style.transform;
-      if (transform) {
-        // Get the transform parameters from the style's transform matrix
-        matrix = transform
-          .match(/^matrix\(([^(]*)\)$/)[1]
-          .split(',')
-          .map(Number);
-      } else {
-        matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
-      }
-      // Apply the transform to the export map context
-      CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-      const backgroundColor = canvas.parentNode.style.backgroundColor;
-      if (backgroundColor && mapContext) {
-        mapContext.fillStyle = backgroundColor;
-        mapContext.fillRect(0, 0, canvas.width, canvas.height);
-      }
-      if (mapContext) mapContext.drawImage(canvas, 0, 0);
-    }
-  });
-  if (mapContext) {
-    mapContext.globalAlpha = 1;
-    mapContext.setTransform(1, 0, 0, 1, 0, 0);
-  }
-  const img = new Image();
-  img.src = mapCanvas.toDataURL('image/png');
+  const img = mergeCanvasesToImage();
   const mapExport = document.getElementById('mapExport');
   if (mapExport) {
     mapExport.innerHTML = '';
@@ -115,11 +133,6 @@ export const isGeneralMarineWarning = (area: Text | undefined): boolean => {
 export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
   const layer = MAP.FEATURE_DATA_LAYERS.find((l) => l.id === id);
   return layer ? layer.offlineSupport : false;
-};
-
-export const getMapCanvasWidth = (): number => {
-  const canvasSize = dvkMap.olMap?.getSize() || [0, 0];
-  return canvasSize[0];
 };
 
 export const getMarineWarningDataLayerId = (type: Text | undefined): FeatureDataLayerId => {
