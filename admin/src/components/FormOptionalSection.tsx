@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import FormInput from './FormInput';
 import { QuayInput, SectionInput, TugInput, VhfInput, VtsInput } from '../graphql/generated';
 import FormTextInputRow from './FormTextInputRow';
-import { ReactComponent as ChevronIcon } from '../theme/img/chevron.svg';
-import { ReactComponent as BinIcon } from '../theme/img/bin.svg';
+import ChevronIcon from '../theme/img/chevron.svg?react';
+import BinIcon from '../theme/img/bin.svg?react';
 
 interface FormSectionProps {
   title: string;

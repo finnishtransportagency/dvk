@@ -3,7 +3,7 @@ import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, Ion
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { ItemType } from '../utils/constants';
-import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
+import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
 

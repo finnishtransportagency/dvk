@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { LineFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
-import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
