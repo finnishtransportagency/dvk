@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonBreadcrumbs,
   IonButton,
@@ -29,6 +29,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { Link } from 'react-router-dom';
 import uniqueId from 'lodash/uniqueId';
+import dvkMap from '../DvkMap';
 
 type FairwaysProps = {
   data?: Fairway[] | null;
@@ -817,6 +818,9 @@ type FairwayCardProps = {
 const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const [tab, setTab] = useState<number>(1);
+  const [moveEnd, setMoveEnd] = useState(false);
+  const [renderComplete, setRenderComplete] = useState(false);
+  const [printDisabled, setPrintDisabled] = useState(true);
   const lang = i18n.resolvedLanguage as Lang;
 
   const { data, isLoading, dataUpdatedAt, isFetching } = useFairwayCardListData();
@@ -824,6 +828,30 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
+  //for disabling printing icon
+  useEffect(() => {
+    const handleMoveStart = () => {
+      setMoveEnd(false);
+      setRenderComplete(false);
+    };
+    const handleMoveEnd = () => {
+      setMoveEnd(true);
+    };
+    const handleRenderComplete = () => {
+      setRenderComplete(true);
+    };
+
+    dvkMap.olMap?.on('movestart', handleMoveStart);
+    dvkMap.olMap?.on('moveend', handleMoveEnd);
+    dvkMap.olMap?.on('rendercomplete', handleRenderComplete);
+
+    setPrintDisabled(!(moveEnd && renderComplete));
+    return () => {
+      dvkMap.olMap?.un('moveend', handleMoveStart);
+      dvkMap.olMap?.un('loadend', handleMoveEnd);
+      dvkMap.olMap?.un('rendercomplete', handleRenderComplete);
+    };
+  }, [moveEnd, renderComplete]);
 
   const getTabLabel = (tabId: number): string => {
     switch (tabId) {
@@ -899,6 +927,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   aria-label={t('print')}
                   role="button"
                   data-testid="printButton"
+                  disabled={printDisabled}
                 >
                   <PrintIcon />
                 </IonButton>
