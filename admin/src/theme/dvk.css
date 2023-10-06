@@ -1165,8 +1165,12 @@ ion-modal.image ion-content img {
   transition: all 0.25s;
 }
 .legendPositionButton {
+  border: 1px solid black;
+  opacity: 55%;
   position: absolute;
   margin: 0;
+  width: 8px;
+  height: 8px;
 }
 .topRight {
   top: 0;
@@ -1184,6 +1188,9 @@ ion-modal.image ion-content img {
   bottom: 0;
   left: 0;
 }
-.invisible {
-  opacity: 0;
+.colorBlue {
+  background-color: green;
+}
+.colorRed {
+  background-color: red;
 }

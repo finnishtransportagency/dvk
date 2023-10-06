@@ -96,11 +96,6 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                   {!isLoading && (
                     <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
-                      //jatka tästä
-                      <IonButton className="legendPositionButton topLeft" onClick={() => setLegendPosition('topLeft')} />
-                      <IonButton className="legendPositionButton topRight" onClick={() => setLegendPosition('topRight')} />
-                      <IonButton className="legendPositionButton bottomRight" onClick={() => setLegendPosition('bottomRight')} />
-                      <IonButton className="legendPositionButton bottomLeft" onClick={() => setLegendPosition('bottomLeft')} />
                       <div className="compassInfo" ref={compassInfo}>
                         <img
                           src={north_arrow}
@@ -127,6 +122,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
+                        // JÄIT TUOHON ETTÄ MITEN SAIS MUUT VÄRIT VIHREIKS KUN MUUT PUNASIA YMS
+                        <button className="legendPositionButton topLeft colorBlue" onClick={() => setLegendPosition('topLeft')} />
+                        <button className="legendPositionButton topRight" onClick={() => setLegendPosition('topRight')} />
+                        <button className="legendPositionButton bottomRight" onClick={() => setLegendPosition('bottomRight')} />
+                        <button className="legendPositionButton bottomLeft" onClick={() => setLegendPosition('bottomLeft')} />
                       </div>
                     </div>
                   )}
