@@ -818,8 +818,8 @@ type FairwayCardProps = {
 const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const [tab, setTab] = useState<number>(1);
-  const [moveEnd, setMoveEnd] = useState(false);
-  const [renderComplete, setRenderComplete] = useState(false);
+  const [moveEnd, setMoveEnd] = useState(true);
+  const [renderComplete, setRenderComplete] = useState(true);
   const [printDisabled, setPrintDisabled] = useState(true);
   const lang = i18n.resolvedLanguage as Lang;
 
