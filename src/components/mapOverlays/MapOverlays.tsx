@@ -22,6 +22,8 @@ import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupConte
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 import { MarineWarningNotifications } from './MarineWarningNotifications';
 import { LoadErrorNotifications } from './LoaderErrorNotifications';
+import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -49,7 +51,8 @@ type MapOverlaysProps = {
 const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isOffline }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
-  const [isOpen, setIsOpen] = useState(false);
+  const { state, dispatch } = useDvkContext();
+  const [isOpen, setIsOpen] = useState(window.location.hash === '#layerModal');
   const [backgroundMapType, setBackgroundMapType] = useState<BackgroundMapType>(dvkMap.getBackgroundMapType());
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
@@ -61,9 +64,15 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
 
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
 
+  const openMapLayersModal = () => {
+    setIsOpen(true);
+    window.location.hash = '#layerModal';
+  };
+
   const dismissMapLayersModal = () => {
     const lpc = dvkMap.getLayerPopupControl();
     setIsOpen(false);
+    window.location.hash = '';
     lpc?.modalClosed();
   };
 
@@ -78,8 +87,32 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
     }
   }, []);
 
+  useEffect(() => {
+    initUserLocation(dispatch);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (state.locationPermission === 'on') {
+      placeUserLocationMarker();
+    } else {
+      removeUserLocationMarker();
+    }
+  }, [state.locationPermission]);
+
+  window.addEventListener(
+    'hashchange',
+    () => {
+      if (window.location.hash === '#layerModal') {
+        setIsOpen(true);
+      } else {
+        dismissMapLayersModal();
+      }
+    },
+    false
+  );
+
   const lpc = dvkMap.getLayerPopupControl();
-  lpc?.onSetIsOpen(setIsOpen);
+  lpc?.onSetIsOpen(openMapLayersModal);
 
   const sc = dvkMap.getSearchbarControl();
   sc?.onSetIsOpen(setIsSearchbarOpen);

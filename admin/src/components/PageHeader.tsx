@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useCurrentUserQueryData } from '../graphql/api';
 import vayla_logo from '../theme/img/vayla_logo.png';
 import vayla_logo_en from '../theme/img/vayla_logo_en.png';
-import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
+import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 
 interface ModalProps {
   isOpen: boolean;

@@ -1,45 +1,61 @@
 {
-  "root": true,
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "airbnb-typescript",
-    "airbnb/hooks",
-    "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended",
-    "prettier",
-    "eslint-config-prettier"
-  ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+    "root": true,
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
     },
-    "ecmaVersion": "latest",
-    "sourceType": "module",
-    "project": ["./tsconfig.json"]
-  },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
-  "settings": {
-    "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
+    "extends": [
+        "eslint:recommended",
+        "airbnb-typescript",
+        "airbnb/hooks",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:jsx-a11y/recommended",
+        "plugin:prettier/recommended",
+        "prettier",
+        "eslint-config-prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module",
+        "project":[ "./tsconfig.json" ]
     },
-    "import/ignore": ["ionic/core", "ol"],
-    "react": {
-      "version": "detect"
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "prettier"
+    ],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [
+                    ".js",
+                    ".jsx",
+                    ".ts",
+                    ".tsx"
+                ]
+            },
+            "typescript": {
+                "alwaysTryTypes": true,
+                "paths": [ "./tsconfig.json" ]
+            }
+        },
+        "import/ignore": [
+            "react-router-dom",
+            "ol"
+        ],
+        "react": {
+            "version": "detect"
+        }
+    },
+    "rules": {
+        "prettier/prettier": ["error"]
     }
-  },
-  "rules": {
-    "prettier/prettier": ["error"]
-  }
 }

@@ -2,7 +2,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
-import svgrPlugin from 'vite-plugin-svgr';
+import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 import legacy from '@vitejs/plugin-legacy';
 import eslintPlugin from 'vite-plugin-eslint';
@@ -19,7 +19,7 @@ export default defineConfig({
   plugins: [
     react(),
     viteTsconfigPaths(),
-    svgrPlugin(),
+    svgr(),
     legacy(),
     VitePWA({
       /* Cache all imports */

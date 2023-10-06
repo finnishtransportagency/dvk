@@ -30,6 +30,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
+import { Stroke } from 'ol/style';
 
 type OrientationType = Orientation | '';
 type LangType = Lang | '';
@@ -152,6 +153,7 @@ class DvkMap {
       zIndex: 1,
       imageRatio: 3,
     });
+
     this.olMap.addLayer(bgFinlandLayer);
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
@@ -163,6 +165,19 @@ class DvkMap {
       imageRatio: 3,
     });
     this.olMap.addLayer(bgBalticseaLayer);
+
+    const bgMmlsatamatLayer = new VectorLayer({
+      properties: { id: 'mml_satamat' },
+      source: new VectorSource(),
+      maxResolution: 30,
+      zIndex: 104,
+      renderBuffer: 100,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      renderOrder: undefined,
+    });
+    this.olMap.addLayer(bgMmlsatamatLayer);
+
     this.setBackgroundLayers(this.olMap, bgSeaMapStyles, '#feefcf', '#c7eafc');
     this.setOrientationType(this.orientationType);
     this.setMapLanguage(this.mapLanguage);
@@ -231,6 +246,19 @@ class DvkMap {
       new Style({
         fill: new Fill({
           color: waterColor,
+        }),
+      })
+    );
+
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource>;
+    bgMmlsatamatLayer.setStyle(
+      new Style({
+        stroke: new Stroke({
+          color: '#333333',
+          width: 1,
+        }),
+        fill: new Fill({
+          color: '#d8d8d8',
         }),
       })
     );
