@@ -294,8 +294,7 @@ const App: React.FC = () => {
 
   document.documentElement.lang = i18n.language;
 
-  InitDvkMap();
-
+  InitDvkMap(dispatch);
   useEffect(() => {
     if (!updating) {
       navigator.serviceWorker?.addEventListener('controllerchange', () => {

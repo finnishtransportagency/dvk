@@ -21,6 +21,7 @@ import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupConten
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
 import { MarineWarningNotifications } from './MarineWarningNotifications';
+import { LoadErrorNotifications } from './LoaderErrorNotifications';
 import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -59,7 +60,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [activeSelection, setActiveSelection] = useState(0);
   const { data } = useFairwayCardListData();
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
-
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
   const [popupProps, setPopupProperties] = useState<PopupProperties>();
@@ -155,6 +155,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">
         <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
+        <LoadErrorNotifications />
       </div>
     </>
   );

@@ -428,6 +428,9 @@
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan"
   },
+  "tileLoadWarning": {
+    "vectorTileError": "[sv] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+  },
   "source": {
     "title": "Informationskällor och användningsvillkor",
     "content1": "Trafikledsverket",
