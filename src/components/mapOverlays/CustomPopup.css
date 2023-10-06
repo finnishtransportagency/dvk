@@ -1,3 +1,22 @@
+.custom-popup-container {
+  position: fixed;
+  opacity: 1;
+  pointer-events: none;
+  /* ion-backdrop has default z-index: 2, must be higher than that */
+  z-index: 3;
+}
+
+ion-app.mobile div.custom-popup-container {
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+ion-app:not(.mobile) div.custom-popup-container {
+  bottom: 36px;
+}
+
 .custom-popup {
   position: relative;
   display: block;
