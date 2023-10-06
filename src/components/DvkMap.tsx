@@ -483,7 +483,7 @@ class DvkMap {
           if (!isOffline) {
             (layer as Layer).getSource()?.refresh();
           }
-          layer.setVisible(isOffline ? false : true);
+          layer.setVisible(!isOffline);
         } else if (layer.get('id') === 'mml_meri' || layer.get('id') === 'mml_jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
