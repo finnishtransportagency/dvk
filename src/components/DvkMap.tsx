@@ -280,11 +280,12 @@ class DvkMap {
             extent: usedExtent,
             featureProjection: usedProjection,
           });
-          this.setResponseState(dispatch, response.status, response.statusText);
           tile.setFeatures(features);
         } catch (error) {
           if (response) {
             this.setResponseState(dispatch, response.status, response.statusText);
+          } else {
+            this.setResponseState(dispatch, 408, "Request timeout")
           }
         } finally {
           clearTimeout(timeoutId);
