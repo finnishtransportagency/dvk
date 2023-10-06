@@ -10,7 +10,10 @@
       "squat": "Squat beräkning",
       "customer-service": "Trafikens kundtjänst",
       "source": "Informationskällor och användningsvillkor",
-      "opens-in-a-new-tab": "Öppnas i en ny flik"
+      "opens-in-a-new-tab": "Öppnas i en ny flik",
+      "location-service": "[sv] Sijaintipalvelu",
+      "location-description": "[sv] Mahdollistaa päätelaitteesi paikantamisen.",
+      "location-disabled": "[sv] Sijainnin käyttöoikeus estetty"
     },
     "map": {
       "controls": {
@@ -424,6 +427,9 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan"
+  },
+  "tileLoadWarning": {
+    "vectorTileError": "[sv] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

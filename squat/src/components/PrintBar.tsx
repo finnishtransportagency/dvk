@@ -13,6 +13,7 @@ const PrintBar: React.FC = () => {
   const { state } = useSquatContext();
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
+  const { embeddedSquat } = state;
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const selectText = useCallback(() => {
@@ -40,7 +41,7 @@ const PrintBar: React.FC = () => {
 
   return (
     <>
-      <IonGrid>
+      <IonGrid className={embeddedSquat ? 'ion-no-padding' : ''}>
         <IonRow>
           <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
             <Modal
@@ -80,22 +81,22 @@ const PrintBar: React.FC = () => {
                   />
                 </>
               }
-              trigger={<IonIcon src={shareIcon} size="medium" />}
+              triggerIcon={<IonIcon src={shareIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />}
               triggerTitle={t('header.shareable-link-title')}
-              triggerClassName="large"
+              triggerClassName={embeddedSquat ? 'small no-mobile no-print' : 'large no-background-focused'}
               handleDismiss={handleToastDismiss}
             />
           </IonCol>
           <IonCol class="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
-              className="icon-only large no-background-focused"
+              className={'icon-only ' + (embeddedSquat ? 'small no-mobile no-print' : 'large no-background-focused')}
               onClick={handlePrintClick}
               title={t('header.print')}
               aria-label={t('header.print')}
               role="button"
             >
-              <IonIcon color="primary" slot="icon-only" src={printIcon} size="medium" />
+              <IonIcon color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
             </IonButton>
           </IonCol>
         </IonRow>

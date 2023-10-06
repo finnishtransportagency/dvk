@@ -127,6 +127,77 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
+function getImage(center: boolean, icon: string, anchorY: number, color: string, selected: boolean) {
+  if (center) {
+    return new Icon({
+      src: icon,
+      color: color,
+      scale: selected ? 1.2 : 1,
+    });
+  } else {
+    return new Icon({
+      src: icon,
+      color: color,
+      anchor: [0.5, anchorY],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+      scale: selected ? 1.2 : 1,
+    });
+  }
+}
+
+function getFaultStyles(anchorY: number, selected: boolean) {
+  return [
+    new Style({
+      image: new Icon({
+        src: errorIcon,
+        anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        scale: selected ? 1.2 : 1,
+      }),
+    }),
+    new Style({
+      image: new Icon({
+        src: errorIcon,
+        anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        scale: selected ? 1.2 : 1,
+      }),
+    }),
+  ];
+}
+
+function getAisStyles(aisType: number, selected: boolean) {
+  const text = aisType === 2 || aisType === 3 ? 'AIS' : 'V-AIS';
+
+  return [
+    new Style({
+      image: new Icon({
+        src: virtual,
+        anchor: [0.5, 0.5],
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'fraction',
+        scale: selected ? 1.2 : 1,
+      }),
+      text: text
+        ? new Text({
+            font: '12px "Exo2"',
+            placement: 'line',
+            offsetY: selected ? 17 : 15,
+            text,
+            scale: selected ? 1.2 : 1,
+            fill: new Fill({
+              color: '#FF00FF',
+            }),
+            stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
+          })
+        : undefined,
+    }),
+  ];
+}
+
 export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean, alwaysVisible: boolean | undefined) => {
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
@@ -135,26 +206,9 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
   if (props.symbol === '1' || resolution <= 10 || !!alwaysVisible) {
-    let image: Icon;
-    if (center) {
-      image = new Icon({
-        src: icon,
-        color: props.faults ? '#EC0E0E' : '#231F20',
-        scale: selected ? 1.2 : 1,
-      });
-    } else {
-      image = new Icon({
-        src: icon,
-        color: props.faults ? '#EC0E0E' : '#231F20',
-        anchor: [0.5, anchorY],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        scale: selected ? 1.2 : 1,
-      });
-    }
     const styles = [
       new Style({
-        image,
+        image: getImage(center, icon, anchorY, props.faults ? '#EC0E0E' : '#231F20', selected),
       }),
       new Style({
         image: new CircleStyle({
@@ -166,58 +220,10 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
       }),
     ];
     if (props.faults && resolution <= 10) {
-      styles.push(
-        new Style({
-          image: new Icon({
-            src: errorIcon,
-            anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-        }),
-        new Style({
-          image: new Icon({
-            src: errorIcon,
-            anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-        })
-      );
+      styles.push(...getFaultStyles(anchorY, selected));
     }
     if (props.aisType !== undefined && props.aisType !== 1) {
-      let text;
-      if (props.aisType === 2 || props.aisType === 3) {
-        text = 'AIS';
-      } else {
-        text = 'V-AIS';
-      }
-      styles.push(
-        new Style({
-          image: new Icon({
-            src: virtual,
-            anchor: [0.5, 0.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-          text: text
-            ? new Text({
-                font: '12px "Exo2"',
-                placement: 'line',
-                offsetY: selected ? 17 : 15,
-                text,
-                scale: selected ? 1.2 : 1,
-                fill: new Fill({
-                  color: '#FF00FF',
-                }),
-                stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
-              })
-            : undefined,
-        })
-      );
+      styles.push(...getAisStyles(props.aisType, selected));
     }
     return styles;
   }

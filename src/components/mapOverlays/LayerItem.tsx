@@ -6,8 +6,8 @@ import './LayerModal.css';
 import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
-import { ReactComponent as DepthMW } from '../../theme/img/syvyys_mw.svg';
-import { ReactComponent as DepthN2000 } from '../../theme/img/syvyys_n2000.svg';
+import DepthMW from '../../theme/img/syvyys_mw.svg?react';
+import DepthN2000 from '../../theme/img/syvyys_n2000.svg?react';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
@@ -313,13 +313,17 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
   if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning'].includes(id)) {
-    const errorUpdatedAt = dvkMap.getFeatureLayer(id).get('errorUpdatedAt');
-    if (errorUpdatedAt) {
+    if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
       alertProps = getAlertProperties(dataUpdatedAt, id);
     }
   }
-  const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'deptharea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
-  const disabled = !initialized || (!hasOfflineSupport(id) && isOffline);
+
+  const isDisabled = (): boolean => {
+    const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'deptharea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
+    return !initialized || (!hasOfflineSupport(id) && isOffline);
+  };
+
+  const disabled = isDisabled();
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');

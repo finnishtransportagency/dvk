@@ -10,7 +10,10 @@
       "squat": "Squat calculator",
       "customer-service": "Traffic customer service",
       "source": "Data sources and terms of use",
-      "opens-in-a-new-tab": "Opens in a new tab"
+      "opens-in-a-new-tab": "Opens in a new tab",
+      "location-service": "[en] Sijaintipalvelu",
+      "location-description": "[en] Mahdollistaa päätelaitteesi paikantamisen.",
+      "location-disabled": "[en] Sijainnin käyttöoikeus estetty"
     },
     "map": {
       "controls": {
@@ -423,6 +426,9 @@
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab",
     "print": "Print page"
+  },
+  "tileLoadWarning": {
+    "vectorTileError": "[en] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
   },
   "source": {
     "title": "Data sources and terms of use",

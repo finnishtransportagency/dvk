@@ -40,13 +40,12 @@ import { isEmbedded } from '../pages/Home';
 import CalculationOptions from './CalculationOptions';
 import CalculationChecks from './CalculationChecks';
 
-interface CalculationProps {
-  limitedView: boolean;
-}
-
-const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
+const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
+  const {
+    status: { showLimitedView: limitedView },
+  } = state;
   const tRoot = i18n.getFixedT(i18n.language);
 
   // useEffects to calculate results by input value update
@@ -305,14 +304,15 @@ const Calculations: React.FC<CalculationProps> = ({ limitedView }) => {
                   </div>
                 </>
               }
+              triggerClassName="no-background-focused"
             />
           </IonCol>
         </IonRow>
       </IonGrid>
 
-      <CalculationChecks limitedView={limitedView} doChecks={['ukc']} />
-      <CalculationOptions limitedView={limitedView} />
-      <CalculationChecks limitedView={limitedView} doChecks={['reliability', 'LBratio', 'BDratio']} />
+      <CalculationChecks doChecks={['ukc']} />
+      <CalculationOptions />
+      <CalculationChecks doChecks={['reliability', 'LBratio', 'BDratio']} />
 
       <SectionTitle title={t('squat')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
       {!limitedView && (
