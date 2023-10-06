@@ -98,7 +98,6 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                         aria-label={props.translateOptions ? t(option.name) : option.name}
                         value={option}
                         className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
-                        legacy
                       />
                     </IonCol>
                   </IonRow>
