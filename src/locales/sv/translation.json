@@ -11,9 +11,9 @@
       "customer-service": "Trafikens kundtjänst",
       "source": "Informationskällor och användningsvillkor",
       "opens-in-a-new-tab": "Öppnas i en ny flik",
-      "location-service": "[sv] Sijaintipalvelu",
-      "location-description": "[sv] Mahdollistaa päätelaitteesi paikantamisen.",
-      "location-disabled": "[sv] Sijainnin käyttöoikeus estetty"
+      "location-service": "Platstjänst",
+      "location-description": "Möjliggör att platsbestämma din mobila enhet.",
+      "location-disabled": "Behörigheter för platsbestämning inaktiverad"
     },
     "map": {
       "controls": {
@@ -429,7 +429,7 @@
     "print": "Skriva ut sidan"
   },
   "tileLoadWarning": {
-    "vectorTileError": "[sv] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",
