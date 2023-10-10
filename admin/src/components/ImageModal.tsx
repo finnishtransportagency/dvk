@@ -6,6 +6,18 @@ import { FairwayCardInput, PictureInput } from '../graphql/generated';
 import { imageUrl, Lang } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 
+enum POSITION {
+  BOTTOMLEFT = 'bottomLeft',
+  TOPLEFT = 'topLeft',
+  TOPRIGHT = 'topRight',
+  BOTTOMRIGHT = 'bottomRight',
+}
+
+enum BUTTONCOLORS {
+  GREEN = 'colorGreen',
+  RED = 'colorRed',
+}
+
 interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
@@ -19,7 +31,8 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const en = i18n.getFixedT('en');
 
   const [isLoading, setIsLoading] = useState(true);
-  const [legendPosition, setLegendPosition] = useState('bottomLeft');
+  const [legendPosition, setLegendPosition] = useState(POSITION.BOTTOMLEFT);
+  const [buttonColors, setButtonColors] = useState<string[]>([BUTTONCOLORS.GREEN, BUTTONCOLORS.RED, BUTTONCOLORS.RED, BUTTONCOLORS.RED]);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
@@ -64,6 +77,13 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     setTimeout(() => {
       setIsOpen('');
     }, 150);
+  };
+
+  // 0 being bottom left and incrementing clockwise
+  const changeButtonColor = (position: number) => {
+    const colorArray = new Array(buttonColors.length).fill(BUTTONCOLORS.RED);
+    colorArray[position] = BUTTONCOLORS.GREEN;
+    setButtonColors(colorArray);
   };
 
   return (
@@ -122,11 +142,35 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
-                        // JÄIT TUOHON ETTÄ MITEN SAIS MUUT VÄRIT VIHREIKS KUN MUUT PUNASIA YMS
-                        <button className="legendPositionButton topLeft colorBlue" onClick={() => setLegendPosition('topLeft')} />
-                        <button className="legendPositionButton topRight" onClick={() => setLegendPosition('topRight')} />
-                        <button className="legendPositionButton bottomRight" onClick={() => setLegendPosition('bottomRight')} />
-                        <button className="legendPositionButton bottomLeft" onClick={() => setLegendPosition('bottomLeft')} />
+                        {/* refactor as an own component */}
+                        <button
+                          className={`legendPositionButton ${POSITION.BOTTOMLEFT} ${buttonColors[0]}`}
+                          onClick={() => {
+                            setLegendPosition(POSITION.BOTTOMLEFT);
+                            changeButtonColor(0);
+                          }}
+                        />
+                        <button
+                          className={`legendPositionButton ${POSITION.TOPLEFT} ${buttonColors[1]}`}
+                          onClick={() => {
+                            setLegendPosition(POSITION.TOPLEFT);
+                            changeButtonColor(1);
+                          }}
+                        />
+                        <button
+                          className={`legendPositionButton ${POSITION.TOPRIGHT} ${buttonColors[2]}`}
+                          onClick={() => {
+                            setLegendPosition(POSITION.TOPRIGHT);
+                            changeButtonColor(2);
+                          }}
+                        />
+                        <button
+                          className={`legendPositionButton ${POSITION.BOTTOMRIGHT} ${buttonColors[3]}`}
+                          onClick={() => {
+                            setLegendPosition(POSITION.BOTTOMRIGHT);
+                            changeButtonColor(3);
+                          }}
+                        />
                       </div>
                     </div>
                   )}
