@@ -94,7 +94,7 @@ const Vessel: React.FC = () => {
           }
         />
         <IonGrid className="no-padding">
-          <IonRow class="input-row">
+          <IonRow className="input-row">
             <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('length-BPP')}
@@ -181,7 +181,7 @@ const Vessel: React.FC = () => {
               valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
             />
             <IonGrid className="no-padding">
-              <IonRow class="input-row">
+              <IonRow className="input-row">
                 <IonCol size="6">
                   <InputField
                     title={t('total-lateral-wind-surface')}
@@ -259,7 +259,7 @@ const Vessel: React.FC = () => {
           <>
             <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
             <IonGrid className="no-padding">
-              <IonRow class="input-row">
+              <IonRow className="input-row">
                 <IonCol size="6">
                   <InputField
                     title={t('KG')}

@@ -60,8 +60,8 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
   };
 
   return (
-    <IonGrid id="areaPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="areaPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         {area.properties.fairways?.map((fairway, index) => {
           return (
             <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
