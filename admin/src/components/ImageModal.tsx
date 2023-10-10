@@ -79,7 +79,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }, 150);
   };
 
-  // 0 being bottom left and incrementing clockwise
+  // 0 being bottom left, incrementing clockwise
   const changeButtonColor = (position: number) => {
     const colorArray = new Array(buttonColors.length).fill(BUTTONCOLORS.RED);
     colorArray[position] = BUTTONCOLORS.GREEN;
