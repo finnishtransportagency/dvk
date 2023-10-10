@@ -4,8 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
 import arrowDownIcon from '../../../theme/img/arrow_down.svg';
-import { ReactComponent as DepthMW } from '../../../theme/img/syvyys_mw.svg';
-import { ReactComponent as DepthN2000 } from '../../../theme/img/syvyys_n2000.svg';
+import DepthMW from '../../../theme/img/syvyys_mw.svg?react';
+import DepthN2000 from '../../../theme/img/syvyys_n2000.svg?react';
 import { FeatureDataLayerId } from '../../../utils/constants';
 
 const LegendDepth = () => {
