@@ -11,9 +11,9 @@
       "customer-service": "Traffic customer service",
       "source": "Data sources and terms of use",
       "opens-in-a-new-tab": "Opens in a new tab",
-      "location-service": "[en] Sijaintipalvelu",
-      "location-description": "[en] Mahdollistaa päätelaitteesi paikantamisen.",
-      "location-disabled": "[en] Sijainnin käyttöoikeus estetty"
+      "location-service": "Location service",
+      "location-description": "Enables tracking of the end device",
+      "location-disabled": "Use of location prohibited"
     },
     "map": {
       "controls": {
@@ -428,7 +428,7 @@
     "print": "Print page"
   },
   "tileLoadWarning": {
-    "vectorTileError": "[en] Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
   },
   "source": {
     "title": "Data sources and terms of use",
