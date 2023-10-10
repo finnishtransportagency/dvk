@@ -113,7 +113,7 @@ const Environment: React.FC = () => {
             valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
           />
           <IonGrid className="no-padding">
-            <IonRow class="input-row">
+            <IonRow className="input-row">
               <IonCol size="6">
                 <InputField
                   title={t('set-wind-speed')}
@@ -201,7 +201,7 @@ const Environment: React.FC = () => {
         }
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           <IonCol size={defaultColumnSize}>
             <InputField
               title={t('swept-depth')}
@@ -387,7 +387,7 @@ const Environment: React.FC = () => {
         valid={limitedView ? isFieldValid('vesselSpeed') : isAllValid(['vesselCourse', 'vesselSpeed', 'turningRadius'])}
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           {!limitedView && (
             <IonCol size="6">
               <InputField
@@ -455,7 +455,7 @@ const Environment: React.FC = () => {
         }
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           {!limitedView && (
             <IonCol size="6">
               <InputField

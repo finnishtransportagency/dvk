@@ -43,7 +43,7 @@ const PrintBar: React.FC = () => {
     <>
       <IonGrid className={embeddedSquat ? 'ion-no-padding' : ''}>
         <IonRow>
-          <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
+          <IonCol className="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
             <Modal
               title={t('header.shareable-link-title')}
               content={
@@ -87,7 +87,7 @@ const PrintBar: React.FC = () => {
               handleDismiss={handleToastDismiss}
             />
           </IonCol>
-          <IonCol class="ion-align-self-center" size="auto">
+          <IonCol className="ion-align-self-center" size="auto">
             <IonButton
               fill="clear"
               className={'icon-only ' + (embeddedSquat ? 'small no-mobile no-print' : 'large no-background-focused')}

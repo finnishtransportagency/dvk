@@ -42,7 +42,7 @@ const Home: React.FC = () => {
           <IonTitle size="small" slot="end" className="version-title">
             <IonGrid className="ion-no-padding">
               <IonRow>
-                <IonCol class="ion-align-self-center">
+                <IonCol className="ion-align-self-center">
                   <IonItem
                     href={t('saavutettavuus-url')}
                     rel="external"
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
                     {t('saavutettavuusseloste')}
                   </IonItem>
                 </IonCol>
-                <IonCol size="auto" class="ion-align-self-center">
+                <IonCol size="auto" className="ion-align-self-center">
                   v{import.meta.env.VITE_APP_VERSION}
                 </IonCol>
               </IonRow>
