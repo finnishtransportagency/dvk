@@ -37,6 +37,8 @@ import { isMobile } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
+import { Dispatch } from 'react';
+import { Action } from '../hooks/dvkReducer';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -84,7 +86,7 @@ class DvkMap {
   public onTileStatusChange: () => void = () => {};
 
   // eslint-disable-next-line
-  init(t: any, i18n: any) {
+  init(t: any, i18n: any, dispatch: Dispatch<Action>) {
     if (this.initialized) {
       return;
     }
@@ -165,6 +167,8 @@ class DvkMap {
       format: new MVT(),
       url: tileUrl,
     });
+
+    this.useCustomVectorTileLoader(this.source, dispatch);
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
@@ -249,6 +253,56 @@ class DvkMap {
     this.translate();
     this.initialized = true;
   }
+
+  // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
+  // Throws error if timeout and sets status code accordingly in case of response
+  private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
+    // eslint-disable-next-line
+    source.setTileLoadFunction((tile: any, url: string) => {
+      tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+        let response;
+
+        try {
+          response = await fetch(url, {
+            signal: controller.signal,
+          }).then((res) => res);
+
+          if (response.status !== 200) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+          }
+
+          const data = await response.arrayBuffer();
+          const format = tile.getFormat();
+          const features = format.readFeatures(data, {
+            extent: usedExtent,
+            featureProjection: usedProjection,
+          });
+          tile.setFeatures(features);
+        } catch (error) {
+          if (response) {
+            this.setResponseState(dispatch, response.status, response.statusText);
+          } else {
+            this.setResponseState(dispatch, 408, 'Request timeout');
+          }
+        } finally {
+          clearTimeout(timeoutId);
+        }
+      });
+    });
+  };
+
+  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string) => {
+    dispatch({
+      type: 'setResponse',
+      payload: {
+        value: [String(statusCode), statusText],
+      },
+    });
+  };
+
   // eslint-disable-next-line
   private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
@@ -291,13 +345,6 @@ class DvkMap {
         }
       });
 
-      source.on('tileloaderror', () => {
-        if (this.tileStatus !== 'error') {
-          this.tileStatus = 'error';
-          this.onTileStatusChange();
-        }
-      });
-
       const layer = new VectorTileLayer({
         declutter: false,
         source,
@@ -307,6 +354,7 @@ class DvkMap {
         updateWhileInteracting: false,
         useInterimTilesOnError: false,
       });
+
       stylefunction(layer, styleJson, bucket.layers, resolutions, null, undefined, getFonts);
       layer.set('type', 'backgroundTile');
       backLayers.push(layer);
@@ -435,7 +483,7 @@ class DvkMap {
           if (!isOffline) {
             (layer as Layer).getSource()?.refresh();
           }
-          layer.setVisible(isOffline ? false : true);
+          layer.setVisible(!isOffline);
         } else if (layer.get('id') === 'mml_meri' || layer.get('id') === 'mml_jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
@@ -563,10 +611,10 @@ class DvkMap {
 
 const dvkMap = new DvkMap();
 
-function InitDvkMap() {
+function InitDvkMap(dispatch: Dispatch<Action>) {
   const { t, i18n } = useTranslation();
   if (!dvkMap.initialized) {
-    dvkMap.init(t, i18n);
+    dvkMap.init(t, i18n, dispatch);
     i18n.on('languageChanged', () => {
       dvkMap.translate();
     });

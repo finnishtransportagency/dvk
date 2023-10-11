@@ -60,8 +60,8 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
   const lineReferenceLevel = getValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel) as string;
 
   return (
-    <IonGrid id="linePopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="linePopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         {line.properties.fairways?.map((fairway, index) => {
           return (
             <IonRow key={fairway.fairwayId} className="ion-justify-content-between">

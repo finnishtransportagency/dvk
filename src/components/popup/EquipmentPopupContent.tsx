@@ -44,8 +44,8 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
   };
 
   return (
-    <IonGrid id="equipmentPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="equipmentPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {equipment.properties.name && (equipment.properties.name[lang] || equipment.properties.name.fi)}
@@ -59,7 +59,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
           </IonCol>
         </IonRow>
         {equipment.properties.faults && (
-          <IonGrid class="faultGrid">
+          <IonGrid className="faultGrid">
             {equipment.properties.faults.map((fault) => {
               return (
                 <div key={fault.faultId}>

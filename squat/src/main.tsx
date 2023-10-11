@@ -9,6 +9,12 @@ import InfoAccordion from './components/InfoAccordion';
 import CalculationOptions from './components/CalculationOptions';
 import CalculationChecks from './components/CalculationChecks';
 import PrintBar from './components/PrintBar';
+import { setupIonicReact } from '@ionic/react';
+
+setupIonicReact({
+  mode: 'md',
+});
+
 export {
   Squat,
   SquatChart,

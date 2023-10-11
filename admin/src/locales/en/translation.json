@@ -192,7 +192,7 @@
     "print-images-language-en": "[en] englanti",
     "print-images-language-null": "[en] ei asetettu",
     "print-images-rotation": "[en] Kuvan kierto",
-    "print-images-description": "[en] Kuvateksti",
+    "print-images-description": "Caption",
     "print-images-card-id-required": "[en] Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Not for navigational use",
     "toggle-sequence": "[en] Aseta järjestysnumero"

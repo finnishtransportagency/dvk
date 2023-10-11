@@ -5,6 +5,7 @@ export type State = {
   isOffline: boolean;
   modalBreakpoint: number;
   layers: string[];
+  response: string[];
   locationPermission: UserLocationPermission;
 };
 
@@ -13,6 +14,7 @@ export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
   layers: ['pilot', 'line12', 'harbor', 'name'],
+  response: [],
   locationPermission: 'off',
 };
 
@@ -25,6 +27,12 @@ export type Action =
     }
   | {
       type: 'setLayers';
+      payload: {
+        value: string[];
+      };
+    }
+  | {
+      type: 'setResponse';
       payload: {
         value: string[];
       };
@@ -49,6 +57,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'setLayers':
       newState = { ...state, layers: action.payload.value };
+      break;
+    case 'setResponse':
+      newState = { ...state, response: action.payload.value };
       break;
     case 'setLocationPermission':
       newState = { ...state, locationPermission: action.payload.value };

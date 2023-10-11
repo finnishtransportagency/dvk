@@ -28,8 +28,8 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
   };
 
   return (
-    <IonGrid id="mareographPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="mareographPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {mareograph.properties.name}
