@@ -6,7 +6,7 @@ import { nameIncludesQuery, sortTypeSafeSelectOptions } from '../utils/common';
 import type { InputCustomEvent } from '@ionic/react';
 import { close, search } from 'ionicons/icons';
 
-interface DropdownSearchInputProps {
+interface SelectDropdownSearchInputProps {
   options: SelectOption[] | null;
   setFilteredItems: (items: SelectOption[]) => void;
   searchQuery: string;
@@ -14,7 +14,10 @@ interface DropdownSearchInputProps {
   blurSearchInput: () => void;
 }
 
-const DropdownSearchInput = forwardRef(function DropdownSearchInput(props: DropdownSearchInputProps, ref: React.ForwardedRef<HTMLIonInputElement>) {
+const SelectDropdownSearchInput = forwardRef(function SelectDropdownSearchInput(
+  props: SelectDropdownSearchInputProps,
+  ref: React.ForwardedRef<HTMLIonInputElement>
+) {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
   const { options, setFilteredItems, searchQuery, setSearchQuery, blurSearchInput } = props;
@@ -72,4 +75,4 @@ const DropdownSearchInput = forwardRef(function DropdownSearchInput(props: Dropd
   );
 });
 
-export default DropdownSearchInput;
+export default SelectDropdownSearchInput;

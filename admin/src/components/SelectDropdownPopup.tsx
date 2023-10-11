@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Lang, SelectOption } from '../utils/constants';
 import { constructSelectOptionLabel, sortTypeSafeSelectOptions } from '../utils/common';
 import type { CheckboxCustomEvent } from '@ionic/react';
-import DropdownSearchInput from './DropdownSearchInput';
+import SelectDropdownSearchInput from './SelectDropdownSearchInput';
 
-interface DropdownPopupProps {
+interface SelectDropdownPopupProps {
   trigger: string;
   triggerRef: React.RefObject<HTMLIonItemElement>;
   options: SelectOption[] | null;
@@ -18,7 +18,7 @@ interface DropdownPopupProps {
   className?: string;
 }
 
-const DropdownPopup: React.FC<DropdownPopupProps> = ({
+const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
   trigger,
   triggerRef,
   options,
@@ -94,7 +94,7 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
     >
-      <DropdownSearchInput
+      <SelectDropdownSearchInput
         ref={searchRef}
         options={options}
         setFilteredItems={setFilteredItems}
@@ -126,4 +126,4 @@ const DropdownPopup: React.FC<DropdownPopupProps> = ({
   );
 };
 
-export default DropdownPopup;
+export default SelectDropdownPopup;

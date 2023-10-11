@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
 import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
-import DropdownPopup from './DropdownPopup';
+import SelectDropdownPopup from './SelectDropdownPopup';
 
 interface SelectItemProps {
   selected: number[];
@@ -131,7 +131,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
           </IonItem>
           {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
-          <DropdownPopup
+          <SelectDropdownPopup
             trigger={triggerId}
             triggerRef={containerRef}
             options={options}
