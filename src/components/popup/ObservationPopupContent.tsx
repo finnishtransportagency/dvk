@@ -28,8 +28,8 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
   };
 
   return (
-    <IonGrid id="observationPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="observationPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {observation.properties.name}

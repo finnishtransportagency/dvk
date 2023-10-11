@@ -13,14 +13,13 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-interface EnvironmentProps {
-  limitedView: boolean;
-}
-
-const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
+const Environment: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.environment' });
   const tRoot = i18n.getFixedT(i18n.language);
   const { state, dispatch } = useSquatContext();
+  const {
+    status: { showLimitedView: limitedView },
+  } = state;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
@@ -114,7 +113,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
             valid={isFieldValid('windSpeed') && isFieldValid('windDirection') && isFieldValid('waveHeight') && isFieldValid('wavePeriod')}
           />
           <IonGrid className="no-padding">
-            <IonRow class="input-row">
+            <IonRow className="input-row">
               <IonCol size="6">
                 <InputField
                   title={t('set-wind-speed')}
@@ -196,13 +195,13 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
       <SectionTitle
         title={t('fairway')}
         valid={
-          isAllValid(['sweptDepth', 'waterDepth']) &&
+          (limitedView ? isAllValid(['sweptDepth', 'waterLevel']) : isAllValid(['sweptDepth', 'waterLevel', 'waterDepth'])) &&
           (state.environment.fairway.fairwayForm !== fairwayForms[0] ? isFieldValid('channelWidth') : true) &&
           (state.environment.fairway.fairwayForm === fairwayForms[2] ? isAllValid(['slopeScale', 'slopeHeight']) : true)
         }
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           <IonCol size={defaultColumnSize}>
             <InputField
               title={t('swept-depth')}
@@ -388,7 +387,7 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
         valid={limitedView ? isFieldValid('vesselSpeed') : isAllValid(['vesselCourse', 'vesselSpeed', 'turningRadius'])}
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           {!limitedView && (
             <IonCol size="6">
               <InputField
@@ -450,11 +449,13 @@ const Environment: React.FC<EnvironmentProps> = ({ limitedView }) => {
       <SectionTitle
         title={t('attribute')}
         valid={
-          limitedView ? isAllValid(['requiredUKC', 'motionClearance']) : isAllValid(['airDensity', 'waterDensity', 'requiredUKC', 'motionClearance'])
+          limitedView
+            ? isAllValid(['requiredUKC', 'motionClearance'])
+            : isAllValid(['airDensity', 'waterDensity', 'requiredUKC', 'motionClearance', 'safetyMarginWindForce'])
         }
       />
       <IonGrid className="no-padding">
-        <IonRow class="input-row">
+        <IonRow className="input-row">
           {!limitedView && (
             <IonCol size="6">
               <InputField

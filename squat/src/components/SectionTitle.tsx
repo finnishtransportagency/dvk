@@ -25,7 +25,12 @@ const SectionTitle: React.FC<SectionProps> = (props) => {
           <IonText color={props.disabled ? 'medium' : 'dark'} className="no-margin">
             <SquatHeader level={3} text={props.title} embedded={isEmbedded()}>
               {props.infoContent && props.infoContentTitle && (
-                <Modal title={props.infoContentTitle} content={props.infoContent} disabled={props.disabled} />
+                <Modal
+                  title={props.infoContentTitle}
+                  content={props.infoContent}
+                  disabled={props.disabled}
+                  triggerClassName="no-background-focused"
+                />
               )}
             </SquatHeader>
           </IonText>

@@ -20,6 +20,7 @@ interface InputRowProps {
   actionOuterTarget?: string | number;
   focused?: boolean;
   name?: string;
+  maxCharLength?: number;
 }
 
 const FormTextInputRow: React.FC<InputRowProps> = ({
@@ -36,6 +37,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   actionOuterTarget,
   focused,
   name,
+  maxCharLength,
 }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
@@ -60,6 +62,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
             focused={focused}
+            maxCharLength={maxCharLength}
           />
         )}
         {inputType === 'textarea' && (
@@ -92,6 +95,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
+            maxCharLength={maxCharLength}
           />
         )}
         {inputType === 'textarea' && (
@@ -124,6 +128,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
+            maxCharLength={maxCharLength}
           />
         )}
         {inputType === 'textarea' && (

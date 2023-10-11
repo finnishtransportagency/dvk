@@ -29,7 +29,7 @@ function goto(id: number) {
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
-    if (feature && geometry) {
+    if (geometry) {
       const extent = olExtent.createEmpty();
       olExtent.extend(extent, geometry.getExtent());
       dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });

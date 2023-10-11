@@ -13,6 +13,7 @@ import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
+import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -289,6 +290,19 @@ export function useArea12Layer(): DvkLayerState {
         source.clear();
         source.addFeatures(afs);
         layer.set('dataUpdatedAt', dataUpdatedAt);
+        if (window.Worker) {
+          const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
+          faWorker.onmessage = (e) => {
+            const borderlineFeatures = format.readFeatures(e.data as string);
+            borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
+            source.addFeatures(borderlineFeatures);
+          };
+          faWorker.postMessage({ faData: JSON.stringify(aData) });
+        } else {
+          const borderlineFeatures = getFairwayAreaBorderFeatures(afs);
+          borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
+          source.addFeatures(borderlineFeatures);
+        }
       }
       setReady(true);
     }
@@ -297,7 +311,43 @@ export function useArea12Layer(): DvkLayerState {
 }
 
 export function useArea3456Layer() {
-  return useDataLayer('area3456', 'area3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
+  const [ready, setReady] = useState(false);
+  const aQuery = useFeatureData('area3456', true, 1000 * 60 * 60 * 6);
+  const dataUpdatedAt = aQuery.dataUpdatedAt;
+  const errorUpdatedAt = aQuery.errorUpdatedAt;
+  const isPaused = aQuery.isPaused;
+  const isError = aQuery.isError;
+
+  useEffect(() => {
+    const aData = aQuery.data;
+    if (aData) {
+      const layer = dvkMap.getFeatureLayer('area3456');
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        afs.forEach((f) => f.set('dataSource', 'area3456', true));
+        const source = dvkMap.getVectorSource('area3456');
+        source.clear();
+        source.addFeatures(afs);
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+        if (window.Worker) {
+          const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
+          faWorker.onmessage = (e) => {
+            const borderlineFeatures = format.readFeatures(e.data as string);
+            borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
+            source.addFeatures(borderlineFeatures);
+          };
+          faWorker.postMessage({ faData: JSON.stringify(aData) });
+        } else {
+          const borderlineFeatures = getFairwayAreaBorderFeatures(afs);
+          borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
+          source.addFeatures(borderlineFeatures);
+        }
+      }
+      setReady(true);
+    }
+  }, [aQuery.data, dataUpdatedAt]);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useDepth12Layer() {

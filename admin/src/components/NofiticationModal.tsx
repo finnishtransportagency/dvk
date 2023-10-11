@@ -1,7 +1,7 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
+import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 
 interface ModalProps {
   isOpen: boolean;

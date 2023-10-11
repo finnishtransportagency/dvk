@@ -20,6 +20,8 @@ import specialarea from '../../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../../theme/img/erityisalue_tausta_active2.svg';
 import Polygon from 'ol/geom/Polygon';
+import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
+import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
@@ -29,6 +31,7 @@ import { GeoJSON } from 'ol/format';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { getCircleStyle } from './layerStyles/circleStyles';
+import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -220,8 +223,24 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   });
 }
 
+function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
+  const props = feature.getProperties();
+  const a1Props = props.area1Properties;
+  const a2Props = props.area2Properties;
+  if (resolution <= 100) {
+    if (!a1Props || !a2Props) {
+      return getLineStyle('#EC0E0E', 1);
+    } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+      return undefined;
+    } else {
+      return getLineStyle('#EC0E0E', 0.5);
+    }
+  }
+  return undefined;
+}
+
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
-  const ds = feature.getProperties().dataSource as FeatureDataLayerId;
+  const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
   if (ds === 'line12') {
     return getLineStyle('#0000FF', 2);
   } else if (ds === 'line3456') {
@@ -230,8 +249,14 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     if (feature.get('hoverStyle')) {
       return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
     } else {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.3)');
+      return new Style({
+        fill: new Fill({
+          color: 'rgba(236,14,14,0.3)',
+        }),
+      });
     }
+  } else if (ds === 'area12Borderline' && resolution <= 100) {
+    return getArea12BorderLineStyle(feature, resolution);
   } else if (ds === 'area3456' && resolution <= 100) {
     return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
   } else if (ds === 'specialarea2' || ds === 'specialarea15') {
@@ -319,31 +344,11 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
 
   // Kauppamerenkulku
-  addFeatureVectorImageLayer(
-    map,
-    'area12',
-    75,
-    1,
-    (feature, resolution) => getAreaStyle('#EC0E0E', 1, 'rgba(236, 14, 14, 0.1)', resolution),
-    undefined,
-    1,
-    false,
-    201
-  );
+  addFeatureVectorImageLayer(map, 'area12', 75, 1, getFairwayArea12Style, undefined, 1, false, 201);
   addFeatureVectorImageLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 0.5), undefined, 1, false, 202);
   addFeatureVectorImageLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 203);
   // Muu vesiliikenne
-  addFeatureVectorImageLayer(
-    map,
-    'area3456',
-    30,
-    1,
-    (feature, resolution) => getAreaStyle('#207A43', 1, 'rgba(32, 122, 67, 0.1)', resolution),
-    undefined,
-    1,
-    false,
-    204
-  );
+  addFeatureVectorImageLayer(map, 'area3456', 30, 1, getFairwayArea3456Style, undefined, 1, false, 204);
   addFeatureVectorImageLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
 
   // Nopeusrajoitus
@@ -619,6 +624,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
       addQuay(harbor, quaySource);
     }
+
+    const area12Features = fairwayFeatures.filter((f) => f.get('dataSource') === 'area12');
+    const borderLineFeatures = getFairwayAreaBorderFeatures(area12Features);
+    borderLineFeatures.forEach((f) => {
+      f.set('dataSource', 'area12Borderline', true);
+      fairwayFeatures.push(f);
+    });
+
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 

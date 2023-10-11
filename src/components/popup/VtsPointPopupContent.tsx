@@ -28,8 +28,8 @@ const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupPro
   };
 
   return (
-    <IonGrid id="vtsPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="vtsPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {vts.properties.name}

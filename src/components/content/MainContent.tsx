@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
-import { ReactComponent as ChevronIcon } from '../../theme/img/chevron.svg';
-import { ReactComponent as MenuIcon } from '../../theme/img/menu.svg';
+import ChevronIcon from '../../theme/img/chevron.svg?react';
+import MenuIcon from '../../theme/img/menu.svg?react';
 import { menuController } from '@ionic/core/components';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
