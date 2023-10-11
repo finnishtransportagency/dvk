@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonLabel, IonTextarea } from '@ionic/react';
-import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../utils/constants';
+import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../utils/common';
+import { getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
 
-interface InputProps {
+interface TextareaProps {
   label: string;
   val: string;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang) => void;
@@ -17,7 +17,7 @@ interface InputProps {
   name?: string;
 }
 
-const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText, name }) => {
+const Textarea: React.FC<TextareaProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText, name }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
@@ -101,4 +101,4 @@ const FormInput: React.FC<InputProps> = ({ label, val, setValue, actionType, act
   );
 };
 
-export default FormInput;
+export default Textarea;

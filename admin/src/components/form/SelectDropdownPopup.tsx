@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang, SelectOption } from '../utils/constants';
-import { constructSelectOptionLabel, sortTypeSafeSelectOptions } from '../utils/common';
+import { Lang, SelectOption } from '../../utils/constants';
+import { constructSelectOptionLabel, sortTypeSafeSelectOptions } from '../../utils/common';
 import type { CheckboxCustomEvent } from '@ionic/react';
-import SelectDropdownSearchInput from './SelectDropdownSearchInput';
+import SelectDropdownFilter from './SelectDropdownFilter';
 
 interface SelectDropdownPopupProps {
   trigger: string;
@@ -94,7 +94,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
     >
-      <SelectDropdownSearchInput
+      <SelectDropdownFilter
         ref={searchRef}
         options={options}
         setFilteredItems={setFilteredItems}

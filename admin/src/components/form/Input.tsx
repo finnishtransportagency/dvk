@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonInput, IonLabel } from '@ionic/react';
-import { ActionType, Lang, INPUT_MAXLENGTH } from '../utils/constants';
+import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../utils/common';
+import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
 
 interface InputProps {
   label: string;
@@ -28,7 +28,7 @@ interface InputProps {
   maxCharLength?: number;
 }
 
-const FormInput: React.FC<InputProps> = ({
+const Input: React.FC<InputProps> = ({
   label,
   val,
   setValue,
@@ -192,4 +192,4 @@ const FormInput: React.FC<InputProps> = ({
   );
 };
 
-export default FormInput;
+export default Input;

@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react';
 import { IonButton, IonIcon, IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang, SelectOption } from '../utils/constants';
-import { nameIncludesQuery, sortTypeSafeSelectOptions } from '../utils/common';
+import { Lang, SelectOption } from '../../utils/constants';
+import { nameIncludesQuery, sortTypeSafeSelectOptions } from '../../utils/common';
 import type { InputCustomEvent } from '@ionic/react';
 import { close, search } from 'ionicons/icons';
 
-interface SelectDropdownSearchInputProps {
+interface SelectDropdownFilterProps {
   options: SelectOption[] | null;
   setFilteredItems: (items: SelectOption[]) => void;
   searchQuery: string;
@@ -14,8 +14,8 @@ interface SelectDropdownSearchInputProps {
   blurSearchInput: () => void;
 }
 
-const SelectDropdownSearchInput = forwardRef(function SelectDropdownSearchInput(
-  props: SelectDropdownSearchInputProps,
+const SelectDropdownFilter = forwardRef(function SelectDropdownSearchInput(
+  props: SelectDropdownFilterProps,
   ref: React.ForwardedRef<HTMLIonInputElement>
 ) {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
@@ -75,4 +75,4 @@ const SelectDropdownSearchInput = forwardRef(function SelectDropdownSearchInput(
   );
 });
 
-export default SelectDropdownSearchInput;
+export default SelectDropdownFilter;

@@ -1,12 +1,12 @@
 import React from 'react';
 import { IonCol, IonRow } from '@ionic/react';
-import { ActionType } from '../utils/constants';
+import { ActionType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import FormTextarea from './FormTextarea';
-import { Text } from '../graphql/generated';
+import Input from './Input';
+import FormTextarea from './Textarea';
+import { Text } from '../../graphql/generated';
 
-interface InputRowProps {
+interface TextInputRowProps {
   labelKey: string;
   value?: Text | null;
   actionType: ActionType;
@@ -23,7 +23,7 @@ interface InputRowProps {
   maxCharLength?: number;
 }
 
-const FormTextInputRow: React.FC<InputRowProps> = ({
+const TextInputRow: React.FC<TextInputRowProps> = ({
   labelKey,
   value,
   updateState,
@@ -49,7 +49,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
     <IonRow className="bordered">
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <Input
             label={fi(labelKey) + ' (fi)'}
             name={name}
             val={value?.fi ?? ''}
@@ -83,7 +83,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <Input
             label={sv(labelKey) + ' (sv)'}
             name={name}
             val={value?.sv ?? ''}
@@ -116,7 +116,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <Input
             label={en(labelKey) + ' (en)'}
             name={name}
             val={value?.en ?? ''}
@@ -151,4 +151,4 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   );
 };
 
-export default FormTextInputRow;
+export default TextInputRow;

@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { QuayInput, SectionInput, TugInput, VhfInput, VtsInput } from '../graphql/generated';
-import FormVtsInputSection from './FormVtsInputSection';
-import FormVhfInputSection from './FormVhfInputSection';
-import FormTugInputSection from './FormTugInputSection';
-import FormQuayInputSection from './FormQuayInputSection';
-import FormSectionInputSection from './FormSectionInputSection';
-import FormSectionHeader from './FormSectionHeader';
+import { QuayInput, SectionInput, TugInput, VhfInput, VtsInput } from '../../graphql/generated';
+import VtsInputSection from './VtsInputSection';
+import VhfInputSection from './VhfInputSection';
+import TugInputSection from './TugInputSection';
+import QuayInputSection from './QuayInputSection';
+import SectionInputSection from './SectionInputSection';
+import SectionHeader from './SectionHeader';
 
-interface FormSectionProps {
+interface SectionProps {
   title: string;
   sections?: VtsInput[] | TugInput[] | VhfInput[] | QuayInput[] | SectionInput[] | null;
   updateState: (
@@ -26,15 +26,7 @@ interface FormSectionProps {
   disabled?: boolean;
 }
 
-const FormOptionalSection: React.FC<FormSectionProps> = ({
-  title,
-  sections,
-  updateState,
-  sectionType,
-  actionOuterTarget,
-  validationErrors,
-  disabled,
-}) => {
+const Section: React.FC<SectionProps> = ({ title, sections, updateState, sectionType, actionOuterTarget, validationErrors, disabled }) => {
   const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
@@ -79,7 +71,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
         return (
           <div className="formSection" key={title + idx}>
             {actionOuterTarget === undefined && (
-              <FormSectionHeader
+              <SectionHeader
                 title={title}
                 idx={idx}
                 deleteSection={deleteSection}
@@ -91,7 +83,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
             {actionOuterTarget !== undefined && <hr />}
 
             {sectionType === 'vts' && (
-              <FormVtsInputSection
+              <VtsInputSection
                 section={section as VtsInput}
                 idx={idx}
                 updateState={updateState}
@@ -103,7 +95,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
             )}
 
             {sectionType === 'vhf' && (
-              <FormVhfInputSection
+              <VhfInputSection
                 section={section as VhfInput}
                 idx={idx}
                 updateState={updateState}
@@ -117,7 +109,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
             )}
 
             {sectionType === 'tug' && (
-              <FormTugInputSection
+              <TugInputSection
                 section={section as TugInput}
                 idx={idx}
                 updateState={updateState}
@@ -129,7 +121,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
             )}
 
             {sectionType === 'quay' && (
-              <FormQuayInputSection
+              <QuayInputSection
                 section={section as QuayInput}
                 idx={idx}
                 updateState={updateState}
@@ -141,7 +133,7 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
             )}
 
             {sectionType === 'section' && (
-              <FormSectionInputSection
+              <SectionInputSection
                 section={section as SectionInput}
                 idx={idx}
                 updateState={updateState}
@@ -170,4 +162,4 @@ const FormOptionalSection: React.FC<FormSectionProps> = ({
   );
 };
 
-export default FormOptionalSection;
+export default Section;

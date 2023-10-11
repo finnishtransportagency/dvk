@@ -1,10 +1,10 @@
 import React from 'react';
 import { IonButton, IonItem, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import ChevronIcon from '../theme/img/chevron.svg?react';
-import BinIcon from '../theme/img/bin.svg?react';
+import ChevronIcon from '../../theme/img/chevron.svg?react';
+import BinIcon from '../../theme/img/bin.svg?react';
 
-interface FormSectionHeaderProps {
+interface SectionHeaderProps {
   title: string;
   idx: number;
   deleteSection: (idx: number) => void;
@@ -13,7 +13,7 @@ interface FormSectionHeaderProps {
   disabled?: boolean;
 }
 
-const FormSectionHeader: React.FC<FormSectionHeaderProps> = ({ title, idx, deleteSection, toggleSection, open, disabled }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection, toggleSection, open, disabled }) => {
   const { t } = useTranslation();
 
   return (
@@ -48,4 +48,4 @@ const FormSectionHeader: React.FC<FormSectionHeaderProps> = ({ title, idx, delet
   );
 };
 
-export default FormSectionHeader;
+export default SectionHeader;

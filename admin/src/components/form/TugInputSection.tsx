@@ -1,12 +1,12 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import { TugInput } from '../graphql/generated';
-import FormTextInputRow from './FormTextInputRow';
+import Input from './Input';
+import { TugInput } from '../../graphql/generated';
+import TextInputRow from './TextInputRow';
 
-interface FormTugInputSectionProps {
+interface TugInputSectionProps {
   section: TugInput;
   idx: number;
   updateState: (
@@ -22,12 +22,12 @@ interface FormTugInputSectionProps {
   disabled?: boolean;
 }
 
-const FormTugInputSection: React.FC<FormTugInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
+const TugInputSection: React.FC<TugInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
   const { t } = useTranslation();
 
   return (
     <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
-      <FormTextInputRow
+      <TextInputRow
         labelKey="fairwaycard.tug-name"
         value={section.name}
         actionType="tugName"
@@ -44,7 +44,7 @@ const FormTugInputSection: React.FC<FormTugInputSectionProps> = ({ section, idx,
       />
       <IonRow>
         <IonCol sizeMd="4">
-          <FormInput
+          <Input
             label={t('general.email')}
             val={section.email}
             setValue={updateState}
@@ -55,7 +55,7 @@ const FormTugInputSection: React.FC<FormTugInputSectionProps> = ({ section, idx,
           />
         </IonCol>
         <IonCol sizeMd="4">
-          <FormInput
+          <Input
             label={t('general.phone-number')}
             val={section.phoneNumber?.join(',')}
             setValue={updateState}
@@ -68,7 +68,7 @@ const FormTugInputSection: React.FC<FormTugInputSectionProps> = ({ section, idx,
           />
         </IonCol>
         <IonCol sizeMd="4">
-          <FormInput
+          <Input
             label={t('general.fax')}
             val={section.fax}
             setValue={updateState}
@@ -83,4 +83,4 @@ const FormTugInputSection: React.FC<FormTugInputSectionProps> = ({ section, idx,
   );
 };
 
-export default FormTugInputSection;
+export default TugInputSection;

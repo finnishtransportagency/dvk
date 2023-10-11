@@ -1,13 +1,13 @@
 import React from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import { VhfInput } from '../graphql/generated';
-import FormTextInputRow from './FormTextInputRow';
-import BinIcon from '../theme/img/bin.svg?react';
+import Input from './Input';
+import { VhfInput } from '../../graphql/generated';
+import TextInputRow from './TextInputRow';
+import BinIcon from '../../theme/img/bin.svg?react';
 
-interface FormVhfInputSectionProps {
+interface VhfInputSectionProps {
   section: VhfInput;
   idx: number;
   updateState: (
@@ -25,7 +25,7 @@ interface FormVhfInputSectionProps {
   actionOuterTarget?: string | number;
 }
 
-const FormVhfInputSection: React.FC<FormVhfInputSectionProps> = ({
+const VhfInputSection: React.FC<VhfInputSectionProps> = ({
   section,
   idx,
   updateState,
@@ -40,7 +40,7 @@ const FormVhfInputSection: React.FC<FormVhfInputSectionProps> = ({
 
   return (
     <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
-      <FormTextInputRow
+      <TextInputRow
         labelKey="fairwaycard.vhf-name"
         value={section.name}
         actionType="vhfName"
@@ -58,7 +58,7 @@ const FormVhfInputSection: React.FC<FormVhfInputSectionProps> = ({
       />
       <IonRow className="ion-justify-content-between">
         <IonCol sizeMd="4">
-          <FormInput
+          <Input
             label={t('fairwaycard.vhf-channel')}
             val={section.channel}
             setValue={updateState}
@@ -90,4 +90,4 @@ const FormVhfInputSection: React.FC<FormVhfInputSectionProps> = ({
   );
 };
 
-export default FormVhfInputSection;
+export default VhfInputSection;

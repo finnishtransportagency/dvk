@@ -1,12 +1,12 @@
 import React from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import { SectionInput } from '../graphql/generated';
-import BinIcon from '../theme/img/bin.svg?react';
+import Input from './Input';
+import { SectionInput } from '../../graphql/generated';
+import BinIcon from '../../theme/img/bin.svg?react';
 
-interface FormSectionInputSectionProps {
+interface SectionInputSectionProps {
   section: SectionInput;
   idx: number;
   updateState: (
@@ -24,7 +24,7 @@ interface FormSectionInputSectionProps {
   actionOuterTarget?: string | number;
 }
 
-const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
+const SectionInputSection: React.FC<SectionInputSectionProps> = ({
   section,
   idx,
   updateState,
@@ -41,7 +41,7 @@ const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
     <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
       <IonRow>
         <IonCol>
-          <FormInput
+          <Input
             label={t('harbour.section-name')}
             val={section.name}
             setValue={updateState}
@@ -53,7 +53,7 @@ const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <FormInput
+          <Input
             label={t('harbour.depth')}
             val={section.depth}
             setValue={updateState}
@@ -68,7 +68,7 @@ const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <FormInput
+          <Input
             label={t('harbour.lat')}
             val={section.geometry?.lat}
             setValue={updateState}
@@ -86,7 +86,7 @@ const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <FormInput
+          <Input
             label={t('harbour.lon')}
             val={section.geometry?.lon}
             setValue={updateState}
@@ -120,4 +120,4 @@ const FormSectionInputSection: React.FC<FormSectionInputSectionProps> = ({
   );
 };
 
-export default FormSectionInputSection;
+export default SectionInputSection;

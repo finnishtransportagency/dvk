@@ -1,13 +1,13 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import { QuayInput, SectionInput } from '../graphql/generated';
-import FormTextInputRow from './FormTextInputRow';
-import FormOptionalSection from './FormOptionalSection';
+import Input from './Input';
+import { QuayInput, SectionInput } from '../../graphql/generated';
+import TextInputRow from './TextInputRow';
+import Section from './Section';
 
-interface FormQuayInputSectionProps {
+interface QuayInputSectionProps {
   section: QuayInput;
   idx: number;
   updateState: (
@@ -23,13 +23,13 @@ interface FormQuayInputSectionProps {
   disabled?: boolean;
 }
 
-const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
+const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
   const { t } = useTranslation();
 
   return (
     <div className={'sectionContent' + (open ? ' open' : ' closed')}>
       <IonGrid className="formGrid">
-        <FormTextInputRow
+        <TextInputRow
           labelKey="harbour.quay-name"
           value={section.name}
           actionType="quayName"
@@ -44,7 +44,7 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
           disabled={disabled}
           focused={focused}
         />
-        <FormTextInputRow
+        <TextInputRow
           labelKey="harbour.quay-extra-info"
           value={section.extraInfo}
           actionType="quayExtraInfo"
@@ -60,7 +60,7 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
         />
         <IonRow>
           <IonCol sizeMd="4">
-            <FormInput
+            <Input
               label={t('harbour.length')}
               val={section.length}
               setValue={updateState}
@@ -74,7 +74,7 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
             />
           </IonCol>
           <IonCol sizeMd="4">
-            <FormInput
+            <Input
               label={t('harbour.lat')}
               val={section.geometry?.lat}
               setValue={updateState}
@@ -91,7 +91,7 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
             />
           </IonCol>
           <IonCol sizeMd="4">
-            <FormInput
+            <Input
               label={t('harbour.lon')}
               val={section.geometry?.lon}
               setValue={updateState}
@@ -109,7 +109,7 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
           </IonCol>
         </IonRow>
       </IonGrid>
-      <FormOptionalSection
+      <Section
         title={''}
         sections={section.sections as SectionInput[]}
         updateState={updateState}
@@ -122,4 +122,4 @@ const FormQuayInputSection: React.FC<FormQuayInputSectionProps> = ({ section, id
   );
 };
 
-export default FormQuayInputSection;
+export default QuayInputSection;

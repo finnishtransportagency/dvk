@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { PilotPlace } from '../graphql/generated';
+import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
+import { PilotPlace } from '../../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import { getCombinedErrorAndHelperText, isInputOk, sortSelectOptions } from '../utils/common';
+import { getCombinedErrorAndHelperText, isInputOk, sortSelectOptions } from '../../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
 }
 
-interface SelectProps {
+interface SelectInputProps {
   label: string;
   selected?: ValueType;
   options: SelectOption[] | PilotPlace[] | null;
@@ -28,7 +28,7 @@ interface SelectProps {
   showCoords?: boolean;
 }
 
-const FormSelect: React.FC<SelectProps> = ({
+const SelectInput: React.FC<SelectInputProps> = ({
   label,
   selected,
   options,
@@ -150,4 +150,4 @@ const FormSelect: React.FC<SelectProps> = ({
   );
 };
 
-export default FormSelect;
+export default SelectInput;

@@ -1,8 +1,8 @@
 import React, { forwardRef, useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../utils/common';
+import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
+import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import SelectDropdownPopup from './SelectDropdownPopup';
 
@@ -13,7 +13,7 @@ interface SelectItemProps {
   disabled?: boolean;
 }
 
-interface SelectWithSearchProps {
+interface SelectWithFilterProps {
   label: string;
   options: SelectOption[] | null;
   selected: number[];
@@ -55,7 +55,7 @@ const SelectItem = forwardRef(function SelectItem(props: SelectItemProps, ref: R
   );
 });
 
-const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
+const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   label,
   options,
   selected,
@@ -148,4 +148,4 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   );
 };
 
-export default FormSelectWithSearch;
+export default SelectWithFilter;

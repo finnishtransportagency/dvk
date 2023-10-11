@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
-import FormInput from './FormInput';
-import FormSelect from './FormSelect';
-import FormTextInputRow from './FormTextInputRow';
+import Input from './form/Input';
+import SelectInput from './form/SelectInput';
+import TextInputRow from './form/TextInputRow';
 import { harbourReducer } from '../utils/harbourReducer';
-import FormOptionalSection from './FormOptionalSection';
+import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
@@ -349,7 +349,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               </IonGrid>
             </IonCol>
             <IonCol size="auto">
-              <FormSelect
+              <SelectInput
                 label={t('general.item-status')}
                 selected={state.status}
                 options={statusOptions}
@@ -390,7 +390,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
             <IonGrid className="formGrid">
               <IonRow>
                 <IonCol sizeMd="3">
-                  <FormInput
+                  <Input
                     label={t('harbour.primary-id')}
                     val={state.id}
                     setValue={updateState}
@@ -403,7 +403,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('general.item-referencelevel')}
                     selected={state.n2000HeightSystem}
                     options={[
@@ -422,7 +422,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <h2>{t('harbour.harbour-info')}</h2>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="harbour.name"
                 value={state.name}
                 name="harbourName"
@@ -432,7 +432,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'name')?.msg}
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="harbour.extra-info"
                 value={state.extraInfo}
                 updateState={updateState}
@@ -442,7 +442,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="harbour.cargo"
                 value={state.cargo}
                 updateState={updateState}
@@ -452,7 +452,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 error={validationErrors.find((error) => error.id === 'cargo')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="harbour.harbour-basin"
                 value={state.harborBasin}
                 updateState={updateState}
@@ -467,7 +467,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               <h3>{t('harbour.contact-info')}</h3>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="harbour.company-name"
                 value={state.company}
                 updateState={updateState}
@@ -478,7 +478,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               />
               <IonRow>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('general.email')}
                     val={state.email ?? ''}
                     setValue={updateState}
@@ -488,7 +488,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('general.phone-number')}
                     val={state.phoneNumber?.join(',')}
                     setValue={updateState}
@@ -500,7 +500,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('general.fax')}
                     val={state.fax ?? ''}
                     setValue={updateState}
@@ -512,7 +512,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               </IonRow>
               <IonRow>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('harbour.internet')}
                     val={state.internet ?? ''}
                     setValue={updateState}
@@ -521,7 +521,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('harbour.lat')}
                     name="lat"
                     val={state.geometry.lat ?? ''}
@@ -534,7 +534,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <Input
                     label={t('harbour.lon')}
                     name="lon"
                     val={state.geometry.lon ?? ''}
@@ -549,7 +549,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               </IonRow>
             </IonGrid>
 
-            <FormOptionalSection
+            <Section
               title={t('harbour.quay-heading')}
               sections={state.quays as QuayInput[]}
               updateState={updateState}

@@ -1,13 +1,13 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../utils/constants';
+import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import { VhfInput, VtsInput } from '../graphql/generated';
-import FormTextInputRow from './FormTextInputRow';
-import FormOptionalSection from './FormOptionalSection';
+import Input from './Input';
+import { VhfInput, VtsInput } from '../../graphql/generated';
+import TextInputRow from './TextInputRow';
+import Section from './Section';
 
-interface FormVtsInputSectionProps {
+interface VtsInputSectionProps {
   section: VtsInput;
   idx: number;
   updateState: (
@@ -23,13 +23,13 @@ interface FormVtsInputSectionProps {
   disabled?: boolean;
 }
 
-const FormVtsInputSection: React.FC<FormVtsInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
+const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
   const { t } = useTranslation();
 
   return (
     <div className={'sectionContent' + (open ? ' open' : ' closed')}>
       <IonGrid className="formGrid">
-        <FormTextInputRow
+        <TextInputRow
           labelKey="fairwaycard.vts-name"
           value={section.name}
           actionType="vtsName"
@@ -46,7 +46,7 @@ const FormVtsInputSection: React.FC<FormVtsInputSectionProps> = ({ section, idx,
         />
         <IonRow>
           <IonCol sizeMd="6">
-            <FormInput
+            <Input
               label={t('general.email')}
               val={section.email?.join(',')}
               setValue={updateState}
@@ -59,7 +59,7 @@ const FormVtsInputSection: React.FC<FormVtsInputSectionProps> = ({ section, idx,
             />
           </IonCol>
           <IonCol sizeMd="6">
-            <FormInput
+            <Input
               label={t('general.phone-number')}
               val={section.phoneNumber}
               setValue={updateState}
@@ -71,7 +71,7 @@ const FormVtsInputSection: React.FC<FormVtsInputSectionProps> = ({ section, idx,
           </IonCol>
         </IonRow>
       </IonGrid>
-      <FormOptionalSection
+      <Section
         title={''}
         sections={section.vhf as VhfInput[]}
         updateState={updateState}
@@ -84,4 +84,4 @@ const FormVtsInputSection: React.FC<FormVtsInputSectionProps> = ({ section, idx,
   );
 };
 
-export default FormVtsInputSection;
+export default VtsInputSection;
