@@ -7,6 +7,7 @@ import { SectionInput } from '../../graphql/generated';
 import BinIcon from '../../theme/img/bin.svg?react';
 
 interface SectionInputSectionProps {
+  className: string;
   section: SectionInput;
   idx: number;
   updateState: (
@@ -17,7 +18,6 @@ interface SectionInputSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   deleteSection: (idx: number) => void;
-  open: boolean;
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
@@ -25,11 +25,11 @@ interface SectionInputSectionProps {
 }
 
 const SectionInputSection: React.FC<SectionInputSectionProps> = ({
+  className,
   section,
   idx,
   updateState,
   deleteSection,
-  open,
   focused,
   validationErrors,
   disabled,
@@ -38,7 +38,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
   const { t } = useTranslation();
 
   return (
-    <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
+    <IonGrid className={'formGrid ' + className}>
       <IonRow>
         <IonCol>
           <TextInput

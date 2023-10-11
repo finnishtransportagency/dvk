@@ -8,6 +8,7 @@ import TextInputRow from './TextInputRow';
 import BinIcon from '../../theme/img/bin.svg?react';
 
 interface VhfInputSectionProps {
+  className: string;
   section: VhfInput;
   idx: number;
   updateState: (
@@ -18,7 +19,6 @@ interface VhfInputSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   deleteSection: (idx: number) => void;
-  open: boolean;
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
@@ -26,11 +26,11 @@ interface VhfInputSectionProps {
 }
 
 const VhfInputSection: React.FC<VhfInputSectionProps> = ({
+  className,
   section,
   idx,
   updateState,
   deleteSection,
-  open,
   focused,
   validationErrors,
   disabled,
@@ -39,7 +39,7 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
   const { t } = useTranslation();
 
   return (
-    <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
+    <IonGrid className={'formGrid ' + className}>
       <TextInputRow
         labelKey="fairwaycard.vhf-name"
         value={section.name}

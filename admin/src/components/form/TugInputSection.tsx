@@ -7,6 +7,7 @@ import { TugInput } from '../../graphql/generated';
 import TextInputRow from './TextInputRow';
 
 interface TugInputSectionProps {
+  className: string;
   section: TugInput;
   idx: number;
   updateState: (
@@ -16,17 +17,16 @@ interface TugInputSectionProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  open: boolean;
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
 }
 
-const TugInputSection: React.FC<TugInputSectionProps> = ({ section, idx, updateState, open, focused, validationErrors, disabled }) => {
+const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, idx, updateState, focused, validationErrors, disabled }) => {
   const { t } = useTranslation();
 
   return (
-    <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
+    <IonGrid className={'formGrid ' + className}>
       <TextInputRow
         labelKey="fairwaycard.tug-name"
         value={section.name}

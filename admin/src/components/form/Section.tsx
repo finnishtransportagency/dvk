@@ -67,6 +67,7 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
       {sections?.map((section, idx) => {
         const sectionOpen = !!openSections[idx];
         const isFocused = idx === sections.length - 1 ? focused : undefined;
+        const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
 
         return (
           <div className="formSection" key={title + idx}>
@@ -83,24 +84,34 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
             {actionOuterTarget !== undefined && <hr />}
 
             {sectionType === 'vts' && (
-              <VtsInputSection
-                section={section as VtsInput}
-                idx={idx}
-                updateState={updateState}
-                open={sectionOpen}
-                focused={isFocused}
-                validationErrors={validationErrors}
-                disabled={disabled}
-              />
+              <div className={sectionClassName}>
+                <VtsInputSection
+                  section={section as VtsInput}
+                  idx={idx}
+                  updateState={updateState}
+                  focused={isFocused}
+                  validationErrors={validationErrors}
+                  disabled={disabled}
+                />
+                <Section
+                  title={''}
+                  sections={(section as VtsInput).vhf as VhfInput[]}
+                  updateState={updateState}
+                  sectionType="vhf"
+                  actionOuterTarget={idx}
+                  validationErrors={validationErrors}
+                  disabled={disabled}
+                />
+              </div>
             )}
 
             {sectionType === 'vhf' && (
               <VhfInputSection
+                className={sectionClassName}
                 section={section as VhfInput}
                 idx={idx}
                 updateState={updateState}
                 deleteSection={deleteSection}
-                open={sectionOpen}
                 focused={isFocused}
                 validationErrors={validationErrors}
                 disabled={disabled}
@@ -110,10 +121,10 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
 
             {sectionType === 'tug' && (
               <TugInputSection
+                className={sectionClassName}
                 section={section as TugInput}
                 idx={idx}
                 updateState={updateState}
-                open={sectionOpen}
                 focused={isFocused}
                 validationErrors={validationErrors}
                 disabled={disabled}
@@ -121,24 +132,34 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
             )}
 
             {sectionType === 'quay' && (
-              <QuayInputSection
-                section={section as QuayInput}
-                idx={idx}
-                updateState={updateState}
-                open={sectionOpen}
-                focused={isFocused}
-                validationErrors={validationErrors}
-                disabled={disabled}
-              />
+              <div className={sectionClassName}>
+                <QuayInputSection
+                  section={section as QuayInput}
+                  idx={idx}
+                  updateState={updateState}
+                  focused={isFocused}
+                  validationErrors={validationErrors}
+                  disabled={disabled}
+                />
+                <Section
+                  title={''}
+                  sections={(section as QuayInput).sections as SectionInput[]}
+                  updateState={updateState}
+                  sectionType="section"
+                  actionOuterTarget={idx}
+                  validationErrors={validationErrors}
+                  disabled={disabled}
+                />
+              </div>
             )}
 
             {sectionType === 'section' && (
               <SectionInputSection
+                className={sectionClassName}
                 section={section as SectionInput}
                 idx={idx}
                 updateState={updateState}
                 deleteSection={deleteSection}
-                open={sectionOpen}
                 focused={isFocused}
                 validationErrors={validationErrors}
                 disabled={disabled}
