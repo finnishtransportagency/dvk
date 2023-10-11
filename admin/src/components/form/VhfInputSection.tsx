@@ -2,7 +2,7 @@ import React from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
+import TextInput from './TextInput';
 import { VhfInput } from '../../graphql/generated';
 import TextInputRow from './TextInputRow';
 import BinIcon from '../../theme/img/bin.svg?react';
@@ -58,7 +58,7 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
       />
       <IonRow className="ion-justify-content-between">
         <IonCol sizeMd="4">
-          <Input
+          <TextInput
             label={t('fairwaycard.vhf-channel')}
             val={section.channel}
             setValue={updateState}

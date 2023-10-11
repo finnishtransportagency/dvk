@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
+import TextInput from './TextInput';
 import { VhfInput, VtsInput } from '../../graphql/generated';
 import TextInputRow from './TextInputRow';
 import Section from './Section';
@@ -46,7 +46,7 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
         />
         <IonRow>
           <IonCol sizeMd="6">
-            <Input
+            <TextInput
               label={t('general.email')}
               val={section.email?.join(',')}
               setValue={updateState}
@@ -59,7 +59,7 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
             />
           </IonCol>
           <IonCol sizeMd="6">
-            <Input
+            <TextInput
               label={t('general.phone-number')}
               val={section.phoneNumber}
               setValue={updateState}

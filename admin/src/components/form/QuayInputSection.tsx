@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
+import TextInput from './TextInput';
 import { QuayInput, SectionInput } from '../../graphql/generated';
 import TextInputRow from './TextInputRow';
 import Section from './Section';
@@ -60,7 +60,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
         />
         <IonRow>
           <IonCol sizeMd="4">
-            <Input
+            <TextInput
               label={t('harbour.length')}
               val={section.length}
               setValue={updateState}
@@ -74,7 +74,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             />
           </IonCol>
           <IonCol sizeMd="4">
-            <Input
+            <TextInput
               label={t('harbour.lat')}
               val={section.geometry?.lat}
               setValue={updateState}
@@ -91,7 +91,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             />
           </IonCol>
           <IonCol sizeMd="4">
-            <Input
+            <TextInput
               label={t('harbour.lon')}
               val={section.geometry?.lon}
               setValue={updateState}

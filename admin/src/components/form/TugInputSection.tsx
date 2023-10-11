@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
+import TextInput from './TextInput';
 import { TugInput } from '../../graphql/generated';
 import TextInputRow from './TextInputRow';
 
@@ -44,7 +44,7 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ section, idx, updateS
       />
       <IonRow>
         <IonCol sizeMd="4">
-          <Input
+          <TextInput
             label={t('general.email')}
             val={section.email}
             setValue={updateState}
@@ -55,7 +55,7 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ section, idx, updateS
           />
         </IonCol>
         <IonCol sizeMd="4">
-          <Input
+          <TextInput
             label={t('general.phone-number')}
             val={section.phoneNumber?.join(',')}
             setValue={updateState}
@@ -68,7 +68,7 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ section, idx, updateS
           />
         </IonCol>
         <IonCol sizeMd="4">
-          <Input
+          <TextInput
             label={t('general.fax')}
             val={section.fax}
             setValue={updateState}

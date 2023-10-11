@@ -20,7 +20,7 @@ import {
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
 } from '../graphql/api';
-import Input from './form/Input';
+import TextInput from './form/TextInput';
 import SelectInput from './form/SelectInput';
 import SelectWithFilter from './form/SelectWithFilter';
 import TextInputRow from './form/TextInputRow';
@@ -502,7 +502,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
               <IonRow>
                 <IonCol sizeMd="3">
-                  <Input
+                  <TextInput
                     label={t('fairwaycard.primary-id')}
                     val={state.id}
                     setValue={updateState}
@@ -739,7 +739,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <IonGrid className="formGrid">
               <IonRow>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.email')}
                     val={state.trafficService?.pilot?.email ?? ''}
                     setValue={updateState}
@@ -749,7 +749,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.phone-number')}
                     val={state.trafficService?.pilot?.phoneNumber ?? ''}
                     setValue={updateState}
@@ -759,7 +759,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.fax')}
                     val={state.trafficService?.pilot?.fax ?? ''}
                     setValue={updateState}
@@ -805,7 +805,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   const pilotName = (pilotPlace.name && (pilotPlace.name[lang] || pilotPlace.name.fi)) || pilotPlace.id.toString();
                   return (
                     <IonCol key={place.id}>
-                      <Input
+                      <TextInput
                         label={t('fairwaycard.pilotage-distance-from') + ' ' + pilotName}
                         val={place.pilotJourney}
                         setValue={updateState}

@@ -2,8 +2,8 @@ import React from 'react';
 import { IonCol, IonRow } from '@ionic/react';
 import { ActionType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
-import FormTextarea from './Textarea';
+import TextInput from './TextInput';
+import Textarea from './Textarea';
 import { Text } from '../../graphql/generated';
 
 interface TextInputRowProps {
@@ -49,7 +49,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
     <IonRow className="bordered">
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <Input
+          <TextInput
             label={fi(labelKey) + ' (fi)'}
             name={name}
             val={value?.fi ?? ''}
@@ -67,7 +67,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={fi(labelKey) + ' (fi)'}
             name={name}
             val={value?.fi ?? ''}
@@ -83,7 +83,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <Input
+          <TextInput
             label={sv(labelKey) + ' (sv)'}
             name={name}
             val={value?.sv ?? ''}
@@ -100,7 +100,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={sv(labelKey) + ' (sv)'}
             name={name}
             val={value?.sv ?? ''}
@@ -116,7 +116,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <Input
+          <TextInput
             label={en(labelKey) + ' (en)'}
             name={name}
             val={value?.en ?? ''}
@@ -133,7 +133,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={en(labelKey) + ' (en)'}
             name={name}
             val={value?.en ?? ''}

@@ -4,7 +4,7 @@ import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
 
-interface InputProps {
+interface TextInputProps {
   label: string;
   val: string | number | null | undefined;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
@@ -28,7 +28,7 @@ interface InputProps {
   maxCharLength?: number;
 }
 
-const Input: React.FC<InputProps> = ({
+const TextInput: React.FC<TextInputProps> = ({
   label,
   val,
   setValue,
@@ -192,4 +192,4 @@ const Input: React.FC<InputProps> = ({
   );
 };
 
-export default Input;
+export default TextInput;

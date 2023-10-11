@@ -2,7 +2,7 @@ import React from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import Input from './Input';
+import TextInput from './TextInput';
 import { SectionInput } from '../../graphql/generated';
 import BinIcon from '../../theme/img/bin.svg?react';
 
@@ -41,7 +41,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
     <IonGrid className={'formGrid sectionContent' + (open ? ' open' : ' closed')}>
       <IonRow>
         <IonCol>
-          <Input
+          <TextInput
             label={t('harbour.section-name')}
             val={section.name}
             setValue={updateState}
@@ -53,7 +53,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <Input
+          <TextInput
             label={t('harbour.depth')}
             val={section.depth}
             setValue={updateState}
@@ -68,7 +68,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <Input
+          <TextInput
             label={t('harbour.lat')}
             val={section.geometry?.lat}
             setValue={updateState}
@@ -86,7 +86,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol>
-          <Input
+          <TextInput
             label={t('harbour.lon')}
             val={section.geometry?.lon}
             setValue={updateState}

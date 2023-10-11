@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
-import Input from './form/Input';
+import TextInput from './form/TextInput';
 import SelectInput from './form/SelectInput';
 import TextInputRow from './form/TextInputRow';
 import { harbourReducer } from '../utils/harbourReducer';
@@ -390,7 +390,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
             <IonGrid className="formGrid">
               <IonRow>
                 <IonCol sizeMd="3">
-                  <Input
+                  <TextInput
                     label={t('harbour.primary-id')}
                     val={state.id}
                     setValue={updateState}
@@ -478,7 +478,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               />
               <IonRow>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.email')}
                     val={state.email ?? ''}
                     setValue={updateState}
@@ -488,7 +488,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.phone-number')}
                     val={state.phoneNumber?.join(',')}
                     setValue={updateState}
@@ -500,7 +500,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('general.fax')}
                     val={state.fax ?? ''}
                     setValue={updateState}
@@ -512,7 +512,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               </IonRow>
               <IonRow>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('harbour.internet')}
                     val={state.internet ?? ''}
                     setValue={updateState}
@@ -521,7 +521,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('harbour.lat')}
                     name="lat"
                     val={state.geometry.lat ?? ''}
@@ -534,7 +534,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <Input
+                  <TextInput
                     label={t('harbour.lon')}
                     name="lon"
                     val={state.geometry.lon ?? ''}
