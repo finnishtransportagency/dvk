@@ -43,6 +43,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
+  const errorText = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
 
   return (
     <IonRow className="bordered">
@@ -57,7 +58,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -75,7 +76,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
@@ -91,7 +92,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -108,7 +109,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
@@ -124,7 +125,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -141,7 +142,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
