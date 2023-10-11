@@ -3,20 +3,8 @@ import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal,
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
-import { imageUrl, Lang } from '../utils/constants';
+import { imageUrl, Lang, BUTTONCOLORS, POSITION } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
-
-enum POSITION {
-  BOTTOMLEFT = 'bottomLeft',
-  TOPLEFT = 'topLeft',
-  TOPRIGHT = 'topRight',
-  BOTTOMRIGHT = 'bottomRight',
-}
-
-enum BUTTONCOLORS {
-  GREEN = 'colorGreen',
-  RED = 'colorRed',
-}
 
 interface ModalProps {
   picture: PictureInput | '';
