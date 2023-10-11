@@ -515,7 +515,6 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
-
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />

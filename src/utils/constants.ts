@@ -286,15 +286,3 @@ export const OFFLINE_STORAGE = {
 };
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
-
-export enum POSITION {
-  BOTTOMLEFT = 'bottomLeft',
-  TOPLEFT = 'topLeft',
-  TOPRIGHT = 'topRight',
-  BOTTOMRIGHT = 'bottomRight',
-}
-
-export enum BUTTONCOLORS {
-  GREEN = 'colorGreen',
-  RED = 'colorRed',
-}

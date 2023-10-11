@@ -268,14 +268,14 @@ export const OFFLINE_STORAGE = {
   cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
 
-export enum POSITION {
-  BOTTOMLEFT = 'bottomLeft',
-  TOPLEFT = 'topLeft',
-  TOPRIGHT = 'topRight',
-  BOTTOMRIGHT = 'bottomRight',
-}
+export const POSITION = {
+  bottomLeft: { position: 'bottomLeft', index: 0 },
+  topLeft: { position: 'topLeft', index: 1 },
+  topRight: { position: 'topRight', index: 2 },
+  bottomRight: { position: 'bottomRight', index: 3 },
+};
 
-export enum BUTTONCOLORS {
-  GREEN = 'colorGreen',
-  RED = 'colorRed',
-}
+export const BUTTON_COLORS = {
+  green: 'colorGreen',
+  red: 'colorRed',
+};
