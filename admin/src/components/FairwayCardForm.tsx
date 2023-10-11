@@ -41,6 +41,7 @@ interface FormProps {
 }
 
 const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, isError }) => {
+  console.log(isError);
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 

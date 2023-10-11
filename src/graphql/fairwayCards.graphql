@@ -71,6 +71,7 @@ fragment PictureParts on Picture {
   text
   groupId
   modificationTimestamp
+  legendPosition
 }
 
 fragment FairwayCardParts on FairwayCard {

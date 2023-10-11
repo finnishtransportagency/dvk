@@ -717,6 +717,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           text: null,
           lang: toBeSavedPicture.lang,
           groupId: toBeSavedPicture.groupId,
+          legendPosition: toBeSavedPicture.legendPosition,
         };
         // Update fairwayCard state
         setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
