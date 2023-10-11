@@ -437,7 +437,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.extraInfo}
                 updateState={updateState}
                 actionType="extraInfo"
-                required={!!(state.extraInfo?.fi || state.extraInfo?.sv || state.extraInfo?.en)}
+                required={!!(state.extraInfo?.fi ?? state.extraInfo?.sv ?? state.extraInfo?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
                 inputType="textarea"
@@ -447,7 +447,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.cargo}
                 updateState={updateState}
                 actionType="cargo"
-                required={!!(state.cargo?.fi || state.cargo?.sv || state.cargo?.en)}
+                required={!!(state.cargo?.fi ?? state.cargo?.sv ?? state.cargo?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'cargo')?.msg}
                 inputType="textarea"
@@ -457,7 +457,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.harborBasin}
                 updateState={updateState}
                 actionType="harbourBasin"
-                required={!!(state.harborBasin?.fi || state.harborBasin?.sv || state.harborBasin?.en)}
+                required={!!(state.harborBasin?.fi ?? state.harborBasin?.sv ?? state.harborBasin?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
                 inputType="textarea"
@@ -472,7 +472,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
                 value={state.company}
                 updateState={updateState}
                 actionType="companyName"
-                required={!!(state.company?.fi || state.company?.sv || state.company?.en)}
+                required={!!(state.company?.fi ?? state.company?.sv ?? state.company?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'companyName')?.msg}
               />
