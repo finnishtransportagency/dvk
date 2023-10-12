@@ -20,6 +20,7 @@ type Mutation {
   saveFairwayCard(card: FairwayCardInput!): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
+  updateLegendPositionByGroup(groupId: Float!, newLegendPosition: String!): Picture
 }
 
 input PictureUploadInput {

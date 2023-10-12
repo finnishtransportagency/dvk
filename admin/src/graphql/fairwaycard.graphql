@@ -176,3 +176,10 @@ mutation saveFairwayCard($card: FairwayCardInput!) {
 mutation uploadMapPicture($picture: PictureUploadInput!) {
   uploadPicture(picture: $picture)
 }
+
+mutation updateLegendPosition($groupId: Float!, $newLegendPosition: String!) {
+  updateLegendPositionByGroup(groupId: $groupId, newLegendPosition: $newLegendPosition) {
+    groupId
+    legendPosition
+  }
+}
