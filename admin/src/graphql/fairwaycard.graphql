@@ -177,8 +177,8 @@ mutation uploadMapPicture($picture: PictureUploadInput!) {
   uploadPicture(picture: $picture)
 }
 
-mutation updateLegendPosition($groupId: Float!, $newLegendPosition: String!) {
-  updateLegendPositionByGroup(groupId: $groupId, newLegendPosition: $newLegendPosition) {
+mutation updateLegendPositionByGroup($legendPosition: LegendPositionUpdateInput!) {
+  updateLegendPositionByGroup(legendPosition: $legendPosition) {
     groupId
     legendPosition
   }

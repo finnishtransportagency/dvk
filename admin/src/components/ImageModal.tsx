@@ -6,12 +6,6 @@ import { FairwayCardInput, PictureInput } from '../graphql/generated';
 import { imageUrl, Lang, POSITION, BUTTON_COLORS } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 
-interface ModalProps {
-  picture: PictureInput | '';
-  fairwayCardInput: FairwayCardInput;
-  setIsOpen: (picture: PictureInput | '') => void;
-}
-
 const getColorArray = (positionString: string) => {
   const colorArray = new Array(4).fill(BUTTON_COLORS.red);
   let greenIndex = 0;
@@ -31,6 +25,11 @@ const getColorArray = (positionString: string) => {
 
   return colorArray;
 };
+interface ModalProps {
+  picture: PictureInput | '';
+  fairwayCardInput: FairwayCardInput;
+  setIsOpen: (picture: PictureInput | '') => void;
+}
 
 const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen }) => {
   const { t, i18n } = useTranslation();
