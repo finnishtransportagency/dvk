@@ -1,12 +1,19 @@
-import React, { useRef, useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { constructSelectDropdownLabel, getCombinedErrorAndHelperText } from '../utils/common';
+import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
+import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
-import DropdownPopup from './DropdownPopup';
+import SelectDropdownPopup from './SelectDropdownPopup';
 
-interface SelectWithSearchProps {
+interface SelectItemProps {
+  selected: number[];
+  label: string[];
+  expanded: boolean;
+  disabled?: boolean;
+}
+
+interface SelectWithFilterProps {
   label: string;
   options: SelectOption[] | null;
   selected: number[];
@@ -20,7 +27,35 @@ interface SelectWithSearchProps {
   isLoading?: boolean;
 }
 
-const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
+const SelectItem = forwardRef(function SelectItem(props: SelectItemProps, ref: React.ForwardedRef<HTMLIonLabelElement>) {
+  const { t } = useTranslation(undefined, { keyPrefix: 'general' });
+
+  return (
+    <IonItem className={'custom-select-item' + (props.expanded ? ' expanded' : '')} detail={false} disabled={props.disabled} lines="none">
+      {props.selected.length > 0 ? (
+        <IonLabel ref={ref} className="ion-text-wrap" color="dark">
+          <ul>
+            {props.label.map((opt) => {
+              return <li key={opt}>{opt}</li>;
+            })}
+          </ul>
+        </IonLabel>
+      ) : (
+        <IonLabel ref={ref} className="ion-text-wrap" color="medium">
+          {t('choose')}
+        </IonLabel>
+      )}
+      <IonIcon
+        icon={props.expanded ? caretUpSharp : caretDownSharp}
+        aria-hidden={true}
+        className="custom-select-icon"
+        color={props.expanded ? 'primary' : 'medium'}
+      />
+    </IonItem>
+  );
+});
+
+const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   label,
   options,
   selected,
@@ -36,15 +71,15 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isValid, setIsValid] = useState(!error);
   const [expanded, setIsExpanded] = useState(false);
 
-  const itemRef = useRef<HTMLIonItemElement>(null);
-  const selectRef = useRef<HTMLIonLabelElement>(null);
+  const containerRef = useRef<HTMLIonItemElement>(null);
+  const selectLabelRef = useRef<HTMLIonLabelElement>(null);
   const triggerId = 'select-with-search-' + actionType;
 
   const focusSelectItem = () => {
-    selectRef.current?.click();
+    selectLabelRef.current?.click();
   };
 
   const getHelperText = () => {
@@ -67,7 +102,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   };
 
   return (
-    <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={disabled ? undefined : focusSelectItem}>
         {label} {required ? '*' : ''}
       </IonLabel>
@@ -76,7 +111,7 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
       ) : (
         <>
           <IonItem
-            ref={itemRef}
+            ref={containerRef}
             id={triggerId}
             button={true}
             className={'custom-select-container' + (expanded ? ' expanded' : '')}
@@ -86,30 +121,19 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
             onClick={() => setIsExpanded(true)}
             onBlur={() => checkValidity()}
           >
-            <IonItem className={'custom-select-item' + (expanded ? ' expanded' : '')} detail={false} disabled={disabled} lines="none">
-              <IonLabel ref={selectRef} className="ion-text-wrap" color={selected.length > 0 ? 'dark' : 'medium'}>
-                {(selected.length > 0 && (
-                  <ul>
-                    {constructSelectDropdownLabel(selected, options, lang, showId).map((opt) => {
-                      return <li key={opt}>{opt}</li>;
-                    })}
-                  </ul>
-                )) ||
-                  t('choose')}
-              </IonLabel>
-              <IonIcon
-                icon={expanded ? caretUpSharp : caretDownSharp}
-                aria-hidden={true}
-                className="custom-select-icon"
-                color={expanded ? 'primary' : 'medium'}
-              />
-            </IonItem>
+            <SelectItem
+              ref={selectLabelRef}
+              selected={selected}
+              label={constructSelectDropdownLabel(selected, options, lang, showId)}
+              expanded={expanded}
+              disabled={disabled}
+            />
           </IonItem>
-          {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
-          <DropdownPopup
+          <SelectDropdownPopup
             trigger={triggerId}
-            triggerRef={itemRef}
+            triggerRef={containerRef}
             options={options}
             selected={selected}
             setSelected={handleSelect}
@@ -124,4 +148,4 @@ const FormSelectWithSearch: React.FC<SelectWithSearchProps> = ({
   );
 };
 
-export default FormSelectWithSearch;
+export default SelectWithFilter;
