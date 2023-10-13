@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  getAISHeaders,
   getExtensionPort,
   getIlmanetPassword,
   getIlmanetUrl,
@@ -33,6 +34,24 @@ export async function fetchTraficomApi<T>(path: string) {
   const duration = Date.now() - start;
   log.debug({ duration }, `Traficom api response time: ${duration} ms`);
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
+}
+
+export async function fetchAISApi<T>(path: string) {
+  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getAISHeaders(),
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`AIS api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from AIS api failed');
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `AIS api response time: ${duration} ms`);
+  return response.data ? (response.data as T) : [];
 }
 
 export type GeometryModel = {

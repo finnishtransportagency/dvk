@@ -1,4 +1,4 @@
-schema { 
+schema {
   query: Query
   mutation: Mutation
 }
@@ -529,4 +529,47 @@ type MarineWarning {
   equipmentId: Float
   lineId: Float
   areaId: Float
+}
+
+type Vessel {
+  name: String!
+  timestamp: Int!
+  mmsi: Int!
+  callSign: String!
+  imo: Int!
+  shipType: Int!
+  draught: Int!
+  eta: Int!
+  posType: Int!
+  referencePointA: Int!
+  referencePointB: Int!
+  referencePointC: Int!
+  referencePointD: Int!
+  destination: String!
+}
+
+type VesselLocationProperties {
+  mmsi: Int!
+  sog: Float!
+  cog: Float!
+  navStat: Int!
+  rot: Int!
+  posAcc: Boolean!
+  raim: Boolean!
+  heading: Int
+  timestamp: Int!
+  timestampExternal: Int!
+}
+
+type VesselLocationFeature {
+  mmsi: Int!
+  type: String
+  geometry: GeometryPoint!
+  properties: VesselLocationProperties!
+}
+
+type VesselLocation {
+  type: String
+  dataUpdatedTime: String!
+  features: [VesselLocationFeature!]
 }

@@ -128,6 +128,10 @@ async function getWeatherSOAApiKey() {
   return readParameterForEnv('WeatherSOAApiKey');
 }
 
+async function getAISSOAApiKey() {
+  return readParameterForEnv('AISSOAApiKey');
+}
+
 export async function getIlmanetUrl() {
   return readParameterForEnv('IlmanetUrl');
 }
@@ -149,6 +153,13 @@ export async function getWeatherHeaders(): Promise<Record<string, string>> {
 
 export async function getTraficomHeaders(): Promise<Record<string, string>> {
   return getWeatherHeaders();
+}
+
+export async function getAISHeaders(): Promise<Record<string, string>> {
+  return {
+    'x-api-key': await getAISSOAApiKey(),
+    'Accept-Encoding': 'gzip',
+  };
 }
 
 export async function getCloudFrontPrivateKey() {
