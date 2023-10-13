@@ -83,7 +83,6 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
         setLegendPosition(picture.legendPosition ?? POSITION.bottomLeft.position);
         setButtonColors(getColorArray(picture.legendPosition ?? POSITION.bottomLeft.position));
       }
-      
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
