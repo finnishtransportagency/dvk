@@ -79,9 +79,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
   const setBoundingBoxAndLegend = () => {
     if (compassInfo.current && compassNeedle.current) {
-      setLegendPosition(picture.legendPosition ?? POSITION.bottomLeft.position);
-      setButtonColors(getColorArray(picture.legendPosition ?? POSITION.bottomLeft.position));
-
+      if (picture) {
+        setLegendPosition(picture.legendPosition ?? POSITION.bottomLeft.position);
+        setButtonColors(getColorArray(picture.legendPosition ?? POSITION.bottomLeft.position));
+      }
+      
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -94,7 +96,9 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   // for the picture group in question
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.groupId);
+    if (picture && picture.groupId) {
+      setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.groupId);
+    }
     setTimeout(() => {
       setIsOpen('');
     }, 150);
