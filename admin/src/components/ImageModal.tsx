@@ -5,8 +5,8 @@ import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
 import { imageUrl, Lang, POSITION, BUTTON_COLORS, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
-//import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 
+// colors for selected legend position
 const getColorArray = (positionString: string) => {
   const colorArray = new Array(4).fill(BUTTON_COLORS.red);
   let greenIndex = 0;
@@ -44,10 +44,9 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
-  //lue statesta position, silleen päästään jo paljon eteenpäin
   const [isLoading, setIsLoading] = useState(true);
-  const [legendPosition, setLegendPosition] = useState<string>(picture.legendPosition ?? POSITION.bottomLeft.position);
-  const [buttonColors, setButtonColors] = useState<string[]>(getColorArray(picture.legendPosition));
+  const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft.position);
+  const [buttonColors, setButtonColors] = useState<string[]>(getColorArray(POSITION.bottomLeft.position));
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
@@ -77,8 +76,12 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
-  const setBoundingBox = () => {
+  // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
+  const setBoundingBoxAndLegend = () => {
     if (compassInfo.current && compassNeedle.current) {
+      setLegendPosition(picture.legendPosition ?? POSITION.bottomLeft.position);
+      setButtonColors(getColorArray(picture.legendPosition ?? POSITION.bottomLeft.position));
+
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -87,15 +90,18 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
+  // when closing a picture, updates fairwaycardreducer state by changing legendPosition
+  // for the picture group in question
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.id);
+    setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.groupId);
     setTimeout(() => {
       setIsOpen('');
     }, 150);
   };
 
-  // 0 being bottom left, incrementing clockwise
+  // updates button color array where 0 is bottom left and incrementing clockwise
+  // updates position of legend state
   // eslint-disable-next-line
   const changeLegendPosition = (position: any) => {
     const colorArray = new Array(4).fill(BUTTON_COLORS.red);
@@ -139,7 +145,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                           src={north_arrow}
                           alt=""
                           ref={compassNeedle}
-                          onLoad={() => setTimeout(() => setBoundingBox(), 50)}
+                          onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
                           style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
                         />
                       </div>
@@ -160,7 +166,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
-                        {/* refactor as an own component */}
+                        {/* buttons for changing legend position */}
                         <button
                           className={`legendPositionButton ${POSITION.bottomLeft.position} ${buttonColors[0]}`}
                           onClick={() => {

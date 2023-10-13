@@ -562,7 +562,7 @@ export const fairwayCardReducer = (
     case 'pictureLegendPosition':
       newState = {
         ...state,
-        pictures: state.pictures?.map((pic) => (pic.id === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
+        pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
       };
       break;
     default:
