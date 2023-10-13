@@ -33,8 +33,8 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
   };
 
   return (
-    <IonGrid id="harborPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="harborPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {harbor.properties.name && harbor.properties.name[lang]}

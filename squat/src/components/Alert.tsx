@@ -5,6 +5,7 @@ import info from '../theme/img/info-circle-solid.svg';
 import green from '../theme/img/green_info_icon.svg';
 import warning from '../theme/img/warning_icon.svg';
 import alert from '../theme/img/alert_icon.svg';
+import { useTranslation } from 'react-i18next';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -14,6 +15,7 @@ interface AlertProps {
 }
 
 const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = false }) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(true);
 
   const handleClickClose = useCallback(() => {
@@ -45,8 +47,8 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
             <IonButton
               onClick={handleClickClose}
               className="icon-only button-clear no-background-focused no-box-shadow"
-              title={'close-dialog'}
-              aria-label={'close-dialog'}
+              title={t('common.close-dialog')}
+              aria-label={t('common.close-dialog')}
             >
               <IonIcon icon={closeOutline} />
             </IonButton>

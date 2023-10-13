@@ -19,7 +19,7 @@ import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
 import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
-import { ReactComponent as ArrowIcon } from '../theme/img/arrow_back.svg';
+import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearButton from '../components/ClearButton';
 import { getMap } from '../components/map/DvkMap';

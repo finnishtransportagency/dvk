@@ -31,8 +31,8 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
   };
 
   return (
-    <IonGrid id="pilotPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="pilotPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {t('popup.pilotPlace.header', { val: pilot?.properties.name[lang] })}

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
+import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
 import { imageUrl, Lang, POSITION, BUTTON_COLORS, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';

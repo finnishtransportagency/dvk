@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
-import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import InfoIcon from '../../theme/img/info.svg?react';
 
 type ParagraphProps = {
   title?: string;

@@ -32,8 +32,8 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
   };
 
   return (
-    <IonGrid id="quayPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="quayPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
             {quay.properties.quay && quay.properties.quay[lang]} {quay.properties.name ? quay.properties.name : ''}

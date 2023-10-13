@@ -14,7 +14,7 @@ import MVT from 'ol/format/MVT';
 import { stylefunction } from 'ol-mapbox-style';
 import bgSeaMapStyles from './merikartta_nls_basemap_v1.json';
 import MapDetailsControl from './mapControls/MapDetailsControl';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import 'ol/ol.css';
 import './DvkMap.css';
 import { addAPILayers } from './layers';

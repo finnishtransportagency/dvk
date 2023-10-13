@@ -21,7 +21,7 @@ const TitleBar: React.FC = () => {
             <SquatHeader level={1} text={t('squat.content')} embedded={isEmbedded()}></SquatHeader>
           </IonText>
         </IonCol>
-        <IonCol class="ion-align-self-center mobile-logo" size="auto">
+        <IonCol className="ion-align-self-center mobile-logo" size="auto">
           {showLogo() && <IonImg className="logo" src={logoSource} alt={t('vaylavirasto-logo')} title={t('vaylavirasto-logo')} />}
         </IonCol>
         <IonCol className="langbar" style={{ textAlign: 'end' }}>
