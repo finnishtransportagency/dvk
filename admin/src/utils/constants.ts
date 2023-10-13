@@ -81,7 +81,9 @@ export type FairwayCardActionType =
   | 'vhfName'
   | 'vhfChannel'
   | 'picture'
-  | 'pictureDescription';
+  | 'pictureDescription'
+  | 'pictureLegendPosition'
+  | 'getState';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

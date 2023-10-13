@@ -3,8 +3,9 @@ import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal,
 import { useTranslation } from 'react-i18next';
 import { ReactComponent as CloseIcon } from '../theme/img/close_black_24dp.svg';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
-import { imageUrl, Lang, POSITION, BUTTON_COLORS } from '../utils/constants';
+import { imageUrl, Lang, POSITION, BUTTON_COLORS, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
+//import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 
 const getColorArray = (positionString: string) => {
   const colorArray = new Array(4).fill(BUTTON_COLORS.red);
@@ -29,16 +30,23 @@ interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
   setIsOpen: (picture: PictureInput | '') => void;
+  setPicture: (
+    val: ValueType,
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => void;
 }
 
-const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen }) => {
+const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
-
+  //lue statesta position, silleen päästään jo paljon eteenpäin
   const [isLoading, setIsLoading] = useState(true);
-  const [legendPosition, setLegendPosition] = useState(picture.legendPosition ?? POSITION.bottomLeft.position);
+  const [legendPosition, setLegendPosition] = useState<string>(picture.legendPosition ?? POSITION.bottomLeft.position);
   const [buttonColors, setButtonColors] = useState<string[]>(getColorArray(picture.legendPosition));
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -81,8 +89,8 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
 
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
+    setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.id);
     setTimeout(() => {
-      // tänne se tallentaminen
       setIsOpen('');
     }, 150);
   };
