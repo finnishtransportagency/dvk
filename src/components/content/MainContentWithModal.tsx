@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
-import { ReactComponent as ArrowBackIcon } from '../../theme/img/arrow_back.svg';
+import ArrowBackIcon from '../../theme/img/arrow_back.svg?react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import FairwayCards from './FairwayCards';

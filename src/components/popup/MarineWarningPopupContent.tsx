@@ -5,7 +5,7 @@ import './popup.css';
 import { Lang } from '../../utils/constants';
 import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../features';
 import { getMap } from '../DvkMap';
-import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';

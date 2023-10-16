@@ -5,14 +5,13 @@ import { useSquatContext } from '../hooks/squatContext';
 import { getNumberValueOrEmptyString } from '../utils/calculations';
 import { IonSegmentCustomEvent, SegmentChangeEventDetail } from '@ionic/core/dist/types/components';
 
-interface CalculationOptionsProps {
-  limitedView: boolean;
-  embeddedView?: boolean;
-}
-
-const CalculationOptions: React.FC<CalculationOptionsProps> = ({ limitedView, embeddedView }) => {
+const CalculationOptions: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
   const { state, dispatch } = useSquatContext();
+  const {
+    embeddedSquat,
+    status: { showLimitedView },
+  } = state;
 
   // Update status to state
   const setStateStatus = useCallback(
@@ -58,13 +57,13 @@ const CalculationOptions: React.FC<CalculationOptionsProps> = ({ limitedView, em
 
   return (
     <div className="calculation-options in-print top-padding">
-      {!limitedView && !embeddedView && (
+      {!showLimitedView && !embeddedSquat && (
         <>
           <span className="printable segment-label">{t('selected-water-values')}:</span>
           <IonSegment
             onIonChange={handleWaterValuesChange}
             value={state.status.showDeepWaterValues ? 'true' : 'false'}
-            disabled={limitedView || !state.environment.weather.waveLength[0]}
+            disabled={showLimitedView || !state.environment.weather.waveLength[0]}
             selectOnFocus
           >
             <IonSegmentButton value="false">
@@ -93,8 +92,13 @@ const CalculationOptions: React.FC<CalculationOptionsProps> = ({ limitedView, em
         </IonSegmentButton>
       </IonSegment>
 
-      {!embeddedView && (
-        <IonSegment onIonChange={handleSelectedViewChange} value={limitedView ? 'true' : 'false'} className="top-padding print-hide" selectOnFocus>
+      {!embeddedSquat && (
+        <IonSegment
+          onIonChange={handleSelectedViewChange}
+          value={showLimitedView ? 'true' : 'false'}
+          className="top-padding print-hide"
+          selectOnFocus
+        >
           <IonSegmentButton value="false">
             <IonLabel>{t('extensive-calculator')}</IonLabel>
           </IonSegmentButton>

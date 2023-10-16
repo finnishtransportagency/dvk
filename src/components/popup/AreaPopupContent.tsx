@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
-import { ReactComponent as InfoIcon } from '../../theme/img/info.svg';
+import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
@@ -60,8 +60,8 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
   };
 
   return (
-    <IonGrid id="areaPopupContent" class="ion-padding">
-      <IonGrid class="ion-no-padding">
+    <IonGrid id="areaPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
         {area.properties.fairways?.map((fairway, index) => {
           return (
             <IonRow key={fairway.fairwayId} className="ion-justify-content-between">

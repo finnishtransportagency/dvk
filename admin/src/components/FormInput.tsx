@@ -25,6 +25,7 @@ interface InputProps {
   focused?: boolean;
   name?: string;
   setValidity?: (actionType: ActionType, val: boolean) => void;
+  maxCharLength?: number;
 }
 
 const FormInput: React.FC<InputProps> = ({
@@ -48,6 +49,7 @@ const FormInput: React.FC<InputProps> = ({
   focused,
   name,
   setValidity,
+  maxCharLength,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -190,7 +192,7 @@ const FormInput: React.FC<InputProps> = ({
         disabled={disabled}
         type={getInputType()}
         inputMode={getInputMode()}
-        maxlength={INPUT_MAXLENGTH}
+        maxlength={maxCharLength ? maxCharLength : INPUT_MAXLENGTH}
         pattern={getInputPattern()}
         multiple={inputType === 'email' && multiple}
         fill="outline"
@@ -200,7 +202,7 @@ const FormInput: React.FC<InputProps> = ({
         label={unit ? t('unit.' + unit) ?? '' : ''}
         labelPlacement={unit ? 'end' : undefined}
         counter={true}
-        counterFormatter={(inputLength, maxLength) => (inputLength > INPUT_MAXLENGTH / 2 ? `${inputLength} / ${maxLength}` : '')}
+        counterFormatter={(inputLength, maxLength) => (inputLength > maxLength / 2 ? `${inputLength} / ${maxLength}` : '')}
       />
     </>
   );

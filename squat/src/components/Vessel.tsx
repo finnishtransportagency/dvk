@@ -14,13 +14,12 @@ import { isEmbedded } from '../pages/Home';
 
 const zero = 0;
 
-interface VesselProps {
-  limitedView: boolean;
-}
-
-const Vessel: React.FC<VesselProps> = ({ limitedView }) => {
+const Vessel: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.vessel' });
   const { state, dispatch } = useSquatContext();
+  const {
+    status: { showLimitedView: limitedView },
+  } = state;
   const defaultColumnSize = limitedView ? '12' : '6';
 
   useEffect(() => {
@@ -95,7 +94,7 @@ const Vessel: React.FC<VesselProps> = ({ limitedView }) => {
           }
         />
         <IonGrid className="no-padding">
-          <IonRow class="input-row">
+          <IonRow className="input-row">
             <IonCol size={defaultColumnSize}>
               <InputField
                 title={t('length-BPP')}
@@ -182,7 +181,7 @@ const Vessel: React.FC<VesselProps> = ({ limitedView }) => {
               valid={isFieldValid('windSurface') && isFieldValid('deckCargo') && isFieldValid('bowThruster') && isFieldValid('bowThrusterEfficiency')}
             />
             <IonGrid className="no-padding">
-              <IonRow class="input-row">
+              <IonRow className="input-row">
                 <IonCol size="6">
                   <InputField
                     title={t('total-lateral-wind-surface')}
@@ -260,7 +259,7 @@ const Vessel: React.FC<VesselProps> = ({ limitedView }) => {
           <>
             <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
             <IonGrid className="no-padding">
-              <IonRow class="input-row">
+              <IonRow className="input-row">
                 <IonCol size="6">
                   <InputField
                     title={t('KG')}

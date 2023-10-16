@@ -241,11 +241,13 @@ ion-text .hoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
-ion-text .inlineHoverText:hover, p .inlineHoverText:hover {
+ion-text .inlineHoverText:hover,
+p .inlineHoverText:hover {
   background-color: var(--ion-color-light);
   cursor: default;
 }
-ion-text .inlineHoverText:focus-visible, p .inlineHoverText:focus-visible {
+ion-text .inlineHoverText:focus-visible,
+p .inlineHoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
@@ -433,7 +435,10 @@ ion-segment.tabs ion-label h3 {
   height: 22px;
   background: url('../../theme/img/drag_handle.svg') no-repeat center;
   opacity: 1;
-  transition: height 150ms, opacity 150ms, padding 150ms;
+  transition:
+    height 150ms,
+    opacity 150ms,
+    padding 150ms;
 }
 .contentModal.full::part(handle) {
   height: 0;
@@ -454,14 +459,16 @@ ion-segment.tabs ion-label h3 {
   max-height: 0;
   opacity: 0;
   overflow: hidden;
-  transition: max-height 150ms, opacity 150ms;
+  transition:
+    max-height 150ms,
+    opacity 150ms;
 }
 .contentModal.full ion-content > ion-grid.searchBar {
   max-height: calc(45px + 24px + 16px);
   opacity: 1;
   overflow: unset;
   position: fixed;
-  z-index: 1;
+  z-index: 3;
   left: 0;
   right: 0;
   padding: 24px 16px 16px;
@@ -490,7 +497,7 @@ ion-segment.tabs ion-label h3 {
 #fairwayContent .skip-to-main-content-link {
   position: absolute;
   top: 20px;
-  left:48px;
+  left: 48px;
   opacity: 0;
   cursor: default;
 }

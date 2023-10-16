@@ -13,6 +13,7 @@ const PrintBar: React.FC = () => {
   const { state } = useSquatContext();
   const [showCopyToast, setShowCopyToast] = useState<boolean>(false);
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
+  const { embeddedSquat } = state;
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
   const selectText = useCallback(() => {
@@ -39,68 +40,66 @@ const PrintBar: React.FC = () => {
   }, []);
 
   return (
-    <>
-      <IonGrid>
-        <IonRow>
-          <IonCol class="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
-            <Modal
-              title={t('header.shareable-link-title')}
-              content={
-                <>
-                  <p>{t('header.shareable-link-body')}</p>
-                  <IonItem lines="none" className="readonly-wrapper">
-                    <IonTextarea
-                      value={createShareableLink(state, true)}
-                      autoGrow
-                      readonly
-                      rows={1}
-                      onIonFocus={selectText}
-                      className="small-text"
-                      fill="outline"
-                      ref={inputRef}
-                    />
-                    <IonButton
-                      fill="clear"
-                      className="icon-only large no-background-focused"
-                      onClick={handleCopyClick}
-                      id="hover-trigger_"
-                      title={t('header.copy-to-clipboard')}
-                      slot="end"
-                    >
-                      <IonIcon color="primary" slot="icon-only" src={clipboardOutline} />
-                    </IonButton>
-                  </IonItem>
-                  <IonToast
-                    isOpen={showCopyToast}
-                    onDidDismiss={handleToastDismiss}
-                    message={t('header.copied-to-clipboard')}
-                    duration={2000}
-                    position="middle"
-                    icon={checkmarkCircleOutline}
+    <IonGrid className={embeddedSquat ? 'ion-no-padding' : ''}>
+      <IonRow>
+        <IonCol className="ion-align-self-center" size="auto" style={{ paddingRight: '16px' }}>
+          <Modal
+            title={t('header.shareable-link-title')}
+            content={
+              <>
+                <p>{t('header.shareable-link-body')}</p>
+                <IonItem lines="none" className="readonly-wrapper">
+                  <IonTextarea
+                    value={createShareableLink(state, true)}
+                    autoGrow
+                    readonly
+                    rows={1}
+                    onIonFocus={selectText}
+                    className="small-text"
+                    fill="outline"
+                    ref={inputRef}
                   />
-                </>
-              }
-              trigger={<IonIcon src={shareIcon} size="medium" />}
-              triggerTitle={t('header.shareable-link-title')}
-              triggerClassName="large"
-              handleDismiss={handleToastDismiss}
-            />
-          </IonCol>
-          <IonCol class="ion-align-self-center" size="auto">
-            <IonButton
-              fill="clear"
-              className="icon-only large no-background-focused"
-              onClick={handlePrintClick}
-              title={t('header.print')}
-              aria-label={t('header.print')}
-              role="button"
-            >
-              <IonIcon color="primary" slot="icon-only" src={printIcon} size="medium" />
-            </IonButton>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </>
+                  <IonButton
+                    fill="clear"
+                    className="icon-only large no-background-focused"
+                    onClick={handleCopyClick}
+                    id="hover-trigger_"
+                    title={t('header.copy-to-clipboard')}
+                    slot="end"
+                  >
+                    <IonIcon color="primary" slot="icon-only" src={clipboardOutline} />
+                  </IonButton>
+                </IonItem>
+                <IonToast
+                  isOpen={showCopyToast}
+                  onDidDismiss={handleToastDismiss}
+                  message={t('header.copied-to-clipboard')}
+                  duration={2000}
+                  position="middle"
+                  icon={checkmarkCircleOutline}
+                />
+              </>
+            }
+            triggerIcon={<IonIcon src={shareIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />}
+            triggerTitle={t('header.shareable-link-title')}
+            triggerClassName={embeddedSquat ? 'small no-print' : 'large no-background-focused'}
+            handleDismiss={handleToastDismiss}
+          />
+        </IonCol>
+        <IonCol className="ion-align-self-center" size="auto">
+          <IonButton
+            fill="clear"
+            className={'icon-only ' + (embeddedSquat ? 'small no-print' : 'large no-background-focused')}
+            onClick={handlePrintClick}
+            title={t('header.print')}
+            aria-label={t('header.print')}
+            role="button"
+          >
+            <IonIcon color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
+          </IonButton>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   );
 };
 
