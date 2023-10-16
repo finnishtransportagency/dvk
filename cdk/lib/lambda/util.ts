@@ -1,4 +1,5 @@
 import { Geometry, Position } from 'geojson';
+import { gzip } from 'zlib';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -43,4 +44,20 @@ export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) 
     }
   }
   return geometry;
+}
+
+export function getNumberValue(value: number | undefined): number | undefined {
+  return value && value > 0 ? value : undefined;
+}
+
+export async function gzipString(input: string): Promise<Buffer> {
+  const buffer = Buffer.from(input);
+  return new Promise((resolve, reject) =>
+    gzip(buffer, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    })
+  );
 }

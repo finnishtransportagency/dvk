@@ -21,22 +21,7 @@ import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-
-function getNumberValue(value: number | undefined): number | undefined {
-  return value && value > 0 ? value : undefined;
-}
-
-const gzipString = async (input: string): Promise<Buffer> => {
-  const buffer = Buffer.from(input);
-  return new Promise((resolve, reject) =>
-    gzip(buffer, (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    })
-  );
-};
+import { getNumberValue, gzipString } from '../util';
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAllPublic();
