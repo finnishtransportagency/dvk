@@ -3,29 +3,9 @@ import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal,
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
-import { imageUrl, Lang, POSITION, BUTTON_COLORS, ActionType, ValueType } from '../utils/constants';
+import { imageUrl, Lang, POSITION, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 
-// colors for selected legend position
-const getColorArray = (positionString: string) => {
-  const colorArray = new Array(4).fill(BUTTON_COLORS.red);
-  let greenIndex = 0;
-
-  switch (positionString) {
-    case 'topLeft':
-      greenIndex = 1;
-      break;
-    case 'topRight':
-      greenIndex = 2;
-      break;
-    case 'bottomRight':
-      greenIndex = 3;
-      break;
-  }
-  colorArray[greenIndex] = BUTTON_COLORS.green;
-
-  return colorArray;
-};
 interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
@@ -45,8 +25,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
   const [isLoading, setIsLoading] = useState(true);
-  const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft.position);
-  const [buttonColors, setButtonColors] = useState<string[]>(getColorArray(POSITION.bottomLeft.position));
+  const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
@@ -79,10 +58,8 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
   const setBoundingBoxAndLegend = () => {
     if (compassInfo.current && compassNeedle.current) {
-      if (picture) {
-        setLegendPosition(picture.legendPosition ?? POSITION.bottomLeft.position);
-        setButtonColors(getColorArray(picture.legendPosition ?? POSITION.bottomLeft.position));
-      }
+      const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
+      setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -95,22 +72,13 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   // for the picture group in question
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (picture && picture.groupId) {
-      setPicture(legendPosition, 'pictureLegendPosition', undefined, picture.groupId);
+    const pictureGroupId = (picture as PictureInput)?.groupId;
+    if (pictureGroupId) {
+      setPicture(legendPosition, 'pictureLegendPosition', undefined, pictureGroupId);
     }
     setTimeout(() => {
       setIsOpen('');
     }, 150);
-  };
-
-  // updates button color array where 0 is bottom left and incrementing clockwise
-  // updates position of legend state
-  // eslint-disable-next-line
-  const changeLegendPosition = (position: any) => {
-    const colorArray = new Array(4).fill(BUTTON_COLORS.red);
-    colorArray[position.index] = BUTTON_COLORS.green;
-    setLegendPosition(position.position);
-    setButtonColors(colorArray);
   };
 
   return (
@@ -169,29 +137,35 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
-                        {/* buttons for changing legend position */}
+                        {/* buttons for changing legend position, could be useful to refactor to its own component */}
                         <button
-                          className={`legendPositionButton ${POSITION.bottomLeft.position} ${buttonColors[0]}`}
+                          className={
+                            'legendPositionButton ' + POSITION.bottomLeft + (legendPosition === POSITION.bottomLeft ? ' colorGreen' : ' colorRed')
+                          }
                           onClick={() => {
-                            changeLegendPosition(POSITION.bottomLeft);
+                            setLegendPosition(POSITION.bottomLeft);
                           }}
                         />
                         <button
-                          className={`legendPositionButton ${POSITION.topLeft.position} ${buttonColors[1]}`}
+                          className={'legendPositionButton ' + POSITION.topLeft + (legendPosition === POSITION.topLeft ? ' colorGreen' : ' colorRed')}
                           onClick={() => {
-                            changeLegendPosition(POSITION.topLeft);
+                            setLegendPosition(POSITION.topLeft);
                           }}
                         />
                         <button
-                          className={`legendPositionButton ${POSITION.topRight.position} ${buttonColors[2]}`}
+                          className={
+                            'legendPositionButton ' + POSITION.topRight + (legendPosition === POSITION.topRight ? ' colorGreen' : ' colorRed')
+                          }
                           onClick={() => {
-                            changeLegendPosition(POSITION.topRight);
+                            setLegendPosition(POSITION.topRight);
                           }}
                         />
                         <button
-                          className={`legendPositionButton ${POSITION.bottomRight.position} ${buttonColors[3]}`}
+                          className={
+                            'legendPositionButton ' + POSITION.bottomRight + (legendPosition === POSITION.bottomRight ? ' colorGreen' : ' colorRed')
+                          }
                           onClick={() => {
-                            changeLegendPosition(POSITION.bottomRight);
+                            setLegendPosition(POSITION.bottomRight);
                           }}
                         />
                       </div>

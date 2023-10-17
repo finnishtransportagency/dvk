@@ -271,13 +271,8 @@ export const OFFLINE_STORAGE = {
 };
 
 export const POSITION = {
-  bottomLeft: { position: 'bottomLeft', index: 0 },
-  topLeft: { position: 'topLeft', index: 1 },
-  topRight: { position: 'topRight', index: 2 },
-  bottomRight: { position: 'bottomRight', index: 3 },
-};
-
-export const BUTTON_COLORS = {
-  green: 'colorGreen',
-  red: 'colorRed',
+  bottomLeft: 'bottomLeft',
+  topLeft: 'topLeft',
+  topRight: 'topRight',
+  bottomRight: 'bottomRight',
 };
