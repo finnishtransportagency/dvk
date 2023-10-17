@@ -3,7 +3,6 @@ import { getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
-import { gzip } from 'zlib';
 import {
   AlueAPIModel,
   fetchVATUByFairwayClass,
@@ -19,9 +18,9 @@ import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { cacheResponse, getFromCache } from '../graphql/cache';
+import { getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { getNumberValue, gzipString } from '../util';
+import { handleLoaderError, getNumberValue, saveResponseToS3 } from '../util';
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAllPublic();
@@ -505,43 +504,61 @@ async function isCacheEnabled(type: string): Promise<boolean> {
 }
 
 async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
-  if (type === 'pilot') {
-    await addPilotFeatures(features);
-  } else if (type === 'harbor') {
-    await addHarborFeatures(features);
-  } else if (type === 'area' || type === 'specialarea' || type === 'specialarea2' || type === 'specialarea15') {
-    const areaFilter = getAreaFilter(type);
-    await addAreaFeatures(features, event, type, areaFilter);
-  } else if (type === 'restrictionarea') {
-    await addRestrictionAreaFeatures(features, event);
-  } else if (type === 'line') {
-    await addLineFeatures(features, event);
-  } else if (type === 'safetyequipment') {
-    await addSafetyEquipmentFeatures(features, event);
-  } else if (type === 'safetyequipmentfault') {
-    await addSafetyEquipmentFaultFeatures(features);
-  } else if (type === 'marinewarning') {
-    await addMarineWarnings(features);
-  } else if (type === 'vtspoint') {
-    await addVTSPointsOrLines(features, true);
-  } else if (type === 'vtsline') {
-    await addVTSPointsOrLines(features, false);
-  } else if (type === 'depth') {
-    await addDepthFeatures(features, event);
-  } else if (type === 'boardline') {
-    await addBoardLineFeatures(features, event);
-  } else if (type === 'mareograph') {
-    await addMareoGraphs(features);
-  } else if (type === 'observation') {
-    await addWeatherObservations(features);
-  } else if (type === 'buoy') {
-    await addBuoys(features);
-  } else if (type === 'circle') {
-    await addTurningCircleFeatures(features);
-  } else {
-    return false;
+  switch (type) {
+    case 'pilot':
+      await addPilotFeatures(features);
+      return true;
+    case 'harbor':
+      await addHarborFeatures(features);
+      return true;
+    case 'area':
+    case 'specialarea':
+    case 'specialarea2':
+    case 'specialarea15':
+      await addAreaFeatures(features, event, type, getAreaFilter(type));
+      return true;
+    case 'restrictionarea':
+      await addRestrictionAreaFeatures(features, event);
+      return true;
+    case 'line':
+      await addLineFeatures(features, event);
+      return true;
+    case 'safetyequipment':
+      await addSafetyEquipmentFeatures(features, event);
+      return true;
+    case 'safetyequipmentfault':
+      await addSafetyEquipmentFaultFeatures(features);
+      return true;
+    case 'marinewarning':
+      await addMarineWarnings(features);
+      return true;
+    case 'vtspoint':
+      await addVTSPointsOrLines(features, true);
+      return true;
+    case 'vtsline':
+      await addVTSPointsOrLines(features, false);
+      return true;
+    case 'depth':
+      await addDepthFeatures(features, event);
+      return true;
+    case 'boardline':
+      await addBoardLineFeatures(features, event);
+      return true;
+    case 'mareograph':
+      await addMareoGraphs(features);
+      return true;
+    case 'observation':
+      await addWeatherObservations(features);
+      return true;
+    case 'buoy':
+      await addBuoys(features);
+      return true;
+    case 'circle':
+      await addTurningCircleFeatures(features);
+      return true;
+    default:
+      return false;
   }
-  return true;
 }
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
@@ -567,26 +584,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         base64Response = undefined;
         statusCode = 400;
       } else {
-        let start = Date.now();
-        const body = JSON.stringify(collection);
-        log.debug('stringify duration: %d ms', Date.now() - start);
-        start = Date.now();
-        const gzippedResponse = await gzipString(body);
-        log.debug('gzip duration: %d ms', Date.now() - start);
-        start = Date.now();
-        base64Response = gzippedResponse.toString('base64');
-        log.debug('base64 duration: %d ms', Date.now() - start);
-        await cacheResponse(key, base64Response);
+        base64Response = await saveResponseToS3(collection, key);
       }
     } catch (e) {
-      log.error('Getting features failed: %s', e);
-      if (response.data) {
-        log.warn('Returning possibly expired response from s3 cache');
-        base64Response = response.data;
-      } else {
-        base64Response = undefined;
-        statusCode = 500;
-      }
+      const errorResult = handleLoaderError(response, e);
+      base64Response = errorResult.body;
+      statusCode = errorResult.statusCode;
     }
   }
   return {

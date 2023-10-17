@@ -1,9 +1,9 @@
 import { ALBEvent, ALBResult } from 'aws-lambda';
 import { getHeaders } from '../environment';
 import { log } from '../logger';
-import { cacheResponse, getFromCache } from '../graphql/cache';
+import { getFromCache } from '../graphql/cache';
 import { fetchVessels } from './ais';
-import { gzipString } from '../util';
+import { handleLoaderError, saveResponseToS3 } from '../util';
 
 function getKey() {
   return 'vessel';
@@ -21,19 +21,11 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     try {
       const vessels = await fetchVessels();
       log.debug('vessels: %d', vessels.length);
-      const body = JSON.stringify(vessels);
-      const gzippedResponse = await gzipString(body);
-      base64Response = gzippedResponse.toString('base64');
-      await cacheResponse(key, vessels);
+      base64Response = await saveResponseToS3(vessels, key);
     } catch (e) {
-      log.error('Getting vessels failed: %s', e);
-      if (response.data) {
-        log.warn('Returning possibly expired response from s3 cache');
-        return JSON.parse(response.data);
-      } else {
-        base64Response = undefined;
-        statusCode = 500;
-      }
+      const errorResult = handleLoaderError(response, e);
+      base64Response = errorResult.body;
+      statusCode = errorResult.statusCode;
     }
   }
   return {
