@@ -162,3 +162,16 @@ export type VtsFeatureProperties = {
   information?: string;
   channel?: string;
 };
+
+export type AisFeatureProperties = {
+  mmsi: string;
+  sog: number;
+  cog: number;
+  navsat: number;
+  rot: number;
+  posAcc: boolean;
+  raim: boolean;
+  heading: number;
+  timestamp: number;
+  timestampExternal: number;
+};

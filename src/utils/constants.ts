@@ -33,7 +33,9 @@ export type FeatureDataId =
   | 'circle'
   | 'soundingpoint'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'aislocation'
+  | 'aisvessel';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 
@@ -170,9 +172,21 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/circle.json.gz'),
     persist: true,
   },
+  {
+    id: 'aislocation',
+    url: new URL('http://localhost:3000/locations.json'),
+    staticUrl: new URL(staticUrl + '/aislocation.json.gz'),
+    persist: false,
+  },
+  {
+    id: 'aisvessel',
+    url: new URL('http://localhost:3000/vessels.json'),
+    staticUrl: new URL(staticUrl + '/aisvessel.json.gz'),
+    persist: false,
+  },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -203,7 +217,16 @@ export type FeatureDataLayerId =
   | 'deptharea'
   | 'circle'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'aisvesselcargo'
+  | 'aisvesseltanker'
+  | 'aisvesselpassenger'
+  | 'aisvesselhighspeed'
+  | 'aisvesseltugandspecialcraft'
+  | 'aisvesselfishing'
+  | 'aisvesselpleasurecraft'
+  | 'aisnavigationaidequipment'
+  | 'aisunspecified';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -260,6 +283,15 @@ export const MAP: MapType = {
     { id: 'depthcontour', offlineSupport: false, localizedStyle: false },
     { id: 'deptharea', offlineSupport: false, localizedStyle: false },
     { id: 'circle', offlineSupport: true, localizedStyle: false },
+    { id: 'aisvesselcargo', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesseltanker', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselpassenger', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselhighspeed', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesseltugandspecialcraft', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselfishing', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselpleasurecraft', offlineSupport: false, localizedStyle: false },
+    { id: 'aisnavigationaidequipment', offlineSupport: false, localizedStyle: false },
+    { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
   ],
 };
 

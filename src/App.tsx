@@ -34,6 +34,15 @@ import {
   useCircleLayer,
   useSpecialArea2Layer,
   useSpecialArea15Layer,
+  useAisVesselCargoLayer,
+  useAisVesselTankerLayer,
+  useAisVesselPassengerLayer,
+  useAisVesselHighSpeedLayer,
+  useAisVesselTugAndSpecialCraftLayer,
+  useAisVesselFishingLayer,
+  useAisVesselPleasureCraftLayer,
+  useAisNavigationAidEquipmentLayer,
+  useAisUnspecifiedLayer,
   useInitStaticDataLayer,
 } from './components/FeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
@@ -148,6 +157,15 @@ const DvkIonApp: React.FC = () => {
   useVtsPointLayer();
   useLine3456Layer();
   useArea3456Layer();
+  useAisVesselCargoLayer();
+  useAisVesselTankerLayer();
+  useAisVesselPassengerLayer();
+  useAisVesselHighSpeedLayer();
+  useAisVesselTugAndSpecialCraftLayer();
+  useAisVesselFishingLayer();
+  useAisVesselPleasureCraftLayer();
+  useAisNavigationAidEquipmentLayer();
+  useAisUnspecifiedLayer();
   useInitStaticDataLayer('balticsea', 'balticsea');
   useInitStaticDataLayer('mml_satamat', 'mml_satamat');
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');

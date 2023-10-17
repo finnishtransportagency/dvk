@@ -32,6 +32,7 @@ import { getMareographStyle } from './layerStyles/mareographStyles';
 import { getObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
 import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
+import { getAisStyle } from './layerStyles/aisStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -773,6 +774,115 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 315,
+  });
+
+  // AIS
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesselcargo',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 316,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesseltanker',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 317,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesselpassenger',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 318,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesselhighspeed',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 319,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesseltugandspecialcraft',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 320,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesselfishing',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 321,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisvesselpleasurecraft',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 322,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisnavigationaidequipment',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 323,
+  });
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisunspecified',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 324,
   });
 }
 

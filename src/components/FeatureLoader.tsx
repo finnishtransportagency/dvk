@@ -184,6 +184,42 @@ export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
 
+export function useAisVesselCargoLayer() {
+  return useDataLayer('aislocation', 'aisvesselcargo');
+}
+
+export function useAisVesselTankerLayer() {
+  return useDataLayer('aislocation', 'aisvesseltanker');
+}
+
+export function useAisVesselPassengerLayer() {
+  return useDataLayer('aislocation', 'aisvesselpassenger');
+}
+
+export function useAisVesselHighSpeedLayer() {
+  return useDataLayer('aislocation', 'aisvesselhighspeed');
+}
+
+export function useAisVesselTugAndSpecialCraftLayer() {
+  return useDataLayer('aislocation', 'aisvesseltugandspecialcraft');
+}
+
+export function useAisVesselFishingLayer() {
+  return useDataLayer('aislocation', 'aisvesselfishing');
+}
+
+export function useAisVesselPleasureCraftLayer() {
+  return useDataLayer('aislocation', 'aisvesselpleasurecraft');
+}
+
+export function useAisNavigationAidEquipmentLayer() {
+  return useDataLayer('aislocation', 'aisnavigationaidequipment');
+}
+
+export function useAisUnspecifiedLayer() {
+  return useDataLayer('aislocation', 'aisunspecified');
+}
+
 export function useMareographLayer() {
   const [initialized, init] = useState(false);
   const [visible, setVisible] = useState(false);
