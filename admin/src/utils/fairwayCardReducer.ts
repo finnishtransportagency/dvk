@@ -258,7 +258,11 @@ export const fairwayCardReducer = (
           ...state.trafficService,
           pilot: {
             ...state.trafficService?.pilot,
-            places: value as PilotPlaceInput[],
+            // check if one of the values is already in state and if found, attach it's pilotjourney value to the new value
+            places: (value as PilotPlaceInput[]).map((place) => {
+              const oldPlace = state.trafficService?.pilot?.places?.find((op) => op.id === place.id);
+              return oldPlace ? { ...place, ...oldPlace } : place;
+            }),
           },
         },
       };
