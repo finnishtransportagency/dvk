@@ -17,7 +17,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useVpc: true,
   },
   {
-    entry: path.join(__dirname, 'vesselllocations-handler.ts'),
+    entry: path.join(__dirname, 'vessellocations-handler.ts'),
     pathPattern: '/api/vessellocations',
     functionName: 'vessel-locations',
     priority: 13,
