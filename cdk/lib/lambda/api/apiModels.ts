@@ -39,7 +39,7 @@ type VesselLocationFeature = {
   properties: VesselLocationProperties;
 };
 
-export type VesselLocation = {
+export type VesselLocationFeatureCollection = {
   type?: string;
   dataUpdatedTime?: string;
   features: VesselLocationFeature[];

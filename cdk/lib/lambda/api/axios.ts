@@ -17,6 +17,7 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
+import { Vessel, VesselLocationFeatureCollection } from './apiModels';
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -36,7 +37,7 @@ export async function fetchTraficomApi<T>(path: string) {
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 
-export async function fetchAISApi<T>(path: string) {
+async function fetchAISApi(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
   const start = Date.now();
   const response = await axios
@@ -51,7 +52,19 @@ export async function fetchAISApi<T>(path: string) {
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `AIS api response time: ${duration} ms`);
-  return response.data ? (response.data as T) : [];
+  return response;
+}
+
+export async function fetchAISMetadata(path: string) {
+  const response = await fetchAISApi(path);
+  return response.data ? (response.data as Vessel[]) : [];
+}
+
+export async function fetchAISFeatureCollection(path: string) {
+  const response = await fetchAISApi(path);
+  return response.data
+    ? (response.data as VesselLocationFeatureCollection)
+    : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
 export type GeometryModel = {

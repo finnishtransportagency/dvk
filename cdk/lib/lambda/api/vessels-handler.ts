@@ -14,7 +14,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const key = getKey();
   let base64Response: string | undefined;
   let statusCode = 200;
-  const response = await getFromCache('vessel');
+  const response = await getFromCache(key);
   if (!response.expired && response.data) {
     base64Response = response.data;
   } else {

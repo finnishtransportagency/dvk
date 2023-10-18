@@ -33,6 +33,7 @@ async function saveToS3(filename: string, data: Buffer) {
 async function main() {
   const featureLoaderUrl = 'http://localhost:8080/api/featureloader';
   const vesselsUrl = 'http://localhost:8080/api/vessels';
+  const vesselLocationsUrl = 'http://localhost:8080/api/vessellocations';
   const sources = [
     { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
     { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
@@ -56,6 +57,7 @@ async function main() {
     { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint') },
     { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle') },
     { id: 'vessel', url: new URL(vesselsUrl) },
+    { id: 'vessel-locations', url: new URL(vesselLocationsUrl) },
   ];
   for (const source of sources) {
     const response = await axios.get(source.url.toString(), {

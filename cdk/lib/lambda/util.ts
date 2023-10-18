@@ -1,9 +1,9 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { Vessel } from '../../graphql/generated';
 import { CacheResponse, cacheResponse } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
+import { Vessel } from './api/apiModels';
 
 const GEOMETRY_DECIMALS = 5;
 

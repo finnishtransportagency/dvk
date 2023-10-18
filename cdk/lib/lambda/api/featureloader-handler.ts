@@ -575,15 +575,15 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     try {
       const features: Feature<Geometry, GeoJsonProperties>[] = [];
       const validType = await addFeatures(type, features, event);
-      const collection: FeatureCollection = {
-        type: 'FeatureCollection',
-        features,
-      };
       if (!validType) {
         log.info('Invalid type: %s', type);
         base64Response = undefined;
         statusCode = 400;
       } else {
+        const collection: FeatureCollection = {
+          type: 'FeatureCollection',
+          features,
+        };
         base64Response = await saveResponseToS3(collection, key);
       }
     } catch (e) {
