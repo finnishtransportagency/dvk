@@ -17,7 +17,7 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
-import { Vessel, VesselLocationFeatureCollection } from './apiModels';
+import { GeometryModel, VaylaAPIModel, Vessel, VesselLocationFeatureCollection } from './apiModels';
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -66,53 +66,6 @@ export async function fetchAISFeatureCollection(path: string) {
     ? (response.data as VesselLocationFeatureCollection)
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
-
-export type GeometryModel = {
-  geometria: object;
-};
-
-export type MitoitusAlusAPIModel = {
-  alustyyppiKoodi: string;
-  alustyyppi: string;
-  pituus: number;
-  leveys: number;
-  syvays: number;
-  koko?: number;
-  runkoTaytelaisyysKerroin?: number;
-};
-
-export type LuokitusAPIModel = {
-  luokitusTyyppi: string;
-  vaylaluokkaKoodi: string;
-  vaylaluokkaFI?: string;
-  vaylaluokkaSV?: string;
-};
-
-export type VaylaAPIModel = {
-  jnro: number;
-  nimiFI: string;
-  nimiSV?: string;
-  vaylalajiKoodi?: string;
-  vaylaLajiFI?: string;
-  vaylaLajiSV?: string;
-  valaistusKoodi?: string;
-  valaistusFI?: string;
-  valaistusSV?: string;
-  omistaja?: string;
-  merialueFI?: string;
-  merialueSV?: string;
-  alunSeloste?: string;
-  paatepisteenSeloste?: string;
-  normaaliKaantosade?: number;
-  minimiKaantosade?: number;
-  normaaliLeveys?: number;
-  minimiLeveys?: number;
-  varavesi?: string;
-  lisatieto?: string;
-  mareografi?: string;
-  mitoitusalus?: MitoitusAlusAPIModel[];
-  luokitus?: LuokitusAPIModel[];
-};
 
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;

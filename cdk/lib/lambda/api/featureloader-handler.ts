@@ -3,24 +3,24 @@ import { getFeatureCacheDurationHours, getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
-import {
-  AlueAPIModel,
-  fetchVATUByFairwayClass,
-  KaantoympyraAPIModel,
-  NavigointiLinjaAPIModel,
-  RajoitusAlueAPIModel,
-  TaululinjaAPIModel,
-  TurvalaiteAPIModel,
-  TurvalaiteVikatiedotAPIModel,
-} from '../graphql/query/vatu';
+import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import { GeometryPoint, Text } from '../../../graphql/generated';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { handleLoaderError, getNumberValue, saveResponseToS3 } from '../util';
+import {
+  AlueAPIModel,
+  KaantoympyraAPIModel,
+  NavigointiLinjaAPIModel,
+  PilotPlace,
+  RajoitusAlueAPIModel,
+  TaululinjaAPIModel,
+  TurvalaiteAPIModel,
+  TurvalaiteVikatiedotAPIModel,
+} from './apiModels';
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAllPublic();
@@ -67,13 +67,6 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
     }
   }
 }
-
-type PilotPlace = {
-  id: number;
-  name: Text;
-  geometry: GeometryPoint;
-  fairwayCards: FairwayCardIdName[];
-};
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const placeMap = new Map<number, PilotPlace>();

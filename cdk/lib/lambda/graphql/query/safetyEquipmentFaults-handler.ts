@@ -1,9 +1,9 @@
 import { SafetyEquipmentFault } from '../../../../graphql/generated';
 import { AppSyncResolverEvent } from 'aws-lambda';
-import { TurvalaiteVikatiedotAPIModel } from './vatu';
 import { log } from '../../logger';
 import { cacheResponse, getFromCache } from '../cache';
 import { fetchVATUByApi } from '../../api/axios';
+import { TurvalaiteVikatiedotAPIModel } from '../../api/apiModels';
 
 function getKey() {
   return 'safetyequipmentfault-graphql';

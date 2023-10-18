@@ -10,9 +10,16 @@ import {
   TurningCircle,
 } from '../../../../graphql/generated';
 import { log } from '../../logger';
-import { AlueAPIModel, fetchVATUByFairwayId, KaantoympyraAPIModel, NavigointiLinjaAPIModel, RajoitusAlueAPIModel, TaululinjaAPIModel } from './vatu';
+import { fetchVATUByFairwayId } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
-import { VaylaAPIModel } from '../../api/axios';
+import {
+  AlueAPIModel,
+  KaantoympyraAPIModel,
+  NavigointiLinjaAPIModel,
+  RajoitusAlueAPIModel,
+  TaululinjaAPIModel,
+  VaylaAPIModel,
+} from '../../api/apiModels';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
