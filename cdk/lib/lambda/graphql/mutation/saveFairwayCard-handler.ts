@@ -123,6 +123,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           text: mapString(p.text, 100),
           lang: mapString(p.lang, 2),
           groupId: p.groupId ?? null,
+          legendPosition: p.legendPosition ?? null,
         };
       }) ?? null,
   };

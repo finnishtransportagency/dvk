@@ -563,6 +563,12 @@ export const fairwayCardReducer = (
         pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget && pic.lang === actionLang ? { ...pic, text: value as string } : pic)),
       };
       break;
+    case 'pictureLegendPosition':
+      newState = {
+        ...state,
+        pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
+      };
+      break;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;

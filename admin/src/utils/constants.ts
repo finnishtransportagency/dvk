@@ -81,7 +81,9 @@ export type FairwayCardActionType =
   | 'vhfName'
   | 'vhfChannel'
   | 'picture'
-  | 'pictureDescription';
+  | 'pictureDescription'
+  | 'pictureLegendPosition'
+  | 'getState';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -266,4 +268,11 @@ export const OFFLINE_STORAGE = {
   cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
   staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
   cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
+};
+
+export const POSITION = {
+  bottomLeft: 'bottomLeft',
+  topLeft: 'topLeft',
+  topRight: 'topRight',
+  bottomRight: 'bottomRight',
 };
