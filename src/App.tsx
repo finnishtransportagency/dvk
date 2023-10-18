@@ -34,6 +34,9 @@ import {
   useCircleLayer,
   useSpecialArea2Layer,
   useSpecialArea15Layer,
+  useInitStaticDataLayer,
+} from './components/FeatureLoader';
+import {
   useAisVesselCargoLayer,
   useAisVesselTankerLayer,
   useAisVesselPassengerLayer,
@@ -43,8 +46,7 @@ import {
   useAisVesselPleasureCraftLayer,
   useAisNavigationAidEquipmentLayer,
   useAisUnspecifiedLayer,
-  useInitStaticDataLayer,
-} from './components/FeatureLoader';
+} from './components/AisFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
 /* Core CSS required for Ionic components to work properly */
