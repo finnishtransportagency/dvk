@@ -1,7 +1,8 @@
 import React from 'react';
-import { marineWarningAreas } from '../../utils/constants';
+import { marineWarningAreas, marineWarningTypes } from '../../utils/constants';
 import { IonGrid, IonItem, IonSelect, IonSelectOption } from '@ionic/react';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
+import { useTranslation } from 'react-i18next';
 
 interface WarningFilterProps {
   setAreaFilter: React.Dispatch<React.SetStateAction<string[]>>;
@@ -9,13 +10,12 @@ interface WarningFilterProps {
 }
 
 const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter }) => {
-  const warningAreaList = Object.values(marineWarningAreas);
-  const warningTypeList = ['COASTAL WARNING', 'LOCAL WARNING', 'Varoituksia veneilijöille'];
+  const { t } = useTranslation();
 
   const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setAreaFilter(event?.detail.value ?? []);
   };
-  console.log(warningAreaList);
+
   const handleTypeChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setTypeFilter(event?.detail.value ?? []);
   };
@@ -31,9 +31,9 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
           labelPlacement="stacked"
           onIonChange={(ev) => handleAreaChange(ev)}
         >
-          {warningAreaList.slice(0, 10).map((a) => (
-            <IonSelectOption key={a.name} value={a.name}>
-              {a.name}
+          {marineWarningAreas.map((area) => (
+            <IonSelectOption key={area} value={t(`areas.${area}`)}>
+              {t(`areas.${area}`)}
             </IonSelectOption>
           ))}
         </IonSelect>
@@ -47,9 +47,9 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
           labelPlacement="stacked"
           onIonChange={(ev) => handleTypeChange(ev)}
         >
-          {warningTypeList.map((t) => (
-            <IonSelectOption key={t} value={t}>
-              {t}
+          {marineWarningTypes.map((type) => (
+            <IonSelectOption key={type} value={t(`homePage.map.controls.layer.${type}`)}>
+              {t(`homePage.map.controls.layer.${type}`)}
             </IonSelectOption>
           ))}
         </IonSelect>

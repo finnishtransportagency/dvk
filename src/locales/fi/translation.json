@@ -438,5 +438,17 @@
     "content3": "Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
     "content4": "Maanmittauslaitos",
     "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
+  },
+  "areas": {
+    "gulfOfFinland": "Suomenlahti",
+    "northernBalticSea": "Pohjoinen Itämeri",
+    "archipelagoSea": "Saaristomeri",
+    "seaOfÅland": "Ahvenanmeri",
+    "bothnianSea": "Selkämeri",
+    "theQuark": "Merenkurkku",
+    "bayOfBothnia": "Perämeri",
+    "saimaa": "Saimaa",
+    "saimaaCanal": "Saimaan kanava",
+    "gulfOfBothnia": "Pohjanlahti"
   }
 }

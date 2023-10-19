@@ -225,6 +225,7 @@ type MarineWarningsProps = {
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+  console.log(data);
   const { state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
@@ -245,6 +246,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     };
   }, []);
 
+  console.log(data);
   console.log(areaFilter);
   console.log(typeFilter);
 

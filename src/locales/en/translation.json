@@ -437,5 +437,17 @@
     "content3": "Source: Traficom. Not for navigational use. Does not fulfil requirements for official navigation chart.",
     "content4": "National Land Survey of Finland",
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
+  },
+  "areas": {
+    "gulfOfFinland": "[en] Suomenlahti",
+    "northernBalticSea": "[en] Pohjoinen Itämeri",
+    "archipelagoSea": "[en] Saaristomeri",
+    "seaOfÅland": "[en] Ahvenanmeri",
+    "bothnianSea": "[en] Selkämeri",
+    "theQuark": "[en] Merenkurkku",
+    "bayOfBothnia": "[en] Perämeri",
+    "saimaa": "[en] Saimaa",
+    "saimaaCanal": "[en] Saimaan kanava",
+    "gulfOfBothnia": "[en] Pohjanlahti"
   }
 }
