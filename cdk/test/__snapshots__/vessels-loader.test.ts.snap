@@ -69,7 +69,7 @@ exports[`should get vessels from cache 1`] = `
     "referencePointC": 2,
     "referencePointD": 5,
     "shipType": 90,
-    "timestamp": "2023-1009T14:06:20.027+03:00",
+    "timestamp": "2023-1009T14:06:20.027Z",
   },
   {
     "callSign": "TS0002",
@@ -85,7 +85,7 @@ exports[`should get vessels from cache 1`] = `
     "referencePointC": 17,
     "referencePointD": 10,
     "shipType": 80,
-    "timestamp": "2023-03-03T22:32:22.428+03:00",
+    "timestamp": "2023-03-03T22:32:22.428Z",
   },
 ]
 `;
@@ -106,7 +106,7 @@ exports[`should get vessels from cache when api call fails 1`] = `
     "referencePointC": 2,
     "referencePointD": 5,
     "shipType": 90,
-    "timestamp": "2023-1009T14:06:20.027+03:00",
+    "timestamp": "2023-1009T14:06:20.027Z",
   },
   {
     "callSign": "TS0002",
@@ -122,7 +122,7 @@ exports[`should get vessels from cache when api call fails 1`] = `
     "referencePointC": 17,
     "referencePointD": 10,
     "shipType": 80,
-    "timestamp": "2023-03-03T22:32:22.428+03:00",
+    "timestamp": "2023-03-03T22:32:22.428Z",
   },
 ]
 `;
