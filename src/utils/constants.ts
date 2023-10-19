@@ -288,3 +288,20 @@ export const OFFLINE_STORAGE = {
 };
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
+
+export const marineWarningAreas = {
+  suomenlahti: { id: 'SUOMENLAHTI', name: 'Suomenlahti' },
+  pohjoinenItameri: { id: 'POHJOINEN ITÄMERI', name: 'Pohjoinen Itämeri' },
+  saaristomeri: { id: 'SAARISTOMERI', name: 'Saaristomeri' },
+  ahvenanmeri: { id: 'AHVENANMERI', name: 'Ahvenanmeri' },
+  selkameri: { id: 'SELKÄMERI', name: 'Selkämeri' },
+  merenkurkku: { id: 'MERENKURKKU', name: 'Merenkurkku' },
+  perameri: { id: 'PERÄMERI', name: 'Perämeri' },
+  saimaa: { id: 'SAIMAA', name: 'Saimaa' },
+  saimaanKanava: { id: 'SAIMAAN KANAVA', name: 'Saimaan kanava' },
+  pohjanlahti: { id: 'POHJANLAHTI', name: 'Pohjanlahti' },
+  kaikkiMerialueet: { id: 'KAIKKI MERIALUEET', name: 'Kaikki merialueet' },
+  suomenMerialueet: { id: 'SUOMEN MERIALUEET', name: 'Suomen merialueet' },
+  suomenMerialueetJaSisavesistot: { id: 'SUOMEN MERIALUEET JA SISÄVESISTÖT', name: 'Suomen merialueet ja sisävesistöt' },
+  sisavesistot: { id: 'Sisävesistöt', name: 'Sisävesistöt' },
+};
