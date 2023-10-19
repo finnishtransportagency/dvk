@@ -53,3 +53,13 @@ export const mockALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
     multiValueQueryStringParameters: { type: [type], vaylaluokka: [fairwayClass ?? ''] },
   };
 };
+
+export const mockAISALBEvent = (path: string): ALBEvent => {
+  return {
+    requestContext: { elb: { targetGroupArn: 'arn' } },
+    body: null,
+    httpMethod: 'GET',
+    path: '/api/' + path,
+    isBase64Encoded: false,
+  };
+};

@@ -303,7 +303,7 @@ export type Buoy = {
 };
 
 /* AIS */
-export type Vessel = {
+export type VesselAPIModel = {
   name: string;
   timestamp: number;
   mmsi: number;
@@ -344,4 +344,21 @@ export type VesselLocationFeatureCollection = {
   type?: string;
   dataUpdatedTime?: string;
   features: VesselLocationFeature[];
+};
+
+export type Vessel = {
+  name: string;
+  timestamp: Date;
+  mmsi: number;
+  callSign: string;
+  imo: number;
+  shipType: number;
+  draught: number; // meters
+  eta: number;
+  posType: number;
+  referencePointA: number;
+  referencePointB: number;
+  referencePointC: number;
+  referencePointD: number;
+  destination: string;
 };

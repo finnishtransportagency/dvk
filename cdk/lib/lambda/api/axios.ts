@@ -17,7 +17,7 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
-import { GeometryModel, VaylaAPIModel, Vessel, VesselLocationFeatureCollection } from './apiModels';
+import { GeometryModel, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -57,7 +57,7 @@ async function fetchAISApi(path: string) {
 
 export async function fetchAISMetadata(path: string) {
   const response = await fetchAISApi(path);
-  return response.data ? (response.data as Vessel[]) : [];
+  return response.data ? (response.data as VesselAPIModel[]) : [];
 }
 
 export async function fetchAISFeatureCollection(path: string) {

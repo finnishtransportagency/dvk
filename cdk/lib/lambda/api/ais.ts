@@ -1,21 +1,21 @@
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { Vessel, VesselLocationFeatureCollection } from './apiModels';
+import { Vessel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
 import { fetchAISFeatureCollection, fetchAISMetadata } from './axios';
 
 const aisV1Path = 'ais/api/ais/v1/';
 
 export async function fetchVessels(): Promise<Vessel[]> {
   const path = aisV1Path + 'vessels';
-  const data: Vessel[] = await fetchAISMetadata(path);
+  const data: VesselAPIModel[] = await fetchAISMetadata(path);
   return data.map((row) => {
     return {
       name: row.name,
-      timestamp: row.timestamp,
+      timestamp: new Date(row.timestamp),
       mmsi: row.mmsi,
       callSign: row.callSign,
       imo: row.imo,
       shipType: row.shipType,
-      draught: row.draught,
+      draught: row.draught / 10,
       eta: row.eta,
       posType: row.posType,
       referencePointA: row.referencePointA,
@@ -39,6 +39,7 @@ export async function fetchVesselLocations(): Promise<FeatureCollection> {
       properties: {
         ...f.properties,
         dataUpdatedTime,
+        timestampExternal: new Date(f.properties.timestampExternal),
       },
     };
   });
