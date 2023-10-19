@@ -6,6 +6,8 @@ import dvkMap from './DvkMap';
 import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
+import { useDvkContext } from '../hooks/dvkContext';
+import _ from 'lodash';
 
 type VesselData = {
   name: string;
@@ -24,14 +26,22 @@ type VesselData = {
   destination: string;
 };
 
-const cargoShipTypes = [70, 71, 72, 73, 74, 75, 76, 77, 78, 79];
-const tankerShipTypes = [80, 81, 82, 83, 84, 85, 86, 87, 88, 89];
-const passengerShipTypes = [60, 61, 62, 63, 64, 65, 66, 67, 68, 69];
-const highSpeedShipTypes = [40, 41, 42, 43, 44, 45, 46, 47, 48, 49];
-const tugAndSpecialCraftShipTypes = [31, 32, 33, 34, 35, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59];
-const fishingShipTypes = [30];
-const pleasureCraftShipTypes = [36, 37];
-const navigationAidEquipmentShipTypes = [100];
+type AisLayer = {
+  id: FeatureDataLayerId;
+  shipTypes: Array<number>;
+};
+
+const aisLayers: Array<AisLayer> = [
+  { id: 'aisvesselcargo', shipTypes: _.range(70, 79) },
+  { id: 'aisvesseltanker', shipTypes: _.range(80, 89) },
+  { id: 'aisvesselpassenger', shipTypes: _.range(60, 69) },
+  { id: 'aisvesselhighspeed', shipTypes: _.range(40, 49) },
+  { id: 'aisvesseltugandspecialcraft', shipTypes: [31, 32, 33, 34, 35, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59] },
+  { id: 'aisvesselfishing', shipTypes: [30] },
+  { id: 'aisvesselpleasurecraft', shipTypes: [36, 37] },
+  { id: 'aisnavigationaidequipment', shipTypes: _.range(100, 131) },
+  { id: 'aisunspecified', shipTypes: _.range(90, 99) },
+];
 
 function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<VesselData>) {
   for (const l of locationFeatures) {
@@ -56,14 +66,20 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
 }
 
 function useAisFeatures() {
+  const { state } = useDvkContext();
   const [ready, setReady] = useState(false);
+  const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer.id)));
   const [aisFeatures, setAisFeatures] = useState<Feature<Geometry>[]>([]);
-  const vesselQuery = useFeatureData('aisvessel');
-  const locationQuery = useFeatureData('aislocation');
+  const vesselQuery = useFeatureData('aisvessel', true, 60 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const locationQuery = useFeatureData('aislocation', true, 60 * 1000, enabled, 5 * 60 * 1000, 5 * 60 * 1000);
   const dataUpdatedAt = Math.max(vesselQuery.dataUpdatedAt, locationQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(vesselQuery.errorUpdatedAt, locationQuery.errorUpdatedAt);
   const isPaused = vesselQuery.isPaused || locationQuery.isPaused;
   const isError = vesselQuery.isError || locationQuery.isError;
+
+  useEffect(() => {
+    setEnabled(aisLayers.some((layer) => state.layers.includes(layer.id)));
+  }, [state.layers]);
 
   useEffect(() => {
     const vesselData = vesselQuery.data;
@@ -79,101 +95,63 @@ function useAisFeatures() {
   return { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-function setLayerFeatures(featureLayerId: FeatureDataLayerId, features: Feature<Geometry>[], dataUpdatedAt: number) {
-  const layer = dvkMap.getFeatureLayer(featureLayerId);
-  const source = dvkMap.getVectorSource(featureLayerId);
-  source.clear();
-  features.forEach((f) => f.set('dataSource', featureLayerId, true));
-  source.addFeatures(features);
-  layer.set('dataUpdatedAt', dataUpdatedAt);
+function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geometry>[]) {
+  const aisLayer = aisLayers.find((al) => al.id === id);
+  const source = dvkMap.getVectorSource(id);
+  if (aisLayer && source) {
+    source.clear();
+    source.addFeatures(aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType'))));
+  }
+}
+
+function useAisLayer(layerId: FeatureDataLayerId) {
+  const { state } = useDvkContext();
+  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
+
+  useEffect(() => {
+    const layer = dvkMap.getFeatureLayer(layerId);
+    if (ready && state.layers.includes(layerId) && layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      updateAisLayerFeatures(layerId, aisFeatures);
+      layer.set('dataUpdatedAt', dataUpdatedAt);
+    }
+    layer.set('errorUpdatedAt', errorUpdatedAt);
+  }, [ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, state.layers, layerId]);
+
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
 export function useAisVesselCargoLayer(): DvkLayerState {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return cargoShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesselcargo', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesselcargo');
 }
 
 export function useAisVesselTankerLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return tankerShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesseltanker', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesseltanker');
 }
 
 export function useAisVesselPassengerLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return passengerShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesselpassenger', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesselpassenger');
 }
 
 export function useAisVesselHighSpeedLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return highSpeedShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesselhighspeed', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesselhighspeed');
 }
 
 export function useAisVesselTugAndSpecialCraftLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return tugAndSpecialCraftShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesseltugandspecialcraft', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesseltugandspecialcraft');
 }
 
 export function useAisVesselFishingLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return fishingShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesselfishing', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesselfishing');
 }
 
 export function useAisVesselPleasureCraftLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return pleasureCraftShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisvesselpleasurecraft', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisvesselpleasurecraft');
 }
 
 export function useAisNavigationAidEquipmentLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return navigationAidEquipmentShipTypes.includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisnavigationaidequipment', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisnavigationaidequipment');
 }
 
 export function useAisUnspecifiedLayer() {
-  const { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useAisFeatures();
-  const layerFeatures = aisFeatures.filter((f) => {
-    return ![
-      ...cargoShipTypes,
-      ...tankerShipTypes,
-      ...passengerShipTypes,
-      ...highSpeedShipTypes,
-      ...tugAndSpecialCraftShipTypes,
-      ...fishingShipTypes,
-      ...pleasureCraftShipTypes,
-      ...navigationAidEquipmentShipTypes,
-    ].includes(f.get('shipType'));
-  });
-  setLayerFeatures('aisunspecified', layerFeatures, dataUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return useAisLayer('aisunspecified');
 }
