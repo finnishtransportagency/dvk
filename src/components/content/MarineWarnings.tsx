@@ -1,5 +1,5 @@
 import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -17,6 +17,7 @@ import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
+import WarningsFilter from './WarningsFilter';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -225,6 +226,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const { state } = useDvkContext();
+  const [filters, setFilter] = useState<string[]>([]);
+
   const path = [{ title: t('title') }];
   // Use any of the marine warning layers as they have the same data source
   const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
@@ -240,6 +243,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       dvkMap.getVectorSource('selectedfairwaycard').clear();
     };
   }, []);
+
+  console.log(filters);
 
   useEffect(() => {
     const source = dvkMap.getVectorSource('selectedfairwaycard');
@@ -288,6 +293,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isLoading && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
+      <WarningsFilter setFilter={setFilter} />
 
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />
