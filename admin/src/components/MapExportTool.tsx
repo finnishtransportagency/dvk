@@ -38,7 +38,7 @@ import back_arrow from '../theme/img/back_arrow-1.svg';
 import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
-import FormTextInputRow from './FormTextInputRow';
+import TextInputRow from './form/TextInputRow';
 import { radiansToDegrees } from '../utils/common';
 
 interface PrintInfoProps {
@@ -417,7 +417,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                     </p>
                     {groupedPics && groupedPics?.length > 0 && (
                       <IonGrid className="formGrid">
-                        <FormTextInputRow
+                        <TextInputRow
                           labelKey="fairwaycard.print-images-description"
                           value={groupedPicTexts?.find((gPic) => gPic.groupId === pic.groupId)?.text}
                           updateState={setPicture}
