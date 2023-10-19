@@ -226,7 +226,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const { state } = useDvkContext();
-  const [filters, setFilter] = useState<string[]>([]);
+  const [areaFilter, setAreaFilter] = useState<string[]>([]);
+  const [typeFilter, setTypeFilter] = useState<string[]>([]);
 
   const path = [{ title: t('title') }];
   // Use any of the marine warning layers as they have the same data source
@@ -244,7 +245,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     };
   }, []);
 
-  console.log(filters);
+  console.log(areaFilter);
+  console.log(typeFilter);
 
   useEffect(() => {
     const source = dvkMap.getVectorSource('selectedfairwaycard');
@@ -293,7 +295,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isLoading && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-      <WarningsFilter setFilter={setFilter} />
+      <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} />
 
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isLoading} data={data?.marineWarnings || []} />
