@@ -1,16 +1,16 @@
 import { mockClient } from 'aws-sdk-client-mock';
-import { handler } from '../lib/lambda/api/vessellocations-handler';
+import { handler } from '../lib/lambda/api/aislocations-handler';
 import { mockAISALBEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { sdkStreamMixin } from '@aws-sdk/util-stream';
-import locationsJson from './data/vessellocations.json';
+import locationsJson from './data/aislocations.json';
 import { Readable } from 'stream';
 import { gunzip, gzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 
 const s3Mock = mockClient(S3Client);
-const path = 'vessellocations';
+const path = 'aislocations';
 
 jest.mock('../lib/lambda/environment', () => ({
   getFeatureCacheDurationHours: () => 2,

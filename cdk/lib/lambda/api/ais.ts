@@ -34,7 +34,7 @@ export async function fetchVessels(): Promise<Vessel[]> {
   });
 }
 
-export async function fetchVesselLocations(): Promise<FeatureCollection> {
+export async function fetchLocations(): Promise<FeatureCollection> {
   const path = aisV1Path + 'locations';
   const params = getTimestampParams();
   const data: VesselLocationFeatureCollection = await fetchAISFeatureCollection(path, params);

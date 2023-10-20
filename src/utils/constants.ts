@@ -2,13 +2,13 @@ const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
 
-const vesselsUrl = import.meta.env.VITE_APP_REST_API_URL
-  ? import.meta.env.VITE_APP_REST_API_URL + '/vessels'
-  : globalThis.location.origin + '/api/vessels';
+const aisVesselsUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/aisvessels'
+  : globalThis.location.origin + '/api/aisvessels';
 
-const vesselLocationsUrl = import.meta.env.VITE_APP_REST_API_URL
-  ? import.meta.env.VITE_APP_REST_API_URL + '/vessellocations'
-  : globalThis.location.origin + '/api/vessellocations';
+const aisLocationsUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/aislocations'
+  : globalThis.location.origin + '/api/aislocations';
 
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
@@ -182,14 +182,14 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'aislocation',
-    url: new URL(vesselLocationsUrl),
-    staticUrl: new URL(staticUrl + '/vessel-locations.json.gz'),
+    url: new URL(aisLocationsUrl),
+    staticUrl: new URL(staticUrl + '/aislocations.json.gz'),
     persist: false,
   },
   {
     id: 'aisvessel',
-    url: new URL(vesselsUrl),
-    staticUrl: new URL(staticUrl + '/vessel.json.gz'),
+    url: new URL(aisVesselsUrl),
+    staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
     persist: false,
   },
 ];

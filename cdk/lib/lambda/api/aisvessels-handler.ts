@@ -6,11 +6,11 @@ import { fetchVessels } from './ais';
 import { handleLoaderError, saveResponseToS3 } from '../util';
 
 function getKey() {
-  return 'vessel';
+  return 'aisvessels';
 }
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
-  log.info({ event }, `vessels()`);
+  log.info({ event }, `aisvessels()`);
   const key = getKey();
   let base64Response: string | undefined;
   let statusCode = 200;
@@ -20,7 +20,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   } else {
     try {
       const vessels = await fetchVessels();
-      log.debug('vessels: %d', vessels.length);
+      log.debug('ais vessels: %d', vessels.length);
       base64Response = await saveResponseToS3(vessels, key);
     } catch (e) {
       const errorResult = handleLoaderError(response, e);
