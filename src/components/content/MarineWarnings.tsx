@@ -223,9 +223,9 @@ type MarineWarningsProps = {
 };
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'warnings' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
+  const lang = i18n.resolvedLanguage as Lang;
   const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
-  console.log(data);
   const { state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
@@ -246,9 +246,22 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     };
   }, []);
 
-  console.log(data);
-  console.log(areaFilter);
-  console.log(typeFilter);
+  const filterDataByAreaAndType = useCallback(() => {
+    const filteredData = data?.marineWarnings.filter((w) => {
+      let foundInArea = true;
+      let foundInType = true;
+
+      if (areaFilter.length > 0) {
+        foundInArea = areaFilter.some((a) => String(w.area[lang]).includes(a.toUpperCase()));
+      }
+      if (typeFilter.length > 0) {
+        foundInType = typeFilter.some((type) => String(w.type[lang]).includes(type.toUpperCase()));
+      }
+      return foundInArea && foundInType;
+    });
+
+    return filteredData;
+  }, [areaFilter, typeFilter, data?.marineWarnings, lang]);
 
   useEffect(() => {
     const source = dvkMap.getVectorSource('selectedfairwaycard');
@@ -300,7 +313,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} />
 
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
-        <WarningList loading={isLoading} data={data?.marineWarnings || []} />
+        <WarningList loading={isLoading} data={filterDataByAreaAndType() || []} />
       </div>
     </>
   );
