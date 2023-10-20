@@ -32,6 +32,17 @@ import { getMareographStyle } from './layerStyles/mareographStyles';
 import { getObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
 import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
+import {
+  getAisVesselCargoStyle,
+  getAisVesselTankerStyle,
+  getAisVesselPassengerStyle,
+  getAisVesselHighSpeedStyle,
+  getAisVesselTugAndSpecialCraftStyle,
+  getAisVesselFishingStyle,
+  getAisVesselPleasureCraftStyle,
+  getAisNavigationAidEquipmentStyle,
+  getAisUnspecifiedStyle,
+} from './layerStyles/aisStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -40,6 +51,7 @@ import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
+import { initialState } from '../hooks/dvkReducer';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -325,7 +337,7 @@ function addFeatureVectorLayer({
       opacity,
       renderOrder: undefined,
       zIndex,
-      visible: id !== 'mareograph' && id !== 'observation' && id !== 'buoy',
+      visible: initialState.layers.includes(id),
     })
   );
 }
@@ -461,6 +473,20 @@ function addSoundingPointLayer(map: Map) {
     zIndex: 305,
   });
   map.addLayer(layer);
+}
+
+function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, zIndex: number) {
+  addFeatureVectorLayer({
+    map: map,
+    id: id,
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: style,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: zIndex,
+  });
 }
 
 export function addAPILayers(map: Map) {
@@ -774,6 +800,29 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 315,
   });
+
+  // AIS
+  addAisVesselLayer(map, 'aisvesselcargo', (feature) => getAisVesselCargoStyle(feature, false), 316);
+  addAisVesselLayer(map, 'aisvesseltanker', (feature) => getAisVesselTankerStyle(feature, false), 317);
+  addAisVesselLayer(map, 'aisvesselpassenger', (feature) => getAisVesselPassengerStyle(feature, false), 318);
+  addAisVesselLayer(map, 'aisvesselhighspeed', (feature) => getAisVesselHighSpeedStyle(feature, false), 319);
+  addAisVesselLayer(map, 'aisvesseltugandspecialcraft', (feature) => getAisVesselTugAndSpecialCraftStyle(feature, false), 320);
+  addAisVesselLayer(map, 'aisvesselfishing', (feature) => getAisVesselFishingStyle(feature, false), 321);
+  addAisVesselLayer(map, 'aisvesselpleasurecraft', (feature) => getAisVesselPleasureCraftStyle(feature, false), 322);
+
+  addFeatureVectorLayer({
+    map: map,
+    id: 'aisnavigationaidequipment',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getAisNavigationAidEquipmentStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 323,
+  });
+
+  addAisVesselLayer(map, 'aisunspecified', (feature) => getAisUnspecifiedStyle(feature, false), 324);
 }
 
 export function unsetSelectedFairwayCard() {

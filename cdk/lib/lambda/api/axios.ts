@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  getAISHeaders,
   getExtensionPort,
   getIlmanetPassword,
   getIlmanetUrl,
@@ -16,6 +17,7 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
+import { GeometryModel, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -35,52 +37,36 @@ export async function fetchTraficomApi<T>(path: string) {
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 
-export type GeometryModel = {
-  geometria: object;
-};
+async function fetchAISApi(path: string, params: Record<string, string>) {
+  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getAISHeaders(),
+      params,
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`AIS api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error('Fetching from AIS api failed');
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `AIS api response time: ${duration} ms`);
+  return response;
+}
 
-export type MitoitusAlusAPIModel = {
-  alustyyppiKoodi: string;
-  alustyyppi: string;
-  pituus: number;
-  leveys: number;
-  syvays: number;
-  koko?: number;
-  runkoTaytelaisyysKerroin?: number;
-};
+export async function fetchAISMetadata(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
+  return response.data ? (response.data as VesselAPIModel[]) : [];
+}
 
-export type LuokitusAPIModel = {
-  luokitusTyyppi: string;
-  vaylaluokkaKoodi: string;
-  vaylaluokkaFI?: string;
-  vaylaluokkaSV?: string;
-};
-
-export type VaylaAPIModel = {
-  jnro: number;
-  nimiFI: string;
-  nimiSV?: string;
-  vaylalajiKoodi?: string;
-  vaylaLajiFI?: string;
-  vaylaLajiSV?: string;
-  valaistusKoodi?: string;
-  valaistusFI?: string;
-  valaistusSV?: string;
-  omistaja?: string;
-  merialueFI?: string;
-  merialueSV?: string;
-  alunSeloste?: string;
-  paatepisteenSeloste?: string;
-  normaaliKaantosade?: number;
-  minimiKaantosade?: number;
-  normaaliLeveys?: number;
-  minimiLeveys?: number;
-  varavesi?: string;
-  lisatieto?: string;
-  mareografi?: string;
-  mitoitusalus?: MitoitusAlusAPIModel[];
-  luokitus?: LuokitusAPIModel[];
-};
+export async function fetchAISFeatureCollection(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
+  return response.data
+    ? (response.data as VesselLocationFeatureCollection)
+    : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
+}
 
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
