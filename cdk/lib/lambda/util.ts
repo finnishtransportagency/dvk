@@ -80,7 +80,7 @@ export async function saveResponseToS3(features: FeatureCollection | Vessel[], k
   return base64Response;
 }
 
-export function handleLoaderError(response: CacheResponse, e: any): ALBResult {
+export function handleLoaderError(response: CacheResponse, e: unknown): ALBResult {
   let base64Response;
   let statusCode;
 
