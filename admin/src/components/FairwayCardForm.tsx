@@ -399,17 +399,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
     }
   };
+  const confirmationCondition =
+    (savedCard ? (savedCard as StatusName) : fairwayCard).status === Status.Draft && state.status === Status.Draft && confirmationType === '';
 
   return (
     <IonPage>
-      <ConfirmationModal
-        saveType="fairwaycard"
-        action={confirmationType === 'cancel' ? backToList : saveCard}
-        confirmationType={confirmationType}
-        setConfirmationType={setConfirmationType}
-        newStatus={state.status}
-        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
-      />
+      {!confirmationCondition && (
+        <ConfirmationModal
+          saveType="fairwaycard"
+          action={confirmationType === 'cancel' ? backToList : saveCard}
+          confirmationType={confirmationType}
+          setConfirmationType={setConfirmationType}
+          newStatus={state.status}
+          oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        />
+      )}
       <NotificationModal
         isOpen={!!saveError || isOpen}
         closeAction={closeNotification}
