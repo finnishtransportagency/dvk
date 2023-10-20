@@ -5,62 +5,65 @@ import { MAP } from '../utils/constants';
 import * as turf from '@turf/turf';
 import { intersects } from 'ol/extent';
 
+function getSpeedLimitFairwayAreas(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]): Feature<Geometry>[] {
+  return fafs.filter((faf) => {
+    const fafExtent = faf.getGeometry()?.getExtent();
+    for (const raf of rafs) {
+      const rafExtent = raf.getGeometry()?.getExtent();
+      if (rafExtent && fafExtent && intersects(rafExtent, fafExtent)) {
+        return true;
+      }
+    }
+    return false;
+  });
+}
+
+type SpeedLimitGeometry = {
+  speedLimit: number;
+  geometry: turf.Polygon | turf.helpers.Feature<turf.helpers.Polygon | turf.helpers.MultiPolygon, turf.helpers.Properties>;
+};
+
+function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeometry> {
+  const speedLimitGeometries: Array<SpeedLimitGeometry> = [];
+  const format = new GeoJSON();
+
+  for (const raf of rafs) {
+    const speedLimit = raf.getProperties().value;
+    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
+
+    const speedLimitGeometry = speedLimitGeometries.find((slg) => slg.speedLimit === speedLimit);
+    if (speedLimitGeometry) {
+      const union = turf.union(speedLimitGeometry.geometry, raGeomPoly as turf.Polygon);
+      if (union) {
+        speedLimitGeometry.geometry = union;
+      }
+    } else {
+      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon });
+    }
+  }
+  return speedLimitGeometries;
+}
+
 /* Input projection EPSG:4326, output projection MAP.EPSG */
 export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]) {
   const speedLimitFeatures: Feature<Geometry>[] = [];
   const format = new GeoJSON();
+  // Filter out restriction areas without speed limit value
+  rafs = rafs.filter((raf) => raf.getProperties().value !== null);
+  // Filter out fairway areas that extent does not intersect any speed limit area extent
+  fafs = getSpeedLimitFairwayAreas(rafs, fafs);
 
-  const speedLimitFafs: Feature<Geometry>[] = [];
-  for (const faf of fafs) {
-    const fafExtent = faf.getGeometry()?.getExtent();
-    for (const raf of rafs) {
-      const speedLimit = raf.getProperties().value;
-      const rafExtent = raf.getGeometry()?.getExtent();
-      if (speedLimit && rafExtent && fafExtent && intersects(rafExtent, fafExtent)) {
-        speedLimitFafs.push(faf);
-        break;
-      }
-    }
-  }
-
-  const speedLimitGeometries: {
-    speedLimit: number;
-    geometry: turf.Polygon | turf.helpers.Feature<turf.helpers.Polygon | turf.helpers.MultiPolygon, turf.helpers.Properties>;
-  }[] = [];
-
-  for (const raf of rafs) {
-    const speedLimit = raf.getProperties().value;
-    // Only analyse restriction areas with speed limit value
-    if (speedLimit === null) {
-      continue;
-    }
-
-    const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
-
-    const index = speedLimitGeometries.findIndex((slg) => slg.speedLimit === speedLimit);
-    if (index < 0) {
-      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon });
-    } else {
-      const union = turf.union(speedLimitGeometries[index].geometry, raGeomPoly as turf.Polygon);
-      if (union) {
-        speedLimitGeometries[index].geometry = union;
-      }
-    }
-  }
-
-  for (const slg of speedLimitGeometries) {
-    const speedLimit = slg.speedLimit;
+  for (const slg of getSpeedLimitGeometries(rafs)) {
     const raGeomPoly = slg.geometry;
     const intersectionPolygons = [];
 
-    for (const faf of speedLimitFafs) {
+    for (const faf of fafs) {
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
       if (intersection) {
         intersectionPolygons.push(turf.truncate(intersection));
       }
     }
-
     if (intersectionPolygons.length < 1) {
       continue; /* Speed limit polygon does not intersect with any fairway area polygon */
     }
@@ -81,7 +84,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
       });
-      feat.setProperties({ speedLimit: speedLimit });
+      feat.setProperties({ speedLimit: slg.speedLimit });
       speedLimitFeatures.push(feat);
     }
   }
