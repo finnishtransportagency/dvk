@@ -172,8 +172,9 @@ export type AisFeatureProperties = {
   posAcc: boolean;
   raim: boolean;
   heading?: number;
-  timestamp: Date;
+  timestamp: number;
   timestampExternal: Date;
+  dataUpdatedTime: Date;
   name?: string;
   callSign?: string;
   imo?: number;
