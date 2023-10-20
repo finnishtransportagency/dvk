@@ -51,6 +51,7 @@ import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
+import { initialState } from '../hooks/dvkReducer';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -336,7 +337,7 @@ function addFeatureVectorLayer({
       opacity,
       renderOrder: undefined,
       zIndex,
-      visible: id !== 'mareograph' && id !== 'observation' && id !== 'buoy',
+      visible: initialState.layers.includes(id),
     })
   );
 }

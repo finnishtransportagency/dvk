@@ -319,7 +319,26 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   }
 
   const isDisabled = (): boolean => {
-    const initialized = !!dataUpdatedAt || ['ice', 'depthcontour', 'deptharea', 'soundingpoint', 'mareograph', 'observation', 'buoy'].includes(id);
+    const initialized =
+      !!dataUpdatedAt ||
+      [
+        'ice',
+        'depthcontour',
+        'deptharea',
+        'soundingpoint',
+        'mareograph',
+        'observation',
+        'buoy',
+        'aisvesselcargo',
+        'aisvesseltanker',
+        'aisvesselpassenger',
+        'aisvesselhighspeed',
+        'aisvesseltugandspecialcraft',
+        'aisvesselfishing',
+        'aisvesselpleasurecraft',
+        'aisnavigationaidequipment',
+        'aisunspecified',
+      ].includes(id);
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };
 
