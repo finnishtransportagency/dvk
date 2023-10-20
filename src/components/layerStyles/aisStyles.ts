@@ -14,7 +14,12 @@ import unspecifiedIcon from '../../theme/img/ais/ais_unspecified.svg';
 function getAisVesselStyle(feature: FeatureLike, selected: boolean, imgSrc: string) {
   const props = feature.getProperties() as AisFeatureProperties;
   const scale = selected ? 1.2 : 1;
-  const rotation = (props.heading * Math.PI) / 180;
+  let rotation = 0;
+  if (props.heading && props.heading >= 0 && props.heading < 360) {
+    rotation = (props.heading * Math.PI) / 180;
+  } else if (props.cog >= 0 && props.cog < 360) {
+    rotation = (props.cog * Math.PI) / 180;
+  }
 
   return new Style({
     image: new Icon({

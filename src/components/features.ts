@@ -171,7 +171,7 @@ export type AisFeatureProperties = {
   rot: number;
   posAcc: boolean;
   raim: boolean;
-  heading: number;
+  heading?: number;
   timestamp: number;
   timestampExternal: number;
   name?: string;
