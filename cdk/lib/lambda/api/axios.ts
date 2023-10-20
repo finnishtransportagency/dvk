@@ -37,12 +37,13 @@ export async function fetchTraficomApi<T>(path: string) {
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 
-async function fetchAISApi(path: string) {
+async function fetchAISApi(path: string, params: Record<string, string>) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
       headers: await getAISHeaders(),
+      params,
       timeout: getTimeout(),
     })
     .catch(function (error) {
@@ -55,13 +56,13 @@ async function fetchAISApi(path: string) {
   return response;
 }
 
-export async function fetchAISMetadata(path: string) {
-  const response = await fetchAISApi(path);
+export async function fetchAISMetadata(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
   return response.data ? (response.data as VesselAPIModel[]) : [];
 }
 
-export async function fetchAISFeatureCollection(path: string) {
-  const response = await fetchAISApi(path);
+export async function fetchAISFeatureCollection(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
   return response.data
     ? (response.data as VesselLocationFeatureCollection)
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);

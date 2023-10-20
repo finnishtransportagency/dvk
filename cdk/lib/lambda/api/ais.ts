@@ -4,9 +4,16 @@ import { fetchAISFeatureCollection, fetchAISMetadata } from './axios';
 
 const aisV1Path = 'ais/api/ais/v1/';
 
+function getTimestampParams(): Record<string, string> {
+  const now = Date.now();
+  const yesterday = Date.now() - 24 * 60 * 60 * 1000;
+  return { from: yesterday.toString(), to: now.toString() };
+}
+
 export async function fetchVessels(): Promise<Vessel[]> {
   const path = aisV1Path + 'vessels';
-  const data: VesselAPIModel[] = await fetchAISMetadata(path);
+  const params = getTimestampParams();
+  const data: VesselAPIModel[] = await fetchAISMetadata(path, params);
   return data.map((row) => {
     return {
       name: row.name,
@@ -29,7 +36,8 @@ export async function fetchVessels(): Promise<Vessel[]> {
 
 export async function fetchVesselLocations(): Promise<FeatureCollection> {
   const path = aisV1Path + 'locations';
-  const data: VesselLocationFeatureCollection = await fetchAISFeatureCollection(path);
+  const params = getTimestampParams();
+  const data: VesselLocationFeatureCollection = await fetchAISFeatureCollection(path, params);
   const { dataUpdatedTime, features } = data;
   const geojsonFeatures: Feature<Geometry, GeoJsonProperties>[] = features.map((f) => {
     return {
