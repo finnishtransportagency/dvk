@@ -25,6 +25,7 @@ interface InputProps {
   actionType: Action['type'];
   infoContentTitle?: string;
   infoContent?: string;
+  inputMode?: 'text' | 'decimal' | 'numeric';
 }
 
 const InputField: React.FC<InputProps> = (props) => {
@@ -59,7 +60,7 @@ const InputField: React.FC<InputProps> = (props) => {
     (event: CustomEvent, actionType: Action['type']) => {
       inputRef?.current?.getInputElement().then((inputElem) => {
         //checks if zeros preceding other numbers and same thing if there's - symbol preceding
-        const trimmedValue = inputElem.value.replace(/(^0+(?=[0-9]))|((?<=-)0+(?=[0-9]))/g, '');
+        const trimmedValue = inputElem.value.replace(/(^0+(?=\d))|((?<=-)0+(?=\d))/g, '');
         setValue(trimmedValue);
         dispatch({
           type: 'validation',
@@ -118,7 +119,7 @@ const InputField: React.FC<InputProps> = (props) => {
   const getErrorText = () => {
     const errorSign = '\u26A0 ';
     if (value) {
-      const unit = props.unit || '';
+      const unit = props.unit ?? '';
       if (props.min !== undefined && Number(value) < props.min) {
         return errorSign + t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) }) + ' ' + unit;
       } else if (props.max !== undefined && Number(value) > props.max) {
@@ -177,7 +178,7 @@ const InputField: React.FC<InputProps> = (props) => {
         onIonBlur={handleBlur}
         onIonFocus={handleFocus}
         debounce={250}
-        inputmode="decimal"
+        inputmode={props.inputMode ?? 'decimal'}
         label={props.unit}
         labelPlacement="end"
         helperText={getHelperText()}
