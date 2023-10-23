@@ -14,3 +14,61 @@
 #marineWarningList ion-grid.table ion-row > ion-col p {
   margin: 0;
 }
+
+#filterContainer {
+  margin-top: 10px;
+}
+
+#customRow {
+  display: inline-flex;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.marineWarningSelectWide {
+  box-sizing: border-box;
+  border: 1px solid #333333;
+  border-radius: 1px;
+  background-color: #FFFFFF;
+  margin-right: 20px;
+  margin-top: 3px;
+  height: 45px;
+  width: 300px;
+}
+
+.marineWarningSelectNarrow {
+  box-sizing: border-box;
+  border: 1px solid #333333;
+  border-radius: 1px;
+  background-color: #FFFFFF;
+  margin-top: 3px;
+  height: 45px;
+  width: 150.5px;
+}
+
+.rightMargin {
+  margin-right: 20px;
+}
+
+.filterTitle {
+    height: 20px;
+    width: 23px;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+}
+
+#sortingButton {
+  margin-top: 28px;
+  margin-left: 11px;
+}
+
+#sortingIcon {
+  height: 32px;
+  width: 32px;
+}
+
+.flipped {
+  transform: rotate(180deg);
+}

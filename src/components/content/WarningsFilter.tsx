@@ -1,6 +1,6 @@
 import React from 'react';
 import { marineWarningAreas, marineWarningTypes } from '../../utils/constants';
-import { IonButton, IonGrid, IonIcon, IonItem, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonButton, IonCol, IonIcon, IonRow, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import { useTranslation } from 'react-i18next';
 import sort_arrow from '../../theme/img/back_arrow-1.svg';
@@ -10,9 +10,10 @@ interface WarningFilterProps {
   setTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setSortNewFirst: React.Dispatch<React.SetStateAction<boolean>>;
   sortNewFirst: boolean;
+  widePane?: boolean;
 }
 
-const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst }) => {
+const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst, widePane }) => {
   const { t } = useTranslation();
 
   const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
@@ -23,14 +24,16 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
     setTypeFilter(event?.detail.value ?? []);
   };
 
-  const handleSortChange = () => {
+  const handleSort = () => {
     setSortNewFirst(!sortNewFirst);
   };
 
   return (
-    <IonGrid>
-      <IonItem>
+    <IonRow id="customRow">
+      <IonCol>
+        <IonText className="filterTitle">{t('warnings.area')}</IonText>
         <IonSelect
+          className={widePane ? 'marineWarningSelectWide rightMargin' : 'marineWarningSelectNarrow rightMargin'}
           placeholder="Valitse suodatin"
           multiple={true}
           interface="popover"
@@ -44,9 +47,11 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
             </IonSelectOption>
           ))}
         </IonSelect>
-      </IonItem>
-      <IonItem>
+      </IonCol>
+      <IonCol>
+        <IonText className="filterTitle">{t('warnings.type')}</IonText>
         <IonSelect
+          className={widePane ? 'marineWarningSelectWide' : 'marineWarningSelectNarrow'}
           placeholder="Valitse suodatin"
           multiple={true}
           interface="popover"
@@ -60,11 +65,13 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
             </IonSelectOption>
           ))}
         </IonSelect>
-        <IonButton fill="clear" onClick={handleSortChange}>
-          <IonIcon color="primary" src={sort_arrow} />
+      </IonCol>
+      <IonCol>
+        <IonButton id="sortingButton" fill="clear" onClick={handleSort}>
+          <IonIcon id="sortingIcon" className={sortNewFirst ? 'flipped' : ''} src={sort_arrow} />
         </IonButton>
-      </IonItem>
-    </IonGrid>
+      </IonCol>
+    </IonRow>
   );
 };
 

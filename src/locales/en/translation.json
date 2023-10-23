@@ -258,7 +258,8 @@
     "lastUpdatedAt": "Data of this view loaded over {{ val, number}} h ago.",
     "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
-    "viewLastUpdatedUnknown": "The last loading time of this views data is unknown."
+    "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
+    "type":"Type"
   },
   "appUpdateAlert": {
     "title": "Update available",
