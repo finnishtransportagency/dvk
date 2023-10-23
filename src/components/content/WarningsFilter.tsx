@@ -3,7 +3,7 @@ import { marineWarningAreas, marineWarningTypes } from '../../utils/constants';
 import { IonButton, IonCol, IonIcon, IonRow, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import { useTranslation } from 'react-i18next';
-import sort_arrow from '../../theme/img/back_arrow-1.svg';
+import sortArrow from '../../theme/img/back_arrow-1.svg';
 
 interface WarningFilterProps {
   setAreaFilter: React.Dispatch<React.SetStateAction<string[]>>;
@@ -18,14 +18,12 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
 
   const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setAreaFilter(event?.detail.value ?? []);
+    event?.preventDefault();
   };
 
   const handleTypeChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setTypeFilter(event?.detail.value ?? []);
-  };
-
-  const handleSort = () => {
-    setSortNewFirst(!sortNewFirst);
+    event?.preventDefault();
   };
 
   return (
@@ -67,8 +65,15 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
         </IonSelect>
       </IonCol>
       <IonCol>
-        <IonButton id="sortingButton" fill="clear" onClick={handleSort}>
-          <IonIcon id="sortingIcon" className={sortNewFirst ? '' : 'flipped'} src={sort_arrow} />
+        <IonButton
+          id="sortingButton"
+          fill="clear"
+          onClick={(e) => {
+            setSortNewFirst(!sortNewFirst);
+            e.preventDefault();
+          }}
+        >
+          <IonIcon id="sortingIcon" className={sortNewFirst ? '' : 'flipped'} src={sortArrow} />
         </IonButton>
       </IonCol>
     </IonRow>

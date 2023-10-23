@@ -1,4 +1,4 @@
-import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
@@ -18,6 +18,9 @@ import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import WarningsFilter from './WarningsFilter';
+import localWarningIcon from '../../theme/img/local_warning_icon.svg';
+import coastalWarningIcon from '../../theme/img/coastal_warning_icon.svg';
+import boaterWarningIcon from '../../theme/img/warning_to_boaters_icon.svg';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -45,6 +48,17 @@ function goto(warning: MarineWarning, layers: string[]) {
       olExtent.extend(extent, geometry.getExtent());
       dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
     }
+  }
+}
+
+function getIcon(type: string): string {
+  switch (type) {
+    case 'COASTAL WARNING':
+      return coastalWarningIcon;
+    case 'LOCAL WARNING':
+      return localWarningIcon;
+    default:
+      return boaterWarningIcon;
   }
 }
 
@@ -80,7 +94,8 @@ const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNewFirst }
               </IonCol>
             </IonRow>
             <IonRow>
-              <IonCol size="6">
+              <IonCol size="6" style={{ display: 'flex' }}>
+                <IonIcon className="listIcon" src={getIcon(warning.type[lang] ?? '')} />
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('area')}</h4>
                   <Paragraph bodyText={warning.area} />
