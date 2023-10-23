@@ -34,7 +34,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
         <IonText className="filterTitle">{t('warnings.area')}</IonText>
         <IonSelect
           className={widePane ? 'marineWarningSelectWide rightMargin' : 'marineWarningSelectNarrow rightMargin'}
-          placeholder="Valitse suodatin"
+          placeholder={t('common.filter')}
           multiple={true}
           interface="popover"
           fill="outline"
@@ -52,7 +52,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
         <IonText className="filterTitle">{t('warnings.type')}</IonText>
         <IonSelect
           className={widePane ? 'marineWarningSelectWide' : 'marineWarningSelectNarrow'}
-          placeholder="Valitse suodatin"
+          placeholder={t('common.filter')}
           multiple={true}
           interface="popover"
           fill="outline"
