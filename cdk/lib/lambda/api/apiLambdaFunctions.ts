@@ -17,6 +17,20 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useVpc: true,
   },
   {
+    entry: path.join(__dirname, 'aislocations-handler.ts'),
+    pathPattern: '/api/aislocations',
+    functionName: 'aislocations',
+    priority: 14,
+    useVpc: true,
+  },
+  {
+    entry: path.join(__dirname, 'aisvessels-handler.ts'),
+    pathPattern: '/api/aisvessels',
+    functionName: 'aisvessels',
+    priority: 16,
+    useVpc: true,
+  },
+  {
     entry: path.join(__dirname, 'login.ts'),
     pathPattern: '/yllapito/kirjaudu.html',
     functionName: 'login',

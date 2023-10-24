@@ -2,6 +2,14 @@ const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
 
+const aisVesselsUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/aisvessels'
+  : globalThis.location.origin + '/api/aisvessels';
+
+const aisLocationsUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/aislocations'
+  : globalThis.location.origin + '/api/aislocations';
+
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
@@ -33,7 +41,9 @@ export type FeatureDataId =
   | 'circle'
   | 'soundingpoint'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'aislocation'
+  | 'aisvessel';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 
@@ -170,9 +180,21 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/circle.json.gz'),
     persist: true,
   },
+  {
+    id: 'aislocation',
+    url: new URL(aisLocationsUrl),
+    staticUrl: new URL(staticUrl + '/aislocations.json.gz'),
+    persist: false,
+  },
+  {
+    id: 'aisvessel',
+    url: new URL(aisVesselsUrl),
+    staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
+    persist: false,
+  },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -203,7 +225,16 @@ export type FeatureDataLayerId =
   | 'deptharea'
   | 'circle'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'aisvesselcargo'
+  | 'aisvesseltanker'
+  | 'aisvesselpassenger'
+  | 'aisvesselhighspeed'
+  | 'aisvesseltugandspecialcraft'
+  | 'aisvesselfishing'
+  | 'aisvesselpleasurecraft'
+  | 'aisnavigationaidequipment'
+  | 'aisunspecified';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -260,6 +291,15 @@ export const MAP: MapType = {
     { id: 'depthcontour', offlineSupport: false, localizedStyle: false },
     { id: 'deptharea', offlineSupport: false, localizedStyle: false },
     { id: 'circle', offlineSupport: true, localizedStyle: false },
+    { id: 'aisvesselcargo', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesseltanker', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselpassenger', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselhighspeed', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesseltugandspecialcraft', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselfishing', offlineSupport: false, localizedStyle: false },
+    { id: 'aisvesselpleasurecraft', offlineSupport: false, localizedStyle: false },
+    { id: 'aisnavigationaidequipment', offlineSupport: false, localizedStyle: false },
+    { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
   ],
 };
 

@@ -75,6 +75,7 @@ export type Picture = {
   lang?: Maybe<string>;
   groupId?: Maybe<number>;
   modificationTimestamp?: Maybe<number>;
+  legendPosition?: Maybe<string>;
 };
 
 class FairwayCardDBModel {

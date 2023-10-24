@@ -71,7 +71,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
       <div className="mapWrapper">
         <div className="mapContent">
           <div className="mapExport" id="mapExport"></div>
-          <div className="mapLegend">
+          <div className="mapLegend bottomLeft">
             <div className="bg"></div>
             <div id="compassInfo">
               <img id="compassNeedle" src={north_arrow} alt="" />
@@ -96,6 +96,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
         </div>
       </div>
       {picturesByLang?.map((picture, index) => {
+        const mapLegendClass = picture.legendPosition ? `mapLegend ${picture.legendPosition}` : 'mapLegend bottomLeft';
         return (
           <div className={'imageWrapper ' + (picture.orientation === Orientation.Portrait ? 'hide-landscape' : 'hide-portrait')} key={picture.id}>
             <div className="pagebreak"></div>
@@ -104,7 +105,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                 <div className="mapExport" id={`mapExport${index}`}>
                   <img src={imageUrl + id + '/' + picture.id} alt={picture.id} />
                 </div>
-                <div className="mapLegend">
+                <div className={mapLegendClass}>
                   <div className="bg"></div>
                   <div className="compassInfo" id={'compassInfo' + picture.id}>
                     <img

@@ -515,11 +515,10 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
-
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
-      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} />
+      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} setPicture={setPicture} />
 
       <IonText>
         <h4>
@@ -717,6 +716,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           text: null,
           lang: toBeSavedPicture.lang,
           groupId: toBeSavedPicture.groupId,
+          legendPosition: toBeSavedPicture.legendPosition,
         };
         // Update fairwayCard state
         setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');

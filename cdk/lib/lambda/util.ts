@@ -1,4 +1,9 @@
-import { Geometry, Position } from 'geojson';
+import { FeatureCollection, Geometry, Position } from 'geojson';
+import { gzip } from 'zlib';
+import { log } from './logger';
+import { CacheResponse, cacheResponse } from './graphql/cache';
+import { ALBResult } from 'aws-lambda';
+import { Vessel } from './api/apiModels';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -43,4 +48,53 @@ export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) 
     }
   }
   return geometry;
+}
+
+export function getNumberValue(value: number | undefined): number | undefined {
+  return value && value > 0 ? value : undefined;
+}
+
+export async function gzipString(input: string): Promise<Buffer> {
+  const buffer = Buffer.from(input);
+  return new Promise((resolve, reject) =>
+    gzip(buffer, (err, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(data);
+    })
+  );
+}
+
+export async function saveResponseToS3(features: FeatureCollection | Vessel[], key: string): Promise<string> {
+  let start = Date.now();
+  const body = JSON.stringify(features);
+  log.debug('stringify duration: %d ms', Date.now() - start);
+  start = Date.now();
+  const gzippedResponse = await gzipString(body);
+  log.debug('gzip duration: %d ms', Date.now() - start);
+  start = Date.now();
+  const base64Response = gzippedResponse.toString('base64');
+  log.debug('base64 duration: %d ms', Date.now() - start);
+  await cacheResponse(key, base64Response);
+  return base64Response;
+}
+
+export function handleLoaderError(response: CacheResponse, e: unknown): ALBResult {
+  let base64Response;
+  let statusCode;
+
+  log.error('Getting features failed: %s', e);
+  if (response.data) {
+    log.warn('Returning possibly expired response from s3 cache');
+    base64Response = response.data;
+    statusCode = 200;
+  } else {
+    base64Response = undefined;
+    statusCode = 500;
+  }
+  return {
+    statusCode,
+    body: base64Response,
+  };
 }
