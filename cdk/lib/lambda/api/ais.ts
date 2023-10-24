@@ -24,10 +24,10 @@ Bits 10-6: hour; 0-23; 24 = not available = default
 Bits 5-0: minute; 0-59; 60 = not available = default
 */
 function parseETA(eta: number): string {
-  let month = parseFrom64BitInteger(eta, 19, 16);
-  let day = parseFrom64BitInteger(eta, 15, 11);
-  let hour = parseFrom64BitInteger(eta, 10, 6);
-  let minute = parseFrom64BitInteger(eta, 5, 0);
+  const month = parseFrom64BitInteger(eta, 19, 16);
+  const day = parseFrom64BitInteger(eta, 15, 11);
+  const hour = parseFrom64BitInteger(eta, 10, 6);
+  const minute = parseFrom64BitInteger(eta, 5, 0);
   return month + '-' + day + ' ' + hour + ':' + minute;
 }
 
