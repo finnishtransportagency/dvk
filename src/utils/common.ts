@@ -166,3 +166,20 @@ export const filterMarineWarnings = (layerId: FeatureDataLayerId) => {
     });
   };
 };
+
+export const getAisVesselShipType = (typeNumber: number): string => {
+  if (typeNumber == 36 || typeNumber == 37) {
+    return 'aisVesselPleasureCraft';
+  } else if ((typeNumber >= 31 && typeNumber <= 35) || (typeNumber >= 50 && typeNumber <= 59)) {
+    return 'aisVesselTugAndSpecialCraft';
+  } else if (typeNumber >= 40 && typeNumber <= 49) {
+    return 'aisVesselHighSpeed';
+  } else if (typeNumber >= 60 && typeNumber <= 69) {
+    return 'aisVesselPassenger';
+  } else if (typeNumber >= 70 && typeNumber <= 79) {
+    return 'aisVesselCargo';
+  } else if (typeNumber >= 80 && typeNumber <= 89) {
+    return 'aisVesselTanker';
+  }
+  return 'aisUnspecified';
+};
