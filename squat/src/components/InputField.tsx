@@ -61,11 +61,11 @@ const InputField: React.FC<InputProps> = (props) => {
     (event: CustomEvent, actionType: Action['type']) => {
       inputRef?.current?.getInputElement().then((inputElem) => {
         let val = inputElem.value;
-        let validTextInput = true;
+        let isValid = inputElem.checkValidity();
         if (inputElem.type === 'text') {
           val = val.replace(/,/g, '.');
           const isNumber = !!val && !isNaN(Number(val)) && !isNaN(parseFloat(val));
-          validTextInput = isNumber && Number(val) >= Number(inputElem.min) && Number(val) <= Number(inputElem.max);
+          isValid = isNumber && Number(val) >= Number(inputElem.min) && Number(val) <= Number(inputElem.max);
         }
         //checks if zeros preceding other numbers and same thing if there's - symbol preceding
         const trimmedValue = val.replace(/(^0+(?=\d))|((?<=-)0+(?=\d))/g, '');
@@ -74,7 +74,7 @@ const InputField: React.FC<InputProps> = (props) => {
           type: 'validation',
           payload: {
             key: inputElem.name,
-            value: validTextInput ? inputElem.checkValidity() : false,
+            value: isValid,
             elType: 'boolean',
           },
         });
