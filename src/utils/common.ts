@@ -167,7 +167,10 @@ export const filterMarineWarnings = (layerId: FeatureDataLayerId) => {
   };
 };
 
-export const getAisVesselShipType = (typeNumber: number): string => {
+export const getAisVesselShipType = (typeNumber: number | undefined): string => {
+  if (!typeNumber) {
+    return 'aisUnspecified';
+  }
   if (typeNumber == 36 || typeNumber == 37) {
     return 'aisVesselPleasureCraft';
   } else if ((typeNumber >= 31 && typeNumber <= 35) || (typeNumber >= 50 && typeNumber <= 59)) {
@@ -180,6 +183,7 @@ export const getAisVesselShipType = (typeNumber: number): string => {
     return 'aisVesselCargo';
   } else if (typeNumber >= 80 && typeNumber <= 89) {
     return 'aisVesselTanker';
+  } else {
+    return 'aisUnspecified';
   }
-  return 'aisUnspecified';
 };

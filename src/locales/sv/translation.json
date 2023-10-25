@@ -394,6 +394,15 @@
       "point": "VTS-punktens uppgifter",
       "line": "VTS-områdens uppgifter",
       "channel": "VHF kanal"
+    },
+    "ais": {
+      "lastUpdated": "[sv] Viimeisin havainto",
+      "lastLocation": "[sv] Viimeisin sijainti",
+      "navState": "[sv] Navigoinnin tila",
+      "callSign": "[sv] Kutsumerkki",
+      "dimensions": "[sv] Aluksen kokonaispituus ja leveys",
+      "draught": "[sv] Syväys",
+      "destination": "[sv] Määränpää" 
     }
   },
   "common": {

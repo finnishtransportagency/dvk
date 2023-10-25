@@ -7,6 +7,7 @@ import { deselectClickSelection } from './popup';
 import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 //import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { getAisVesselShipType } from '../../utils/common';
 
 type AisVesselPopupContentProps = {
   vessel: AisVesselProperties;
@@ -26,7 +27,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
     deselectClickSelection();
   };
   return (
-    <IonGrid id="aisVesselPopupContent" className="ion-padding">
+    <IonGrid id="aisVesselPopupContent">
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
@@ -38,14 +39,60 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
             </IonButton>
           </IonCol>
         </IonRow>
+        <IonRow id="higher"> {t(`homePage.map.controls.layer.${getAisVesselShipType(properties?.shipType)}`)}</IonRow>
         <IonRow>
-          <IonCol className="header">{t('popup.pilotPlace.coordinates')}</IonCol>
+          <IonCol className="header">{t('popup.ais.lastUpdated')}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>terve</IonCol>
+          <IonCol>placeholder</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol className="header">terve</IonCol>
+          <IonCol className="header">{t('popup.ais.lastLocation')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.ais.navState')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">MMSI</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.ais.callSign')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">IMO</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.ais.dimensions')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.ais.draught')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.ais.destination')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>placeholder</IonCol>
         </IonRow>
       </IonGrid>
     </IonGrid>

@@ -55,3 +55,7 @@
   border: 1px solid #ec0e0e;
   background-color: #fdf6f6;
 }
+
+.ol-popup #higher {
+  margin-top: -13px;
+}
