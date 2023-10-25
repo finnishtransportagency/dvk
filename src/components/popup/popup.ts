@@ -20,6 +20,15 @@ import { GeoJSON } from 'ol/format';
 import * as turf from '@turf/turf';
 import { Coordinate } from 'ol/coordinate';
 import { getCircleStyle } from '../layerStyles/circleStyles';
+import {
+  getAisVesselCargoStyle,
+  getAisVesselTankerStyle,
+  getAisVesselPassengerStyle,
+  getAisVesselHighSpeedStyle,
+  getAisVesselTugAndSpecialCraftStyle,
+  getAisVesselPleasureCraftStyle,
+  getAisUnspecifiedStyle,
+} from '../layerStyles/aisStyles';
 
 export function deselectClickSelection() {
   dvkMap.olMap?.getInteractions()?.forEach((int) => {
@@ -27,6 +36,25 @@ export function deselectClickSelection() {
       (int as Select).getFeatures().clear();
     }
   });
+}
+
+function getAisVesselStyle(feature: FeatureLike, selected: boolean = true) {
+  const shipType = feature.getProperties().shipType;
+  if (shipType == 36 || shipType == 37) {
+    return getAisVesselPleasureCraftStyle(feature, selected);
+  } else if ((shipType >= 31 && shipType <= 35) || (shipType >= 50 && shipType <= 59)) {
+    return getAisVesselTugAndSpecialCraftStyle(feature, selected);
+  } else if (shipType >= 40 && shipType <= 49) {
+    return getAisVesselHighSpeedStyle(feature, selected);
+  } else if (shipType >= 60 && shipType <= 69) {
+    return getAisVesselPassengerStyle(feature, selected);
+  } else if (shipType >= 70 && shipType <= 79) {
+    return getAisVesselCargoStyle(feature, selected);
+  } else if (shipType >= 80 && shipType <= 89) {
+    return getAisVesselTankerStyle(feature, selected);
+  } else {
+    return getAisUnspecifiedStyle(feature, selected);
+  }
 }
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -278,6 +306,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       return getVtsStyle(feature, true);
     } else if (type === 'circle') {
       return getCircleStyle(feature, resolution);
+    } else if (type === 'aisvessel') {
+      return getAisVesselStyle(feature, selected);
     } else {
       return undefined;
     }
