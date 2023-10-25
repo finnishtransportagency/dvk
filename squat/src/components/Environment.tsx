@@ -232,6 +232,7 @@ const Environment: React.FC = () => {
               actionType="environment-fairway"
               infoContentTitle={t('swept-depth-info-title')}
               infoContent={t('swept-depth-info')}
+              inputType="text"
               inputMode="text"
             />
           </IonCol>
