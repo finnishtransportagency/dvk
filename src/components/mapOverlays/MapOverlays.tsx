@@ -20,10 +20,12 @@ import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
 import VtsLinePopupContent from '../popup/VtsLinePopupContent';
+
 import { MarineWarningNotifications } from './MarineWarningNotifications';
 import { LoadErrorNotifications } from './LoaderErrorNotifications';
 import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } from './userLocationMarker';
 import { useDvkContext } from '../../hooks/dvkContext';
+import AisVesselPopupContent, { AisVesselProperties } from '../popup/AisVesselPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -40,6 +42,7 @@ export type PopupProperties = {
   harbor?: HarborProperties;
   vtspoint?: VtsProperties;
   vtsline?: VtsProperties;
+  aisvessel?: AisVesselProperties;
 };
 
 type MapOverlaysProps = {
@@ -143,6 +146,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} setPopupProperties={setPopupProperties} />}
         {popupProps?.vtspoint && <VtsPointPopupContent vts={popupProps.vtspoint} setPopupProperties={setPopupProperties} />}
         {popupProps?.vtsline && <VtsLinePopupContent vts={popupProps.vtsline} setPopupProperties={setPopupProperties} />}
+        {popupProps?.aisvessel && <AisVesselPopupContent vessel={popupProps.aisvessel} setPopupProperties={setPopupProperties} />}
       </div>
       <LayerModal
         isOpen={isOpen}

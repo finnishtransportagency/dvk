@@ -55,6 +55,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'specialarea2',
     'specialarea15',
     'area',
+    'aisvessel',
   ];
   if (container) {
     container.addEventListener('pointercancel', (e) => {
@@ -74,6 +75,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     map.forEachFeatureAtPixel(
       evt.pixel,
       function (f) {
+        console.log(f);
         if (types.includes(f.getProperties().featureType)) {
           features.push(f);
         }
