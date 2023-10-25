@@ -4,7 +4,8 @@ import { Alarm, ComparisonOperator, GraphWidget, Metric, TreatMissingData } from
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { Duration, aws_cloudwatch as cloudwatch } from 'aws-cdk-lib';
-import { Subscription, SubscriptionProtocol, Topic } from 'aws-cdk-lib/aws-sns';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import Config from './config';
 
@@ -19,11 +20,8 @@ export class MonitoringServices extends Construct {
       topicName: `DvkAlarmsTopic_${env}`,
     });
 
-    new Subscription(this, 'DvkAlarmSubscription', {
-      topic,
-      endpoint: 'juhani.kettunen@cgi.com', //TODO: change to support email
-      protocol: SubscriptionProtocol.EMAIL,
-    });
+    topic.addSubscription(new subscriptions.EmailSubscription('FI.SM.GEN.DVK@cgi.com'));
+
     const action = new SnsAction(topic);
 
     // create log group filters for (graphql) lambda logs and create alarms for filters
@@ -37,19 +35,13 @@ export class MonitoringServices extends Construct {
     for (const lambdaFunc of apiLambdaFunctions) {
       const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
       const metricFilter = this.createLogGroupMetricFilter(functionName, env);
-      const logAlarm = this.createAlarmForMetric(metricFilter.metric(), env);
+      const logAlarm = this.createAlarmForMetric(metricFilter.metric({ statistic: 'Sum' }), env);
       logAlarm.addAlarmAction(action);
     }
 
     // create general alarms for lambdas...
     const lambdaAlarms = this.createAlarmForMetric(this.createLambdaMetric(env, 'Errors', 'Sum'), env);
     lambdaAlarms.addAlarmAction(action);
-
-    // ...cloudfront
-    // TODO: Cannot create an Alarm in region 'eu-west-1' based on metric '5xxErrorRate' in 'us-east-1'
-    // needs own stack with us-east-1 if no other workarounds
-    // const cloudFrontAlarm = this.createAlarmForMetric(this.createCloudFrontMetric(env, '5xxErrorRate', 'Max'), env);
-    // cloudFrontAlarm.addAlarmAction(action);
 
     // ... and appsync
     const appSyncAlarm = this.createAlarmForMetric(this.createAppSyncMetric(env, '5XXError', 'Max'), env);
@@ -120,7 +112,16 @@ export class MonitoringServices extends Construct {
   }
 
   createLogGroupMetricFilter(lambdaName: string, env: string): MetricFilter {
-    const filterPattern = FilterPattern.any(FilterPattern.stringValue('$.level', '=', 'error'), FilterPattern.stringValue('$.level', '=', 'fatal'));
+    const filterPattern = FilterPattern.any(
+      FilterPattern.stringValue('$.level', '=', 'error'),
+      FilterPattern.stringValue('$.level', '=', 'fatal'),
+      FilterPattern.stringValue('$.message', '=', 'ERROR'),
+      FilterPattern.stringValue('$.message', '=', 'Error'),
+      FilterPattern.stringValue('$.message', '=', 'Error'),
+      FilterPattern.stringValue('$.message', '=', 'FATAL'),
+      FilterPattern.stringValue('$.message', '=', 'Fatal'),
+      FilterPattern.stringValue('$.message', '=', 'fatal')
+    );
     const logGroupName = '/aws/lambda/' + lambdaName;
     const metricName = lambdaName + `_metric_${env}`;
     const logGroup = LogGroup.fromLogGroupName(this, 'DvkLogGroup_' + lambdaName, logGroupName);
