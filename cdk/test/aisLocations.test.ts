@@ -41,6 +41,7 @@ const locations: FeatureCollection = {
         timestamp: 59,
         timestampExternal: new Date(1659212938646),
         dataUpdatedTime: '2023-10-19T07:06:13Z',
+        featureType: 'aisvessel',
       },
     },
     {
@@ -62,6 +63,7 @@ const locations: FeatureCollection = {
         timestamp: 28,
         timestampExternal: new Date(1638940711289),
         dataUpdatedTime: '2023-10-19T07:06:13Z',
+        featureType: 'aisvessel',
       },
     },
     {
@@ -83,6 +85,7 @@ const locations: FeatureCollection = {
         timestamp: 45,
         timestampExternal: new Date(1539814847556),
         dataUpdatedTime: '2023-10-19T07:06:13Z',
+        featureType: 'aisvessel',
       },
     },
   ],
