@@ -75,7 +75,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     map.forEachFeatureAtPixel(
       evt.pixel,
       function (f) {
-        console.log(f);
         if (types.includes(f.getProperties().featureType)) {
           features.push(f);
         }
@@ -308,6 +307,14 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('harbor'),
       dvkMap.getFeatureLayer('vtsline'),
       dvkMap.getFeatureLayer('vtspoint'),
+      dvkMap.getFeatureLayer('aisunspecified'),
+      dvkMap.getFeatureLayer('aisvesselcargo'),
+      dvkMap.getFeatureLayer('aisvesselfishing'),
+      dvkMap.getFeatureLayer('aisvesselhighspeed'),
+      dvkMap.getFeatureLayer('aisvesselpassenger'),
+      dvkMap.getFeatureLayer('aisvesselpleasurecraft'),
+      dvkMap.getFeatureLayer('aisvesseltanker'),
+      dvkMap.getFeatureLayer('aisvesseltugandspecialcraft'),
     ],
     hitTolerance: 3,
     multi: true,
@@ -344,6 +351,14 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       dvkMap.getFeatureLayer('harbor'),
       dvkMap.getFeatureLayer('vtsline'),
       dvkMap.getFeatureLayer('vtspoint'),
+      dvkMap.getFeatureLayer('aisunspecified'),
+      dvkMap.getFeatureLayer('aisvesselcargo'),
+      dvkMap.getFeatureLayer('aisvesselfishing'),
+      dvkMap.getFeatureLayer('aisvesselhighspeed'),
+      dvkMap.getFeatureLayer('aisvesselpassenger'),
+      dvkMap.getFeatureLayer('aisvesselpleasurecraft'),
+      dvkMap.getFeatureLayer('aisvesseltanker'),
+      dvkMap.getFeatureLayer('aisvesseltugandspecialcraft'),
     ],
     hitTolerance: 3,
   });
