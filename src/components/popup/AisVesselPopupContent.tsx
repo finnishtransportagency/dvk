@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+//import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { AisFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
@@ -17,9 +17,8 @@ export type AisVesselProperties = {
 };
 
 const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, setPopupProperties }) => {
-  const { t } = useTranslation();
+  //const { t } = useTranslation();
   console.log(vessel);
-  console.log(t);
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     deselectClickSelection();
