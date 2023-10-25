@@ -38,9 +38,7 @@ import {
   getAisVesselPassengerStyle,
   getAisVesselHighSpeedStyle,
   getAisVesselTugAndSpecialCraftStyle,
-  getAisVesselFishingStyle,
   getAisVesselPleasureCraftStyle,
-  getAisNavigationAidEquipmentStyle,
   getAisUnspecifiedStyle,
 } from './layerStyles/aisStyles';
 import { GeoJSON } from 'ol/format';
@@ -812,21 +810,7 @@ export function addAPILayers(map: Map) {
     (feature, resolution) => getAisVesselTugAndSpecialCraftStyle(feature, resolution, false),
     320
   );
-  addAisVesselLayer(map, 'aisvesselfishing', (feature, resolution) => getAisVesselFishingStyle(feature, resolution, false), 321);
   addAisVesselLayer(map, 'aisvesselpleasurecraft', (feature, resolution) => getAisVesselPleasureCraftStyle(feature, resolution, false), 322);
-
-  addFeatureVectorLayer({
-    map: map,
-    id: 'aisnavigationaidequipment',
-    maxResolution: undefined,
-    renderBuffer: 50,
-    style: (feature) => getAisNavigationAidEquipmentStyle(feature, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 323,
-  });
-
   addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisUnspecifiedStyle(feature, resolution, false), 324);
 }
 

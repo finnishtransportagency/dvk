@@ -1,7 +1,6 @@
 import { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Fill, Stroke } from 'ol/style';
 import { AisFeatureProperties } from '../features';
-import navigationAidEquipmentIcon from '../../theme/img/ais/ais_navigation_aid_equipment.svg';
 import CircleStyle from 'ol/style/Circle';
 
 const minVesselIconWidth = 8;
@@ -131,24 +130,8 @@ export function getAisVesselTugAndSpecialCraftStyle(feature: FeatureLike, resolu
   return getAisVesselStyle(feature, '#00ffff', '#008888', resolution, selected);
 }
 
-export function getAisVesselFishingStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  return getAisVesselStyle(feature, '#ffa07a', '#80503d', resolution, selected);
-}
-
 export function getAisVesselPleasureCraftStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   return getAisVesselStyle(feature, '#ff00ff', '#880088', resolution, selected);
-}
-
-export function getAisNavigationAidEquipmentStyle(feature: FeatureLike, selected: boolean) {
-  const scale = selected ? 1.2 : 1;
-
-  return new Style({
-    image: new Icon({
-      src: navigationAidEquipmentIcon,
-      scale: scale,
-      anchor: [0.5, 0.5],
-    }),
-  });
 }
 
 export function getAisUnspecifiedStyle(feature: FeatureLike, resolution: number, selected: boolean) {
