@@ -6,17 +6,9 @@ import CircleStyle from 'ol/style/Circle';
 const minVesselIconWidth = 8;
 const minVesselIconHeight = 18;
 
-function getSvgImage(vesselLength: number, vesselWidth: number, fillColor: string, strokeColor: string, resolution: number) {
+function getSvgImage(vesselIconWidth: number, vesselIconHeight: number, fillColor: string, strokeColor: string) {
   const originalIconWidth = 20;
   const originalIconHeight = 52;
-  let vesselIconWidth = vesselWidth / resolution;
-  let vesselIconHeight = vesselLength / resolution;
-
-  if (vesselIconWidth < minVesselIconWidth || vesselIconHeight < minVesselIconHeight) {
-    vesselIconWidth = minVesselIconWidth;
-    vesselIconHeight = minVesselIconHeight;
-  }
-
   const scaleX = vesselIconWidth / originalIconWidth;
   const scaleY = vesselIconHeight / originalIconHeight;
 
@@ -57,26 +49,30 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
 
   let iconWidth = minVesselIconWidth;
   let iconHeight = minVesselIconHeight;
-
-  let vesselLength = 0;
-  let vesselWidth = 0;
   let anchorX = 0.5;
   let anchorY = 0.5;
 
+  // Check if vessel dimensions are available
   if (
     props.referencePointA !== undefined &&
     props.referencePointB !== undefined &&
     props.referencePointC !== undefined &&
-    props.referencePointD !== undefined
+    props.referencePointD !== undefined &&
+    props.referencePointB > 0 &&
+    props.referencePointD > 0
   ) {
-    vesselLength = props.referencePointA + props.referencePointB;
-    vesselWidth = props.referencePointC + props.referencePointD;
+    const vesselLength = props.referencePointA + props.referencePointB;
+    const vesselWidth = props.referencePointC + props.referencePointD;
     iconHeight = vesselLength / resolution;
     iconWidth = vesselWidth / resolution;
-    anchorX = props.referencePointC / vesselWidth;
-    anchorY = props.referencePointA / vesselLength;
+    // Reference point is available only if also A > 0 && C > 0
+    if (props.referencePointA > 0 && props.referencePointC > 0) {
+      anchorX = props.referencePointC / vesselWidth;
+      anchorY = props.referencePointA / vesselLength;
+    }
   }
 
+  // Use minimum icon size if either width or height is below minimum
   if (iconWidth < minVesselIconWidth || iconHeight < minVesselIconHeight) {
     iconWidth = minVesselIconWidth;
     iconHeight = minVesselIconHeight;
@@ -89,7 +85,7 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
 
   const vesselStyle = new Style({
     image: new Icon({
-      src: getSvgImage(vesselLength, vesselWidth, fillColor, strokeColor, resolution),
+      src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor),
       width: iconWidth,
       height: iconHeight,
       anchorOrigin: 'top-left',
