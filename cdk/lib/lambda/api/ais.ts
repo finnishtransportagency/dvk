@@ -69,6 +69,7 @@ export async function fetchLocations(): Promise<FeatureCollection> {
         ...f.properties,
         dataUpdatedTime,
         timestampExternal: new Date(f.properties.timestampExternal),
+        featureType: 'aisvessel',
       },
     };
   });
