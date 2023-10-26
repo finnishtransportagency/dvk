@@ -47,7 +47,6 @@
     "@types/jsonwebtoken": "^9.0.4",
     "@types/jwk-to-pem": "^2.0.2",
     "@types/node": "^20.8.9",
-    "@types/prettier": "^2.7.3",
     "aws-cdk": "^2.103.0",
     "aws-sdk-client-mock": "^3.0.0",
     "cdk-sso-sync": "0.0.6",
