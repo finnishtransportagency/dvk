@@ -451,15 +451,15 @@
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
   },
   "areas": {
-    "gulfOfFinland": "[en] Suomenlahti",
-    "northernBalticSea": "[en] Pohjoinen Itämeri",
-    "archipelagoSea": "[en] Saaristomeri",
-    "seaOfÅland": "[en] Ahvenanmeri",
-    "bothnianSea": "[en] Selkämeri",
-    "theQuark": "[en] Merenkurkku",
-    "bayOfBothnia": "[en] Perämeri",
-    "saimaa": "[en] Saimaa",
-    "saimaaCanal": "[en] Saimaan kanava",
-    "gulfOfBothnia": "[en] Pohjanlahti"
+    "gulfOfFinland": "Gulf of Finland",
+    "northernBalticSea": "Northern Baltic",
+    "archipelagoSea": "Archipelago Sea",
+    "seaOfÅland": "Aland Sea",
+    "bothnianSea": "Bothnian Sea",
+    "theQuark": "The Quark",
+    "bayOfBothnia": "Bay of Bothnia",
+    "saimaa": "Saimaa",
+    "saimaaCanal": "Saimaa Canal",
+    "gulfOfBothnia": "Gulf of Bothnia"
   }
 }
