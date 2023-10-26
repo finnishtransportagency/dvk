@@ -354,7 +354,7 @@ export type Vessel = {
   imo: number;
   shipType: number;
   draught: number; // meters
-  eta: number;
+  eta: string; // MM-DD HH:mm
   posType: number;
   referencePointA: number;
   referencePointB: number;

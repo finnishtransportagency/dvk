@@ -10,6 +10,27 @@ function getTimestampParams(): Record<string, string> {
   return { from: yesterday.toString(), to: now.toString() };
 }
 
+function parseFrom64BitInteger(integer: number, bitStart: number, bitEnd: number) {
+  // 64-bit integer: get bit range from start to end by losing other bits
+  // Shift bits first to left and then to right, let others fall off
+  const i = (integer << (63 - bitStart)) >>> (63 - bitStart + bitEnd);
+  return i.toString().padStart(2, '0');
+}
+
+/* MMDDHHMM UTC
+Bits 19-16: month; 1-12; 0 = not available = default
+Bits 15-11: day; 1-31; 0 = not available = default
+Bits 10-6: hour; 0-23; 24 = not available = default
+Bits 5-0: minute; 0-59; 60 = not available = default
+*/
+function parseETA(eta: number): string {
+  const month = parseFrom64BitInteger(eta, 19, 16);
+  const day = parseFrom64BitInteger(eta, 15, 11);
+  const hour = parseFrom64BitInteger(eta, 10, 6);
+  const minute = parseFrom64BitInteger(eta, 5, 0);
+  return month + '-' + day + ' ' + hour + ':' + minute;
+}
+
 export async function fetchVessels(): Promise<Vessel[]> {
   const path = aisV1Path + 'vessels';
   const params = getTimestampParams();
@@ -23,7 +44,7 @@ export async function fetchVessels(): Promise<Vessel[]> {
       imo: row.imo,
       shipType: row.shipType,
       draught: row.draught / 10,
-      eta: row.eta,
+      eta: parseETA(row.eta),
       posType: row.posType,
       referencePointA: row.referencePointA,
       referencePointB: row.referencePointB,
@@ -48,6 +69,7 @@ export async function fetchLocations(): Promise<FeatureCollection> {
         ...f.properties,
         dataUpdatedTime,
         timestampExternal: new Date(f.properties.timestampExternal),
+        featureType: 'aisvessel',
       },
     };
   });
