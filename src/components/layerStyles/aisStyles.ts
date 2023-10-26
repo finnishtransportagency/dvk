@@ -110,12 +110,12 @@ function getRotation(feature: Feature) {
 
 function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor: string, resolution: number, selected: boolean) {
   const props = feature.getProperties() as AisFeatureProperties;
-  const rotation = getRotation(feature as Feature);
-
   let iconWidth = minVesselIconWidth;
   let iconHeight = minVesselIconHeight;
   let anchorX = 0.5;
   let anchorY = 0.5;
+  let vesselLength = 0;
+  let vesselWidth = 0;
 
   // Check if vessel dimensions are available
   if (
@@ -126,8 +126,8 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
     props.referencePointB > 0 &&
     props.referencePointD > 0
   ) {
-    const vesselLength = props.referencePointA + props.referencePointB;
-    const vesselWidth = props.referencePointC + props.referencePointD;
+    vesselLength = props.referencePointA + props.referencePointB;
+    vesselWidth = props.referencePointC + props.referencePointD;
     iconHeight = vesselLength / resolution;
     iconWidth = vesselWidth / resolution;
     // Reference point is available only if also A > 0 && C > 0
@@ -143,31 +143,59 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
     iconHeight = minVesselIconHeight;
   }
 
-  if (selected) {
-    iconWidth += 5;
-    iconHeight += 5;
+  let vesselStyle: Style | undefined = undefined;
+
+  const resLimit = vesselLength > 50 ? 2 : 1;
+  if (resolution < resLimit) {
+    if (selected) {
+      iconWidth += 2;
+      iconHeight += 2;
+    }
+    vesselStyle = new Style({
+      image: new Icon({
+        src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
+        width: iconWidth,
+        height: iconHeight,
+        anchorOrigin: 'top-left',
+        anchor: [anchorX, anchorY],
+        rotation: getRotation(feature as Feature),
+        rotateWithView: true,
+      }),
+    });
+  } else {
+    iconWidth = vesselLength > 50 ? 10 : 8;
+    iconHeight = vesselLength > 50 ? 25 : 18;
+    if (selected) {
+      iconWidth += 2;
+      iconHeight += 2;
+    }
+    if (movingNavStats.includes(props.navStat)) {
+      vesselStyle = new Style({
+        image: new Icon({
+          src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
+          width: iconWidth,
+          height: iconHeight,
+          anchorOrigin: 'top-left',
+          anchor: [anchorX, anchorY],
+          rotation: getRotation(feature as Feature),
+          rotateWithView: true,
+        }),
+      });
+    } else {
+      let radius = vesselLength > 50 ? 8 : 5;
+      if (selected) {
+        radius += 1;
+      }
+      vesselStyle = new Style({
+        image: new CircleStyle({
+          radius: radius,
+          fill: new Fill({ color: fillColor }),
+          stroke: new Stroke({ width: 1, color: strokeColor }),
+        }),
+      });
+    }
   }
-
-  const vesselStyle = new Style({
-    image: new Icon({
-      src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
-      width: iconWidth,
-      height: iconHeight,
-      anchorOrigin: 'top-left',
-      anchor: [anchorX, anchorY],
-      rotation: rotation,
-      rotateWithView: true,
-    }),
-  });
-
-  const aisStyle = new Style({
-    image: new CircleStyle({
-      radius: 2,
-      fill: new Fill({ color: '#ff0000' }),
-      stroke: new Stroke({ width: 1, color: '#ffffff' }),
-    }),
-  });
-  return [vesselStyle, aisStyle];
+  return vesselStyle;
 }
 
 export function getAisVesselCargoStyle(feature: FeatureLike, resolution: number, selected: boolean) {
