@@ -1,7 +1,10 @@
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Fill, Stroke } from 'ol/style';
 import { AisFeatureProperties } from '../features';
 import CircleStyle from 'ol/style/Circle';
+import { Point } from 'ol/geom';
+import { MAP } from '../../utils/constants';
+import * as turf from '@turf/turf';
 
 const minVesselIconWidth = 8;
 const minVesselIconHeight = 18;
@@ -76,14 +79,38 @@ function getSvgImage(vesselIconWidth: number, vesselIconHeight: number, fillColo
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
+function getRotation(feature: Feature) {
+  let rotation = 0;
+  const props = feature.getProperties() as AisFeatureProperties;
+  const geom = feature.clone().getGeometry();
+  if (geom) {
+    let heading = 0;
+    if (props.heading && props.heading >= 0 && props.heading < 360) {
+      heading = props.heading;
+    } else if (props.cog >= 0 && props.cog < 360) {
+      heading = props.cog;
+    }
+    const point = feature.getGeometry() as Point;
+    const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
+    const turfPoint = turf.point(wgs84Point.getCoordinates());
+    const turfPoint2 = turf.transformTranslate(turfPoint, 1, heading);
+    const point2 = new Point(turfPoint2.geometry.coordinates);
+    point2.transform('EPSG:4326', MAP.EPSG);
+    const coord1 = point.getCoordinates();
+    const coord2 = point2.getCoordinates();
+    const angle = Math.atan2(coord2[1] - coord1[1], coord2[0] - coord1[0]);
+    if (angle > Math.PI / 2) {
+      rotation = 2.5 * Math.PI - angle;
+    } else {
+      rotation = 0.5 * Math.PI - angle;
+    }
+  }
+  return rotation;
+}
+
 function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor: string, resolution: number, selected: boolean) {
   const props = feature.getProperties() as AisFeatureProperties;
-  let rotation = 0;
-  if (props.heading && props.heading >= 0 && props.heading < 360) {
-    rotation = (props.heading * Math.PI) / 180;
-  } else if (props.cog >= 0 && props.cog < 360) {
-    rotation = (props.cog * Math.PI) / 180;
-  }
+  const rotation = getRotation(feature as Feature);
 
   let iconWidth = minVesselIconWidth;
   let iconHeight = minVesselIconHeight;
