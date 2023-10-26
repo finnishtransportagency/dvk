@@ -5,19 +5,42 @@ import CircleStyle from 'ol/style/Circle';
 
 const minVesselIconWidth = 8;
 const minVesselIconHeight = 18;
+const movingNavStats = [0, 3, 4, 7, 8];
 
-function getSvgImage(vesselIconWidth: number, vesselIconHeight: number, fillColor: string, strokeColor: string) {
+function getSvgIconVesselAnchored(vesselIconWidth: number, vesselIconHeight: number, fillColor: string, strokeColor: string) {
+  const originalIconWidth = 20;
+  const originalIconHeight = 112;
+  const scaleX = vesselIconWidth / originalIconWidth;
+  const scaleY = vesselIconHeight / originalIconHeight;
+
+  return (
+    '<g transform="scale(' +
+    scaleX +
+    ', ' +
+    scaleY +
+    ')">' +
+    '<path ' +
+    'd="M9.99000999,24.4843586 C7.89210789,24.4843586 6.18381618,26.2543586 6.18381618,28.4443586 C6.18381618,30.6343586 7.89210789,32.4043586 9.99000999,32.4043586 C12.0879121,32.4043586 13.7962038,30.6343586 13.7962038,28.4443586 C13.7962038,26.2543586 12.0879121,24.4843586 9.99000999,24.4843586 L9.99000999,24.4843586 Z M8.47152847,1.53435864 C9.1008991,0.664358637 10.2997003,0.484358637 11.1388611,1.13435864 C11.2787213,1.24435864 11.4085914,1.38435864 11.5184815,1.53435864 L19.5104895,12.6143586 L19.5104895,109.534359 C19.5104895,110.624359 18.6613387,111.514359 17.6123876,111.514359 L2.37762238,111.514359 C1.32867133,111.514359 0.47952048,110.624359 0.47952048,109.534359 L0.47952048,12.6143586 L8.47152847,1.53435864 Z" ' +
+    'fill="' +
+    fillColor +
+    '" ' +
+    'opacity="0.5"></path>' +
+    '<path ' +
+    'd="M17.6023976,112.004359 L2.37762238,112.004359 C1.06893107,112.004359 0,110.894359 0,109.524359 L0,12.2243586 L8.09190809,0.994358637 C8.47152847,0.464358637 9.03096903,0.124358637 9.66033966,0.0243586372 C10.2897103,-0.0656413628 10.9190809,0.0943586372 11.4285714,0.494358637 C11.6083916,0.634358637 11.7682318,0.804358637 11.9080919,0.994358637 L20,12.2243586 L20,109.524359 C20,110.894359 18.9310689,112.004359 17.6223776,112.004359 L17.6023976,112.004359 Z M0.949050949,12.5543586 L0.949050949,109.524359 C0.949050949,110.344359 1.58841159,111.014359 2.37762238,111.014359 L17.6023976,111.014359 C18.3916084,111.014359 19.030969,110.344359 19.030969,109.524359 L19.030969,12.5543586 L11.1288711,1.59435864 C11.048951,1.48435864 10.9490509,1.38435864 10.8491508,1.29435864 C10.5394605,1.05435864 10.1698302,0.954358637 9.79020979,1.01435864 C9.41058941,1.07435864 9.08091908,1.27435864 8.85114885,1.59435864 L0.949050949,12.5543586 Z M9.99000999,33.3743586 C7.36263736,33.3743586 5.23476523,31.1543586 5.23476523,28.4343586 C5.23476523,25.7143586 7.37262737,23.4943586 9.99000999,23.4943586 C12.6073926,23.4943586 14.7452547,25.7143586 14.7452547,28.4343586 C14.7452547,31.1543586 12.6073926,33.3743586 9.99000999,33.3743586 Z M9.99000999,24.4743586 C7.89210789,24.4743586 6.18381618,26.2443586 6.18381618,28.4343586 C6.18381618,30.6243586 7.89210789,32.3943586 9.99000999,32.3943586 C12.0879121,32.3943586 13.7962038,30.6243586 13.7962038,28.4343586 C13.7962038,26.2443586 12.0879121,24.4743586 9.99000999,24.4743586 Z" ' +
+    'fill="' +
+    strokeColor +
+    '" ></path>' +
+    '</g>'
+  );
+}
+
+export function getSvgIconVesselMoving(vesselIconWidth: number, vesselIconHeight: number, fillColor: string, strokeColor: string) {
   const originalIconWidth = 20;
   const originalIconHeight = 52;
   const scaleX = vesselIconWidth / originalIconWidth;
   const scaleY = vesselIconHeight / originalIconHeight;
 
-  const svg =
-    '<svg width="' +
-    vesselIconWidth +
-    '" height="' +
-    vesselIconHeight +
-    '" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+  return (
     '<g transform="scale(' +
     scaleX +
     ', ' +
@@ -33,7 +56,22 @@ function getSvgImage(vesselIconWidth: number, vesselIconHeight: number, fillColo
     'fill="' +
     strokeColor +
     '"></path>' +
-    '</g>' +
+    '</g>'
+  );
+}
+
+function getSvgImage(vesselIconWidth: number, vesselIconHeight: number, fillColor: string, strokeColor: string, navStat: number) {
+  const svgContent = movingNavStats.includes(navStat)
+    ? getSvgIconVesselMoving(vesselIconWidth, vesselIconHeight, fillColor, strokeColor)
+    : getSvgIconVesselAnchored(vesselIconWidth, vesselIconHeight, fillColor, strokeColor);
+
+  const svg =
+    '<svg width="' +
+    vesselIconWidth +
+    '" height="' +
+    vesselIconHeight +
+    '" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' +
+    svgContent +
     '</svg>';
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
@@ -85,7 +123,7 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
 
   const vesselStyle = new Style({
     image: new Icon({
-      src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor),
+      src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
       width: iconWidth,
       height: iconHeight,
       anchorOrigin: 'top-left',
@@ -102,7 +140,6 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
       stroke: new Stroke({ width: 1, color: '#ffffff' }),
     }),
   });
-
   return [vesselStyle, aisStyle];
 }
 
