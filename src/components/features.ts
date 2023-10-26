@@ -168,7 +168,7 @@ export type AisFeatureProperties = {
   mmsi: string;
   sog: number;
   cog: number;
-  navsat: number;
+  navStat: number;
   rot: number;
   posAcc: boolean;
   raim: boolean;

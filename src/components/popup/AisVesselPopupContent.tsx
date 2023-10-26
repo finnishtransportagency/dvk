@@ -6,8 +6,35 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
 import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-//import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
-import { getAisVesselShipType } from '../../utils/common';
+import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { checkIfMoored, getAisVesselShipType, reformatAisvesselDataUpdatedTime, calculateVesselDimensions } from '../../utils/common';
+import InfoIcon from '../../theme/img/info.svg?react';
+
+type AisVesselInfoRowProperties = {
+  title: string;
+  body: string;
+};
+
+const AisVesselInfoRow: React.FC<AisVesselInfoRowProperties> = ({ title, body }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <IonRow>
+        <IonCol className="header">{title}</IonCol>
+      </IonRow>
+      <IonRow>
+        {body ? (
+          <IonCol>{body}</IonCol>
+        ) : (
+          <IonCol className="info">
+            <InfoIcon />
+            {t('common.noDataSet')}
+          </IonCol>
+        )}
+      </IonRow>
+    </>
+  );
+};
 
 type AisVesselPopupContentProps = {
   vessel: AisVesselProperties;
@@ -20,12 +47,21 @@ export type AisVesselProperties = {
 
 const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, setPopupProperties }) => {
   const { t } = useTranslation();
-  const properties = vessel.properties;
 
+  const properties = vessel.properties;
+  const dataUpdatedTime = reformatAisvesselDataUpdatedTime(properties.dataUpdatedTime);
+  const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
+  const vesselDimensions = calculateVesselDimensions(
+    properties.referencePointA,
+    properties.referencePointB,
+    properties.referencePointC,
+    properties.referencePointD
+  );
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     deselectClickSelection();
   };
+  //could use some refactoring
   return (
     <IonGrid id="aisVesselPopupContent">
       <IonGrid className="ion-no-padding">
@@ -40,60 +76,18 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
           </IonCol>
         </IonRow>
         <IonRow id="higher"> {t(`homePage.map.controls.layer.${getAisVesselShipType(properties?.shipType)}`)}</IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.lastUpdated')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.lastLocation')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.navState')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">MMSI</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.callSign')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">IMO</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.dimensions')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.draught')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.ais.destination')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>placeholder</IonCol>
-        </IonRow>
+        <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
+        <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
+        <AisVesselInfoRow title={t('popup.ais.navState')} body={checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving')} />
+        <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
+        <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
+        <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
+        <AisVesselInfoRow
+          title={t('popup.ais.dimensions')}
+          body={vesselDimensions.length ? `${vesselDimensions[0]} x ${vesselDimensions[1]} m` : ''}
+        />
+        <AisVesselInfoRow title={t('popup.ais.draught')} body={String(properties.draught)} />
+        <AisVesselInfoRow title={t('popup.ais.destination')} body={String(properties.destination)} />
       </IonGrid>
     </IonGrid>
   );

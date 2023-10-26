@@ -187,3 +187,34 @@ export const getAisVesselShipType = (typeNumber: number | undefined): string => 
     return 'aisUnspecified';
   }
 };
+
+export const reformatAisvesselDataUpdatedTime = (dateTimeString: Date): string => {
+  const dateTime = new Date(dateTimeString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+
+  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
+
+  return formattedDatetime.replace(' ', ', ');
+};
+
+export const checkIfMoored = (navState: number): boolean => {
+  return !(navState === 0 || navState === 3 || navState === 4 || navState === 7 || navState === 8);
+};
+
+export const calculateVesselDimensions = (a: number | undefined, b: number | undefined, c: number | undefined, d: number | undefined): number[] => {
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined && b > 0 && d > 0) {
+    const vesselLength = a + b;
+    const vesselWidth = c + d;
+
+    return [vesselLength, vesselWidth];
+  }
+
+  return [];
+};
