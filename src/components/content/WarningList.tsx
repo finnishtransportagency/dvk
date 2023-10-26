@@ -17,7 +17,6 @@ type WarningListProps = {
   loading?: boolean;
   sortNewFirst: boolean;
 };
-
 function goto(warning: MarineWarning, layers: string[]) {
   // Clear possible previous feature(s) from temporary layer
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
@@ -73,7 +72,9 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
             </IonRow>
             <IonRow>
               <IonCol size="6" style={{ display: 'flex' }}>
-                <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
+                <div>
+                  <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
+                </div>
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('area')}</h4>
                   <Paragraph bodyText={warning.area} />
