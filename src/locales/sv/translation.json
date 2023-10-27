@@ -392,6 +392,24 @@
       "point": "VTS-punktens uppgifter",
       "line": "VTS-områdens uppgifter",
       "channel": "VHF kanal"
+    },
+    "ais": {
+      "lastUpdated": "[sv] Viimeisin havainto",
+      "lastLocation": "[sv] Viimeisin sijainti",
+      "navState": "[sv] Navigoinnin tila",
+      "callSign": "[sv] Kutsumerkki",
+      "dimensions": "[sv] Aluksen kokonaispituus ja leveys",
+      "draught": "[sv] Syväys",
+      "destination": "[sv] Määränpää",
+      "moored": "[sv] Ankkuroituna",
+      "moving": "[sv] Liikkeessä",
+      "aisVesselCargo": " [sv] Rahtialus",
+      "aisVesselTanker": "[sv] Tankkeri",
+      "aisVesselPassenger": "[sv] Matkustaja-alus",
+      "aisVesselHighSpeed": "[sv] Nopea vene",
+      "aisVesselTugAndSpecialCraft": "[sv] Hinaaja tai erikoisalus",
+      "aisVesselPleasureCraft": "[sv] Huvivene",
+      "aisUnspecified": "[sv] Määrittelemätön alus"
     }
   },
   "common": {
