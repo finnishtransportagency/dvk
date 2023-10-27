@@ -334,9 +334,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
         'aisvesselpassenger',
         'aisvesselhighspeed',
         'aisvesseltugandspecialcraft',
-        'aisvesselfishing',
         'aisvesselpleasurecraft',
-        'aisnavigationaidequipment',
         'aisunspecified',
       ].includes(id);
     return !initialized || (!hasOfflineSupport(id) && isOffline);
