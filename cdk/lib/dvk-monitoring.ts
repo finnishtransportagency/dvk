@@ -140,7 +140,7 @@ export class MonitoringServices extends Construct {
       FilterPattern.stringValue('$.level', '=', 'fatal'),
       FilterPattern.stringValue('$.message', '=', 'ERROR'),
       FilterPattern.stringValue('$.message', '=', 'Error'),
-      FilterPattern.stringValue('$.message', '=', 'Error'),
+      FilterPattern.stringValue('$.message', '=', 'error'),
       FilterPattern.stringValue('$.message', '=', 'FATAL'),
       FilterPattern.stringValue('$.message', '=', 'Fatal'),
       FilterPattern.stringValue('$.message', '=', 'fatal')
