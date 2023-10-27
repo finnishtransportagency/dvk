@@ -20,7 +20,7 @@ export class MonitoringServices extends Construct {
       topicName: `DvkAlarmsTopic_${env}`,
     });
 
-    topic.addSubscription(new subscriptions.EmailSubscription('FI.SM.GEN.DVK@cgi.com'));
+    topic.addSubscription(new subscriptions.EmailSubscription('juhani.kettunen@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
 
     const action = new SnsAction(topic);
 
@@ -33,10 +33,12 @@ export class MonitoringServices extends Construct {
     }
     // ... and api functions
     for (const lambdaFunc of apiLambdaFunctions) {
-      const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
-      const metricFilter = this.createLogGroupMetricFilter(functionName, env);
-      const logAlarm = this.createAlarmForMetric(metricFilter.metric({ statistic: 'Sum' }), env);
-      logAlarm.addAlarmAction(action);
+      if (lambdaFunc.useMonitoring) {
+        const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
+        const metricFilter = this.createLogGroupMetricFilter(functionName, env);
+        const logAlarm = this.createAlarmForMetric(metricFilter.metric({ statistic: 'Sum' }), env);
+        logAlarm.addAlarmAction(action);
+      }
     }
 
     // create general alarms for lambdas...
@@ -66,11 +68,15 @@ export class MonitoringServices extends Construct {
 
     // create error log widget
     const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
-    apiLambdaFunctions.map((lambda) => logGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()));
+    const apiLogGroupNames: string[] = [];
+    apiLambdaFunctions.forEach((lambda) => {
+      if (lambda.useMonitoring) apiLogGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase());
+    });
 
     dashboard.addWidgets(
       new cloudwatch.LogQueryWidget({
-        logGroupNames: logGroupNames,
+        title: 'All errors',
+        logGroupNames: logGroupNames.concat(apiLogGroupNames),
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: [
           'fields @timestamp, @message',
@@ -79,11 +85,28 @@ export class MonitoringServices extends Construct {
           'limit 50',
         ],
       }),
-      // Feature loader all lines
+      // APIs all lines
       new cloudwatch.LogQueryWidget({
-        logGroupNames: apiLambdaFunctions.map((lambda) => `/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()),
+        title: 'APIs all lines',
+        logGroupNames: apiLogGroupNames,
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: ['fields @timestamp, @message', 'filter tag = "DVK_BACKEND"', 'sort @timestamp desc', 'limit 50'],
+      })
+    );
+    // Log widget with error counts for APIs
+    dashboard.addWidgets(
+      new cloudwatch.LogQueryWidget({
+        title: 'APIs error counts',
+        logGroupNames: apiLogGroupNames,
+        view: cloudwatch.LogQueryVisualizationType.TABLE,
+        queryLines: [
+          `fields Lukumaara, msg`,
+          ` filter tag = "DVK_BACKEND" and @message like /Fetching from (\\w+) api failed/`,
+          ` fields substr(msg, 0, 150) as short_msg`,
+          ` stats count(*) as Lukumaara by short_msg`,
+          ` sort Lukumaara desc`,
+          ` display Lukumaara, short_msg`,
+        ],
       })
     );
 
