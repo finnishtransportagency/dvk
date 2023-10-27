@@ -14,7 +14,6 @@
 #marineWarningList ion-grid.table ion-row > ion-col p {
   margin: 0;
 }
-
 #filterContainer {
   margin-top: 10px;
 }
@@ -46,11 +45,6 @@
   width: 150.5px;
   --border-radius: 0px;
   --border-width: 0;
-}
-
-ion-select.marineWarningSelectNarrow:active,
-ion-select.marineWarningSelectNarrow:focus {
-  border-color: red;
 }
 
 .rightMargin {
@@ -86,3 +80,126 @@ ion-select.marineWarningSelectNarrow:focus {
   height: 33px;
   width: 30px;
 }
+
+/* Form inputs */
+/*ion-item.filterSelectInput,
+ion-item.custom-select-container {
+  font-size: 14px;
+  width: 150px;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  --border-width: 0;
+  --background: var(--ion-color-dark);
+}
+
+ion-item.custom-select-container {
+  --background-hover-opacity: 0;
+  --ripple-color: transparent;
+}
+ion-item.custom-select-item {
+  font-size: 14px;
+  margin: 1px;
+  width: 100%;
+  opacity: 1;
+  --padding-start: 13px;
+  --inner-padding-end: 13px;
+}
+ion-item.custom-select-item.expanded,
+ion-item.custom-select-container.ion-focused ion-item.custom-select-item {
+  margin: 2px;
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+}
+
+.custom-select-icon {
+  width: 13px;
+}
+
+ion-item.custom-select-item ion-label ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ion-item.custom-select-option {
+  --ripple-color: var(--ion-color-primary);
+}
+
+ion-button.custom-select-search {
+  --padding-start: 3px;
+  --padding-end: 3px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+ion-button.custom-select-search.button-disabled {
+  opacity: 1;
+}
+
+ion-item.filterSelectInput.item-has-focus,
+ion-item.filterSelectInput.ion-focused,
+ion-item.filterSelectInput:has(.select-expanded),
+ion-item.custom-select-container.expanded,
+ion-item.custom-select-container.ion-focused {
+  --highlight-background: transparent;
+  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+}
+.selectWrapper.invalid ion-item.filterSelectInput,
+.selectWrapper.invalid ion-item.custom-select-container {
+  --background: var(--ion-color-danger);
+}
+.selectWrapper.invalid ion-item.filterSelectInput:has(.select-expanded),
+.selectWrapper.invalid ion-item.custom-select-container.expanded {
+  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+}
+ion-item.filterSelectInput.item-select-disabled,
+ion-item.custom-select-container.item-disabled {
+  opacity: 0.5;
+}
+ion-item.filterSelectInput::part(native),
+ion-item.custom-select-container::part(native) {
+  border-radius: 0;
+  overflow: hidden;
+}
+ion-item.filterSelectInput ion-select {
+  min-height: 0;
+  height: calc(100% - 1px);
+  margin: 0 auto;
+  background-color: var(--ion-color-primary-contrast);
+  width: calc(100% - 2px);
+  --padding-start: 13px;
+  --padding-end: 13px;
+  --placeholder-color: var(--ion-color-medium);
+  --placeholder-opacity: 1;
+  --border-radius: 0;
+  --border-width: 0;
+}
+ion-item.filterSelectInput.ion-focused ion-select,
+ion-item.filterSelectInput ion-select.select-expanded {
+  height: calc(100% - 3px);
+  width: calc(100% - 4px);
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+.selectWrapper.disabled ion-item.filterSelectInput {
+  opacity: 0.5;
+}
+.selectWrapper.disabled ion-item.filterSelectInput ion-select.select-disabled {
+  opacity: 1;
+}
+ion-item.filterSelectInput ion-select::part(placeholder),
+ion-item.filterSelectInput ion-select.has-value::part(text) {
+  overflow: auto;
+  white-space: normal;
+  padding: 12px 0;
+}
+ion-item.filterSelectInput.ion-focused ion-select::part(placeholder),
+ion-item.filterSelectInput ion-select.select-expanded::part(placeholder),
+ion-item.filterSelectInput.ion-focused ion-select.has-value::part(text),
+ion-item.filterSelectInput ion-select.select-expanded.has-value::part(text) {
+  padding: 13px 0 11px;
+}
+ion-item.filterSelectInput.ion-focused ion-select::part(icon) {
+  margin-top: 1px;
+}
+*/
