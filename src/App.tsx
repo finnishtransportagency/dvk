@@ -42,9 +42,7 @@ import {
   useAisVesselPassengerLayer,
   useAisVesselHighSpeedLayer,
   useAisVesselTugAndSpecialCraftLayer,
-  useAisVesselFishingLayer,
   useAisVesselPleasureCraftLayer,
-  useAisNavigationAidEquipmentLayer,
   useAisUnspecifiedLayer,
 } from './components/AisFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
@@ -164,9 +162,7 @@ const DvkIonApp: React.FC = () => {
   useAisVesselPassengerLayer();
   useAisVesselHighSpeedLayer();
   useAisVesselTugAndSpecialCraftLayer();
-  useAisVesselFishingLayer();
   useAisVesselPleasureCraftLayer();
-  useAisNavigationAidEquipmentLayer();
   useAisUnspecifiedLayer();
   useInitStaticDataLayer('balticsea', 'balticsea');
   useInitStaticDataLayer('mml_satamat', 'mml_satamat');

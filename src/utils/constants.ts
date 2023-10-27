@@ -231,9 +231,7 @@ export type FeatureDataLayerId =
   | 'aisvesselpassenger'
   | 'aisvesselhighspeed'
   | 'aisvesseltugandspecialcraft'
-  | 'aisvesselfishing'
   | 'aisvesselpleasurecraft'
-  | 'aisnavigationaidequipment'
   | 'aisunspecified';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
@@ -296,9 +294,7 @@ export const MAP: MapType = {
     { id: 'aisvesselpassenger', offlineSupport: false, localizedStyle: false },
     { id: 'aisvesselhighspeed', offlineSupport: false, localizedStyle: false },
     { id: 'aisvesseltugandspecialcraft', offlineSupport: false, localizedStyle: false },
-    { id: 'aisvesselfishing', offlineSupport: false, localizedStyle: false },
     { id: 'aisvesselpleasurecraft', offlineSupport: false, localizedStyle: false },
-    { id: 'aisnavigationaidequipment', offlineSupport: false, localizedStyle: false },
     { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
   ],
 };

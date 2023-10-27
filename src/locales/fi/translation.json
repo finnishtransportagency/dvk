@@ -67,9 +67,7 @@
           "aisVesselPassenger": "Matkustaja-alukset",
           "aisVesselHighSpeed": "Nopeat veneet",
           "aisVesselTugAndSpecialCraft": "Hinaajat ja erikoisalukset",
-          "aisVesselFishing": "Kalastusalukset",
           "aisVesselPleasureCraft": "Huviveneet",
-          "aisNavigationAidEquipment": "Navigoinnin apuvälineet",
           "aisUnspecified": "Määrittelemättömät alukset",
           "mapStyle": {
             "header": "Kartan tyyli",
