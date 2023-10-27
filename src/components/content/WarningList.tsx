@@ -17,6 +17,7 @@ type WarningListProps = {
   loading?: boolean;
   sortNewFirst: boolean;
 };
+
 function goto(warning: MarineWarning, layers: string[]) {
   // Clear possible previous feature(s) from temporary layer
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
@@ -39,6 +40,7 @@ function goto(warning: MarineWarning, layers: string[]) {
     }
   }
 }
+
 export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNewFirst }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const { state } = useDvkContext();
@@ -51,7 +53,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
   });
 
   return (
-    <div>
+    <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
         return (
@@ -71,18 +73,20 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
               </IonCol>
             </IonRow>
             <IonRow>
-              <IonCol size="2">
-                <div>
-                  <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
-                </div>
+              <IonCol size="6" className="no-padding">
+                <IonRow>
+                  <IonCol size="auto">
+                    <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
+                  </IonCol>
+                  <IonCol>
+                    <IonText className="no-margin-top">
+                      <h4 className="h5">{t('area')}</h4>
+                      <Paragraph bodyText={warning.area} />
+                    </IonText>
+                  </IonCol>
+                </IonRow>
               </IonCol>
-              <IonCol>
-                <IonText className="no-margin-top">
-                  <h4 className="h5">{t('area')}</h4>
-                  <Paragraph bodyText={warning.area} />
-                </IonText>
-              </IonCol>
-              <IonCol size="5">
+              <IonCol size="6">
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('location')}</h4>
                   <p>
@@ -93,7 +97,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                         goto(warning, state.layers);
                       }}
                     >
-                      {warning.location[lang] || warning.location.fi || t('noObjects')}
+                      {warning.location[lang] ?? warning.location.fi ?? t('noObjects')}
                     </Link>
                   </p>
                 </IonText>
@@ -131,7 +135,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                               const uuid = uniqueId('span_');
                               return (
                                 <span key={uuid}>
-                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                  {fairway.name[lang] ?? fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
                             })}
@@ -143,7 +147,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                               const uuid = uniqueId('span_');
                               return (
                                 <span key={uuid}>
-                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                  {fairway.name[lang] ?? fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
                             })}
@@ -159,7 +163,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                               const uuid = uniqueId('span_');
                               return (
                                 <span key={uuid}>
-                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                  {fairway.name[lang] ?? fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
                             })}
@@ -171,7 +175,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                               const uuid = uniqueId('span_');
                               return (
                                 <span key={uuid}>
-                                  {fairway.name[lang] || fairway.name.fi} - {fairway.fairwayId}
+                                  {fairway.name[lang] ?? fairway.name.fi} - {fairway.fairwayId}
                                 </span>
                               );
                             })}
@@ -214,6 +218,6 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
           </IonGrid>
         );
       })}
-    </div>
+    </>
   );
 };

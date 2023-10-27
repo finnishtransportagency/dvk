@@ -33,7 +33,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('viewLastUpdatedUnknown');
+    if (!alertProps?.duration) return t('viewLastUpdatedUnknown');
     return t('lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
@@ -108,15 +108,9 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isLoading && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-      <WarningsFilter
-        setAreaFilter={setAreaFilter}
-        setTypeFilter={setTypeFilter}
-        setSortNewFirst={setSortNewFirst}
-        sortNewFirst={sortNewFirst}
-        widePane={widePane}
-      />
+      <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} setSortNewFirst={setSortNewFirst} sortNewFirst={sortNewFirst} />
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
-        <WarningList loading={isLoading} data={filterDataByAreaAndType() || []} sortNewFirst={sortNewFirst} />
+        <WarningList loading={isLoading} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
       </div>
     </>
   );
