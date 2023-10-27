@@ -75,7 +75,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
             </IonButton>
           </IonCol>
         </IonRow>
-        <IonRow id="higher"> {t(`homePage.map.controls.layer.${getAisVesselShipType(properties?.shipType)}`)}</IonRow>
+        <IonRow id="higher"> {t(`popup.ais.${getAisVesselShipType(properties?.shipType)}`)}</IonRow>
         <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
         <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
         <AisVesselInfoRow title={t('popup.ais.navState')} body={checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving')} />
@@ -86,8 +86,8 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
           title={t('popup.ais.dimensions')}
           body={vesselDimensions.length ? `${vesselDimensions[0]} x ${vesselDimensions[1]} m` : ''}
         />
-        <AisVesselInfoRow title={t('popup.ais.draught')} body={String(properties.draught)} />
-        <AisVesselInfoRow title={t('popup.ais.destination')} body={String(properties.destination)} />
+        <AisVesselInfoRow title={t('popup.ais.draught')} body={`${String(properties.draught)} m`} />
+        <AisVesselInfoRow title={`${t('popup.ais.destination')}`} body={String(properties.destination)} />
       </IonGrid>
     </IonGrid>
   );

@@ -404,7 +404,16 @@
       "draught": "Syväys",
       "destination": "Määränpää",
       "moored": "Ankkuroitu",
-      "moving": "Liikkeessä"
+      "moving": "Liikkeessä",
+      "aisVesselCargo": "Rahtialus",
+      "aisVesselTanker": "Tankkeri",
+      "aisVesselPassenger": "Matkustaja-alus",
+      "aisVesselHighSpeed": "Nopea vene",
+      "aisVesselTugAndSpecialCraft": "Hinaaja tai erikoisalus",
+      "aisVesselFishing": "Kalastusalus",
+      "aisVesselPleasureCraft": "Huvivene",
+      "aisNavigationAidEquipment": "Navigoinnin apuväline",
+      "aisUnspecified": "Määrittelemätön alus"
     }
   },
   "common": {

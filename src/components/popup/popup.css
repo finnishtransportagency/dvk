@@ -59,3 +59,7 @@
 .ol-popup #higher {
   margin-top: -13px;
 }
+
+#aisVesselPopupContent {
+  width: 226px;
+}
