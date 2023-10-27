@@ -1,7 +1,13 @@
 // eslint-disable-next-line import/named
 import { GetParametersByPathCommand, GetParametersByPathCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
 // eslint-disable-next-line import/named
-import { FilterNameStringType, GetSecretValueCommand, ListSecretsCommand, ListSecretsCommandOutput, SecretsManagerClient } from '@aws-sdk/client-secrets-manager';
+import {
+  FilterNameStringType,
+  GetSecretValueCommand,
+  ListSecretsCommand,
+  ListSecretsCommandOutput,
+  SecretsManagerClient
+} from '@aws-sdk/client-secrets-manager';
 
 const euWestSSMClient = new SSMClient({ region: 'eu-west-1' });
 const euWestSecretClient = new SecretsManagerClient({ region: 'eu-west-1' });
