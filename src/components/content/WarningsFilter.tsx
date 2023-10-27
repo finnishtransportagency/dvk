@@ -1,9 +1,10 @@
 import React from 'react';
 import { marineWarningAreas, marineWarningTypes } from '../../utils/constants';
-import { IonButton, IonCol, IonIcon, IonRow, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonIcon, IonItem, IonRow, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import { useTranslation } from 'react-i18next';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
+import '../../../admin/src/theme/dvk.css';
 
 interface WarningFilterProps {
   setAreaFilter: React.Dispatch<React.SetStateAction<string[]>>;
@@ -30,39 +31,43 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
     <IonRow id="customRow">
       <IonCol>
         <IonText className="filterTitle">{t('warnings.area')}</IonText>
-        <IonSelect
-          className={widePane ? 'marineWarningSelectWide rightMargin' : 'marineWarningSelectNarrow rightMargin'}
-          placeholder={t('common.filter')}
-          multiple={true}
-          interface="popover"
-          fill="outline"
-          labelPlacement="stacked"
-          onIonChange={(ev) => handleAreaChange(ev)}
-        >
-          {marineWarningAreas.map((area) => (
-            <IonSelectOption key={area} value={t(`areas.${area}`)}>
-              {t(`areas.${area}`)}
-            </IonSelectOption>
-          ))}
-        </IonSelect>
+        <IonItem>
+          <IonSelect
+            className={widePane ? 'marineWarningSelectWide rightMargin' : 'marineWarningSelectNarrow rightMargin'}
+            placeholder={t('common.filter')}
+            multiple={true}
+            interface="popover"
+            fill="outline"
+            labelPlacement="stacked"
+            onIonChange={(ev) => handleAreaChange(ev)}
+          >
+            {marineWarningAreas.map((area) => (
+              <IonSelectOption key={area} value={t(`areas.${area}`)}>
+                {t(`areas.${area}`)}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+        </IonItem>
       </IonCol>
       <IonCol>
         <IonText className="filterTitle">{t('warnings.type')}</IonText>
-        <IonSelect
-          className={widePane ? 'marineWarningSelectWide' : 'marineWarningSelectNarrow'}
-          placeholder={t('common.filter')}
-          multiple={true}
-          interface="popover"
-          fill="outline"
-          labelPlacement="stacked"
-          onIonChange={(ev) => handleTypeChange(ev)}
-        >
-          {marineWarningTypes.map((type) => (
-            <IonSelectOption key={type} value={t(`homePage.map.controls.layer.${type}`)}>
-              {t(`homePage.map.controls.layer.${type}`)}
-            </IonSelectOption>
-          ))}
-        </IonSelect>
+        <IonItem>
+          <IonSelect
+            className={widePane ? 'marineWarningSelectWide' : 'marineWarningSelectNarrow'}
+            placeholder={t('common.filter')}
+            multiple={true}
+            interface="popover"
+            fill="outline"
+            labelPlacement="stacked"
+            onIonChange={(ev) => handleTypeChange(ev)}
+          >
+            {marineWarningTypes.map((type) => (
+              <IonSelectOption key={type} value={t(`homePage.map.controls.layer.${type}`)}>
+                {t(`homePage.map.controls.layer.${type}`)}
+              </IonSelectOption>
+            ))}
+          </IonSelect>
+        </IonItem>
       </IonCol>
       <IonCol>
         <IonButton

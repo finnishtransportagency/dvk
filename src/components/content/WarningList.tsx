@@ -71,16 +71,18 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
               </IonCol>
             </IonRow>
             <IonRow>
-              <IonCol size="6" style={{ display: 'flex' }}>
+              <IonCol size="2">
                 <div>
                   <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
                 </div>
+              </IonCol>
+              <IonCol>
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('area')}</h4>
                   <Paragraph bodyText={warning.area} />
                 </IonText>
               </IonCol>
-              <IonCol size="6">
+              <IonCol size="5">
                 <IonText className="no-margin-top">
                   <h4 className="h5">{t('location')}</h4>
                   <p>

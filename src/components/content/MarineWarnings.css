@@ -28,22 +28,29 @@
 .marineWarningSelectWide {
   box-sizing: border-box;
   border: 1px solid #333333;
-  border-radius: 1px;
   background-color: #FFFFFF;
   margin-right: 20px;
   margin-top: 3px;
-  height: 45px;
+  height: 10px;
   width: 300px;
+  --border-radius: 0px;
+  --border-width: 0;
 }
 
 .marineWarningSelectNarrow {
   box-sizing: border-box;
   border: 1px solid #333333;
-  border-radius: 1px;
   background-color: #FFFFFF;
   margin-top: 3px;
-  height: 45px;
+  height: 10px;
   width: 150.5px;
+  --border-radius: 0px;
+  --border-width: 0;
+}
+
+ion-select.marineWarningSelectNarrow:active,
+ion-select.marineWarningSelectNarrow:focus {
+  border-color: red;
 }
 
 .rightMargin {
@@ -51,12 +58,12 @@
 }
 
 .filterTitle {
-    height: 20px;
-    width: 23px;
-    color: #333333;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
+  height: 20px;
+  width: 23px;
+  color: #333333;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
 }
 
 #sortingButton {
