@@ -6,7 +6,7 @@ import {
   GetSecretValueCommand,
   ListSecretsCommand,
   ListSecretsCommandOutput,
-  SecretsManagerClient
+  SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
 
 const euWestSSMClient = new SSMClient({ region: 'eu-west-1' });
