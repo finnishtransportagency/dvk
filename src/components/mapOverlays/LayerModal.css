@@ -299,7 +299,6 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .aisvesselpassenger,
 #layerModalContainer ion-item .aisvesselhighspeed,
 #layerModalContainer ion-item .aisvesseltugandspecialcraft,
-#layerModalContainer ion-item .aisvesselfishing,
 #layerModalContainer ion-item .aisvesselpleasurecraft,
 #layerModalContainer ion-item .aisunspecified {
   top: 0px !important;
@@ -329,19 +328,8 @@ ion-modal#layerModalContainer::part(content) {
   background: url('../../theme/img/ais/ais_vessel_tug_and_special_craft.svg') no-repeat center;
 }
 
-#layerModalContainer ion-item .aisvesselfishing {
-  background: url('../../theme/img/ais/ais_vessel_fishing.svg') no-repeat center;
-}
-
 #layerModalContainer ion-item .aisvesselpleasurecraft {
   background: url('../../theme/img/ais/ais_vessel_pleasure_craft.svg') no-repeat center;
-}
-
-#layerModalContainer ion-item .aisnavigationaidequipment {
-  width: 14px;
-  height: 14px;
-  background: url('../../theme/img/ais/ais_navigation_aid_equipment.svg') no-repeat center;
-  background-size: cover;
 }
 
 #layerModalContainer ion-item .aisunspecified {

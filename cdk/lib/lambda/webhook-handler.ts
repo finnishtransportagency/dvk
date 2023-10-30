@@ -262,7 +262,8 @@ const handler = async function (event: any) {
     if (squatPipelineName) await kaynnistaPipeline(squatPipelineName);
   }
   // ja DVK-pipelinet
-  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
+  // 13.10.2023 DVK:lla nykyaan riippuvuus squattiin upotuksen takia
+  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk') || folders.includes('squat')) {
     const dvkPipelineName = getPipelineName(branch, APPS.DVK);
     if (dvkPipelineName) await kaynnistaPipeline(dvkPipelineName);
   }
