@@ -324,3 +324,18 @@ export const OFFLINE_STORAGE = {
 };
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
+
+export const marineWarningAreas = [
+  'gulfOfFinland',
+  'northernBalticSea',
+  'archipelagoSea',
+  'seaOfÅland',
+  'bothnianSea',
+  'theQuark',
+  'bayOfBothnia',
+  'saimaa',
+  'saimaaCanal',
+  'gulfOfBothnia',
+];
+
+export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];

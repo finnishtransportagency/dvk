@@ -68,6 +68,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     },
   });
   const types = [
+    'aisvessel',
     'pilot',
     'vtspoint',
     'quay',

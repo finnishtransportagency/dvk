@@ -5,6 +5,9 @@ import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './consta
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
+import coastal from '../theme/img/coastal_warning_icon.svg';
+import local from '../theme/img/local_warning_icon.svg';
+import boaters from '../theme/img/warning_to_boaters_icon.svg';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -166,6 +169,17 @@ export const filterMarineWarnings = (layerId: FeatureDataLayerId) => {
     });
   };
 };
+
+export function getWarningImgSource(type: string) {
+  switch (type) {
+    case 'COASTAL WARNING':
+      return coastal;
+    case 'LOCAL WARNING':
+      return local;
+    default:
+      return boaters;
+  }
+}
 
 export const getAisVesselShipType = (typeNumber: number | undefined): string => {
   if (!typeNumber) {

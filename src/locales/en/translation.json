@@ -266,7 +266,8 @@
     "lastUpdatedAt": "Data of this view loaded over {{ val, number}} h ago.",
     "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
-    "viewLastUpdatedUnknown": "The last loading time of this views data is unknown."
+    "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
+    "type":"Type"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -401,16 +402,14 @@
       "dimensions": "[en] Aluksen kokonaispituus ja leveys",
       "draught": "[en] Syväys",
       "destination": "[en] Määränpää",
-      "moored": "[en] Ankkuroitu",
+      "moored": "[en] Ankkuroituna",
       "moving": "[en] Liikkeessä",
       "aisVesselCargo": " [en] Rahtialus",
       "aisVesselTanker": "[en] Tankkeri",
       "aisVesselPassenger": "[en] Matkustaja-alus",
       "aisVesselHighSpeed": "[en] Nopea vene",
       "aisVesselTugAndSpecialCraft": "[en] Hinaaja tai erikoisalus",
-      "aisVesselFishing": "[en] Kalastusalus",
       "aisVesselPleasureCraft": "[en] Huvivene",
-      "aisNavigationAidEquipment": "[en] Navigoinnin apuväline",
       "aisUnspecified": "[en] Määrittelemätön alus"
     }
   },
@@ -453,7 +452,8 @@
     "fairway-cards": "Fairway Cards",
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab",
-    "print": "Print page"
+    "print": "Print page",
+    "filter": "[en] Valitse suodatin..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
@@ -465,5 +465,17 @@
     "content3": "Source: Traficom. Not for navigational use. Does not fulfil requirements for official navigation chart.",
     "content4": "National Land Survey of Finland",
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
+  },
+  "areas": {
+    "gulfOfFinland": "Gulf of Finland",
+    "northernBalticSea": "Northern Baltic",
+    "archipelagoSea": "Archipelago Sea",
+    "seaOfÅland": "Aland Sea",
+    "bothnianSea": "Bothnian Sea",
+    "theQuark": "The Quark",
+    "bayOfBothnia": "Bay of Bothnia",
+    "saimaa": "Saimaa",
+    "saimaaCanal": "Saimaa Canal",
+    "gulfOfBothnia": "Gulf of Bothnia"
   }
 }
