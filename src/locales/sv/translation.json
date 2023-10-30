@@ -266,7 +266,8 @@
     "lastUpdatedAt": "Vyns uppgifter laddat för över {{ val, number}} h sedan.",
     "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan.",
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
-    "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd."
+    "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
+    "type": "Typ"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
@@ -452,7 +453,8 @@
     "skip-to-content": "Gå till huvudinnehåll",
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
-    "print": "Skriva ut sidan"
+    "print": "Skriva ut sidan",
+    "filter": "[sv] Valitse suodatin..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
@@ -464,5 +466,17 @@
     "content3": "Källa: Traficom. Ej för navigationsbruk. Uppfyller inte kraven för officiella sjökort.",
     "content4": "Lantmäteriverket",
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
+  },
+  "areas": {
+    "gulfOfFinland": "Finska viken",
+    "northernBalticSea": "Norra Östersjön",
+    "archipelagoSea": "Skärgårdshavet",
+    "seaOfÅland": "Ålands hav",
+    "bothnianSea": "Bottenhavet",
+    "theQuark": "Kvarken",
+    "bayOfBothnia": "Bottenviken",
+    "saimaa": "Saimen",
+    "saimaaCanal": "Saima kanal",
+    "gulfOfBothnia": "Bottenvik"
   }
 }
