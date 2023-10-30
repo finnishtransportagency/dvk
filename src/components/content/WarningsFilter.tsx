@@ -5,6 +5,7 @@ import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/
 import { useTranslation } from 'react-i18next';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import './WarningsFilter.css';
+
 interface WarningFilterProps {
   setAreaFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
@@ -31,7 +32,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
         <IonRow className="ion-align-items-center ion-justify-content-between">
           <IonCol size="5">
             <IonText className="filterTitle">{t('warnings.area')}</IonText>
-            <IonItem className="filterSelectInput">
+            <IonItem className="filterSelectInput" lines="none">
               <IonSelect
                 placeholder={t('common.filter')}
                 multiple={true}
@@ -40,7 +41,6 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
                   size: 'cover',
                   className: 'multiSelect',
                 }}
-                fill="outline"
                 labelPlacement="stacked"
                 onIonChange={(ev) => handleAreaChange(ev)}
               >
@@ -54,7 +54,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
           </IonCol>
           <IonCol size="5">
             <IonText className="filterTitle">{t('warnings.type')}</IonText>
-            <IonItem className="filterSelectInput">
+            <IonItem className="filterSelectInput" lines="none">
               <IonSelect
                 placeholder={t('common.filter')}
                 multiple={true}
@@ -63,7 +63,6 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
                   size: 'cover',
                   className: 'multiSelect',
                 }}
-                fill="outline"
                 labelPlacement="stacked"
                 onIonChange={(ev) => handleTypeChange(ev)}
               >

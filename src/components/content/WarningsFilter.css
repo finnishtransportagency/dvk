@@ -24,7 +24,7 @@ ion-item.filterSelectInput::part(native) {
 
 ion-item.filterSelectInput ion-select {
   min-height: 0;
-  height: calc(100% - 1px);
+  height: calc(100% - 2px);
   margin: 0 auto;
   background-color: var(--ion-color-primary-contrast);
   width: calc(100% - 2px);
@@ -38,7 +38,7 @@ ion-item.filterSelectInput ion-select {
 
 ion-item.filterSelectInput.ion-focused ion-select,
 ion-item.filterSelectInput ion-select.select-expanded {
-  height: calc(100% - 3px);
+  height: calc(100% - 4px);
   width: calc(100% - 4px);
   --padding-start: 12px;
   --padding-end: 12px;
