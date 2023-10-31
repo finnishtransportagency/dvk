@@ -84,7 +84,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
                 e.preventDefault();
               }}
             >
-              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? '' : 'flipped')} src={sortArrow} />
+              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
             </IonButton>
           </IonCol>
         </IonRow>
