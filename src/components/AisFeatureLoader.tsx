@@ -37,9 +37,7 @@ const aisLayers: Array<AisLayer> = [
   { id: 'aisvesselpassenger', shipTypes: _.range(60, 69) },
   { id: 'aisvesselhighspeed', shipTypes: _.range(40, 49) },
   { id: 'aisvesseltugandspecialcraft', shipTypes: [31, 32, 33, 34, 35, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59] },
-  { id: 'aisvesselfishing', shipTypes: [30] },
   { id: 'aisvesselpleasurecraft', shipTypes: [36, 37] },
-  { id: 'aisnavigationaidequipment', shipTypes: _.range(100, 131) },
   { id: 'aisunspecified', shipTypes: _.range(90, 99) },
 ];
 
@@ -140,16 +138,8 @@ export function useAisVesselTugAndSpecialCraftLayer() {
   return useAisLayer('aisvesseltugandspecialcraft');
 }
 
-export function useAisVesselFishingLayer() {
-  return useAisLayer('aisvesselfishing');
-}
-
 export function useAisVesselPleasureCraftLayer() {
   return useAisLayer('aisvesselpleasurecraft');
-}
-
-export function useAisNavigationAidEquipmentLayer() {
-  return useAisLayer('aisnavigationaidequipment');
 }
 
 export function useAisUnspecifiedLayer() {

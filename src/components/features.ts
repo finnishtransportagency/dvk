@@ -164,10 +164,11 @@ export type VtsFeatureProperties = {
 };
 
 export type AisFeatureProperties = {
+  featureType: 'aisvessel';
   mmsi: string;
   sog: number;
   cog: number;
-  navsat: number;
+  navStat: number;
   rot: number;
   posAcc: boolean;
   raim: boolean;

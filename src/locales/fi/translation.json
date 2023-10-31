@@ -67,9 +67,7 @@
           "aisVesselPassenger": "Matkustaja-alukset",
           "aisVesselHighSpeed": "Nopeat veneet",
           "aisVesselTugAndSpecialCraft": "Hinaajat ja erikoisalukset",
-          "aisVesselFishing": "Kalastusalukset",
           "aisVesselPleasureCraft": "Huviveneet",
-          "aisNavigationAidEquipment": "Navigoinnin apuvälineet",
           "aisUnspecified": "Määrittelemättömät alukset",
           "mapStyle": {
             "header": "Kartan tyyli",
@@ -395,6 +393,24 @@
       "point": "VTS-pisteen tiedot",
       "line": "VTS-alueen tiedot",
       "channel": "VHF-kanava"
+    },
+    "ais": {
+      "lastUpdated": "Viimeisin havainto",
+      "lastLocation": "Viimeisin sijainti",
+      "navState": "Navigoinnin tila",
+      "callSign": "Kutsumerkki",
+      "dimensions": "Aluksen kokonaispituus ja leveys",
+      "draught": "Syväys",
+      "destination": "Määränpää",
+      "moored": "Ankkuroituna",
+      "moving": "Liikkeessä",
+      "aisVesselCargo": "Rahtialus",
+      "aisVesselTanker": "Tankkeri",
+      "aisVesselPassenger": "Matkustaja-alus",
+      "aisVesselHighSpeed": "Nopea vene",
+      "aisVesselTugAndSpecialCraft": "Hinaaja tai erikoisalus",
+      "aisVesselPleasureCraft": "Huvivene",
+      "aisUnspecified": "Määrittelemätön alus"
     }
   },
   "common": {
