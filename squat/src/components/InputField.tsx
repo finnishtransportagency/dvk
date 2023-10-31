@@ -63,9 +63,14 @@ const InputField: React.FC<InputProps> = (props) => {
         let val = inputElem.value;
         let isValid = inputElem.checkValidity();
         if (inputElem.type === 'text') {
+          // Number stored in a text field - must validate type, min, max and step
           val = val.replace(/,/g, '.');
           const isNumber = !!val && !isNaN(Number(val)) && !isNaN(parseFloat(val));
-          isValid = isNumber && Number(val) >= Number(inputElem.min) && Number(val) <= Number(inputElem.max);
+          isValid =
+            isNumber &&
+            Number(val) >= Number(props.min) &&
+            Number(val) <= Number(props.max) &&
+            countDecimals(Number(val)) <= countDecimals(Number(props.step));
         }
         //checks if zeros preceding other numbers and same thing if there's - symbol preceding
         const trimmedValue = val.replace(/(^0+(?=\d))|((?<=-)0+(?=\d))/g, '');
@@ -89,7 +94,7 @@ const InputField: React.FC<InputProps> = (props) => {
         });
       });
     },
-    [dispatch]
+    [dispatch, props.min, props.max, props.step]
   );
 
   const updateAction = useCallback(
