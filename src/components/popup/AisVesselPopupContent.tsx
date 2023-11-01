@@ -55,7 +55,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   //speed and course combined
   const speed = properties.sog > 102 ? '-' : properties.sog + 'kn';
   const course = properties.cog === 360 ? '-' : properties.cog + '°';
-  const speedAndCourse = speed === '-' && course === '-' ? '' : `${speed} / ${course}`;
+  const speedAndCourse = speed === '-' && course === '-' ? '' : `${String(speed).replace('.', ',')} / ${String(course).replace('.', ',')}`;
   const vesselDimensions = calculateVesselDimensions(
     properties.referencePointA,
     properties.referencePointB,
@@ -65,7 +65,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   //check decimals
   const vesselLength = vesselDimensions[0] % 1 == 0 ? vesselDimensions[0] : vesselDimensions[0].toFixed(2).replace('.', ',');
   const vesselWidth = vesselDimensions[1] % 1 == 0 ? vesselDimensions[1] : vesselDimensions[1].toFixed(2).replace('.', ',');
-  const lengthAndWidth = vesselLength  ? `${vesselLength} x ${vesselWidth} m` : '';
+  const lengthAndWidth = vesselLength ? `${vesselLength} x ${vesselWidth} m` : '';
   const draught = properties.draught ? `${String(properties.draught).replace('.', ',')} m` : '';
 
   const closePopup = () => {
