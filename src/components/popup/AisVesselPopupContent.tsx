@@ -51,8 +51,8 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const properties = vessel.properties;
   const dataUpdatedTime = reformatAisvesselDataUpdatedTime(properties.dataUpdatedTime);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
-  const speed = properties.sog;
-  const course = properties.cog;
+  const speed = properties.sog > 102 ? '-' : properties.sog;
+  const course = properties.cog === 360 ? '-' : properties.cog;
   const vesselDimensions = calculateVesselDimensions(
     properties.referencePointA,
     properties.referencePointB,
