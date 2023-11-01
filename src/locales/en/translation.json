@@ -61,14 +61,14 @@
           "deptharea": "Areas",
           "specialarea2": "Anchoring areas",
           "specialarea15": "Meeting and overtaking prohibition areas",
-          "ais": "[en] Liikennetilanne",
-          "aisVesselCargo": "[en] Rahtialukset",
-          "aisVesselTanker": "[en] Tankkerit",
-          "aisVesselPassenger": "[en] Matkustaja-alukset",
-          "aisVesselHighSpeed": "[en] Nopeat veneet",
-          "aisVesselTugAndSpecialCraft": "[en] Hinaajat ja erikoisalukset",
-          "aisVesselPleasureCraft": "[en] Huviveneet",
-          "aisUnspecified": "[en] Määrittelemättömät alukset",
+          "ais": "Traffic situation",
+          "aisVesselCargo": "Cargo vessels",
+          "aisVesselTanker": "Tankers",
+          "aisVesselPassenger": "Passenger vessels",
+          "aisVesselHighSpeed": "High speed vessels",
+          "aisVesselTugAndSpecialCraft": "Tugboats and special crafts",
+          "aisVesselPleasureCraft": "Pleasure crafts",
+          "aisUnspecified": "Unspecified vessels",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -395,24 +395,22 @@
       "channel": "VHF channel"
     },
     "ais": {
-      "lastUpdated": "[en] Viimeisin havainto",
-      "lastLocation": "[en] Viimeisin sijainti",
-      "navState": "[en] Navigoinnin tila",
-      "speed": "[en] Nopeus",
-      "course": "[en] Suunta",
-      "callSign": "[en] Kutsumerkki",
-      "dimensions": "[en] Aluksen kokonaispituus ja leveys",
-      "draught": "[en] Syväys",
-      "destination": "[en] Määränpää",
-      "moored": "[en] Ankkuroituna",
-      "moving": "[en] Liikkeessä",
-      "aisVesselCargo": " [en] Rahtialus",
-      "aisVesselTanker": "[en] Tankkeri",
-      "aisVesselPassenger": "[en] Matkustaja-alus",
-      "aisVesselHighSpeed": "[en] Nopea vene",
-      "aisVesselTugAndSpecialCraft": "[en] Hinaaja tai erikoisalus",
-      "aisVesselPleasureCraft": "[en] Huvivene",
-      "aisUnspecified": "[en] Määrittelemätön alus"
+      "lastUpdated": "Latest observation",
+      "lastLocation": "Latest location",
+      "navState": "Navigation mode",
+      "callSign": "Call sign",
+      "dimensions": "Vessel's total length and width",
+      "draught": "Draught",
+      "destination": "Destination",
+      "moored": "At anchor",
+      "moving": "In movement",
+      "aisVesselCargo": "Cargo vessel",
+      "aisVesselTanker": "Tanker",
+      "aisVesselPassenger": "Passenger vessel",
+      "aisVesselHighSpeed": "High speed vessel",
+      "aisVesselTugAndSpecialCraft": "Tugboat or special craft",
+      "aisVesselPleasureCraft": "Pleasure craft",
+      "aisUnspecified": "Unspecified vessel"
     }
   },
   "common": {
@@ -455,7 +453,7 @@
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab",
     "print": "Print page",
-    "filter": "[en] Valitse suodatin..."
+    "filter": "Select filter..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."

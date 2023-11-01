@@ -59,6 +59,9 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
     properties.referencePointC,
     properties.referencePointD
   );
+  const vesselLength = vesselDimensions[0] % 1 == 0 ? vesselDimensions[0] : vesselDimensions[0].toFixed(2).replace('.', ',');
+  const vesselWidth = vesselDimensions[1] % 1 == 0 ? vesselDimensions[1] : vesselDimensions[1].toFixed(2).replace('.', ',');
+  const draught = String(properties.draught).replace('.', ',');
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -86,11 +89,8 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
         <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
         <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
         <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
-        <AisVesselInfoRow
-          title={t('popup.ais.dimensions')}
-          body={vesselDimensions.length ? `${vesselDimensions[0]} x ${vesselDimensions[1]} m` : ''}
-        />
-        <AisVesselInfoRow title={t('popup.ais.draught')} body={`${String(properties.draught)} m`} />
+        <AisVesselInfoRow title={t('popup.ais.dimensions')} body={vesselDimensions.length ? `${vesselLength} x ${vesselWidth} m` : ''} />
+        <AisVesselInfoRow title={t('popup.ais.draught')} body={draught + ' m'} />
         <AisVesselInfoRow title={`${t('popup.ais.destination')}`} body={String(properties.destination)} />
       </IonGrid>
     </IonGrid>

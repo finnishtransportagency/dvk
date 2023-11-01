@@ -61,14 +61,14 @@
           "deptharea": "Zoner",
           "specialarea2": "Ankringsområden",
           "specialarea15": "Områden med mötes- och omkörningsförbud",
-          "ais": "[sv] Liikennetilanne",
-          "aisVesselCargo": "[sv] Rahtialukset",
-          "aisVesselTanker": "[sv] Tankkerit",
-          "aisVesselPassenger": "[sv] Matkustaja-alukset",
-          "aisVesselHighSpeed": "[sv] Nopeat veneet",
-          "aisVesselTugAndSpecialCraft": "[sv] Hinaajat ja erikoisalukset",
-          "aisVesselPleasureCraft": "[sv] Huviveneet",
-          "aisUnspecified": "[sv] Määrittelemättömät alukset",
+          "ais": "Trafikläge",
+          "aisVesselCargo": "Fraktfartyg",
+          "aisVesselTanker": "Tankfartyg",
+          "aisVesselPassenger": "Passagerarfartyg",
+          "aisVesselHighSpeed": "Snabba Båtar",
+          "aisVesselTugAndSpecialCraft": "Bogserbåtar och specialfartyg",
+          "aisVesselPleasureCraft": "Fritidsbåtar",
+          "aisUnspecified": "Odefinierade fartyg",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -406,13 +406,13 @@
       "destination": "[sv] Määränpää",
       "moored": "[sv] Ankkuroituna",
       "moving": "[sv] Liikkeessä",
-      "aisVesselCargo": " [sv] Rahtialus",
-      "aisVesselTanker": "[sv] Tankkeri",
-      "aisVesselPassenger": "[sv] Matkustaja-alus",
-      "aisVesselHighSpeed": "[sv] Nopea vene",
-      "aisVesselTugAndSpecialCraft": "[sv] Hinaaja tai erikoisalus",
-      "aisVesselPleasureCraft": "[sv] Huvivene",
-      "aisUnspecified": "[sv] Määrittelemätön alus"
+      "aisVesselCargo": "Fraktfartyg",
+      "aisVesselTanker": "Tankfartyg",
+      "aisVesselPassenger": "Passagerarfartyg",
+      "aisVesselHighSpeed": "Snabba båt",
+      "aisVesselTugAndSpecialCraft": "Bogserbåt eller specialfartyg",
+      "aisVesselPleasureCraft": "Fritidsbåt",
+      "aisUnspecified": "Odefinierade fartyg"
     }
   },
   "common": {
@@ -456,7 +456,7 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan",
-    "filter": "[sv] Valitse suodatin..."
+    "filter": "Välj filter..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."

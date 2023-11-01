@@ -4,7 +4,8 @@ import { Alarm, ComparisonOperator, GraphWidget, Metric, TreatMissingData } from
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
 import { Duration, aws_cloudwatch as cloudwatch } from 'aws-cdk-lib';
-import { Subscription, SubscriptionProtocol, Topic } from 'aws-cdk-lib/aws-sns';
+import { Topic } from 'aws-cdk-lib/aws-sns';
+import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import Config from './config';
 
@@ -19,11 +20,8 @@ export class MonitoringServices extends Construct {
       topicName: `DvkAlarmsTopic_${env}`,
     });
 
-    new Subscription(this, 'DvkAlarmSubscription', {
-      topic,
-      endpoint: 'juhani.kettunen@cgi.com', //TODO: change to support email
-      protocol: SubscriptionProtocol.EMAIL,
-    });
+    topic.addSubscription(new subscriptions.EmailSubscription('juhani.kettunen@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
+
     const action = new SnsAction(topic);
 
     // create log group filters for (graphql) lambda logs and create alarms for filters
@@ -35,21 +33,17 @@ export class MonitoringServices extends Construct {
     }
     // ... and api functions
     for (const lambdaFunc of apiLambdaFunctions) {
-      const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
-      const metricFilter = this.createLogGroupMetricFilter(functionName, env);
-      const logAlarm = this.createAlarmForMetric(metricFilter.metric(), env);
-      logAlarm.addAlarmAction(action);
+      if (lambdaFunc.useMonitoring) {
+        const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
+        const metricFilter = this.createLogGroupMetricFilter(functionName, env);
+        const logAlarm = this.createAlarmForMetric(metricFilter.metric({ statistic: 'Sum' }), env);
+        logAlarm.addAlarmAction(action);
+      }
     }
 
     // create general alarms for lambdas...
     const lambdaAlarms = this.createAlarmForMetric(this.createLambdaMetric(env, 'Errors', 'Sum'), env);
     lambdaAlarms.addAlarmAction(action);
-
-    // ...cloudfront
-    // TODO: Cannot create an Alarm in region 'eu-west-1' based on metric '5xxErrorRate' in 'us-east-1'
-    // needs own stack with us-east-1 if no other workarounds
-    // const cloudFrontAlarm = this.createAlarmForMetric(this.createCloudFrontMetric(env, '5xxErrorRate', 'Max'), env);
-    // cloudFrontAlarm.addAlarmAction(action);
 
     // ... and appsync
     const appSyncAlarm = this.createAlarmForMetric(this.createAppSyncMetric(env, '5XXError', 'Max'), env);
@@ -74,11 +68,15 @@ export class MonitoringServices extends Construct {
 
     // create error log widget
     const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
-    apiLambdaFunctions.map((lambda) => logGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()));
+    const apiLogGroupNames: string[] = [];
+    apiLambdaFunctions.forEach((lambda) => {
+      if (lambda.useMonitoring) apiLogGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase());
+    });
 
     dashboard.addWidgets(
       new cloudwatch.LogQueryWidget({
-        logGroupNames: logGroupNames,
+        title: 'All errors',
+        logGroupNames: logGroupNames.concat(apiLogGroupNames),
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: [
           'fields @timestamp, @message',
@@ -87,11 +85,28 @@ export class MonitoringServices extends Construct {
           'limit 50',
         ],
       }),
-      // Feature loader all lines
+      // APIs all lines
       new cloudwatch.LogQueryWidget({
-        logGroupNames: apiLambdaFunctions.map((lambda) => `/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase()),
+        title: 'APIs all lines',
+        logGroupNames: apiLogGroupNames,
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: ['fields @timestamp, @message', 'filter tag = "DVK_BACKEND"', 'sort @timestamp desc', 'limit 50'],
+      })
+    );
+    // Log widget with error counts for APIs
+    dashboard.addWidgets(
+      new cloudwatch.LogQueryWidget({
+        title: 'APIs error counts',
+        logGroupNames: apiLogGroupNames,
+        view: cloudwatch.LogQueryVisualizationType.TABLE,
+        queryLines: [
+          `fields Lukumaara, msg`,
+          ` filter tag = "DVK_BACKEND" and @message like /Fetching from (\\w+) api failed/`,
+          ` fields substr(msg, 0, 150) as short_msg`,
+          ` stats count(*) as Lukumaara by short_msg`,
+          ` sort Lukumaara desc`,
+          ` display Lukumaara, short_msg`,
+        ],
       })
     );
 
@@ -120,7 +135,16 @@ export class MonitoringServices extends Construct {
   }
 
   createLogGroupMetricFilter(lambdaName: string, env: string): MetricFilter {
-    const filterPattern = FilterPattern.any(FilterPattern.stringValue('$.level', '=', 'error'), FilterPattern.stringValue('$.level', '=', 'fatal'));
+    const filterPattern = FilterPattern.any(
+      FilterPattern.stringValue('$.level', '=', 'error'),
+      FilterPattern.stringValue('$.level', '=', 'fatal'),
+      FilterPattern.stringValue('$.message', '=', 'ERROR'),
+      FilterPattern.stringValue('$.message', '=', 'Error'),
+      FilterPattern.stringValue('$.message', '=', 'error'),
+      FilterPattern.stringValue('$.message', '=', 'FATAL'),
+      FilterPattern.stringValue('$.message', '=', 'Fatal'),
+      FilterPattern.stringValue('$.message', '=', 'fatal')
+    );
     const logGroupName = '/aws/lambda/' + lambdaName;
     const metricName = lambdaName + `_metric_${env}`;
     const logGroup = LogGroup.fromLogGroupName(this, 'DvkLogGroup_' + lambdaName, logGroupName);
