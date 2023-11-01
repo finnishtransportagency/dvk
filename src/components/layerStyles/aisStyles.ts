@@ -5,8 +5,7 @@ import CircleStyle from 'ol/style/Circle';
 import { Point } from 'ol/geom';
 import { MAP } from '../../utils/constants';
 import * as turf from '@turf/turf';
-
-const minVesselIconWidth = 8;
+const minVesselIconWidth = 4;
 const minVesselIconHeight = 18;
 const movingNavStats = [0, 3, 4, 7, 8];
 
