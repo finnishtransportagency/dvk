@@ -51,17 +51,20 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const properties = vessel.properties;
   const dataUpdatedTime = reformatAisvesselDataUpdatedTime(properties.dataUpdatedTime);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
+  const speed = properties.sog;
+  const course = properties.cog;
   const vesselDimensions = calculateVesselDimensions(
     properties.referencePointA,
     properties.referencePointB,
     properties.referencePointC,
     properties.referencePointD
   );
+
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     deselectClickSelection();
   };
-  //could use some refactoring
+
   return (
     <IonGrid id="aisVesselPopupContent">
       <IonGrid className="ion-no-padding">
@@ -79,6 +82,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
         <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
         <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
         <AisVesselInfoRow title={t('popup.ais.navState')} body={checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving')} />
+        <AisVesselInfoRow title={`${t('popup.ais.speed')} / ${t('popup.ais.course').toLowerCase()}`} body={`${speed}kn / ${course}°`} />
         <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
         <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
         <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
