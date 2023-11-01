@@ -398,6 +398,8 @@
       "lastUpdated": "Viimeisin havainto",
       "lastLocation": "Viimeisin sijainti",
       "navState": "Navigoinnin tila",
+      "speed": "Nopeus",
+      "course": "Suunta",
       "callSign": "Kutsumerkki",
       "dimensions": "Aluksen kokonaispituus ja leveys",
       "draught": "Syväys",
