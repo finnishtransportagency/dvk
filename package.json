@@ -39,10 +39,12 @@
     "ol-mapbox-style": "^12.0.0",
     "proj4": "^2.9.2",
     "react": "^18.2.0",
+    "react-country-flag": "^3.1.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^13.3.1",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
+    "squatlib": "file:./squat",
     "typescript": "^5.2.2",
     "web-vitals": "^3.5.0",
     "workbox-background-sync": "^7.0.0",
@@ -56,8 +58,7 @@
     "workbox-range-requests": "^7.0.0",
     "workbox-routing": "^7.0.0",
     "workbox-strategies": "^7.0.0",
-    "workbox-streams": "^7.0.0",
-    "squatlib": "file:./squat"
+    "workbox-streams": "^7.0.0"
   },
   "scripts": {
     "prestart": "npm run generate",
