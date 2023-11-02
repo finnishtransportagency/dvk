@@ -398,6 +398,8 @@
       "lastUpdated": "Latest observation",
       "lastLocation": "Latest location",
       "navState": "Navigation mode",
+      "speed": "[en] Nopeus",
+      "course": "[en] Suunta",
       "callSign": "Call sign",
       "dimensions": "Vessel's total length and width",
       "draught": "Draught",
