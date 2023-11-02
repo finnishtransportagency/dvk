@@ -1,4 +1,4 @@
-schema { 
+schema {
   query: Query
   mutation: Mutation
 }
@@ -84,6 +84,7 @@ input PictureInput {
   lang: String
   groupId: Float
   modificationTimestamp: Float
+  legendPosition: String
 }
 
 enum Orientation {
@@ -244,6 +245,7 @@ type Picture {
   scaleWidth: String
   groupId: Float
   modificationTimestamp: Float
+  legendPosition: String
 }
 
 type TrafficService {

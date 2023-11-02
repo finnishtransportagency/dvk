@@ -38,7 +38,7 @@ import back_arrow from '../theme/img/back_arrow-1.svg';
 import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
-import FormTextInputRow from './FormTextInputRow';
+import TextInputRow from './form/TextInputRow';
 import { radiansToDegrees } from '../utils/common';
 
 interface PrintInfoProps {
@@ -417,7 +417,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                     </p>
                     {groupedPics && groupedPics?.length > 0 && (
                       <IonGrid className="formGrid">
-                        <FormTextInputRow
+                        <TextInputRow
                           labelKey="fairwaycard.print-images-description"
                           value={groupedPicTexts?.find((gPic) => gPic.groupId === pic.groupId)?.text}
                           updateState={setPicture}
@@ -515,11 +515,10 @@ const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, 
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
-
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
-      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} />
+      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} setPicture={setPicture} />
 
       <IonText>
         <h4>
@@ -717,6 +716,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           text: null,
           lang: toBeSavedPicture.lang,
           groupId: toBeSavedPicture.groupId,
+          legendPosition: toBeSavedPicture.legendPosition,
         };
         // Update fairwayCard state
         setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');

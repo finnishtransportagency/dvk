@@ -20,18 +20,18 @@ import {
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
 } from '../graphql/api';
-import FormInput from './FormInput';
-import FormSelect from './FormSelect';
-import FormSelectWithSearch from './FormSelectWithSearch';
-import FormTextInputRow from './FormTextInputRow';
-import FormOptionalSection from './FormOptionalSection';
+import TextInput from './form/TextInput';
+import SelectInput from './form/SelectInput';
+import SelectWithFilter from './form/SelectWithFilter';
+import TextInputRow from './form/TextInputRow';
+import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
 import MapExportTool from './MapExportTool';
-import { mapToFairwayCardInput } from '../pages/FairwayCardEditPage';
+import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -399,17 +399,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (state.operation === Operation.Create) history.push({ pathname: '/vaylakortti/' + savedCard.id });
     }
   };
+  const confirmationCondition =
+    (savedCard ? (savedCard as StatusName) : fairwayCard).status === Status.Draft && state.status === Status.Draft && confirmationType === '';
 
   return (
     <IonPage>
-      <ConfirmationModal
-        saveType="fairwaycard"
-        action={confirmationType === 'cancel' ? backToList : saveCard}
-        confirmationType={confirmationType}
-        setConfirmationType={setConfirmationType}
-        newStatus={state.status}
-        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
-      />
+      {!confirmationCondition && (
+        <ConfirmationModal
+          saveType="fairwaycard"
+          action={confirmationType === 'cancel' ? backToList : saveCard}
+          confirmationType={confirmationType}
+          setConfirmationType={setConfirmationType}
+          newStatus={state.status}
+          oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        />
+      )}
       <NotificationModal
         isOpen={!!saveError || isOpen}
         closeAction={closeNotification}
@@ -442,7 +446,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               </IonGrid>
             </IonCol>
             <IonCol size="auto">
-              <FormSelect
+              <SelectInput
                 label={t('general.item-status')}
                 selected={state.status}
                 options={statusOptions}
@@ -490,7 +494,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         {!isError && (
           <form ref={formRef}>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.name"
                 value={state.name}
                 updateState={updateState}
@@ -502,7 +506,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
               <IonRow>
                 <IonCol sizeMd="3">
-                  <FormInput
+                  <TextInput
                     label={t('fairwaycard.primary-id')}
                     val={state.id}
                     setValue={updateState}
@@ -516,7 +520,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelectWithSearch
+                  <SelectWithFilter
                     label={t('fairwaycard.linked-fairways')}
                     options={fairwayList?.fairways ?? []}
                     selected={state.fairwayIds || []}
@@ -530,7 +534,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('fairwaycard.starting-fairway')}
                     selected={state.primaryFairwayId ?? ''}
                     options={fairwaySelection ?? []}
@@ -544,7 +548,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('fairwaycard.ending-fairway')}
                     selected={state.secondaryFairwayId ?? ''}
                     options={fairwaySelection ?? []}
@@ -560,7 +564,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               </IonRow>
               <IonRow>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('general.item-area')}
                     selected={state.group}
                     options={[
@@ -576,7 +580,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('general.item-referencelevel')}
                     selected={state.n2000HeightSystem}
                     options={[
@@ -589,7 +593,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="3">
-                  <FormSelect
+                  <SelectInput
                     label={t('fairwaycard.linked-harbours')}
                     selected={state.harbors ?? []}
                     options={harbourSelection ?? []}
@@ -608,42 +612,42 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <h2>{t('fairwaycard.fairway-info')}</h2>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.lining-and-marking"
                 value={state.lineText}
                 updateState={updateState}
                 actionType="line"
-                required={!!(state.lineText?.fi || state.lineText?.sv || state.lineText?.en)}
+                required={!!(state.lineText?.fi ?? state.lineText?.sv ?? state.lineText?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'line')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.design-speed"
                 value={state.designSpeed}
                 updateState={updateState}
                 actionType="designSpeed"
-                required={!!(state.designSpeed?.fi || state.designSpeed?.sv || state.designSpeed?.en)}
+                required={!!(state.designSpeed?.fi ?? state.designSpeed?.sv ?? state.designSpeed?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'designSpeed')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.speed-limit"
                 value={state.speedLimit}
                 updateState={updateState}
                 actionType="speedLimit"
-                required={!!(state.speedLimit?.fi || state.speedLimit?.sv || state.speedLimit?.en)}
+                required={!!(state.speedLimit?.fi ?? state.speedLimit?.sv ?? state.speedLimit?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'speedLimit')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.anchorage"
                 value={state.anchorage}
                 updateState={updateState}
                 actionType="anchorage"
-                required={!!(state.anchorage?.fi || state.anchorage?.sv || state.anchorage?.en)}
+                required={!!(state.anchorage?.fi ?? state.anchorage?.sv ?? state.anchorage?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'anchorage')?.msg}
                 inputType="textarea"
@@ -654,22 +658,22 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <h2>{t('fairwaycard.navigation')}</h2>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.navigation-condition"
                 value={state.navigationCondition}
                 updateState={updateState}
                 actionType="navigationCondition"
-                required={!!(state.navigationCondition?.fi || state.navigationCondition?.sv || state.navigationCondition?.en)}
+                required={!!(state.navigationCondition?.fi ?? state.navigationCondition?.sv ?? state.navigationCondition?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'navigationCondition')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.ice-condition"
                 value={state.iceCondition}
                 updateState={updateState}
                 actionType="iceCondition"
-                required={!!(state.iceCondition?.fi || state.iceCondition?.sv || state.iceCondition?.en)}
+                required={!!(state.iceCondition?.fi ?? state.iceCondition?.sv ?? state.iceCondition?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'iceCondition')?.msg}
                 inputType="textarea"
@@ -680,52 +684,52 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <h2>{t('fairwaycard.recommendation')}</h2>
             </IonText>
             <IonGrid className="formGrid">
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.wind-recommendation"
                 value={state.windRecommendation}
                 updateState={updateState}
                 actionType="windRecommendation"
-                required={!!(state.windRecommendation?.fi || state.windRecommendation?.sv || state.windRecommendation?.en)}
+                required={!!(state.windRecommendation?.fi ?? state.windRecommendation?.sv ?? state.windRecommendation?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'windRecommendation')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.vessel-recommendation"
                 value={state.vesselRecommendation}
                 updateState={updateState}
                 actionType="vesselRecommendation"
-                required={!!(state.vesselRecommendation?.fi || state.vesselRecommendation?.sv || state.vesselRecommendation?.en)}
+                required={!!(state.vesselRecommendation?.fi ?? state.vesselRecommendation?.sv ?? state.vesselRecommendation?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'vesselRecommendation')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.visibility-recommendation"
                 value={state.visibility}
                 updateState={updateState}
                 actionType="visibility"
-                required={!!(state.visibility?.fi || state.visibility?.sv || state.visibility?.en)}
+                required={!!(state.visibility?.fi ?? state.visibility?.sv ?? state.visibility?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'visibility')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.wind-gauge"
                 value={state.windGauge}
                 updateState={updateState}
                 actionType="windGauge"
-                required={!!(state.windGauge?.fi || state.windGauge?.sv || state.windGauge?.en)}
+                required={!!(state.windGauge?.fi ?? state.windGauge?.sv ?? state.windGauge?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
                 inputType="textarea"
               />
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="fairwaycard.sea-level"
                 value={state.seaLevel}
                 updateState={updateState}
                 actionType="seaLevel"
-                required={!!(state.seaLevel?.fi || state.seaLevel?.sv || state.seaLevel?.en)}
+                required={!!(state.seaLevel?.fi ?? state.seaLevel?.sv ?? state.seaLevel?.en)}
                 disabled={state.status === Status.Removed}
                 error={validationErrors.find((error) => error.id === 'seaLevel')?.msg}
                 inputType="textarea"
@@ -739,7 +743,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             <IonGrid className="formGrid">
               <IonRow>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <TextInput
                     label={t('general.email')}
                     val={state.trafficService?.pilot?.email ?? ''}
                     setValue={updateState}
@@ -749,7 +753,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <TextInput
                     label={t('general.phone-number')}
                     val={state.trafficService?.pilot?.phoneNumber ?? ''}
                     setValue={updateState}
@@ -759,7 +763,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
                 <IonCol sizeMd="4">
-                  <FormInput
+                  <TextInput
                     label={t('general.fax')}
                     val={state.trafficService?.pilot?.fax ?? ''}
                     setValue={updateState}
@@ -769,15 +773,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   />
                 </IonCol>
               </IonRow>
-              <FormTextInputRow
+              <TextInputRow
                 labelKey="general.additional-information"
                 value={state.trafficService?.pilot?.extraInfo}
                 updateState={updateState}
                 actionType="pilotExtraInfo"
                 required={
                   !!(
-                    state.trafficService?.pilot?.extraInfo?.fi ||
-                    state.trafficService?.pilot?.extraInfo?.sv ||
+                    state.trafficService?.pilot?.extraInfo?.fi ??
+                    state.trafficService?.pilot?.extraInfo?.sv ??
                     state.trafficService?.pilot?.extraInfo?.en
                   )
                 }
@@ -787,7 +791,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
               <IonRow>
                 <IonCol sizeMd="6">
-                  <FormSelect
+                  <SelectInput
                     label={t('fairwaycard.linked-pilot-places')}
                     selected={(state.trafficService?.pilot?.places as PilotPlaceInput[]) || []}
                     options={pilotPlaceList?.pilotPlaces ?? []}
@@ -805,7 +809,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   const pilotName = (pilotPlace.name && (pilotPlace.name[lang] || pilotPlace.name.fi)) || pilotPlace.id.toString();
                   return (
                     <IonCol key={place.id}>
-                      <FormInput
+                      <TextInput
                         label={t('fairwaycard.pilotage-distance-from') + ' ' + pilotName}
                         val={place.pilotJourney}
                         setValue={updateState}
@@ -823,7 +827,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               </IonRow>
             </IonGrid>
 
-            <FormOptionalSection
+            <Section
               title={t('fairwaycard.vts-heading')}
               sections={state.trafficService?.vts as VtsInput[]}
               updateState={updateState}
@@ -832,7 +836,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               disabled={state.status === Status.Removed}
             />
 
-            <FormOptionalSection
+            <Section
               title={t('fairwaycard.tug-heading')}
               sections={state.trafficService?.tugs as TugInput[]}
               updateState={updateState}

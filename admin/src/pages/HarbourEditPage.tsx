@@ -1,74 +1,14 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, HarborInput, HarbourByIdQuery, Operation, Status } from '../graphql/generated';
+import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
+import { mapToHarborInput } from '../utils/dataMapper';
 
 interface HarbourEditProps {
   harbourId: string;
   origin?: boolean;
-}
-
-export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQuery | undefined) {
-  const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
-  return {
-    id: origin ? '' : data?.harbor?.id ?? '',
-    name: {
-      fi: data?.harbor?.name?.fi ?? '',
-      sv: data?.harbor?.name?.sv ?? '',
-      en: data?.harbor?.name?.en ?? '',
-    },
-    extraInfo: {
-      fi: data?.harbor?.extraInfo?.fi ?? '',
-      sv: data?.harbor?.extraInfo?.sv ?? '',
-      en: data?.harbor?.extraInfo?.en ?? '',
-    },
-    cargo: {
-      fi: data?.harbor?.cargo?.fi ?? '',
-      sv: data?.harbor?.cargo?.sv ?? '',
-      en: data?.harbor?.cargo?.en ?? '',
-    },
-    harborBasin: {
-      fi: data?.harbor?.harborBasin?.fi ?? '',
-      sv: data?.harbor?.harborBasin?.sv ?? '',
-      en: data?.harbor?.harborBasin?.en ?? '',
-    },
-    n2000HeightSystem: data?.harbor?.n2000HeightSystem ?? false,
-    geometry: { lat: coordinates[1]?.toString() ?? '', lon: coordinates[0]?.toString() ?? '' },
-    company: {
-      fi: data?.harbor?.company?.fi ?? '',
-      sv: data?.harbor?.company?.sv ?? '',
-      en: data?.harbor?.company?.en ?? '',
-    },
-    email: data?.harbor?.email ?? '',
-    fax: data?.harbor?.fax ?? '',
-    internet: data?.harbor?.internet ?? '',
-    phoneNumber: data?.harbor?.phoneNumber ?? [],
-    quays: data?.harbor?.quays?.map((quay) => {
-      const quayCoords = quay?.geometry?.coordinates ?? ['', ''];
-      return {
-        extraInfo: {
-          fi: quay?.extraInfo?.fi ?? '',
-          sv: quay?.extraInfo?.sv ?? '',
-          en: quay?.extraInfo?.en ?? '',
-        },
-        geometry: { lat: quayCoords[1]?.toString() ?? '', lon: quayCoords[0]?.toString() ?? '' },
-        length: quay?.length?.toString() ?? '',
-        name: { fi: quay?.name?.fi ?? '', sv: quay?.name?.sv ?? '', en: quay?.name?.en ?? '' },
-        sections: quay?.sections?.map((section) => {
-          const sectionCoords = section?.geometry?.coordinates ?? ['', ''];
-          return {
-            depth: section?.depth?.toString() ?? '',
-            geometry: { lat: sectionCoords[1]?.toString() ?? '', lon: sectionCoords[0]?.toString() ?? '' },
-            name: section?.name,
-          };
-        }),
-      };
-    }),
-    status: origin ? Status.Draft : data?.harbor?.status ?? Status.Draft,
-    operation: origin ? Operation.Create : Operation.Update,
-  };
 }
 
 const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {

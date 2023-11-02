@@ -4,72 +4,7 @@ import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
 import { fetchIlmanetApi, fetchWeatherApi } from './axios';
-
-type WeatherMareograph = {
-  fmisid: number;
-  geoid: number;
-  latlon: string;
-  station_name: string;
-  localtime: string;
-  WLEV_PT1S_INSTANT: number;
-  WLEVN2K_PT1S_INSTANT: number;
-};
-
-export type Mareograph = {
-  id: number;
-  geometry: Geometry;
-  name: string;
-  dateTime: number;
-  waterLevel: number;
-  n2000WaterLevel: number;
-  calculated: boolean;
-};
-
-type WeatherObservation = {
-  fmisid: number;
-  geoid: number;
-  latlon: string;
-  name: string;
-  localtime: string;
-  WG_PT10M_MAX: number;
-  WD_PT10M_AVG: number;
-  WS_PT10M_AVG: number;
-  TA_PT1M_AVG: number;
-  VIS_PT1M_AVG: number | null;
-};
-
-export type Observation = {
-  id: number;
-  name: string;
-  windSpeedAvg: number;
-  windSpeedMax: number;
-  windDirection: number;
-  visibility: number | null;
-  temperature: number;
-  dateTime: number;
-  geometry: Geometry;
-};
-
-type WeatherBuoy = {
-  fmisid: number;
-  geoid: number;
-  latlon: string;
-  station_name: string;
-  localtime: string;
-  WH_PT1M_ACC: number | null;
-  WHD_PT1M_ACC: number | null;
-  TW_PT1M_AVG: number | null;
-};
-
-export type Buoy = {
-  id: number;
-  name: string;
-  dateTime: number;
-  geometry: Geometry;
-  temperature: number | null;
-  waveDirection: number | null;
-  waveHeight: number | null;
-};
+import { Mareograph, WeatherMareograph, Observation, WeatherObservation, Buoy, WeatherBuoy } from './apiModels';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -101,7 +36,7 @@ function parseMeasure(location: any): Partial<Mareograph> {
   } else {
     measure = parseObservation(location.observation);
   }
-  return measure || {};
+  return measure ?? {};
 }
 
 const options = {

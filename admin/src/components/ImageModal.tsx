@@ -3,22 +3,29 @@ import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal,
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { FairwayCardInput, PictureInput } from '../graphql/generated';
-import { imageUrl, Lang } from '../utils/constants';
+import { imageUrl, Lang, POSITION, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 
 interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
   setIsOpen: (picture: PictureInput | '') => void;
+  setPicture: (
+    val: ValueType,
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => void;
 }
 
-const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen }) => {
+const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
-
   const [isLoading, setIsLoading] = useState(true);
+  const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft);
 
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
@@ -48,8 +55,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
-  const setBoundingBox = () => {
+  // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
+  const setBoundingBoxAndLegend = () => {
     if (compassInfo.current && compassNeedle.current) {
+      const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
+      setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -58,8 +68,14 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
+  // when closing a picture, updates fairwaycardreducer state by changing legendPosition
+  // for the picture group in question
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
+    const pictureGroupId = (picture as PictureInput)?.groupId;
+    if (pictureGroupId) {
+      setPicture(legendPosition, 'pictureLegendPosition', undefined, pictureGroupId);
+    }
     setTimeout(() => {
       setIsOpen('');
     }, 150);
@@ -93,14 +109,14 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                 <div className="imageWrapper">
                   <img src={imageUrl + fairwayCardInput.id + '/' + picture.id} alt={picture.id} onLoad={() => setIsLoading(false)} />
                   {!isLoading && (
-                    <div className="mapLegend">
+                    <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
                       <div className="compassInfo" ref={compassInfo}>
                         <img
                           src={north_arrow}
                           alt=""
                           ref={compassNeedle}
-                          onLoad={() => setTimeout(() => setBoundingBox(), 50)}
+                          onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
                           style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
                         />
                       </div>
@@ -121,6 +137,37 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                         <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
                           {picture.scaleLabel}
                         </div>
+                        {/* buttons for changing legend position, could be useful to refactor to its own component */}
+                        <button
+                          className={
+                            'legendPositionButton ' + POSITION.bottomLeft + (legendPosition === POSITION.bottomLeft ? ' colorGreen' : ' colorRed')
+                          }
+                          onClick={() => {
+                            setLegendPosition(POSITION.bottomLeft);
+                          }}
+                        />
+                        <button
+                          className={'legendPositionButton ' + POSITION.topLeft + (legendPosition === POSITION.topLeft ? ' colorGreen' : ' colorRed')}
+                          onClick={() => {
+                            setLegendPosition(POSITION.topLeft);
+                          }}
+                        />
+                        <button
+                          className={
+                            'legendPositionButton ' + POSITION.topRight + (legendPosition === POSITION.topRight ? ' colorGreen' : ' colorRed')
+                          }
+                          onClick={() => {
+                            setLegendPosition(POSITION.topRight);
+                          }}
+                        />
+                        <button
+                          className={
+                            'legendPositionButton ' + POSITION.bottomRight + (legendPosition === POSITION.bottomRight ? ' colorGreen' : ' colorRed')
+                          }
+                          onClick={() => {
+                            setLegendPosition(POSITION.bottomRight);
+                          }}
+                        />
                       </div>
                     </div>
                   )}

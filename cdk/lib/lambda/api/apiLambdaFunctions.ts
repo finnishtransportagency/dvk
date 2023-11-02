@@ -6,6 +6,7 @@ interface BackendAPILambda {
   functionName: string;
   priority: number;
   useVpc?: boolean;
+  useMonitoring?: boolean;
 }
 
 const apiLambdaFunctions: BackendAPILambda[] = [
@@ -15,6 +16,23 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     functionName: 'featureloader',
     priority: 10,
     useVpc: true,
+    useMonitoring: true,
+  },
+  {
+    entry: path.join(__dirname, 'aislocations-handler.ts'),
+    pathPattern: '/api/aislocations',
+    functionName: 'aislocations',
+    priority: 14,
+    useVpc: true,
+    useMonitoring: true,
+  },
+  {
+    entry: path.join(__dirname, 'aisvessels-handler.ts'),
+    pathPattern: '/api/aisvessels',
+    functionName: 'aisvessels',
+    priority: 16,
+    useVpc: true,
+    useMonitoring: true,
   },
   {
     entry: path.join(__dirname, 'login.ts'),

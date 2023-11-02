@@ -1,12 +1,12 @@
 import React from 'react';
 import { IonCol, IonRow } from '@ionic/react';
-import { ActionType } from '../utils/constants';
+import { ActionType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import FormInput from './FormInput';
-import FormTextarea from './FormTextarea';
-import { Text } from '../graphql/generated';
+import TextInput from './TextInput';
+import Textarea from './Textarea';
+import { Text } from '../../graphql/generated';
 
-interface InputRowProps {
+interface TextInputRowProps {
   labelKey: string;
   value?: Text | null;
   actionType: ActionType;
@@ -23,7 +23,7 @@ interface InputRowProps {
   maxCharLength?: number;
 }
 
-const FormTextInputRow: React.FC<InputRowProps> = ({
+const TextInputRow: React.FC<TextInputRowProps> = ({
   labelKey,
   value,
   updateState,
@@ -43,12 +43,13 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
+  const errorText = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
 
   return (
     <IonRow className="bordered">
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <TextInput
             label={fi(labelKey) + ' (fi)'}
             name={name}
             val={value?.fi ?? ''}
@@ -57,7 +58,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -66,7 +67,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={fi(labelKey) + ' (fi)'}
             name={name}
             val={value?.fi ?? ''}
@@ -75,14 +76,14 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.fi?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <TextInput
             label={sv(labelKey) + ' (sv)'}
             name={name}
             val={value?.sv ?? ''}
@@ -91,7 +92,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -99,7 +100,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={sv(labelKey) + ' (sv)'}
             name={name}
             val={value?.sv ?? ''}
@@ -108,14 +109,14 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.sv?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
       </IonCol>
       <IonCol sizeMd="4">
         {(!inputType || inputType === 'input') && (
-          <FormInput
+          <TextInput
             label={en(labelKey) + ' (en)'}
             name={name}
             val={value?.en ?? ''}
@@ -124,7 +125,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -132,7 +133,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
           />
         )}
         {inputType === 'textarea' && (
-          <FormTextarea
+          <Textarea
             label={en(labelKey) + ' (en)'}
             name={name}
             val={value?.en ?? ''}
@@ -141,7 +142,7 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={error === t('general.required-field') && value?.en?.trim() ? '' : error}
+            error={errorText}
             helperText={helperText}
           />
         )}
@@ -150,4 +151,4 @@ const FormTextInputRow: React.FC<InputRowProps> = ({
   );
 };
 
-export default FormTextInputRow;
+export default TextInputRow;

@@ -55,6 +55,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
     title = t(`modal.publish-${saveType}-title`);
     description = t(`modal.publish-${saveType}-description`);
   }
+
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {

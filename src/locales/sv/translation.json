@@ -61,6 +61,14 @@
           "deptharea": "Zoner",
           "specialarea2": "Ankringsområden",
           "specialarea15": "Områden med mötes- och omkörningsförbud",
+          "ais": "Trafikläge",
+          "aisVesselCargo": "Fraktfartyg",
+          "aisVesselTanker": "Tankfartyg",
+          "aisVesselPassenger": "Passagerarfartyg",
+          "aisVesselHighSpeed": "Snabba Båtar",
+          "aisVesselTugAndSpecialCraft": "Bogserbåtar och specialfartyg",
+          "aisVesselPleasureCraft": "Fritidsbåtar",
+          "aisUnspecified": "Odefinierade fartyg",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -258,7 +266,8 @@
     "lastUpdatedAt": "Vyns uppgifter laddat för över {{ val, number}} h sedan.",
     "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan.",
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
-    "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd."
+    "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
+    "type": "Typ"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
@@ -384,6 +393,26 @@
       "point": "VTS-punktens uppgifter",
       "line": "VTS-områdens uppgifter",
       "channel": "VHF kanal"
+    },
+    "ais": {
+      "lastUpdated": "[sv] Viimeisin havainto",
+      "lastLocation": "[sv] Viimeisin sijainti",
+      "navState": "[sv] Navigoinnin tila",
+      "speed": "[sv] Nopeus",
+      "course": "[sv] Suunta",
+      "callSign": "[sv] Kutsumerkki",
+      "dimensions": "[sv] Aluksen kokonaispituus ja leveys",
+      "draught": "[sv] Syväys",
+      "destination": "[sv] Määränpää",
+      "moored": "[sv] Ankkuroituna",
+      "moving": "[sv] Liikkeessä",
+      "aisVesselCargo": "Fraktfartyg",
+      "aisVesselTanker": "Tankfartyg",
+      "aisVesselPassenger": "Passagerarfartyg",
+      "aisVesselHighSpeed": "Snabba båt",
+      "aisVesselTugAndSpecialCraft": "Bogserbåt eller specialfartyg",
+      "aisVesselPleasureCraft": "Fritidsbåt",
+      "aisUnspecified": "Odefinierade fartyg"
     }
   },
   "common": {
@@ -426,7 +455,8 @@
     "skip-to-content": "Gå till huvudinnehåll",
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
-    "print": "Skriva ut sidan"
+    "print": "Skriva ut sidan",
+    "filter": "Välj filter..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
@@ -438,5 +468,17 @@
     "content3": "Källa: Traficom. Ej för navigationsbruk. Uppfyller inte kraven för officiella sjökort.",
     "content4": "Lantmäteriverket",
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
+  },
+  "areas": {
+    "gulfOfFinland": "Finska viken",
+    "northernBalticSea": "Norra Östersjön",
+    "archipelagoSea": "Skärgårdshavet",
+    "seaOfÅland": "Ålands hav",
+    "bothnianSea": "Bottenhavet",
+    "theQuark": "Kvarken",
+    "bayOfBothnia": "Bottenviken",
+    "saimaa": "Saimen",
+    "saimaaCanal": "Saima kanal",
+    "gulfOfBothnia": "Bottenvik"
   }
 }

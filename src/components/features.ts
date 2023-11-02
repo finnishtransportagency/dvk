@@ -162,3 +162,30 @@ export type VtsFeatureProperties = {
   information?: string;
   channel?: string;
 };
+
+export type AisFeatureProperties = {
+  featureType: 'aisvessel';
+  mmsi: string;
+  sog: number;
+  cog: number;
+  navStat: number;
+  rot: number;
+  posAcc: boolean;
+  raim: boolean;
+  heading?: number;
+  timestamp: number;
+  timestampExternal: Date;
+  dataUpdatedTime: Date;
+  name?: string;
+  callSign?: string;
+  imo?: number;
+  shipType?: number;
+  draught?: number;
+  eta?: number;
+  posType?: number;
+  referencePointA?: number;
+  referencePointB?: number;
+  referencePointC?: number;
+  referencePointD?: number;
+  destination?: string;
+};

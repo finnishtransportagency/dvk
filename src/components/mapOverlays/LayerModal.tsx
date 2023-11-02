@@ -103,6 +103,19 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       ],
     },
     { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
+    {
+      id: 'ais',
+      title: t('homePage.map.controls.layer.ais'),
+      childLayers: [
+        { id: 'aisvesselcargo', title: t('homePage.map.controls.layer.aisVesselCargo') },
+        { id: 'aisvesseltanker', title: t('homePage.map.controls.layer.aisVesselTanker') },
+        { id: 'aisvesselpassenger', title: t('homePage.map.controls.layer.aisVesselPassenger') },
+        { id: 'aisvesselhighspeed', title: t('homePage.map.controls.layer.aisVesselHighSpeed') },
+        { id: 'aisvesseltugandspecialcraft', title: t('homePage.map.controls.layer.aisVesselTugAndSpecialCraft') },
+        { id: 'aisvesselpleasurecraft', title: t('homePage.map.controls.layer.aisVesselPleasureCraft') },
+        { id: 'aisunspecified', title: t('homePage.map.controls.layer.aisUnspecified') },
+      ],
+    },
     { id: 'name', title: t('homePage.map.controls.layer.name') },
   ];
 
