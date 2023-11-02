@@ -43,6 +43,7 @@
     "react-i18next": "^13.3.1",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
+    "squatlib": "file:./squat",
     "typescript": "^5.2.2",
     "web-vitals": "^3.5.0",
     "workbox-background-sync": "^7.0.0",
@@ -56,8 +57,7 @@
     "workbox-range-requests": "^7.0.0",
     "workbox-routing": "^7.0.0",
     "workbox-strategies": "^7.0.0",
-    "workbox-streams": "^7.0.0",
-    "squatlib": "file:./squat"
+    "workbox-streams": "^7.0.0"
   },
   "scripts": {
     "prestart": "npm run generate",
@@ -90,7 +90,6 @@
     "@types/lodash": "^4.14.200",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^6.9.0",
-    "@vitejs/plugin-legacy": "^4.1.1",
     "@vitejs/plugin-react": "^4.1.0",
     "@vitest/coverage-v8": "^0.34.6",
     "c8": "^8.0.1",
