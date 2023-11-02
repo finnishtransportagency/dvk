@@ -7,8 +7,8 @@ import { deselectClickSelection } from './popup';
 import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
-import { checkIfMoored, getAisVesselShipType, reformatAisvesselDataUpdatedTime, calculateVesselDimensions } from '../../utils/common';
 import InfoIcon from '../../theme/img/info.svg?react';
+import { calculateVesselDimensions, checkIfMoored, getAisVesselShipType, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
 
 type AisVesselInfoRowProperties = {
   title: string;
@@ -49,7 +49,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const { t } = useTranslation();
 
   const properties = vessel.properties;
-  const dataUpdatedTime = reformatAisvesselDataUpdatedTime(properties.dataUpdatedTime);
+  const dataUpdatedTime = reformatAisVesselDataUpdatedTime(properties.dataUpdatedTime);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
   const navState = checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving');
   //speed and course combined
