@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Lang } from '../../utils/constants';
@@ -7,8 +7,8 @@ import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../fea
 import { getMap } from '../DvkMap';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import CloseButton from './CloseButton';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
@@ -28,7 +28,7 @@ export type FairwayPopupRowProperties = {
 const FairwayPopupRow: React.FC<FairwayPopupRowProperties> = ({ fairway, lang }) => {
   return (
     <IonRow>
-      <IonCol>{fairway.name[lang] || fairway.name.fi}</IonCol>
+      <IonCol>{fairway.name[lang] ?? fairway.name.fi}</IonCol>
     </IonRow>
   );
 };
@@ -53,9 +53,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
             {marine.properties.number}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         {marine.properties.area && (
@@ -64,7 +62,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
               <IonCol className="header">{t('popup.marine.area')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{marine.properties.area[lang] || marine.properties.area.fi}</IonCol>
+              <IonCol>{marine.properties.area[lang] ?? marine.properties.area.fi}</IonCol>
             </IonRow>
           </>
         )}
@@ -74,7 +72,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
               <IonCol className="header">{t('popup.marine.location')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{marine.properties.location[lang] || marine.properties.location.fi}</IonCol>
+              <IonCol>{marine.properties.location[lang] ?? marine.properties.location.fi}</IonCol>
             </IonRow>
           </>
         )}
@@ -84,7 +82,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
               <IonCol className="header">{t('popup.marine.description')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{marine.properties.description[lang] || marine.properties.description.fi}</IonCol>
+              <IonCol>{marine.properties.description[lang] ?? marine.properties.description.fi}</IonCol>
             </IonRow>
           </>
         )}
@@ -103,28 +101,28 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
         )}
         {dvkMap
           .getVectorSource('line12')
-          .getFeatureById(marine.properties.lineId || 0)
+          .getFeatureById(marine.properties.lineId ?? 0)
           ?.getProperties()
           .fairways?.map((fairway: LineFairway) => {
             return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('line3456')
-          .getFeatureById(marine.properties.lineId || 0)
+          .getFeatureById(marine.properties.lineId ?? 0)
           ?.getProperties()
           .fairways?.map((fairway: LineFairway) => {
             return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('area12')
-          .getFeatureById(marine.properties.areaId || 0)
+          .getFeatureById(marine.properties.areaId ?? 0)
           ?.getProperties()
           .fairways?.map((fairway: AreaFairway) => {
             return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
           })}
         {dvkMap
           .getVectorSource('area3456')
-          .getFeatureById(marine.properties.areaId || 0)
+          .getFeatureById(marine.properties.areaId ?? 0)
           ?.getProperties()
           .fairways?.map((fairway: AreaFairway) => {
             return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;

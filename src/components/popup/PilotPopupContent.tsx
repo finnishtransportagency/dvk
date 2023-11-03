@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
@@ -8,8 +8,8 @@ import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import CloseButton from './CloseButton';
 
 type PilotPopupContentProps = {
   pilot: PilotProperties;
@@ -38,9 +38,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
             {t('popup.pilotPlace.header', { val: pilot?.properties.name[lang] })}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         <IonRow>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
@@ -9,9 +9,9 @@ import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import dvkMap from '../DvkMap';
 import { deselectClickSelection } from './popup';
+import CloseButton from './CloseButton';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -70,15 +70,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
               </IonCol>
               {index === 0 && (
                 <IonCol size="auto">
-                  <IonButton
-                    fill="clear"
-                    className="closeButton"
-                    onClick={() => closePopup()}
-                    title={t('common.close')}
-                    aria-label={t('common.close')}
-                  >
-                    <IonIcon className="otherIconLarge" src={closeIcon} />
-                  </IonButton>
+                  <CloseButton close={closePopup} />
                 </IonCol>
               )}
             </IonRow>

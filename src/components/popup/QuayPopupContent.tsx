@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
@@ -7,9 +7,9 @@ import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
 import uniqueId from 'lodash/uniqueId';
+import CloseButton from './CloseButton';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -36,12 +36,10 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
-            {quay.properties.quay && quay.properties.quay[lang]} {quay.properties.name ? quay.properties.name : ''}
+            {quay.properties.quay?.[lang]} {quay.properties.name ? quay.properties.name : ''}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         <IonRow>
@@ -115,7 +113,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
             </IonCol>
           </IonRow>
         )}
-        {quay.properties.extraInfo && quay.properties.extraInfo[lang] && (
+        {quay.properties.extraInfo?.[lang] && (
           <>
             <IonRow>
               <IonCol className="header">{t('popup.quay.extra')}</IonCol>

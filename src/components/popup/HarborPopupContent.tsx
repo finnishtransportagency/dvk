@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
@@ -8,9 +8,9 @@ import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { Link } from 'react-router-dom';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
 import uniqueId from 'lodash/uniqueId';
+import CloseButton from './CloseButton';
 
 type HarborPopupContentProps = {
   harbor: HarborProperties;
@@ -37,12 +37,10 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
-            {harbor.properties.name && harbor.properties.name[lang]}
+            {harbor.properties.name?.[lang]}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         <IonRow>
@@ -114,7 +112,7 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
             </IonRow>
           );
         })}
-        {harbor.properties.extraInfo && harbor.properties.extraInfo[lang] && (
+        {harbor.properties.extraInfo?.[lang] && (
           <>
             <IonRow>
               <IonCol className="header">{t('popup.harbor.extra')}</IonCol>

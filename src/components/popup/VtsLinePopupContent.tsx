@@ -1,10 +1,10 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { VtsPopupContentProps } from './VtsPointPopupContent';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import CloseButton from './CloseButton';
 
 const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProperties }) => {
   const { t } = useTranslation();
@@ -19,12 +19,10 @@ const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProp
       <IonGrid className="ion-no-padding">
         <IonRow className="ion-justify-content-between">
           <IonCol size="auto" className="header">
-            {vts.properties.name || t('popup.vts.line')}
+            {vts.properties.name ?? t('popup.vts.line')}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         {vts.properties.name && (

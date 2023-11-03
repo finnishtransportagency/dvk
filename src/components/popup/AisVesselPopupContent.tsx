@@ -4,8 +4,7 @@ import './popup.css';
 import { AisFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
 import {
@@ -16,6 +15,7 @@ import {
   reformatAisVesselDataUpdatedTime,
 } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';
+import CloseButton from './CloseButton';
 
 type AisVesselInfoRowProperties = {
   title: string;
@@ -103,16 +103,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
           </IonRow>
         </IonCol>
         <IonCol size="auto">
-          <IonButton
-            fill="clear"
-            className="closeButton"
-            onClick={() => closePopup()}
-            title={t('common.close')}
-            aria-label={t('common.close')}
-            size="small"
-          >
-            <IonIcon className="otherIconLarge" src={closeIcon} slot="icon-only" />
-          </IonButton>
+          <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
       <IonRow className="negativeMargin">

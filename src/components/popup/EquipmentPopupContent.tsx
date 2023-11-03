@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
@@ -8,8 +8,8 @@ import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
+import CloseButton from './CloseButton';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -53,9 +53,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             {equipment.properties.id}
           </IonCol>
           <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
+            <CloseButton close={closePopup} />
           </IonCol>
         </IonRow>
         {equipment.properties.faults && (
@@ -73,7 +71,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
                     </IonCol>
                   </IonRow>
                   <IonRow>
-                    <IonCol>{fault.faultType[lang] || fault.faultType.fi}</IonCol>
+                    <IonCol>{fault.faultType[lang] ?? fault.faultType.fi}</IonCol>
                   </IonRow>
                 </div>
               );
@@ -93,7 +91,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
             </IonRow>
             <IonRow>
               <IonCol>
-                {equipment.properties.typeName[lang] || equipment.properties.typeName.fi}
+                {equipment.properties.typeName[lang] ?? equipment.properties.typeName.fi}
                 {equipment.properties.aisType !== undefined && equipment.properties.aisType !== 1
                   ? `${', ' + t('popup.equipment.type' + equipment.properties.aisType)}`
                   : ''}
@@ -117,7 +115,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
               <IonCol className="header">{t('popup.equipment.navigationCode')}</IonCol>
             </IonRow>
             <IonRow>
-              <IonCol>{equipment.properties.navigation[lang] || equipment.properties.navigation.fi}</IonCol>
+              <IonCol>{equipment.properties.navigation[lang] ?? equipment.properties.navigation.fi}</IonCol>
             </IonRow>
           </>
         )}
