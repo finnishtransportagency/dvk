@@ -31,39 +31,37 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
   };
 
   return (
-    <IonGrid id="pilotPopupContent" className="ion-padding">
-      <IonGrid className="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {t('popup.pilotPlace.header', { val: pilot?.properties.name[lang] })}
-          </IonCol>
-          <IonCol size="auto">
-            <CloseButton close={closePopup} />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.pilotPlace.coordinates')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
-        </IonRow>
-        {pilot.properties.fairwayCards && pilot.properties.fairwayCards.length > 0 && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
-            </IonRow>
-            {pilot.properties.fairwayCards.map((card) => {
-              return (
-                <IonRow key={card.id}>
-                  <IonCol>
-                    <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-                  </IonCol>
-                </IonRow>
-              );
-            })}
-          </>
-        )}
-      </IonGrid>
+    <IonGrid className="ion-no-padding">
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {t('popup.pilotPlace.header', { val: pilot?.properties.name[lang] })}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.pilotPlace.coordinates')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+      </IonRow>
+      {pilot.properties.fairwayCards && pilot.properties.fairwayCards.length > 0 && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
+          </IonRow>
+          {pilot.properties.fairwayCards.map((card) => {
+            return (
+              <IonRow key={card.id}>
+                <IonCol>
+                  <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                </IonCol>
+              </IonRow>
+            );
+          })}
+        </>
+      )}
     </IonGrid>
   );
 };

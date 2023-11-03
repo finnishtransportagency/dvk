@@ -28,39 +28,37 @@ const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupPro
   };
 
   return (
-    <IonGrid id="vtsPopupContent" className="ion-padding">
-      <IonGrid className="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {vts.properties.name}
-          </IonCol>
-          <IonCol size="auto">
-            <CloseButton close={closePopup} />
-          </IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.vts.coordinates')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>{coordinatesToStringHDM(vts.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.vts.point')}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol>{vts.properties.information}</IonCol>
-        </IonRow>
-        {vts.properties.channel && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('popup.vts.channel')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{vts.properties.channel}</IonCol>
-            </IonRow>
-          </>
-        )}
-      </IonGrid>
+    <IonGrid className="ion-no-padding">
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {vts.properties.name}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.vts.coordinates')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>{coordinatesToStringHDM(vts.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.vts.point')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>{vts.properties.information}</IonCol>
+      </IonRow>
+      {vts.properties.channel && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('popup.vts.channel')}</IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>{vts.properties.channel}</IonCol>
+          </IonRow>
+        </>
+      )}
     </IonGrid>
   );
 };

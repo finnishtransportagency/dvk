@@ -60,133 +60,131 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
   const lineReferenceLevel = getValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel) as string;
 
   return (
-    <IonGrid id="linePopupContent" className="ion-padding">
-      <IonGrid className="ion-no-padding">
-        {line.properties.fairways?.map((fairway, index) => {
-          return (
-            <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
-              <IonCol size="auto" className="header">
-                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
+    <IonGrid className="ion-no-padding">
+      {line.properties.fairways?.map((fairway, index) => {
+        return (
+          <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
+            <IonCol size="auto" className="header">
+              {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
+            </IonCol>
+            {index === 0 && (
+              <IonCol size="auto">
+                <CloseButton close={closePopup} />
               </IonCol>
-              {index === 0 && (
-                <IonCol size="auto">
-                  <CloseButton close={closePopup} />
-                </IonCol>
-              )}
+            )}
+          </IonRow>
+        );
+      })}
+      {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
+        <IonRow>
+          <IonCol>
+            <em>{lineReferenceLevel}</em>
+          </IonCol>
+        </IonRow>
+      )}
+      <IonRow>
+        <IonCol className="header">{t('popup.line.info')}</IonCol>
+      </IonRow>
+      {(line.properties.n2000draft || line.properties.draft) && (
+        <IonRow>
+          <IonCol>
+            {t('popup.line.draft', { val: lineDraft })}{' '}
+            <span
+              aria-label={t('fairwayCards.unit.mDesc', {
+                count: lineDraft,
+              })}
+              role="definition"
+            >
+              m
+            </span>
+          </IonCol>
+        </IonRow>
+      )}
+      {(line.properties.n2000depth || line.properties.depth) && (
+        <IonRow>
+          <IonCol>
+            {t('popup.line.depth', { val: lineDepth })}{' '}
+            <span
+              aria-label={t('fairwayCards.unit.mDesc', {
+                count: lineDepth,
+              })}
+              role="definition"
+            >
+              m
+            </span>
+          </IonCol>
+        </IonRow>
+      )}
+      {line.properties.length && (
+        <IonRow>
+          <IonCol>
+            {t('popup.line.length', { val: line.properties.length })}{' '}
+            <span aria-label={t('fairwayCards.unit.mDesc', { count: line.properties.length })} role="definition">
+              m
+            </span>
+          </IonCol>
+        </IonRow>
+      )}
+      {line.properties.direction && (
+        <IonRow>
+          <IonCol>
+            {t('popup.line.direction', { val: line.properties.direction })}{' '}
+            <span aria-label={t('fairwayCards.unit.degDesc', { count: line.properties.direction })} role="definition">
+              °
+            </span>
+          </IonCol>
+        </IonRow>
+      )}
+      <IonRow>
+        <IonCol className="header">{t('popup.line.fairways')}</IonCol>
+      </IonRow>
+      {fairwayCards.length > 0 ? (
+        fairwayCards?.map((card) => {
+          return (
+            <IonRow key={'cardlink' + card.id}>
+              <IonCol>
+                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+              </IonCol>
             </IonRow>
           );
-        })}
-        {(line.properties.depth || line.properties.draft || line.properties.n2000depth || line.properties.n2000draft) && (
-          <IonRow>
-            <IonCol>
-              <em>{lineReferenceLevel}</em>
-            </IonCol>
-          </IonRow>
-        )}
+        })
+      ) : (
         <IonRow>
-          <IonCol className="header">{t('popup.line.info')}</IonCol>
+          <IonCol>
+            <p className="info use-flex ion-align-items-center">
+              <InfoIcon />
+              {t('popup.common.noFairwayCards')}
+            </p>
+          </IonCol>
         </IonRow>
-        {(line.properties.n2000draft || line.properties.draft) && (
-          <IonRow>
-            <IonCol>
-              {t('popup.line.draft', { val: lineDraft })}{' '}
-              <span
-                aria-label={t('fairwayCards.unit.mDesc', {
-                  count: lineDraft,
-                })}
-                role="definition"
-              >
-                m
-              </span>
-            </IonCol>
-          </IonRow>
-        )}
-        {(line.properties.n2000depth || line.properties.depth) && (
-          <IonRow>
-            <IonCol>
-              {t('popup.line.depth', { val: lineDepth })}{' '}
-              <span
-                aria-label={t('fairwayCards.unit.mDesc', {
-                  count: lineDepth,
-                })}
-                role="definition"
-              >
-                m
-              </span>
-            </IonCol>
-          </IonRow>
-        )}
-        {line.properties.length && (
-          <IonRow>
-            <IonCol>
-              {t('popup.line.length', { val: line.properties.length })}{' '}
-              <span aria-label={t('fairwayCards.unit.mDesc', { count: line.properties.length })} role="definition">
-                m
-              </span>
-            </IonCol>
-          </IonRow>
-        )}
-        {line.properties.direction && (
-          <IonRow>
-            <IonCol>
-              {t('popup.line.direction', { val: line.properties.direction })}{' '}
-              <span aria-label={t('fairwayCards.unit.degDesc', { count: line.properties.direction })} role="definition">
-                °
-              </span>
-            </IonCol>
-          </IonRow>
-        )}
-        <IonRow>
-          <IonCol className="header">{t('popup.line.fairways')}</IonCol>
-        </IonRow>
-        {fairwayCards.length > 0 ? (
-          fairwayCards?.map((card) => {
-            return (
-              <IonRow key={'cardlink' + card.id}>
-                <IonCol>
-                  <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-                </IonCol>
-              </IonRow>
-            );
-          })
-        ) : (
-          <IonRow>
-            <IonCol>
-              <p className="info use-flex ion-align-items-center">
-                <InfoIcon />
-                {t('popup.common.noFairwayCards')}
-              </p>
-            </IonCol>
-          </IonRow>
-        )}
+      )}
 
-        {line.width && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('popup.line.width')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                {Math.floor(line.width)}
-                <span aria-label={t('fairwayCards.unit.mDesc', { count: line.width })} role="definition">
-                  m
-                </span>
-              </IonCol>
-            </IonRow>
-          </>
-        )}
+      {line.width && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('popup.line.width')}</IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              {Math.floor(line.width)}
+              <span aria-label={t('fairwayCards.unit.mDesc', { count: line.width })} role="definition">
+                m
+              </span>
+            </IonCol>
+          </IonRow>
+        </>
+      )}
 
-        {line.properties.extra && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('popup.line.extra')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{line.properties.extra}</IonCol>
-            </IonRow>
-          </>
-        )}
-      </IonGrid>
+      {line.properties.extra && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('popup.line.extra')}</IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>{line.properties.extra}</IonCol>
+          </IonRow>
+        </>
+      )}
     </IonGrid>
   );
 };

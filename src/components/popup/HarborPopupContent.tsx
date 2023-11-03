@@ -33,96 +33,94 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
   };
 
   return (
-    <IonGrid id="harborPopupContent" className="ion-padding">
-      <IonGrid className="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {harbor.properties.name?.[lang]}
+    <IonGrid className="ion-no-padding">
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {harbor.properties.name?.[lang]}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.harbor.coordinates')}</IonCol>
+      </IonRow>
+      {harbor.coordinates && (
+        <IonRow>
+          <IonCol>{coordinatesToStringHDM(harbor.coordinates)}</IonCol>
+        </IonRow>
+      )}
+      <IonRow>
+        <IonCol className="header">{t('popup.harbor.quays')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>{harbor.properties.quays}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.harbor.contactDetails')}</IonCol>
+      </IonRow>
+      {harbor.properties.email && (
+        <IonRow>
+          <IonCol>
+            {t('popup.harbor.email')}: <a href={'mailto:' + harbor.properties.email}>{harbor.properties.email}</a>
           </IonCol>
-          <IonCol size="auto">
-            <CloseButton close={closePopup} />
+        </IonRow>
+      )}
+      {harbor.properties.phoneNumber && (
+        <IonRow>
+          <IonCol>
+            {t('popup.harbor.phoneNumber')}:{' '}
+            {harbor.properties.phoneNumber.map((p) => {
+              const uuid = uniqueId('phone_');
+              return (
+                <span key={uuid}>
+                  <a href={'tel:' + p}>{p}</a>
+                  <br />
+                </span>
+              );
+            })}
           </IonCol>
         </IonRow>
+      )}
+      {harbor.properties.fax && (
         <IonRow>
-          <IonCol className="header">{t('popup.harbor.coordinates')}</IonCol>
+          <IonCol>
+            {t('popup.harbor.fax')}: <a href={'tel:' + harbor.properties.fax}>{harbor.properties.fax}</a>
+          </IonCol>
         </IonRow>
-        {harbor.coordinates && (
-          <IonRow>
-            <IonCol>{coordinatesToStringHDM(harbor.coordinates)}</IonCol>
-          </IonRow>
-        )}
+      )}
+      {harbor.properties.internet && (
         <IonRow>
-          <IonCol className="header">{t('popup.harbor.quays')}</IonCol>
+          <IonCol>
+            {t('popup.harbor.internet')}:{' '}
+            <a href={harbor.properties.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
+              {harbor.properties.internet}
+            </a>
+          </IonCol>
         </IonRow>
-        <IonRow>
-          <IonCol>{harbor.properties.quays}</IonCol>
-        </IonRow>
-        <IonRow>
-          <IonCol className="header">{t('popup.harbor.contactDetails')}</IonCol>
-        </IonRow>
-        {harbor.properties.email && (
-          <IonRow>
+      )}
+      <IonRow>
+        <IonCol className="header">{t('popup.harbor.fairways')}</IonCol>
+      </IonRow>
+      {harbor.properties.fairwayCards.map((card) => {
+        return (
+          <IonRow key={card.id}>
             <IonCol>
-              {t('popup.harbor.email')}: <a href={'mailto:' + harbor.properties.email}>{harbor.properties.email}</a>
+              <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
             </IonCol>
           </IonRow>
-        )}
-        {harbor.properties.phoneNumber && (
+        );
+      })}
+      {harbor.properties.extraInfo?.[lang] && (
+        <>
           <IonRow>
-            <IonCol>
-              {t('popup.harbor.phoneNumber')}:{' '}
-              {harbor.properties.phoneNumber.map((p) => {
-                const uuid = uniqueId('phone_');
-                return (
-                  <span key={uuid}>
-                    <a href={'tel:' + p}>{p}</a>
-                    <br />
-                  </span>
-                );
-              })}
-            </IonCol>
+            <IonCol className="header">{t('popup.harbor.extra')}</IonCol>
           </IonRow>
-        )}
-        {harbor.properties.fax && (
           <IonRow>
-            <IonCol>
-              {t('popup.harbor.fax')}: <a href={'tel:' + harbor.properties.fax}>{harbor.properties.fax}</a>
-            </IonCol>
+            <IonCol>{harbor.properties.extraInfo[lang]}</IonCol>
           </IonRow>
-        )}
-        {harbor.properties.internet && (
-          <IonRow>
-            <IonCol>
-              {t('popup.harbor.internet')}:{' '}
-              <a href={harbor.properties.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
-                {harbor.properties.internet}
-              </a>
-            </IonCol>
-          </IonRow>
-        )}
-        <IonRow>
-          <IonCol className="header">{t('popup.harbor.fairways')}</IonCol>
-        </IonRow>
-        {harbor.properties.fairwayCards.map((card) => {
-          return (
-            <IonRow key={card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-              </IonCol>
-            </IonRow>
-          );
-        })}
-        {harbor.properties.extraInfo?.[lang] && (
-          <>
-            <IonRow>
-              <IonCol className="header">{t('popup.harbor.extra')}</IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>{harbor.properties.extraInfo[lang]}</IonCol>
-            </IonRow>
-          </>
-        )}
-      </IonGrid>
+        </>
+      )}
     </IonGrid>
   );
 };

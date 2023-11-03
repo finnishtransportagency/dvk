@@ -15,25 +15,23 @@ const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProp
   };
 
   return (
-    <IonGrid id="vtsPopupContent" className="ion-padding">
-      <IonGrid className="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {vts.properties.name ?? t('popup.vts.line')}
-          </IonCol>
-          <IonCol size="auto">
-            <CloseButton close={closePopup} />
-          </IonCol>
-        </IonRow>
-        {vts.properties.name && (
-          <IonRow>
-            <IonCol className="header">{t('popup.vts.line')}</IonCol>
-          </IonRow>
-        )}
+    <IonGrid className="ion-no-padding">
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {vts.properties.name ?? t('popup.vts.line')}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>
+      {vts.properties.name && (
         <IonRow>
-          <IonCol>{vts.properties.information}</IonCol>
+          <IonCol className="header">{t('popup.vts.line')}</IonCol>
         </IonRow>
-      </IonGrid>
+      )}
+      <IonRow>
+        <IonCol>{vts.properties.information}</IonCol>
+      </IonRow>
     </IonGrid>
   );
 };
