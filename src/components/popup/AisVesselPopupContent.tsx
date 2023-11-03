@@ -94,7 +94,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
                 <ReactCountryFlag
                   countryCode={countryCode.code}
                   aria-label={countryCode.name}
-                  title={countryCode.name}
+                  title={countryCode.code}
                   svg
                   style={{ height: '1.6em', width: 'auto' }}
                 />
