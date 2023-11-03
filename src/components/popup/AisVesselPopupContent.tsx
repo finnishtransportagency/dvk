@@ -59,9 +59,9 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const dataUpdatedTime = reformatAisVesselDataUpdatedTime(properties.dataUpdatedTime);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
   const navState = checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving');
-  //speed and course combined
+  //check for unavailable properties (unavailable values: speed==102.3 and course===360)
   const speed = properties.sog > 102 ? '-' : properties.sog + 'kn';
-  const course = properties.cog === 360 ? '-' : properties.cog + '°';
+  const course = properties.cog === 360 ? '-' : Math.round(properties.cog) + '°';
   const speedAndCourse = speed === '-' && course === '-' ? '' : `${String(speed).replace('.', ',')} / ${String(course).replace('.', ',')}`;
   const vesselDimensions = calculateVesselDimensions(
     properties.referencePointA,
