@@ -1,4 +1,4 @@
-import { countryTable } from './countryCodes';
+import { CountryCode, countryTable } from './countryCodes';
 
 export const getAisVesselShipType = (typeNumber?: number): string => {
   if (!typeNumber) {
@@ -52,9 +52,9 @@ export const calculateVesselDimensions = (a?: number, b?: number, c?: number, d?
   return [];
 };
 
-export function getCountryCode(mmsi: number): string | undefined {
+export function getCountryCode(mmsi: string | number): CountryCode | undefined {
   // Get MID (maritime identification digit) from mmsi
   const mid = mmsi.toString().substring(0, 3);
-  const countryCode = countryTable.get(mid)?.code;
+  const countryCode = countryTable.get(mid);
   return countryCode;
 }

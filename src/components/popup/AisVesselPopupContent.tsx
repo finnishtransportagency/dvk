@@ -8,7 +8,14 @@ import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
-import { calculateVesselDimensions, checkIfMoored, getAisVesselShipType, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
+import {
+  calculateVesselDimensions,
+  checkIfMoored,
+  getAisVesselShipType,
+  getCountryCode,
+  reformatAisVesselDataUpdatedTime,
+} from '../../utils/aisUtils';
+import { ReactCountryFlag } from 'react-country-flag';
 
 type AisVesselInfoRowProperties = {
   title: string;
@@ -19,7 +26,7 @@ const AisVesselInfoRow: React.FC<AisVesselInfoRowProperties> = ({ title, body })
   const { t } = useTranslation();
   return (
     <>
-      <IonRow>
+      <IonRow className="ion-margin-end">
         <IonCol className="header">{title}</IonCol>
       </IonRow>
       <IonRow>
@@ -67,6 +74,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const vesselWidth = vesselDimensions[1] % 1 == 0 ? vesselDimensions[1] : vesselDimensions[1].toFixed(2).replace('.', ',');
   const lengthAndWidth = vesselLength ? `${vesselLength} x ${vesselWidth} m` : '';
   const draught = properties.draught ? `${String(properties.draught).replace('.', ',')} m` : '';
+  const countryCode = getCountryCode(vessel.properties.mmsi);
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -74,30 +82,46 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   };
 
   return (
-    <IonGrid id="aisVesselPopupContent">
-      <IonGrid className="ion-no-padding">
-        <IonRow className="ion-justify-content-between">
-          <IonCol size="auto" className="header">
-            {properties.name}
-          </IonCol>
-          <IonCol size="auto">
-            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
-              <IonIcon className="otherIconLarge" src={closeIcon} />
-            </IonButton>
-          </IonCol>
-        </IonRow>
-        <IonRow id="higher"> {t(`popup.ais.${getAisVesselShipType(properties?.shipType)}`)}</IonRow>
-        <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
-        <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
-        <AisVesselInfoRow title={t('popup.ais.navState')} body={navState} />
-        <AisVesselInfoRow title={`${t('popup.ais.speed')} / ${t('popup.ais.course').toLowerCase()}`} body={speedAndCourse} />
-        <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
-        <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
-        <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
-        <AisVesselInfoRow title={t('popup.ais.dimensions')} body={lengthAndWidth} />
-        <AisVesselInfoRow title={t('popup.ais.draught')} body={draught} />
-        <AisVesselInfoRow title={`${t('popup.ais.destination')}`} body={String(properties.destination)} />
-      </IonGrid>
+    <IonGrid className="ion-no-padding">
+      <IonRow className="ion-justify-content-between">
+        <IonCol>
+          <IonRow>
+            <IonCol size="auto" className="header ion-margin-end">
+              {properties.name}
+            </IonCol>
+            {countryCode && (
+              <IonCol className="countryFlag">
+                <ReactCountryFlag countryCode={countryCode.code} aria-label={countryCode.name} svg style={{ height: '1.6em', width: 'auto' }} />
+              </IonCol>
+            )}
+          </IonRow>
+        </IonCol>
+        <IonCol size="auto">
+          <IonButton
+            fill="clear"
+            className="closeButton"
+            size="small"
+            onClick={() => closePopup()}
+            title={t('common.close')}
+            aria-label={t('common.close')}
+          >
+            <IonIcon className="otherIconLarge" src={closeIcon} slot="icon-only" />
+          </IonButton>
+        </IonCol>
+      </IonRow>
+      <IonRow className="negativeMargin">
+        <IonCol>{t(`popup.ais.${getAisVesselShipType(properties?.shipType)}`)}</IonCol>
+      </IonRow>
+      <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
+      <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
+      <AisVesselInfoRow title={t('popup.ais.navState')} body={navState} />
+      <AisVesselInfoRow title={`${t('popup.ais.speed')} / ${t('popup.ais.course').toLowerCase()}`} body={speedAndCourse} />
+      <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
+      <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
+      <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
+      <AisVesselInfoRow title={t('popup.ais.dimensions')} body={lengthAndWidth} />
+      <AisVesselInfoRow title={t('popup.ais.draught')} body={draught} />
+      <AisVesselInfoRow title={`${t('popup.ais.destination')}`} body={String(properties.destination)} />
     </IonGrid>
   );
 };

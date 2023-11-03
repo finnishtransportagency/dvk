@@ -27,8 +27,10 @@
   --background-hover: var(--ion-color-lighter);
   --background-hover-opacity: 1;
   --background-focused: unset;
-  --padding-end: 0;
   --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
   height: 24px;
   margin: 0 0 0 12px;
 }
@@ -56,10 +58,12 @@
   background-color: #fdf6f6;
 }
 
-.ol-popup #higher {
-  margin-top: -13px;
+ion-row.negativeMargin {
+  margin-top: -4px;
 }
 
-#aisVesselPopupContent {
-  width: 226px;
+.countryFlag img {
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--ion-color-light);
 }

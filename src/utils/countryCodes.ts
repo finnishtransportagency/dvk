@@ -1,4 +1,4 @@
-type CountryCode = {
+export type CountryCode = {
   name: string;
   code: string;
 };
