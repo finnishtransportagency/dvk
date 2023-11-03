@@ -3,6 +3,7 @@ export type CountryCode = {
   code: string;
 };
 
+// Data collected from https://help.marinetraffic.com/hc/en-us/articles/360018392858-How-does-MarineTraffic-identify-a-vessel-s-country-and-flag-
 export const countryTable = new Map<string, CountryCode>([
   ['201', { name: 'Albania', code: 'AL' }],
   ['202', { name: 'Andorra', code: 'AD' }],

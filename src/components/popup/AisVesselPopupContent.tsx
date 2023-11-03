@@ -91,7 +91,13 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
             </IonCol>
             {countryCode && (
               <IonCol className="countryFlag">
-                <ReactCountryFlag countryCode={countryCode.code} aria-label={countryCode.name} svg style={{ height: '1.6em', width: 'auto' }} />
+                <ReactCountryFlag
+                  countryCode={countryCode.code}
+                  aria-label={countryCode.name}
+                  title={countryCode.name}
+                  svg
+                  style={{ height: '1.6em', width: 'auto' }}
+                />
               </IonCol>
             )}
           </IonRow>
@@ -100,10 +106,10 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
           <IonButton
             fill="clear"
             className="closeButton"
-            size="small"
             onClick={() => closePopup()}
             title={t('common.close')}
             aria-label={t('common.close')}
+            size="small"
           >
             <IonIcon className="otherIconLarge" src={closeIcon} slot="icon-only" />
           </IonButton>
