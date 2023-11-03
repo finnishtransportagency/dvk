@@ -116,7 +116,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
       <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
       <AisVesselInfoRow title={t('popup.ais.navState')} body={navState} />
       <AisVesselInfoRow title={`${t('popup.ais.speed')} / ${t('popup.ais.course').toLowerCase()}`} body={speedAndCourse} />
-      <AisVesselInfoRow title="MMSI" body={properties.mmsi} />
+      <AisVesselInfoRow title="MMSI" body={String(properties.mmsi)} />
       <AisVesselInfoRow title={t('popup.ais.callSign')} body={String(properties.callSign)} />
       <AisVesselInfoRow title="IMO" body={String(properties.imo)} />
       <AisVesselInfoRow title={t('popup.ais.dimensions')} body={lengthAndWidth} />

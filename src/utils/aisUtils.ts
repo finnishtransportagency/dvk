@@ -52,7 +52,7 @@ export const calculateVesselDimensions = (a?: number, b?: number, c?: number, d?
   return [];
 };
 
-export function getCountryCode(mmsi: string | number): CountryCode | undefined {
+export function getCountryCode(mmsi: number): CountryCode | undefined {
   // Get MID (maritime identification digit) from mmsi
   const mid = mmsi.toString().substring(0, 3);
   const countryCode = countryTable.get(mid);
