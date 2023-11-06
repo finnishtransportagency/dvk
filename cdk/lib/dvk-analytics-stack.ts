@@ -5,10 +5,14 @@ import * as events from 'aws-cdk-lib/aws-events';
 import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as ecsPatterns from 'aws-cdk-lib/aws-ecs-patterns';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as cdk from 'aws-cdk-lib';
 
 export class DvkAnalyticsStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, env: string, props?: StackProps) {
     super(scope, id, props);
+
+    const importedLogBucket = cdk.Fn.importValue('AccessLogBucket' + env); //DistributionId
+    const importedDistributionId = cdk.Fn.importValue('SquatDistribution' + env);
 
     // Define an IAM role for the Fargate task
     const taskRole = new iam.Role(this, 'DvkFargateTaskRole', {
@@ -19,7 +23,7 @@ export class DvkAnalyticsStack extends Stack {
     taskRole.addToPolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject', 's3:ListBucket'],
-        resources: ['arn:aws:s3:::log-s3-bucket-name/*'], // TODO: S3 bucket
+        resources: [`arn:aws:s3:::${importedLogBucket}/*`],
       })
     );
 
@@ -34,9 +38,8 @@ export class DvkAnalyticsStack extends Stack {
     taskDefinition.addContainer('DvkAnalyticsContainer', {
       image: ecs.ContainerImage.fromRegistry('dvk-image-repo/your-image:latest'), //TODO: image
       environment: {
-        //TODO: env vars
-        LOG_BUCKET: 'cloudfront-dvk-dev',
-        CF_DISTRIBUTION: 'E2GP14WC00IGAB',
+        LOG_BUCKET: importedLogBucket,
+        CF_DISTRIBUTION: importedDistributionId,
       },
     });
 
