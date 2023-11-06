@@ -1,5 +1,5 @@
 build
 coverage
+vite.config.ts
 reportWebVitals.ts
 src/graphql/generated.ts
-vite.config.ts

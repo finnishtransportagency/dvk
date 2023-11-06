@@ -1,48 +1,32 @@
 {
+  "root": true,
   "env": {
-    "browser": true,
     "es2021": true,
     "node": true
   },
   "extends": [
     "eslint:recommended",
-    "airbnb-typescript",
-    "airbnb/hooks",
-    "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:jsx-a11y/recommended",
-    "plugin:prettier/recommended",
-    "prettier",
-    "eslint-config-prettier"
+    "plugin:prettier/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
     "ecmaVersion": "latest",
     "sourceType": "module",
     "project": ["./tsconfig.json"]
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["@typescript-eslint"],
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+        "extensions": [".js", ".ts"]
       },
       "typescript": {
         "alwaysTryTypes": true,
         "paths": ["./tsconfig.json"]
       }
-    },
-    "import/ignore": ["react-router-dom", "ol"],
-    "react": {
-      "version": "detect"
     }
-  },
-  "rules": {
-    "prettier/prettier": ["error"]
   }
 }
