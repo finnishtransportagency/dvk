@@ -294,6 +294,48 @@ ion-modal#layerModalContainer::part(content) {
   background-size: cover;
 }
 
+#layerModalContainer ion-item .aisvesselcargo,
+#layerModalContainer ion-item .aisvesseltanker,
+#layerModalContainer ion-item .aisvesselpassenger,
+#layerModalContainer ion-item .aisvesselhighspeed,
+#layerModalContainer ion-item .aisvesseltugandspecialcraft,
+#layerModalContainer ion-item .aisvesselpleasurecraft,
+#layerModalContainer ion-item .aisunspecified {
+  top: 0px !important;
+  width: 8px;
+  height: 18px;
+  right: 3px !important;
+  background-size: cover;
+}
+
+#layerModalContainer ion-item .aisvesselcargo {
+  background: url('../../theme/img/ais/ais_vessel_cargo.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisvesseltanker {
+  background: url('../../theme/img/ais/ais_vessel_tanker.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisvesselpassenger {
+  background: url('../../theme/img/ais/ais_vessel_passenger.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisvesselhighspeed {
+  background: url('../../theme/img/ais/ais_vessel_high_speed.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisvesseltugandspecialcraft {
+  background: url('../../theme/img/ais/ais_vessel_tug_and_special_craft.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisvesselpleasurecraft {
+  background: url('../../theme/img/ais/ais_vessel_pleasure_craft.svg') no-repeat center;
+}
+
+#layerModalContainer ion-item .aisunspecified {
+  background: url('../../theme/img/ais/ais_unspecified.svg') no-repeat center;
+}
+
 #layerModalContainer ion-checkbox {
   display: block;
   width: 100%;

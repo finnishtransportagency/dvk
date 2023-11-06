@@ -5,6 +5,9 @@ import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './consta
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
+import coastal from '../theme/img/coastal_warning_icon.svg';
+import local from '../theme/img/local_warning_icon.svg';
+import boaters from '../theme/img/warning_to_boaters_icon.svg';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -165,4 +168,67 @@ export const filterMarineWarnings = (layerId: FeatureDataLayerId) => {
       }
     });
   };
+};
+
+export function getWarningImgSource(type: string) {
+  switch (type) {
+    case 'COASTAL WARNING':
+      return coastal;
+    case 'LOCAL WARNING':
+      return local;
+    default:
+      return boaters;
+  }
+}
+
+export const getAisVesselShipType = (typeNumber: number | undefined): string => {
+  if (!typeNumber) {
+    return 'aisUnspecified';
+  }
+  if (typeNumber == 36 || typeNumber == 37) {
+    return 'aisVesselPleasureCraft';
+  } else if ((typeNumber >= 31 && typeNumber <= 35) || (typeNumber >= 50 && typeNumber <= 59)) {
+    return 'aisVesselTugAndSpecialCraft';
+  } else if (typeNumber >= 40 && typeNumber <= 49) {
+    return 'aisVesselHighSpeed';
+  } else if (typeNumber >= 60 && typeNumber <= 69) {
+    return 'aisVesselPassenger';
+  } else if (typeNumber >= 70 && typeNumber <= 79) {
+    return 'aisVesselCargo';
+  } else if (typeNumber >= 80 && typeNumber <= 89) {
+    return 'aisVesselTanker';
+  } else {
+    return 'aisUnspecified';
+  }
+};
+
+export const reformatAisvesselDataUpdatedTime = (dateTimeString: Date): string => {
+  const dateTime = new Date(dateTimeString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  };
+
+  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
+
+  return formattedDatetime.replace(' ', ', ');
+};
+
+export const checkIfMoored = (navState: number): boolean => {
+  return !(navState === 0 || navState === 3 || navState === 4 || navState === 7 || navState === 8);
+};
+
+export const calculateVesselDimensions = (a: number | undefined, b: number | undefined, c: number | undefined, d: number | undefined): number[] => {
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined && b > 0 && d > 0) {
+    const vesselLength = a + b;
+    const vesselWidth = c + d;
+
+    return [vesselLength, vesselWidth];
+  }
+
+  return [];
 };

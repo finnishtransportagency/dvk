@@ -4,7 +4,8 @@ import { log } from '../../logger';
 import { mapAPIModelToFairway } from './fairwayCardFairways-handler';
 import { fetchVATUByFairwayId } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
-import { GeometryModel, VaylaAPIModel, fetchVATUByApi } from '../../api/axios';
+import { fetchVATUByApi } from '../../api/axios';
+import { GeometryModel, VaylaAPIModel } from '../../api/apiModels';
 
 function mapIdModels(models: APIModel[]) {
   return models.map((model) => {

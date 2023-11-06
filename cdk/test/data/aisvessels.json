@@ -1,0 +1,33 @@
+[{
+		"name": "TEST1",
+		"timestamp": "2023-1009T14:06:20.027Z",
+		"mmsi": 11122233000,
+		"callSign": "TS0001",
+		"imo": 1234567,
+		"shipType": 90,
+		"draught": 3.1,
+		"eta": "10-24 13:00",
+		"posType": 1,
+		"referencePointA": 19,
+		"referencePointB": 12,
+		"referencePointC": 2,
+		"referencePointD": 5,
+		"destination": "HANKO"
+	},
+	{
+		"name": "TEST2",
+		"timestamp": "2023-03-03T22:32:22.428Z",
+		"mmsi": 99988877000,
+		"callSign": "TS0002",
+		"imo": 9876543,
+		"shipType": 80,
+		"draught": 10.9,
+		"eta": "00-00 24:60",
+		"posType": 1,
+		"referencePointA": 148,
+		"referencePointB": 36,
+		"referencePointC": 17,
+		"referencePointD": 10,
+		"destination": "HAMINA"
+	}]
+  

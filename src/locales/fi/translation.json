@@ -61,6 +61,14 @@
           "deptharea": "Alueet",
           "specialarea2": "Ankkurointialueet",
           "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
+          "ais": "Liikennetilanne",
+          "aisVesselCargo": "Rahtialukset",
+          "aisVesselTanker": "Tankkerit",
+          "aisVesselPassenger": "Matkustaja-alukset",
+          "aisVesselHighSpeed": "Nopeat veneet",
+          "aisVesselTugAndSpecialCraft": "Hinaajat ja erikoisalukset",
+          "aisVesselPleasureCraft": "Huviveneet",
+          "aisUnspecified": "Määrittelemättömät alukset",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -258,7 +266,8 @@
     "lastUpdatedAt": "Näkymän tiedot ladattu yli {{ val, number}} h sitten.",
     "lastUpdatedAt2": "Tason tiedot on ladattu yli {{ val, number}} h sitten.",
     "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa.",
-    "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa."
+    "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa.",
+    "type": "Tyyppi"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
@@ -384,6 +393,26 @@
       "point": "VTS-pisteen tiedot",
       "line": "VTS-alueen tiedot",
       "channel": "VHF-kanava"
+    },
+    "ais": {
+      "lastUpdated": "Viimeisin havainto",
+      "lastLocation": "Viimeisin sijainti",
+      "navState": "Navigoinnin tila",
+      "speed": "Nopeus",
+      "course": "Suunta",
+      "callSign": "Kutsumerkki",
+      "dimensions": "Aluksen kokonaispituus ja leveys",
+      "draught": "Syväys",
+      "destination": "Määränpää",
+      "moored": "Ankkuroituna",
+      "moving": "Liikkeessä",
+      "aisVesselCargo": "Rahtialus",
+      "aisVesselTanker": "Tankkeri",
+      "aisVesselPassenger": "Matkustaja-alus",
+      "aisVesselHighSpeed": "Nopea vene",
+      "aisVesselTugAndSpecialCraft": "Hinaaja tai erikoisalus",
+      "aisVesselPleasureCraft": "Huvivene",
+      "aisUnspecified": "Määrittelemätön alus"
     }
   },
   "common": {
@@ -426,7 +455,8 @@
     "skip-to-content": "Siirry pääsisältöön",
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten.",
-    "print": "Tulosta sivu"
+    "print": "Tulosta sivu",
+    "filter": "Valitse suodatin..."
   },
   "tileLoadWarning": {
     "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
@@ -438,5 +468,17 @@
     "content3": "Lähde: Traficom. Ei navigointikäyttöön. Ei täytä virallisen merikartan vaatimuksia.",
     "content4": "Maanmittauslaitos",
     "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
+  },
+  "areas": {
+    "gulfOfFinland": "Suomenlahti",
+    "northernBalticSea": "Pohjoinen Itämeri",
+    "archipelagoSea": "Saaristomeri",
+    "seaOfÅland": "Ahvenanmeri",
+    "bothnianSea": "Selkämeri",
+    "theQuark": "Merenkurkku",
+    "bayOfBothnia": "Perämeri",
+    "saimaa": "Saimaa",
+    "saimaaCanal": "Saimaan kanava",
+    "gulfOfBothnia": "Pohjanlahti"
   }
 }

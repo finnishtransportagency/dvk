@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, SelectOption, ValueType } from '../utils/constants';
-import { PilotPlace } from '../graphql/generated';
+import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
+import { PilotPlace } from '../../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
-import { getCombinedErrorAndHelperText, sortSelectOptions } from '../utils/common';
+import { getCombinedErrorAndHelperText, isInputOk, sortSelectOptions } from '../../utils/common';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
 }
 
-interface SelectProps {
+interface SelectInputProps {
   label: string;
   selected?: ValueType;
   options: SelectOption[] | PilotPlace[] | null;
@@ -28,7 +28,7 @@ interface SelectProps {
   showCoords?: boolean;
 }
 
-const FormSelect: React.FC<SelectProps> = ({
+const SelectInput: React.FC<SelectInputProps> = ({
   label,
   selected,
   options,
@@ -64,7 +64,7 @@ const FormSelect: React.FC<SelectProps> = ({
     return o1 === o2;
   };
 
-  const [isValid, setIsValid] = useState(error ? false : true);
+  const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
 
   const checkValidity = (event?: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
@@ -102,7 +102,7 @@ const FormSelect: React.FC<SelectProps> = ({
   }, [required, error, selected, isTouched]);
 
   return (
-    <div className={'selectWrapper' + (isValid && (!error || error === '') ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       {!hideLabel && (
         <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
           {label} {required ? '*' : ''}
@@ -142,7 +142,7 @@ const FormSelect: React.FC<SelectProps> = ({
               })}
             </IonSelect>
           </IonItem>
-          {isValid && (!error || error === '') && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+          {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
         </>
       )}
@@ -150,4 +150,4 @@ const FormSelect: React.FC<SelectProps> = ({
   );
 };
 
-export default FormSelect;
+export default SelectInput;

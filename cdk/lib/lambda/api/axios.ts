@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  getAISHeaders,
   getExtensionPort,
   getIlmanetPassword,
   getIlmanetUrl,
@@ -16,6 +17,20 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
+import { GeometryModel, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+
+export enum ExternalAPI {
+  ILMANET = 'Ilmanet',
+  POOKI = 'Pooki',
+  TRAFICOM = 'Traficom',
+  VATU = 'VATU',
+  WEATHER = 'Weather',
+  AIS = 'AIS',
+}
+
+export function getFetchErrorMessage(api: ExternalAPI): string {
+  return `Fetching from ${api} api failed`;
+}
 
 export async function fetchTraficomApi<T>(path: string) {
   const url = `https://${await getSOAApiUrl()}/${path}`;
@@ -27,60 +42,44 @@ export async function fetchTraficomApi<T>(path: string) {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`Traficom api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Traficom api failed');
+      log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.TRAFICOM));
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Traficom api response time: ${duration} ms`);
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 
-export type GeometryModel = {
-  geometria: object;
-};
+async function fetchAISApi(path: string, params: Record<string, string>) {
+  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getAISHeaders(),
+      params,
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`${ExternalAPI.AIS} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.AIS));
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `AIS api response time: ${duration} ms`);
+  return response;
+}
 
-export type MitoitusAlusAPIModel = {
-  alustyyppiKoodi: string;
-  alustyyppi: string;
-  pituus: number;
-  leveys: number;
-  syvays: number;
-  koko?: number;
-  runkoTaytelaisyysKerroin?: number;
-};
+export async function fetchAISMetadata(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
+  return response.data ? (response.data as VesselAPIModel[]) : [];
+}
 
-export type LuokitusAPIModel = {
-  luokitusTyyppi: string;
-  vaylaluokkaKoodi: string;
-  vaylaluokkaFI?: string;
-  vaylaluokkaSV?: string;
-};
-
-export type VaylaAPIModel = {
-  jnro: number;
-  nimiFI: string;
-  nimiSV?: string;
-  vaylalajiKoodi?: string;
-  vaylaLajiFI?: string;
-  vaylaLajiSV?: string;
-  valaistusKoodi?: string;
-  valaistusFI?: string;
-  valaistusSV?: string;
-  omistaja?: string;
-  merialueFI?: string;
-  merialueSV?: string;
-  alunSeloste?: string;
-  paatepisteenSeloste?: string;
-  normaaliKaantosade?: number;
-  minimiKaantosade?: number;
-  normaaliLeveys?: number;
-  minimiLeveys?: number;
-  varavesi?: string;
-  lisatieto?: string;
-  mareografi?: string;
-  mitoitusalus?: MitoitusAlusAPIModel[];
-  luokitus?: LuokitusAPIModel[];
-};
+export async function fetchAISFeatureCollection(path: string, params: Record<string, string>) {
+  const response = await fetchAISApi(path, params);
+  return response.data
+    ? (response.data as VesselLocationFeatureCollection)
+    : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
+}
 
 export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}/${api}`;
@@ -93,8 +92,14 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`VATU /${api} fetch failed: params=%o status=%d code=%s message=%s`, params, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from VATU failed');
+      log.fatal(
+        `${ExternalAPI.VATU} api /${api} fetch failed: params=%o status=%d code=%s message=%s`,
+        params,
+        errorObj.status,
+        errorObj.code,
+        errorObj.message
+      );
+      throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
   const datas = response ? (response.data as T[]) : [];
@@ -115,8 +120,8 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`Pooki fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Pooki failed');
+      log.fatal(`${ExternalAPI.POOKI} api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.POOKI));
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Pooki response time: ${duration} ms`);
@@ -138,8 +143,8 @@ export async function fetchWeatherApi<T>(path: string) {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`Weather api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Weather api failed');
+      log.fatal(`${ExternalAPI.WEATHER} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.WEATHER));
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
@@ -160,8 +165,8 @@ export async function fetchIlmanetApi(): Promise<string> {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`Ilmanet api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
-      throw new Error('Fetching from Ilmanet api failed');
+      log.fatal(`${ExternalAPI.ILMANET} api fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.ILMANET));
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Ilmanet api response time: ${duration} ms`);

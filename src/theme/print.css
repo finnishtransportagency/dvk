@@ -171,8 +171,6 @@
   .mapLegend {
     display: flex;
     position: absolute;
-    bottom: 0;
-    left: 0;
     max-width: 100%;
     overflow: hidden;
   }
@@ -217,6 +215,22 @@
     margin: 6px auto 0 0;
     text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
     transition: all 0.25s;
+  }
+  .topRight {
+    top: 0;
+    right: 0;
+  }
+  .topLeft {
+    top: 0;
+    left: 0;
+  }
+  .bottomRight {
+    bottom: 0;
+    right: 0;
+  }
+  .bottomLeft {
+    bottom: 0;
+    left: 0;
   }
 
   .printable,

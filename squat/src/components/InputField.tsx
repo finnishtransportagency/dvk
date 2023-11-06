@@ -25,6 +25,8 @@ interface InputProps {
   actionType: Action['type'];
   infoContentTitle?: string;
   infoContent?: string;
+  inputType?: 'text' | 'number';
+  inputMode?: 'text' | 'decimal' | 'numeric';
 }
 
 const InputField: React.FC<InputProps> = (props) => {
@@ -58,14 +60,26 @@ const InputField: React.FC<InputProps> = (props) => {
   const innerUpdateAction = useCallback(
     (event: CustomEvent, actionType: Action['type']) => {
       inputRef?.current?.getInputElement().then((inputElem) => {
+        let val = inputElem.value;
+        let isValid = inputElem.checkValidity();
+        if (inputElem.type === 'text') {
+          // Number stored in a text field - must validate type, min, max and step
+          val = val.replace(/,/g, '.');
+          const isNumber = !!val && !isNaN(Number(val)) && !isNaN(parseFloat(val));
+          isValid =
+            isNumber &&
+            Number(val) >= Number(props.min) &&
+            Number(val) <= Number(props.max) &&
+            countDecimals(Number(val)) <= countDecimals(Number(props.step));
+        }
         //checks if zeros preceding other numbers and same thing if there's - symbol preceding
-        const trimmedValue = inputElem.value.replace(/(^0+(?=[0-9]))|((?<=-)0+(?=[0-9]))/g, '');
+        const trimmedValue = val.replace(/(^0+(?=\d))|((?<=-)0+(?=\d))/g, '');
         setValue(trimmedValue);
         dispatch({
           type: 'validation',
           payload: {
             key: inputElem.name,
-            value: inputElem.checkValidity(),
+            value: isValid,
             elType: 'boolean',
           },
         });
@@ -73,14 +87,14 @@ const InputField: React.FC<InputProps> = (props) => {
           type: actionType,
           payload: {
             key: inputElem.name,
-            value: inputElem.value,
+            value: trimmedValue,
             elType: inputElem.tagName,
             fallThrough: true,
           },
         });
       });
     },
-    [dispatch]
+    [dispatch, props.min, props.max, props.step]
   );
 
   const updateAction = useCallback(
@@ -118,7 +132,7 @@ const InputField: React.FC<InputProps> = (props) => {
   const getErrorText = () => {
     const errorSign = '\u26A0 ';
     if (value) {
-      const unit = props.unit || '';
+      const unit = props.unit ?? '';
       if (props.min !== undefined && Number(value) < props.min) {
         return errorSign + t('value-cannot-be-less-than', { value: props.min.toLocaleString(i18n.language) }) + ' ' + unit;
       } else if (props.max !== undefined && Number(value) > props.max) {
@@ -164,7 +178,7 @@ const InputField: React.FC<InputProps> = (props) => {
         ref={inputRef}
         fill="outline"
         className={props.fieldClass + ' input-item'}
-        type="number"
+        type={props.inputType ?? 'number'}
         min={props.min}
         max={props.max}
         step={props.step}
@@ -177,7 +191,7 @@ const InputField: React.FC<InputProps> = (props) => {
         onIonBlur={handleBlur}
         onIonFocus={handleFocus}
         debounce={250}
-        inputmode="decimal"
+        inputmode={props.inputMode ?? 'decimal'}
         label={props.unit}
         labelPlacement="end"
         helperText={getHelperText()}

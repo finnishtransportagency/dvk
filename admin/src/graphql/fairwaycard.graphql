@@ -157,6 +157,7 @@ fragment FairwayCardById on FairwayCard {
       scaleLabel
       scaleWidth
       groupId
+      legendPosition
     }
 }
 

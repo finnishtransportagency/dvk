@@ -1,11 +1,6 @@
 import { log } from '../logger';
 import { Feature, GeoJsonProperties, Geometry } from 'geojson';
-
-export type MarineWarningDates = {
-  startDateTime?: number;
-  endDateTime?: number;
-  dateTime?: number;
-};
+import { MarineWarningDates } from './apiModels';
 
 export function parseDateTimes(feature: Feature<Geometry, GeoJsonProperties>): MarineWarningDates {
   const dateFormat = /(\d{1,2}).(\d{1,2}).(\d{4}) (\d{1,2}):(\d{1,2})/;
