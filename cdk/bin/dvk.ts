@@ -17,6 +17,7 @@ import { MonitoringServices } from '../lib/dvk-monitoring';
 import { DvkUsEast } from '../lib/dvk-us-east';
 import { AdminPipeline } from '../lib/admin-pipeline';
 import { DvkScheduledTestsPipelineStack } from '../lib/dvk-scheduled-tests-pipeline';
+import { DvkAnalyticsStack } from '../lib/dvk-analytics-stack';
 
 class DvkUsEastStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -198,6 +199,20 @@ new DvkMonitoringServicesStack(app, 'DvkMonitoringStack', {
   stackName: 'DvkMonitoringServicesStack-' + appEnv,
   tags: Config.tags,
 });
+
+new DvkAnalyticsStack(
+  app,
+  'DvkAnalyticsStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: process.env.CDK_DEFAULT_REGION,
+    },
+    stackName: 'DvkAnalyticsStack-' + appEnv,
+    tags: Config.tags,
+  },
+  appEnv
+);
 
 new DvkUsEastStack(app, 'DvkUsEastStack', {
   env: {
