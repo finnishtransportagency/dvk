@@ -12,7 +12,7 @@ import _ from 'lodash';
 type VesselData = {
   name: string;
   timestamp: number;
-  mmsi: string;
+  mmsi: number;
   callSign: string;
   imo: number;
   shipType: number;
