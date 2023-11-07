@@ -138,7 +138,7 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
-  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+  const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
   const { state } = useDvkContext();
@@ -191,8 +191,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
           <strong>{t('faults.title')}</strong>
         </h2>
         <em>
-          {t('faults.modified')} {!isLoading && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
-          {(isLoading || isFetching) && (
+          {t('faults.modified')} {!isPending && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}
               style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
@@ -201,7 +201,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      {alertProps && !isLoading && !isFetching && (
+      {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
 
@@ -210,7 +210,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isLoading} data={data?.safetyEquipmentFaults || []} />
+        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} />
       </div>
     </>
   );

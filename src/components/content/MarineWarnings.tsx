@@ -22,7 +22,7 @@ type MarineWarningsProps = {
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
   const lang = i18n.resolvedLanguage as Lang;
-  const { data, isLoading, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+  const { data, isPending, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const { state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
@@ -85,8 +85,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
           <strong>{t('title')}</strong>
         </h2>
         <em>
-          {t('modified')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
-          {(isLoading || isFetching) && (
+          {t('modified')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}
               style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
@@ -105,12 +105,12 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         }
       />
 
-      {alertProps && !isLoading && !isFetching && (
+      {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
       <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} setSortNewFirst={setSortNewFirst} sortNewFirst={sortNewFirst} />
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
-        <WarningList loading={isLoading} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
+        <WarningList loading={isPending} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
       </div>
     </>
   );
