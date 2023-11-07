@@ -8,3 +8,4 @@ generates:
       - typescript-react-query
     config:
       withHooks: true
+      reactQueryVersion: 5
