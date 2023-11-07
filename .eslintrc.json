@@ -41,6 +41,10 @@
   },
   "rules": {
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    // Recommended to be disabled within TypeScript projects
+    "import/named": "off",
+    "import/no-named-as-default-member": "off",
+    "import/no-unresolved": "off"
   }
 }
