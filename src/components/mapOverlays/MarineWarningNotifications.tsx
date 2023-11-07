@@ -71,13 +71,13 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
   const [warningNotifications, setWarningNotifications] = useState<MarineWarningNotification[]>([]);
   const [infoVisible, setInfoVisible] = useState(false);
 
-  const { data, isLoading, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
+  const { data, isPending, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
 
   useEffect(() => {
     if (showMarineWarnings) {
       setInfoVisible(showMarineWarnings);
 
-      if (!isFetching && !isLoading && data) {
+      if (!isFetching && !isPending && data) {
         const { marineWarnings } = data;
         const generalWarnings = marineWarnings.filter((warning) => isGeneralMarineWarning(warning.area));
         const initialWarnings = generalWarnings.map((warning) => ({ marineWarning: warning, visible: true }));
@@ -85,7 +85,7 @@ export const MarineWarningNotifications: React.FC<MarineWarningNotificationsProp
         setWarningNotifications(initialWarnings);
       }
     }
-  }, [data, isLoading, isFetching, showMarineWarnings]);
+  }, [data, isPending, isFetching, showMarineWarnings]);
 
   return (
     <>
