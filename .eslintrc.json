@@ -6,9 +6,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "airbnb-typescript",
-    "airbnb/hooks",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
@@ -43,6 +42,8 @@
     }
   },
   "rules": {
-    "prettier/prettier": ["error"]
+    "prettier/prettier": ["error"],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error"
   }
 }
