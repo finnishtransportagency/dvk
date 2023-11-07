@@ -824,7 +824,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const [printDisabled, setPrintDisabled] = useState(true);
   const lang = i18n.resolvedLanguage as Lang;
 
-  const { data, isLoading, dataUpdatedAt, isFetching } = useFairwayCardListData();
+  const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
   const filteredFairwayCard = data?.fairwayCards.filter((card) => card.id === id);
   const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
 
@@ -890,7 +890,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
   return (
     <>
-      {isLoading && (
+      {isPending && (
         <>
           <IonBreadcrumbs>
             <IonSkeletonText animated={true} style={{ width: '100%', height: widePane ? '24px' : '48px', margin: '0' }}></IonSkeletonText>
@@ -905,8 +905,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50vh', marginTop: '20px' }}></IonSkeletonText>
         </>
       )}
-      {!isLoading && !fairwayCard && <Alert fairwayCardId={id} />}
-      {!isLoading && fairwayCard && (
+      {!isPending && !fairwayCard && <Alert fairwayCardId={id} />}
+      {!isPending && fairwayCard && (
         <>
           <Breadcrumb path={path} />
 
@@ -949,8 +949,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
                   </em>
                   <br />
                   <em className="no-print">
-                    {t('dataUpdated')} {!isLoading && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
-                    {(isLoading || isFetching) && (
+                    {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+                    {(isPending || isFetching) && (
                       <IonSkeletonText
                         animated={true}
                         style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
