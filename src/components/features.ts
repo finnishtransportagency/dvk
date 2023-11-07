@@ -188,4 +188,6 @@ export type AisFeatureProperties = {
   referencePointC?: number;
   referencePointD?: number;
   destination?: string;
+  vesselLength?: number;
+  vesselWidth?: number;
 };
