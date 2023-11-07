@@ -1,10 +1,10 @@
 // eslint-disable-next-line import/named
 import { GetParametersByPathCommand, GetParametersByPathCommandOutput, SSMClient } from '@aws-sdk/client-ssm';
-// eslint-disable-next-line import/named
 import {
   FilterNameStringType,
   GetSecretValueCommand,
   ListSecretsCommand,
+  // eslint-disable-next-line import/named
   ListSecretsCommandOutput,
   SecretsManagerClient,
 } from '@aws-sdk/client-secrets-manager';
