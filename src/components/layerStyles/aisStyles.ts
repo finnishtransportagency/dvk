@@ -113,24 +113,15 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
   let iconHeight = minVesselIconHeight;
   let anchorX = 0.5;
   let anchorY = 0.5;
-  let vesselLength = 0;
-  let vesselWidth = 0;
+  const vesselLength = props.vesselLength ?? 0;
+  const vesselWidth = props.vesselWidth ?? 0;
 
   // Check if vessel dimensions are available
-  if (
-    props.referencePointA !== undefined &&
-    props.referencePointB !== undefined &&
-    props.referencePointC !== undefined &&
-    props.referencePointD !== undefined &&
-    props.referencePointB > 0 &&
-    props.referencePointD > 0
-  ) {
-    vesselLength = props.referencePointA + props.referencePointB;
-    vesselWidth = props.referencePointC + props.referencePointD;
+  if (props.vesselLength && props.vesselWidth) {
     iconHeight = vesselLength / resolution;
     iconWidth = vesselWidth / resolution;
     // Reference point is available only if also A > 0 && C > 0
-    if (props.referencePointA > 0 && props.referencePointC > 0) {
+    if (props.referencePointA !== undefined && props.referencePointC !== undefined && props.referencePointA > 0 && props.referencePointC > 0) {
       anchorX = props.referencePointC / vesselWidth;
       anchorY = props.referencePointA / vesselLength;
     }

@@ -7,13 +7,7 @@ import { deselectClickSelection } from './popup';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
-import {
-  calculateVesselDimensions,
-  checkIfMoored,
-  getAisVesselShipType,
-  getCountryCode,
-  reformatAisVesselDataUpdatedTime,
-} from '../../utils/aisUtils';
+import { checkIfMoored, getAisVesselShipType, getCountryCode, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';
 import CloseButton from './CloseButton';
 
@@ -63,15 +57,9 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const speed = properties.sog > 102 ? '-' : properties.sog + 'kn';
   const course = properties.cog === 360 ? '-' : Math.round(properties.cog) + '°';
   const speedAndCourse = speed === '-' && course === '-' ? '' : `${String(speed).replace('.', ',')} / ${String(course).replace('.', ',')}`;
-  const vesselDimensions = calculateVesselDimensions(
-    properties.referencePointA,
-    properties.referencePointB,
-    properties.referencePointC,
-    properties.referencePointD
-  );
   //check decimals
-  const vesselLength = vesselDimensions[0] % 1 == 0 ? vesselDimensions[0] : vesselDimensions[0].toFixed(2).replace('.', ',');
-  const vesselWidth = vesselDimensions[1] % 1 == 0 ? vesselDimensions[1] : vesselDimensions[1].toFixed(2).replace('.', ',');
+  const vesselLength = (properties.vesselLength ?? 0) % 1 == 0 ? properties.vesselLength : properties.vesselLength?.toFixed(2).replace('.', ',');
+  const vesselWidth = (properties.vesselWidth ?? 0) % 1 == 0 ? properties.vesselWidth : properties.vesselWidth?.toFixed(2).replace('.', ',');
   const lengthAndWidth = vesselLength ? `${vesselLength} x ${vesselWidth} m` : '';
   const draught = properties.draught ? `${String(properties.draught).replace('.', ',')} m` : '';
   const countryCode = getCountryCode(vessel.properties.mmsi);
