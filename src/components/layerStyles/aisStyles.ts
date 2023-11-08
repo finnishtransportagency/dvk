@@ -2,7 +2,11 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Fill, Stroke } from 'ol/style';
 import { AisFeatureProperties } from '../features';
 import CircleStyle from 'ol/style/Circle';
-import { Point } from 'ol/geom';
+import { Point, Polygon } from 'ol/geom';
+import Circle from 'ol/geom/Circle';
+import { fromCircle } from 'ol/geom/Polygon';
+import LinearRing from 'ol/geom/LinearRing';
+import { asArray, Color } from 'ol/color';
 import { MAP } from '../../utils/constants';
 import * as turf from '@turf/turf';
 const minVesselIconWidth = 4;
@@ -107,6 +111,47 @@ function getRotation(feature: Feature) {
   return rotation;
 }
 
+function getVesselGeometry(feature: Feature) {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const geom = feature.getGeometry() as Point;
+  if (geom) {
+    const polygonPoints: Array<number[]> = [];
+    const coordinates = geom.getCoordinates();
+    const x = coordinates[0];
+    const y = coordinates[1];
+    const w = props.vesselWidth || 0;
+    const h = props.vesselLength || 0;
+    const dx1 = props.referencePointC ? -props.referencePointC : 0;
+    const dy1 = props.referencePointA ? props.referencePointA : 0;
+    const dx2 = props.referencePointD ? props.referencePointD : 0;
+    const dy2 = props.referencePointB ? -props.referencePointB : 0;
+
+    /* Calculate vesselshaped polygon points starting from the bow clockwise */
+    polygonPoints.push([x + dx1 + (dx2 - dx1) / 2, y + dy1]);
+    polygonPoints.push([x + dx2, y + dy1 - h / 5]);
+    polygonPoints.push([x + dx2, y + dy2]);
+    if (movingNavStats.includes(props.navStat)) {
+      polygonPoints.push([x + dx1 + (dx2 - dx1) / 2, y + dy2 + h / 5]);
+    }
+    polygonPoints.push([x + dx1, y + dy2]);
+    polygonPoints.push([x + dx1, y + dy1 - h / 5]);
+
+    const polygon = new Polygon([polygonPoints]);
+
+    /* Cut circular hole to polygon if vessel is no moving */
+    if (!movingNavStats.includes(props.navStat)) {
+      const holeCenterCoord = [x + dx1 + (dx2 - dx1) / 2, y + dy1 - h / 4];
+      const holePoly = fromCircle(new Circle(holeCenterCoord, w / 4));
+      const c = holePoly.getCoordinates();
+      polygon.appendLinearRing(new LinearRing(c[0]));
+    }
+
+    /* Rotate polygon to the rigth angle */
+    polygon.rotate(-getRotation(feature), coordinates);
+    return polygon;
+  }
+}
+
 function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor: string, resolution: number, selected: boolean) {
   const props = feature.getProperties() as AisFeatureProperties;
   let iconWidth = minVesselIconWidth;
@@ -115,6 +160,7 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
   let anchorY = 0.5;
   const vesselLength = props.vesselLength ?? 0;
   const vesselWidth = props.vesselWidth ?? 0;
+  const vesselMoving = movingNavStats.includes(props.navStat);
 
   // Check if vessel dimensions are available
   if (props.vesselLength && props.vesselWidth) {
@@ -137,21 +183,19 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
 
   const resLimit = vesselLength > 50 ? 2 : 1;
   if (resolution < resLimit) {
-    if (selected) {
-      iconWidth += 2;
-      iconHeight += 2;
-    }
     vesselStyle = new Style({
-      image: new Icon({
-        src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
-        width: iconWidth,
-        height: iconHeight,
-        anchorOrigin: 'top-left',
-        anchor: [anchorX, anchorY],
-        rotation: getRotation(feature as Feature),
-        rotateWithView: true,
-      }),
+      fill: new Fill({ color: fillColor }),
+      stroke: new Stroke({ width: selected ? 2 : 1, color: strokeColor }),
+      geometry: getVesselGeometry(feature as Feature),
     });
+    if (!vesselMoving) {
+      const color = vesselStyle.getFill().getColor();
+      if (color) {
+        const colorArray = asArray(color as Color).slice();
+        colorArray[3] = 0.5;
+        vesselStyle.getFill().setColor(colorArray);
+      }
+    }
   } else {
     iconWidth = vesselLength > 50 ? 10 : 8;
     iconHeight = vesselLength > 50 ? 25 : 18;
@@ -159,7 +203,7 @@ function getAisVesselStyle(feature: FeatureLike, fillColor: string, strokeColor:
       iconWidth += 2;
       iconHeight += 2;
     }
-    if (movingNavStats.includes(props.navStat)) {
+    if (vesselMoving) {
       vesselStyle = new Style({
         image: new Icon({
           src: getSvgImage(iconWidth, iconHeight, fillColor, strokeColor, props.navStat),
