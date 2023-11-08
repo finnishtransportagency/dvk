@@ -21,7 +21,7 @@ export const getCurrentDecimalSeparator = () => {
 
 export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lang: 'fi' | 'sv' | 'en', searchQuery: string) => {
   if (searchQuery.length < MINIMUM_QUERYLENGTH) return [];
-  return (data && data.filter((card) => (card.name[lang] || '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS)) || [];
+  return data?.filter((card) => (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) ?? [];
 };
 
 export const getMapCanvasWidth = (): number => {
@@ -130,7 +130,7 @@ export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLaye
 }
 
 export const isGeneralMarineWarning = (area: Text | undefined): boolean => {
-  return ['KAIKKI MERIALUEET', 'SUOMEN_MERIALUEET', 'SUOMEN MERIALUEET JA SISÄVESISTÖT'].includes(area?.fi || '');
+  return ['KAIKKI MERIALUEET', 'SUOMEN_MERIALUEET', 'SUOMEN MERIALUEET JA SISÄVESISTÖT'].includes(area?.fi ?? '');
 };
 
 export const hasOfflineSupport = (id: FeatureDataLayerId): boolean => {
@@ -178,5 +178,22 @@ export function getWarningImgSource(type: string) {
       return local;
     default:
       return boaters;
+  }
+}
+
+export function updateIceLayerOpacity() {
+  const res = dvkMap.olMap?.getView()?.getResolution();
+  if (res !== undefined) {
+    let opacity;
+    if (res < 10) {
+      opacity = 0.1;
+    } else if (res < 35) {
+      opacity = 0.2;
+    } else if (res < 90) {
+      opacity = 0.3;
+    } else {
+      opacity = 0.4;
+    }
+    dvkMap.getFeatureLayer('ice').setOpacity(opacity);
   }
 }
