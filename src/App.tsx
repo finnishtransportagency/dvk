@@ -89,7 +89,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: OFFLINE_STORAGE.staleTime,
-      gcTime: OFFLINE_STORAGE.cacheTime,
+      cacheTime: OFFLINE_STORAGE.cacheTime,
     },
   },
 });

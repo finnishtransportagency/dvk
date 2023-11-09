@@ -10,7 +10,7 @@ export function useFeatureData(
   refetchInterval: number | false = false,
   enabled: boolean = true,
   staleTime: number = OFFLINE_STORAGE.staleTime,
-  gcTime: number = OFFLINE_STORAGE.cacheTime
+  cacheTime: number = OFFLINE_STORAGE.cacheTime
 ) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
@@ -25,7 +25,7 @@ export function useFeatureData(
     refetchOnMount,
     refetchInterval,
     staleTime,
-    gcTime,
+    cacheTime,
     queryFn: async () => {
       const { data } = await axios.get(urlStr);
       return data;

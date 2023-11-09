@@ -1,13 +1,13 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
 import { VtsFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { deselectClickSelection } from './popup';
-import CloseButton from './CloseButton';
 
 export type VtsPopupContentProps = {
   vts: VtsProperties;
@@ -28,37 +28,41 @@ const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupPro
   };
 
   return (
-    <IonGrid className="ion-no-padding">
-      <IonRow className="ion-justify-content-between">
-        <IonCol size="auto" className="header">
-          {vts.properties.name}
-        </IonCol>
-        <IonCol size="auto">
-          <CloseButton close={closePopup} />
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.vts.coordinates')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>{coordinatesToStringHDM(vts.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.vts.point')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>{vts.properties.information}</IonCol>
-      </IonRow>
-      {vts.properties.channel && (
-        <>
-          <IonRow>
-            <IonCol className="header">{t('popup.vts.channel')}</IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>{vts.properties.channel}</IonCol>
-          </IonRow>
-        </>
-      )}
+    <IonGrid id="vtsPopupContent" className="ion-padding">
+      <IonGrid className="ion-no-padding">
+        <IonRow className="ion-justify-content-between">
+          <IonCol size="auto" className="header">
+            {vts.properties.name}
+          </IonCol>
+          <IonCol size="auto">
+            <IonButton fill="clear" className="closeButton" onClick={() => closePopup()} title={t('common.close')} aria-label={t('common.close')}>
+              <IonIcon className="otherIconLarge" src={closeIcon} />
+            </IonButton>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.vts.coordinates')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{coordinatesToStringHDM(vts.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.vts.point')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{vts.properties.information}</IonCol>
+        </IonRow>
+        {vts.properties.channel && (
+          <>
+            <IonRow>
+              <IonCol className="header">{t('popup.vts.channel')}</IonCol>
+            </IonRow>
+            <IonRow>
+              <IonCol>{vts.properties.channel}</IonCol>
+            </IonRow>
+          </>
+        )}
+      </IonGrid>
     </IonGrid>
   );
 };

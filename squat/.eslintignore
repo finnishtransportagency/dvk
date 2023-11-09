@@ -1,7 +1,9 @@
+reportWebVitals.ts
+serviceWorkerRegistration.ts
+service-worker.ts
 build
-coverage
-dist
 capacitor.config.ts
 vite.config.ts
+coverage
+dist
 vite.lib.config.ts
-service-worker.ts

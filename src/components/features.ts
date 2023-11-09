@@ -165,7 +165,7 @@ export type VtsFeatureProperties = {
 
 export type AisFeatureProperties = {
   featureType: 'aisvessel';
-  mmsi: number;
+  mmsi: string;
   sog: number;
   cog: number;
   navStat: number;
@@ -188,6 +188,4 @@ export type AisFeatureProperties = {
   referencePointC?: number;
   referencePointD?: number;
   destination?: string;
-  vesselLength?: number;
-  vesselWidth?: number;
 };
