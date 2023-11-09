@@ -67,6 +67,9 @@ const TextInput: React.FC<TextInputProps> = ({
     if (isTouched) {
       checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
     }
+    if (!newVal) {
+      newVal = null;
+    }
     setValue(newVal as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
