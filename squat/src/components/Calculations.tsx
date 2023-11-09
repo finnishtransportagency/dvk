@@ -276,14 +276,10 @@ const Calculations: React.FC = () => {
     if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
     return '';
   };
-  // used for classnames, errors and values
-  const getConditionalString = (condition: boolean, truthy: string, falsy: string) => {
-    return condition ? truthy : falsy;
-  };
 
   return (
     <>
-      <div className={getConditionalString(limitedView, 'pagebreak hide-portrait', 'pagebreak')}></div>
+      <div className={'pagebreak' + (limitedView ? ' hide-portrait' : '')}></div>
       <IonGrid className="ion-no-padding ion-no-margin">
         <IonRow>
           <IonCol size="auto" style={{ paddingLeft: 0, paddingRight: 0 }}>
@@ -318,20 +314,16 @@ const Calculations: React.FC = () => {
       <CalculationOptions />
       <CalculationChecks doChecks={['reliability', 'LBratio', 'BDratio']} />
 
-      <SectionTitle title={t('squat')} hideValidity className={getConditionalString(limitedView, 'print-hide', '')} disabled={limitedView} />
+      <SectionTitle title={t('squat')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
       {!limitedView && (
         <IonGrid className="no-padding">
           <IonRow className="input-row">
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('heel-due-wind')}
-                value={getConditionalString(
-                  isNaN(state.calculations.squat.heelDueWind),
-                  '',
-                  state.calculations.squat.heelDueWind.toLocaleString(i18n.language, {
-                    maximumFractionDigits: 2,
-                  })
-                )}
+                value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 2,
+                })}
                 unit="°"
                 unitId="deg"
               />
@@ -339,11 +331,11 @@ const Calculations: React.FC = () => {
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('constant-heel-during-turn')}
-                value={getConditionalString(
-                  isNaN(state.calculations.squat.constantHeelDuringTurn),
-                  '',
-                  state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                )}
+                value={
+                  isNaN(state.calculations.squat.constantHeelDuringTurn)
+                    ? ''
+                    : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
                 unit="°"
                 unitId="deg"
                 infoContentTitle={t('constant-heel-during-turn-info-title')}
@@ -354,22 +346,22 @@ const Calculations: React.FC = () => {
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('corrected-draught')}
-                value={getConditionalString(
-                  isNaN(state.calculations.squat.correctedDraught),
-                  '',
-                  state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                )}
+                value={
+                  isNaN(state.calculations.squat.correctedDraught)
+                    ? ''
+                    : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
                 unit="m"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('corrected-draught-during-turn')}
-                value={getConditionalString(
-                  isNaN(state.calculations.squat.correctedDraughtDuringTurn),
-                  '',
-                  state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                )}
+                value={
+                  isNaN(state.calculations.squat.correctedDraughtDuringTurn)
+                    ? ''
+                    : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
+                }
                 unit="m"
               />
             </IonCol>
@@ -379,16 +371,16 @@ const Calculations: React.FC = () => {
                 title={t('UKC-vessel-motions')}
                 value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
                 unit="m"
-                error={getConditionalString(
+                error={
                   isUKCShipMotionsUnderRequired(
                     state.environment.attribute.requiredUKC,
                     state.calculations.squat.UKCVesselMotions,
                     state.status.showBarrass,
                     state.status.showDeepWaterValues
-                  ),
-                  t('UKC-under-required-minimum'),
-                  ''
-                )}
+                  )
+                    ? t('UKC-under-required-minimum')
+                    : ''
+                }
                 infoContentTitle={t('vessel-motions-assumptions')}
                 infoContent={
                   <>
@@ -409,15 +401,15 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 2,
                 })}
                 unit="m"
-                error={getConditionalString(
+                error={
                   isUKCStraightUnderRequired(
                     state.environment.attribute.requiredUKC,
                     state.calculations.squat.UKCStraightCourse,
                     state.status.showBarrass
-                  ),
-                  t('UKC-under-required-minimum'),
-                  ''
-                )}
+                  )
+                    ? t('UKC-under-required-minimum')
+                    : ''
+                }
               />
             </IonCol>
 
@@ -428,15 +420,15 @@ const Calculations: React.FC = () => {
                   maximumFractionDigits: 2,
                 })}
                 unit="m"
-                error={getConditionalString(
+                error={
                   isUKCDuringTurnUnderRequired(
                     state.environment.attribute.requiredUKC,
                     state.calculations.squat.UKCDuringTurn,
                     state.status.showBarrass
-                  ),
-                  t('UKC-under-required-minimum'),
-                  ''
-                )}
+                  )
+                    ? t('UKC-under-required-minimum')
+                    : ''
+                }
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -457,7 +449,7 @@ const Calculations: React.FC = () => {
         </IonGrid>
       )}
 
-      <SectionTitle title={t('wind-force')} hideValidity className={getConditionalString(limitedView, 'print-hide', '')} disabled={limitedView} />
+      <SectionTitle title={t('wind-force')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
       {!limitedView && (
         <IonGrid className="no-padding">
           <IonRow className="input-row">
@@ -476,13 +468,9 @@ const Calculations: React.FC = () => {
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('wind-force')}
-                value={getConditionalString(
-                  isNaN(state.calculations.forces.windForce),
-                  '',
-                  state.calculations.forces.windForce.toLocaleString(i18n.language, {
-                    maximumFractionDigits: 1,
-                  })
-                )}
+                value={(isNaN(state.calculations.forces.windForce) ? '' : state.calculations.forces.windForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
                 unit="mt"
                 infoContentTitle={t('wind-force-info-title')}
                 infoContent={<p>{t('wind-force-info')}</p>}
@@ -491,13 +479,9 @@ const Calculations: React.FC = () => {
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('wave-force')}
-                value={getConditionalString(
-                  isNaN(state.calculations.forces.waveForce),
-                  '',
-                  state.calculations.forces.waveForce.toLocaleString(i18n.language, {
-                    maximumFractionDigits: 1,
-                  })
-                )}
+                value={(isNaN(state.calculations.forces.waveForce) ? '' : state.calculations.forces.waveForce).toLocaleString(i18n.language, {
+                  maximumFractionDigits: 1,
+                })}
                 unit="mt"
                 infoContentTitle={t('wave-force-info-title')}
                 infoContent={<p>{t('wave-force-info')}</p>}
@@ -514,17 +498,16 @@ const Calculations: React.FC = () => {
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
               <LabelField
                 title={t('remaining-safety-margin')}
-                value={getConditionalString(
-                  isNaN(state.calculations.forces.remainingSafetyMargin),
-                  '',
-                  (state.calculations.forces.remainingSafetyMargin * 100).toLocaleString(i18n.language, { maximumFractionDigits: 1 })
-                )}
+                value={(isNaN(state.calculations.forces.remainingSafetyMargin)
+                  ? ''
+                  : state.calculations.forces.remainingSafetyMargin * 100
+                ).toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
                 unit="%"
-                error={getConditionalString(
-                  isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin),
-                  t('insufficient-safety-margin'),
-                  ''
-                )}
+                error={
+                  isSafetyMarginInsufficient(state.environment.attribute.safetyMarginWindForce, state.calculations.forces.remainingSafetyMargin)
+                    ? t('insufficient-safety-margin')
+                    : ''
+                }
               />
             </IonCol>
 
@@ -536,11 +519,7 @@ const Calculations: React.FC = () => {
                     ? state.calculations.forces.externalForceRequired.toLocaleString(i18n.language, { maximumFractionDigits: 1 })
                     : '-'
                 }
-                error={getConditionalString(
-                  isExternalForceRequired(state.calculations.forces.externalForceRequired),
-                  t('external-force-required'),
-                  ''
-                )}
+                error={isExternalForceRequired(state.calculations.forces.externalForceRequired) ? t('external-force-required') : ''}
               />
             </IonCol>
             <IonCol size="6" />
@@ -555,7 +534,7 @@ const Calculations: React.FC = () => {
       <SectionTitle
         title={t('drift')}
         hideValidity
-        className={getConditionalString(limitedView, 'print-hide', '')}
+        className={limitedView ? 'print-hide' : ''}
         disabled={limitedView}
         infoContentTitle={t('drift-info-title')}
         infoContent={<p>{t('drift-info')}</p>}
