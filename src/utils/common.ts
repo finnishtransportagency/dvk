@@ -186,7 +186,7 @@ export function updateIceLayerOpacity() {
   if (res !== undefined) {
     let opacity;
     if (res < 10) {
-      opacity = 0.1;
+      opacity = 0.15;
     } else if (res < 35) {
       opacity = 0.2;
     } else if (res < 90) {
