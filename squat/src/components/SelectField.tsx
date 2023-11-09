@@ -28,8 +28,7 @@ interface SelectProps {
 const SelectField: React.FC<SelectProps> = (props) => {
   const { t } = useTranslation();
   const { dispatch } = useSquatContext();
-  console.log(typeof props.value);
-  console.log(props.value);
+
   const handleChange = useCallback(
     (e: IonSelectCustomEvent<SelectChangeEventDetail>) => {
       dispatch({

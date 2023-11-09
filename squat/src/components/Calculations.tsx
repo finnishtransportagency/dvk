@@ -21,24 +21,18 @@ import {
   calculateUKCVesselMotions,
   calculateWaveForce,
   calculateWindForce,
-  getNumberValueOrEmptyString,
   toDeg,
 } from '../utils/calculations';
 
 import SectionTitle from './SectionTitle';
 import LabelField from './LabelField';
-import {
-  isExternalForceRequired,
-  isSafetyMarginInsufficient,
-  isUKCDuringTurnUnderRequired,
-  isUKCShipMotionsUnderRequired,
-  isUKCStraightUnderRequired,
-} from '../utils/validations';
+import { isExternalForceRequired, isSafetyMarginInsufficient } from '../utils/validations';
 import Modal from './Modal';
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
 import CalculationOptions from './CalculationOptions';
 import CalculationChecks from './CalculationChecks';
+import SquatCalculationResults from './SquatCalculationResults';
 
 const Calculations: React.FC = () => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.squat.calculations' });
@@ -46,7 +40,6 @@ const Calculations: React.FC = () => {
   const {
     status: { showLimitedView: limitedView },
   } = state;
-  const tRoot = i18n.getFixedT(i18n.language);
 
   // useEffects to calculate results by input value update
   // 1. Wind Force & 3. Drift
@@ -255,28 +248,6 @@ const Calculations: React.FC = () => {
     dispatch,
   ]);
 
-  // Determine values to show
-  const getUKCVesselMotionValue = () => {
-    const currentValue = state.calculations.squat.UKCVesselMotions[state.status.showBarrass ? 0 : 1][state.status.showDeepWaterValues ? 1 : 0];
-    return getNumberValueOrEmptyString(currentValue);
-  };
-  const getUKCStraightCourseValue = () => {
-    const currentValue = state.calculations.squat.UKCStraightCourse[state.status.showBarrass ? 0 : 1];
-    return getNumberValueOrEmptyString(currentValue);
-  };
-  const getUKCDuringTurnValue = () => {
-    const currentValue = state.calculations.squat.UKCDuringTurn[state.status.showBarrass ? 0 : 1];
-    return getNumberValueOrEmptyString(currentValue);
-  };
-  const getSquatValue = () => {
-    const currentValue = state.status.showBarrass ? state.calculations.squat.squatBarrass : state.calculations.squat.squatHG;
-    return getNumberValueOrEmptyString(currentValue);
-  };
-  const printSquatHelper = () => {
-    if (getSquatValue() !== '') return '(' + (state.status.showBarrass ? t('squat-barrass') : t('squat-HG')) + ')';
-    return '';
-  };
-
   return (
     <>
       <div className={'pagebreak' + (limitedView ? ' hide-portrait' : '')}></div>
@@ -314,140 +285,7 @@ const Calculations: React.FC = () => {
       <CalculationOptions />
       <CalculationChecks doChecks={['reliability', 'LBratio', 'BDratio']} />
 
-      <SectionTitle title={t('squat')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
-      {!limitedView && (
-        <IonGrid className="no-padding">
-          <IonRow className="input-row">
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('heel-due-wind')}
-                value={(isNaN(state.calculations.squat.heelDueWind) ? '' : state.calculations.squat.heelDueWind).toLocaleString(i18n.language, {
-                  maximumFractionDigits: 2,
-                })}
-                unit="°"
-                unitId="deg"
-              />
-            </IonCol>
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('constant-heel-during-turn')}
-                value={
-                  isNaN(state.calculations.squat.constantHeelDuringTurn)
-                    ? ''
-                    : state.calculations.squat.constantHeelDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                }
-                unit="°"
-                unitId="deg"
-                infoContentTitle={t('constant-heel-during-turn-info-title')}
-                infoContent={<p>{t('constant-heel-during-turn-info')}</p>}
-              />
-            </IonCol>
-
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('corrected-draught')}
-                value={
-                  isNaN(state.calculations.squat.correctedDraught)
-                    ? ''
-                    : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                }
-                unit="m"
-              />
-            </IonCol>
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('corrected-draught-during-turn')}
-                value={
-                  isNaN(state.calculations.squat.correctedDraughtDuringTurn)
-                    ? ''
-                    : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
-                }
-                unit="m"
-              />
-            </IonCol>
-
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('UKC-vessel-motions')}
-                value={getUKCVesselMotionValue().toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
-                unit="m"
-                error={
-                  isUKCShipMotionsUnderRequired(
-                    state.environment.attribute.requiredUKC,
-                    state.calculations.squat.UKCVesselMotions,
-                    state.status.showBarrass,
-                    state.status.showDeepWaterValues
-                  )
-                    ? t('UKC-under-required-minimum')
-                    : ''
-                }
-                infoContentTitle={t('vessel-motions-assumptions')}
-                infoContent={
-                  <>
-                    <p>{t('vessel-motions-assumptions')}:</p>
-                    <ul>
-                      <li>{t('vessel-motions-assumption-1')}</li>
-                      <li>{t('vessel-motions-assumption-2')}</li>
-                      <li>{t('vessel-motions-assumption-3')}</li>
-                    </ul>
-                  </>
-                }
-              />
-            </IonCol>
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('UKC-straight-course')}
-                value={getUKCStraightCourseValue().toLocaleString(i18n.language, {
-                  maximumFractionDigits: 2,
-                })}
-                unit="m"
-                error={
-                  isUKCStraightUnderRequired(
-                    state.environment.attribute.requiredUKC,
-                    state.calculations.squat.UKCStraightCourse,
-                    state.status.showBarrass
-                  )
-                    ? t('UKC-under-required-minimum')
-                    : ''
-                }
-              />
-            </IonCol>
-
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('UKC-during-turn')}
-                value={getUKCDuringTurnValue().toLocaleString(i18n.language, {
-                  maximumFractionDigits: 2,
-                })}
-                unit="m"
-                error={
-                  isUKCDuringTurnUnderRequired(
-                    state.environment.attribute.requiredUKC,
-                    state.calculations.squat.UKCDuringTurn,
-                    state.status.showBarrass
-                  )
-                    ? t('UKC-under-required-minimum')
-                    : ''
-                }
-              />
-            </IonCol>
-            <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField
-                title={t('squat') + ', ' + tRoot(state.environment.fairway.fairwayForm?.name).toLocaleLowerCase()}
-                value={getSquatValue().toLocaleString(i18n.language, {
-                  maximumFractionDigits: 2,
-                })}
-                unit="m"
-                helper={printSquatHelper()}
-              />
-            </IonCol>
-            <IonCol size="6" className="hide-portrait" />
-            <IonCol size="6" className="hide-portrait" />
-            <IonCol size="6" className="hide-portrait" />
-            <IonCol size="6" className="hide-portrait" />
-          </IonRow>
-        </IonGrid>
-      )}
+      <SquatCalculationResults limitedView={limitedView} />
 
       <SectionTitle title={t('wind-force')} hideValidity className={limitedView ? 'print-hide' : ''} disabled={limitedView} />
       {!limitedView && (
