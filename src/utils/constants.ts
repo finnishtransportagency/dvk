@@ -333,9 +333,9 @@ export const marineWarningAreas = [
   'bothnianSea',
   'theQuark',
   'bayOfBothnia',
+  'gulfOfBothnia',
   'saimaa',
   'saimaaCanal',
-  'gulfOfBothnia',
 ];
 
 export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
