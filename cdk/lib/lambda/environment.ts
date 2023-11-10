@@ -1,6 +1,8 @@
 import { readParameterByPath } from './api/axios';
 
 const envParameters: Record<string, string> = {};
+const AIS_LOCATION_CACHE_DURATION = 1;
+const AIS_VESSEL_CACHE_DURATION = 60;
 
 function errorMessage(variable: string): string {
   return `Environment variable ${variable} missing`;
@@ -83,9 +85,17 @@ export async function getVatuUrl() {
   return readParameterForEnv('VatuUrl');
 }
 
-export async function getFeatureCacheDurationHours() {
-  const value = await readParameterForEnv('FeatureCacheDurationHours');
-  return value ? Number.parseFloat(value) : 0;
+export async function getFeatureCacheDuration(key: string) {
+  let value;
+  if (key === 'aislocations') {
+    value = AIS_LOCATION_CACHE_DURATION;
+  } else if (key === 'aisvessels') {
+    value = AIS_VESSEL_CACHE_DURATION;
+  } else {
+    const durationHours = await readParameterForEnv('FeatureCacheDurationHours');
+    value = durationHours ? Number.parseFloat(durationHours) * 60 : 0;
+  }
+  return value;
 }
 
 export async function getVatuHeaders(): Promise<Record<string, string>> {

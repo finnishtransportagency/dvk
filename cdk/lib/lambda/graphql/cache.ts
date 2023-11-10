@@ -1,5 +1,5 @@
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getEnvironment, getFeatureCacheDurationHours } from '../environment';
+import { getEnvironment, getFeatureCacheDuration } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
 
@@ -10,9 +10,9 @@ function getCacheBucketName() {
 }
 
 export async function cacheResponse(key: string, response: object | string) {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
+  const cacheDurationMinutes = await getFeatureCacheDuration(key);
   const expires = new Date();
-  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
+  expires.setTime(expires.getTime() + cacheDurationMinutes * 60 * 1000);
   const command = new PutObjectCommand({
     Key: key,
     Bucket: getCacheBucketName(),
