@@ -14,7 +14,7 @@ type OptionType = {
 interface SelectProps {
   title: string;
   name: string;
-  value: unknown | null;
+  value: unknown;
   options: OptionType[];
   required?: boolean;
   helper?: string;
