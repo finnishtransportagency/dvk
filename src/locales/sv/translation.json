@@ -456,7 +456,8 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan",
-    "filter": "Välj filter..."
+    "filter": "Välj filter...",
+    "sort": "[sv] Järjestä"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."

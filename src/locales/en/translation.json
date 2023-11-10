@@ -455,7 +455,8 @@
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab",
     "print": "Print page",
-    "filter": "Select filter..."
+    "filter": "Select filter...",
+    "sort": "[en] Järjestä" 
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."

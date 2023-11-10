@@ -456,7 +456,8 @@
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "lastUpdatedDuration": "Tietoja päivitetty viimeksi {{ duration }} tuntia sitten.",
     "print": "Tulosta sivu",
-    "filter": "Valitse suodatin..."
+    "filter": "Valitse suodatin...",
+    "sort": "Järjestä"
   },
   "tileLoadWarning": {
     "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
