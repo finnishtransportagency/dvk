@@ -42,14 +42,15 @@ export const checkIfMoored = (navState: number): boolean => {
 };
 
 export const calculateVesselDimensions = (a?: number, b?: number, c?: number, d?: number): number[] => {
-  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined && b > 0 && d > 0) {
-    const vesselLength = a + b;
-    const vesselWidth = c + d;
+  let vesselLength = 0;
+  let vesselWidth = 0;
 
-    return [vesselLength, vesselWidth];
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
+    vesselLength = a + b;
+    vesselWidth = c + d;
   }
 
-  return [];
+  return [vesselLength, vesselWidth];
 };
 
 export function getCountryCode(mmsi: number): CountryCode | undefined {

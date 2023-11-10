@@ -50,7 +50,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const { t } = useTranslation();
 
   const properties = vessel.properties;
-  const dataUpdatedTime = reformatAisVesselDataUpdatedTime(properties.dataUpdatedTime);
+  const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
   const navState = checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving');
   //check for unavailable properties (unavailable values: speed==102.3 and course===360)
@@ -97,7 +97,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
       <IonRow className="negativeMargin">
         <IonCol>{t(`popup.ais.${getAisVesselShipType(properties?.shipType)}`)}</IonCol>
       </IonRow>
-      <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={dataUpdatedTime} />
+      <AisVesselInfoRow title={t('popup.ais.lastUpdated')} body={timestamp} />
       <AisVesselInfoRow title={t('popup.ais.lastLocation')} body={coordinates} />
       <AisVesselInfoRow title={t('popup.ais.navState')} body={navState} />
       <AisVesselInfoRow title={`${t('popup.ais.speed')} / ${t('popup.ais.course').toLowerCase()}`} body={speedAndCourse} />

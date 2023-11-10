@@ -51,7 +51,7 @@ const SquatDataTable: React.FC<Props> = (props) => {
     setSpeeds(
       getSpeedData()?.map((values) => {
         return values[0];
-      }) || []
+      }) ?? []
     );
   }, [getSpeedData]);
 

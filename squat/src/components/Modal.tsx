@@ -33,12 +33,12 @@ const Modal: React.FC<ModalProps> = (props) => {
         fill="clear"
         className={'icon-only ' + (props.triggerClassName ? ' ' + props.triggerClassName : '')}
         onClick={handleClickOpen}
-        title={props.triggerTitle || t('more-info')}
-        aria-label={props.triggerTitle || t('more-info')}
+        title={props.triggerTitle ?? t('more-info')}
+        aria-label={props.triggerTitle ?? t('more-info')}
         role="button"
         disabled={props.disabled}
       >
-        {props.triggerIcon || <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
+        {props.triggerIcon ?? <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
       </IonButton>
       <IonModal isOpen={isOpen} className={'squatModal ' + (props.size ? props.size : 'medium')} onDidDismiss={handleClickClose}>
         <IonHeader>

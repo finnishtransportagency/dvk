@@ -138,25 +138,25 @@ vi.mock('./graphql/generated', async () => {
     useFindAllFairwayCardsQuery: () => {
       return {
         data: mockFairwayList,
-        isLoading: false,
+        isPending: false,
       };
     },
     useFindFairwayCardByIdQuery: () => {
       return {
         data: mockFairwayCard,
-        isLoading: false,
+        isPending: false,
       };
     },
     useFindAllMarineWarningsQuery: () => {
       return {
         data: mockMarineWarningList,
-        isLoading: false,
+        isPending: false,
       };
     },
     useFindAllSafetyEquipmentFaultsQuery: () => {
       return {
         data: mockSafetyEquipmentFaultList,
-        isLoading: false,
+        isPending: false,
       };
     },
   };
