@@ -222,13 +222,14 @@ export const checkIfMoored = (navState: number): boolean => {
   return !(navState === 0 || navState === 3 || navState === 4 || navState === 7 || navState === 8);
 };
 
-export const calculateVesselDimensions = (a: number | undefined, b: number | undefined, c: number | undefined, d: number | undefined): number[] => {
-  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined && b > 0 && d > 0) {
-    const vesselLength = a + b;
-    const vesselWidth = c + d;
+export const calculateVesselDimensions = (a?: number, b?: number, c?: number, d?: number): number[] => {
+  let vesselLength = 0;
+  let vesselWidth = 0;
 
-    return [vesselLength, vesselWidth];
+  if (a !== undefined && b !== undefined && c !== undefined && d !== undefined) {
+    vesselLength = a + b;
+    vesselWidth = c + d;
   }
 
-  return [];
+  return [vesselLength, vesselWidth];
 };
