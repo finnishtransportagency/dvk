@@ -457,7 +457,8 @@
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan",
     "filter": "Välj filter...",
-    "sort": "[sv] Järjestä"
+    "sortOldToNew": "[sv] Järjestä vanhimmasta uusimpaan",
+    "sortNewToOld": "[sv] Järjesta uusimmasta vanhimpaan"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
