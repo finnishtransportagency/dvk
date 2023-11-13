@@ -490,6 +490,7 @@ function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, z
 export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
+  // Syvyystiedot
   addDepthContourLayer(map);
   addDepthAreaLayer(map);
   addSoundingPointLayer(map);
