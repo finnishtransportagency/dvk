@@ -96,7 +96,3 @@ ion-popover.multiSelect ion-item {
 #marineWarningList ion-grid.table ion-row > ion-col.no-padding {
   padding: 0;
 }
-
-.narrow {
-  --offset-x: -2px;
-}

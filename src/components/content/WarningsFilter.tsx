@@ -14,7 +14,7 @@ interface WarningFilterProps {
   widePane?: boolean;
 }
 
-const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst, widePane }) => {
+const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst }) => {
   const { t } = useTranslation();
 
   const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
@@ -40,7 +40,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
                 interface="popover"
                 interfaceOptions={{
                   size: 'cover',
-                  className: widePane ? 'multiSelect' : 'multiSelect narrow',
+                  className: 'multiSelect',
                 }}
                 labelPlacement="stacked"
                 onIonChange={(ev) => handleAreaChange(ev)}
@@ -62,7 +62,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
                 interface="popover"
                 interfaceOptions={{
                   size: 'cover',
-                  className: widePane ? 'multiSelect' : 'multiSelect narrow',
+                  className: 'multiSelect',
                 }}
                 labelPlacement="stacked"
                 onIonChange={(ev) => handleTypeChange(ev)}

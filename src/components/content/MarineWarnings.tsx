@@ -108,13 +108,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-      <WarningsFilter
-        setAreaFilter={setAreaFilter}
-        setTypeFilter={setTypeFilter}
-        setSortNewFirst={setSortNewFirst}
-        sortNewFirst={sortNewFirst}
-        widePane={widePane}
-      />
+      <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} setSortNewFirst={setSortNewFirst} sortNewFirst={sortNewFirst} />
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isPending} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
       </div>
