@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getFeatureCacheDuration, getHeaders } from '../environment';
+import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
@@ -8,7 +8,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFromCache } from '../graphql/cache';
+import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { handleLoaderError, getNumberValue, saveResponseToS3 } from '../util';
 import {
@@ -490,7 +490,7 @@ const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observa
 
 async function isCacheEnabled(type: string, key: string): Promise<boolean> {
   const cacheDuration = await getFeatureCacheDuration(key);
-  log.debug('cacheDurationMinutes: %d', cacheDuration);
+  log.debug('cacheDuration: %d', cacheDuration);
   const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
   log.debug('cacheEnabled: %s', cacheEnabled);
   return cacheEnabled;
