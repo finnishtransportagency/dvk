@@ -702,7 +702,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   // Upload map picture
   const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
 
-  const { mutateAsync: uploadMapPictureMutation, isLoading: isLoadingMutation } = useUploadMapPictureMutationQuery({
+  const { mutateAsync: uploadMapPictureMutation, isPending: isLoadingMutation } = useUploadMapPictureMutationQuery({
     onSuccess: () => {
       if (toBeSavedPicture) {
         const newPictureInput = {
