@@ -41,19 +41,37 @@ export class DvkAnalyticsStack extends Stack {
     // Get s3 instance of importedLogBucket
     const logBucketS3 = s3.Bucket.fromBucketName(this, 'DvkCloudFrontLogBucket', importedLogBucket);
 
-    // Add permissions to access the S3 bucket
+    // Add permissions to download the cloudwatch accesslogs from S3 bucket
+    // TODO: "it's not possible to tell whether the bucket already has a policy attached, let alone to re-use that policy to add more statements to it"
+    // that means we have to change to direct methods ie. logBucket.grantRead etc
     logBucketS3.addToResourcePolicy(
       new iam.PolicyStatement({
-        actions: ['s3:GetObject', 's3:ListBucket', 's3:ListObjectsV2'],
-        resources: [logBucketS3.arnForObjects('*')],
+        actions: ['s3:GetObject', 's3:ListBucket'],
+        resources: [logBucketS3.bucketArn, logBucketS3.arnForObjects('*')],
         principals: [taskRole.grantPrincipal],
       })
     );
 
     taskRole.addToPolicy(
       new iam.PolicyStatement({
-        actions: ['s3:GetObject', 's3:ListBucket', 's3:ListObjectsV2'],
-        resources: [`arn:aws:s3:::${importedLogBucket}/*`],
+        actions: ['s3:GetObject', 's3:ListBucket'],
+        resources: [logBucketS3.bucketArn, logBucketS3.arnForObjects('*')],
+      })
+    );
+
+    // add putObject permission to reportBucket for taskRole
+    reportBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject'],
+        resources: [reportBucket.bucketArn, reportBucket.arnForObjects('*')],
+        principals: [taskRole.grantPrincipal],
+      })
+    );
+
+    taskRole.addToPolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject'],
+        resources: [reportBucket.bucketArn, reportBucket.arnForObjects('*')],
       })
     );
 
@@ -70,7 +88,7 @@ export class DvkAnalyticsStack extends Stack {
 
     // Degine log group for the Fargate task definition
     const logGroup = new logs.LogGroup(this, 'LogGroup', {
-      logGroupName: '/ecs/dvk-analytics',
+      logGroupName: '/ecs/dvk-analytics-' + env,
       retention: logs.RetentionDays.TWO_WEEKS,
     });
 
@@ -94,7 +112,11 @@ export class DvkAnalyticsStack extends Stack {
       cluster,
       taskDefinition,
       securityGroups: [ecsSecurityGroup],
+      desiredCount: 0,
     });
+
+    // TODO: using this or ecsPatterns.ScheduledFargateTask end up in error due to wrong type of subnets
+    // but doing it manually from the console does not so it is used for now to finish the job
 
     // // Define the rule for scheduling the Fargate task
     // const rule = new events.Rule(this, 'DvkAnalyticsScheduledRule', {
