@@ -257,38 +257,41 @@ class DvkMap {
   // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
   // Throws error if timeout and sets status code accordingly in case of response
   private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
+    const retryCodes = [404, 408, 429, 500, 502, 503, 504];
     // eslint-disable-next-line
     source.setTileLoadFunction((tile: any, url: string) => {
       tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000);
-
         let response;
-
+        //seconds
+        let pollInterval = 1;
+        let valid = false;
         try {
-          response = await fetch(url, {
-            signal: controller.signal,
-          }).then((res) => res);
-
-          if (response.status !== 200) {
+          //eslint-disable-next-line
+          while (true) {
+            response = await fetch(url);
+            valid = !retryCodes.includes(response.status);
+            if (valid) {
+              break;
+            }
+            this.setResponseState(dispatch, response.status, response.statusText);
+            await new Promise((resolve) => setTimeout(resolve, pollInterval >= 3600 ? 3600 * 1000 : (pollInterval *= 2) * 1000));
+          }
+          if (valid) {
+            const data = await response.arrayBuffer();
+            const format = tile.getFormat();
+            const features = format.readFeatures(data, {
+              extent: usedExtent,
+              featureProjection: usedProjection,
+            });
+            tile.setFeatures(features);
+          } else {
             throw new Error(`Error: ${response.status} ${response.statusText}`);
           }
-
-          const data = await response.arrayBuffer();
-          const format = tile.getFormat();
-          const features = format.readFeatures(data, {
-            extent: usedExtent,
-            featureProjection: usedProjection,
-          });
-          tile.setFeatures(features);
         } catch (error) {
+          tile.setState(3);
           if (response) {
             this.setResponseState(dispatch, response.status, response.statusText);
-          } else {
-            this.setResponseState(dispatch, 408, 'Request timeout');
           }
-        } finally {
-          clearTimeout(timeoutId);
         }
       });
     });
