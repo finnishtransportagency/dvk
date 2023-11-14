@@ -182,10 +182,11 @@ async function getParameterFromStore(path: string): Promise<string | undefined> 
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.error(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       if (errorObj.status === 400) {
-        throw new Error(`Error 400 when getting parameter ${path}`);
+        log.warn(`Parameter ${path} cache fetch failed:`, errorObj.message);
+        throw new Error(errorObj.message);
       }
+      log.error(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
     });
   log.debug(`Parameter cache response time: ${Date.now() - start} ms`);
   if (response?.data) {
