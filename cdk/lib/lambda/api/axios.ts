@@ -173,7 +173,7 @@ export async function fetchIlmanetApi(): Promise<string> {
   return response.data;
 }
 
-export async function readParameterByPath(path: string): Promise<string | undefined> {
+async function getParameterFromStore(path: string): Promise<string | undefined> {
   const url = `http://localhost:${getExtensionPort()}/systemsmanager/parameters/get/?name=${path}&withDecryption=true`;
   const start = Date.now();
   const response = await axios
@@ -182,9 +182,9 @@ export async function readParameterByPath(path: string): Promise<string | undefi
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      // ignore parameter not found
-      if (errorObj.status !== 400) {
-        log.fatal(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      log.error(`Parameter cache fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      if (errorObj.status === 400) {
+        throw new Error(`Error 400 when getting parameter ${path}`);
       }
     });
   log.debug(`Parameter cache response time: ${Date.now() - start} ms`);
@@ -192,4 +192,24 @@ export async function readParameterByPath(path: string): Promise<string | undefi
     return response.data.Parameter.Value;
   }
   return undefined;
+}
+
+export async function readParameterByPath(path: string): Promise<string | undefined> {
+  const maxAttempts = 2;
+  let attempt = 1;
+
+  const executeWithRetries = async (): Promise<string | undefined> => {
+    try {
+      return await getParameterFromStore(path);
+    } catch (e: unknown) {
+      if (attempt < maxAttempts) {
+        attempt++;
+        return executeWithRetries();
+      }
+      log.error(`Getting parameter ${path} failed after ${maxAttempts} attempts`);
+      return undefined;
+    }
+  };
+
+  return executeWithRetries();
 }
