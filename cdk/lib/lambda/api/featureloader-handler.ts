@@ -489,7 +489,7 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
 const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
 
 async function isCacheEnabled(type: string, key: string): Promise<boolean> {
-  const cacheDuration = await getFeatureCacheDuration(key);
+  const cacheDuration = getFeatureCacheDuration(key);
   log.debug('cacheDuration: %d', cacheDuration);
   const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
   log.debug('cacheEnabled: %s', cacheEnabled);

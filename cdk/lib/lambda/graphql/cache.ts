@@ -13,7 +13,7 @@ function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
 
-export async function getFeatureCacheDuration(key: string) {
+export function getFeatureCacheDuration(key: string) {
   if (key === 'aislocations') {
     return AIS_LOCATION_CACHE_DURATION;
   } else if (key === 'aisvessels') {
@@ -24,7 +24,7 @@ export async function getFeatureCacheDuration(key: string) {
 }
 
 export async function cacheResponse(key: string, response: object | string) {
-  const cacheDurationSeconds = await getFeatureCacheDuration(key);
+  const cacheDurationSeconds = getFeatureCacheDuration(key);
   const expires = new Date();
   expires.setTime(expires.getTime() + cacheDurationSeconds * 1000);
   const command = new PutObjectCommand({
