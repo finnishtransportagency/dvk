@@ -3,7 +3,7 @@ import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonI
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
-import { getAlertProperties, hasOfflineSupport } from '../../utils/common';
+import { getAlertProperties, hasOfflineSupport, updateIceLayerOpacity } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import DepthMW from '../../theme/img/syvyys_mw.svg?react';
@@ -343,7 +343,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   const disabled = isDisabled();
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.lastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.lastUpdatedUnknown');
     return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
   }, [alertProps, t]);
 
@@ -351,6 +351,10 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+    // Set ice layer opacity depending on current view resolution
+    if (checked && id === 'ice') {
+      updateIceLayerOpacity();
+    }
   };
 
   return (

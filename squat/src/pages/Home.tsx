@@ -11,7 +11,7 @@ export function getUrlParam(param: string) {
 
 function parseBooleanUrlParam(param: string): boolean {
   const sh = getUrlParam(param);
-  return sh && sh === 'false' ? false : true;
+  return !(sh && sh === 'false');
 }
 
 export const showLanguages = (): boolean => {
