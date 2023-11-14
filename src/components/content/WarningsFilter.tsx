@@ -11,7 +11,6 @@ interface WarningFilterProps {
   setTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setSortNewFirst: React.Dispatch<React.SetStateAction<boolean>>;
   sortNewFirst: boolean;
-  widePane?: boolean;
 }
 
 const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst }) => {
