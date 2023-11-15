@@ -120,7 +120,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [saveError, setSaveError] = useState<string>();
   const [savedCard, setSavedCard] = useState<FairwayCardByIdFragment | null>();
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: saveFairwayCard, isLoading: isLoadingMutation } = useSaveFairwayCardMutationQuery({
+  const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
