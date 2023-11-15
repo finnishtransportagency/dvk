@@ -389,7 +389,7 @@ function addIceLayer(map: Map) {
         transition: 0,
         crossOrigin: 'Anonymous',
       }),
-      zIndex: 101,
+      zIndex: 102,
       preload: 10,
       opacity: 0.4,
     })
@@ -444,7 +444,7 @@ function addDepthAreaLayer(map: Map) {
         crossOrigin: 'Anonymous',
       }),
       maxResolution: 10,
-      zIndex: 102,
+      zIndex: 101,
       preload: 10,
     })
   );
@@ -490,6 +490,7 @@ function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, z
 export function addAPILayers(map: Map) {
   // Jääkartta
   addIceLayer(map);
+  // Syvyystiedot
   addDepthContourLayer(map);
   addDepthAreaLayer(map);
   addSoundingPointLayer(map);
