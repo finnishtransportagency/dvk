@@ -1,9 +1,10 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse } from './graphql/cache';
+import { CacheResponse, cacheResponse, getFromCache } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
+import { getHeaders } from './environment';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -96,5 +97,37 @@ export function handleLoaderError(response: CacheResponse, e: unknown): ALBResul
   return {
     statusCode,
     body: base64Response,
+  };
+}
+
+export async function handleAisCall(
+  key: string,
+  fetchAisData: () => Promise<FeatureCollection> | Promise<Vessel[]>,
+  contentType: string[]
+): Promise<ALBResult> {
+  let base64Response: string | undefined;
+  let statusCode = 200;
+  const cacheResponse = await getFromCache(key);
+  if (!cacheResponse.expired && cacheResponse.data) {
+    base64Response = cacheResponse.data;
+  } else {
+    try {
+      const aisData = await fetchAisData();
+      log.debug('ais data: %d', Array.isArray(aisData) ? aisData.length : aisData.features.length);
+      base64Response = await saveResponseToS3(aisData, key);
+    } catch (e) {
+      const errorResult = handleLoaderError(cacheResponse, e);
+      base64Response = errorResult.body;
+      statusCode = errorResult.statusCode;
+    }
+  }
+  return {
+    statusCode,
+    body: base64Response,
+    isBase64Encoded: true,
+    multiValueHeaders: {
+      ...getHeaders(),
+      'Content-Type': contentType,
+    },
   };
 }

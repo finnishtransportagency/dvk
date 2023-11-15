@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getFeatureCacheDurationHours, getHeaders } from '../environment';
+import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
@@ -8,7 +8,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFromCache } from '../graphql/cache';
+import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { handleLoaderError, getNumberValue, saveResponseToS3 } from '../util';
 import {
@@ -488,10 +488,10 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
 
 const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
 
-async function isCacheEnabled(type: string): Promise<boolean> {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
-  log.debug('cacheDurationHours: %d', cacheDurationHours);
-  const cacheEnabled = cacheDurationHours > 0 && !noCache.includes(type);
+function isCacheEnabled(type: string, key: string): boolean {
+  const cacheDuration = getFeatureCacheDuration(key);
+  log.debug('cacheDuration: %d', cacheDuration);
+  const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
   log.debug('cacheEnabled: %s', cacheEnabled);
   return cacheEnabled;
 }
@@ -560,7 +560,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheEnabled = await isCacheEnabled(type);
+  const cacheEnabled = isCacheEnabled(type, key);
   const response = await getFromCache(key);
   if (cacheEnabled && !response.expired && response.data) {
     base64Response = response.data;
