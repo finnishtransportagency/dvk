@@ -395,17 +395,17 @@
       "channel": "VHF kanal"
     },
     "ais": {
-      "lastUpdated": "[sv] Viimeisin havainto",
-      "lastLocation": "[sv] Viimeisin sijainti",
-      "navState": "[sv] Navigoinnin tila",
-      "speed": "[sv] Nopeus",
-      "course": "[sv] Suunta",
-      "callSign": "[sv] Kutsumerkki",
-      "dimensions": "[sv] Aluksen kokonaispituus ja leveys",
-      "draught": "[sv] Syväys",
-      "destination": "[sv] Määränpää",
-      "moored": "[sv] Ankkuroituna",
-      "moving": "[sv] Liikkeessä",
+      "lastUpdated": "Senaste observation",
+      "lastLocation": "Senaste position",
+      "navState": "Navigerings status",
+      "speed": "Hastighet",
+      "course": "Riktning",
+      "callSign": "Anropssignal",
+      "dimensions": "Fartygets totala längd och bredd",
+      "draught": "Djupgående",
+      "destination": "Destination",
+      "moored": "Ankrad",
+      "moving": "I rörelse",
       "aisVesselCargo": "Fraktfartyg",
       "aisVesselTanker": "Tankfartyg",
       "aisVesselPassenger": "Passagerarfartyg",
@@ -457,8 +457,8 @@
     "lastUpdatedDuration": "Senaste uppdateringen av data {{ duration }} timmar sedan.",
     "print": "Skriva ut sidan",
     "filter": "Välj filter...",
-    "sortOldToNew": "[sv] Järjestä vanhimmasta uusimpaan",
-    "sortNewToOld": "[sv] Järjesta uusimmasta vanhimpaan"
+    "sortOldToNew": "Äldst först",
+    "sortNewToOld": "Nyaste först"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
