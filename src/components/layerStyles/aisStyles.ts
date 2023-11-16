@@ -38,6 +38,7 @@ function getSvgArrowHead(strokeColor: string) {
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
+/* Cache arrow head icons, to avoid generating the same svg multiple times */
 const arrowHeadIcons: Array<{ color: string; icon: Icon }> = [];
 
 function getArrowHeadIcon(strokeColor: string, rotation: number | undefined) {
@@ -60,6 +61,7 @@ function getArrowHeadIcon(strokeColor: string, rotation: number | undefined) {
   return ahi.icon;
 }
 
+/* Get vessel heading. If heading is missing uses cog. If heading and cog are missing returns undefined */
 function getVesselHeading(feature: Feature): number | undefined {
   const props = feature.getProperties() as AisFeatureProperties;
   if (props.heading && props.heading >= 0 && props.heading < 360) {
@@ -70,19 +72,29 @@ function getVesselHeading(feature: Feature): number | undefined {
   return undefined;
 }
 
-function getPointRotationAngle(point: Point, heading: number) {
+/* Translate point to heading direction distance meters */
+function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
   const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
   const turfPoint = turf.point(wgs84Point.getCoordinates());
-  const turfPoint2 = turf.transformTranslate(turfPoint, 1, heading);
+  // Transform given point 1km to headng direction
+  const turfPoint2 = turf.transformTranslate(turfPoint, distance / 1000, heading);
   const point2 = new Point(turfPoint2.geometry.coordinates);
   point2.transform('EPSG:4326', MAP.EPSG);
+  return point2;
+}
+
+/* Get rotation angle on the map (EPSG:4326) at given point base on the wgs84 heading */
+function getPointRotationAngle(point: Point, heading: number) {
+  const point2 = translatePoint(point, heading, 1000);
+  // calculate angle between tho points in map (EPSG:4326) coordinate system
   const coord1 = point.getCoordinates();
   const coord2 = point2.getCoordinates();
   const angle = Math.atan2(coord2[1] - coord1[1], coord2[0] - coord1[0]);
   return angle > Math.PI / 2 ? 2.5 * Math.PI - angle : 0.5 * Math.PI - angle;
 }
 
+/* Get vessel rotation on the map */
 function getRotation(feature: Feature): number | undefined {
   const heading = getVesselHeading(feature);
   const geom = feature.clone().getGeometry();
@@ -160,17 +172,6 @@ function aisRotToDegreesPerSecond(x: number) {
 }
 */
 
-/* Speed m/s, time s */
-function getPredictedPoint(start: Point, speed: number, cog: number, time: number): Point {
-  const geom = start.clone();
-  const wgs84StartPoint = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
-  const turfStartPoint = turf.point(wgs84StartPoint.getCoordinates());
-  const turfEndPoint = turf.transformTranslate(turfStartPoint, (speed * time) / 1000, cog);
-  const endPoint = new Point(turfEndPoint.geometry.coordinates);
-  endPoint.transform('EPSG:4326', MAP.EPSG);
-  return endPoint;
-}
-
 function getPathPredictorGeometry(feature: Feature, startFromBow: boolean) {
   const props = feature.getProperties() as AisFeatureProperties;
   const rotation = getRotation(feature);
@@ -178,6 +179,7 @@ function getPathPredictorGeometry(feature: Feature, startFromBow: boolean) {
   let point = feature.clone().getGeometry() as Point;
 
   if (startFromBow) {
+    /* Calculate vessel bow coordinates */
     const coordinates = point.getCoordinates();
     const x = coordinates[0];
     const y = coordinates[1];
@@ -185,7 +187,6 @@ function getPathPredictorGeometry(feature: Feature, startFromBow: boolean) {
     const dy1 = props.referencePointA ? props.referencePointA : 0;
     const dx2 = props.referencePointD ? props.referencePointD : 0;
 
-    /* Calculate vessel bow coordinates */
     const bowCoordinates = [x + dx1 + (dx2 - dx1) / 2, y + dy1];
     point = new Point(bowCoordinates);
     if (rotation !== undefined) {
@@ -195,14 +196,13 @@ function getPathPredictorGeometry(feature: Feature, startFromBow: boolean) {
 
   const pathCoords: Array<Coordinate> = [];
   pathCoords.push(point.getCoordinates());
-  const step = 10;
+  const step = 60;
   for (let i = 0; i < 360; i += step) {
-    const nextPoint = getPredictedPoint(point, speed, props.cog, step);
+    const nextPoint = translatePoint(point, props.cog, speed * step);
     pathCoords.push(nextPoint.getCoordinates());
     point = nextPoint;
   }
-  const path = new LineString(pathCoords);
-  return path;
+  return new LineString(pathCoords);
 }
 
 interface AisVesselStyleProps {
