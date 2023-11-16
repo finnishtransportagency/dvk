@@ -38,6 +38,28 @@ function getSvgArrowHead(strokeColor: string) {
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 
+const arrowHeadIcons: Array<{ color: string; icon: Icon }> = [];
+
+function getArrowHeadIcon(strokeColor: string, rotation: number | undefined) {
+  let ahi = arrowHeadIcons.find((ahi) => ahi.color === strokeColor);
+  if (!ahi) {
+    ahi = {
+      color: strokeColor,
+      icon: new Icon({
+        src: getSvgArrowHead(strokeColor),
+        width: 16,
+        height: 16,
+        rotateWithView: true,
+      }),
+    };
+    arrowHeadIcons.push(ahi);
+  }
+  if (rotation) {
+    ahi.icon.setRotation(rotation);
+  }
+  return ahi.icon;
+}
+
 function getVesselHeading(feature: Feature): number | undefined {
   const props = feature.getProperties() as AisFeatureProperties;
   if (props.heading && props.heading >= 0 && props.heading < 360) {
@@ -289,13 +311,7 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
 
     const pathPredictorArrowHeadStyle = new Style({
       geometry: new Point(predictorLineGeom.getLastCoordinate()),
-      image: new Icon({
-        src: getSvgArrowHead(styleProps.strokeColor),
-        width: 16,
-        height: 16,
-        rotation: getCogRotation(feature as Feature),
-        rotateWithView: true,
-      }),
+      image: getArrowHeadIcon(styleProps.strokeColor, getCogRotation(feature as Feature)),
       zIndex: -1,
     });
     styles.push(pathPredictorArrowHeadStyle);
