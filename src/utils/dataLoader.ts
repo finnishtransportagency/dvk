@@ -3,10 +3,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
 import {
   Status,
+  useFairwayCardPreviewQuery,
   useFindAllFairwayCardsQuery,
   useFindAllMarineWarningsQuery,
   useFindAllSafetyEquipmentFaultsQuery,
-  useGetFairwayCardPreviewQuery,
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
@@ -59,7 +59,7 @@ export function useFairwayCardListData() {
 }
 
 export function useFairwayCardPreviewData(id: string) {
-  return useGetFairwayCardPreviewQuery(datasourceClient, { id: id });
+  return useFairwayCardPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
 }
 
 export function useSafetyEquipmentFaultData() {
