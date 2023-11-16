@@ -1,5 +1,5 @@
 import { Fill, Icon, Style, Text } from 'ol/style';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from '../DvkMap';
 import speedLimitIcon from '../../../theme/img/rajoitus_pohja.svg';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
@@ -36,7 +36,7 @@ const labelStyle = new Style({
 
 export function getSpeedLimitStyle(feature: FeatureLike) {
   const speedLimit = feature.get('speedLimit');
-  labelStyle.getText().setText('' + speedLimit);
+  labelStyle.getText()?.setText('' + speedLimit);
 
   let fillColor = 'rgba(0,0,0,0)';
   if (speedLimit > 0 && speedLimit <= 5) {
@@ -53,7 +53,7 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
     fillColor = 'rgba(0,176,204,0.5)';
   }
 
-  fillStyle.getFill().setColor(fillColor);
+  fillStyle.getFill()?.setColor(fillColor);
 
   const dvkMap = getMap();
   const bbox = dvkMap.olMap?.getView().calculateExtent();
@@ -68,7 +68,7 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
       const flattened = turf.flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
-        const geom = format.readFeature(fg).getGeometry() as Polygon;
+        const geom = (format.readFeature(fg) as Feature<Geometry>).getGeometry() as Polygon;
         multiPolygon.appendPolygon(geom);
       }
       labelStyle.setGeometry(multiPolygon.getInteriorPoints());
