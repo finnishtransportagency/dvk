@@ -34,7 +34,7 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
       }),
     });
   } else {
-    lineStyle.getText().setText(Math.floor(width) + 'm');
+    lineStyle.getText()?.setText(Math.floor(width) + 'm');
   }
 
   const geometry = feature.getGeometry() as LineString;
@@ -56,7 +56,7 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
     });
   } else {
     startStyle.setGeometry(new Point(start));
-    startStyle.getImage().setRotation(Math.PI - rotation);
+    startStyle.getImage()?.setRotation(Math.PI - rotation);
   }
 
   if (!endStyle) {
@@ -71,7 +71,7 @@ export function getFairwayWidthStyle(feature: FeatureLike) {
     });
   } else {
     endStyle.setGeometry(new Point(end));
-    endStyle.getImage().setRotation(-rotation);
+    endStyle.getImage()?.setRotation(-rotation);
   }
 
   return [lineStyle, startStyle, endStyle];
