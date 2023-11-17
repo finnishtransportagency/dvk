@@ -5,7 +5,7 @@ import { AisFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { checkIfMoored, getAisVesselShipType, getCountryCode, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';

@@ -15,7 +15,7 @@ import {
 import { Trans, useTranslation } from 'react-i18next';
 import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../../graphql/generated';
 import { metresToNauticalMiles } from '../../utils/conversions';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import PrintIcon from '../../theme/img/print.svg?react';
 import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
 import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor, setSelectedQuay } from '../layers';
