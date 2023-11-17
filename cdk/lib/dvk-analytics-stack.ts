@@ -42,15 +42,9 @@ export class DvkAnalyticsStack extends Stack {
     const logBucketS3 = s3.Bucket.fromBucketName(this, 'DvkCloudFrontLogBucket', importedLogBucket);
 
     // Add permissions to download the cloudwatch accesslogs from S3 bucket
-    // TODO: "it's not possible to tell whether the bucket already has a policy attached, let alone to re-use that policy to add more statements to it"
-    // that means we have to change to direct methods ie. logBucket.grantRead etc
-    logBucketS3.addToResourcePolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:GetObject', 's3:ListBucket'],
-        resources: [logBucketS3.bucketArn, logBucketS3.arnForObjects('*')],
-        principals: [taskRole.grantPrincipal],
-      })
-    );
+    // "it's not possible to tell whether the bucket already has a policy attached, let alone to re-use that policy to add more statements to it"
+    // that means we have to change to direct grant
+    logBucketS3.grantRead(taskRole);
 
     taskRole.addToPolicy(
       new iam.PolicyStatement({
@@ -107,8 +101,7 @@ export class DvkAnalyticsStack extends Stack {
     });
 
     // Define the ECS service
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const fargateService = new ecs.FargateService(this, 'DvkFargateScheduled' + env, {
+    new ecs.FargateService(this, 'DvkFargateScheduled' + env, {
       cluster,
       taskDefinition,
       securityGroups: [ecsSecurityGroup],
@@ -117,18 +110,6 @@ export class DvkAnalyticsStack extends Stack {
 
     // TODO: using this or ecsPatterns.ScheduledFargateTask end up in error due to wrong type of subnets
     // but doing it manually from the console does not so it is used for now to finish the job
-
-    // // Define the rule for scheduling the Fargate task
-    // const rule = new events.Rule(this, 'DvkAnalyticsScheduledRule', {
-    //   schedule: events.Schedule.cron({ minute: '0', hour: '0' }), // Daily at midnight
-    // });
-
-    // rule.addTarget(
-    //   new targets.EcsTask({
-    //     cluster: cluster,
-    //     taskDefinition,
-    //   })
-    // );
   }
 
   private getVPCName(env: string): string {

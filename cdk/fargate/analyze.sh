@@ -34,7 +34,7 @@ else
     echo "Report ready"
 fi
 
-#TODO: Upload report to S3
+year_number=$(date +'%Y')
 month_number=$(date +'%m')
 #if environment variable REPORT_BUCKET exists
 if [ -z "$REPORT_BUCKET" ]; then
@@ -42,13 +42,13 @@ if [ -z "$REPORT_BUCKET" ]; then
     exit 0
 else
     echo "Uploading report to S3"
-    aws s3 cp report.html s3://$REPORT_BUCKET/reports/$month_number/
+    aws s3 cp report.html s3://$REPORT_BUCKET/reports/$year_number/$month_number/
     if [ $? -ne 0 ]; then
         echo "Error uploading report"
         exit 1
     else
         echo "Report uploaded"
-        echo "Report URL: https://$REPORT_BUCKET.s3.amazonaws.com/reports/$month_number/report.html"
+        echo "Report URL: https://$REPORT_BUCKET.s3.amazonaws.com/reports/$year_number/$month_number/report.html"
         exit 0
     fi
 fi
