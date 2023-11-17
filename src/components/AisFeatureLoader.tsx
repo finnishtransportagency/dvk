@@ -93,7 +93,7 @@ function useAisFeatures() {
     const locationData = locationQuery.data;
     if (vesselData && locationData) {
       const format = new GeoJSON();
-      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
       addVesselData(locationFeatures, vesselData);
       setAisFeatures(locationFeatures);
       setReady(true);

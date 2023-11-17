@@ -39,7 +39,7 @@ function useDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
@@ -139,7 +139,7 @@ export function useInitStaticDataLayer(
       const format = new GeoJSON();
       const source = layer.getSource() as VectorSource;
       source.clear();
-      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
       source.addFeatures(features);
       setDataUpdatedAt(Date.now());
       layer.set('dataUpdatedAt', Date.now());
@@ -282,8 +282,8 @@ export function useArea12Layer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('area12');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
@@ -293,7 +293,7 @@ export function useArea12Layer(): DvkLayerState {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string);
+            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -324,7 +324,7 @@ export function useArea3456Layer() {
       const layer = dvkMap.getFeatureLayer('area3456');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
         source.clear();
@@ -333,7 +333,7 @@ export function useArea3456Layer() {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string);
+            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -374,15 +374,15 @@ export function useSpeedLimitLayer(): DvkLayerState {
         if (window.Worker) {
           const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
           slWorker.onmessage = (e) => {
-            const features = format.readFeatures(e.data as string);
+            const features = format.readFeatures(e.data as string) as Feature<Geometry>[];
             const source = dvkMap.getVectorSource('speedlimit');
             source.clear();
             source.addFeatures(features);
           };
           slWorker.postMessage({ raData: JSON.stringify(raData), aData: JSON.stringify(aData) });
         } else {
-          const afs = format.readFeatures(aData);
-          const rafs = format.readFeatures(raData);
+          const afs = format.readFeatures(aData) as Feature<Geometry>[];
+          const rafs = format.readFeatures(raData) as Feature<Geometry>[];
           const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
           const source = dvkMap.getVectorSource('speedlimit');
           source.clear();
@@ -446,11 +446,11 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
           f.set('dataSource', 'safetyequipment', true);
         });
-        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();
         source.addFeatures(efs);
@@ -472,7 +472,7 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
           }
         }
         faultMap.forEach((faults, equipmentId) => {
-          const feature = source.getFeatureById(equipmentId);
+          const feature = source.getFeatureById(equipmentId) as Feature<Geometry>;
           if (feature) {
             faults.sort((a, b) => b.recordTime - a.recordTime);
             feature.set('faults', faults, true);

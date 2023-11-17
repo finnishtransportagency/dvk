@@ -220,11 +220,11 @@ function getRealSizeVesselStyle(feature: FeatureLike, selected: boolean, stylePr
   });
   /* Set opacity to anchored vessels */
   if (!movingNavStats.includes(props.navStat)) {
-    const color = vesselStyle.getFill().getColor();
+    const color = vesselStyle.getFill()?.getColor();
     if (color) {
       const colorArray = asArray(color as Color).slice();
       colorArray[3] = 0.5;
-      vesselStyle.getFill().setColor(colorArray);
+      vesselStyle.getFill()?.setColor(colorArray);
     }
   }
   return vesselStyle;
