@@ -72,6 +72,28 @@ export class DvkBuildImageStack extends Stack {
         input: sourceOutput,
       })
     );
+
+    const analyticsImageRepoName = 'dvk-analyticsimage';
+    new cdk.aws_ecr.Repository(this, 'AnalyticsBuildImageRepository', {
+      repositoryName: analyticsImageRepoName,
+      lifecycleRules: [
+        {
+          rulePriority: 1,
+          description: 'Remove untagged images over 30 days old',
+          maxImageAge: cdk.Duration.days(30),
+          tagStatus: TagStatus.UNTAGGED,
+        },
+      ],
+    });
+    const analyticsBuildProject = this.buildProject(account, analyticsImageRepoName, '1.0.1', 'cdk/fargate', 'AnalyticsImageBuild');
+    actions.push(
+      new cdk.aws_codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildAnalyticsImage',
+        project: analyticsBuildProject,
+        input: sourceOutput,
+      })
+    );
+
     pipeline.addStage({
       stageName: 'Build',
       actions,
