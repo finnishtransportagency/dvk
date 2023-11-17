@@ -1,11 +1,13 @@
 import { modulo } from 'ol/math';
 import { padNumber } from 'ol/string';
 
-export const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
+// See degreesToStringHDMS from openlayers /src/ol/coordinate.js for reference
+const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
   const normalizedDegrees = modulo(degrees + 180, 360) - 180;
   const x = Math.abs(3600 * normalizedDegrees);
-  const dflPrecision = opt_fractionDigits || 0;
+  const dflPrecision = opt_fractionDigits ?? 0;
   const precision = Math.pow(10, dflPrecision);
+
   let deg = Math.floor(x / 3600);
   let min = Math.floor((x - deg * 3600) / 60);
   let sec = x - deg * 3600 - min * 60;

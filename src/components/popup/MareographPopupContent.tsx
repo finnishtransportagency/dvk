@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { MareographFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';

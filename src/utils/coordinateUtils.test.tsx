@@ -1,4 +1,4 @@
-import { coordinatesToStringHDM } from './CoordinateUtils';
+import { coordinatesToStringHDM } from './coordinateUtils';
 
 test('if conversion from coordinates to HDM is correct', () => {
   expect(coordinatesToStringHDM(undefined)).toEqual('');
