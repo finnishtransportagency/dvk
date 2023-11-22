@@ -398,8 +398,8 @@
       "lastUpdated": "Latest observation",
       "lastLocation": "Latest location",
       "navState": "Navigation mode",
-      "speed": "[en] Nopeus",
-      "course": "[en] Suunta",
+      "speed": "Speed",
+      "course": "Course",
       "callSign": "Call sign",
       "dimensions": "Vessel's total length and width",
       "draught": "Draught",
@@ -455,7 +455,9 @@
     "skip-to-content": "Skip to main content",
     "opens-in-a-new-tab": "Opens in a new tab",
     "print": "Print page",
-    "filter": "Select filter..."
+    "filter": "Select filter...",
+    "sortOldToNew": "Oldest first",
+    "sortNewToOld": "Newest first"
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."

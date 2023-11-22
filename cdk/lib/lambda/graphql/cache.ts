@@ -1,18 +1,32 @@
 import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getEnvironment, getFeatureCacheDurationHours } from '../environment';
+import { getEnvironment } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
+const AIS_LOCATION_CACHE_DURATION = 10;
+const AIS_VESSEL_CACHE_DURATION = 1800;
+const FEATURE_CACHE_DURATION = 7200;
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
 
+export function getFeatureCacheDuration(key: string) {
+  if (key === 'aislocations') {
+    return AIS_LOCATION_CACHE_DURATION;
+  } else if (key === 'aisvessels') {
+    return AIS_VESSEL_CACHE_DURATION;
+  } else {
+    return FEATURE_CACHE_DURATION;
+  }
+}
+
 export async function cacheResponse(key: string, response: object | string) {
-  const cacheDurationHours = await getFeatureCacheDurationHours();
+  const cacheDurationSeconds = getFeatureCacheDuration(key);
   const expires = new Date();
-  expires.setTime(expires.getTime() + cacheDurationHours * 60 * 60 * 1000);
+  expires.setTime(expires.getTime() + cacheDurationSeconds * 1000);
   const command = new PutObjectCommand({
     Key: key,
     Bucket: getCacheBucketName(),

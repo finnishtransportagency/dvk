@@ -1,0 +1,8 @@
+cdk.out
+coverage
+graphql/generated.ts
+lib/lambda/auth/authFunction.js
+lib/lambda/router/adminRequestRouter.js
+lib/lambda/router/dvkRequestRouter.js
+lib/lambda/router/replaceFunction.js
+lib/lambda/router/squatRequestRouter.js

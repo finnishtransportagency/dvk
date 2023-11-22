@@ -12,7 +12,6 @@ beforeEach(() => {
 });
 
 jest.mock('../lib/lambda/environment', () => ({
-  getFeatureCacheDurationHours: () => 2,
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHarborTableName: () => 'Harbor-mock',

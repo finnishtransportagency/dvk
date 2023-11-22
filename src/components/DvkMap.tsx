@@ -18,7 +18,7 @@ import CenterToOwnLocationControl from './mapControls/CenterToOwnLocationControl
 import OpenSidebarMenuControl from './mapControls/OpenSidebarMenuControl';
 import MapDetailsControl from './mapControls/MapDetailsControl';
 import LayerPopupControl from './mapControls/LayerPopupControl';
-import { coordinatesToStringHDM } from '../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../utils/coordinateUtils';
 import 'ol/ol.css';
 import './DvkMap.css';
 import SearchbarControl from './mapControls/SearchbarControl';

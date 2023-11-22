@@ -120,7 +120,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [saveError, setSaveError] = useState<string>();
   const [savedCard, setSavedCard] = useState<FairwayCardByIdFragment | null>();
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: saveFairwayCard, isLoading: isLoadingMutation } = useSaveFairwayCardMutationQuery({
+  const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
@@ -375,7 +375,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     if (isRemove || (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1)) {
       if (
         (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && fairwayCard.status === Status.Draft && !isRemove)
+        (state.status === Status.Draft && oldState.status === Status.Draft && !isRemove)
       ) {
         if (isRemove) updateState(Status.Removed, 'status');
         saveCard(isRemove);

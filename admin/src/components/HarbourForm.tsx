@@ -79,7 +79,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
   const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
   const [isOpen, setIsOpen] = useState(false);
-  const { mutate: saveHarbourMutation, isLoading: isLoadingMutation } = useSaveHarborMutationQuery({
+  const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
       setSavedHarbour(data.saveHarbor);
       setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));

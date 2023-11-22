@@ -76,7 +76,7 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
     });
   } else {
     startStyle.setGeometry(new Point(start));
-    startStyle.getImage().setRotation(Math.PI - rotation);
+    startStyle.getImage()?.setRotation(Math.PI - rotation);
   }
   if (!endStyle) {
     endStyle = new Style({
@@ -90,7 +90,7 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
     });
   } else {
     endStyle.setGeometry(new Point(end));
-    endStyle.getImage().setRotation(-rotation);
+    endStyle.getImage()?.setRotation(-rotation);
   }
   return [lineDashStyle, lineStyle, startStyle, endStyle];
 }

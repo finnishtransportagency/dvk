@@ -33,7 +33,7 @@ export function getFairwayArea12Style(feature: FeatureLike, resolution: number) 
       }
     }
 
-    borderLineStyle.getStroke().setWidth(strokeWidth);
+    borderLineStyle.getStroke()?.setWidth(strokeWidth);
     return borderLineStyle;
   }
   return undefined;

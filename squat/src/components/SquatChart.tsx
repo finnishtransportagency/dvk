@@ -27,11 +27,11 @@ const SquatChart: React.FC = () => {
   const [barrass, setBarrass] = useState(Array<[number, number]>);
 
   useEffect(() => {
-    if (ref != null && ref.current != null) {
+    if (ref?.current) {
       setWidth(ref.current.clientWidth);
       if (window.ResizeObserver) {
         new ResizeObserver(() => {
-          if (ref != null && ref.current != null) {
+          if (ref?.current) {
             setWidth(ref.current.clientWidth);
           }
         }).observe(ref.current);

@@ -8,11 +8,12 @@ import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
+import { calculateVesselDimensions } from '../utils/aisUtils';
 
 type VesselData = {
   name: string;
   timestamp: number;
-  mmsi: string;
+  mmsi: number;
   callSign: string;
   imo: number;
   shipType: number;
@@ -45,6 +46,12 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
   for (const l of locationFeatures) {
     const vessel = vesselData.find((v) => v.mmsi === l.get('mmsi'));
     if (vessel) {
+      const vesselDimensions = calculateVesselDimensions(
+        vessel.referencePointA,
+        vessel.referencePointB,
+        vessel.referencePointC,
+        vessel.referencePointD
+      );
       l.setProperties({
         name: vessel.name,
         callSign: vessel.callSign,
@@ -58,6 +65,8 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
         referencePointC: vessel.referencePointC,
         referencePointD: vessel.referencePointD,
         destination: vessel.destination,
+        vesselLength: vesselDimensions[0],
+        vesselWidth: vesselDimensions[1],
       });
     }
   }
@@ -84,7 +93,7 @@ function useAisFeatures() {
     const locationData = locationQuery.data;
     if (vesselData && locationData) {
       const format = new GeoJSON();
-      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
       addVesselData(locationFeatures, vesselData);
       setAisFeatures(locationFeatures);
       setReady(true);

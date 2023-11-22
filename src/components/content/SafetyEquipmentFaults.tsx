@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
@@ -17,6 +17,8 @@ import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { useSafetyEquipmentLayer } from '../FeatureLoader';
 import { setSelectedSafetyEquipment } from '../layers';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -25,7 +27,7 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id);
+  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
@@ -57,7 +59,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId);
+        const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId) as Feature<Geometry>;
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
@@ -138,7 +140,7 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
-  const { data, isLoading, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+  const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
   const { state } = useDvkContext();
@@ -191,8 +193,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
           <strong>{t('faults.title')}</strong>
         </h2>
         <em>
-          {t('faults.modified')} {!isLoading && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
-          {(isLoading || isFetching) && (
+          {t('faults.modified')} {!isPending && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
+          {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}
               style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
@@ -201,7 +203,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         </em>
       </IonText>
 
-      {alertProps && !isLoading && !isFetching && (
+      {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
 
@@ -210,7 +212,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isLoading} data={data?.safetyEquipmentFaults || []} />
+        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} />
       </div>
     </>
   );
