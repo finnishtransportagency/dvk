@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, PictureGroup, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -32,6 +32,7 @@ import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
 import MapExportTool from './MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
+import { validateFairwayCardForm } from '../utils/formValidations';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -170,220 +171,37 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   );
 
   const formRef = useRef<HTMLFormElement>(null);
-  const handleSubmit = (isRemove = false) => {
-    let allValidations: ValidationType[] = [];
-    if (!isRemove) {
-      // Manual validations for required fields
-      let primaryIdErrorMsg = '';
-      if (state.operation === Operation.Create) {
-        if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-        if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
-      }
-      const manualValidations = [
-        { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
-        { id: 'primaryId', msg: primaryIdErrorMsg },
-        { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? t(ErrorMessageKeys?.required) : '' },
-        { id: 'group', msg: state.group.length < 1 ? t(ErrorMessageKeys?.required) : '' },
-        {
-          id: 'line',
-          msg:
-            (state.lineText?.fi.trim() || state.lineText?.sv.trim() || state.lineText?.en.trim()) &&
-            (!state.lineText?.fi.trim() || !state.lineText?.sv.trim() || !state.lineText?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'designSpeed',
-          msg:
-            (state.designSpeed?.fi.trim() || state.designSpeed?.sv.trim() || state.designSpeed?.en.trim()) &&
-            (!state.designSpeed?.fi.trim() || !state.designSpeed?.sv.trim() || !state.designSpeed?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'speedLimit',
-          msg:
-            (state.speedLimit?.fi.trim() || state.speedLimit?.sv.trim() || state.speedLimit?.en.trim()) &&
-            (!state.speedLimit?.fi.trim() || !state.speedLimit?.sv.trim() || !state.speedLimit?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'anchorage',
-          msg:
-            (state.anchorage?.fi.trim() || state.anchorage?.sv.trim() || state.anchorage?.en.trim()) &&
-            (!state.anchorage?.fi.trim() || !state.anchorage?.sv.trim() || !state.anchorage?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'navigationCondition',
-          msg:
-            (state.navigationCondition?.fi.trim() || state.navigationCondition?.sv.trim() || state.navigationCondition?.en.trim()) &&
-            (!state.navigationCondition?.fi.trim() || !state.navigationCondition?.sv.trim() || !state.navigationCondition?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'iceCondition',
-          msg:
-            (state.iceCondition?.fi.trim() || state.iceCondition?.sv.trim() || state.iceCondition?.en.trim()) &&
-            (!state.iceCondition?.fi.trim() || !state.iceCondition?.sv.trim() || !state.iceCondition?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'windRecommendation',
-          msg:
-            (state.windRecommendation?.fi.trim() || state.windRecommendation?.sv.trim() || state.windRecommendation?.en.trim()) &&
-            (!state.windRecommendation?.fi.trim() || !state.windRecommendation?.sv.trim() || !state.windRecommendation?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'vesselRecommendation',
-          msg:
-            (state.vesselRecommendation?.fi.trim() || state.vesselRecommendation?.sv.trim() || state.vesselRecommendation?.en.trim()) &&
-            (!state.vesselRecommendation?.fi.trim() || !state.vesselRecommendation?.sv.trim() || !state.vesselRecommendation?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'visibility',
-          msg:
-            (state.visibility?.fi.trim() || state.visibility?.sv.trim() || state.visibility?.en.trim()) &&
-            (!state.visibility?.fi.trim() || !state.visibility?.sv.trim() || !state.visibility?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'windGauge',
-          msg:
-            (state.windGauge?.fi.trim() || state.windGauge?.sv.trim() || state.windGauge?.en.trim()) &&
-            (!state.windGauge?.fi.trim() || !state.windGauge?.sv.trim() || !state.windGauge?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'seaLevel',
-          msg:
-            (state.seaLevel?.fi.trim() || state.seaLevel?.sv.trim() || state.seaLevel?.en.trim()) &&
-            (!state.seaLevel?.fi.trim() || !state.seaLevel?.sv.trim() || !state.seaLevel?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'pilotExtraInfo',
-          msg:
-            (state.trafficService?.pilot?.extraInfo?.fi.trim() ||
-              state.trafficService?.pilot?.extraInfo?.sv.trim() ||
-              state.trafficService?.pilot?.extraInfo?.en.trim()) &&
-            (!state.trafficService?.pilot?.extraInfo?.fi.trim() ||
-              !state.trafficService?.pilot?.extraInfo?.sv.trim() ||
-              !state.trafficService?.pilot?.extraInfo?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-      ];
-      const vtsNameErrors =
-        state.trafficService?.vts
-          ?.flatMap((vts, i) => (!vts?.name?.fi.trim() || !vts?.name?.sv.trim() || !vts?.name?.en.trim() ? i : null))
-          .filter((val) => Number.isInteger(val))
-          .map((vIndex) => {
-            return {
-              id: 'vtsName-' + vIndex,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
-      const vhfNameErrors =
-        state.trafficService?.vts
-          ?.map(
-            (vts) =>
-              vts?.vhf
-                ?.flatMap((vhf, j) =>
-                  (vhf?.name?.fi.trim() || vhf?.name?.sv.trim() || vhf?.name?.en.trim()) &&
-                  (!vhf?.name?.fi.trim() || !vhf?.name?.sv.trim() || !vhf?.name?.en.trim())
-                    ? j
-                    : null
-                )
-                .filter((val) => Number.isInteger(val))
-          )
-          .flatMap((vhfIndices, vtsIndex) => {
-            return (
-              vhfIndices?.map((vhfIndex) => {
-                return {
-                  id: 'vhfName-' + vtsIndex + '-' + vhfIndex,
-                  msg: t(ErrorMessageKeys?.required),
-                };
-              }) ?? []
-            );
-          }) ?? [];
-      const vhfChannelErrors =
-        state.trafficService?.vts
-          ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel.trim() ? j : null)).filter((val) => Number.isInteger(val)))
-          .flatMap((vhfIndices, vtsIndex) => {
-            return (
-              vhfIndices?.map((vhfIndex) => {
-                return {
-                  id: 'vhfChannel-' + vtsIndex + '-' + vhfIndex,
-                  msg: t(ErrorMessageKeys?.required),
-                };
-              }) ?? []
-            );
-          }) ?? [];
-      const tugNameErrors =
-        state.trafficService?.tugs
-          ?.flatMap((tug, i) => (!tug?.name?.fi.trim() || !tug?.name?.sv.trim() || !tug?.name?.en.trim() ? i : null))
-          .filter((val) => Number.isInteger(val))
-          .map((tIndex) => {
-            return {
-              id: 'tugName-' + tIndex,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
 
-      const groupedPicTexts: PictureGroup[] = [];
-      state.pictures?.map((pic) => {
-        if (pic.groupId && !groupedPicTexts.some((p) => p.groupId === pic.groupId)) {
-          const currentGroup = state.pictures?.filter((p) => p.groupId === pic.groupId);
-          groupedPicTexts.push({
-            groupId: pic.groupId,
-            text: {
-              fi: currentGroup?.find((p) => p.lang === 'fi')?.text ?? '',
-              sv: currentGroup?.find((p) => p.lang === 'sv')?.text ?? '',
-              en: currentGroup?.find((p) => p.lang === 'en')?.text ?? '',
-            },
-          });
-        }
-      });
-      const pictureTextErrors = groupedPicTexts
-        .filter(
-          (pic) =>
-            (pic.text.fi.trim() || pic.text.sv.trim() || pic.text.en.trim()) && (!pic.text.fi.trim() || !pic.text.sv.trim() || !pic.text.en.trim())
-        )
-        .map((picGroup) => {
-          return {
-            id: 'pictureText-' + picGroup.groupId,
-            msg: t(ErrorMessageKeys?.required),
-          };
-        });
-
-      allValidations = manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors);
-      setValidationErrors(allValidations);
+  const validateForm = (): ValidationType[] => {
+    let primaryIdErrorMsg = '';
+    const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
+    if (state.operation === Operation.Create) {
+      if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
+      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
+    const validationMessages = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
+    setValidationErrors(validationMessages);
+    return validationMessages;
+  };
 
-    if (isRemove || (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1)) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && oldState.status === Status.Draft && !isRemove)
-      ) {
-        if (isRemove) updateState(Status.Removed, 'status');
-        saveCard(isRemove);
-      } else {
-        setConfirmationType(isRemove ? 'remove' : 'save');
-      }
+  const handleSubmit = (isRemove = false) => {
+    if (isRemove) {
+      setConfirmationType('remove');
     } else {
-      setSaveError('MISSING-INFORMATION');
+      const validationMessages = validateForm();
+
+      if (formRef.current?.checkValidity() && validationMessages.filter((error) => error.msg.length > 0).length < 1) {
+        if (
+          (state.operation === Operation.Create && state.status === Status.Draft) ||
+          (state.status === Status.Draft && oldState.status === Status.Draft)
+        ) {
+          saveCard(false);
+        } else {
+          setConfirmationType('save');
+        }
+      } else {
+        setSaveError('MISSING-INFORMATION');
+      }
     }
   };
 
