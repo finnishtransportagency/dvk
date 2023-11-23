@@ -262,7 +262,7 @@ class DvkMap {
     source.setTileLoadFunction((tile: any, url: string) => {
       tile.setLoader(async (usedExtent: Array<number>, usedProjection: string) => {
         let response;
-        //seconds
+        //polling in seconds
         let pollInterval = 1;
         let valid = false;
         try {
@@ -270,11 +270,11 @@ class DvkMap {
           while (true) {
             response = await fetch(url);
             valid = !retryCodes.includes(response.status);
-            if (valid) {
+            if (valid || pollInterval === 4) {
               break;
             }
             this.setResponseState(dispatch, response.status, response.statusText);
-            await new Promise((resolve) => setTimeout(resolve, pollInterval >= 3600 ? 3600 * 1000 : (pollInterval *= 2) * 1000));
+            await new Promise((resolve) => setTimeout(resolve, (pollInterval *= 2) * 1000));
           }
           if (valid) {
             const data = await response.arrayBuffer();
