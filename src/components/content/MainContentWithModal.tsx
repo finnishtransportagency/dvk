@@ -71,7 +71,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
   const { state, dispatch } = useDvkContext();
-
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
@@ -258,6 +257,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
             <IonCol className="ion-margin-start ion-margin-end">
               <div className="dropdownWrapper">
                 <IonInput
+                  disabled={state.preview}
+                  aria-disabled={state.preview}
                   className="searchBar"
                   placeholder={t('search')}
                   title={t('searchTitle')}
@@ -270,6 +271,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
                   data-testid={modalContent === 'fairwayCardList' ? 'searchInput' : ''}
                 />
                 <button
+                  disabled={state.preview}
+                  aria-disabled={state.preview}
                   type="button"
                   className="input-clear-icon"
                   title={t('clearTitle')}
@@ -286,7 +289,15 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
               </div>
             </IonCol>
             <IonCol size="auto">
-              <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
+              <IonButton
+                disabled={state.preview}
+                aria-disabled={state.preview}
+                fill="clear"
+                className="closeButton"
+                title={t('closePane')}
+                aria-label={t('closePane')}
+                onClick={() => backToHome()}
+              >
                 <IonIcon className="otherIconLarge" src={closeIcon} />
               </IonButton>
             </IonCol>

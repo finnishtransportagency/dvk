@@ -509,3 +509,11 @@ ion-segment.tabs ion-label h3 {
 ion-modal.contentModal {
   touch-action: none;
 }
+
+#emphasizedPreviewText {
+  color: #EC0E0E;
+}
+
+.disabled {
+  opacity: 50%;
+}

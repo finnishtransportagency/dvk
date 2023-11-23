@@ -21,6 +21,7 @@ import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 import { isMobile } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
+import { useDvkContext } from '../hooks/dvkContext';
 
 interface FairwayCardPageProps {
   fairwayCardId?: string;
@@ -28,14 +29,25 @@ interface FairwayCardPageProps {
 
 interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;
+  preview: boolean;
 }
 
-const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModalContent }) => {
+const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModalContent, preview }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
   const { fairwayCardId } = useParams<FairwayCardPageProps>();
+  const { dispatch } = useDvkContext();
 
-  const { data } = useFairwayCardListData();
+  useEffect(() => {
+    dispatch({
+      type: 'setPreview',
+      payload: {
+        value: preview,
+      },
+    });
+  }, [dispatch, preview]);
+
+  const { data } = useFairwayCardListData(); //ota data muualta jos preview
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();

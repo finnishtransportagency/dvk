@@ -822,6 +822,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const [moveEnd, setMoveEnd] = useState(true);
   const [renderComplete, setRenderComplete] = useState(true);
   const [printDisabled, setPrintDisabled] = useState(true);
+  const { state } = useDvkContext();
   const lang = i18n.resolvedLanguage as Lang;
 
   const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
@@ -940,23 +941,33 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <IonRow>
               <IonCol>
                 <IonText className="fairwayTitle">
-                  <em>
-                    {t('modified')}{' '}
-                    {t('modifiedDate', {
-                      val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
-                    })}
-                    {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
-                  </em>
-                  <br />
-                  <em className="no-print">
-                    {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
-                    {(isPending || isFetching) && (
-                      <IonSkeletonText
-                        animated={true}
-                        style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
-                      />
-                    )}
-                  </em>
+                  {state.preview ? (
+                    <>
+                      <em id="emphasizedPreviewText">Väyläkortin esikatselu</em>
+                      <br />
+                      <em>-</em>
+                    </>
+                  ) : (
+                    <>
+                      <em>
+                        {t('modified')}{' '}
+                        {t('modifiedDate', {
+                          val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
+                        })}
+                        {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                      </em>
+                      <br />
+                      <em className="no-print">
+                        {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+                        {(isPending || isFetching) && (
+                          <IonSkeletonText
+                            animated={true}
+                            style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+                          />
+                        )}
+                      </em>
+                    </>
+                  )}
                 </IonText>
               </IonCol>
               <IonCol size="auto" className="ion-align-self-start">

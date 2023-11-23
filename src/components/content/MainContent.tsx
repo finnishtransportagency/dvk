@@ -20,6 +20,7 @@ import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import SquatCalculator from './SquatCalculator';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -30,6 +31,7 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
   const { data } = useFairwayCardListData();
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
@@ -212,7 +214,9 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                   <IonRow className="ion-align-items-center">
                     <IonCol size="auto">
                       <button
-                        className="icon"
+                        disabled={state.preview}
+                        aria-disabled={state.preview}
+                        className={state.preview ? 'icon disabled' : 'icon'}
                         data-testid={!fairwayCardId && !target ? 'menuController' : ''}
                         onClick={() => menuController.open()}
                         title={t('openMenu')}
@@ -224,6 +228,8 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     <IonCol className="ion-margin-start ion-margin-end">
                       <div className="dropdownWrapper">
                         <IonInput
+                          disabled={state.preview}
+                          aria-disabled={state.preview}
                           className="searchBar"
                           placeholder={t('search')}
                           title={t('searchTitle')}
@@ -265,6 +271,8 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     </IonCol>
                     <IonCol size="auto">
                       <IonButton
+                        disabled={state.preview}
+                        aria-disabled={state.preview}
                         ref={mainPageContentRef}
                         fill="clear"
                         className="closeButton"
@@ -279,7 +287,6 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                   </IonRow>
                 </IonGrid>
                 <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
-
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
