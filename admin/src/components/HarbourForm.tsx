@@ -137,14 +137,29 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   );
 
   const formRef = useRef<HTMLFormElement>(null);
+
+  function validateForm(): ValidationType[] {
+    let primaryIdErrorMsg = '';
+    const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
+    if (state.operation === Operation.Create) {
+      if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
+      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+    }
+    const validationMessages = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
+    setValidationErrors(validationMessages);
+    return validationMessages;
+  }
+
   const handleSubmit = (isRemove = false) => {
     // Check if harbour is linked to some fairway card
     queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
     const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
       (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
     );
+
     const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
     const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
+
     if ((linkedFairwayCards || []).length > 0) {
       if (isToBeRemoved || isToBeDrafted) {
         let translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length });
@@ -156,31 +171,22 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       }
     }
 
-    let allValidations: ValidationType[] = [];
-    if (!isToBeRemoved) {
-      // Manual validations for required fields
-      let primaryIdErrorMsg = '';
-      const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
-      if (state.operation === Operation.Create) {
-        if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-        if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
-      }
-      allValidations = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
-      setValidationErrors(allValidations);
-    }
-
-    if (isToBeRemoved || (formRef.current?.checkValidity() && allValidations.filter((error) => error.msg.length > 0).length < 1)) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && harbour.status === Status.Draft && !isRemove)
-      ) {
-        if (isToBeRemoved) updateState(Status.Removed, 'status');
-        saveHarbour(isToBeRemoved);
-      } else {
-        setConfirmationType(isToBeRemoved ? 'remove' : 'save');
-      }
+    if (isToBeRemoved) {
+      setConfirmationType('remove');
     } else {
-      setSaveError('MISSING-INFORMATION');
+      const validationMessages = validateForm();
+      if (formRef.current?.checkValidity() && validationMessages.filter((error) => error.msg.length > 0).length < 1) {
+        if (
+          (state.operation === Operation.Create && state.status === Status.Draft) ||
+          (state.status === Status.Draft && harbour.status === Status.Draft)
+        ) {
+          saveHarbour(false);
+        } else {
+          setConfirmationType('save');
+        }
+      } else {
+        setSaveError('MISSING-INFORMATION');
+      }
     }
   };
 
