@@ -1,6 +1,6 @@
 import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
 import { FairwayCard, QueryFairwayCardPreviewArgs, Status } from '../../../../graphql/generated';
-import { log } from '../../logger';
+import { auditLog as log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
 import { ADMIN_ROLE, getOptionalCurrentUser } from '../../api/login';
