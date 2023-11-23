@@ -1,18 +1,22 @@
-import { FairwayCardInput, HarborInput, TextInput } from '../graphql/generated';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
 
-function checkTranslations(input?: TextInput | null): boolean {
-  return !!(input?.fi.trim() || input?.sv.trim() || input?.en.trim()) && (!input?.fi.trim() || !input?.sv.trim() || !input?.en.trim());
+function requiredError(input?: TextInput | null): boolean {
+  return !input?.fi.trim() || !input?.sv.trim() || !input?.en.trim();
 }
 
-function validateInput(input?: TextInput | null, errorText?: string): string {
-  return checkTranslations(input) ? errorText ?? '' : '';
+function translationError(input?: TextInput | null): boolean {
+  return !!(input?.fi.trim() || input?.sv.trim() || input?.en.trim()) && requiredError(input);
+}
+
+function geometryError(input?: GeometryInput | null): boolean {
+  return !!(input?.lat.trim() || input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
   const vtsNameErrors =
     state.trafficService?.vts
-      ?.flatMap((vts, i) => (!vts?.name?.fi.trim() || !vts?.name?.sv.trim() || !vts?.name?.en.trim() ? i : null))
+      ?.flatMap((vts, i) => (requiredError(vts?.name) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
@@ -23,7 +27,7 @@ function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
 
   const vhfNameErrors =
     state.trafficService?.vts
-      ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (checkTranslations(vhf?.name) ? j : null)).filter((val) => Number.isInteger(val)))
+      ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (translationError(vhf?.name) ? j : null)).filter((val) => Number.isInteger(val)))
       .flatMap((vhfIndices, vtsIndex) => {
         return (
           vhfIndices?.map((vhfIndex) => {
@@ -51,7 +55,7 @@ function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
 
   const tugNameErrors =
     state.trafficService?.tugs
-      ?.flatMap((tug, i) => (!tug?.name?.fi.trim() || !tug?.name?.sv.trim() || !tug?.name?.en.trim() ? i : null))
+      ?.flatMap((tug, i) => (requiredError(tug?.name) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((tIndex) => {
         return {
@@ -78,7 +82,7 @@ function validatePictures(state: FairwayCardInput, requiredMsg: string) {
     }
   });
   const pictureTextErrors = groupedPicTexts
-    .filter((pic) => checkTranslations(pic.text))
+    .filter((pic) => translationError(pic.text))
     .map((picGroup) => {
       return {
         id: 'pictureText-' + picGroup.groupId,
@@ -90,57 +94,57 @@ function validatePictures(state: FairwayCardInput, requiredMsg: string) {
 
 export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
   const manualValidations = [
-    { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? requiredMsg : '' },
+    { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     { id: 'primaryId', msg: primaryIdErrorMsg },
     { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? requiredMsg : '' },
     { id: 'group', msg: state.group.length < 1 ? requiredMsg : '' },
     {
       id: 'line',
-      msg: validateInput(state.lineText, requiredMsg),
+      msg: translationError(state.lineText) ? requiredMsg : '',
     },
     {
       id: 'designSpeed',
-      msg: validateInput(state.designSpeed, requiredMsg),
+      msg: translationError(state.designSpeed) ? requiredMsg : '',
     },
     {
       id: 'speedLimit',
-      msg: validateInput(state.speedLimit, requiredMsg),
+      msg: translationError(state.speedLimit) ? requiredMsg : '',
     },
     {
       id: 'anchorage',
-      msg: validateInput(state.anchorage, requiredMsg),
+      msg: translationError(state.anchorage) ? requiredMsg : '',
     },
     {
       id: 'navigationCondition',
-      msg: validateInput(state.navigationCondition, requiredMsg),
+      msg: translationError(state.navigationCondition) ? requiredMsg : '',
     },
     {
       id: 'iceCondition',
-      msg: validateInput(state.iceCondition, requiredMsg),
+      msg: translationError(state.iceCondition) ? requiredMsg : '',
     },
     {
       id: 'windRecommendation',
-      msg: validateInput(state.windRecommendation, requiredMsg),
+      msg: translationError(state.windRecommendation) ? requiredMsg : '',
     },
     {
       id: 'vesselRecommendation',
-      msg: validateInput(state.vesselRecommendation, requiredMsg),
+      msg: translationError(state.vesselRecommendation) ? requiredMsg : '',
     },
     {
       id: 'visibility',
-      msg: validateInput(state.visibility, requiredMsg),
+      msg: translationError(state.visibility) ? requiredMsg : '',
     },
     {
       id: 'windGauge',
-      msg: validateInput(state.windGauge, requiredMsg),
+      msg: translationError(state.windGauge) ? requiredMsg : '',
     },
     {
       id: 'seaLevel',
-      msg: validateInput(state.seaLevel, requiredMsg),
+      msg: translationError(state.seaLevel) ? requiredMsg : '',
     },
     {
       id: 'pilotExtraInfo',
-      msg: validateInput(state.trafficService?.pilot?.extraInfo, requiredMsg),
+      msg: translationError(state.trafficService?.pilot?.extraInfo) ? requiredMsg : '',
     },
   ];
 
@@ -153,7 +157,7 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
 function validateQuay(state: HarborInput, requiredMsg: string) {
   const quayNameErrors =
     state.quays
-      ?.flatMap((quay, i) => (checkTranslations(quay?.name) ? i : null))
+      ?.flatMap((quay, i) => (translationError(quay?.name) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((qIndex) => {
         return {
@@ -163,7 +167,7 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
       }) ?? [];
   const quayExtraInfoErrors =
     state.quays
-      ?.flatMap((quay, i) => (checkTranslations(quay?.extraInfo) ? i : null))
+      ?.flatMap((quay, i) => (translationError(quay?.extraInfo) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((qIndex) => {
         return {
@@ -173,9 +177,7 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
       }) ?? [];
   const quayGeometryErrors =
     state.quays
-      ?.flatMap((quay, i) =>
-        (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim()) && (!quay?.geometry?.lat.trim() || !quay?.geometry?.lon.trim()) ? i : null
-      )
+      ?.flatMap((quay, i) => (geometryError(quay?.geometry) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((qIndex) => {
         return {
@@ -185,16 +187,7 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
       }) ?? [];
   const sectionGeometryErrors =
     state.quays
-      ?.map(
-        (quay) =>
-          quay?.sections
-            ?.flatMap((section, j) =>
-              (section?.geometry?.lat.trim() || section?.geometry?.lon.trim()) && (!section?.geometry?.lat.trim() || !section?.geometry?.lon.trim())
-                ? j
-                : null
-            )
-            .filter((val) => Number.isInteger(val))
-      )
+      ?.map((quay) => quay?.sections?.flatMap((section, j) => (geometryError(section?.geometry) ? j : null)).filter((val) => Number.isInteger(val)))
       .flatMap((sIndices, qIndex) => {
         return (
           sIndices?.map((sIndex) => {
@@ -210,22 +203,22 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
 
 export function validateHarbourForm(state: HarborInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
   const manualValidations = [
-    { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? requiredMsg : '' },
+    { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     {
       id: 'extraInfo',
-      msg: validateInput(state.extraInfo),
+      msg: translationError(state.extraInfo) ? requiredMsg : '',
     },
     {
       id: 'cargo',
-      msg: validateInput(state.cargo),
+      msg: translationError(state.cargo) ? requiredMsg : '',
     },
     {
       id: 'harbourBasin',
-      msg: validateInput(state.harborBasin),
+      msg: translationError(state.harborBasin) ? requiredMsg : '',
     },
     {
       id: 'companyName',
-      msg: validateInput(state.company),
+      msg: translationError(state.company) ? requiredMsg : '',
     },
     { id: 'primaryId', msg: primaryIdErrorMsg },
     { id: 'lat', msg: !state.geometry.lat ? requiredMsg : '' },
