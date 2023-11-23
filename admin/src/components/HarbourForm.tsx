@@ -15,6 +15,7 @@ import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
 import { mapToHarborInput } from '../utils/dataMapper';
+import { validateHarbourForm } from '../utils/formValidations';
 
 interface FormProps {
   harbour: HarborInput;
@@ -159,114 +160,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     if (!isToBeRemoved) {
       // Manual validations for required fields
       let primaryIdErrorMsg = '';
+      const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
       if (state.operation === Operation.Create) {
         if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
         if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
       }
-      const manualValidations = [
-        { id: 'name', msg: !state.name.fi.trim() || !state.name.sv.trim() || !state.name.en.trim() ? t(ErrorMessageKeys?.required) : '' },
-        {
-          id: 'extraInfo',
-          msg:
-            (state.extraInfo?.fi.trim() || state.extraInfo?.sv.trim() || state.extraInfo?.en.trim()) &&
-            (!state.extraInfo?.fi.trim() || !state.extraInfo?.sv.trim() || !state.extraInfo?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'cargo',
-          msg:
-            (state.cargo?.fi.trim() || state.cargo?.sv.trim() || state.cargo?.en.trim()) &&
-            (!state.cargo?.fi.trim() || !state.cargo?.sv.trim() || !state.cargo?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'harbourBasin',
-          msg:
-            (state.harborBasin?.fi.trim() || state.harborBasin?.sv.trim() || state.harborBasin?.en.trim()) &&
-            (!state.harborBasin?.fi.trim() || !state.harborBasin?.sv.trim() || !state.harborBasin?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        {
-          id: 'companyName',
-          msg:
-            (state.company?.fi.trim() || state.company?.sv.trim() || state.company?.en.trim()) &&
-            (!state.company?.fi.trim() || !state.company?.sv.trim() || !state.company?.en.trim())
-              ? t(ErrorMessageKeys?.required)
-              : '',
-        },
-        { id: 'primaryId', msg: primaryIdErrorMsg },
-        { id: 'lat', msg: !state.geometry.lat ? t(ErrorMessageKeys?.required) : '' },
-        { id: 'lon', msg: !state.geometry.lon ? t(ErrorMessageKeys?.required) : '' },
-      ];
-      const quayNameErrors =
-        state.quays
-          ?.flatMap((quay, i) =>
-            (quay?.name?.fi.trim() || quay?.name?.sv.trim() || quay?.name?.en.trim()) &&
-            (!quay?.name?.fi.trim() || !quay?.name?.sv.trim() || !quay?.name?.en.trim())
-              ? i
-              : null
-          )
-          .filter((val) => Number.isInteger(val))
-          .map((qIndex) => {
-            return {
-              id: 'quayName-' + qIndex,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
-      const quayExtraInfoErrors =
-        state.quays
-          ?.flatMap((quay, i) =>
-            (quay?.extraInfo?.fi.trim() || quay?.extraInfo?.sv.trim() || quay?.extraInfo?.en.trim()) &&
-            (!quay?.extraInfo?.fi.trim() || !quay?.extraInfo?.sv.trim() || !quay?.extraInfo?.en.trim())
-              ? i
-              : null
-          )
-          .filter((val) => Number.isInteger(val))
-          .map((qIndex) => {
-            return {
-              id: 'quayExtraInfo-' + qIndex,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
-      const quayGeometryErrors =
-        state.quays
-          ?.flatMap((quay, i) =>
-            (quay?.geometry?.lat.trim() || quay?.geometry?.lon.trim()) && (!quay?.geometry?.lat.trim() || !quay?.geometry?.lon.trim()) ? i : null
-          )
-          .filter((val) => Number.isInteger(val))
-          .map((qIndex) => {
-            return {
-              id: 'quayGeometry-' + qIndex,
-              msg: t(ErrorMessageKeys?.required),
-            };
-          }) ?? [];
-      const sectionGeometryErrors =
-        state.quays
-          ?.map(
-            (quay) =>
-              quay?.sections
-                ?.flatMap((section, j) =>
-                  (section?.geometry?.lat.trim() || section?.geometry?.lon.trim()) &&
-                  (!section?.geometry?.lat.trim() || !section?.geometry?.lon.trim())
-                    ? j
-                    : null
-                )
-                .filter((val) => Number.isInteger(val))
-          )
-          .flatMap((sIndices, qIndex) => {
-            return (
-              sIndices?.map((sIndex) => {
-                return {
-                  id: 'sectionGeometry-' + qIndex + '-' + sIndex,
-                  msg: t(ErrorMessageKeys?.required),
-                };
-              }) ?? []
-            );
-          }) ?? [];
-      allValidations = manualValidations.concat(quayNameErrors).concat(quayExtraInfoErrors).concat(quayGeometryErrors).concat(sectionGeometryErrors);
+      allValidations = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
       setValidationErrors(allValidations);
     }
 
