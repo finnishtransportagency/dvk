@@ -139,3 +139,143 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
   "windRecommendation": undefined,
 }
 `;
+
+exports[`should get draft card from the DynamoDB 1`] = `
+{
+  "anchorage": undefined,
+  "attention": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test2",
+  "designSpeed": undefined,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": false,
+    },
+  ],
+  "generalInfo": undefined,
+  "group": undefined,
+  "harbors": undefined,
+  "iceCondition": undefined,
+  "id": "test",
+  "lineText": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "Testen2",
+    "fi": "Testfi2",
+    "sv": "Testsv2",
+  },
+  "navigationCondition": undefined,
+  "pictures": undefined,
+  "seaLevel": undefined,
+  "speedLimit": undefined,
+  "status": "DRAFT",
+  "trafficService": {
+    "pilot": {
+      "email": undefined,
+      "extraInfo": undefined,
+      "fax": undefined,
+      "internet": undefined,
+      "phoneNumber": undefined,
+      "places": [
+        {
+          "geometry": {
+            "coordinates": [
+              28.17,
+              61.52283,
+            ],
+            "type": "Point",
+          },
+          "id": 3458100305,
+          "name": {
+            "en": "Puumala",
+            "fi": "Puumala",
+            "sv": "Puumala",
+          },
+          "pilotJourney": undefined,
+        },
+      ],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "vesselRecommendation": undefined,
+  "visibility": undefined,
+  "windGauge": undefined,
+  "windRecommendation": undefined,
+}
+`;
+
+exports[`should get public card from the DynamoDB 1`] = `
+{
+  "anchorage": undefined,
+  "attention": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "designSpeed": undefined,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": false,
+    },
+  ],
+  "generalInfo": undefined,
+  "group": undefined,
+  "harbors": undefined,
+  "iceCondition": undefined,
+  "id": "test",
+  "lineText": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "Testen",
+    "fi": "Testfi",
+    "sv": "Testsv",
+  },
+  "navigationCondition": undefined,
+  "pictures": undefined,
+  "seaLevel": undefined,
+  "speedLimit": undefined,
+  "status": "PUBLIC",
+  "trafficService": {
+    "pilot": {
+      "email": undefined,
+      "extraInfo": undefined,
+      "fax": undefined,
+      "internet": undefined,
+      "phoneNumber": undefined,
+      "places": [
+        {
+          "geometry": {
+            "coordinates": [
+              26.42267,
+              60.23833,
+            ],
+            "type": "Point",
+          },
+          "id": 681017200,
+          "name": {
+            "en": "Orrengrund",
+            "fi": "Orrengrund",
+            "sv": "Orrengrund",
+          },
+          "pilotJourney": undefined,
+        },
+      ],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "vesselRecommendation": undefined,
+  "visibility": undefined,
+  "windGauge": undefined,
+  "windRecommendation": undefined,
+}
+`;

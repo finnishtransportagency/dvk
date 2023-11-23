@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
-import { Status, useFindAllFairwayCardsQuery, useFindAllMarineWarningsQuery, useFindAllSafetyEquipmentFaultsQuery } from '../graphql/generated';
+import {
+  Status,
+  useFairwayCardPreviewQuery,
+  useFindAllFairwayCardsQuery,
+  useFindAllMarineWarningsQuery,
+  useFindAllSafetyEquipmentFaultsQuery,
+} from '../graphql/generated';
 import { useEffect } from 'react';
 
 export function useFeatureData(
@@ -50,6 +56,10 @@ const datasourceClient = {
 
 export function useFairwayCardListData() {
   return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] });
+}
+
+export function useFairwayCardPreviewData(id: string) {
+  return useFairwayCardPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
 }
 
 export function useSafetyEquipmentFaultData() {
