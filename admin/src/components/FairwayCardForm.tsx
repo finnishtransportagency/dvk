@@ -172,36 +172,32 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  const validateForm = (): ValidationType[] => {
+  const formValid = (): boolean => {
     let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     if (state.operation === Operation.Create) {
       if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validationMessages = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
-    setValidationErrors(validationMessages);
-    return validationMessages;
+    const validations = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
+    setValidationErrors(validations);
+    return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
   const handleSubmit = (isRemove = false) => {
     if (isRemove) {
       setConfirmationType('remove');
-    } else {
-      const validationMessages = validateForm();
-
-      if (formRef.current?.checkValidity() && validationMessages.filter((error) => error.msg.length > 0).length < 1) {
-        if (
-          (state.operation === Operation.Create && state.status === Status.Draft) ||
-          (state.status === Status.Draft && oldState.status === Status.Draft)
-        ) {
-          saveCard(false);
-        } else {
-          setConfirmationType('save');
-        }
+    } else if (formValid()) {
+      if (
+        (state.operation === Operation.Create && state.status === Status.Draft) ||
+        (state.status === Status.Draft && oldState.status === Status.Draft)
+      ) {
+        saveCard(false);
       } else {
-        setSaveError('MISSING-INFORMATION');
+        setConfirmationType('save');
       }
+    } else {
+      setSaveError('MISSING-INFORMATION');
     }
   };
 

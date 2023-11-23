@@ -138,27 +138,22 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
   const formRef = useRef<HTMLFormElement>(null);
 
-  function validateForm(): ValidationType[] {
+  const formValid = (): boolean => {
     let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     if (state.operation === Operation.Create) {
       if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required);
+      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validationMessages = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
-    setValidationErrors(validationMessages);
-    return validationMessages;
-  }
+    const validations = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
+    setValidationErrors(validations);
+    return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
+  };
 
-  const handleSubmit = (isRemove = false) => {
-    // Check if harbour is linked to some fairway card
-    queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
+  const checkLinkedFairways = (isToBeRemoved: boolean, isToBeDrafted: boolean) => {
     const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
       (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
     );
-
-    const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
-    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
 
     if ((linkedFairwayCards || []).length > 0) {
       if (isToBeRemoved || isToBeDrafted) {
@@ -170,23 +165,28 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         return;
       }
     }
+  };
+
+  const handleSubmit = (isRemove = false) => {
+    queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
+
+    const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
+    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
+    checkLinkedFairways(isToBeRemoved, isToBeDrafted);
 
     if (isToBeRemoved) {
       setConfirmationType('remove');
-    } else {
-      const validationMessages = validateForm();
-      if (formRef.current?.checkValidity() && validationMessages.filter((error) => error.msg.length > 0).length < 1) {
-        if (
-          (state.operation === Operation.Create && state.status === Status.Draft) ||
-          (state.status === Status.Draft && harbour.status === Status.Draft)
-        ) {
-          saveHarbour(false);
-        } else {
-          setConfirmationType('save');
-        }
+    } else if (formValid()) {
+      if (
+        (state.operation === Operation.Create && state.status === Status.Draft) ||
+        (state.status === Status.Draft && harbour.status === Status.Draft)
+      ) {
+        saveHarbour(false);
       } else {
-        setSaveError('MISSING-INFORMATION');
+        setConfirmationType('save');
       }
+    } else {
+      setSaveError('MISSING-INFORMATION');
     }
   };
 
