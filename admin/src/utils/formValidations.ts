@@ -2,15 +2,15 @@ import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../grap
 import { PictureGroup, ValidationType } from './constants';
 
 function requiredError(input?: TextInput | null): boolean {
-  return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
+  return !input?.fi.trim() || !input?.sv.trim() || !input?.en.trim();
 }
 
 function translationError(input?: TextInput | null): boolean {
-  return !!(input?.fi?.trim() ?? input?.sv?.trim() ?? input?.en?.trim()) && requiredError(input);
+  return (!!input?.fi.trim() || !!input?.sv.trim() || !!input?.en.trim()) && requiredError(input);
 }
 
 function geometryError(input?: GeometryInput | null): boolean {
-  return !!(input?.lat?.trim() ?? input?.lon?.trim()) && (!input?.lat?.trim() || !input.lon?.trim());
+  return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
@@ -41,7 +41,7 @@ function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
 
   const vhfChannelErrors =
     state.trafficService?.vts
-      ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel?.trim() ? j : null)).filter((val) => Number.isInteger(val)))
+      ?.map((vts) => vts?.vhf?.flatMap((vhf, j) => (!vhf?.channel.trim() ? j : null)).filter((val) => Number.isInteger(val)))
       .flatMap((vhfIndices, vtsIndex) => {
         return (
           vhfIndices?.map((vhfIndex) => {
@@ -226,5 +226,5 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
   ];
 
   const { quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
-  return manualValidations.concat(quayNameErrors).concat(quayExtraInfoErrors).concat(quayGeometryErrors).concat(sectionGeometryErrors);
+  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors);
 }
