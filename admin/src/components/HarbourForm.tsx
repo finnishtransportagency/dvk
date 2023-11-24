@@ -4,9 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
-import TextInput from './form/TextInput';
 import SelectInput from './form/SelectInput';
-import TextInputRow from './form/TextInputRow';
 import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
@@ -16,6 +14,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
 import { mapToHarborInput } from '../utils/dataMapper';
 import { validateHarbourForm } from '../utils/formValidations';
+import HarbourSection from './form/harbour/HarbourSection';
+import ContactInfoSection from './form/harbour/ContactInfoSection';
+import MainSection from './form/harbour/MainSection';
 
 interface FormProps {
   harbour: HarborInput;
@@ -27,19 +28,40 @@ interface FormProps {
 const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
-  const { data: fairwayCardList } = useFairwayCardsQueryData();
-  const queryClient = useQueryClient();
+  const history = useHistory();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [state, setState] = useState<HarborInput>(harbour);
+  const [oldState, setOldState] = useState<HarborInput>(harbour);
+  const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
+  const [saveError, setSaveError] = useState<string>();
+  const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
+  const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
+  const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
+
+  const queryClient = useQueryClient();
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: fairwayCardList } = useFairwayCardsQueryData();
+  const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
+    onSuccess(data) {
+      setSavedHarbour(data.saveHarbor);
+      setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
+      setNotificationOpen(true);
+    },
+    onError: (error: Error) => {
+      setSaveError(error.message);
+      setNotificationOpen(true);
+    },
+  });
+
   const statusOptions = [
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
   ];
   if (state.operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
-  const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const reservedHarbourIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Harbor)
     .flatMap((item) => item.id);
@@ -56,15 +78,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     );
   };
 
-  // Confirmation modal
-  const [confirmationType, setConfirmationType] = useState<ConfirmationType>('');
-
-  const history = useHistory();
   const backToList = () => {
     history.push({ pathname: '/' });
   };
 
-  const [oldState, setOldState] = useState<HarborInput>(harbour);
   const handleCancel = () => {
     const diffObj = diff(oldState, state);
     if (JSON.stringify(diffObj) === '{}') {
@@ -73,29 +90,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       setConfirmationType('cancel');
     }
   };
-
-  // Save harbour
-  const [saveError, setSaveError] = useState<string>();
-  const [saveErrorMsg, setSaveErrorMsg] = useState<string>();
-  const [saveErrorItems, setSaveErrorItems] = useState<string[]>();
-  const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
-  const [isOpen, setIsOpen] = useState(false);
-  const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
-    onSuccess(data) {
-      setSavedHarbour(data.saveHarbor);
-      setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
-      setIsOpen(true);
-    },
-    onError: (error: Error) => {
-      setSaveError(error.message);
-      setIsOpen(true);
-    },
-  });
-
-  useEffect(() => {
-    setState(harbour);
-    setOldState(harbour);
-  }, [harbour]);
 
   const saveHarbour = useCallback(
     (isRemove?: boolean) => {
@@ -135,8 +129,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     },
     [state, oldState, saveHarbourMutation]
   );
-
-  const formRef = useRef<HTMLFormElement>(null);
 
   const formValid = (): boolean => {
     let primaryIdErrorMsg = '';
@@ -199,7 +191,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     setSaveError('');
     setSaveErrorMsg('');
     setSaveErrorItems([]);
-    setIsOpen(false);
+    setNotificationOpen(false);
     if (!saveError && !!savedHarbour) {
       if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
     }
@@ -209,6 +201,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     if (saveError === 'OPERATION-BLOCKED') return '';
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
+
+  useEffect(() => {
+    setState(harbour);
+    setOldState(harbour);
+  }, [harbour]);
 
   return (
     <IonPage>
@@ -221,7 +218,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
       <NotificationModal
-        isOpen={!!saveError || isOpen}
+        isOpen={!!saveError || notificationOpen}
         closeAction={closeNotification}
         header={getNotificationTitle()}
         subHeader={
@@ -292,168 +289,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
         {!isError && (
           <form ref={formRef}>
-            <IonGrid className="formGrid">
-              <IonRow>
-                <IonCol sizeMd="3">
-                  <TextInput
-                    label={t('harbour.primary-id')}
-                    val={state.id}
-                    setValue={updateState}
-                    actionType="primaryId"
-                    name="primaryId"
-                    required
-                    disabled={state.operation === Operation.Update}
-                    error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
-                    helperText={t('harbour.primary-id-help-text')}
-                  />
-                </IonCol>
-                <IonCol sizeMd="3">
-                  <SelectInput
-                    label={t('general.item-referencelevel')}
-                    selected={state.n2000HeightSystem}
-                    options={[
-                      { name: { fi: 'MW' }, id: false },
-                      { name: { fi: 'N2000' }, id: true },
-                    ]}
-                    setSelected={updateState}
-                    actionType="referenceLevel"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-                <IonCol sizeMd="6"></IonCol>
-              </IonRow>
-            </IonGrid>
-            <IonText>
-              <h2>{t('harbour.harbour-info')}</h2>
-            </IonText>
-            <IonGrid className="formGrid">
-              <TextInputRow
-                labelKey="harbour.name"
-                value={state.name}
-                name="harbourName"
-                updateState={updateState}
-                actionType="name"
-                required
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'name')?.msg}
-              />
-              <TextInputRow
-                labelKey="harbour.extra-info"
-                value={state.extraInfo}
-                updateState={updateState}
-                actionType="extraInfo"
-                required={!!state.extraInfo?.fi || !!state.extraInfo?.sv || !!state.extraInfo?.en}
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
-                inputType="textarea"
-              />
-              <TextInputRow
-                labelKey="harbour.cargo"
-                value={state.cargo}
-                updateState={updateState}
-                actionType="cargo"
-                required={!!state.cargo?.fi || !!state.cargo?.sv || !!state.cargo?.en}
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'cargo')?.msg}
-                inputType="textarea"
-              />
-              <TextInputRow
-                labelKey="harbour.harbour-basin"
-                value={state.harborBasin}
-                updateState={updateState}
-                actionType="harbourBasin"
-                required={!!state.harborBasin?.fi || !!state.harborBasin?.sv || !!state.harborBasin?.en}
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
-                inputType="textarea"
-              />
-            </IonGrid>
-            <IonText>
-              <h3>{t('harbour.contact-info')}</h3>
-            </IonText>
-            <IonGrid className="formGrid">
-              <TextInputRow
-                labelKey="harbour.company-name"
-                value={state.company}
-                updateState={updateState}
-                actionType="companyName"
-                required={!!state.company?.fi || !!state.company?.sv || !!state.company?.en}
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'companyName')?.msg}
-              />
-              <IonRow>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('general.email')}
-                    val={state.email ?? ''}
-                    setValue={updateState}
-                    actionType="email"
-                    inputType="email"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('general.phone-number')}
-                    val={state.phoneNumber?.join(',')}
-                    setValue={updateState}
-                    actionType="phoneNumber"
-                    helperText={t('general.use-comma-separated-values')}
-                    inputType="tel"
-                    multiple
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('general.fax')}
-                    val={state.fax ?? ''}
-                    setValue={updateState}
-                    actionType="fax"
-                    inputType="tel"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('harbour.internet')}
-                    val={state.internet ?? ''}
-                    setValue={updateState}
-                    actionType="internet"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('harbour.lat')}
-                    name="lat"
-                    val={state.geometry.lat ?? ''}
-                    setValue={updateState}
-                    actionType="lat"
-                    required
-                    error={validationErrors.find((error) => error.id === 'lat')?.msg}
-                    inputType="latitude"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-                <IonCol sizeMd="4">
-                  <TextInput
-                    label={t('harbour.lon')}
-                    name="lon"
-                    val={state.geometry.lon ?? ''}
-                    setValue={updateState}
-                    actionType="lon"
-                    required
-                    error={validationErrors.find((error) => error.id === 'lon')?.msg}
-                    inputType="longitude"
-                    disabled={state.status === Status.Removed}
-                  />
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-
+            <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
+            <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
+            <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <Section
               title={t('harbour.quay-heading')}
               sections={state.quays as QuayInput[]}

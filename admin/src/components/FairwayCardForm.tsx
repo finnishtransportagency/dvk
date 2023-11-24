@@ -39,13 +39,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const history = useHistory();
   const formRef = useRef<HTMLFormElement>(null);
 
-  const [oldState, setOldState] = useState<FairwayCardInput>(fairwayCard);
   const [state, setState] = useState<FairwayCardInput>(fairwayCard);
+  const [oldState, setOldState] = useState<FairwayCardInput>(fairwayCard);
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
   const [innerValidationErrors, setInnerValidationErrors] = useState<ValidationType[]>([]);
   const [saveError, setSaveError] = useState<string>();
   const [savedCard, setSavedCard] = useState<FairwayCardByIdFragment | null>();
-  const [isOpen, setIsOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
@@ -56,11 +56,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
-      setIsOpen(true);
+      setNotificationOpen(true);
     },
     onError: (error: Error) => {
       setSaveError(error.message);
-      setIsOpen(true);
+      setNotificationOpen(true);
     },
   });
 
@@ -194,7 +194,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const closeNotification = () => {
     setSaveError('');
-    setIsOpen(false);
+    setNotificationOpen(false);
     if (!saveError && !!savedCard && state.operation === Operation.Create) {
       history.push({ pathname: '/vaylakortti/' + savedCard.id });
     }
@@ -217,7 +217,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
       <NotificationModal
-        isOpen={!!saveError || isOpen}
+        isOpen={!!saveError || notificationOpen}
         closeAction={closeNotification}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
         subHeader={
