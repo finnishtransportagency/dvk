@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, FairwayCardByIdFragment, FairwayCardInput, Operation, Status, TugInput, VtsInput } from '../graphql/generated';
@@ -10,7 +10,6 @@ import {
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
 } from '../graphql/api';
-import SelectInput from './form/SelectInput';
 import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
@@ -25,6 +24,7 @@ import FairwaySection from './form/fairwayCard/FairwaySection';
 import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
+import Header from './form/Header';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -67,12 +67,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem && item.status === Status.Public);
-
-  const statusOptions = [
-    { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
-    { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-  ];
-  if (state.operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Card)
@@ -227,59 +221,19 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
       />
-      <IonHeader className="ion-no-border" id="mainPageContent">
-        {isLoadingMutation && <IonProgressBar type="indeterminate" />}
-        <IonGrid className="optionBar">
-          <IonRow className="ion-align-items-end">
-            <IonCol className="align-right">
-              <IonGrid>
-                <IonRow className="ion-align-items-center">
-                  <IonCol>
-                    <IonText>
-                      <em>
-                        {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
-                        <br />
-                        {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
-                        {savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
-                      </em>
-                    </IonText>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonCol>
-            <IonCol size="auto">
-              <SelectInput
-                label={t('general.item-status')}
-                selected={state.status}
-                options={statusOptions}
-                setSelected={updateState}
-                actionType="status"
-                disabled={isLoading}
-              />
-            </IonCol>
-            <IonCol size="auto">
-              <IonButton shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
-                {t('general.cancel')}
-              </IonButton>
-              {state.operation === Operation.Update && oldState.status !== Status.Removed && (
-                <IonButton
-                  shape="round"
-                  color="danger"
-                  disabled={isError ?? isLoading}
-                  onClick={() => {
-                    handleSubmit(true);
-                  }}
-                >
-                  {t('general.delete')}
-                </IonButton>
-              )}
-              <IonButton shape="round" disabled={isError ?? isLoading} onClick={() => handleSubmit(state.status === Status.Removed)}>
-                {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonHeader>
+      <Header
+        operation={state.operation}
+        status={state.status}
+        oldStatus={oldState.status}
+        isLoading={isLoading}
+        isLoadingMutation={isLoadingMutation}
+        updateState={updateState}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        modifiedInfo={getModifiedInfo()}
+        modifierInfo={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
+        isError={isError}
+      />
 
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}

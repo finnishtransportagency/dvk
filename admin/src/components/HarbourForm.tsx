@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonButton, IonCol, IonContent, IonGrid, IonHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
-import SelectInput from './form/SelectInput';
 import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
@@ -17,6 +16,7 @@ import { validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
+import Header from './form/Header';
 
 interface FormProps {
   harbour: HarborInput;
@@ -55,12 +55,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       setNotificationOpen(true);
     },
   });
-
-  const statusOptions = [
-    { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
-    { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-  ];
-  if (state.operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const reservedHarbourIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Harbor)
@@ -230,59 +224,19 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         message={saveError ? saveErrorMsg ?? t('general.fix-errors-try-again') ?? '' : ''}
         itemList={saveErrorItems}
       />
-      <IonHeader className="ion-no-border" id="mainPageContent">
-        {isLoadingMutation && <IonProgressBar type="indeterminate" />}
-        <IonGrid className="optionBar">
-          <IonRow className="ion-align-items-end">
-            <IonCol className="align-right">
-              <IonGrid>
-                <IonRow className="ion-align-items-center">
-                  <IonCol>
-                    <IonText>
-                      <em>
-                        {state.operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {getModifiedInfo()}
-                        <br />
-                        {state.operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}:{' '}
-                        {savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
-                      </em>
-                    </IonText>
-                  </IonCol>
-                </IonRow>
-              </IonGrid>
-            </IonCol>
-            <IonCol size="auto">
-              <SelectInput
-                label={t('general.item-status')}
-                selected={state.status}
-                options={statusOptions}
-                setSelected={updateState}
-                actionType="status"
-                disabled={isLoadingMutation}
-              />
-            </IonCol>
-            <IonCol size="auto">
-              <IonButton shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoadingMutation}>
-                {t('general.cancel')}
-              </IonButton>
-              {state.operation === Operation.Update && oldState.status !== Status.Removed && (
-                <IonButton
-                  shape="round"
-                  color="danger"
-                  disabled={isError ?? isLoadingMutation}
-                  onClick={() => {
-                    handleSubmit(true);
-                  }}
-                >
-                  {t('general.delete')}
-                </IonButton>
-              )}
-              <IonButton shape="round" disabled={isError ?? isLoadingMutation} onClick={() => handleSubmit(state.status === Status.Removed)}>
-                {state.operation === Operation.Update ? t('general.save') : t('general.create-new')}
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonHeader>
+      <Header
+        operation={state.operation}
+        status={state.status}
+        oldStatus={oldState.status}
+        isLoading={isLoadingMutation}
+        isLoadingMutation={isLoadingMutation}
+        updateState={updateState}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel}
+        modifiedInfo={getModifiedInfo()}
+        modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
+        isError={isError}
+      />
 
       <IonContent className="mainContent ion-no-padding" data-testid="harbourEditPage">
         {isError && <p>{t('general.loading-error')}</p>}
