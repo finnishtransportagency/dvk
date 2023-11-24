@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
@@ -17,6 +17,8 @@ import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { useSafetyEquipmentLayer } from '../FeatureLoader';
 import { setSelectedSafetyEquipment } from '../layers';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -25,7 +27,7 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id);
+  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
@@ -57,7 +59,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {groupedFaults.map((faultArray) => {
-        const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId);
+        const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId) as Feature<Geometry>;
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {

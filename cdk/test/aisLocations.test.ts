@@ -13,7 +13,6 @@ const s3Mock = mockClient(S3Client);
 const path = 'aislocations';
 
 jest.mock('../lib/lambda/environment', () => ({
-  getFeatureCacheDurationHours: () => 2,
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},
@@ -135,9 +134,20 @@ beforeEach(() => {
   throwError = false;
 });
 
-it('should get locations from api', async () => {
+it('should get locations from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), Expires: expires });
+  const response = await handler(mockAISALBEvent(path));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(4);
+  expect(responseObj).toMatchSnapshot();
+});
+
+it('should get locations from api when cache expired', async () => {
+  const expires = new Date();
+  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), Expires: expires });
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);

@@ -11,6 +11,8 @@ import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -25,7 +27,7 @@ function goto(warning: MarineWarning, layers: string[]) {
 
   const layerDataId = getMarineWarningDataLayerId(warning.type);
   const warningSource = dvkMap.getVectorSource(layerDataId);
-  const feature = warningSource.getFeatureById(warning.id);
+  const feature = warningSource.getFeatureById(warning.id) as Feature<Geometry>;
 
   if (feature) {
     // If warning layer is not visible, use selectedfairwaycard to show warning on map
@@ -119,17 +121,18 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                     <p>
                       {warning.equipmentId && (
                         <>
-                          {dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name[lang] ||
-                            dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId)?.getProperties().name.fi}
+                          {(dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId) as Feature<Geometry>)?.getProperties().name[
+                            lang
+                          ] ||
+                            (dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId) as Feature<Geometry>)?.getProperties().name
+                              .fi}
                           {' - '}
                           {warning.equipmentId}
                         </>
                       )}
                       {warning.lineId && (
                         <>
-                          {dvkMap
-                            .getVectorSource('line12')
-                            .getFeatureById(warning.lineId)
+                          {(dvkMap.getVectorSource('line12').getFeatureById(warning.lineId) as Feature<Geometry>)
                             ?.getProperties()
                             .fairways?.map((fairway: LineFairway) => {
                               const uuid = uniqueId('span_');
@@ -139,9 +142,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                                 </span>
                               );
                             })}
-                          {dvkMap
-                            .getVectorSource('line3456')
-                            .getFeatureById(warning.lineId)
+                          {(dvkMap.getVectorSource('line3456').getFeatureById(warning.lineId) as Feature<Geometry>)
                             ?.getProperties()
                             .fairways?.map((fairway: LineFairway) => {
                               const uuid = uniqueId('span_');
@@ -155,9 +156,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                       )}
                       {warning.areaId && (
                         <>
-                          {dvkMap
-                            .getVectorSource('area12')
-                            .getFeatureById(warning.areaId)
+                          {(dvkMap.getVectorSource('area12').getFeatureById(warning.areaId) as Feature<Geometry>)
                             ?.getProperties()
                             .fairways?.map((fairway: AreaFairway) => {
                               const uuid = uniqueId('span_');
@@ -167,9 +166,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                                 </span>
                               );
                             })}
-                          {dvkMap
-                            .getVectorSource('area3456')
-                            .getFeatureById(warning.areaId)
+                          {(dvkMap.getVectorSource('area3456').getFeatureById(warning.areaId) as Feature<Geometry>)
                             ?.getProperties()
                             .fairways?.map((fairway: AreaFairway) => {
                               const uuid = uniqueId('span_');

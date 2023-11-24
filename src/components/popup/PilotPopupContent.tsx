@@ -2,7 +2,7 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { Link } from 'react-router-dom';
 import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';

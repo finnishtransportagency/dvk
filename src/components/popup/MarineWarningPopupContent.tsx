@@ -9,6 +9,8 @@ import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
 import CloseButton from './CloseButton';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 type MarineWarningPopupContentProps = {
   marine: MarineWarningProperties;
@@ -91,37 +93,31 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
       {marine.properties.equipmentId && (
         <IonRow>
           <IonCol>
-            {dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId)?.getProperties().name[lang] ||
-              dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId)?.getProperties().name.fi}
+            {(dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>)?.getProperties().name[
+              lang
+            ] ||
+              (dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>)?.getProperties().name.fi}
             {' - '}
             {marine.properties.equipmentId}
           </IonCol>
         </IonRow>
       )}
-      {dvkMap
-        .getVectorSource('line12')
-        .getFeatureById(marine.properties.lineId ?? 0)
+      {(dvkMap.getVectorSource('line12').getFeatureById(marine.properties.lineId ?? 0) as Feature<Geometry>)
         ?.getProperties()
         .fairways?.map((fairway: LineFairway) => {
           return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
         })}
-      {dvkMap
-        .getVectorSource('line3456')
-        .getFeatureById(marine.properties.lineId ?? 0)
+      {(dvkMap.getVectorSource('line3456').getFeatureById(marine.properties.lineId ?? 0) as Feature<Geometry>)
         ?.getProperties()
         .fairways?.map((fairway: LineFairway) => {
           return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
         })}
-      {dvkMap
-        .getVectorSource('area12')
-        .getFeatureById(marine.properties.areaId ?? 0)
+      {(dvkMap.getVectorSource('area12').getFeatureById(marine.properties.areaId ?? 0) as Feature<Geometry>)
         ?.getProperties()
         .fairways?.map((fairway: AreaFairway) => {
           return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;
         })}
-      {dvkMap
-        .getVectorSource('area3456')
-        .getFeatureById(marine.properties.areaId ?? 0)
+      {(dvkMap.getVectorSource('area3456').getFeatureById(marine.properties.areaId ?? 0) as Feature<Geometry>)
         ?.getProperties()
         .fairways?.map((fairway: AreaFairway) => {
           return <FairwayPopupRow key={fairway.fairwayId} fairway={fairway} lang={lang} />;

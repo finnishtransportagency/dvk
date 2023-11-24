@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
-import { coordinatesToStringHDM } from '../../utils/CoordinateUtils';
+import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
 import CloseButton from './CloseButton';

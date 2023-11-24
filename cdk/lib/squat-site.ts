@@ -120,6 +120,22 @@ export class SquatSite extends Construct {
       description: 'The name of Admin app S3',
       exportName: 'AdminBucket' + props.env,
     });
+
+    // Accesss log bucket
+    const logBucket = new s3.Bucket(this, 'LogBucket', {
+      bucketName: `dvk-access-logs-${props.env}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
+      ...s3DeletePolicy,
+    });
+    new CfnOutput(parent, 'AccessLogBucket', {
+      value: logBucket.bucketName,
+      description: 'The name of cloudfront access log bucket',
+      exportName: 'AccessLogBucket' + props.env,
+    });
+
     // TLS certificate
     let certificate, domainNames;
     if (props.cloudfrontCertificateArn) {
@@ -362,6 +378,8 @@ export class SquatSite extends Construct {
         { httpStatus: 404, responseHttpStatus: 404, responsePagePath: '/notfound.html' },
         { httpStatus: 500, responseHttpStatus: 500, responsePagePath: '/error.html' },
       ],
+      enableLogging: true,
+      logBucket: logBucket,
     });
 
     new CfnOutput(parent, 'DistributionId', {

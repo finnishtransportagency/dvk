@@ -1,6 +1,7 @@
 import { modulo } from 'ol/math';
 import { padNumber } from 'ol/string';
 
+// See degreesToStringHDMS from openlayers /src/ol/coordinate.js for reference
 const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
   const normalizedDegrees = modulo(degrees + 180, 360) - 180;
   const x = Math.abs(3600 * normalizedDegrees);

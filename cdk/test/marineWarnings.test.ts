@@ -8,7 +8,6 @@ import { createReadStream } from 'fs';
 const s3Mock = mockClient(S3Client);
 
 jest.mock('../lib/lambda/environment', () => ({
-  getFeatureCacheDurationHours: () => 2,
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},

@@ -13,7 +13,6 @@ const s3Mock = mockClient(S3Client);
 const path = 'aisvessels';
 
 jest.mock('../lib/lambda/environment', () => ({
-  getFeatureCacheDurationHours: () => 2,
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},

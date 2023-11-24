@@ -32,6 +32,7 @@ import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
+import { Geometry } from 'ol/geom';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -452,7 +453,7 @@ export function unsetSelectedFairwayCard() {
       case 'area12':
         area12Source.addFeature(feature);
         feature.unset('n2000HeightSystem');
-        depthSource.getFeatureById(feature.getId() as number)?.unset('n2000HeightSystem');
+        (depthSource.getFeatureById(feature.getId() as number) as Feature<Geometry>)?.unset('n2000HeightSystem');
         break;
       case 'area3456':
         area3456Source.addFeature(feature);
@@ -483,7 +484,7 @@ export function unsetSelectedFairwayCard() {
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
   const depth = quay.sections?.map((s) => s?.depth || 0).filter((v) => v !== undefined && v > 0);
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
@@ -501,7 +502,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: Vecto
 }
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
@@ -554,13 +555,13 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const fairwayFeatures: Feature[] = [];
     for (const fairway of fairwayCard?.fairways || []) {
       for (const line of fairway.navigationLines || []) {
-        let feature = line12Source.getFeatureById(line.id);
+        let feature = line12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {
           line12Source.removeFeature(feature);
           fairwayFeatures.push(feature);
           feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
         } else {
-          feature = line3456Source.getFeatureById(line.id);
+          feature = line3456Source.getFeatureById(line.id) as Feature<Geometry>;
           if (feature) {
             line3456Source.removeFeature(feature);
             fairwayFeatures.push(feature);
@@ -568,22 +569,22 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         }
       }
       for (const area of fairway.areas || []) {
-        let feature = area12Source.getFeatureById(area.id);
+        let feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
         if (feature) {
           area12Source.removeFeature(feature);
           fairwayFeatures.push(feature);
           feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          feature = depthSource.getFeatureById(area.id);
+          feature = depthSource.getFeatureById(area.id) as Feature<Geometry>;
           feature?.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
         } else {
-          feature = area3456Source.getFeatureById(area.id);
+          feature = area3456Source.getFeatureById(area.id) as Feature<Geometry>;
           if (feature) {
             area3456Source.removeFeature(feature);
             fairwayFeatures.push(feature);
           }
         }
         if (!feature) {
-          feature = specialArea2Source.getFeatureById(area.id);
+          feature = specialArea2Source.getFeatureById(area.id) as Feature<Geometry>;
           if (feature) {
             specialArea2Source.removeFeature(feature);
             fairwayFeatures.push(feature);
@@ -591,7 +592,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
           }
         }
         if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id);
+          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
           if (feature) {
             specialArea15Source.removeFeature(feature);
             fairwayFeatures.push(feature);
@@ -600,14 +601,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         }
       }
       for (const line of fairway.boardLines || []) {
-        const feature = boardLine12Source.getFeatureById(line.id);
+        const feature = boardLine12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {
           boardLine12Source.removeFeature(feature);
           fairwayFeatures.push(feature);
         }
       }
       for (const circle of fairway.turningCircles || []) {
-        const feature = circleSource.getFeatureById(circle.id);
+        const feature = circleSource.getFeatureById(circle.id) as Feature<Geometry>;
         if (feature) {
           circleSource.removeFeature(feature);
           fairwayFeatures.push(feature);
@@ -617,7 +618,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
     for (const harbor of fairwayCard?.harbors || []) {
       const id = harbor.geometry?.coordinates?.join(';');
-      const feature = id ? harborSource.getFeatureById(id) : undefined;
+      const feature = id ? (harborSource.getFeatureById(id) as Feature<Geometry>) : undefined;
       if (feature) {
         harborSource.removeFeature(feature);
         fairwayFeatures.push(feature);
