@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Bogserbåtar och specialfartyg",
           "aisVesselPleasureCraft": "Fritidsbåtar",
           "aisUnspecified": "Odefinierade fartyg",
+          "aisShowPath": "[sv] Näytä suuntavektorit",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",

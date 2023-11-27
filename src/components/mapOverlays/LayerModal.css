@@ -422,6 +422,9 @@ ion-modal#layerModalContainer::part(content) {
   border-top: none;
   padding-left: 24px;
 }
+#layerModalContainer ion-row.pathControl {
+  margin-left: 24px;
+}
 #layerModalContainer ion-row.hide {
   max-height: 0;
   overflow: hidden;

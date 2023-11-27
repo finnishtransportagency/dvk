@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Tugboats and special crafts",
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
+          "aisShowPath": "[en] Näytä suuntavektorit",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -267,7 +268,7 @@
     "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
     "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
-    "type":"Type"
+    "type": "Type"
   },
   "appUpdateAlert": {
     "title": "Update available",

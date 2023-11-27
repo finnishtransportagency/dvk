@@ -8,6 +8,7 @@ import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
 import { FeatureDataLayerId } from '../../utils/constants';
 import { hasOfflineSupport } from '../../utils/common';
+import AisPathControl from './AisPathControl';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -29,19 +30,19 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
     return isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
   };
   const selectedChildLayers =
-    currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
+    currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) ?? [];
   const isChecked = () => {
-    return selectedChildLayers?.length === (currentLayer.childLayers || []).length;
+    return selectedChildLayers?.length === (currentLayer.childLayers ?? []).length;
   };
   const isIndeterminate = () => {
-    return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers || []).length;
+    return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers ?? []).length;
   };
-  const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
+  const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) ?? []).length);
   const handleChange = () => {
     if (isChecked() || isIndeterminate()) {
       updateLayers(layersWOCurrentChildLayers);
     } else {
-      updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
+      updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) ?? []));
       setLegendOpen(true);
     }
   };
@@ -90,6 +91,13 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
           </IonList>
         </IonCol>
       </IonRow>
+      {currentLayer.id === 'ais' && (
+        <IonRow className={'toggle pathControl ' + (legendOpen ? 'show' : 'hide')}>
+          <IonCol>
+            <AisPathControl />
+          </IonCol>
+        </IonRow>
+      )}
     </IonGrid>
   );
 };
