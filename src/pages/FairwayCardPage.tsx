@@ -36,8 +36,9 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
   const { fairwayCardId } = useParams<FairwayCardPageProps>();
-  const { dispatch } = useDvkContext();
+  const { state, dispatch } = useDvkContext();
 
+  //first component to load regarding single fairway card, so state is updateed here
   useEffect(() => {
     dispatch({
       type: 'setPreview',
@@ -47,7 +48,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     });
   }, [dispatch, preview]);
 
-  const { data } = useFairwayCardListData(); //ota data muualta jos preview
+  const { data } = useFairwayCardListData();
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -91,7 +92,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   ]);
 
   useEffect(() => {
-    if (data && fairwayCardId && initDone) {
+    if (data && fairwayCardId && initDone && !state.preview) {
       const filteredFairwayCard = data?.fairwayCards.filter((card: { id: string | undefined }) => card.id === fairwayCardId);
       const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
       if (fairwayCard) {
@@ -102,7 +103,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle]);
+  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview]);
 
   useEffect(() => {
     setModalContent(fairwayCardId || 'fairwayCardList');
