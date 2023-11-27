@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { setSelectedFairwayCard, unsetSelectedFairwayCard } from '../components/layers';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
-import { useFairwayCardListData } from '../utils/dataLoader';
+import { useFairwayCardListData, useFairwayCardPreviewData } from '../utils/dataLoader';
 import {
   useArea12Layer,
   useArea3456Layer,
@@ -49,6 +49,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   }, [dispatch, preview]);
 
   const { data } = useFairwayCardListData();
+  const { data: previewData } = useFairwayCardPreviewData(fairwayCardId!);
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -92,9 +93,15 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   ]);
 
   useEffect(() => {
-    if (data && fairwayCardId && initDone && !state.preview) {
-      const filteredFairwayCard = data?.fairwayCards.filter((card: { id: string | undefined }) => card.id === fairwayCardId);
-      const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
+    if (data && fairwayCardId && initDone) {
+      let fairwayCard;
+
+      if (state.preview) {
+        fairwayCard = previewData?.fairwayCardPreview;
+      } else {
+        const filteredFairwayCard = data?.fairwayCards.filter((card: { id: string | undefined }) => card.id === fairwayCardId);
+        fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
+      }
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
         setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
@@ -103,7 +110,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview]);
+  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview, previewData?.fairwayCardPreview]);
 
   useEffect(() => {
     setModalContent(fairwayCardId || 'fairwayCardList');

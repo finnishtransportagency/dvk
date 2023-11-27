@@ -1074,6 +1074,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
   const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id);
 
+  //not using useEffect since it affects unnecessary alert rendering
   if (state.preview) {
     fairwayCard = previewData?.fairwayCardPreview ?? undefined;
   } else {
