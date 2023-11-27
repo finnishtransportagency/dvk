@@ -19,7 +19,7 @@ import {
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile } from '../utils/common';
+import { isMobile, setFairwayCardByState } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
 
@@ -94,14 +94,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
 
   useEffect(() => {
     if (data && fairwayCardId && initDone) {
-      let fairwayCard;
-
-      if (state.preview) {
-        fairwayCard = previewData?.fairwayCardPreview;
-      } else {
-        const filteredFairwayCard = data?.fairwayCards.filter((card: { id: string | undefined }) => card.id === fairwayCardId);
-        fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
-      }
+      const fairwayCard = setFairwayCardByState(state.preview, fairwayCardId, data, previewData);
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
         setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
@@ -110,7 +103,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview, previewData?.fairwayCardPreview]);
+  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview, previewData]);
 
   useEffect(() => {
     setModalContent(fairwayCardId || 'fairwayCardList');
