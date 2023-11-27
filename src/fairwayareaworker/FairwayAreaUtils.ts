@@ -10,7 +10,7 @@ function createFeature(featCoords: Array<turf.Position>, area1Properties: object
   const feat = format.readFeature(turf.lineString(featCoords), {
     dataProjection: 'EPSG:4326',
     featureProjection: MAP.EPSG,
-  });
+  }) as Feature<Geometry>;
   feat.setProperties({ area1Properties: area1Properties }, true);
   feat.setProperties({ area2Properties: area2Properties }, true);
   return feat;

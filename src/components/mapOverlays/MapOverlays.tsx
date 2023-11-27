@@ -6,7 +6,7 @@ import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
-import { filterFairways } from '../../utils/common';
+import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
 import { SourceModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
@@ -65,7 +65,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
 
-  const [popupProps, setPopupProperties] = useState<PopupProperties>();
+  const [popupProperties, setPopupProperties] = useState<PopupProperties>();
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -87,6 +87,12 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   useEffect(() => {
     if (dvkMap.olMap) {
       addPopup(dvkMap.olMap, setPopupProperties);
+
+      dvkMap.olMap.getView().on('change:resolution', () => {
+        if (dvkMap.getFeatureLayer('ice').isVisible()) {
+          updateIceLayerOpacity();
+        }
+      });
     }
   }, []);
 
@@ -128,25 +134,31 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   return (
     <>
       <div id="popup" className="ol-popup">
-        {popupProps?.pilot && <PilotPopupContent pilot={popupProps.pilot} setPopupProperties={setPopupProperties} />}
-        {popupProps?.quay && <QuayPopupContent quay={popupProps.quay} setPopupProperties={setPopupProperties} />}
-        {popupProps?.area && <AreaPopupContent area={popupProps.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
-        {popupProps?.specialarea2 && (
-          <AreaPopupContent area={popupProps.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+        {popupProperties?.pilot && <PilotPopupContent pilot={popupProperties.pilot} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.quay && <QuayPopupContent quay={popupProperties.quay} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
+        {popupProperties?.specialarea2 && (
+          <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />
         )}
-        {popupProps?.specialarea15 && (
-          <AreaPopupContent area={popupProps.specialarea15} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+        {popupProperties?.specialarea15 && (
+          <AreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} isOffline={isOffline} />
         )}
-        {popupProps?.line && <LinePopupContent line={popupProps.line} setPopupProperties={setPopupProperties} />}
-        {popupProps?.safetyequipment && <EquipmentPopupContent equipment={popupProps.safetyequipment} setPopupProperties={setPopupProperties} />}
-        {popupProps?.marinewarning && <MarineWarningPopupContent marine={popupProps.marinewarning} setPopupProperties={setPopupProperties} />}
-        {popupProps?.mareograph && <MareographPopupContent mareograph={popupProps.mareograph} setPopupProperties={setPopupProperties} />}
-        {popupProps?.observation && <ObservationPopupContent observation={popupProps.observation} setPopupProperties={setPopupProperties} />}
-        {popupProps?.buoy && <BuoyPopupContent buoy={popupProps.buoy} setPopupProperties={setPopupProperties} />}
-        {popupProps?.harbor && <HarborPopupContent harbor={popupProps.harbor} setPopupProperties={setPopupProperties} />}
-        {popupProps?.vtspoint && <VtsPointPopupContent vts={popupProps.vtspoint} setPopupProperties={setPopupProperties} />}
-        {popupProps?.vtsline && <VtsLinePopupContent vts={popupProps.vtsline} setPopupProperties={setPopupProperties} />}
-        {popupProps?.aisvessel && <AisVesselPopupContent vessel={popupProps.aisvessel} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.line && <LinePopupContent line={popupProperties.line} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.safetyequipment && (
+          <EquipmentPopupContent equipment={popupProperties.safetyequipment} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.marinewarning && (
+          <MarineWarningPopupContent marine={popupProperties.marinewarning} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.mareograph && <MareographPopupContent mareograph={popupProperties.mareograph} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.observation && (
+          <ObservationPopupContent observation={popupProperties.observation} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.buoy && <BuoyPopupContent buoy={popupProperties.buoy} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.harbor && <HarborPopupContent harbor={popupProperties.harbor} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.vtspoint && <VtsPointPopupContent vts={popupProperties.vtspoint} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.vtsline && <VtsLinePopupContent vts={popupProperties.vtsline} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.aisvessel && <AisVesselPopupContent vessel={popupProperties.aisvessel} setPopupProperties={setPopupProperties} />}
       </div>
       <LayerModal
         isOpen={isOpen}

@@ -95,7 +95,6 @@ const points = {
 };
 
 jest.mock('../lib/lambda/environment', () => ({
-  getFeatureCacheDurationHours: () => 2,
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getFairwayCardTableName: () => 'FairwayCard-mock',

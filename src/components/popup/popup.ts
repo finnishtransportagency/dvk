@@ -225,7 +225,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
                 const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
                   dataProjection: 'EPSG:4326',
                   featureProjection: MAP.EPSG,
-                });
+                }) as Feature<Geometry>;
                 fairwayWidthLineFeat.setProperties({ width: fairwayWidth });
 
                 dvkMap.getFeatureLayer('fairwaywidth').setVisible(true);

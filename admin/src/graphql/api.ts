@@ -1,4 +1,4 @@
-import { UseMutationOptions } from '@tanstack/react-query/build/lib/types';
+import { UseMutationOptions } from '@tanstack/react-query';
 import {
   SaveFairwayCardMutation,
   SaveFairwayCardMutationVariables,

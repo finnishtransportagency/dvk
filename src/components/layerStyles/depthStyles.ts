@@ -73,7 +73,7 @@ const soundingPointStyle = new Style({
 });
 
 export function getSoundingPointStyle(feature: FeatureLike) {
-  soundingPointStyle.getText().setText(String(feature.getProperties().DEPTH));
+  soundingPointStyle.getText()?.setText(String(feature.getProperties().DEPTH));
   return soundingPointStyle;
 }
 
