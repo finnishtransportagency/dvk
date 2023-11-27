@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { BackgroundMapType, getMap } from '../DvkMap';
+import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
-import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
+import { FeatureDataLayerId, FeatureDataMainLayerId, MAP, aisLayers } from '../../utils/constants';
 import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
@@ -28,13 +28,12 @@ export type LayerType = {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
-  const { isOffline, layers } = state;
+  const { isOffline, layers, showAisPath } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
   };
-  const dvkMap = getMap();
 
   const layerStructure: LayerType[] = [
     {
@@ -127,7 +126,17 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningNotificationLayer, isOffline, dvkMap]);
+  }, [layers, setMarineWarningNotificationLayer, isOffline]);
+
+  useEffect(() => {
+    console.log('showAisPath', showAisPath);
+    aisLayers.forEach((layerId) => {
+      const layer = dvkMap.getFeatureLayer(layerId);
+      if (layer.isVisible()) {
+        // Update style
+      }
+    });
+  }, [showAisPath]);
 
   return (
     <IonModal
