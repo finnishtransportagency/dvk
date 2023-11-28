@@ -3,7 +3,11 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from '../DvkMap';
 import speedLimitIcon from '../../../theme/img/rajoitus_pohja.svg';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
-import * as turf from '@turf/turf';
+import intersect from '@turf/intersect';
+import flatten from '@turf/flatten';
+import { polygon } from '@turf/helpers';
+import { Polygon as turf_Polygon } from 'geojson';
+import { getTopLeft, getBottomRight } from 'ol/extent';
 import { GeoJSON } from 'ol/format';
 
 const speedLimitImage = new Image();
@@ -59,13 +63,22 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
   const bbox = dvkMap.olMap?.getView().calculateExtent();
 
   if (bbox) {
-    const turfBBox = bbox as turf.BBox;
-    const turfBBoxPolygon = turf.bboxPolygon(turfBBox);
+    const topLeft = getTopLeft(bbox);
+    const bottomRight = getBottomRight(bbox);
+    const turfBBoxPolygon = polygon([
+      [
+        [topLeft[0], topLeft[1]],
+        [bottomRight[0], topLeft[1]],
+        [bottomRight[0], bottomRight[1]],
+        [topLeft[0], bottomRight[1]],
+        [topLeft[0], topLeft[1]],
+      ],
+    ]);
     const geomPoly = format.writeGeometryObject(feature.getGeometry() as Geometry);
-    const intersected = turf.intersect(geomPoly as turf.Polygon, turfBBoxPolygon.geometry);
+    const intersected = intersect(geomPoly as turf_Polygon, turfBBoxPolygon.geometry);
 
     if (intersected) {
-      const flattened = turf.flatten(intersected);
+      const flattened = flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
         const geom = (format.readFeature(fg) as Feature<Geometry>).getGeometry() as Polygon;
