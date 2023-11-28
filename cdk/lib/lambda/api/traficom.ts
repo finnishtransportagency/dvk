@@ -3,9 +3,9 @@ import { roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
 import { fetchTraficomApi } from './axios';
 
-function roundGeometryAnd2D(row: Feature<Geometry, GeoJsonProperties>) {
+function flattenCoordinates(row: Feature<Geometry, GeoJsonProperties>) {
   if ('coordinates' in row.geometry) {
-    // to 2D
+    // From 3D to 2D - drop z coordinates
     if (row.geometry.type === 'Point' && row.geometry.coordinates.length === 3) {
       row.geometry.coordinates.pop();
     } else if (row.geometry.type === 'LineString') {
@@ -16,7 +16,6 @@ function roundGeometryAnd2D(row: Feature<Geometry, GeoJsonProperties>) {
       }
     }
   }
-  roundGeometry(row.geometry);
 }
 
 async function fetchVTSByType(type: string) {
@@ -24,7 +23,8 @@ async function fetchVTSByType(type: string) {
     `trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=${type}&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258`
   );
   return data.features.filter((row) => {
-    roundGeometryAnd2D(row);
+    flattenCoordinates(row);
+    roundGeometry(row.geometry);
     return row.properties?.OBJNAM !== 'GOFREP' && row.properties?.OBJNAM !== 'Reporting wintertime 60N';
   });
 }
@@ -42,7 +42,7 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
     'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:PilotBoardingPlace_P&srsName=urn:ogc:def:crs:EPSG::4258&outputFormat=application/json'
   )) as FeatureCollection<Point>;
   data.features.forEach((row) => {
-    roundGeometryAnd2D(row);
+    flattenCoordinates(row);
   });
   return data.features.map((row) => {
     return {

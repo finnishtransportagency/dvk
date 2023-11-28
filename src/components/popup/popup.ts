@@ -8,7 +8,16 @@ import { MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { GeoJSON } from 'ol/format';
-import * as turf from '@turf/turf';
+import { lineString, bearingToAzimuth } from '@turf/helpers';
+import along from '@turf/along';
+import lineIntersect from '@turf/line-intersect';
+import nearestPointOnLine from '@turf/nearest-point-on-line';
+import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
+import transformTranslate from '@turf/transform-translate';
+import length from '@turf/length';
+import distance from '@turf/distance';
+import bearing from '@turf/bearing';
+import { Point as turf_Point, LineString as turf_LineString, Polygon as turf_Polygon } from 'geojson';
 import { Coordinate } from 'ol/coordinate';
 import { addPointerClickInteraction, addPointerMoveInteraction } from './selectInteraction';
 
@@ -111,28 +120,28 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           const turfLine = format.writeGeometryObject(feature.getGeometry() as Geometry, {
             dataProjection: 'EPSG:4326',
             featureProjection: MAP.EPSG,
-          }) as turf.LineString;
+          }) as turf_LineString;
           const turfPoint = format.writeGeometryObject(new Point(evt.coordinate) as Geometry, {
             dataProjection: 'EPSG:4326',
             featureProjection: MAP.EPSG,
-          }) as turf.Point;
+          }) as turf_Point;
 
-          const pointOnLine = turf.nearestPointOnLine(turfLine, turfPoint);
+          const pointOnLine = nearestPointOnLine(turfLine, turfPoint);
           if (
             pointOnLine.properties.index !== undefined &&
             pointOnLine.properties.dist !== undefined &&
             pointOnLine.properties.location !== undefined
           ) {
             /* The point on line nearest to the clicked point */
-            const turfSnapPoint = turf.along(turfLine, pointOnLine.properties.location);
+            const turfSnapPoint = along(turfLine, pointOnLine.properties.location);
 
             /* Filter areas containing snap point */
             areaFeatures = areaFeatures.filter((f) => {
               const turfArea = format.writeGeometryObject(f.getGeometry() as Geometry, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: MAP.EPSG,
-              }) as turf.Polygon;
-              return turf.booleanPointInPolygon(turfSnapPoint, turfArea);
+              }) as turf_Polygon;
+              return booleanPointInPolygon(turfSnapPoint, turfArea);
             });
 
             /* Continue only if we have only one area polygon that contains snap point */
@@ -140,24 +149,24 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               const turfArea = format.writeGeometryObject(areaFeatures[0].getGeometry() as Geometry, {
                 dataProjection: 'EPSG:4326',
                 featureProjection: MAP.EPSG,
-              }) as turf.Polygon;
+              }) as turf_Polygon;
               /* Get line azimuth at snap point */
-              const azimuth = turf.bearingToAzimuth(
-                turf.bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
+              const azimuth = bearingToAzimuth(
+                bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
               );
               /* Create lines perpendicular navigation to line and length of 5km to both direction from snap point */
-              const startPoint = turf.transformTranslate(turfSnapPoint, 5, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
-              const endPoint = turf.transformTranslate(turfSnapPoint, 5, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
+              const startPoint = transformTranslate(turfSnapPoint, 5, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
+              const endPoint = transformTranslate(turfSnapPoint, 5, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
 
-              const turfStartPerpendicularLine = turf.lineString([turfSnapPoint.geometry.coordinates, startPoint.geometry.coordinates]);
-              const turfEndPerpendicularLine = turf.lineString([turfSnapPoint.geometry.coordinates, endPoint.geometry.coordinates]);
+              const turfStartPerpendicularLine = lineString([turfSnapPoint.geometry.coordinates, startPoint.geometry.coordinates]);
+              const turfEndPerpendicularLine = lineString([turfSnapPoint.geometry.coordinates, endPoint.geometry.coordinates]);
 
               /* Find perpendicular lines and fairway area polygon intersections */
-              const startInterSectionPoints = turf.lineIntersect(turfStartPerpendicularLine, turfArea);
+              const startInterSectionPoints = lineIntersect(turfStartPerpendicularLine, turfArea);
               const startIntersectionPointsArray = startInterSectionPoints.features.map((d) => {
                 return d.geometry.coordinates;
               });
-              const endInterSectionPoints = turf.lineIntersect(turfEndPerpendicularLine, turfArea);
+              const endInterSectionPoints = lineIntersect(turfEndPerpendicularLine, turfArea);
               const endIntersectionPointsArray = endInterSectionPoints.features.map((d) => {
                 return d.geometry.coordinates;
               });
@@ -165,7 +174,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               let minDist = 5;
               let startCoord = undefined;
               for (const coord of startIntersectionPointsArray) {
-                const dist = turf.distance(turfSnapPoint, coord);
+                const dist = distance(turfSnapPoint, coord);
                 if (dist < minDist) {
                   startCoord = coord;
                   minDist = dist;
@@ -174,7 +183,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               minDist = 5;
               let endCoord = undefined;
               for (const coord of endIntersectionPointsArray) {
-                const dist = turf.distance(turfSnapPoint, coord);
+                const dist = distance(turfSnapPoint, coord);
                 if (dist < minDist) {
                   endCoord = coord;
                   minDist = dist;
@@ -182,8 +191,8 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
               }
 
               if (startCoord && endCoord) {
-                const turfFairwayWidthLine = turf.lineString([startCoord, endCoord]);
-                fairwayWidth = turf.length(turfFairwayWidthLine) * 1000;
+                const turfFairwayWidthLine = lineString([startCoord, endCoord]);
+                fairwayWidth = length(turfFairwayWidthLine) * 1000;
 
                 const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
                   dataProjection: 'EPSG:4326',
