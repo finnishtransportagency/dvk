@@ -10,6 +10,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './popup';
 import CloseButton from './CloseButton';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -29,6 +30,7 @@ type FairwayCardIdName = {
 const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   let fairwayCards: FairwayCardIdName[] = [];
   equipment.properties?.fairways?.forEach((f) => {
@@ -146,7 +148,9 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
         return (
           <IonRow key={card.id}>
             <IonCol>
-              <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+              <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                {card.name[lang]}
+              </Link>
             </IonCol>
           </IonRow>
         );

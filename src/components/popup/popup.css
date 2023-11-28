@@ -67,3 +67,10 @@ ion-row.negativeMargin {
   border-width: 1px;
   border-color: var(--ion-color-light);
 }
+
+.disableLink {
+  opacity: 0.5;
+  pointer-events: none;
+}
+  console.log(state.preview);
+  opacity: state.preview ? '0.5' : '1', pointerEvents: state.preview ? 'none' : 'auto' 
