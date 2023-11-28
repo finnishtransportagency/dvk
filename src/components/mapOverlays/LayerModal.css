@@ -422,7 +422,7 @@ ion-modal#layerModalContainer::part(content) {
   border-top: none;
   padding-left: 24px;
 }
-#layerModalContainer ion-row.pathControl {
+#layerModalContainer ion-row.predictorControl {
   margin-left: 24px;
 }
 #layerModalContainer ion-row.hide {

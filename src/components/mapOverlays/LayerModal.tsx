@@ -29,7 +29,7 @@ export type LayerType = {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
-  const { isOffline, layers, showAisPath } = state;
+  const { isOffline, layers, showAisPredictor } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
@@ -133,12 +133,14 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   useEffect(() => {
-    console.log('showAisPath', showAisPath);
+    console.log('showAisPredictor', showAisPredictor);
     aisLayers.forEach((layerId) => {
       const source = dvkMap.getVectorSource(layerId);
-      source.forEachFeature((f) => f.setStyle((feature, resolution) => getAisVesselLayerStyle(layerId, feature, resolution, false, showAisPath)));
+      source.forEachFeature((f) =>
+        f.setStyle((feature, resolution) => getAisVesselLayerStyle(layerId, feature, resolution, false, showAisPredictor))
+      );
     });
-  }, [showAisPath]);
+  }, [showAisPredictor]);
 
   return (
     <IonModal

@@ -8,7 +8,7 @@ import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
 import { FeatureDataLayerId } from '../../utils/constants';
 import { hasOfflineSupport } from '../../utils/common';
-import AisPathControl from './AisPathControl';
+import AisPredictorControl from './AisPredictorControl';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -92,9 +92,9 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
         </IonCol>
       </IonRow>
       {currentLayer.id === 'ais' && (
-        <IonRow className={'toggle pathControl ' + (legendOpen ? 'show' : 'hide')}>
+        <IonRow className={'toggle predictorControl ' + (legendOpen ? 'show' : 'hide')}>
           <IonCol>
-            <AisPathControl />
+            <AisPredictorControl />
           </IonCol>
         </IonRow>
       )}
