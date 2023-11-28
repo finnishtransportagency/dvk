@@ -3,7 +3,7 @@ import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { MAP } from '../../utils/constants';
+import { FeatureLayerId, MAP } from '../../utils/constants';
 import { never, pointerMove } from 'ol/events/condition';
 // eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
@@ -20,15 +20,7 @@ import { GeoJSON } from 'ol/format';
 import * as turf from '@turf/turf';
 import { Coordinate } from 'ol/coordinate';
 import { getCircleStyle } from '../layerStyles/circleStyles';
-import {
-  getAisVesselCargoStyle,
-  getAisVesselTankerStyle,
-  getAisVesselPassengerStyle,
-  getAisVesselHighSpeedStyle,
-  getAisVesselTugAndSpecialCraftStyle,
-  getAisVesselPleasureCraftStyle,
-  getAisUnspecifiedStyle,
-} from '../layerStyles/aisStyles';
+import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
 
 export function deselectClickSelection() {
   dvkMap.olMap?.getInteractions()?.forEach((int) => {
@@ -36,25 +28,6 @@ export function deselectClickSelection() {
       (int as Select).getFeatures().clear();
     }
   });
-}
-
-function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: boolean = true) {
-  const shipType = feature.getProperties().shipType;
-  if (shipType == 36 || shipType == 37) {
-    return getAisVesselPleasureCraftStyle(feature, resolution, selected);
-  } else if ((shipType >= 31 && shipType <= 35) || (shipType >= 50 && shipType <= 59)) {
-    return getAisVesselTugAndSpecialCraftStyle(feature, resolution, selected);
-  } else if (shipType >= 40 && shipType <= 49) {
-    return getAisVesselHighSpeedStyle(feature, resolution, selected);
-  } else if (shipType >= 60 && shipType <= 69) {
-    return getAisVesselPassengerStyle(feature, resolution, selected);
-  } else if (shipType >= 70 && shipType <= 79) {
-    return getAisVesselCargoStyle(feature, resolution, selected);
-  } else if (shipType >= 80 && shipType <= 89) {
-    return getAisVesselTankerStyle(feature, resolution, selected);
-  } else {
-    return getAisUnspecifiedStyle(feature, resolution, selected);
-  }
 }
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -307,7 +280,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     } else if (type === 'circle') {
       return getCircleStyle(feature, resolution);
     } else if (type === 'aisvessel') {
-      return getAisVesselStyle(feature, resolution, selected);
+      return getAisVesselLayerStyle(dataSource as FeatureLayerId, feature, resolution, true, false);
     } else {
       return undefined;
     }

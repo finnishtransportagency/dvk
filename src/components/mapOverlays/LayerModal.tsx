@@ -10,6 +10,7 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
 
 interface ModalProps {
   isOpen: boolean;
@@ -123,6 +124,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
+      if (!featureLayer) {
+        console.log('!!!undefined', dataLayer.id);
+      }
       featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
@@ -131,10 +135,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   useEffect(() => {
     console.log('showAisPath', showAisPath);
     aisLayers.forEach((layerId) => {
-      const layer = dvkMap.getFeatureLayer(layerId);
-      if (layer.isVisible()) {
-        // Update style
-      }
+      const source = dvkMap.getVectorSource(layerId);
+      source.forEachFeature((f) => f.setStyle((feature, resolution) => getAisVesselLayerStyle(layerId, feature, resolution, false, showAisPath)));
     });
   }, [showAisPath]);
 

@@ -107,7 +107,9 @@ function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geo
   const source = dvkMap.getVectorSource(id);
   if (aisLayer && source) {
     source.clear();
-    source.addFeatures(aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType'))));
+    const features = aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType')));
+    features.forEach((f) => f.set('dataSource', id, true));
+    source.addFeatures(features);
   }
 }
 
