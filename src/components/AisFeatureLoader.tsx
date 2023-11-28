@@ -67,6 +67,7 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
         destination: vessel.destination,
         vesselLength: vesselDimensions[0],
         vesselWidth: vesselDimensions[1],
+        showPathPredictor: false,
       });
     }
   }

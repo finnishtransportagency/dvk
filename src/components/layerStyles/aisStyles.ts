@@ -274,13 +274,14 @@ function getAnchoredVesselIconStyle(feature: FeatureLike, selected: boolean, sty
   });
 }
 
-function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: boolean, showPredictor: boolean, styleProps: AisVesselStyleProps) {
+function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: boolean, styleProps: AisVesselStyleProps) {
   const props = feature.getProperties() as AisFeatureProperties;
   const vesselLength = props.vesselLength ?? 0;
   const vesselWidth = props.vesselWidth ?? 0;
   const resLimit = vesselLength > 50 ? 2 : 1;
   const vesselMoving = movingNavStats.includes(props.navStat);
   let pathPredictorStartFromBow = false;
+  const showPathPredictor = feature.get('showPathPredictor');
 
   const styles: Array<Style> = [];
 
@@ -293,7 +294,7 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
     styles.push(getAnchoredVesselIconStyle(feature as Feature, selected, styleProps));
   }
 
-  if (showPredictor && resolution < 75 && vesselMoving && props.sog > 0.2 && props.sog < 100) {
+  if (showPathPredictor && resolution < 75 && vesselMoving && props.sog > 0.2 && props.sog < 100) {
     const predictorLineGeom = getPathPredictorGeometry(feature as Feature, pathPredictorStartFromBow);
 
     const pathPredictorHaloStyle = new Style({
@@ -320,46 +321,46 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
   return styles;
 }
 
-export function getAisVesselLayerStyle(layerId: FeatureLayerId, feature: FeatureLike, resolution: number, selected: boolean, showPredictor: boolean) {
+export function getAisVesselLayerStyle(layerId: FeatureLayerId, feature: FeatureLike, resolution: number, selected: boolean) {
   switch (layerId) {
     case 'aisvesselpleasurecraft':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#FF00FF',
         strokeColor: '#880088',
         vesselIcon: vesselPleasureCraftIcon,
       });
     case 'aisvesseltugandspecialcraft':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#00FFFF',
         strokeColor: '#008888',
         vesselIcon: vesselTugAndSpecialCraftIcon,
       });
     case 'aisvesselhighspeed':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#FFFF00',
         strokeColor: '#888800',
         vesselIcon: vesselHighSpeedIcon,
       });
     case 'aisvesselpassenger':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#0000FF',
         strokeColor: '#000088',
         vesselIcon: vesselPassengerIcon,
       });
     case 'aisvesselcargo':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#90EE8F',
         strokeColor: '#487748',
         vesselIcon: vesselCargoIcon,
       });
     case 'aisvesseltanker':
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#FF0000',
         strokeColor: '#880000',
         vesselIcon: vesselTankerIcon,
       });
     default:
-      return getAisVesselStyle(feature, resolution, selected, showPredictor, {
+      return getAisVesselStyle(feature, resolution, selected, {
         fillColor: '#D3D3D3',
         strokeColor: '#6A6A6A',
         vesselIcon: unspecifiedIcon,

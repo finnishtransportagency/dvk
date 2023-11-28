@@ -794,38 +794,33 @@ export function addAPILayers(map: Map) {
   });
 
   // AIS
-  addAisVesselLayer(map, 'aisvesselcargo', (feature, resolution) => getAisVesselLayerStyle('aisvesselcargo', feature, resolution, false, false), 316);
-  addAisVesselLayer(
-    map,
-    'aisvesseltanker',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesseltanker', feature, resolution, false, false),
-    317
-  );
+  addAisVesselLayer(map, 'aisvesselcargo', (feature, resolution) => getAisVesselLayerStyle('aisvesselcargo', feature, resolution, false), 316);
+  addAisVesselLayer(map, 'aisvesseltanker', (feature, resolution) => getAisVesselLayerStyle('aisvesseltanker', feature, resolution, false), 317);
   addAisVesselLayer(
     map,
     'aisvesselpassenger',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselpassenger', feature, resolution, false, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpassenger', feature, resolution, false),
     318
   );
   addAisVesselLayer(
     map,
     'aisvesselhighspeed',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselhighspeed', feature, resolution, false, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselhighspeed', feature, resolution, false),
     319
   );
   addAisVesselLayer(
     map,
     'aisvesseltugandspecialcraft',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesseltugandspecialcraft', feature, resolution, false, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesseltugandspecialcraft', feature, resolution, false),
     320
   );
   addAisVesselLayer(
     map,
     'aisvesselpleasurecraft',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselpleasurecraft', feature, resolution, false, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpleasurecraft', feature, resolution, false),
     322
   );
-  addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, false, false), 324);
+  addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, false), 324);
 }
 
 export function unsetSelectedFairwayCard() {

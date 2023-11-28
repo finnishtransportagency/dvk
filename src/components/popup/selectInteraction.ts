@@ -13,7 +13,7 @@ import { getBuoyStyle } from '../layerStyles/buoyStyles';
 import { getVtsStyle } from '../layerStyles/vtsStyles';
 import { getCircleStyle } from '../layerStyles/circleStyles';
 import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
-import { StyleFunction } from 'ol/style/Style';
+import { FeatureLike } from 'ol/Feature';
 
 function getLayers() {
   return [
@@ -47,55 +47,53 @@ function getLayers() {
   ];
 }
 
-function getSelectStyle(showAisPredictor: boolean): StyleFunction {
-  return (feature, resolution) => {
-    const type = feature.getProperties().featureType;
-    const dataSource = feature.getProperties().dataSource;
-    const selected: boolean | undefined = feature.getProperties().selected;
-    if (type === 'quay') {
-      return getQuayStyle(feature, resolution, true);
-    } else if (type === 'harbor') {
-      return getHarborStyle(feature, resolution, 0, true);
-    } else if (type === 'pilot') {
-      return getPilotStyle(true);
-    } else if (type === 'area' && dataSource === 'area12') {
-      return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
-    } else if (type === 'area' && dataSource === 'area3456') {
-      return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
-    } else if (type === 'specialarea2' || type === 'specialarea15') {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
-    } else if (type === 'line') {
-      return getLineStyle('#0000FF', 2);
-    } else if (type === 'safetyequipment') {
-      return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
-    } else if (type === 'safetyequipmentfault') {
-      return getSafetyEquipmentStyle(feature, resolution, true, true);
-    } else if (type === 'marinewarning') {
-      return getMarineWarningStyle(feature, true);
-    } else if (type === 'boardline') {
-      return getBoardLineStyle('#000000', 1);
-    } else if (type === 'mareograph') {
-      return getMareographStyle(feature, true, resolution);
-    } else if (type === 'observation') {
-      return getObservationStyle(true);
-    } else if (type === 'buoy') {
-      return getBuoyStyle(true);
-    } else if (type === 'vtsline' || type === 'vtspoint') {
-      return getVtsStyle(feature, true);
-    } else if (type === 'circle') {
-      return getCircleStyle(feature, resolution);
-    } else if (type === 'aisvessel') {
-      return getAisVesselLayerStyle(dataSource as FeatureLayerId, feature, resolution, true, showAisPredictor);
-    } else {
-      return undefined;
-    }
-  };
-}
+const selectStyle = function (feature: FeatureLike, resolution: number) {
+  const type = feature.getProperties().featureType;
+  const dataSource = feature.getProperties().dataSource;
+  const selected: boolean | undefined = feature.getProperties().selected;
+  if (type === 'quay') {
+    return getQuayStyle(feature, resolution, true);
+  } else if (type === 'harbor') {
+    return getHarborStyle(feature, resolution, 0, true);
+  } else if (type === 'pilot') {
+    return getPilotStyle(true);
+  } else if (type === 'area' && dataSource === 'area12') {
+    return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
+  } else if (type === 'area' && dataSource === 'area3456') {
+    return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
+  } else if (type === 'specialarea2' || type === 'specialarea15') {
+    return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
+  } else if (type === 'line') {
+    return getLineStyle('#0000FF', 2);
+  } else if (type === 'safetyequipment') {
+    return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
+  } else if (type === 'safetyequipmentfault') {
+    return getSafetyEquipmentStyle(feature, resolution, true, true);
+  } else if (type === 'marinewarning') {
+    return getMarineWarningStyle(feature, true);
+  } else if (type === 'boardline') {
+    return getBoardLineStyle('#000000', 1);
+  } else if (type === 'mareograph') {
+    return getMareographStyle(feature, true, resolution);
+  } else if (type === 'observation') {
+    return getObservationStyle(true);
+  } else if (type === 'buoy') {
+    return getBuoyStyle(true);
+  } else if (type === 'vtsline' || type === 'vtspoint') {
+    return getVtsStyle(feature, true);
+  } else if (type === 'circle') {
+    return getCircleStyle(feature, resolution);
+  } else if (type === 'aisvessel') {
+    return getAisVesselLayerStyle(dataSource as FeatureLayerId, feature, resolution, true);
+  } else {
+    return undefined;
+  }
+};
 
 export function addPointerMoveInteraction(map: Map, types: string[]) {
   const pointerMoveSelect = new Select({
     condition: pointerMove,
-    style: getSelectStyle(false),
+    style: selectStyle,
     layers: getLayers(),
     hitTolerance: 3,
     multi: true,
@@ -112,7 +110,7 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 export function addPointerClickInteraction(map: Map) {
   const pointerClickSelect = new Select({
     condition: never,
-    style: getSelectStyle(false),
+    style: selectStyle,
     layers: getLayers(),
     hitTolerance: 3,
   });
