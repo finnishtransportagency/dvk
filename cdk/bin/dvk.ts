@@ -18,6 +18,7 @@ import { DvkUsEast } from '../lib/dvk-us-east';
 import { AdminPipeline } from '../lib/admin-pipeline';
 import { DvkScheduledTestsPipelineStack } from '../lib/dvk-scheduled-tests-pipeline';
 import { DvkAnalyticsStack } from '../lib/dvk-analytics-stack';
+import { PreviewPipeline } from '../lib/preview-pipeline';
 
 class DvkUsEastStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -240,6 +241,28 @@ new AdminPipelineStack(
       region: 'eu-west-1',
     },
     stackName: 'AdminPipelineStack-' + appEnv,
+    tags: Config.tags,
+  },
+  appEnv
+);
+
+class PreviewPipelineStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps, env: string) {
+    super(parent, id, props);
+
+    new PreviewPipeline(this, 'PreviewPipeline', { env });
+  }
+}
+
+new PreviewPipelineStack(
+  app,
+  'PreviewPipelineStack',
+  {
+    env: {
+      account: process.env.CDK_DEFAULT_ACCOUNT,
+      region: 'eu-west-1',
+    },
+    stackName: 'PreviewPipelineStack-' + appEnv,
     tags: Config.tags,
   },
   appEnv
