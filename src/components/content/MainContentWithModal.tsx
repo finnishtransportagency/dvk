@@ -84,6 +84,13 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const [, setDocumentTitle] = useDocumentTitle(title);
   const pointerEventCache: PointerEvent[] = useMemo(() => [], []);
 
+  useEffect(() => {
+    if (state.preview) {
+      dvkMap.getSearchbarControl().disable();
+      dvkMap.getOpenSidebarMenuControl().disable();
+    }
+  }, [state.preview]);
+
   const removeEvent = useCallback(
     (e: PointerEvent) => {
       const index = pointerEventCache.findIndex((cachedEvent) => cachedEvent.pointerId === e.pointerId);

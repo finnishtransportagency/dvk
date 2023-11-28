@@ -599,6 +599,10 @@ class DvkMap {
     return this.centerToOwnLocationControl;
   };
 
+  public getOpenSidebarMenuControl = () => {
+    return this.openSidebarMenuControl;
+  };
+
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
