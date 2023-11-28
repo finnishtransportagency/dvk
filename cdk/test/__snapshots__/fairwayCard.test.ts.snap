@@ -116,7 +116,7 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
           "geometry": {
             "coordinates": [
               28.17,
-              61.52283,
+              61.5228333,
             ],
             "type": "Point",
           },
