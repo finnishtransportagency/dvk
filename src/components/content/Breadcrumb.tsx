@@ -54,7 +54,14 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
           </IonBreadcrumbs>
         </IonCol>
         <IonCol size="auto">
-          <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
+          <IonButton
+            disabled={state.preview}
+            fill="clear"
+            className="closeButton"
+            title={t('closePane')}
+            aria-label={t('closePane')}
+            onClick={() => backToHome()}
+          >
             <IonIcon className="otherIconLarge" src={closeIcon} />
           </IonButton>
         </IonCol>
