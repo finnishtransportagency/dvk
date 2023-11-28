@@ -198,7 +198,7 @@ export function updateIceLayerOpacity() {
   }
 }
 
-export const setFairwayCardByState = (
+export const setFairwayCardByPreview = (
   preview: boolean,
   id: string,
   data: FindAllFairwayCardsQuery | undefined,

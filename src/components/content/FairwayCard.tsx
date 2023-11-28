@@ -17,7 +17,7 @@ import { Fairway, FairwayCardPartsFragment, HarborPartsFragment, Pilot, Quay, Te
 import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import PrintIcon from '../../theme/img/print.svg?react';
-import { getCurrentDecimalSeparator, isMobile, setFairwayCardByState } from '../../utils/common';
+import { getCurrentDecimalSeparator, isMobile, setFairwayCardByPreview } from '../../utils/common';
 import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor, setSelectedQuay } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
@@ -1073,7 +1073,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
   const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id);
 
-  const fairwayCard = setFairwayCardByState(state.preview, id, data, previewData);
+  const fairwayCard = setFairwayCardByPreview(state.preview, id, data, previewData);
 
   //for disabling printing icon
   useEffect(() => {

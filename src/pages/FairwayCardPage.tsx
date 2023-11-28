@@ -19,7 +19,7 @@ import {
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile, setFairwayCardByState } from '../utils/common';
+import { isMobile, setFairwayCardByPreview } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
 
@@ -94,7 +94,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
 
   useEffect(() => {
     if (data && fairwayCardId && initDone) {
-      const fairwayCard = setFairwayCardByState(state.preview, fairwayCardId, data, previewData);
+      const fairwayCard = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
       if (fairwayCard) {
         setSelectedFairwayCard(fairwayCard);
         setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
