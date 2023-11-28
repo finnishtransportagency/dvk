@@ -87,6 +87,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   useEffect(() => {
     if (state.preview) {
       dvkMap.getSearchbarControl().disable();
+      dvkMap.getSearchbarControl().setPlaceholder('');
       dvkMap.getOpenSidebarMenuControl().disable();
     }
   }, [state.preview]);
@@ -267,7 +268,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
                   disabled={state.preview}
                   aria-disabled={state.preview}
                   className="searchBar"
-                  placeholder={t('search')}
+                  placeholder={state.preview ? '' : t('search')}
                   title={t('searchTitle')}
                   value={searchQuery}
                   onIonFocus={openDropdown}
