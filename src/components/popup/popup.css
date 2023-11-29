@@ -72,5 +72,3 @@ ion-row.negativeMargin {
   opacity: 0.5;
   pointer-events: none;
 }
-  console.log(state.preview);
-  opacity: state.preview ? '0.5' : '1', pointerEvents: state.preview ? 'none' : 'auto' 
