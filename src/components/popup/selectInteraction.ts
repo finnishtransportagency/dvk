@@ -47,46 +47,58 @@ function getLayers() {
   ];
 }
 
-const selectStyle = function (feature: FeatureLike, resolution: number) {
-  const type = feature.getProperties().featureType;
-  const dataSource = feature.getProperties().dataSource;
-  const selected: boolean | undefined = feature.getProperties().selected;
-  if (type === 'quay') {
-    return getQuayStyle(feature, resolution, true);
-  } else if (type === 'harbor') {
-    return getHarborStyle(feature, resolution, 0, true);
-  } else if (type === 'pilot') {
-    return getPilotStyle(true);
-  } else if (type === 'area' && dataSource === 'area12') {
+function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean | undefined) {
+  if (dataSource === 'area12') {
     return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
-  } else if (type === 'area' && dataSource === 'area3456') {
+  } else if (dataSource === 'area3456') {
     return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
-  } else if (type === 'specialarea2' || type === 'specialarea15') {
-    return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
-  } else if (type === 'line') {
-    return getLineStyle('#0000FF', 2);
-  } else if (type === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
-  } else if (type === 'safetyequipmentfault') {
-    return getSafetyEquipmentStyle(feature, resolution, true, true);
-  } else if (type === 'marinewarning') {
-    return getMarineWarningStyle(feature, true);
-  } else if (type === 'boardline') {
-    return getBoardLineStyle('#000000', 1);
-  } else if (type === 'mareograph') {
-    return getMareographStyle(feature, true, resolution);
-  } else if (type === 'observation') {
-    return getObservationStyle(true);
-  } else if (type === 'buoy') {
-    return getBuoyStyle(true);
-  } else if (type === 'vtsline' || type === 'vtspoint') {
-    return getVtsStyle(feature, true);
-  } else if (type === 'circle') {
-    return getCircleStyle(feature, resolution);
-  } else if (type === 'aisvessel') {
-    return getAisVesselLayerStyle(dataSource as FeatureLayerId, feature, resolution, true);
   } else {
     return undefined;
+  }
+}
+
+const selectStyle = function (feature: FeatureLike, resolution: number) {
+  const type = feature.getProperties().featureType;
+  const dataSource = feature.getProperties().dataSource as FeatureLayerId;
+  const selected: boolean | undefined = feature.getProperties().selected;
+
+  switch (type) {
+    case 'quay':
+      return getQuayStyle(feature, resolution, true);
+    case 'harbor':
+      return getHarborStyle(feature, resolution, 0, true);
+    case 'pilot':
+      return getPilotStyle(true);
+    case 'area':
+      return getAreaStyleBySource(dataSource, selected);
+    case 'specialarea2':
+    case 'specialarea15':
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
+    case 'line':
+      return getLineStyle('#0000FF', 2);
+    case 'safetyequipment':
+      return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
+    case 'safetyequipmentfault':
+      return getSafetyEquipmentStyle(feature, resolution, true, true);
+    case 'marinewarning':
+      return getMarineWarningStyle(feature, true);
+    case 'boardline':
+      return getBoardLineStyle('#000000', 1);
+    case 'mareograph':
+      return getMareographStyle(feature, true, resolution);
+    case 'observation':
+      return getObservationStyle(true);
+    case 'buoy':
+      return getBuoyStyle(true);
+    case 'vtsline':
+    case 'vtspoint':
+      return getVtsStyle(feature, true);
+    case 'circle':
+      return getCircleStyle(feature, resolution);
+    case 'aisvessel':
+      return getAisVesselLayerStyle(dataSource, feature, resolution, true);
+    default:
+      return undefined;
   }
 };
 
