@@ -515,5 +515,6 @@ ion-modal.contentModal {
 }
 
 .disabled {
+  pointer-events: none;
   opacity: 50%;
 }
