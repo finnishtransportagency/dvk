@@ -197,7 +197,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   useEffect(() => {
     setState(fairwayCard);
     setOldState(fairwayCard);
-    console.log(fairwayCard);
   }, [fairwayCard]);
 
   return (
