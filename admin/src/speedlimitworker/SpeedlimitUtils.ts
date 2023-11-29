@@ -2,7 +2,12 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { GeoJSON } from 'ol/format';
 import { MAP } from '../utils/constants';
-import * as turf from '@turf/turf';
+import intersect from '@turf/intersect';
+import flatten from '@turf/flatten';
+import union from '@turf/union';
+import truncate from '@turf/truncate';
+import * as turf_helpers from '@turf/helpers';
+import { Polygon as turf_Polygon } from 'geojson';
 import { intersects } from 'ol/extent';
 
 function getSpeedLimitFairwayAreas(rafs: Feature<Geometry>[], fafs: Feature<Geometry>[]): Feature<Geometry>[] {
@@ -20,7 +25,7 @@ function getSpeedLimitFairwayAreas(rafs: Feature<Geometry>[], fafs: Feature<Geom
 
 type SpeedLimitGeometry = {
   speedLimit: number;
-  geometry: turf.Polygon | turf.helpers.Feature<turf.helpers.Polygon | turf.helpers.MultiPolygon, turf.helpers.Properties>;
+  geometry: turf_Polygon | turf_helpers.Feature<turf_helpers.Polygon | turf_helpers.MultiPolygon, turf_helpers.Properties>;
 };
 
 function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeometry> {
@@ -33,12 +38,12 @@ function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeo
 
     const speedLimitGeometry = speedLimitGeometries.find((slg) => slg.speedLimit === speedLimit);
     if (speedLimitGeometry) {
-      const union = turf.union(speedLimitGeometry.geometry, raGeomPoly as turf.Polygon);
-      if (union) {
-        speedLimitGeometry.geometry = union;
+      const u = union(speedLimitGeometry.geometry, raGeomPoly as turf_Polygon);
+      if (u) {
+        speedLimitGeometry.geometry = u;
       }
     } else {
-      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf.Polygon });
+      speedLimitGeometries.push({ speedLimit: speedLimit, geometry: raGeomPoly as turf_Polygon });
     }
   }
   return speedLimitGeometries;
@@ -59,9 +64,9 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
 
     for (const faf of fafs) {
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
-      const intersection = turf.intersect(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon);
+      const intersection = intersect(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon);
       if (intersection) {
-        intersectionPolygons.push(turf.truncate(intersection));
+        intersectionPolygons.push(truncate(intersection));
       }
     }
     if (intersectionPolygons.length < 1) {
@@ -71,13 +76,13 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
     let intersectionUnion = intersectionPolygons[0];
 
     for (let i = 1; i < intersectionPolygons.length; i++) {
-      const union = turf.union(intersectionUnion, intersectionPolygons[i]);
-      if (union) {
-        intersectionUnion = union;
+      const u = union(intersectionUnion, intersectionPolygons[i]);
+      if (u) {
+        intersectionUnion = u;
       }
     }
 
-    const flattenIntersectionUnion = turf.flatten(intersectionUnion);
+    const flattenIntersectionUnion = flatten(intersectionUnion);
 
     for (const union of flattenIntersectionUnion.features) {
       const feat = format.readFeature(union.geometry, {

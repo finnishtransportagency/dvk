@@ -8,7 +8,8 @@ import { fromCircle } from 'ol/geom/Polygon';
 import LinearRing from 'ol/geom/LinearRing';
 import { asArray, Color } from 'ol/color';
 import { MAP } from '../../utils/constants';
-import * as turf from '@turf/turf';
+import transformTranslate from '@turf/transform-translate';
+import { point as turf_point } from '@turf/helpers';
 import vesselCargoIcon from '../../theme/img/ais/ais_vessel_cargo.svg';
 import vesselTankerIcon from '../../theme/img/ais/ais_vessel_tanker.svg';
 import vesselPassengerIcon from '../../theme/img/ais/ais_vessel_passenger.svg';
@@ -76,9 +77,9 @@ function getVesselHeading(feature: Feature): number | undefined {
 function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
   const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
-  const turfPoint = turf.point(wgs84Point.getCoordinates());
+  const turfPoint = turf_point(wgs84Point.getCoordinates());
   // Transform given point 1km to headng direction
-  const turfPoint2 = turf.transformTranslate(turfPoint, distance / 1000, heading);
+  const turfPoint2 = transformTranslate(turfPoint, distance / 1000, heading);
   const point2 = new Point(turfPoint2.geometry.coordinates);
   point2.transform('EPSG:4326', MAP.EPSG);
   return point2;

@@ -3,10 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import { IonApp, IonContent, IonRouterOutlet, setupIonicReact, IonAlert, useIonAlert, IonProgressBar } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { useTranslation } from 'react-i18next';
-/* React query offline cache */
-import { Query, QueryClient, useIsFetching } from '@tanstack/react-query';
-import { PersistQueryClientProvider, persistQueryClient } from '@tanstack/react-query-persist-client';
-import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { Query, QueryClient, QueryClientProvider, useIsFetching } from '@tanstack/react-query';
+import { experimental_createPersister } from '@tanstack/react-query-persist-client';
 import IdbAsyncStorage from './utils/IdbAsyncStorage';
 import { getMap, InitDvkMap } from './components/DvkMap';
 import { Lang, OFFLINE_STORAGE } from './utils/constants';
@@ -85,42 +83,33 @@ setupIonicReact({
   mode: 'md',
 });
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: OFFLINE_STORAGE.staleTime,
-      gcTime: OFFLINE_STORAGE.cacheTime,
-    },
-  },
-});
-
 /* Delete old react query ionic storage database "DVK", if still exist */
 if (window.indexedDB) {
   window.indexedDB.deleteDatabase('DVK');
 }
 
-const asyncStoragePersister = createAsyncStoragePersister({
-  storage: IdbAsyncStorage(),
-  throttleTime: 10000,
-});
+const idbAsyncStorage = IdbAsyncStorage();
 
-const persistOptions = {
-  persister: asyncStoragePersister,
-  buster: import.meta.env.VITE_APP_VERSION,
+/* Remove old react query cache "REACT_QUERY_OFFLINE_CACHE", if still exist */
+idbAsyncStorage.removeItem('REACT_QUERY_OFFLINE_CACHE');
+
+const queryFilter = (query: Query) => {
+  // Defaults to true. Do not persist only if meta.persist === false
+  return !(query.meta && query.meta.persist === false);
 };
 
-persistQueryClient({
-  queryClient: queryClient,
-  persister: asyncStoragePersister,
-  hydrateOptions: {},
-  dehydrateOptions: {
-    shouldDehydrateQuery: (query: Query) => {
-      /* Defaults to true. Do not persist only if meta.persist === false */
-      const persist = !(query.meta && query.meta.persist === false);
-      if (query.state.status === 'success' && persist) {
-        return true;
-      }
-      return false;
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: OFFLINE_STORAGE.staleTime,
+      gcTime: OFFLINE_STORAGE.cacheTime,
+      persister: experimental_createPersister({
+        storage: idbAsyncStorage,
+        buster: import.meta.env.VITE_APP_VERSION,
+        maxAge: OFFLINE_STORAGE.staleTime,
+        prefix: 'DVK_REACT_QUERY_STORAGE',
+        filters: { predicate: queryFilter },
+      }),
     },
   },
 });
@@ -339,11 +328,11 @@ const App: React.FC = () => {
   }, [showUpdateAlert, updating, t, originalSW]);
 
   return (
-    <PersistQueryClientProvider client={queryClient} persistOptions={persistOptions}>
+    <QueryClientProvider client={queryClient}>
       <DvkContext.Provider value={providerState}>
         <DvkIonApp />
       </DvkContext.Provider>
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 };
 
