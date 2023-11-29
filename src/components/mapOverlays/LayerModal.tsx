@@ -10,6 +10,7 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import VectorSource from 'ol/source/Vector';
 
 interface ModalProps {
   isOpen: boolean;
@@ -130,9 +131,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
   useEffect(() => {
     aisLayers.forEach((layerId) => {
-      const source = dvkMap.getVectorSource(layerId);
+      const featureLayer = dvkMap.getFeatureLayer(layerId);
+      const source = featureLayer.getSource() as VectorSource;
       source.forEachFeature((f) => f.set('showPathPredictor', showAisPredictor, true));
-      dvkMap.getFeatureLayer(layerId).changed();
+      featureLayer.changed();
     });
   }, [showAisPredictor]);
 
