@@ -2,12 +2,21 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { GeoJSON } from 'ol/format';
 import { MAP } from '../utils/constants';
-import * as turf from '@turf/turf';
+import { lineString } from '@turf/helpers';
+import lineSegment from '@turf/line-segment';
+import lineOverlap from '@turf/line-overlap';
+import length from '@turf/length';
+import {
+  Position as turf_Position,
+  LineString as turf_LineString,
+  Polygon as turf_Polygon,
+  FeatureCollection as turf_FeatureCollection,
+} from 'geojson';
 import { intersects } from 'ol/extent';
 
-function createFeature(featCoords: Array<turf.Position>, area1Properties: object | null, area2Properties: object | null) {
+function createFeature(featCoords: Array<turf_Position>, area1Properties: object | null, area2Properties: object | null) {
   const format = new GeoJSON();
-  const feat = format.readFeature(turf.lineString(featCoords), {
+  const feat = format.readFeature(lineString(featCoords), {
     dataProjection: 'EPSG:4326',
     featureProjection: MAP.EPSG,
   }) as Feature<Geometry>;
@@ -19,11 +28,11 @@ function createFeature(featCoords: Array<turf.Position>, area1Properties: object
 function getAreaBorderlineFeatures(
   areas: Feature<Geometry>[],
   index: number,
-  turfPolygonLineSegments: turf.FeatureCollection<turf.LineString>,
+  turfPolygonLineSegments: turf_FeatureCollection<turf_LineString>,
   segmentsNeighbour: Array<number | null>
 ) {
   const borderLineFeatures: Feature<Geometry>[] = [];
-  let featCoords: Array<turf.Position> = [];
+  let featCoords: Array<turf_Position> = [];
   for (let k = 0; k < turfPolygonLineSegments.features.length; k++) {
     const segmentLineString = turfPolygonLineSegments.features[k].geometry;
     if (featCoords.length < 1) {
@@ -47,17 +56,17 @@ function getAreaBorderlineFeatures(
 export function getFairwayAreaBorderFeatures(areas: Feature<Geometry>[]) {
   const format = new GeoJSON();
   const borderLineFeatures: Feature<Geometry>[] = [];
-  const turfPolygons: Array<turf.Polygon> = [];
+  const turfPolygons: Array<turf_Polygon> = [];
 
   areas.forEach((area, i) => {
     turfPolygons[i] = format.writeGeometryObject(area.getGeometry() as Geometry, {
       dataProjection: 'EPSG:4326',
       featureProjection: MAP.EPSG,
-    }) as turf.Polygon;
+    }) as turf_Polygon;
   });
 
   areas.forEach((area1, i) => {
-    const turfPolygonLineSegments = turf.lineSegment(turfPolygons[i]);
+    const turfPolygonLineSegments = lineSegment(turfPolygons[i]);
     const segmentsNeighbour: Array<number | null> = Array(turfPolygonLineSegments.features.length).fill(null);
     const area1Extent = area1.getGeometry()?.getExtent();
 
@@ -71,9 +80,9 @@ export function getFairwayAreaBorderFeatures(areas: Feature<Geometry>[]) {
       turfPolygonLineSegments.features.forEach((turfPolygonLineSegment, k) => {
         if (segmentsNeighbour[k] === null) {
           const segmentLineString = turfPolygonLineSegment.geometry;
-          const turfOverlappingSegment = turf.lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
+          const turfOverlappingSegment = lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
           // Do not consider polygon edge overlapping if segment length is small (for example polygon touches only in corner)
-          const turfOverlapFeatures = turfOverlappingSegment.features.filter((v) => turf.length(v) > 0.002);
+          const turfOverlapFeatures = turfOverlappingSegment.features.filter((v) => length(v) > 0.002);
           if (turfOverlapFeatures.length > 0) {
             segmentsNeighbour[k] = j;
           }

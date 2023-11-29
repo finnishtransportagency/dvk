@@ -6,8 +6,8 @@ const aisV1Path = 'ais/api/ais/v1/';
 
 function getTimestampParams(): Record<string, string> {
   const now = Date.now();
-  const yesterday = Date.now() - 24 * 60 * 60 * 1000;
-  return { from: yesterday.toString(), to: now.toString() };
+  const startTime = Date.now() - 5 * 60 * 1000; // 5 minutes ago
+  return { from: startTime.toString(), to: now.toString() };
 }
 
 function parseFrom64BitInteger(integer: number, bitStart: number, bitEnd: number) {
