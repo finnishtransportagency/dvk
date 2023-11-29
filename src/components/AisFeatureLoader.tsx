@@ -9,6 +9,7 @@ import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
 import { calculateVesselDimensions } from '../utils/aisUtils';
+import VectorSource from 'ol/source/Vector';
 
 type VesselData = {
   name: string;
@@ -126,6 +127,15 @@ function useAisLayer(layerId: FeatureDataLayerId) {
     }
     layer.set('errorUpdatedAt', errorUpdatedAt);
   }, [ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, state.layers, layerId]);
+
+  useEffect(() => {
+    if (ready) {
+      const layer = dvkMap.getFeatureLayer(layerId);
+      const source = layer.getSource() as VectorSource;
+      source.forEachFeature((f) => f.set('showPathPredictor', state.showAisPredictor, true));
+      layer.changed();
+    }
+  }, [ready, state.showAisPredictor, layerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

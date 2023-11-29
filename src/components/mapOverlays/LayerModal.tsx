@@ -3,14 +3,13 @@ import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon
 import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
-import { FeatureDataLayerId, FeatureDataMainLayerId, MAP, aisLayers } from '../../utils/constants';
+import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
 import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
-import VectorSource from 'ol/source/Vector';
 
 interface ModalProps {
   isOpen: boolean;
@@ -29,7 +28,7 @@ export type LayerType = {
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
-  const { isOffline, layers, showAisPredictor } = state;
+  const { isOffline, layers } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
@@ -128,15 +127,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
-
-  useEffect(() => {
-    aisLayers.forEach((layerId) => {
-      const featureLayer = dvkMap.getFeatureLayer(layerId);
-      const source = featureLayer.getSource() as VectorSource;
-      source.forEachFeature((f) => f.set('showPathPredictor', showAisPredictor, true));
-      featureLayer.changed();
-    });
-  }, [showAisPredictor]);
 
   return (
     <IonModal
