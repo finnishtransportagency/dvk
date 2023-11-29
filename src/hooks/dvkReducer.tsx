@@ -8,6 +8,7 @@ export type State = {
   showAisPredictor: boolean;
   response: string[];
   locationPermission: UserLocationPermission;
+  preview: boolean;
 };
 
 // Set initial state
@@ -18,6 +19,7 @@ export const initialState: State = {
   showAisPredictor: false,
   response: [],
   locationPermission: 'off',
+  preview: false,
 };
 
 export type Action =
@@ -51,6 +53,12 @@ export type Action =
         value: UserLocationPermission;
       };
     }
+  | {
+      type: 'setPreview';
+      payload: {
+        value: boolean;
+      };
+    }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
@@ -74,6 +82,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'setLocationPermission':
       newState = { ...state, locationPermission: action.payload.value };
+      break;
+    case 'setPreview':
+      newState = { ...state, preview: action.payload.value };
       break;
     case 'reset':
       return initialState;

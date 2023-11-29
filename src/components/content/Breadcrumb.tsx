@@ -3,6 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type PathItem = {
   title?: string;
@@ -17,6 +18,7 @@ type BreadcrumbProps = {
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const history = useHistory();
+  const { state } = useDvkContext();
 
   const backToHome = () => {
     history.push('/');
@@ -27,12 +29,14 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
       <IonRow className="ion-align-items-center">
         <IonCol>
           <IonBreadcrumbs>
-            <IonBreadcrumb routerLink="/">
+            <IonBreadcrumb routerLink="/" disabled={state.preview} aria-disabled={state.preview}>
               {t('home')}
               <IonLabel slot="separator">&gt;</IonLabel>
             </IonBreadcrumb>
             {path.map((item, idx) => (
               <IonBreadcrumb
+                disabled={state.preview}
+                aria-disabled={state.preview}
                 key={item.route || item.title}
                 routerLink={idx < path.length - 1 ? item.route : undefined}
                 onClick={item.onClick}
@@ -50,7 +54,14 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
           </IonBreadcrumbs>
         </IonCol>
         <IonCol size="auto">
-          <IonButton fill="clear" className="closeButton" title={t('closePane')} aria-label={t('closePane')} onClick={() => backToHome()}>
+          <IonButton
+            disabled={state.preview}
+            fill="clear"
+            className="closeButton"
+            title={t('closePane')}
+            aria-label={t('closePane')}
+            onClick={() => backToHome()}
+          >
             <IonIcon className="otherIconLarge" src={closeIcon} />
           </IonButton>
         </IonCol>

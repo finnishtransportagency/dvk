@@ -10,6 +10,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type PilotPopupContentProps = {
   pilot: PilotProperties;
@@ -24,6 +25,7 @@ export type PilotProperties = {
 const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -55,7 +57,9 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
             return (
               <IonRow key={card.id}>
                 <IonCol>
-                  <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                  <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                    {card.name[lang]}
+                  </Link>
                 </IonCol>
               </IonRow>
             );

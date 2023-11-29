@@ -13,15 +13,15 @@ import {
   IonText,
 } from '@ionic/react';
 import { Trans, useTranslation } from 'react-i18next';
-import { Fairway, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../../graphql/generated';
+import { Fairway, FairwayCardPartsFragment, HarborPartsFragment, Pilot, Quay, Text, Tug, Vts } from '../../graphql/generated';
 import { metresToNauticalMiles } from '../../utils/conversions';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import PrintIcon from '../../theme/img/print.svg?react';
-import { getCurrentDecimalSeparator, isMobile } from '../../utils/common';
+import { getCurrentDecimalSeparator, isMobile, setFairwayCardByPreview } from '../../utils/common';
 import { setSelectedFairwayCard, setSelectedPilotPlace, setSelectedFairwayArea, setSelectedHarbor, setSelectedQuay } from '../layers';
 import { Lang, MASTERSGUIDE_URLS, N2000_URLS, PILOTORDER_URL } from '../../utils/constants';
 import PrintMap from '../PrintMap';
-import { useFairwayCardListData } from '../../utils/dataLoader';
+import { useFairwayCardListData, useFairwayCardPreviewData } from '../../utils/dataLoader';
 import Breadcrumb from './Breadcrumb';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import Phonenumber from './Phonenumber';
@@ -793,6 +793,7 @@ interface AlertProps {
 
 const Alert: React.FC<AlertProps> = ({ fairwayCardId }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { state } = useDvkContext();
   return (
     <IonGrid className="top-margin alert danger">
       <IonRow className="ion-align-items-center">
@@ -800,59 +801,51 @@ const Alert: React.FC<AlertProps> = ({ fairwayCardId }) => {
           <IonIcon icon={alertIcon} color="danger" />
         </IonCol>
         <IonCol>
-          <Trans t={t} i18nKey="alert">
-            The {{ fairwayCardId }} fairway card you requested was not found. Check the site address for typos. You can also check if the fairway card
-            you are looking for can be found in the <Link to="/kortit">Fairway cards</Link> listing.
-          </Trans>
+          {state.preview ? (
+            <Trans t={t} i18nKey="previewAlert">
+              The {{ fairwayCardId }} fairway card you requested was not found. Check the site address for typos.
+            </Trans>
+          ) : (
+            <Trans t={t} i18nKey="alert">
+              The {{ fairwayCardId }} fairway card you requested was not found. Check the site address for typos. You can also check if the fairway
+              card you are looking for can be found in the <Link to="/kortit">Fairway cards</Link> listing.
+            </Trans>
+          )}
         </IonCol>
       </IonRow>
     </IonGrid>
   );
 };
 
-type FairwayCardProps = {
-  id: string;
+interface FairwayCardContentProps {
+  fairwayCardId: string;
+  fairwayCard: FairwayCardPartsFragment | undefined;
+  isPending: boolean;
+  dataUpdatedAt: number;
+  isFetching: boolean;
+  printDisabled: boolean;
   widePane?: boolean;
-};
+}
 
-const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
+const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
+  fairwayCardId,
+  fairwayCard,
+  isPending,
+  dataUpdatedAt,
+  isFetching,
+  widePane,
+  printDisabled,
+}) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
 
-  const [moveEnd, setMoveEnd] = useState(true);
-  const [renderComplete, setRenderComplete] = useState(true);
-  const [printDisabled, setPrintDisabled] = useState(true);
+  const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
 
-  const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
-  const filteredFairwayCard = data?.fairwayCards.filter((card) => card.id === id);
-  const fairwayCard = filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
-
-  const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
-  //for disabling printing icon
-  useEffect(() => {
-    const handleMoveStart = () => {
-      setMoveEnd(false);
-      setRenderComplete(false);
-    };
-    const handleMoveEnd = () => {
-      setMoveEnd(true);
-    };
-    const handleRenderComplete = () => {
-      setRenderComplete(true);
-    };
-
-    dvkMap.olMap?.on('movestart', handleMoveStart);
-    dvkMap.olMap?.on('moveend', handleMoveEnd);
-    dvkMap.olMap?.on('rendercomplete', handleRenderComplete);
-
-    setPrintDisabled(!(moveEnd && renderComplete));
-    return () => {
-      dvkMap.olMap?.un('moveend', handleMoveStart);
-      dvkMap.olMap?.un('loadend', handleMoveEnd);
-      dvkMap.olMap?.un('rendercomplete', handleRenderComplete);
-    };
-  }, [moveEnd, renderComplete]);
+  const getTabClassName = (tabId: number): string => {
+    return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
+  };
 
   const getTabLabel = (tabId: number): string => {
     switch (tabId) {
@@ -867,10 +860,6 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     }
   };
 
-  const getTabClassName = (tabId: number): string => {
-    return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
-  };
-
   const path = [
     {
       title: t('title', { count: 0 }),
@@ -878,7 +867,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
     },
     {
       title: fairwayCard?.name[lang] ?? fairwayCard?.name.fi ?? '',
-      route: '/kortit/' + id,
+      route: '/kortit/' + fairwayCardId,
       onClick: () => {
         setSelectedFairwayCard(fairwayCard);
       },
@@ -905,11 +894,10 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50vh', marginTop: '20px' }}></IonSkeletonText>
         </>
       )}
-      {!isPending && !fairwayCard && <Alert fairwayCardId={id} />}
+      {!isPending && !fairwayCard && <Alert fairwayCardId={fairwayCardId} />}
       {!isPending && fairwayCard && (
         <>
           <Breadcrumb path={path} />
-
           <IonGrid className="ion-no-padding ion-margin-top">
             <IonRow>
               <IonCol>
@@ -940,23 +928,33 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
             <IonRow>
               <IonCol>
                 <IonText className="fairwayTitle">
-                  <em>
-                    {t('modified')}{' '}
-                    {t('modifiedDate', {
-                      val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
-                    })}
-                    {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
-                  </em>
-                  <br />
-                  <em className="no-print">
-                    {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
-                    {(isPending || isFetching) && (
-                      <IonSkeletonText
-                        animated={true}
-                        style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
-                      />
-                    )}
-                  </em>
+                  {state.preview ? (
+                    <>
+                      <em id="emphasizedPreviewText">Väyläkortin esikatselu</em>
+                      <br />
+                      <em>-</em>
+                    </>
+                  ) : (
+                    <>
+                      <em>
+                        {t('modified')}{' '}
+                        {t('modifiedDate', {
+                          val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
+                        })}
+                        {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                      </em>
+                      <br />
+                      <em className="no-print">
+                        {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+                        {(isPending || isFetching) && (
+                          <IonSkeletonText
+                            animated={true}
+                            style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
+                          />
+                        )}
+                      </em>
+                    </>
+                  )}
                 </IonText>
               </IonCol>
               <IonCol size="auto" className="ion-align-self-start">
@@ -1064,6 +1062,62 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
           )}
         </>
       )}
+    </>
+  );
+};
+
+type FairwayCardProps = {
+  id: string;
+  widePane?: boolean;
+};
+
+const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
+  const [moveEnd, setMoveEnd] = useState(true);
+  const [renderComplete, setRenderComplete] = useState(true);
+  const [printDisabled, setPrintDisabled] = useState(true);
+  const { state } = useDvkContext();
+
+  const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
+  const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id);
+
+  const fairwayCard = setFairwayCardByPreview(state.preview, id, data, previewData);
+
+  //for disabling printing icon
+  useEffect(() => {
+    const handleMoveStart = () => {
+      setMoveEnd(false);
+      setRenderComplete(false);
+    };
+    const handleMoveEnd = () => {
+      setMoveEnd(true);
+    };
+    const handleRenderComplete = () => {
+      setRenderComplete(true);
+    };
+
+    dvkMap.olMap?.on('movestart', handleMoveStart);
+    dvkMap.olMap?.on('moveend', handleMoveEnd);
+    dvkMap.olMap?.on('rendercomplete', handleRenderComplete);
+
+    setPrintDisabled(!(moveEnd && renderComplete));
+    return () => {
+      dvkMap.olMap?.un('moveend', handleMoveStart);
+      dvkMap.olMap?.un('loadend', handleMoveEnd);
+      dvkMap.olMap?.un('rendercomplete', handleRenderComplete);
+    };
+  }, [moveEnd, renderComplete]);
+
+  return (
+    <>
+      <FairwayCardContent
+        fairwayCardId={id}
+        fairwayCard={fairwayCard}
+        isPending={state.preview ? previewPending : isPending}
+        dataUpdatedAt={dataUpdatedAt}
+        isFetching={state.preview ? previewFetching : isFetching}
+        printDisabled={printDisabled}
+        widePane={widePane}
+      />
     </>
   );
 };

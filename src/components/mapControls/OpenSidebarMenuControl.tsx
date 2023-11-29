@@ -24,6 +24,11 @@ class OpenSidebarMenuControl extends Control {
     this.buttonElement.title = label;
     this.buttonElement.ariaLabel = label;
   }
+
+  public disable() {
+    this.buttonElement.disabled = true;
+    this.buttonElement.style.opacity = '0.5';
+  }
 }
 
 export default OpenSidebarMenuControl;
