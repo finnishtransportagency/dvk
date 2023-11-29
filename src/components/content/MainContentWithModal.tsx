@@ -198,8 +198,10 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
 
   const contentRef = useRef<HTMLIonContentElement>(null);
   const backToHome = () => {
-    modal.current?.dismiss();
-    history.push('/');
+    if (!state.preview) {
+      modal.current?.dismiss();
+      history.push('/');
+    }
   };
 
   const checkBreakpoint = () => {
