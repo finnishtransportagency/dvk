@@ -249,6 +249,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       className={'contentModal' + (state.modalBreakpoint === 1 ? ' full' : '')}
       onDidDismiss={() => backToHome()}
       onIonBreakpointDidChange={() => checkBreakpoint()}
+      canDismiss={!state.preview}
     >
       <IonContent className="ion-padding" ref={contentRef}>
         <IonGrid className="searchBar ion-no-padding no-print">
