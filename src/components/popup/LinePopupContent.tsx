@@ -12,6 +12,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import dvkMap from '../DvkMap';
 import { deselectClickSelection } from './popup';
 import CloseButton from './CloseButton';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -32,6 +33,7 @@ type FairwayCardIdName = {
 const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const fairwayCards: FairwayCardIdName[] = [];
   line.properties?.fairways?.forEach((f) => {
@@ -143,7 +145,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
           return (
             <IonRow key={'cardlink' + card.id}>
               <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                  {card.name[lang]}
+                </Link>
               </IonCol>
             </IonRow>
           );

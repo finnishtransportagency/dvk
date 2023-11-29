@@ -67,3 +67,8 @@ ion-row.negativeMargin {
   border-width: 1px;
   border-color: var(--ion-color-light);
 }
+
+.disableLink {
+  opacity: 0.5;
+  pointer-events: none;
+}
