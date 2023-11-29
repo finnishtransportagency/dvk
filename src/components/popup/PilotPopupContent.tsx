@@ -8,7 +8,7 @@ import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type PilotPopupContentProps = {

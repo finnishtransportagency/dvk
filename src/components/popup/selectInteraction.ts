@@ -117,3 +117,11 @@ export function addPointerClickInteraction(map: Map) {
   pointerClickSelect.set('name', 'clickSelection');
   map.addInteraction(pointerClickSelect);
 }
+
+export function deselectClickSelection() {
+  dvkMap.olMap?.getInteractions()?.forEach((int) => {
+    if (int.get('name') === 'clickSelection') {
+      (int as Select).getFeatures().clear();
+    }
+  });
+}

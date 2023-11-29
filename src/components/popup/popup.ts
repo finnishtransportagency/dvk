@@ -4,7 +4,6 @@ import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { MAP } from '../../utils/constants';
-// eslint-disable-next-line import/named
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { GeoJSON } from 'ol/format';
@@ -19,15 +18,7 @@ import distance from '@turf/distance';
 import bearing from '@turf/bearing';
 import { Point as turf_Point, LineString as turf_LineString, Polygon as turf_Polygon } from 'geojson';
 import { Coordinate } from 'ol/coordinate';
-import { addPointerClickInteraction, addPointerMoveInteraction } from './selectInteraction';
-
-export function deselectClickSelection() {
-  dvkMap.olMap?.getInteractions()?.forEach((int) => {
-    if (int.get('name') === 'clickSelection') {
-      (int as Select).getFeatures().clear();
-    }
-  });
-}
+import { addPointerClickInteraction, addPointerMoveInteraction, deselectClickSelection } from './selectInteraction';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;

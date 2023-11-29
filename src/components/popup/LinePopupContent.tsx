@@ -10,7 +10,7 @@ import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import dvkMap from '../DvkMap';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type LinePopupContentProps = {

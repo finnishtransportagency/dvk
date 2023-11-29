@@ -8,7 +8,7 @@ import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type EquipmentPopupContentProps = {
