@@ -83,3 +83,9 @@ export function getCountryCode(mmsi: number): CountryCode | undefined {
   const countryCode = countryTable.get(mid);
   return countryCode;
 }
+
+export const isVesselMoving = (navStat: number, speed: number) => {
+  const movingNavStats = [0, 2, 3, 4, 7, 8];
+
+  return movingNavStats.includes(navStat) || speed > 3;
+};

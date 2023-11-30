@@ -48,7 +48,7 @@ export type AisVesselProperties = {
 
 const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, setPopupProperties }) => {
   const { t } = useTranslation();
-
+  console.log(vessel);
   const properties = vessel.properties;
   const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
