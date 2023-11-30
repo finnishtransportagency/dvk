@@ -337,9 +337,9 @@ ion-modal#layerModalContainer::part(content) {
 }
 #layerModalContainer ion-item .aisShowPredictor {
   top: 0px !important;
-  width: 20px;
-  height: 20px;
-  background: url('../../theme/img/speed_vector.svg') no-repeat right;
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/speed_vector.svg') no-repeat center;
   background-size: cover;
 }
 
