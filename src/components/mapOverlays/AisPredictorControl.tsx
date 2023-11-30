@@ -39,6 +39,7 @@ const AisPredictorControl: React.FC = () => {
             <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
               {t('homePage.map.controls.layer.aisShowPredictor')}
             </IonText>
+            <IonText className={'layerLegend layer ' + title}></IonText>
           </IonCheckbox>
         </IonItem>
       </IonCol>

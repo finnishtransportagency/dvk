@@ -90,6 +90,13 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
           )}
         </IonCol>
       </IonRow>
+      {currentLayer.id === 'ais' && (
+        <IonRow className={'toggle mainToggle ' + (legendOpen ? 'show' : 'hide')}>
+          <IonCol>
+            <AisPredictorControl />
+          </IonCol>
+        </IonRow>
+      )}
       <IonRow className={'toggle mainToggle ' + (legendOpen ? 'show' : 'hide')}>
         <IonCol>
           <IonList lines="none" className="ion-no-padding" aria-label={currentLayer.title}>
@@ -99,13 +106,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
           </IonList>
         </IonCol>
       </IonRow>
-      {currentLayer.id === 'ais' && (
-        <IonRow className={'toggle predictorControl ' + (legendOpen ? 'show' : 'hide')}>
-          <IonCol>
-            <AisPredictorControl />
-          </IonCol>
-        </IonRow>
-      )}
     </IonGrid>
   );
 };

@@ -335,6 +335,13 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .aisunspecified {
   background: url('../../theme/img/ais/ais_unspecified.svg') no-repeat center;
 }
+#layerModalContainer ion-item .aisShowPredictor {
+  top: 0px !important;
+  width: 20px;
+  height: 20px;
+  background: url('../../theme/img/speed_vector.svg') no-repeat right;
+  background-size: cover;
+}
 
 #layerModalContainer ion-checkbox {
   display: block;
@@ -421,9 +428,6 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-row.mainToggle {
   border-top: none;
   padding-left: 24px;
-}
-#layerModalContainer ion-row.predictorControl {
-  margin-left: 24px;
 }
 #layerModalContainer ion-row.hide {
   max-height: 0;
