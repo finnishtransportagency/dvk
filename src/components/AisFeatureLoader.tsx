@@ -135,7 +135,7 @@ function useAisLayer(layerId: FeatureDataLayerId) {
       source.forEachFeature((f) => f.set('showPathPredictor', state.showAisPredictor, true));
       layer.changed();
     }
-  }, [ready, state.showAisPredictor, layerId]);
+  }, [ready, state.showAisPredictor, layerId, dataUpdatedAt]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
