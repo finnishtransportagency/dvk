@@ -121,6 +121,26 @@ export class SquatSite extends Construct {
       exportName: 'AdminBucket' + props.env,
     });
 
+    const previewBucket = new s3.Bucket(this, 'PreviewSiteBucket', {
+      bucketName: `preview.${siteDomain}`,
+      publicReadAccess: false,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      encryption: BucketEncryption.S3_MANAGED,
+      ...s3DeletePolicy,
+    });
+    previewBucket.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: [previewBucket.arnForObjects('*')],
+        principals: [new iam.CanonicalUserPrincipal(cloudfrontOAI.cloudFrontOriginAccessIdentityS3CanonicalUserId)],
+      })
+    );
+    new CfnOutput(parent, 'PreviewBucket', {
+      value: previewBucket.bucketName,
+      description: 'The name of Preview app S3',
+      exportName: 'PreviewBucket' + props.env,
+    });
+
     // Accesss log bucket
     const logBucket = new s3.Bucket(this, 'LogBucket', {
       bucketName: `dvk-access-logs-${props.env}`,
@@ -227,6 +247,26 @@ export class SquatSite extends Construct {
       functionAssociations: [
         {
           function: adminCfFunction,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
+      responseHeadersPolicy: Config.isPermanentEnvironment() ? strictTransportSecurityResponsePolicy : undefined,
+      trustedKeyGroups: keyGroups,
+    };
+
+    const previewRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/previewRequestRouter.js`).toString('utf-8');
+    const previewCfFunction = new cloudfront.Function(this, 'PreviewRouterFunction' + props.env, {
+      code: cloudfront.FunctionCode.fromInline(previewRouterSourceCode),
+    });
+
+    const previewBehavior: BehaviorOptions = {
+      origin: new cloudfront_origins.S3Origin(previewBucket, { originAccessIdentity: cloudfrontOAI }),
+      compress: true,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: previewCfFunction,
           eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
         },
       ],
@@ -351,6 +391,9 @@ export class SquatSite extends Construct {
       'yllapito/kirjaudu.html': apiProxyBehavior,
       'yllapito/api/*': apiProxyBehavior,
       'yllapito*': adminBehavior,
+      'esikatselu/graphql': graphqlProxyBehavior,
+      'esikatselu/api/*': apiProxyBehavior,
+      'esikatselu*': previewBehavior,
       '/oauth2/*': apiProxyBehavior,
       '/sso/*': apiProxyBehavior,
     };

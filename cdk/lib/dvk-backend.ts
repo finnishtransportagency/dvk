@@ -70,7 +70,7 @@ export class DvkBackendStack extends Stack {
     const layer = LayerVersion.fromLayerVersionArn(
       this,
       'ParameterLayer',
-      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
+      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
     );
 
     const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
