@@ -186,7 +186,7 @@ export function useBoardLine12Layer() {
 }
 
 export function useMareographLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('mareograph');
@@ -194,13 +194,13 @@ export function useMareographLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useObservationLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('observation');
@@ -208,13 +208,13 @@ export function useObservationLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
 }
 
 export function useBuoyLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('buoy');
@@ -222,7 +222,7 @@ export function useBuoyLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
 }

@@ -7,7 +7,7 @@ import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../fea
 import { getMap } from '../DvkMap';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';

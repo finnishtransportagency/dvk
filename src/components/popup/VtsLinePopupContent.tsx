@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { VtsPopupContentProps } from './VtsPointPopupContent';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 const VtsLinePopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupProperties }) => {

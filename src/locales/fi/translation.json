@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Hinaajat ja erikoisalukset",
           "aisVesselPleasureCraft": "Huviveneet",
           "aisUnspecified": "Määrittelemättömät alukset",
+          "aisShowPredictor": "Alusten nopeusvektorit",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",

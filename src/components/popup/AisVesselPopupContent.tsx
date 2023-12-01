@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { AisFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';

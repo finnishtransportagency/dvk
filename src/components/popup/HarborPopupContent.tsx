@@ -8,7 +8,7 @@ import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { Link } from 'react-router-dom';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
 
