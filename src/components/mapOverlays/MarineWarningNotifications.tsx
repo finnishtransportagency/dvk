@@ -8,6 +8,7 @@ import { useMarineWarningsDataWithRelatedDataInvalidation } from '../../utils/da
 import { MarineWarning } from '../../graphql/generated';
 import marineWarningIcon from '../../theme/img/merivaroitus_ikoni_plain.svg';
 import infoIcon from '../../theme/img/info.svg';
+import './MarineWarningNotifications.css';
 
 interface MarineWarningNotificationsProps {
   showMarineWarnings: boolean;
