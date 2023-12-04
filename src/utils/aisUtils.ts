@@ -1,3 +1,4 @@
+import { TFunction } from 'i18next';
 import { CountryCode, countryTable } from './countryCodes';
 
 export const getAisVesselShipType = (typeNumber?: number): string => {
@@ -37,8 +38,31 @@ export const reformatAisVesselDataUpdatedTime = (dateTimeString: Date): string =
   return formattedDatetime.replace(' ', ', ');
 };
 
-export const checkIfMoored = (navState: number): boolean => {
-  return !(navState === 0 || navState === 3 || navState === 4 || navState === 7 || navState === 8);
+export const getNavState = (t: TFunction, navState: number): string | undefined => {
+  switch (navState) {
+    case 0:
+      return t('popup.ais.moving');
+    case 1:
+      return t('popup.ais.anchored');
+    case 2:
+      return t('popup.ais.noCommand');
+    case 3:
+      return t('popup.ais.restricted');
+    case 4:
+      return t('popup.ais.constrained');
+    case 5:
+      return t('popup.ais.moored');
+    case 6:
+      return t('popup.ais.aground');
+    case 7:
+      return t('popup.ais.fishing');
+    case 8:
+      return t('popup.ais.sailing');
+    case 14:
+      return t('popup.ais.emergency');
+    default:
+      return undefined;
+  }
 };
 
 export const calculateVesselDimensions = (a?: number, b?: number, c?: number, d?: number): number[] => {
@@ -59,3 +83,9 @@ export function getCountryCode(mmsi: number): CountryCode | undefined {
   const countryCode = countryTable.get(mid);
   return countryCode;
 }
+
+export const isVesselMoving = (navStat: number, speed: number) => {
+  const movingNavStats = [0, 2, 3, 4, 7, 8];
+
+  return movingNavStats.includes(navStat) || speed > 3;
+};

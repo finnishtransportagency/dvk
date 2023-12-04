@@ -18,8 +18,7 @@ import vesselTugAndSpecialCraftIcon from '../../theme/img/ais/ais_vessel_tug_and
 import vesselPleasureCraftIcon from '../../theme/img/ais/ais_vessel_pleasure_craft.svg';
 import unspecifiedIcon from '../../theme/img/ais/ais_unspecified.svg';
 import { Coordinate } from 'ol/coordinate';
-
-const movingNavStats = [0, 3, 4, 7, 8];
+import { isVesselMoving } from '../../utils/aisUtils';
 
 function getSvgArrowHead(strokeColor: string) {
   const svg =
@@ -120,7 +119,7 @@ function getVesselGeometry(feature: Feature): Polygon | undefined {
   const geom = feature.getGeometry() as Point;
   const rotation = getRotation(feature);
   if (geom && rotation !== undefined && props.vesselWidth && props.vesselLength) {
-    const vesselMoving = movingNavStats.includes(props.navStat);
+    const vesselMoving = isVesselMoving(props.navStat, props.sog);
     const polygonPoints: Array<number[]> = [];
     const coordinates = geom.getCoordinates();
     const x = coordinates[0];
@@ -219,8 +218,9 @@ function getRealSizeVesselStyle(feature: FeatureLike, selected: boolean, stylePr
     stroke: new Stroke({ width: selected ? 2 : 1, color: styleProps.strokeColor }),
     geometry: getVesselGeometry(feature as Feature),
   });
+  const vesselMoving = isVesselMoving(props.navStat, props.sog);
   /* Set opacity to anchored vessels */
-  if (!movingNavStats.includes(props.navStat)) {
+  if (!vesselMoving) {
     const color = vesselStyle.getFill()?.getColor();
     if (color) {
       const colorArray = asArray(color as Color).slice();
@@ -279,7 +279,7 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
   const vesselLength = props.vesselLength ?? 0;
   const vesselWidth = props.vesselWidth ?? 0;
   const resLimit = vesselLength > 50 ? 2 : 1;
-  const vesselMoving = movingNavStats.includes(props.navStat);
+  const vesselMoving = isVesselMoving(props.navStat, props.sog);
   let pathPredictorStartFromBow = false;
   const showPathPredictor = feature.get('showPathPredictor');
 
@@ -288,7 +288,7 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
   if (resolution < resLimit && vesselWidth > 0 && vesselLength > 0 && getVesselHeading(feature as Feature) !== undefined) {
     styles.push(getRealSizeVesselStyle(feature as Feature, selected, styleProps));
     pathPredictorStartFromBow = true;
-  } else if (movingNavStats.includes(props.navStat)) {
+  } else if (vesselMoving) {
     styles.push(getMovingVesselIconStyle(feature as Feature, selected, styleProps));
   } else {
     styles.push(getAnchoredVesselIconStyle(feature as Feature, selected, styleProps));

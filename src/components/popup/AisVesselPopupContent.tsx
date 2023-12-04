@@ -7,7 +7,7 @@ import { deselectClickSelection } from './selectInteraction';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
-import { checkIfMoored, getAisVesselShipType, getCountryCode, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
+import { getAisVesselShipType, getCountryCode, getNavState, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';
 import CloseButton from './CloseButton';
 
@@ -52,7 +52,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const properties = vessel.properties;
   const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
   const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
-  const navState = checkIfMoored(properties.navStat) ? t('popup.ais.moored') : t('popup.ais.moving');
+  const navState = getNavState(t, properties.navStat);
   //check for unavailable properties (unavailable values: speed==102.3 and course===360)
   const speed = properties.sog > 102 ? '-' : properties.sog + 'kn';
   const course = properties.cog === 360 ? '-' : Math.round(properties.cog) + '°';
