@@ -34,7 +34,7 @@ export class DvkBuildImageStack extends Stack {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'feature/DVK-1168-kayttotilastojen-parannukset',
+      branch: env === 'prod' ? 'prod' : 'main',
       trigger: GitHubTrigger.NONE,
     });
 
