@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2D6D4E2B-18C7-4160-9F8A-113D81A3BCD0</title>
+    <defs>
+        <path d="M2.51898652,0.000879491167 L2.51898652,19" id="path-1"></path>
+        <polyline id="path-2" points="-6.51793954e-13 2.51980664 2.51916463 0.000642002162 5.03773555 2.51980664"></polyline>
+    </defs>
+    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="traffic_situation_layer_open_alt" transform="translate(-1353, -472)">
+            <g id="pohja" transform="translate(1112, 6)">
+                <g id="merivedenkorkeus-copy" transform="translate(52, 457)">
+                    <g id="symbol_wrapper" transform="translate(190, 11)">
+                        <rect id="wrapper" x="0" y="0" width="18" height="18"></rect>
+                        <g id="Group-5" transform="translate(8.9989, 9) rotate(45) translate(-8.9989, -9)translate(6.48, -0.5)" stroke-linecap="round">
+                            <g id="Stroke-3" stroke-dasharray="4,2">
+                                <use stroke="#FFFFFF" stroke-width="2" xlink:href="#path-1"></use>
+                                <use stroke="#333333" stroke-width="1" xlink:href="#path-1"></use>
+                            </g>
+                            <g id="Stroke-1">
+                                <use stroke="#FFFFFF" stroke-width="2" xlink:href="#path-2"></use>
+                                <use stroke="#333333" stroke-width="1" xlink:href="#path-2"></use>
+                            </g>
+                            <line x1="2.51760712" y1="-5.42846583e-12" x2="2.51756176" y2="2.37489006" id="Stroke-3" stroke="#333333" stroke-dasharray="2,1"></line>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

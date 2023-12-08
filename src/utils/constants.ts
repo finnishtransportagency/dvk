@@ -339,3 +339,13 @@ export const marineWarningAreas = [
 ];
 
 export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
+
+export const aisLayers: FeatureDataLayerId[] = [
+  'aisvesselcargo',
+  'aisvesseltanker',
+  'aisvesselpassenger',
+  'aisvesselhighspeed',
+  'aisvesseltugandspecialcraft',
+  'aisvesselpleasurecraft',
+  'aisunspecified',
+];

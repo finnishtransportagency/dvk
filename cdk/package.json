@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
+    "watch:backend": "watch 'npm run deploy:backend:hotswap' ./lib/lambda",
     "test": "cross-env LOG_LEVEL=silent TZ=UTC jest",
     "update:snapshot": "cross-env LOG_LEVEL=silent TZ=UTC jest --updateSnapshot",
     "cdk": "cdk",
@@ -19,9 +20,9 @@
     "deploy:backend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never && cross-env ./bin/setstackpolicy.sh DvkBackendStack",
     "deploy:backend:hotswap": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never --hotswap-fallback",
     "deploy:frontend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkUsEastStack SquatSiteStack --require-approval never && cross-env ./bin/setstackpolicy.sh SquatSiteStack",
-    "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack --require-approval never",
-    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack --require-approval never",
-    "deploy:pipeline:prod": "cross-env ENVIRONMENT=prod cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack --require-approval never",
+    "deploy:pipeline:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack PreviewPipelineStack --require-approval never",
+    "deploy:pipeline:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack PreviewPipelineStack --require-approval never",
+    "deploy:pipeline:prod": "cross-env ENVIRONMENT=prod cdk --profile=$AWS_PROFILE deploy DvkPipelineStack SquatPipelineStack AdminPipelineStack PreviewPipelineStack --require-approval never",
     "deploy:image:prod": "cross-env ENVIRONMENT=prod cdk --profile=$AWS_PROFILE deploy DvkBuildImageStack --require-approval never",
     "deploy:site:dev": "cross-env ENVIRONMENT=dev cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
     "deploy:site:test": "cross-env ENVIRONMENT=test cdk --profile=$AWS_PROFILE deploy SquatSiteStack --require-approval never",
@@ -92,7 +93,8 @@
     "jwk-to-pem": "2.0.5",
     "pino": "^8.16.2",
     "proj4": "^2.9.2",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "watch": "^1.0.2"
   },
   "engines": {
     "node": ">=18.16.0",

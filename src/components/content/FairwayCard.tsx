@@ -1101,8 +1101,8 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
 
     setPrintDisabled(!(moveEnd && renderComplete));
     return () => {
-      dvkMap.olMap?.un('moveend', handleMoveStart);
-      dvkMap.olMap?.un('loadend', handleMoveEnd);
+      dvkMap.olMap?.un('movestart', handleMoveStart);
+      dvkMap.olMap?.un('moveend', handleMoveEnd);
       dvkMap.olMap?.un('rendercomplete', handleRenderComplete);
     };
   }, [moveEnd, renderComplete]);

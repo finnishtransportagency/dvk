@@ -32,15 +32,7 @@ import { getMareographStyle } from './layerStyles/mareographStyles';
 import { getObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
 import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
-import {
-  getAisVesselCargoStyle,
-  getAisVesselTankerStyle,
-  getAisVesselPassengerStyle,
-  getAisVesselHighSpeedStyle,
-  getAisVesselTugAndSpecialCraftStyle,
-  getAisVesselPleasureCraftStyle,
-  getAisUnspecifiedStyle,
-} from './layerStyles/aisStyles';
+import { getAisVesselLayerStyle } from './layerStyles/aisStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
@@ -802,18 +794,33 @@ export function addAPILayers(map: Map) {
   });
 
   // AIS
-  addAisVesselLayer(map, 'aisvesselcargo', (feature, resolution) => getAisVesselCargoStyle(feature, resolution, false), 316);
-  addAisVesselLayer(map, 'aisvesseltanker', (feature, resolution) => getAisVesselTankerStyle(feature, resolution, false), 317);
-  addAisVesselLayer(map, 'aisvesselpassenger', (feature, resolution) => getAisVesselPassengerStyle(feature, resolution, false), 318);
-  addAisVesselLayer(map, 'aisvesselhighspeed', (feature, resolution) => getAisVesselHighSpeedStyle(feature, resolution, false), 319);
+  addAisVesselLayer(map, 'aisvesselcargo', (feature, resolution) => getAisVesselLayerStyle('aisvesselcargo', feature, resolution, false), 316);
+  addAisVesselLayer(map, 'aisvesseltanker', (feature, resolution) => getAisVesselLayerStyle('aisvesseltanker', feature, resolution, false), 317);
+  addAisVesselLayer(
+    map,
+    'aisvesselpassenger',
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpassenger', feature, resolution, false),
+    318
+  );
+  addAisVesselLayer(
+    map,
+    'aisvesselhighspeed',
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselhighspeed', feature, resolution, false),
+    319
+  );
   addAisVesselLayer(
     map,
     'aisvesseltugandspecialcraft',
-    (feature, resolution) => getAisVesselTugAndSpecialCraftStyle(feature, resolution, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesseltugandspecialcraft', feature, resolution, false),
     320
   );
-  addAisVesselLayer(map, 'aisvesselpleasurecraft', (feature, resolution) => getAisVesselPleasureCraftStyle(feature, resolution, false), 322);
-  addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisUnspecifiedStyle(feature, resolution, false), 324);
+  addAisVesselLayer(
+    map,
+    'aisvesselpleasurecraft',
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpleasurecraft', feature, resolution, false),
+    322
+  );
+  addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, false), 324);
 }
 
 export function unsetSelectedFairwayCard() {
@@ -873,7 +880,7 @@ export function unsetSelectedFairwayCard() {
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
-  const depth = quay.sections?.map((s) => s?.depth || 0).filter((v) => v !== undefined && v > 0);
+  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
@@ -912,11 +919,11 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
 
 function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
   const format = new GeoJSON();
-  for (const quay of harbor.quays || []) {
-    if (quay && quay.geometry) {
+  for (const quay of harbor.quays ?? []) {
+    if (quay?.geometry) {
       addQuayFeature(harbor, quay, features, format);
     } else {
-      for (const section of quay?.sections || []) {
+      for (const section of quay?.sections ?? []) {
         if (quay && section && section.geometry) {
           addSectionFeature(harbor, quay, section, features, format);
         }
@@ -944,7 +951,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
     const fairwayFeatures: Feature[] = [];
     for (const fairway of fairwayCard?.fairways || []) {
-      for (const line of fairway.navigationLines || []) {
+      for (const line of fairway.navigationLines ?? []) {
         let feature = line12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {
           line12Source.removeFeature(feature);
@@ -958,7 +965,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
           }
         }
       }
-      for (const area of fairway.areas || []) {
+      for (const area of fairway.areas ?? []) {
         let feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
         if (feature) {
           area12Source.removeFeature(feature);
@@ -991,14 +998,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         }
       }
 
-      for (const line of fairway.boardLines || []) {
+      for (const line of fairway.boardLines ?? []) {
         const feature = boardLine12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {
           boardLine12Source.removeFeature(feature);
           fairwayFeatures.push(feature);
         }
       }
-      for (const circle of fairway.turningCircles || []) {
+      for (const circle of fairway.turningCircles ?? []) {
         const feature = circleSource.getFeatureById(circle.id) as Feature<Geometry>;
         if (feature) {
           circleSource.removeFeature(feature);
@@ -1007,7 +1014,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
-    for (const harbor of fairwayCard?.harbors || []) {
+    for (const harbor of fairwayCard?.harbors ?? []) {
       const id = harbor.geometry?.coordinates?.join(';');
       const feature = id ? (harborSource.getFeatureById(id) as Feature<Geometry>) : undefined;
       if (feature) {

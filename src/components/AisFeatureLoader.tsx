@@ -9,6 +9,7 @@ import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
 import { calculateVesselDimensions } from '../utils/aisUtils';
+import VectorSource from 'ol/source/Vector';
 
 type VesselData = {
   name: string;
@@ -67,6 +68,7 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
         destination: vessel.destination,
         vesselLength: vesselDimensions[0],
         vesselWidth: vesselDimensions[1],
+        showPathPredictor: false,
       });
     }
   }
@@ -107,7 +109,9 @@ function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geo
   const source = dvkMap.getVectorSource(id);
   if (aisLayer && source) {
     source.clear();
-    source.addFeatures(aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType'))));
+    const features = aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType')));
+    features.forEach((f) => f.set('dataSource', id, true));
+    source.addFeatures(features);
   }
 }
 
@@ -123,6 +127,15 @@ function useAisLayer(layerId: FeatureDataLayerId) {
     }
     layer.set('errorUpdatedAt', errorUpdatedAt);
   }, [ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, state.layers, layerId]);
+
+  useEffect(() => {
+    if (ready) {
+      const layer = dvkMap.getFeatureLayer(layerId);
+      const source = layer.getSource() as VectorSource;
+      source.forEachFeature((f) => f.set('showPathPredictor', state.showAisPredictor, true));
+      layer.changed();
+    }
+  }, [ready, state.showAisPredictor, layerId, dataUpdatedAt]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

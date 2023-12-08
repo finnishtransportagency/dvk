@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Tugboats and special crafts",
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
+          "aisShowPredictor": "[en] Alusten nopeusvektorit",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -268,7 +269,7 @@
     "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
     "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
-    "type":"Type"
+    "type": "Type"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -405,8 +406,16 @@
       "dimensions": "Vessel's total length and width",
       "draught": "Draught",
       "destination": "Destination",
-      "moored": "At anchor",
-      "moving": "In movement",
+      "moving": "Under way using engine",
+      "anchored": "At anchor",
+      "noCommand": "Not under command",
+      "restricted": "Restricted maneuverability",
+      "constrained": "Constrained by her draught",
+      "moored": "Moored",
+      "aground": "Aground",
+      "fishing": "Engaged in fishing",
+      "sailing": "Under way sailing",
+      "emergency": "AIS-SART/MOB/EPIRB",
       "aisVesselCargo": "Cargo vessel",
       "aisVesselTanker": "Tanker",
       "aisVesselPassenger": "Passenger vessel",
