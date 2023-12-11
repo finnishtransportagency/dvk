@@ -930,7 +930,7 @@ const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <IonText className="fairwayTitle">
                   {state.preview ? (
                     <>
-                      <em id="emphasizedPreviewText">Väyläkortin esikatselu</em>
+                      <em id="emphasizedPreviewText">{t('preview')}</em>
                       <br />
                       <em>-</em>
                     </>
