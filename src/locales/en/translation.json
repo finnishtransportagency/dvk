@@ -69,7 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Tugboats and special crafts",
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
-          "aisShowPredictor": "[en] Alusten nopeusvektorit",
+          "aisShowPredictor": "Velocity vectors",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
