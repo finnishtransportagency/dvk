@@ -248,7 +248,7 @@ const DvkIonApp: React.FC = () => {
           />
         )}
         <IonContent id="MainContent">
-          <IonRouterOutlet>
+          <IonRouterOutlet placeholder="">
             <Switch>
               <Route path="/esikatselu/vaylakortti/:fairwayCardId">
                 <FairwayCardPage setModalContent={setModalContent} preview={true} />
