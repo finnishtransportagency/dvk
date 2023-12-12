@@ -148,9 +148,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         setSaveError('OPERATION-BLOCKED');
         setSaveErrorMsg(translatedMsg);
         setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] ?? card.name.fi ?? card.id));
-        return;
+        return true;
       }
     }
+    return false;
   };
 
   const handleSubmit = (isRemove = false) => {
@@ -158,7 +159,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
 
     const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
     const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
-    checkLinkedFairways(isToBeRemoved, isToBeDrafted);
+    const linkedFairways = checkLinkedFairways(isToBeRemoved, isToBeDrafted);
+
+    if (linkedFairways) return;
 
     if (isToBeRemoved) {
       setConfirmationType('remove');
