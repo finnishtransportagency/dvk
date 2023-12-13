@@ -26,7 +26,7 @@ else
 fi
 
 echo "Creating report"
-gunzip -c cflogs/*.gz | goaccess -a -o report.html --time-format=%H:%M:%S --date-format=%Y-%m-%d --log-format=CLOUDFRONT -
+gunzip -c cflogs/*.gz | goaccess -a -o report.html --std-geoip --anonymize-ip --ignore-crawlers --unknowns-as-crawlers --time-format=%H:%M:%S --date-format=%Y-%m-%d --log-format=CLOUDFRONT -
 if [ $? -ne 0 ]; then
     echo "Error creating report"
     exit 1

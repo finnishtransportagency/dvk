@@ -63,7 +63,7 @@ export const CustomPopupContainer: React.FC<CustomPopupContainerProps> = ({ chil
     const newValue = target.get(key);
     // Opening side modal triggers map size changes that have undefined or zero values before calculating final size
     // Ignore changes in height
-    if (newValue !== undefined && newValue[0] && (!oldValue || oldValue[0] !== newValue[0])) {
+    if (newValue?.[0] && (!oldValue || oldValue[0] !== newValue[0])) {
       debouncedBackgroundWidthRefresh();
     }
   });

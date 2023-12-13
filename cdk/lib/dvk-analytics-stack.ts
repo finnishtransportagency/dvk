@@ -88,7 +88,7 @@ export class DvkAnalyticsStack extends Stack {
 
     // Define your container image and task definition details
     taskDefinition.addContainer('DvkAnalyticsContainer' + env, {
-      image: ecs.ContainerImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkAnalyticsImage', 'dvk-analyticsimage'), '1.0.1'),
+      image: ecs.ContainerImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkAnalyticsImage', 'dvk-analyticsimage'), '1.0.2'),
       environment: {
         REPORT_BUCKET: reportBucket.bucketName,
         LOG_BUCKET: importedLogBucket,

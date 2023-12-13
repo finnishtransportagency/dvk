@@ -16,11 +16,11 @@ export type ErrorMessageType = {
   invalid: string;
   duplicateId: string;
 };
-export const ErrorMessageKeys = {
+export const ErrorMessageKeys: ErrorMessageType = {
   required: 'general.required-field',
   invalid: 'general.check-input',
   duplicateId: 'fairwaycard.error-duplicate-id',
-} as ErrorMessageType;
+};
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
 

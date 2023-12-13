@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Hinaajat ja erikoisalukset",
           "aisVesselPleasureCraft": "Huviveneet",
           "aisUnspecified": "Määrittelemättömät alukset",
+          "aisShowPredictor": "Nopeusvektorit",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -118,6 +119,7 @@
     "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
     "name": "Väyläkortin nimi",
+    "preview": "Esikatselu",
     "print": "Tulosta väyläkortti",
     "modified": "Päivitetty",
     "modifiedDate": "{{val, datetime}}",
@@ -239,7 +241,8 @@
       "degDesc_other": "astetta"
     },
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
-    "alert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.<br/><br/>Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3>-listauksesta."
+    "alert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.<br/><br/>Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3>-listauksesta.",
+    "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -404,8 +407,16 @@
       "dimensions": "Aluksen kokonaispituus ja leveys",
       "draught": "Syväys",
       "destination": "Määränpää",
-      "moored": "Ankkuroituna",
-      "moving": "Liikkeessä",
+      "moving": "Kulussa konevoimalla",
+      "anchored": "Ankkuroituna",
+      "noCommand": "Ohjailukyvytön",
+      "restricted": "Ohjailukyky rajoitettu",
+      "constrained": "Liikkumista rajoittaa syväys",
+      "moored": "Kiinnitettynä",
+      "aground": "Karilla",
+      "fishing": "Kalastaa",
+      "sailing": "Kulussa purjein",
+      "emergency": "AIS-SART/MOB/EPIRB",
       "aisVesselCargo": "Rahtialus",
       "aisVesselTanker": "Tankkeri",
       "aisVesselPassenger": "Matkustaja-alus",

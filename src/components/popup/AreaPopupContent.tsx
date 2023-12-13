@@ -9,8 +9,9 @@ import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -31,6 +32,7 @@ type FairwayCardIdName = {
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   let fairwayCards: FairwayCardIdName[] = [];
   area.properties?.fairways?.forEach((f) => {
@@ -163,7 +165,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
           return (
             <IonRow key={'cardlink' + card.id}>
               <IonCol>
-                <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                  {card.name[lang]}
+                </Link>
               </IonCol>
             </IonRow>
           );

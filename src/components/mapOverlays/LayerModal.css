@@ -335,6 +335,13 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .aisunspecified {
   background: url('../../theme/img/ais/ais_unspecified.svg') no-repeat center;
 }
+#layerModalContainer ion-item .aisShowPredictor {
+  top: 0px !important;
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/speed_vector.svg') no-repeat center;
+  background-size: cover;
+}
 
 #layerModalContainer ion-checkbox {
   display: block;

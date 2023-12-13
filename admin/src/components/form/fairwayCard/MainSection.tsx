@@ -1,0 +1,160 @@
+import React from 'react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
+import { FairwayCardInput, Operation, Status } from '../../../graphql/generated';
+import TextInput from '../TextInput';
+import SelectInput from '../SelectInput';
+import SelectWithFilter from '../SelectWithFilter';
+import TextInputRow from '../TextInputRow';
+
+interface MainSectionProps {
+  state: FairwayCardInput;
+  updateState: (
+    value: ValueType,
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) => void;
+  validationErrors: ValidationType[];
+  setValidity: (actionType: ActionType, val: boolean) => void;
+  isLoadingFairways: boolean;
+  isLoadingHarbours: boolean;
+  fairwayOptions?: SelectOption[];
+  harbourOptions?: SelectOption[];
+  fairwaySelection?: SelectOption[];
+}
+
+const MainSection: React.FC<MainSectionProps> = ({
+  state,
+  updateState,
+  validationErrors,
+  setValidity,
+  isLoadingFairways,
+  isLoadingHarbours,
+  fairwayOptions,
+  harbourOptions,
+  fairwaySelection,
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <IonGrid className="formGrid">
+      <TextInputRow
+        labelKey="fairwaycard.name"
+        value={state.name}
+        updateState={updateState}
+        actionType="name"
+        name="fairwayCardName"
+        required
+        disabled={state.status === Status.Removed}
+        error={validationErrors.find((error) => error.id === 'name')?.msg}
+      />
+      <IonRow>
+        <IonCol sizeMd="3">
+          <TextInput
+            label={t('fairwaycard.primary-id')}
+            val={state.id}
+            setValue={updateState}
+            actionType="primaryId"
+            name="primaryId"
+            required
+            disabled={state.operation === Operation.Update || !!state.pictures?.length}
+            error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
+            helperText={t('fairwaycard.primary-id-help-text')}
+            setValidity={setValidity}
+          />
+        </IonCol>
+        <IonCol sizeMd="3">
+          <SelectWithFilter
+            label={t('fairwaycard.linked-fairways')}
+            options={fairwayOptions ?? []}
+            selected={state.fairwayIds || []}
+            setSelected={updateState}
+            actionType="fairwayIds"
+            required
+            showId
+            disabled={state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
+            isLoading={isLoadingFairways}
+          />
+        </IonCol>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('fairwaycard.starting-fairway')}
+            selected={state.primaryFairwayId ?? ''}
+            options={fairwaySelection ?? []}
+            setSelected={updateState}
+            actionType="fairwayPrimary"
+            required
+            showId
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            helperText={t('fairwaycard.fairway-order-help-text')}
+            isLoading={isLoadingFairways}
+          />
+        </IonCol>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('fairwaycard.ending-fairway')}
+            selected={state.secondaryFairwayId ?? ''}
+            options={fairwaySelection ?? []}
+            setSelected={updateState}
+            actionType="fairwaySecondary"
+            required
+            showId
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            helperText={t('fairwaycard.fairway-order-help-text')}
+            isLoading={isLoadingFairways}
+          />
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('general.item-area')}
+            selected={state.group}
+            options={[
+              { name: { fi: t('general.archipelagoSea') }, id: '1' },
+              { name: { fi: t('general.gulfOfFinland') }, id: '2' },
+              { name: { fi: t('general.gulfOfBothnia') }, id: '3' },
+            ]}
+            setSelected={updateState}
+            actionType="group"
+            required
+            disabled={state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'group')?.msg}
+          />
+        </IonCol>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('general.item-referencelevel')}
+            selected={state.n2000HeightSystem}
+            options={[
+              { name: { fi: 'MW' }, id: false },
+              { name: { fi: 'N2000' }, id: true },
+            ]}
+            setSelected={updateState}
+            actionType="referenceLevel"
+            disabled={state.status === Status.Removed}
+          />
+        </IonCol>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('fairwaycard.linked-harbours')}
+            selected={state.harbors ?? []}
+            options={harbourOptions ?? []}
+            setSelected={updateState}
+            actionType="harbours"
+            multiple
+            isLoading={isLoadingHarbours}
+            disabled={state.status === Status.Removed}
+          />
+        </IonCol>
+        <IonCol sizeMd="3"></IonCol>
+      </IonRow>
+    </IonGrid>
+  );
+};
+
+export default MainSection;

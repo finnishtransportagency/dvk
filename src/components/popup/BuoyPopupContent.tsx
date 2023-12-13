@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type BuoyPopupContentProps = {

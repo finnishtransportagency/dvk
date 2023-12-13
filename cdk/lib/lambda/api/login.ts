@@ -8,6 +8,7 @@ import axios from 'axios';
 import { OperationError } from '../../../graphql/generated';
 
 const cloudFrontDnsName = process.env.CLOUDFRONT_DNSNAME;
+export const ADMIN_ROLE = 'DVK_yllapito';
 let cachedKeys: Record<string, string>;
 
 // Fetch JWK's from Cognito or cache
@@ -127,7 +128,7 @@ export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEv
       uid: 'K123456',
       firstName: 'Developer',
       lastName: 'X',
-      roles: ['DVK_yllapito'],
+      roles: [ADMIN_ROLE],
     };
   }
   return undefined;
