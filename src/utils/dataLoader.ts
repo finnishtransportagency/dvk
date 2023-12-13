@@ -33,8 +33,8 @@ export function useFeatureData(
     staleTime,
     gcTime,
     queryFn: async () => {
-      const { data } = await axios.get(urlStr);
-      return data;
+      const { data, status } = await axios.get(urlStr);
+      return { data, status };
     },
     enabled,
   });

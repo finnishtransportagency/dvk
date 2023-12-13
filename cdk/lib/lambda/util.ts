@@ -84,7 +84,7 @@ export async function saveResponseToS3(features: FeatureCollection | Vessel[], k
 export function handleLoaderError(response: CacheResponse, e: unknown): ALBResult {
   let base64Response;
   let statusCode;
-
+  
   log.error('Getting features failed: %s', e);
   if (response.data) {
     log.warn('Returning possibly expired response from s3 cache');
@@ -92,7 +92,7 @@ export function handleLoaderError(response: CacheResponse, e: unknown): ALBResul
     statusCode = 200;
   } else {
     base64Response = undefined;
-    statusCode = 500;
+    statusCode = 503;
   }
   return {
     statusCode,
