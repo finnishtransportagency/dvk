@@ -85,7 +85,6 @@ export function handleLoaderError(response: CacheResponse, e: unknown): ALBResul
   let base64Response;
   let statusCode;
   
-  log.error('Getting features failed: %s', e);
   if (response.data) {
     log.warn('Returning possibly expired response from s3 cache');
     base64Response = response.data;

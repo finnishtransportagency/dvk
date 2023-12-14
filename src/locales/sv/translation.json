@@ -269,7 +269,8 @@
     "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan.",
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
-    "type": "Typ"
+    "type": "Typ",
+    "layerLoadError": "[sv] Tason tietojen lataus epäonnistui"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -284,9 +284,10 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
+  setLayerError: (layerError: boolean) => void;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, setLayerError }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -312,11 +313,17 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning'].includes(id)) {
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice'].includes(id)) {
     if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
       alertProps = getAlertProperties(dataUpdatedAt, id);
     }
   }
+
+  useEffect(() => {
+    if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
+      setLayerError(true);
+    }
+  }, [dvkMap, id, setLayerError]);
 
   const isDisabled = (): boolean => {
     const initialized =
@@ -343,7 +350,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   const disabled = isDisabled();
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps?.duration) return t('warnings.lastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.layerLoadError');
     return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
   }, [alertProps, t]);
 

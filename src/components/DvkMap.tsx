@@ -273,7 +273,6 @@ class DvkMap {
             if (valid || pollInterval === 4) {
               break;
             }
-            this.setResponseState(dispatch, response.status, response.statusText);
             await new Promise((resolve) => setTimeout(resolve, (pollInterval *= 2) * 1000));
           }
           if (valid) {
@@ -290,18 +289,18 @@ class DvkMap {
         } catch (error) {
           tile.setState(3);
           if (response) {
-            this.setResponseState(dispatch, response.status, response.statusText);
+            this.setResponseState(dispatch, response.status, response.statusText, this.t('tileLoadWarning.vectorTileError'));
           }
         }
       });
     });
   };
 
-  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string) => {
+  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string, errorText: string) => {
     dispatch({
       type: 'setResponse',
       payload: {
-        value: [String(statusCode), statusText],
+        value: [String(statusCode), statusText, errorText],
       },
     });
   };
