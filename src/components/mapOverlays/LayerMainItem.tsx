@@ -19,8 +19,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
-  const [layerError, setLayerError] = useState(false);
-
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
   };
@@ -53,15 +51,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
       updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) ?? []));
       dispatch({ type: 'setShowAisPredictor', payload: { value: true } });
       setLegendOpen(true);
-      if (layerError) {
-        dispatch({
-          type: 'setResponse',
-          payload: {
-            value: [String(503), 'Service Untemporarily Unavailable', t('warnings.layerLoadError')],
-          },
-        });
-        setLayerError(false);
-      }
     }
   };
 
@@ -115,8 +104,8 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
                 key={child.id}
                 id={child.id as FeatureDataLayerId}
                 title={child.title}
+                mainLegendOpen={legendOpen}
                 aria-hidden={!legendOpen}
-                setLayerError={setLayerError}
               />
             ))}
           </IonList>

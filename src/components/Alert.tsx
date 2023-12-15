@@ -1,11 +1,14 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from '@ionic/react';
+import { useDvkContext } from '../hooks/dvkContext';
+import { t } from 'i18next';
 
 interface AlertProps {
   title: string | ReactElement;
   icon: string;
   color?: string;
   className?: string;
+  mainLegendOpen?: boolean;
 }
 
 const Alert: React.FC<AlertProps> = (props) => {
@@ -24,6 +27,19 @@ const Alert: React.FC<AlertProps> = (props) => {
 };
 
 export const LayerAlert: React.FC<AlertProps> = (props) => {
+  const { dispatch } = useDvkContext();
+
+  useEffect(() => {
+    if (props.mainLegendOpen) {
+      dispatch({
+        type: 'setResponse',
+        payload: {
+          value: [String(503), 'Service Untemporarily Unavailable', t('warnings.layerLoadError')],
+        },
+      });
+    }
+  }, [dispatch, props.mainLegendOpen]);
+
   return (
     <IonRow>
       <IonCol>

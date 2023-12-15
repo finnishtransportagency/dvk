@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -284,10 +284,10 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  setLayerError: (layerError: boolean) => void;
+  mainLegendOpen: boolean;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, setLayerError }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -318,12 +318,6 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, setLayerError }) => {
       alertProps = getAlertProperties(dataUpdatedAt, id);
     }
   }
-
-  useEffect(() => {
-    if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
-      setLayerError(true);
-    }
-  }, [dvkMap, id, setLayerError]);
 
   const isDisabled = (): boolean => {
     const initialized =
@@ -398,7 +392,15 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, setLayerError }) => {
           )}
         </IonCol>
       </IonRow>
-      {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
+      {alertProps && (
+        <LayerAlert
+          icon={alertIcon}
+          className={'layerAlert'}
+          title={getLayerItemAlertText()}
+          color={alertProps.color}
+          mainLegendOpen={mainLegendOpen}
+        />
+      )}
       {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>

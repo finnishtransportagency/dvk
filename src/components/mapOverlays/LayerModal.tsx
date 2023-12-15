@@ -30,7 +30,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const { state } = useDvkContext();
   const { isOffline, layers } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [, setLayerError] = useState(false);
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
@@ -163,7 +162,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <IonRow key={layer.id}>
                 <IonCol>
                   {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
-                  {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} setLayerError={setLayerError} />}
+                  {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
                 </IonCol>
               </IonRow>
             );
