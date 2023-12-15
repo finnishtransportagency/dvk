@@ -4,7 +4,13 @@ import { fetchAISFeatureCollection, fetchAISMetadata } from './axios';
 
 const aisV1Path = 'ais/api/ais/v1/';
 
-function getTimestampParams(): Record<string, string> {
+function getVesselsTimestampParams(): Record<string, string> {
+  const now = Date.now();
+  const yesterday = Date.now() - 24 * 60 * 60 * 1000;
+  return { from: yesterday.toString(), to: now.toString() };
+}
+
+function getLocationsTimestampParams(): Record<string, string> {
   const now = Date.now();
   const startTime = Date.now() - 5 * 60 * 1000; // 5 minutes ago
   return { from: startTime.toString(), to: now.toString() };
@@ -33,7 +39,7 @@ function parseETA(eta: number): string {
 
 export async function fetchVessels(): Promise<Vessel[]> {
   const path = aisV1Path + 'vessels';
-  const params = getTimestampParams();
+  const params = getVesselsTimestampParams();
   const data: VesselAPIModel[] = await fetchAISMetadata(path, params);
   return data.map((row) => {
     return {
@@ -57,7 +63,7 @@ export async function fetchVessels(): Promise<Vessel[]> {
 
 export async function fetchLocations(): Promise<FeatureCollection> {
   const path = aisV1Path + 'locations';
-  const params = getTimestampParams();
+  const params = getLocationsTimestampParams();
   const data: VesselLocationFeatureCollection = await fetchAISFeatureCollection(path, params);
   const { dataUpdatedTime, features } = data;
   const geojsonFeatures: Feature<Geometry, GeoJsonProperties>[] = features.map((f) => {
