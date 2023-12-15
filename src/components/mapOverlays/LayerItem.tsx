@@ -284,7 +284,7 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  mainLegendOpen: boolean;
+  mainLegendOpen?: boolean;
 }
 
 const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
