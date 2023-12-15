@@ -16,9 +16,17 @@ const staticUrl = import.meta.env.VITE_APP_STATIC_URL
 
 export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
-export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
+export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_meri_rantaviiva' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
 
-export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'name';
+export type StaticFeatureDataId =
+  | 'balticsea'
+  | 'finland'
+  | 'mml_meri'
+  | 'mml_meri_rantaviiva'
+  | 'mml_jarvi'
+  | 'mml_satamat'
+  | 'mml_laiturit'
+  | 'name';
 
 export type FeatureDataId =
   | 'area12'
@@ -51,7 +59,8 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20231213.json.gz') },
   { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
   { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
