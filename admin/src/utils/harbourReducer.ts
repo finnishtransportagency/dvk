@@ -23,7 +23,7 @@ export const harbourReducer = (
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'name')
-        .concat({ id: 'name', msg: (value as string).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+        .concat({ id: 'name', msg: (value as string).length < 1 || (value as string) === null ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'lat' && validationErrors.find((error) => error.id === 'lat')?.msg) {
     setValidationErrors(
