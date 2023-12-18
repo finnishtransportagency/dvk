@@ -158,6 +158,9 @@ button.icon:focus-visible:hover {
   width: 24px;
   height: 24px;
 }
+ion-modal ion-button.button-disabled {
+  opacity: 0.5;
+}
 
 #splitPane .togglePane {
   --background: var(--ion-color-primary-contrast);
@@ -508,4 +511,13 @@ ion-segment.tabs ion-label h3 {
 
 ion-modal.contentModal {
   touch-action: none;
+}
+
+#emphasizedPreviewText {
+  color: #EC0E0E;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 50%;
 }

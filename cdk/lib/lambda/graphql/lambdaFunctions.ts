@@ -21,6 +21,12 @@ const lambdaFunctions: BackendLambda[] = [
     useVpc: true,
   },
   {
+    entry: path.join(__dirname, 'query/fairwayCardPreview-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'fairwayCardPreview',
+    useVpc: true,
+  },
+  {
     entry: path.join(__dirname, 'query/fairwayCardFairways-handler.ts'),
     typeName: 'FairwayCard',
     fieldName: 'fairways',

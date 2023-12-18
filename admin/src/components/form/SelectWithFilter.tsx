@@ -72,7 +72,7 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   const lang = i18n.resolvedLanguage as Lang;
 
   const [isValid, setIsValid] = useState(!error);
-  const [expanded, setIsExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const containerRef = useRef<HTMLIonItemElement>(null);
   const selectLabelRef = useRef<HTMLIonLabelElement>(null);
@@ -118,7 +118,7 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
             detail={false}
             disabled={disabled}
             lines="none"
-            onClick={() => setIsExpanded(true)}
+            onClick={() => setExpanded(true)}
             onBlur={() => checkValidity()}
           >
             <SelectItem
@@ -137,7 +137,7 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
             options={options}
             selected={selected}
             setSelected={handleSelect}
-            setIsExpanded={setIsExpanded}
+            setIsExpanded={setExpanded}
             checkValidity={checkValidity}
             showId={showId}
             className={'custom-select-popover ' + actionType}

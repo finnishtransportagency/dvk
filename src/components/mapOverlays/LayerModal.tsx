@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { BackgroundMapType, getMap } from '../DvkMap';
+import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
 import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
@@ -34,7 +34,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setBgMapType(type);
     setBgMap(type);
   };
-  const dvkMap = getMap();
 
   const layerStructure: LayerType[] = [
     {
@@ -127,7 +126,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
-  }, [layers, setMarineWarningNotificationLayer, isOffline, dvkMap]);
+  }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
     <IonModal

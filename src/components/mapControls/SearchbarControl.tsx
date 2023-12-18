@@ -162,6 +162,11 @@ class SearchbarControl extends Control {
     this.history = history;
     this.curPath = history.location.pathname;
   }
+
+  public disable() {
+    this.inputElement.disabled = true;
+    this.element.style.opacity = '0.5';
+  }
 }
 
 export default SearchbarControl;

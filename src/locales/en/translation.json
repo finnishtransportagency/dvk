@@ -69,6 +69,7 @@
           "aisVesselTugAndSpecialCraft": "Tugboats and special crafts",
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
+          "aisShowPredictor": "Velocity vectors",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -118,6 +119,7 @@
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
     "name": "Fairway card name",
+    "preview": "Preview",
     "print": "Print fairway card",
     "modified": "Modified",
     "modifiedDate": "{{val, datetime}}",
@@ -239,7 +241,8 @@
       "degDesc_other": "degrees"
     },
     "opens-in-a-new-tab": "Opens in a new tab",
-    "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list."
+    "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
+    "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -267,7 +270,7 @@
     "lastUpdatedAt2": "Data of this layer loaded over {{ val, number}} h ago.",
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
     "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
-    "type":"Type"
+    "type": "Type"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -404,8 +407,16 @@
       "dimensions": "Vessel's total length and width",
       "draught": "Draught",
       "destination": "Destination",
-      "moored": "At anchor",
-      "moving": "In movement",
+      "moving": "Under way using engine",
+      "anchored": "At anchor",
+      "noCommand": "Not under command",
+      "restricted": "Restricted maneuverability",
+      "constrained": "Constrained by her draught",
+      "moored": "Moored",
+      "aground": "Aground",
+      "fishing": "Engaged in fishing",
+      "sailing": "Under way sailing",
+      "emergency": "AIS-SART/MOB/EPIRB",
       "aisVesselCargo": "Cargo vessel",
       "aisVesselTanker": "Tanker",
       "aisVesselPassenger": "Passenger vessel",

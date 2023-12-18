@@ -1,7 +1,8 @@
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
-import * as turf from '@turf/turf';
+import booleanDisjoint from '@turf/boolean-disjoint';
+import { Polygon as turf_Polygon } from 'geojson';
 import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
@@ -185,7 +186,7 @@ export function useBoardLine12Layer() {
 }
 
 export function useMareographLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('mareograph');
@@ -193,13 +194,13 @@ export function useMareographLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useObservationLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('observation');
@@ -207,13 +208,13 @@ export function useObservationLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
 }
 
 export function useBuoyLayer() {
-  const [initialized, init] = useState(false);
+  const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('buoy');
@@ -221,7 +222,7 @@ export function useBuoyLayer() {
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
     });
-    init(true);
+    setInitialized(true);
   }
   return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
 }
@@ -254,7 +255,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
 
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       // Check if fairway area polygone intersects restriction area polygone
-      if (!turf.booleanDisjoint(raGeomPoly as turf.Polygon, aGeomPoly as turf.Polygon)) {
+      if (!booleanDisjoint(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon)) {
         const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
         if (oldSpeedLimit) {
           oldSpeedLimit.push(speedLimit);

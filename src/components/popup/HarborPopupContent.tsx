@@ -8,7 +8,7 @@ import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { Link } from 'react-router-dom';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
 
@@ -106,7 +106,9 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
         return (
           <IonRow key={card.id}>
             <IonCol>
-              <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+              <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                {card.name[lang]}
+              </Link>
             </IonCol>
           </IonRow>
         );

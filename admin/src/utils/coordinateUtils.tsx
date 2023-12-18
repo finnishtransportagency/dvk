@@ -1,5 +1,6 @@
 import { modulo } from 'ol/math';
 import { padNumber } from 'ol/string';
+import { Maybe } from '../graphql/generated';
 
 const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
   const normalizedDegrees = modulo(degrees + 180, 360) - 180;
@@ -28,3 +29,8 @@ export const coordinatesToStringHDM = (coords: number[] | undefined): string => 
     return '';
   }
 };
+
+export function roundCoordinates(coords: Maybe<Maybe<number>[]> | undefined, decimals = 0) {
+  const power = Math.pow(10, decimals);
+  return coords ? coords.map((coord) => (coord ? Math.round(coord * power) / power : undefined)) : undefined;
+}

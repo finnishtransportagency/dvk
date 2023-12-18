@@ -5,6 +5,7 @@ import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants
 import { PilotPlace } from '../../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 import { getCombinedErrorAndHelperText, isInputOk, sortSelectOptions } from '../../utils/common';
+import { roundCoordinates } from '../../utils/coordinateUtils';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
@@ -131,8 +132,8 @@ const SelectInput: React.FC<SelectInputProps> = ({
             >
               {sortedOptions?.map((item) => {
                 const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                const coordinates = item.geometry?.coordinates;
-                const additionalLabel = coordinates && showCoords ? [coordinates[1], coordinates[0]].join(', ') : '';
+                const coordinates = showCoords ? roundCoordinates(item.geometry?.coordinates, 5) : undefined;
+                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
                 return (
                   <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
                     {showId ? '[' + item.id + '] ' : ''}

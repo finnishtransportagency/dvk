@@ -291,3 +291,9 @@ query findAllFairwayCards($status: [Status!]) {
     ...FairwayCardParts
   }
 }
+
+query fairwayCardPreview($id: String!) {
+  fairwayCardPreview(id: $id) {
+    ...FairwayCardParts
+  }
+}

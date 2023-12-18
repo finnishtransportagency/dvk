@@ -7,7 +7,7 @@ import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './popup';
+import { deselectClickSelection } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
 
