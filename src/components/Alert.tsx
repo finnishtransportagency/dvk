@@ -34,7 +34,7 @@ export const LayerAlert: React.FC<AlertProps> = (props) => {
       dispatch({
         type: 'setResponse',
         payload: {
-          value: [String(503), 'Service Untemporarily Unavailable', t('warnings.layerLoadError')],
+          value: [String(503), 'Service Unavailable', t('warnings.layerLoadError')],
         },
       });
     }
