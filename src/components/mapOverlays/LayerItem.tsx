@@ -284,9 +284,10 @@ const LegendIce = () => {
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
+  mainLegendOpen?: boolean;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -312,7 +313,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning'].includes(id)) {
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice'].includes(id)) {
     if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
       alertProps = getAlertProperties(dataUpdatedAt, id);
     }
@@ -343,7 +344,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
   const disabled = isDisabled();
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps?.duration) return t('warnings.lastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.layerLoadError');
     return t('warnings.lastUpdatedAt2', { val: alertProps.duration });
   }, [alertProps, t]);
 
@@ -391,7 +392,15 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title }) => {
           )}
         </IonCol>
       </IonRow>
-      {alertProps && <LayerAlert icon={alertIcon} className={'layerAlert'} title={getLayerItemAlertText()} color={alertProps.color} />}
+      {alertProps && (
+        <LayerAlert
+          icon={alertIcon}
+          className={'layerAlert'}
+          title={getLayerItemAlertText()}
+          color={alertProps.color}
+          mainLegendOpen={mainLegendOpen}
+        />
+      )}
       {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
         <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
           <IonCol>
