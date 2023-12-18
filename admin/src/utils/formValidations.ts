@@ -2,7 +2,7 @@ import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../grap
 import { PictureGroup, ValidationType } from './constants';
 
 function requiredError(input?: TextInput | null): boolean {
-  return !input?.fi.trim() || !input?.sv.trim() || !input?.en.trim();
+  return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
 }
 
 function translationError(input?: TextInput | null): boolean {
