@@ -297,3 +297,9 @@ query fairwayCardPreview($id: String!) {
     ...FairwayCardParts
   }
 }
+
+query harborPreview($id: String!) {
+  harborPreview(id: $id) {
+    ...HarborParts
+  }
+}
