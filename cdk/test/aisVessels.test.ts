@@ -150,5 +150,5 @@ it('should get vessels from cache when api call fails', async () => {
 it('should get internal server error when api call fails and no cached response', async () => {
   throwError = true;
   const response = await handler(mockAISALBEvent(path));
-  expect(response.statusCode).toBe(500);
+  expect(response.statusCode).toBe(503);
 });

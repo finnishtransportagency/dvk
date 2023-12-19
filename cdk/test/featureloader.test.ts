@@ -554,7 +554,7 @@ it('should get internal server error when api call fails and no cached response'
   });
   throwError = true;
   const response = await handler(mockALBEvent('line', '1,2'));
-  expect(response.statusCode).toBe(500);
+  expect(response.statusCode).toBe(503);
 });
 
 it('should get bad request when invalid type', async () => {
