@@ -270,7 +270,8 @@
     "lastUpdatedAt2": "Tason tiedot on ladattu yli {{ val, number}} h sitten.",
     "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa.",
     "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa.",
-    "type": "Tyyppi"
+    "type": "Tyyppi",
+    "layerLoadError": "Tason tietojen lataus epäonnistui"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
