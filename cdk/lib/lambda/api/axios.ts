@@ -153,14 +153,19 @@ export async function fetchWeatherApi<T>(path: string) {
 
 export async function fetchIlmanetApi(): Promise<string> {
   const start = Date.now();
+  const [paramUsername, paramPassword, _headers]  = await Promise.all([
+    getIlmanetUsername(),
+    getIlmanetPassword(),
+    getWeatherHeaders(),
+  ]);
   const response = await axios
     .get(await getIlmanetUrl(), {
       params: {
-        username: await getIlmanetUsername(),
-        password: await getIlmanetPassword(),
+        username: paramUsername,
+        password: paramPassword,
         orderId: 165689,
       },
-      headers: await getWeatherHeaders(),
+      headers: _headers,
       timeout: getTimeout(),
     })
     .catch(function (error) {

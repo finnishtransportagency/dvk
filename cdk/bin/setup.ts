@@ -72,8 +72,10 @@ function writeEnvFile(fileName: string, variables: { [p: string]: string }) {
 }
 
 async function main() {
-  const backendStackOutputs = await readBackendStackOutputs();
-  const frontendStackOutputs = await readFrontendStackOutputs();
+  const [backendStackOutputs, frontendStackOutputs]  =await Promise.all([
+    readBackendStackOutputs(),
+    readFrontendStackOutputs(),
+  ]);
   const envParameters = await readParametersForEnv(Config.getEnvironment());
   writeEnvFile('../.env.local', {
     VITE_APP_API_URL: backendStackOutputs.AppSyncAPIURL,

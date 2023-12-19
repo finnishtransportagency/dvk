@@ -64,11 +64,13 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
     const fairways = await fetchVATUByApi<VaylaAPIModel>('vaylat', { vaylaluokka: '1,2' });
     log.debug('%d fairway(s) found', fairways.length);
     const fairwayIds = fairways.map((f) => f.jnro);
-    const lines = await getModelMap(fairwayIds, 'navigointilinjat');
-    const areas = await getModelMap(fairwayIds, 'vaylaalueet');
-    const restrictionAreas = await getModelMap(fairwayIds, 'rajoitusalueet');
-    const circles = await getModelMap(fairwayIds, 'kaantoympyrat');
-    const boardLines = await getModelMap(fairwayIds, 'taululinjat');
+    const [lines, areas, restrictionAreas, circles, boardLines] = await Promise.all([
+      getModelMap(fairwayIds, 'navigointilinjat'),
+      getModelMap(fairwayIds, 'vaylaalueet'),
+      getModelMap(fairwayIds, 'rajoitusalueet'),
+      getModelMap(fairwayIds, 'kaantoympyrat'),
+      getModelMap(fairwayIds, 'taululinjat'),
+    ]);
     const response = fairways.map((apiFairway) => {
       return {
         ...mapAPIModelToFairway(apiFairway),

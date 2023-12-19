@@ -165,10 +165,14 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       ],
     });
 
+    const [_privateKey, _keyPairId] = await Promise.all([
+      getCloudFrontPrivateKey(),
+      getCloudFrontPublicKeyId(),
+    ]);
     const cookie = getSignedCookies({
       url: cloudFrontDnsName as string,
-      privateKey: await getCloudFrontPrivateKey(),
-      keyPairId: await getCloudFrontPublicKeyId(),
+      privateKey: _privateKey,
+      keyPairId: _keyPairId,
       policy: cloudFrontPolicy,
     });
 
