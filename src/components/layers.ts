@@ -582,7 +582,7 @@ export function addAPILayers(map: Map) {
     id: 'circle',
     maxResolution: 30,
     renderBuffer: 2,
-    style: (feature, resolution) => getCircleStyle(feature, resolution),
+    style: getCircleStyle,
     minResolution: undefined,
     opacity: 1,
     declutter: false,

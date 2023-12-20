@@ -3,8 +3,20 @@ import { LineString, Point, Polygon } from 'ol/geom';
 import { Fill, Icon, Stroke, Style, Text } from 'ol/style';
 import arrowIcon from '../../../theme/img/arrow-right.svg';
 
-let startStyle: Style | undefined = undefined;
-let endStyle: Style | undefined = undefined;
+const lineHeadIcon = new Icon({
+  src: arrowIcon,
+  anchor: [1, 0.5],
+  rotateWithView: true,
+});
+
+const startStyle = new Style({
+  image: lineHeadIcon,
+});
+
+const endStyle = new Style({
+  image: lineHeadIcon.clone(),
+});
+
 const lineDashStyle = new Style({
   stroke: new Stroke({
     color: '#000000',
@@ -64,33 +76,12 @@ export function getCircleStyle(feature: FeatureLike, resolution: number) {
       rotateWithView: true,
     }),
   });
-  if (!startStyle) {
-    startStyle = new Style({
-      geometry: new Point(start),
-      image: new Icon({
-        src: arrowIcon,
-        anchor: [1, 0.5],
-        rotateWithView: true,
-        rotation: Math.PI - rotation,
-      }),
-    });
-  } else {
-    startStyle.setGeometry(new Point(start));
-    startStyle.getImage()?.setRotation(Math.PI - rotation);
-  }
-  if (!endStyle) {
-    endStyle = new Style({
-      geometry: new Point(end),
-      image: new Icon({
-        src: arrowIcon,
-        anchor: [1, 0.5],
-        rotateWithView: true,
-        rotation: -rotation,
-      }),
-    });
-  } else {
-    endStyle.setGeometry(new Point(end));
-    endStyle.getImage()?.setRotation(-rotation);
-  }
+
+  startStyle.setGeometry(new Point(start));
+  startStyle.getImage()?.setRotation(Math.PI - rotation);
+
+  endStyle.setGeometry(new Point(end));
+  endStyle.getImage()?.setRotation(-rotation);
+
   return [lineDashStyle, lineStyle, startStyle, endStyle];
 }
