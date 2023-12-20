@@ -80,7 +80,9 @@
   "scripts": {
     "prestart": "npm run generate",
     "start": "vite",
+    "preview": "vite --config vite.preview.config.ts",
     "build": "tsc && vite build",
+    "buildpreview": "tsc && vite build --config vite.preview.config.ts",
     "serve": "vite preview",
     "test": "vitest",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.jsx,.ts,.tsx .",
