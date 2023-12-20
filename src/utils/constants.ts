@@ -1,3 +1,5 @@
+import { Maybe } from '../graphql/generated';
+
 const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
@@ -325,18 +327,19 @@ export const OFFLINE_STORAGE = {
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
 
-export const marineWarningAreas = [
-  'gulfOfFinland',
-  'northernBalticSea',
-  'archipelagoSea',
-  'seaOfÅland',
-  'bothnianSea',
-  'theQuark',
-  'bayOfBothnia',
-  'gulfOfBothnia',
-  'saimaa',
-  'saimaaCanal',
-];
+export type MarineWarningArea =
+  | 'seaAreas'
+  | 'gulfOfFinland'
+  | 'northernBalticSea'
+  | 'archipelagoSea'
+  | 'seaOfÅland'
+  | 'bothnianSea'
+  | 'theQuark'
+  | 'bayOfBothnia'
+  | 'gulfOfBothnia'
+  | 'saimaa'
+  | 'saimaaCanal'
+  | 'inlandAreas';
 
 export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
 
@@ -348,4 +351,29 @@ export const aisLayers: FeatureDataLayerId[] = [
   'aisvesseltugandspecialcraft',
   'aisvesselpleasurecraft',
   'aisunspecified',
+];
+
+export type WarningArea = {
+  id: MarineWarningArea;
+  childAreas?: Maybe<Array<WarningArea>>;
+};
+
+export const marineWarningAreasStructure: WarningArea[] = [
+  {
+    id: 'seaAreas',
+    childAreas: [
+      { id: 'gulfOfFinland' },
+      { id: 'northernBalticSea' },
+      { id: 'archipelagoSea' },
+      { id: 'seaOfÅland' },
+      {
+        id: 'gulfOfBothnia',
+        childAreas: [{ id: 'bothnianSea' }, { id: 'theQuark' }, { id: 'bayOfBothnia' }],
+      },
+    ],
+  },
+  {
+    id: 'inlandAreas',
+    childAreas: [{ id: 'saimaa' }, { id: 'saimaaCanal' }],
+  },
 ];

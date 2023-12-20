@@ -1,25 +1,27 @@
 import React from 'react';
-import { marineWarningAreas, marineWarningTypes } from '../../utils/constants';
+import { marineWarningTypes } from '../../utils/constants';
 import { IonButton, IonCol, IonGrid, IonIcon, IonItem, IonRow, IonSelect, IonSelectOption, IonText } from '@ionic/react';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import { useTranslation } from 'react-i18next';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import './WarningsFilter.css';
+import CustomSelectDropdown from './CustomSelectDropdown';
 
 interface WarningFilterProps {
+  areaFilter: string[];
   setAreaFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setTypeFilter: React.Dispatch<React.SetStateAction<string[]>>;
   setSortNewFirst: React.Dispatch<React.SetStateAction<boolean>>;
   sortNewFirst: boolean;
 }
 
-const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst }) => {
+const WarningsFilter: React.FC<WarningFilterProps> = ({ areaFilter, setAreaFilter, setTypeFilter, setSortNewFirst, sortNewFirst }) => {
   const { t } = useTranslation();
 
-  const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
+  /*const handleAreaChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setAreaFilter(event?.detail.value ?? []);
     event?.preventDefault();
-  };
+  };*/
 
   const handleTypeChange = (event?: IonSelectCustomEvent<SelectChangeEventDetail<string[]>>) => {
     setTypeFilter(event?.detail.value ?? []);
@@ -32,25 +34,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ setAreaFilter, setTypeFi
         <IonRow className="ion-align-items-center ion-justify-content-between">
           <IonCol size="5">
             <IonText className="filterTitle">{t('warnings.area')}</IonText>
-            <IonItem className="filterSelectInput" lines="none">
-              <IonSelect
-                placeholder={t('common.filter')}
-                multiple={true}
-                interface="popover"
-                interfaceOptions={{
-                  size: 'cover',
-                  className: 'multiSelect',
-                }}
-                labelPlacement="stacked"
-                onIonChange={(ev) => handleAreaChange(ev)}
-              >
-                {marineWarningAreas.map((area) => (
-                  <IonSelectOption key={area} value={t(`areas.${area}`)}>
-                    {t(`areas.${area}`)}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            </IonItem>
+            <CustomSelectDropdown selected={areaFilter} setSelected={setAreaFilter} />
           </IonCol>
           <IonCol size="5">
             <IonText className="filterTitle">{t('warnings.type')}</IonText>

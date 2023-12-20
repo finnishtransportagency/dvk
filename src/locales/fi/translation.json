@@ -484,6 +484,7 @@
     "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
   },
   "areas": {
+    "seaAreas": "Kaikki merialueet",
     "gulfOfFinland": "Suomenlahti",
     "northernBalticSea": "Pohjoinen Itämeri",
     "archipelagoSea": "Saaristomeri",
@@ -493,6 +494,7 @@
     "bayOfBothnia": "Perämeri",
     "saimaa": "Saimaa",
     "saimaaCanal": "Saimaan kanava",
-    "gulfOfBothnia": "Pohjanlahti"
+    "gulfOfBothnia": "Pohjanlahti",
+    "inlandAreas": "Sisävesistöt"
   }
 }

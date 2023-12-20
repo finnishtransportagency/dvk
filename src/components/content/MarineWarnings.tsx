@@ -27,6 +27,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
+  console.log(areaFilter);
 
   const path = [{ title: t('title') }];
   // Use any of the marine warning layers as they have the same data source
@@ -108,7 +109,13 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-      <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} setSortNewFirst={setSortNewFirst} sortNewFirst={sortNewFirst} />
+      <WarningsFilter
+        areaFilter={areaFilter}
+        setAreaFilter={setAreaFilter}
+        setTypeFilter={setTypeFilter}
+        setSortNewFirst={setSortNewFirst}
+        sortNewFirst={sortNewFirst}
+      />
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isPending} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
       </div>
