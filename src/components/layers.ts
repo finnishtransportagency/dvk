@@ -36,7 +36,6 @@ import { getAisVesselLayerStyle } from './layerStyles/aisStyles';
 import { GeoJSON } from 'ol/format';
 import TileLayer from 'ol/layer/Tile';
 import TileWMS from 'ol/source/TileWMS';
-import VectorImageLayer from 'ol/layer/VectorImage';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
@@ -333,34 +332,6 @@ function addFeatureVectorLayer({
   );
 }
 
-function addFeatureVectorImageLayer({
-  map,
-  id,
-  maxResolution,
-  renderBuffer,
-  style,
-  minResolution = undefined,
-  opacity = 1,
-  declutter = false,
-  zIndex = undefined,
-}: FeatureVectorLayerProps) {
-  map.addLayer(
-    new VectorImageLayer({
-      properties: { id },
-      source: new VectorSource(),
-      declutter,
-      maxResolution,
-      minResolution,
-      renderBuffer,
-      style,
-      opacity,
-      imageRatio: 2,
-      renderOrder: undefined,
-      zIndex,
-    })
-  );
-}
-
 function addIceLayer(map: Map) {
   const apiKey = import.meta.env.VITE_APP_FMI_MAP_API_KEY;
   const cloudFrontUrl = import.meta.env.VITE_APP_FRONTEND_DOMAIN_NAME;
@@ -501,7 +472,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Kauppamerenkulku
-  addFeatureVectorImageLayer({
+  addFeatureVectorLayer({
     map: map,
     id: 'area12',
     maxResolution: 75,
@@ -512,7 +483,7 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 201,
   });
-  addFeatureVectorImageLayer({
+  addFeatureVectorLayer({
     map: map,
     id: 'boardline12',
     maxResolution: 75,
@@ -523,7 +494,7 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 202,
   });
-  addFeatureVectorImageLayer({
+  addFeatureVectorLayer({
     map: map,
     id: 'line12',
     maxResolution: undefined,
@@ -535,7 +506,7 @@ export function addAPILayers(map: Map) {
     zIndex: 203,
   });
   // Muu vesiliikenne
-  addFeatureVectorImageLayer({
+  addFeatureVectorLayer({
     map: map,
     id: 'area3456',
     maxResolution: 30,
@@ -546,7 +517,7 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 204,
   });
-  addFeatureVectorImageLayer({
+  addFeatureVectorLayer({
     map: map,
     id: 'line3456',
     maxResolution: 75,
