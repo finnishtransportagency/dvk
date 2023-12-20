@@ -7,6 +7,7 @@ import {
   useFindAllFairwayCardsQuery,
   useFindAllMarineWarningsQuery,
   useFindAllSafetyEquipmentFaultsQuery,
+  useHarborPreviewQuery,
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
@@ -60,6 +61,10 @@ export function useFairwayCardListData() {
 
 export function useFairwayCardPreviewData(id: string) {
   return useFairwayCardPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
+}
+
+export function useHarborPreviewData(id: string) {
+  return useHarborPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
 }
 
 export function useSafetyEquipmentFaultData() {
