@@ -38,6 +38,7 @@ const OfflineStatus: React.FC = () => {
   const bgLayerSea = useStaticDataLayer('mml_meri');
   const bgLayerSeaShoreline = useStaticDataLayer('mml_meri_rantaviiva');
   const bgLayerLake = useStaticDataLayer('mml_jarvi');
+  const bgLayerLakeShoreline = useStaticDataLayer('mml_jarvi_rantaviiva');
   const bgLayerHarbor = useStaticDataLayer('mml_satamat');
   const bgLayerQuay = useStaticDataLayer('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
@@ -70,6 +71,7 @@ const OfflineStatus: React.FC = () => {
     bgLayerSea,
     bgLayerSeaShoreline,
     bgLayerLake,
+    bgLayerLakeShoreline,
     bgLayerHarbor,
     bgLayerQuay,
     vtsLineLayer,

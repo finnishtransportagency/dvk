@@ -34,6 +34,7 @@ const OfflineSupport: React.FC = () => {
   const bgLayerSea = useStaticDataLayer('mml_meri');
   const bgLayerSeaShoreline = useStaticDataLayer('mml_meri_rantaviiva');
   const bgLayerLake = useStaticDataLayer('mml_jarvi');
+  const bgLayerLakeShoreline = useStaticDataLayer('mml_jarvi_rantaviiva');
   const bgLayerQuay = useStaticDataLayer('mml_laiturit');
   const vtsLineLayer = useFeatureData('vtsline');
   const vtsPointLayer = useFeatureData('vtspoint');
@@ -65,6 +66,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerSea.dataUpdatedAt,
     bgLayerSeaShoreline.dataUpdatedAt,
     bgLayerLake.dataUpdatedAt,
+    bgLayerLakeShoreline.dataUpdatedAt,
     bgLayerQuay.dataUpdatedAt,
     vtsLineLayer.dataUpdatedAt,
     vtsPointLayer.dataUpdatedAt,
@@ -96,6 +98,7 @@ const OfflineSupport: React.FC = () => {
     bgLayerSea.isError ? bgLayerSea.errorUpdatedAt : 0,
     bgLayerSeaShoreline.isError ? bgLayerSeaShoreline.errorUpdatedAt : 0,
     bgLayerLake.isError ? bgLayerLake.errorUpdatedAt : 0,
+    bgLayerLakeShoreline.isError ? bgLayerLakeShoreline.errorUpdatedAt : 0,
     bgLayerQuay.isError ? bgLayerQuay.errorUpdatedAt : 0,
     vtsLineLayer.isError ? vtsLineLayer.errorUpdatedAt : 0,
     vtsPointLayer.isError ? vtsPointLayer.errorUpdatedAt : 0,
