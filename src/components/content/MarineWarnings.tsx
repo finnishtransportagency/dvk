@@ -27,7 +27,6 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
-  console.log(areaFilter);
 
   const path = [{ title: t('warnings.title') }];
   // Use any of the marine warning layers as they have the same data source

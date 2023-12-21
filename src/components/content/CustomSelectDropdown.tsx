@@ -85,7 +85,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
       {items.map((item) => {
         const optionSelected = isOptionSelected(item.id);
         return (
-          <>
+          <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
               <IonCheckbox checked={optionSelected} value={item.id} justify="start" labelPlacement="end" onIonChange={handleCheckboxChange}>
                 <IonLabel>{t(`areas.${item.id}`)}</IonLabel>
@@ -94,7 +94,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
             {item.childAreas && (
               <CheckBoxItems items={item.childAreas} selected={selected} setSelected={setSelected} padding={padding + 10} parent={item} />
             )}
-          </>
+          </React.Fragment>
         );
       })}
     </>
@@ -138,7 +138,7 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ selected, s
         ) : (
           <IonLabel className="halfOpacity">{t('common.filter')}</IonLabel>
         )}
-        <IonIcon className="custom-select-icon" icon={expanded ? caretUpSharp : caretDownSharp} />
+        <IonIcon className="customSelectIcon" icon={expanded ? caretUpSharp : caretDownSharp} />
         <SelectDropdownPopup trigger={triggerId} selected={selected} setSelected={setSelected} setExpanded={setExpanded} expanded={expanded} />
       </IonItem>
     </>
