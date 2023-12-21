@@ -237,7 +237,7 @@ const DvkIonApp: React.FC = () => {
   return (
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
-      <IonReactRouter basename="/vaylakortti">
+      <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
         <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
@@ -250,27 +250,33 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet placeholder="">
             <Switch>
-              <Route path="/esikatselu/vaylakortti/:fairwayCardId">
-                <FairwayCardPage setModalContent={setModalContent} preview={true} />
-              </Route>
               <Route path="/kortit/:fairwayCardId">
-                <FairwayCardPage setModalContent={setModalContent} preview={false} />
+                <FairwayCardPage setModalContent={setModalContent} />
               </Route>
               <Route path="/kortit">
                 <FairwayCardListPage setModalContent={setModalContent} />
               </Route>
-              <Route path="/turvalaiteviat">
-                <SafetyEquipmentFaultPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/merivaroitukset">
-                <MarineWarningPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/squat">
-                <SquatCalculatorPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/">
-                <HomePage setModalContent={setModalContent} />
-              </Route>
+              {!state.preview && (
+                <Switch>
+                  <Route path="/turvalaiteviat">
+                    <SafetyEquipmentFaultPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/merivaroitukset">
+                    <MarineWarningPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/squat">
+                    <SquatCalculatorPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/">
+                    <HomePage setModalContent={setModalContent} />
+                  </Route>
+                </Switch>
+              )}
+              {state.preview && (
+                <Route path="/">
+                  <FairwayCardPage setModalContent={setModalContent} />
+                </Route>
+              )}
             </Switch>
           </IonRouterOutlet>
         </IonContent>

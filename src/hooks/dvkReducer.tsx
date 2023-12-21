@@ -1,4 +1,4 @@
-import { UserLocationPermission } from '../utils/constants';
+import { APP_CONFIG_PREVIEW, UserLocationPermission } from '../utils/constants';
 
 // Set up reducer and state properties
 export type State = {
@@ -19,7 +19,7 @@ export const initialState: State = {
   showAisPredictor: false,
   response: [],
   locationPermission: 'off',
-  preview: false,
+  preview: VITE_APP_CONFIG === APP_CONFIG_PREVIEW,
 };
 
 export type Action =
