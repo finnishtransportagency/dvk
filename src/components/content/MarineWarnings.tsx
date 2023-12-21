@@ -50,7 +50,16 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       let foundInType = true;
 
       if (areaFilter.length > 0) {
-        foundInArea = areaFilter.some((a) => w.area[lang]?.includes(t(`areas.${a}`).toUpperCase()));
+        foundInArea = areaFilter.some((a) => {
+          if (a === 'seaAreas') {
+            return (
+              w.area[lang]?.includes('merialueet'.toUpperCase()) ||
+              w.area[lang]?.includes('sjöområden'.toUpperCase()) ||
+              w.area[lang]?.includes('sea areas'.toUpperCase())
+            );
+          }
+          return w.area[lang]?.includes(t(`areas.${a}`).toUpperCase());
+        });
       }
       if (typeFilter.length > 0) {
         foundInType = typeFilter.some((type) => w.type[lang]?.includes(type.toUpperCase()));
