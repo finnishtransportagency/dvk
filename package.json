@@ -80,7 +80,7 @@
   "scripts": {
     "prestart": "npm run generate",
     "start": "vite",
-    "preview": "vite --config vite.preview.config.ts",
+    "startpreview": "vite --config vite.preview.config.ts",
     "build": "tsc && vite build",
     "buildpreview": "tsc && vite build --config vite.preview.config.ts",
     "serve": "vite preview",
