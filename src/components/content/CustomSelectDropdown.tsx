@@ -1,7 +1,8 @@
-import { CheckboxCustomEvent, IonCheckbox, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
+import { CheckboxCustomEvent, IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WarningArea, marineWarningAreasStructure } from '../../utils/constants';
+import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 
 interface CustomSelectDropdownProps {
   selected: string[];
@@ -128,7 +129,16 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ selected, s
   return (
     <>
       <IonItem id={triggerId} button={true} onClick={() => setExpanded(true)} className={'customSelect' + (expanded ? ' expanded' : '')}>
-        <IonLabel>{t('common.filter')}</IonLabel>
+        {selected.length > 0 ? (
+          <IonLabel>
+            {selected.map((s) => {
+              return <IonText key={s}>{selected.length > 1 ? t(`areas.${s}`) + ', ' : t(`areas.${s}`)}</IonText>;
+            })}
+          </IonLabel>
+        ) : (
+          <IonLabel className="halfOpacity">{t('common.filter')}</IonLabel>
+        )}
+        <IonIcon className="custom-select-icon" icon={expanded ? caretUpSharp : caretDownSharp} />
         <SelectDropdownPopup trigger={triggerId} selected={selected} setSelected={setSelected} setExpanded={setExpanded} expanded={expanded} />
       </IonItem>
     </>

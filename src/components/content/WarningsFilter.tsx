@@ -45,7 +45,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ areaFilter, setAreaFilte
                 interface="popover"
                 interfaceOptions={{
                   size: 'cover',
-                  className: 'multiSelect',
+                  className: 'customSelect',
                 }}
                 labelPlacement="stacked"
                 onIonChange={(ev) => handleTypeChange(ev)}
