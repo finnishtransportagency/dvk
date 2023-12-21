@@ -355,6 +355,7 @@ export const aisLayers: FeatureDataLayerId[] = [
 
 export type WarningArea = {
   id: MarineWarningArea;
+  parent?: MarineWarningArea;
   childAreas?: Maybe<Array<WarningArea>>;
 };
 
@@ -362,18 +363,26 @@ export const marineWarningAreasStructure: WarningArea[] = [
   {
     id: 'seaAreas',
     childAreas: [
-      { id: 'gulfOfFinland' },
-      { id: 'northernBalticSea' },
-      { id: 'archipelagoSea' },
-      { id: 'seaOfÅland' },
+      { id: 'gulfOfFinland', parent: 'seaAreas' },
+      { id: 'northernBalticSea', parent: 'seaAreas' },
+      { id: 'archipelagoSea', parent: 'seaAreas' },
+      { id: 'seaOfÅland', parent: 'seaAreas' },
       {
         id: 'gulfOfBothnia',
-        childAreas: [{ id: 'bothnianSea' }, { id: 'theQuark' }, { id: 'bayOfBothnia' }],
+        parent: 'seaAreas',
+        childAreas: [
+          { id: 'bothnianSea', parent: 'gulfOfBothnia' },
+          { id: 'theQuark', parent: 'gulfOfBothnia' },
+          { id: 'bayOfBothnia', parent: 'gulfOfBothnia' },
+        ],
       },
     ],
   },
   {
     id: 'inlandAreas',
-    childAreas: [{ id: 'saimaa' }, { id: 'saimaaCanal' }],
+    childAreas: [
+      { id: 'saimaa', parent: 'inlandAreas' },
+      { id: 'saimaaCanal', parent: 'inlandAreas' },
+    ],
   },
 ];

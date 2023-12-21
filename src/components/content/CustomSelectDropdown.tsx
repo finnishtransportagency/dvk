@@ -21,9 +21,10 @@ interface CheckBoxItemsProps {
   selected: string[];
   setSelected: (selected: string[]) => void;
   padding?: number;
+  parent?: WarningArea;
 }
 
-const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelected, padding = 15 }) => {
+const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelected, padding = 15, parent = undefined }) => {
   const { t } = useTranslation();
 
   const isOptionSelected = (value: string) => {
@@ -33,10 +34,48 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
     return selected.includes(value);
   };
 
+  const checkAllChildren = (value: string) => {
+    const array: string[] = [];
+    const parentItem = items.find((p) => p.id === value);
+    parentItem?.childAreas?.map((c) => {
+      if (!selected.includes(c.id)) {
+        array.push(c.id);
+        // Check child's children. Not the most elegant solution.
+        c.childAreas?.map((c2) => {
+          if (!selected.includes(c2.id)) {
+            array.push(c2.id);
+          }
+        });
+      }
+    });
+    return array;
+  };
+
+  const uncheckAllChildren = (value: string, updatedValues: string[]) => {
+    const oldValues: string[] = [...updatedValues];
+    const parentItem = items.find((p) => p.id === value);
+    const childArray = parentItem?.childAreas?.flatMap((c) => {
+      return c.childAreas ? [c.id.toString(), ...c.childAreas.map((area) => area.id.toString())] : [c.id.toString()];
+    });
+    const newArray = oldValues.filter((item) => !childArray?.includes(item));
+    return newArray;
+  };
+
   const handleCheckboxChange = (event: CheckboxCustomEvent) => {
     const { checked, value } = event.detail;
-    const updatedValues = checked ? [...selected, value] : selected.filter((selectedId) => selectedId !== value);
-    setSelected(updatedValues);
+    let childElements: string[] = [];
+    let updatedValues = checked ? [...selected, value] : selected.filter((selectedId) => selectedId !== value);
+    if (checked) {
+      if (parent && !isOptionSelected(parent.id)) {
+        // if there's parent and it's unchecked, check the parent box aswell
+        updatedValues = [...updatedValues, parent.id, ...(parent.parent ? [parent.parent] : [])];
+      }
+      childElements = checkAllChildren(value);
+    } else if (!checked) {
+      setSelected([...uncheckAllChildren(value, updatedValues)]);
+      return;
+    }
+    setSelected([...updatedValues, ...childElements]);
   };
 
   return (
@@ -50,7 +89,9 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
                 <IonLabel>{t(`areas.${item.id}`)}</IonLabel>
               </IonCheckbox>
             </IonItem>
-            {item.childAreas && <CheckBoxItems items={item.childAreas} selected={selected} setSelected={setSelected} padding={padding + 10} />}
+            {item.childAreas && (
+              <CheckBoxItems items={item.childAreas} selected={selected} setSelected={setSelected} padding={padding + 10} parent={item} />
+            )}
           </>
         );
       })}

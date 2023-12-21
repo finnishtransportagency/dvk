@@ -20,7 +20,7 @@ type MarineWarningsProps = {
 };
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { data, isPending, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const { state } = useDvkContext();
@@ -29,13 +29,13 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
   console.log(areaFilter);
 
-  const path = [{ title: t('title') }];
+  const path = [{ title: t('warnings.title') }];
   // Use any of the marine warning layers as they have the same data source
   const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps?.duration) return t('viewLastUpdatedUnknown');
-    return t('lastUpdatedAt', { val: alertProps.duration });
+    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
+    return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       let foundInType = true;
 
       if (areaFilter.length > 0) {
-        foundInArea = areaFilter.some((a) => w.area[lang]?.includes(a.toUpperCase()));
+        foundInArea = areaFilter.some((a) => w.area[lang]?.includes(t(`areas.${a}`).toUpperCase()));
       }
       if (typeFilter.length > 0) {
         foundInType = typeFilter.some((type) => w.type[lang]?.includes(type.toUpperCase()));
@@ -60,7 +60,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
     });
 
     return filteredData;
-  }, [areaFilter, typeFilter, data?.marineWarnings, lang]);
+  }, [areaFilter, typeFilter, data?.marineWarnings, lang, t]);
 
   useEffect(() => {
     const source = dvkMap.getVectorSource('selectedfairwaycard');
@@ -83,10 +83,10 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
       <IonText className="fairwayTitle" id="mainPageContent">
         <h2 className="no-margin-bottom">
-          <strong>{t('title')}</strong>
+          <strong>{t('warnings.title')}</strong>
         </h2>
         <em>
-          {t('modified')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {t('warnings.modified')} {!isPending && !isFetching && <>{t('warnings.datetimeFormat', { val: dataUpdatedAt })}</>}
           {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}
@@ -101,7 +101,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         className="top-margin info"
         title={
           <>
-            <strong>{t('note')}</strong> {t('notification')}
+            <strong>{t('warnings.note')}</strong> {t('warnings.notification')}
           </>
         }
       />
