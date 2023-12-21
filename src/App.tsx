@@ -129,7 +129,9 @@ const DvkIonApp: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
   const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
+  const bgMmlmerirantaviivaLayer = useInitStaticDataLayer('mml_meri_rantaviiva', 'mml_meri_rantaviiva');
   const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
+  const bgMmljarvirantaviivaLayer = useInitStaticDataLayer('mml_jarvi_rantaviiva', 'mml_jarvi_rantaviiva');
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
@@ -200,7 +202,9 @@ const DvkIonApp: React.FC = () => {
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlmeriLayer,
+    bgMmlmerirantaviivaLayer,
     bgMmljarviLayer,
+    bgMmljarvirantaviivaLayer,
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,
