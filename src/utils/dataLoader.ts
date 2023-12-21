@@ -22,7 +22,7 @@ export function useFeatureData(
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
-    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() || '';
+    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() ?? '';
   } else {
     urlStr = fds?.url ? fds.url.toString() : '';
   }
@@ -45,14 +45,22 @@ export function useFeatureData(
   };
 }
 
-const datasourceClient = {
-  endpoint: import.meta.env.VITE_APP_API_URL ? import.meta.env.VITE_APP_API_URL : '/graphql',
-  fetchParams: {
-    headers: {
-      'content-type': 'application/json;charset=UTF-8',
-      'x-api-key': import.meta.env.VITE_APP_API_KEY || 'key missing',
-    },
+const fetchParams = {
+  headers: {
+    'content-type': 'application/json;charset=UTF-8',
+    'x-api-key': import.meta.env.VITE_APP_API_KEY ?? 'key missing',
   },
+};
+
+const datasourceClient = {
+  endpoint: import.meta.env.VITE_APP_API_URL ?? '/graphql',
+  fetchParams: fetchParams,
+};
+
+const previewDataSourceClient = {
+  // Use same API url for preview in local environment
+  endpoint: import.meta.env.VITE_APP_API_URL ?? '/esikatselu/graphql',
+  fetchParams: fetchParams,
 };
 
 export function useFairwayCardListData() {
@@ -60,11 +68,11 @@ export function useFairwayCardListData() {
 }
 
 export function useFairwayCardPreviewData(id: string) {
-  return useFairwayCardPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
+  return useFairwayCardPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
 }
 
 export function useHarborPreviewData(id: string) {
-  return useHarborPreviewQuery(datasourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
+  return useHarborPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
 }
 
 export function useSafetyEquipmentFaultData() {
