@@ -6,3 +6,4 @@ lib/lambda/router/adminRequestRouter.js
 lib/lambda/router/dvkRequestRouter.js
 lib/lambda/router/replaceFunction.js
 lib/lambda/router/squatRequestRouter.js
+lib/lambda/router/previewRequestRouter.js

@@ -1,3 +1,6 @@
+export const APP_CONFIG_DVK = 'DVK';
+export const APP_CONFIG_PREVIEW = 'PREVIEW';
+
 const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';

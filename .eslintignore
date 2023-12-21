@@ -5,4 +5,5 @@ admin
 squat
 capacitor.config.ts
 vite.config.ts
+vite.preview.config.ts
 src/graphql/generated.ts

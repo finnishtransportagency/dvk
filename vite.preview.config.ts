@@ -5,12 +5,11 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 import eslintPlugin from 'vite-plugin-eslint';
-// https://vitejs.dev/config/
 export default defineConfig({
   build: {
-    outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build',
+    outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build/esikatselu',
   },
-  base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/',
+  base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/esikatselu',
   server: {
     open: true,
     port: 3000,
@@ -29,9 +28,9 @@ export default defineConfig({
       filename: 'service-worker.js',
       manifestFilename: 'manifest.json',
       manifest: {
-        id: '/vaylakortti/',
-        name: 'Digitaalinen väyläkortti',
-        short_name: 'DVK',
+        id: '/esikatselu',
+        name: 'Digitaalisen väyläkortin esikatselu',
+        short_name: 'DVK esikatselu',
         display: 'fullscreen',
         theme_color: '#0064af',
         background_color: '#ffffff',
@@ -85,6 +84,6 @@ export default defineConfig({
     },
   },
   define: {
-    VITE_APP_CONFIG: JSON.stringify('DVK'),
+    VITE_APP_CONFIG: JSON.stringify('PREVIEW'),
   },
 });
