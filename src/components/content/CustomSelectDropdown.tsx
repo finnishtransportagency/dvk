@@ -54,6 +54,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
   const uncheckAllChildren = (value: string, updatedValues: string[]) => {
     const oldValues: string[] = [...updatedValues];
     const parentItem = items.find((p) => p.id === value);
+    // get all children areas and children's children areas
     const childArray = parentItem?.childAreas?.flatMap((c) => {
       return c.childAreas ? [c.id.toString(), ...c.childAreas.map((area) => area.id.toString())] : [c.id.toString()];
     });
@@ -68,7 +69,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
     if (checked) {
       if (parent && !isOptionSelected(parent.id)) {
         // if there's parent and it's unchecked, check the parent box aswell
-        updatedValues = [...updatedValues, parent.id, ...(parent.parent ? [parent.parent] : [])];
+        updatedValues = [...updatedValues, parent.id, ...(parent.parent && !isOptionSelected(parent.parent) ? [parent.parent] : [])];
       }
       childElements = checkAllChildren(value);
     } else if (!checked) {
