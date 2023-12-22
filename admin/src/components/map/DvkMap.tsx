@@ -171,9 +171,9 @@ class DvkMap {
       source: new VectorSource(),
       maxResolution: 30,
       zIndex: 104,
-      renderBuffer: 100,
-      updateWhileInteracting: false,
-      updateWhileAnimating: false,
+      renderBuffer: 1,
+      updateWhileInteracting: true,
+      updateWhileAnimating: true,
       renderOrder: undefined,
     });
     this.olMap.addLayer(bgMmlsatamatLayer);
