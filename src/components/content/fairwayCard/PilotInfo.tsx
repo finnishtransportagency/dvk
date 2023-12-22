@@ -63,10 +63,7 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
                         <>
                           {' '}
                           {t('pilotageDistance')}: {place.pilotJourney.toLocaleString()}&nbsp;
-                          <span aria-label={t('unit.nmDesc', { count: place.pilotJourney })} role="definition">
-                            {t('unit.nm')}
-                          </span>
-                          .
+                          <dd aria-label={t('unit.nmDesc', { count: place.pilotJourney })}>{t('unit.nm')}</dd>.
                         </>
                       )}
                     </>

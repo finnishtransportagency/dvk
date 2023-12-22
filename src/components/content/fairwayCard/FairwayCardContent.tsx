@@ -10,7 +10,7 @@ import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
 import Paragraph, { InfoParagraph } from '../Paragraph';
 import { useDvkContext } from '../../../hooks/dvkContext';
-import { VTSInfo } from './VTSInfoProps';
+import { VTSInfo } from './VTSInfo';
 import { GeneralInfo } from './GeneralInfo';
 import { AnchorageInfo } from './AnchorageInfo';
 import { SpeedLimitInfo } from './SpeedLimitInfo';
@@ -119,7 +119,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                   onClick={() => window.print()}
                   title={t('print')}
                   aria-label={t('print')}
-                  role="button"
                   data-testid="printButton"
                   disabled={printDisabled}
                 >

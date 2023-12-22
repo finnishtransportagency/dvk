@@ -53,8 +53,8 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
 
   const formatSentence = (str?: string | null, endSentence?: boolean) => {
     if (str) {
-      if (endSentence) return str.trim() + (str.trim().slice(-1) === '.' ? '' : '.');
-      return str.trim().slice(-1) === '.' ? str.trim().slice(0, -1) : str.trim();
+      if (endSentence) return str.trim() + (str.trim().endsWith('.') ? '' : '.');
+      return str.trim().endsWith('.') ? str.trim().slice(0, -1) : str.trim();
     } else {
       return '';
     }
@@ -69,14 +69,9 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
             {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)}{' '}
             {lineText && formatSentence(lineText[lang], true)} {t('length')}:{' '}
             {((extractNavigationLinesLength() ?? 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-            <span aria-label={t('unit.kmDesc', { count: 3 })} role="definition">
-              km
-            </span>{' '}
-            / {metresToNauticalMiles(extractNavigationLinesLength()).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-            <span aria-label={t('unit.nmDesc', { count: 2 })} role="definition">
-              {t('unit.nm')}
-            </span>
-            . {extractLightingInfo()}. {extractNotationInfo()}.
+            <dd aria-label={t('unit.kmDesc', { count: 3 })}>km</dd> /{' '}
+            {metresToNauticalMiles(extractNavigationLinesLength()).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+            <dd aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</dd>. {extractLightingInfo()}. {extractNotationInfo()}.
           </p>
         </IonText>
       )}

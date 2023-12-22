@@ -4,6 +4,7 @@ import { Quay } from '../../../graphql/generated';
 import { setSelectedQuay } from '../../layers';
 import { Lang } from '../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
+import { IonText } from '@ionic/react';
 
 type QuayInfoProps = {
   data?: (Quay | null)[] | null;
@@ -18,7 +19,7 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
       {data?.map((quay) => {
         const uuid = uniqueId('quay_');
         return (
-          <p
+          <IonText
             key={uuid}
             className="inlineHoverText"
             onMouseOver={() => setSelectedQuay(quay)}
@@ -26,40 +27,38 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
             onMouseOut={() => setSelectedQuay(null)}
             onBlur={() => setSelectedQuay(null)}
           >
-            {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
-            {quay?.name && quay.name[lang]?.slice(1)}
-            {!quay?.name && t('quay')}
-            {quay?.length && (
-              <>
-                {' - '}
-                <em>
-                  {t('length')} {quay?.length?.toLocaleString()}&nbsp;
-                  <span aria-label={t('unit.mDesc', { count: Number(quay?.length) })} role="definition">
-                    m
+            <p>
+              {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
+              {quay?.name && quay.name[lang]?.slice(1)}
+              {!quay?.name && t('quay')}
+              {quay?.length && (
+                <>
+                  {' - '}
+                  <em>
+                    {t('length')} {quay?.length?.toLocaleString()}&nbsp;
+                    <dd aria-label={t('unit.mDesc', { count: Number(quay?.length) })}>m</dd>
+                  </em>
+                </>
+              )}
+              {quay?.sections?.map((section) => {
+                const sectionUuid = uniqueId('section_');
+                return (
+                  <span key={sectionUuid}>
+                    <br />
+                    {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
+                    <dd aria-label={t('unit.mDesc', { count: Number(section?.depth) })}>m</dd>
                   </span>
-                </em>
-              </>
-            )}
-            {quay?.sections?.map((section) => {
-              const sectionUuid = uniqueId('section_');
-              return (
-                <span key={sectionUuid}>
+                );
+              })}
+              {quay?.extraInfo && (
+                <>
                   <br />
-                  {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
-                  <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })} role="definition">
-                    m
-                  </span>
-                </span>
-              );
-            })}
-            {quay?.extraInfo && (
-              <>
-                <br />
-                {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
-                {quay.extraInfo[lang]?.slice(1)}.
-              </>
-            )}
-          </p>
+                  {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
+                  {quay.extraInfo[lang]?.slice(1)}.
+                </>
+              )}
+            </p>
+          </IonText>
         );
       })}
     </>

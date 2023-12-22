@@ -93,7 +93,6 @@ const PrintBar: React.FC = () => {
             onClick={handlePrintClick}
             title={t('header.print')}
             aria-label={t('header.print')}
-            role="button"
           >
             <IonIcon color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
           </IonButton>

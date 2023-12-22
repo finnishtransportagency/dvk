@@ -35,7 +35,6 @@ const Modal: React.FC<ModalProps> = (props) => {
         onClick={handleClickOpen}
         title={props.triggerTitle ?? t('more-info')}
         aria-label={props.triggerTitle ?? t('more-info')}
-        role="button"
         disabled={props.disabled}
       >
         {props.triggerIcon ?? <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}

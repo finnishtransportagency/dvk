@@ -24,14 +24,14 @@ export const ProhibitionInfo: React.FC<ProhibitionInfoProps> = ({ data, inlineLa
           <p>
             {inlineLabel && <strong>{t('prohibitionAreas')}: </strong>}
             {prohibitionAreas?.length > 0 && (
-              <>
+              <span>
                 {t('prohibitionText', { count: prohibitionAreas?.length })}{' '}
                 <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
                   {MASTERSGUIDE_URLS[lang]}
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
-                .
-              </>
+                {' .'}
+              </span>
             )}
             {prohibitionAreas?.length < 1 && t('noDataSet')}
           </p>
