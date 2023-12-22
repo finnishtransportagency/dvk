@@ -244,13 +244,11 @@ ion-text .hoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
-ion-text .inlineHoverText:hover,
-p .inlineHoverText:hover {
+ion-text .inlineHoverText:hover {
   background-color: var(--ion-color-light);
   cursor: default;
 }
-ion-text .inlineHoverText:focus-visible,
-p .inlineHoverText:focus-visible {
+ion-text .inlineHoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
@@ -514,7 +512,7 @@ ion-modal.contentModal {
 }
 
 #emphasizedPreviewText {
-  color: #EC0E0E;
+  color: #ec0e0e;
 }
 
 .disabled {

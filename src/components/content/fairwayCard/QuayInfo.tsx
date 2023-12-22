@@ -21,13 +21,12 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
         return (
           <IonText
             key={uuid}
-            className="inlineHoverText"
             onMouseOver={() => setSelectedQuay(quay)}
             onFocus={() => setSelectedQuay(quay)}
             onMouseOut={() => setSelectedQuay(null)}
             onBlur={() => setSelectedQuay(null)}
           >
-            <p>
+            <p className="inlineHoverText">
               {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
               {quay?.name && quay.name[lang]?.slice(1)}
               {!quay?.name && t('quay')}
