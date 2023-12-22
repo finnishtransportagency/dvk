@@ -18,7 +18,7 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
   const lang = i18n.resolvedLanguage as Lang;
 
   const highlightHarbor = (id: string | undefined) => {
-    setSelectedHarbor(id ? id : '');
+    setSelectedHarbor(id ?? '');
   };
 
   return (
@@ -26,15 +26,17 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
       {data && (
         <>
           <IonText className="no-margin-top">
-            <h4
+            <IonText
               className="inlineHoverText"
               onMouseOver={() => highlightHarbor(data.id)}
               onFocus={() => highlightHarbor(data.id)}
               onMouseOut={() => highlightHarbor(undefined)}
               onBlur={() => highlightHarbor(undefined)}
             >
-              <strong>{data.name?.[lang]}</strong>
-            </h4>
+              <h4>
+                <strong>{data.name?.[lang]}</strong>
+              </h4>
+            </IonText>
             <h5>{t('restrictions')}</h5>
             {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
           </IonText>

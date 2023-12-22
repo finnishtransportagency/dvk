@@ -58,18 +58,9 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                     <>
                       <br />
                       {t('designVessel')} {idx + 1}: {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
-                      <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })} role="definition">
-                        m
-                      </span>
-                      , b = {vessel.width}&nbsp;
-                      <span aria-label={t('unit.mDesc', { count: Number(vessel.width) })} role="definition">
-                        m
-                      </span>
-                      , t = {vessel.draft}&nbsp;
-                      <span aria-label={t('unit.mDesc', { count: Number(vessel.draft) })} role="definition">
-                        m
-                      </span>
-                      .
+                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.
                     </>
                   )}
                 </span>
@@ -80,19 +71,13 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
           <p>
             <strong>{t('fairwayDimensions')}: </strong>
             {t('designDraft', { count: designDraftValues.length })}: {designDraftValues.join(' / ')}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
-              m
-            </span>
-            . {t('sweptDepth', { count: sweptDepthValues.length })}: {sweptDepthValues.join(' / ')}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
-              m
-            </span>
+            <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>. {t('sweptDepth', { count: sweptDepthValues.length })}:{' '}
+            {sweptDepthValues.join(' / ')}&nbsp;
+            <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
             {minimumWidths.length > 0 && (
               <>
                 . {t('minimumWidth', { count: minimumWidths.length })}: {minimumWidths.join(' / ')}&nbsp;
-                <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
-                  m
-                </span>
+                <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
               </>
             )}
             {minimumTurningCircles.length > 0 && (
@@ -106,9 +91,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                   <>. {t('minimumTurningCircle', { count: minimumTurningCircles.length })}</>
                 )}
                 : {minimumTurningCircles.join(' / ')}&nbsp;
-                <span aria-label={t('unit.mDesc', { count: 0 })} role="definition">
-                  m
-                </span>
+                <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
               </>
             )}
             . {designSpeedText?.[lang]}

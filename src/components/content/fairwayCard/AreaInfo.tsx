@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { setSelectedFairwayArea } from '../../layers';
 import { Fairway } from '../../../graphql/generated';
+import { IonText } from '@ionic/react';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;
@@ -12,7 +13,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
 
   const highlightArea = (id: string | number | undefined) => {
-    setSelectedFairwayArea(id ? id : 0);
+    setSelectedFairwayArea(id ?? 0);
   };
 
   const fairwayAreas =
@@ -45,36 +46,30 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
 
         return (
           <li key={area?.id ?? idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
-            <em
+            <IonText
               className="inlineHoverText"
               onMouseOver={() => highlightArea(area?.id)}
               onFocus={() => highlightArea(area?.id)}
               onMouseOut={() => highlightArea(0)}
               onBlur={() => highlightArea(0)}
             >
-              {area?.name ?? <>{t('areaType' + area?.typeCode)}</>}
-            </em>
+              <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
+            </IonText>
             {isDraftAvailable && (
               <>
                 <br />
                 {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
-                <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })} role="definition">
-                  m
-                </span>
+                <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })}>m</dd>
               </>
             )}
             <br />
             {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
-            <span aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })} role="definition">
-              m
-            </span>
+            <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
             {sizingSpeeds.length > 0 && (
               <>
                 <br />
                 {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
-                <span aria-label={t('unit.ktsDesc', { count: 0 })} role="definition">
-                  kts
-                </span>
+                <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
               </>
             )}
             <br />
