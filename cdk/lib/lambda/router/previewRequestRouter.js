@@ -1,6 +1,6 @@
 function handler(event) {
-  const request = event.request;
-  if (!request?.uri) {
+  var request = event.request;
+  if (!request || !request.uri) {
     return {
       statusCode: 404,
       statusDescription: 'Not found',
