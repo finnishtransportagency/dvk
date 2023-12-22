@@ -1,0 +1,61 @@
+import React from 'react';
+import { IonText } from '@ionic/react';
+import { useTranslation } from 'react-i18next';
+import { HarborPartsFragment } from '../../../graphql/generated';
+import { setSelectedHarbor } from '../../layers';
+import { Lang } from '../../../utils/constants';
+import { InfoParagraph } from '../Paragraph';
+import { QuayInfo } from './QuayInfo';
+import { ContactInfo } from './ContactInfo';
+
+type HarbourInfoProps = {
+  data?: HarborPartsFragment | null;
+  isLast?: boolean;
+};
+
+export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  const highlightHarbor = (id: string | undefined) => {
+    setSelectedHarbor(id ? id : '');
+  };
+
+  return (
+    <>
+      {data && (
+        <>
+          <IonText className="no-margin-top">
+            <h4
+              className="inlineHoverText"
+              onMouseOver={() => highlightHarbor(data.id)}
+              onFocus={() => highlightHarbor(data.id)}
+              onMouseOut={() => highlightHarbor(undefined)}
+              onBlur={() => highlightHarbor(undefined)}
+            >
+              <strong>{data.name?.[lang]}</strong>
+            </h4>
+            <h5>{t('restrictions')}</h5>
+            {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
+          </IonText>
+          <IonText>
+            <h5>{t('quays')}</h5>
+            <div className="printGrid">{(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}</div>
+          </IonText>
+          <IonText>
+            <h5>{t('cargo')}</h5>
+            {(data.cargo && <p>{data.cargo[lang]}</p>) || <InfoParagraph />}
+          </IonText>
+          <IonText>
+            <h5>{t('harbourBasin')}</h5>
+            {(data.harborBasin && <p>{data.harborBasin[lang]}</p>) || <InfoParagraph />}
+          </IonText>
+          <IonText>
+            <h5>{t('contactDetails')}</h5>
+            <ContactInfo data={data} noMargin={isLast} />
+          </IonText>
+        </>
+      )}
+    </>
+  );
+};
