@@ -99,14 +99,14 @@ export class IllegalAccessError extends Error {
 export async function getOptionalCurrentUser(event: ALBEvent | AppSyncResolverEvent<unknown>, checkRoles = true): Promise<CurrentUser | undefined> {
   let jwtDataToken;
   if ('multiValueHeaders' in event && event.multiValueHeaders) {
-    log.info({ headers: event.multiValueHeaders }, 'Request headers');
+    log.debug({ headers: event.multiValueHeaders }, 'Request headers');
     const token = event.multiValueHeaders['x-iam-accesstoken'];
     const data = event.multiValueHeaders['x-iam-data'];
     if (token && data) {
       jwtDataToken = await validateJwtToken(token[0], data[0]);
     }
   } else if ('request' in event && event.request.headers) {
-    log.info({ headers: event.request.headers }, 'Request headers');
+    log.debug({ headers: event.request.headers }, 'Request headers');
     const token = event.request.headers['x-iam-accesstoken'];
     const data = event.request.headers['x-iam-data'];
     if (token && data) {
