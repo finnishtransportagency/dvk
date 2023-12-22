@@ -156,7 +156,7 @@ export class PreviewPipeline extends Construct {
       region: '',
       service: 's3',
       resource: importedPreviewBucketName,
-      resourceName: 'yllapito/*',
+      resourceName: 'esikatselu/*',
       account: '',
       partition: 'aws',
     });
