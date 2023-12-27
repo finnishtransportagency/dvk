@@ -5,6 +5,7 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+  position: relative;
 }
 
 .sortingButton {
@@ -39,23 +40,24 @@ ion-item.customSelect {
   font-size: 14px;
   width: 100%;
   opacity: 1;
-  --min-height: 40px;
-  border-style: solid;
-  border-width: 1px;
+  --min-height: 43px;
+  border: 1px solid black;
 }
 
 ion-item.customSelect.expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
   border-image-width: 25px;
   border-width: 3px;
+  max-height: 44.5px;
 }
 
 .toRight {
   padding: 0px;
 }
 
-ion-popover {
+ion-popover.customPopover {
  --min-width: fit-content;
+ border-radius: 0px;
 }
 
 .customSelectIcon {

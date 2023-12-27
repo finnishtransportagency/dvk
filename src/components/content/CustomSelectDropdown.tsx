@@ -1,4 +1,4 @@
-import { CheckboxCustomEvent, IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText } from '@ionic/react';
+import { CheckboxCustomEvent, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
@@ -122,9 +122,11 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ trigger, sele
         showBackdrop={false}
         size="cover"
       >
-        <IonList className="customPopover">
-          <CheckBoxItems items={items} trigger={trigger} selected={selected} setSelected={setSelected} />
-        </IonList>
+        <IonContent>
+          <IonList>
+            <CheckBoxItems items={items} trigger={trigger} selected={selected} setSelected={setSelected} />
+          </IonList>
+        </IonContent>
       </IonPopover>
     </>
   );
