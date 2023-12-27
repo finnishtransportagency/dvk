@@ -1,4 +1,4 @@
-import { CheckboxCustomEvent, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText } from '@ionic/react';
+import { CheckboxCustomEvent, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
@@ -144,8 +144,9 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, 
       <IonItem id={triggerId} button={true} onClick={() => setExpanded(true)} className={'customSelect' + (expanded ? ' expanded' : '')}>
         {selected.length > 0 ? (
           <IonLabel>
-            {selected.map((s) => {
-              return <IonText key={s}>{selected.length > 1 ? t(translationPrefix + '.' + s) + ', ' : t(translationPrefix + '.' + s)}</IonText>;
+            {selected.map((s, index) => {
+              const label = t(translationPrefix + '.' + s);
+              return index < selected.length - 1 ? label + ', ' : label;
             })}
           </IonLabel>
         ) : (
