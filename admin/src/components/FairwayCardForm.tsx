@@ -181,6 +181,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const handlePreview = () => {
+    console.log('Open preview');
+  };
+
   const getModifiedInfo = () => {
     if (savedCard) return t('general.datetimeFormat', { val: savedCard.modificationTimestamp ?? savedCard.creationTimestamp });
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
@@ -229,6 +233,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         updateState={updateState}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handlePreview={handlePreview}
         modifiedInfo={getModifiedInfo()}
         modifierInfo={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}

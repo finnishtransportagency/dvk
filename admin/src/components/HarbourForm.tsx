@@ -179,6 +179,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
   };
 
+  const handlePreview = () => {
+    console.log('Open preview');
+  };
+
   const getModifiedInfo = () => {
     if (savedHarbour) return t('general.datetimeFormat', { val: savedHarbour.modificationTimestamp ?? savedHarbour.creationTimestamp });
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
@@ -236,6 +240,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         updateState={updateState}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handlePreview={handlePreview}
         modifiedInfo={getModifiedInfo()}
         modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
