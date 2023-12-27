@@ -29,6 +29,7 @@ import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
+import { useDvkContext } from '../hooks/dvkContext';
 
 type SidebarMenuProps = {
   isSourceOpen: boolean;
@@ -40,6 +41,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const router = useIonRouter();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
+  const { state } = useDvkContext();
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
     const isTabPressed = e.key === 'Tab';
@@ -113,7 +115,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/kortit/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
@@ -127,7 +129,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/turvalaiteviat/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
@@ -141,7 +143,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/merivaroitukset/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
@@ -156,7 +158,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/squat/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       data-testid="squatLink"
                       disabled={router.routeInfo.pathname === '/squat/'}
