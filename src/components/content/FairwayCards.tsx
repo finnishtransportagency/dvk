@@ -20,8 +20,8 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const sorted = [...data].sort((a, b) => {
-    const nameA = a.name[lang] || '';
-    const nameB = b.name[lang] || '';
+    const nameA = a.name[lang] ?? '';
+    const nameB = b.name[lang] ?? '';
     return nameA.localeCompare(nameB);
   });
   return (
@@ -95,11 +95,11 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
         <FairwayCardGroup
           title={t('archipelagoSea')}
           loading={isPending}
-          data={data?.fairwayCards.filter((card) => card.group === '1') || []}
+          data={data?.fairwayCards.filter((card) => card.group === '1') ?? []}
           first
         />
-        <FairwayCardGroup title={t('gulfOfFinland')} loading={isPending} data={data?.fairwayCards.filter((card) => card.group === '2') || []} />
-        <FairwayCardGroup title={t('gulfOfBothnia')} loading={isPending} data={data?.fairwayCards.filter((card) => card.group === '3') || []} />
+        <FairwayCardGroup title={t('gulfOfFinland')} loading={isPending} data={data?.fairwayCards.filter((card) => card.group === '2') ?? []} />
+        <FairwayCardGroup title={t('gulfOfBothnia')} loading={isPending} data={data?.fairwayCards.filter((card) => card.group === '3') ?? []} />
       </div>
     </>
   );

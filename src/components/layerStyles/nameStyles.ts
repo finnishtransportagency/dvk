@@ -5,6 +5,15 @@ import { Lang } from '../../utils/constants';
 
 const styles: Style[] = [];
 
+function getFeatureName(feature: FeatureLike) {
+  const dvkMap = getMap();
+  const featureName = feature.get('name');
+  if ((dvkMap.i18n.resolvedLanguage as Lang) === 'sv') {
+    return '' + (featureName.sv || featureName.fi);
+  }
+  return '' + (featureName.fi || featureName.sv);
+}
+
 export function getNameStyle(feature: FeatureLike, resolution: number) {
   const priority = feature.get('priority') as number;
   const visible =
@@ -32,13 +41,7 @@ export function getNameStyle(feature: FeatureLike, resolution: number) {
         }),
       });
     }
-    const dvkMap = getMap();
-    const featureName = feature.get('name');
-    if ((dvkMap.i18n.resolvedLanguage as Lang) === 'sv') {
-      style.getText()?.setText('' + (featureName.sv || featureName.fi));
-    } else {
-      style.getText()?.setText('' + (featureName.fi || featureName.sv));
-    }
+    style.getText()?.setText(getFeatureName(feature));
     return style;
   }
   return undefined;

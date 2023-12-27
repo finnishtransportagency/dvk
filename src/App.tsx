@@ -129,7 +129,9 @@ const DvkIonApp: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
   const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
+  const bgMmlmerirantaviivaLayer = useInitStaticDataLayer('mml_meri_rantaviiva', 'mml_meri_rantaviiva');
   const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
+  const bgMmljarvirantaviivaLayer = useInitStaticDataLayer('mml_jarvi_rantaviiva', 'mml_jarvi_rantaviiva');
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
@@ -200,7 +202,9 @@ const DvkIonApp: React.FC = () => {
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlmeriLayer,
+    bgMmlmerirantaviivaLayer,
     bgMmljarviLayer,
+    bgMmljarvirantaviivaLayer,
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,
@@ -237,7 +241,7 @@ const DvkIonApp: React.FC = () => {
   return (
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
-      <IonReactRouter basename="/vaylakortti">
+      <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
         <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
@@ -250,27 +254,33 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet placeholder="">
             <Switch>
-              <Route path="/esikatselu/vaylakortti/:fairwayCardId">
-                <FairwayCardPage setModalContent={setModalContent} preview={true} />
-              </Route>
               <Route path="/kortit/:fairwayCardId">
-                <FairwayCardPage setModalContent={setModalContent} preview={false} />
+                <FairwayCardPage setModalContent={setModalContent} />
               </Route>
               <Route path="/kortit">
                 <FairwayCardListPage setModalContent={setModalContent} />
               </Route>
-              <Route path="/turvalaiteviat">
-                <SafetyEquipmentFaultPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/merivaroitukset">
-                <MarineWarningPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/squat">
-                <SquatCalculatorPage setModalContent={setModalContent} />
-              </Route>
-              <Route path="/">
-                <HomePage setModalContent={setModalContent} />
-              </Route>
+              {!state.preview && (
+                <Switch>
+                  <Route path="/turvalaiteviat">
+                    <SafetyEquipmentFaultPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/merivaroitukset">
+                    <MarineWarningPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/squat">
+                    <SquatCalculatorPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/">
+                    <HomePage setModalContent={setModalContent} />
+                  </Route>
+                </Switch>
+              )}
+              {state.preview && (
+                <Route path="/">
+                  <FairwayCardPage setModalContent={setModalContent} />
+                </Route>
+              )}
             </Switch>
           </IonRouterOutlet>
         </IonContent>

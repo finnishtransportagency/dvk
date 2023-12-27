@@ -8,9 +8,35 @@ import { MarineWarningFeatureProperties } from '../features';
 
 const marineAreaImage = new Image();
 marineAreaImage.src = marinearea;
+let areaStyle: Style | undefined = undefined;
 
 const marineAreaSelectedImage = new Image();
 marineAreaSelectedImage.src = marineareaSelected;
+let selectedAreaStyle: Style | undefined = undefined;
+
+function getAreaStyle(selected: boolean) {
+  let s = selected ? selectedAreaStyle : areaStyle;
+  if (!s) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+    const gradient = context.createPattern(selected ? marineAreaSelectedImage : marineAreaImage, 'repeat');
+    s = new Style({
+      stroke: new Stroke({
+        color: '#EC0E0E',
+        width: 2,
+      }),
+      fill: new Fill({
+        color: gradient,
+      }),
+    });
+    if (selected) {
+      selectedAreaStyle = s;
+    } else {
+      areaStyle = s;
+    }
+  }
+  return s;
+}
 
 export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   const featureProperties = feature.getProperties() as MarineWarningFeatureProperties;
@@ -18,20 +44,8 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   const iconScale = isGeneralMarineWarning(featureProperties.area) ? 1.5 * selectedScale : 1 * selectedScale;
 
   if (feature.getGeometry()?.getType() === 'Polygon') {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const gradient = context.createPattern(selected ? marineAreaSelectedImage : marineAreaImage, 'repeat');
-
     return [
-      new Style({
-        stroke: new Stroke({
-          color: '#EC0E0E',
-          width: 2,
-        }),
-        fill: new Fill({
-          color: gradient,
-        }),
-      }),
+      getAreaStyle(selected),
       new Style({
         image: new Icon({
           src: getWarningImgSource(featureProperties.type?.fi ?? ''),

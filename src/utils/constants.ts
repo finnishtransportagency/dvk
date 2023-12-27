@@ -1,5 +1,8 @@
 import { Maybe } from '../graphql/generated';
 
+export const APP_CONFIG_DVK = 'DVK';
+export const APP_CONFIG_PREVIEW = 'PREVIEW';
+
 const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
@@ -18,9 +21,26 @@ const staticUrl = import.meta.env.VITE_APP_STATIC_URL
 
 export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
-export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
+export type BackgroundLayerId =
+  | 'finland'
+  | 'mml_meri'
+  | 'mml_meri_rantaviiva'
+  | 'mml_jarvi'
+  | 'mml_jarvi_rantaviiva'
+  | 'mml_satamat'
+  | 'mml_laiturit'
+  | 'balticsea';
 
-export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'name';
+export type StaticFeatureDataId =
+  | 'balticsea'
+  | 'finland'
+  | 'mml_meri'
+  | 'mml_meri_rantaviiva'
+  | 'mml_jarvi'
+  | 'mml_jarvi_rantaviiva'
+  | 'mml_satamat'
+  | 'mml_laiturit'
+  | 'name';
 
 export type FeatureDataId =
   | 'area12'
@@ -53,8 +73,10 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20231213.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20231219.json.gz') },
+  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20231219.json.gz') },
   { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
 ];
@@ -275,7 +297,7 @@ export const MAP: MapType = {
     { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
-    { id: 'depth12', offlineSupport: true, localizedStyle: false },
+    { id: 'depth12', offlineSupport: true, localizedStyle: true },
     { id: 'coastalwarning', offlineSupport: true, localizedStyle: false },
     { id: 'localwarning', offlineSupport: true, localizedStyle: false },
     { id: 'boaterwarning', offlineSupport: true, localizedStyle: false },

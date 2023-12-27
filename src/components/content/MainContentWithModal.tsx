@@ -4,7 +4,7 @@ import ArrowBackIcon from '../../theme/img/arrow_back.svg?react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import FairwayCards from './FairwayCards';
-import FairwayCard from './FairwayCard';
+import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';

@@ -61,7 +61,7 @@ export class PreviewPipeline extends Construct {
               'cd ..',
               'npm ci',
               'npm run generate',
-              'BUILD_PATH=./build/esikatselu PUBLIC_URL=/esikatselu npm run build',
+              'BUILD_PATH=./build/esikatselu PUBLIC_URL=/esikatselu npm run buildpreview',
             ],
           },
         },
@@ -156,7 +156,7 @@ export class PreviewPipeline extends Construct {
       region: '',
       service: 's3',
       resource: importedPreviewBucketName,
-      resourceName: 'yllapito/*',
+      resourceName: 'esikatselu/*',
       account: '',
       partition: 'aws',
     });

@@ -84,4 +84,7 @@ export default defineConfig({
       exclude: ['node_modules/', 'src/setupTests.ts'],
     },
   },
+  define: {
+    VITE_APP_CONFIG: JSON.stringify('DVK'),
+  },
 });
