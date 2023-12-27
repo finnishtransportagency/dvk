@@ -17,6 +17,7 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
+import { getPreviewBaseUrl } from '../utils/common';
 
 interface FormProps {
   harbour: HarborInput;
@@ -180,7 +181,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   };
 
   const handlePreview = () => {
-    console.log('Open preview');
+    window.open(getPreviewBaseUrl() + '/satamat/' + harbour.id);
   };
 
   const getModifiedInfo = () => {

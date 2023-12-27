@@ -25,6 +25,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
+import { getPreviewBaseUrl } from '../utils/common';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -182,7 +183,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const handlePreview = () => {
-    console.log('Open preview');
+    window.open(getPreviewBaseUrl() + '/kortit/' + fairwayCard.id);
   };
 
   const getModifiedInfo = () => {

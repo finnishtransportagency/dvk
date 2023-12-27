@@ -126,3 +126,8 @@ export const constructSelectDropdownLabel = (selected: number[], options: Select
 export const radiansToDegrees = (rads: number) => {
   return Math.round(rads * (180 / Math.PI) + (rads < 0 ? 360 : 0));
 };
+
+export const getPreviewBaseUrl = (): string => {
+  const path = import.meta.env.VITE_APP_ENV === 'local' ? 'https://' + import.meta.env.VITE_APP_STATIC_URL : '';
+  return path + '/esikatselu';
+};
