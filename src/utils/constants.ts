@@ -341,7 +341,7 @@ export type MarineWarningArea =
   | 'saimaaCanal'
   | 'inlandAreas';
 
-export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
+export type MarineWarningType = 'boaterWarning' | 'coastalWarning' | 'localWarning';
 
 export const aisLayers: FeatureDataLayerId[] = [
   'aisvesselcargo',
@@ -353,13 +353,13 @@ export const aisLayers: FeatureDataLayerId[] = [
   'aisunspecified',
 ];
 
-export type WarningArea = {
-  id: MarineWarningArea;
+export type WarningFilter = {
+  id: MarineWarningArea | MarineWarningType;
   parent?: MarineWarningArea;
-  childAreas?: Maybe<Array<WarningArea>>;
+  childAreas?: Maybe<Array<WarningFilter>>;
 };
 
-export const marineWarningAreasStructure: WarningArea[] = [
+export const marineWarningAreasStructure: WarningFilter[] = [
   {
     id: 'seaAreas',
     childAreas: [
@@ -386,3 +386,5 @@ export const marineWarningAreasStructure: WarningArea[] = [
     ],
   },
 ];
+
+export const marineWarningTypeStructure: WarningFilter[] = [{ id: 'boaterWarning' }, { id: 'coastalWarning' }, { id: 'localWarning' }];

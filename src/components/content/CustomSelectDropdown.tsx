@@ -1,10 +1,11 @@
 import { CheckboxCustomEvent, IonCheckbox, IonIcon, IonItem, IonLabel, IonList, IonPopover, IonText } from '@ionic/react';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WarningArea, marineWarningAreasStructure } from '../../utils/constants';
+import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 
 interface CustomSelectDropdownProps {
+  triggerId: string;
   selected: string[];
   setSelected: (selected: string[]) => void;
 }
@@ -18,15 +19,16 @@ interface SelectDropdownPopupProps {
 }
 
 interface CheckBoxItemsProps {
-  items: WarningArea[];
+  items: WarningFilter[];
+  trigger: string;
   selected: string[];
   setSelected: (selected: string[]) => void;
   padding?: number;
-  parent?: WarningArea;
+  parent?: WarningFilter;
 }
 
-const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelected, padding = 15, parent = undefined }) => {
-  const { t } = useTranslation();
+const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, trigger, selected, setSelected, padding = 15, parent = undefined }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: `${trigger.includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
 
   const isOptionSelected = (value: string) => {
     if (value === undefined) {
@@ -88,11 +90,18 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
           <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
               <IonCheckbox checked={optionSelected} value={item.id} justify="start" labelPlacement="end" onIonChange={handleCheckboxChange}>
-                <IonLabel>{t(`areas.${item.id}`)}</IonLabel>
+                <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
             </IonItem>
             {item.childAreas && (
-              <CheckBoxItems items={item.childAreas} selected={selected} setSelected={setSelected} padding={padding + 10} parent={item} />
+              <CheckBoxItems
+                trigger={trigger}
+                items={item.childAreas}
+                selected={selected}
+                setSelected={setSelected}
+                padding={padding + 10}
+                parent={item}
+              />
             )}
           </React.Fragment>
         );
@@ -102,6 +111,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, selected, setSelec
 };
 
 const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ trigger, selected, setSelected, setExpanded, expanded }) => {
+  const items = trigger.includes('area') ? marineWarningAreasStructure : marineWarningTypeStructure;
   return (
     <>
       <IonPopover
@@ -113,18 +123,19 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ trigger, sele
         size="cover"
       >
         <IonList className="customPopover">
-          <CheckBoxItems items={marineWarningAreasStructure} selected={selected} setSelected={setSelected} />
+          <CheckBoxItems items={items} trigger={trigger} selected={selected} setSelected={setSelected} />
         </IonList>
       </IonPopover>
     </>
   );
 };
 
-const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ selected, setSelected }) => {
+const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, selected, setSelected }) => {
   const { t } = useTranslation();
+  // 3 different translations, so couldn't use functions own prefix setting
+  const translationPrefix = triggerId.includes('area') ? 'areas' : 'homePage.map.controls.layer';
 
   const [expanded, setExpanded] = useState(false);
-  const triggerId = 'popover-container';
 
   return (
     <>
@@ -132,7 +143,7 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ selected, s
         {selected.length > 0 ? (
           <IonLabel>
             {selected.map((s) => {
-              return <IonText key={s}>{selected.length > 1 ? t(`areas.${s}`) + ', ' : t(`areas.${s}`)}</IonText>;
+              return <IonText key={s}>{selected.length > 1 ? t(translationPrefix + '.' + s) + ', ' : t(translationPrefix + '.' + s)}</IonText>;
             })}
           </IonLabel>
         ) : (

@@ -53,6 +53,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         foundInArea = areaFilter.some((a) => {
           if (a === 'seaAreas') {
             return (
+              //refaktoroi koko tarkistus jonnekin muualle poikkeuksineen
               w.area[lang]?.includes('merialueet'.toUpperCase()) ||
               w.area[lang]?.includes('sjöområden'.toUpperCase()) ||
               w.area[lang]?.includes('sea areas'.toUpperCase())
@@ -62,7 +63,8 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         });
       }
       if (typeFilter.length > 0) {
-        foundInType = typeFilter.some((type) => w.type[lang]?.includes(type.toUpperCase()));
+        foundInType = typeFilter.some((type) => w.type[lang]?.includes(t(`homePage.map.controls.layer.${type}`).toUpperCase()));
+        console.log(t(`homePage.map.controls.layer.boaterWarning`));
       }
       return foundInArea && foundInType;
     });
@@ -119,6 +121,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       )}
       <WarningsFilter
         areaFilter={areaFilter}
+        typeFilter={typeFilter}
         setAreaFilter={setAreaFilter}
         setTypeFilter={setTypeFilter}
         setSortNewFirst={setSortNewFirst}
