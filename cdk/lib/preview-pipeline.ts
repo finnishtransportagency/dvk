@@ -55,10 +55,6 @@ export class PreviewPipeline extends Construct {
           build: {
             commands: [
               'echo build preview app',
-              'cd squat',
-              'npm ci',
-              'npm run buildlib',
-              'cd ..',
               'npm ci',
               'npm run generate',
               'BUILD_PATH=./build/esikatselu PUBLIC_URL=/esikatselu npm run buildpreview',
