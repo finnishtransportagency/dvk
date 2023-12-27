@@ -1,12 +1,12 @@
 import React from 'react';
 
-type PhonenumberProps = {
+type PhoneNumberProps = {
   number?: string | null;
   title?: string;
   showEmpty?: boolean;
 };
 
-const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) => {
+const PhoneNumber: React.FC<PhoneNumberProps> = ({ number, title, showEmpty }) => {
   return (
     <>
       {number && (
@@ -27,4 +27,4 @@ const Phonenumber: React.FC<PhonenumberProps> = ({ number, title, showEmpty }) =
   );
 };
 
-export default Phonenumber;
+export default PhoneNumber;
