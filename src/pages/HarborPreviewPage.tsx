@@ -6,14 +6,20 @@ import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
 import { isMobile } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useParams } from 'react-router-dom';
+import { useDvkContext } from '../hooks/dvkContext';
 
 interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;
 }
 
+type HarborPreviewParams = {
+  harborId: string;
+};
+
 const HarborPreviewPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t } = useTranslation();
-  const { harborId } = useParams();
+  const { harborId } = useParams<HarborPreviewParams>();
+  const { dispatch } = useDvkContext();
   const title = t('common.documentTitle') + ' - ' + t('fairwayCards.harboursTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
 
@@ -25,11 +31,20 @@ const HarborPreviewPage: React.FC<ModalProps> = ({ setModalContent }) => {
     setModalContent('harborPreview');
   }, [setModalContent]);
 
+  useEffect(() => {
+    dispatch({
+      type: 'setHarborId',
+      payload: {
+        value: harborId,
+      },
+    });
+  }, [dispatch, harborId]);
+
   return (
     <IonPage id="mainContent">
       <IonContent>
         {isMobile() && <MainContentWithModal />}
-        {!isMobile() && <MainContent target="harborPreview" harborId={harborId} splitPane />}
+        {!isMobile() && <MainContent target="harborPreview" splitPane />}
       </IonContent>
     </IonPage>
   );

@@ -219,7 +219,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   };
 
   const [fairwayCardId, setFairwayCardId] = useState('');
-  const [harborId, setHarborId] = useState('');
 
   useEffect(() => {
     const card = data?.fairwayCards.find((c) => c.id === modalContent);
@@ -236,7 +235,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       setFairwayCardId(modalContent);
     } else {
       setFairwayCardId('');
-      setHarborId('');
     }
   }, [modalContent, data]);
 
@@ -324,7 +322,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
         {modalContent === 'squatCalculator' && <SquatCalculator />}
-        {modalContent === 'harborPreview' && <HarborPreview id={harborId} />}
+        {modalContent === 'harborPreview' && <HarborPreview />}
       </IonContent>
     </IonModal>
   );

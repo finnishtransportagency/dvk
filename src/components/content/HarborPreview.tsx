@@ -1,21 +1,20 @@
 import { IonText, IonSkeletonText } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useFairwayCardListData } from '../../utils/dataLoader';
+import { useHarborPreviewData } from '../../utils/dataLoader';
 import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type HarborPreviewProps = {
-  id?: string;
   widePane?: boolean;
 };
 
-const HarborPreview: React.FC<HarborPreviewProps> = ({ id, widePane }) => {
+const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const { isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
+  const { state } = useDvkContext();
+  const { data, isPending, dataUpdatedAt, isFetching } = useHarborPreviewData(state.harborId);
   const path = [{ title: t('title', { count: 0 }) }];
-
-  console.log(id);
 
   return (
     <>
@@ -42,7 +41,7 @@ const HarborPreview: React.FC<HarborPreviewProps> = ({ id, widePane }) => {
         widePane={widePane}
       />
 
-      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}></div>
+      <div className={'tabContent active show-print' + (widePane ? ' wide' : '')}>Hello harbor {data?.harborPreview?.id}</div>
     </>
   );
 };
