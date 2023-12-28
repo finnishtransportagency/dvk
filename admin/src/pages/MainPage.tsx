@@ -58,7 +58,7 @@ const MainPage: React.FC = () => {
   const [sortDescending, setSortDescending] = useState(false);
   const searchRef = useRef<HTMLIonInputElement>(null);
 
-  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending, t, groups);
+  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending, t);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
