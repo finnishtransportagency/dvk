@@ -47,7 +47,7 @@ ion-item.customSelect {
 ion-item.customSelect.expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
   border-image-width: 25px;
-  border-width: 3px;
+  border-width: 2px;
   max-height: 44.5px;
 }
 
@@ -66,4 +66,8 @@ ion-popover.customPopover {
 
 .halfOpacity {
   opacity: 0.5;
+}
+
+.item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
+  font-size: 14px;
 }

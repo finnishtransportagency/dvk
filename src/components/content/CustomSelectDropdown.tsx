@@ -90,7 +90,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, trigger, selected,
           <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
               <IonCheckbox checked={optionSelected} value={item.id} justify="start" labelPlacement="end" onIonChange={handleCheckboxChange}>
-                <IonLabel>{t(`${item.id}`)}</IonLabel>
+                <IonLabel className="optionLabel">{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
             </IonItem>
             {item.childAreas && (
@@ -113,22 +113,20 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, trigger, selected,
 const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ trigger, selected, setSelected, setExpanded, expanded }) => {
   const items = trigger.includes('area') ? marineWarningAreasStructure : marineWarningTypeStructure;
   return (
-    <>
-      <IonPopover
-        trigger={trigger}
-        className="customPopover"
-        isOpen={expanded}
-        onDidDismiss={() => setExpanded(false)}
-        showBackdrop={false}
-        size="cover"
-      >
-        <IonContent>
-          <IonList>
-            <CheckBoxItems items={items} trigger={trigger} selected={selected} setSelected={setSelected} />
-          </IonList>
-        </IonContent>
-      </IonPopover>
-    </>
+    <IonPopover
+      trigger={trigger}
+      className="customPopover"
+      isOpen={expanded}
+      onDidDismiss={() => setExpanded(false)}
+      showBackdrop={false}
+      size="cover"
+    >
+      <IonContent>
+        <IonList>
+          <CheckBoxItems items={items} trigger={trigger} selected={selected} setSelected={setSelected} />
+        </IonList>
+      </IonContent>
+    </IonPopover>
   );
 };
 
@@ -140,22 +138,20 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, 
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <>
-      <IonItem id={triggerId} button={true} onClick={() => setExpanded(true)} className={'customSelect' + (expanded ? ' expanded' : '')}>
-        {selected.length > 0 ? (
-          <IonLabel>
-            {selected.map((s, index) => {
-              const label = t(translationPrefix + '.' + s);
-              return index < selected.length - 1 ? label + ', ' : label;
-            })}
-          </IonLabel>
-        ) : (
-          <IonLabel className="halfOpacity">{t('common.filter')}</IonLabel>
-        )}
-        <IonIcon className="customSelectIcon" icon={expanded ? caretUpSharp : caretDownSharp} />
-        <SelectDropdownPopup trigger={triggerId} selected={selected} setSelected={setSelected} setExpanded={setExpanded} expanded={expanded} />
-      </IonItem>
-    </>
+    <IonItem id={triggerId} button={true} onClick={() => setExpanded(true)} className={'customSelect' + (expanded ? ' expanded' : '')}>
+      {selected.length > 0 ? (
+        <IonLabel>
+          {selected.map((s, index) => {
+            const label = t(translationPrefix + '.' + s);
+            return index < selected.length - 1 ? label + ', ' : label;
+          })}
+        </IonLabel>
+      ) : (
+        <IonLabel className="halfOpacity">{t('common.filter')}</IonLabel>
+      )}
+      <IonIcon className="customSelectIcon" icon={expanded ? caretUpSharp : caretDownSharp} color={expanded ? 'primary' : 'medium'} />
+      <SelectDropdownPopup trigger={triggerId} selected={selected} setSelected={setSelected} setExpanded={setExpanded} expanded={expanded} />
+    </IonItem>
   );
 };
 
