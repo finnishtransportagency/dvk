@@ -93,7 +93,7 @@ export const getInputCounterText = (inputLength: number, maxLength: number) => {
 
 export const nameIncludesQuery = (name: Text | null | undefined, query: string) => {
   if (!name) return false;
-  return name.fi?.toLowerCase().includes(query) ?? name.sv?.toLowerCase().includes(query) ?? name.en?.toLowerCase().includes(query);
+  return name.fi?.toLowerCase().includes(query) || name.sv?.toLowerCase().includes(query) || name.en?.toLowerCase().includes(query);
 };
 
 export const sortSelectOptions = (options: SelectOption[], lang: Lang) => {
