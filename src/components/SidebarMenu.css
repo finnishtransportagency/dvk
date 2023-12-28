@@ -228,3 +228,8 @@
 .offlineSupport ion-icon[slot='start'] {
   margin: 0 8px 0 0;
 }
+
+.disabled {
+  pointer-events: none;
+  opacity: 50%;
+}

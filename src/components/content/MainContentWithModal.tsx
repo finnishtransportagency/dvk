@@ -88,7 +88,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     if (state.preview) {
       dvkMap.getSearchbarControl().disable();
       dvkMap.getSearchbarControl().setPlaceholder('');
-      dvkMap.getOpenSidebarMenuControl().disable();
     }
   }, [state.preview]);
 
