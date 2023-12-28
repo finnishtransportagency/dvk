@@ -84,7 +84,7 @@ const Header: React.FC<HeaderProps> = ({
               <IonButton
                 shape="round"
                 color="danger"
-                disabled={isError ?? isLoading}
+                disabled={isError || isLoading}
                 onClick={() => {
                   handleSubmit(true);
                 }}
@@ -92,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({
                 {t('general.delete')}
               </IonButton>
             )}
-            <IonButton shape="round" disabled={isError ?? isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
               {operation === Operation.Update ? t('general.save') : t('general.create-new')}
             </IonButton>
           </IonCol>
