@@ -484,6 +484,7 @@
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
   },
   "areas": {
+    "seaAreas": "[sv] Kaikki merialueet",
     "gulfOfFinland": "Finska viken",
     "northernBalticSea": "Norra Östersjön",
     "archipelagoSea": "Skärgårdshavet",
@@ -493,6 +494,7 @@
     "bayOfBothnia": "Bottenviken",
     "saimaa": "Saimen",
     "saimaaCanal": "Saima kanal",
-    "gulfOfBothnia": "Bottenvik"
+    "gulfOfBothnia": "Bottenvik",
+    "inlandAreas": "[sv] Sisävesistöt"
   }
 }
