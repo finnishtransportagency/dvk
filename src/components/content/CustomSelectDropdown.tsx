@@ -90,7 +90,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, trigger, selected,
           <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
               <IonCheckbox checked={optionSelected} value={item.id} justify="start" labelPlacement="end" onIonChange={handleCheckboxChange}>
-                <IonLabel className="optionLabel">{t(`${item.id}`)}</IonLabel>
+                <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
             </IonItem>
             {item.childAreas && (
