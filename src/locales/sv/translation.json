@@ -120,6 +120,7 @@
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
     "name": "Farledskortets namn",
     "preview": "Förhandsvisning",
+    "harborPreview": "[sv] Sataman esikatselu",
     "print": "Skriv ut farledskort",
     "modified": "Uppdaterat",
     "modifiedDate": "{{val, datetime}}",
