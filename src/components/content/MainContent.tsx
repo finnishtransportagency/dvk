@@ -21,14 +21,16 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
+import HarborPreview from './HarborPreview';
 
 interface MainContentProps {
   fairwayCardId?: string;
+  harborId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings' | 'squat';
+  target?: 'faults' | 'warnings' | 'squat' | 'harborPreview';
 }
 
-const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
+const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, harborId, splitPane, target }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
@@ -292,6 +294,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
                 {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
+                {target && target === 'harborPreview' && <HarborPreview widePane={widePane} id={harborId} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">
