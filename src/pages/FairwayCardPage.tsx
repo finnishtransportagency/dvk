@@ -19,7 +19,8 @@ import {
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile, setFairwayCardByPreview } from '../utils/common';
+import { isMobile } from '../utils/common';
+import { setFairwayCardByPreview } from '../utils/fairwayCardUtils';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
 

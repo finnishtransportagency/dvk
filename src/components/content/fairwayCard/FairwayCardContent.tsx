@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { IonBreadcrumbs, IonButton, IonCol, IonGrid, IonLabel, IonRow, IonSegment, IonSegmentButton, IonSkeletonText, IonText } from '@ionic/react';
+import { IonLabel, IonSegment, IonSegmentButton, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment } from '../../../graphql/generated';
-import PrintIcon from '../../../theme/img/print.svg?react';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
 import { Lang } from '../../../utils/constants';
@@ -22,6 +21,9 @@ import { PilotInfo } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
+import { getTabLabel } from '../../../utils/fairwayCardUtils';
+import PendingPlaceholder from './PendingPlaceholder';
+import { FairwayCardHeader } from './FairwayCardHeader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -47,22 +49,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
+  const modifiedInfo =
+    t('modified') +
+    ' ' +
+    t('modifiedDate', {
+      val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
+    });
+  const heightSystemInfo = isN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW';
+  const updatedInfo = t('dataUpdated') + (!isPending && !isFetching ? ' ' + t('datetimeFormat', { val: dataUpdatedAt }) : '');
 
   const getTabClassName = (tabId: number): string => {
     return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
-  };
-
-  const getTabLabel = (tabId: number): string => {
-    switch (tabId) {
-      case 1:
-        return t('title', { count: 1 });
-      case 2:
-        return t('harboursTitle');
-      case 3:
-        return t('areasTitle');
-      default:
-        return '-';
-    }
   };
 
   const path = [
@@ -78,102 +75,31 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       },
     },
     {
-      title: getTabLabel(tab),
+      title: getTabLabel(t, tab),
     },
   ];
 
   return (
     <>
-      {isPending && (
-        <>
-          <IonBreadcrumbs>
-            <IonSkeletonText animated={true} style={{ width: '100%', height: widePane ? '24px' : '48px', margin: '0' }}></IonSkeletonText>
-          </IonBreadcrumbs>
-          <IonText className="fairwayTitle">
-            <h2 className="no-margin-bottom">
-              <IonSkeletonText animated={true} style={{ width: '100%', height: '30px' }}></IonSkeletonText>
-            </h2>
-            <IonSkeletonText animated={true} style={{ width: '150px', height: '14px', margin: '0' }}></IonSkeletonText>
-          </IonText>
-          <IonSkeletonText animated={true} style={{ width: '100%', height: '50px', marginTop: '20px' }}></IonSkeletonText>
-          <IonSkeletonText animated={true} style={{ width: '100%', height: '50vh', marginTop: '20px' }}></IonSkeletonText>
-        </>
-      )}
+      {isPending && <PendingPlaceholder widePane={widePane} />}
       {!isPending && !fairwayCard && <Alert fairwayCardId={fairwayCardId} />}
       {!isPending && fairwayCard && (
         <>
           <Breadcrumb path={path} />
-          <IonGrid className="ion-no-padding ion-margin-top">
-            <IonRow>
-              <IonCol>
-                <IonText className="fairwayTitle" id="mainPageContent">
-                  <h2 className="ion-no-margin">
-                    <strong>{fairwayCard?.name[lang]}</strong>
-                  </h2>
-                </IonText>
-              </IonCol>
-              <IonCol size="auto" className="ion-align-self-end">
-                <IonButton
-                  fill="clear"
-                  className="icon-only small no-mobile no-print"
-                  onClick={() => window.print()}
-                  title={t('print')}
-                  aria-label={t('print')}
-                  data-testid="printButton"
-                  disabled={printDisabled}
-                >
-                  <PrintIcon />
-                </IonButton>
-                <IonText className="fairwayTitle printable">
-                  <h3 className="no-margin-bottom">{t('title', { count: 1 })}</h3>
-                </IonText>
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonText className="fairwayTitle">
-                  {state.preview ? (
-                    <>
-                      <em id="emphasizedPreviewText">{t('preview')}</em>
-                      <br />
-                      <em>-</em>
-                    </>
-                  ) : (
-                    <>
-                      <em>
-                        {t('modified')}{' '}
-                        {t('modifiedDate', {
-                          val: fairwayCard?.modificationTimestamp ? fairwayCard?.modificationTimestamp : '-',
-                        })}
-                        {isN2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
-                      </em>
-                      <br />
-                      <em className="no-print">
-                        {t('dataUpdated')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
-                        {(isPending || isFetching) && (
-                          <IonSkeletonText
-                            animated={true}
-                            style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
-                          />
-                        )}
-                      </em>
-                    </>
-                  )}
-                </IonText>
-              </IonCol>
-              <IonCol size="auto" className="ion-align-self-start">
-                <IonText className="fairwayTitle">
-                  <em>{t('notForNavigation')}</em>
-                </IonText>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <FairwayCardHeader
+            fairwayTitle={fairwayCard?.name[lang] ?? fairwayCardId}
+            infoText1={state.preview ? t('preview') : modifiedInfo + ' - ' + heightSystemInfo}
+            infoText2={state.preview ? '-' : updatedInfo}
+            isPending={isPending}
+            isFetching={isFetching}
+            printDisabled={printDisabled}
+          />
 
           <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
             {[1, 2, 3].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
                 <IonLabel>
-                  <h3>{getTabLabel(tabId)}</h3>
+                  <h3>{getTabLabel(t, tabId)}</h3>
                 </IonLabel>
               </IonSegmentButton>
             ))}
