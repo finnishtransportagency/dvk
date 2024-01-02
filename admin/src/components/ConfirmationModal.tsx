@@ -34,6 +34,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
     buttonTitle = t('general.leave');
     title = t(`modal.cancel-${saveType}-title`);
     description = t(`modal.cancel-${saveType}-description`);
+  } else if (confirmationType === 'preview') {
+    buttonTitle = t('general.preview');
+    title = t(`modal.preview-${saveType}-title`);
+    description = t(`modal.preview-${saveType}-description`);
   } else if (confirmationType === 'remove' || newStatus === Status.Removed) {
     buttonTitle = t('general.delete');
     title = t(`modal.delete-${saveType}-title`);

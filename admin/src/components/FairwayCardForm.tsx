@@ -14,11 +14,10 @@ import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
-import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
 import MapExportTool from './MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
-import { validateFairwayCardForm } from '../utils/formValidations';
+import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
 import NavigationSection from './form/fairwayCard/NavigationSection';
@@ -108,11 +107,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const handleCancel = () => {
-    const diffObj = diff(oldState, state);
-    if (JSON.stringify(diffObj) === '{}') {
-      backToList();
-    } else {
+    if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('cancel');
+    } else {
+      backToList();
     }
   };
 
@@ -182,8 +180,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
-  const handlePreview = () => {
+  const openPreview = () => {
     window.open(getPreviewBaseUrl() + '/kortit/' + fairwayCard.id);
+  };
+
+  const handlePreview = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('preview');
+    } else {
+      openPreview();
+    }
   };
 
   const getModifiedInfo = () => {
@@ -199,6 +205,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const getConfirmationAction = () => {
+    switch (confirmationType) {
+      case 'cancel':
+        return backToList;
+      case 'preview':
+        return openPreview;
+      default:
+        return saveCard;
+    }
+  };
+
   useEffect(() => {
     setState(fairwayCard);
     setOldState(fairwayCard);
@@ -208,7 +225,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     <IonPage>
       <ConfirmationModal
         saveType="fairwaycard"
-        action={confirmationType === 'cancel' ? backToList : saveCard}
+        action={getConfirmationAction()}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
         newStatus={state.status}

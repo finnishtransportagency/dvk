@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({
               </IonButton>
             )}
             {status !== Status.Removed && (
-              <IonButton shape="round" disabled={(isError ?? isLoading) || operation === Operation.Create} onClick={() => handlePreview()}>
+              <IonButton shape="round" disabled={isError || isLoading || operation === Operation.Create} onClick={() => handlePreview()}>
                 {t('general.preview')}
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>

@@ -8,11 +8,10 @@ import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
-import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
 import { mapToHarborInput } from '../utils/dataMapper';
-import { validateHarbourForm } from '../utils/formValidations';
+import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
@@ -78,11 +77,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   };
 
   const handleCancel = () => {
-    const diffObj = diff(oldState, state);
-    if (JSON.stringify(diffObj) === '{}') {
-      backToList();
-    } else {
+    if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('cancel');
+    } else {
+      backToList();
     }
   };
 
@@ -180,8 +178,16 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
   };
 
-  const handlePreview = () => {
+  const openPreview = () => {
     window.open(getPreviewBaseUrl() + '/satamat/' + harbour.id);
+  };
+
+  const handlePreview = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('preview');
+    } else {
+      openPreview();
+    }
   };
 
   const getModifiedInfo = () => {
@@ -204,6 +210,17 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
 
+  const getConfirmationAction = () => {
+    switch (confirmationType) {
+      case 'cancel':
+        return backToList;
+      case 'preview':
+        return openPreview;
+      default:
+        return saveHarbour;
+    }
+  };
+
   useEffect(() => {
     setState(harbour);
     setOldState(harbour);
@@ -213,7 +230,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     <IonPage>
       <ConfirmationModal
         saveType="harbor"
-        action={confirmationType === 'cancel' ? backToList : saveHarbour}
+        action={getConfirmationAction()}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
