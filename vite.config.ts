@@ -67,7 +67,6 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    threads: false,
     environment: 'jsdom',
     silent: true,
     isolate: true,
