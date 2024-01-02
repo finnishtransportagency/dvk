@@ -214,9 +214,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                   <IonRow className="ion-align-items-center">
                     <IonCol size="auto">
                       <button
-                        disabled={state.preview}
-                        aria-disabled={state.preview}
-                        className={state.preview ? 'icon disabled' : 'icon'}
+                        className="icon"
                         data-testid={!fairwayCardId && !target ? 'menuController' : ''}
                         onClick={() => menuController.open()}
                         title={t('openMenu')}

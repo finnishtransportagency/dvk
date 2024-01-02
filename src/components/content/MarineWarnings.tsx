@@ -20,7 +20,7 @@ type MarineWarningsProps = {
 };
 
 const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { data, isPending, dataUpdatedAt, isFetching } = useMarineWarningsDataWithRelatedDataInvalidation();
   const { state } = useDvkContext();
@@ -28,13 +28,13 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
 
-  const path = [{ title: t('title') }];
+  const path = [{ title: t('warnings.title') }];
   // Use any of the marine warning layers as they have the same data source
   const alertProps = getAlertProperties(dataUpdatedAt, 'coastalwarning');
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps?.duration) return t('viewLastUpdatedUnknown');
-    return t('lastUpdatedAt', { val: alertProps.duration });
+    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
+    return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
   useEffect(() => {
@@ -50,16 +50,26 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       let foundInType = true;
 
       if (areaFilter.length > 0) {
-        foundInArea = areaFilter.some((a) => w.area[lang]?.includes(a.toUpperCase()));
+        foundInArea = areaFilter.some((a) => {
+          if (a === 'seaAreas') {
+            return (
+              //refactor to its own function if more exceptions appear
+              w.area[lang]?.includes('merialueet'.toUpperCase()) ||
+              w.area[lang]?.includes('sjöområden'.toUpperCase()) ||
+              w.area[lang]?.includes('sea areas'.toUpperCase())
+            );
+          }
+          return w.area[lang]?.includes(t(`areas.${a}`).toUpperCase());
+        });
       }
       if (typeFilter.length > 0) {
-        foundInType = typeFilter.some((type) => w.type[lang]?.includes(type.toUpperCase()));
+        foundInType = typeFilter.some((type) => w.type[lang]?.includes(t(`homePage.map.controls.layer.${type}`).toUpperCase()));
       }
       return foundInArea && foundInType;
     });
 
     return filteredData;
-  }, [areaFilter, typeFilter, data?.marineWarnings, lang]);
+  }, [areaFilter, typeFilter, data?.marineWarnings, lang, t]);
 
   useEffect(() => {
     const source = dvkMap.getVectorSource('selectedfairwaycard');
@@ -82,10 +92,10 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
       <IonText className="fairwayTitle" id="mainPageContent">
         <h2 className="no-margin-bottom">
-          <strong>{t('title')}</strong>
+          <strong>{t('warnings.title')}</strong>
         </h2>
         <em>
-          {t('modified')} {!isPending && !isFetching && <>{t('datetimeFormat', { val: dataUpdatedAt })}</>}
+          {t('warnings.modified')} {!isPending && !isFetching && <>{t('warnings.datetimeFormat', { val: dataUpdatedAt })}</>}
           {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}
@@ -100,7 +110,7 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
         className="top-margin info"
         title={
           <>
-            <strong>{t('note')}</strong> {t('notification')}
+            <strong>{t('warnings.note')}</strong> {t('warnings.notification')}
           </>
         }
       />
@@ -108,7 +118,14 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
       {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-      <WarningsFilter setAreaFilter={setAreaFilter} setTypeFilter={setTypeFilter} setSortNewFirst={setSortNewFirst} sortNewFirst={sortNewFirst} />
+      <WarningsFilter
+        areaFilter={areaFilter}
+        typeFilter={typeFilter}
+        setAreaFilter={setAreaFilter}
+        setTypeFilter={setTypeFilter}
+        setSortNewFirst={setSortNewFirst}
+        sortNewFirst={sortNewFirst}
+      />
       <div id="marineWarningList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="marineWarningList">
         <WarningList loading={isPending} data={filterDataByAreaAndType() ?? []} sortNewFirst={sortNewFirst} />
       </div>
