@@ -18,7 +18,7 @@ interface HeaderProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  handleSubmit: (isRemove: boolean) => void;
+  handleSubmit: (isRemove: boolean, openPreview: boolean) => void;
   handleCancel: () => void;
   handlePreview: () => void;
   modifiedInfo: string;
@@ -88,7 +88,7 @@ const Header: React.FC<HeaderProps> = ({
                 color="danger"
                 disabled={isError || isLoading}
                 onClick={() => {
-                  handleSubmit(true);
+                  handleSubmit(true, false);
                 }}
               >
                 {t('general.delete')}
@@ -100,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed, false)}>
               {operation === Operation.Update ? t('general.save') : t('general.create-new')}
             </IonButton>
           </IonCol>

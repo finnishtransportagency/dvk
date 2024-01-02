@@ -24,7 +24,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { getPreviewBaseUrl } from '../utils/common';
+import { openPreview } from '../utils/common';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -115,7 +115,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const saveCard = useCallback(
-    (isRemove?: boolean) => {
+    (isRemove?: boolean, isPreview?: boolean) => {
       if (isRemove) {
         const oldCard = {
           ...oldState,
@@ -146,9 +146,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
           },
         };
         saveFairwayCard({ card: currentCard as FairwayCardInput });
+
+        if (isPreview) {
+          openPreview(fairwayCard.id, true);
+        }
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, saveFairwayCard, fairwayCard.id]
   );
 
   const formValid = (): boolean => {
@@ -163,32 +167,33 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove = false) => {
+  const handleSubmit = (isRemove = false, isPreview = false) => {
     if (isRemove) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && oldState.status === Status.Draft)
-      ) {
-        saveCard(false);
+      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
+        saveCard(false, isPreview);
       } else {
-        setConfirmationType('save');
+        setConfirmationType(isPreview ? 'previewsave' : 'save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
 
-  const openPreview = () => {
-    window.open(getPreviewBaseUrl() + '/kortit/' + fairwayCard.id);
+  const handlePreviewSubmit = () => {
+    handleSubmit(false, true);
+  };
+
+  const handlePreviewSave = () => {
+    saveCard(false, true);
   };
 
   const handlePreview = () => {
     if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('preview');
     } else {
-      openPreview();
+      openPreview(fairwayCard.id, true);
     }
   };
 
@@ -210,7 +215,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       case 'cancel':
         return backToList;
       case 'preview':
-        return openPreview;
+        return handlePreviewSubmit;
+      case 'previewsave':
+        return handlePreviewSave;
       default:
         return saveCard;
     }

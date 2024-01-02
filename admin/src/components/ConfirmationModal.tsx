@@ -15,7 +15,7 @@ export type SaveType = 'fairwaycard' | 'harbor';
 interface ModalProps {
   confirmationType: ConfirmationType;
   setConfirmationType: (isOpen: ConfirmationType) => void;
-  action: (isRemove?: boolean) => void;
+  action: (isRemove?: boolean, isPreview?: boolean) => void;
   oldState: StatusName;
   newStatus: Status;
   saveType: SaveType;
@@ -35,7 +35,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
     title = t(`modal.cancel-${saveType}-title`);
     description = t(`modal.cancel-${saveType}-description`);
   } else if (confirmationType === 'preview') {
-    buttonTitle = t('general.preview');
     title = t(`modal.preview-${saveType}-title`);
     description = t(`modal.preview-${saveType}-description`);
   } else if (confirmationType === 'remove' || newStatus === Status.Removed) {

@@ -16,7 +16,7 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { getPreviewBaseUrl } from '../utils/common';
+import { openPreview } from '../utils/common';
 
 interface FormProps {
   harbour: HarborInput;
@@ -85,7 +85,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   };
 
   const saveHarbour = useCallback(
-    (isRemove?: boolean) => {
+    (isRemove?: boolean, isPreview?: boolean) => {
       if (isRemove) {
         const oldHarbour = { ...oldState, status: Status.Removed };
         setState({ ...oldState, status: Status.Removed });
@@ -118,9 +118,13 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
           }),
         };
         saveHarbourMutation({ harbor: currentHarbour as HarborInput });
+
+        if (isPreview) {
+          openPreview(harbour.id, false);
+        }
       }
     },
-    [state, oldState, saveHarbourMutation]
+    [state, oldState, saveHarbourMutation, harbour.id]
   );
 
   const formValid = (): boolean => {
@@ -153,7 +157,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     return false;
   };
 
-  const handleSubmit = (isRemove = false) => {
+  const handleSubmit = (isRemove = false, isPreview = false) => {
     queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
 
     const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
@@ -165,28 +169,29 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     if (isToBeRemoved) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && harbour.status === Status.Draft)
-      ) {
-        saveHarbour(false);
+      if (state.status === Status.Draft && (harbour.status === Status.Draft || state.operation === Operation.Create)) {
+        saveHarbour(false, isPreview);
       } else {
-        setConfirmationType('save');
+        setConfirmationType(isPreview ? 'previewsave' : 'save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
 
-  const openPreview = () => {
-    window.open(getPreviewBaseUrl() + '/satamat/' + harbour.id);
+  const handlePreviewSubmit = () => {
+    handleSubmit(false, true);
+  };
+
+  const handlePreviewSave = () => {
+    saveHarbour(false, true);
   };
 
   const handlePreview = () => {
     if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('preview');
     } else {
-      openPreview();
+      openPreview(harbour.id, false);
     }
   };
 
@@ -215,7 +220,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       case 'cancel':
         return backToList;
       case 'preview':
-        return openPreview;
+        return handlePreviewSubmit;
+      case 'previewsave':
+        return handlePreviewSave;
       default:
         return saveHarbour;
     }
