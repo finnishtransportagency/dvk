@@ -40,6 +40,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
+  const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
@@ -85,7 +86,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   };
 
   const saveHarbour = useCallback(
-    (isRemove?: boolean, isPreview?: boolean) => {
+    (isRemove?: boolean) => {
       if (isRemove) {
         const oldHarbour = { ...oldState, status: Status.Removed };
         setState({ ...oldState, status: Status.Removed });
@@ -118,13 +119,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
           }),
         };
         saveHarbourMutation({ harbor: currentHarbour as HarborInput });
-
-        if (isPreview) {
-          openPreview(harbour.id, false);
-        }
       }
     },
-    [state, oldState, saveHarbourMutation, harbour.id]
+    [state, oldState, saveHarbourMutation]
   );
 
   const formValid = (): boolean => {
@@ -157,7 +154,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     return false;
   };
 
-  const handleSubmit = (isRemove = false, isPreview = false) => {
+  const handleSubmit = (isRemove = false) => {
     queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
 
     const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
@@ -169,27 +166,23 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     if (isToBeRemoved) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (state.status === Status.Draft && (harbour.status === Status.Draft || state.operation === Operation.Create)) {
-        saveHarbour(false, isPreview);
+      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
+        saveHarbour(false);
       } else {
-        setConfirmationType(isPreview ? 'previewsave' : 'save');
+        setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
 
-  const handlePreviewSubmit = () => {
-    handleSubmit(false, true);
-  };
-
   const handlePreviewSave = () => {
-    saveHarbour(false, true);
+    handleSubmit(false);
   };
 
   const handlePreview = () => {
     if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('preview');
+      setPreviewConfirmation('preview');
     } else {
       openPreview(harbour.id, false);
     }
@@ -215,19 +208,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
 
-  const getConfirmationAction = () => {
-    switch (confirmationType) {
-      case 'cancel':
-        return backToList;
-      case 'preview':
-        return handlePreviewSubmit;
-      case 'previewsave':
-        return handlePreviewSave;
-      default:
-        return saveHarbour;
-    }
-  };
-
   useEffect(() => {
     setState(harbour);
     setOldState(harbour);
@@ -237,9 +217,17 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     <IonPage>
       <ConfirmationModal
         saveType="harbor"
-        action={getConfirmationAction()}
+        action={confirmationType === 'cancel' ? backToList : saveHarbour}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
+        newStatus={state.status}
+        oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
+      />
+      <ConfirmationModal
+        saveType="harbor"
+        action={handlePreviewSave}
+        confirmationType={previewConfirmation}
+        setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />

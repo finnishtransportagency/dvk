@@ -47,6 +47,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [savedCard, setSavedCard] = useState<FairwayCardByIdFragment | null>();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
+  const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -115,7 +116,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const saveCard = useCallback(
-    (isRemove?: boolean, isPreview?: boolean) => {
+    (isRemove?: boolean) => {
       if (isRemove) {
         const oldCard = {
           ...oldState,
@@ -146,13 +147,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
           },
         };
         saveFairwayCard({ card: currentCard as FairwayCardInput });
-
-        if (isPreview) {
-          openPreview(fairwayCard.id, true);
-        }
       }
     },
-    [state, oldState, saveFairwayCard, fairwayCard.id]
+    [state, oldState, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -167,31 +164,27 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove = false, isPreview = false) => {
+  const handleSubmit = (isRemove = false) => {
     if (isRemove) {
       setConfirmationType('remove');
     } else if (formValid()) {
       if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
-        saveCard(false, isPreview);
+        saveCard(false);
       } else {
-        setConfirmationType(isPreview ? 'previewsave' : 'save');
+        setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
 
-  const handlePreviewSubmit = () => {
-    handleSubmit(false, true);
-  };
-
   const handlePreviewSave = () => {
-    saveCard(false, true);
+    handleSubmit(false);
   };
 
   const handlePreview = () => {
     if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('preview');
+      setPreviewConfirmation('preview');
     } else {
       openPreview(fairwayCard.id, true);
     }
@@ -210,19 +203,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
-  const getConfirmationAction = () => {
-    switch (confirmationType) {
-      case 'cancel':
-        return backToList;
-      case 'preview':
-        return handlePreviewSubmit;
-      case 'previewsave':
-        return handlePreviewSave;
-      default:
-        return saveCard;
-    }
-  };
-
   useEffect(() => {
     setState(fairwayCard);
     setOldState(fairwayCard);
@@ -232,9 +212,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     <IonPage>
       <ConfirmationModal
         saveType="fairwaycard"
-        action={getConfirmationAction()}
+        action={confirmationType === 'cancel' ? backToList : saveCard}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
+        newStatus={state.status}
+        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+      />
+      <ConfirmationModal
+        saveType="fairwaycard"
+        action={handlePreviewSave}
+        confirmationType={previewConfirmation}
+        setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
       />
