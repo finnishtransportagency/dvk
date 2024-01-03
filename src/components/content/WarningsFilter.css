@@ -72,7 +72,6 @@ ion-popover.customPopover {
   font-size: 14px;
 }
 
-ion-popover::part(content) {
+ion-popover.tooLong::part(content) {
   bottom: 0;
-  --max-height: 595px;
 }

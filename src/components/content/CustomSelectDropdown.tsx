@@ -112,10 +112,11 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({ items, trigger, selected,
 
 const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ trigger, selected, setSelected, setExpanded, expanded }) => {
   const items = trigger.includes('area') ? marineWarningAreasStructure : marineWarningTypeStructure;
+
   return (
     <IonPopover
       trigger={trigger}
-      className="customPopover"
+      className={trigger.includes('area') ? 'customPopover tooLong' : 'customPopover'}
       isOpen={expanded}
       onDidDismiss={() => setExpanded(false)}
       showBackdrop={false}
