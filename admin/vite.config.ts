@@ -26,13 +26,11 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    minThreads: 0,
-    maxThreads: 1,
     environment: 'jsdom',
     silent: true,
     isolate: true,
     include: ['src/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
-    setupFiles: './src/setupTests.ts',
+    setupFiles: 'src/setupTests.ts',
     reporters: ['basic', 'junit', 'vitest-sonar-reporter'],
     outputFile: {
       junit: './junit.xml',
