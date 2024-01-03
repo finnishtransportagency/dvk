@@ -71,3 +71,8 @@ ion-popover.customPopover {
 .item.sc-ion-label-md-h, .item .sc-ion-label-md-h {
   font-size: 14px;
 }
+
+ion-popover::part(content) {
+  bottom: 0;
+  --max-height: 595px;
+}
