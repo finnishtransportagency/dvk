@@ -4,7 +4,7 @@ import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
 import { Status } from '../graphql/generated';
 import { mockContext, mockQueryByIdEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
