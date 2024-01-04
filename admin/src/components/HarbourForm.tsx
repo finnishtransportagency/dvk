@@ -8,15 +8,15 @@ import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
-import { diff } from 'deep-object-diff';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NofiticationModal';
 import { mapToHarborInput } from '../utils/dataMapper';
-import { validateHarbourForm } from '../utils/formValidations';
+import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
+import { openPreview } from '../utils/common';
 
 interface FormProps {
   harbour: HarborInput;
@@ -40,6 +40,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [savedHarbour, setSavedHarbour] = useState<HarborByIdFragment | null>();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
+  const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
@@ -77,11 +78,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   };
 
   const handleCancel = () => {
-    const diffObj = diff(oldState, state);
-    if (JSON.stringify(diffObj) === '{}') {
-      backToList();
-    } else {
+    if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('cancel');
+    } else {
+      backToList();
     }
   };
 
@@ -166,16 +166,25 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     if (isToBeRemoved) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && harbour.status === Status.Draft)
-      ) {
+      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
         saveHarbour(false);
       } else {
         setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const handlePreviewSave = () => {
+    handleSubmit(false);
+  };
+
+  const handlePreview = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setPreviewConfirmation('preview');
+    } else {
+      openPreview(harbour.id, false);
     }
   };
 
@@ -214,6 +223,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
       />
+      <ConfirmationModal
+        saveType="harbor"
+        action={handlePreviewSave}
+        confirmationType={previewConfirmation}
+        setConfirmationType={setPreviewConfirmation}
+        newStatus={state.status}
+        oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
+      />
       <NotificationModal
         isOpen={!!saveError || notificationOpen}
         closeAction={closeNotification}
@@ -236,6 +253,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         updateState={updateState}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handlePreview={handlePreview}
         modifiedInfo={getModifiedInfo()}
         modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
