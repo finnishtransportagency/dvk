@@ -129,5 +129,5 @@ export const radiansToDegrees = (rads: number) => {
 
 export function openPreview(id: string, isCard: boolean) {
   const path = import.meta.env.VITE_APP_ENV === 'local' ? 'https://' + import.meta.env.VITE_APP_STATIC_URL : '';
-  window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id);
+  window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
 }
