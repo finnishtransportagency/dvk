@@ -72,7 +72,7 @@ export function useFairwayCardPreviewData(id: string) {
 }
 
 export function useHarborPreviewData(id: string) {
-  return useHarborPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
+  return useHarborPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: id.length > 0 });
 }
 
 export function useSafetyEquipmentFaultData() {

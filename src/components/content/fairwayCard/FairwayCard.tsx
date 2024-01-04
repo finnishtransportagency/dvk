@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { setFairwayCardByPreview } from '../../../utils/common';
+import { setFairwayCardByPreview } from '../../../utils/fairwayCardUtils';
 import { useFairwayCardListData, useFairwayCardPreviewData } from '../../../utils/dataLoader';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import dvkMap from '../../DvkMap';

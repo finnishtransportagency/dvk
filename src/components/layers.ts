@@ -41,7 +41,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
-import { Geometry } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -1085,4 +1085,24 @@ export function setSelectedSafetyEquipment(id: number) {
   });
   equipmentSource.dispatchEvent('change');
   faultSource.dispatchEvent('change');
+}
+
+export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
+  const dvkMap = getMap();
+  const harborSource = dvkMap.getVectorSource('harbor');
+  const quaySource = dvkMap.getVectorSource('quay');
+
+  addQuay(harbor, quaySource);
+
+  const harborFeatureId = harbor.geometry?.coordinates?.join(';');
+  const harborFeature = harborFeatureId ? (harborSource.getFeatureById(harborFeatureId) as Feature<Geometry>) : undefined;
+
+  if (harborFeature) {
+    dvkMap.olMap?.getView().animate({ center: (harborFeature.getGeometry() as Point).getCoordinates() }, { resolution: 2 });
+  }
+}
+
+export function unsetSelectedHarborPreview() {
+  const dvkMap = getMap();
+  dvkMap.getVectorSource('quay').clear();
 }
