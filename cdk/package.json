@@ -80,7 +80,7 @@
     "@aws-sdk/cloudfront-signer": "^3.485.0",
     "@aws-sdk/lib-dynamodb": "^3.485.0",
     "@aws-sdk/util-dynamodb": "^3.485.0",
-    "@aws-sdk/util-stream": "^3.374.0",
+    "@smithy/util-stream": "^2.0.24",
     "@types/aws-lambda": "^8.10.130",
     "@types/geojson": "^7946.0.13",
     "aws-cdk-lib": "^2.118.0",

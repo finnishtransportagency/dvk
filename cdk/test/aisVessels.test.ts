@@ -2,7 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/api/aisvessels-handler';
 import { mockAISALBEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import vesselsJson from './data/aisvessels.json';
 import { Readable } from 'stream';
 import { gunzip, gzip } from 'zlib';
