@@ -850,7 +850,7 @@ export function unsetSelectedFairwayCard() {
   quaySource.clear();
 }
 
-function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON) {
+function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON) {
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(quay.geometry?.coordinates?.join(';'));
@@ -866,10 +866,10 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: Vecto
     fax: harbor.fax,
     internet: harbor.internet,
   });
-  features.addFeature(feature);
+  source.addFeature(feature);
 }
 
-function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
+function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, source: VectorSource, format: GeoJSON) {
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
@@ -885,22 +885,44 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
     fax: harbor.fax,
     internet: harbor.internet,
   });
-  features.addFeature(feature);
+  source.addFeature(feature);
 }
 
-function addQuay(harbor: HarborPartsFragment, features: VectorSource) {
+function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
   const format = new GeoJSON();
   for (const quay of harbor.quays ?? []) {
     if (quay?.geometry) {
-      addQuayFeature(harbor, quay, features, format);
+      addQuayFeature(harbor, quay, source, format);
     } else {
       for (const section of quay?.sections ?? []) {
         if (quay && section && section.geometry) {
-          addSectionFeature(harbor, quay, section, features, format);
+          addSectionFeature(harbor, quay, section, source, format);
         }
       }
     }
   }
+}
+
+function addHarborFeature(harbor: HarborPartsFragment, source: VectorSource): Feature<Geometry> {
+  const format = new GeoJSON();
+  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
+  feature.setId(harbor.id);
+  feature.setProperties({
+    featureType: 'harbor',
+    dataSource: 'harbor',
+    id: harbor.id,
+    harborId: harbor.id,
+    name: harbor.name ?? harbor.company,
+    email: harbor.email,
+    phoneNumber: harbor.phoneNumber,
+    fax: harbor.fax,
+    internet: harbor.internet,
+    quays: harbor.quays?.length ?? 0,
+    extraInfo: harbor.extraInfo,
+    fairwayCards: [],
+  });
+  source.addFeature(feature);
+  return feature;
 }
 
 export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
@@ -1089,20 +1111,26 @@ export function setSelectedSafetyEquipment(id: number) {
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
   const dvkMap = getMap();
-  const harborSource = dvkMap.getVectorSource('harbor');
+  const harborLayer = dvkMap.getFeatureLayer('harbor');
+  const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
   const quaySource = dvkMap.getVectorSource('quay');
 
+  fairwayCardLayer.setVisible(true);
+  const harborFeature = addHarborFeature(harbor, fairwayCardLayer.getSource() as VectorSource);
   addQuay(harbor, quaySource);
+  harborLayer.setVisible(false);
 
-  const harborFeatureId = harbor.geometry?.coordinates?.join(';');
-  const harborFeature = harborFeatureId ? (harborSource.getFeatureById(harborFeatureId) as Feature<Geometry>) : undefined;
-
-  if (harborFeature) {
-    dvkMap.olMap?.getView().animate({ center: (harborFeature.getGeometry() as Point).getCoordinates() }, { resolution: 2 });
-  }
+  dvkMap.olMap?.getView().animate({ center: (harborFeature.getGeometry() as Point).getCoordinates() }, { resolution: 2 });
 }
 
 export function unsetSelectedHarborPreview() {
   const dvkMap = getMap();
-  dvkMap.getVectorSource('quay').clear();
+  const harborLayer = dvkMap.getFeatureLayer('harbor');
+  const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+  const quaySource = dvkMap.getVectorSource('quay');
+
+  quaySource.clear();
+  (fairwayCardLayer.getSource() as VectorSource).clear();
+  fairwayCardLayer.setVisible(false);
+  harborLayer.setVisible(true);
 }
