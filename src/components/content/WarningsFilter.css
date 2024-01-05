@@ -76,3 +76,4 @@ ion-popover.customPopover {
 ion-popover.tooLong::part(content) {
   bottom: 0;
 }
+
