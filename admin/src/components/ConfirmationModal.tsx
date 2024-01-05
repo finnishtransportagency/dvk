@@ -1,5 +1,5 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
-import React, { useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Maybe, Status, TextInput } from '../graphql/generated';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
@@ -19,9 +19,18 @@ interface ModalProps {
   oldState: StatusName;
   newStatus: Status;
   saveType: SaveType;
+  setActionPending: Dispatch<SetStateAction<boolean>>;
 }
 
-const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirmationType, action, newStatus, oldState, saveType }) => {
+const ConfirmationModal: React.FC<ModalProps> = ({
+  confirmationType,
+  setConfirmationType,
+  action,
+  newStatus,
+  oldState,
+  saveType,
+  setActionPending,
+}) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -65,6 +74,12 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
       setConfirmationType('');
     }, 150);
   };
+
+  const cancelAction = () => {
+    setActionPending(false);
+    closeModal();
+  };
+
   const buttonAction = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
     action(confirmationType === 'remove' || newStatus === Status.Removed);
@@ -101,7 +116,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({ confirmationType, setConfirma
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" size="large" onClick={() => cancelAction()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
           <IonButton slot="end" size="large" onClick={() => buttonAction()} shape="round">
