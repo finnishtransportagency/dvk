@@ -78,6 +78,7 @@ import { DvkReducer, initialState } from './hooks/dvkReducer';
 import DvkContext, { useDvkContext } from './hooks/dvkContext';
 import { ContentModal } from './components/content/MainContentWithModal';
 import SquatCalculatorPage from './pages/SquatCalculatorPage';
+import HarborPreviewPage from './pages/HarborPreviewPage';
 
 setupIonicReact({
   mode: 'md',
@@ -277,9 +278,14 @@ const DvkIonApp: React.FC = () => {
                 </Switch>
               )}
               {state.preview && (
-                <Route path="/">
-                  <FairwayCardPage setModalContent={setModalContent} />
-                </Route>
+                <Switch>
+                  <Route path="/satamat/:harborId">
+                    <HarborPreviewPage setModalContent={setModalContent} />
+                  </Route>
+                  <Route path="/">
+                    <FairwayCardPage setModalContent={setModalContent} />
+                  </Route>
+                </Switch>
               )}
             </Switch>
           </IonRouterOutlet>

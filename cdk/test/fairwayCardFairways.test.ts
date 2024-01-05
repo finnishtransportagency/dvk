@@ -3,7 +3,7 @@ import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCardFairways-handler';
 import { mockContext, mockQueryFairwayCardArgsFairwayCardEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 

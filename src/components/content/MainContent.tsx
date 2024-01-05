@@ -21,11 +21,12 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
+import HarborPreview from './HarborPreview';
 
 interface MainContentProps {
   fairwayCardId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings' | 'squat';
+  target?: 'faults' | 'warnings' | 'squat' | 'harborPreview';
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
@@ -290,6 +291,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
                 {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
+                {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">

@@ -17,8 +17,8 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const highlightHarbor = (id: string | undefined) => {
-    setSelectedHarbor(id ?? '');
+  const highlightHarbor = (id: string, selected: boolean) => {
+    setSelectedHarbor(id, selected);
   };
 
   return (
@@ -27,10 +27,10 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
         <>
           <IonText className="no-margin-top">
             <IonText
-              onMouseOver={() => highlightHarbor(data.id)}
-              onFocus={() => highlightHarbor(data.id)}
-              onMouseOut={() => highlightHarbor(undefined)}
-              onBlur={() => highlightHarbor(undefined)}
+              onMouseOver={() => highlightHarbor(data.id, true)}
+              onFocus={() => highlightHarbor(data.id, true)}
+              onMouseOut={() => highlightHarbor(data.id, false)}
+              onBlur={() => highlightHarbor(data.id, false)}
             >
               <h4 className="inlineHoverText">
                 <strong>{data.name?.[lang]}</strong>

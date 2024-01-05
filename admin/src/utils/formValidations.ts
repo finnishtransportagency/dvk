@@ -1,3 +1,4 @@
+import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
 
@@ -227,4 +228,9 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
 
   const { quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
   return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors);
+}
+
+export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
+  const diffObj = diff(oldState, currentState);
+  return JSON.stringify(diffObj) !== '{}';
 }
