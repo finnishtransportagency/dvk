@@ -49,6 +49,12 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     return selected.includes(value);
   };
 
+  const isIndeterminate = (area: WarningFilter) => {
+    const values = area?.childAreas?.filter((a) => isOptionSelected(a.id)) ?? [];
+
+    return values.length < (area?.childAreas?.length ?? 0) && values.length !== 0;
+  };
+
   const checkAllChildren = (value: string) => {
     const array: string[] = [];
     const parentItem = items.find((p) => p.id === value);
@@ -66,7 +72,31 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     return array;
   };
 
-  const uncheckAllChildren = (value: string, updatedValues: string[]) => {
+  // function for unchecking parents and parent's parent checkbox
+  const checkIfUncheckParents = (newArray: string[]) => {
+    const array: string[] = [];
+    // notice ! front of parent
+    const noChildrenChecked = !parent?.childAreas?.some((a) => newArray.includes(a.id));
+    if (noChildrenChecked) {
+      const removedParentArray = newArray.filter((i) => i !== parent?.id);
+      // HOIDA TÄÄ HÄSSÄKKÄ JOTENKIN PALJON NÄTIMMIN
+      if (parent?.parent) {
+        // check if parents parent has children checked, if has, then no unchecking
+        const noGrandParentsChildrenChecked = !marineWarningAreasStructure[0]?.childAreas?.some((a) => removedParentArray.includes(a.id));
+        if (noGrandParentsChildrenChecked) {
+          const removedGrandParentArray = removedParentArray.filter((i) => i !== parent.parent);
+          array.push(...removedGrandParentArray);
+        } else {
+          array.push(...removedParentArray);
+        }
+      } else {
+        array.push(...removedParentArray);
+      }
+    }
+    return noChildrenChecked ? array : newArray;
+  };
+
+  const handleUncheck = (value: string, updatedValues: string[]) => {
     const oldValues: string[] = [...updatedValues];
     const parentItem = items.find((p) => p.id === value);
     // get all children areas and children's children areas
@@ -74,7 +104,9 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
       return c.childAreas ? [c.id.toString(), ...c.childAreas.map((area) => area.id.toString())] : [c.id.toString()];
     });
     const newArray = oldValues.filter((item) => !childArray?.includes(item));
-    return newArray;
+    const uncheckedParentsArray = checkIfUncheckParents(newArray);
+    console.log(uncheckedParentsArray);
+    return uncheckedParentsArray;
   };
 
   const handleCheckboxChange = (event: CheckboxCustomEvent) => {
@@ -88,10 +120,11 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
       }
       childElements = checkAllChildren(value);
     } else if (!checked) {
-      setSelected([...uncheckAllChildren(value, updatedValues)]);
+      setSelected([...handleUncheck(value, updatedValues)]);
       return;
     }
     setSelected([...updatedValues, ...childElements]);
+    // forcing the popover to be under the box
     setTimeout(() => {
       (popoverRef.current?.shadowRoot?.childNodes[1].childNodes[1] as HTMLElement).style.top =
         (triggerRef.current?.getBoundingClientRect().top ?? 0) + (triggerRef.current?.getBoundingClientRect().height ?? 0) + 'px';
@@ -102,10 +135,18 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     <>
       {items.map((item) => {
         const optionSelected = isOptionSelected(item.id);
+        const indeterminate = isIndeterminate(item);
         return (
           <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
-              <IonCheckbox checked={optionSelected} value={item.id} justify="start" labelPlacement="end" onIonChange={handleCheckboxChange}>
+              <IonCheckbox
+                checked={optionSelected}
+                indeterminate={indeterminate}
+                value={item.id}
+                justify="start"
+                labelPlacement="end"
+                onIonChange={handleCheckboxChange}
+              >
                 <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
             </IonItem>
