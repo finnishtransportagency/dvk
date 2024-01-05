@@ -104,7 +104,7 @@ export const getInputCounterText = (inputLength: number, maxLength: number) => {
 
 export const nameIncludesQuery = (name: Text | null | undefined, query: string) => {
   if (!name) return false;
-  return name.fi?.toLowerCase().includes(query) ?? name.sv?.toLowerCase().includes(query) ?? name.en?.toLowerCase().includes(query);
+  return name.fi?.toLowerCase().includes(query) || name.sv?.toLowerCase().includes(query) || name.en?.toLowerCase().includes(query);
 };
 
 export const sortSelectOptions = (options: SelectOption[], lang: Lang) => {
@@ -137,3 +137,8 @@ export const constructSelectDropdownLabel = (selected: number[], options: Select
 export const radiansToDegrees = (rads: number) => {
   return Math.round(rads * (180 / Math.PI) + (rads < 0 ? 360 : 0));
 };
+
+export function openPreview(id: string, isCard: boolean) {
+  const path = import.meta.env.VITE_APP_ENV === 'local' ? 'https://' + import.meta.env.VITE_APP_STATIC_URL : '';
+  window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
+}

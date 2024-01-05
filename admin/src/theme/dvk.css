@@ -1142,13 +1142,21 @@ ion-modal.image ion-content img {
   font-size: 16px;
   line-height: 1.5rem;
   font-weight: bold;
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
 }
 .mapLegend .cardInfo em {
   font-size: 12px;
   line-height: 1rem;
   display: block;
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
 }
 .mapLegend .cardInfo em.danger {
   color: var(--ion-color-danger);
@@ -1161,7 +1169,11 @@ ion-modal.image ion-content img {
   line-height: 1rem;
   text-align: center;
   margin: 6px auto 0 0;
-  text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
   transition: all 0.25s;
 }
 .legendPositionButton {
@@ -1193,4 +1205,12 @@ ion-modal.image ion-content img {
 }
 .colorRed {
   background-color: red;
+}
+
+span.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  white-space: nowrap;
 }

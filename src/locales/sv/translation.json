@@ -120,6 +120,7 @@
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
     "name": "Farledskortets namn",
     "preview": "Förhandsvisning",
+    "harborPreview": "[sv] Sataman esikatselu",
     "print": "Skriv ut farledskort",
     "modified": "Uppdaterat",
     "modifiedDate": "{{val, datetime}}",
@@ -484,6 +485,7 @@
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
   },
   "areas": {
+    "seaAreas": "[sv] Kaikki merialueet",
     "gulfOfFinland": "Finska viken",
     "northernBalticSea": "Norra Östersjön",
     "archipelagoSea": "Skärgårdshavet",
@@ -493,6 +495,7 @@
     "bayOfBothnia": "Bottenviken",
     "saimaa": "Saimen",
     "saimaaCanal": "Saima kanal",
-    "gulfOfBothnia": "Bottenvik"
+    "gulfOfBothnia": "Bottenvik",
+    "inlandAreas": "[sv] Sisävesistöt"
   }
 }

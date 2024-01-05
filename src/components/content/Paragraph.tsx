@@ -19,7 +19,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ title, bodyText, showNoData }) =>
       {bodyText && (
         <p>
           {title && <strong>{title}: </strong>}
-          {bodyText[lang] || bodyText.fi}
+          {bodyText[lang] ?? bodyText.fi}
         </p>
       )}
       {showNoData && !bodyText && (
@@ -41,7 +41,7 @@ export const InfoParagraph: React.FC<InfoParagraphProps> = ({ title }) => {
   return (
     <p className="info use-flex ion-align-items-center">
       <InfoIcon aria-label="info" className="no-print" />
-      {title || t('noDataSet')}
+      {title ?? t('noDataSet')}
     </p>
   );
 };

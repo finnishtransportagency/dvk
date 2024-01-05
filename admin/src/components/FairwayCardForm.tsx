@@ -14,17 +14,17 @@ import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
-import { diff } from 'deep-object-diff';
 import NotificationModal from './NofiticationModal';
 import MapExportTool from './MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
-import { validateFairwayCardForm } from '../utils/formValidations';
+import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
 import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
+import { openPreview } from '../utils/common';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -47,6 +47,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [savedCard, setSavedCard] = useState<FairwayCardByIdFragment | null>();
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
+  const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
+  const [previewPending, setPreviewPending] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -57,10 +59,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
+      if (previewPending) {
+        handleOpenPreview();
+      }
     },
     onError: (error: Error) => {
       setSaveError(error.message);
       setNotificationOpen(true);
+      setPreviewPending(false);
     },
   });
 
@@ -107,11 +113,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const handleCancel = () => {
-    const diffObj = diff(oldState, state);
-    if (JSON.stringify(diffObj) === '{}') {
-      backToList();
-    } else {
+    if (hasUnsavedChanges(oldState, state)) {
       setConfirmationType('cancel');
+    } else {
+      backToList();
     }
   };
 
@@ -168,16 +173,28 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     if (isRemove) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (
-        (state.operation === Operation.Create && state.status === Status.Draft) ||
-        (state.status === Status.Draft && oldState.status === Status.Draft)
-      ) {
+      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
         saveCard(false);
       } else {
         setConfirmationType('save');
       }
     } else {
       setSaveError('MISSING-INFORMATION');
+      setPreviewPending(false);
+    }
+  };
+
+  const handleOpenPreview = () => {
+    openPreview(fairwayCard.id, true);
+    setPreviewPending(false);
+  };
+
+  const handlePreview = () => {
+    setPreviewPending(true);
+    if (hasUnsavedChanges(oldState, state)) {
+      setPreviewConfirmation('preview');
+    } else {
+      handleOpenPreview();
     }
   };
 
@@ -208,6 +225,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        setActionPending={setPreviewPending}
+      />
+      <ConfirmationModal
+        saveType="fairwaycard"
+        action={handleSubmit}
+        confirmationType={previewConfirmation}
+        setConfirmationType={setPreviewConfirmation}
+        newStatus={state.status}
+        oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        setActionPending={setPreviewPending}
       />
       <NotificationModal
         isOpen={!!saveError || notificationOpen}
@@ -229,6 +256,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         updateState={updateState}
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handlePreview={handlePreview}
         modifiedInfo={getModifiedInfo()}
         modifierInfo={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}

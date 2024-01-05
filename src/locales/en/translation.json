@@ -120,6 +120,7 @@
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
     "name": "Fairway card name",
     "preview": "Preview",
+    "harborPreview": "[en] Sataman esikatselu",
     "print": "Print fairway card",
     "modified": "Modified",
     "modifiedDate": "{{val, datetime}}",
@@ -483,6 +484,7 @@
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
   },
   "areas": {
+    "seaAreas": "[en] Kaikki merialueet",
     "gulfOfFinland": "Gulf of Finland",
     "northernBalticSea": "Northern Baltic",
     "archipelagoSea": "Archipelago Sea",
@@ -492,6 +494,7 @@
     "bayOfBothnia": "Bay of Bothnia",
     "saimaa": "Saimaa",
     "saimaaCanal": "Saimaa Canal",
-    "gulfOfBothnia": "Gulf of Bothnia"
+    "gulfOfBothnia": "Gulf of Bothnia",
+    "inlandAreas": "[en] Sisävesistöt"
   }
 }
