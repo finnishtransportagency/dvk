@@ -26,10 +26,9 @@ export const filterItemList = (
   itemTypes: ItemType[],
   sortBy: string,
   sortDescending: boolean,
-  t: TFunction
+  t?: TFunction
 ) => {
-  // sonarlint doesnt appreciate more over 7 parameters
-  const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
+  const groups = t ? ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')] : [];
   return (
     data
       ?.filter(
@@ -42,14 +41,14 @@ export const filterItemList = (
           case 'name':
             return sortByString(a.name[lang], b.name[lang], sortDescending);
           case 'type':
-            return sortByString(t(`item-type-${a.type}`), t(`item-type-${b.type}`), sortDescending);
+            return sortByString(t!(`item-type-${a.type}`), t!(`item-type-${b.type}`), sortDescending);
           case 'area':
             return sortByString(groups[Number(a.group ?? 0)], groups[Number(b.group ?? 0)], sortDescending);
           case 'referencelevel':
-            // based on boolean 1 = N2000, 0 = MW but alphabetical order is different
+            // based on boolean 1 = N2000, 0 = MW but alphabetical order is different hence !sortDescending
             return sortByNumber(Number(b.n2000HeightSystem), Number(a.n2000HeightSystem), !sortDescending);
           case 'status':
-            return sortByString(t(`item-status-${a.status}`), t(`item-status-${b.status}`), sortDescending);
+            return sortByString(t!(`item-status-${a.status}`), t!(`item-status-${b.status}`), sortDescending);
           case 'creator':
             return sortByString(a.creator, b.creator, sortDescending);
           case 'modifier':
