@@ -45,8 +45,7 @@ export const filterItemList = (
           case 'area':
             return sortByString(groups[Number(a.group ?? 0)], groups[Number(b.group ?? 0)], sortDescending);
           case 'referencelevel':
-            // based on boolean 1 = N2000, 0 = MW but alphabetical order is different hence !sortDescending
-            return sortByNumber(Number(b.n2000HeightSystem), Number(a.n2000HeightSystem), !sortDescending);
+            return sortByNumber(Number(a.n2000HeightSystem), Number(b.n2000HeightSystem), sortDescending);
           case 'status':
             return sortByString(t!(`item-status-${a.status}`), t!(`item-status-${b.status}`), sortDescending);
           case 'creator':
