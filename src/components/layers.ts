@@ -49,6 +49,7 @@ const specialAreaSelectedImage = new Image();
 specialAreaSelectedImage.src = specialareaSelected;
 const specialAreaSelectedImage2 = new Image();
 specialAreaSelectedImage2.src = specialareaSelected2;
+const minResolutionHarbor = 3;
 
 export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean, selected2 = false) {
   const canvas = document.createElement('canvas');
@@ -282,7 +283,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boaterwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'harbor') {
-    return getHarborStyle(feature, resolution, 3);
+    return getHarborStyle(feature, resolution, minResolutionHarbor);
   } else if (ds === 'circle') {
     return getCircleStyle(feature, resolution);
   } else {
@@ -1061,14 +1062,26 @@ export function setSelectedFairwayArea(id?: number | string) {
   selectedFairwayCardSource.dispatchEvent('change');
 }
 
-export function setSelectedHarbor(id?: string) {
-  const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
+function highlightFeatures(source: VectorSource, featureTypes: string[], id: string, idProp: string, selected: boolean) {
+  source.forEachFeature((f) => {
+    if (id === f.get(idProp) && featureTypes.includes(f.get('featureType'))) {
+      f.set('hoverStyle', selected, true);
+    }
+  });
+  source.dispatchEvent('change');
+}
 
-  for (const f of quaySource.getFeatures()) {
-    f.set('hoverStyle', id && ['harbor'].includes(f.get('featureType')) && f.get('harborId') === id);
+export function setSelectedHarbor(id: string, selected: boolean) {
+  const dvkMap = getMap();
+  const resolution = dvkMap.olMap?.getView().getResolution() ?? 0;
+  if (resolution < minResolutionHarbor) {
+    // Harbor not visible, highlight quays
+    const quaySource = dvkMap.getVectorSource('quay');
+    highlightFeatures(quaySource, ['quay'], id, 'harbor', selected);
+  } else {
+    const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+    highlightFeatures(fairwayCardSource, ['harbor'], id, 'harborId', selected);
   }
-  quaySource.dispatchEvent('change');
 }
 
 export function setSelectedQuay(quay: Maybe<Quay>) {

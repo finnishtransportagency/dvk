@@ -49,7 +49,7 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({ fairwayTit
             <em>{infoText1}</em>
             <br />
           </IonText>
-          <IonText>
+          <IonText className="fairwayTitle">
             <em className="no-print">
               {infoText2}
               {!state.preview && (isPending || isFetching) && (
