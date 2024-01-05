@@ -120,6 +120,7 @@
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
     "name": "Väyläkortin nimi",
     "preview": "Esikatselu",
+    "harborPreview": "Sataman esikatselu",
     "print": "Tulosta väyläkortti",
     "modified": "Päivitetty",
     "modifiedDate": "{{val, datetime}}",
@@ -484,6 +485,7 @@
     "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
   },
   "areas": {
+    "seaAreas": "Kaikki merialueet",
     "gulfOfFinland": "Suomenlahti",
     "northernBalticSea": "Pohjoinen Itämeri",
     "archipelagoSea": "Saaristomeri",
@@ -493,6 +495,7 @@
     "bayOfBothnia": "Perämeri",
     "saimaa": "Saimaa",
     "saimaaCanal": "Saimaan kanava",
-    "gulfOfBothnia": "Pohjanlahti"
+    "gulfOfBothnia": "Pohjanlahti",
+    "inlandAreas": "Sisävesistöt"
   }
 }

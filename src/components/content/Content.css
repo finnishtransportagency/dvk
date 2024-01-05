@@ -511,7 +511,7 @@ ion-modal.contentModal {
   touch-action: none;
 }
 
-#emphasizedPreviewText {
+ion-text.previewText > * {
   color: #ec0e0e;
 }
 

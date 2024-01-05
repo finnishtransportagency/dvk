@@ -20,6 +20,7 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import SquatCalculator from './SquatCalculator';
+import HarborPreview from './HarborPreview';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -88,7 +89,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     if (state.preview) {
       dvkMap.getSearchbarControl().disable();
       dvkMap.getSearchbarControl().setPlaceholder('');
-      dvkMap.getOpenSidebarMenuControl().disable();
     }
   }, [state.preview]);
 
@@ -207,7 +207,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       dispatch({
         type: 'setBreakpoint',
         payload: {
-          value: breakpoint || 0,
+          value: breakpoint ?? 0,
         },
       });
       if (breakpoint !== 1) contentRef.current?.scrollToTop();
@@ -218,6 +218,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   };
 
   const [fairwayCardId, setFairwayCardId] = useState('');
+
   useEffect(() => {
     const card = data?.fairwayCards.find((c) => c.id === modalContent);
     if (card?.id) {
@@ -227,7 +228,8 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
       modalContent !== 'fairwayCardList' &&
       modalContent !== 'safetyEquipmentFaultList' &&
       modalContent !== 'marineWarningList' &&
-      modalContent !== 'squatCalculator'
+      modalContent !== 'squatCalculator' &&
+      modalContent !== 'harborPreview'
     ) {
       setFairwayCardId(modalContent);
     } else {
@@ -319,6 +321,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
         {modalContent === 'squatCalculator' && <SquatCalculator />}
+        {modalContent === 'harborPreview' && <HarborPreview />}
       </IonContent>
     </IonModal>
   );

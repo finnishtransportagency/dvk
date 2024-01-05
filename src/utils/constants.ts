@@ -1,3 +1,5 @@
+import { Maybe } from '../graphql/generated';
+
 export const APP_CONFIG_DVK = 'DVK';
 export const APP_CONFIG_PREVIEW = 'PREVIEW';
 
@@ -347,20 +349,21 @@ export const OFFLINE_STORAGE = {
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
 
-export const marineWarningAreas = [
-  'gulfOfFinland',
-  'northernBalticSea',
-  'archipelagoSea',
-  'seaOfÅland',
-  'bothnianSea',
-  'theQuark',
-  'bayOfBothnia',
-  'gulfOfBothnia',
-  'saimaa',
-  'saimaaCanal',
-];
+export type MarineWarningArea =
+  | 'seaAreas'
+  | 'gulfOfFinland'
+  | 'northernBalticSea'
+  | 'archipelagoSea'
+  | 'seaOfÅland'
+  | 'bothnianSea'
+  | 'theQuark'
+  | 'bayOfBothnia'
+  | 'gulfOfBothnia'
+  | 'saimaa'
+  | 'saimaaCanal'
+  | 'inlandAreas';
 
-export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
+export type MarineWarningType = 'boaterWarning' | 'coastalWarning' | 'localWarning';
 
 export const aisLayers: FeatureDataLayerId[] = [
   'aisvesselcargo',
@@ -371,3 +374,39 @@ export const aisLayers: FeatureDataLayerId[] = [
   'aisvesselpleasurecraft',
   'aisunspecified',
 ];
+
+export type WarningFilter = {
+  id: MarineWarningArea | MarineWarningType;
+  parent?: MarineWarningArea;
+  childAreas?: Maybe<Array<WarningFilter>>;
+};
+
+export const marineWarningAreasStructure: WarningFilter[] = [
+  {
+    id: 'seaAreas',
+    childAreas: [
+      { id: 'gulfOfFinland', parent: 'seaAreas' },
+      { id: 'northernBalticSea', parent: 'seaAreas' },
+      { id: 'archipelagoSea', parent: 'seaAreas' },
+      { id: 'seaOfÅland', parent: 'seaAreas' },
+      {
+        id: 'gulfOfBothnia',
+        parent: 'seaAreas',
+        childAreas: [
+          { id: 'bothnianSea', parent: 'gulfOfBothnia' },
+          { id: 'theQuark', parent: 'gulfOfBothnia' },
+          { id: 'bayOfBothnia', parent: 'gulfOfBothnia' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'inlandAreas',
+    childAreas: [
+      { id: 'saimaa', parent: 'inlandAreas' },
+      { id: 'saimaaCanal', parent: 'inlandAreas' },
+    ],
+  },
+];
+
+export const marineWarningTypeStructure: WarningFilter[] = [{ id: 'boaterWarning' }, { id: 'coastalWarning' }, { id: 'localWarning' }];
