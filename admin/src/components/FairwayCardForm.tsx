@@ -48,6 +48,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [notificationOpen, setNotificationOpen] = useState(false);
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
+  const [previewPending, setPreviewPending] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -58,10 +59,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
+      if (previewPending) {
+        handleOpenPreview();
+      }
     },
     onError: (error: Error) => {
       setSaveError(error.message);
       setNotificationOpen(true);
+      setPreviewPending(false);
     },
   });
 
@@ -175,18 +180,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       }
     } else {
       setSaveError('MISSING-INFORMATION');
+      setPreviewPending(false);
     }
   };
 
-  const handlePreviewSave = () => {
-    handleSubmit(false);
+  const handleOpenPreview = () => {
+    openPreview(fairwayCard.id, true);
+    setPreviewPending(false);
   };
 
   const handlePreview = () => {
+    setPreviewPending(true);
     if (hasUnsavedChanges(oldState, state)) {
       setPreviewConfirmation('preview');
     } else {
-      openPreview(fairwayCard.id, true);
+      handleOpenPreview();
     }
   };
 
@@ -217,14 +225,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        setActionPending={setPreviewPending}
       />
       <ConfirmationModal
         saveType="fairwaycard"
-        action={handlePreviewSave}
+        action={handleSubmit}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
+        setActionPending={setPreviewPending}
       />
       <NotificationModal
         isOpen={!!saveError || notificationOpen}
