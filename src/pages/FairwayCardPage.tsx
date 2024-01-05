@@ -23,6 +23,7 @@ import { isMobile } from '../utils/common';
 import { setFairwayCardByPreview } from '../utils/fairwayCardUtils';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
+import { FairwayCardPartsFragment } from '../graphql/generated';
 
 interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;
@@ -38,8 +39,8 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { fairwayCardId } = useParams<FairwayCardParams>();
   const { state } = useDvkContext();
 
-  const { data } = useFairwayCardListData();
-  const { data: previewData } = useFairwayCardPreviewData(fairwayCardId!);
+  const { data, isPending } = useFairwayCardListData();
+  const { data: previewData, isPending: isPreviewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview);
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -53,6 +54,7 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
 
   const [initDone, setInitDone] = useState(false);
   const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
+  const [fairwayCard, setFairwayCard] = useState<FairwayCardPartsFragment | undefined>(undefined);
 
   useEffect(() => {
     if (
@@ -83,17 +85,28 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   ]);
 
   useEffect(() => {
-    if (data && fairwayCardId && initDone) {
-      const fairwayCard = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
-      if (fairwayCard) {
-        setSelectedFairwayCard(fairwayCard);
-        setDocumentTitle((t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi) ?? '');
+    if (fairwayCardId && !isPending && !isPreviewPending && data) {
+      const card = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
+      if (card) {
+        setFairwayCard(card);
       }
+    }
+  }, [fairwayCardId, isPending, isPreviewPending, data, previewData, state.preview]);
+
+  useEffect(() => {
+    if (fairwayCard && initDone) {
+      setSelectedFairwayCard(fairwayCard);
     }
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview, previewData]);
+  }, [fairwayCard, initDone]);
+
+  useEffect(() => {
+    if (fairwayCard) {
+      setDocumentTitle((t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi) ?? '');
+    }
+  }, [fairwayCard, t, lang, setDocumentTitle]);
 
   useEffect(() => {
     setModalContent(fairwayCardId ?? 'fairwayCardList');
