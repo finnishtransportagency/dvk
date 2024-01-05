@@ -79,16 +79,11 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     const noChildrenChecked = !parent?.childAreas?.some((a) => newArray.includes(a.id));
     if (noChildrenChecked) {
       const removedParentArray = newArray.filter((i) => i !== parent?.id);
-      // HOIDA TÄÄ HÄSSÄKKÄ JOTENKIN PALJON NÄTIMMIN
       if (parent?.parent) {
-        // check if parents parent has children checked, if has, then no unchecking
+        // check if parent's parent has children checked, if has, then no unchecking
+        // atm this clause only used in warning areas, so hard coded structure. If needed in future for other use -> refactor
         const noGrandParentsChildrenChecked = !marineWarningAreasStructure[0]?.childAreas?.some((a) => removedParentArray.includes(a.id));
-        if (noGrandParentsChildrenChecked) {
-          const removedGrandParentArray = removedParentArray.filter((i) => i !== parent.parent);
-          array.push(...removedGrandParentArray);
-        } else {
-          array.push(...removedParentArray);
-        }
+        array.push(...(noGrandParentsChildrenChecked ? removedParentArray.filter((i) => i !== parent.parent) : removedParentArray));
       } else {
         array.push(...removedParentArray);
       }
@@ -105,7 +100,6 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     });
     const newArray = oldValues.filter((item) => !childArray?.includes(item));
     const uncheckedParentsArray = checkIfUncheckParents(newArray);
-    console.log(uncheckedParentsArray);
     return uncheckedParentsArray;
   };
 
@@ -119,15 +113,16 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
         updatedValues = [...updatedValues, parent.id, ...(parent.parent && !isOptionSelected(parent.parent) ? [parent.parent] : [])];
       }
       childElements = checkAllChildren(value);
+      setSelected([...updatedValues, ...childElements]);
     } else if (!checked) {
       setSelected([...handleUncheck(value, updatedValues)]);
-      return;
     }
-    setSelected([...updatedValues, ...childElements]);
     // forcing the popover to be under the box
     setTimeout(() => {
-      (popoverRef.current?.shadowRoot?.childNodes[1].childNodes[1] as HTMLElement).style.top =
-        (triggerRef.current?.getBoundingClientRect().top ?? 0) + (triggerRef.current?.getBoundingClientRect().height ?? 0) + 'px';
+      const popoverElement = popoverRef.current?.shadowRoot?.childNodes[1].childNodes[1] as HTMLElement;
+      const triggerElement = triggerRef.current?.getBoundingClientRect();
+
+      popoverElement.style.top = (triggerElement?.top ?? 0) + (triggerElement?.height ?? 0) + 'px';
     }, 0);
   };
 
