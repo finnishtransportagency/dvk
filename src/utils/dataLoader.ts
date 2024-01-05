@@ -67,8 +67,8 @@ export function useFairwayCardListData() {
   return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] });
 }
 
-export function useFairwayCardPreviewData(id: string) {
-  return useFairwayCardPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000 });
+export function useFairwayCardPreviewData(id: string, isPreview: boolean) {
+  return useFairwayCardPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: isPreview });
 }
 
 export function useHarborPreviewData(id: string) {

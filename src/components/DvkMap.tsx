@@ -570,6 +570,8 @@ class DvkMap {
           this.getFeatureLayer(fdl.id).changed();
         }
       });
+      // Localize features on selected fairway card
+      this.getFeatureLayer('selectedfairwaycard').changed();
       this.olMap?.render();
     }
   };
