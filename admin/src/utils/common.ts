@@ -1,9 +1,17 @@
+import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Maybe, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
   const valB = b ?? '';
+
+  if (valA.startsWith('-')) {
+    return sortDescending ? -1 : 1;
+  }
+  if (valB.startsWith('-')) {
+    return sortDescending ? 1 : -1;
+  }
   return sortDescending ? valB.localeCompare(valA) : valA.localeCompare(valB);
 };
 
@@ -17,8 +25,10 @@ export const filterItemList = (
   searchQuery: string,
   itemTypes: ItemType[],
   sortBy: string,
-  sortDescending: boolean
+  sortDescending: boolean,
+  t?: TFunction
 ) => {
+  const groups = t ? ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')] : [];
   return (
     data
       ?.filter(
@@ -31,19 +41,20 @@ export const filterItemList = (
           case 'name':
             return sortByString(a.name[lang], b.name[lang], sortDescending);
           case 'type':
-            return sortByString(a.type, b.type, sortDescending);
+            return sortByString(t!(`item-type-${a.type}`), t!(`item-type-${b.type}`), sortDescending);
           case 'area':
-            return sortByNumber(Number(a.group), Number(b.group), sortDescending);
+            return sortByString(groups[Number(a.group ?? 0)], groups[Number(b.group ?? 0)], sortDescending);
           case 'referencelevel':
-            return sortByNumber(Number(a.n2000HeightSystem), Number(b.n2000HeightSystem), !sortDescending);
+            return sortByNumber(Number(a.n2000HeightSystem), Number(b.n2000HeightSystem), sortDescending);
           case 'status':
-            return sortByString(a.status, b.status, sortDescending);
+            return sortByString(t!(`item-status-${a.status}`), t!(`item-status-${b.status}`), sortDescending);
           case 'creator':
-            return sortByString(a.creator, a.modifier, sortDescending);
+            return sortByString(a.creator, b.creator, sortDescending);
           case 'modifier':
             return sortByString(a.modifier, b.modifier, sortDescending);
           case 'modified':
-            return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), sortDescending);
+            // should be newest first when arrow down hence "!sortDescending"
+            return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
           default:
             return 1;
         }
