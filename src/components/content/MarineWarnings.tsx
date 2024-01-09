@@ -51,13 +51,9 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
 
       if (areaFilter.length > 0) {
         foundInArea = areaFilter.some((a) => {
-          if (a === 'seaAreas') {
-            return (
-              //refactor to its own function if more exceptions appear
-              w.area[lang]?.includes('merialueet'.toUpperCase()) ||
-              w.area[lang]?.includes('sjöområden'.toUpperCase()) ||
-              w.area[lang]?.includes('sea areas'.toUpperCase())
-            );
+          // exception for all sea areas when lang is fi
+          if (a === 'seaAreas' && lang === 'fi') {
+            return w.area[lang]?.includes('merialueet'.toUpperCase());
           }
           return w.area[lang]?.includes(t(`areas.${a}`).toUpperCase());
         });
