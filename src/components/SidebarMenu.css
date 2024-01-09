@@ -233,3 +233,9 @@
   pointer-events: none;
   opacity: 50%;
 }
+
+.version {
+  position: relative;
+  top: 13px;
+  right: 20px;
+}
