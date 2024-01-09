@@ -21,6 +21,12 @@ const staticUrl = import.meta.env.VITE_APP_STATIC_URL
 
 export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
+export const accessibilityUrl = {
+  fi: 'https://vayla.fi/tietoa-meista/yhteystiedot/saavutettavuus/digitaalinen-vaylakortti',
+  sv: 'https://vayla.fi/sv/trafikledsverket/kontaktuppgifter/tillganglighet/digital-farledskort',
+  en: 'https://vayla.fi/en/about/contact-information/accessibility/digital-fairway-card',
+};
+
 export type BackgroundLayerId =
   | 'finland'
   | 'mml_meri'

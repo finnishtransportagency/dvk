@@ -233,3 +233,9 @@
   pointer-events: none;
   opacity: 50%;
 }
+
+.bottom {
+  position: absolute;
+  top: 5px;
+  left: 51px;
+}

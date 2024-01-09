@@ -30,6 +30,7 @@ import calculateIcon from '../theme/img/calculate_icon.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
 import { useDvkContext } from '../hooks/dvkContext';
+import { Lang, accessibilityUrl } from '../utils/constants';
 
 type SidebarMenuProps = {
   isSourceOpen: boolean;
@@ -42,6 +43,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
   const { state } = useDvkContext();
+  const lang = i18n.resolvedLanguage as Lang;
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
     const isTabPressed = e.key === 'Tab';
@@ -192,6 +194,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
             <IonRow className="ion-align-items-center">
               <IonCol>
                 <IonTitle>
+                  <a href={accessibilityUrl[lang]} rel="noreferrer" target="_blank" className="ion-no-padding">
+                    {t('accessibility')}
+                  </a>
                   <IonButtons>
                     <IonButton
                       ref={lastFocusableElement}
@@ -207,7 +212,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 </IonTitle>
               </IonCol>
               <IonCol className="ion-text-end">
-                <IonTitle>
+                <IonTitle className="bottom">
                   <small>v{import.meta.env.VITE_APP_VERSION}</small>
                 </IonTitle>
               </IonCol>
