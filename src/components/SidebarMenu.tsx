@@ -211,8 +211,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   </IonButtons>
                 </IonTitle>
               </IonCol>
-              <IonCol className="ion-text-end">
-                <IonTitle className="bottom">
+              <IonCol>
+                <IonTitle className="ion-text-end ion-no-padding version">
                   <small>v{import.meta.env.VITE_APP_VERSION}</small>
                 </IonTitle>
               </IonCol>

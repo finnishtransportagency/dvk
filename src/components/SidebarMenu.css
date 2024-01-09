@@ -234,8 +234,8 @@
   opacity: 50%;
 }
 
-.bottom {
-  position: absolute;
-  top: 5px;
-  left: 51px;
+.version {
+  position: relative;
+  top: 13px;
+  right: 20px;
 }
