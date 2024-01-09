@@ -40,7 +40,7 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { state } = useDvkContext();
 
   const { data, isPending } = useFairwayCardListData();
-  const { data: previewData, isPending: isPreviewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview);
+  const { data: previewData, isPending: previewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview);
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -85,13 +85,14 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   ]);
 
   useEffect(() => {
-    if (fairwayCardId && !isPending && !isPreviewPending && data) {
+    const dataReady = state.preview ? !previewPending : !isPending && data;
+    if (fairwayCardId && dataReady) {
       const card = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
       if (card) {
         setFairwayCard(card);
       }
     }
-  }, [fairwayCardId, isPending, isPreviewPending, data, previewData, state.preview]);
+  }, [fairwayCardId, isPending, previewPending, data, previewData, state.preview]);
 
   useEffect(() => {
     if (fairwayCard && initDone) {
