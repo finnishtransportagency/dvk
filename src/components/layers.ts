@@ -139,18 +139,24 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const props = feature.getProperties() as QuayFeatureProperties;
-  let text;
+
   const dvkMap = getMap();
-  if (props.name && props.depth) {
-    text = `${props.name} ${props.depth?.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m`;
-  } else if (props.depth) {
-    text = `${props.depth?.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m`;
-  } else if (props.name) {
-    text = props.name;
-  } else {
-    text = '';
+  const featureType = feature.get('featureType');
+  const props = feature.getProperties() as QuayFeatureProperties;
+  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
+  const nameText = featureType === 'section' ? props.name : quayName;
+  const depthText =
+    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+  let text = '';
+
+  if (nameText && depthText) {
+    text = `${nameText} ${depthText}`;
+  } else if (depthText) {
+    text = depthText;
+  } else if (nameText) {
+    text = nameText;
   }
+
   return [
     new Style({
       image: selected ? activeImage : image,
@@ -874,7 +880,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
-    featureType: 'quay',
+    featureType: 'section',
     harbor: harbor.id,
     quay: quay.name,
     extraInfo: quay.extraInfo,
@@ -1077,7 +1083,7 @@ export function setSelectedHarbor(id: string, selected: boolean) {
   if (resolution < minResolutionHarbor) {
     // Harbor not visible, highlight quays
     const quaySource = dvkMap.getVectorSource('quay');
-    highlightFeatures(quaySource, ['quay'], id, 'harbor', selected);
+    highlightFeatures(quaySource, ['quay', 'section'], id, 'harbor', selected);
   } else {
     const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
     highlightFeatures(fairwayCardSource, ['harbor'], id, 'harborId', selected);
@@ -1098,7 +1104,7 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
     });
   }
   for (const f of quaySource.getFeatures()) {
-    if (f.get('featureType') === 'quay') {
+    if (['quay', 'section'].includes(f.get('featureType'))) {
       f.set('hoverStyle', ids.includes(f.getId() as string), true);
     } else {
       f.set('hoverStyle', false, true);

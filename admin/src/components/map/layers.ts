@@ -279,7 +279,9 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
 }
 
 function getSelectedStyle(feature: FeatureLike, resolution: number) {
-  return feature.getProperties().featureType === 'quay' ? getQuayStyle(feature, resolution, false) : getSafetyEquipmentStyle(feature, 1, false);
+  return ['quay, section'].includes(feature.getProperties().featureType)
+    ? getQuayStyle(feature, resolution, false)
+    : getSafetyEquipmentStyle(feature, 1, false);
 }
 
 function addFeatureVectorLayer(
@@ -476,7 +478,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
-    featureType: 'quay',
+    featureType: 'section',
     harbor: harbor.id,
     quay: quay.name,
     extraInfo: quay.extraInfo,
@@ -665,7 +667,7 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
     });
   }
   for (const f of quaySource.getFeatures()) {
-    if (f.get('featureType') === 'quay') {
+    if (['quay, section'].includes(f.get('featureType'))) {
       f.set('hoverStyle', ids.includes(f.getId() as string), true);
     } else {
       f.set('hoverStyle', false, true);
