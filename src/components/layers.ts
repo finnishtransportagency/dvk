@@ -144,17 +144,19 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   const featureType = feature.get('featureType');
   const props = feature.getProperties() as QuayFeatureProperties;
   const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
-  const nameText = featureType === 'section' ? props.name : quayName;
+  const sectionName = featureType === 'section' ? props.name : '';
   const depthText =
     props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
-  let text = '';
 
-  if (nameText && depthText) {
-    text = `${nameText} ${depthText}`;
+  let text = '';
+  if (sectionName && depthText) {
+    text = `${sectionName} ${depthText}`;
   } else if (depthText) {
     text = depthText;
-  } else if (nameText) {
-    text = nameText;
+  } else if (sectionName) {
+    text = sectionName;
+  } else {
+    text = quayName;
   }
 
   return [
