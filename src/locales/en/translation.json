@@ -484,7 +484,7 @@
     "content5": "National Land Survey open data Attribution CC 4.0 licence"
   },
   "areas": {
-    "seaAreas": "[en] Kaikki merialueet",
+    "seaAreas": "Finnish sea areas",
     "gulfOfFinland": "Gulf of Finland",
     "northernBalticSea": "Northern Baltic",
     "archipelagoSea": "Archipelago Sea",
@@ -495,6 +495,6 @@
     "saimaa": "Saimaa",
     "saimaaCanal": "Saimaa Canal",
     "gulfOfBothnia": "Gulf of Bothnia",
-    "inlandAreas": "[en] Sisävesistöt"
+    "inlandAreas": "Inland waterways"
   }
 }
