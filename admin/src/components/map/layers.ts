@@ -10,7 +10,7 @@ import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Orientation, Quay, Section } from '../../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, Orientation, Quay, Section } from '../../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
@@ -109,6 +109,27 @@ export function getBoardLineStyle(color: string, width: number) {
   });
 }
 
+function getQuayLabel(feature: FeatureLike): string {
+  const dvkMap = getMap();
+  const featureType = feature.get('featureType');
+  const props = feature.getProperties() as QuayFeatureProperties;
+  const lang = (dvkMap.getMapLanguage() || dvkMap.i18n.resolvedLanguage) as Lang;
+  const quayName = props.quay ? (props.quay[lang] as string) : '';
+  const sectionName = featureType === 'section' ? props.name : '';
+  const depthText =
+    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m` : '';
+
+  if (sectionName && depthText) {
+    return `${sectionName} ${depthText}`;
+  } else if (depthText) {
+    return depthText;
+  } else if (sectionName) {
+    return sectionName;
+  } else {
+    return quayName;
+  }
+}
+
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   if (resolution > 3) {
     return undefined;
@@ -128,18 +149,8 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const props = feature.getProperties() as QuayFeatureProperties;
-  let text;
-  const dvkMap = getMap();
-  if (props.name && props.depth) {
-    text = `${props.name} ${props.depth?.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m`;
-  } else if (props.depth) {
-    text = `${props.depth?.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m`;
-  } else if (props.name) {
-    text = props.name;
-  } else {
-    text = '';
-  }
+  const label = getQuayLabel(feature);
+
   return [
     new Style({
       image: selected ? activeImage : image,
@@ -147,7 +158,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
         font: 'bold 18px "Exo2"',
         placement: 'line',
         offsetY: -55,
-        text,
+        text: label,
         fill: new Fill({
           color: selected ? '#0064AF' : '#000000',
         }),
@@ -279,7 +290,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
 }
 
 function getSelectedStyle(feature: FeatureLike, resolution: number) {
-  return ['quay, section'].includes(feature.getProperties().featureType)
+  return ['quay', 'section'].includes(feature.getProperties().featureType)
     ? getQuayStyle(feature, resolution, false)
     : getSafetyEquipmentStyle(feature, 1, false);
 }
@@ -621,57 +632,4 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       dvkMap.currentExtent = extent;
     }
   }
-}
-
-export function setSelectedPilotPlace(id?: number | string) {
-  const dvkMap = getMap();
-  const pilotSource = dvkMap.getVectorSource('pilot');
-
-  for (const f of pilotSource.getFeatures()) {
-    f.set('hoverStyle', id && f.getId() === id);
-  }
-  pilotSource.dispatchEvent('change');
-}
-
-export function setSelectedFairwayArea(id?: number | string) {
-  const dvkMap = getMap();
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-
-  for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
-  }
-  selectedFairwayCardSource.dispatchEvent('change');
-}
-
-export function setSelectedHarbor(id?: string) {
-  const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
-
-  for (const f of quaySource.getFeatures()) {
-    f.set('hoverStyle', id && ['harbor'].includes(f.get('featureType')) && f.get('harborId') === id);
-  }
-  quaySource.dispatchEvent('change');
-}
-
-export function setSelectedQuay(quay: Maybe<Quay>) {
-  const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
-  const ids = [];
-  if (quay?.geometry?.coordinates) {
-    ids.push(quay.geometry.coordinates.join(';'));
-  } else if (quay?.sections) {
-    quay.sections.forEach((s) => {
-      if (s?.geometry?.coordinates) {
-        ids.push(s.geometry.coordinates.join(';'));
-      }
-    });
-  }
-  for (const f of quaySource.getFeatures()) {
-    if (['quay, section'].includes(f.get('featureType'))) {
-      f.set('hoverStyle', ids.includes(f.getId() as string), true);
-    } else {
-      f.set('hoverStyle', false, true);
-    }
-  }
-  quaySource.dispatchEvent('change');
 }

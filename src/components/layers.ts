@@ -120,6 +120,26 @@ export function getBoardLineStyle(color: string, width: number) {
   });
 }
 
+function getQuayLabel(feature: FeatureLike): string {
+  const dvkMap = getMap();
+  const featureType = feature.get('featureType');
+  const props = feature.getProperties() as QuayFeatureProperties;
+  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
+  const sectionName = featureType === 'section' ? props.name : '';
+  const depthText =
+    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+
+  if (sectionName && depthText) {
+    return `${sectionName} ${depthText}`;
+  } else if (depthText) {
+    return depthText;
+  } else if (sectionName) {
+    return sectionName;
+  } else {
+    return quayName;
+  }
+}
+
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   if (resolution > 3) {
     return undefined;
@@ -139,25 +159,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-
-  const dvkMap = getMap();
-  const featureType = feature.get('featureType');
-  const props = feature.getProperties() as QuayFeatureProperties;
-  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
-  const sectionName = featureType === 'section' ? props.name : '';
-  const depthText =
-    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
-
-  let text = '';
-  if (sectionName && depthText) {
-    text = `${sectionName} ${depthText}`;
-  } else if (depthText) {
-    text = depthText;
-  } else if (sectionName) {
-    text = sectionName;
-  } else {
-    text = quayName;
-  }
+  const label = getQuayLabel(feature);
 
   return [
     new Style({
@@ -166,7 +168,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
         font: 'bold 18px "Exo2"',
         placement: 'line',
         offsetY: -55,
-        text,
+        text: label,
         fill: new Fill({
           color: selected ? '#0064AF' : '#000000',
         }),
