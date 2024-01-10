@@ -11,6 +11,7 @@ import PendingPlaceholder from './fairwayCard/PendingPlaceholder';
 import { FairwayCardHeader } from './fairwayCard/FairwayCardHeader';
 import { setSelectedHarborPreview, unsetSelectedHarborPreview } from '../layers';
 import { useHarborLayer } from '../FeatureLoader';
+import { HarborPreviewAlert } from './HarborPreviewAlert';
 
 interface HarborPreviewProps {
   widePane?: boolean;
@@ -35,9 +36,9 @@ const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
 
   return (
     <>
-      {isPending ? (
-        <PendingPlaceholder widePane={widePane} />
-      ) : (
+      {isPending && <PendingPlaceholder widePane={widePane} />}
+      {!isPending && !data?.harborPreview && <HarborPreviewAlert harborId={state.harborId} />}
+      {!isPending && data?.harborPreview && (
         <>
           <Breadcrumb path={path} />
           <FairwayCardHeader
