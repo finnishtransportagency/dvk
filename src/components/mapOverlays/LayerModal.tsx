@@ -157,14 +157,16 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               </IonButton>
             </IonCol>
           </IonRow>
-          {layerStructure.map((layer) => (
-            <IonRow key={layer.id}>
-              <IonCol>
-                {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
-                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
-              </IonCol>
-            </IonRow>
-          ))}
+          {layerStructure.map((layer) => {
+            return (
+              <IonRow key={layer.id}>
+                <IonCol>
+                  {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
+                  {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
+                </IonCol>
+              </IonRow>
+            );
+          })}
 
           <IonRow>
             <IonCol>

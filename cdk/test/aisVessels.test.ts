@@ -2,7 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/api/aisvessels-handler';
 import { mockAISALBEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import vesselsJson from './data/aisvessels.json';
 import { Readable } from 'stream';
 import { gunzip, gzip } from 'zlib';
@@ -150,5 +150,5 @@ it('should get vessels from cache when api call fails', async () => {
 it('should get internal server error when api call fails and no cached response', async () => {
   throwError = true;
   const response = await handler(mockAISALBEvent(path));
-  expect(response.statusCode).toBe(500);
+  expect(response.statusCode).toBe(503);
 });

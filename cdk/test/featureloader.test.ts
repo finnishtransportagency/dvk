@@ -3,7 +3,7 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/api/featureloader-handler';
 import { mockALBEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import linesCollection from './data/lines.json';
 import areasCollection from './data/areas.json';
@@ -554,7 +554,7 @@ it('should get internal server error when api call fails and no cached response'
   });
   throwError = true;
   const response = await handler(mockALBEvent('line', '1,2'));
-  expect(response.statusCode).toBe(500);
+  expect(response.statusCode).toBe(503);
 });
 
 it('should get bad request when invalid type', async () => {

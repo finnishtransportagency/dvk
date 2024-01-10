@@ -19,37 +19,28 @@ import {
 } from '../components/FeatureLoader';
 import { Lang } from '../utils/constants';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile, setFairwayCardByPreview } from '../utils/common';
+import { isMobile } from '../utils/common';
+import { setFairwayCardByPreview } from '../utils/fairwayCardUtils';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
-
-interface FairwayCardPageProps {
-  fairwayCardId?: string;
-}
+import { FairwayCardPartsFragment } from '../graphql/generated';
 
 interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;
-  preview: boolean;
 }
 
-const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModalContent, preview }) => {
+type FairwayCardParams = {
+  fairwayCardId?: string;
+};
+
+const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
-  const { fairwayCardId } = useParams<FairwayCardPageProps>();
-  const { state, dispatch } = useDvkContext();
+  const { fairwayCardId } = useParams<FairwayCardParams>();
+  const { state } = useDvkContext();
 
-  //first component to load regarding single fairway card, so state is updateed here
-  useEffect(() => {
-    dispatch({
-      type: 'setPreview',
-      payload: {
-        value: preview,
-      },
-    });
-  }, [dispatch, preview]);
-
-  const { data } = useFairwayCardListData();
-  const { data: previewData } = useFairwayCardPreviewData(fairwayCardId!);
+  const { data, isPending } = useFairwayCardListData();
+  const { data: previewData, isPending: previewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview);
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -63,6 +54,7 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
 
   const [initDone, setInitDone] = useState(false);
   const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
+  const [fairwayCard, setFairwayCard] = useState<FairwayCardPartsFragment | undefined>(undefined);
 
   useEffect(() => {
     if (
@@ -93,20 +85,32 @@ const FairwayCardPage: React.FC<FairwayCardPageProps & ModalProps> = ({ setModal
   ]);
 
   useEffect(() => {
-    if (data && fairwayCardId && initDone) {
-      const fairwayCard = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
-      if (fairwayCard) {
-        setSelectedFairwayCard(fairwayCard);
-        setDocumentTitle(t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi || '');
+    const dataReady = state.preview ? !previewPending : !isPending && data;
+    if (fairwayCardId && dataReady) {
+      const card = setFairwayCardByPreview(state.preview, fairwayCardId, data, previewData);
+      if (card) {
+        setFairwayCard(card);
       }
+    }
+  }, [fairwayCardId, isPending, previewPending, data, previewData, state.preview]);
+
+  useEffect(() => {
+    if (fairwayCard && initDone) {
+      setSelectedFairwayCard(fairwayCard);
     }
     return () => {
       unsetSelectedFairwayCard();
     };
-  }, [fairwayCardId, data, initDone, t, lang, setDocumentTitle, state.preview, previewData]);
+  }, [fairwayCard, initDone]);
 
   useEffect(() => {
-    setModalContent(fairwayCardId || 'fairwayCardList');
+    if (fairwayCard) {
+      setDocumentTitle((t('documentTitle') + ' — ' + fairwayCard.name[lang] || fairwayCard.name.fi) ?? '');
+    }
+  }, [fairwayCard, t, lang, setDocumentTitle]);
+
+  useEffect(() => {
+    setModalContent(fairwayCardId ?? 'fairwayCardList');
   }, [setModalContent, fairwayCardId]);
 
   return (

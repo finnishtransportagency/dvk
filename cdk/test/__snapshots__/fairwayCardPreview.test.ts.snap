@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get draft card from the DynamoDB 1`] = `
+{
+  "anchorage": undefined,
+  "attention": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test2",
+  "designSpeed": undefined,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": false,
+    },
+  ],
+  "generalInfo": undefined,
+  "group": undefined,
+  "harbors": undefined,
+  "iceCondition": undefined,
+  "id": "draft",
+  "lineText": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "Testen2",
+    "fi": "Testfi2",
+    "sv": "Testsv2",
+  },
+  "navigationCondition": undefined,
+  "pictures": undefined,
+  "seaLevel": undefined,
+  "speedLimit": undefined,
+  "status": "DRAFT",
+  "trafficService": {
+    "pilot": {
+      "email": undefined,
+      "extraInfo": undefined,
+      "fax": undefined,
+      "internet": undefined,
+      "phoneNumber": undefined,
+      "places": [],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "vesselRecommendation": undefined,
+  "visibility": undefined,
+  "windGauge": undefined,
+  "windRecommendation": undefined,
+}
+`;
+
+exports[`should get public card from the DynamoDB 1`] = `
+{
+  "anchorage": undefined,
+  "attention": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "designSpeed": undefined,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": false,
+    },
+  ],
+  "generalInfo": undefined,
+  "group": undefined,
+  "harbors": undefined,
+  "iceCondition": undefined,
+  "id": "public",
+  "lineText": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "Testen",
+    "fi": "Testfi",
+    "sv": "Testsv",
+  },
+  "navigationCondition": undefined,
+  "pictures": undefined,
+  "seaLevel": undefined,
+  "speedLimit": undefined,
+  "status": "PUBLIC",
+  "trafficService": {
+    "pilot": {
+      "email": undefined,
+      "extraInfo": undefined,
+      "fax": undefined,
+      "internet": undefined,
+      "phoneNumber": undefined,
+      "places": [],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "vesselRecommendation": undefined,
+  "visibility": undefined,
+  "windGauge": undefined,
+  "windRecommendation": undefined,
+}
+`;

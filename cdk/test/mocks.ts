@@ -16,7 +16,8 @@ export const mockContext: Context = {
   fail: () => {},
 };
 
-export const mockQueryFairwayCardArgsEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
+// Mock for query with id (string) as param, used for fairway and harbor queries
+export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
   arguments: { id: 'test' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,

@@ -9,6 +9,7 @@
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
       "customer-service": "Liikenteen asiakaspalvelu",
+      "accessibility": "Saavutettavuusseloste",
       "source": "Tietolähteet ja käyttöehdot",
       "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
       "location-service": "Sijaintipalvelu",
@@ -120,6 +121,7 @@
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
     "name": "Väyläkortin nimi",
     "preview": "Esikatselu",
+    "harborPreview": "Sataman esikatselu",
     "print": "Tulosta väyläkortti",
     "modified": "Päivitetty",
     "modifiedDate": "{{val, datetime}}",
@@ -270,7 +272,8 @@
     "lastUpdatedAt2": "Tason tiedot on ladattu yli {{ val, number}} h sitten.",
     "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa.",
     "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa.",
-    "type": "Tyyppi"
+    "type": "Tyyppi",
+    "layerLoadError": "Tason tietojen lataus epäonnistui"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
@@ -483,6 +486,7 @@
     "content5": "Maanmittauslaitoksen avoimen tietoaineiston Nimeä CC 4.0 -lisenssi"
   },
   "areas": {
+    "seaAreas": "Kaikki merialueet",
     "gulfOfFinland": "Suomenlahti",
     "northernBalticSea": "Pohjoinen Itämeri",
     "archipelagoSea": "Saaristomeri",
@@ -492,6 +496,7 @@
     "bayOfBothnia": "Perämeri",
     "saimaa": "Saimaa",
     "saimaaCanal": "Saimaan kanava",
-    "gulfOfBothnia": "Pohjanlahti"
+    "gulfOfBothnia": "Pohjanlahti",
+    "inlandAreas": "Sisävesistöt"
   }
 }

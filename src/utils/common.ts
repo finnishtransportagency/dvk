@@ -1,6 +1,6 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap from '../components/DvkMap';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, Text } from '../graphql/generated';
+import { FairwayCardPartsFragment, Text } from '../graphql/generated';
 import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
@@ -197,16 +197,3 @@ export function updateIceLayerOpacity() {
     dvkMap.getFeatureLayer('ice').setOpacity(opacity);
   }
 }
-
-export const setFairwayCardByPreview = (
-  preview: boolean,
-  id: string,
-  data: FindAllFairwayCardsQuery | undefined,
-  previewData: FairwayCardPreviewQuery | undefined
-) => {
-  if (preview) {
-    return previewData?.fairwayCardPreview ?? undefined;
-  }
-  const filteredFairwayCard = data?.fairwayCards.filter((card) => card.id === id);
-  return filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
-};

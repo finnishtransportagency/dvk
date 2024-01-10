@@ -29,6 +29,8 @@ import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
+import { useDvkContext } from '../hooks/dvkContext';
+import { Lang, accessibilityUrl } from '../utils/constants';
 
 type SidebarMenuProps = {
   isSourceOpen: boolean;
@@ -40,6 +42,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const router = useIonRouter();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
+  const { state } = useDvkContext();
+  const lang = i18n.resolvedLanguage as Lang;
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
     const isTabPressed = e.key === 'Tab';
@@ -113,7 +117,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/kortit/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/kortit/'}
                       data-testid="fairwaysLink"
@@ -127,7 +131,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/turvalaiteviat/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
                       data-testid="faultsLink"
@@ -141,7 +145,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/merivaroitukset/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       disabled={router.routeInfo.pathname === '/merivaroitukset/'}
                       data-testid="warningsLink"
@@ -156,7 +160,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                       routerLink="/squat/"
                       detail={false}
                       lines="none"
-                      className="ion-no-padding internal"
+                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
                       onClick={async () => menuController.close()}
                       data-testid="squatLink"
                       disabled={router.routeInfo.pathname === '/squat/'}
@@ -190,6 +194,9 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
             <IonRow className="ion-align-items-center">
               <IonCol>
                 <IonTitle>
+                  <a href={accessibilityUrl[lang]} rel="noreferrer" target="_blank" className="ion-no-padding">
+                    {t('accessibility')}
+                  </a>
                   <IonButtons>
                     <IonButton
                       ref={lastFocusableElement}
@@ -204,8 +211,8 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   </IonButtons>
                 </IonTitle>
               </IonCol>
-              <IonCol className="ion-text-end">
-                <IonTitle>
+              <IonCol>
+                <IonTitle className="ion-text-end ion-no-padding version">
                   <small>v{import.meta.env.VITE_APP_VERSION}</small>
                 </IonTitle>
               </IonCol>

@@ -6,7 +6,12 @@ function handler(event) {
       statusDescription: 'Not found',
     };
   }
-  if (request.uri === '/esikatselu/' || request.uri === '/esikatselu' || request.uri.startsWith('/esikatselu/satama') || request.uri.startsWith('/esikatselu/vaylakortti')) {
+  if (
+    request.uri === '/esikatselu/' ||
+    request.uri === '/esikatselu' ||
+    request.uri.startsWith('/esikatselu/satamat') ||
+    request.uri.startsWith('/esikatselu/kortit')
+  ) {
     request.uri = '/esikatselu/index.html';
   }
   return request;

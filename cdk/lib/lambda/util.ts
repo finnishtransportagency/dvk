@@ -92,7 +92,7 @@ export function handleLoaderError(response: CacheResponse, e: unknown): ALBResul
     statusCode = 200;
   } else {
     base64Response = undefined;
-    statusCode = 500;
+    statusCode = 503;
   }
   return {
     statusCode,

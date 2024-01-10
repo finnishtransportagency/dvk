@@ -1,15 +1,13 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
-import { handler as previewHandler } from '../lib/lambda/graphql/query/fairwayCardPreview-handler';
 import { Status } from '../graphql/generated';
-import { mockContext, mockQueryFairwayCardArgsEvent } from './mocks';
+import { mockContext, mockQueryByIdEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
-import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -60,29 +58,6 @@ const card2: FairwayCardDBModel = {
     },
   },
 };
-const card3: FairwayCardDBModel = {
-  id: 'test',
-  name: {
-    fi: 'Testfi3',
-    sv: 'Testsv3',
-    en: 'Testen3',
-  },
-  creator: 'test3',
-  creationTimestamp: Date.now(),
-  modifier: 'test',
-  modificationTimestamp: Date.now(),
-  status: Status.Removed,
-  fairways: [{ id: 1, primary: true, secondary: false }],
-  trafficService: {
-    pilot: {
-      places: [
-        {
-          id: 3458100305,
-        },
-      ],
-    },
-  },
-};
 const points = {
   features: [
     {
@@ -118,18 +93,6 @@ const points = {
     },
   ],
 };
-const adminUser = {
-  uid: 'K123456',
-  firstName: 'Developer',
-  lastName: 'X',
-  roles: [ADMIN_ROLE],
-};
-const otherUser = {
-  uid: 'K654321',
-  firstName: 'User',
-  lastName: 'X',
-  roles: ['DVK_Kayttaja'],
-};
 
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
@@ -141,14 +104,11 @@ jest.mock('../lib/lambda/api/axios', () => ({
   fetchTraficomApi: () => points,
 }));
 
-jest.mock('../lib/lambda/api/login');
-
 beforeEach(() => {
   jest.resetAllMocks();
   ddbMock.reset();
   s3Mock.reset();
   pilotPlaceMap.clear();
-  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => adminUser);
 });
 
 it('should get card by id from the DynamoDB', async () => {
@@ -163,7 +123,7 @@ it('should get card by id from the DynamoDB', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -182,80 +142,9 @@ it('should get card by id from the DynamoDB when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await handler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
-
-it('should get public card from the DynamoDB', async () => {
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test' },
-    })
-    .resolves({
-      Item: card,
-    });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await previewHandler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
-  expect(response).toMatchSnapshot({
-    modificationTimestamp: expect.any(Number),
-    creationTimestamp: expect.any(Number),
-  });
-});
-
-it('should get draft card from the DynamoDB', async () => {
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test' },
-    })
-    .resolves({
-      Item: card2,
-    });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await previewHandler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
-  expect(response).toMatchSnapshot({
-    modificationTimestamp: expect.any(Number),
-    creationTimestamp: expect.any(Number),
-  });
-});
-
-it('should filter removed card from the DynamoDB', async () => {
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test' },
-    })
-    .resolves({
-      Item: card3,
-    });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await previewHandler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
-  expect(response).toBe(undefined);
-});
-
-it('should return nothing when admin role missing', async () => {
-  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test' },
-    })
-    .resolves({
-      Item: card,
-    });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
-  const response = await previewHandler(mockQueryFairwayCardArgsEvent, mockContext, () => {});
-  expect(response).toBe(undefined);
 });

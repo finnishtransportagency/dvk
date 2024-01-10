@@ -1,3 +1,8 @@
+import { Maybe } from '../graphql/generated';
+
+export const APP_CONFIG_DVK = 'DVK';
+export const APP_CONFIG_PREVIEW = 'PREVIEW';
+
 const featureLoaderUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/featureloader'
   : globalThis.location.origin + '/api/featureloader';
@@ -16,9 +21,32 @@ const staticUrl = import.meta.env.VITE_APP_STATIC_URL
 
 export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
-export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
+export const accessibilityUrl = {
+  fi: 'https://vayla.fi/tietoa-meista/yhteystiedot/saavutettavuus/digitaalinen-vaylakortti',
+  sv: 'https://vayla.fi/sv/trafikledsverket/kontaktuppgifter/tillganglighet/digital-farledskort',
+  en: 'https://vayla.fi/en/about/contact-information/accessibility/digital-fairway-card',
+};
 
-export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'name';
+export type BackgroundLayerId =
+  | 'finland'
+  | 'mml_meri'
+  | 'mml_meri_rantaviiva'
+  | 'mml_jarvi'
+  | 'mml_jarvi_rantaviiva'
+  | 'mml_satamat'
+  | 'mml_laiturit'
+  | 'balticsea';
+
+export type StaticFeatureDataId =
+  | 'balticsea'
+  | 'finland'
+  | 'mml_meri'
+  | 'mml_meri_rantaviiva'
+  | 'mml_jarvi'
+  | 'mml_jarvi_rantaviiva'
+  | 'mml_satamat'
+  | 'mml_laiturit'
+  | 'name';
 
 export type FeatureDataId =
   | 'area12'
@@ -51,8 +79,10 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20230505.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20231213.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20231219.json.gz') },
+  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20231219.json.gz') },
   { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
 ];
@@ -273,7 +303,7 @@ export const MAP: MapType = {
     { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
-    { id: 'depth12', offlineSupport: true, localizedStyle: false },
+    { id: 'depth12', offlineSupport: true, localizedStyle: true },
     { id: 'coastalwarning', offlineSupport: true, localizedStyle: false },
     { id: 'localwarning', offlineSupport: true, localizedStyle: false },
     { id: 'boaterwarning', offlineSupport: true, localizedStyle: false },
@@ -325,20 +355,21 @@ export const OFFLINE_STORAGE = {
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
 
-export const marineWarningAreas = [
-  'gulfOfFinland',
-  'northernBalticSea',
-  'archipelagoSea',
-  'seaOfÅland',
-  'bothnianSea',
-  'theQuark',
-  'bayOfBothnia',
-  'gulfOfBothnia',
-  'saimaa',
-  'saimaaCanal',
-];
+export type MarineWarningArea =
+  | 'seaAreas'
+  | 'gulfOfFinland'
+  | 'northernBalticSea'
+  | 'archipelagoSea'
+  | 'seaOfÅland'
+  | 'bothnianSea'
+  | 'theQuark'
+  | 'bayOfBothnia'
+  | 'gulfOfBothnia'
+  | 'saimaa'
+  | 'saimaaCanal'
+  | 'inlandAreas';
 
-export const marineWarningTypes = ['coastalWarning', 'localWarning', 'boaterWarning'];
+export type MarineWarningType = 'boaterWarning' | 'coastalWarning' | 'localWarning';
 
 export const aisLayers: FeatureDataLayerId[] = [
   'aisvesselcargo',
@@ -349,3 +380,39 @@ export const aisLayers: FeatureDataLayerId[] = [
   'aisvesselpleasurecraft',
   'aisunspecified',
 ];
+
+export type WarningFilter = {
+  id: MarineWarningArea | MarineWarningType;
+  parent?: MarineWarningArea;
+  childAreas?: Maybe<Array<WarningFilter>>;
+};
+
+export const marineWarningAreasStructure: WarningFilter[] = [
+  {
+    id: 'seaAreas',
+    childAreas: [
+      { id: 'gulfOfFinland', parent: 'seaAreas' },
+      { id: 'northernBalticSea', parent: 'seaAreas' },
+      { id: 'archipelagoSea', parent: 'seaAreas' },
+      { id: 'seaOfÅland', parent: 'seaAreas' },
+      {
+        id: 'gulfOfBothnia',
+        parent: 'seaAreas',
+        childAreas: [
+          { id: 'bothnianSea', parent: 'gulfOfBothnia' },
+          { id: 'theQuark', parent: 'gulfOfBothnia' },
+          { id: 'bayOfBothnia', parent: 'gulfOfBothnia' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'inlandAreas',
+    childAreas: [
+      { id: 'saimaa', parent: 'inlandAreas' },
+      { id: 'saimaaCanal', parent: 'inlandAreas' },
+    ],
+  },
+];
+
+export const marineWarningTypeStructure: WarningFilter[] = [{ id: 'boaterWarning' }, { id: 'coastalWarning' }, { id: 'localWarning' }];

@@ -35,6 +35,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'pilot',
     'vtspoint',
     'quay',
+    'section',
     'harbor',
     'marinewarning',
     'safetyequipment',
