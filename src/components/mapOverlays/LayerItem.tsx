@@ -330,6 +330,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         'mareograph',
         'observation',
         'buoy',
+        'safetyequipmentfault',
         'aisvesselcargo',
         'aisvesseltanker',
         'aisvesselpassenger',

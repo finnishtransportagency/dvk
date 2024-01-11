@@ -37,6 +37,7 @@
           "fairwayAreas": "Fairway areas",
           "depths": "Depths",
           "safetyEquipments": "Navigational aids",
+          "safetyEquipmentFaults": "Defective navigation aids",          
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",

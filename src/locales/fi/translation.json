@@ -37,6 +37,7 @@
           "fairwayAreas": "Väyläalueet",
           "depths": "Haraussyvyydet",
           "safetyEquipments": "Turvalaitteet",
+          "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
