@@ -72,7 +72,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
               <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'labelText disabled' : 'labelText'}>
                 {currentLayer.title}
               </IonText>
-              <IonText className={'layerLegend layer ' + currentLayer.id}></IonText>
             </IonCheckbox>
           </IonItem>
         </IonCol>

@@ -154,7 +154,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       const updatedLayers = state.layers.includes('safetyequipmentfault') ? [...state.layers] : [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
-    // tick safety equipment fault box only when rendering first time
+    // tick safety equipment fault checkbox only when rendering first time
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
