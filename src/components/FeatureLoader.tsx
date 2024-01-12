@@ -439,7 +439,6 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
   const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
   const isPaused = eQuery.isPaused || fQuery.isPaused;
   const isError = eQuery.isError || fQuery.isError;
-
   useEffect(() => {
     const eData = eQuery.data;
     const fData = fQuery.data;
@@ -455,6 +454,7 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();
         source.addFeatures(efs);
+        const fSource = dvkMap.getVectorSource('safetyequipmentfault');
         const faultMap = new Map<number, EquipmentFault[]>();
         for (const ff of ffs) {
           const id = ff.getProperties().equipmentId as number;
@@ -477,6 +477,8 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
           if (feature) {
             faults.sort((a, b) => b.recordTime - a.recordTime);
             feature.set('faults', faults, true);
+            source.removeFeature(feature);
+            fSource.addFeature(feature);
           }
         });
         layer.set('dataUpdatedAt', dataUpdatedAt);
@@ -486,3 +488,64 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
   }, [eQuery.data, fQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
+// ELI TÄLLÄ HETKELLÄ TÄMÄ ALAPUOLELLA PALAUTTAA OIKEAT JUTUT
+// MITÄ TARVITAAN LAYERÖINNISSÄ, PITÄISI REFAKTOROIDA YLÄPUOLELTA NUO JUTUT
+// TÄHÄN FUNKKARIIN NIIN TULEE SELKEEMPI
+// TARVII RETURN DATA, READY YMS.
+// LISÄKSI LAYERMODALIN RIVI 133 TUNTUU RIKKOVAN safetyequipment -> safetyequipmentfault
+/*export function useSafetyEquipmentFaultLayer() {
+  const safetyEquipmentLayer = useSafetyEquipmentLayer();
+  //const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+
+  useEffect(() => {
+    return () => {
+      const dvkMap = getMap();
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      equipmentSource.forEachFeature((f) => {
+        f.set('faultListStyle', false, true);
+        f.set('hoverStyle', false, true);
+      });
+      equipmentSource.dispatchEvent('change');
+      dvkMap.getVectorSource('safetyequipmentfault').clear();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (safetyEquipmentLayer.ready) {
+      const dvkMap = getMap();
+      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+      const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+      const safetyEquipments = equipmentSource.getFeatures();
+      // Set safetyEquipmentFaultList prop to change feature styling
+      safetyEquipments.forEach((f) => f.set('faultListStyle', !!f.get('faults'), true));
+      equipmentSource.dispatchEvent('change');
+      // Add equipment faults to separate layer
+      const safetyEquipmentFaults = safetyEquipments.filter((feat) => !!feat.get('faults'));
+      faultSource.clear();
+      faultSource.addFeatures(safetyEquipmentFaults);
+    }
+  }, [safetyEquipmentLayer.ready, safetyEquipmentLayer.dataUpdatedAt]);*/
+
+/*export function useSafetyEquipmentFaultLayer() {
+  const [ready, setReady] = useState(false);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
+
+  useEffect(() => {
+    if (data) {
+      const layer = dvkMap.getFeatureLayer('safetyequipmentfault');
+      console.log(layer);
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const ffs = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const source = dvkMap.getVectorSource('safetyequipmentfault');
+        console.log(ffs);
+        source.clear();
+        source.addFeatures(ffs);
+      }
+      layer.set('dataUpdatedAt', dataUpdatedAt);
+    }
+    setReady(true);
+  }, [data, dataUpdatedAt]);
+  // ttänne tarvitaan ne tiedoot
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}*/
