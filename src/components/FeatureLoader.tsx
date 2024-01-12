@@ -431,7 +431,7 @@ export type EquipmentFault = {
   recordTime: number;
 };
 
-export function useSafetyEquipmentLayers(): DvkLayerState {
+export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const eQuery = useFeatureData('safetyequipment');
   const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
