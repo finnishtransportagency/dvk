@@ -500,7 +500,6 @@ export function useSafetyEquipmentFaultLayer() {
             feature.set('faults', faults, true);
             equipmentSource.removeFeature(feature);
             faultSource.addFeature(feature);
-            equipmentSource.removeFeature(feature);
           }
         });
         layer.set('dataUpdatedAt', dataUpdatedAt);

@@ -15,7 +15,6 @@ import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { useSafetyEquipmentLayer } from '../FeatureLoader';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
@@ -143,8 +142,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
-  const { state } = useDvkContext();
-  const safetyEquipmentLayer = useSafetyEquipmentLayer();
+  const { dispatch, state } = useDvkContext();
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
@@ -152,37 +150,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [alertProps, t]);
 
   useEffect(() => {
-    return () => {
-      const dvkMap = getMap();
-      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
-      equipmentSource.forEachFeature((f) => {
-        f.set('faultListStyle', false, true);
-        f.set('hoverStyle', false, true);
-      });
-      equipmentSource.dispatchEvent('change');
-      dvkMap.getVectorSource('safetyequipmentfault').clear();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (safetyEquipmentLayer.ready) {
-      const dvkMap = getMap();
-      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
-      const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-      const safetyEquipments = equipmentSource.getFeatures();
-      // Set safetyEquipmentFaultList prop to change feature styling
-      safetyEquipments.forEach((f) => f.set('faultListStyle', !!f.get('faults'), true));
-      equipmentSource.dispatchEvent('change');
-      // Add equipment faults to separate layer
-      const safetyEquipmentFaults = safetyEquipments.filter((feat) => !!feat.get('faults'));
-      faultSource.clear();
-      faultSource.addFeatures(safetyEquipmentFaults);
+    if (!state.layers.includes('safetyequipmentfault')) {
+      const updatedLayers = state.layers.includes('safetyequipmentfault') ? [...state.layers] : [...state.layers, 'safetyequipmentfault'];
+      dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
-  }, [safetyEquipmentLayer.ready, safetyEquipmentLayer.dataUpdatedAt]);
-
-  useEffect(() => {
-    getMap().getFeatureLayer('safetyequipmentfault').setVisible(!state.layers.includes('safetyequipment'));
-  }, [state.layers]);
+    // tick safety equipment fault box only when rendering first time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
