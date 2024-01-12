@@ -431,48 +431,33 @@ export type EquipmentFault = {
   recordTime: number;
 };
 
-export function useSafetyEquipmentLayer(): DvkLayerState {
+export function useSafetyEquipmentLayers(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('safetyequipment');
-
+  const eQuery = useFeatureData('safetyequipment');
+  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
+  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
+  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
+  const isPaused = eQuery.isPaused || fQuery.isPaused;
+  const isError = eQuery.isError || fQuery.isError;
   useEffect(() => {
-    if (data) {
+    const eData = eQuery.data;
+    const fData = fQuery.data;
+    if (eData && fData) {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const efs = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
           f.set('dataSource', 'safetyequipment', true);
         });
+        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         const source = dvkMap.getVectorSource('safetyequipment');
         source.clear();
         source.addFeatures(efs);
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [data, dataUpdatedAt]);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
-}
-
-export function useSafetyEquipmentFaultLayer() {
-  const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const safetyEquipmentLayer = useSafetyEquipmentLayer();
-
-  useEffect(() => {
-    if (data && safetyEquipmentLayer.ready) {
-      const layer = dvkMap.getFeatureLayer('safetyequipmentfault');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const ffs = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-        const equipmentSource = dvkMap.getVectorSource('safetyequipment');
         const faultMap = new Map<number, EquipmentFault[]>();
-        // compare faults and original equipment features
         for (const ff of ffs) {
           const id = ff.getProperties().equipmentId as number;
-          const feature = equipmentSource.getFeatureById(id);
+          const feature = source.getFeatureById(id);
           if (feature) {
             const fault: EquipmentFault = {
               faultId: ff.getId() as number,
@@ -486,20 +471,22 @@ export function useSafetyEquipmentFaultLayer() {
             faultMap.get(id)?.push(fault);
           }
         }
+        const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
         faultSource.clear();
         faultMap.forEach((faults, equipmentId) => {
-          const feature = equipmentSource.getFeatureById(equipmentId) as Feature<Geometry>;
+          const feature = source.getFeatureById(equipmentId) as Feature<Geometry>;
           if (feature) {
             faults.sort((a, b) => b.recordTime - a.recordTime);
             feature.set('faults', faults, true);
-            equipmentSource.removeFeature(feature);
+            // add to safetyequipmentfault layer and remove from safetyequipment layer
             faultSource.addFeature(feature);
+            source.removeFeature(feature);
           }
         });
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
+      setReady(true);
     }
-    setReady(true);
-  }, [data, safetyEquipmentLayer.ready, dataUpdatedAt]);
+  }, [eQuery.data, fQuery.data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

@@ -26,7 +26,7 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id) as Feature<Geometry>;
+  const feature = dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
@@ -53,7 +53,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipmentSource = getMap().getVectorSource('safetyequipment');
+  const equipmentSource = getMap().getVectorSource('safetyequipmentfault');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -141,7 +141,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
+  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
   const { dispatch, state } = useDvkContext();
 
   const getLayerItemAlertText = useCallback(() => {
@@ -151,7 +151,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
 
   useEffect(() => {
     if (!state.layers.includes('safetyequipmentfault')) {
-      const updatedLayers = state.layers.includes('safetyequipmentfault') ? [...state.layers] : [...state.layers, 'safetyequipmentfault'];
+      const updatedLayers = [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
     // tick safety equipment fault checkbox only when rendering first time

@@ -83,7 +83,7 @@ vi.mock('./components/FeatureLoader', () => ({
   useHarborLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useSafetyEquipmentLayer: () => {
+  useSafetyEquipmentLayers: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useCoastalWarningLayer: () => {
