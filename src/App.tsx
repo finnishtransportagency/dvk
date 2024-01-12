@@ -33,6 +33,7 @@ import {
   useSpecialArea2Layer,
   useSpecialArea15Layer,
   useInitStaticDataLayer,
+  useSafetyEquipmentFaultLayer,
 } from './components/FeatureLoader';
 import {
   useAisVesselCargoLayer,
@@ -138,6 +139,7 @@ const DvkIonApp: React.FC = () => {
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentLayer();
+  useSafetyEquipmentFaultLayer();
   useCoastalWarningLayer();
   useLocalWarningLayer();
   useBoaterWarningLayer();
