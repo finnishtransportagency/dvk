@@ -433,21 +433,14 @@ export type EquipmentFault = {
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const eQuery = useFeatureData('safetyequipment');
-  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
-  const isPaused = eQuery.isPaused || fQuery.isPaused;
-  const isError = eQuery.isError || fQuery.isError;
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData('safetyequipment');
 
   useEffect(() => {
-    const eData = eQuery.data;
-    const fData = fQuery.data;
-    if (eData && fData) {
+    if (data) {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const efs = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
           f.set('dataSource', 'safetyequipment', true);
         });
@@ -458,7 +451,7 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
       }
       setReady(true);
     }
-  }, [eQuery.data, fQuery.data, dataUpdatedAt]);
+  }, [data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -476,6 +469,7 @@ export function useSafetyEquipmentFaultLayer() {
         const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
         const equipmentSource = dvkMap.getVectorSource('safetyequipment');
         const faultMap = new Map<number, EquipmentFault[]>();
+        // compare faults and original equipment features
         for (const ff of ffs) {
           const id = ff.getProperties().equipmentId as number;
           const feature = equipmentSource.getFeatureById(id);
