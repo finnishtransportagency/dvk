@@ -7,6 +7,8 @@ const devPipelineDVK = process.env.DEV_PIPELINE_DVK;
 const testPipelineDVK = process.env.TEST_PIPELINE_DVK;
 const devPipelineAdmin = process.env.DEV_PIPELINE_ADMIN;
 const testPipelineAdmin = process.env.TEST_PIPELINE_ADMIN;
+const devPipelinePreview = process.env.DEV_PIPELINE_PREVIEW;
+const testPipelinePreview = process.env.TEST_PIPELINE_PREVIEW;
 
 const buildimagePipeline = process.env.BUILDIMAGE_PIPELINE;
 const webhookSecret = process.env.WEBHOOK_SECRET;
@@ -16,6 +18,7 @@ enum APPS {
   DVK = 'dvk',
   IMAGE = 'image',
   ADMIN = 'admin',
+  PREVIEW = 'preview',
 }
 
 function parseBranchName(branch: string) {
@@ -48,6 +51,13 @@ function getPipelineName(branch: string, appName: string) {
         return devPipelineAdmin;
       } else if (branchName === 'test') {
         return testPipelineAdmin;
+      }
+      return undefined;
+    case APPS.PREVIEW:
+      if (branchName === 'main') {
+        return devPipelinePreview;
+      } else if (branchName === 'test') {
+        return testPipelinePreview;
       }
       return undefined;
     case APPS.IMAGE:
@@ -275,6 +285,11 @@ const handler = async function (event: any) {
   if (isDockerFiles) {
     const imagePipelineName = getPipelineName(branch, APPS.IMAGE);
     if (imagePipelineName) await kaynnistaPipeline(imagePipelineName);
+  }
+  // esikatselusovellus kaytannossa sama kuin dvk -squat
+  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
+    const previewPipelineName = getPipelineName(branch, APPS.PREVIEW);
+    if (previewPipelineName) await kaynnistaPipeline(previewPipelineName);
   }
 
   response = {

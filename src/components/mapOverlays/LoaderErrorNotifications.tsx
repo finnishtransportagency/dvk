@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useDvkContext } from '../../hooks/dvkContext';
 import errorIcon from '../../theme/img/safetyequipment/error_icon.svg';
 import { IonCol } from '@ionic/react';
-import { useTranslation } from 'react-i18next';
 import CustomPopup, { CustomPopupContainer } from './CustomPopup';
 
 export const LoadErrorNotifications: React.FC = () => {
-  const { t } = useTranslation();
   const { state } = useDvkContext();
   const [visible, setVisible] = useState(false);
 
@@ -26,7 +24,7 @@ export const LoadErrorNotifications: React.FC = () => {
             <strong>
               Error: {state.response[0]} {state.response[1]}.&nbsp;
             </strong>
-            {t('tileLoadWarning.vectorTileError')}
+            {state.response[2]}
           </p>
         </IonCol>
       </CustomPopup>

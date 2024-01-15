@@ -9,6 +9,7 @@
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
       "customer-service": "Trafikens kundtjänst",
+      "accessibility": "Tillgänglighet",
       "source": "Informationskällor och användningsvillkor",
       "opens-in-a-new-tab": "Öppnas i en ny flik",
       "location-service": "Platstjänst",
@@ -120,6 +121,7 @@
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
     "name": "Farledskortets namn",
     "preview": "Förhandsvisning",
+    "harborPreview": "[sv] Sataman esikatselu",
     "print": "Skriv ut farledskort",
     "modified": "Uppdaterat",
     "modifiedDate": "{{val, datetime}}",
@@ -270,7 +272,8 @@
     "lastUpdatedAt2": "Lagrets data laddat för över {{ val, number}} h sedan.",
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
-    "type": "Typ"
+    "type": "Typ",
+    "layerLoadError": "[sv] Tason tietojen lataus epäonnistui"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
@@ -483,6 +486,7 @@
     "content5": "Erkännande CC 4.0 licens till Lantmäteriverkets avgiftsfria datamaterial"
   },
   "areas": {
+    "seaAreas": "Finska sjöområden",
     "gulfOfFinland": "Finska viken",
     "northernBalticSea": "Norra Östersjön",
     "archipelagoSea": "Skärgårdshavet",
@@ -492,6 +496,7 @@
     "bayOfBothnia": "Bottenviken",
     "saimaa": "Saimen",
     "saimaaCanal": "Saima kanal",
-    "gulfOfBothnia": "Bottenvik"
+    "gulfOfBothnia": "Bottenvik",
+    "inlandAreas": "Inlandsfarvatten"
   }
 }

@@ -53,31 +53,36 @@ function getStyle(icon: string, offsetX: number, offsetY: number) {
   });
 }
 
+function getCalculatedStyle(selected: boolean) {
+  let s = selected ? calculatedSelectedStyle : calculatedStyle;
+  if (!s) {
+    if (selected) {
+      s = calculatedSelectedStyle = getSelectedStyle(mareographIcon2, 42, -23);
+    } else {
+      s = calculatedStyle = getStyle(mareographIcon2, 40, -19);
+    }
+  }
+  return s;
+}
+
+function getMeasuredStyle(selected: boolean) {
+  let s = selected ? selectedStyle : style;
+  if (!s) {
+    if (selected) {
+      s = selectedStyle = getSelectedStyle(mareographIcon, 44, -20);
+    } else {
+      s = style = getStyle(mareographIcon, 42, -16);
+    }
+  }
+  return s;
+}
+
 export function getMareographStyle(feature: FeatureLike, selected: boolean, resolution: number) {
   const props = feature.getProperties() as MareographFeatureProperties;
   if (props.calculated && resolution > 150) {
     return undefined;
   }
-  let s;
-  if (props.calculated) {
-    s = selected ? calculatedSelectedStyle : calculatedStyle;
-    if (!s) {
-      if (selected) {
-        s = calculatedSelectedStyle = getSelectedStyle(mareographIcon2, 42, -23);
-      } else {
-        s = calculatedStyle = getStyle(mareographIcon2, 40, -19);
-      }
-    }
-  } else {
-    s = selected ? selectedStyle : style;
-    if (!s) {
-      if (selected) {
-        s = selectedStyle = getSelectedStyle(mareographIcon, 44, -20);
-      } else {
-        s = style = getStyle(mareographIcon, 42, -16);
-      }
-    }
-  }
+  const s = props.calculated ? getCalculatedStyle(selected) : getMeasuredStyle(selected);
   s.getText()?.setText(`${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)} cm`);
   return s;
 }

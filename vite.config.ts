@@ -67,7 +67,6 @@ export default defineConfig({
   ],
   test: {
     globals: true,
-    threads: false,
     environment: 'jsdom',
     silent: true,
     isolate: true,
@@ -83,5 +82,8 @@ export default defineConfig({
       reporter: ['text', 'lcov', 'clover'],
       exclude: ['node_modules/', 'src/setupTests.ts'],
     },
+  },
+  define: {
+    VITE_APP_CONFIG: JSON.stringify('DVK'),
   },
 });

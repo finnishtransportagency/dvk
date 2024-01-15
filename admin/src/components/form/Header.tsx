@@ -20,6 +20,7 @@ interface HeaderProps {
   ) => void;
   handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
+  handlePreview: () => void;
   modifiedInfo: string;
   modifierInfo: string;
   isError?: boolean;
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   updateState,
   handleSubmit,
   handleCancel,
+  handlePreview,
   modifiedInfo,
   modifierInfo,
   isError,
@@ -84,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({
               <IonButton
                 shape="round"
                 color="danger"
-                disabled={isError ?? isLoading}
+                disabled={isError || isLoading}
                 onClick={() => {
                   handleSubmit(true);
                 }}
@@ -92,7 +94,13 @@ const Header: React.FC<HeaderProps> = ({
                 {t('general.delete')}
               </IonButton>
             )}
-            <IonButton shape="round" disabled={isError ?? isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+            {status !== Status.Removed && (
+              <IonButton shape="round" disabled={isError || isLoading || operation === Operation.Create} onClick={() => handlePreview()}>
+                {t('general.preview')}
+                <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
+              </IonButton>
+            )}
+            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
               {operation === Operation.Update ? t('general.save') : t('general.create-new')}
             </IonButton>
           </IonCol>

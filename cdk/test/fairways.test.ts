@@ -2,7 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/graphql/query/fairways-handler';
 import { mockVoidEvent } from './mocks';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@aws-sdk/util-stream';
+import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 

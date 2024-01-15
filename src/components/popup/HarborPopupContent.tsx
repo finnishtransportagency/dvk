@@ -99,9 +99,11 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
           </IonCol>
         </IonRow>
       )}
-      <IonRow>
-        <IonCol className="header">{t('popup.harbor.fairways')}</IonCol>
-      </IonRow>
+      {harbor.properties.fairwayCards.length > 0 && (
+        <IonRow>
+          <IonCol className="header">{t('popup.harbor.fairways')}</IonCol>
+        </IonRow>
+      )}
       {harbor.properties.fairwayCards.map((card) => {
         return (
           <IonRow key={card.id}>

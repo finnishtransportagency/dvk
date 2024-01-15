@@ -6,7 +6,7 @@ import { menuController } from '@ionic/core/components';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import FairwayCards from './FairwayCards';
-import FairwayCard from './FairwayCard';
+import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
@@ -21,11 +21,12 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
+import HarborPreview from './HarborPreview';
 
 interface MainContentProps {
   fairwayCardId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings' | 'squat';
+  target?: 'faults' | 'warnings' | 'squat' | 'harborPreview';
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
@@ -214,9 +215,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                   <IonRow className="ion-align-items-center">
                     <IonCol size="auto">
                       <button
-                        disabled={state.preview}
-                        aria-disabled={state.preview}
-                        className={state.preview ? 'icon disabled' : 'icon'}
+                        className="icon"
                         data-testid={!fairwayCardId && !target ? 'menuController' : ''}
                         onClick={() => menuController.open()}
                         title={t('openMenu')}
@@ -292,6 +291,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
                 {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
+                {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>
             <IonCol size="auto">
