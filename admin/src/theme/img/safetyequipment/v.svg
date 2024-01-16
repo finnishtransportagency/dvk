@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>F79D568C-A493-43FA-9F1F-7FAFE6BED715</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1150.000000, -954.000000)">
-            <g id="turvalaite_ikonit" transform="translate(718.000000, 906.000000)">
-                <g id="tunnusmajakka" transform="translate(432.000000, 48.000000)">
-                    <path d="M6.62857143,30.8571429 L25.3714286,30.8571429 L25.3714286,32 L6.62857143,32 L6.62857143,30.8571429 Z M12.76,12.5714286 L19.0857143,12.5714286 L20.9885714,30.8571429 L11.0114286,30.8571429 L12.7657143,12.5714286 L12.76,12.5714286 Z M15.92,12.5714286 L16.0742857,12.5714286 L16.0742857,30.8171429 L15.92,30.8171429 L15.92,12.5714286 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
-                    <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="M6.62857143 30.8571429H25.3714286V32H6.62857143v-1.1428571ZM12.76 12.5714286h6.3257143l1.9028571 18.2857143h-9.9771428l1.7542857-18.2857143H12.76Zm3.16 0h.1542857v18.2457143H15.92V12.5714286Z" fill="#EC0E0E" fill-rule="nonzero"/>
+    <path d="M0 0h32v32H0z"/>
+  </g>
 </svg>

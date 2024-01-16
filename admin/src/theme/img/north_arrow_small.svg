@@ -1,13 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="28px" height="36px" viewBox="0 0 28 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="dvk_labels" transform="translate(-46.000000, -943.000000)">
-            <g id="north_arrow_small" transform="translate(48.000000, 946.000000)">
-                <path d="M12.0000305,-1.3462868 L24.9527163,31.0353049 L12.0000305,24.5589866 L-0.952655298,31.0353049 L12.0000305,-1.3462868 Z" id="Combined-Shape" stroke-opacity="0.57" stroke="#FFFFFF"></path>
-                <path d="M10.5,7.5962912 L10.5,23.090983 L2.7526541,26.964656 L10.5,7.5962912 Z" id="Triangle" stroke-opacity="0.75" stroke="#FFFFFF"></path>
-                <path d="M11.5000305,2.59628206 L11.5000305,23.6909525 L0.952655298,28.9646201 L11.5000305,2.59628206 Z" id="Triangle" stroke="#000000"></path>
-                <polygon id="Triangle-Copy-2" fill="#000000" transform="translate(18.000046, 14.999981) scale(-1, 1) translate(-18.000046, -14.999981) " points="24.000061 0 24.000061 23.99997 12.0000305 29.9999625"></polygon>
-            </g>
-        </g>
-    </g>
+<svg width="28" height="36" viewBox="0 0 28 36" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="m14.0000305 1.6537132 12.9526858 32.3815917-12.9526858-6.4763183-12.9526858 6.4763183L14.0000305 1.6537132Z" stroke-opacity=".57" stroke="#FFF"/>
+    <path d="M12.5 10.5962912V26.090983l-7.7473459 3.873673L12.5 10.5962912Z" stroke-opacity=".75" stroke="#FFF"/>
+    <path d="M13.5000305 5.59628206V26.6909525L2.9526553 31.9646201 13.5000305 5.59628206Z" stroke="#000"/>
+    <path fill="#000" d="M14.000031 3v23.99997l12.0000305 5.9999925z"/>
+  </g>
 </svg>
