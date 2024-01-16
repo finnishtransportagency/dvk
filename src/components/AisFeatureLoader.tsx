@@ -108,10 +108,25 @@ function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geo
   const aisLayer = aisLayers.find((al) => al.id === id);
   const source = dvkMap.getVectorSource(id);
   if (aisLayer && source) {
-    source.clear();
     const features = aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType')));
-    features.forEach((f) => f.set('dataSource', id, true));
-    source.addFeatures(features);
+    const layerFeatureIds: Array<string | number | undefined> = [];
+
+    source.forEachFeature((f) => {
+      const newFeat = features.find((feat) => feat.getId() === f.getId());
+      if (!newFeat) {
+        source.removeFeature(f);
+      } else {
+        layerFeatureIds.push(f.getId());
+        f.setProperties(newFeat.getProperties(), true);
+        f.setGeometry(newFeat.getGeometry());
+      }
+      return false;
+    });
+    const featuresToAdd = features.filter((f) => {
+      return !layerFeatureIds.includes(f.getId());
+    });
+    featuresToAdd.forEach((f) => f.set('dataSource', id, true));
+    source.addFeatures(featuresToAdd);
   }
 }
 
@@ -123,9 +138,9 @@ function useAisLayer(layerId: FeatureDataLayerId) {
     const layer = dvkMap.getFeatureLayer(layerId);
     if (ready && state.layers.includes(layerId) && layer.get('dataUpdatedAt') !== dataUpdatedAt) {
       updateAisLayerFeatures(layerId, aisFeatures);
-      layer.set('dataUpdatedAt', dataUpdatedAt);
+      layer.set('dataUpdatedAt', dataUpdatedAt, true);
     }
-    layer.set('errorUpdatedAt', errorUpdatedAt);
+    layer.set('errorUpdatedAt', errorUpdatedAt, true);
   }, [ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, state.layers, layerId]);
 
   useEffect(() => {
