@@ -15,7 +15,6 @@ import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { useSafetyEquipmentLayer } from '../FeatureLoader';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
@@ -27,7 +26,7 @@ type FaultGroupProps = {
 
 function goto(id: number) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipment').getFeatureById(id) as Feature<Geometry>;
+  const feature = dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
@@ -54,7 +53,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipmentSource = getMap().getVectorSource('safetyequipment');
+  const equipmentSource = getMap().getVectorSource('safetyequipmentfault');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -142,9 +141,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const path = [{ title: t('faults.title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipment');
-  const { state } = useDvkContext();
-  const safetyEquipmentLayer = useSafetyEquipmentLayer();
+  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
+  const { dispatch, state } = useDvkContext();
 
   const getLayerItemAlertText = useCallback(() => {
     if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
@@ -152,37 +150,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [alertProps, t]);
 
   useEffect(() => {
-    return () => {
-      const dvkMap = getMap();
-      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
-      equipmentSource.forEachFeature((f) => {
-        f.set('faultListStyle', false, true);
-        f.set('hoverStyle', false, true);
-      });
-      equipmentSource.dispatchEvent('change');
-      dvkMap.getVectorSource('safetyequipmentfault').clear();
-    };
-  }, []);
-
-  useEffect(() => {
-    if (safetyEquipmentLayer.ready) {
-      const dvkMap = getMap();
-      const equipmentSource = dvkMap.getVectorSource('safetyequipment');
-      const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-      const safetyEquipments = equipmentSource.getFeatures();
-      // Set safetyEquipmentFaultList prop to change feature styling
-      safetyEquipments.forEach((f) => f.set('faultListStyle', !!f.get('faults'), true));
-      equipmentSource.dispatchEvent('change');
-      // Add equipment faults to separate layer
-      const safetyEquipmentFaults = safetyEquipments.filter((feat) => !!feat.get('faults'));
-      faultSource.clear();
-      faultSource.addFeatures(safetyEquipmentFaults);
+    if (!state.layers.includes('safetyequipmentfault')) {
+      const updatedLayers = [...state.layers, 'safetyequipmentfault'];
+      dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
-  }, [safetyEquipmentLayer.ready, safetyEquipmentLayer.dataUpdatedAt]);
-
-  useEffect(() => {
-    getMap().getFeatureLayer('safetyequipmentfault').setVisible(!state.layers.includes('safetyequipment'));
-  }, [state.layers]);
+    // tick safety equipment fault checkbox only when rendering first time
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

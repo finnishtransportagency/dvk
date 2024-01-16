@@ -73,7 +73,14 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       ],
     },
     { id: 'depth12', title: t('homePage.map.controls.layer.depths') },
-    { id: 'safetyequipment', title: t('homePage.map.controls.layer.safetyEquipments') },
+    {
+      id: 'safetyequipment',
+      title: t('homePage.map.controls.layer.safetyEquipmentsTitle'),
+      childLayers: [
+        { id: 'safetyequipment', title: t('homePage.map.controls.layer.safetyEquipments') },
+        { id: 'safetyequipmentfault', title: t('homePage.map.controls.layer.safetyEquipmentFaults') },
+      ],
+    },
     {
       id: 'conditions',
       title: t('homePage.map.controls.layer.conditions'),
