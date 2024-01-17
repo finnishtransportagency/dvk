@@ -519,3 +519,21 @@ ion-text.previewText > * {
   pointer-events: none;
   opacity: 50%;
 }
+
+.equipmentAlert.accordion-collapsed,
+.equipmentAlert.accordion-collapsing,
+.equipmentAlert.accordion-expanding,
+.equipmentAlert.accordion-expanded {
+  margin-top: 0px;
+  border-bottom: 0px;
+}
+.equipmentAlertItem {
+  width: 400px;
+}
+.equipmentAlertLabel {
+  padding-left: 0px;
+  width: 100%;
+}
+.equipmentAlertContent {
+  padding: 40px;
+}
