@@ -117,6 +117,7 @@
     "title_one": "Väyläkortti",
     "title_other": "Väyläkortit",
     "dataUpdated": "Tiedot ladattu laitteelle",
+    "faultsDataUpdated": "Vikatiedot ladattu laitteelle",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Väyläkortti sisältää väylänkäyttäjälle tarkoitettua informaatiota väylästä ja siihen liittyvästä satamasta. Se täydentää osaltaan merikartoilta ja muista julkaisuista saatavia väylätietoja. Väyläkortteja on laadittu talvisatamiin johtavista meriväylistä, ja ne kattavat suurimman osan nk. kauppamerenkulun pääväylistä.",
     "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
@@ -276,7 +277,10 @@
     "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa.",
     "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa.",
     "type": "Tyyppi",
-    "layerLoadError": "Tason tietojen lataus epäonnistui"
+    "layerLoadError": "Tason tietojen lataus epäonnistui",
+    "faultsOnFairway": "Väylällä turvalaitevikoja",
+    "faultsLastUpdated": "Turvalaitevikojen tiedot ladattu yli {{ val, number}} h sitten.",
+    "faultsLastUpdatedUnknown": "Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",

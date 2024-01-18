@@ -25,6 +25,7 @@ import { getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../u
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -47,7 +48,14 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
+
+  const {
+    dataUpdatedAt: faultDataUpdatedAt,
+    isPending: faultIsPending,
+    isFetching: faultIsFetching,
+  } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const safetyEquipmentFaults = getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId);
+
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
   const modifiedInfo =
@@ -95,7 +103,9 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
-          {safetyEquipmentFaults.length > 0 && <SafetyEquipmentFaultAlert data={safetyEquipmentFaults} widePane={widePane} />}
+          {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
+            <SafetyEquipmentFaultAlert data={safetyEquipmentFaults} dataUpdatedAt={faultDataUpdatedAt} widePane={widePane} />
+          )}
           <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
             {[1, 2, 3].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
