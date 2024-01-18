@@ -7,18 +7,19 @@ import { FaultGroup } from '../SafetyEquipmentFaults';
 
 interface SafetyEquipmentFaultAlertProps {
   data: SafetyEquipmentFault[];
+  widePane?: boolean;
 }
 
-export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps> = ({ data }) => {
+export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps> = ({ data, widePane }) => {
   return (
     <IonAccordionGroup expand="compact">
-      <IonGrid className="alert danger no-padding">
+      <IonGrid className="alert danger no-padding equipmentAlertGrid">
         <IonAccordion className="equipmentAlert" toggleIcon={arrow_down} value="third">
-          <IonItem className="equipmentAlertItem" lines="none" slot="header" color="lightest">
-            <IonIcon icon={alertIcon} color="danger" />
+          <IonItem className={widePane ? 'equipmentAlertWide' : 'equipmentAlertNarrow'} lines="none" slot="header" color="lightest">
+            <IonIcon className="equipmentAlertIcon" icon={alertIcon} color="danger" />
             <IonLabel className="equipmentAlertLabel">Väylällä turvalaitevikoja ({data.length})</IonLabel>
           </IonItem>
-          <div slot="content">
+          <div className="equipmentAlertContent" slot="content">
             <FaultGroup data={data} />
           </div>
         </IonAccordion>

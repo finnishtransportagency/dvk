@@ -33,7 +33,7 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const equipmentFaults: SafetyEquipmentFault[] = [];
 
-  // coordinates are finally converted from ETRS-TM35FIN to WGS84
+  // coordinates are converted from ETRS-TM35FIN to WGS84
   proj4.defs('ETRS-TM35FIN', '+proj=utm +zone=35 +ellps=GRS80 +no_defs');
   proj4.defs('WGS84', '+proj=longlat +datum=WGS84 +no_defs');
 

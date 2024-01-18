@@ -48,7 +48,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
   const safetyEquipmentFaults = getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId);
-
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
   const modifiedInfo =
@@ -96,7 +95,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
-          {safetyEquipmentFaults.length > 0 && <SafetyEquipmentFaultAlert data={safetyEquipmentFaults} />}
+          {safetyEquipmentFaults.length > 0 && <SafetyEquipmentFaultAlert data={safetyEquipmentFaults} widePane={widePane} />}
           <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
             {[1, 2, 3].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
