@@ -55,17 +55,10 @@ ion-modal#layerModalContainer::part(content) {
   --min-height: 30px;
 }
 
-#layerModalContainer ion-list-header {
-  font-size: 1rem;
-  padding-left: 0px;
-  min-height: auto;
-  padding-bottom: 0.25rem;
-}
-
 #layerModalContainer ion-item .layer {
   width: 14px;
   height: 14px;
-  margin: 0 3px 0 5px;
+  margin: 0 5px 0 5px;
 }
 #layerModalContainer ion-item .area12 {
   border: 1px solid var(--ion-color-danger);
@@ -79,22 +72,21 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .line3456 {
   border-top: 2px solid var(--ion-color-layer-line);
   height: 1px;
-  top: 9px !important;
+  vertical-align: middle;
 }
 #layerModalContainer ion-item .boardline12 {
   border-top: 2px dashed var(--ion-color-layer-boardline);
   height: 1px;
-  top: 9px !important;
+  vertical-align: middle;
 }
 
 #layerModalContainer ion-item .vtsline {
   border-top: 2px dashed var(--ion-color-layer-vts);
   height: 1px;
-  top: 9px !important;
+  vertical-align: middle;
 }
 
 #layerModalContainer ion-item .vtspoint {
-  top: 0px !important;
   width: 16px;
   height: 16px;
   background: url('../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
@@ -112,8 +104,6 @@ ion-modal#layerModalContainer::part(content) {
   mask-size: cover;
   background: var(--ion-color-dark);
   height: 24px;
-  margin-bottom: 2px;
-  top: 0px !important;
 }
 #layerModalContainer ion-item .speedlimit {
   border: 2px solid var(--ion-color-layer-speedlimit-border);
@@ -174,25 +164,22 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .depthcontour {
   border-top: 2px solid var(--ion-color-layer-depthcontour);
   height: 1px;
-  top: 9px !important;
+  vertical-align: middle;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line1 {
   border-top: 2px dotted var(--ion-color-layer-depthcontour);
   height: 1px;
-  top: 9px !important;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line2 {
   border-top: 2px dashed var(--ion-color-layer-depthcontour);
   height: 1px;
-  top: 9px !important;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line3 {
   border-top: 2px solid var(--ion-color-layer-depthcontour);
   height: 1px;
-  top: 9px !important;
 }
 
 #layerModalContainer ion-item .deptharea {
@@ -216,21 +203,18 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-item .specialarea2 {
-  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../theme/img/ankkurointialue.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .specialarea15 {
-  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../theme/img/kohtaamiskielto_ikoni.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .pilot {
-  top: 0px !important;
   width: 16px;
   height: 16px;
   background: url('../../theme/img/pilotPlace.svg') no-repeat center;
@@ -238,28 +222,24 @@ ion-modal#layerModalContainer::part(content) {
   margin-top: 2px;
 }
 #layerModalContainer ion-item .coastalwarning {
-  top: 0px !important;
   width: 17px;
   height: 20px;
   background: url('../../theme/img/coastal_warning_icon.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .localwarning {
-  top: 0px !important;
   width: 17px;
   height: 20px;
   background: url('../../theme/img/local_warning_icon.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .boaterwarning {
-  top: 0px !important;
   width: 17px;
   height: 20px;
   background: url('../../theme/img/warning_to_boaters_icon.svg') no-repeat center;
   background-size: cover;
 }
 #layerModalContainer ion-item .mareograph {
-  top: 0px !important;
   width: 21px;
   height: 24px;
   background: url('../../theme/img/vedenkorkeus_ikoni.svg') no-repeat left;
@@ -267,7 +247,6 @@ ion-modal#layerModalContainer::part(content) {
   margin-right: 0;
 }
 #layerModalContainer ion-item .observation {
-  top: 0px !important;
   width: 21px;
   height: 24px;
   background: url('../../theme/img/saahavaintoasema.svg') no-repeat left;
@@ -275,7 +254,6 @@ ion-modal#layerModalContainer::part(content) {
   margin-right: 0;
 }
 #layerModalContainer ion-item .buoy {
-  top: 0px !important;
   width: 21px;
   height: 24px;
   background: url('../../theme/img/buoy.svg') no-repeat left;
@@ -287,7 +265,6 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-item .circle {
-  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../theme/img/circle.svg') no-repeat center;
@@ -301,10 +278,8 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .aisvesseltugandspecialcraft,
 #layerModalContainer ion-item .aisvesselpleasurecraft,
 #layerModalContainer ion-item .aisunspecified {
-  top: 0px !important;
   width: 8px;
   height: 18px;
-  right: 3px !important;
   background-size: cover;
 }
 
@@ -336,7 +311,6 @@ ion-modal#layerModalContainer::part(content) {
   background: url('../../theme/img/ais/ais_unspecified.svg') no-repeat center;
 }
 #layerModalContainer ion-item .aisShowPredictor {
-  top: 0px !important;
   width: 18px;
   height: 18px;
   background: url('../../theme/img/speed_vector.svg') no-repeat center;
@@ -344,26 +318,17 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-checkbox {
-  display: block;
-  width: 100%;
   --size: 20px;
   --border-width: 1px;
   --checkmark-width: 3px;
-  margin: 5px 5px 5px 0;
 }
 
-#layerModalContainer ion-checkbox .labelText {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  padding-left: 25px;
-  padding-right: 50px;
+#layerModalContainer ion-checkbox::part(label) {
+  margin: 0 0 0 5px;
+  width: 100%;
 }
 
 #layerModalContainer ion-checkbox .layerLegend {
-  position: absolute;
-  top: 3px;
-  right: 0px;
   display: inline-block;
 }
 
@@ -380,14 +345,6 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-checkbox.checkbox-disabled::part(container) {
   opacity: 0.5;
   background: var(--ion-color-light);
-}
-
-#layerModalContainer ion-col {
-  padding: 0;
-}
-#layerModalContainer .section ion-col,
-#layerModalContainer .layerItem ion-col {
-  padding: 0;
 }
 
 #layerModalContainer h6 {
