@@ -11,13 +11,15 @@ interface SafetyEquipmentFaultAlertProps {
 }
 
 export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps> = ({ data, widePane }) => {
+  // count all unique equipmentIds
+  const faultCount = new Set(data.map((o) => o.equipmentId)).size;
   return (
     <IonAccordionGroup expand="compact">
       <IonGrid className="alert danger no-padding equipmentAlertGrid">
         <IonAccordion className="equipmentAlert" toggleIcon={arrow_down} value="third">
           <IonItem className={widePane ? 'equipmentAlertWide' : 'equipmentAlertNarrow'} lines="none" slot="header" color="lightest">
             <IonIcon className="equipmentAlertIcon" icon={alertIcon} color="danger" />
-            <IonLabel className="equipmentAlertLabel">Väylällä turvalaitevikoja ({data.length})</IonLabel>
+            <IonLabel className="equipmentAlertLabel">Väylällä turvalaitevikoja ({faultCount})</IonLabel>
           </IonItem>
           <div className="equipmentAlertContent" slot="content">
             <FaultGroup data={data} />
