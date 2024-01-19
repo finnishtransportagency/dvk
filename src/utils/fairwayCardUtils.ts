@@ -1,7 +1,8 @@
 import { TFunction } from 'i18next';
 import { FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
-import proj4 from 'proj4';
+import { MAP } from './constants';
+import { SimpleGeometry } from 'ol/geom';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -33,10 +34,6 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const equipmentFaults: SafetyEquipmentFault[] = [];
 
-  // coordinates are converted from ETRS-TM35FIN to WGS84
-  proj4.defs('ETRS-TM35FIN', '+proj=utm +zone=35 +ellps=GRS80 +no_defs');
-  proj4.defs('WGS84', '+proj=longlat +datum=WGS84 +no_defs');
-
   faultSource.getFeatures().forEach((f) => {
     const props = f.getProperties();
     const fairways = props.fairways;
@@ -49,9 +46,10 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
             const faults = props.faults;
             // create new safetyequipmentfault objects
             for (const fault of faults) {
+              const convertedGeometry = f.getGeometry()?.clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
               const faultObject: SafetyEquipmentFault = {
                 equipmentId: Number(f.getId()),
-                geometry: { type: 'Point', coordinates: proj4('ETRS-TM35FIN', 'WGS84', props.geometry.flatCoordinates) },
+                geometry: { type: 'Point', coordinates: convertedGeometry.getFlatCoordinates() },
                 id: fault.faultId,
                 name: props.name,
                 recordTime: fault.recordTime,

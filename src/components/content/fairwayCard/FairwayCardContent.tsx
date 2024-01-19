@@ -26,6 +26,7 @@ import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -55,10 +56,11 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     isPending: faultIsPending,
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+  const { ready } = useSafetyEquipmentAndFaultLayer();
 
   useEffect(() => {
     setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
-  }, [fairwayCardId]);
+  }, [fairwayCardId, ready]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
