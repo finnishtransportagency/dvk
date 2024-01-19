@@ -1,15 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="8px" height="18px" viewBox="0 0 8 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>C4D79E28-1E6B-4151-A0FC-E752C795D25C</title>
-    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="traffic_situation_layer_open_alt" transform="translate(-1359, -747)" fill="#D3D3D3" stroke="#6A6A6A">
-            <g id="pohja" transform="translate(1112, -46)">
-                <g id="aaltopoijut-copy-5" transform="translate(52, 783)">
-                    <g id="symbol_wrapper" transform="translate(190, 10)">
-                        <path d="M8.77232055,1.05849664 C9.15150643,0.99862519 9.55353251,1.08340827 9.88852196,1.32703697 L12.0925288,4.23347894 L12.0925288,16.4724454 L9.93969846,14.777 L8.07222971,14.777 L6.84366982,16.7379711 L5.92,4.23347894 L7.79316029,1.65788355 C8.03678898,1.32289409 8.39313467,1.1183681 8.77232055,1.05849664 Z" id="Combined-Shape-Copy"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="8" height="18" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M7.1,16.5V4.3L5.2,1.7C5,1.3,4.4,1.1,4,1.1S3,1.3,2.8,1.7L0.9,4.3v12.2l2.2-1.7h1.8L7.1,16.5z"
+    style="fill:#D3D3D3;stroke:#6A6A6A;"
+  />
 </svg>

@@ -303,6 +303,7 @@ export const MAP: MapType = {
     { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
+    { id: 'safetyequipmentfault', offlineSupport: true, localizedStyle: false },
     { id: 'depth12', offlineSupport: true, localizedStyle: true },
     { id: 'coastalwarning', offlineSupport: true, localizedStyle: false },
     { id: 'localwarning', offlineSupport: true, localizedStyle: false },

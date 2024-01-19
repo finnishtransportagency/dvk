@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>422726D0-013C-4A3D-A42D-31483015E587</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1150.000000, -1002.000000)">
-            <g id="turvalaite_ikonit" transform="translate(718.000000, 906.000000)">
-                <g id="Asset-36" transform="translate(432.000000, 96.000000)">
-                    <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
-                    <path d="M11.24,30.8533333 L20.76,30.8533333 L20.76,32 L11.24,32 L11.24,30.8533333 Z M20.4133333,13.5333333 L11.5733333,13.5333333 L15.9866667,5.92 L20.4,13.5333333 L20.4133333,13.5333333 Z M19.2266667,30.8533333 L12.7466667,30.8533333 L15.9866667,18.7866667 L19.2266667,30.8533333 Z M15.4133333,13.5333333 L15.4133333,18.7866667 L16.56,18.7866667 L16.56,13.5333333 L15.4133333,13.5333333 Z M15.4133333,20.92 L15.4133333,18.7866667 L15.9866667,18.7866667 L15.4133333,20.92 Z M16.56,20.88 L15.9866667,18.7866667 L16.56,18.7866667 L16.56,20.88 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="M0 0h32v32H0z"/>
+    <path d="M11.24 30.8533333h9.52V32h-9.52v-1.1466667Zm9.1733333-17.32h-8.84L15.9866667 5.92 20.4 13.5333333h.0133333Zm-1.1866666 17.32h-6.48l3.24-12.0666666 3.24 12.0666666Zm-3.8133334-17.32v5.2533334H16.56v-5.2533334h-1.1466667Zm0 7.3866667v-2.1333333h.5733334L15.4133333 20.92ZM16.56 20.88l-.5733333-2.0933333H16.56V20.88Z" fill="#EC0E0E" fill-rule="nonzero"/>
+  </g>
 </svg>

@@ -36,7 +36,9 @@
           "lines": "Navigointilinjat",
           "fairwayAreas": "Väyläalueet",
           "depths": "Haraussyvyydet",
+          "safetyEquipmentsTitle": "Turvalaitteet",
           "safetyEquipments": "Turvalaitteet",
+          "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
@@ -244,7 +246,8 @@
     },
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "alert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.<br/><br/>Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3>-listauksesta.",
-    "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
+    "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.",
+    "harborPreviewAlert": "Hakemaasi \"{{ harborId }}\" satamaa ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
   },
   "faults": {
     "title": "Turvalaiteviat",

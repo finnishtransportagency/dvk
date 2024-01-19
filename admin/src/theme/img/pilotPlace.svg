@@ -1,12 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="pilotPlaceIcon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1182.000000, -916.000000)">
-            <g id="luotsauspaikka_ikoni" transform="translate(1182.000000, 916.000000)">
-                <rect id="Rectangle" x="0" y="0" width="24" height="24"></rect>
-                <circle id="Oval" stroke="#FF00FF" stroke-width="2" cx="12" cy="12" r="9"></circle>
-                <path d="M12,7.01556444 L14.8482489,12 L12,16.9844356 L9.15175111,12 L12,7.01556444 Z" id="Polygon" stroke="#FF00FF" stroke-width="2"></path>
-            </g>
-        </g>
-    </g>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="M0 0h24v24H0z"/>
+    <circle stroke="#F0F" stroke-width="2" cx="12" cy="12" r="9"/>
+    <path d="M12 7.01556444 14.8482489 12 12 16.9844356 9.15175111 12 12 7.01556444Z" stroke="#F0F" stroke-width="2"/>
+  </g>
 </svg>

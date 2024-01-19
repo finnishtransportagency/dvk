@@ -68,6 +68,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         'aisvesseltugandspecialcraft',
         'aisvesselpleasurecraft',
         'aisunspecified',
+        'safetyequipmentfault',
       ].includes(id);
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };

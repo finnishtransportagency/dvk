@@ -1,16 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>5EB52B5E-8A93-4BC9-ACF8-F8CF613DB6EB</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-914.000000, -1154.000000)">
-            <g id="turvalaite_ikonit" transform="translate(722.000000, 914.000000)">
-                <g id="kohtaamiskielto_ikoni" transform="translate(192.000000, 240.000000)">
-                    <rect id="Rectangle" stroke="#D72416" stroke-width="2" fill="#FFFFFF" x="1" y="1" width="22" height="22"></rect>
-                    <line x1="1" y1="1" x2="22.9203102" y2="22.9203102" id="Path-3" stroke="#D72416" stroke-width="2"></line>
-                    <path d="M14,7.5 L16,4.5 L18,7.5 L17,7.5 L17,19.5 L15,19.5 L15,7.5 L14,7.5 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero"></path>
-                    <path d="M6,7.5 L8,4.5 L10,7.5 L9,7.5 L9,19.5 L7,19.5 L7,7.5 L6,7.5 Z" id="Combined-Shape" fill="#000000" fill-rule="nonzero" transform="translate(8.000000, 12.000000) scale(1, -1) translate(-8.000000, -12.000000) "></path>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path stroke="#D72416" stroke-width="2" fill="#FFF" d="M1 1h22v22H1z"/>
+    <path stroke="#D72416" stroke-width="2" d="m1 1 21.9203102 21.9203102"/>
+    <path d="m14 7.5 2-3 2 3h-1v12h-2v-12h-1ZM6 16.5l2 3 2-3H9v-12H7v12H6Z" fill="#000" fill-rule="nonzero"/>
+  </g>
 </svg>

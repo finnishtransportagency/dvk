@@ -1,26 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="35px" height="24px" viewBox="0 0 35 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <defs>
-        <text id="text-1" font-family="'Exo2', sans-serif" font-size="12" font-weight="bold" fill="#FF00FF">
-            <tspan x="0.407" y="17">10,2m</tspan>
+<svg width="35" height="24" viewBox="0 0 35 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <text id="a" font-family="'Exo2', sans-serif" font-size="12" font-weight="bold" fill="#F0F">
+            <tspan x=".407" y="17">10,2m</tspan>
         </text>
-        <filter x="-0.7%" y="-1.8%" width="102.9%" height="107.1%" filterUnits="objectBoundingBox" id="filter-2">
-            <feOffset dx="0.5" dy="0.5" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.75 0" type="matrix" in="shadowOffsetOuter1"></feColorMatrix>
-        </filter>
-    </defs>
-    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="dvk_land_layer_selection" transform="translate(-540.000000, -403.000000)">
-            <g id="layers_open-copy-8" transform="translate(512.000000, 61.000000)">
-                <g id="haraussyvyydet" transform="translate(28.000000, 308.000000)">
-                    <g id="syvyys_n2000" transform="translate(0.000000, 34.000000)">
-                        <rect id="Rectangle" x="5" y="0" width="24" height="24"></rect>
-                        <g id="10,2m" fill="#FF00FF" fill-opacity="1">
-                            <use xlink:href="#text-1"></use>
-                        </g>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <path d="M5 0h24v24H5z"/>
+    <use xlink:href="#a" fill="#F0F"/>
+  </g>
 </svg>

@@ -36,7 +36,9 @@
           "lines": "Navigationslinjer",
           "fairwayAreas": "Farledsområden",
           "depths": "Djupen",
+          "safetyEquipmentsTitle": "Säkerhetsanordningar",
           "safetyEquipments": "Säkerhetsanordningar",
+          "safetyEquipmentFaults": "Säkerhetsanordningsfelen",
           "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
@@ -244,7 +246,8 @@
     },
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>.",
-    "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel."
+    "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
+    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel."
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

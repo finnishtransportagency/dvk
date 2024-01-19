@@ -75,9 +75,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
                     {currentLayer.title}
                   </IonText>
                 </IonCol>
-                <IonCol size="auto">
-                  <IonText className={'layerLegend layer ' + currentLayer.id}></IonText>
-                </IonCol>
               </IonRow>
             </IonCheckbox>
           </IonItem>
