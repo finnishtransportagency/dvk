@@ -30,6 +30,7 @@ ion-modal#layerModalContainer::part(content) {
   bottom: 48px;
   position: absolute;
 }
+
 .mobile ion-modal#layerModalContainer::part(content) {
   position: static;
 }
@@ -38,10 +39,12 @@ ion-modal#layerModalContainer::part(content) {
   margin: 0 28px;
   padding: 12px 0;
 }
+
 .mobile #layerModalContainer ion-grid.mainGrid {
   margin: 0 16px;
   padding: 12px 0;
 }
+
 @media screen and (orientation: landscape) {
   .mobile #layerModalContainer ion-grid.mainGrid ion-grid ion-list {
     column-count: 3;
@@ -58,86 +61,50 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .layer {
   width: 14px;
   height: 14px;
-  margin: 0 5px 0 5px;
+  margin: 0 4px;
 }
+
 #layerModalContainer ion-item .area12 {
   border: 1px solid var(--ion-color-danger);
   background: rgba(var(--ion-color-danger-rgb), 0.1);
 }
+
 #layerModalContainer ion-item .area3456 {
   border: 1px solid var(--ion-color-success);
   background: rgba(var(--ion-color-success-rgb), 0.1);
 }
+
 #layerModalContainer ion-item .line12,
 #layerModalContainer ion-item .line3456 {
   border-top: 2px solid var(--ion-color-layer-line);
   height: 1px;
   vertical-align: middle;
+  margin-bottom: 4px;
 }
+
 #layerModalContainer ion-item .boardline12 {
   border-top: 2px dashed var(--ion-color-layer-boardline);
   height: 1px;
   vertical-align: middle;
+  margin-bottom: 4px;
 }
 
-#layerModalContainer ion-item .vtsline {
-  border-top: 2px dashed var(--ion-color-layer-vts);
-  height: 1px;
-  vertical-align: middle;
-}
-
-#layerModalContainer ion-item .vtspoint {
-  width: 16px;
-  height: 16px;
-  background: url('../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
-  background-size: cover;
-}
-
-#layerModalContainer ion-item .safetyequipment {
-  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: cover;
-  mask-image: url('../../theme/img/safetyequipment/a.svg');
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: cover;
-  background: var(--ion-color-dark);
-  height: 24px;
-}
-#layerModalContainer ion-item .safetyequipmentfault {
-  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-position: center;
-  -webkit-mask-size: cover;
-  mask-image: url('../../theme/img/safetyequipment/a.svg');
-  mask-repeat: no-repeat;
-  mask-position: center;
-  mask-size: cover;
-  background: red;
-  height: 24px;
-  margin-bottom: 2px;
-  top: 0px !important;
-}
-#layerModalContainer ion-item .speedlimit {
-  border: 2px solid var(--ion-color-layer-speedlimit-border);
+#layerModalContainer ion-item .circle {
   width: 18px;
   height: 18px;
-  text-align: center;
+  background: url('../../theme/img/circle.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
 }
-#layerModalContainer ion-item .speedlimit::before {
-  font-size: 9px;
-  font-weight: bold;
-  line-height: 14px;
-  content: '30';
-  color: var(--ion-color-layer-speedlimit-text);
-  vertical-align: text-top;
-}
+
 #layerModalContainer ion-item .depth12 {
   width: 30px;
   height: 12px;
   text-align: right;
+  margin-top: 3px;
 }
+
 #layerModalContainer ion-item .depth12::before {
   font-size: 12px;
   font-weight: bold;
@@ -151,6 +118,7 @@ ion-modal#layerModalContainer::part(content) {
     1px -1px 0 var(--ion-color-primary-contrast),
     1px 1px 0 var(--ion-color-primary-contrast);
 }
+
 .en #layerModalContainer ion-item .depth12::before {
   content: '10.2';
 }
@@ -179,6 +147,7 @@ ion-modal#layerModalContainer::part(content) {
   border-top: 2px solid var(--ion-color-layer-depthcontour);
   height: 1px;
   vertical-align: middle;
+  margin-bottom: 4px;
 }
 
 #layerModalContainer ion-grid.legend.depthcontour .def.line1 {
@@ -216,73 +185,148 @@ ion-modal#layerModalContainer::part(content) {
   border: 1px solid #757575;
 }
 
+#layerModalContainer ion-item .speedlimit {
+  border: 2px solid var(--ion-color-layer-speedlimit-border);
+  width: 18px;
+  height: 18px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+#layerModalContainer ion-item .speedlimit::before {
+  font-size: 9px;
+  font-weight: bold;
+  line-height: 14px;
+  content: '30';
+  color: var(--ion-color-layer-speedlimit-text);
+  vertical-align: text-top;
+}
+
 #layerModalContainer ion-item .specialarea2 {
   width: 18px;
   height: 18px;
   background: url('../../theme/img/ankkurointialue.svg') no-repeat center;
   background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
 }
+
 #layerModalContainer ion-item .specialarea15 {
   width: 18px;
   height: 18px;
   background: url('../../theme/img/kohtaamiskielto_ikoni.svg') no-repeat center;
   background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
 }
-#layerModalContainer ion-item .pilot {
-  width: 16px;
-  height: 16px;
-  background: url('../../theme/img/pilotPlace.svg') no-repeat center;
-  background-size: cover;
-  margin-top: 2px;
+
+#layerModalContainer ion-item .safetyequipment {
+  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  mask-image: url('../../theme/img/safetyequipment/a.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+  background: var(--ion-color-dark);
+  height: 24px;
 }
-#layerModalContainer ion-item .coastalwarning {
-  width: 17px;
-  height: 20px;
-  background: url('../../theme/img/coastal_warning_icon.svg') no-repeat center;
-  background-size: cover;
+
+#layerModalContainer ion-item .safetyequipmentfault {
+  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  mask-image: url('../../theme/img/safetyequipment/a.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+  background: red;
+  height: 24px;
 }
-#layerModalContainer ion-item .localwarning {
-  width: 17px;
-  height: 20px;
-  background: url('../../theme/img/local_warning_icon.svg') no-repeat center;
-  background-size: cover;
-}
-#layerModalContainer ion-item .boaterwarning {
-  width: 17px;
-  height: 20px;
-  background: url('../../theme/img/warning_to_boaters_icon.svg') no-repeat center;
-  background-size: cover;
-}
+
 #layerModalContainer ion-item .mareograph {
   width: 21px;
   height: 24px;
   background: url('../../theme/img/vedenkorkeus_ikoni.svg') no-repeat left;
   background-size: cover;
+  margin-top: 6px;
   margin-right: 0;
 }
+
 #layerModalContainer ion-item .observation {
   width: 21px;
   height: 24px;
   background: url('../../theme/img/saahavaintoasema.svg') no-repeat left;
   background-size: cover;
+  margin-top: 6px;
   margin-right: 0;
 }
+
 #layerModalContainer ion-item .buoy {
   width: 21px;
   height: 24px;
   background: url('../../theme/img/buoy.svg') no-repeat left;
   background-size: cover;
+  margin-top: 6px;
   margin-right: 0;
 }
+
 #layerModalContainer ion-item .ice {
   background: var(--ion-color-layer-ice);
 }
 
-#layerModalContainer ion-item .circle {
-  width: 18px;
-  height: 18px;
-  background: url('../../theme/img/circle.svg') no-repeat center;
+#layerModalContainer ion-item .coastalwarning {
+  width: 17px;
+  height: 20px;
+  background: url('../../theme/img/coastal_warning_icon.svg') no-repeat center;
   background-size: cover;
+  margin-top: 4px;
+  margin-right: 3px;
+}
+
+#layerModalContainer ion-item .localwarning {
+  width: 17px;
+  height: 20px;
+  background: url('../../theme/img/local_warning_icon.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 3px;
+}
+
+#layerModalContainer ion-item .boaterwarning {
+  width: 17px;
+  height: 20px;
+  background: url('../../theme/img/warning_to_boaters_icon.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 3px;
+}
+
+#layerModalContainer ion-item .vtsline {
+  border-top: 2px dashed var(--ion-color-layer-vts);
+  height: 1px;
+  vertical-align: middle;
+  margin-bottom: 4px;
+}
+
+#layerModalContainer ion-item .vtspoint {
+  width: 16px;
+  height: 16px;
+  background: url('../../theme/img/vts_ilmoituspiste_ikoni.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 3px;
+}
+
+#layerModalContainer ion-item .pilot {
+  width: 16px;
+  height: 16px;
+  background: url('../../theme/img/pilotPlace.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 3px;
 }
 
 #layerModalContainer ion-item .aisvesselcargo,
@@ -295,6 +339,8 @@ ion-modal#layerModalContainer::part(content) {
   width: 8px;
   height: 18px;
   background-size: cover;
+  margin-top: 4px;
+  margin-right: 7px;
 }
 
 #layerModalContainer ion-item .aisvesselcargo {
@@ -324,11 +370,13 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .aisunspecified {
   background: url('../../theme/img/ais/ais_unspecified.svg') no-repeat center;
 }
+
 #layerModalContainer ion-item .aisShowPredictor {
   width: 18px;
   height: 18px;
   background: url('../../theme/img/speed_vector.svg') no-repeat center;
   background-size: cover;
+  margin-right: 2px;
 }
 
 #layerModalContainer ion-checkbox {
@@ -350,12 +398,14 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-checkbox.checkbox-indeterminate {
   --border-width: 3px;
 }
+
 #layerModalContainer ion-checkbox.checkbox-disabled {
   opacity: 1;
   --border-width: 1px;
   --border-color: rgb(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
   --border-color-checked: rgb(var(--ion-text-color-rgb, 0, 0, 0), 0.6);
 }
+
 #layerModalContainer ion-checkbox.checkbox-disabled::part(container) {
   opacity: 0.5;
   background: var(--ion-color-light);
@@ -380,14 +430,17 @@ ion-modal#layerModalContainer::part(content) {
   min-height: 28px;
   margin: 1px;
 }
+
 #layerModalContainer .toggleButton.ion-focused {
   outline: 1px solid var(--ion-color-dark);
 }
+
 #layerModalContainer .toggleButton ion-icon {
   width: 14px;
   height: 14px;
   transition: all 250ms;
 }
+
 #layerModalContainer .toggleButton.close ion-icon {
   transform: rotate(180deg);
 }
@@ -396,15 +449,18 @@ ion-modal#layerModalContainer::part(content) {
   transition: all 250ms;
   border-top: 1px solid var(--ion-color-lighter);
 }
+
 #layerModalContainer ion-row.mainToggle {
   border-top: none;
   padding-left: 24px;
 }
+
 #layerModalContainer ion-row.hide {
   max-height: 0;
   overflow: hidden;
   visibility: hidden;
 }
+
 #layerModalContainer ion-row.show {
   max-height: 500px;
 }
@@ -412,67 +468,86 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-grid.legend {
   max-height: 500px;
 }
+
 #layerModalContainer ion-grid.legend ion-item {
   font-size: 12px;
   --min-height: 28px;
 }
+
 #layerModalContainer ion-grid.legend .def {
   width: 14px;
   height: 14px;
   margin-inline-end: 8px;
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit30 {
   background: var(--ion-color-speedlimit-30);
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit25 {
   background: var(--ion-color-speedlimit-25);
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit20 {
   background: var(--ion-color-speedlimit-20);
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit15 {
   background: var(--ion-color-speedlimit-15);
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit10 {
   background: var(--ion-color-speedlimit-10);
 }
+
 #layerModalContainer ion-grid.legend.speedlimit .def.limit5 {
   background: var(--ion-color-speedlimit-5);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.icefree {
   background: var(--ion-color-ice-free);
   border: 1px solid var(--ion-color-medium);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.newice {
   background: var(--ion-color-ice-new);
   border: 1px solid var(--ion-color-medium);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.thinice {
   background: var(--ion-color-ice-thin);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.fastice {
   background: var(--ion-color-ice-fast);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.rottenice {
   background: var(--ion-color-ice-rotten);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.openwater {
   background: var(--ion-color-ice-openwater);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.veryopenice {
   background: var(--ion-color-ice-veryopen);
   border: 1px solid var(--ion-color-medium);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.openice {
   background: var(--ion-color-ice-open);
   border: 1px solid var(--ion-color-medium);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.closeice {
   background: var(--ion-color-ice-close);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.verycloseice {
   background: var(--ion-color-ice-veryclose);
 }
+
 #layerModalContainer ion-grid.legend.ice .def.consolidatedice {
   background: var(--ion-color-ice-consolidated);
 }
@@ -509,6 +584,7 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer .bgMapButtonLand:focus-visible {
   outline: none;
 }
+
 #layerModalContainer .bgMapButtonSea:focus-visible .mapImage,
 #layerModalContainer .bgMapButtonLand:focus-visible .mapImage {
   border: 1px solid var(--ion-color-primary);
