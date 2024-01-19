@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonLabel, IonSegment, IonSegmentButton, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardPartsFragment, HarborPartsFragment } from '../../../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
 import { Lang } from '../../../utils/constants';
@@ -48,13 +48,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
+  const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
 
   const {
     dataUpdatedAt: faultDataUpdatedAt,
     isPending: faultIsPending,
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const safetyEquipmentFaults = getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId);
+
+  useEffect(() => {
+    setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
+  }, [fairwayCardId]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
