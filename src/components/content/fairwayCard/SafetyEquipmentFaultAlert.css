@@ -1,0 +1,34 @@
+.equipmentAlertGrid {
+  margin-top: 12px;
+}
+.equipmentAlertGrid.danger {
+  padding: 0px;
+}
+.equipmentAlert.accordion-collapsed,
+.equipmentAlert.accordion-collapsing,
+.equipmentAlert.accordion-expanding,
+.equipmentAlert.accordion-expanded {
+  margin-top: 0px;
+  border-bottom: 0px;
+  padding: 0px;
+}
+.equipmentAlertNarrow {
+  width: 405px;
+}
+.equipmentAlertWide {
+  width: 722px;
+}
+.equipmentAlertIcon {
+  position: relative;
+  left: 1px
+}
+.equipmentAlert ion-icon.ion-accordion-toggle-icon {
+  position: relative;
+  left: 10px;
+}
+.equipmentAlertContent {
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-bottom: 12px;
+  background-color: var(--ion-color-dangerbg);
+}

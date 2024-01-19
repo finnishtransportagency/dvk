@@ -7,6 +7,7 @@ import { FaultGroup } from '../SafetyEquipmentFaults';
 import { getAlertProperties } from '../../../utils/common';
 import { useTranslation } from 'react-i18next';
 import Alert from '../../Alert';
+import './SafetyEquipmentFaultAlert.css';
 
 interface SafetyEquipmentFaultAlertProps {
   data: SafetyEquipmentFault[];
@@ -30,9 +31,9 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
     <>
       {alertProps && <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />}
       <IonAccordionGroup expand="compact">
-        <IonGrid className="alert danger no-padding equipmentAlertGrid">
+        <IonGrid className="equipmentAlertGrid alert danger">
           <IonAccordion className="equipmentAlert" toggleIcon={arrow_down} value="third">
-            <IonItem className={widePane ? 'equipmentAlertWide' : 'equipmentAlertNarrow'} lines="none" slot="header" color="lightest">
+            <IonItem className={widePane ? 'equipmentAlertWide' : 'equipmentAlertNarrow'} lines="none" slot="header" color="dangerbg">
               <IonIcon className="equipmentAlertIcon" icon={alertIcon} color="danger" />
               <IonLabel className="equipmentAlertLabel">
                 {t('warnings.faultsOnFairway')} ({faultCount})
