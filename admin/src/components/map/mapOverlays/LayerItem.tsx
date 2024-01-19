@@ -1,126 +1,15 @@
 import React, { useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
 import arrowDownIcon from '../../../theme/img/arrow_down.svg';
-import DepthMW from '../../../theme/img/syvyys_mw.svg?react';
-import DepthN2000 from '../../../theme/img/syvyys_n2000.svg?react';
 import { FeatureDataLayerId } from '../../../utils/constants';
-
-const LegendDepth = () => {
-  return (
-    <IonGrid className="legend ion-no-padding">
-      <IonRow>
-        <IonCol size="2">
-          <IonItem>
-            <DepthN2000 />
-          </IonItem>
-        </IonCol>
-        <IonCol size="3">
-          <IonItem>
-            <IonText>N2000</IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol size="2">
-          <IonItem>
-            <DepthMW />
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>MW</IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendSpeedlimits = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend speedlimit ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              30-26{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit30"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              25-21{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit25"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              20-16{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit20"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              15-11{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit15"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              10-6{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit10"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              5-1{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 }) || ''} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit5"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
+import { LegendDepth, LegendSpeedlimits } from './LayerLegends';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
   title: string;
-  noOfflineSupport?: boolean;
   layers: string[];
   setLayers: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -147,7 +36,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
   const disabled = !initialized;
 
   return (
-    <IonGrid className="ion-no-padding layerItem">
+    <>
       <IonRow>
         <IonCol>
           <IonItem>
@@ -155,7 +44,6 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               aria-labelledby={`${title}-label`}
               value={id}
               checked={layers.includes(id)}
-              slot="start"
               onIonChange={() =>
                 setLayers((prev) => {
                   if (prev.includes(id)) {
@@ -166,11 +54,18 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
               }
               disabled={disabled}
               labelPlacement="end"
+              justify="start"
             >
-              <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
-                {title}
-              </IonText>
-              <IonText className={'layerLegend layer ' + id}></IonText>
+              <IonRow className="ion-align-items-center ion-justify-content-between">
+                <IonCol>
+                  <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                    {title}
+                  </IonText>
+                </IonCol>
+                <IonCol size="auto">
+                  <IonText className={'layerLegend layer ' + id}></IonText>
+                </IonCol>
+              </IonRow>
             </IonCheckbox>
           </IonItem>
         </IonCol>
@@ -195,7 +90,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, layers, setLayers }) =
           </IonCol>
         </IonRow>
       )}
-    </IonGrid>
+    </>
   );
 };
 

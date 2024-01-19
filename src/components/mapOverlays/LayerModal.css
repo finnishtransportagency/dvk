@@ -98,31 +98,6 @@ ion-modal#layerModalContainer::part(content) {
   margin-right: 2px;
 }
 
-#layerModalContainer ion-item .depth12 {
-  width: 30px;
-  height: 12px;
-  text-align: right;
-  margin-top: 3px;
-}
-
-#layerModalContainer ion-item .depth12::before {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 16px;
-  content: '10,2';
-  color: var(--ion-color-layer-depth);
-  vertical-align: text-top;
-  text-shadow:
-    -1px -1px 0 var(--ion-color-primary-contrast),
-    -1px 1px 0 var(--ion-color-primary-contrast),
-    1px -1px 0 var(--ion-color-primary-contrast),
-    1px 1px 0 var(--ion-color-primary-contrast);
-}
-
-.en #layerModalContainer ion-item .depth12::before {
-  content: '10.2';
-}
-
 #layerModalContainer ion-item .soundingpoint {
   width: 30px;
   height: 12px;
@@ -218,6 +193,31 @@ ion-modal#layerModalContainer::part(content) {
   background-size: cover;
   margin-top: 4px;
   margin-right: 2px;
+}
+
+#layerModalContainer ion-item .depth12 {
+  width: 30px;
+  height: 12px;
+  text-align: right;
+  margin-top: 3px;
+}
+
+#layerModalContainer ion-item .depth12::before {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 16px;
+  content: '10,2';
+  color: var(--ion-color-layer-depth);
+  vertical-align: text-top;
+  text-shadow:
+    -1px -1px 0 var(--ion-color-primary-contrast),
+    -1px 1px 0 var(--ion-color-primary-contrast),
+    1px -1px 0 var(--ion-color-primary-contrast),
+    1px 1px 0 var(--ion-color-primary-contrast);
+}
+
+.en #layerModalContainer ion-item .depth12::before {
+  content: '10.2';
 }
 
 #layerModalContainer ion-item .safetyequipment {

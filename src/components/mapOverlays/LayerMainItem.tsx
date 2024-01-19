@@ -69,13 +69,9 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
               labelPlacement="end"
               justify="start"
             >
-              <IonRow className="ion-align-items-center ion-justify-content-between">
-                <IonCol>
-                  <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'labelText disabled' : 'labelText'}>
-                    {currentLayer.title}
-                  </IonText>
-                </IonCol>
-              </IonRow>
+              <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'labelText disabled' : 'labelText'}>
+                {currentLayer.title}
+              </IonText>
             </IonCheckbox>
           </IonItem>
         </IonCol>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
@@ -83,9 +83,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
         setIsOpen(false);
       }}
     >
-      <IonList id="layerModalContent" lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
-        <IonGrid className="mainGrid">
-          <IonRow className="section ion-align-items-center">
+      <div id="layerModalContent">
+        <IonGrid className="mainGrid ion-no-padding">
+          <IonRow className="ion-align-items-center">
             <IonCol>
               <IonText id="layerlist-label">
                 <h6>{t('homePage.map.controls.layer.header')}</h6>
@@ -104,24 +104,16 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
               </IonButton>
             </IonCol>
           </IonRow>
-          {layerStructure.map((layer) => (
-            <IonRow key={layer.id}>
-              <IonCol>
+          <IonList lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">
+            {layerStructure.map((layer) => (
+              <Fragment key={layer.id}>
                 {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} layers={layers} setLayers={setLayers} />}
-                {!layer.childLayers && (
-                  <LayerItem
-                    id={layer.id as FeatureDataLayerId}
-                    title={layer.title}
-                    noOfflineSupport={layer.noOfflineSupport || false}
-                    layers={layers}
-                    setLayers={setLayers}
-                  />
-                )}
-              </IonCol>
-            </IonRow>
-          ))}
+                {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} layers={layers} setLayers={setLayers} />}
+              </Fragment>
+            ))}
+          </IonList>
         </IonGrid>
-      </IonList>
+      </div>
     </IonModal>
   );
 };

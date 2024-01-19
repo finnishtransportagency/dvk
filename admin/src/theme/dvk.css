@@ -1214,3 +1214,8 @@ span.screen-reader-only {
   overflow: hidden;
   white-space: nowrap;
 }
+
+dd {
+  display: inline;
+  margin: 0;
+}
