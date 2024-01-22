@@ -46,9 +46,6 @@ ion-row.input-row > ion-col {
 .align-right {
   text-align: right;
 }
-.left-padding {
-  padding-left: 5px;
-}
 .top-padding {
   padding-top: 10px;
 }
