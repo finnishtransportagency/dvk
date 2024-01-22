@@ -1,12 +1,13 @@
 import React, { useRef, useState } from 'react';
-import { IonInput } from '@ionic/react';
+import { IonButton, IonIcon, IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { filterItemList } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
-import ClearButton from './ClearButton';
+import searchIcon from '../theme/img/search.svg';
+import closeIcon from '../theme/img/close_primary.svg';
 
 interface SearchProps {
   itemList: FairwayCardOrHarbor[];
@@ -43,6 +44,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   };
   const selectAction = (item: FairwayCardOrHarbor | undefined) => {
     setSelectedItem(item);
+    setSearchQuery('');
     closeDropdown();
   };
   const blurAction = () => {
@@ -72,23 +74,38 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
 
   const clearInput = () => {
     selectAction(undefined);
+    setSearchQuery('');
   };
+
+  const searchHasInput = searchQuery.length > 0 || !!selectedItem;
 
   return (
     <div className="dropdownWrapper">
-      <IonInput
-        className="searchBar"
-        placeholder={t('search-placeholder') ?? ''}
-        title={t('search-title') ?? ''}
-        value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
-        onIonFocus={openDropdown}
-        onIonInput={(e) => changeAction(e.detail.value)}
-        onIonBlur={blurAction}
-        onKeyDown={(e) => keyDownAction(e)}
-        readonly={!isDropdownOpen}
-        ref={inputRef}
-      />
-      <ClearButton clearInput={clearInput} />
+      <IonItem lines="none" className={'searchBar ' + (isDropdownOpen ? 'expanded' : '')}>
+        <IonInput
+          className="searchBar"
+          placeholder={t('search-placeholder') ?? ''}
+          title={t('search-title') ?? ''}
+          value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
+          onIonFocus={openDropdown}
+          onIonInput={(e) => changeAction(e.detail.value)}
+          onIonBlur={blurAction}
+          onKeyDown={(e) => keyDownAction(e)}
+          readonly={!isDropdownOpen}
+          ref={inputRef}
+        />
+        <IonButton
+          aria-label={t('search-clear-title') ?? ''}
+          className="custom-select-search"
+          disabled={!searchHasInput}
+          fill="clear"
+          onClick={clearInput}
+          size="small"
+          slot="end"
+        >
+          <IonIcon icon={searchHasInput ? closeIcon : searchIcon} slot="icon-only" className={searchHasInput ? 'closeIcon' : ''} />
+        </IonButton>
+      </IonItem>
       <SearchDropdown
         isOpen={isDropdownOpen}
         searchQuery={searchQuery.trim()}
