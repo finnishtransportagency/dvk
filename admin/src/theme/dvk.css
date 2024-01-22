@@ -220,61 +220,44 @@ ion-button.plainButton.button-disabled {
 .searchWrapper {
   width: 320px;
   max-width: 100%;
+}
+
+.searchWrapper,
+.dropdownWrapper {
   position: relative;
 }
-.searchWrapper ion-input.searchBar {
-  box-sizing: border-box;
-  height: 43px;
-  min-height: 0;
-  max-width: 100%;
-  background-color: var(--ion-color-dark);
-  padding: 1px !important;
-  font-size: 14px;
+
+.searchWrapper ion-item.searchBar {
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
+  --min-height: 40px;
+  font-size: 14px;
 }
-.searchWrapper ion-input.searchBar > label {
-  height: 100%;
-}
-.searchWrapper ion-input.searchBar input {
-  height: 100%;
-  padding: 0 40px 0 12px;
-  background: var(--ion-color-primary-contrast) url('./img/search.svg') no-repeat right 12px center;
-  background-size: 24px 24px;
+
+.searchWrapper ion-item.searchBar,
+.dropdownWrapper ion-item.searchBar {
+  border-style: solid;
+  border-color: var(--ion-color-dark);
+  border-width: 1px;
   border-radius: 0;
+  --inner-padding-end: 8px;
 }
-.searchWrapper ion-input.searchBar.has-focus {
-  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  padding: 2px !important;
+
+.searchWrapper ion-input {
+  min-height: 40px;
 }
-.searchWrapper ion-input.searchBar.has-focus input {
-  padding: 0 39px 0 11px;
-  background-position: right 11px center;
+
+.searchWrapper ion-item.searchBar:focus-within,
+.dropdownWrapper ion-item.searchBar.expanded {
+  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
+  border-image-width: 25px;
+  border-width: 2px;
 }
-.searchWrapper ion-input.searchBar.has-value input {
-  padding-right: 12px;
-  background: var(--ion-color-primary-contrast);
-}
-.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon {
-  background: var(--ion-color-primary-contrast) url('./img/close_primary.svg') no-repeat center;
-  background-size: 18px;
-  width: 24px;
-  height: 24px;
-  position: absolute;
-  top: 11px;
-  right: 12px;
-  z-index: 2;
-}
-.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
-  background-color: var(--ion-color-light);
-}
-.searchWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
-  background-color: var(--ion-color-primary-contrast);
-  opacity: 1;
-  outline: 1px solid var(--ion-color-dark);
-}
-.searchWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
-  display: none;
+
+.searchWrapper ion-icon.closeIcon,
+.dropdownWrapper ion-icon.closeIcon {
+  width: 18px;
+  height: 18px;
 }
 
 /* Form inputs */
@@ -325,14 +308,14 @@ ion-item.custom-select-option {
   --ripple-color: var(--ion-color-primary);
 }
 
-ion-button.custom-select-search {
+ion-button.clearSearch {
   --padding-start: 3px;
   --padding-end: 3px;
   --padding-top: 0;
   --padding-bottom: 0;
 }
 
-ion-button.custom-select-search.button-disabled {
+ion-button.clearSearch.button-disabled {
   opacity: 1;
 }
 

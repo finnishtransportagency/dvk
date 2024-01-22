@@ -96,7 +96,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
         />
         <IonButton
           aria-label={t('search-clear-title') ?? ''}
-          className="custom-select-search"
+          className="clearSearch"
           disabled={!searchHasInput}
           fill="clear"
           onClick={clearInput}

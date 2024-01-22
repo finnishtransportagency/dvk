@@ -1,26 +1,10 @@
-.dropdownWrapper {
-  position: relative;
-}
 .dropdownWrapper ion-item.searchBar {
   --min-height: 42px;
-  --inner-padding-end: 8px;
-  border-style: solid;
-  border-color: var(--ion-color-dark);
-  border-width: 1px;
-  border-radius: 0;
   margin-bottom: 2px;
 }
 
 .dropdownWrapper ion-item.searchBar.expanded {
-  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
-  border-image-width: 25px;
-  border-width: 2px;
   margin-bottom: 0;
-}
-
-.dropdownWrapper ion-icon.closeIcon {
-  width: 18px;
-  height: 18px;
 }
 
 ion-list.searchInputDropdownContainer {
@@ -34,6 +18,7 @@ ion-list.searchInputDropdownContainer {
   overflow-y: auto;
   z-index: 99;
 }
+
 ion-list.searchInputDropdownContainer ion-item {
   --min-height: 40px;
 }
