@@ -38,7 +38,7 @@ function goto(id: number) {
   }
 }
 
-const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
   const lang = i18n.resolvedLanguage as Lang;
 

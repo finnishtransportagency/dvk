@@ -117,6 +117,7 @@
     "title_one": "Fairway card",
     "title_other": "Fairway cards",
     "dataUpdated": "Data updated to device",
+    "faultsDataUpdated": "[en] Vikatiedot ladattu laitteelle",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
@@ -276,7 +277,10 @@
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
     "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
     "type": "Type",
-    "layerLoadError": "[en] Tason tietojen lataus epäonnistui"
+    "layerLoadError": "[en] Tason tietojen lataus epäonnistui",
+    "faultsOnFairway": "[en] Väylällä turvalaitevikoja",
+    "faultsLastUpdated": "[en] Turvalaitevikojen tiedot ladattu yli {{ val, number}} h sitten.",
+    "faultsLastUpdatedUnknown": "[en] Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
   "appUpdateAlert": {
     "title": "Update available",
