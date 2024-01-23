@@ -217,50 +217,91 @@ ion-button.plainButton.button-disabled {
 }
 
 /* Search input */
-.searchWrapper {
+.optionBar .searchWrapper {
   width: 320px;
   max-width: 100%;
 }
 
-.searchWrapper,
-.dropdownWrapper {
+.searchWrapper {
   position: relative;
 }
 
-.searchWrapper ion-item.searchBar {
+.optionBar .searchWrapper ion-item.searchBar {
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
-  --min-height: 40px;
   font-size: 14px;
 }
 
-.searchWrapper ion-item.searchBar,
-.dropdownWrapper ion-item.searchBar {
+.searchWrapper ion-item.searchBar {
   border-style: solid;
   border-color: var(--ion-color-dark);
   border-width: 1px;
   border-radius: 0;
+  --min-height: 42px;
   --inner-padding-end: 8px;
 }
 
-.searchWrapper ion-input {
+.searchWrapper ion-item.searchBar::part(native) {
+  min-height: 40px;
+  margin: 1px;
+}
+
+.searchWrapper ion-input,
+.searchWrapper .sc-ion-input-md-h:not(.legacy-input) {
   min-height: 40px;
 }
 
-.searchWrapper ion-item.searchBar:focus-within,
-.dropdownWrapper ion-item.searchBar.expanded {
-  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
-  border-image-width: 25px;
+.searchWrapper ion-item.searchBar:focus-within {
+  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  border-image-slice: 30%;
+  border-image-width: 2px;
   border-width: 2px;
+  --inner-padding-end: 6px;
 }
 
-.searchWrapper ion-icon.closeIcon,
-.dropdownWrapper ion-icon.closeIcon {
+.searchWrapper ion-item.searchBar:focus-within::part(native) {
+  margin: 0;
+}
+
+.searchWrapper ion-icon.closeIcon {
   width: 18px;
   height: 18px;
 }
 
+ion-button.clearSearch {
+  --padding-start: 3px;
+  --padding-end: 3px;
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+ion-button.clearSearch.button-disabled {
+  opacity: 1;
+}
+
 /* Form inputs */
+ion-select.selectInput {
+  font-size: 14px;
+  max-width: 100%;
+  min-height: 42px;
+  border-style: solid;
+  border-color: var(--ion-color-dark);
+  border-width: 1px;
+  border-radius: 0;
+  /* Fill: outline used to remove div "select-highlight", hide outline here */
+  --border-style: hidden;
+  --padding-start: 13px;
+  --padding-end: 13px;
+  --placeholder-color: var(--ion-color-medium);
+  --placeholder-opacity: 1;
+}
+
+ion-select.selectInput.select-expanded {
+  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  border-image-slice: 30%;
+  border-image-width: 2px;
+}
+
 ion-item.selectInput,
 ion-item.custom-select-container {
   font-size: 14px;
@@ -306,17 +347,6 @@ ion-item.custom-select-item ion-label ul {
 
 ion-item.custom-select-option {
   --ripple-color: var(--ion-color-primary);
-}
-
-ion-button.clearSearch {
-  --padding-start: 3px;
-  --padding-end: 3px;
-  --padding-top: 0;
-  --padding-bottom: 0;
-}
-
-ion-button.clearSearch.button-disabled {
-  opacity: 1;
 }
 
 ion-item.selectInput.item-has-focus,

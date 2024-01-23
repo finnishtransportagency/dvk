@@ -1,17 +1,8 @@
-.dropdownWrapper ion-item.searchBar {
-  --min-height: 42px;
-  margin-bottom: 2px;
-}
-
-.dropdownWrapper ion-item.searchBar.expanded {
-  margin-bottom: 0;
-}
-
 ion-list.searchInputDropdownContainer {
   box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
   position: absolute;
   left: 0;
-  top: 48px;
+  top: 44px;
   width: 100%;
   transition: all 150ms;
   max-height: min(calc(50vh - 250px), calc(5 * 40px + 2 * 8px));

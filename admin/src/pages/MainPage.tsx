@@ -113,7 +113,7 @@ const MainPage: React.FC = () => {
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">
               <div className="searchWrapper">
-                <IonItem lines="none" className={'searchBar'}>
+                <IonItem lines="none" className="searchBar">
                   <IonInput
                     className="searchBar"
                     placeholder={translatedTextOrEmpty('search-placeholder')}
@@ -130,23 +130,23 @@ const MainPage: React.FC = () => {
               <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
                 {translatedTextOrEmpty('label-type')}
               </IonLabel>
-              <IonItem className="selectInput">
-                <IonSelect
-                  ref={selectTypeRef}
-                  placeholder={translatedTextOrEmpty('choose')}
-                  interface="popover"
-                  multiple={true}
-                  onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
-                  interfaceOptions={{
-                    size: 'cover',
-                    className: 'multiSelect',
-                  }}
-                  labelPlacement="stacked"
-                >
-                  <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
-                  <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
-                </IonSelect>
-              </IonItem>
+              <IonSelect
+                ref={selectTypeRef}
+                className="selectInput"
+                placeholder={translatedTextOrEmpty('choose')}
+                interface="popover"
+                multiple={true}
+                onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
+                interfaceOptions={{
+                  size: 'cover',
+                  className: 'multiSelect',
+                }}
+                labelPlacement="stacked"
+                fill="outline"
+              >
+                <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
+                <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
+              </IonSelect>
             </IonCol>
             <IonCol></IonCol>
             <IonCol size="auto">
