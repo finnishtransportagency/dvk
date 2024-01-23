@@ -253,7 +253,7 @@ ion-button.plainButton.button-disabled {
 
 .searchWrapper ion-item.searchBar:focus-within {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  border-image-slice: 30%;
+  border-image-slice: 20%;
   border-image-width: 2px;
   border-width: 2px;
   --inner-padding-end: 6px;
@@ -298,11 +298,14 @@ ion-select.selectInput {
 
 ion-select.selectInput.select-expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  border-image-slice: 30%;
+  border-image-slice: 20%;
   border-image-width: 2px;
 }
 
-ion-item.selectInput,
+.selectWrapper.invalid ion-select.selectInput {
+  border-color: var(--ion-color-danger);
+}
+
 ion-item.custom-select-container {
   font-size: 14px;
   width: auto;
@@ -313,12 +316,10 @@ ion-item.custom-select-container {
   --inner-padding-end: 0;
   --border-width: 0;
   --background: var(--ion-color-dark);
-}
-
-ion-item.custom-select-container {
   --background-hover-opacity: 0;
   --ripple-color: transparent;
 }
+
 ion-item.custom-select-item {
   font-size: 14px;
   margin: 1px;
@@ -349,72 +350,36 @@ ion-item.custom-select-option {
   --ripple-color: var(--ion-color-primary);
 }
 
-ion-item.selectInput.item-has-focus,
-ion-item.selectInput.ion-focused,
-ion-item.selectInput:has(.select-expanded),
 ion-item.custom-select-container.expanded,
 ion-item.custom-select-container.ion-focused {
   --highlight-background: transparent;
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
-.selectWrapper.invalid ion-item.selectInput,
+
 .selectWrapper.invalid ion-item.custom-select-container {
   --background: var(--ion-color-danger);
 }
-.selectWrapper.invalid ion-item.selectInput:has(.select-expanded),
+
 .selectWrapper.invalid ion-item.custom-select-container.expanded {
   --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
 }
-ion-item.selectInput.item-select-disabled,
+ion-select.selectInput.select-disabled,
 ion-item.custom-select-container.item-disabled {
   opacity: 0.5;
 }
-ion-item.selectInput::part(native),
+
+ion-select.selectInput::part(native),
 ion-item.custom-select-container::part(native) {
-  border-radius: 0;
   overflow: hidden;
 }
-ion-item.selectInput ion-select {
-  min-height: 0;
-  height: calc(100% - 1px);
-  margin: 0 auto;
-  background-color: var(--ion-color-primary-contrast);
-  width: calc(100% - 2px);
-  --padding-start: 13px;
-  --padding-end: 13px;
-  --placeholder-color: var(--ion-color-medium);
-  --placeholder-opacity: 1;
-  --border-radius: 0;
-  --border-width: 0;
-}
-ion-item.selectInput.ion-focused ion-select,
-ion-item.selectInput ion-select.select-expanded {
-  height: calc(100% - 3px);
-  width: calc(100% - 4px);
-  --padding-start: 12px;
-  --padding-end: 12px;
-}
-.selectWrapper.disabled ion-item.selectInput {
-  opacity: 0.5;
-}
-.selectWrapper.disabled ion-item.selectInput ion-select.select-disabled {
-  opacity: 1;
-}
-ion-item.selectInput ion-select::part(placeholder),
-ion-item.selectInput ion-select.has-value::part(text) {
+
+ion-select.selectInput::part(placeholder),
+ion-select.selectInput.has-value::part(text) {
   overflow: auto;
   white-space: normal;
   padding: 12px 0;
 }
-ion-item.selectInput.ion-focused ion-select::part(placeholder),
-ion-item.selectInput ion-select.select-expanded::part(placeholder),
-ion-item.selectInput.ion-focused ion-select.has-value::part(text),
-ion-item.selectInput ion-select.select-expanded.has-value::part(text) {
-  padding: 13px 0 11px;
-}
-ion-item.selectInput.ion-focused ion-select::part(icon) {
-  margin-top: 1px;
-}
+
 .selectWrapper ion-note.helper {
   display: block;
   color: var(--ion-color-medium);
@@ -441,16 +406,11 @@ ion-item.selectInput.ion-focused ion-select::part(icon) {
   opacity: 0.5;
 }
 .selectWrapper .select-skeleton {
-  height: 43px;
+  height: 42px;
   margin: 0;
   border: 1px solid var(--ion-color-light);
 }
-ion-popover.multiSelect {
-  --offset-y: 2px;
-}
-ion-popover.multiSelect.custom-select-popover {
-  --offset-y: 0px;
-}
+
 ion-popover.multiSelect::part(content) {
   border-radius: 0;
 }
