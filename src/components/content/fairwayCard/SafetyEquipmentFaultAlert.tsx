@@ -12,10 +12,11 @@ import './SafetyEquipmentFaultAlert.css';
 interface SafetyEquipmentFaultAlertProps {
   data: SafetyEquipmentFault[];
   dataUpdatedAt: number;
+  isPending: boolean;
   widePane?: boolean;
 }
 
-export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps> = ({ data, dataUpdatedAt, widePane }) => {
+export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps> = ({ data, dataUpdatedAt, isPending, widePane }) => {
   // count all unique equipmentIds
   const faultCount = new Set(data.map((o) => o.equipmentId)).size;
   const { t } = useTranslation();
@@ -44,7 +45,9 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
               </IonLabel>
             </IonItem>
             <div className="equipmentAlertContent" slot="content">
-              <FaultGroup data={data} />
+              <div id="equipmentFaultList" className={'equipmentTabContent active show-print' + (widePane ? ' wide' : '')}>
+                <FaultGroup data={data} loading={isPending} />
+              </div>
             </div>
           </IonAccordion>
         </IonGrid>
