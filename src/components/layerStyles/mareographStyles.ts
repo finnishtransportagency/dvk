@@ -57,9 +57,9 @@ function getCalculatedStyle(selected: boolean) {
   let s = selected ? calculatedSelectedStyle : calculatedStyle;
   if (!s) {
     if (selected) {
-      s = calculatedSelectedStyle = getSelectedStyle(mareographIcon2, 42, -23);
+      s = calculatedSelectedStyle = getSelectedStyle(mareographIcon2, 44, -20);
     } else {
-      s = calculatedStyle = getStyle(mareographIcon2, 40, -19);
+      s = calculatedStyle = getStyle(mareographIcon2, 42, -16);
     }
   }
   return s;
