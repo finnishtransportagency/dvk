@@ -59,7 +59,9 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { ready } = useSafetyEquipmentAndFaultLayer();
 
   useEffect(() => {
-    setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
+    if (ready) {
+      setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
+    }
   }, [fairwayCardId, ready]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
