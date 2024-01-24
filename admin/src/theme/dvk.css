@@ -216,7 +216,7 @@ ion-button.plainButton.button-disabled {
   text-decoration: none;
 }
 
-/* Search input */
+/* Search and custom select input */
 .optionBar .searchWrapper {
   width: 320px;
   max-width: 100%;
@@ -226,24 +226,40 @@ ion-button.plainButton.button-disabled {
   position: relative;
 }
 
-.optionBar .searchWrapper ion-item.searchBar {
-  --placeholder-color: var(--ion-color-medium);
-  --placeholder-opacity: 1;
+.optionBar .searchWrapper ion-item.searchBar,
+.selectWrapper ion-item.selectInput {
   font-size: 14px;
 }
 
-.searchWrapper ion-item.searchBar {
+.searchWrapper ion-item.searchBar,
+.selectWrapper ion-item.selectInput {
   border-style: solid;
   border-color: var(--ion-color-dark);
   border-width: 1px;
   border-radius: 0;
   --min-height: 42px;
+}
+
+.searchWrapper ion-item.searchBar {
   --inner-padding-end: 8px;
 }
 
-.searchWrapper ion-item.searchBar::part(native) {
+.selectWrapper ion-item.selectInput {
+  min-width: 150px;
+  --background-hover-opacity: 0;
+  --ripple-color: transparent;
+  --padding-start: 13px;
+  --inner-padding-end: 13px;
+}
+
+.searchWrapper ion-item.searchBar::part(native),
+.selectWrapper ion-item.selectInput::part(native) {
   min-height: 40px;
   margin: 1px;
+}
+
+.selectWrapper ion-label.ion-text-wrap {
+  margin: 9px 0;
 }
 
 .searchWrapper ion-input,
@@ -251,15 +267,27 @@ ion-button.plainButton.button-disabled {
   min-height: 40px;
 }
 
-.searchWrapper ion-item.searchBar:focus-within {
+.searchWrapper ion-item.searchBar:focus-within,
+.selectWrapper ion-item.selectInput.select-expanded,
+.selectWrapper.invalid ion-item.selectInput.select-expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   border-image-slice: 20%;
   border-image-width: 2px;
   border-width: 2px;
+}
+
+.searchWrapper ion-item.searchBar:focus-within {
   --inner-padding-end: 6px;
 }
 
-.searchWrapper ion-item.searchBar:focus-within::part(native) {
+.selectWrapper ion-item.selectInput.select-expanded,
+.selectWrapper.invalid ion-item.selectInput.select-expanded {
+  --inner-padding-end: 11px;
+}
+
+.searchWrapper ion-item.searchBar:focus-within::part(native),
+.selectWrapper ion-item.selectInput.select-expanded::part(native),
+.selectWrapper.invalid ion-item.selectInput.select-expanded::part(native) {
   margin: 0;
 }
 
@@ -280,7 +308,7 @@ ion-button.clearSearch.button-disabled {
 }
 
 /* Form inputs */
-ion-select.selectInput {
+.selectWrapper ion-select.selectInput {
   font-size: 14px;
   max-width: 100%;
   min-height: 42px;
@@ -288,96 +316,49 @@ ion-select.selectInput {
   border-color: var(--ion-color-dark);
   border-width: 1px;
   border-radius: 0;
-  /* Fill: outline used to remove div "select-highlight", hide outline here */
-  --border-style: hidden;
   --padding-start: 13px;
   --padding-end: 13px;
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
+  /* Fill: outline used to remove div "select-highlight", hide outline here */
+  --border-style: hidden;
 }
 
-ion-select.selectInput.select-expanded {
+.selectWrapper.invalid ion-select.selectInput,
+.selectWrapper.invalid ion-item.selectInput {
+  border-color: var(--ion-color-danger);
+}
+
+.selectWrapper ion-select.selectInput.select-expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   border-image-slice: 20%;
   border-image-width: 2px;
 }
 
-.selectWrapper.invalid ion-select.selectInput {
-  border-color: var(--ion-color-danger);
-}
-
-ion-item.custom-select-container {
-  font-size: 14px;
-  width: auto;
-  min-width: 150px;
-  max-width: 100%;
-  --min-height: 43px;
-  --padding-start: 0;
-  --inner-padding-end: 0;
-  --border-width: 0;
-  --background: var(--ion-color-dark);
-  --background-hover-opacity: 0;
-  --ripple-color: transparent;
-}
-
-ion-item.custom-select-item {
-  font-size: 14px;
-  margin: 1px;
-  width: 100%;
-  opacity: 1;
-  --min-height: 41px;
-  --padding-start: 13px;
-  --inner-padding-end: 13px;
-}
-ion-item.custom-select-item.expanded,
-ion-item.custom-select-container.ion-focused ion-item.custom-select-item {
-  margin: 2px;
-  --padding-start: 12px;
-  --inner-padding-end: 12px;
-}
-
-.custom-select-icon {
-  width: 13px;
-}
-
-ion-item.custom-select-item ion-label ul {
+.selectWrapper ion-item.selectInput ion-label ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-ion-item.custom-select-option {
-  --ripple-color: var(--ion-color-primary);
-}
-
-ion-item.custom-select-container.expanded,
-ion-item.custom-select-container.ion-focused {
-  --highlight-background: transparent;
-  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-}
-
-.selectWrapper.invalid ion-item.custom-select-container {
-  --background: var(--ion-color-danger);
-}
-
-.selectWrapper.invalid ion-item.custom-select-container.expanded {
-  --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-}
-ion-select.selectInput.select-disabled,
-ion-item.custom-select-container.item-disabled {
+.selectWrapper ion-select.selectInput.select-disabled,
+.selectWrapper ion-item.selectInput.item-disabled {
   opacity: 0.5;
 }
 
-ion-select.selectInput::part(native),
-ion-item.custom-select-container::part(native) {
+.selectWrapper ion-select.selectInput::part(native) {
   overflow: hidden;
 }
 
-ion-select.selectInput::part(placeholder),
-ion-select.selectInput.has-value::part(text) {
+.selectWrapper ion-select.selectInput::part(placeholder),
+.selectWrapper ion-select.selectInput.has-value::part(text) {
   overflow: auto;
   white-space: normal;
   padding: 12px 0;
+}
+
+.selectWrapper .select-icon {
+  width: 13px;
 }
 
 .selectWrapper ion-note.helper {
