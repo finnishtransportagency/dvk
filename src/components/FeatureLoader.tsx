@@ -478,6 +478,7 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
           if (feature) {
             faults.sort((a, b) => b.recordTime - a.recordTime);
             feature.set('faults', faults, true);
+            feature.set('faultListStyle', !!feature.get('faults'), true);
             // add to safetyequipmentfault layer and remove from safetyequipment layer
             faultSource.addFeature(feature);
             source.removeFeature(feature);
