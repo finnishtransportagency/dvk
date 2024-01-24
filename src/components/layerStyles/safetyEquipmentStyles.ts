@@ -133,6 +133,7 @@ function getImage(center: boolean, icon: string, anchorY: number, color: string,
       src: icon,
       color: color,
       scale: selected ? 1.2 : 1,
+      declutterMode: 'obstacle',
     });
   } else {
     return new Icon({
@@ -142,6 +143,7 @@ function getImage(center: boolean, icon: string, anchorY: number, color: string,
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       scale: selected ? 1.2 : 1,
+      declutterMode: 'obstacle',
     });
   }
 }
@@ -155,6 +157,7 @@ function getFaultStyles(anchorY: number, selected: boolean) {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         scale: selected ? 1.2 : 1,
+        declutterMode: 'obstacle',
       }),
     }),
     new Style({
@@ -164,6 +167,7 @@ function getFaultStyles(anchorY: number, selected: boolean) {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         scale: selected ? 1.2 : 1,
+        declutterMode: 'obstacle',
       }),
     }),
   ];
