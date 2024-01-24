@@ -13,10 +13,7 @@
   padding: 0px;
 }
 .equipmentAlertNarrow {
-  width: 406px;
-}
-.equipmentAlertWide {
-  width: 723px;
+  width: 100%;
 }
 .equipmentAlertIcon {
   position: relative;
