@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { Lang, SelectOption } from '../../utils/constants';
 import { nameIncludesQuery, sortTypeSafeSelectOptions } from '../../utils/common';
 import type { InputCustomEvent } from '@ionic/react';
-import { close, search } from 'ionicons/icons';
+import searchIcon from '../../theme/img/search.svg';
+import closeIcon from '../../theme/img/close_primary.svg';
 
 interface SelectDropdownFilterProps {
   options: SelectOption[] | null;
@@ -57,6 +58,8 @@ const SelectDropdownFilter = forwardRef(function SelectDropdownSearchInput(
     }
   };
 
+  const searchHasInput = searchQuery.length > 0;
+
   return (
     <IonItem lines="full">
       <IonInput
@@ -67,8 +70,8 @@ const SelectDropdownFilter = forwardRef(function SelectDropdownSearchInput(
         title={t('search-title') ?? ''}
         value={searchQuery}
       />
-      <IonButton className="clearSearch" disabled={searchQuery.length === 0} fill="clear" onClick={clearInput} size="small" slot="end">
-        <IonIcon icon={searchQuery.length > 0 ? close : search} slot="icon-only" />
+      <IonButton className="clearSearch" disabled={!searchHasInput} fill="clear" onClick={clearInput} size="small" slot="end">
+        <IonIcon icon={searchHasInput ? closeIcon : searchIcon} slot="icon-only" className={searchHasInput ? 'closeIcon' : 'searchIcon'} />
       </IonButton>
     </IonItem>
   );

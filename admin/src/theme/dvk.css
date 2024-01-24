@@ -307,8 +307,7 @@ ion-button.clearSearch.button-disabled {
   opacity: 1;
 }
 
-/* Form inputs */
-.selectWrapper ion-select.selectInput {
+ion-select.selectInput {
   font-size: 14px;
   max-width: 100%;
   min-height: 42px;
@@ -324,15 +323,15 @@ ion-button.clearSearch.button-disabled {
   --border-style: hidden;
 }
 
-.selectWrapper.invalid ion-select.selectInput,
-.selectWrapper.invalid ion-item.selectInput {
-  border-color: var(--ion-color-danger);
-}
-
-.selectWrapper ion-select.selectInput.select-expanded {
+ion-select.selectInput.select-expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   border-image-slice: 20%;
   border-image-width: 2px;
+}
+
+.selectWrapper.invalid ion-select.selectInput,
+.selectWrapper.invalid ion-item.selectInput {
+  border-color: var(--ion-color-danger);
 }
 
 .selectWrapper ion-item.selectInput ion-label ul {
@@ -395,19 +394,39 @@ ion-button.clearSearch.button-disabled {
 ion-popover.multiSelect::part(content) {
   border-radius: 0;
 }
+
 ion-popover.multiSelect.fairwayIds::part(content) {
   bottom: 0;
 }
+
 ion-popover.multiSelect ion-item {
   font-size: 14px;
 }
-ion-popover.multiSelect ion-item ion-checkbox {
-  margin: 10px 20px 10px 4px;
+
+ion-popover.multiSelect ion-item.option-selected {
+  font-size: 14px;
+  --ripple-color: var(--ion-color-primary);
 }
+
 ion-popover.multiSelect ion-item ion-label {
   white-space: normal !important;
 }
 
+ion-popover.multiSelect ion-list {
+  padding: 0;
+}
+
+ion-popover.multiSelect ion-icon.searchIcon {
+  width: 24px;
+  height: 24px;
+}
+
+ion-popover.multiSelect ion-icon.closeIcon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Form inputs */
 ion-label.formLabel {
   font-size: 14px;
   line-height: 1.25rem;

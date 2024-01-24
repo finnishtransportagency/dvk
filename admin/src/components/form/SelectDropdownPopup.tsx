@@ -107,7 +107,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
           const optionLabel = constructSelectOptionLabel(item, lang, showId);
           const optionSelected = isOptionSelected(item);
           return (
-            <IonItem key={item.id.toString()} className="custom-select-option" lines="none">
+            <IonItem key={item.id.toString()} className={optionSelected ? 'option-selected' : ''} lines="none">
               <IonCheckbox
                 aria-label={optionLabel}
                 checked={optionSelected}
