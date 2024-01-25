@@ -42,6 +42,7 @@ import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
+import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -819,6 +820,7 @@ export function unsetSelectedFairwayCard() {
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const harborSource = dvkMap.getVectorSource('harbor');
   const circleSource = dvkMap.getVectorSource('circle');
+  const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
@@ -853,6 +855,9 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'circle':
         circleSource.addFeature(feature);
+        break;
+      case 'safetyequipment':
+        safetyEquipmentFaultSource.addFeature(feature);
         break;
     }
   }
@@ -951,6 +956,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
     const harborSource = dvkMap.getVectorSource('harbor');
     const circleSource = dvkMap.getVectorSource('circle');
+    const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -1034,6 +1040,15 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       f.set('dataSource', 'area12Borderline', true);
       fairwayFeatures.push(f);
     });
+
+    const safetyEquipmentFaults = getSafetyEquipmentFaultsByFairwayCardId(fairwayCard.id);
+    for (const fault of safetyEquipmentFaults) {
+      const feature = safetyEquipmentFaultSource.getFeatureById(fault.equipmentId) as Feature<Geometry>;
+      if (feature) {
+        safetyEquipmentFaultSource.removeFeature(feature);
+        fairwayFeatures.push(feature);
+      }
+    }
 
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);

@@ -38,7 +38,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
       setTimeout(() => {
         const gridWidth = grid.offsetWidth;
         header.style.width = String(gridWidth) + 'px';
-      }, 150);
+      }, 300);
     }
   }, [widePane]);
 
@@ -60,7 +60,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
             </IonItem>
             <div className="equipmentAlertContent" slot="content">
               <div id="equipmentFaultList" className={'equipmentTabContent active show-print' + (widePane ? ' wide' : '')}>
-                <FaultGroup data={data} loading={isPending} />
+                <FaultGroup data={data} loading={isPending} selectedFairwayCard={true} />
               </div>
             </div>
           </IonAccordion>

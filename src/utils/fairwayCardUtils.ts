@@ -2,7 +2,8 @@ import { TFunction } from 'i18next';
 import { FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { MAP } from './constants';
-import { SimpleGeometry } from 'ol/geom';
+import { Geometry, SimpleGeometry } from 'ol/geom';
+import { Feature } from 'ol';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -65,3 +66,15 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
   });
   return equipmentFaults;
 }
+
+export const handleSafetyEquipmentLayerChange = () => {
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  for (const f of selectedFairwayCardSource.getFeatures()) {
+    if (f.getProperties().featureType == 'safetyequipment') {
+      const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
+      safetyEquipmentFaultSource.removeFeature(feature);
+      safetyEquipmentFaultSource.dispatchEvent('change');
+    }
+  }
+};
