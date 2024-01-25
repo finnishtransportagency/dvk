@@ -61,7 +61,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
             </IonItem>
             <div className="equipmentAlertContent" slot="content">
               <div id="equipmentFaultList" className={'equipmentTabContent active show-print' + (widePane ? ' wide' : '')}>
-                <FaultGroup data={data} loading={isPending} selectedFairwayCard={true}/>
+                <FaultGroup data={data} loading={isPending} selectedFairwayCard={true} />
               </div>
             </div>
           </IonAccordion>
