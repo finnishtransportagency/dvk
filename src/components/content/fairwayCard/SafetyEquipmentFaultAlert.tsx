@@ -44,7 +44,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
               </IonLabel>
             </IonItem>
             <div className="equipmentAlertContent" slot="content">
-              <FaultGroup data={data} />
+              <FaultGroup data={data} selectedFairwayCard={true} />
             </div>
           </IonAccordion>
         </IonGrid>

@@ -22,11 +22,14 @@ import { Geometry } from 'ol/geom';
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
+  selectedFairwayCard: boolean;
 };
 
-function goto(id: number) {
+function goto(id: number, selectedFairwayCard: boolean) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(id) as Feature<Geometry>;
+  const feature = dvkMap
+    .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
+    .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
@@ -38,7 +41,7 @@ function goto(id: number) {
   }
 }
 
-export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -86,7 +89,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
                       to="/turvalaiteviat/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(faultArray[0].equipmentId);
+                        goto(faultArray[0].equipmentId, selectedFairwayCard);
                       }}
                     >
                       {faultArray[0].geometry?.coordinates[0] &&
@@ -186,7 +189,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} />
+        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} selectedFairwayCard={false} />
       </div>
     </>
   );
