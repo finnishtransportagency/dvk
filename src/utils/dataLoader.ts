@@ -68,11 +68,19 @@ export function useFairwayCardListData() {
 }
 
 export function useFairwayCardPreviewData(id: string, isPreview: boolean) {
-  return useFairwayCardPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: isPreview });
+  return useFairwayCardPreviewQuery(
+    previewDataSourceClient,
+    { id: id },
+    { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: isPreview, meta: { persist: false } }
+  );
 }
 
 export function useHarborPreviewData(id: string) {
-  return useHarborPreviewQuery(previewDataSourceClient, { id: id }, { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: id.length > 0 });
+  return useHarborPreviewQuery(
+    previewDataSourceClient,
+    { id: id },
+    { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: id.length > 0, meta: { persist: false } }
+  );
 }
 
 export function useSafetyEquipmentFaultData() {

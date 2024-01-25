@@ -112,7 +112,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             printDisabled={printDisabled}
           />
           {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
-            <SafetyEquipmentFaultAlert data={safetyEquipmentFaults} dataUpdatedAt={faultDataUpdatedAt} widePane={widePane} />
+            <SafetyEquipmentFaultAlert
+              data={safetyEquipmentFaults}
+              dataUpdatedAt={faultDataUpdatedAt}
+              isPending={faultIsPending}
+              widePane={widePane}
+            />
           )}
           <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
             {[1, 2, 3].map((tabId) => (
