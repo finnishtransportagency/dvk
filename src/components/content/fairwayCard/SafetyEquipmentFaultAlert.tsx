@@ -27,8 +27,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
   const headerRef = useRef<HTMLIonItemElement>(null);
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.faultsLastUpdatedUnknown');
-    return t('warnings.faultsLastUpdated', { val: alertProps.duration });
+    return alertProps?.duration ? t('warnings.faultsLastUpdated', { val: alertProps.duration }) : t('warnings.faultsLastUpdatedUnknown');
   }, [alertProps, t]);
 
   useEffect(() => {
