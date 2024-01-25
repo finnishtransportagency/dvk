@@ -38,7 +38,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
       setTimeout(() => {
         const gridWidth = grid.offsetWidth;
         header.style.width = String(gridWidth) + 'px';
-      }, 150);
+      }, 300);
     }
   }, [widePane]);
 
