@@ -1,8 +1,8 @@
-import { IonButton, IonIcon } from '@ionic/react';
+import { IonButton } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import searchIcon from '../theme/img/search.svg';
-import closeIcon from '../theme/img/close_primary.svg';
+import CloseIcon from '../theme/img/close_primary.svg?react';
+import SearchIcon from '../theme/img/search.svg?react';
 
 interface ClearSearchButtonProps {
   clearInput: () => void;
@@ -22,7 +22,7 @@ const ClearSearchButton: React.FC<ClearSearchButtonProps> = ({ clearInput, disab
       size="small"
       slot="end"
     >
-      <IonIcon icon={disabled ? searchIcon : closeIcon} slot="icon-only" className={disabled ? '' : 'closeIcon'} />
+      {disabled ? <SearchIcon /> : <CloseIcon width="18px" height="18px" />}
     </IonButton>
   );
 };

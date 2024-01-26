@@ -1,13 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { IonButton, IonIcon, IonInput, IonItem } from '@ionic/react';
+import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { filterItemList } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
-import searchIcon from '../theme/img/search.svg';
-import closeIcon from '../theme/img/close_primary.svg';
+import ClearSearchButton from './ClearSearchButton';
 
 interface SearchProps {
   itemList: FairwayCardOrHarbor[];
@@ -94,17 +93,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
           readonly={!isDropdownOpen}
           ref={inputRef}
         />
-        <IonButton
-          aria-label={t('search-clear-title') ?? ''}
-          className="clearSearch"
-          disabled={!searchHasInput}
-          fill="clear"
-          onClick={clearInput}
-          size="small"
-          slot="end"
-        >
-          <IonIcon icon={searchHasInput ? closeIcon : searchIcon} slot="icon-only" className={searchHasInput ? 'closeIcon' : ''} />
-        </IonButton>
+        <ClearSearchButton clearInput={clearInput} disabled={!searchHasInput} />
       </IonItem>
       <SearchDropdown
         isOpen={isDropdownOpen}
