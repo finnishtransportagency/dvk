@@ -42,7 +42,7 @@ const AdminIonApp: React.FC = () => {
       <IonReactRouter basename="/yllapito">
         <PageHeader />
         <IonContent>
-          <IonRouterOutlet placeholder="">
+          <IonRouterOutlet>
             <Switch>
               <Route path="/vaylakortti/:fairwayCardId">
                 <FairwayCardEditPage />
