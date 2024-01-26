@@ -18,17 +18,22 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
+  selectedFairwayCard: boolean;
 };
 
-function goto(id: number) {
+function goto(id: number, selectedFairwayCard: boolean) {
   const dvkMap = getMap();
-  const feature = dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(id) as Feature<Geometry>;
+  const feature = dvkMap
+    .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
+    .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
+    handleSafetyEquipmentLayerChange();
     const geometry = feature.getGeometry();
     if (geometry) {
       const extent = olExtent.createEmpty();
@@ -38,7 +43,7 @@ function goto(id: number) {
   }
 }
 
-const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -53,7 +58,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipmentSource = getMap().getVectorSource('safetyequipmentfault');
+  const equipmentSource = getMap().getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -86,7 +91,7 @@ const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading }) => {
                       to="/turvalaiteviat/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(faultArray[0].equipmentId);
+                        goto(faultArray[0].equipmentId, selectedFairwayCard);
                       }}
                     >
                       {faultArray[0].geometry?.coordinates[0] &&
@@ -186,7 +191,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} />
+        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} selectedFairwayCard={false} />
       </div>
     </>
   );

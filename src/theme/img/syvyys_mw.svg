@@ -1,6 +1,6 @@
-<svg width="29" height="24" viewBox="0 0 29 24" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="29" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <defs>
-    <filter x="-.2%" y="-13.6%" width="102.1%" height="127.3%" filterUnits="objectBoundingBox" id="b">
+    <filter x="-.2%" y="-13.6%" width="102.1%" height="127.3%" filterUnits="objectBoundingBox" id="b_mw">
       <feMorphology radius=".5" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"/>
       <feOffset dx=".5" dy=".5" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
       <feMorphology radius="1" in="SourceAlpha" result="shadowInner"/>
@@ -8,17 +8,14 @@
       <feComposite in="shadowOffsetOuter1" in2="shadowInner" operator="out" result="shadowOffsetOuter1"/>
       <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.75 0" in="shadowOffsetOuter1"/>
     </filter>
-    <text id="a" font-family="'Exo2', sans-serif" font-size="12" font-weight="bold" fill="#F0F">
-            <tspan x="2.69" y="16">10,2</tspan>
-        </text>
-    <path d="M.7 14.5v5m26.6-5v5m-26.6 0h26.6" id="c"/>
+    <path d="M.7 14.5v5m26.6-5v5m-26.6 0h26.6" id="c_mw"/>
   </defs>
-  <g fill="none" fill-rule="evenodd">
-    <path d="M2 0h24v24H2z"/>
-    <use xlink:href="#a" fill="#F0F"/>
-    <g stroke-linecap="square">
-      <use fill="#000" filter="url(#b)" xlink:href="#c"/>
-      <use stroke="#F0F" xlink:href="#c"/>
-    </g>
+  <path d="M2 0h24v24H2z"/>
+  <text font-family="'Exo2', sans-serif" font-size="12" font-weight="bold" fill="#F0F">
+     <tspan x="2.69" y="16">10,2</tspan>
+  </text>
+  <g stroke-linecap="square">
+    <use fill="#000" filter="url(#b_mw)" xlink:href="#c_mw"/>
+    <use stroke="#F0F" xlink:href="#c_mw"/>
   </g>
 </svg>

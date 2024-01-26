@@ -117,6 +117,7 @@
     "title_one": "Farledskort",
     "title_other": "Farledskort",
     "dataUpdated": "Data laddat till enheten",
+    "faultsDataUpdated": "[sv] Vikatiedot ladattu laitteelle",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
     "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
@@ -276,7 +277,10 @@
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "type": "Typ",
-    "layerLoadError": "[sv] Tason tietojen lataus epäonnistui"
+    "layerLoadError": "[sv] Tason tietojen lataus epäonnistui",
+    "faultsOnFairway": "[sv] Väylällä turvalaitevikoja",
+    "faultsLastUpdated": "[sv] Turvalaitevikojen tiedot ladattu yli {{ val, number}} h sitten.",
+    "faultsLastUpdatedUnknown": "[sv] Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",

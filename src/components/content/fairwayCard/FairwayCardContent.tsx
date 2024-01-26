@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonLabel, IonSegment, IonSegmentButton, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardPartsFragment, HarborPartsFragment } from '../../../graphql/generated';
+import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
 import { Lang } from '../../../utils/constants';
@@ -21,9 +21,12 @@ import { PilotInfo } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
-import { getTabLabel } from '../../../utils/fairwayCardUtils';
+import { getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
+import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -46,6 +49,20 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
+  const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
+
+  const {
+    dataUpdatedAt: faultDataUpdatedAt,
+    isPending: faultIsPending,
+    isFetching: faultIsFetching,
+  } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+  const { ready } = useSafetyEquipmentAndFaultLayer();
+
+  useEffect(() => {
+    if (ready) {
+      setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
+    }
+  }, [fairwayCardId, ready]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -94,7 +111,16 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
-
+          {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
+            <div className="no-print">
+              <SafetyEquipmentFaultAlert
+                data={safetyEquipmentFaults}
+                dataUpdatedAt={faultDataUpdatedAt}
+                isPending={faultIsPending}
+                widePane={widePane}
+              />
+            </div>
+          )}
           <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
             {[1, 2, 3].map((tabId) => (
               <IonSegmentButton key={tabId} value={tabId}>
