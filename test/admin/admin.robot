@@ -18,7 +18,7 @@ ${REMOVE_BUTTON}    //ion-button[text() = "Poista"]
 ${CANCEL_BUTTON}    //ion-button[text() = "Peruuta"]
 ${CREATE_HARBOR_BUTTON}    //ion-button[text() = "Luo satama"]
 ${CREATE_CARD_BUTTON}    //ion-button[text() = "Luo väyläkortti"]
-${SEARCH_INPUT}    //div[@class = "searchWrapper"]
+${SEARCH_INPUT}    //div[@id = "fairwayCardOrHarborSearch"]
 *** Test Cases ***
 
 Open Existing Public Harbor And Save It

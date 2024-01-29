@@ -79,7 +79,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   const searchHasInput = searchQuery.length > 0 || !!selectedItem;
 
   return (
-    <div className="searchWrapper">
+    <div id="fairwayCardOrHarborSearch" className="searchWrapper">
       <IonItem lines="none" className={'searchBar ' + (isDropdownOpen ? 'expanded' : '')}>
         <IonInput
           className="searchBar"
