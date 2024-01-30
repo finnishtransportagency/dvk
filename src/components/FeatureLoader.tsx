@@ -447,7 +447,7 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
     if (eData && fData) {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
       const faultLayer = dvkMap.getFeatureLayer('safetyequipmentfault');
-      if (layer.get('dataUpdatedAt') !== eDataUpdatedAt) {
+      if (layer.get('dataUpdatedAt') !== eDataUpdatedAt || faultLayer.get('dataUpdatedAt') !== fDataUpdatedAt) {
         const format = new GeoJSON();
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
