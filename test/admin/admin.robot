@@ -161,6 +161,7 @@ Select Row From List
 
 Save Public Harbor
     [Documentation]    Save harbour which state is public and verify resulting popup titles.
+    Wait Until Element Is Enabled    ${SAVE_BUTTON}
     Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "Sataman muutosten tallentaminen"]
     Click Element    //ion-button[@slot = "end" and text() = "Tallenna"]
@@ -178,6 +179,7 @@ Return Back To List View
 
 Save Public Fairway Card
     [Documentation]    Save fairway card which state is public and verify resulting popup titles.
+    Wait Until Element Is Enabled    ${SAVE_BUTTON}
     Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "Väyläkortin muutosten tallentaminen"]
     Click Element    //ion-button[@slot = "end" and text() = "Tallenna"]
