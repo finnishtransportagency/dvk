@@ -435,8 +435,10 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
   const eQuery = useFeatureData('safetyequipment');
   const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const dataUpdatedAt = Math.max(eQuery.dataUpdatedAt, fQuery.dataUpdatedAt);
-  const errorUpdatedAt = Math.max(eQuery.errorUpdatedAt, fQuery.errorUpdatedAt);
+  const eDataUpdatedAt = eQuery.dataUpdatedAt;
+  const fDataUpdatedAt = fQuery.dataUpdatedAt;
+  const eErrorUpdatedAt = eQuery.errorUpdatedAt;
+  const fErrorUpdatedAt = fQuery.errorUpdatedAt;
   const isPaused = eQuery.isPaused || fQuery.isPaused;
   const isError = eQuery.isError || fQuery.isError;
   useEffect(() => {
@@ -444,7 +446,8 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
     const fData = fQuery.data;
     if (eData && fData) {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      const faultLayer = dvkMap.getFeatureLayer('safetyequipmentfault');
+      if (layer.get('dataUpdatedAt') !== eDataUpdatedAt || faultLayer.get('dataUpdatedAt') !== fDataUpdatedAt) {
         const format = new GeoJSON();
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
@@ -484,10 +487,15 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
             source.removeFeature(feature);
           }
         });
-        layer.set('dataUpdatedAt', dataUpdatedAt);
+        layer.set('dataUpdatedAt', eDataUpdatedAt);
+        layer.set('errorUpdatedAt', eErrorUpdatedAt);
+        faultLayer.set('dataUpdatedAt', fDataUpdatedAt);
+        faultLayer.set('errorUpdatedAt', fErrorUpdatedAt);
       }
       setReady(true);
     }
-  }, [eQuery.data, fQuery.data, dataUpdatedAt]);
+  }, [eQuery.data, fQuery.data, eDataUpdatedAt, fDataUpdatedAt, eErrorUpdatedAt, fErrorUpdatedAt]);
+  const dataUpdatedAt = Math.max(eDataUpdatedAt, fDataUpdatedAt);
+  const errorUpdatedAt = Math.max(eErrorUpdatedAt, fErrorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

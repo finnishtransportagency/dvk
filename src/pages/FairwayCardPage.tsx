@@ -14,6 +14,7 @@ import {
   useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
+  useSafetyEquipmentAndFaultLayer,
   useSpecialArea15Layer,
   useSpecialArea2Layer,
 } from '../components/FeatureLoader';
@@ -51,6 +52,7 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const circleLayer = useCircleLayer();
+  const safetyEquipmentFaultLayer = useSafetyEquipmentAndFaultLayer();
 
   const [initDone, setInitDone] = useState(false);
   const [, setDocumentTitle] = useDocumentTitle(t('documentTitle'));
@@ -67,7 +69,8 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
       specialArea15Layer.ready &&
       harborLayer.ready &&
       boardLine12Layer.ready &&
-      circleLayer.ready
+      circleLayer.ready &&
+      safetyEquipmentFaultLayer.ready
     ) {
       setInitDone(true);
     }
@@ -82,6 +85,7 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
     circleLayer.ready,
     specialArea2Layer.ready,
     specialArea15Layer.ready,
+    safetyEquipmentFaultLayer.ready,
   ]);
 
   useEffect(() => {
