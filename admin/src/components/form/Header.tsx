@@ -100,7 +100,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+            <IonButton className="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
               {operation === Operation.Update ? t('general.save') : t('general.create-new')}
             </IonButton>
           </IonCol>
