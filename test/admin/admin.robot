@@ -12,10 +12,9 @@ ${HOST}           localhost
 ${PORT}           3000
 ${URL}            ${PROTOCOL}://${HOST}:${PORT}
 ${BROWSER}        headlesschrome
-${SAVE_BUTTON}    //ion-button[contains(@class, "saveButton")]
-${CREATE_BUTTON}    //ion-button[text() = "Luo uusi"]
-${REMOVE_BUTTON}    //ion-button[text() = "Poista"]
-${CANCEL_BUTTON}    //ion-button[text() = "Peruuta"]
+${SAVE_BUTTON}    //ion-button[@id = "saveButton"]
+${REMOVE_BUTTON}    //ion-button[@id = "deleteButton"]
+${CANCEL_BUTTON}    //ion-button[@id = "cancelButton"]
 ${CREATE_HARBOR_BUTTON}    //ion-button[text() = "Luo satama"]
 ${CREATE_CARD_BUTTON}    //ion-button[text() = "Luo väyläkortti"]
 ${SEARCH_INPUT}    //div[@class = "dropdownWrapper"]
@@ -140,7 +139,7 @@ Create And Select Harbour
 Save New Harbour
     [Documentation]    Press "Create new" button and verify resulting popup title.
     [Arguments]    ${Text}=Tallennus onnistui
-    Click Element    ${CREATE_BUTTON}
+    Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "${Text}"]
     Click Element    //ion-button[@slot = "end" and text() = "Ok"]
 
@@ -201,7 +200,7 @@ Create And Select Fairway Card
 
 Save New Fairway Card
     [Documentation]    Press "Create new" button and verify resulting popup title.
-    Click Element    ${CREATE_BUTTON}
+    Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "Tallennus onnistui"]
     Click Element    //ion-button[@slot = "end" and text() = "Ok"]
 
