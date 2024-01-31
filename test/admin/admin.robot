@@ -13,6 +13,7 @@ ${PORT}           3000
 ${URL}            ${PROTOCOL}://${HOST}:${PORT}
 ${BROWSER}        headlesschrome
 ${SAVE_BUTTON}    //ion-button[@id = "saveButton"]
+${SAVE_BUTTON_DISABLED}    //ion-button[contains(@class, "button-disabled") and @id = "saveButton"]
 ${REMOVE_BUTTON}    //ion-button[@id = "deleteButton"]
 ${CANCEL_BUTTON}    //ion-button[@id = "cancelButton"]
 ${CREATE_HARBOR_BUTTON}    //ion-button[text() = "Luo satama"]
@@ -160,7 +161,8 @@ Select Row From List
 
 Save Public Harbor
     [Documentation]    Save harbour which state is public and verify resulting popup titles.
-    Wait Until Element Is Enabled    ${SAVE_BUTTON}
+    Wait Until Element Is Visible    ${SAVE_BUTTON}
+    Wait Until Element Is Not Visible    ${SAVE_BUTTON_DISABLED}
     Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "Sataman muutosten tallentaminen"]
     Click Element    //ion-button[@slot = "end" and text() = "Tallenna"]
@@ -179,7 +181,7 @@ Return Back To List View
 Save Public Fairway Card
     [Documentation]    Save fairway card which state is public and verify resulting popup titles.
     Wait Until Element Is Visible    ${SAVE_BUTTON}
-    Wait Until Element Is Enabled    ${SAVE_BUTTON}
+    Wait Until Element Is Not Visible    ${SAVE_BUTTON_DISABLED}
     Click Element    ${SAVE_BUTTON}
     Wait Until Element Is Visible    //div[@class = "wrappable-title" and text() = "Väyläkortin muutosten tallentaminen"]
     Click Element    //ion-button[@slot = "end" and text() = "Tallenna"]
