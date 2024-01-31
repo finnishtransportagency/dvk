@@ -431,6 +431,7 @@ ion-popover.multiSelect ion-icon.closeIcon {
 }
 
 .dropdownSearchWrapper {
+  width: 100%;
   display: flex;
   align-items: center;
 }
