@@ -18,7 +18,6 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
 import { useSafetyEquipmentAndFaultLayer } from '../FeatureLoader';
 
 type FaultGroupProps = {
@@ -34,7 +33,6 @@ function goto(id: number, selectedFairwayCard: boolean) {
     .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
     setSelectedSafetyEquipment(id);
-    handleSafetyEquipmentLayerChange();
     const geometry = feature.getGeometry();
     if (geometry) {
       const extent = olExtent.createEmpty();

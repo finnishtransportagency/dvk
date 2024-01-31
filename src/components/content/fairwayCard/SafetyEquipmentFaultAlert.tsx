@@ -8,6 +8,7 @@ import { getAlertProperties } from '../../../utils/common';
 import { useTranslation } from 'react-i18next';
 import Alert from '../../Alert';
 import './SafetyEquipmentFaultAlert.css';
+import { handleSafetyEquipmentLayerChange } from '../../../utils/fairwayCardUtils';
 
 interface SafetyEquipmentFaultAlertProps {
   data: SafetyEquipmentFault[];
@@ -29,6 +30,8 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
   const getLayerItemAlertText = useCallback(() => {
     return alertProps?.duration ? t('warnings.faultsLastUpdated', { val: alertProps.duration }) : t('warnings.faultsLastUpdatedUnknown');
   }, [alertProps, t]);
+
+  handleSafetyEquipmentLayerChange();
 
   useEffect(() => {
     const grid = gridRef.current as HTMLElement;
