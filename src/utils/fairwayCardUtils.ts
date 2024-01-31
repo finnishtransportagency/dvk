@@ -74,7 +74,7 @@ export const handleSafetyEquipmentLayerChange = () => {
     if (f.getProperties().featureType == 'safetyequipment') {
       const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
       safetyEquipmentFaultSource.removeFeature(feature);
-      safetyEquipmentFaultSource.dispatchEvent('change');
     }
   }
+  safetyEquipmentFaultSource.dispatchEvent('change');
 };
