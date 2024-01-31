@@ -19,6 +19,7 @@ import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
+import { useSafetyEquipmentAndFaultLayer } from '../FeatureLoader';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -144,7 +145,9 @@ type FaultsProps = {
 
 const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
+  // both data fetched for the sake of same data on list and map
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
+  const { ready } = useSafetyEquipmentAndFaultLayer();
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
   const { dispatch, state } = useDvkContext();
@@ -155,13 +158,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [alertProps, t]);
 
   useEffect(() => {
-    if (!state.layers.includes('safetyequipmentfault')) {
+    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && ready) {
       const updatedLayers = [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
-    // tick safety equipment fault checkbox only when rendering first time
+    // disable because of unnecessary callbacks
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isFetching, isPending, ready]);
 
   return (
     <>

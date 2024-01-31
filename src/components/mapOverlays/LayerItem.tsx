@@ -44,7 +44,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
       }
     | undefined = undefined;
   const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice'].includes(id)) {
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice', 'safetyequipmentfault'].includes(id)) {
     if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
       alertProps = getAlertProperties(dataUpdatedAt, id);
     }
