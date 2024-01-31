@@ -115,6 +115,20 @@ ion-modal#layerModalContainer::part(content) {
   margin-bottom: 2px;
   top: 0px !important;
 }
+#layerModalContainer ion-item .safetyequipmentfault {
+  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  mask-image: url('../../theme/img/safetyequipment/a.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+  background: red;
+  height: 24px;
+  margin-bottom: 2px;
+  top: 0px !important;
+}
 #layerModalContainer ion-item .speedlimit {
   border: 2px solid var(--ion-color-layer-speedlimit-border);
   width: 18px;

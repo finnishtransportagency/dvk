@@ -1,24 +1,18 @@
+import { type AsyncStorage, type PersistedQuery } from '@tanstack/react-query-persist-client';
 import { get, set, del } from 'idb-keyval';
 
-// Note: the interface definition is copied from the react-query source code '/src/createAsyncStoragePersistor-experimental/index.ts'
-interface AsyncStorage {
-  getItem: (key: string) => Promise<string | null>;
-  setItem: (key: string, value: string) => Promise<void>;
-  removeItem: (key: string) => Promise<void>;
-}
-
-const IdbAsyncStorage = (): AsyncStorage => {
+const IdbAsyncStorage = (): AsyncStorage<PersistedQuery> => {
   return {
     getItem: async (key: string) => {
-      return get(key) as Promise<string | null>;
+      return get(key);
     },
 
-    setItem: async (key: string, value: string) => {
-      await set(key, value);
+    setItem: async (key: string, value: PersistedQuery) => {
+      set(key, value);
     },
 
     removeItem: async (key: string) => {
-      await del(key);
+      del(key);
     },
   };
 };

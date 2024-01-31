@@ -1,0 +1,68 @@
+.equipmentAlertGrid {
+  margin-top: 12px;
+}
+.equipmentAlertGrid.danger {
+  padding: 0px;
+}
+.equipmentAlert.accordion-collapsed,
+.equipmentAlert.accordion-collapsing,
+.equipmentAlert.accordion-expanding,
+.equipmentAlert.accordion-expanded {
+  margin-top: 0px;
+  border-bottom: 0px;
+  padding: 0px;
+}
+.equipmentAlertIcon {
+  position: relative;
+  left: 1px
+}
+.equipmentAlert ion-icon.ion-accordion-toggle-icon {
+  position: relative;
+  left: 10px;
+}
+.equipmentAlertContent {
+  padding-left: 12px;
+  padding-right: 12px;
+  background-color: var(--ion-color-dangerbg);
+}
+
+ion-accordion .equipmentTabContent {
+  padding-top: 10px;
+  margin: 0;
+}
+.equipmentTabContent {
+  margin-top: 16px;
+  display: none;
+  transition: column-count 150ms 50ms;
+}
+.equipmentTabContent.wide {
+  column-count: 2;
+  column-gap: 48px;
+}
+.hidden .equipmentTabContent.wide {
+  column-count: 1;
+  transition: column-count 0s;
+}
+.equipmentTabContent.active {
+  display: block;
+}
+.equipmentTabContent ion-text {
+  break-inside: avoid;
+}
+
+#equipmentFaultList ion-grid.table {
+  padding-bottom: 8px;
+}
+
+#equipmentFaultList ion-grid.table ion-row > ion-col {
+  padding: 5px 5px 5px 0;
+  border: none;
+}
+
+#equipmentFaultList ion-grid.table ion-row > ion-col h4 {
+  margin: 0;
+}
+
+#equipmentFaultList ion-grid.table ion-row > ion-col p {
+  margin: 0;
+}

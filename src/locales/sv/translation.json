@@ -36,7 +36,9 @@
           "lines": "Navigationslinjer",
           "fairwayAreas": "Farledsområden",
           "depths": "Djupen",
+          "safetyEquipmentsTitle": "Säkerhetsanordningar",
           "safetyEquipments": "Säkerhetsanordningar",
+          "safetyEquipmentFaults": "Säkerhetsanordningsfelen",
           "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
           "pilotPlaces": "Lotsplatser",
@@ -115,13 +117,14 @@
     "title_one": "Farledskort",
     "title_other": "Farledskort",
     "dataUpdated": "Data laddat till enheten",
+    "faultsDataUpdated": "Felmeddellanden nedladdade på enheten",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Farledskortet innehåller information för farledsanvändaren om farleden och hamnen. Vilket kompletterar tillika farledsuppgifter från sjökort och övrig allmän information. Farledskorten har utformats för farleder som leder till vinterhamnar och korten täcker största delen av handelssjöfartens huvudfarleder.",
     "additionalDescription": "Farledskorten har förnyats i digital form, viket betyder att dessa kan erbjuda ett större utbud av information åt farledsanvändarna. Ett förnyat farledskort innehåller fortfarande information om dimensioneringen, navigationsförfaranden och navigationsförhållande, trafikrekommendationer och -begränsningar samt trafikinformation. Farledskortet innehåller också kartbilder av farleden och hamnen, vilka inte skall användas för navigering. Från dessa får man i huvudsak farledslinjer och utmärkningen, alla farledsområden med där tillhörande ramningsdjup, kajplatser samt annan information i texten. Som nyhet farledskortet innehåller också en kalkylator för Squat-beräkning, vilken kan användas för varje enskilt fartyg och farled.",
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
     "name": "Farledskortets namn",
     "preview": "Förhandsvisning",
-    "harborPreview": "[sv] Sataman esikatselu",
+    "harborPreview": "Förhandsvisning av hamn",
     "print": "Skriv ut farledskort",
     "modified": "Uppdaterat",
     "modifiedDate": "{{val, datetime}}",
@@ -244,7 +247,8 @@
     },
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>.",
-    "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel."
+    "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
+    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel."
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -273,7 +277,10 @@
     "lastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "viewLastUpdatedUnknown": "Den senaste laddningstiden för denna data är okänd.",
     "type": "Typ",
-    "layerLoadError": "[sv] Tason tietojen lataus epäonnistui"
+    "layerLoadError": "Det gick inte att läsa in lagerdata",
+    "faultsOnFairway": "Farleden innehåller felmeddellanden för säkerhetsanordningar",
+    "faultsLastUpdated": "Felmeddellanden för säkerhetsanordningar nedladdade för mer än {{ val, number}} h sedan.",
+    "faultsLastUpdatedUnknown": "Tidpunkt för senaste nedladdning av felmeddelanden för säkerhetsanordningar är okänd."
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",

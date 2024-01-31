@@ -10,6 +10,7 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
 
 interface ModalProps {
   isOpen: boolean;
@@ -73,7 +74,14 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       ],
     },
     { id: 'depth12', title: t('homePage.map.controls.layer.depths') },
-    { id: 'safetyequipment', title: t('homePage.map.controls.layer.safetyEquipments') },
+    {
+      id: 'safetyequipment',
+      title: t('homePage.map.controls.layer.safetyEquipmentsTitle'),
+      childLayers: [
+        { id: 'safetyequipment', title: t('homePage.map.controls.layer.safetyEquipments') },
+        { id: 'safetyequipmentfault', title: t('homePage.map.controls.layer.safetyEquipmentFaults') },
+      ],
+    },
     {
       id: 'conditions',
       title: t('homePage.map.controls.layer.conditions'),
@@ -122,6 +130,9 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
+      if (dataLayer.id == 'safetyequipmentfault') {
+        handleSafetyEquipmentLayerChange();
+      }
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
       featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });

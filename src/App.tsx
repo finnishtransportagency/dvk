@@ -18,7 +18,7 @@ import {
   useSpeedLimitLayer,
   usePilotLayer,
   useHarborLayer,
-  useSafetyEquipmentLayer,
+  useSafetyEquipmentAndFaultLayer,
   useCoastalWarningLayer,
   useLocalWarningLayer,
   useBoaterWarningLayer,
@@ -94,6 +94,28 @@ const idbAsyncStorage = IdbAsyncStorage();
 /* Remove old react query cache "REACT_QUERY_OFFLINE_CACHE", if still exist */
 idbAsyncStorage.removeItem('REACT_QUERY_OFFLINE_CACHE');
 
+/* Remove old DVK_REACT_QUERY_STORAGE-* items with stringified values, if still exist */
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area12"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area3456"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["boardline12"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["circle"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["depth12"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllFairwayCards",{"status":["PUBLIC"]}]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllMarineWarnings"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllSafetyEquipmentFaults"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["harbor"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line12"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line3456"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["marinewarning"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["pilot"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["restrictionarea"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipment"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipmentfault"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea2"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea15"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtsline"]');
+idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtspoint"]');
+
 const queryFilter = (query: Query) => {
   // Defaults to true. Do not persist only if meta.persist === false
   return !(query.meta && query.meta.persist === false);
@@ -108,8 +130,14 @@ const queryClient = new QueryClient({
         storage: idbAsyncStorage,
         buster: import.meta.env.VITE_APP_VERSION,
         maxAge: OFFLINE_STORAGE.staleTime,
-        prefix: 'DVK_REACT_QUERY_STORAGE',
+        prefix: 'DVK_STORAGE',
         filters: { predicate: queryFilter },
+        serialize: (persistedQuery) => {
+          return persistedQuery;
+        },
+        deserialize: (cached) => {
+          return cached;
+        },
       }),
     },
   },
@@ -137,7 +165,7 @@ const DvkIonApp: React.FC = () => {
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
-  useSafetyEquipmentLayer();
+  useSafetyEquipmentAndFaultLayer();
   useCoastalWarningLayer();
   useLocalWarningLayer();
   useBoaterWarningLayer();

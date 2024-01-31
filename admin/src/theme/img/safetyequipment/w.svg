@@ -1,14 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>C3D73D02-8F7D-4862-8A00-A61E9E26C385</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1198.000000, -954.000000)">
-            <g id="turvalaite_ikonit" transform="translate(718.000000, 906.000000)">
-                <g id="Asset-61" transform="translate(480.000000, 48.000000)">
-                    <path d="M9.14666667,30.8533333 L22.8533333,30.8533333 L22.8533333,32 L9.14666667,32 L9.14666667,30.8533333 Z M13.2266667,26.0933333 L18.6666667,26.0933333 L20.2666667,30.8533333 L11.7333333,30.8533333 L13.2133333,26.0933333 L13.2266667,26.0933333 Z" id="Shape" fill="#EC0E0E" fill-rule="nonzero"></path>
-                    <rect id="Rectangle" x="0" y="0" width="32" height="32"></rect>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="M9.14666667 30.8533333H22.8533333V32H9.14666667v-1.1466667Zm4.08000003-4.76h5.44l1.6 4.76h-8.5333334l1.48-4.76h.0133334Z" fill="#EC0E0E" fill-rule="nonzero"/>
+    <path d="M0 0h32v32H0z"/>
+  </g>
 </svg>

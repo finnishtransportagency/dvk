@@ -23,7 +23,12 @@ export class BackupServices extends Construct {
       deleteAfter: Duration.days(35),
       enableContinuousBackup: true,
     };
-    this.addPlan('ContinuousPlan-' + Config.getEnvironment(), 'Vault-' + Config.getEnvironment(), backupPlanRuleProps, backupPlanRole);
+    const plan = this.addPlanWithNewVault(
+      'ContinuousPlan-' + Config.getEnvironment(),
+      'Vault-' + Config.getEnvironment(),
+      backupPlanRuleProps,
+      backupPlanRole
+    );
 
     // Tuotannolle lisaksi pitkan sailytyksen paivittainen varmistus
     if (Config.isProductionEnvironment()) {
@@ -32,14 +37,16 @@ export class BackupServices extends Construct {
         moveToColdStorageAfter: Duration.days(35),
         deleteAfter: Duration.days(365),
       };
-      this.addPlan('LongStoragePlan-prod', 'Vault-Long-prod', backupPlanRuleProps, backupPlanRole);
+
+      this.addPlanWithNewVault('LongStoragePlan-prod', 'Vault-Long-prod', backupPlanRuleProps, backupPlanRole); // TODO: poistetaan aikanaan, kun päätetty mitä olemassa oleville varmistuksille tehdään
+      this.addPlan('LongStoragePlan-new-' + Config.getEnvironment(), plan.backupVault, backupPlanRuleProps, backupPlanRole); // lisätään pitkät kopiot samaan vaultiin jatkuvan varmistuksen kanssa, koska s3-resursseja ei voida kopioida useaan eri vaulttiin
     }
   }
 
-  private addPlan(backupPlanName: string, backupVaultName: string, props: BackupPlanRuleProps, backupPlanRole: Role) {
+  private addPlan(backupPlanName: string, backupVault: backup.IBackupVault, props: BackupPlanRuleProps, backupPlanRole: Role) {
     const plan = new backup.BackupPlan(this, backupPlanName, {
       backupPlanName,
-      backupVault: new backup.BackupVault(this, backupVaultName, { backupVaultName }),
+      backupVault,
       backupPlanRules: [
         new backup.BackupPlanRule({
           ...props,
@@ -61,5 +68,13 @@ export class BackupServices extends Construct {
       resources: [backup.BackupResource.fromTag('Backups-' + Config.getEnvironment(), 'true')],
       role: backupPlanRole,
     });
+
+    return plan;
+  }
+
+  private addPlanWithNewVault(backupPlanName: string, backupVaultName: string, props: BackupPlanRuleProps, backupPlanRole: Role) {
+    const backupVault = new backup.BackupVault(this, backupVaultName, { backupVaultName });
+    const plan = this.addPlan(backupPlanName, backupVault, props, backupPlanRole);
+    return plan;
   }
 }

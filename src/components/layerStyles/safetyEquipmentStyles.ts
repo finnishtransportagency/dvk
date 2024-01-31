@@ -133,6 +133,7 @@ function getImage(center: boolean, icon: string, anchorY: number, color: string,
       src: icon,
       color: color,
       scale: selected ? 1.2 : 1,
+      declutterMode: 'obstacle',
     });
   } else {
     return new Icon({
@@ -142,6 +143,7 @@ function getImage(center: boolean, icon: string, anchorY: number, color: string,
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
       scale: selected ? 1.2 : 1,
+      declutterMode: 'obstacle',
     });
   }
 }
@@ -155,6 +157,7 @@ function getFaultStyles(anchorY: number, selected: boolean) {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         scale: selected ? 1.2 : 1,
+        declutterMode: 'obstacle',
       }),
     }),
     new Style({
@@ -164,6 +167,7 @@ function getFaultStyles(anchorY: number, selected: boolean) {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         scale: selected ? 1.2 : 1,
+        declutterMode: 'obstacle',
       }),
     }),
   ];
@@ -180,6 +184,7 @@ function getAisStyles(aisType: number, selected: boolean) {
         anchorXUnits: 'fraction',
         anchorYUnits: 'fraction',
         scale: selected ? 1.2 : 1,
+        declutterMode: 'obstacle',
       }),
       text: text
         ? new Text({
@@ -205,10 +210,12 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
   const icon = opts?.icon || symbol2Icon['?'].icon;
   const center = opts ? opts.center : true;
   const anchorY = opts ? opts.anchorY : 0;
+  //declutterMode and zIndex in these styles are for selected fairway card
   if (props.symbol === '1' || resolution <= 10 || !!alwaysVisible) {
     const styles = [
       new Style({
         image: getImage(center, icon, anchorY, props.faults ? '#EC0E0E' : '#231F20', selected),
+        zIndex: 315,
       }),
       new Style({
         image: new CircleStyle({

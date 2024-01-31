@@ -79,11 +79,12 @@ const Header: React.FC<HeaderProps> = ({
             />
           </IonCol>
           <IonCol size="auto">
-            <IonButton shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
+            <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
             {operation === Operation.Update && oldStatus !== Status.Removed && (
               <IonButton
+                id="deleteButton"
                 shape="round"
                 color="danger"
                 disabled={isError || isLoading}
@@ -100,7 +101,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            <IonButton shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+            <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
               {operation === Operation.Update ? t('general.save') : t('general.create-new')}
             </IonButton>
           </IonCol>

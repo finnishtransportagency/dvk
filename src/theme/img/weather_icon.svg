@@ -1,15 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Digitaalinen-väyläkortti-(DVK)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="dvk_sea_menu_open" transform="translate(-22.000000, -243.000000)">
-            <g id="menu_open" transform="translate(-0.000000, 0.000000)">
-                <g id="fairway_item-copy-2" transform="translate(22.000000, 235.000000)">
-                    <g id="rajoitus_pohja-copy" transform="translate(0.000000, 8.000000)">
-                        <rect id="Combined-Shape" fill="#FFFFFF" x="0" y="0" width="24" height="24"></rect>
-                        <path d="M9.7314539,22 L10.8540418,14.1666667 L6.85653358,14.1666667 C6.65574549,14.1666667 6.5097178,14.0740741 6.41845048,13.8888889 C6.32718317,13.7037037 6.32718317,13.5277778 6.41845048,13.3611111 L13.1265979,2 L14.2491858,2 L13.1265979,9.80555556 L17.0693458,9.80555556 C17.2701339,9.80555556 17.4207249,9.89814815 17.521119,10.0833333 C17.621513,10.2685185 17.6260764,10.4444444 17.5348091,10.6111111 L10.8540418,22 L9.7314539,22 Z" id="Path" fill="#0064AF" fill-rule="nonzero"></path>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path fill="#FFF" d="M0 0h24v24H0z"/>
+    <path d="m9.7314539 22 1.1225879-7.8333333H6.85653358c-.20078809 0-.34681578-.0925926-.4380831-.2777778-.09126731-.1851852-.09126731-.3611111 0-.5277778L13.1265979 2h1.1225879l-1.1225879 7.80555556h3.9427479c.2007881 0 .3513791.09259259.4517732.27777774.100394.1851852.1049574.3611111.0136901.5277778L10.8540418 22H9.7314539Z" fill="#0064AF" fill-rule="nonzero"/>
+  </g>
 </svg>

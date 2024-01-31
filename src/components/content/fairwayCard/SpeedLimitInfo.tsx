@@ -14,11 +14,8 @@ export const SpeedLimitInfo: React.FC<SpeedLimitInfoProps> = ({ data, speedLimit
 
   const speedLimits =
     data
-      ?.flatMap(
-        (fairway) =>
-          fairway.restrictionAreas?.filter(
-            (area) => (area.types?.filter((type) => type.code === '01') ?? []).length > 0 && area.location && area.value
-          )
+      ?.flatMap((fairway) =>
+        fairway.restrictionAreas?.filter((area) => (area.types?.filter((type) => type.code === '01') ?? []).length > 0 && area.location && area.value)
       )
       .filter(
         (value, index, self) =>
