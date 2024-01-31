@@ -395,6 +395,10 @@ ion-popover.multiSelect::part(content) {
   border-radius: 0;
 }
 
+.multiSelect ion-select-popover {
+  overflow-y: auto;
+}
+
 ion-popover.multiSelect.fairwayIds::part(content) {
   bottom: 0;
 }

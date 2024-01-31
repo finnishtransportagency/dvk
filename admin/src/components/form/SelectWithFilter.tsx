@@ -118,7 +118,7 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
             setIsExpanded={setExpanded}
             checkValidity={checkValidity}
             showId={showId}
-            className={'custom-select-popover ' + actionType}
+            className={actionType}
           />
         </>
       )}
