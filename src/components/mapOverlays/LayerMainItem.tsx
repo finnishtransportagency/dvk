@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
 import { useDvkContext } from '../../hooks/dvkContext';
@@ -55,7 +55,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
   };
 
   return (
-    <IonGrid className="ion-no-padding layerItem layerMainItem">
+    <>
       <IonRow>
         <IonCol>
           <IonItem lines="none">
@@ -63,11 +63,11 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
               aria-labelledby={`${currentLayer.title}-label`}
               value={currentLayer.id}
               checked={isChecked()}
-              slot="start"
               onIonChange={handleChange}
               disabled={isDisabled()}
               indeterminate={isIndeterminate()}
               labelPlacement="end"
+              justify="start"
             >
               <IonText id={`${currentLayer.title}-label`} className={isDisabled() ? 'labelText disabled' : 'labelText'}>
                 {currentLayer.title}
@@ -110,7 +110,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
           </IonList>
         </IonCol>
       </IonRow>
-    </IonGrid>
+    </>
   );
 };
 

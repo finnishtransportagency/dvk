@@ -1,285 +1,16 @@
 import React, { useCallback, useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonItem, IonText, IonButton, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { getMap } from '../DvkMap';
 import './LayerModal.css';
 import { getAlertProperties, hasOfflineSupport, updateIceLayerOpacity } from '../../utils/common';
 import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
-import DepthMW from '../../theme/img/syvyys_mw.svg?react';
-import DepthN2000 from '../../theme/img/syvyys_n2000.svg?react';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId } from '../../utils/constants';
 import type { CheckboxCustomEvent } from '@ionic/react';
-
-const LegendDepth = () => {
-  return (
-    <IonGrid className="legend ion-no-padding">
-      <IonRow>
-        <IonCol size="2">
-          <IonItem>
-            <DepthN2000 />
-          </IonItem>
-        </IonCol>
-        <IonCol size="3">
-          <IonItem>
-            <IonText>N2000</IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol size="2">
-          <IonItem>
-            <DepthMW />
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>MW</IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendArea = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend deptharea ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth1')}</IonText>
-            <IonText slot="start" className="def area1"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth2')}</IonText>
-            <IonText slot="start" className="def area2"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth3')}</IonText>
-            <IonText slot="start" className="def area3"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendContour = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend depthcontour ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth4')}</IonText>
-            <IonText slot="start" className="def line1"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth5')}</IonText>
-            <IonText slot="start" className="def line2"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.depth6')}</IonText>
-            <IonText slot="start" className="def line3"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendSpeedlimits = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend speedlimit ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              30-26{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit30"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              25-21{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit25"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              20-16{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit20"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              15-11{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit15"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              10-6{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit10"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              5-1{' '}
-              <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-                km/h
-              </span>
-            </IonText>
-            <IonText slot="start" className="def limit5"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
-
-const LegendIce = () => {
-  const { t } = useTranslation();
-  return (
-    <IonGrid className="legend ice ion-no-padding">
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.icefree')}</IonText>
-            <IonText slot="start" className="def icefree"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              {t('homePage.map.controls.layer.legend.newice')} (&lt; 5{' '}
-              <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
-                cm
-              </span>
-              )
-            </IonText>
-            <IonText slot="start" className="def newice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>
-              {t('homePage.map.controls.layer.legend.thinice')} (5-15{' '}
-              <span aria-label={t('fairwayCards.unit.cmDesc', { count: 5 })} role="definition">
-                cm
-              </span>
-              )
-            </IonText>
-            <IonText slot="start" className="def thinice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.fastice')}</IonText>
-            <IonText slot="start" className="def fastice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.rottenice')}</IonText>
-            <IonText slot="start" className="def rottenice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.openwater')}</IonText>
-            <IonText slot="start" className="def openwater"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.veryopenice')}</IonText>
-            <IonText slot="start" className="def veryopenice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.openice')}</IonText>
-            <IonText slot="start" className="def openice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.closeice')}</IonText>
-            <IonText slot="start" className="def closeice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.verycloseice')}</IonText>
-            <IonText slot="start" className="def verycloseice"></IonText>
-          </IonItem>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonItem>
-            <IonText>{t('homePage.map.controls.layer.legend.consolidatedice')}</IonText>
-            <IonText slot="start" className="def consolidatedice"></IonText>
-          </IonItem>
-        </IonCol>
-        <IonCol></IonCol>
-      </IonRow>
-    </IonGrid>
-  );
-};
+import { LegendSpeedlimits, LegendIce, LegendDepth, LegendArea, LegendContour } from './LayerLegends';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
@@ -360,7 +91,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   };
 
   return (
-    <IonGrid className="ion-no-padding layerItem">
+    <>
       <IonRow>
         <IonCol>
           <IonItem>
@@ -368,15 +99,21 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
               aria-labelledby={`${title}-label`}
               value={id}
               checked={layers.includes(id)}
-              slot="start"
               onIonChange={handleChange}
               disabled={disabled}
               labelPlacement="end"
+              justify="start"
             >
-              <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
-                {title}
-              </IonText>
-              <IonText className={'layerLegend layer ' + id}></IonText>
+              <IonRow className="ion-align-items-center ion-justify-content-between">
+                <IonCol>
+                  <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                    {title}
+                  </IonText>
+                </IonCol>
+                <IonCol size="auto">
+                  <IonText className={'layerLegend layer ' + id}></IonText>
+                </IonCol>
+              </IonRow>
             </IonCheckbox>
           </IonItem>
         </IonCol>
@@ -413,7 +150,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
           </IonCol>
         </IonRow>
       )}
-    </IonGrid>
+    </>
   );
 };
 

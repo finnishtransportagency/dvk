@@ -191,7 +191,6 @@ const Vessel: React.FC = () => {
                     min={fieldParams.windSurface.min}
                     max={fieldParams.windSurface.max}
                     unit={fieldParams.windSurface.unit}
-                    unitId={fieldParams.windSurface.unitId}
                     fieldClass={setFieldClass('windSurface')}
                     actionType="vessel-detailed"
                   />
@@ -205,7 +204,6 @@ const Vessel: React.FC = () => {
                     min={fieldParams.deckCargo.min}
                     max={fieldParams.deckCargo.max}
                     unit={fieldParams.deckCargo.unit}
-                    unitId={fieldParams.deckCargo.unitId}
                     fieldClass={setFieldClass('deckCargo')}
                     actionType="vessel-detailed"
                   />

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonItem, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
+import { IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { PilotPlace } from '../../graphql/generated';
@@ -112,37 +112,36 @@ const SelectInput: React.FC<SelectInputProps> = ({
       {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
       {!isLoading && (
         <>
-          <IonItem className="selectInput">
-            <IonSelect
-              ref={selectRef}
-              placeholder={t('choose') ?? ''}
-              interface="popover"
-              onIonChange={(ev) => handleChange(ev)}
-              onIonBlur={() => checkValidity()}
-              interfaceOptions={{
-                size: 'cover',
-                className: 'multiSelect',
-              }}
-              value={selected}
-              multiple={Array.isArray(selected) || multiple}
-              compareWith={Array.isArray(selected) ? compareOptions : undefined}
-              disabled={disabled}
-              fill="outline"
-              labelPlacement="stacked"
-            >
-              {sortedOptions?.map((item) => {
-                const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-                const coordinates = showCoords ? roundCoordinates(item.geometry?.coordinates, 5) : undefined;
-                const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
-                return (
-                  <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
-                    {showId ? '[' + item.id + '] ' : ''}
-                    {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
-                  </IonSelectOption>
-                );
-              })}
-            </IonSelect>
-          </IonItem>
+          <IonSelect
+            ref={selectRef}
+            className="selectInput"
+            placeholder={t('choose') ?? ''}
+            onIonChange={(ev) => handleChange(ev)}
+            onIonBlur={() => checkValidity()}
+            interface="popover"
+            interfaceOptions={{
+              size: 'cover',
+              className: 'multiSelect',
+            }}
+            value={selected}
+            multiple={Array.isArray(selected) || multiple}
+            compareWith={Array.isArray(selected) ? compareOptions : undefined}
+            disabled={disabled}
+            fill="outline"
+            labelPlacement="stacked"
+          >
+            {sortedOptions?.map((item) => {
+              const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+              const coordinates = showCoords ? roundCoordinates(item.geometry?.coordinates, 5) : undefined;
+              const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
+              return (
+                <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
+                  {showId ? '[' + item.id + '] ' : ''}
+                  {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
+                </IonSelectOption>
+              );
+            })}
+          </IonSelect>
           {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
         </>

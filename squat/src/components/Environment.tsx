@@ -136,7 +136,6 @@ const Environment: React.FC = () => {
                   min={fieldParams.windDirection.min}
                   max={fieldParams.windDirection.max}
                   unit={fieldParams.windDirection.unit}
-                  unitId={fieldParams.windDirection.unitId}
                   fieldClass={setFieldClass('windDirection')}
                   actionType="environment-weather"
                 />
@@ -400,7 +399,6 @@ const Environment: React.FC = () => {
                 min={fieldParams.vesselCourse.min}
                 max={fieldParams.vesselCourse.max}
                 unit={fieldParams.vesselCourse.unit}
-                unitId={fieldParams.vesselCourse.unitId}
                 fieldClass={setFieldClass('vesselCourse')}
                 actionType="environment-vessel"
               />
@@ -469,7 +467,6 @@ const Environment: React.FC = () => {
                 max={fieldParams.airDensity.max}
                 step={fieldParams.airDensity.step}
                 unit={fieldParams.airDensity.unit}
-                unitId={fieldParams.airDensity.unitId}
                 fieldClass={setFieldClass('airDensity')}
                 actionType="environment-attribute"
               />
@@ -485,7 +482,6 @@ const Environment: React.FC = () => {
                 min={fieldParams.waterDensity.min}
                 max={fieldParams.waterDensity.max}
                 unit={fieldParams.waterDensity.unit}
-                unitId={fieldParams.waterDensity.unitId}
                 fieldClass={setFieldClass('waterDensity')}
                 actionType="environment-attribute"
               />

@@ -22,10 +22,6 @@ ion-grid.info-accordion,
   padding-right: 0;
 }
 
-.squatCalculatorContainer ion-item.item.only-label {
-  --background: none;
-}
-
 .squatCalculatorContainer .sc-ion-input-md-h {
   --background: var(--ion-color-primary-contrast);
   --border-radius: 0;
@@ -35,21 +31,26 @@ ion-grid.info-accordion,
   width: 24px;
   height: 24px;
 }
-.squatCalculatorContainer ion-item.item.only-label ion-label {
-  overflow: visible;
+
+.squatCalculatorContainer .labelContainer ion-text {
+  font-size: 14px;
+  margin-top: 8px;
 }
-.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.no-background-focused {
-  margin: 0 2px 0 8px;
+
+.squatCalculatorContainer .labelContainer ion-button.no-background-focused {
+  margin: 5px 0 0 5px;
   width: auto;
   min-height: unset;
 }
-.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.no-background-focused::part(native) {
+
+.squatCalculatorContainer .labelContainer ion-button.no-background-focused::part(native) {
   min-height: 24px;
   min-width: 24px;
   height: 24px;
   width: 24px;
 }
-.squatCalculatorContainer ion-item.item.only-label ion-label ion-button.icon-only.ion-focused {
+
+.squatCalculatorContainer .labelContainer ion-button.icon-only.ion-focused {
   border: none;
 }
 

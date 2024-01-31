@@ -56,9 +56,6 @@ ion-row.input-row > ion-col {
 .align-right {
   text-align: right;
 }
-.left-padding {
-  padding-left: 5px;
-}
 .top-padding {
   padding-top: 10px;
 }
@@ -155,12 +152,35 @@ ion-icon {
 }
 
 /* Forms */
-ion-item.item.only-label {
-  --min-height: 30px;
-  --padding-top: 2px;
-  --padding-start: 0;
-  --inner-padding-start: 0;
-  --inner-padding-end: 0;
+.labelContainer {
+  display: flex;
+  min-height: 30px;
+}
+
+.labelContainer ion-text {
+  margin-top: 5px;
+  margin-left: 5px;
+}
+
+.labelContainer ion-text.collapsible {
+  display: block;
+  box-sizing: border-box;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 0;
+}
+
+.labelContainer ion-button.no-background-focused {
+  margin: 0 0 0 5px;
+  min-height: 24px;
+}
+
+@media screen and (max-width: 575px) {
+  /* Show whole label in mobile */
+  .labelContainer ion-text.collapsible {
+    white-space: normal;
+  }
 }
 
 ion-item.item.no-padding {
@@ -169,20 +189,6 @@ ion-item.item.no-padding {
   --inner-padding-end: 0;
   --padding-end: 0;
   --padding-top: 0;
-}
-
-ion-item.item.only-label ion-label {
-  margin: 0;
-}
-
-ion-item.item.only-label ion-label ion-button.no-background-focused {
-  margin: 1px;
-}
-
-@media screen and (max-width: 575px) {
-  ion-item.item.only-label ion-label {
-    white-space: normal;
-  }
 }
 
 ion-item.item-interactive {
@@ -505,11 +511,6 @@ ion-modal ion-footer ion-toolbar.buttonBar ion-button {
   outline: 1px solid var(--ion-color-dark);
   z-index: 2;
   --background-focused: unset;
-}
-
-.no-focus {
-  --background-focused: unset;
-  outline: none;
 }
 
 ion-item.external-link {

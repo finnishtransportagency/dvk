@@ -10,7 +10,8 @@
     max-height: none !important;
   }
 
-  ion-header, .titlebar {
+  ion-header,
+  .titlebar {
     display: none;
   }
 
@@ -131,13 +132,18 @@
     padding: 0 !important;
   }
 
-  ion-item.item.only-label {
-    --min-height: 20px;
-    --padding-top: 2px;
+  .labelContainer {
+    min-height: 20px;
   }
-  ion-item.item.only-label ion-label {
-    white-space: normal;
+
+  .labelContainer ion-text {
+    margin-top: 2px;
+    margin-left: 0px;
     font-size: 12px;
+  }
+
+  .labelContainer ion-text.collapsible {
+    white-space: normal;
   }
 
   /* Input field styles */
@@ -157,7 +163,8 @@
   }
 
   /* Hide input helper and error texts */
-  ion-input .helper-text, ion-input .error-text {
+  ion-input .helper-text,
+  ion-input .error-text {
     display: none !important;
   }
 
@@ -213,7 +220,8 @@
     margin: 0;
     text-align: left;
   }
-  ion-label.radio ion-img, ion-label.radio ion-radio {
+  ion-label.radio ion-img,
+  ion-label.radio ion-radio {
     display: none !important;
   }
   ion-label.radio p {
@@ -281,7 +289,7 @@
   .squatChartRow svg {
     max-height: 58vh;
   }
-  
+
   .dataTableRow .dataCol {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -307,12 +315,19 @@
     font-size: 12px;
   }
 
-  .pagebreak { page-break-after: always; break-after: page; }
+  .pagebreak {
+    page-break-after: always;
+    break-after: page;
+  }
 
   @media (orientation: portrait) {
-    .hide-portrait {display: none !important;}
+    .hide-portrait {
+      display: none !important;
+    }
   }
   @media (orientation: landscape) {
-    .hide-landscape {display: none !important;}
+    .hide-landscape {
+      display: none !important;
+    }
   }
 }
