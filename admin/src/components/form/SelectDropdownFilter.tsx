@@ -62,17 +62,19 @@ const SelectDropdownFilter = forwardRef(function SelectDropdownSearchInput(
 
   return (
     <IonItem lines="full">
-      <IonInput
-        ref={ref}
-        onIonInput={searchBarInput}
-        onKeyDown={keyDownAction}
-        placeholder={t('search-placeholder') ?? ''}
-        title={t('search-title') ?? ''}
-        value={searchQuery}
-      />
-      <IonButton className="clearSearch" disabled={!searchHasInput} fill="clear" onClick={clearInput} size="small" slot="end">
-        <IonIcon icon={searchHasInput ? closeIcon : searchIcon} slot="icon-only" className={searchHasInput ? 'closeIcon' : 'searchIcon'} />
-      </IonButton>
+      <div className="dropdownSearchWrapper">
+        <IonInput
+          ref={ref}
+          onIonInput={searchBarInput}
+          onKeyDown={keyDownAction}
+          placeholder={t('search-placeholder') ?? ''}
+          title={t('search-title') ?? ''}
+          value={searchQuery}
+        />
+        <IonButton className="clearSearch" disabled={!searchHasInput} fill="clear" onClick={clearInput} size="small">
+          <IonIcon icon={searchHasInput ? closeIcon : searchIcon} slot="icon-only" className={searchHasInput ? 'closeIcon' : 'searchIcon'} />
+        </IonButton>
+      </div>
     </IonItem>
   );
 });

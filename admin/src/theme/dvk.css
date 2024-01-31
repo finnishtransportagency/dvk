@@ -430,6 +430,11 @@ ion-popover.multiSelect ion-icon.closeIcon {
   height: 18px;
 }
 
+.dropdownSearchWrapper {
+  display: flex;
+  align-items: center;
+}
+
 /* Form inputs */
 ion-label.formLabel {
   font-size: 14px;
