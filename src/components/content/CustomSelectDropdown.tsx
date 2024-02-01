@@ -204,6 +204,7 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, 
       button={true}
       onClick={() => setExpanded(true)}
       className={'customSelect' + (expanded ? ' expanded' : '')}
+      lines="none"
     >
       {selected.length > 0 ? (
         <IonLabel>
