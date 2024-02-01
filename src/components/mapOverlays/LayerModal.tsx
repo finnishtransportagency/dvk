@@ -10,7 +10,6 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
 
 interface ModalProps {
   isOpen: boolean;
@@ -130,9 +129,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      if (dataLayer.id == 'safetyequipmentfault') {
-        handleSafetyEquipmentLayerChange();
-      }
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
       featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });

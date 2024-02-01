@@ -70,11 +70,14 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
 export const handleSafetyEquipmentLayerChange = () => {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
-  for (const f of selectedFairwayCardSource.getFeatures()) {
-    if (f.getProperties().featureType == 'safetyequipment') {
-      const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
-      safetyEquipmentFaultSource.removeFeature(feature);
-      safetyEquipmentFaultSource.dispatchEvent('change');
+
+  if (selectedFairwayCardSource.getFeatures().length > 0) {
+    for (const f of selectedFairwayCardSource.getFeatures()) {
+      if (f.getProperties().featureType == 'safetyequipment') {
+        const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
+        safetyEquipmentFaultSource.removeFeature(feature);
+      }
     }
+    safetyEquipmentFaultSource.dispatchEvent('change');
   }
 };
