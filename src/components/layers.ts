@@ -43,6 +43,7 @@ import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUt
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import { getRtzStyle } from './layerStyles/rtzStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -774,6 +775,19 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 315,
+  });
+
+  // RTZ
+  addFeatureVectorLayer({
+    map: map,
+    id: 'rtz',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getRtzStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 316,
   });
 
   // AIS
