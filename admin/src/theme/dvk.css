@@ -258,10 +258,6 @@ ion-button.plainButton.button-disabled {
   margin: 1px;
 }
 
-.selectWrapper ion-label.ion-text-wrap {
-  margin: 9px 0;
-}
-
 .searchWrapper ion-input,
 .searchWrapper .sc-ion-input-md-h:not(.legacy-input) {
   min-height: 41px;
@@ -386,7 +382,7 @@ ion-select.selectInput.select-expanded {
   opacity: 0.5;
 }
 .selectWrapper .select-skeleton {
-  height: 43px;
+  height: 45px;
   margin: 0;
   border: 1px solid var(--ion-color-light);
 }

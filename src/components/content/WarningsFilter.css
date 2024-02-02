@@ -56,7 +56,6 @@ ion-item.customSelect::part(native) {
 ion-item.customSelect ion-label {
   white-space: nowrap;
   overflow: hidden;
-  margin: 9px 0;
 }
 
 ion-item.customSelect.expanded {
