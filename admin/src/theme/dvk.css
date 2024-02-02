@@ -237,7 +237,7 @@ ion-button.plainButton.button-disabled {
   border-color: var(--ion-color-dark);
   border-width: 1px;
   border-radius: 0;
-  --min-height: 42px;
+  --min-height: 43px;
 }
 
 .searchWrapper ion-item.searchBar {
@@ -248,13 +248,13 @@ ion-button.plainButton.button-disabled {
   min-width: 150px;
   --background-hover-opacity: 0;
   --ripple-color: transparent;
-  --padding-start: 13px;
-  --inner-padding-end: 13px;
+  --padding-start: 14px;
+  --inner-padding-end: 14px;
 }
 
 .searchWrapper ion-item.searchBar::part(native),
 .selectWrapper ion-item.selectInput::part(native) {
-  min-height: 40px;
+  min-height: 41px;
   margin: 1px;
 }
 
@@ -264,7 +264,7 @@ ion-button.plainButton.button-disabled {
 
 .searchWrapper ion-input,
 .searchWrapper .sc-ion-input-md-h:not(.legacy-input) {
-  min-height: 40px;
+  min-height: 41px;
 }
 
 .searchWrapper ion-item.searchBar:focus-within,
@@ -282,7 +282,7 @@ ion-button.plainButton.button-disabled {
 
 .selectWrapper ion-item.selectInput.select-expanded,
 .selectWrapper.invalid ion-item.selectInput.select-expanded {
-  --inner-padding-end: 11px;
+  --inner-padding-end: 13px;
 }
 
 .searchWrapper ion-item.searchBar:focus-within::part(native),
@@ -310,13 +310,13 @@ ion-button.clearSearch.button-disabled {
 ion-select.selectInput {
   font-size: 14px;
   max-width: 100%;
-  min-height: 42px;
+  min-height: 43px;
   border-style: solid;
   border-color: var(--ion-color-dark);
   border-width: 1px;
   border-radius: 0;
-  --padding-start: 13px;
-  --padding-end: 13px;
+  --padding-start: 14px;
+  --padding-end: 14px;
   --placeholder-color: var(--ion-color-medium);
   --placeholder-opacity: 1;
   /* Fill: outline used to remove div "select-highlight", hide outline here */
@@ -386,7 +386,7 @@ ion-select.selectInput.select-expanded {
   opacity: 0.5;
 }
 .selectWrapper .select-skeleton {
-  height: 42px;
+  height: 43px;
   margin: 0;
   border: 1px solid var(--ion-color-light);
 }
