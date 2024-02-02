@@ -17,6 +17,7 @@
     "deploy:monitoring": "cross-env cdk --profile=$AWS_PROFILE deploy DvkMonitoringStack --require-approval never",
     "deploy:image": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBuildImageStack --require-approval never",
     "deploy:lambda": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaStack --require-approval never",
+    "deploy:githublambda": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkPipelineLambdaVpcStack --require-approval never",
     "deploy:backend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never && cross-env ./bin/setstackpolicy.sh DvkBackendStack",
     "deploy:backend:hotswap": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkBackendStack --require-approval never --hotswap-fallback",
     "deploy:frontend": "cross-env-shell cdk --profile=$AWS_PROFILE deploy DvkUsEastStack SquatSiteStack --require-approval never && cross-env ./bin/setstackpolicy.sh SquatSiteStack",

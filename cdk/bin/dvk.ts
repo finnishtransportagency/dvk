@@ -19,6 +19,7 @@ import { AdminPipeline } from '../lib/admin-pipeline';
 import { DvkScheduledTestsPipelineStack } from '../lib/dvk-scheduled-tests-pipeline';
 import { DvkAnalyticsStack } from '../lib/dvk-analytics-stack';
 import { PreviewPipeline } from '../lib/preview-pipeline';
+import { PipelineLambdaVpc } from '../lib/pipeline-lambda-vpc';
 
 class DvkUsEastStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -53,6 +54,14 @@ class DvkPipelineLambdaStack extends cdk.Stack {
     super(parent, id, props);
 
     new PipelineLambda(this, 'DvkPipelineLambda');
+  }
+}
+
+class DvkPipelineLambdaVpcStack extends cdk.Stack {
+  constructor(parent: App, id: string, props: StackProps) {
+    super(parent, id, props);
+
+    new PipelineLambdaVpc(this, 'DvkPipelineVpcLambda');
   }
 }
 
@@ -92,6 +101,15 @@ new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
     region: process.env.CDK_DEFAULT_REGION,
   },
   stackName: 'DvkPipelineLambdaStack',
+  tags: Config.tags,
+});
+
+new DvkPipelineLambdaVpcStack(app, 'DvkPipelineLambdaVpcStack', {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+  stackName: 'DvkPipelineLambdaVpcStack',
   tags: Config.tags,
 });
 
