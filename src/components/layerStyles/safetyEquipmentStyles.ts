@@ -65,7 +65,7 @@ import errorIcon from '../../theme/img/safetyequipment/error_icon.svg';
 import Text from 'ol/style/Text';
 import { EquipmentFeatureProperties } from '../features';
 
-const symbol2Icon = {
+export const symbol2Icon = {
   a: { icon: a, center: false, anchorY: 32 },
   b: { icon: b, center: false, anchorY: 32 },
   c: { icon: c, center: false, anchorY: 32 },
