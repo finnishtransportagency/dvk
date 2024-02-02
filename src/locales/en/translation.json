@@ -256,7 +256,9 @@
     "print": "Print defective navigation aids",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Updated",
-    "fairways": "Fairway cards connected to the navigational aid"
+    "fairways": "Fairway cards connected to the navigational aid",
+    "faultType": "[en] Vika",
+    "faultDateTime": "[en] Ajankohta"
   },
   "warnings": {
     "title": "Navigational warnings",

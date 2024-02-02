@@ -117,12 +117,12 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         <IonRow>
                           <IonCol>
                             <IonLabel>
-                              <strong>Vika</strong>
+                              <strong>{t('faults.faultType')}</strong>
                             </IonLabel>
                           </IonCol>
                           <IonCol>
                             <IonLabel>
-                              <strong>Ajankohta</strong>
+                              <strong>{t('faults.faultDateTime')}</strong>
                             </IonLabel>
                           </IonCol>
                         </IonRow>
