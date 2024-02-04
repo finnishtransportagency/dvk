@@ -75,8 +75,8 @@ export class DvkAnalyticsStack extends Stack {
 
     // Define the Fargate task definition
     const taskDefinition = new ecs.FargateTaskDefinition(this, 'DvkFargateTask' + env, {
-      memoryLimitMiB: 1024,
-      cpu: 512,
+      memoryLimitMiB: 2048,
+      cpu: 1024,
       taskRole,
     });
 
