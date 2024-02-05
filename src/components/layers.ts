@@ -121,24 +121,31 @@ export function getBoardLineStyle(color: string, width: number) {
   });
 }
 
-function getQuayLabel(feature: FeatureLike): string {
-  const dvkMap = getMap();
-  const featureType = feature.get('featureType');
-  const props = feature.getProperties() as QuayFeatureProperties;
-  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
-  const sectionName = featureType === 'section' ? props.name : '';
-  const depthText =
-    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
+  const color = selected ? '#0064AF' : '#000000';
+  const depth = props.depth ? `${props.depth[0]} m` : '';
 
-  if (sectionName && depthText) {
-    return `${sectionName} ${depthText}`;
-  } else if (depthText) {
-    return depthText;
-  } else if (sectionName) {
-    return sectionName;
-  } else {
-    return quayName;
-  }
+  return new Style({
+    image: new CircleStyle({
+      radius: 3,
+      fill: new Fill({
+        color: color,
+      }),
+    }),
+    text: new Text({
+      font: '14px "Exo2"',
+      placement: 'line',
+      offsetY: -16,
+      text: depth,
+      fill: new Fill({
+        color: color,
+      }),
+      stroke: new Stroke({
+        width: 2,
+        color: '#ffffff',
+      }),
+    }),
+  });
 }
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
@@ -148,6 +155,19 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   if (feature.get('hoverStyle')) {
     selected = true;
   }
+
+  const featureType = feature.get('featureType');
+  const props = feature.getProperties() as QuayFeatureProperties;
+  if (featureType === 'section') {
+    return getSectionStyle(selected, props);
+  }
+
+  const dvkMap = getMap();
+  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
+  const depthText =
+    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+  const label = `${quayName} ${depthText}`;
+
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -160,7 +180,6 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const label = getQuayLabel(feature);
 
   return [
     new Style({
@@ -902,6 +921,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
     internet: harbor.internet,
   });
   source.addFeature(feature);
+  console.log('hello add section');
 }
 
 function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
@@ -909,11 +929,10 @@ function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
   for (const quay of harbor.quays ?? []) {
     if (quay?.geometry) {
       addQuayFeature(harbor, quay, source, format);
-    } else {
-      for (const section of quay?.sections ?? []) {
-        if (quay && section && section.geometry) {
-          addSectionFeature(harbor, quay, section, source, format);
-        }
+    }
+    for (const section of quay?.sections ?? []) {
+      if (quay && section?.geometry) {
+        addSectionFeature(harbor, quay, section, source, format);
       }
     }
   }
