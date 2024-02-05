@@ -1,25 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="73px" height="73px" viewBox="0 0 73 73" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>686BF804-0CD6-4B7B-8DE9-BBADC76525D5</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1114.000000, -2278.000000)" fill="#EC0E0E">
-            <g id="erityisalue_tausta-copy-3" transform="translate(1114.000000, 2278.000000)">
-                <g id="Group" opacity="0.65" transform="translate(55.000000, 0.000000)">
-                    <polygon id="Rectangle-Copy-5" opacity="0.75" points="18 0 18 17.8 0 0"></polygon>
-                </g>
-                <g id="Group" opacity="0.65">
-                    <polygon id="Rectangle-Copy-9" opacity="0.75" points="18.8 0 73 54.3 73 73 55 73 0 17.8 0 0"></polygon>
-                </g>
-                <g id="Group" opacity="0.65" transform="translate(0.000000, 54.300000)">
-                    <polygon id="Rectangle-Copy-11" opacity="0.75" points="0 0 18.8 18.7 0 18.7"></polygon>
-                </g>
-                <g id="Group" opacity="0.4" transform="translate(18.800000, 0.000000)">
-                    <polygon id="Rectangle-Copy-6" opacity="0.75" points="36.2 0 54.2 17.8 54.2 54.3 -7.10542736e-15 0"></polygon>
-                </g>
-                <g id="Group" opacity="0.4" transform="translate(0.000000, 17.800000)">
-                    <polygon id="Rectangle-Copy-10" opacity="0.75" points="0 -7.10542736e-15 55 55.2 18.8 55.2 0 36.5"></polygon>
-                </g>
-            </g>
-        </g>
+<svg width="73" height="73" viewBox="0 0 73 73" xmlns="http://www.w3.org/2000/svg">
+  <g fill="#EC0E0E" fill-rule="evenodd">
+    <g opacity=".65">
+      <path opacity=".75" d="M73 0v17.8L55 0z"/>
     </g>
+    <g opacity=".65">
+      <path opacity=".75" d="M18.8 0 73 54.3V73H55L0 17.8V0z"/>
+    </g>
+    <g opacity=".65">
+      <path opacity=".75" d="M0 54.3 18.8 73H0z"/>
+    </g>
+    <g opacity=".4">
+      <path opacity=".75" d="m55 0 18 17.8v36.5L18.8 0z"/>
+    </g>
+    <g opacity=".4">
+      <path opacity=".75" d="M0 17.8 55 73H18.8L0 54.3z"/>
+    </g>
+  </g>
 </svg>

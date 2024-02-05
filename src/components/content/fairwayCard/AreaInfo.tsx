@@ -18,15 +18,14 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
 
   const fairwayAreas =
     data
-      ?.flatMap(
-        (fairway) =>
-          fairway.areas?.sort((a, b) => {
-            const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
-            const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
-            const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
-            const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
-            return sequenceNumberA - sequenceNumberB;
-          })
+      ?.flatMap((fairway) =>
+        fairway.areas?.sort((a, b) => {
+          const areaFairwayA = a.fairways?.find((f) => f.fairwayId === fairway.id);
+          const areaFairwayB = b.fairways?.find((f) => f.fairwayId === fairway.id);
+          const sequenceNumberA = areaFairwayA?.sequenceNumber ?? 0;
+          const sequenceNumberB = areaFairwayB?.sequenceNumber ?? 0;
+          return sequenceNumberA - sequenceNumberB;
+        })
       )
       .filter((value, index, self) => self.findIndex((inner) => inner?.id === value?.id) === index) ?? [];
 

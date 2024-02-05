@@ -36,7 +36,9 @@
           "lines": "Navigation lines",
           "fairwayAreas": "Fairway areas",
           "depths": "Depths",
+          "safetyEquipmentsTitle": "Navigational aids",
           "safetyEquipments": "Navigational aids",
+          "safetyEquipmentFaults": "Defective navigation aids",          
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
@@ -115,13 +117,14 @@
     "title_one": "Fairway card",
     "title_other": "Fairway cards",
     "dataUpdated": "Data updated to device",
+    "faultsDataUpdated": "AtoN defects downloaded to device",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Fairway cards contain information on fairways and ports and are intended for seafarers. They form a complement to the nautical charts and other official navigation publications. The fairway cards cover the channels to all ports which are kept open in winter, i.e. most of the major shipping lanes.",
     "additionalDescription": "Fairway cards have been renewed to a digital form, and in the future they will provide further services to the fairway users. They contain facts about the fairway dimensions, navigability and navigational conditions, traffic recommendations and restrictions and traffic services provided. Drawings of the fairway and the harbour are appended. The drawings are not intended for navigational use. They outline the channel alignment and buoyage, the fairway area, safe clearance depths, berths and other places which the text refers to. As a new feature, fairway cards include a tool to estimate vertical movements of vessels on individual fairways.",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
     "name": "Fairway card name",
     "preview": "Preview",
-    "harborPreview": "[en] Sataman esikatselu",
+    "harborPreview": "Harbour preview",
     "print": "Print fairway card",
     "modified": "Modified",
     "modifiedDate": "{{val, datetime}}",
@@ -244,7 +247,8 @@
     },
     "opens-in-a-new-tab": "Opens in a new tab",
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
-    "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
+    "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
+    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -273,7 +277,10 @@
     "lastUpdatedUnknown": "The last loading time of this layers data is unknown.",
     "viewLastUpdatedUnknown": "The last loading time of this views data is unknown.",
     "type": "Type",
-    "layerLoadError": "[en] Tason tietojen lataus epäonnistui"
+    "layerLoadError": "Layer data failed to load",
+    "faultsOnFairway": "AtoN defects in the fairway",
+    "faultsLastUpdated": "AtoN defects downloaded more than {{ val, number}} h ago.",
+    "faultsLastUpdatedUnknown": "The time of the latest download of the AtoN defects is unknown."
   },
   "appUpdateAlert": {
     "title": "Update available",

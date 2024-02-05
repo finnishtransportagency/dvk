@@ -1,13 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="16px" height="81px" viewBox="0 0 16 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>AA01B86A-FB67-4743-8F34-3A2FB9A1D8D0</title>
-    <g id="Squat-laskuri" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="colors_and_typography" transform="translate(-1148.000000, -1226.000000)">
-            <g id="north_arrow" transform="translate(1148.000000, 1226.000000)">
-                <path d="M7.50003033,5.04950976 L7.50003033,39.5001516 L0.609901951,39.5001516 L7.50003033,5.04950976 Z" id="Triangle" stroke="#000000" fill="#FFFFFF"></path>
-                <polygon id="Triangle-Copy-2" fill="#000000" transform="translate(12.000045, 20.000076) scale(-1, 1) translate(-12.000045, -20.000076) " points="16.0000607 0 16.0000607 40.0001516 8.00003033 40.0001516"></polygon>
-                <line x1="8.00003033" y1="40.0001516" x2="7.84426749" y2="80" id="Line-6" stroke="#000000" stroke-linecap="square"></line>
-            </g>
-        </g>
-    </g>
+<svg width="16" height="81" viewBox="0 0 16 81" xmlns="http://www.w3.org/2000/svg">
+  <g fill="none" fill-rule="evenodd">
+    <path d="M7.50003033 5.04950976V39.5001516H.60990195L7.50003033 5.04950976Z" stroke="#000" fill="#FFF"/>
+    <path fill="#000" d="M8.0000293 0v40.0001516h8.00003037z"/>
+    <path stroke="#000" stroke-linecap="square" d="M8.00003033 40.0001516 7.84426749 80"/>
+  </g>
 </svg>

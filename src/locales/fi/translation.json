@@ -36,7 +36,9 @@
           "lines": "Navigointilinjat",
           "fairwayAreas": "Väyläalueet",
           "depths": "Haraussyvyydet",
+          "safetyEquipmentsTitle": "Turvalaitteet",
           "safetyEquipments": "Turvalaitteet",
+          "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
           "pilotPlaces": "Luotsipaikat",
@@ -115,6 +117,7 @@
     "title_one": "Väyläkortti",
     "title_other": "Väyläkortit",
     "dataUpdated": "Tiedot ladattu laitteelle",
+    "faultsDataUpdated": "Vikatiedot ladattu laitteelle",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "description": "Väyläkortti sisältää väylänkäyttäjälle tarkoitettua informaatiota väylästä ja siihen liittyvästä satamasta. Se täydentää osaltaan merikartoilta ja muista julkaisuista saatavia väylätietoja. Väyläkortteja on laadittu talvisatamiin johtavista meriväylistä, ja ne kattavat suurimman osan nk. kauppamerenkulun pääväylistä.",
     "additionalDescription": "Väyläkortit ovat uudistuneet digitaaliseen muotoon ja tulevat jatkossa tarjoamaan laajempia palveluita niiden käyttäjille. Uudistettu väyläkortti sisältää edelleen tietoja väylän mitoituksesta, navigoitavuudesta ja navigointiolosuhteista, mahdollisista liikennesuosituksista ja -rajoituksista sekä liikennepalveluista. Väyläkorttiin sisältyy myös karttakuvia väylästä ja satamasta. Kuvia ei ole tarkoitettu navigointikäyttöön. Niistä käyvät ilmi pääpiirteissään väylän linjaus ja merkintä, väyläalue, haraussyvyydet kullakin väyläosuudella, laituripaikat sekä ylipäätään kohdat, joihin tekstiosassa on viitattu. Uutuutena väyläkortti sisältää myös työkalun aluskohtaisten painumien arvioimiseksi väyläkohtaisesti.",
@@ -244,7 +247,8 @@
     },
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "alert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.<br/><br/>Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3>-listauksesta.",
-    "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
+    "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.",
+    "harborPreviewAlert": "Hakemaasi \"{{ harborId }}\" satamaa ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -273,7 +277,10 @@
     "lastUpdatedUnknown": "Tason tietojen viimeisin latausajankohta ei tiedossa.",
     "viewLastUpdatedUnknown": "Näkymän tietojen viimeisin latausajankohta ei tiedossa.",
     "type": "Tyyppi",
-    "layerLoadError": "Tason tietojen lataus epäonnistui"
+    "layerLoadError": "Tason tietojen lataus epäonnistui",
+    "faultsOnFairway": "Väylällä turvalaitevikoja",
+    "faultsLastUpdated": "Turvalaitevikojen tiedot ladattu yli {{ val, number}} h sitten.",
+    "faultsLastUpdatedUnknown": "Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
