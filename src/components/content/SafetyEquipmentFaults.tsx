@@ -82,7 +82,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
-                    {(faultArray[0].name && faultArray[0].name[lang]) || faultArray[0].name?.fi} - {faultArray[0].equipmentId}
+                    {faultArray[0].name?.[lang] ?? faultArray[0].name?.fi} - {faultArray[0].equipmentId}
                   </strong>
                 </IonLabel>
               </IonCol>
@@ -131,7 +131,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                       )}
                       <IonRow>
                         <IonCol>
-                          <IonLabel>{(fault.type && fault.type[lang]) || fault.type?.fi}</IonLabel>
+                          <IonLabel>{fault.type?.[lang] ?? fault.type?.fi}</IonLabel>
                         </IonCol>
                         <IonCol>
                           <IonLabel>{t('faults.datetimeFormat', { val: fault.recordTime })}</IonLabel>
