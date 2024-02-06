@@ -951,7 +951,6 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
     internet: harbor.internet,
   });
   source.addFeature(feature);
-  console.log('hello add section');
 }
 
 function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
