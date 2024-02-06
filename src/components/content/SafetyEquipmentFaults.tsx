@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -19,6 +19,8 @@ import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { useSafetyEquipmentAndFaultLayer } from '../FeatureLoader';
+import { InfoParagraph } from './Paragraph';
+import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -43,15 +45,13 @@ function goto(id: number, selectedFairwayCard: boolean) {
 }
 
 export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-
   // Sort faults by recordTime (desc)
   // and group faults by equipmentId
   const sortedFaults = [...data].sort((a, b) => {
     return a.recordTime > b.recordTime ? -1 : 1;
   });
-
   const groupedFaults: SafetyEquipmentFault[][] = [];
   sortedFaults.forEach((value) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
@@ -64,6 +64,9 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
       {groupedFaults.map((faultArray) => {
         const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId) as Feature<Geometry>;
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
+        // check if symbol is not undefined and key in symbol2Icon structure
+        // seems to be safe enough to justify disabling eslint and using symbol2Icon from safetyEquipmentStyles
+        const symbol = equipment?.symbol !== undefined && equipment?.symbol in symbol2Icon ? equipment?.symbol : '?';
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
           if (f.fairwayCards) {
@@ -79,57 +82,91 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
-                    {(faultArray[0].name && faultArray[0].name[lang]) || faultArray[0].name?.fi} - {faultArray[0].equipmentId}
+                    {faultArray[0].name?.[lang] ?? faultArray[0].name?.fi} - {faultArray[0].equipmentId}
                   </strong>
                 </IonLabel>
               </IonCol>
               <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
-                    <Link
-                      to="/turvalaiteviat/"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        goto(faultArray[0].equipmentId, selectedFairwayCard);
-                      }}
-                    >
-                      {faultArray[0].geometry?.coordinates[0] &&
-                        faultArray[0].geometry?.coordinates[1] &&
-                        coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]])}
-                    </Link>
+                    <em>
+                      <Link
+                        to="/turvalaiteviat/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          goto(faultArray[0].equipmentId, selectedFairwayCard);
+                        }}
+                      >
+                        {faultArray[0].geometry?.coordinates[0] &&
+                          faultArray[0].geometry?.coordinates[1] &&
+                          coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]]).replace('N', 'N /')}
+                      </Link>
+                    </em>
                   )}
                 </IonLabel>
               </IonCol>
             </IonRow>
-            {faultArray.map((fault) => (
-              <IonRow key={fault.id}>
-                <IonCol>
-                  <IonLabel>{(fault.type && fault.type[lang]) || fault.type?.fi}</IonLabel>
+            <IonGrid className="ion-no-padding">
+              <IonRow>
+                <IonCol size="1.5">
+                  {/*eslint-disable-next-line  @typescript-eslint/no-explicit-any*/}
+                  <IonIcon className="equipmentListIcon" src={(symbol2Icon as any)[symbol].icon} />
                 </IonCol>
-                <IonCol className="ion-text-end ion-no-padding">
-                  <IonLabel>
-                    <em>{fault.recordTime > 0 && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
-                  </IonLabel>
+                <IonCol className="faultInfoCol">
+                  {faultArray.map((fault, index) => (
+                    <IonGrid key={fault.id} className="ion-no-padding">
+                      {index === 0 && (
+                        <IonRow>
+                          <IonCol>
+                            <IonLabel>
+                              <strong>{t('faults.faultType')}</strong>
+                            </IonLabel>
+                          </IonCol>
+                          <IonCol>
+                            <IonLabel>
+                              <strong>{t('faults.faultDateTime')}</strong>
+                            </IonLabel>
+                          </IonCol>
+                        </IonRow>
+                      )}
+                      <IonRow>
+                        <IonCol>
+                          <IonLabel>{fault.type?.[lang] ?? fault.type?.fi}</IonLabel>
+                        </IonCol>
+                        <IonCol>
+                          <IonLabel>{t('faults.datetimeFormat', { val: fault.recordTime })}</IonLabel>
+                        </IonCol>
+                      </IonRow>
+                    </IonGrid>
+                  ))}
                 </IonCol>
               </IonRow>
-            ))}
-            {cards.length > 0 && (
-              <>
-                <IonRow>
-                  <IonCol>{t('fairways')}</IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    {cards.map((card, idx) => (
-                      <span key={card.id}>
-                        <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-                        {idx < cards.length - 1 ? ', ' : ''}
-                      </span>
-                    ))}
-                  </IonCol>
-                </IonRow>
-              </>
-            )}
+              {!selectedFairwayCard && (
+                <>
+                  <IonRow>
+                    <IonCol>
+                      <strong>{t('faults.fairways')}</strong>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      {cards.length > 0 ? (
+                        cards.map((card, idx) => (
+                          <span key={card.id}>
+                            <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                            {idx < cards.length - 1 ? ', ' : ''}
+                          </span>
+                        ))
+                      ) : (
+                        <IonText className="customInfoStyle">
+                          <InfoParagraph />
+                        </IonText>
+                      )}
+                    </IonCol>
+                  </IonRow>
+                </>
+              )}
+            </IonGrid>
           </IonGrid>
         );
       })}

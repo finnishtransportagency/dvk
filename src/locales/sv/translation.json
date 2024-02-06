@@ -256,7 +256,9 @@
     "print": "Skriv ut säkerhetsanordningsfelen",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Uppdaterat",
-    "fairways": "Farledskorten angående säkerhetsanordningen"
+    "fairways": "Farledskorten angående säkerhetsanordningen",
+    "faultType": "[sv] Vika",
+    "faultDateTime": "[sv] Ajankohta"
   },
   "warnings": {
     "title": "Navigationsvarningar",
