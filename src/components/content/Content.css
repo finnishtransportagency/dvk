@@ -88,37 +88,53 @@ button.icon:focus-visible:hover {
   position: relative;
   transition: max-width 150ms;
 }
+
 .wide .dropdownWrapper {
   max-width: 335px;
 }
+
 .dropdownWrapper ion-input.searchBar {
   box-sizing: border-box;
-  min-height: 43px !important;
   max-width: 100%;
-  background-color: var(--ion-color-dark);
-  padding: 1px !important;
+  border: 1px solid var(--ion-color-dark);
+  border-radius: 0;
+  --min-height: 43px;
+  --background: var(--ion-color-primary-contrast);
   --highlight-color-focused: transparent;
+  --padding-top: 1px;
+  --padding-bottom: 1px;
 }
+
 .dropdownWrapper ion-input.searchBar input {
-  height: 100%;
-  padding: 0 40px 0 12px;
   background: var(--ion-color-primary-contrast) url('../../theme/img/search.svg') no-repeat right 12px center;
   background-size: 24px 24px;
   border-radius: 0;
+  min-height: 41px;
 }
+
+.dropdownWrapper label.input-wrapper {
+  min-height: 41px;
+}
+
 .dropdownWrapper ion-input.searchBar.has-focus {
-  background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
-  min-height: 41px !important;
-  padding: 2px !important;
+  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  border-image-slice: 20%;
+  border-image-width: 2px;
+  border-width: 2px;
+  --padding-top: 0px;
+  --padding-bottom: 0px;
 }
+
 .dropdownWrapper ion-input.searchBar.has-focus input {
-  padding: 0 39px 0 11px;
   background-position: right 11px center;
+  padding-inline-start: 9px;
 }
+
 .dropdownWrapper ion-input.searchBar.has-value input {
   padding-right: 12px;
   background: var(--ion-color-primary-contrast);
 }
+
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon {
   background: var(--ion-color-primary-contrast) url('../../theme/img/close_primary.svg') no-repeat center;
   background-size: 18px;
@@ -129,14 +145,17 @@ button.icon:focus-visible:hover {
   right: 12px;
   z-index: 2;
 }
+
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
   background-color: var(--ion-color-light);
 }
+
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
   background-color: var(--ion-color-primary-contrast);
   opacity: 1;
   outline: 1px solid var(--ion-color-dark);
 }
+
 .dropdownWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
   display: none;
 }
