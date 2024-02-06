@@ -89,17 +89,19 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
               <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
-                    <Link
-                      to="/turvalaiteviat/"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        goto(faultArray[0].equipmentId, selectedFairwayCard);
-                      }}
-                    >
-                      {faultArray[0].geometry?.coordinates[0] &&
-                        faultArray[0].geometry?.coordinates[1] &&
-                        coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]]).replace('N', 'N /')}
-                    </Link>
+                    <em>
+                      <Link
+                        to="/turvalaiteviat/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          goto(faultArray[0].equipmentId, selectedFairwayCard);
+                        }}
+                      >
+                        {faultArray[0].geometry?.coordinates[0] &&
+                          faultArray[0].geometry?.coordinates[1] &&
+                          coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]]).replace('N', 'N /')}
+                      </Link>
+                    </em>
                   )}
                 </IonLabel>
               </IonCol>
