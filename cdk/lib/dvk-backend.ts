@@ -8,7 +8,7 @@ import { FieldLogLevel } from 'aws-cdk-lib/aws-appsync';
 import * as path from 'path';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import { Table, AttributeType, BillingMode, ProjectionType, StreamViewType } from 'aws-cdk-lib/aws-dynamodb';
-import { RetentionDays } from 'aws-cdk-lib/aws-logs';
+import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import Config from './config';
 import { IVpc, Vpc } from 'aws-cdk-lib/aws-ec2';
 import {
@@ -114,8 +114,9 @@ export class DvkBackendStack extends Stack {
     for (const lambdaFunc of lambdaFunctions) {
       const typeName = lambdaFunc.typeName;
       const fieldName = lambdaFunc.fieldName;
+      const functionName = `${typeName}-${fieldName}-${env}`.toLocaleLowerCase();
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
-        functionName: `${typeName}-${fieldName}-${env}`.toLocaleLowerCase(),
+        functionName,
         runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
@@ -135,7 +136,11 @@ export class DvkBackendStack extends Stack {
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
           API_TIMEOUT: '10000',
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        // logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        logGroup: new LogGroup(this, `LambdaLogs-${functionName}`, {
+          logGroupName: `/dvk/lambda/${functionName}`,
+          retention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        }),
         bundling: {
           minify: true,
         },
@@ -181,15 +186,20 @@ export class DvkBackendStack extends Stack {
   }
 
   private addDevelopmentLambdas(httpListener: ApplicationListener, env: string, staticBucket: Bucket) {
+    let functionName = `cors-${env}`.toLocaleLowerCase();
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
-      functionName: `cors-${env}`.toLocaleLowerCase(),
+      functionName,
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       environment: {
         LOG_LEVEL: 'debug',
       },
-      logRetention: RetentionDays.ONE_DAY,
+      // logRetention: RetentionDays.ONE_DAY,
+      logGroup: new LogGroup(this, `LambdaLogs-${functionName}`, {
+        logGroupName: `/dvk/lambda/${functionName}`,
+        retention: RetentionDays.ONE_DAY,
+      }),
       bundling: {
         minify: true,
       },
@@ -199,8 +209,9 @@ export class DvkBackendStack extends Stack {
       priority: 1,
       conditions: [ListenerCondition.httpRequestMethods(['OPTIONS'])],
     });
+    functionName = `image-${env}`.toLocaleLowerCase();
     const imgLambda = new NodejsFunction(this, `APIHandler-Image-${env}`, {
-      functionName: `image-${env}`.toLocaleLowerCase(),
+      functionName,
       runtime: lambda.Runtime.NODEJS_18_X,
       entry: path.join(__dirname, 'lambda/api/image-handler.ts'),
       handler: 'handler',
@@ -208,7 +219,11 @@ export class DvkBackendStack extends Stack {
         LOG_LEVEL: 'debug',
         ENVIRONMENT: env,
       },
-      logRetention: RetentionDays.ONE_DAY,
+      // logRetention: RetentionDays.ONE_DAY,
+      logGroup: new LogGroup(this, `LambdaLogs-${functionName}`, {
+        logGroupName: `/dvk/lambda/${functionName}`,
+        retention: RetentionDays.ONE_DAY,
+      }),
       bundling: {
         minify: true,
       },
@@ -362,9 +377,10 @@ export class DvkBackendStack extends Stack {
       this.addDevelopmentLambdas(httpListener, env, staticBucket);
     }
     for (const lambdaFunc of apiLambdaFunctions) {
-      const functionName = lambdaFunc.functionName;
-      const backendLambda = new NodejsFunction(this, `APIHandler-${functionName}-${env}`, {
-        functionName: `${functionName}-${env}`.toLocaleLowerCase(),
+      const lambdaName = lambdaFunc.functionName;
+      const functionName = `${lambdaName}-${env}`.toLocaleLowerCase();
+      const backendLambda = new NodejsFunction(this, `APIHandler-${lambdaName}-${env}`, {
+        functionName,
         runtime: lambda.Runtime.NODEJS_18_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
@@ -383,12 +399,16 @@ export class DvkBackendStack extends Stack {
           CLOUDFRONT_DNSNAME: `${this.siteSubDomain}.${this.domainName}`,
           API_TIMEOUT: '10000',
         },
-        logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        // logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        logGroup: new LogGroup(this, `LambdaLogs-${lambdaName}`, {
+          logGroupName: `/dvk/lambda/${functionName}`,
+          retention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
+        }),
         bundling: {
           minify: true,
         },
       });
-      const target = httpListener.addTargets(`HTTPListenerTarget-${functionName}`, {
+      const target = httpListener.addTargets(`HTTPListenerTarget-${lambdaName}`, {
         targets: [new LambdaTarget(backendLambda)],
         priority: lambdaFunc.priority,
         conditions: [ListenerCondition.pathPatterns([lambdaFunc.pathPattern])],
