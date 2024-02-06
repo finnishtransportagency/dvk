@@ -104,7 +104,9 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
     return arc.geometry.coordinates as Coordinate[];
   } else {
     const arc = lineArc(center, turningRadius, rhumbBearing(center, touchPoint2.geometry), rhumbBearing(center, touchPoint1.geometry));
-    return arc.geometry.coordinates.toReversed() as Coordinate[];
+    const coordinates = arc.geometry.coordinates;
+    coordinates.reverse();
+    return coordinates as Coordinate[];
   }
 }
 
