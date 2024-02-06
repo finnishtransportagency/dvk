@@ -166,7 +166,6 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
   const depthText =
     props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
-  const label = `${quayName} ${depthText}`;
 
   const image = new Icon({
     src: quayIcon,
@@ -180,24 +179,27 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
+  const labelFill = new Fill({
+    color: selected ? '#0064AF' : '#000000',
+  });
+  const labelStroke = new Stroke({
+    width: 3,
+    color: '#ffffff',
+  });
+  const labelZIndex = selected ? 10 : 1;
 
-  return [
+  const quayStyle = [
     new Style({
       image: selected ? activeImage : image,
       text: new Text({
         font: 'bold 18px "Exo2"',
         placement: 'line',
-        offsetY: -55,
-        text: label,
-        fill: new Fill({
-          color: selected ? '#0064AF' : '#000000',
-        }),
-        stroke: new Stroke({
-          width: 3,
-          color: '#ffffff',
-        }),
+        offsetY: props.showDepth ? -70 : -55,
+        text: quayName,
+        fill: labelFill,
+        stroke: labelStroke,
       }),
-      zIndex: selected ? 10 : 1,
+      zIndex: labelZIndex,
     }),
     new Style({
       image: new CircleStyle({
@@ -210,6 +212,24 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
       zIndex: selected ? 11 : 2,
     }),
   ];
+
+  if (props.showDepth) {
+    quayStyle.push(
+      new Style({
+        text: new Text({
+          font: '12px "Exo2"',
+          placement: 'line',
+          offsetY: -52,
+          text: depthText,
+          fill: labelFill,
+          stroke: labelStroke,
+        }),
+        zIndex: labelZIndex,
+      })
+    );
+  }
+
+  return quayStyle;
 }
 
 export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
@@ -885,9 +905,9 @@ export function unsetSelectedFairwayCard() {
   quaySource.clear();
 }
 
-function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON) {
-  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
+function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
+  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
@@ -896,6 +916,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
     extraInfo: quay.extraInfo,
     length: quay.length,
     depth,
+    showDepth,
     email: harbor.email,
     phoneNumber: harbor.phoneNumber,
     fax: harbor.fax,
@@ -927,13 +948,18 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
 function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
   const format = new GeoJSON();
   for (const quay of harbor.quays ?? []) {
-    if (quay?.geometry) {
-      addQuayFeature(harbor, quay, source, format);
-    }
-    for (const section of quay?.sections ?? []) {
-      if (quay && section?.geometry) {
-        addSectionFeature(harbor, quay, section, source, format);
+    let sectionGeometryMissing = false;
+    quay?.sections?.forEach((section) => {
+      if (section) {
+        if (section.geometry) {
+          addSectionFeature(harbor, quay, section, source, format);
+        } else {
+          sectionGeometryMissing = true;
+        }
       }
+    });
+    if (quay?.geometry) {
+      addQuayFeature(harbor, quay, source, format, sectionGeometryMissing);
     }
   }
 }

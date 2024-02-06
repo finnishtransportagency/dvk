@@ -20,6 +20,7 @@ export type QuayFeatureProperties = {
   length?: number;
   name?: string;
   depth?: number[];
+  showDepth?: boolean;
   email?: string;
   phoneNumber?: string[];
   fax?: string;
