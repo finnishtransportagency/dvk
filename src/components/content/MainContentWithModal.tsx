@@ -19,7 +19,7 @@ import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-import SquatCalculator from './SquatCalculator';
+// import SquatCalculator from './SquatCalculator';
 import HarborPreview from './HarborPreview';
 
 interface ModalContentProps {
@@ -320,7 +320,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
-        {modalContent === 'squatCalculator' && <SquatCalculator />}
+        {/* {modalContent === 'squatCalculator' && <SquatCalculator />} */}
         {modalContent === 'harborPreview' && <HarborPreview />}
       </IonContent>
     </IonModal>

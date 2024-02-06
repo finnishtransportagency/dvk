@@ -19,7 +19,7 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-import SquatCalculator from './SquatCalculator';
+// import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
 import HarborPreview from './HarborPreview';
 
@@ -290,7 +290,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
-                {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
+                {/* {target && target === 'squat' && <SquatCalculator widePane={widePane} />} */}
                 {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>
