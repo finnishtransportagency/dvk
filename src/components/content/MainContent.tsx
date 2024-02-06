@@ -9,7 +9,7 @@ import FairwayCards from './FairwayCards';
 import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
-import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { APP_CONFIG_PREVIEW, Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
@@ -188,6 +188,18 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
     }
   });
 
+  const [importedSquatCalculator, setImportedSquatCalculator] = useState(<></>);
+
+  useEffect(() => {
+    const importComponent = async () => {
+      const module = await import('./SquatCalculator');
+      const SquatCalculator = module.default;
+      setImportedSquatCalculator(<SquatCalculator widePane={widePane} />);
+    };
+
+    if (VITE_APP_CONFIG != APP_CONFIG_PREVIEW) importComponent();
+  }, [widePane]);
+
   return (
     <IonGrid className="ion-no-padding" id="splitPane" ref={grid}>
       <IonRow>
@@ -290,7 +302,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
-                {/* {target && target === 'squat' && <SquatCalculator widePane={widePane} />} */}
+                {target && target === 'squat' && importedSquatCalculator}
                 {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>

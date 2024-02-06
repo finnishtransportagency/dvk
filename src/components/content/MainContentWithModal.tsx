@@ -7,7 +7,7 @@ import FairwayCards from './FairwayCards';
 import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
-import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { APP_CONFIG_PREVIEW, Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
@@ -237,6 +237,18 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     }
   }, [modalContent, data]);
 
+  const [importedSquatCalculator, setImportedSquatCalculator] = useState(<></>);
+
+  useEffect(() => {
+    const importComponent = async () => {
+      const module = await import('./SquatCalculator');
+      const SquatCalculator = module.default;
+      setImportedSquatCalculator(<SquatCalculator />);
+    };
+
+    if (VITE_APP_CONFIG != APP_CONFIG_PREVIEW) importComponent();
+  }, []);
+
   return (
     <IonModal
       ref={modal}
@@ -320,7 +332,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
-        {/* {modalContent === 'squatCalculator' && <SquatCalculator />} */}
+        {modalContent === 'squatCalculator' && importedSquatCalculator}
         {modalContent === 'harborPreview' && <HarborPreview />}
       </IonContent>
     </IonModal>
