@@ -6,6 +6,8 @@ import { Fill, Icon } from 'ol/style';
 import Map from 'ol/Map';
 import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
+import quaySectionIcon from '../theme/img/quay_section.svg';
+import quaySectionIconActive from '../theme/img/quay_section_active.svg';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
@@ -124,18 +126,25 @@ export function getBoardLineStyle(color: string, width: number) {
 function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
   const color = selected ? '#0064AF' : '#000000';
   const depth = props.depth ? `${props.depth[0]} m` : '';
+  const image = new Icon({
+    src: quaySectionIcon,
+    anchor: [0.5, 19],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const activeImage = new Icon({
+    src: quaySectionIconActive,
+    anchor: [0.5, 19],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
 
   return new Style({
-    image: new CircleStyle({
-      radius: 3,
-      fill: new Fill({
-        color: color,
-      }),
-    }),
+    image: selected ? activeImage : image,
     text: new Text({
       font: '14px "Exo2"',
       placement: 'line',
-      offsetY: -16,
+      offsetY: -29,
       text: depth,
       fill: new Fill({
         color: color,
@@ -194,7 +203,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
       text: new Text({
         font: 'bold 18px "Exo2"',
         placement: 'line',
-        offsetY: props.showDepth ? -70 : -55,
+        offsetY: props.showDepth ? -72 : -55,
         text: quayName,
         fill: labelFill,
         stroke: labelStroke,
@@ -219,7 +228,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
         text: new Text({
           font: '12px "Exo2"',
           placement: 'line',
-          offsetY: -52,
+          offsetY: -53,
           text: depthText,
           fill: labelFill,
           stroke: labelStroke,
