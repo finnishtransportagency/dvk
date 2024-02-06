@@ -1168,7 +1168,8 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   const ids = [];
   if (quay?.geometry?.coordinates) {
     ids.push(quay.geometry.coordinates.join(';'));
-  } else if (quay?.sections) {
+  }
+  if (quay?.sections) {
     quay.sections.forEach((s) => {
       if (s?.geometry?.coordinates) {
         ids.push(s.geometry.coordinates.join(';'));

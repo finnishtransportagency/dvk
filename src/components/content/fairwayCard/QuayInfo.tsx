@@ -27,8 +27,8 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
             onBlur={() => setSelectedQuay(null)}
           >
             <p className="inlineHoverText">
-              {quay?.name && quay.name[lang]?.charAt(0).toLocaleUpperCase()}
-              {quay?.name && quay.name[lang]?.slice(1)}
+              {quay?.name?.[lang]?.charAt(0).toLocaleUpperCase()}
+              {quay?.name?.[lang]?.slice(1)}
               {!quay?.name && t('quay')}
               {quay?.length && (
                 <>
