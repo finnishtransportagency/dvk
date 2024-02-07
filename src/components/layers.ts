@@ -172,7 +172,8 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   }
 
   const dvkMap = getMap();
-  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
+  const lang = dvkMap.i18n.resolvedLanguage as Lang;
+  const quayName = props.quay?.[lang] ?? '';
   const depthText =
     props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
 
