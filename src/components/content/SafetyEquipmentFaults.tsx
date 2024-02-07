@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
+import { coordinatesToStringHDM, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
@@ -47,11 +47,17 @@ function goto(id: number, selectedFairwayCard: boolean) {
 export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
-  // Sort faults by recordTime (desc)
+
+  // Sort faults by recordTime (desc) if only one fault or
+  // safety equipment fault page
   // and group faults by equipmentId
-  const sortedFaults = [...data].sort((a, b) => {
-    return a.recordTime > b.recordTime ? -1 : 1;
-  });
+  const sortedFaults =
+    data.length == 1 || !selectedFairwayCard
+      ? [...data].sort((a, b) => {
+          return a.recordTime > b.recordTime ? -1 : 1;
+        })
+      : sortByAlign(data);
+
   const groupedFaults: SafetyEquipmentFault[][] = [];
   sortedFaults.forEach((value) => {
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
