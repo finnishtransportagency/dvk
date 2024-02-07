@@ -10,6 +10,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
+import InfoIcon from '../../theme/img/info.svg?react';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -41,13 +42,20 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
-      {quay.properties.name && (
+      {quay.properties.featureType === 'section' && (
         <>
           <IonRow>
             <IonCol className="header">{t('popup.quay.section')}</IonCol>
           </IonRow>
           <IonRow>
-            <IonCol>{quay.properties.name}</IonCol>
+            {quay.properties.name ? (
+              <IonCol>{quay.properties.name}</IonCol>
+            ) : (
+              <IonCol className="info">
+                <InfoIcon />
+                {t('common.noDataSet')}
+              </IonCol>
+            )}
           </IonRow>
         </>
       )}
