@@ -314,7 +314,8 @@
       "fax": "Fax",
       "phoneNumber": "Telefonnummer",
       "internet": "Nätsida",
-      "extra": "Tilläggsuppgift"
+      "extra": "Tilläggsuppgift",
+      "section": "[sv] Osio"
     },
     "area": {
       "info": "Farledsområdets uppgifter",

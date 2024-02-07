@@ -38,7 +38,7 @@
           "depths": "Depths",
           "safetyEquipmentsTitle": "Navigational aids",
           "safetyEquipments": "Navigational aids",
-          "safetyEquipmentFaults": "Defective navigation aids",          
+          "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
@@ -314,7 +314,8 @@
       "fax": "Fax",
       "phoneNumber": "Telephone",
       "internet": "Website",
-      "extra": "Additional information"
+      "extra": "Additional information",
+      "section": "[en] Osio"
     },
     "area": {
       "info": "Fairway area information",

@@ -35,12 +35,22 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {quay.properties.quay?.[lang]} {quay.properties.name ? quay.properties.name : ''}
+          {quay.properties.quay?.[lang] ?? ''}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
+      {quay.properties.name && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('popup.quay.section')}</IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>{quay.properties.name}</IonCol>
+          </IonRow>
+        </>
+      )}
       <IonRow>
         <IonCol className="header">{t('popup.quay.coordinates')}</IonCol>
       </IonRow>

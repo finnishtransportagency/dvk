@@ -314,7 +314,8 @@
       "fax": "Fax",
       "phoneNumber": "Puhelin",
       "internet": "Verkkosivu",
-      "extra": "Lisätieto"
+      "extra": "Lisätieto",
+      "section": "Osio"
     },
     "area": {
       "info": "Väyläalueen tiedot",
