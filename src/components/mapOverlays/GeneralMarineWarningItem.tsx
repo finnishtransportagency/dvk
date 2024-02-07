@@ -30,19 +30,6 @@ export const GeneralMarineWarningItem: React.FC<GeneralMarineWarningItemProps> =
                 })}
               </IonText>
             )}
-            {(marineWarning.startDateTime || marineWarning.endDateTime) && (
-              <IonText>
-                {marineWarning.startDateTime &&
-                  t('popup.marine.datetimeFormat', {
-                    val: marineWarning.startDateTime,
-                  })}
-                {' - '}
-                {marineWarning.endDateTime &&
-                  t('popup.marine.datetimeFormat', {
-                    val: marineWarning.endDateTime,
-                  })}
-              </IonText>
-            )}
           </strong>
         </IonCol>
       </IonRow>

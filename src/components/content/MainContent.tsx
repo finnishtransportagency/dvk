@@ -248,7 +248,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                           aria-label={t('clearTitle')}
                           onClick={clearInput}
                           data-testid={!fairwayCardId && !target ? 'clearInput' : ''}
-                        ></button>
+                        />
                         <SearchbarDropdown
                           isOpen={isSearchbarOpen}
                           searchQuery={searchQuery.trim()}
