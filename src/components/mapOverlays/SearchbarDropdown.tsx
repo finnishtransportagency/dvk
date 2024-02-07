@@ -16,8 +16,8 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
   const { t, i18n } = useTranslation('', { keyPrefix: 'homePage.map.controls.searchbar' });
   const lang = i18n.resolvedLanguage as Lang;
   const sortedCards = [...fairwayCards].sort((a, b) => {
-    const nameA = a.name[lang] || '';
-    const nameB = b.name[lang] || '';
+    const nameA = a.name[lang] ?? '';
+    const nameB = b.name[lang] ?? '';
     return nameA.localeCompare(nameB);
   });
 
@@ -28,7 +28,7 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
   return (
     <>
       {isOpen && searchQuery.length >= MINIMUM_QUERYLENGTH && (
-        <IonList lines="none" className="searchbarDropdownContainer">
+        <IonList lines="none" className="searchbarDropdownContainer ion-no-padding">
           {sortedCards.map((fairwayCard, idx) => {
             return (
               <IonItem

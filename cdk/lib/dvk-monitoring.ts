@@ -67,10 +67,10 @@ export class MonitoringServices extends Construct {
     dashboard.addWidgets(...cwWidgets);
 
     // create error log widget
-    const logGroupNames = lambdaFunctions.map((lambda) => `/aws/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
+    const logGroupNames = lambdaFunctions.map((lambda) => `/dvk/lambda/${this.getLambdaName(lambda.typeName, lambda.fieldName, env)}`);
     const apiLogGroupNames: string[] = [];
     apiLambdaFunctions.forEach((lambda) => {
-      if (lambda.useMonitoring) apiLogGroupNames.push(`/aws/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase());
+      if (lambda.useMonitoring) apiLogGroupNames.push(`/dvk/lambda/${lambda.functionName}-${env}`.toLocaleLowerCase());
     });
 
     dashboard.addWidgets(
@@ -145,7 +145,7 @@ export class MonitoringServices extends Construct {
       FilterPattern.stringValue('$.message', '=', 'Fatal'),
       FilterPattern.stringValue('$.message', '=', 'fatal')
     );
-    const logGroupName = '/aws/lambda/' + lambdaName;
+    const logGroupName = '/dvk/lambda/' + lambdaName;
     const metricName = lambdaName + `_metric_${env}`;
     const logGroup = LogGroup.fromLogGroupName(this, 'DvkLogGroup_' + lambdaName, logGroupName);
     const metricFilter = new MetricFilter(this, `MetricFilter_${lambdaName}`, {

@@ -256,7 +256,9 @@
     "print": "Tulosta turvalaiteviat",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Päivitetty",
-    "fairways": "Turvalaitteeseen liittyvät väyläkortit"
+    "fairways": "Turvalaitteeseen liittyvät väyläkortit",
+    "faultType": "Vika",
+    "faultDateTime": "Ajankohta"
   },
   "warnings": {
     "title": "Merivaroitukset",
