@@ -44,37 +44,39 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
         const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) ?? 0) > 0;
 
         return (
-          <li key={area?.id ?? idx} className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
-            <IonText
-              className="inlineHoverText"
-              onMouseOver={() => highlightArea(area?.id)}
-              onFocus={() => highlightArea(area?.id)}
-              onMouseOut={() => highlightArea(0)}
-              onBlur={() => highlightArea(0)}
-            >
-              <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
-            </IonText>
-            {isDraftAvailable && (
-              <>
+          <IonText
+            key={area?.id ?? idx}
+            onMouseOver={() => highlightArea(area?.id)}
+            onFocus={() => highlightArea(area?.id)}
+            onMouseOut={() => highlightArea(0)}
+            onBlur={() => highlightArea(0)}
+          >
+            <p className="inlineHoverText">
+              <li className={fairwayAreas.length === idx + 1 ? 'no-margin-bottom' : ''}>
+                <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
+                {isDraftAvailable && (
+                  <>
+                    <br />
+                    {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
+                    <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })}>m</dd>
+                  </>
+                )}
                 <br />
-                {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
-                <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })}>m</dd>
-              </>
-            )}
-            <br />
-            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
-            {sizingSpeeds.length > 0 && (
-              <>
+                {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
+                <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
+                {sizingSpeeds.length > 0 && (
+                  <>
+                    <br />
+                    {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
+                    <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
+                  </>
+                )}
                 <br />
-                {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
-                <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
-              </>
-            )}
-            <br />
-            {area?.notationCode === 1 ? t('lateralMarking') : ''}
-            {area?.notationCode === 2 ? t('cardinalMarking') : ''}
-          </li>
+                {area?.notationCode === 1 ? t('lateralMarking') : ''}
+                {area?.notationCode === 2 ? t('cardinalMarking') : ''}
+              </li>
+            </p>
+          </IonText>
         );
       })}
     </ol>
