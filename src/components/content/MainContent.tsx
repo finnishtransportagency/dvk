@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
 import ChevronIcon from '../../theme/img/chevron.svg?react';
 import MenuIcon from '../../theme/img/menu.svg?react';
@@ -19,7 +19,6 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-// import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
 import HarborPreview from './HarborPreview';
 
@@ -35,11 +34,14 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const { state } = useDvkContext();
   const { data } = useFairwayCardListData();
 
+  const SquatCalculator = lazy(() => import('./SquatCalculator'));
+
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const [widePane, setWidePane] = useState(false);
   const [showPane, setShowPane] = useState(true);
+
   const mapElement = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();
@@ -188,18 +190,6 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
     }
   });
 
-  const [importedSquatCalculator, setImportedSquatCalculator] = useState(<></>);
-
-  useEffect(() => {
-    const importComponent = async () => {
-      const module = await import('./SquatCalculator');
-      const SquatCalculator = module.default;
-      setImportedSquatCalculator(<SquatCalculator widePane={widePane} />);
-    };
-
-    if (VITE_APP_CONFIG != APP_CONFIG_PREVIEW) importComponent();
-  }, [widePane]);
-
   return (
     <IonGrid className="ion-no-padding" id="splitPane" ref={grid}>
       <IonRow>
@@ -302,7 +292,11 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
-                {target && target === 'squat' && importedSquatCalculator}
+                {VITE_APP_CONFIG !== APP_CONFIG_PREVIEW && target && target === 'squat' && (
+                  <Suspense fallback={<></>}>
+                    <SquatCalculator widePane={widePane}></SquatCalculator>
+                  </Suspense>
+                )}
                 {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>
