@@ -35,6 +35,14 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useMonitoring: true,
   },
   {
+    entry: path.join(__dirname, 'pilotroute-handler.ts'),
+    pathPattern: '/api/pilotroutes',
+    functionName: 'pilotroutes',
+    priority: 18,
+    useVpc: true,
+    useMonitoring: true
+  },
+  {
     entry: path.join(__dirname, 'login.ts'),
     pathPattern: '/yllapito/kirjaudu.html',
     functionName: 'login',

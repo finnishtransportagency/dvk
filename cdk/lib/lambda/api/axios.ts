@@ -26,6 +26,7 @@ export enum ExternalAPI {
   VATU = 'VATU',
   WEATHER = 'Weather',
   AIS = 'AIS',
+  PILOTROUTE = 'PilotRoute'
 }
 
 export function getFetchErrorMessage(api: ExternalAPI): string {
@@ -48,6 +49,24 @@ export async function fetchTraficomApi<T>(path: string) {
   const duration = Date.now() - start;
   log.debug({ duration }, `Traficom api response time: ${duration} ms`);
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
+}
+
+export async function fetchPilotRouteApi() {
+  // muutetaan kun soaaurl toiminnassa
+  const url = 'https://testiapi.vayla.fi/reittisuunnitelmarajapinta';
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getVatuHeaders(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`${ExternalAPI.AIS} api %s fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.PILOTROUTE));
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `PILOTROUTE api response time: ${duration} ms`);
+  return response;
 }
 
 async function fetchAISApi(path: string, params: Record<string, string>) {
