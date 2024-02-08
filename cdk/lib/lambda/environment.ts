@@ -83,6 +83,10 @@ export async function getVatuUrl() {
   return readParameterForEnv('VatuUrl');
 }
 
+export async function getVatuPilotRoutesUrl() {
+  return readParameterForEnv('VatuPilotRouteUrl');
+}
+
 export async function getVatuHeaders(): Promise<Record<string, string>> {
   return {
     Authorization: 'Basic ' + Buffer.from(`${await getVatuUsername()}:${await getVatuPassword()}`).toString('base64'),

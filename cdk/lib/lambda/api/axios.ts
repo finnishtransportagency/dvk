@@ -11,6 +11,7 @@ import {
   getTimeout,
   getTraficomHeaders,
   getVatuHeaders,
+  getVatuPilotRoutesUrl,
   getVatuUrl,
   getWeatherHeaders,
 } from '../environment';
@@ -52,8 +53,7 @@ export async function fetchTraficomApi<T>(path: string) {
 }
 
 export async function fetchPilotRouteApi() {
-  // muutetaan kun soaaurl toiminnassa
-  const url = 'https://testiapi.vayla.fi/reittisuunnitelmarajapinta';
+  const url = await getVatuPilotRoutesUrl();
   const start = Date.now();
   const response = await axios
     .get(url, {
