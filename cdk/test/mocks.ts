@@ -64,3 +64,13 @@ export const mockAISALBEvent = (path: string): ALBEvent => {
     isBase64Encoded: false,
   };
 };
+
+export const mockPilotRoutesALBEvent = (path: string): ALBEvent => {
+  return {
+    requestContext: { elb: { targetGroupArn: 'arn' } },
+    body: null,
+    httpMethod: 'GET',
+    path: '/api/' + path,
+    isBase64Encoded: false,
+  };
+};

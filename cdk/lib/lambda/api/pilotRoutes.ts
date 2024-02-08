@@ -3,11 +3,11 @@ import { getHeaders } from "../environment";
 import { getFromCache } from "../graphql/cache";
 import { handleLoaderError, saveResponseToS3 } from "../util";
 import { RtzData } from "./apiModels";
-import { fetchPilotRouteApi } from "./axios";
+import { fetchPilotRoutesApi } from "./axios";
 
 async function fetchPilotRouteData(): Promise<RtzData[]> {
-  const response = await fetchPilotRouteApi();
-  return response.data?.map((entry: RtzData) => {
+  const data: RtzData[] = await fetchPilotRoutesApi();
+  return data?.map((entry) => {
     return {
       tunnus: entry.tunnus,
       tila: entry.tila,

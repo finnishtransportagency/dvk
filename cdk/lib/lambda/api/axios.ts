@@ -18,7 +18,7 @@ import {
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
-import { GeometryModel, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+import { GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
 
 export enum ExternalAPI {
   ILMANET = 'Ilmanet',
@@ -52,7 +52,7 @@ export async function fetchTraficomApi<T>(path: string) {
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 
-export async function fetchPilotRouteApi() {
+export async function fetchPilotRoutesApi() {
   const url = await getVatuPilotRoutesUrl();
   const start = Date.now();
   const response = await axios
@@ -61,12 +61,14 @@ export async function fetchPilotRouteApi() {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.AIS} api %s fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`${ExternalAPI.PILOTROUTE} api %s fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.PILOTROUTE));
     });
+  console.log('RESPONSE FETCHPILOTROUTESAPI');
+  console.log(response);
   const duration = Date.now() - start;
   log.debug({ duration }, `PILOTROUTE api response time: ${duration} ms`);
-  return response;
+  return response.data ? (response.data as RtzData[]) : [];
 }
 
 async function fetchAISApi(path: string, params: Record<string, string>) {
