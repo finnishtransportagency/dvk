@@ -82,7 +82,7 @@
     "start": "vite",
     "startpreview": "vite --config vite.preview.config.ts",
     "build": "tsc && vite build",
-    "buildpreview": "tsc --project tsconfig.preview.json && vite build --config vite.preview.config.ts",
+    "buildpreview": "tsc && vite build --config vite.preview.config.ts",
     "serve": "vite preview",
     "servepreview": "vite preview --config vite.preview.config.ts",
     "test": "vitest",

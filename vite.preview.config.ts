@@ -8,12 +8,9 @@ import eslintPlugin from 'vite-plugin-eslint';
 export default defineConfig({
   build: {
     outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build/esikatselu',
-    commonjsOptions: {
-      exclude: ['squat'],
-    },
     rollupOptions: {
-      external: ['squatlib']
-    }
+      external: ['squatlib'],
+    },
   },
   base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/esikatselu',
   server: {
