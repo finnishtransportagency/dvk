@@ -62,7 +62,6 @@ async function main() {
     { id: 'pilotroutes', url: new URL(pilotRoutesUrl) },
   ];
   for (const source of sources) {
-    console.log('TERVETERVETERVE');
     const response = await axios.get(source.url.toString(), {
       responseType: 'blob',
       headers: {

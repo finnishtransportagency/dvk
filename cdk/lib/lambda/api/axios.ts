@@ -64,8 +64,6 @@ export async function fetchPilotRoutesApi() {
       log.fatal(`${ExternalAPI.PILOTROUTE} api %s fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.PILOTROUTE));
     });
-  console.log('RESPONSE FETCHPILOTROUTESAPI');
-  console.log(response);
   const duration = Date.now() - start;
   log.debug({ duration }, `PILOTROUTE api response time: ${duration} ms`);
   return response.data ? (response.data as RtzData[]) : [];
