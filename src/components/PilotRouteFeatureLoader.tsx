@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { MAP } from '../utils/constants';
-import rtzDataJson from '../temp_data/rtz.json';
 import { Feature } from 'ol';
 import { Geometry, LineString } from 'ol/geom';
 import dvkMap from './DvkMap';
@@ -10,6 +9,7 @@ import rhumbBearing from '@turf/rhumb-bearing';
 import lineArc from '@turf/line-arc';
 import transformTranslate from '@turf/transform-translate';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
+import { useFeatureData } from '../utils/dataLoader';
 
 type Coordinate = [number, number];
 
@@ -129,45 +129,50 @@ function getRtzRoute(waypoints: Array<RtzWaypoint>): Array<Coordinate> {
   return routeCoordinates;
 }
 
-function useRtzFeatures() {
-  const [rtzFeatures, setRtzFeatures] = useState<Feature<Geometry>[]>([]);
+function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
-  const dataUpdatedAt = 1;
-  const errorUpdatedAt = 0;
-  const isPaused = false;
-  const isError = false;
-  const rtzData = rtzDataJson as unknown as RtzData[];
-  if (!ready) {
-    const features: Feature<Geometry>[] = [];
-    rtzData.forEach((rtz) => {
-      const waypoints: Array<RtzWaypoint> = [];
-      rtz.reittipisteet.forEach((rp) => {
-        waypoints.push({ coordinate: rp.geometria.coordinates, turnRadius: rp.kaarresade * 1852 });
-      });
+  const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
+  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, true, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const dataUpdatedAt = pilotRouteQuery.dataUpdatedAt;
+  const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
+  const isPaused = pilotRouteQuery.isPaused;
+  const isError = pilotRouteQuery.isError;
 
-      const routeCoordinates = getRtzRoute(waypoints);
-      const routeLine = new LineString(routeCoordinates);
-      routeLine.transform('EPSG:4326', MAP.EPSG);
-      features.push(new Feature(routeLine));
-    });
-    setRtzFeatures(features);
-    setReady(true);
-  }
-  return { ready, rtzFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  useEffect(() => {
+    const pilotRouteData = pilotRouteQuery.data;
+    if (pilotRouteData) {
+      const rtzData = pilotRouteData as unknown as RtzData[];
+      const features: Feature<Geometry>[] = [];
+      rtzData.forEach((rtz) => {
+        const waypoints: Array<RtzWaypoint> = [];
+        rtz.reittipisteet.forEach((rp) => {
+          waypoints.push({ coordinate: rp.geometria.coordinates, turnRadius: rp.kaarresade * 1852 });
+        });
+
+        const routeCoordinates = getRtzRoute(waypoints);
+        const routeLine = new LineString(routeCoordinates);
+        routeLine.transform('EPSG:4326', MAP.EPSG);
+        features.push(new Feature(routeLine));
+      });
+      setPilotRouteFeatures(features);
+      setReady(true);
+    }
+  }, [pilotRouteQuery.data]);
+  return { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useRtzLayer() {
-  const layerId = 'rtz';
-  const { ready, rtzFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useRtzFeatures();
+export function usePilotRouteLayer() {
+  const layerId = 'pilotroute';
+  const { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = usePilotRouteFeatures();
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(layerId);
     const source = dvkMap.getVectorSource(layerId);
     source.clear();
-    rtzFeatures.forEach((f) => f.set('dataSource', layerId, true));
-    source.addFeatures(rtzFeatures);
+    pilotRouteFeatures.forEach((f) => f.set('dataSource', layerId, true));
+    source.addFeatures(pilotRouteFeatures);
     layer.set('dataUpdatedAt', dataUpdatedAt);
-  }, [ready, rtzFeatures, dataUpdatedAt, errorUpdatedAt, layerId]);
+  }, [ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, layerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

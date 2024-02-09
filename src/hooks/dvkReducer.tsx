@@ -16,7 +16,7 @@ export type State = {
 export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
-  layers: ['pilot', 'line12', 'harbor', 'name', 'quay', 'rtz'],
+  layers: ['pilot', 'line12', 'harbor', 'name', 'quay', 'pilotroute'],
   showAisPredictor: false,
   response: [],
   locationPermission: 'off',
