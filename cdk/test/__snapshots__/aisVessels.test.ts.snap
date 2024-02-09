@@ -1,58 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should get vessels from api 1`] = `
-[
-  {
-    "callSign": "MC001",
-    "destination": "KOTKA",
-    "draught": 0.32,
-    "eta": "00-00 00:00",
-    "imo": 7734789,
-    "mmsi": 11122233001,
-    "name": "MOCK1",
-    "posType": 1,
-    "referencePointA": 8,
-    "referencePointB": 20,
-    "referencePointC": 4,
-    "referencePointD": 4,
-    "shipType": 52,
-    "timestamp": "2022-04-22T18:30:05.774Z",
-  },
-  {
-    "callSign": "MC002",
-    "destination": "TURKU",
-    "draught": 0.75,
-    "eta": "00-00 00:00",
-    "imo": 9505508,
-    "mmsi": 99988877001,
-    "name": "MOCK2",
-    "posType": 1,
-    "referencePointA": 35,
-    "referencePointB": 63,
-    "referencePointC": 10,
-    "referencePointD": 10,
-    "shipType": 90,
-    "timestamp": "2022-02-05T22:59:32.418Z",
-  },
-  {
-    "callSign": "MC003",
-    "destination": "HELSINKI",
-    "draught": 0.5599999999999999,
-    "eta": "00-00 00:00",
-    "imo": 9684823,
-    "mmsi": 66655544001,
-    "name": "MOCK3",
-    "posType": 3,
-    "referencePointA": 12,
-    "referencePointB": 12,
-    "referencePointC": 6,
-    "referencePointD": 5,
-    "shipType": 52,
-    "timestamp": "2022-08-03T05:11:33.045Z",
-  },
-]
-`;
-
 exports[`should get vessels from api when cache expired 1`] = `
 [
   {
