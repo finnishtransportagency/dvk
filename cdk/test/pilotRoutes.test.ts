@@ -8,7 +8,6 @@ import { handler } from "../lib/lambda/api/pilotroute-handler";
 import { mockPilotRoutesALBEvent } from "./mocks";
 import assert from "assert";
 import pilotRoutesJson from './data/pilotroutes.json';
-import { error } from "console";
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -16,7 +15,7 @@ const path = 'pilotroutes';
 jest.mock('../lib/lambda/environment', () => ({
     getEnvironment: () => 'mock',
     isPermanentEnvironment: () => false,
-    getHeaders: () => {},
+    getPilotRoutesHeaders: () => {},
 }));
 
 const pilotRoutes: RtzData[] = [
