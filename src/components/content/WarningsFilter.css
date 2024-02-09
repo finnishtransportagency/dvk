@@ -40,8 +40,17 @@ ion-item.customSelect {
   font-size: 14px;
   width: 100%;
   opacity: 1;
+  border: 1px solid var(--ion-color-dark);
   --min-height: 43px;
-  border: 1px solid black;
+  --padding-start: 14px;
+  --inner-padding-end: 14px;
+  --background-hover-opacity: 0;
+  --ripple-color: transparent;
+}
+
+ion-item.customSelect::part(native) {
+  min-height: 41px;
+  margin: 1px;
 }
 
 ion-item.customSelect ion-label {
@@ -50,10 +59,15 @@ ion-item.customSelect ion-label {
 }
 
 ion-item.customSelect.expanded {
-  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary)) 30;
-  border-image-width: 25px;
+  border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
+  border-image-slice: 20%;
+  border-image-width: 2px;
   border-width: 2px;
-  max-height: 44.5px;
+  --inner-padding-end: 12px;
+}
+
+ion-item.customSelect.expanded::part(native) {
+  margin: 0;
 }
 
 .toRight {

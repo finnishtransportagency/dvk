@@ -1,0 +1,1963 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get pilotroutes from api when cache expired 1`] = `
+[
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.919513,
+            60.417641,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU",
+        "reittitunnus": 11,
+        "rtzTunniste": 14,
+        "tunnus": 97,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.9408,
+            60.424694,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri",
+        "reittitunnus": 11,
+        "rtzTunniste": 13,
+        "tunnus": 98,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.975418,
+            60.404075,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 3,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Lelleri",
+        "reittitunnus": 11,
+        "rtzTunniste": 12,
+        "tunnus": 99,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.981856,
+            60.390952,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 4,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hietakari",
+        "reittitunnus": 11,
+        "rtzTunniste": 11,
+        "tunnus": 100,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.010772,
+            60.361969,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 5,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Retonpaasi",
+        "reittitunnus": 11,
+        "rtzTunniste": 10,
+        "tunnus": 101,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.064569,
+            60.345702,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 6,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Pauhakarit",
+        "reittitunnus": 11,
+        "rtzTunniste": 9,
+        "tunnus": 102,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.102449,
+            60.341925,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 7,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Merikari",
+        "reittitunnus": 11,
+        "rtzTunniste": 8,
+        "tunnus": 103,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146538,
+            60.342926,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 8,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Ahvenkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 7,
+        "tunnus": 104,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.152175,
+            60.412304,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 9,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Nimetön",
+        "reittitunnus": 11,
+        "rtzTunniste": 6,
+        "tunnus": 105,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.136566,
+            60.435074,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 10,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Einonkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 5,
+        "tunnus": 106,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146839,
+            60.458342,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 11,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Suur Musta",
+        "reittitunnus": 11,
+        "rtzTunniste": 4,
+        "tunnus": 107,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.131067,
+            60.480808,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 12,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Sovinnonmatala",
+        "reittitunnus": 11,
+        "rtzTunniste": 3,
+        "tunnus": 108,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.14778,
+            60.505289,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 13,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hajaskari",
+        "reittitunnus": 11,
+        "rtzTunniste": 2,
+        "tunnus": 109,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.172524,
+            60.517077,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 14,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIHMN",
+        "reittitunnus": 11,
+        "rtzTunniste": 1,
+        "tunnus": 110,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 11,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_2",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.9,
+            60.4,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU2",
+        "reittitunnus": 21,
+        "rtzTunniste": 24,
+        "tunnus": 197,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.91,
+            60.41,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri2",
+        "reittitunnus": 21,
+        "rtzTunniste": 23,
+        "tunnus": 198,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 22,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_3",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.93,
+            60.43,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU3",
+        "reittitunnus": 31,
+        "rtzTunniste": 34,
+        "tunnus": 397,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.93,
+            60.43,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havour3",
+        "reittitunnus": 31,
+        "rtzTunniste": 33,
+        "tunnus": 398,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 33,
+  },
+]
+`;
+
+exports[`should get pilotroutes from cache 1`] = `
+[
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.919513,
+            60.417641,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU",
+        "reittitunnus": 11,
+        "rtzTunniste": 14,
+        "tunnus": 97,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.9408,
+            60.424694,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri",
+        "reittitunnus": 11,
+        "rtzTunniste": 13,
+        "tunnus": 98,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.975418,
+            60.404075,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 3,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Lelleri",
+        "reittitunnus": 11,
+        "rtzTunniste": 12,
+        "tunnus": 99,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.981856,
+            60.390952,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 4,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hietakari",
+        "reittitunnus": 11,
+        "rtzTunniste": 11,
+        "tunnus": 100,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.010772,
+            60.361969,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 5,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Retonpaasi",
+        "reittitunnus": 11,
+        "rtzTunniste": 10,
+        "tunnus": 101,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.064569,
+            60.345702,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 6,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Pauhakarit",
+        "reittitunnus": 11,
+        "rtzTunniste": 9,
+        "tunnus": 102,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.102449,
+            60.341925,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 7,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Merikari",
+        "reittitunnus": 11,
+        "rtzTunniste": 8,
+        "tunnus": 103,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146538,
+            60.342926,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 8,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Ahvenkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 7,
+        "tunnus": 104,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.152175,
+            60.412304,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 9,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Nimetön",
+        "reittitunnus": 11,
+        "rtzTunniste": 6,
+        "tunnus": 105,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.136566,
+            60.435074,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 10,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Einonkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 5,
+        "tunnus": 106,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146839,
+            60.458342,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 11,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Suur Musta",
+        "reittitunnus": 11,
+        "rtzTunniste": 4,
+        "tunnus": 107,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.131067,
+            60.480808,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 12,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Sovinnonmatala",
+        "reittitunnus": 11,
+        "rtzTunniste": 3,
+        "tunnus": 108,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.14778,
+            60.505289,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 13,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hajaskari",
+        "reittitunnus": 11,
+        "rtzTunniste": 2,
+        "tunnus": 109,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.172524,
+            60.517077,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 14,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIHMN",
+        "reittitunnus": 11,
+        "rtzTunniste": 1,
+        "tunnus": 110,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 11,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_2",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.9,
+            60.4,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU2",
+        "reittitunnus": 21,
+        "rtzTunniste": 24,
+        "tunnus": 197,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.91,
+            60.41,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri2",
+        "reittitunnus": 21,
+        "rtzTunniste": 23,
+        "tunnus": 198,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 22,
+  },
+]
+`;
+
+exports[`should get vessels from api 1`] = `
+[
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.919513,
+            60.417641,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU",
+        "reittitunnus": 11,
+        "rtzTunniste": 14,
+        "tunnus": 97,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.9408,
+            60.424694,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri",
+        "reittitunnus": 11,
+        "rtzTunniste": 13,
+        "tunnus": 98,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.975418,
+            60.404075,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 3,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Lelleri",
+        "reittitunnus": 11,
+        "rtzTunniste": 12,
+        "tunnus": 99,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.981856,
+            60.390952,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 4,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hietakari",
+        "reittitunnus": 11,
+        "rtzTunniste": 11,
+        "tunnus": 100,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.010772,
+            60.361969,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 5,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Retonpaasi",
+        "reittitunnus": 11,
+        "rtzTunniste": 10,
+        "tunnus": 101,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.064569,
+            60.345702,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 6,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Pauhakarit",
+        "reittitunnus": 11,
+        "rtzTunniste": 9,
+        "tunnus": 102,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.102449,
+            60.341925,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 7,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Merikari",
+        "reittitunnus": 11,
+        "rtzTunniste": 8,
+        "tunnus": 103,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146538,
+            60.342926,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 8,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Ahvenkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 7,
+        "tunnus": 104,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.152175,
+            60.412304,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 9,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Nimetön",
+        "reittitunnus": 11,
+        "rtzTunniste": 6,
+        "tunnus": 105,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.136566,
+            60.435074,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 10,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Einonkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 5,
+        "tunnus": 106,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146839,
+            60.458342,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 11,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Suur Musta",
+        "reittitunnus": 11,
+        "rtzTunniste": 4,
+        "tunnus": 107,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.131067,
+            60.480808,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 12,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Sovinnonmatala",
+        "reittitunnus": 11,
+        "rtzTunniste": 3,
+        "tunnus": 108,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.14778,
+            60.505289,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 13,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hajaskari",
+        "reittitunnus": 11,
+        "rtzTunniste": 2,
+        "tunnus": 109,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.172524,
+            60.517077,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 14,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIHMN",
+        "reittitunnus": 11,
+        "rtzTunniste": 1,
+        "tunnus": 110,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 11,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_2",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.9,
+            60.4,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU2",
+        "reittitunnus": 21,
+        "rtzTunniste": 24,
+        "tunnus": 197,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.91,
+            60.41,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri2",
+        "reittitunnus": 21,
+        "rtzTunniste": 23,
+        "tunnus": 198,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 22,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_3",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.93,
+            60.43,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU3",
+        "reittitunnus": 31,
+        "rtzTunniste": 34,
+        "tunnus": 397,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.93,
+            60.43,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havour3",
+        "reittitunnus": 31,
+        "rtzTunniste": 33,
+        "tunnus": 398,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 33,
+  },
+]
+`;
+
+exports[`should get vessels from cache when api call fails 1`] = `
+[
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.919513,
+            60.417641,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU",
+        "reittitunnus": 11,
+        "rtzTunniste": 14,
+        "tunnus": 97,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.9408,
+            60.424694,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri",
+        "reittitunnus": 11,
+        "rtzTunniste": 13,
+        "tunnus": 98,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.975418,
+            60.404075,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 3,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Lelleri",
+        "reittitunnus": 11,
+        "rtzTunniste": 12,
+        "tunnus": 99,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.981856,
+            60.390952,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 4,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hietakari",
+        "reittitunnus": 11,
+        "rtzTunniste": 11,
+        "tunnus": 100,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.010772,
+            60.361969,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 5,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Retonpaasi",
+        "reittitunnus": 11,
+        "rtzTunniste": 10,
+        "tunnus": 101,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.064569,
+            60.345702,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 6,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Pauhakarit",
+        "reittitunnus": 11,
+        "rtzTunniste": 9,
+        "tunnus": 102,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.102449,
+            60.341925,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 7,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Merikari",
+        "reittitunnus": 11,
+        "rtzTunniste": 8,
+        "tunnus": 103,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146538,
+            60.342926,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 8,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Ahvenkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 7,
+        "tunnus": 104,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.152175,
+            60.412304,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 9,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Nimetön",
+        "reittitunnus": 11,
+        "rtzTunniste": 6,
+        "tunnus": 105,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.136566,
+            60.435074,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 10,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Einonkari",
+        "reittitunnus": 11,
+        "rtzTunniste": 5,
+        "tunnus": 106,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.146839,
+            60.458342,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 11,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Suur Musta",
+        "reittitunnus": 11,
+        "rtzTunniste": 4,
+        "tunnus": 107,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.131067,
+            60.480808,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 12,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Sovinnonmatala",
+        "reittitunnus": 11,
+        "rtzTunniste": 3,
+        "tunnus": 108,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.14778,
+            60.505289,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 13,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Hajaskari",
+        "reittitunnus": 11,
+        "rtzTunniste": 2,
+        "tunnus": 109,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            27.172524,
+            60.517077,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 14,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIHMN",
+        "reittitunnus": 11,
+        "rtzTunniste": 1,
+        "tunnus": 110,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 11,
+  },
+  {
+    "nimi": "FIKMU-FIHMN (via Merikari)_2",
+    "reittipisteet": [
+      {
+        "geometria": {
+          "coordinates": [
+            26.9,
+            60.4,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 1,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "FIKMU2",
+        "reittitunnus": 21,
+        "rtzTunniste": 24,
+        "tunnus": 197,
+      },
+      {
+        "geometria": {
+          "coordinates": [
+            26.91,
+            60.41,
+          ],
+          "type": "Point",
+        },
+        "geometriaTyyppi": "Loxodrome",
+        "jarjestys": 2,
+        "kaarresade": 0.5,
+        "leveysOikea": 0.03,
+        "leveysVasen": 0.03,
+        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
+        "nimi": "Havouri2",
+        "reittitunnus": 21,
+        "rtzTunniste": 23,
+        "tunnus": 198,
+      },
+    ],
+    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
+    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
+    <waypoints>
+        <defaultWaypoint radius="0.50">
+            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
+        </defaultWaypoint>
+        <waypoint id="14" name="FIKMU">
+            <position lat="60.41764100" lon="26.91951300"/>
+        </waypoint>
+        <waypoint id="13" name="Havouri">
+            <position lat="60.42469400" lon="26.94080000"/>
+        </waypoint>
+        <waypoint id="12" name="Lelleri">
+            <position lat="60.40407500" lon="26.97541800"/>
+        </waypoint>
+        <waypoint id="11" name="Hietakari">
+            <position lat="60.39095200" lon="26.98185600"/>
+        </waypoint>
+        <waypoint id="10" name="Retonpaasi">
+            <position lat="60.36196900" lon="27.01077200"/>
+        </waypoint>
+        <waypoint id="9" name="Pauhakarit">
+            <position lat="60.34570200" lon="27.06456900"/>
+        </waypoint>
+        <waypoint id="8" name="Merikari">
+            <position lat="60.34192500" lon="27.10244900"/>
+        </waypoint>
+        <waypoint id="7" name="Ahvenkari">
+            <position lat="60.34292600" lon="27.14653800"/>
+        </waypoint>
+        <waypoint id="6" name="Nimetön">
+            <position lat="60.41230400" lon="27.15217500"/>
+        </waypoint>
+        <waypoint id="5" name="Einonkari">
+            <position lat="60.43507400" lon="27.13656600"/>
+        </waypoint>
+        <waypoint id="4" name="Suur Musta">
+            <position lat="60.45834200" lon="27.14683900"/>
+        </waypoint>
+        <waypoint id="3" name="Sovinnonmatala">
+            <position lat="60.48080800" lon="27.13106700"/>
+        </waypoint>
+        <waypoint id="2" name="Hajaskari">
+            <position lat="60.50528900" lon="27.14778000"/>
+        </waypoint>
+        <waypoint id="1" name="FIHMN">
+            <position lat="60.51707700" lon="27.17252400"/>
+            <leg safetyContour="30.00"/>
+        </waypoint>
+    </waypoints>
+    <schedules>
+        <schedule id="0" name="Base Calculation"/>
+        <schedule id="1" name=""/>
+    </schedules>
+</route>
+",
+    "tila": 1,
+    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+    "tunnus": 22,
+  },
+]
+`;

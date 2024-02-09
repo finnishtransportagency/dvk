@@ -71,7 +71,8 @@ export type FeatureDataId =
   | 'specialarea2'
   | 'specialarea15'
   | 'aislocation'
-  | 'aisvessel';
+  | 'aisvessel'
+  | 'vayla_water_area';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 
@@ -221,6 +222,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(aisVesselsUrl),
     staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
     persist: false,
+  },
+  {
+    id: 'vayla_water_area',
+    url: new URL(staticUrl + '/vayla-merialueet.json.gz'),
+    staticUrl: new URL(staticUrl + '/vayla-merialueet.json.gz'),
+    persist: true,
   },
 ];
 

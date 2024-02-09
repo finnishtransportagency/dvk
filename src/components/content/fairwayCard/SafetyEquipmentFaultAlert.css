@@ -55,7 +55,7 @@ ion-accordion .equipmentTabContent {
 }
 
 #equipmentFaultList ion-grid.table ion-row > ion-col {
-  padding: 5px 5px 5px 0;
+  padding: 5px 5px 2px 0;
   border: none;
 }
 

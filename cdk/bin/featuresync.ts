@@ -34,6 +34,7 @@ async function main() {
   const featureLoaderUrl = 'http://localhost:8080/api/featureloader';
   const aisVesselsUrl = 'http://localhost:8080/api/aisvessels';
   const aisLocationsUrl = 'http://localhost:8080/api/aislocations';
+  const pilotRoutesUrl = 'http://localhost:8080/api/pilotroutes';
   const sources = [
     { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
     { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6') },
@@ -58,6 +59,7 @@ async function main() {
     { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle') },
     { id: 'aisvessels', url: new URL(aisVesselsUrl) },
     { id: 'aislocations', url: new URL(aisLocationsUrl) },
+    { id: 'pilotroutes', url: new URL(pilotRoutesUrl) },
   ];
   for (const source of sources) {
     const response = await axios.get(source.url.toString(), {

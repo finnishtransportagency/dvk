@@ -23,7 +23,7 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, s
   return (
     <>
       {isOpen && (
-        <IonList lines="none" className="searchInputDropdownContainer">
+        <IonList lines="none" className="searchInputDropdownContainer ion-no-padding">
           {items.map((item, idx) => {
             return (
               <IonItem key={item.id} className={'item' + checkSelected(idx + 1)} button onClick={() => setSelectedItem(item)}>

@@ -156,7 +156,17 @@ function validateSignature(event: any): boolean {
     console.error('webhook secret is missing');
     return false;
   }
-  const body = JSON.parse(event.body);
+
+  let body;
+  // if event is from ALB, then it will be base64encoded, if it is from "functionurl" lambda then it isn't
+  if (event.isBase64Encoded) {
+    const base64body = Buffer.from(event.body, 'base64').toString();
+    console.log('base64 decoded body: ', base64body);
+    body = JSON.parse(base64body);
+  } else {
+    body = JSON.parse(event.body);
+  }
+
   const headers: EventHeaders = event.headers;
   if (!body || !headers) {
     console.error('error parsing body or headers');
@@ -187,7 +197,7 @@ async function kaynnistaPipeline(pipelineName: string | undefined) {
 function validateEvent(event: any): WebhookResponse | undefined {
   let response: WebhookResponse | undefined = undefined;
 
-  const method = event.requestContext.http.method;
+  const method = event.requestContext?.http?.method || event.httpMethod;
   if (!method || method !== 'POST') {
     response = {
       statusCode: 400,

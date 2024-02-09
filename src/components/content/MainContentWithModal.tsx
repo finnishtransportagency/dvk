@@ -290,7 +290,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
                   aria-label={t('clearTitle')}
                   onClick={clearInput}
                   data-testid={modalContent === 'fairwayCardList' ? 'clearInput' : ''}
-                ></button>
+                />
                 <SearchbarDropdown
                   isOpen={isSearchbarOpen}
                   searchQuery={searchQuery.trim()}

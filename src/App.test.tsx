@@ -128,6 +128,9 @@ vi.mock('./components/FeatureLoader', () => ({
   useStaticDataLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useVaylaWaterAreaData: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 vi.mock('./graphql/generated', async () => {
