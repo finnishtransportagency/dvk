@@ -502,3 +502,7 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
   const errorUpdatedAt = Math.max(eErrorUpdatedAt, fErrorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
+
+export function useVaylaWaterAreaData() {
+  return useFeatureData('vayla_water_area');
+}

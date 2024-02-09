@@ -127,6 +127,9 @@ export const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
+const iconStyles: Array<{ key: keyof typeof symbol2Icon; style: Style }> = [];
+const faultIconStyles: Array<{ key: keyof typeof symbol2Icon; style: Style }> = [];
+
 function getImage(center: boolean, icon: string, anchorY: number, color: string, selected: boolean) {
   if (center) {
     return new Icon({
@@ -148,29 +151,54 @@ function getImage(center: boolean, icon: string, anchorY: number, color: string,
   }
 }
 
+/* Fault styles */
+const faultLeftStyleAnchorZero = new Style({
+  image: new Icon({
+    src: errorIcon,
+    anchor: [-0.85, 0.5],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    declutterMode: 'obstacle',
+  }),
+});
+const faultLeftStyleAnchorNotZero = new Style({
+  image: new Icon({
+    src: errorIcon,
+    anchor: [-0.85, 1.5],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    declutterMode: 'obstacle',
+  }),
+});
+const faultRightStyleAnchorZero = new Style({
+  image: new Icon({
+    src: errorIcon,
+    anchor: [1.85, 0.5],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    declutterMode: 'obstacle',
+  }),
+});
+const faultRightStyleAnchorNotZero = new Style({
+  image: new Icon({
+    src: errorIcon,
+    anchor: [1.85, 1.5],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    declutterMode: 'obstacle',
+  }),
+});
+
 function getFaultStyles(anchorY: number, selected: boolean) {
-  return [
-    new Style({
-      image: new Icon({
-        src: errorIcon,
-        anchor: [-0.85, anchorY === 0 ? 0.5 : 1.5],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        scale: selected ? 1.2 : 1,
-        declutterMode: 'obstacle',
-      }),
-    }),
-    new Style({
-      image: new Icon({
-        src: errorIcon,
-        anchor: [1.85, anchorY === 0 ? 0.5 : 1.5],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'fraction',
-        scale: selected ? 1.2 : 1,
-        declutterMode: 'obstacle',
-      }),
-    }),
-  ];
+  if (anchorY === 0) {
+    faultLeftStyleAnchorZero.getImage()?.setScale(selected ? 1.2 : 1);
+    faultRightStyleAnchorZero.getImage()?.setScale(selected ? 1.2 : 1);
+    return [faultLeftStyleAnchorZero, faultRightStyleAnchorZero];
+  } else {
+    faultLeftStyleAnchorNotZero.getImage()?.setScale(selected ? 1.2 : 1);
+    faultRightStyleAnchorNotZero.getImage()?.setScale(selected ? 1.2 : 1);
+    return [faultLeftStyleAnchorNotZero, faultRightStyleAnchorNotZero];
+  }
 }
 
 function getAisStyles(aisType: number, selected: boolean) {
@@ -203,6 +231,15 @@ function getAisStyles(aisType: number, selected: boolean) {
   ];
 }
 
+const hitAreaStyle = new Style({
+  image: new CircleStyle({
+    radius: 10,
+    fill: new Fill({
+      color: 'rgba(0,0,0,0)',
+    }),
+  }),
+});
+
 export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean, alwaysVisible: boolean | undefined) => {
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
@@ -212,22 +249,42 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
   const anchorY = opts ? opts.anchorY : 0;
   //declutterMode and zIndex in these styles are for selected fairway card
   if (props.symbol === '1' || resolution <= 10 || !!alwaysVisible) {
-    const styles = [
-      new Style({
-        image: getImage(center, icon, anchorY, props.faults ? '#EC0E0E' : '#231F20', selected),
-        zIndex: 315,
-      }),
-      new Style({
-        image: new CircleStyle({
-          radius: 10,
-          fill: new Fill({
-            color: 'rgba(0,0,0,0)',
+    const styles = [hitAreaStyle];
+    if (props.faults) {
+      let faultIconStyle = faultIconStyles.find((s) => {
+        return s.key === key;
+      });
+      if (!faultIconStyle) {
+        faultIconStyle = {
+          key: key,
+          style: new Style({
+            image: getImage(center, icon, anchorY, '#EC0E0E', selected),
+            zIndex: 315,
           }),
-        }),
-      }),
-    ];
-    if (props.faults && resolution <= 10) {
-      styles.push(...getFaultStyles(anchorY, selected));
+        };
+        faultIconStyles.push(faultIconStyle);
+      }
+      faultIconStyle.style.getImage()?.setScale(selected ? 1.2 : 1);
+      styles.push(faultIconStyle.style);
+      if (resolution <= 10) {
+        styles.push(...getFaultStyles(anchorY, selected));
+      }
+    } else {
+      let iconStyle = iconStyles.find((s) => {
+        return s.key === key;
+      });
+      if (!iconStyle) {
+        iconStyle = {
+          key: key,
+          style: new Style({
+            image: getImage(center, icon, anchorY, '#231F20', selected),
+            zIndex: 315,
+          }),
+        };
+        iconStyles.push(iconStyle);
+      }
+      iconStyle.style.getImage()?.setScale(selected ? 1.2 : 1);
+      styles.push(iconStyle.style);
     }
     if (props.aisType !== undefined && props.aisType !== 1) {
       styles.push(...getAisStyles(props.aisType, selected));
