@@ -1,5 +1,5 @@
 import { ALBResult } from "aws-lambda";
-import { getHeaders } from "../environment";
+import { getPilotRoutesHeaders } from "../environment";
 import { getFromCache } from "../graphql/cache";
 import { handleLoaderError, saveResponseToS3 } from "../util";
 import { RtzData } from "./apiModels";
@@ -57,7 +57,7 @@ export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
     body: base64Response,
     isBase64Encoded: true,
     multiValueHeaders: {
-      ...getHeaders(),
+      ...getPilotRoutesHeaders(),
     }
   };
 }

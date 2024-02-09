@@ -59,6 +59,20 @@ export function getHeaders(): Record<string, string[]> {
   };
 }
 
+export function getPilotRoutesHeaders(): Record<string, string[]> {
+  // identical to getHeaders() for now, but could change in future
+  if (isPermanentEnvironment()) {
+    return { 'Content-Type': ['application/json'], 'Content-Encoding': ['gzip'] };
+  }
+  return {
+    'Content-Type': ['application/json'],
+    'Access-Control-Allow-Origin': ['*'],
+    'Access-Control-Allow-Methods': ['*'],
+    'Access-Control-Allow-Headers': ['*'],
+    'Content-Encoding': ['gzip'],
+  };
+}
+
 async function readParameterForEnv(path: string): Promise<string> {
   if (envParameters[path]) {
     return envParameters[path];
