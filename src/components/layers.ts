@@ -43,6 +43,7 @@ import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUt
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -774,6 +775,19 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 315,
+  });
+
+  // Luotsausreitit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotroute',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getPilotRouteStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 316,
   });
 
   // AIS

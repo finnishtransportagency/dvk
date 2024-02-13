@@ -15,6 +15,10 @@ const aisLocationsUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/aislocations'
   : globalThis.location.origin + '/api/aislocations';
 
+const pilotRoutesUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/pilotroutes'
+  : globalThis.location.origin + '/api/pilotroutes';
+
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
@@ -72,7 +76,8 @@ export type FeatureDataId =
   | 'specialarea15'
   | 'aislocation'
   | 'aisvessel'
-  | 'vayla_water_area';
+  | 'vayla_water_area'
+  | 'pilotroute';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 
@@ -229,6 +234,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     staticUrl: new URL(staticUrl + '/vayla-merialueet.json.gz'),
     persist: true,
   },
+  {
+    id: 'pilotroute',
+    url: new URL(pilotRoutesUrl),
+    staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
+    persist: true,
+  },
 ];
 
 export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais';
@@ -269,7 +280,8 @@ export type FeatureDataLayerId =
   | 'aisvesselhighspeed'
   | 'aisvesseltugandspecialcraft'
   | 'aisvesselpleasurecraft'
-  | 'aisunspecified';
+  | 'aisunspecified'
+  | 'pilotroute';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -334,6 +346,7 @@ export const MAP: MapType = {
     { id: 'aisvesseltugandspecialcraft', offlineSupport: false, localizedStyle: false },
     { id: 'aisvesselpleasurecraft', offlineSupport: false, localizedStyle: false },
     { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
+    { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
   ],
 };
 
