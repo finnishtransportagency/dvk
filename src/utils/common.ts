@@ -21,7 +21,12 @@ export const getCurrentDecimalSeparator = () => {
 
 export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lang: 'fi' | 'sv' | 'en', searchQuery: string) => {
   if (searchQuery.length < MINIMUM_QUERYLENGTH) return [];
-  return data?.filter((card) => (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) ?? [];
+  const filtered = data?.filter((card) => (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) ?? [];
+  return filtered.sort((a, b) => {
+    const nameA = a.name[lang] ?? '';
+    const nameB = b.name[lang] ?? '';
+    return nameA.localeCompare(nameB);
+  });
 };
 
 export const getMapCanvasWidth = (): number => {
