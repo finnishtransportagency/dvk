@@ -10,6 +10,7 @@ import lineArc from '@turf/line-arc';
 import transformTranslate from '@turf/transform-translate';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
 import { useFeatureData } from '../utils/dataLoader';
+import { useDvkContext } from '../hooks/dvkContext';
 
 type Coordinate = [number, number];
 
@@ -130,13 +131,19 @@ function getRtzRoute(waypoints: Array<RtzWaypoint>): Array<Coordinate> {
 }
 
 function usePilotRouteFeatures() {
+  const { state } = useDvkContext();
   const [ready, setReady] = useState(false);
+  const [enabled, setEnabled] = useState(state.layers.includes('pilotroute'));
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, true, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
   const dataUpdatedAt = pilotRouteQuery.dataUpdatedAt;
   const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
   const isPaused = pilotRouteQuery.isPaused;
   const isError = pilotRouteQuery.isError;
+
+  useEffect(() => {
+    setEnabled(state.layers.includes('pilotroute'));
+  }, [state.layers]);
 
   useEffect(() => {
     const pilotRouteData = pilotRouteQuery.data;
