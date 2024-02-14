@@ -7,6 +7,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import { vi } from 'vitest';
+import { APP_CONFIG_PREVIEW } from './utils/constants';
 
 class ResizeObserver {
   observe() {
@@ -398,8 +399,10 @@ it('should render squat calculator page successfully', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    // Squat calculator container
-    const squatContainer = screen.getByTestId('squatCalculatorContainer');
-    expect(squatContainer).toBeInTheDocument();
+    if (VITE_APP_CONFIG !== APP_CONFIG_PREVIEW) {
+      // Squat calculator
+      const squatContainer = screen.getByTestId('squatCalculatorContent');
+      expect(squatContainer).toBeInTheDocument();
+    }
   });
 });

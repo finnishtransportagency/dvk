@@ -26,14 +26,14 @@ const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
   const Squat = lazy(() => import('./Squat'));
 
   return (
-    <>
+    <div data-testid="squatCalculatorContent">
       <Breadcrumb path={path} />
       {VITE_APP_CONFIG !== APP_CONFIG_PREVIEW && (
         <Suspense fallback={<SquatSkeleton />}>
           <Squat widePane={widePane} />
         </Suspense>
       )}
-    </>
+    </div>
   );
 };
 

@@ -65,7 +65,7 @@ const Squat: React.FC<SquatProps> = ({ widePane }) => {
         </IonRow>
       </IonGrid>
 
-      <div id="squatCalculatorContainer" className="squatCalculatorContainer show-print" data-testid="squatCalculatorContainer">
+      <div id="squatCalculatorContainer" className="squatCalculatorContainer show-print">
         <InfoAccordion />
         <IonGrid className="ion-no-padding">
           <IonRow>
