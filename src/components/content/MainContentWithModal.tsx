@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonModal, IonRow, useIonViewWillEnter } from '@ionic/react';
 import ArrowBackIcon from '../../theme/img/arrow_back.svg?react';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import FairwayCards from './FairwayCards';
 import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
-import { APP_CONFIG_PREVIEW, Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
@@ -20,6 +20,7 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import HarborPreview from './HarborPreview';
+import SquatCalculator from './SquatCalculator';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -71,8 +72,6 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
   const { state, dispatch } = useDvkContext();
-
-  const SquatCalculator = lazy(() => import('./SquatCalculator'));
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -322,11 +321,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
-        {VITE_APP_CONFIG !== APP_CONFIG_PREVIEW && modalContent === 'squatCalculator' && (
-          <Suspense fallback={<></>}>
-            <SquatCalculator />
-          </Suspense>
-        )}
+        {modalContent === 'squatCalculator' && <SquatCalculator />}
         {modalContent === 'harborPreview' && <HarborPreview />}
       </IonContent>
     </IonModal>

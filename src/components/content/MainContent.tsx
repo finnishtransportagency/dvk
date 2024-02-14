@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonGrid, IonIcon, IonInput, IonRow, useIonViewWillEnter } from '@ionic/react';
 import ChevronIcon from '../../theme/img/chevron.svg?react';
 import MenuIcon from '../../theme/img/menu.svg?react';
@@ -9,7 +9,7 @@ import FairwayCards from './FairwayCards';
 import FairwayCard from './fairwayCard/FairwayCard';
 import dvkMap from '../DvkMap';
 import SearchbarDropdown from '../mapOverlays/SearchbarDropdown';
-import { APP_CONFIG_PREVIEW, Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
 import { filterFairways } from '../../utils/common';
 import vayla_logo from '../../theme/img/vayla_logo.png';
 import vayla_logo_en from '../../theme/img/vayla_logo_en.png';
@@ -21,6 +21,7 @@ import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { useDvkContext } from '../../hooks/dvkContext';
 import HarborPreview from './HarborPreview';
+import SquatCalculator from './SquatCalculator';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -33,8 +34,6 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
   const { data } = useFairwayCardListData();
-
-  const SquatCalculator = lazy(() => import('./SquatCalculator'));
 
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -292,11 +291,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
-                {VITE_APP_CONFIG !== APP_CONFIG_PREVIEW && target && target === 'squat' && (
-                  <Suspense fallback={<></>}>
-                    <SquatCalculator widePane={widePane}></SquatCalculator>
-                  </Suspense>
-                )}
+                {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
                 {target && target === 'harborPreview' && <HarborPreview widePane={widePane} />}
               </IonContent>
             </IonCol>
