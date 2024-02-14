@@ -424,3 +424,38 @@ export const marineWarningAreasStructure: WarningFilter[] = [
 ];
 
 export const marineWarningTypeStructure: WarningFilter[] = [{ id: 'boaterWarning' }, { id: 'coastalWarning' }, { id: 'localWarning' }];
+
+export type SafetyEquipmentFaultArea =
+  | 'seaAreas'
+  | 'gulfOfFinland'
+  | 'northernBalticSea'
+  | 'archipelagoSea'
+  | 'seaOfÅland'
+  | 'bothnianSea'
+  | 'bayOfBothnia'
+  | 'saimaa'
+  | 'inlandAreas';
+
+export type SafetyEquipmentFaultFilter = {
+  id: SafetyEquipmentFaultArea;
+  parent?: SafetyEquipmentFaultArea;
+  childAreas?: Maybe<Array<SafetyEquipmentFaultFilter>>;
+};
+
+export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
+  {
+    id: 'seaAreas',
+    childAreas: [
+      { id: 'gulfOfFinland', parent: 'seaAreas' },
+      { id: 'northernBalticSea', parent: 'seaAreas' },
+      { id: 'archipelagoSea', parent: 'seaAreas' },
+      { id: 'seaOfÅland', parent: 'seaAreas' },
+      { id: 'bothnianSea', parent: 'seaAreas' },
+      { id: 'bayOfBothnia', parent: 'seaAreas' },
+    ],
+  },
+  {
+    id: 'inlandAreas',
+    childAreas: [{ id: 'saimaa', parent: 'inlandAreas' }],
+  },
+];

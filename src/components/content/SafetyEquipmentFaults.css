@@ -31,3 +31,15 @@
   width: 12px;
   height: 12px;
 }
+
+.faultFilterContainer {
+  position: relative;
+  margin-top: 15px;
+  right: 5px;
+}
+
+.faultSortingButton {
+  position: relative;
+  top: 14px;
+  left: 12px;
+}
