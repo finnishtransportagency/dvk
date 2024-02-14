@@ -98,6 +98,15 @@ ion-modal#layerModalContainer::part(content) {
   margin-right: 2px;
 }
 
+#layerModalContainer ion-item .pilotroute {
+  width: 18px;
+  height: 18px;
+  background: url('../../theme/img/pilotRoute.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+
 #layerModalContainer ion-item .soundingpoint {
   width: 30px;
   height: 12px;

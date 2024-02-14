@@ -44,6 +44,7 @@ import {
   useAisVesselPleasureCraftLayer,
   useAisUnspecifiedLayer,
 } from './components/AisFeatureLoader';
+import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
 /* Core CSS required for Ionic components to work properly */
@@ -188,6 +189,7 @@ const DvkIonApp: React.FC = () => {
   useInitStaticDataLayer('balticsea', 'balticsea');
   useInitStaticDataLayer('mml_satamat', 'mml_satamat');
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
+  usePilotRouteLayer();
   useVaylaWaterAreaData();
 
   const [initDone, setInitDone] = useState(false);
