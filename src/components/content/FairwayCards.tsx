@@ -70,7 +70,7 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonText className="fairwayTitle">
+      <IonText className="fairwayTitle" id="mainPageContent">
         <h2 className="no-margin-bottom">
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
