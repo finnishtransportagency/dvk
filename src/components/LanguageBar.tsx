@@ -3,16 +3,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './SidebarMenu.css';
 import { APP_CONFIG_PREVIEW } from '../utils/constants';
-// import { changeSquatLanguage } from 'squatlib';
+
+const squatLib = VITE_APP_CONFIG !== APP_CONFIG_PREVIEW ? import('squatlib') : Promise.resolve(undefined);
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
     i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
-    if (VITE_APP_CONFIG !== APP_CONFIG_PREVIEW) {
-      import('squatlib').then((squatlib) => squatlib.changeSquatLanguage(lang));
-    }
+    squatLib.then((module) => {
+      if (module !== undefined) module.changeSquatLanguage(lang);
+    });
 
     e.preventDefault();
   };
