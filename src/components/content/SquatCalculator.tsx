@@ -5,6 +5,8 @@ import { APP_CONFIG_PREVIEW } from '../../utils/constants';
 import { IonSkeletonText } from '@ionic/react';
 import './SquatCalculator.css';
 
+const Squat = lazy(() => import('./Squat'));
+
 interface SquatCalculatorProps {
   widePane?: boolean;
 }
@@ -14,7 +16,6 @@ const SquatSkeleton: React.FC<SquatCalculatorProps> = () => {
     <>
       <IonSkeletonText animated={true} className="squatHeader ion-margin-top" />
       <IonSkeletonText animated={true} className="squatLink" />
-      <IonSkeletonText animated={true} className="squatContent ion-margin-top" />
     </>
   );
 };
@@ -22,8 +23,6 @@ const SquatSkeleton: React.FC<SquatCalculatorProps> = () => {
 const SquatCalculator: React.FC<SquatCalculatorProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const path = [{ title: t('common.squat') }];
-
-  const Squat = lazy(() => import('./Squat'));
 
   return (
     <div data-testid="squatCalculatorContent">
