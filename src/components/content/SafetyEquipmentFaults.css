@@ -3,7 +3,7 @@
 }
 
 #safetyEquipmentFaultList ion-grid.table ion-row > ion-col {
-  padding: 5px 5px 5px 0;
+  padding: 5px 5px 2px 0;
   border: none;
 }
 
@@ -13,4 +13,21 @@
 
 #safetyEquipmentFaultList ion-grid.table ion-row > ion-col p {
   margin: 0;
+}
+
+.equipmentListIcon {
+  margin-top: 3px;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  left: 4px;
+}
+
+.faultInfoCol {
+  margin-bottom: 8px;
+}
+
+.customInfoStyle .info svg {
+  width: 12px;
+  height: 12px;
 }

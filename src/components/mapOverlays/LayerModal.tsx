@@ -125,6 +125,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     { id: 'name', title: t('homePage.map.controls.layer.name') },
   ];
 
+  /* Add pilot route layer for testing purposes, if not production environment */
+  if (import.meta.env.VITE_APP_ENV !== 'prod') {
+    layerStructure[0].childLayers?.push({ id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes') });
+  }
+
   useEffect(() => {
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
 
