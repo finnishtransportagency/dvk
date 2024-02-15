@@ -40,6 +40,10 @@
 
 .faultSortingButton {
   position: relative;
-  top: 14px;
-  left: 12px;
+  top: 12px;
+  left: 20px;
+  --padding-top: 2px;
+  --padding-bottom: 2px;
+  --padding-start: 2px;
+  --padding-end: 2px;
 }

@@ -181,7 +181,6 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
       items = marineWarningTypeStructure;
       break;
     case trigger.includes('equipmentArea'):
-      // Add the third option here
       items = equipmentAreasStructure;
       break;
     default:
