@@ -308,7 +308,6 @@
       "fairways": "Farledskort angående lotsplatsen"
     },
     "quay": {
-      "coordinates": "Koordinater",
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
       "number": "{{val, number}}",
@@ -317,8 +316,7 @@
       "fax": "Fax",
       "phoneNumber": "Telefonnummer",
       "internet": "Nätsida",
-      "extra": "Tilläggsuppgift",
-      "section": "[sv] Laituripaikka"
+      "extra": "Tilläggsuppgift"
     },
     "area": {
       "info": "Farledsområdets uppgifter",

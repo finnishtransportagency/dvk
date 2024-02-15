@@ -308,7 +308,6 @@
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
     "quay": {
-      "coordinates": "Koordinaatit",
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
       "number": "{{val, number}}",
@@ -317,8 +316,7 @@
       "fax": "Fax",
       "phoneNumber": "Puhelin",
       "internet": "Verkkosivu",
-      "extra": "Lisätieto",
-      "section": "Laituripaikka"
+      "extra": "Lisätieto"
     },
     "area": {
       "info": "Väyläalueen tiedot",

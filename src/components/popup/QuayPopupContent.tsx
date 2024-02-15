@@ -2,7 +2,6 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
-import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
@@ -10,7 +9,6 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { deselectClickSelection } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
-import InfoIcon from '../../theme/img/info.svg?react';
 
 type QuayPopupContentProps = {
   quay: QuayProperties;
@@ -32,41 +30,20 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
     deselectClickSelection();
   };
 
+  const quayName = quay.properties.quay?.[lang];
+  const sectionName = quay.properties.name ?? '';
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+
   return (
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {quay.properties.quay?.[lang] ?? ''}
+          {headerText}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
-      {quay.properties.featureType === 'section' && (
-        <>
-          <IonRow>
-            <IonCol className="header">{t('popup.quay.section')}</IonCol>
-          </IonRow>
-          <IonRow>
-            {quay.properties.name ? (
-              <IonCol>{quay.properties.name}</IonCol>
-            ) : (
-              <IonCol className="info">
-                <InfoIcon />
-                {t('common.noDataSet')}
-              </IonCol>
-            )}
-          </IonRow>
-        </>
-      )}
-      <IonRow>
-        <IonCol className="header">{t('popup.quay.coordinates')}</IonCol>
-      </IonRow>
-      {quay.coordinates && (
-        <IonRow>
-          <IonCol>{coordinatesToStringHDM(quay.coordinates)}</IonCol>
-        </IonRow>
-      )}
       {quay.properties.depth && (
         <>
           <IonRow>
