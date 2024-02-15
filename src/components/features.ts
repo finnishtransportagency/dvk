@@ -1,3 +1,4 @@
+import { Point } from 'ol/geom';
 import { Text } from '../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 
@@ -188,6 +189,15 @@ export type AisFeatureProperties = {
   referencePointC?: number;
   referencePointD?: number;
   destination?: string;
+  vesselLength?: number;
+  vesselWidth?: number;
+  aisPoint?: Point;
+};
+
+export type AisFeaturePathPredictorProperties = {
+  featureType: 'aisvessel_pathpredictor';
+  realSizeVessel: boolean;
+  cog: number;
   vesselLength?: number;
   vesselWidth?: number;
 };

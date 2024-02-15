@@ -455,7 +455,7 @@ function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, z
     map: map,
     id: id,
     maxResolution: undefined,
-    renderBuffer: 1000,
+    renderBuffer: 5,
     style: style,
     minResolution: undefined,
     opacity: 1,
