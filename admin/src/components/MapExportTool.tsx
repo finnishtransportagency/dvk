@@ -283,7 +283,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     } else {
       const sequencedPictures = currentPicturesByOrientation?.filter((pic) => !!pic.sequenceNumber);
       const maxSequenceNumber = sequencedPictures?.reduce((acc, pic) => {
-        return (acc = acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0);
+        return acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0;
       }, 0);
       newSequencedPictures =
         currentPicturesByOrientation?.map((pic) => {
@@ -423,7 +423,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           updateState={setPicture}
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
-                          required={!!(pic.text || groupedPics?.filter((gPic) => gPic.text).length)}
+                          required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={false}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
