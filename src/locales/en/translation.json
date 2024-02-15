@@ -38,7 +38,7 @@
           "depths": "Depths",
           "safetyEquipmentsTitle": "Navigational aids",
           "safetyEquipments": "Navigational aids",
-          "safetyEquipmentFaults": "Defective navigation aids",          
+          "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
@@ -308,7 +308,6 @@
       "fairways": "Fairway cards on the pilot boarding position"
     },
     "quay": {
-      "coordinates": "Coordinates",
       "length": "Length of the quay",
       "depth": "Swept depth",
       "number": "{{val, number}}",

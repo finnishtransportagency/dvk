@@ -308,7 +308,6 @@
       "fairways": "Farledskort angående lotsplatsen"
     },
     "quay": {
-      "coordinates": "Koordinater",
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
       "number": "{{val, number}}",
