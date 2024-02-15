@@ -30,6 +30,7 @@ import AisVesselPopupContent, { AisVesselProperties } from '../popup/AisVesselPo
 export type PopupProperties = {
   pilot?: PilotProperties;
   quay?: QuayProperties;
+  section?: QuayProperties;
   area?: AreaProperties;
   specialarea2?: AreaProperties;
   specialarea15?: AreaProperties;
@@ -136,6 +137,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <div id="popup" className="ol-popup">
         {popupProperties?.pilot && <PilotPopupContent pilot={popupProperties.pilot} setPopupProperties={setPopupProperties} />}
         {popupProperties?.quay && <QuayPopupContent quay={popupProperties.quay} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
         {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
         {popupProperties?.specialarea2 && (
           <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />

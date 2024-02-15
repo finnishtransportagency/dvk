@@ -64,6 +64,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
 
   switch (type) {
     case 'quay':
+    case 'section':
       return getQuayStyle(feature, resolution, true);
     case 'harbor':
       return getHarborStyle(feature, resolution, 0, true);

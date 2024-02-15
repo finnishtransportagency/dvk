@@ -308,7 +308,6 @@
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
     "quay": {
-      "coordinates": "Koordinaatit",
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
       "number": "{{val, number}}",
