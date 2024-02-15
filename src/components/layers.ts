@@ -45,6 +45,7 @@ import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUt
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -690,7 +691,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'safetyequipment',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), feature.get('faultListStyle')),
     minResolution: undefined,
     opacity: 1,
@@ -817,12 +818,25 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'safetyequipmentfault',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
     zIndex: 315,
+  });
+
+  // Luotsausreitit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotroute',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getPilotRouteStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 316,
   });
 
   // AIS
