@@ -210,7 +210,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
     return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
