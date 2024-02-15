@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon, IonButton } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM, sortByAlign } from '../../utils/coordinateUtils';
+import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
@@ -18,14 +18,17 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { useSafetyEquipmentAndFaultLayer } from '../FeatureLoader';
+import { useSafetyEquipmentAndFaultLayer, useVaylaWaterAreaData } from '../FeatureLoader';
 import { InfoParagraph } from './Paragraph';
 import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
+import CustomSelectDropdown from './CustomSelectDropdown';
+import sortArrow from '../../theme/img/back_arrow-1.svg';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
   selectedFairwayCard: boolean;
+  sortNewFirst?: boolean;
 };
 
 function goto(id: number, selectedFairwayCard: boolean) {
@@ -44,7 +47,7 @@ function goto(id: number, selectedFairwayCard: boolean) {
   }
 }
 
-export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -54,7 +57,10 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
   const sortedFaults =
     data.length == 1 || !selectedFairwayCard
       ? [...data].sort((a, b) => {
-          return a.recordTime > b.recordTime ? -1 : 1;
+          if (sortNewFirst) {
+            return a.recordTime > b.recordTime ? -1 : 1;
+          }
+          return a.recordTime > b.recordTime ? 1 : -1;
         })
       : sortByAlign(data);
 
@@ -192,9 +198,19 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
   const { dispatch, state } = useDvkContext();
+  const [areaFilter, setAreaFilter] = useState<string[]>([]);
+  const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
+  const areaPolygons = useVaylaWaterAreaData();
+
+  const filterDataByArea = useCallback(() => {
+    if (areaFilter.length < 1) {
+      return data?.safetyEquipmentFaults;
+    }
+    return filterFeaturesInPolygonByArea(areaPolygons.data, data?.safetyEquipmentFaults, areaFilter);
+  }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
     return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
@@ -229,13 +245,34 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-
+      <IonGrid className="faultFilterContainer">
+        <IonRow className="ion-align-items-center">
+          <IonCol size="10.5">
+            <IonText className="filterTitle">{t('warnings.area')}</IonText>
+            <CustomSelectDropdown triggerId="popover-container-equipmentArea" selected={areaFilter} setSelected={setAreaFilter} />
+          </IonCol>
+          <IonCol size="1.5">
+            <IonButton
+              className="faultSortingButton"
+              fill="clear"
+              size="small"
+              onClick={(e) => {
+                setSortNewFirst(!sortNewFirst);
+                e.preventDefault();
+              }}
+              title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
+            >
+              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
       <div
         id="safetyEquipmentFaultList"
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} selectedFairwayCard={false} />
+        <FaultGroup loading={isPending} data={filterDataByArea() ?? []} selectedFairwayCard={false} sortNewFirst={sortNewFirst} />
       </div>
     </>
   );
