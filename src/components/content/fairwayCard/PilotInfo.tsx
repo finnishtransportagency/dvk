@@ -45,9 +45,9 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
                 <IonLabel
                   key={place.id}
                   className="hoverText"
-                  onMouseOver={() => highlightPilot(place.id)}
+                  onMouseEnter={() => highlightPilot(place.id)}
                   onFocus={() => highlightPilot(place.id)}
-                  onMouseOut={() => highlightPilot(0)}
+                  onMouseLeave={() => highlightPilot(0)}
                   onBlur={() => highlightPilot(0)}
                   tabIndex={0}
                   data-testid={idx < 1 ? 'pilotPlaceHover' : ''}

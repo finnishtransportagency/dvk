@@ -21,9 +21,9 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
         return (
           <IonText
             key={uuid}
-            onMouseOver={() => setSelectedQuay(quay)}
+            onMouseEnter={() => setSelectedQuay(quay)}
             onFocus={() => setSelectedQuay(quay)}
-            onMouseOut={() => setSelectedQuay(null)}
+            onMouseLeave={() => setSelectedQuay(null)}
             onBlur={() => setSelectedQuay(null)}
           >
             <p className="inlineHoverText">
