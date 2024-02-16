@@ -10,6 +10,8 @@ import InfoIcon from '../../theme/img/info.svg?react';
 import { getAisVesselShipType, getCountryCode, getNavState, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';
 import CloseButton from './CloseButton';
+import { Point } from 'ol/geom';
+import { MAP } from '../../utils/constants';
 
 type AisVesselInfoRowProperties = {
   title: string;
@@ -51,7 +53,9 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
 
   const properties = vessel.properties;
   const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
-  const coordinates = coordinatesToStringHDM(vessel.coordinates).replace('N', 'N / ');
+  const aisPoint = properties.aisPoint as Point;
+  const wgs84Point = aisPoint.clone().transform(MAP.EPSG, 'EPSG:4326') as Point;
+  const coordinates = coordinatesToStringHDM(wgs84Point.getCoordinates()).replace('N', 'N / ');
   const navState = getNavState(t, properties.navStat);
   //check for unavailable properties (unavailable values: speed==102.3 and course===360)
   const speed = properties.sog > 102 ? '-' : properties.sog + 'kn';

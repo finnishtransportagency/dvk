@@ -1,6 +1,6 @@
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
-import { Geometry } from 'ol/geom';
+import { Circle, Geometry, LineString, LinearRing, Point, Polygon } from 'ol/geom';
 import { FeatureDataLayerId, MAP } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { useFeatureData } from '../utils/dataLoader';
@@ -8,8 +8,11 @@ import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
-import { calculateVesselDimensions } from '../utils/aisUtils';
+import { calculateVesselDimensions, isVesselMoving, getVesselHeading, translatePoint, getPointRotationAngle } from '../utils/aisUtils';
 import VectorSource from 'ol/source/Vector';
+import { AisFeatureProperties } from './features';
+import { Coordinate } from 'ol/coordinate';
+import { fromCircle } from 'ol/geom/Polygon';
 
 type VesselData = {
   name: string;
@@ -68,7 +71,6 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
         destination: vessel.destination,
         vesselLength: vesselDimensions[0],
         vesselWidth: vesselDimensions[1],
-        showPathPredictor: false,
       });
     }
   }
@@ -104,29 +106,147 @@ function useAisFeatures() {
   return { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
+/* Get vessel rotation on the map */
+function getRotation(feature: Feature): number | undefined {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const heading = getVesselHeading(props.heading, props.cog);
+  const geom = feature.getGeometry() as Point;
+
+  if (heading !== undefined && geom !== undefined) {
+    return getPointRotationAngle(geom, heading);
+  }
+  return undefined;
+}
+
+function knotsToMetresPerSecond(x: number) {
+  return (x * 1.852) / 3.6;
+}
+
+export function getVesselGeometry(feature: Feature): Polygon | undefined {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const geom = feature.getGeometry() as Point;
+  const rotation = getRotation(feature);
+  if (geom && rotation !== undefined && props.vesselWidth && props.vesselLength) {
+    const vesselMoving = isVesselMoving(props.navStat, props.sog);
+    const polygonPoints: Array<number[]> = [];
+    const coordinates = geom.getCoordinates();
+    const x = coordinates[0];
+    const y = coordinates[1];
+    const w = props.vesselWidth;
+    const h = props.vesselLength;
+    const dx1 = props.referencePointC ? -props.referencePointC : 0;
+    const dy1 = props.referencePointA ? props.referencePointA : 0;
+    const dx2 = props.referencePointD ? props.referencePointD : 0;
+    const dy2 = props.referencePointB ? -props.referencePointB : 0;
+
+    /* Calculate vesselshaped polygon points starting from the bow clockwise */
+    polygonPoints.push([x + dx1 + (dx2 - dx1) / 2, y + dy1]);
+    polygonPoints.push([x + dx2, y + dy1 - h / 5]);
+    polygonPoints.push([x + dx2, y + dy2]);
+    if (vesselMoving) {
+      polygonPoints.push([x + dx1 + (dx2 - dx1) / 2, y + dy2 + h / 5]);
+    }
+    polygonPoints.push([x + dx1, y + dy2]);
+    polygonPoints.push([x + dx1, y + dy1 - h / 5]);
+
+    const polygon = new Polygon([polygonPoints]);
+
+    /* Cut circular hole to polygon if vessel is no moving */
+    if (!vesselMoving) {
+      const holeCenterCoord = [x + dx1 + (dx2 - dx1) / 2, y + dy1 - h / 4];
+      const holePoly = fromCircle(new Circle(holeCenterCoord, w / 4));
+      const c = holePoly.getCoordinates();
+      polygon.appendLinearRing(new LinearRing(c[0]));
+    }
+
+    /* Rotate polygon to the rigth angle */
+    polygon.rotate(-rotation, coordinates);
+    return polygon;
+  }
+  return undefined;
+}
+
+export function getPathPredictorGeometry(feature: Feature, startFromBow: boolean) {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const rotation = getRotation(feature);
+  const speed = knotsToMetresPerSecond(props.sog);
+  let point = feature.getGeometry() as Point;
+
+  if (startFromBow) {
+    /* Calculate vessel bow coordinates */
+    const coordinates = point.getCoordinates();
+    const x = coordinates[0];
+    const y = coordinates[1];
+    const dx1 = props.referencePointC ? -props.referencePointC : 0;
+    const dy1 = props.referencePointA ? props.referencePointA : 0;
+    const dx2 = props.referencePointD ? props.referencePointD : 0;
+
+    const bowCoordinates = [x + dx1 + (dx2 - dx1) / 2, y + dy1];
+    point = new Point(bowCoordinates);
+    if (rotation !== undefined) {
+      point.rotate(-rotation, coordinates);
+    }
+  }
+
+  const pathCoords: Array<Coordinate> = [];
+  pathCoords.push(point.getCoordinates());
+  const step = 60;
+  for (let i = 0; i < 360; i += step) {
+    const nextPoint = translatePoint(point, props.cog, speed * step);
+    pathCoords.push(nextPoint.getCoordinates());
+    point = nextPoint;
+  }
+  return new LineString(pathCoords);
+}
+
 function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geometry>[]) {
   const aisLayer = aisLayers.find((al) => al.id === id);
   const source = dvkMap.getVectorSource(id);
   if (aisLayer && source) {
     const features = aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType')));
-    const layerFeatureIds: Array<string | number | undefined> = [];
+    source.clear(true);
 
-    source.forEachFeature((f) => {
-      const newFeat = features.find((feat) => feat.getId() === f.getId());
-      if (!newFeat) {
-        source.removeFeature(f);
+    /* Add vessel features */
+    features.forEach((f) => {
+      const feat = new Feature();
+      feat.setProperties(f.getProperties(), true);
+      feat.set('dataSource', id, true);
+      feat.set('aisPoint', f.getGeometry()?.clone(), true);
+      const vesselGeom = getVesselGeometry(f);
+      if (vesselGeom !== undefined) {
+        feat.setGeometry(vesselGeom);
       } else {
-        layerFeatureIds.push(f.getId());
-        f.setProperties(newFeat.getProperties(), true);
-        f.setGeometry(newFeat.getGeometry());
+        feat.setGeometry(f.getGeometry());
       }
-      return false;
+      source.addFeature(feat);
     });
-    const featuresToAdd = features.filter((f) => {
-      return !layerFeatureIds.includes(f.getId());
+
+    /* Add path predictor features */
+    features.forEach((f) => {
+      const props = f.getProperties() as AisFeatureProperties;
+      if (isVesselMoving(props.navStat, props.sog) && props.sog > 0.2 && props.sog < 100 && props.cog && props.cog >= 0 && props.cog < 360) {
+        source.addFeature(
+          new Feature({
+            geometry: getPathPredictorGeometry(f, false),
+            featureType: f.get('featureType') + '_pathpredictor',
+            realSizeVessel: false,
+            vesselLength: f.get('vesselLength'),
+            vesselWidth: f.get('vesselWidth'),
+            cog: f.get('cog'),
+          })
+        );
+        source.addFeature(
+          new Feature({
+            geometry: getPathPredictorGeometry(f, true),
+            featureType: f.getProperties().featureType + '_pathpredictor',
+            realSizeVessel: true,
+            vesselLength: f.get('vesselLength'),
+            vesselWidth: f.get('vesselWidth'),
+            cog: f.get('cog'),
+          })
+        );
+      }
     });
-    featuresToAdd.forEach((f) => f.set('dataSource', id, true));
-    source.addFeatures(featuresToAdd);
   }
 }
 
@@ -147,7 +267,19 @@ function useAisLayer(layerId: FeatureDataLayerId) {
     if (ready) {
       const layer = dvkMap.getFeatureLayer(layerId);
       const source = layer.getSource() as VectorSource;
-      source.forEachFeature((f) => f.set('showPathPredictor', state.showAisPredictor, true));
+      source.forEachFeature((f) => {
+        if (f.get('featureType') === 'aisvessel_pathpredictor') {
+          if (state.showAisPredictor) {
+            /* Remove feature style -> uses layer style */
+            f.setStyle();
+          } else {
+            /* Hide path predictor by overwriting layers style */
+            f.setStyle(() => {
+              return undefined;
+            });
+          }
+        }
+      });
       layer.changed();
     }
   }, [ready, state.showAisPredictor, layerId, dataUpdatedAt]);
