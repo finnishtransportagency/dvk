@@ -1201,7 +1201,7 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedSafetyEquipment(id: number) {
+export function setSelectedSafetyEquipment(id: number | null) {
   const dvkMap = getMap();
   const equipmentSource = dvkMap.getVectorSource('safetyequipment');
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
