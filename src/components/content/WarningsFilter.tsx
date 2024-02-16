@@ -31,6 +31,7 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ areaFilter, typeFilter, 
           </IonCol>
           <IonCol size="1">
             <IonButton
+              id="warningFilterSortingButton"
               className="sortingButton"
               fill="clear"
               size="small"
