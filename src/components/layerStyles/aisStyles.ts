@@ -14,7 +14,7 @@ import vesselHighSpeedIcon from '../../theme/img/ais/ais_vessel_high_speed.svg';
 import vesselTugAndSpecialCraftIcon from '../../theme/img/ais/ais_vessel_tug_and_special_craft.svg';
 import vesselPleasureCraftIcon from '../../theme/img/ais/ais_vessel_pleasure_craft.svg';
 import unspecifiedIcon from '../../theme/img/ais/ais_unspecified.svg';
-import { isVesselMoving } from '../../utils/aisUtils';
+import { isVesselMoving, getVesselHeading } from '../../utils/aisUtils';
 
 function getSvgArrowHead(strokeColor: string) {
   const svg =
@@ -55,17 +55,6 @@ function getArrowHeadIcon(strokeColor: string, rotation: number | undefined) {
   return ahi.icon;
 }
 
-/* Get vessel heading. If heading is missing uses cog. If heading and cog are missing returns undefined */
-function getVesselHeading(feature: Feature): number | undefined {
-  const props = feature.getProperties() as AisFeatureProperties;
-  if (props.heading && props.heading >= 0 && props.heading < 360) {
-    return props.heading;
-  } else if (props.cog && props.cog >= 0 && props.cog < 360) {
-    return props.cog;
-  }
-  return undefined;
-}
-
 /* Translate point to heading direction distance meters */
 function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
@@ -90,8 +79,8 @@ function getPointRotationAngle(point: Point, heading: number) {
 
 /* Get vessel rotation on the map */
 function getRotation(feature: Feature): number | undefined {
-  const heading = getVesselHeading(feature);
   const props = feature.getProperties() as AisFeatureProperties;
+  const heading = getVesselHeading(props.heading, props.cog);
   const geom = props.aisPoint?.clone();
 
   if (heading !== undefined && geom !== undefined) {
@@ -229,7 +218,7 @@ function getAisVesselStyle(feature: FeatureLike, resolution: number, selected: b
     const vesselWidth = props.vesselWidth ?? 0;
     const resLimit = vesselLength > 50 ? 2 : 1;
 
-    if (resolution < resLimit && vesselWidth > 0 && vesselLength > 0 && getVesselHeading(feature as Feature) !== undefined) {
+    if (resolution < resLimit && vesselWidth > 0 && vesselLength > 0 && getVesselHeading(props.heading, props.cog) !== undefined) {
       return getRealSizeVesselStyle(feature as Feature, selected, styleProps);
     } else if (isVesselMoving(props.navStat, props.sog)) {
       return getMovingVesselIconStyle(feature as Feature, selected, styleProps);

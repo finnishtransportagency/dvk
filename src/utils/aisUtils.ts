@@ -96,3 +96,13 @@ export function aisRotToDegreesPerSecond(x: number) {
   const degreesPerSecond = Math.pow(x / 4.733, 2) / 60;
   return x < 0 ? -degreesPerSecond : degreesPerSecond;
 }
+
+/* Get vessel heading. If heading is missing uses cog. If heading and cog are missing returns undefined */
+export function getVesselHeading(aisHeading?: number, aisCog?: number): number | undefined {
+  if (aisHeading && aisHeading >= 0 && aisHeading < 360) {
+    return aisHeading;
+  } else if (aisCog && aisCog >= 0 && aisCog < 360) {
+    return aisCog;
+  }
+  return undefined;
+}

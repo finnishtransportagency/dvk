@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
-import { calculateVesselDimensions, isVesselMoving } from '../utils/aisUtils';
+import { calculateVesselDimensions, isVesselMoving, getVesselHeading } from '../utils/aisUtils';
 import VectorSource from 'ol/source/Vector';
 import { AisFeatureProperties } from './features';
 import transformTranslate from '@turf/transform-translate';
@@ -108,17 +108,6 @@ function useAisFeatures() {
   return { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-/* Get vessel heading. If heading is missing uses cog. If heading and cog are missing returns undefined */
-function getVesselHeading(feature: Feature): number | undefined {
-  const props = feature.getProperties() as AisFeatureProperties;
-  if (props.heading && props.heading >= 0 && props.heading < 360) {
-    return props.heading;
-  } else if (props.cog && props.cog >= 0 && props.cog < 360) {
-    return props.cog;
-  }
-  return undefined;
-}
-
 /* Translate point to heading direction distance meters */
 function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
@@ -143,7 +132,8 @@ function getPointRotationAngle(point: Point, heading: number) {
 
 /* Get vessel rotation on the map */
 function getRotation(feature: Feature): number | undefined {
-  const heading = getVesselHeading(feature);
+  const props = feature.getProperties() as AisFeatureProperties;
+  const heading = getVesselHeading(props.heading, props.cog);
   const geom = feature.getGeometry() as Point;
 
   if (heading !== undefined && geom !== undefined) {
