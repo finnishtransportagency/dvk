@@ -8,11 +8,9 @@ import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
 import _ from 'lodash';
-import { calculateVesselDimensions, isVesselMoving, getVesselHeading } from '../utils/aisUtils';
+import { calculateVesselDimensions, isVesselMoving, getVesselHeading, translatePoint, getPointRotationAngle } from '../utils/aisUtils';
 import VectorSource from 'ol/source/Vector';
 import { AisFeatureProperties } from './features';
-import transformTranslate from '@turf/transform-translate';
-import { point as turf_point } from '@turf/helpers';
 import { Coordinate } from 'ol/coordinate';
 import { fromCircle } from 'ol/geom/Polygon';
 
@@ -106,28 +104,6 @@ function useAisFeatures() {
     }
   }, [vesselQuery.data, locationQuery.data, dataUpdatedAt]);
   return { ready, aisFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
-}
-
-/* Translate point to heading direction distance meters */
-function translatePoint(point: Point, heading: number, distance: number) {
-  const geom = point.clone();
-  const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
-  const turfPoint = turf_point(wgs84Point.getCoordinates());
-  // Transform given point 1km to headng direction
-  const turfPoint2 = transformTranslate(turfPoint, distance / 1000, heading);
-  const point2 = new Point(turfPoint2.geometry.coordinates);
-  point2.transform('EPSG:4326', MAP.EPSG);
-  return point2;
-}
-
-/* Get rotation angle on the map (EPSG:4326) at given point base on the wgs84 heading */
-function getPointRotationAngle(point: Point, heading: number) {
-  const point2 = translatePoint(point, heading, 1000);
-  // calculate angle between tho points in map (EPSG:4326) coordinate system
-  const coord1 = point.getCoordinates();
-  const coord2 = point2.getCoordinates();
-  const angle = Math.atan2(coord2[1] - coord1[1], coord2[0] - coord1[0]);
-  return angle > Math.PI / 2 ? 2.5 * Math.PI - angle : 0.5 * Math.PI - angle;
 }
 
 /* Get vessel rotation on the map */
