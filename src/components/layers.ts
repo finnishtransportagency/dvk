@@ -336,7 +336,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, resolution, false, true);
+    return getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), true);
   } else if (ds === 'coastalwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'localwarning') {
@@ -1202,17 +1202,20 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
 }
 
 export function setSelectedSafetyEquipment(id: number | null) {
+  console.log(id);
   const dvkMap = getMap();
-  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
-  equipmentSource.forEachFeature((f) => {
+  fairwayCardSource.forEachFeature((f) => {
+    console.log('feat', f.getId());
     f.set('hoverStyle', f.getId() === id, true);
   });
   faultSource.forEachFeature((f) => {
+    console.log('feat', f.getId());
     f.set('hoverStyle', f.getId() === id, true);
   });
-  equipmentSource.dispatchEvent('change');
+  fairwayCardSource.dispatchEvent('change');
   faultSource.dispatchEvent('change');
 }
 

@@ -91,9 +91,9 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
           <IonGrid
             className="table light group ion-no-padding inlineHoverText"
             key={faultArray[0].equipmentId}
-            onMouseOver={() => setSelectedSafetyEquipment(faultArray[0].equipmentId)}
+            onMouseEnter={() => setSelectedSafetyEquipment(faultArray[0].equipmentId)}
             onFocus={() => setSelectedSafetyEquipment(faultArray[0].equipmentId)}
-            onMouseOut={() => setSelectedSafetyEquipment(null)}
+            onMouseLeave={() => setSelectedSafetyEquipment(null)}
             onBlur={() => setSelectedSafetyEquipment(null)}
           >
             <IonRow className="header">
