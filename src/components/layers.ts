@@ -1155,7 +1155,7 @@ export function setSelectedFairwayArea(id?: number | string) {
   selectedFairwayCardSource.dispatchEvent('change');
 }
 
-function highlightFeatures(source: VectorSource, featureTypes: string[], id: string, idProp: string, selected: boolean) {
+function highlightFeatures(source: VectorSource, featureTypes: string[], id: string | number, idProp: string, selected: boolean) {
   source.forEachFeature((f) => {
     if (id === f.get(idProp) && featureTypes.includes(f.get('featureType'))) {
       f.set('hoverStyle', selected, true);
@@ -1201,22 +1201,13 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedSafetyEquipment(id: number | null) {
-  console.log(id);
+export function setSelectedSafetyEquipment(id: number, selected: boolean) {
   const dvkMap = getMap();
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
-  fairwayCardSource.forEachFeature((f) => {
-    console.log('feat', f.getId());
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  faultSource.forEachFeature((f) => {
-    console.log('feat', f.getId());
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  fairwayCardSource.dispatchEvent('change');
-  faultSource.dispatchEvent('change');
+  highlightFeatures(faultSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
 }
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
