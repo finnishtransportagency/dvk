@@ -55,7 +55,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
       }
     } else if (trigger === 'popover-container-type') {
       if ((document.activeElement?.getAttribute('value') === 'localWarning' && isTabPressed) || isEnterPressed) {
-        setNextFocusableElement(popoverRef, 'warningFilterSortingButton');
+        setNextFocusableElement(popoverRef, 'warningFilterSortButton');
         e.preventDefault();
       }
     }
