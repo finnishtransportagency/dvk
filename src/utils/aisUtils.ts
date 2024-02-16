@@ -94,6 +94,5 @@ export const isVesselMoving = (navStat: number, speed: number) => {
 export function aisRotToDegreesPerSecond(x: number) {
   if (x < -127 || x > 127) return 0;
   const degreesPerSecond = Math.pow(x / 4.733, 2) / 60;
-  console.log(x + ' : ' + degreesPerSecond);
   return x < 0 ? -degreesPerSecond : degreesPerSecond;
 }
