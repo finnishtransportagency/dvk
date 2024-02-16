@@ -1,5 +1,5 @@
 import { CheckboxCustomEvent, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
@@ -43,36 +43,28 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: `${trigger.includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
 
-  const handleTabFocus = useCallback(
-    (e: KeyboardEvent) => {
-      const isTabPressed = e.key === 'Tab';
+  const handleTabFocus = (e: KeyboardEvent | React.KeyboardEvent<HTMLIonCheckboxElement>) => {
+    const isTabPressed = e.key === 'Tab';
+    const isEnterPressed = e.key === 'Enter';
 
-      if (!isTabPressed) {
-        return;
+    if (trigger === 'popover-container-area') {
+      // check if last element of the list, if structure changes these needs to be changed
+      if ((document.activeElement?.getAttribute('value') === 'saimaaCanal' && isTabPressed) || isEnterPressed) {
+        setNextFocusableElement(popoverRef, 'popover-container-type');
+        e.preventDefault();
       }
-      if (trigger === 'popover-container-area') {
-        // check if last element of the list, if structure changes these needs to be changed
-        if (document.activeElement?.getAttribute('value') === 'saimaaCanal') {
-          setNextFocusableElement(popoverRef, 'popover-container-type');
-          e.preventDefault();
-        }
-      } else if (trigger === 'popover-container-type') {
-        if (document.activeElement?.getAttribute('value') === 'localWarning') {
-          setNextFocusableElement(popoverRef, 'warningFilterSortingButton');
-          e.preventDefault();
-        }
+    } else if (trigger === 'popover-container-type') {
+      if ((document.activeElement?.getAttribute('value') === 'localWarning' && isTabPressed) || isEnterPressed) {
+        setNextFocusableElement(popoverRef, 'warningFilterSortingButton');
+        e.preventDefault();
       }
-    },
-    [popoverRef, trigger]
-  );
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLIonCheckboxElement>) => {
-    if (event.key === 'Enter') {
-      const checkbox = event.currentTarget as HTMLIonCheckboxElement;
+    }
+    if (isEnterPressed) {
+      const checkbox = e.currentTarget as HTMLIonCheckboxElement;
       const customEvent = {
         bubbles: true,
         composed: true,
-        target: event.currentTarget,
+        target: e.currentTarget,
         detail: {
           checked: !checkbox.checked,
           value: checkbox.value,
@@ -81,14 +73,6 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
       handleCheckboxChange(customEvent);
     }
   };
-
-  useEffect(() => {
-    document.addEventListener('keydown', handleTabFocus);
-
-    return () => {
-      document.removeEventListener('keydown', handleTabFocus);
-    };
-  }, [handleTabFocus]);
 
   const isOptionSelected = (value: string) => {
     if (value === undefined) {
@@ -191,7 +175,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
                 justify="start"
                 labelPlacement="end"
                 onIonChange={handleCheckboxChange}
-                onKeyDown={handleKeyDown}
+                onKeyDown={handleTabFocus}
               >
                 <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
