@@ -39,7 +39,7 @@ import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
 import TextInputRow from './form/TextInputRow';
-import { radiansToDegrees } from '../utils/common';
+import { addSequence, radiansToDegrees, removeSequence, sortPictures } from '../utils/common';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -265,33 +265,15 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   });
 
   const toggleSequence = (picture: PictureInput) => {
-    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation);
+    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation) ?? [];
     const currentOtherPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation !== orientation) ?? [];
     // Check if we need to add or remove the picture from sequence
-    let newSequencedPictures: PictureInput[] = [];
     const currentSequenceNumber = picture.sequenceNumber;
-    if (currentSequenceNumber) {
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-            pic.sequenceNumber = null;
-          } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-            pic.sequenceNumber--;
-          }
-          return pic;
-        }) ?? [];
-    } else {
-      const sequencedPictures = currentPicturesByOrientation?.filter((pic) => !!pic.sequenceNumber);
-      const maxSequenceNumber = sequencedPictures?.reduce((acc, pic) => {
-        return acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0;
-      }, 0);
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
-          return pic;
-        }) ?? [];
-    }
-    setPicture(newSequencedPictures.concat(currentOtherPictures), 'picture');
+    const newSequencedPictures = currentSequenceNumber
+      ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
+      : addSequence(picture, currentPicturesByOrientation);
+    const newPictures = sortPictures([...newSequencedPictures, ...currentOtherPictures]);
+    setPicture(newPictures, 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {

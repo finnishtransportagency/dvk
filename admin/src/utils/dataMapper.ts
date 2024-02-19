@@ -1,4 +1,5 @@
 import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery } from '../graphql/generated';
+import { sortPictures } from './common';
 
 const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
@@ -114,7 +115,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       }),
     },
     operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin ? [] : data?.fairwayCard?.pictures ?? [],
+    pictures: origin ? [] : sortPictures(data?.fairwayCard?.pictures ?? []),
   };
 }
 
