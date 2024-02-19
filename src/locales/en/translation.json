@@ -48,7 +48,7 @@
           "boaterWarning": "Navigational warnings for yachtsmen",
           "boardLines": "Leading lines",
           "circles": "Turning circles",
-          "pilotroutes": "[en] Luotsausreitit",
+          "pilotroutes": "Pilot routes",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
@@ -258,8 +258,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Updated",
     "fairways": "Fairway cards connected to the navigational aid",
-    "faultType": "[en] Vika",
-    "faultDateTime": "[en] Ajankohta"
+    "faultType": "Fault",
+    "faultDateTime": "Date and time"
   },
   "warnings": {
     "title": "Navigational warnings",

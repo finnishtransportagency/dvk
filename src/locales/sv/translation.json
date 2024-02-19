@@ -48,7 +48,7 @@
           "boaterWarning": "Navigationsvarningar för båtfarare",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
-          "pilotroutes": "[sv] Luotsausreitit",
+          "pilotroutes": "Lotsningsrutter",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
@@ -258,8 +258,8 @@
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Uppdaterat",
     "fairways": "Farledskorten angående säkerhetsanordningen",
-    "faultType": "[sv] Vika",
-    "faultDateTime": "[sv] Ajankohta"
+    "faultType": "Fel",
+    "faultDateTime": "Tidpunt"
   },
   "warnings": {
     "title": "Navigationsvarningar",
