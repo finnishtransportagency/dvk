@@ -110,6 +110,7 @@ button.icon:focus-visible:hover {
   background-size: 24px 24px;
   border-radius: 0;
   min-height: 41px;
+  padding-inline-start: 10px;
 }
 
 .dropdownWrapper label.input-wrapper {

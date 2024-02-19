@@ -336,7 +336,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, resolution, false, true);
+    return getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), true);
   } else if (ds === 'coastalwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'localwarning') {
@@ -1155,7 +1155,7 @@ export function setSelectedFairwayArea(id?: number | string) {
   selectedFairwayCardSource.dispatchEvent('change');
 }
 
-function highlightFeatures(source: VectorSource, featureTypes: string[], id: string, idProp: string, selected: boolean) {
+function highlightFeatures(source: VectorSource, featureTypes: string[], id: string | number, idProp: string, selected: boolean) {
   source.forEachFeature((f) => {
     if (id === f.get(idProp) && featureTypes.includes(f.get('featureType'))) {
       f.set('hoverStyle', selected, true);
@@ -1201,19 +1201,13 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedSafetyEquipment(id: number) {
+export function setSelectedSafetyEquipment(id: number, selected: boolean) {
   const dvkMap = getMap();
-  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
-  equipmentSource.forEachFeature((f) => {
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  faultSource.forEachFeature((f) => {
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  equipmentSource.dispatchEvent('change');
-  faultSource.dispatchEvent('change');
+  highlightFeatures(faultSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
 }
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
