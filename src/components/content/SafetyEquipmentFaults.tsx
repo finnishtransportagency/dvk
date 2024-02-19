@@ -37,7 +37,6 @@ function goto(id: number, selectedFairwayCard: boolean) {
     .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
     .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
-    setSelectedSafetyEquipment(id);
     const geometry = feature.getGeometry();
     if (geometry) {
       const extent = olExtent.createEmpty();
@@ -89,7 +88,14 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
         });
         const cards = Array.from(cardMap.values());
         return (
-          <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
+          <IonGrid
+            className="table light group ion-no-padding inlineHoverText"
+            key={faultArray[0].equipmentId}
+            onMouseEnter={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, true)}
+            onFocus={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, true)}
+            onMouseLeave={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, false)}
+            onBlur={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, false)}
+          >
             <IonRow className="header">
               <IonCol className="ion-no-padding">
                 <IonLabel>
