@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
-import { setNextFocusableElement } from '../../utils/CustomSelectDropdownUtils';
+import { setNextFocusableElement } from '../../utils/customSelectDropdownUtils';
 
 interface CustomSelectDropdownProps {
   triggerId: string;
@@ -43,7 +43,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: `${trigger.includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
 
-  const handleTabFocus = (e: KeyboardEvent | React.KeyboardEvent<HTMLIonCheckboxElement>) => {
+  const handleFocus = (e: KeyboardEvent | React.KeyboardEvent<HTMLIonCheckboxElement>) => {
     const isTabPressed = e.key === 'Tab';
     const isEnterPressed = e.key === 'Enter';
 
@@ -175,7 +175,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
                 justify="start"
                 labelPlacement="end"
                 onIonChange={handleCheckboxChange}
-                onKeyDown={handleTabFocus}
+                onKeyDown={handleFocus}
               >
                 <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
