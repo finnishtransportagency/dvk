@@ -2,7 +2,7 @@ import { Text } from '../../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
-  type: string;
+  featureType: string;
   name?: Text;
   email?: string;
   phoneNumber?: string[];
@@ -14,12 +14,13 @@ export type HarborFeatureProperties = {
 };
 
 export type QuayFeatureProperties = {
-  type: string;
+  featureType: string;
   quay?: Text;
   extraInfo?: Text;
   length?: number;
   name?: string;
   depth?: number[];
+  showDepth?: boolean;
   email?: string;
   phoneNumber?: string[];
   fax?: string;

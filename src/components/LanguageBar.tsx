@@ -2,14 +2,19 @@ import { IonButtons, IonButton } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './SidebarMenu.css';
-import { changeSquatLanguage } from 'squatlib';
+import { APP_CONFIG_PREVIEW } from '../utils/constants';
+
+const squatLib = VITE_APP_CONFIG !== APP_CONFIG_PREVIEW ? import('squatlib') : Promise.resolve(undefined);
 
 const LanguageBar: React.FC = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (e: React.MouseEvent<HTMLIonButtonElement, MouseEvent>, lang: string) => {
     i18n.changeLanguage(lang, () => localStorage.setItem('dvkLang', lang));
-    changeSquatLanguage(lang);
+    squatLib.then((module) => {
+      if (module !== undefined) module.changeSquatLanguage(lang);
+    });
+
     e.preventDefault();
   };
 

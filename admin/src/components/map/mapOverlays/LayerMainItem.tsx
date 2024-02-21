@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCheckbox, IonCol, IonRow, IonGrid, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
+import { IonCheckbox, IonCol, IonRow, IonItem, IonText, IonButton, IonIcon, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './LayerModal.css';
 import arrowDownIcon from '../../../theme/img/arrow_down.svg';
@@ -30,25 +30,25 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
   };
 
   const selectedChildLayers =
-    currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) || [];
+    currentLayer.childLayers?.flatMap((child) => (layers.includes(child.id) ? child.id : null)).filter((layerId) => layerId) ?? [];
   const isChecked = () => {
-    return selectedChildLayers?.length === (currentLayer.childLayers || []).length;
+    return selectedChildLayers?.length === (currentLayer.childLayers ?? []).length;
   };
   const isIndeterminate = () => {
-    return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers || []).length;
+    return selectedChildLayers?.length > 0 && selectedChildLayers?.length < (currentLayer.childLayers ?? []).length;
   };
-  const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) || []).length);
+  const layersWOCurrentChildLayers = layers?.filter((layer) => !(currentLayer.childLayers?.filter((child) => child.id === layer) ?? []).length);
   const handleChange = () => {
     if (isChecked() || isIndeterminate()) {
       setLayers(layersWOCurrentChildLayers);
     } else {
-      setLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) || []));
+      setLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) ?? []));
       setLegendOpen(true);
     }
   };
 
   return (
-    <IonGrid className="ion-no-padding layerItem layerMainItem">
+    <>
       <IonRow>
         <IonCol>
           <IonItem lines="none">
@@ -56,15 +56,14 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
               aria-labelledby={`${currentLayer.title}-label`}
               value={currentLayer.id}
               checked={isChecked()}
-              slot="start"
               onIonChange={handleChange}
               indeterminate={isIndeterminate()}
               labelPlacement="end"
+              justify="start"
             >
               <IonText id={`${currentLayer.title}-label`} className="labelText">
                 {currentLayer.title}
               </IonText>
-              <IonText className={'layerLegend layer ' + currentLayer.id}></IonText>
             </IonCheckbox>
           </IonItem>
         </IonCol>
@@ -97,7 +96,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, layers, set
           </IonList>
         </IonCol>
       </IonRow>
-    </IonGrid>
+    </>
   );
 };
 

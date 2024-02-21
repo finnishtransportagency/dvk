@@ -38,7 +38,7 @@
           "depths": "Depths",
           "safetyEquipmentsTitle": "Navigational aids",
           "safetyEquipments": "Navigational aids",
-          "safetyEquipmentFaults": "Defective navigation aids",          
+          "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
           "pilotPlaces": "Pilot boarding position",
@@ -48,6 +48,7 @@
           "boaterWarning": "Navigational warnings for yachtsmen",
           "boardLines": "Leading lines",
           "circles": "Turning circles",
+          "pilotroutes": "Pilot routes",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
@@ -256,7 +257,9 @@
     "print": "Print defective navigation aids",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Updated",
-    "fairways": "Fairway cards connected to the navigational aid"
+    "fairways": "Fairway cards connected to the navigational aid",
+    "faultType": "Fault",
+    "faultDateTime": "Date and time"
   },
   "warnings": {
     "title": "Navigational warnings",
@@ -305,7 +308,6 @@
       "fairways": "Fairway cards on the pilot boarding position"
     },
     "quay": {
-      "coordinates": "Coordinates",
       "length": "Length of the quay",
       "depth": "Swept depth",
       "number": "{{val, number}}",

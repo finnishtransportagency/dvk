@@ -25,25 +25,27 @@ const AisPredictorControl: React.FC = () => {
   }, [dispatch, layers]);
 
   return (
-    <IonRow>
-      <IonCol>
-        <IonItem>
-          <IonCheckbox
-            aria-labelledby={`${title}-label`}
-            checked={state.showAisPredictor}
-            slot="start"
-            onIonChange={handleChange}
-            disabled={disabled}
-            labelPlacement="end"
-          >
+    <IonItem>
+      <IonCheckbox
+        aria-labelledby={`${title}-label`}
+        checked={state.showAisPredictor}
+        onIonChange={handleChange}
+        disabled={disabled}
+        labelPlacement="end"
+        justify="start"
+      >
+        <IonRow className="ion-align-items-center ion-justify-content-between">
+          <IonCol>
             <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
               {t('homePage.map.controls.layer.aisShowPredictor')}
             </IonText>
+          </IonCol>
+          <IonCol size="auto">
             <IonText className={'layerLegend layer ' + title}></IonText>
-          </IonCheckbox>
-        </IonItem>
-      </IonCol>
-    </IonRow>
+          </IonCol>
+        </IonRow>
+      </IonCheckbox>
+    </IonItem>
   );
 };
 

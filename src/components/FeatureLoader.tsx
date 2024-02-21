@@ -15,6 +15,7 @@ import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
+import { handleSafetyEquipmentLayerChange } from '../utils/fairwayCardUtils';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -492,10 +493,16 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
         faultLayer.set('dataUpdatedAt', fDataUpdatedAt);
         faultLayer.set('errorUpdatedAt', fErrorUpdatedAt);
       }
+      // in case there's selected fairway card containing safety equipment faults (to avoid duplicates)
+      handleSafetyEquipmentLayerChange();
       setReady(true);
     }
   }, [eQuery.data, fQuery.data, eDataUpdatedAt, fDataUpdatedAt, eErrorUpdatedAt, fErrorUpdatedAt]);
   const dataUpdatedAt = Math.max(eDataUpdatedAt, fDataUpdatedAt);
   const errorUpdatedAt = Math.max(eErrorUpdatedAt, fErrorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useVaylaWaterAreaData() {
+  return useFeatureData('vayla_water_area');
 }

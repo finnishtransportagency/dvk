@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from 'react';
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText } from '@ionic/react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon, IonButton } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
+import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
@@ -18,13 +18,17 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { handleSafetyEquipmentLayerChange } from '../../utils/fairwayCardUtils';
-import { useSafetyEquipmentAndFaultLayer } from '../FeatureLoader';
+import { useSafetyEquipmentAndFaultLayer, useVaylaWaterAreaData } from '../FeatureLoader';
+import { InfoParagraph } from './Paragraph';
+import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
+import CustomSelectDropdown from './CustomSelectDropdown';
+import sortArrow from '../../theme/img/back_arrow-1.svg';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
   selectedFairwayCard: boolean;
+  sortNewFirst?: boolean;
 };
 
 function goto(id: number, selectedFairwayCard: boolean) {
@@ -33,8 +37,6 @@ function goto(id: number, selectedFairwayCard: boolean) {
     .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
     .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
-    setSelectedSafetyEquipment(id);
-    handleSafetyEquipmentLayerChange();
     const geometry = feature.getGeometry();
     if (geometry) {
       const extent = olExtent.createEmpty();
@@ -44,15 +46,22 @@ function goto(id: number, selectedFairwayCard: boolean) {
   }
 }
 
-export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'faults' });
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
 
-  // Sort faults by recordTime (desc)
+  // Sort faults by recordTime (desc) if only one fault or
+  // safety equipment fault page
   // and group faults by equipmentId
-  const sortedFaults = [...data].sort((a, b) => {
-    return a.recordTime > b.recordTime ? -1 : 1;
-  });
+  const sortedFaults =
+    data.length == 1 || !selectedFairwayCard
+      ? [...data].sort((a, b) => {
+          if (sortNewFirst) {
+            return a.recordTime > b.recordTime ? -1 : 1;
+          }
+          return a.recordTime > b.recordTime ? 1 : -1;
+        })
+      : sortByAlign(data);
 
   const groupedFaults: SafetyEquipmentFault[][] = [];
   sortedFaults.forEach((value) => {
@@ -66,6 +75,9 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
       {groupedFaults.map((faultArray) => {
         const feature = equipmentSource.getFeatureById(faultArray[0].equipmentId) as Feature<Geometry>;
         const equipment = feature?.getProperties() as EquipmentFeatureProperties | undefined;
+        // check if symbol is not undefined and key in symbol2Icon structure
+        // seems to be safe enough to justify disabling eslint and using symbol2Icon from safetyEquipmentStyles
+        const symbol = equipment?.symbol !== undefined && equipment?.symbol in symbol2Icon ? equipment?.symbol : '?';
         const cardMap: Map<string, Card> = new Map();
         equipment?.fairways?.forEach((f) => {
           if (f.fairwayCards) {
@@ -76,62 +88,103 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
         });
         const cards = Array.from(cardMap.values());
         return (
-          <IonGrid className="table light group ion-no-padding" key={faultArray[0].equipmentId}>
+          <IonGrid
+            className="table light group ion-no-padding inlineHoverText"
+            key={faultArray[0].equipmentId}
+            onMouseEnter={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, true)}
+            onFocus={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, true)}
+            onMouseLeave={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, false)}
+            onBlur={() => setSelectedSafetyEquipment(faultArray[0].equipmentId, false)}
+          >
             <IonRow className="header">
               <IonCol className="ion-no-padding">
                 <IonLabel>
                   <strong>
-                    {(faultArray[0].name && faultArray[0].name[lang]) || faultArray[0].name?.fi} - {faultArray[0].equipmentId}
+                    {faultArray[0].name?.[lang] ?? faultArray[0].name?.fi} - {faultArray[0].equipmentId}
                   </strong>
                 </IonLabel>
               </IonCol>
               <IonCol className="ion-text-end ion-no-padding">
                 <IonLabel>
                   {faultArray[0].geometry?.coordinates && (
-                    <Link
-                      to="/turvalaiteviat/"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        goto(faultArray[0].equipmentId, selectedFairwayCard);
-                      }}
-                    >
-                      {faultArray[0].geometry?.coordinates[0] &&
-                        faultArray[0].geometry?.coordinates[1] &&
-                        coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]])}
-                    </Link>
+                    <em>
+                      <Link
+                        to="/turvalaiteviat/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          goto(faultArray[0].equipmentId, selectedFairwayCard);
+                        }}
+                      >
+                        {faultArray[0].geometry?.coordinates[0] &&
+                          faultArray[0].geometry?.coordinates[1] &&
+                          coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]]).replace('N', 'N /')}
+                      </Link>
+                    </em>
                   )}
                 </IonLabel>
               </IonCol>
             </IonRow>
-            {faultArray.map((fault) => (
-              <IonRow key={fault.id}>
-                <IonCol>
-                  <IonLabel>{(fault.type && fault.type[lang]) || fault.type?.fi}</IonLabel>
+            <IonGrid className="ion-no-padding">
+              <IonRow>
+                <IonCol size="1.5">
+                  {/*eslint-disable-next-line  @typescript-eslint/no-explicit-any*/}
+                  <IonIcon className="equipmentListIcon" src={(symbol2Icon as any)[symbol].icon} />
                 </IonCol>
-                <IonCol className="ion-text-end ion-no-padding">
-                  <IonLabel>
-                    <em>{fault.recordTime > 0 && <>{t('datetimeFormat', { val: fault.recordTime })}</>}</em>
-                  </IonLabel>
+                <IonCol className="faultInfoCol">
+                  {faultArray.map((fault, index) => (
+                    <IonGrid key={fault.id} className="ion-no-padding">
+                      {index === 0 && (
+                        <IonRow>
+                          <IonCol>
+                            <IonLabel>
+                              <strong>{t('faults.faultType')}</strong>
+                            </IonLabel>
+                          </IonCol>
+                          <IonCol>
+                            <IonLabel>
+                              <strong>{t('faults.faultDateTime')}</strong>
+                            </IonLabel>
+                          </IonCol>
+                        </IonRow>
+                      )}
+                      <IonRow>
+                        <IonCol>
+                          <IonLabel>{fault.type?.[lang] ?? fault.type?.fi}</IonLabel>
+                        </IonCol>
+                        <IonCol>
+                          <IonLabel>{t('faults.datetimeFormat', { val: fault.recordTime })}</IonLabel>
+                        </IonCol>
+                      </IonRow>
+                    </IonGrid>
+                  ))}
                 </IonCol>
               </IonRow>
-            ))}
-            {cards.length > 0 && (
-              <>
-                <IonRow>
-                  <IonCol>{t('fairways')}</IonCol>
-                </IonRow>
-                <IonRow>
-                  <IonCol>
-                    {cards.map((card, idx) => (
-                      <span key={card.id}>
-                        <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
-                        {idx < cards.length - 1 ? ', ' : ''}
-                      </span>
-                    ))}
-                  </IonCol>
-                </IonRow>
-              </>
-            )}
+              {!selectedFairwayCard && (
+                <>
+                  <IonRow>
+                    <IonCol>
+                      <strong>{t('faults.fairways')}</strong>
+                    </IonCol>
+                  </IonRow>
+                  <IonRow>
+                    <IonCol>
+                      {cards.length > 0 ? (
+                        cards.map((card, idx) => (
+                          <span key={card.id}>
+                            <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                            {idx < cards.length - 1 ? ', ' : ''}
+                          </span>
+                        ))
+                      ) : (
+                        <IonText className="customInfoStyle">
+                          <InfoParagraph />
+                        </IonText>
+                      )}
+                    </IonCol>
+                  </IonRow>
+                </>
+              )}
+            </IonGrid>
           </IonGrid>
         );
       })}
@@ -151,9 +204,19 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const path = [{ title: t('faults.title') }];
   const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
   const { dispatch, state } = useDvkContext();
+  const [areaFilter, setAreaFilter] = useState<string[]>([]);
+  const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
+  const areaPolygons = useVaylaWaterAreaData();
+
+  const filterDataByArea = useCallback(() => {
+    if (areaFilter.length < 1) {
+      return data?.safetyEquipmentFaults;
+    }
+    return filterFeaturesInPolygonByArea(areaPolygons.data, data?.safetyEquipmentFaults, areaFilter);
+  }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
 
   const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps || !alertProps.duration) return t('warnings.viewLastUpdatedUnknown');
+    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
     return t('warnings.lastUpdatedAt', { val: alertProps.duration });
   }, [alertProps, t]);
 
@@ -188,13 +251,34 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       {alertProps && !isPending && !isFetching && (
         <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
       )}
-
+      <IonGrid className="faultFilterContainer">
+        <IonRow className="ion-align-items-center">
+          <IonCol size="10.5">
+            <IonText className="filterTitle">{t('warnings.area')}</IonText>
+            <CustomSelectDropdown triggerId="popover-container-equipmentArea" selected={areaFilter} setSelected={setAreaFilter} />
+          </IonCol>
+          <IonCol size="1.5">
+            <IonButton
+              className="faultSortingButton"
+              fill="clear"
+              size="small"
+              onClick={(e) => {
+                setSortNewFirst(!sortNewFirst);
+                e.preventDefault();
+              }}
+              title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
+            >
+              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
       <div
         id="safetyEquipmentFaultList"
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={data?.safetyEquipmentFaults || []} selectedFairwayCard={false} />
+        <FaultGroup loading={isPending} data={filterDataByArea() ?? []} selectedFairwayCard={false} sortNewFirst={sortNewFirst} />
       </div>
     </>
   );

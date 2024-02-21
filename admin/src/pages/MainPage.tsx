@@ -21,7 +21,7 @@ import { filterItemList } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
-import ClearButton from '../components/ClearButton';
+import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
 
 type HeaderButtonProps = {
@@ -104,6 +104,8 @@ const MainPage: React.FC = () => {
     selectTypeRef.current?.click();
   };
 
+  const searchHasInput = searchQuery.length > 0;
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border" id="mainPageContent">
@@ -111,38 +113,40 @@ const MainPage: React.FC = () => {
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">
               <div className="searchWrapper">
-                <IonInput
-                  className="searchBar"
-                  placeholder={translatedTextOrEmpty('search-placeholder')}
-                  title={translatedTextOrEmpty('search-title')}
-                  value={searchQuery}
-                  onIonChange={(e) => changeAction(e.detail.value)}
-                  ref={searchRef}
-                />
-                <ClearButton clearInput={clearInput} />
+                <IonItem lines="none" className="searchBar">
+                  <IonInput
+                    className="searchBar"
+                    placeholder={translatedTextOrEmpty('search-placeholder')}
+                    title={translatedTextOrEmpty('search-title')}
+                    value={searchQuery}
+                    onIonChange={(e) => changeAction(e.detail.value)}
+                    ref={searchRef}
+                  />
+                  <ClearSearchButton clearInput={clearInput} disabled={!searchHasInput} />
+                </IonItem>
               </div>
             </IonCol>
             <IonCol size="auto">
               <IonLabel className="formLabel" onClick={() => focusTypeSelect()}>
                 {translatedTextOrEmpty('label-type')}
               </IonLabel>
-              <IonItem className="selectInput">
-                <IonSelect
-                  ref={selectTypeRef}
-                  placeholder={translatedTextOrEmpty('choose')}
-                  interface="popover"
-                  multiple={true}
-                  onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
-                  interfaceOptions={{
-                    size: 'cover',
-                    className: 'multiSelect',
-                  }}
-                  labelPlacement="stacked"
-                >
-                  <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
-                  <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
-                </IonSelect>
-              </IonItem>
+              <IonSelect
+                ref={selectTypeRef}
+                className="selectInput"
+                placeholder={translatedTextOrEmpty('choose')}
+                interface="popover"
+                multiple={true}
+                onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
+                interfaceOptions={{
+                  size: 'cover',
+                  className: 'multiSelect',
+                }}
+                labelPlacement="stacked"
+                fill="outline"
+              >
+                <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
+                <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
+              </IonSelect>
             </IonCol>
             <IonCol></IonCol>
             <IonCol size="auto">
