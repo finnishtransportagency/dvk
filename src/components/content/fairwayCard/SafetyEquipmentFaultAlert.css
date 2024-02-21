@@ -14,16 +14,19 @@
 }
 .equipmentAlertIcon {
   position: relative;
-  left: 1px
+  left: 1px;
 }
 .equipmentAlert ion-icon.ion-accordion-toggle-icon {
   position: relative;
   left: 10px;
 }
 .equipmentAlertContent {
+  background-color: var(--ion-color-dangerbg);
+}
+
+.equipmentAlertContent ion-grid.table {
   padding-left: 12px;
   padding-right: 12px;
-  background-color: var(--ion-color-dangerbg);
 }
 
 ion-accordion .equipmentTabContent {

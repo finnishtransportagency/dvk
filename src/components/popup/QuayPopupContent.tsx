@@ -2,7 +2,6 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
-import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
@@ -31,24 +30,20 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
     deselectClickSelection();
   };
 
+  const quayName = quay.properties.quay?.[lang];
+  const sectionName = quay.properties.name ?? '';
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+
   return (
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {quay.properties.quay?.[lang]} {quay.properties.name ? quay.properties.name : ''}
+          {headerText}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.quay.coordinates')}</IonCol>
-      </IonRow>
-      {quay.coordinates && (
-        <IonRow>
-          <IonCol>{coordinatesToStringHDM(quay.coordinates)}</IonCol>
-        </IonRow>
-      )}
       {quay.properties.depth && (
         <>
           <IonRow>

@@ -1,7 +1,13 @@
 import { CheckboxCustomEvent, IonCheckbox, IonContent, IonIcon, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { WarningFilter, marineWarningAreasStructure, marineWarningTypeStructure } from '../../utils/constants';
+import {
+  WarningFilter,
+  marineWarningAreasStructure,
+  marineWarningTypeStructure,
+  equipmentAreasStructure,
+  SafetyEquipmentFaultFilter,
+} from '../../utils/constants';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import { setNextFocusableElement, isOptionSelected, isIndeterminate, checkAllChildren, handleUncheck } from '../../utils/customSelectDropdownUtils';
 
@@ -41,7 +47,7 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
   padding = 15,
   parent = undefined,
 }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: `${trigger.includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
+  const { t } = useTranslation(undefined, { keyPrefix: `${trigger.toLocaleLowerCase().includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
 
   const handleFocus = (e: KeyboardEvent | React.KeyboardEvent<HTMLIonCheckboxElement>) => {
     const isTabPressed = e.key === 'Tab';
@@ -139,7 +145,22 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
 };
 
 const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, trigger, selected, setSelected, setExpanded, expanded }) => {
-  const items = trigger.includes('area') ? marineWarningAreasStructure : marineWarningTypeStructure;
+  let items: WarningFilter[] | SafetyEquipmentFaultFilter[];
+
+  switch (true) {
+    case trigger.includes('area'):
+      items = marineWarningAreasStructure;
+      break;
+    case trigger.includes('type'):
+      items = marineWarningTypeStructure;
+      break;
+    case trigger.includes('equipmentArea'):
+      items = equipmentAreasStructure;
+      break;
+    default:
+      // Handle the case when none of the conditions match
+      items = [];
+  }
 
   const popover = useRef<HTMLIonPopoverElement>(null);
 
@@ -165,8 +186,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
 const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, selected, setSelected }) => {
   const { t } = useTranslation();
   // 3 different translations, so couldn't use functions own prefix setting
-  const translationPrefix = triggerId.includes('area') ? 'areas' : 'homePage.map.controls.layer';
-
+  const translationPrefix = triggerId.toLocaleLowerCase().includes('area') ? 'areas' : 'homePage.map.controls.layer';
   const [expanded, setExpanded] = useState(false);
 
   const triggerRef = useRef<HTMLIonItemElement>(null);

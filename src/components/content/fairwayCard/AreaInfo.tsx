@@ -46,9 +46,9 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
         return (
           <IonText
             key={area?.id ?? idx}
-            onMouseOver={() => highlightArea(area?.id)}
+            onMouseEnter={() => highlightArea(area?.id)}
             onFocus={() => highlightArea(area?.id)}
-            onMouseOut={() => highlightArea(0)}
+            onMouseLeave={() => highlightArea(0)}
             onBlur={() => highlightArea(0)}
           >
             <p className="inlineHoverText">

@@ -19,9 +19,9 @@ import MarineWarnings from './MarineWarnings';
 import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-import SquatCalculator from './SquatCalculator';
 import { useDvkContext } from '../../hooks/dvkContext';
 import HarborPreview from './HarborPreview';
+import SquatCalculator from './SquatCalculator';
 
 interface MainContentProps {
   fairwayCardId?: string;
@@ -40,6 +40,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
   const [activeSelection, setActiveSelection] = useState(0);
   const [widePane, setWidePane] = useState(false);
   const [showPane, setShowPane] = useState(true);
+
   const mapElement = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLIonInputElement>(null);
   const history = useHistory();

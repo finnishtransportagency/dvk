@@ -401,8 +401,8 @@ it('should render squat calculator page successfully', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    // Squat calculator container
-    const squatContainer = screen.getByTestId('squatCalculatorContainer');
+    // Squat calculator
+    const squatContainer = screen.getByTestId('squatCalculatorContent');
     expect(squatContainer).toBeInTheDocument();
   });
 });

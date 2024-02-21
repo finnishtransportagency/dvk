@@ -4,6 +4,9 @@ import { SafetyEquipmentFault } from '../graphql/generated';
 import { getMap } from '../components/DvkMap';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { Coordinate } from 'ol/coordinate';
+import { FeatureCollection } from 'geojson';
+import { GeoJSON } from 'ol/format';
 
 // See degreesToStringHDMS from openlayers /src/ol/coordinate.js for reference
 const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
@@ -84,4 +87,23 @@ export function sortByAlign(data: SafetyEquipmentFault[]) {
   });
 
   return finalSortedData;
+}
+
+export function filterFeaturesInPolygonByArea(polygons: FeatureCollection, features: SafetyEquipmentFault[] | undefined, areaFilter: string[]) {
+  if (!features) {
+    return [];
+  }
+  const format = new GeoJSON();
+  const polygonFeatures = format.readFeatures(polygons) as Feature<Geometry>[];
+
+  const lowerCaseAreaFilter = areaFilter.map((a) => a.toLocaleLowerCase());
+  const filteredArray = features.filter((f) => {
+    return polygonFeatures.some((p) => {
+      // exception since english Saimaa name is different in polygons
+      const area = p.getProperties().NIMI_EN !== 'Lake Saimaa' ? p.getProperties().NIMI_EN.toLocaleLowerCase().replace(/\s/g, '') : 'saimaa';
+      const faultCoordinates = f.geometry.coordinates as Coordinate;
+      return p.getGeometry()?.intersectsCoordinate(faultCoordinates) && lowerCaseAreaFilter.includes(area);
+    });
+  });
+  return filteredArray;
 }
