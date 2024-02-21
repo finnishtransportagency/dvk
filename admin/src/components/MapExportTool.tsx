@@ -29,7 +29,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -39,7 +39,7 @@ import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
 import TextInputRow from './form/TextInputRow';
-import { radiansToDegrees } from '../utils/common';
+import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -265,33 +265,14 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   });
 
   const toggleSequence = (picture: PictureInput) => {
-    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation);
+    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation) ?? [];
     const currentOtherPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation !== orientation) ?? [];
     // Check if we need to add or remove the picture from sequence
-    let newSequencedPictures: PictureInput[] = [];
     const currentSequenceNumber = picture.sequenceNumber;
-    if (currentSequenceNumber) {
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-            pic.sequenceNumber = null;
-          } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-            pic.sequenceNumber--;
-          }
-          return pic;
-        }) ?? [];
-    } else {
-      const sequencedPictures = currentPicturesByOrientation?.filter((pic) => !!pic.sequenceNumber);
-      const maxSequenceNumber = sequencedPictures?.reduce((acc, pic) => {
-        return (acc = acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0);
-      }, 0);
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
-          return pic;
-        }) ?? [];
-    }
-    setPicture(newSequencedPictures.concat(currentOtherPictures), 'picture');
+    const newSequencedPictures = currentSequenceNumber
+      ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
+      : addSequence(picture, currentPicturesByOrientation);
+    setPicture([...newSequencedPictures, ...currentOtherPictures], 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {
@@ -423,7 +404,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           updateState={setPicture}
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
-                          required={!!(pic.text || groupedPics?.filter((gPic) => gPic.text).length)}
+                          required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={false}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
@@ -699,34 +680,34 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     setSelectedFairwayCard(fairwayCard);
   }, [fairwayCardInput, fairways, harbours, initDone]);
 
-  // Upload map picture
-  const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
+  // Picture with input data waiting for upload
+  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
 
   const { mutateAsync: uploadMapPictureMutation, isPending: isLoadingMutation } = useUploadMapPictureMutationQuery({
     onSuccess: () => {
-      if (toBeSavedPicture) {
-        const newPictureInput = {
-          id: toBeSavedPicture.id,
+      if (newPicture) {
+        const pictureInput = {
+          id: newPicture.id,
           orientation: dvkMap.getOrientationType() || Orientation.Portrait,
-          rotation: toBeSavedPicture.rotation,
+          rotation: newPicture.rotation,
           modificationTimestamp: Date.now(),
-          scaleWidth: toBeSavedPicture.scaleWidth,
-          scaleLabel: toBeSavedPicture.scaleLabel,
+          scaleWidth: newPicture.scaleWidth,
+          scaleLabel: newPicture.scaleLabel,
           sequenceNumber: null,
           text: null,
-          lang: toBeSavedPicture.lang,
-          groupId: toBeSavedPicture.groupId,
-          legendPosition: toBeSavedPicture.legendPosition,
+          lang: newPicture.lang,
+          groupId: newPicture.groupId,
+          legendPosition: newPicture.legendPosition,
         };
-        // Update fairwayCard state
-        setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
+        // Update fairwayCard state with uploaded picture data
+        setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
       }
     },
     onError: (error: Error) => {
       console.error(error.message);
     },
     onSettled: () => {
-      setToBeSavedPicture(undefined);
+      setNewPicture(undefined);
     },
   });
 
@@ -752,8 +733,9 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       scaleLabel,
       lang,
       groupId,
+      legendPosition: POSITION.bottomLeft,
     };
-    setToBeSavedPicture({ ...picUploadObject, ...picInputObject });
+    setNewPicture({ ...picUploadObject, ...picInputObject });
     await uploadMapPictureMutation({
       picture: picUploadObject,
     });
@@ -844,7 +826,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           });
         });
       } else {
-        Promise.reject(`Map export for locale ${lang} failed.`);
+        Promise.reject(new Error(`Map export for locale ${lang} failed.`));
       }
     });
   };
