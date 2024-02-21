@@ -213,7 +213,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   useEffect(() => {
     setState(fairwayCard);
-    setOldState(fairwayCard);
+    setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
 
   return (

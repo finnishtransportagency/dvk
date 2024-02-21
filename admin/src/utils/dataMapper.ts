@@ -115,7 +115,25 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       }),
     },
     operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin ? [] : sortPictures(data?.fairwayCard?.pictures ?? []),
+    pictures: origin
+      ? []
+      : sortPictures(
+          data?.fairwayCard?.pictures?.map((picture) => {
+            return {
+              id: picture.id,
+              text: picture.text,
+              lang: picture.lang,
+              orientation: picture.orientation,
+              rotation: picture.rotation,
+              modificationTimestamp: picture.modificationTimestamp,
+              sequenceNumber: picture.sequenceNumber,
+              scaleLabel: picture.scaleLabel,
+              scaleWidth: picture.scaleWidth,
+              groupId: picture.groupId,
+              legendPosition: picture.legendPosition,
+            };
+          }) ?? []
+        ),
   };
 }
 
