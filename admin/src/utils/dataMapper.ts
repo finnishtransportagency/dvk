@@ -1,5 +1,6 @@
 import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery } from '../graphql/generated';
 import { sortPictures } from './common';
+import { POSITION } from './constants';
 
 const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
@@ -130,7 +131,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
               scaleLabel: picture.scaleLabel,
               scaleWidth: picture.scaleWidth,
               groupId: picture.groupId,
-              legendPosition: picture.legendPosition,
+              legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
             };
           }) ?? []
         ),

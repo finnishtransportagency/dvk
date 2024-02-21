@@ -29,7 +29,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -39,7 +39,7 @@ import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
 import TextInputRow from './form/TextInputRow';
-import { addSequence, radiansToDegrees, removeSequence, sortPictures } from '../utils/common';
+import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -272,8 +272,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     const newSequencedPictures = currentSequenceNumber
       ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
       : addSequence(picture, currentPicturesByOrientation);
-    const newPictures = sortPictures([...newSequencedPictures, ...currentOtherPictures]);
-    setPicture(newPictures, 'picture');
+    setPicture([...newSequencedPictures, ...currentOtherPictures], 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {
@@ -698,7 +697,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           text: null,
           lang: newPicture.lang,
           groupId: newPicture.groupId,
-          legendPosition: null,
+          legendPosition: newPicture.legendPosition,
         };
         // Update fairwayCard state with uploaded picture data
         setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
@@ -734,6 +733,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       scaleLabel,
       lang,
       groupId,
+      legendPosition: POSITION.bottomLeft,
     };
     setNewPicture({ ...picUploadObject, ...picInputObject });
     await uploadMapPictureMutation({
