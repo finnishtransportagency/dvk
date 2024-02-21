@@ -37,12 +37,6 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ areaFilter, typeFilter, 
                 setSortNewFirst(!sortNewFirst);
                 e.preventDefault();
               }}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {
-                  setSortNewFirst(!sortNewFirst);
-                  e.preventDefault();
-                }
-              }}
               title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
             >
               <IonIcon className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
