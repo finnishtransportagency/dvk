@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import './WarningsFilter.css';
@@ -30,18 +30,17 @@ const WarningsFilter: React.FC<WarningFilterProps> = ({ areaFilter, typeFilter, 
             <CustomSelectDropdown triggerId="popover-container-type" selected={typeFilter} setSelected={setTypeFilter} />
           </IonCol>
           <IonCol size="1">
-            <IonButton
+            <button
+              id="warningFilterSortButton"
               className="sortingButton"
-              fill="clear"
-              size="small"
               onClick={(e) => {
                 setSortNewFirst(!sortNewFirst);
                 e.preventDefault();
               }}
               title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
             >
-              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
-            </IonButton>
+              <IonIcon className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
+            </button>
           </IonCol>
         </IonRow>
       </IonGrid>
