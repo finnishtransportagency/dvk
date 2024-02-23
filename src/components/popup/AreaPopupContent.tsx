@@ -9,7 +9,7 @@ import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -58,7 +58,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (

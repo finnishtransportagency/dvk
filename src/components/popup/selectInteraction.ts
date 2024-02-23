@@ -134,7 +134,7 @@ export function addPointerClickInteraction(map: Map) {
   map.addInteraction(pointerClickSelect);
 }
 
-export function deselectFeatures() {
+export function clearClickSelectionFeatures() {
   dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
     if (interaction.get('name') === 'clickSelection') {
       (interaction as Select).getFeatures().clear();
@@ -142,7 +142,7 @@ export function deselectFeatures() {
   });
 }
 
-export function selectFeature(feature: FeatureLike) {
+export function setClickSelectionFeature(feature: FeatureLike) {
   dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
     if (interaction.get('name') === 'clickSelection') {
       (interaction as Select).getFeatures().push(feature as Feature<Geometry>);

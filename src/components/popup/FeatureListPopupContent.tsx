@@ -3,8 +3,11 @@ import './popup.css';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { FeatureLike } from 'ol/Feature';
 import { Coordinate } from 'ol/coordinate';
-import { IonCol, IonGrid, IonList, IonRow } from '@ionic/react';
+import { IonIcon, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import closeIcon from '../../theme/img/close_black_24dp.svg';
+import { setClickSelectionFeature } from './selectInteraction';
+import { showFeaturePopup } from './popup';
 
 export type FeatureListProperties = {
   features: FeatureLike[];
@@ -13,24 +16,34 @@ export type FeatureListProperties = {
 
 type FeatureListPopupContentProps = {
   featureList: FeatureListProperties;
-  setPopupProperties?: (properties: PopupProperties) => void;
+  setPopupProperties: (properties: PopupProperties) => void;
 };
 
 const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featureList, setPopupProperties }) => {
   const { t } = useTranslation();
-  console.log(featureList, setPopupProperties);
+  const { features, coordinate } = featureList;
+
+  const selectFeature = (feature: FeatureLike) => {
+    setClickSelectionFeature(feature);
+    showFeaturePopup(features, feature, coordinate, setPopupProperties);
+  };
 
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol className="header">{`${t('popup.common.multipleFeatures')}:`}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <IonList></IonList>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <div className="featureList">
+      <div className="featureListHeader">
+        <IonText className="header">{`${t('popup.common.multipleFeatures')}:`}</IonText>
+      </div>
+      <IonList>
+        {features.map((feature) => {
+          return (
+            <IonItem key={`${feature.get('featureType')}-${feature.getId()}`} lines="none" button onClick={() => selectFeature(feature)}>
+              <IonLabel>{feature.get('featureType')}</IonLabel>
+              <IonIcon slot="end" icon={closeIcon}></IonIcon>
+            </IonItem>
+          );
+        })}
+      </IonList>
+    </div>
   );
 };
 

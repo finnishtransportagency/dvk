@@ -8,7 +8,7 @@ import { PilotFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -29,7 +29,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (

@@ -10,7 +10,7 @@ import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import dvkMap from '../DvkMap';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -47,7 +47,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   function getValue(n2000Value: string | number | undefined, value: string | number | undefined) {

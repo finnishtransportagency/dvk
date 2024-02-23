@@ -7,7 +7,7 @@ import { AreaFairway, LineFairway, MarineWarningFeatureProperties } from '../fea
 import { getMap } from '../DvkMap';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
@@ -42,7 +42,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (

@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { MareographFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type MareographPopupContentProps = {
@@ -24,7 +24,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (

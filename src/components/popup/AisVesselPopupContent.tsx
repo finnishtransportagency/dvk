@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { AisFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
@@ -70,7 +70,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (

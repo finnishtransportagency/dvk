@@ -6,7 +6,7 @@ import { QuayFeatureProperties } from '../features';
 import { Lang } from '../../utils/constants';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import uniqueId from 'lodash/uniqueId';
 import CloseButton from './CloseButton';
 
@@ -27,7 +27,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   const quayName = quay.properties.quay?.[lang];

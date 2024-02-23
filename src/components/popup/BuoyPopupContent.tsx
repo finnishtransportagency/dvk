@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectFeatures } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type BuoyPopupContentProps = {
@@ -24,7 +24,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectFeatures();
+    clearClickSelectionFeatures();
   };
 
   return (
