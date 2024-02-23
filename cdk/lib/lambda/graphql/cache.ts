@@ -5,9 +5,17 @@ import { Readable } from 'stream';
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-const AIS_LOCATION_CACHE_DURATION = 10;
-const AIS_VESSEL_CACHE_DURATION = 1800;
-const FEATURE_CACHE_DURATION = 7200;
+const AIS_LOCATION_CACHE = {
+  MAX_AGE: 2, // 2 seconds
+  STALE_WHILE_REVALIDATE: 3, // 3 seconds
+  STALE_IF_ERROR: 58, // 58 seconds (do not return location data more than 1 minute old)
+}
+const AIS_VESSEL_CACHE = {
+  MAX_AGE: 300, // 5 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
+}
+const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
@@ -15,11 +23,33 @@ function getCacheBucketName() {
 
 export function getFeatureCacheDuration(key: string) {
   if (key === 'aislocations') {
-    return AIS_LOCATION_CACHE_DURATION;
+    return AIS_LOCATION_CACHE.MAX_AGE;
   } else if (key === 'aisvessels') {
-    return AIS_VESSEL_CACHE_DURATION;
+    return AIS_VESSEL_CACHE.MAX_AGE;
   } else {
     return FEATURE_CACHE_DURATION;
+  }
+}
+
+export function getCacheControlHeaders(key: string): Record<string, string[]> {
+  if (key === 'aislocations') {
+    return {
+      'Cache-Control': [
+        'max-age=' + AIS_LOCATION_CACHE.MAX_AGE + ', ' +
+        'stale-while-revalidate=' + AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE + ', ' +
+        'stale-if-error=' + AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE
+      ],
+    };
+  } else if (key === 'aisvessels') {
+      return {
+        'Cache-Control': [
+          'max-age=' + AIS_VESSEL_CACHE.MAX_AGE + ', ' +
+          'stale-while-revalidate=' + AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE + ', ' +
+          'stale-if-error=' + AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE
+        ],
+      };
+  } else {
+    return {};
   }
 }
 
