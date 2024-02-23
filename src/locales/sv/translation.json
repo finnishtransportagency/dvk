@@ -300,8 +300,7 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort",
-      "multipleFeatures": "[sv] Useita valittavia kohteita"
+      "noFairwayCards": "Inget farledskort"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
@@ -437,6 +436,28 @@
       "aisVesselTugAndSpecialCraft": "Bogserbåt eller specialfartyg",
       "aisVesselPleasureCraft": "Fritidsbåt",
       "aisUnspecified": "Odefinierade fartyg"
+    },
+    "featureList": {
+      "multipleFeatures": "Useita valittavia kohteita",
+      "featureType": {
+        "aisvessel": "Alus",
+        "pilot": "Luotsipaikka",
+        "vtspoint": "VTS-ilmoituspiste",
+        "quay": "Laituri",
+        "section": "Laituripaikka",
+        "harbor": "Satama",
+        "marinewarning": "Merivaroitus",
+        "safetyequipment": "Turvalaite",
+        "safetyequipmentfault": "Turvalaitevika",
+        "observation": "Säähavaintoasema",
+        "buoy": "Aaltopoiju",
+        "mareograph": "Mareografi",
+        "vtsline": "VTS-alue",
+        "line": "Navigointilinja",
+        "specialarea2": "Ankkurointialue",
+        "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
+        "area": "Väyläalue"
+      }
     }
   },
   "common": {

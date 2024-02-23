@@ -1,13 +1,14 @@
 import React from 'react';
 import './popup.css';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
 import { Coordinate } from 'ol/coordinate';
 import { IonIcon, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { setClickSelectionFeature } from './selectInteraction';
 import { showFeaturePopup } from './popup';
+import { Geometry } from 'ol/geom';
 
 export type FeatureListProperties = {
   features: FeatureLike[];
@@ -28,15 +29,29 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
     showFeaturePopup(features, feature, coordinate, setPopupProperties);
   };
 
+  const highlightFeature = (feature: FeatureLike, selected: boolean) => {
+    const f = feature as Feature<Geometry>;
+    f.set('hoverStyle', selected);
+  };
+
   return (
     <div className="featureList">
       <div className="featureListHeader">
-        <IonText className="header">{`${t('popup.common.multipleFeatures')}:`}</IonText>
+        <IonText className="header">{`${t('popup.featureList.multipleFeatures')}:`}</IonText>
       </div>
       <IonList>
         {features.map((feature) => {
           return (
-            <IonItem key={`${feature.get('featureType')}-${feature.getId()}`} lines="none" button onClick={() => selectFeature(feature)}>
+            <IonItem
+              key={`${feature.get('featureType')}-${feature.getId()}`}
+              lines="none"
+              button
+              onClick={() => selectFeature(feature)}
+              onFocus={() => highlightFeature(feature, true)}
+              onMouseEnter={() => highlightFeature(feature, true)}
+              onBlur={() => highlightFeature(feature, false)}
+              onMouseLeave={() => highlightFeature(feature, false)}
+            >
               <IonLabel>{feature.get('featureType')}</IonLabel>
               <IonIcon slot="end" icon={closeIcon}></IonIcon>
             </IonItem>

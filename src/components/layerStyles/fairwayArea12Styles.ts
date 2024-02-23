@@ -8,16 +8,22 @@ const areaStyle = new Style({
   }),
 });
 
+const selectedAreaStyle = new Style({
+  fill: new Fill({
+    color: 'rgba(236, 14, 14, 0.3)',
+  }),
+});
+
 const borderLineStyle = new Style({
   stroke: new Stroke({
     color: '#EC0E0E',
   }),
 });
 
-export function getFairwayArea12Style(feature: FeatureLike, resolution: number) {
+export function getFairwayArea12Style(feature: FeatureLike, resolution: number, selected: boolean) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
   if (ds === 'area12') {
-    return areaStyle;
+    return selected ? selectedAreaStyle : areaStyle;
   } else if (ds === 'area12Borderline' && resolution <= 30) {
     const props = feature.getProperties();
     const a1Props = props.area1Properties;
