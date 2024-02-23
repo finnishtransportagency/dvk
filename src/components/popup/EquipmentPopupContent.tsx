@@ -8,7 +8,7 @@ import { EquipmentFeatureProperties } from '../features';
 import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './selectInteraction';
+import { deselectFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -42,7 +42,7 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    deselectFeatures();
   };
 
   return (

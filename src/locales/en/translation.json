@@ -300,7 +300,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "No fairway cards"
+      "noFairwayCards": "No fairway cards",
+      "multipleFeatures": "[en] Useita valittavia kohteita"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",

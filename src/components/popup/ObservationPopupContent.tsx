@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { ObservationFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './selectInteraction';
+import { deselectFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type ObservationPopupContentProps = {
@@ -24,7 +24,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    deselectFeatures();
   };
 
   return (
@@ -60,13 +60,9 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
       <IonRow>
         <IonCol>
           {Math.round(observation.properties.windSpeedAvg)}{' '}
-          <span aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })} role="definition">
-            m/s
-          </span>
-          , {Math.round(observation.properties.windDirection)}{' '}
-          <span aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.windDirection || 0) })} role="definition">
-            °
-          </span>
+          <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })}>m/s</dd>,{' '}
+          {Math.round(observation.properties.windDirection)}{' '}
+          <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.windDirection || 0) })}>°</dd>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -75,9 +71,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
       <IonRow>
         <IonCol>
           {Math.round(observation.properties.windSpeedMax)}{' '}
-          <span aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedMax || 0) })} role="definition">
-            m/s
-          </span>
+          <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedMax || 0) })}>m/s</dd>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -86,12 +80,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
       <IonRow>
         <IonCol>
           {Math.round(observation.properties.temperature)}{' '}
-          <span
-            aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.temperature || 0) }) + ' (Celsius)'}
-            role="definition"
-          >
-            °C
-          </span>
+          <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.temperature || 0) }) + ' (Celsius)'}>°C</dd>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -102,12 +91,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
           {(observation.properties.visibility !== null && (
             <>
               {Math.round((observation.properties.visibility || 0) / 1000)}{' '}
-              <span
-                aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((observation.properties.visibility || 0) / 1000) })}
-                role="definition"
-              >
-                km
-              </span>
+              <dd aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((observation.properties.visibility || 0) / 1000) })}>km</dd>
             </>
           )) || <InfoParagraph title={t('common.noData')} />}
         </IonCol>

@@ -9,7 +9,7 @@ import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { deselectClickSelection } from './selectInteraction';
+import { deselectFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 
@@ -58,7 +58,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    deselectFeatures();
   };
 
   return (
@@ -111,14 +111,13 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         <IonRow>
           <IonCol>
             {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft })}{' '}
-            <span
+            <dd
               aria-label={t('fairwayCards.unit.mDesc', {
                 count: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft,
               })}
-              role="definition"
             >
               m
-            </span>
+            </dd>
           </IonCol>
         </IonRow>
       )}
@@ -126,34 +125,27 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         <IonRow>
           <IonCol>
             {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth })}{' '}
-            <span
+            <dd
               aria-label={t('fairwayCards.unit.mDesc', {
                 count: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth,
               })}
-              role="definition"
             >
               m
-            </span>
+            </dd>
           </IonCol>
         </IonRow>
       )}
       {speedLimits.length > 0 && (
         <IonRow>
           <IonCol>
-            {t('popup.area.speedLimit', { val: speedLimits.join(' / ') })}{' '}
-            <span aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })} role="definition">
-              km/h
-            </span>
+            {t('popup.area.speedLimit', { val: speedLimits.join(' / ') })} <dd aria-label={t('fairwayCards.unit.kmhDesc', { count: 0 })}>km/h</dd>
           </IonCol>
         </IonRow>
       )}
       {sizingSpeeds.length > 0 && (
         <IonRow>
           <IonCol>
-            {t('popup.area.speed')} {sizingSpeeds.join(' / ')}{' '}
-            <span aria-label={t('fairwayCards.unit.ktsDesc', { count: 0 })} role="definition">
-              kts
-            </span>
+            {t('popup.area.speed')} {sizingSpeeds.join(' / ')} <dd aria-label={t('fairwayCards.unit.ktsDesc', { count: 0 })}>kts</dd>
           </IonCol>
         </IonRow>
       )}
@@ -195,7 +187,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
                   {MASTERSGUIDE_URLS[lang]}
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
-                .
+                {'.'}
               </>
             </IonCol>
           </IonRow>

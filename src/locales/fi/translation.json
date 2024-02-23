@@ -300,7 +300,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Ei väyläkorttia"
+      "noFairwayCards": "Ei väyläkorttia",
+      "multipleFeatures": "Useita valittavia kohteita"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",

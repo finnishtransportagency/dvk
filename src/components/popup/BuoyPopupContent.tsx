@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { BuoyFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './selectInteraction';
+import { deselectFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type BuoyPopupContentProps = {
@@ -24,7 +24,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    deselectFeatures();
   };
 
   return (
@@ -57,13 +57,9 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
           {((buoy.properties.waveHeight || buoy.properties.waveDirection) && (
             <>
               {buoy.properties.waveHeight ? buoy.properties.waveHeight.toLocaleString() : '-'}{' '}
-              <span aria-label={t('fairwayCards.unit.mDesc', { count: Number(buoy.properties.waveHeight ?? 0) })} role="definition">
-                m
-              </span>
-              , {buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'}{' '}
-              <span aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.waveDirection ?? 0)) })} role="definition">
-                °
-              </span>
+              <dd aria-label={t('fairwayCards.unit.mDesc', { count: Number(buoy.properties.waveHeight ?? 0) })}>m</dd>,{' '}
+              {buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'}{' '}
+              <dd aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.waveDirection ?? 0)) })}>°</dd>
             </>
           )) || <InfoParagraph title={t('common.noData')} />}
         </IonCol>
@@ -76,12 +72,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
           {(typeof buoy.properties.temperature === 'number' && (
             <>
               {Math.round(buoy.properties.temperature)}{' '}
-              <span
-                aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.temperature)) }) + ' (Celsius)'}
-                role="definition"
-              >
-                °C
-              </span>
+              <dd aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.temperature)) }) + ' (Celsius)'}>°C</dd>
             </>
           )) || <InfoParagraph title={t('common.noData')} />}
         </IonCol>

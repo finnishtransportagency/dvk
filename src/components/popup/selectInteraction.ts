@@ -13,7 +13,8 @@ import { getBuoyStyle } from '../layerStyles/buoyStyles';
 import { getVtsStyle } from '../layerStyles/vtsStyles';
 import { getCircleStyle } from '../layerStyles/circleStyles';
 import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
+import { Geometry } from 'ol/geom';
 
 function getLayers() {
   return [
@@ -133,10 +134,18 @@ export function addPointerClickInteraction(map: Map) {
   map.addInteraction(pointerClickSelect);
 }
 
-export function deselectClickSelection() {
-  dvkMap.olMap?.getInteractions()?.forEach((int) => {
-    if (int.get('name') === 'clickSelection') {
-      (int as Select).getFeatures().clear();
+export function deselectFeatures() {
+  dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
+    if (interaction.get('name') === 'clickSelection') {
+      (interaction as Select).getFeatures().clear();
+    }
+  });
+}
+
+export function selectFeature(feature: FeatureLike) {
+  dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
+    if (interaction.get('name') === 'clickSelection') {
+      (interaction as Select).getFeatures().push(feature as Feature<Geometry>);
     }
   });
 }

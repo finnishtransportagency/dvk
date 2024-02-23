@@ -300,7 +300,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort"
+      "noFairwayCards": "Inget farledskort",
+      "multipleFeatures": "[sv] Useita valittavia kohteita"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
