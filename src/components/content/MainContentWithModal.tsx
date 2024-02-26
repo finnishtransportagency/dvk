@@ -19,8 +19,8 @@ import './Content.css';
 import { useDocumentTitle } from '../../hooks/dvkDocumentTitle';
 import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
-import SquatCalculator from './SquatCalculator';
 import HarborPreview from './HarborPreview';
+import SquatCalculator from './SquatCalculator';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -72,6 +72,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
   const { state, dispatch } = useDvkContext();
+
   const [isSearchbarOpen, setIsSearchbarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
@@ -290,7 +291,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
                   aria-label={t('clearTitle')}
                   onClick={clearInput}
                   data-testid={modalContent === 'fairwayCardList' ? 'clearInput' : ''}
-                ></button>
+                />
                 <SearchbarDropdown
                   isOpen={isSearchbarOpen}
                   searchQuery={searchQuery.trim()}

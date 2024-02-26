@@ -64,6 +64,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
 
   switch (type) {
     case 'quay':
+    case 'section':
       return getQuayStyle(feature, resolution, true);
     case 'harbor':
       return getHarborStyle(feature, resolution, 0, true);
@@ -107,13 +108,15 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
     condition: pointerMove,
     style: selectStyle,
     layers: getLayers(),
+    filter: (feature) => {
+      return types.includes(feature.get('featureType'));
+    },
     hitTolerance: 3,
     multi: true,
   });
   pointerMoveSelect.on('select', (e) => {
-    const hit = e.selected.length > 0 && e.selected.some((f) => types.includes(f.getProperties().featureType));
     const target = map.getTarget() as HTMLElement;
-    target.style.cursor = hit ? 'pointer' : '';
+    target.style.cursor = e.selected.length > 0 ? 'pointer' : '';
   });
   map.addInteraction(pointerMoveSelect);
 }

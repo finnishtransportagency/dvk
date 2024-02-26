@@ -128,6 +128,9 @@ vi.mock('./components/FeatureLoader', () => ({
   useStaticDataLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useVaylaWaterAreaData: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 vi.mock('./graphql/generated', async () => {
@@ -398,8 +401,8 @@ it('should render squat calculator page successfully', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    // Squat calculator container
-    const squatContainer = screen.getByTestId('squatCalculatorContainer');
+    // Squat calculator
+    const squatContainer = screen.getByTestId('squatCalculatorContent');
     expect(squatContainer).toBeInTheDocument();
   });
 });

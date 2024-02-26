@@ -362,3 +362,39 @@ export type Vessel = {
   referencePointD: number;
   destination: string;
 };
+
+/* RTZ */
+export type Coordinate = [number, number];
+
+export type RtzWaypoint = {
+  coordinate: Coordinate;
+  turnRadius: number;
+};
+
+type RtzGeometria = {
+  type: string;
+  coordinates: Coordinate;
+};
+
+type RtzReittipiste = {
+  tunnus: number;
+  nimi: string;
+  rtzTunniste: number;
+  reittitunnus: number;
+  kaarresade: number;
+  geometria: RtzGeometria;
+  leveysVasen: number;
+  leveysOikea: number;
+  geometriaTyyppi: string;
+  muutosaikaleima: string;
+  jarjestys: number;
+}
+
+export type RtzData = {
+  tunnus: number;
+  tila: number;
+  nimi: string;
+  tunniste: string;
+  rtz: string;
+  reittipisteet: Array<RtzReittipiste>;
+};

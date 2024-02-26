@@ -6,6 +6,8 @@ import { Fill, Icon } from 'ol/style';
 import Map from 'ol/Map';
 import quayIcon from '../theme/img/dock_icon.svg';
 import quayIconActive from '../theme/img/dock_icon_active.svg';
+import quaySectionIcon from '../theme/img/quay_section.svg';
+import quaySectionIconActive from '../theme/img/quay_section_active.svg';
 import CircleStyle from 'ol/style/Circle';
 import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
@@ -43,6 +45,7 @@ import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUt
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -121,24 +124,38 @@ export function getBoardLineStyle(color: string, width: number) {
   });
 }
 
-function getQuayLabel(feature: FeatureLike): string {
-  const dvkMap = getMap();
-  const featureType = feature.get('featureType');
-  const props = feature.getProperties() as QuayFeatureProperties;
-  const quayName = props.quay ? (props.quay[dvkMap.i18n.resolvedLanguage as Lang] as string) : '';
-  const sectionName = featureType === 'section' ? props.name : '';
-  const depthText =
-    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
+  const color = selected ? '#0064AF' : '#000000';
+  const depth = props.depth ? `${props.depth[0]} m` : '';
+  const image = new Icon({
+    src: quaySectionIcon,
+    anchor: [0.5, 19],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
+  const activeImage = new Icon({
+    src: quaySectionIconActive,
+    anchor: [0.5, 19],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  });
 
-  if (sectionName && depthText) {
-    return `${sectionName} ${depthText}`;
-  } else if (depthText) {
-    return depthText;
-  } else if (sectionName) {
-    return sectionName;
-  } else {
-    return quayName;
-  }
+  return new Style({
+    image: selected ? activeImage : image,
+    text: new Text({
+      font: '14px "Exo2"',
+      placement: 'line',
+      offsetY: -29,
+      text: depth,
+      fill: new Fill({
+        color: color,
+      }),
+      stroke: new Stroke({
+        width: 2,
+        color: '#ffffff',
+      }),
+    }),
+  });
 }
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
@@ -148,6 +165,19 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   if (feature.get('hoverStyle')) {
     selected = true;
   }
+
+  const featureType = feature.get('featureType');
+  const props = feature.getProperties() as QuayFeatureProperties;
+  if (featureType === 'section') {
+    return getSectionStyle(selected, props);
+  }
+
+  const dvkMap = getMap();
+  const lang = dvkMap.i18n.resolvedLanguage as Lang;
+  const quayName = props.quay?.[lang] ?? '';
+  const depthText =
+    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('popup.quay.number', { val: d })).join(' m / ')} m` : '';
+
   const image = new Icon({
     src: quayIcon,
     anchor: [0.5, 43],
@@ -160,25 +190,27 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
   });
-  const label = getQuayLabel(feature);
+  const labelFill = new Fill({
+    color: selected ? '#0064AF' : '#000000',
+  });
+  const labelStroke = new Stroke({
+    width: 3,
+    color: '#ffffff',
+  });
+  const labelZIndex = selected ? 10 : 1;
 
-  return [
+  const quayStyle = [
     new Style({
       image: selected ? activeImage : image,
       text: new Text({
         font: 'bold 18px "Exo2"',
         placement: 'line',
-        offsetY: -55,
-        text: label,
-        fill: new Fill({
-          color: selected ? '#0064AF' : '#000000',
-        }),
-        stroke: new Stroke({
-          width: 3,
-          color: '#ffffff',
-        }),
+        offsetY: props.showDepth ? -72 : -55,
+        text: quayName,
+        fill: labelFill,
+        stroke: labelStroke,
       }),
-      zIndex: selected ? 10 : 1,
+      zIndex: labelZIndex,
     }),
     new Style({
       image: new CircleStyle({
@@ -191,6 +223,24 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
       zIndex: selected ? 11 : 2,
     }),
   ];
+
+  if (props.showDepth) {
+    quayStyle.push(
+      new Style({
+        text: new Text({
+          font: '12px "Exo2"',
+          placement: 'line',
+          offsetY: -53,
+          text: depthText,
+          fill: labelFill,
+          stroke: labelStroke,
+        }),
+        zIndex: labelZIndex,
+      })
+    );
+  }
+
+  return quayStyle;
 }
 
 export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
@@ -286,7 +336,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   } else if (ds === 'boardline12') {
     return getBoardLineStyle('#000000', 1);
   } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, resolution, false, true);
+    return getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), true);
   } else if (ds === 'coastalwarning') {
     return getMarineWarningStyle(feature, false);
   } else if (ds === 'localwarning') {
@@ -454,7 +504,7 @@ function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, z
     map: map,
     id: id,
     maxResolution: undefined,
-    renderBuffer: 1000,
+    renderBuffer: 5,
     style: style,
     minResolution: undefined,
     opacity: 1,
@@ -641,7 +691,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'safetyequipment',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), feature.get('faultListStyle')),
     minResolution: undefined,
     opacity: 1,
@@ -768,12 +818,25 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'safetyequipmentfault',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
     zIndex: 315,
+  });
+
+  // Luotsausreitit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotroute',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getPilotRouteStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 316,
   });
 
   // AIS
@@ -866,9 +929,9 @@ export function unsetSelectedFairwayCard() {
   quaySource.clear();
 }
 
-function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON) {
-  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
+function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
+  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
@@ -877,6 +940,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
     extraInfo: quay.extraInfo,
     length: quay.length,
     depth,
+    showDepth,
     email: harbor.email,
     phoneNumber: harbor.phoneNumber,
     fax: harbor.fax,
@@ -907,14 +971,18 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
 function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
   const format = new GeoJSON();
   for (const quay of harbor.quays ?? []) {
-    if (quay?.geometry) {
-      addQuayFeature(harbor, quay, source, format);
-    } else {
-      for (const section of quay?.sections ?? []) {
-        if (quay && section && section.geometry) {
+    let sectionGeometryMissing = false;
+    quay?.sections?.forEach((section) => {
+      if (section) {
+        if (section.geometry) {
           addSectionFeature(harbor, quay, section, source, format);
+        } else {
+          sectionGeometryMissing = true;
         }
       }
+    });
+    if (quay?.geometry) {
+      addQuayFeature(harbor, quay, source, format, sectionGeometryMissing);
     }
   }
 }
@@ -1087,7 +1155,7 @@ export function setSelectedFairwayArea(id?: number | string) {
   selectedFairwayCardSource.dispatchEvent('change');
 }
 
-function highlightFeatures(source: VectorSource, featureTypes: string[], id: string, idProp: string, selected: boolean) {
+function highlightFeatures(source: VectorSource, featureTypes: string[], id: string | number, idProp: string, selected: boolean) {
   source.forEachFeature((f) => {
     if (id === f.get(idProp) && featureTypes.includes(f.get('featureType'))) {
       f.set('hoverStyle', selected, true);
@@ -1115,7 +1183,8 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   const ids = [];
   if (quay?.geometry?.coordinates) {
     ids.push(quay.geometry.coordinates.join(';'));
-  } else if (quay?.sections) {
+  }
+  if (quay?.sections) {
     quay.sections.forEach((s) => {
       if (s?.geometry?.coordinates) {
         ids.push(s.geometry.coordinates.join(';'));
@@ -1132,19 +1201,13 @@ export function setSelectedQuay(quay: Maybe<Quay>) {
   quaySource.dispatchEvent('change');
 }
 
-export function setSelectedSafetyEquipment(id: number) {
+export function setSelectedSafetyEquipment(id: number, selected: boolean) {
   const dvkMap = getMap();
-  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
 
-  equipmentSource.forEachFeature((f) => {
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  faultSource.forEachFeature((f) => {
-    f.set('hoverStyle', f.getId() === id, true);
-  });
-  equipmentSource.dispatchEvent('change');
-  faultSource.dispatchEvent('change');
+  highlightFeatures(faultSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
 }
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {

@@ -48,6 +48,7 @@
           "boaterWarning": "Varoituksia veneilijöille",
           "boardLines": "Taululinjat",
           "circles": "Kääntöympyrät",
+          "pilotroutes": "Luotsausreitit",
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
@@ -256,7 +257,9 @@
     "print": "Tulosta turvalaiteviat",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Päivitetty",
-    "fairways": "Turvalaitteeseen liittyvät väyläkortit"
+    "fairways": "Turvalaitteeseen liittyvät väyläkortit",
+    "faultType": "Vika",
+    "faultDateTime": "Ajankohta"
   },
   "warnings": {
     "title": "Merivaroitukset",
@@ -305,7 +308,6 @@
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
     "quay": {
-      "coordinates": "Koordinaatit",
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
       "number": "{{val, number}}",

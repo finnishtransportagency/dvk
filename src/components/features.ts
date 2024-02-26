@@ -1,8 +1,9 @@
+import { Point } from 'ol/geom';
 import { Text } from '../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
-  type: string;
+  featureType: string;
   name?: Text;
   email?: string;
   phoneNumber?: string[];
@@ -14,12 +15,13 @@ export type HarborFeatureProperties = {
 };
 
 export type QuayFeatureProperties = {
-  type: string;
+  featureType: string;
   quay?: Text;
   extraInfo?: Text;
   length?: number;
   name?: string;
   depth?: number[];
+  showDepth?: boolean;
   email?: string;
   phoneNumber?: string[];
   fax?: string;
@@ -188,6 +190,15 @@ export type AisFeatureProperties = {
   referencePointC?: number;
   referencePointD?: number;
   destination?: string;
+  vesselLength?: number;
+  vesselWidth?: number;
+  aisPoint?: Point;
+};
+
+export type AisFeaturePathPredictorProperties = {
+  featureType: 'aisvessel_pathpredictor';
+  realSizeVessel: boolean;
+  cog: number;
   vesselLength?: number;
   vesselWidth?: number;
 };

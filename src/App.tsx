@@ -33,6 +33,7 @@ import {
   useSpecialArea2Layer,
   useSpecialArea15Layer,
   useInitStaticDataLayer,
+  useVaylaWaterAreaData,
 } from './components/FeatureLoader';
 import {
   useAisVesselCargoLayer,
@@ -43,6 +44,7 @@ import {
   useAisVesselPleasureCraftLayer,
   useAisUnspecifiedLayer,
 } from './components/AisFeatureLoader';
+import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 
 /* Core CSS required for Ionic components to work properly */
@@ -187,6 +189,8 @@ const DvkIonApp: React.FC = () => {
   useInitStaticDataLayer('balticsea', 'balticsea');
   useInitStaticDataLayer('mml_satamat', 'mml_satamat');
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
+  usePilotRouteLayer();
+  useVaylaWaterAreaData();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
@@ -281,7 +285,7 @@ const DvkIonApp: React.FC = () => {
           />
         )}
         <IonContent id="MainContent">
-          <IonRouterOutlet placeholder="">
+          <IonRouterOutlet>
             <Switch>
               <Route path="/kortit/:fairwayCardId">
                 <FairwayCardPage setModalContent={setModalContent} />

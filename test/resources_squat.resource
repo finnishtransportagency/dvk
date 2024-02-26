@@ -91,28 +91,28 @@ ${FERRY_RADIOBUTTON}    //div[contains(text(), "Ferry")]/preceding-sibling::div
 ${LNG_TANKER_RADIOBUTTON}    //div[contains(text(), "LNG Tanker")]/preceding-sibling::div
 
 #Painuma (Squat) -calculation
-${KALLISTUMA_KAANNOS_VALUE}    //ion-label[@title = "Käännöksen aiheuttama kallistuma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KALLISTUMA_TUULI_VALUE}    //ion-label[@title = "Tuulen aiheuttama kallistuma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ALUKSEN_TODELLINEN_SYVAYS_VALUE}    //ion-label[@title = "Aluksen todellinen syväys"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}    //ion-label[@title = "Aluksen todellinen syväys käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}    //ion-label[@title = "Kölivara ja aluksen liikkeet"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_SUORALLA_KURSSILLA_VALUE}    //ion-label[@title = "Kölivara suoralla kurssilla"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KOLIVARA_KAANNOKSESSA_VALUE}    //ion-label[@title = "Kölivara käännöksessä"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_SLOPED_VALUE}    //ion-label[@title = "Painuma (Squat), luiska"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_CHANNEL_VALUE}    //ion-label[@title = "Painuma (Squat), kanava"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${PAINUMA_OPEN_VALUE}    //ion-label[@title = "Painuma (Squat), avovesi"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${KALLISTUMA_TUULI_VALUE}    //ion-text[@title = "Tuulen aiheuttama kallistuma"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${KALLISTUMA_KAANNOS_VALUE}    //ion-text[@title = "Käännöksen aiheuttama kallistuma"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${ALUKSEN_TODELLINEN_SYVAYS_VALUE}    //ion-text[@title = "Aluksen todellinen syväys"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${ALUKSEN_TODELLINEN_SYVAYS_KAANNOKSESSA_VALUE}    //ion-text[@title = "Aluksen todellinen syväys käännöksessä"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${KOLIVARA_JA_ALUKSEN_LIIKKEET_VALUE}    //ion-text[@title = "Kölivara ja aluksen liikkeet"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${KOLIVARA_SUORALLA_KURSSILLA_VALUE}    //ion-text[@title = "Kölivara suoralla kurssilla"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${KOLIVARA_KAANNOKSESSA_VALUE}    //ion-text[@title = "Kölivara käännöksessä"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${PAINUMA_SLOPED_VALUE}    //ion-text[@title = "Painuma (Squat), luiska"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${PAINUMA_CHANNEL_VALUE}    //ion-text[@title = "Painuma (Squat), kanava"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${PAINUMA_OPEN_VALUE}    //ion-text[@title = "Painuma (Squat), avovesi"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
 
 #Tuulen voima -calculation
-${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-label[@title = "Suhteellinen tuulen nopeus"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${TUULEN_VOIMA_VALUE}    //ion-label[@title = "Tuulen voima"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${AALLOKON_VOIMA_VALUE}    //ion-label[@title = "Aallokon voima"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${KEULAPOTKURIN_SUORITUSKYKY_VALUE}    //ion-label[@title = "Keulapotkurin suorituskyky"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${TURVAMARGINAALI_VALUE}    //ion-label[@title = "Käytettävissä oleva turvamarginaali"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_VALUE}    //ion-label[@title = "Vähimmäisvaatimus tarvittavalle ulkoiselle työntövoimalle"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${SUHTEELLINEN_TUULEN_SUUNTA_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-text[@title = "Suhteellinen tuulen suunta"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${SUHTEELLINEN_TUULEN_NOPEUS_1_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[1]/descendant::ion-text[@title = "Suhteellinen tuulen nopeus"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${TUULEN_VOIMA_VALUE}    //ion-text[@title = "Tuulen voima"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${AALLOKON_VOIMA_VALUE}    //ion-text[@title = "Aallokon voima"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${KEULAPOTKURIN_SUORITUSKYKY_VALUE}    //ion-text[@title = "Keulapotkurin suorituskyky"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${TURVAMARGINAALI_VALUE}    //ion-text[@title = "Käytettävissä oleva turvamarginaali"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${VAHIMMAISVAATIMUS_ULKOINEN_TYONTOVOIMA_VALUE}    //ion-text[@title = "Vähimmäisvaatimus tarvittavalle ulkoiselle työntövoimalle"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
 
 #Sorto -calculation
-${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-label[@title = "Suhteellinen tuulen suunta"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-label[@title = "Suhteellinen tuulen nopeus"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ARVIOITU_SORTOKULMA_VALUE}    //ion-label[@title = "Arvioitu sortokulma"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
-${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}    //ion-label[@title = "Aluksen arvioitu leveys sorto huomioiden"]/parent::ion-item/parent::ion-item/following-sibling::ion-item/ion-text
+${SUHTEELLINEN_TUULEN_SUUNTA_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-text[@title = "Suhteellinen tuulen suunta"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${SUHTEELLINEN_TUULEN_NOPEUS_2_VALUE}    //strong[text() = "Tuulen voima"]/ancestor::ion-grid/following-sibling::ion-grid[3]/descendant::ion-text[@title = "Suhteellinen tuulen nopeus"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${ARVIOITU_SORTOKULMA_VALUE}    //ion-text[@title = "Arvioitu sortokulma"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text
+${ARVIOITU_LEVEYS_SORTO_HUOMIOIDEN_VALUE}    //ion-text[@title = "Aluksen arvioitu leveys sorto huomioiden"]/parent::div/parent::ion-label/following-sibling::ion-item/ion-text

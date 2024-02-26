@@ -48,6 +48,7 @@
           "boaterWarning": "Navigationsvarningar för båtfarare",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
+          "pilotroutes": "Lotsningsrutter",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
@@ -256,7 +257,9 @@
     "print": "Skriv ut säkerhetsanordningsfelen",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "modified": "Uppdaterat",
-    "fairways": "Farledskorten angående säkerhetsanordningen"
+    "fairways": "Farledskorten angående säkerhetsanordningen",
+    "faultType": "Fel",
+    "faultDateTime": "Tidpunt"
   },
   "warnings": {
     "title": "Navigationsvarningar",
@@ -305,7 +308,6 @@
       "fairways": "Farledskort angående lotsplatsen"
     },
     "quay": {
-      "coordinates": "Koordinater",
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
       "number": "{{val, number}}",

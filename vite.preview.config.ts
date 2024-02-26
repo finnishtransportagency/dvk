@@ -8,6 +8,9 @@ import eslintPlugin from 'vite-plugin-eslint';
 export default defineConfig({
   build: {
     outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build/esikatselu',
+    rollupOptions: {
+      external: ['squatlib'],
+    },
   },
   base: process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '/esikatselu',
   server: {
@@ -19,11 +22,6 @@ export default defineConfig({
     viteTsconfigPaths(),
     svgr(),
     VitePWA({
-      /* Cache all imports */
-      workbox: {
-        globPatterns: ['**/*'],
-        maximumFileSizeToCacheInBytes: 3000000,
-      },
       registerType: 'autoUpdate',
       filename: 'service-worker.js',
       manifestFilename: 'manifest.json',
@@ -57,6 +55,13 @@ export default defineConfig({
         ],
       },
       useCredentials: true,
+      /* Cache all imports, ignore icons in manifest */
+      workbox: {
+        globPatterns: ['**/*'],
+        globIgnores: ['assets/icon/vayla_v_rgb_*.png', '**/node_modules/**/*'],
+        maximumFileSizeToCacheInBytes: 3000000,
+        cleanupOutdatedCaches: true,
+      },
     }),
     eslintPlugin({
       cache: false,

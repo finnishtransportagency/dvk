@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
-import { IonInput } from '@ionic/react';
+import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { filterItemList } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
-import ClearButton from './ClearButton';
+import ClearSearchButton from './ClearSearchButton';
 
 interface SearchProps {
   itemList: FairwayCardOrHarbor[];
@@ -43,6 +43,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   };
   const selectAction = (item: FairwayCardOrHarbor | undefined) => {
     setSelectedItem(item);
+    setSearchQuery('');
     closeDropdown();
   };
   const blurAction = () => {
@@ -72,23 +73,28 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
 
   const clearInput = () => {
     selectAction(undefined);
+    setSearchQuery('');
   };
 
+  const searchHasInput = searchQuery.length > 0 || !!selectedItem;
+
   return (
-    <div className="dropdownWrapper">
-      <IonInput
-        className="searchBar"
-        placeholder={t('search-placeholder') ?? ''}
-        title={t('search-title') ?? ''}
-        value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
-        onIonFocus={openDropdown}
-        onIonInput={(e) => changeAction(e.detail.value)}
-        onIonBlur={blurAction}
-        onKeyDown={(e) => keyDownAction(e)}
-        readonly={!isDropdownOpen}
-        ref={inputRef}
-      />
-      <ClearButton clearInput={clearInput} />
+    <div id="fairwayCardOrHarborSearch" className="searchWrapper">
+      <IonItem lines="none" className={'searchBar ' + (isDropdownOpen ? 'expanded' : '')}>
+        <IonInput
+          className="searchBar"
+          placeholder={t('search-placeholder') ?? ''}
+          title={t('search-title') ?? ''}
+          value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
+          onIonFocus={openDropdown}
+          onIonInput={(e) => changeAction(e.detail.value)}
+          onIonBlur={blurAction}
+          onKeyDown={(e) => keyDownAction(e)}
+          readonly={!isDropdownOpen}
+          ref={inputRef}
+        />
+        <ClearSearchButton clearInput={clearInput} disabled={!searchHasInput} />
+      </IonItem>
       <SearchDropdown
         isOpen={isDropdownOpen}
         searchQuery={searchQuery.trim()}

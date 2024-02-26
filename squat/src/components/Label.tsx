@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { IonItem, IonLabel } from '@ionic/react';
+import { IonLabel, IonText } from '@ionic/react';
 import Modal from './Modal';
 
 interface LabelProps {
@@ -13,23 +13,21 @@ interface LabelProps {
 
 const Label: React.FC<LabelProps> = (props) => {
   return (
-    <IonItem lines="none" className="only-label no-focus">
-      <IonItem lines="none" className="only-label no-padding no-focus">
-        <IonLabel color="dark" title={props.description ? props.description : props.title}>
+    <IonLabel>
+      <div className="labelContainer">
+        <IonText className="collapsible" color="dark" title={props.description ? props.description : props.title}>
           {props.title}
-        </IonLabel>
+        </IonText>
         {props.required && (
-          <IonLabel slot="end" color="dark" className="input-required-marker left-padding">
+          <IonText color="dark" className="input-required-marker">
             *
-          </IonLabel>
+          </IonText>
         )}
         {props.infoContent && props.infoContentTitle && (
-          <IonLabel slot="end">
-            <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} triggerClassName="no-background-focused" />
-          </IonLabel>
+          <Modal title={props.infoContentTitle} content={props.infoContent} size={props.infoContentSize} triggerClassName="no-background-focused" />
         )}
-      </IonItem>
-    </IonItem>
+      </div>
+    </IonLabel>
   );
 };
 

@@ -1,17 +1,10 @@
-import React, { forwardRef, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import SelectDropdownPopup from './SelectDropdownPopup';
-
-interface SelectItemProps {
-  selected: number[];
-  label: string[];
-  expanded: boolean;
-  disabled?: boolean;
-}
 
 interface SelectWithFilterProps {
   label: string;
@@ -26,34 +19,6 @@ interface SelectWithFilterProps {
   error?: string;
   isLoading?: boolean;
 }
-
-const SelectItem = forwardRef(function SelectItem(props: SelectItemProps, ref: React.ForwardedRef<HTMLIonLabelElement>) {
-  const { t } = useTranslation(undefined, { keyPrefix: 'general' });
-
-  return (
-    <IonItem className={'custom-select-item' + (props.expanded ? ' expanded' : '')} detail={false} disabled={props.disabled} lines="none">
-      {props.selected.length > 0 ? (
-        <IonLabel ref={ref} className="ion-text-wrap" color="dark">
-          <ul>
-            {props.label.map((opt) => {
-              return <li key={opt}>{opt}</li>;
-            })}
-          </ul>
-        </IonLabel>
-      ) : (
-        <IonLabel ref={ref} className="ion-text-wrap" color="medium">
-          {t('choose')}
-        </IonLabel>
-      )}
-      <IonIcon
-        icon={props.expanded ? caretUpSharp : caretDownSharp}
-        aria-hidden={true}
-        className="custom-select-icon"
-        color={props.expanded ? 'primary' : 'medium'}
-      />
-    </IonItem>
-  );
-});
 
 const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   label,
@@ -74,12 +39,11 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   const [isValid, setIsValid] = useState(!error);
   const [expanded, setExpanded] = useState(false);
 
-  const containerRef = useRef<HTMLIonItemElement>(null);
-  const selectLabelRef = useRef<HTMLIonLabelElement>(null);
+  const selectRef = useRef<HTMLIonItemElement>(null);
   const triggerId = 'select-with-search-' + actionType;
 
   const focusSelectItem = () => {
-    selectLabelRef.current?.click();
+    selectRef.current?.click();
   };
 
   const getHelperText = () => {
@@ -101,6 +65,8 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
     setSelected(updatedValues, actionType);
   };
 
+  const labelText = constructSelectDropdownLabel(selected, options, lang, showId);
+
   return (
     <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={disabled ? undefined : focusSelectItem}>
@@ -111,36 +77,48 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
       ) : (
         <>
           <IonItem
-            ref={containerRef}
+            ref={selectRef}
             id={triggerId}
             button={true}
-            className={'custom-select-container' + (expanded ? ' expanded' : '')}
+            className={'selectInput' + (expanded ? ' select-expanded' : '')}
             detail={false}
             disabled={disabled}
             lines="none"
             onClick={() => setExpanded(true)}
             onBlur={() => checkValidity()}
           >
-            <SelectItem
-              ref={selectLabelRef}
-              selected={selected}
-              label={constructSelectDropdownLabel(selected, options, lang, showId)}
-              expanded={expanded}
-              disabled={disabled}
+            {selected.length > 0 ? (
+              <IonLabel className="ion-text-wrap" color="dark">
+                <ul>
+                  {labelText.map((opt) => {
+                    return <li key={opt}>{opt}</li>;
+                  })}
+                </ul>
+              </IonLabel>
+            ) : (
+              <IonLabel className="ion-text-wrap" color="medium">
+                {t('choose')}
+              </IonLabel>
+            )}
+            <IonIcon
+              icon={expanded ? caretUpSharp : caretDownSharp}
+              aria-hidden={true}
+              className="select-icon"
+              color={expanded ? 'primary' : 'medium'}
             />
           </IonItem>
           {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
           <SelectDropdownPopup
             trigger={triggerId}
-            triggerRef={containerRef}
+            triggerRef={selectRef}
             options={options}
             selected={selected}
             setSelected={handleSelect}
             setIsExpanded={setExpanded}
             checkValidity={checkValidity}
             showId={showId}
-            className={'custom-select-popover ' + actionType}
+            className={actionType}
           />
         </>
       )}

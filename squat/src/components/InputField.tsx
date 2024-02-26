@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonInput } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
@@ -19,8 +19,6 @@ interface InputProps {
   max?: number;
   step?: string;
   unit?: string;
-  unitId?: string;
-  helper?: string | ReactElement;
   fieldClass?: string;
   actionType: Action['type'];
   infoContentTitle?: string;
