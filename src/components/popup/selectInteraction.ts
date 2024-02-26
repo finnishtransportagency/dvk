@@ -125,12 +125,13 @@ export function addPointerClickInteraction(map: Map) {
 }
 
 function getClickSelection(): Select | undefined {
+  let select: Select | undefined = undefined;
   dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
     if (interaction.get('name') === 'clickSelection') {
-      return interaction as Select;
+      select = interaction as Select;
     }
   });
-  return undefined;
+  return select;
 }
 
 export function clearClickSelectionFeatures() {

@@ -25,6 +25,7 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
   const { features, coordinate } = featureList;
 
   const selectFeature = (feature: FeatureLike) => {
+    highlightFeature(feature, false);
     setClickSelectionFeature(feature);
     showFeaturePopup(features, feature, coordinate, setPopupProperties);
   };

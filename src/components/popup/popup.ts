@@ -48,10 +48,17 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     });
   }
 
+  addPointerMoveInteraction(map, types);
+  addPointerClickInteraction(map);
+
   map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
+    /* Close popup */
+    overlay.setPosition(undefined);
+    setPopupProperties({});
+    clearClickSelectionFeatures();
 
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
@@ -64,10 +71,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       { hitTolerance: 3 }
     );
 
-    overlay.setPosition(undefined);
-    setPopupProperties({});
-    clearClickSelectionFeatures();
-
     if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
@@ -79,9 +82,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       }
     }
   });
-
-  addPointerMoveInteraction(map, types);
-  addPointerClickInteraction(map);
 }
 
 function showFeatureListPopup(
@@ -110,60 +110,59 @@ export function showFeaturePopup(
 ) {
   let popupPositioningCoordinate: Coordinate | undefined = undefined;
   const popup = overlay ?? dvkMap.olMap?.getOverlayById('popup');
+  if (!popup) return;
 
-  if (popup) {
-    if (selectedFeature.getProperties().featureType === 'mareograph') {
-      popup.setPositioning('center-right');
-      popup.setOffset([-20, 0]);
-    } else {
-      popup.setPositioning('center-left');
-      popup.setOffset([20, 0]);
-    }
-    const geom = (selectedFeature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-
-    /* If selected feature is navigation line start "fairway width calculation process" */
-    if (selectedFeature.getProperties().featureType === 'line') {
-      let fairwayWidth: number | undefined = undefined;
-      const areaFeatures = features.filter((f) => {
-        return f.getProperties().featureType === 'area';
-      });
-
-      /* Continue only if clicked point is inside area polygon (area layer must be visible) */
-      if (areaFeatures.length > 0) {
-        const fairwayWidthFeature: Feature<Geometry> | undefined = addFairwayWidthIndicator(selectedFeature, areaFeatures, coordinate);
-        if (fairwayWidthFeature) {
-          fairwayWidth = fairwayWidthFeature.get('width');
-          /* Set popup position right to the fairway width line */
-          const geometry = fairwayWidthFeature.getGeometry() as LineString;
-          const s = geometry.getFirstCoordinate();
-          const e = geometry.getLastCoordinate();
-          popupPositioningCoordinate = s[0] > e[0] ? s : e;
-        }
-      }
-      setPopupProperties({
-        [selectedFeature.getProperties().featureType]: {
-          coordinates: geom.getCoordinates() as number[],
-          properties: selectedFeature.getProperties(),
-          width: fairwayWidth,
-        },
-      });
-    } else {
-      setPopupProperties({
-        [selectedFeature.getProperties().featureType]: {
-          coordinates: geom.getCoordinates() as number[],
-          properties: selectedFeature.getProperties(),
-        },
-      });
-    }
-    /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
-    setTimeout(() => {
-      if (popupPositioningCoordinate) {
-        popup.setPosition(popupPositioningCoordinate);
-      } else if (selectedFeature.getGeometry()?.getType() === 'Point') {
-        popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
-      } else {
-        popup.setPosition(coordinate);
-      }
-    }, 100);
+  if (selectedFeature.getProperties().featureType === 'mareograph') {
+    popup.setPositioning('center-right');
+    popup.setOffset([-20, 0]);
+  } else {
+    popup.setPositioning('center-left');
+    popup.setOffset([20, 0]);
   }
+  const geom = (selectedFeature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+
+  /* If selected feature is navigation line start "fairway width calculation process" */
+  if (selectedFeature.getProperties().featureType === 'line') {
+    let fairwayWidth: number | undefined = undefined;
+    const areaFeatures = features.filter((f) => {
+      return f.getProperties().featureType === 'area';
+    });
+
+    /* Continue only if clicked point is inside area polygon (area layer must be visible) */
+    if (areaFeatures.length > 0) {
+      const fairwayWidthFeature: Feature<Geometry> | undefined = addFairwayWidthIndicator(selectedFeature, areaFeatures, coordinate);
+      if (fairwayWidthFeature) {
+        fairwayWidth = fairwayWidthFeature.get('width');
+        /* Set popup position right to the fairway width line */
+        const geometry = fairwayWidthFeature.getGeometry() as LineString;
+        const s = geometry.getFirstCoordinate();
+        const e = geometry.getLastCoordinate();
+        popupPositioningCoordinate = s[0] > e[0] ? s : e;
+      }
+    }
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+        width: fairwayWidth,
+      },
+    });
+  } else {
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+      },
+    });
+  }
+  /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
+  setTimeout(() => {
+    if (popupPositioningCoordinate) {
+      popup.setPosition(popupPositioningCoordinate);
+    } else if (selectedFeature.getGeometry()?.getType() === 'Point') {
+      popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
+    } else {
+      popup.setPosition(coordinate);
+    }
+  }, 100);
 }
