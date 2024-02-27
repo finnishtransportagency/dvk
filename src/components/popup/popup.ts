@@ -2,12 +2,29 @@ import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { MAP } from '../../utils/constants';
+import { Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { Coordinate } from 'ol/coordinate';
 import { addPointerClickInteraction, addPointerMoveInteraction, setClickSelectionFeature, clearClickSelectionFeatures } from './selectInteraction';
 import { addFairwayWidthIndicator } from './fairwayWidthIndicator';
+import { TFunction } from 'i18next';
+import { getAisVesselShipType } from '../../utils/aisUtils';
+import {
+  AisFeatureProperties,
+  AreaFeatureProperties,
+  BuoyFeatureProperties,
+  EquipmentFeatureProperties,
+  HarborFeatureProperties,
+  LineFeatureProperties,
+  MareographFeatureProperties,
+  MarineWarningFeatureProperties,
+  ObservationFeatureProperties,
+  PilotFeatureProperties,
+  QuayFeatureProperties,
+  VtsFeatureProperties,
+} from '../features';
+import { getMarineWarningDataLayerId } from '../../utils/common';
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
@@ -20,6 +37,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       },
     },
   });
+  map.addOverlay(overlay);
+
+  /* Selectable feature types in order of importance */
   const types = [
     'aisvessel',
     'pilot',
@@ -39,6 +59,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'specialarea15',
     'area',
   ];
+
   if (container) {
     container.addEventListener('pointercancel', (e) => {
       e.preventDefault();
@@ -51,7 +72,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   addPointerMoveInteraction(map, types);
   addPointerClickInteraction(map);
 
-  map.addOverlay(overlay);
   map.on('singleclick', function (evt) {
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
@@ -165,4 +185,115 @@ export function showFeaturePopup(
       popup.setPosition(coordinate);
     }
   }, 100);
+}
+
+export type FeatureDetailProperties = {
+  header?: string[];
+  featureType?: string;
+  className?: string;
+};
+
+function getAisVesselDetails(t: TFunction, feature: FeatureLike) {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const shipType = getAisVesselShipType(props.shipType);
+  return {
+    header: [props.name ?? ''],
+    featureType: t(`ais.${shipType}`),
+    className: `${feature.get('featureType')}-${shipType}`,
+  };
+}
+
+function getMarineWarningDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as MarineWarningFeatureProperties;
+  return {
+    header: [`${props.type?.[lang] ?? props.type?.fi} - ${props.number}`],
+    featureType: t('featureList.featureType.marinewarning'),
+    className: `${feature.get('featureType')}-${getMarineWarningDataLayerId(props.type)}`,
+  };
+}
+
+function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as QuayFeatureProperties;
+  const quayName = props.quay?.[lang];
+  const sectionName = props.name ?? '';
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  return {
+    header: [headerText],
+    featureType: t('featureList.featureType.section'),
+    className: feature.get('featureType'),
+  };
+}
+
+function getSafetyEquipmentDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as EquipmentFeatureProperties;
+  const type = feature.get('featureType');
+  return {
+    header: [`${props.name?.[lang] ?? props.name?.fi} - ${props.id}`],
+    featureType: type === 'safetyequipment' ? t('featureList.featureType.safetyequipment') : t('featureList.featureType.safetyequipmentfault'),
+    className: type,
+  };
+}
+
+export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike): FeatureDetailProperties | undefined {
+  const type = feature.get('featureType');
+  const props = feature.getProperties();
+  /* Selectable feature types for popup */
+  switch (type) {
+    case 'aisvessel':
+      return getAisVesselDetails(t, feature);
+    case 'area':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.area'),
+        className: type,
+      };
+    case 'buoy':
+      return { header: [(props as BuoyFeatureProperties).name], featureType: t('featureList.featureType.buoy'), className: type };
+    case 'harbor':
+      return { header: [(props as HarborFeatureProperties).name?.[lang] ?? ''], featureType: t('featureList.featureType.harbor'), className: type };
+    case 'line':
+      return {
+        header: (props as LineFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.line'),
+        className: type,
+      };
+    case 'mareograph':
+      return { header: [(props as MareographFeatureProperties).name], featureType: t('featureList.featureType.mareograph'), className: type };
+    case 'marinewarning':
+      return getMarineWarningDetails(t, lang, feature);
+    case 'observation':
+      return { header: [(props as ObservationFeatureProperties).name], featureType: t('featureList.featureType.observation'), className: type };
+    case 'pilot':
+      return {
+        header: [t('pilotPlace.header', { val: (props as PilotFeatureProperties).name[lang] })],
+        featureType: t('featureList.featureType.pilot'),
+        className: type,
+      };
+    case 'quay':
+      return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
+    case 'safetyequipment':
+      return getSafetyEquipmentDetails(t, lang, feature);
+    case 'safetyequipmentfault':
+      return getSafetyEquipmentDetails(t, lang, feature);
+    case 'section':
+      return getSectionDetails(t, lang, feature);
+    case 'specialarea15':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea15'),
+        className: type,
+      };
+    case 'specialarea2':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea2'),
+        className: type,
+      };
+    case 'vtsline':
+      return { header: [(props as VtsFeatureProperties).name ?? t('vts.line')], featureType: t('featureList.featureType.vtsline'), className: type };
+    case 'vtspoint':
+      return { header: [(props as VtsFeatureProperties).name ?? ''], featureType: t('featureList.featureType.vtspoint'), className: type };
+    default:
+      return undefined;
+  }
 }

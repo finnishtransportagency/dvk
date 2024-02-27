@@ -440,22 +440,22 @@
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
-        "pilot": "Luotsipaikka",
-        "vtspoint": "VTS-ilmoituspiste",
-        "quay": "Laituri",
-        "section": "Laituripaikka",
+        "area": "Väyläalue",
+        "buoy": "Aaltopoiju",
         "harbor": "Satama",
+        "line": "Navigointilinja",
+        "mareograph": "Mareografi",
         "marinewarning": "Merivaroitus",
+        "observation": "Säähavaintoasema",
+        "pilot": "Luotsipaikka",
+        "quay": "Laituri",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",
-        "observation": "Säähavaintoasema",
-        "buoy": "Aaltopoiju",
-        "mareograph": "Mareografi",
-        "vtsline": "VTS-alue",
-        "line": "Navigointilinja",
-        "specialarea2": "Ankkurointialue",
+        "section": "Laituripaikka",
         "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
-        "area": "Väyläalue"
+        "specialarea2": "Ankkurointialue",
+        "vtsline": "VTS-alue",
+        "vtspoint": "VTS-ilmoituspiste"
       }
     }
   },

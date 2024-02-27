@@ -27,11 +27,30 @@
 }
 
 .featureListHeader {
-  padding: 8px 8px 0 8px;
+  padding: 8px 8px 4px 8px;
 }
 
 .featureList ion-list {
   padding: 0;
+}
+
+.featureList ion-item {
+  --padding-start: 8px;
+  --inner-padding-end: 8px;
+}
+
+.featureList ion-label {
+  margin: 4px 0;
+}
+
+.featureList p {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--ion-color-dark);
+}
+
+.featureList p.headerText {
+  font-weight: bold;
 }
 
 .ol-popup .closeButton {

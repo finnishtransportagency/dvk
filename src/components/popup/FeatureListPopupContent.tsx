@@ -7,8 +7,9 @@ import { IonIcon, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { setClickSelectionFeature } from './selectInteraction';
-import { showFeaturePopup } from './popup';
+import { getFeatureDetails, showFeaturePopup } from './popup';
 import { Geometry } from 'ol/geom';
+import { Lang } from '../../utils/constants';
 
 export type FeatureListProperties = {
   features: FeatureLike[];
@@ -21,7 +22,8 @@ type FeatureListPopupContentProps = {
 };
 
 const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featureList, setPopupProperties }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'popup' });
+  const lang = i18n.resolvedLanguage as Lang;
   const { features, coordinate } = featureList;
 
   const selectFeature = (feature: FeatureLike) => {
@@ -38,10 +40,11 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
   return (
     <div className="featureList">
       <div className="featureListHeader">
-        <IonText className="header">{`${t('popup.featureList.multipleFeatures')}:`}</IonText>
+        <IonText className="header">{`${t('featureList.multipleFeatures')}:`}</IonText>
       </div>
       <IonList>
         {features.map((feature) => {
+          const details = getFeatureDetails(t, lang, feature);
           return (
             <IonItem
               key={`${feature.get('featureType')}-${feature.getId()}`}
@@ -53,7 +56,16 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
               onBlur={() => highlightFeature(feature, false)}
               onMouseLeave={() => highlightFeature(feature, false)}
             >
-              <IonLabel>{feature.get('featureType')}</IonLabel>
+              <IonLabel>
+                {details?.header?.map((h) => {
+                  return (
+                    <p key={`${feature.getId}-${h}`} className="headerText">
+                      {h}
+                    </p>
+                  );
+                })}
+                <p>{details?.featureType ?? ''}</p>
+              </IonLabel>
               <IonIcon slot="end" icon={closeIcon}></IonIcon>
             </IonItem>
           );
