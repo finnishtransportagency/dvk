@@ -192,6 +192,15 @@
   background-color: red;
 }
 
-/* HARBOR */
-/* QUAY */
-/* SECTION */
+.featureList ion-item .harbor,
+.featureList ion-item .quay {
+  width: 18px;
+  height: 23px;
+  margin: 0 2px;
+  background: url('../../theme/img/dock_icon.svg') no-repeat center / cover;
+}
+.featureList ion-item .section {
+  width: 15px;
+  height: 19px;
+  background: url('../../theme/img/quay_section.svg') no-repeat center / cover;
+}
