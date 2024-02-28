@@ -26,7 +26,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const en = i18n.getFixedT('en');
   const [isLoading, setIsLoading] = useState(true);
   const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft);
-
+  console.log(picture);
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
   const compassNeedle = useRef<HTMLImageElement>(null);
@@ -111,15 +111,17 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                   {!isLoading && (
                     <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
-                      <div className="compassInfo" ref={compassInfo}>
-                        <img
-                          src={north_arrow}
-                          alt=""
-                          ref={compassNeedle}
-                          onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
-                          style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
-                        />
-                      </div>
+                      {picture.rotation !== null && (
+                        <div className="compassInfo" ref={compassInfo}>
+                          <img
+                            src={north_arrow}
+                            alt=""
+                            ref={compassNeedle}
+                            onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
+                            style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                          />
+                        </div>
+                      )}
                       <div className="cardInfo">
                         <IonText>
                           <h3>{getPictureTitle()}</h3>
@@ -134,9 +136,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                           </em>
                         )}
                         <em className="danger">{getTranslatedText('fairwaycard.notForNavigation')}</em>
-                        <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
-                          {picture.scaleLabel}
-                        </div>
+                        {picture.scaleLabel && picture.scaleWidth && (
+                          <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
+                            {picture.scaleLabel}
+                          </div>
+                        )}
                         {/* buttons for changing legend position, could be useful to refactor to its own component */}
                         <button
                           className={

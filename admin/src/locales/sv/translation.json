@@ -91,7 +91,8 @@
       "m": "m",
       "mDesc_one": "meter",
       "mDesc_other": "meter"
-    }
+    },
+    "noDataSet": "Uppgifter finns inte."
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

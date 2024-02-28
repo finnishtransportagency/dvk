@@ -91,7 +91,8 @@
       "m": "m",
       "mDesc_one": "metri",
       "mDesc_other": "metriä"
-    }
+    },
+    "noDataSet": "Tietoa ei ole asetettu."
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",

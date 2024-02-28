@@ -9,3 +9,15 @@
   right: 5px;
   width: auto;
 }
+
+.infoIcon {
+  position: relative;
+  right: 5px;
+  margin-top: 5px;
+  margin-right: 3px;
+}
+
+.infoText {
+  bottom: 2px;
+  position: relative;
+}

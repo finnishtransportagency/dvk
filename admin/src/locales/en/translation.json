@@ -91,7 +91,8 @@
       "m": "m",
       "mDesc_one": "metre",
       "mDesc_other": "metres"
-    }
+    },
+    "noDataSet": "Data is not set."
   },
   "modal": {
     "title-new-CARD": "New fairway card",

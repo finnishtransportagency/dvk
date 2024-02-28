@@ -41,6 +41,7 @@ import Alert from './Alert';
 import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
+import infoIcon from '../theme/img/info-circle-solid.svg';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -228,8 +229,8 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
         />
       </div>
       <div className="extControl">
-        <button disabled={!dvkMap.getOrientationType()}>
-          <input type="file" id="fileInput" disabled={!dvkMap.getOrientationType()} onChange={handlePictureUpload} accept="image/png" />
+        <button className="fileInput" disabled={!dvkMap.getOrientationType()}>
+          <input type="file" disabled={!dvkMap.getOrientationType()} onChange={handlePictureUpload} accept="image/png" />
         </button>
       </div>
     </div>
@@ -414,8 +415,22 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                     <p>
                       <strong>{t('fairwaycard.print-images-rotation')}</strong>
                       <br />
-                      {radiansToDegrees(pic.rotation ?? 0)} °{' '}
-                      <img className="orientation" src={back_arrow} alt="" style={{ transform: 'rotate(' + pic.rotation?.toPrecision(2) + 'rad)' }} />
+                      {pic.rotation !== null ? (
+                        <>
+                          {radiansToDegrees(pic.rotation ?? 0)} °{' '}
+                          <img
+                            className="orientation"
+                            src={back_arrow}
+                            alt=""
+                            style={{ transform: 'rotate(' + pic.rotation?.toPrecision(2) + 'rad)' }}
+                          />
+                        </>
+                      ) : (
+                        <IonCol>
+                          <IonIcon className="infoIcon" icon={infoIcon} />
+                          <span className="infoText">{t('general.noDataSet')}</span>
+                        </IonCol>
+                      )}
                     </p>
                     {groupedPics && groupedPics?.length > 0 && (
                       <IonGrid className="formGrid">
@@ -602,7 +617,7 @@ interface MapProps {
 const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
-  const [fileUploader] = useState(() => new FileUploader());
+  const [fileUploader] = useState<FileUploader>(() => new FileUploader());
 
   InitDvkMap();
 
@@ -710,13 +725,13 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
         const pictureInput = {
           id: newPicture.id,
           orientation: dvkMap.getOrientationType() || Orientation.Portrait,
-          rotation: newPicture.rotation,
+          rotation: newPicture.rotation ?? null,
           modificationTimestamp: Date.now(),
-          scaleWidth: newPicture.scaleWidth,
-          scaleLabel: newPicture.scaleLabel,
+          scaleWidth: newPicture.scaleWidth ?? null,
+          scaleLabel: newPicture.scaleLabel ?? null,
           sequenceNumber: null,
           text: null,
-          lang: newPicture.lang,
+          lang: newPicture.lang ?? null,
           groupId: newPicture.groupId,
           legendPosition: newPicture.legendPosition,
         };
@@ -735,11 +750,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const uploadPicture = async (
     base64Data: string,
     orientation: Orientation,
-    rotation: number,
     groupId: number,
+    lang?: string,
+    rotation?: number,
     scaleWidth?: string,
-    scaleLabel?: string,
-    lang?: string
+    scaleLabel?: string
   ) => {
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
@@ -832,11 +847,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           await uploadPicture(
             base64Data,
             dvkMap.getOrientationType() || Orientation.Portrait,
-            rotation,
             picGroupId,
+            lang,
+            rotation,
             mapScaleWidth,
-            mapScale?.innerHTML,
-            lang
+            mapScale?.innerHTML
           );
           // Reset original map properties
           dvkMap.setMapLanguage('');
@@ -874,13 +889,13 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     console.timeEnd('Export pictures');
   };
 
-  const exportExternalPicByLang = async (rotation: number, lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
+  const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.getOrientationType()) {
         dvkMap.setMapLanguage(lang);
 
         try {
-          uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, rotation, picGroupId, undefined, undefined, lang);
+          uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
           dvkMap.setMapLanguage('');
           //won't resolve for some reason without this
           dvkMap.olMap?.once('rendercomplete', function () {
@@ -906,7 +921,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       for (const locale of locales) {
         if (locale !== curLang) setIsProcessingCurLang(false);
         const data = await fileUploader.getPictureBase64Data();
-        await exportExternalPicByLang(1, locale as Lang, picGroupId, data as string);
+        await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
       }
       setIsMapDisabled(false);
       fileUploader.deleteFiles();
