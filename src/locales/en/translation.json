@@ -429,13 +429,13 @@
       "fishing": "Engaged in fishing",
       "sailing": "Under way sailing",
       "emergency": "AIS-SART/MOB/EPIRB",
-      "aisVesselCargo": "Cargo vessel",
-      "aisVesselTanker": "Tanker",
-      "aisVesselPassenger": "Passenger vessel",
-      "aisVesselHighSpeed": "High speed vessel",
-      "aisVesselTugAndSpecialCraft": "Tugboat or special craft",
-      "aisVesselPleasureCraft": "Pleasure craft",
-      "aisUnspecified": "Unspecified vessel"
+      "aisvesselcargo": "Cargo vessel",
+      "aisvesseltanker": "Tanker",
+      "aisvesselpassenger": "Passenger vessel",
+      "aisvesselhighspeed": "High speed vessel",
+      "aisvesseltugandspecialcraft": "Tugboat or special craft",
+      "aisvesselpleasurecraft": "Pleasure craft",
+      "aisunspecified": "Unspecified vessel"
     },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",

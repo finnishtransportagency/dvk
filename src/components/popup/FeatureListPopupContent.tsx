@@ -1,11 +1,11 @@
 import React from 'react';
 import './popup.css';
+import './FeatureListPopupContent.css';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { Coordinate } from 'ol/coordinate';
-import { IonIcon, IonItem, IonLabel, IonList, IonText } from '@ionic/react';
+import { IonItem, IonLabel, IonList, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { setClickSelectionFeature } from './selectInteraction';
 import { getFeatureDetails, showFeaturePopup } from './popup';
 import { Geometry } from 'ol/geom';
@@ -66,7 +66,7 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
                 })}
                 <p>{details?.featureType ?? ''}</p>
               </IonLabel>
-              <IonIcon slot="end" icon={closeIcon}></IonIcon>
+              <IonText slot="end" className={'layer ' + (details?.className ?? '')} />
             </IonItem>
           );
         })}

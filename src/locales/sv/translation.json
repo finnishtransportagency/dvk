@@ -429,13 +429,13 @@
       "fishing": "Sysselsatt med fiske",
       "sailing": "Segelfartyg på väg",
       "emergency": "AIS-SART/MOB/EPIRB",
-      "aisVesselCargo": "Fraktfartyg",
-      "aisVesselTanker": "Tankfartyg",
-      "aisVesselPassenger": "Passagerarfartyg",
-      "aisVesselHighSpeed": "Snabba båt",
-      "aisVesselTugAndSpecialCraft": "Bogserbåt eller specialfartyg",
-      "aisVesselPleasureCraft": "Fritidsbåt",
-      "aisUnspecified": "Odefinierade fartyg"
+      "aisvesselcargo": "Fraktfartyg",
+      "aisvesseltanker": "Tankfartyg",
+      "aisvesselpassenger": "Passagerarfartyg",
+      "aisvesselhighspeed": "Snabba båt",
+      "aisvesseltugandspecialcraft": "Bogserbåt eller specialfartyg",
+      "aisvesselpleasurecraft": "Fritidsbåt",
+      "aisunspecified": "Odefinierade fartyg"
     },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",

@@ -1,0 +1,196 @@
+.featureListHeader {
+  padding: 8px 8px 4px 8px;
+}
+
+.featureList ion-list {
+  padding: 0;
+}
+
+.featureList ion-item {
+  --padding-start: 8px;
+  --inner-padding-end: 8px;
+}
+
+.featureList ion-label {
+  margin: 4px 0;
+}
+
+.featureList p {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--ion-color-dark);
+}
+
+.featureList p.headerText {
+  font-weight: bold;
+}
+
+.featureList ion-text.layer {
+  margin-inline-start: 0;
+  margin: 0 4px;
+  width: 14px;
+  height: 14px;
+}
+
+.featureList ion-item .aisvesselcargo,
+.featureList ion-item .aisvesseltanker,
+.featureList ion-item .aisvesselpassenger,
+.featureList ion-item .aisvesselhighspeed,
+.featureList ion-item .aisvesseltugandspecialcraft,
+.featureList ion-item .aisvesselpleasurecraft,
+.featureList ion-item .aisunspecified {
+  width: 8px;
+  height: 18px;
+  margin: 0 7px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.featureList ion-item .aisvesselcargo {
+  background-image: url('../../theme/img/ais/ais_vessel_cargo.svg');
+}
+.featureList ion-item .aisvesseltanker {
+  background-image: url('../../theme/img/ais/ais_vessel_tanker.svg');
+}
+.featureList ion-item .aisvesselpassenger {
+  background-image: url('../../theme/img/ais/ais_vessel_passenger.svg');
+}
+.featureList ion-item .aisvesselhighspeed {
+  background-image: url('../../theme/img/ais/ais_vessel_high_speed.svg');
+}
+.featureList ion-item .aisvesseltugandspecialcraft {
+  background-image: url('../../theme/img/ais/ais_vessel_tug_and_special_craft.svg');
+}
+.featureList ion-item .aisvesselpleasurecraft {
+  background-image: url('../../theme/img/ais/ais_vessel_pleasure_craft.svg');
+}
+.featureList ion-item .aisunspecified {
+  background-image: url('../../theme/img/ais/ais_unspecified.svg');
+}
+
+.featureList ion-item .area12 {
+  border: 1px solid var(--ion-color-danger);
+  background: rgba(var(--ion-color-danger-rgb), 0.1);
+}
+.featureList ion-item .area3456 {
+  border: 1px solid var(--ion-color-success);
+  background: rgba(var(--ion-color-success-rgb), 0.1);
+}
+
+.featureList ion-item .specialarea2,
+.featureList ion-item .specialarea15 {
+  width: 18px;
+  height: 18px;
+  margin: 0 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.featureList ion-item .specialarea2 {
+  background-image: url('../../theme/img/ankkurointialue.svg');
+}
+.featureList ion-item .specialarea15 {
+  background-image: url('../../theme/img/kohtaamiskielto_ikoni.svg');
+}
+
+.featureList ion-item .line,
+.featureList ion-item .vtsline {
+  border-top-width: 2px;
+  height: 1px;
+  margin-bottom: 2px;
+  vertical-align: middle;
+}
+
+.featureList ion-item .line {
+  border-top-style: solid;
+  border-top-color: var(--ion-color-layer-line);
+}
+.featureList ion-item .vtsline {
+  border-top-style: dashed;
+  border-top-color: var(--ion-color-layer-vts);
+}
+
+.featureList ion-item .vtspoint,
+.featureList ion-item .pilot {
+  width: 20px;
+  height: 20px;
+  margin: 0 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.featureList ion-item .vtspoint {
+  background-image: url('../../theme/img/vts_ilmoituspiste_ikoni.svg');
+}
+.featureList ion-item .pilot {
+  background-image: url('../../theme/img/pilotPlace.svg');
+}
+
+.featureList ion-item .buoy,
+.featureList ion-item .mareograph,
+.featureList ion-item .observation {
+  width: 21px;
+  height: 24px;
+  margin: 0 0 0 1px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-size: cover;
+}
+
+.featureList ion-item .buoy {
+  background-image: url('../../theme/img/buoy.svg');
+}
+.featureList ion-item .mareograph {
+  background-image: url('../../theme/img/vedenkorkeus_ikoni.svg');
+}
+.featureList ion-item .observation {
+  background-image: url('../../theme/img/saahavaintoasema.svg');
+}
+
+.featureList ion-item .coastalwarning,
+.featureList ion-item .localwarning,
+.featureList ion-item .boaterwarning {
+  width: 18px;
+  height: 21px;
+  margin: 0 2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.featureList ion-item .coastalwarning {
+  background-image: url('../../theme/img/coastal_warning_icon.svg');
+}
+.featureList ion-item .localwarning {
+  background-image: url('../../theme/img/local_warning_icon.svg');
+}
+.featureList ion-item .boaterwarning {
+  background-image: url('../../theme/img/warning_to_boaters_icon.svg');
+}
+
+.featureList ion-item .safetyequipment,
+.featureList ion-item .safetyequipmentfault {
+  height: 24px;
+  -webkit-mask-image: url('../../theme/img/safetyequipment/a.svg');
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  -webkit-mask-size: cover;
+  mask-image: url('../../theme/img/safetyequipment/a.svg');
+  mask-repeat: no-repeat;
+  mask-position: center;
+  mask-size: cover;
+}
+
+.featureList ion-item .safetyequipment {
+  background-color: var(--ion-color-dark);
+}
+.featureList ion-item .safetyequipmentfault {
+  background-color: red;
+}
+
+/* HARBOR */
+/* QUAY */
+/* SECTION */

@@ -2,7 +2,7 @@ import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { Lang, MAP } from '../../utils/constants';
+import { FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { Coordinate } from 'ol/coordinate';
@@ -199,7 +199,7 @@ function getAisVesselDetails(t: TFunction, feature: FeatureLike) {
   return {
     header: [props.name ?? ''],
     featureType: t(`ais.${shipType}`),
-    className: `${feature.get('featureType')}-${shipType}`,
+    className: shipType,
   };
 }
 
@@ -208,7 +208,7 @@ function getMarineWarningDetails(t: TFunction, lang: Lang, feature: FeatureLike)
   return {
     header: [`${props.type?.[lang] ?? props.type?.fi} - ${props.number}`],
     featureType: t('featureList.featureType.marinewarning'),
-    className: `${feature.get('featureType')}-${getMarineWarningDataLayerId(props.type)}`,
+    className: getMarineWarningDataLayerId(props.type),
   };
 }
 
@@ -226,17 +226,19 @@ function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
 
 function getSafetyEquipmentDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
   const props = feature.getProperties() as EquipmentFeatureProperties;
-  const type = feature.get('featureType');
+  const dataSource = feature.getProperties().dataSource as FeatureLayerId;
   return {
     header: [`${props.name?.[lang] ?? props.name?.fi} - ${props.id}`],
-    featureType: type === 'safetyequipment' ? t('featureList.featureType.safetyequipment') : t('featureList.featureType.safetyequipmentfault'),
-    className: type,
+    featureType: dataSource === 'safetyequipment' ? t('featureList.featureType.safetyequipment') : t('featureList.featureType.safetyequipmentfault'),
+    className: dataSource,
   };
 }
 
 export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike): FeatureDetailProperties | undefined {
   const type = feature.get('featureType');
   const props = feature.getProperties();
+  const dataSource = props.dataSource as FeatureLayerId;
+
   /* Selectable feature types for popup */
   switch (type) {
     case 'aisvessel':
@@ -245,7 +247,7 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return {
         header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
         featureType: t('featureList.featureType.area'),
-        className: type,
+        className: dataSource,
       };
     case 'buoy':
       return { header: [(props as BuoyFeatureProperties).name], featureType: t('featureList.featureType.buoy'), className: type };
@@ -290,7 +292,7 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
         className: type,
       };
     case 'vtsline':
-      return { header: [(props as VtsFeatureProperties).name ?? t('vts.line')], featureType: t('featureList.featureType.vtsline'), className: type };
+      return { header: [(props as VtsFeatureProperties).name ?? ''], featureType: t('featureList.featureType.vtsline'), className: type };
     case 'vtspoint':
       return { header: [(props as VtsFeatureProperties).name ?? ''], featureType: t('featureList.featureType.vtspoint'), className: type };
     default:
