@@ -104,11 +104,11 @@ function getAreaStyle(color: string, width: number, fillColor: string, resolutio
   });
 }
 
-export function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean | undefined) {
+export function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean, selected2: boolean | undefined) {
   if (dataSource === 'area12') {
-    return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
+    return getAreaStyle('#EC0E0E', selected ? 1 : 0, selected2 ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
   } else if (dataSource === 'area3456') {
-    return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
+    return getAreaStyle('#207A43', selected ? 1 : 0, selected2 ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
   } else {
     return undefined;
   }
@@ -309,30 +309,31 @@ function getArea12BorderLineStyle(feature: FeatureLike) {
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
+  const highlighted = !!feature.get('hoverStyle');
   switch (ds) {
     case 'line12':
       return getLineStyle('#0000FF', 2);
     case 'line3456':
       return getLineStyle('#0000FF', 2);
     case 'area12':
-      return resolution <= 100 ? getAreaStyleBySource('area12', feature.get('hoverStyle')) : undefined;
+      return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
     case 'area12Borderline':
       return resolution <= 100 ? getArea12BorderLineStyle(feature) : undefined;
     case 'area3456':
-      return resolution <= 100 ? getAreaStyleBySource('area3456', feature.get('hoverStyle')) : undefined;
+      return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted, highlighted) : undefined;
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, !!feature.get('hoverStyle'));
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
     case 'boardline12':
       return getBoardLineStyle('#000000', 1);
     case 'safetyequipment':
-      return getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), true);
+      return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
     case 'coastalwarning':
     case 'localwarning':
     case 'boaterwarning':
-      return getMarineWarningStyle(feature, !!feature.get('hoverStyle'));
+      return getMarineWarningStyle(feature, highlighted);
     case 'harbor':
-      return getHarborStyle(feature, resolution, !!feature.get('hoverStyle'), minResolutionHarbor);
+      return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
       return getCircleStyle(feature, resolution);
     default:
