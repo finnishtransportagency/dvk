@@ -26,6 +26,92 @@ import {
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
 
+function setPopupPosition(popup: Overlay, coordinate: Coordinate, selectedFeature?: FeatureLike, popupPositioningCoordinate?: Coordinate) {
+  /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
+  setTimeout(() => {
+    if (popupPositioningCoordinate) {
+      popup.setPosition(popupPositioningCoordinate);
+    } else if (selectedFeature?.getGeometry()?.getType() === 'Point') {
+      popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
+    } else {
+      popup.setPosition(coordinate);
+    }
+  }, 100);
+}
+
+function showFeatureListPopup(
+  features: FeatureLike[],
+  coordinate: Coordinate,
+  setPopupProperties: (properties: PopupProperties) => void,
+  overlay: Overlay
+) {
+  setPopupProperties({
+    featureList: {
+      features: features,
+      coordinate: coordinate,
+    },
+  });
+  setPopupPosition(overlay, coordinate);
+}
+
+export function showFeaturePopup(
+  features: FeatureLike[],
+  selectedFeature: FeatureLike,
+  coordinate: Coordinate,
+  setPopupProperties: (properties: PopupProperties) => void,
+  overlay?: Overlay
+) {
+  let popupPositioningCoordinate: Coordinate | undefined = undefined;
+  const popup = overlay ?? dvkMap.olMap?.getOverlayById('popup');
+  if (!popup) return;
+
+  if (selectedFeature.getProperties().featureType === 'mareograph') {
+    popup.setPositioning('center-right');
+    popup.setOffset([-20, 0]);
+  } else {
+    popup.setPositioning('center-left');
+    popup.setOffset([20, 0]);
+  }
+
+  const geom = (selectedFeature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+
+  /* If selected feature is navigation line start "fairway width calculation process" */
+  if (selectedFeature.getProperties().featureType === 'line') {
+    let fairwayWidth: number | undefined = undefined;
+    const areaFeatures = features.filter((f) => {
+      return f.getProperties().featureType === 'area';
+    });
+
+    /* Continue only if clicked point is inside area polygon (area layer must be visible) */
+    if (areaFeatures.length > 0) {
+      const fairwayWidthFeature: Feature<Geometry> | undefined = addFairwayWidthIndicator(selectedFeature, areaFeatures, coordinate);
+      if (fairwayWidthFeature) {
+        fairwayWidth = fairwayWidthFeature.get('width');
+        /* Set popup position right to the fairway width line */
+        const geometry = fairwayWidthFeature.getGeometry() as LineString;
+        const s = geometry.getFirstCoordinate();
+        const e = geometry.getLastCoordinate();
+        popupPositioningCoordinate = s[0] > e[0] ? s : e;
+      }
+    }
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+        width: fairwayWidth,
+      },
+    });
+  } else {
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+      },
+    });
+  }
+  setPopupPosition(popup, coordinate, selectedFeature, popupPositioningCoordinate);
+}
+
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
@@ -102,89 +188,6 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       }
     }
   });
-}
-
-function showFeatureListPopup(
-  features: FeatureLike[],
-  coordinate: Coordinate,
-  setPopupProperties: (properties: PopupProperties) => void,
-  overlay: Overlay
-) {
-  setPopupProperties({
-    featureList: {
-      features: features,
-      coordinate: coordinate,
-    },
-  });
-  setTimeout(() => {
-    overlay.setPosition(coordinate);
-  }, 100);
-}
-
-export function showFeaturePopup(
-  features: FeatureLike[],
-  selectedFeature: FeatureLike,
-  coordinate: Coordinate,
-  setPopupProperties: (properties: PopupProperties) => void,
-  overlay?: Overlay
-) {
-  let popupPositioningCoordinate: Coordinate | undefined = undefined;
-  const popup = overlay ?? dvkMap.olMap?.getOverlayById('popup');
-  if (!popup) return;
-
-  if (selectedFeature.getProperties().featureType === 'mareograph') {
-    popup.setPositioning('center-right');
-    popup.setOffset([-20, 0]);
-  } else {
-    popup.setPositioning('center-left');
-    popup.setOffset([20, 0]);
-  }
-  const geom = (selectedFeature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-
-  /* If selected feature is navigation line start "fairway width calculation process" */
-  if (selectedFeature.getProperties().featureType === 'line') {
-    let fairwayWidth: number | undefined = undefined;
-    const areaFeatures = features.filter((f) => {
-      return f.getProperties().featureType === 'area';
-    });
-
-    /* Continue only if clicked point is inside area polygon (area layer must be visible) */
-    if (areaFeatures.length > 0) {
-      const fairwayWidthFeature: Feature<Geometry> | undefined = addFairwayWidthIndicator(selectedFeature, areaFeatures, coordinate);
-      if (fairwayWidthFeature) {
-        fairwayWidth = fairwayWidthFeature.get('width');
-        /* Set popup position right to the fairway width line */
-        const geometry = fairwayWidthFeature.getGeometry() as LineString;
-        const s = geometry.getFirstCoordinate();
-        const e = geometry.getLastCoordinate();
-        popupPositioningCoordinate = s[0] > e[0] ? s : e;
-      }
-    }
-    setPopupProperties({
-      [selectedFeature.getProperties().featureType]: {
-        coordinates: geom.getCoordinates() as number[],
-        properties: selectedFeature.getProperties(),
-        width: fairwayWidth,
-      },
-    });
-  } else {
-    setPopupProperties({
-      [selectedFeature.getProperties().featureType]: {
-        coordinates: geom.getCoordinates() as number[],
-        properties: selectedFeature.getProperties(),
-      },
-    });
-  }
-  /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
-  setTimeout(() => {
-    if (popupPositioningCoordinate) {
-      popup.setPosition(popupPositioningCoordinate);
-    } else if (selectedFeature.getGeometry()?.getType() === 'Point') {
-      popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
-    } else {
-      popup.setPosition(coordinate);
-    }
-  }, 100);
 }
 
 export type FeatureDetailProperties = {
