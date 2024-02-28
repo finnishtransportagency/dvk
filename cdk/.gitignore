@@ -8,3 +8,5 @@ graphql/generated.ts
 cdk.context.json
 *.json.gz
 coverage
+
+bastion_script.sh
