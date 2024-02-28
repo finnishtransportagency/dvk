@@ -4,12 +4,13 @@ import './FeatureListPopupContent.css';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { Coordinate } from 'ol/coordinate';
-import { IonItem, IonLabel, IonList, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonItem, IonLabel, IonList, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { setClickSelectionFeature } from './selectInteraction';
+import { clearClickSelectionFeatures, setClickSelectionFeature } from './selectInteraction';
 import { getFeatureDetails, showFeaturePopup } from './popup';
 import { Geometry } from 'ol/geom';
 import { Lang } from '../../utils/constants';
+import CloseButton from './CloseButton';
 
 export type FeatureListProperties = {
   features: FeatureLike[];
@@ -37,11 +38,23 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
     f.set('hoverStyle', selected);
   };
 
+  const closePopup = () => {
+    if (setPopupProperties) setPopupProperties({});
+    clearClickSelectionFeatures();
+  };
+
   return (
     <div className="featureList">
-      <div className="featureListHeader">
-        <IonText className="header">{`${t('featureList.multipleFeatures')}:`}</IonText>
-      </div>
+      <IonGrid className="featureListHeader ion-no-padding">
+        <IonRow>
+          <IonCol>
+            <IonText className="header">{`${t('featureList.multipleFeatures')}:`}</IonText>
+          </IonCol>
+          <IonCol size="auto">
+            <CloseButton close={closePopup} />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
       <IonList>
         {features.map((feature) => {
           const details = getFeatureDetails(t, lang, feature);

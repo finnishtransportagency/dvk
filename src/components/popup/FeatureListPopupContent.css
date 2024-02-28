@@ -9,6 +9,7 @@
 .featureList ion-item {
   --padding-start: 8px;
   --inner-padding-end: 8px;
+  --min-height: 36px;
 }
 
 .featureList ion-label {
