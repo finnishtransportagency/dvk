@@ -26,7 +26,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   const en = i18n.getFixedT('en');
   const [isLoading, setIsLoading] = useState(true);
   const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft);
-  console.log(picture);
+
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
   const compassNeedle = useRef<HTMLImageElement>(null);

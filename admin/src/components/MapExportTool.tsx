@@ -106,6 +106,7 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePictureUpload = (event: ChangeEvent) => {
     fileUploader.addPicture(event);
@@ -184,6 +185,26 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
           aria-label={t('homePage.map.controls.screenshot.tipLabel')}
         />
       </div>
+      <div className="extControl uploadPictureControlContainer">
+        <button
+          className="uploadPictureControl"
+          type="button"
+          disabled={!dvkMap.getOrientationType()}
+          onClick={() => {
+            fileInputRef.current?.click();
+          }}
+        >
+          <input
+            id="fileInput"
+            type="file"
+            ref={fileInputRef}
+            disabled={!dvkMap.getOrientationType()}
+            onChange={handlePictureUpload}
+            accept="image/png"
+            style={{ display: 'none' }}
+          />
+        </button>
+      </div>
       <div className="extControl layerControlContainer">
         <button
           className={'layerControlContainer ' + (isOpen ? 'layerControlOpen' : 'layerControl')}
@@ -227,11 +248,6 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
           title={t('homePage.map.controls.zoom.zoomOutTipLabel')}
           aria-label={t('homePage.map.controls.zoom.zoomOutTipLabel')}
         />
-      </div>
-      <div className="extControl">
-        <button className="fileInput" disabled={!dvkMap.getOrientationType()}>
-          <input type="file" disabled={!dvkMap.getOrientationType()} onChange={handlePictureUpload} accept="image/png" />
-        </button>
       </div>
     </div>
   );

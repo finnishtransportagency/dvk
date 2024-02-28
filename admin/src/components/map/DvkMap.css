@@ -228,6 +228,14 @@
   background: transparent;
 }
 
+.dvkMap .uploadPictureControlContainer {
+  top: auto;
+  left: auto;
+  right: 24px;
+  bottom: 248px;
+  background: transparent;
+}
+
 .dvkMap .takeScreenshotControlContainer {
   top: auto;
   left: auto;
@@ -258,10 +266,6 @@
   pointer-events: none;
 }
 
-.mapExportTool .extControl.takeScreenshotControlContainer {
-  bottom: calc(272px + 5px);
-}
-
 .mapExportTool .extControl.selectPortraitControlContainer {
   bottom: calc(384px + 5px);
 }
@@ -270,20 +274,28 @@
   bottom: calc(328px + 5px);
 }
 
-.mapExportTool .extControl.layerControlContainer {
+.mapExportTool .extControl.takeScreenshotControlContainer {
+  bottom: calc(272px + 5px);
+}
+
+.mapExportTool .extControl.uploadPictureControlContainer {
   bottom: calc(216px + 5px);
 }
 
-.mapExportTool .extControl.centerToOwnLocationControlContainer {
+.mapExportTool .extControl.layerControlContainer {
   bottom: calc(160px + 5px);
 }
 
-.mapExportTool .extControl.zoomInControlContainer {
+.mapExportTool .extControl.centerToOwnLocationControlContainer {
   bottom: calc(104px + 5px);
 }
 
-.mapExportTool .extControl.zoomOutControlContainer {
+.mapExportTool .extControl.zoomInControlContainer {
   bottom: calc(48px + 5px);
+}
+
+.mapExportTool .extControl.zoomOutControlContainer {
+  bottom: calc(-8px + 5px);
 }
 
 .dvkMap .ol-control > button,
@@ -354,6 +366,10 @@
   background-color: var(--ion-color-primary);
   background-image: url('../../theme/img/layersOpen.svg');
   background-size: 22px 22px;
+}
+.dvkMap .uploadPictureControl,
+.mapExportTool .extControl .uploadPictureControl {
+  background-image: url('../../theme/img/upload_image_icon.svg');
 }
 .dvkMap .takeScreenshotControl,
 .mapExportTool .extControl .takeScreenshotControl {
