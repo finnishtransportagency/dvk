@@ -312,7 +312,6 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const highlighted = !!feature.get('hoverStyle');
   switch (ds) {
     case 'line12':
-      return getLineStyle('#0000FF', 2);
     case 'line3456':
       return getLineStyle('#0000FF', 2);
     case 'area12':
@@ -539,7 +538,7 @@ export function addAPILayers(map: Map) {
     id: 'boardline12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature) => getBoardLineStyle('#000000', feature.get('hoverStyle') ? 1 : 0.5),
+    style: getBoardLineStyle('#000000', 0.5),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
