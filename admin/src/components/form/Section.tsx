@@ -68,6 +68,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
         const sectionOpen = !!openSections[idx];
         const isFocused = idx === sections.length - 1 ? focused : undefined;
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
+        const helperHeader = sectionType === 'quay' ? t('modal.help-title-quay') : undefined;
+        const helperText = sectionType === 'quay' ? t('modal.help-description-quay') : undefined;
 
         return (
           <div className="formSection" key={title + idx}>
@@ -79,6 +81,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 toggleSection={toggleSection}
                 open={sectionOpen}
                 disabled={disabled}
+                helperHeader={helperHeader}
+                helpertText={helperText}
               />
             )}
             {actionOuterTarget !== undefined && <hr />}

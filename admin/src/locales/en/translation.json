@@ -46,6 +46,7 @@
     "update": "Update",
     "publish": "Publish",
     "choose": "Choose...",
+    "info": "[en] Lisätietoja",
     "opens-in-a-new-tab": "Opens in a new tab",
     "loading-error": "Data fetching failed, please try again later.",
     "multiple-values-supported": "Multiple items can be selected",
