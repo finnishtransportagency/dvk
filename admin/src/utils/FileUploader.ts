@@ -37,7 +37,6 @@ class FileUploader {
   public getPictureBase64Data() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      console.log(this.uppy.getFiles());
       reader.readAsDataURL(this.uppy.getFiles()[0].data);
 
       reader.onloadend = () => {

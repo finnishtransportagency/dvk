@@ -107,7 +107,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
       <IonContent className="ion-padding">
         <IonGrid className="ion-no-padding">
           <IonRow className="content">
-            <IonCol>
+            <IonCol className="imageWrapperParent">
               {picture && (
                 <div className="imageWrapper">
                   <img src={imageUrl + fairwayCardInput.id + '/' + picture.id} alt={picture.id} onLoad={() => setIsLoading(false)} />
