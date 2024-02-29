@@ -438,24 +438,24 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "featureList": {
-      "multipleFeatures": "Useita valittavia kohteita",
+      "multipleFeatures": "[sv] Useita valittavia kohteita",
       "featureType": {
-        "area": "Väyläalue",
-        "buoy": "Aaltopoiju",
-        "harbor": "Satama",
-        "line": "Navigointilinja",
-        "mareograph": "Mareografi",
-        "marinewarning": "Merivaroitus",
-        "observation": "Säähavaintoasema",
-        "pilot": "Luotsipaikka",
-        "quay": "Laituri",
-        "safetyequipment": "Turvalaite",
-        "safetyequipmentfault": "Turvalaitevika",
-        "section": "Laituripaikka",
-        "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
-        "specialarea2": "Ankkurointialue",
-        "vtsline": "VTS-alue",
-        "vtspoint": "VTS-ilmoituspiste"
+        "area": "Farledsområde",
+        "buoy": "Vågboj",
+        "harbor": "Hamn",
+        "line": "Navigationslinje",
+        "mareograph": "Mareograf",
+        "marinewarning": "Navigationsvarning",
+        "observation": "Kustväderstation",
+        "pilot": "Lotsplats",
+        "quay": "Kaj",
+        "safetyequipment": "Säkerhetsanordning",
+        "safetyequipmentfault": "Säkerhetsanordningsfel",
+        "section": "[sv] Laituripaikka",
+        "specialarea15": "Område med mötes- och omkörningsförbud",
+        "specialarea2": "Ankringsområde",
+        "vtsline": "VTS-område",
+        "vtspoint": "VTS-trafikrapporteringspunkt"
       }
     }
   },

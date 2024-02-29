@@ -438,24 +438,24 @@
       "aisunspecified": "Unspecified vessel"
     },
     "featureList": {
-      "multipleFeatures": "Useita valittavia kohteita",
+      "multipleFeatures": "[en] Useita valittavia kohteita",
       "featureType": {
-        "area": "Väyläalue",
-        "buoy": "Aaltopoiju",
-        "harbor": "Satama",
-        "line": "Navigointilinja",
-        "mareograph": "Mareografi",
-        "marinewarning": "Merivaroitus",
-        "observation": "Säähavaintoasema",
-        "pilot": "Luotsipaikka",
-        "quay": "Laituri",
-        "safetyequipment": "Turvalaite",
-        "safetyequipmentfault": "Turvalaitevika",
-        "section": "Laituripaikka",
-        "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
-        "specialarea2": "Ankkurointialue",
-        "vtsline": "VTS-alue",
-        "vtspoint": "VTS-ilmoituspiste"
+        "area": "Fairway area",
+        "buoy": "Wave buoy",
+        "harbor": "Harbour",
+        "line": "Navigation line",
+        "mareograph": "Mareograph",
+        "marinewarning": "Navigational warning",
+        "observation": "Weather station",
+        "pilot": "Pilot boarding position",
+        "quay": "Quay",
+        "safetyequipment": "Navigational aid",
+        "safetyequipmentfault": "Defective navigation aid",
+        "section": "[en] Laituripaikka",
+        "specialarea15": "Meeting and overtaking prohibition area",
+        "specialarea2": "Anchoring area",
+        "vtsline": "VTS area",
+        "vtspoint": "VTS reporting point"
       }
     }
   },
