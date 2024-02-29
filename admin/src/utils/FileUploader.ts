@@ -35,14 +35,18 @@ class FileUploader {
   }
 
   public getPictureBase64Data() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      console.log(this.uppy.getFiles());
+      reader.readAsDataURL(this.uppy.getFiles()[0].data);
+
       reader.onloadend = () => {
         if (reader.result !== null && typeof reader.result === 'string') {
           resolve(reader.result);
+        } else {
+          reject(new Error('Failed to read base64 data.'));
         }
       };
-      reader.readAsDataURL(this.uppy.getFiles()[0].data);
     });
   }
 

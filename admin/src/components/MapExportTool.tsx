@@ -81,6 +81,10 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation, isFull }) => 
           {t('fairwaycard.print-images-info-select-image')} <span className="icon select-image" />{' '}
           {t('fairwaycard.print-images-info-select-image-button')}
         </li>
+        <li>
+          {t('fairwaycard.print-images-info-upload-image')} <span className="icon uploadPicture" />{' '}
+          {t('fairwaycard.print-images-info-upload-image-button')}
+        </li>
       </ol>
     </Alert>
   );
@@ -193,6 +197,8 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
           onClick={() => {
             fileInputRef.current?.click();
           }}
+          title={t('homePage.map.controls.upload.uploadPicture')}
+          aria-label={t('homePage.map.controls.upload.uploadPicture')}
         >
           <input
             id="fileInput"
@@ -914,7 +920,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
           dvkMap.setMapLanguage('');
           //won't resolve for some reason without this
-          dvkMap.olMap?.once('rendercomplete', function () {
+          dvkMap.olMap?.once('rendercomplete', async function () {
             resolve(`External import for locale ${lang} done.`);
           });
         } catch (error) {

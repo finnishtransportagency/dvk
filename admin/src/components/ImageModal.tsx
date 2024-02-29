@@ -132,7 +132,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                             {getTranslatedText('general.datetimeFormat', {
                               val: picture.modificationTimestamp ?? '-',
                             })}
-                            {fairwayCardInput.n2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                            {picture.scaleLabel && picture.scaleWidth && (fairwayCardInput.n2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW')}
                           </em>
                         )}
                         <em className="danger">{getTranslatedText('fairwaycard.notForNavigation')}</em>

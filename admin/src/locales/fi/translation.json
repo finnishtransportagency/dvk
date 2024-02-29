@@ -191,6 +191,8 @@
     "print-images-info-set-image-button": "Aseta kuva -painikkeella.",
     "print-images-info-select-image": "Valitse julkaistavat kuvat sekä niiden järjestys esikatselukuvien yläkulman",
     "print-images-info-select-image-button": "Aseta järjestysnumero -painikkeella.",
+    "print-images-info-upload-image": "Vaihtoehtoisesti voit ladata järjestelmän ulkopuolisen kuvan tulosteelle",
+    "print-images-info-upload-image-button": "Lataa kuva -painikkeella.",
     "print-images-modified": "Kuva luotu",
     "print-images-language": "Kuvan kieli",
     "print-images-language-fi": "suomi",
@@ -269,6 +271,9 @@
         },
         "screenshot": {
           "tipLabel": "Aseta kuva"
+        },
+        "upload": {
+          "uploadPicture": "Lataa kuva"
         },
         "features": {
           "tipLabel": "Kohdista kartta"

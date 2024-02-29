@@ -1081,6 +1081,9 @@ ion-grid.printInfo ol span.icon.target {
 ion-grid.printInfo ol span.icon.takeScreenshot {
   background-image: url('./img/take_screenshot_icon.svg');
 }
+ion-grid.printInfo ol span.icon.uploadPicture {
+  background-image: url('./img/upload_image_icon.svg');
+}
 ion-grid.printInfo ol span.icon.select-image {
   width: 20px;
   height: 20px;
