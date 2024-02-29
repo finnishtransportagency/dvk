@@ -70,10 +70,11 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
               onMouseLeave={() => highlightFeature(feature, false)}
             >
               <IonLabel>
-                {details?.header?.map((h) => {
+                {details?.header?.map((text, index) => {
                   return (
-                    <p key={`${feature.getId}-${h}`} className="headerText">
-                      {h}
+                    /* S6479 false positive fixed in SonarJs release 10.12.0  */
+                    <p key={`${feature.getId}-header-${index}-${text}`} className="headerText">
+                      {text}
                     </p>
                   );
                 })}
