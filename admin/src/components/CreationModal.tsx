@@ -74,10 +74,10 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" size="large" onClick={() => createNewItem()} shape="round">
+          <IonButton slot="end" onClick={() => createNewItem()} shape="round">
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>

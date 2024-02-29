@@ -9,7 +9,7 @@ import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
-import NotificationModal from './NofiticationModal';
+import NotificationModal from './NotificationModal';
 import { mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';

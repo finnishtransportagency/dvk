@@ -14,7 +14,7 @@ import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
-import NotificationModal from './NofiticationModal';
+import NotificationModal from './NotificationModal';
 import MapExportTool from './MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';

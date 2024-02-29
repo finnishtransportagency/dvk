@@ -63,7 +63,7 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, header, 
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round">
             {t('general.button-ok')}
           </IonButton>
         </IonToolbar>
