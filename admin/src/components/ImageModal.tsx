@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
@@ -55,11 +55,14 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
-  // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
-  const setBoundingBoxAndLegend = () => {
+  // sets legend accordingly when opening a picture, if undefined sets box to bottom left corner
+  useEffect(() => {
+    const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
+    setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
+  }, [picture]);
+
+  const setCompassInfo = () => {
     if (compassInfo.current && compassNeedle.current) {
-      const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
-      setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -117,7 +120,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                             src={north_arrow}
                             alt=""
                             ref={compassNeedle}
-                            onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
+                            onLoad={() => setTimeout(() => setCompassInfo(), 50)}
                             style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
                           />
                         </div>
