@@ -81,8 +81,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 toggleSection={toggleSection}
                 open={sectionOpen}
                 disabled={disabled}
-                helperHeader={helperHeader}
-                helpertText={helperText}
+                infoTitle={helperHeader}
+                infoDescription={helperText}
               />
             )}
             {actionOuterTarget !== undefined && <hr />}

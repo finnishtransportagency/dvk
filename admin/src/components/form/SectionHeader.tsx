@@ -13,16 +13,16 @@ interface SectionHeaderProps {
   toggleSection: (position: number) => void;
   open: boolean;
   disabled?: boolean;
-  helperHeader?: string;
-  helpertText?: string;
+  infoTitle?: string;
+  infoDescription?: string;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection, toggleSection, open, disabled, helperHeader, helpertText }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection, toggleSection, open, disabled, infoTitle, infoDescription }) => {
   const { t } = useTranslation();
-  const [helperOpen, setHelperOpen] = useState<boolean>(false);
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
-  const showHelperModal = () => {
-    setHelperOpen(true);
+  const showInfoModal = () => {
+    setInfoModalOpen(true);
   };
 
   return (
@@ -33,12 +33,12 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection
             {title} {idx + 1}
           </h3>
         </IonText>
-        {(helperHeader || helpertText) && (
+        {infoTitle && infoDescription && (
           <IonButton
             slot="end"
             fill="clear"
             className="icon-only small"
-            onClick={() => showHelperModal()}
+            onClick={() => showInfoModal()}
             title={t('general.info') ?? ''}
             aria-label={t('general.info') ?? ''}
           >
@@ -67,7 +67,12 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection
           <ChevronIcon />
         </IonButton>
       </IonItem>
-      <NotificationModal isOpen={helperOpen} closeAction={() => setHelperOpen(false)} header={helperHeader ?? ''} message={helpertText ?? ''} />
+      <NotificationModal
+        isOpen={infoModalOpen}
+        closeAction={() => setInfoModalOpen(false)}
+        header={infoTitle ?? ''}
+        message={infoDescription ?? ''}
+      />
     </>
   );
 };

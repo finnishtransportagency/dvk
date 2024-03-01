@@ -167,6 +167,10 @@ ion-button.icon-only.xx-small {
   width: 16px;
   vertical-align: top;
 }
+ion-button.icon-only.labelButton {
+  margin-top: 2px;
+  margin-left: 4px;
+}
 ion-button.icon-only:hover {
   --background-hover: none;
   --color: var(--ion-color-primary-shade);
