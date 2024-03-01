@@ -19,7 +19,7 @@ class FileUploader {
   public addPicture(event: ChangeEvent) {
     const target = event.target as HTMLInputElement;
     const files = Array.from(target?.files ?? []);
-
+    //if multiple files support is wanted in future
     files.forEach((file) => {
       try {
         this.uppy.addFile({
@@ -37,6 +37,7 @@ class FileUploader {
   public getPictureBase64Data() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      // only one picture added at the time since file is deleted afterwards
       reader.readAsDataURL(this.uppy.getFiles()[0].data);
 
       reader.onloadend = () => {

@@ -96,25 +96,17 @@ interface ExtMapControlProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   fileUploader: FileUploader;
-  printExternalPicture: () => void;
+  printExternalPicture: (event: ChangeEvent) => void;
 }
 
-const ExtMapControls: React.FC<ExtMapControlProps> = ({
-  printCurrentMapView,
-  printDisabled,
-  setIsOpen,
-  isOpen,
-  fileUploader,
-  printExternalPicture,
-}) => {
+const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen, printExternalPicture }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePictureUpload = (event: ChangeEvent) => {
-    fileUploader.addPicture(event);
-    printExternalPicture();
+    printExternalPicture(event);
     //so duplicates can be added
     (event.target as HTMLInputElement).value = '';
   };
@@ -914,11 +906,8 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.getOrientationType()) {
-        dvkMap.setMapLanguage(lang);
-
         try {
           uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
-          dvkMap.setMapLanguage('');
           //won't resolve for some reason without this
           dvkMap.olMap?.once('rendercomplete', async function () {
             resolve(`External import for locale ${lang} done.`);
@@ -932,8 +921,9 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     });
   };
 
-  const printExternalPicture = async () => {
+  const printExternalPicture = async (event: ChangeEvent) => {
     console.time('Export pictures');
+    fileUploader.addPicture(event);
     if (dvkMap.getOrientationType()) {
       setIsMapDisabled(true);
       setIsProcessingCurLang(true);
