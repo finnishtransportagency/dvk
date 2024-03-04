@@ -455,13 +455,13 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
           f.set('dataSource', 'safetyequipment', true);
         });
         const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        const source = dvkMap.getVectorSource('safetyequipment');
-        source.clear();
-        source.addFeatures(efs);
+        const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+        equipmentSource.clear();
+        equipmentSource.addFeatures(efs);
         const faultMap = new Map<number, EquipmentFault[]>();
         for (const ff of ffs) {
           const id = ff.getProperties().equipmentId as number;
-          const feature = source.getFeatureById(id);
+          const feature = equipmentSource.getFeatureById(id);
           if (feature) {
             const fault: EquipmentFault = {
               faultId: ff.getId() as number,
@@ -478,14 +478,15 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
         const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
         faultSource.clear();
         faultMap.forEach((faults, equipmentId) => {
-          const feature = source.getFeatureById(equipmentId) as Feature<Geometry>;
+          const feature = equipmentSource.getFeatureById(equipmentId) as Feature<Geometry>;
           if (feature) {
             faults.sort((a, b) => b.recordTime - a.recordTime);
             feature.set('faults', faults, true);
             feature.set('faultListStyle', !!feature.get('faults'), true);
+            feature.set('dataSource', 'safetyequipmentfault', true);
             // add to safetyequipmentfault layer and remove from safetyequipment layer
             faultSource.addFeature(feature);
-            source.removeFeature(feature);
+            equipmentSource.removeFeature(feature);
           }
         });
         layer.set('dataUpdatedAt', eDataUpdatedAt);

@@ -209,6 +209,7 @@ function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geo
     /* Add vessel features */
     features.forEach((f) => {
       const feat = new Feature();
+      feat.setId(f.getId());
       feat.setProperties(f.getProperties(), true);
       feat.set('dataSource', id, true);
       feat.set('aisPoint', f.getGeometry()?.clone(), true);

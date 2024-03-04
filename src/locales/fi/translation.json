@@ -429,13 +429,34 @@
       "fishing": "Kalastaa",
       "sailing": "Kulussa purjein",
       "emergency": "AIS-SART/MOB/EPIRB",
-      "aisVesselCargo": "Rahtialus",
-      "aisVesselTanker": "Tankkeri",
-      "aisVesselPassenger": "Matkustaja-alus",
-      "aisVesselHighSpeed": "Nopea vene",
-      "aisVesselTugAndSpecialCraft": "Hinaaja tai erikoisalus",
-      "aisVesselPleasureCraft": "Huvivene",
-      "aisUnspecified": "Määrittelemätön alus"
+      "aisvesselcargo": "Rahtialus",
+      "aisvesseltanker": "Tankkeri",
+      "aisvesselpassenger": "Matkustaja-alus",
+      "aisvesselhighspeed": "Nopea vene",
+      "aisvesseltugandspecialcraft": "Hinaaja tai erikoisalus",
+      "aisvesselpleasurecraft": "Huvivene",
+      "aisunspecified": "Määrittelemätön alus"
+    },
+    "featureList": {
+      "multipleFeatures": "Useita valittavia kohteita",
+      "featureType": {
+        "area": "Väyläalue",
+        "buoy": "Aaltopoiju",
+        "harbor": "Satama",
+        "line": "Navigointilinja",
+        "mareograph": "Mareografi",
+        "marinewarning": "Merivaroitus",
+        "observation": "Säähavaintoasema",
+        "pilot": "Luotsipaikka",
+        "quay": "Laituri",
+        "safetyequipment": "Turvalaite",
+        "safetyequipmentfault": "Turvalaitevika",
+        "section": "Laituripaikka",
+        "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
+        "specialarea2": "Ankkurointialue",
+        "vtsline": "VTS-alue",
+        "vtspoint": "VTS-ilmoituspiste"
+      }
     }
   },
   "common": {

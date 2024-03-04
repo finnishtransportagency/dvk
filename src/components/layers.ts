@@ -89,7 +89,7 @@ export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: 
   ];
 }
 
-export function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
+function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;
   if (resolution && resolution > 15) strokeWidth = 0.5;
   if (resolution && resolution > 30) strokeWidth = 0;
@@ -102,6 +102,16 @@ export function getAreaStyle(color: string, width: number, fillColor: string, re
       color: fillColor,
     }),
   });
+}
+
+export function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean, selected2: boolean | undefined) {
+  if (dataSource === 'area12') {
+    return getAreaStyle('#EC0E0E', selected ? 1 : 0, selected2 ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
+  } else if (dataSource === 'area3456') {
+    return getAreaStyle('#207A43', selected ? 1 : 0, selected2 ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
+  } else {
+    return undefined;
+  }
 }
 
 export function getLineStyle(color: string, width: number) {
@@ -161,9 +171,6 @@ function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
   if (resolution > 3) {
     return undefined;
-  }
-  if (feature.get('hoverStyle')) {
-    selected = true;
   }
 
   const featureType = feature.get('featureType');
@@ -243,13 +250,9 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   return quayStyle;
 }
 
-export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
+export function getHarborStyle(feature: FeatureLike, resolution: number, selected = false, minResolution = 0) {
   if (minResolution && resolution < minResolution) {
     return undefined;
-  }
-
-  if (feature.get('hoverStyle')) {
-    selected = true;
   }
 
   const image = new Icon({
@@ -291,64 +294,49 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   });
 }
 
-function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
+function getArea12BorderLineStyle(feature: FeatureLike) {
   const props = feature.getProperties();
   const a1Props = props.area1Properties;
   const a2Props = props.area2Properties;
-  if (resolution <= 100) {
-    if (!a1Props || !a2Props) {
-      return getLineStyle('#EC0E0E', 1);
-    } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
-      return undefined;
-    } else {
-      return getLineStyle('#EC0E0E', 0.5);
-    }
+  if (!a1Props || !a2Props) {
+    return getLineStyle('#EC0E0E', 1);
+  } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+    return undefined;
+  } else {
+    return getLineStyle('#EC0E0E', 0.5);
   }
-  return undefined;
 }
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
-  if (ds === 'line12') {
-    return getLineStyle('#0000FF', 2);
-  } else if (ds === 'line3456') {
-    return getLineStyle('#0000FF', 2);
-  } else if (ds === 'area12' && resolution <= 100) {
-    if (feature.get('hoverStyle')) {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
-    } else {
-      return new Style({
-        fill: new Fill({
-          color: 'rgba(236,14,14,0.3)',
-        }),
-      });
-    }
-  } else if (ds === 'area12Borderline' && resolution <= 100) {
-    return getArea12BorderLineStyle(feature, resolution);
-  } else if (ds === 'area3456' && resolution <= 100) {
-    return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
-  } else if (ds === 'specialarea2' || ds === 'specialarea15') {
-    if (feature.get('hoverStyle')) {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, true);
-    } else {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, false);
-    }
-  } else if (ds === 'boardline12') {
-    return getBoardLineStyle('#000000', 1);
-  } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), true);
-  } else if (ds === 'coastalwarning') {
-    return getMarineWarningStyle(feature, false);
-  } else if (ds === 'localwarning') {
-    return getMarineWarningStyle(feature, false);
-  } else if (ds === 'boaterwarning') {
-    return getMarineWarningStyle(feature, false);
-  } else if (ds === 'harbor') {
-    return getHarborStyle(feature, resolution, minResolutionHarbor);
-  } else if (ds === 'circle') {
-    return getCircleStyle(feature, resolution);
-  } else {
-    return undefined;
+  const highlighted = !!feature.get('hoverStyle');
+  switch (ds) {
+    case 'line12':
+    case 'line3456':
+      return getLineStyle('#0000FF', 2);
+    case 'area12':
+      return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
+    case 'area12Borderline':
+      return resolution <= 100 ? getArea12BorderLineStyle(feature) : undefined;
+    case 'area3456':
+      return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted, highlighted) : undefined;
+    case 'specialarea2':
+    case 'specialarea15':
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
+    case 'boardline12':
+      return getBoardLineStyle('#000000', 1);
+    case 'safetyequipment':
+      return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
+    case 'coastalwarning':
+    case 'localwarning':
+    case 'boaterwarning':
+      return getMarineWarningStyle(feature, highlighted);
+    case 'harbor':
+      return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
+    case 'circle':
+      return getCircleStyle(feature, resolution);
+    default:
+      return undefined;
   }
 }
 
@@ -539,7 +527,7 @@ export function addAPILayers(map: Map) {
     id: 'area12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getFairwayArea12Style,
+    style: (feature, resolution) => getFairwayArea12Style(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -561,7 +549,7 @@ export function addAPILayers(map: Map) {
     id: 'line12',
     maxResolution: undefined,
     renderBuffer: 1,
-    style: getLineStyle('#0000FF', 1),
+    style: (feature) => getLineStyle('#0000FF', feature.get('hoverStyle') ? 2 : 1),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -573,7 +561,7 @@ export function addAPILayers(map: Map) {
     id: 'area3456',
     maxResolution: 30,
     renderBuffer: 1,
-    style: getFairwayArea3456Style,
+    style: (feature, resolution) => getFairwayArea3456Style(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -584,7 +572,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getLineStyle('#0000FF', 1),
+    style: (feature) => getLineStyle('#0000FF', feature.get('hoverStyle') ? 2 : 1),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -609,7 +597,7 @@ export function addAPILayers(map: Map) {
     id: 'specialarea2',
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
+    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -621,7 +609,7 @@ export function addAPILayers(map: Map) {
     id: 'specialarea15',
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
+    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -668,7 +656,7 @@ export function addAPILayers(map: Map) {
     id: 'quay',
     maxResolution: undefined,
     renderBuffer: 100,
-    style: (feature, resolution) => getQuayStyle(feature, resolution, false),
+    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -680,7 +668,7 @@ export function addAPILayers(map: Map) {
     id: 'harbor',
     maxResolution: 300,
     renderBuffer: 100,
-    style: getHarborStyle,
+    style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -692,7 +680,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipment',
     maxResolution: undefined,
     renderBuffer: 30,
-    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), feature.get('faultListStyle')),
+    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), feature.get('faultListStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -704,7 +692,7 @@ export function addAPILayers(map: Map) {
     id: 'buoy',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: () => getBuoyStyle(false),
+    style: (feature) => getBuoyStyle(!!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -715,7 +703,7 @@ export function addAPILayers(map: Map) {
     id: 'observation',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: () => getObservationStyle(false),
+    style: (feature) => getObservationStyle(!!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -726,7 +714,7 @@ export function addAPILayers(map: Map) {
     id: 'mareograph',
     maxResolution: undefined,
     renderBuffer: 91,
-    style: (feature, resolution) => getMareographStyle(feature, false, resolution),
+    style: (feature, resolution) => getMareographStyle(feature, !!feature.get('hoverStyle'), resolution),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -738,7 +726,7 @@ export function addAPILayers(map: Map) {
     id: 'coastalwarning',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, false),
+    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -749,7 +737,7 @@ export function addAPILayers(map: Map) {
     id: 'localwarning',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, false),
+    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -760,7 +748,7 @@ export function addAPILayers(map: Map) {
     id: 'boaterwarning',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, false),
+    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -772,7 +760,7 @@ export function addAPILayers(map: Map) {
     id: 'vtsline',
     maxResolution: undefined,
     renderBuffer: 2,
-    style: (feature) => getVtsStyle(feature, false),
+    style: (feature) => getVtsStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -783,7 +771,7 @@ export function addAPILayers(map: Map) {
     id: 'vtspoint',
     maxResolution: 75,
     renderBuffer: 50,
-    style: (feature) => getVtsStyle(feature, false),
+    style: (feature) => getVtsStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -795,7 +783,7 @@ export function addAPILayers(map: Map) {
     id: 'pilot',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: (feature) => getPilotStyle(feature.get('hoverStyle')),
+    style: (feature) => getPilotStyle(!!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -840,33 +828,48 @@ export function addAPILayers(map: Map) {
   });
 
   // AIS
-  addAisVesselLayer(map, 'aisvesselcargo', (feature, resolution) => getAisVesselLayerStyle('aisvesselcargo', feature, resolution, false), 316);
-  addAisVesselLayer(map, 'aisvesseltanker', (feature, resolution) => getAisVesselLayerStyle('aisvesseltanker', feature, resolution, false), 317);
+  addAisVesselLayer(
+    map,
+    'aisvesselcargo',
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselcargo', feature, resolution, !!feature.get('hoverStyle')),
+    316
+  );
+  addAisVesselLayer(
+    map,
+    'aisvesseltanker',
+    (feature, resolution) => getAisVesselLayerStyle('aisvesseltanker', feature, resolution, !!feature.get('hoverStyle')),
+    317
+  );
   addAisVesselLayer(
     map,
     'aisvesselpassenger',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselpassenger', feature, resolution, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpassenger', feature, resolution, !!feature.get('hoverStyle')),
     318
   );
   addAisVesselLayer(
     map,
     'aisvesselhighspeed',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselhighspeed', feature, resolution, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselhighspeed', feature, resolution, !!feature.get('hoverStyle')),
     319
   );
   addAisVesselLayer(
     map,
     'aisvesseltugandspecialcraft',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesseltugandspecialcraft', feature, resolution, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesseltugandspecialcraft', feature, resolution, !!feature.get('hoverStyle')),
     320
   );
   addAisVesselLayer(
     map,
     'aisvesselpleasurecraft',
-    (feature, resolution) => getAisVesselLayerStyle('aisvesselpleasurecraft', feature, resolution, false),
+    (feature, resolution) => getAisVesselLayerStyle('aisvesselpleasurecraft', feature, resolution, !!feature.get('hoverStyle')),
     322
   );
-  addAisVesselLayer(map, 'aisunspecified', (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, false), 324);
+  addAisVesselLayer(
+    map,
+    'aisunspecified',
+    (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, !!feature.get('hoverStyle')),
+    324
+  );
 }
 
 export function unsetSelectedFairwayCard() {

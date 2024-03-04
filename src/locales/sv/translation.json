@@ -429,13 +429,34 @@
       "fishing": "Sysselsatt med fiske",
       "sailing": "Segelfartyg på väg",
       "emergency": "AIS-SART/MOB/EPIRB",
-      "aisVesselCargo": "Fraktfartyg",
-      "aisVesselTanker": "Tankfartyg",
-      "aisVesselPassenger": "Passagerarfartyg",
-      "aisVesselHighSpeed": "Snabba båt",
-      "aisVesselTugAndSpecialCraft": "Bogserbåt eller specialfartyg",
-      "aisVesselPleasureCraft": "Fritidsbåt",
-      "aisUnspecified": "Odefinierade fartyg"
+      "aisvesselcargo": "Fraktfartyg",
+      "aisvesseltanker": "Tankfartyg",
+      "aisvesselpassenger": "Passagerarfartyg",
+      "aisvesselhighspeed": "Snabba båt",
+      "aisvesseltugandspecialcraft": "Bogserbåt eller specialfartyg",
+      "aisvesselpleasurecraft": "Fritidsbåt",
+      "aisunspecified": "Odefinierade fartyg"
+    },
+    "featureList": {
+      "multipleFeatures": "[sv] Useita valittavia kohteita",
+      "featureType": {
+        "area": "Farledsområde",
+        "buoy": "Vågboj",
+        "harbor": "Hamn",
+        "line": "Navigationslinje",
+        "mareograph": "Mareograf",
+        "marinewarning": "Navigationsvarning",
+        "observation": "Kustväderstation",
+        "pilot": "Lotsplats",
+        "quay": "Kaj",
+        "safetyequipment": "Säkerhetsanordning",
+        "safetyequipmentfault": "Säkerhetsanordningsfel",
+        "section": "[sv] Laituripaikka",
+        "specialarea15": "Område med mötes- och omkörningsförbud",
+        "specialarea2": "Ankringsområde",
+        "vtsline": "VTS-område",
+        "vtspoint": "VTS-trafikrapporteringspunkt"
+      }
     }
   },
   "common": {

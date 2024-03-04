@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { MareographFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 type MareographPopupContentProps = {
@@ -24,7 +24,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    clearClickSelectionFeatures();
   };
 
   return (
@@ -59,9 +59,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
         <IonCol>
           {mareograph.properties.waterLevel >= 0 ? '+' : ''}
           {Math.round(mareograph.properties.waterLevel / 10)}{' '}
-          <span aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.waterLevel || 0) / 10) })} role="definition">
-            cm
-          </span>
+          <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.waterLevel || 0) / 10) })}>cm</dd>
         </IonCol>
       </IonRow>
       <IonRow>
@@ -71,12 +69,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
         <IonCol>
           {mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}
           {Math.round(mareograph.properties.n2000WaterLevel / 10)}{' '}
-          <span
-            aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.n2000WaterLevel || 0) / 10) })}
-            role="definition"
-          >
-            cm
-          </span>
+          <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.n2000WaterLevel || 0) / 10) })}>cm</dd>
         </IonCol>
       </IonRow>
     </IonGrid>

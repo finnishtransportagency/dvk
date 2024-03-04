@@ -7,22 +7,22 @@ import { MAP } from './constants';
 
 export const getAisVesselShipType = (typeNumber?: number): string => {
   if (!typeNumber) {
-    return 'aisUnspecified';
+    return 'aisunspecified';
   }
   if (typeNumber == 36 || typeNumber == 37) {
-    return 'aisVesselPleasureCraft';
+    return 'aisvesselpleasurecraft';
   } else if ((typeNumber >= 31 && typeNumber <= 35) || (typeNumber >= 50 && typeNumber <= 59)) {
-    return 'aisVesselTugAndSpecialCraft';
+    return 'aisvesseltugandspecialcraft';
   } else if (typeNumber >= 40 && typeNumber <= 49) {
-    return 'aisVesselHighSpeed';
+    return 'aisvesselhighspeed';
   } else if (typeNumber >= 60 && typeNumber <= 69) {
-    return 'aisVesselPassenger';
+    return 'aisvesselpassenger';
   } else if (typeNumber >= 70 && typeNumber <= 79) {
-    return 'aisVesselCargo';
+    return 'aisvesselcargo';
   } else if (typeNumber >= 80 && typeNumber <= 89) {
-    return 'aisVesselTanker';
+    return 'aisvesseltanker';
   } else {
-    return 'aisUnspecified';
+    return 'aisunspecified';
   }
 };
 
