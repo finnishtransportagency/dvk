@@ -1,4 +1,4 @@
-import Uppy from '@uppy/core';
+import { Uppy } from '@uppy/core';
 import FileInput from '@uppy/file-input';
 import { ChangeEvent } from 'react';
 
