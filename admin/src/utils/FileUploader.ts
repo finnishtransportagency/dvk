@@ -22,7 +22,6 @@ class FileUploader {
     const files = Array.from(target?.files ?? []);
     //if multiple files support is wanted in future
     files.forEach((file) => {
-      console.log(file.size);
       try {
         this.uppy.addFile({
           source: 'file input',
