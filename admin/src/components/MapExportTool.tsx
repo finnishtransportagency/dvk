@@ -936,13 +936,16 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     if (dvkMap.getOrientationType()) {
       setIsMapDisabled(true);
       setIsProcessingCurLang(true);
-
-      const picGroupId = Date.now();
-
-      for (const locale of locales) {
-        if (locale !== curLang) setIsProcessingCurLang(false);
+      try {
+        const picGroupId = Date.now();
         const data = await fileUploader.getPictureBase64Data();
-        await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
+
+        for (const locale of locales) {
+          if (locale !== curLang) setIsProcessingCurLang(false);
+          await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
+        }
+      } catch (error) {
+        console.log(error);
       }
       setIsMapDisabled(false);
       fileUploader.deleteFiles();

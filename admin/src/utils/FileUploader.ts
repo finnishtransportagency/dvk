@@ -6,7 +6,7 @@ class FileUploader {
   private uppy = new Uppy({
     restrictions: {
       allowedFileTypes: ['.png'],
-      maxFileSize: 3 * 1000 * 1000,
+      maxFileSize: 2 * 1000 * 1000,
     },
   });
 
