@@ -2,7 +2,7 @@ import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import { FeatureLayerId } from '../../utils/constants';
 import { never, pointerMove } from 'ol/events/condition';
-import { getQuayStyle, getAreaStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle } from '../layers';
+import { getQuayStyle, getSpecialAreaStyle, getLineStyle, getBoardLineStyle, getHarborStyle, getAreaStyleBySource } from '../layers';
 import dvkMap from '../DvkMap';
 import { getPilotStyle } from '../layerStyles/pilotStyles';
 import { getSafetyEquipmentStyle } from '../layerStyles/safetyEquipmentStyles';
@@ -13,7 +13,8 @@ import { getBuoyStyle } from '../layerStyles/buoyStyles';
 import { getVtsStyle } from '../layerStyles/vtsStyles';
 import { getCircleStyle } from '../layerStyles/circleStyles';
 import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
-import { FeatureLike } from 'ol/Feature';
+import Feature, { FeatureLike } from 'ol/Feature';
+import { Geometry } from 'ol/geom';
 
 function getLayers() {
   return [
@@ -47,34 +48,24 @@ function getLayers() {
   ];
 }
 
-function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean | undefined) {
-  if (dataSource === 'area12') {
-    return getAreaStyle('#EC0E0E', 1, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
-  } else if (dataSource === 'area3456') {
-    return getAreaStyle('#207A43', 1, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
-  } else {
-    return undefined;
-  }
-}
-
 const selectStyle = function (feature: FeatureLike, resolution: number) {
   const type = feature.getProperties().featureType;
   const dataSource = feature.getProperties().dataSource as FeatureLayerId;
-  const selected: boolean | undefined = feature.getProperties().selected;
+  const selectedFairwayCard: boolean | undefined = feature.getProperties().selected;
 
   switch (type) {
     case 'quay':
     case 'section':
       return getQuayStyle(feature, resolution, true);
     case 'harbor':
-      return getHarborStyle(feature, resolution, 0, true);
+      return getHarborStyle(feature, resolution, true, 0);
     case 'pilot':
       return getPilotStyle(true);
     case 'area':
-      return getAreaStyleBySource(dataSource, selected);
+      return getAreaStyleBySource(dataSource, true, selectedFairwayCard);
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selected);
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selectedFairwayCard);
     case 'line':
       return getLineStyle('#0000FF', 2);
     case 'safetyequipment':
@@ -133,10 +124,26 @@ export function addPointerClickInteraction(map: Map) {
   map.addInteraction(pointerClickSelect);
 }
 
-export function deselectClickSelection() {
-  dvkMap.olMap?.getInteractions()?.forEach((int) => {
-    if (int.get('name') === 'clickSelection') {
-      (int as Select).getFeatures().clear();
+function getClickSelection(): Select | undefined {
+  let select: Select | undefined = undefined;
+  dvkMap.olMap?.getInteractions()?.forEach((interaction) => {
+    if (interaction.get('name') === 'clickSelection') {
+      select = interaction as Select;
     }
   });
+  return select;
+}
+
+export function clearClickSelectionFeatures() {
+  const interaction = getClickSelection();
+  if (interaction) {
+    interaction.getFeatures().clear();
+  }
+}
+
+export function setClickSelectionFeature(feature: FeatureLike) {
+  const interaction = getClickSelection();
+  if (interaction) {
+    interaction.getFeatures().push(feature as Feature<Geometry>);
+  }
 }

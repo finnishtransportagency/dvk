@@ -6,7 +6,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { VtsFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
-import { deselectClickSelection } from './selectInteraction';
+import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 
 export type VtsPopupContentProps = {
@@ -24,7 +24,7 @@ const VtsPointPopupContent: React.FC<VtsPopupContentProps> = ({ vts, setPopupPro
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
-    deselectClickSelection();
+    clearClickSelectionFeatures();
   };
 
   return (

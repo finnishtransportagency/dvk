@@ -1,28 +1,121 @@
 import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
-import Select from 'ol/interaction/Select';
 import Overlay from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { MAP } from '../../utils/constants';
+import { FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
-import { GeoJSON } from 'ol/format';
-import { lineString, bearingToAzimuth } from '@turf/helpers';
-import along from '@turf/along';
-import lineIntersect from '@turf/line-intersect';
-import nearestPointOnLine from '@turf/nearest-point-on-line';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
-import transformTranslate from '@turf/transform-translate';
-import length from '@turf/length';
-import distance from '@turf/distance';
-import bearing from '@turf/bearing';
-import { Point as turf_Point, LineString as turf_LineString, Polygon as turf_Polygon } from 'geojson';
 import { Coordinate } from 'ol/coordinate';
-import { addPointerClickInteraction, addPointerMoveInteraction, deselectClickSelection } from './selectInteraction';
+import { addPointerClickInteraction, addPointerMoveInteraction, setClickSelectionFeature, clearClickSelectionFeatures } from './selectInteraction';
+import { addFairwayWidthIndicator } from './fairwayWidthIndicator';
+import { TFunction } from 'i18next';
+import { getAisVesselShipType } from '../../utils/aisUtils';
+import {
+  AisFeatureProperties,
+  AreaFeatureProperties,
+  BuoyFeatureProperties,
+  EquipmentFeatureProperties,
+  HarborFeatureProperties,
+  LineFeatureProperties,
+  MareographFeatureProperties,
+  MarineWarningFeatureProperties,
+  ObservationFeatureProperties,
+  PilotFeatureProperties,
+  QuayFeatureProperties,
+  VtsFeatureProperties,
+} from '../features';
+import { getMarineWarningDataLayerId } from '../../utils/common';
+
+function setPopupPosition(popup: Overlay, coordinate: Coordinate, selectedFeature?: FeatureLike, popupPositioningCoordinate?: Coordinate) {
+  /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
+  setTimeout(() => {
+    if (popupPositioningCoordinate) {
+      popup.setPosition(popupPositioningCoordinate);
+    } else if (selectedFeature?.getGeometry()?.getType() === 'Point') {
+      popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
+    } else {
+      popup.setPosition(coordinate);
+    }
+  }, 100);
+}
+
+function showFeatureListPopup(
+  features: FeatureLike[],
+  coordinate: Coordinate,
+  setPopupProperties: (properties: PopupProperties) => void,
+  overlay: Overlay
+) {
+  setPopupProperties({
+    featureList: {
+      features: features,
+      coordinate: coordinate,
+    },
+  });
+  setPopupPosition(overlay, coordinate);
+}
+
+export function showFeaturePopup(
+  features: FeatureLike[],
+  selectedFeature: FeatureLike,
+  coordinate: Coordinate,
+  setPopupProperties: (properties: PopupProperties) => void,
+  overlay?: Overlay
+) {
+  let popupPositioningCoordinate: Coordinate | undefined = undefined;
+  const popup = overlay ?? dvkMap.olMap?.getOverlayById('popup');
+  if (!popup) return;
+
+  if (selectedFeature.getProperties().featureType === 'mareograph') {
+    popup.setPositioning('center-right');
+    popup.setOffset([-20, 0]);
+  } else {
+    popup.setPositioning('center-left');
+    popup.setOffset([20, 0]);
+  }
+
+  const geom = (selectedFeature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+
+  /* If selected feature is navigation line start "fairway width calculation process" */
+  if (selectedFeature.getProperties().featureType === 'line') {
+    let fairwayWidth: number | undefined = undefined;
+    const areaFeatures = features.filter((f) => {
+      return f.getProperties().featureType === 'area';
+    });
+
+    /* Continue only if clicked point is inside area polygon (area layer must be visible) */
+    if (areaFeatures.length > 0) {
+      const fairwayWidthFeature: Feature<Geometry> | undefined = addFairwayWidthIndicator(selectedFeature, areaFeatures, coordinate);
+      if (fairwayWidthFeature) {
+        fairwayWidth = fairwayWidthFeature.get('width');
+        /* Set popup position right to the fairway width line */
+        const geometry = fairwayWidthFeature.getGeometry() as LineString;
+        const s = geometry.getFirstCoordinate();
+        const e = geometry.getLastCoordinate();
+        popupPositioningCoordinate = s[0] > e[0] ? s : e;
+      }
+    }
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+        width: fairwayWidth,
+      },
+    });
+  } else {
+    setPopupProperties({
+      [selectedFeature.getProperties().featureType]: {
+        coordinates: geom.getCoordinates() as number[],
+        properties: selectedFeature.getProperties(),
+      },
+    });
+  }
+  setPopupPosition(popup, coordinate, selectedFeature, popupPositioningCoordinate);
+}
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
+    id: 'popup',
     element: container,
     autoPan: {
       animation: {
@@ -30,6 +123,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       },
     },
   });
+  map.addOverlay(overlay);
+
+  /* Selectable feature types in order of importance */
   const types = [
     'aisvessel',
     'pilot',
@@ -49,6 +145,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'specialarea15',
     'area',
   ];
+
   if (container) {
     container.addEventListener('pointercancel', (e) => {
       e.preventDefault();
@@ -58,10 +155,16 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     });
   }
 
-  map.addOverlay(overlay);
+  addPointerMoveInteraction(map, types);
+  addPointerClickInteraction(map);
+
   map.on('singleclick', function (evt) {
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
+    /* Close popup */
+    overlay.setPosition(undefined);
+    setPopupProperties({});
+    clearClickSelectionFeatures();
 
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
@@ -73,167 +176,129 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       },
       { hitTolerance: 3 }
     );
-    features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
-    const feature = features[0];
 
-    overlay.setPosition(undefined);
-    setPopupProperties({});
-    deselectClickSelection();
-
-    if (feature) {
-      // Add prioritized feature to clickSelection
-      map?.getInteractions()?.forEach((int) => {
-        if (int.get('name') === 'clickSelection') {
-          (int as Select).getFeatures().push(feature as Feature<Geometry>);
-        }
-      });
-
-      let popupPositioningCoordinate: Coordinate | undefined = undefined;
-
-      if (feature.getProperties().featureType === 'mareograph') {
-        overlay.setPositioning('center-right');
-        overlay.setOffset([-20, 0]);
-      } else {
-        overlay.setPositioning('center-left');
-        overlay.setOffset([20, 0]);
+    if (features.length > 1) {
+      features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
+      showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
+    } else {
+      const feature = features[0];
+      if (feature) {
+        setClickSelectionFeature(feature);
+        showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
       }
-      const geom = (feature.getGeometry() as SimpleGeometry).clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-
-      /* If selected feature is navigation line start "fairway width calculation process" */
-      if (feature.getProperties().featureType === 'line') {
-        let fairwayWidth: number | undefined = undefined;
-        let areaFeatures = features.filter((f) => {
-          return f.getProperties().featureType === 'area';
-        });
-
-        /* Continue only if clicked point is inside area polygon (area layer must be visible) */
-        if (areaFeatures.length > 0) {
-          const format = new GeoJSON();
-          const turfLine = format.writeGeometryObject(feature.getGeometry() as Geometry, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: MAP.EPSG,
-          }) as turf_LineString;
-          const turfPoint = format.writeGeometryObject(new Point(evt.coordinate) as Geometry, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: MAP.EPSG,
-          }) as turf_Point;
-
-          const pointOnLine = nearestPointOnLine(turfLine, turfPoint);
-          if (
-            pointOnLine.properties.index !== undefined &&
-            pointOnLine.properties.dist !== undefined &&
-            pointOnLine.properties.location !== undefined
-          ) {
-            /* The point on line nearest to the clicked point */
-            const turfSnapPoint = along(turfLine, pointOnLine.properties.location);
-
-            /* Filter areas containing snap point */
-            areaFeatures = areaFeatures.filter((f) => {
-              const turfArea = format.writeGeometryObject(f.getGeometry() as Geometry, {
-                dataProjection: 'EPSG:4326',
-                featureProjection: MAP.EPSG,
-              }) as turf_Polygon;
-              return booleanPointInPolygon(turfSnapPoint, turfArea);
-            });
-
-            /* Continue only if we have only one area polygon that contains snap point */
-            if (areaFeatures.length === 1) {
-              const turfArea = format.writeGeometryObject(areaFeatures[0].getGeometry() as Geometry, {
-                dataProjection: 'EPSG:4326',
-                featureProjection: MAP.EPSG,
-              }) as turf_Polygon;
-              /* Get line azimuth at snap point */
-              const azimuth = bearingToAzimuth(
-                bearing(turfLine.coordinates[pointOnLine.properties.index], turfLine.coordinates[pointOnLine.properties.index + 1])
-              );
-              /* Create lines perpendicular navigation to line and length of 5km to both direction from snap point */
-              const startPoint = transformTranslate(turfSnapPoint, 5, azimuth >= 90 ? azimuth - 90 : azimuth - 90 + 360);
-              const endPoint = transformTranslate(turfSnapPoint, 5, azimuth <= 270 ? azimuth + 90 : azimuth + 90 - 360);
-
-              const turfStartPerpendicularLine = lineString([turfSnapPoint.geometry.coordinates, startPoint.geometry.coordinates]);
-              const turfEndPerpendicularLine = lineString([turfSnapPoint.geometry.coordinates, endPoint.geometry.coordinates]);
-
-              /* Find perpendicular lines and fairway area polygon intersections */
-              const startInterSectionPoints = lineIntersect(turfStartPerpendicularLine, turfArea);
-              const startIntersectionPointsArray = startInterSectionPoints.features.map((d) => {
-                return d.geometry.coordinates;
-              });
-              const endInterSectionPoints = lineIntersect(turfEndPerpendicularLine, turfArea);
-              const endIntersectionPointsArray = endInterSectionPoints.features.map((d) => {
-                return d.geometry.coordinates;
-              });
-              /* Find start and end intersection points nearest to the snap point */
-              let minDist = 5;
-              let startCoord = undefined;
-              for (const coord of startIntersectionPointsArray) {
-                const dist = distance(turfSnapPoint, coord);
-                if (dist < minDist) {
-                  startCoord = coord;
-                  minDist = dist;
-                }
-              }
-              minDist = 5;
-              let endCoord = undefined;
-              for (const coord of endIntersectionPointsArray) {
-                const dist = distance(turfSnapPoint, coord);
-                if (dist < minDist) {
-                  endCoord = coord;
-                  minDist = dist;
-                }
-              }
-
-              if (startCoord && endCoord) {
-                const turfFairwayWidthLine = lineString([startCoord, endCoord]);
-                fairwayWidth = length(turfFairwayWidthLine) * 1000;
-
-                const fairwayWidthLineFeat = format.readFeature(turfFairwayWidthLine, {
-                  dataProjection: 'EPSG:4326',
-                  featureProjection: MAP.EPSG,
-                }) as Feature<Geometry>;
-                fairwayWidthLineFeat.setProperties({ width: fairwayWidth });
-
-                dvkMap.getFeatureLayer('fairwaywidth').setVisible(true);
-                const source = dvkMap.getVectorSource('fairwaywidth');
-                source.clear();
-                source.addFeature(fairwayWidthLineFeat);
-
-                /* Set popup position right to the fairway width line */
-                const geometry = fairwayWidthLineFeat.getGeometry() as LineString;
-                const s = geometry.getFirstCoordinate();
-                const e = geometry.getLastCoordinate();
-                popupPositioningCoordinate = s[0] > e[0] ? s : e;
-              }
-            }
-          }
-        }
-        setPopupProperties({
-          [feature.getProperties().featureType]: {
-            coordinates: geom.getCoordinates() as number[],
-            properties: feature.getProperties(),
-            width: fairwayWidth,
-          },
-        });
-      } else {
-        setPopupProperties({
-          [feature.getProperties().featureType]: {
-            coordinates: geom.getCoordinates() as number[],
-            properties: feature.getProperties(),
-          },
-        });
-      }
-      /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
-      setTimeout(() => {
-        if (popupPositioningCoordinate) {
-          overlay.setPosition(popupPositioningCoordinate);
-        } else if (feature.getGeometry()?.getType() === 'Point') {
-          overlay.setPosition((feature.getGeometry() as Point).getCoordinates());
-        } else {
-          overlay.setPosition(evt.coordinate);
-        }
-      }, 100);
     }
   });
+}
 
-  addPointerMoveInteraction(map, types);
-  addPointerClickInteraction(map);
+export type FeatureDetailProperties = {
+  header?: string[];
+  featureType?: string;
+  className?: string;
+};
+
+function getAisVesselDetails(t: TFunction, feature: FeatureLike) {
+  const props = feature.getProperties() as AisFeatureProperties;
+  const shipType = getAisVesselShipType(props.shipType);
+  return {
+    header: [props.name ?? ''],
+    featureType: t(`ais.${shipType}`),
+    className: shipType,
+  };
+}
+
+function getMarineWarningDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as MarineWarningFeatureProperties;
+  return {
+    header: [`${props.type?.[lang] ?? props.type?.fi} - ${props.number}`],
+    featureType: t('featureList.featureType.marinewarning'),
+    className: getMarineWarningDataLayerId(props.type),
+  };
+}
+
+function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as QuayFeatureProperties;
+  const quayName = props.quay?.[lang];
+  const sectionName = props.name ?? '';
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  return {
+    header: [headerText],
+    featureType: t('featureList.featureType.section'),
+    className: feature.get('featureType'),
+  };
+}
+
+function getSafetyEquipmentDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
+  const props = feature.getProperties() as EquipmentFeatureProperties;
+  const dataSource = feature.getProperties().dataSource as FeatureLayerId;
+  return {
+    header: [`${props.name?.[lang] ?? props.name?.fi} - ${props.id}`],
+    featureType: dataSource === 'safetyequipment' ? t('featureList.featureType.safetyequipment') : t('featureList.featureType.safetyequipmentfault'),
+    className: dataSource,
+  };
+}
+
+export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike): FeatureDetailProperties | undefined {
+  const type = feature.get('featureType');
+  const props = feature.getProperties();
+  const dataSource = props.dataSource as FeatureLayerId;
+
+  /* Selectable feature types for popup */
+  switch (type) {
+    case 'aisvessel':
+      return getAisVesselDetails(t, feature);
+    case 'area':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.area'),
+        className: dataSource,
+      };
+    case 'buoy':
+      return { header: [(props as BuoyFeatureProperties).name], featureType: t('featureList.featureType.buoy'), className: type };
+    case 'harbor':
+      return { header: [(props as HarborFeatureProperties).name?.[lang] ?? ''], featureType: t('featureList.featureType.harbor'), className: type };
+    case 'line':
+      return {
+        header: (props as LineFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.line'),
+        className: type,
+      };
+    case 'mareograph':
+      return { header: [(props as MareographFeatureProperties).name], featureType: t('featureList.featureType.mareograph'), className: type };
+    case 'marinewarning':
+      return getMarineWarningDetails(t, lang, feature);
+    case 'observation':
+      return { header: [(props as ObservationFeatureProperties).name], featureType: t('featureList.featureType.observation'), className: type };
+    case 'pilot':
+      return {
+        header: [t('pilotPlace.header', { val: (props as PilotFeatureProperties).name[lang] })],
+        featureType: t('featureList.featureType.pilot'),
+        className: type,
+      };
+    case 'quay':
+      return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
+    case 'safetyequipment':
+      return getSafetyEquipmentDetails(t, lang, feature);
+    case 'safetyequipmentfault':
+      return getSafetyEquipmentDetails(t, lang, feature);
+    case 'section':
+      return getSectionDetails(t, lang, feature);
+    case 'specialarea15':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea15'),
+        className: type,
+      };
+    case 'specialarea2':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea2'),
+        className: type,
+      };
+    case 'vtsline':
+      return { header: [(props as VtsFeatureProperties).name ?? ''], featureType: t('featureList.featureType.vtsline'), className: type };
+    case 'vtspoint':
+      return { header: [(props as VtsFeatureProperties).name ?? ''], featureType: t('featureList.featureType.vtspoint'), className: type };
+    default:
+      return undefined;
+  }
 }
