@@ -96,17 +96,25 @@ interface ExtMapControlProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   fileUploader: FileUploader;
-  printExternalPicture: (event: ChangeEvent) => void;
+  printExternalPicture: () => void;
 }
 
-const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen, printExternalPicture }) => {
+const ExtMapControls: React.FC<ExtMapControlProps> = ({
+  printCurrentMapView,
+  printDisabled,
+  setIsOpen,
+  isOpen,
+  fileUploader,
+  printExternalPicture,
+}) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handlePictureUpload = (event: ChangeEvent) => {
-    printExternalPicture(event);
+    fileUploader.addPicture(event);
+    printExternalPicture();
     //so duplicates can be added
     (event.target as HTMLInputElement).value = '';
   };
@@ -906,24 +914,25 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.getOrientationType()) {
-        try {
-          uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
-          //won't resolve for some reason without this
-          dvkMap.olMap?.once('rendercomplete', async function () {
-            resolve(`External import for locale ${lang} done.`);
-          });
-        } catch (error) {
-          console.log(error);
-        }
+        (async () => {
+          try {
+            await uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
+            //won't resolve for some reason without this
+            dvkMap.olMap?.once('rendercomplete', async function () {
+              resolve(`External import for locale ${lang} done.`);
+            });
+          } catch (error) {
+            console.log(error);
+          }
+        })();
       } else {
         Promise.reject(new Error(`External import for locale ${lang} failed.`));
       }
     });
   };
 
-  const printExternalPicture = async (event: ChangeEvent) => {
+  const printExternalPicture = async () => {
     console.time('Export pictures');
-    fileUploader.addPicture(event);
     if (dvkMap.getOrientationType()) {
       setIsMapDisabled(true);
       setIsProcessingCurLang(true);
