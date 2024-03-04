@@ -96,7 +96,7 @@ interface ExtMapControlProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   fileUploader: FileUploader;
-  printExternalPicture: () => void;
+  importExternalImage: () => void;
 }
 
 const ExtMapControls: React.FC<ExtMapControlProps> = ({
@@ -105,7 +105,7 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
   setIsOpen,
   isOpen,
   fileUploader,
-  printExternalPicture,
+  importExternalImage,
 }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
@@ -114,7 +114,7 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({
 
   const handlePictureUpload = (event: ChangeEvent) => {
     fileUploader.addPicture(event);
-    printExternalPicture();
+    importExternalImage();
     //so duplicates can be added
     (event.target as HTMLInputElement).value = '';
   };
@@ -931,11 +931,12 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     });
   };
 
-  const printExternalPicture = async () => {
-    console.time('Export pictures');
+  const importExternalImage = async () => {
+    console.time('Import pictures');
     if (dvkMap.getOrientationType()) {
       setIsMapDisabled(true);
       setIsProcessingCurLang(true);
+
       try {
         const picGroupId = Date.now();
         const data = await fileUploader.getPictureBase64Data();
@@ -950,7 +951,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       setIsMapDisabled(false);
       fileUploader.deleteFiles();
     }
-    console.timeEnd('Export pictures');
+    console.timeEnd('Import pictures');
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -975,7 +976,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
             setIsOpen={setIsOpen}
             printDisabled={isLoadingMutation || isMapDisabled}
             fileUploader={fileUploader}
-            printExternalPicture={printExternalPicture}
+            importExternalImage={importExternalImage}
           />
           <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
         </IonCol>

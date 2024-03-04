@@ -6,7 +6,8 @@ class FileUploader {
   private uppy = new Uppy({
     restrictions: {
       allowedFileTypes: ['.png'],
-      maxFileSize: 2 * 1000 * 1000,
+      // this equals ~2MB
+      maxFileSize: 2.1 * 1000 * 1000,
     },
   });
 
@@ -21,6 +22,7 @@ class FileUploader {
     const files = Array.from(target?.files ?? []);
     //if multiple files support is wanted in future
     files.forEach((file) => {
+      console.log(file.size);
       try {
         this.uppy.addFile({
           source: 'file input',
