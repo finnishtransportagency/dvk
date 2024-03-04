@@ -70,6 +70,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection
       <NotificationModal
         isOpen={infoModalOpen}
         closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('general.close')}
         header={infoTitle ?? ''}
         message={infoDescription ?? ''}
       />

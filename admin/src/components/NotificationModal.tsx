@@ -6,13 +6,14 @@ import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 interface ModalProps {
   isOpen: boolean;
   closeAction: () => void;
+  closeTitle: string;
   header: string;
   subHeader?: string;
   message: string;
   itemList?: string[];
 }
 
-const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, header, subHeader, message, itemList }) => {
+const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList }) => {
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -63,8 +64,8 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, header, 
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" onClick={() => closeModal()} shape="round">
-            {t('general.button-ok')}
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" aria-label={closeTitle}>
+            {closeTitle}
           </IonButton>
         </IonToolbar>
       </IonFooter>

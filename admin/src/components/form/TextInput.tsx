@@ -218,6 +218,7 @@ const TextInput: React.FC<TextInputProps> = ({
       <NotificationModal
         isOpen={infoModalOpen}
         closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('close')}
         header={infoTitle ?? ''}
         message={infoDescription ?? ''}
       />

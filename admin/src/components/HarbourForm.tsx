@@ -246,6 +246,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       <NotificationModal
         isOpen={!!saveError || notificationOpen}
         closeAction={closeNotification}
+        closeTitle={t('general.button-ok')}
         header={getNotificationTitle()}
         subHeader={
           (saveError

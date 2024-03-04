@@ -239,6 +239,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       <NotificationModal
         isOpen={!!saveError || notificationOpen}
         closeAction={closeNotification}
+        closeTitle={t('general.button-ok')}
         header={(saveError ? t('general.save-failed') : t('general.save-successful')) || ''}
         subHeader={
           (saveError
