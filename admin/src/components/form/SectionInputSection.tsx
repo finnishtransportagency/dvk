@@ -50,6 +50,8 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             actionOuterTarget={actionOuterTarget}
             disabled={disabled}
             focused={focused}
+            infoTitle={t('modal.help-title-section')}
+            infoDescription={t('modal.help-description-section')}
           />
         </IonCol>
         <IonCol>

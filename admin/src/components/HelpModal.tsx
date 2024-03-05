@@ -51,7 +51,7 @@ const HelpModal: React.FC<ModalProps> = ({ orientation, setIsOpen }) => {
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round">
             {t('general.close')}
           </IonButton>
         </IonToolbar>

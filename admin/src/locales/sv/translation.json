@@ -46,6 +46,7 @@
     "update": "[sv] Muuta",
     "publish": "[sv] Julkaise",
     "choose": "[sv] Valitse...",
+    "info": "[sv] Lisätietoja",
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "loading-error": "[sv] Tietojen haku epäonnistui, yritä myöhemmin uudelleen.",
     "multiple-values-supported": "[sv] Voit valita tarvittaessa useita kohteita",
@@ -131,7 +132,11 @@
     "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
     "help-title-LANDSCAPE": "[sv] Väyläkortin vaakatulosteiden asettaminen",
     "help-title-picture-PORTRAIT": "[sv] Väyläkortin pystytulosteen esikatselu",
-    "help-title-picture-LANDSCAPE": "[sv] Väyläkortin vaakatulosteen esikatselu"
+    "help-title-picture-LANDSCAPE": "[sv] Väyläkortin vaakatulosteen esikatselu",
+    "help-title-quay": "[sv] Laiturin sijainnin syöttö",
+    "help-description-quay": "[sv] Syöttämällä laiturille sen sijaintitiedot, piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi. Ilman sijaintitietoja laituri-ikonia ei piirretä kartalle.",
+    "help-title-section": "[sv] Laituripaikan sijainnin syöttö",
+    "help-description-section": "[sv] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen."
   },
   "fairwaycard": {
     "name": "Farledskortets namn",

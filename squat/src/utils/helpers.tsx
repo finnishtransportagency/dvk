@@ -119,3 +119,7 @@ export const copyToClipboard = (text: string) => {
   navigator.clipboard.writeText(text);
   return true;
 };
+
+export function removeSoftHyphen(text: string) {
+  return text.replace(/\u00AD/g, '');
+}
