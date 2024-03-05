@@ -134,7 +134,7 @@
     "help-title-picture-PORTRAIT": "[en] Väyläkortin pystytulosteen esikatselu",
     "help-title-picture-LANDSCAPE": "[en] Väyläkortin vaakatulosteen esikatselu",
     "help-title-quay": "[en] Laiturin sijainnin syöttö",
-    "help-description-quay": "[en] Syöttämällä laiturille sen sijaintitiedot, piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi. Ilman sijaintitietoja laituri-ikonia ei piirretä kartalle.",
+    "help-description-quay": "[en] Syöttämällä laiturille sen sijaintitiedot, piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi.",
     "help-title-section": "[en] Laituripaikan sijainnin syöttö",
     "help-description-section": "[en] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen."
   },

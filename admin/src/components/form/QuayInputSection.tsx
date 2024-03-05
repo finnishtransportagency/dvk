@@ -78,10 +78,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             actionType="quayLat"
             actionTarget={idx}
             inputType="latitude"
-            required={!!section.geometry?.lat || !!section.geometry?.lon}
-            error={
-              !section.geometry?.lat && section.geometry?.lon ? validationErrors?.find((error) => error.id === 'quayGeometry-' + idx)?.msg : undefined
-            }
+            required
+            error={validationErrors?.find((error) => error.id === 'quayLat-' + idx)?.msg}
             disabled={disabled}
           />
         </IonCol>
@@ -93,10 +91,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             actionType="quayLon"
             actionTarget={idx}
             inputType="longitude"
-            required={!!section.geometry?.lat || !!section.geometry?.lon}
-            error={
-              section.geometry?.lat && !section.geometry?.lon ? validationErrors?.find((error) => error.id === 'quayGeometry-' + idx)?.msg : undefined
-            }
+            required
+            error={validationErrors?.find((error) => error.id === 'quayLon-' + idx)?.msg}
             disabled={disabled}
           />
         </IonCol>
