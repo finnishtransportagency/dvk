@@ -37,15 +37,16 @@ import { deleteCacheObjects } from '../cache';
 
 // Feature cache s3 objects related to fairway card
 const CACHE_KEYS = [
-  'harbor',
   'pilot',
+  'harbor',
   'area1,2',
   'area3,4,5,6',
   'specialarea151,2,3,4,5,6',
   'specialarea21,2,3,4,5,6',
-  'boardline1,2',
   'line1,2',
   'line3,4,5,6',
+  'safetyequipment1,2,99',
+  'safetyequipmentfault',
 ];
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
