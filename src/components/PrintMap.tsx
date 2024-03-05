@@ -107,14 +107,16 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                 </div>
                 <div className={mapLegendClass}>
                   <div className="bg"></div>
-                  <div className="compassInfo" id={'compassInfo' + picture.id}>
-                    <img
-                      src={north_arrow}
-                      alt=""
-                      id={'compassNeedle' + picture.id}
-                      style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
-                    />
-                  </div>
+                  {picture.rotation !== null && (
+                    <div className="compassInfo" id={'compassInfo' + picture.id}>
+                      <img
+                        src={north_arrow}
+                        alt=""
+                        id={'compassNeedle' + picture.id}
+                        style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                      />
+                    </div>
+                  )}
                   <div className="cardInfo">
                     <IonText>
                       <h3>{getPictureTitle(picture)}</h3>
@@ -125,13 +127,15 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                         {t('modifiedDate', {
                           val: picture.modificationTimestamp ?? '-',
                         })}
-                        {isN2000 ? ' - N2000 (BSCD2000)' : ' - MW'}
+                        {picture.scaleLabel && picture.scaleWidth && (isN2000 ? ' - N2000 (BSCD2000)' : ' - MW')}
                       </em>
                     )}
                     <em className="danger">{t('notForNavigation')}</em>
-                    <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
-                      {picture.scaleLabel}
-                    </div>
+                    {picture.scaleLabel && (
+                      <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
+                        {picture.scaleLabel}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
