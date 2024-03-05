@@ -61,6 +61,7 @@ it('should get faults from cache when api call fails', async () => {
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
   throwError = true;
   const response = await handler(mockVoidEvent);
+  console.log(response);
   expect(response.length).toBe(2);
   expect(response).toMatchSnapshot();
 });
