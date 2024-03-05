@@ -123,7 +123,7 @@ export async function deleteCacheObjects(keys: string[]) {
       },
     })
   );
-  log.debug(`delete cache objects: ${keys}`);
+  log.debug(`Deleted cache objects ${keys}: ${response.Deleted?.length}/${keys.length}`);
   if (response.Errors?.length) {
     log.error(response.Errors);
   }

@@ -107,7 +107,7 @@ export class DvkBackendStack extends Stack {
     fairwayCardVersioningBucket.grantRead(dbStreamHandler);
     harborVersioningBucket.grantPut(dbStreamHandler);
     harborVersioningBucket.grantRead(dbStreamHandler);
-    const bucket = this.createCacheBucket(env);
+    const cacheBucket = this.createCacheBucket(env);
     const staticBucket = this.createStaticBucket();
     staticBucket.grantDelete(dbStreamHandler);
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
@@ -154,18 +154,19 @@ export class DvkBackendStack extends Stack {
         fairwayCardTable.grantReadWriteData(backendLambda);
         harborTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
+        cacheBucket.grantDelete(backendLambda);
       } else {
         fairwayCardTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
-      bucket.grantPut(backendLambda);
-      bucket.grantRead(backendLambda);
+      cacheBucket.grantPut(backendLambda);
+      cacheBucket.grantRead(backendLambda);
       staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardTable, harborTable, bucket, staticBucket, layer, vpc);
+    const alb = this.createALB(env, fairwayCardTable, harborTable, cacheBucket, staticBucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
