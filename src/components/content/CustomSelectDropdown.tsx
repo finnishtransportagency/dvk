@@ -158,7 +158,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
     <IonPopover
       ref={popover}
       trigger={trigger}
-      className={trigger.includes('area') ? 'customPopover tooLong' : 'customPopover'}
+      className={trigger.includes('container-area') ? 'customPopover tooLong' : 'customPopover'}
       isOpen={expanded}
       onDidDismiss={() => setExpanded(false)}
       showBackdrop={false}
