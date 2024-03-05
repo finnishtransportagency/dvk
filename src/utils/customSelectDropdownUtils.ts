@@ -1,13 +1,40 @@
 import { WarningFilter, marineWarningAreasStructure } from './constants';
 
-export function setNextFocusableElement(popoverRef: React.RefObject<HTMLIonPopoverElement>, focusableElementId: string) {
-  popoverRef?.current?.dismiss().then(() => {
-    const focusable = document.getElementById(focusableElementId);
+function getFocusableElementId(activeElement: string | null | undefined, trigger: string, isTabPressed: boolean, isEnterPressed: boolean) {
+  if (trigger === 'popover-container-area') {
+    if ((activeElement === 'saimaaCanal' && isTabPressed) || isEnterPressed) {
+      return 'popover-container-type';
+    }
+  } else if (trigger === 'popover-container-type') {
+    if ((activeElement === 'localWarning' && isTabPressed) || isEnterPressed) {
+      return 'warningFilterSortButton';
+    }
+  } else if (trigger === 'popover-container-equipment-area') {
+    if ((activeElement === 'saimaa' && isTabPressed) || isEnterPressed) {
+      return 'faultSortingButton';
+    }
+  }
 
-    focusable?.setAttribute('tabIndex', '-1');
-    focusable?.focus({ preventScroll: false });
-    focusable?.setAttribute('tabIndex', '0');
-  });
+  return '';
+}
+
+export function setNextFocusableElement(
+  popoverRef: React.RefObject<HTMLIonPopoverElement>,
+  trigger: string,
+  isTabPressed: boolean,
+  isEnterPressed: boolean
+) {
+  const activeElement = document.activeElement?.getAttribute('value');
+  const focusableElementId = getFocusableElementId(activeElement, trigger, isTabPressed, isEnterPressed);
+
+  if (focusableElementId !== '') {
+    popoverRef?.current?.dismiss().then(() => {
+      const focusable = document.getElementById(focusableElementId);
+      focusable?.setAttribute('tabIndex', '-1');
+      focusable?.focus({ preventScroll: false });
+      focusable?.setAttribute('tabIndex', '0');
+    });
+  }
 }
 
 export const isOptionSelected = (selected: string[], value: string) => {

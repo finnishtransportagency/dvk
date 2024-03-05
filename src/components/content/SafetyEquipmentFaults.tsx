@@ -255,10 +255,11 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         <IonRow className="ion-align-items-center">
           <IonCol size="10.5">
             <IonText className="filterTitle">{t('warnings.area')}</IonText>
-            <CustomSelectDropdown triggerId="popover-container-equipmentArea" selected={areaFilter} setSelected={setAreaFilter} />
+            <CustomSelectDropdown triggerId="popover-container-equipment-area" selected={areaFilter} setSelected={setAreaFilter} />
           </IonCol>
           <IonCol size="1.5">
             <IonButton
+              id="faultSortingButton"
               className="faultSortingButton"
               fill="clear"
               size="small"
