@@ -207,7 +207,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
   const areaPolygons = useVaylaWaterAreaData();
-  console.log(data);
+
   const filterDataByArea = useCallback(() => {
     if (areaFilter.length < 1) {
       return data?.safetyEquipmentFaults;
