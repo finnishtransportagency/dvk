@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon, IonButton } from '@ionic/react';
+import { IonGrid, IonRow, IonCol, IonLabel, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -258,11 +258,9 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
             <CustomSelectDropdown triggerId="popover-container-equipment-area" selected={areaFilter} setSelected={setAreaFilter} />
           </IonCol>
           <IonCol size="1.5">
-            <IonButton
+            <button
               id="faultSortingButton"
               className="faultSortingButton"
-              fill="clear"
-              size="small"
               onClick={(e) => {
                 setSortNewFirst(!sortNewFirst);
                 e.preventDefault();
@@ -270,7 +268,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
               title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
             >
               <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
-            </IonButton>
+            </button>
           </IonCol>
         </IonRow>
       </IonGrid>
