@@ -137,7 +137,7 @@ beforeEach(() => {
 it('should get locations from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -148,7 +148,7 @@ it('should get locations from cache', async () => {
 it('should get locations from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -159,7 +159,7 @@ it('should get locations from api when cache expired', async () => {
 it('should get locations from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);

@@ -48,7 +48,7 @@ it('should get faults from api', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler(mockVoidEvent);
   expect(response.length).toBe(1);
   expect(response).toMatchSnapshot();
@@ -58,7 +58,7 @@ it('should get faults from cache when api call fails', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockVoidEvent);
   console.log(response);
