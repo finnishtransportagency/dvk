@@ -389,7 +389,7 @@ type RtzReittipiste = {
   geometriaTyyppi: string;
   muutosaikaleima: string;
   jarjestys: number;
-}
+};
 
 export type RtzData = {
   tunnus: number;

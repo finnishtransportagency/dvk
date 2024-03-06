@@ -1,7 +1,7 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getCacheControlHeaders, getFeatureCacheDuration, getFromCache } from './graphql/cache';
+import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { RtzData, Vessel } from './api/apiModels';
 import { getHeaders } from './environment';

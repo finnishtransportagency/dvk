@@ -1,9 +1,9 @@
-import { ALBResult } from "aws-lambda";
-import { getPilotRoutesHeaders } from "../environment";
-import { getFromCache } from "../graphql/cache";
-import { handleLoaderError, saveResponseToS3 } from "../util";
-import { RtzData } from "./apiModels";
-import { fetchPilotRoutesApi } from "./axios";
+import { ALBResult } from 'aws-lambda';
+import { getPilotRoutesHeaders } from '../environment';
+import { getFromCache } from '../graphql/cache';
+import { handleLoaderError, saveResponseToS3 } from '../util';
+import { RtzData } from './apiModels';
+import { fetchPilotRoutesApi } from './axios';
 
 async function fetchPilotRouteData(): Promise<RtzData[]> {
   const data: RtzData[] = await fetchPilotRoutesApi();
@@ -15,7 +15,7 @@ async function fetchPilotRouteData(): Promise<RtzData[]> {
       tunniste: entry.tunniste,
       rtz: entry.rtz,
       reittipisteet: entry.reittipisteet?.map((piste) => {
-        return { 
+        return {
           tunnus: piste.tunnus,
           nimi: piste.nimi,
           rtzTunniste: piste.rtzTunniste,
@@ -30,8 +30,8 @@ async function fetchPilotRouteData(): Promise<RtzData[]> {
           geometriaTyyppi: piste.geometriaTyyppi,
           muutosaikaleima: piste.muutosaikaleima,
           jarjestys: piste.jarjestys,
-        }
-      })
+        };
+      }),
     };
   });
 }
@@ -58,6 +58,6 @@ export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getPilotRoutesHeaders(),
-    }
+    },
   };
 }
