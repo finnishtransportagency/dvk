@@ -53,18 +53,8 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     const isTabPressed = e.key === 'Tab';
     const isEnterPressed = e.key === 'Enter';
 
-    if (trigger === 'popover-container-area') {
-      // check if last element of the list, if structure changes these needs to be changed
-      if ((document.activeElement?.getAttribute('value') === 'saimaaCanal' && isTabPressed) || isEnterPressed) {
-        setNextFocusableElement(popoverRef, 'popover-container-type');
-        e.preventDefault();
-      }
-    } else if (trigger === 'popover-container-type') {
-      if ((document.activeElement?.getAttribute('value') === 'localWarning' && isTabPressed) || isEnterPressed) {
-        setNextFocusableElement(popoverRef, 'warningFilterSortButton');
-        e.preventDefault();
-      }
-    }
+    setNextFocusableElement(popoverRef, trigger, isTabPressed, isEnterPressed);
+
     if (isEnterPressed) {
       const checkbox = e.currentTarget as HTMLIonCheckboxElement;
       const customEvent = {
@@ -148,14 +138,14 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
   let items: WarningFilter[] | SafetyEquipmentFaultFilter[];
 
   switch (true) {
+    case trigger.includes('equipment-area'):
+      items = equipmentAreasStructure;
+      break;
     case trigger.includes('area'):
       items = marineWarningAreasStructure;
       break;
     case trigger.includes('type'):
       items = marineWarningTypeStructure;
-      break;
-    case trigger.includes('equipmentArea'):
-      items = equipmentAreasStructure;
       break;
     default:
       // Handle the case when none of the conditions match
@@ -168,7 +158,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
     <IonPopover
       ref={popover}
       trigger={trigger}
-      className={trigger.includes('area') ? 'customPopover tooLong' : 'customPopover'}
+      className={trigger.includes('container-area') ? 'customPopover tooLong' : 'customPopover'}
       isOpen={expanded}
       onDidDismiss={() => setExpanded(false)}
       showBackdrop={false}

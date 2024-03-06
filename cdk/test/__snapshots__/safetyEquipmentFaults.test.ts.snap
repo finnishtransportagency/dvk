@@ -18,6 +18,7 @@ exports[`should get faults from api 1`] = `
     },
     "recordTime": 1591554784711,
     "type": {
+      "en": "Light unlit",
       "fi": "Valo pimeä",
       "sv": "Ljuset slocknat",
     },
@@ -44,6 +45,7 @@ exports[`should get faults from cache when api call fails 1`] = `
     },
     "recordTime": 1682082750000,
     "type": {
+      "en": "Damaged",
       "fi": "Rikkoutunut",
       "sv": "Söndrig",
     },
@@ -65,6 +67,7 @@ exports[`should get faults from cache when api call fails 1`] = `
     },
     "recordTime": 1650366855000,
     "type": {
+      "en": "Destroyed/Missing",
       "fi": "Tuhoutunut/kadonnut",
       "sv": "Förstörd/försvunnen",
     },
