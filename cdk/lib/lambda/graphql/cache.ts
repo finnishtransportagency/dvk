@@ -99,8 +99,9 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
           stream.on('error', reject);
           stream.on('end', () => resolve(Buffer.concat(chunks).toString('utf8')));
         });
+      const expires = data.ExpiresString ? Date.parse(data.ExpiresString) : undefined;
       return {
-        expired: data.Expires !== undefined && data.Expires.getTime() < Date.now(),
+        expired: expires !== undefined && !isNaN(expires) && expires < Date.now(),
         data: await streamToString(data.Body as Readable),
         lastModified: data.LastModified?.toUTCString(),
       };

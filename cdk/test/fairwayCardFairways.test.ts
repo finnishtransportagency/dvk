@@ -447,7 +447,7 @@ it('should get fairway card fairways from cache', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/fairways.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler(mockQueryFairwayCardArgsFairwayCardEvent, mockContext, () => {});
   expect(response).toMatchSnapshot();
 });
@@ -456,7 +456,7 @@ it('should get fairway card fairways from api when cache expired', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/fairways.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler(mockQueryFairwayCardArgsFairwayCardEvent, mockContext, () => {});
   expect(response).toMatchSnapshot();
 });
