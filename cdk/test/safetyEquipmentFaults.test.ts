@@ -22,6 +22,7 @@ const faults = [
     turvalaiteNimiSV: 'Kuusinen övre',
     vikatyyppiFI: 'Valo pimeä',
     vikatyyppiSV: 'Ljuset slocknat',
+    vikatyyppiEN: 'Light unlit',
     kirjausAika: '2020-06-07T18:33:04.711000',
     geometria: { type: 'Point', coordinates: [26.9622327773, 60.461115575] },
   },
@@ -60,6 +61,7 @@ it('should get faults from cache when api call fails', async () => {
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
   throwError = true;
   const response = await handler(mockVoidEvent);
+  console.log(response);
   expect(response.length).toBe(2);
   expect(response).toMatchSnapshot();
 });

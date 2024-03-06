@@ -158,6 +158,7 @@ export type TurvalaiteVikatiedotAPIModel = {
   vikatyyppiKoodi: number;
   vikatyyppiFI: string;
   vikatyyppiSV?: string;
+  vikatyyppiEN?: string;
   kirjausAika: string;
 } & GeometryModel;
 

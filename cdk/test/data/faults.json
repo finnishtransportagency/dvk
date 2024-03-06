@@ -9,7 +9,8 @@
     "typeCode": 1022541006,
     "type": {
       "fi": "Rikkoutunut",
-      "sv": "Söndrig"
+      "sv": "Söndrig",
+      "en": "Damaged"
     },
     "recordTime": 1682082750000,
     "geometry": {
@@ -30,7 +31,8 @@
     "typeCode": 1022541004,
     "type": {
       "fi": "Tuhoutunut/kadonnut",
-      "sv": "Förstörd/försvunnen"
+      "sv": "Förstörd/försvunnen",
+      "en": "Destroyed/Missing"
     },
     "recordTime": 1650366855000,
     "geometry": {
