@@ -40,7 +40,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     functionName: 'pilotroutes',
     priority: 18,
     useVpc: true,
-    useMonitoring: true
+    useMonitoring: true,
   },
   {
     entry: path.join(__dirname, 'login.ts'),
