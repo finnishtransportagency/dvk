@@ -176,13 +176,23 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           msg: requiredMsg,
         };
       }) ?? [];
-  const quayGeometryErrors =
+  const quayLatErrors =
     state.quays
-      ?.flatMap((quay, i) => (geometryError(quay?.geometry) ? i : null))
+      ?.flatMap((quay, i) => (!quay?.geometry?.lat ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((qIndex) => {
         return {
-          id: 'quayGeometry-' + qIndex,
+          id: 'quayLat-' + qIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const quayLonErrors =
+    state.quays
+      ?.flatMap((quay, i) => (!quay?.geometry?.lon ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((qIndex) => {
+        return {
+          id: 'quayLon-' + qIndex,
           msg: requiredMsg,
         };
       }) ?? [];
@@ -199,7 +209,7 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           }) ?? []
         );
       }) ?? [];
-  return { quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors };
+  return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors };
 }
 
 export function validateHarbourForm(state: HarborInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
@@ -226,8 +236,8 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
     { id: 'lon', msg: !state.geometry?.lon ? requiredMsg : '' },
   ];
 
-  const { quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
-  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayGeometryErrors, sectionGeometryErrors);
+  const { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
+  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors);
 }
 
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
