@@ -83,7 +83,7 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation, isFull }) => 
         </li>
         <li>
           {t('fairwaycard.print-images-info-upload-image')} <span className="icon uploadPicture" />{' '}
-          {t('fairwaycard.print-images-info-upload-image-button')}
+          {orientation === Orientation.Portrait ? t('fairwaycard.print-images-info-upload-image-button-portrait') : t('fairwaycard.print-images-info-upload-image-button-landscape')}
         </li>
       </ol>
     </Alert>
