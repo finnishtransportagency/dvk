@@ -27,7 +27,6 @@ import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUp
 import { fitSelectedFairwayCardOnMap, setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
-import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
@@ -42,6 +41,7 @@ import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
+import { useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -741,33 +741,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   // Picture with input data waiting for upload
   const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
 
-  const { mutateAsync: uploadMapPictureMutation, isPending: isLoadingMutation } = useUploadMapPictureMutationQuery({
-    onSuccess: () => {
-      if (newPicture) {
-        const pictureInput = {
-          id: newPicture.id,
-          orientation: dvkMap.getOrientationType() || Orientation.Portrait,
-          rotation: newPicture.rotation ?? null,
-          modificationTimestamp: Date.now(),
-          scaleWidth: newPicture.scaleWidth ?? null,
-          scaleLabel: newPicture.scaleLabel ?? null,
-          sequenceNumber: null,
-          text: null,
-          lang: newPicture.lang ?? null,
-          groupId: newPicture.groupId,
-          legendPosition: newPicture.legendPosition,
-        };
-        // Update fairwayCard state with uploaded picture data
-        setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
-      }
-    },
-    onError: (error: Error) => {
-      console.error(error.message);
-    },
-    onSettled: () => {
-      setNewPicture(undefined);
-    },
-  });
+  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
 
   const uploadPicture = async (
     base64Data: string,
