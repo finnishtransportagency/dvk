@@ -325,7 +325,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
     case 'boardline12':
       return getBoardLineStyle('#000000', 1);
-    case 'safetyequipment':
+    case 'safetyequipmentfault':
       return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
     case 'coastalwarning':
     case 'localwarning':
@@ -922,7 +922,7 @@ export function unsetSelectedFairwayCard() {
       case 'circle':
         circleSource.addFeature(feature);
         break;
-      case 'safetyequipment':
+      case 'safetyequipmentfault':
         safetyEquipmentFaultSource.addFeature(feature);
         break;
     }
