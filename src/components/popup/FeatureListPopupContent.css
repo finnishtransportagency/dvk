@@ -146,7 +146,7 @@
   background-image: url('../../theme/img/buoy.svg');
 }
 .featureList ion-item .calculated {
-  background-image: url('../../theme/img/laskennallinen_vedenkorkeus_pohja.svg');
+  background-image: url('../../theme/img/laskennallinen_vedenkorkeus_ikoni.svg');
 }
 .featureList ion-item .mareograph {
   background-image: url('../../theme/img/vedenkorkeus_ikoni.svg');
