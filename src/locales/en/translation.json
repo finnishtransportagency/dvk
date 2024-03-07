@@ -442,6 +442,7 @@
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
+        "calculated": "Calculated sea level",
         "harbor": "Harbour",
         "line": "Navigation line",
         "mareograph": "Mareograph",

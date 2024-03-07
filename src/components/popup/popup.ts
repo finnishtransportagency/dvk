@@ -206,6 +206,15 @@ function getAisVesselDetails(t: TFunction, feature: FeatureLike) {
   };
 }
 
+function getMareographDetails(t: TFunction, feature: FeatureLike) {
+  const props = feature.getProperties() as MareographFeatureProperties;
+  return {
+    header: [props.name ?? ''],
+    featureType: props.calculated ? t('featureList.featureType.calculated') : t('featureList.featureType.mareograph'),
+    className: props.calculated ? 'calculated' : 'mareograph',
+  };
+}
+
 function getMarineWarningDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
   const props = feature.getProperties() as MarineWarningFeatureProperties;
   return {
@@ -263,7 +272,7 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
         className: type,
       };
     case 'mareograph':
-      return { header: [(props as MareographFeatureProperties).name], featureType: t('featureList.featureType.mareograph'), className: type };
+      return getMareographDetails(t, feature);
     case 'marinewarning':
       return getMarineWarningDetails(t, lang, feature);
     case 'observation':

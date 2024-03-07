@@ -131,6 +131,7 @@
 }
 
 .featureList ion-item .buoy,
+.featureList ion-item .calculated,
 .featureList ion-item .mareograph,
 .featureList ion-item .observation {
   width: 21px;
@@ -143,6 +144,9 @@
 
 .featureList ion-item .buoy {
   background-image: url('../../theme/img/buoy.svg');
+}
+.featureList ion-item .calculated {
+  background-image: url('../../theme/img/laskennallinen_vedenkorkeus_pohja.svg');
 }
 .featureList ion-item .mareograph {
   background-image: url('../../theme/img/vedenkorkeus_ikoni.svg');
