@@ -5,7 +5,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 import eslintPlugin from 'vite-plugin-eslint';
-export default defineConfig({
+export default defineConfig((env) => ({
   build: {
     outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build/esikatselu',
     rollupOptions: {
@@ -63,11 +63,12 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
       },
     }),
-    eslintPlugin({
-      cache: false,
-      include: ['./src/**/*.ts', './src/**/*.tsx'],
-      exclude: [],
-    }),
+    env.mode !== 'test' &&
+      eslintPlugin({
+        cache: false,
+        include: ['./src/**/*.ts', './src/**/*.tsx'],
+        exclude: [],
+      }),
   ],
   test: {
     globals: true,
@@ -90,4 +91,4 @@ export default defineConfig({
   define: {
     VITE_APP_CONFIG: JSON.stringify('PREVIEW'),
   },
-});
+}));

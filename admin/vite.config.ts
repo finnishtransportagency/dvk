@@ -5,7 +5,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr';
 import eslintPlugin from 'vite-plugin-eslint';
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig((env) => ({
   build: {
     outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build',
   },
@@ -18,11 +18,12 @@ export default defineConfig({
     react(),
     viteTsconfigPaths(),
     svgr(),
-    eslintPlugin({
-      cache: false,
-      include: ['./src/**/*.ts', './src/**/*.tsx'],
-      exclude: [],
-    }),
+    env.mode !== 'test' &&
+      eslintPlugin({
+        cache: false,
+        include: ['./src/**/*.ts', './src/**/*.tsx'],
+        exclude: [],
+      }),
   ],
   test: {
     globals: true,
@@ -42,4 +43,4 @@ export default defineConfig({
       exclude: ['node_modules/', 'src/setupTests.ts'],
     },
   },
-});
+}));
