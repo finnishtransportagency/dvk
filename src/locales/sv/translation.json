@@ -442,6 +442,7 @@
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
+        "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",
         "mareograph": "Mareograf",
