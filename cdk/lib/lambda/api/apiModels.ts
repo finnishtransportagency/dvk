@@ -1,4 +1,4 @@
-import { Geometry } from 'geojson';
+import { Geometry, LineString } from 'geojson';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { FairwayCardIdName } from '../db/fairwayCardDBModel';
 
@@ -399,3 +399,12 @@ export type RtzData = {
   rtz: string;
   reittipisteet: Array<RtzReittipiste>;
 };
+
+export type RtzResponseData = Array<{
+  tunnus: number;
+  tila: number;
+  nimi: string;
+  tunniste: string;
+  rtz: string;
+  geometria: LineString;
+}>;
