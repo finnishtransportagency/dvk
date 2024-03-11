@@ -438,7 +438,7 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "featureList": {
-      "multipleFeatures": "[sv] Useita valittavia kohteita",
+      "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
@@ -452,7 +452,7 @@
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
-        "section": "[sv] Laituripaikka",
+        "section": "Kajplats",
         "specialarea15": "Område med mötes- och omkörningsförbud",
         "specialarea2": "Ankringsområde",
         "vtsline": "VTS-område",

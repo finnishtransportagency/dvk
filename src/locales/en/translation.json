@@ -438,7 +438,7 @@
       "aisunspecified": "Unspecified vessel"
     },
     "featureList": {
-      "multipleFeatures": "[en] Useita valittavia kohteita",
+      "multipleFeatures": "Multiple items to select",
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
@@ -452,7 +452,7 @@
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
-        "section": "[en] Laituripaikka",
+        "section": "Berth position",
         "specialarea15": "Meeting and overtaking prohibition area",
         "specialarea2": "Anchoring area",
         "vtsline": "VTS area",
