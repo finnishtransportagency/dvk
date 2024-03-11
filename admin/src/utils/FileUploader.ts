@@ -17,10 +17,11 @@ class FileUploader {
     });
   }
 
-  public addPicture(event: ChangeEvent) {
+  public addPicture(event: ChangeEvent): string[] {
     const target = event.target as HTMLInputElement;
     const files = Array.from(target?.files ?? []);
     //if multiple files support is wanted in future
+    const fileErrors: string[] = [];
     files.forEach((file) => {
       try {
         this.uppy.addFile({
@@ -31,23 +32,30 @@ class FileUploader {
         });
       } catch (error) {
         console.log(error);
+        fileErrors.push(error as string);
       }
     });
+    return fileErrors;
   }
 
   public getPictureBase64Data() {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
+      const files = this.uppy.getFiles();
       // only one picture added at the time since file is deleted afterwards
-      reader.readAsDataURL(this.uppy.getFiles()[0].data);
+      if (files.length > 0) {
+        reader.readAsDataURL(files[0].data);
 
-      reader.onloadend = () => {
-        if (reader.result !== null && typeof reader.result === 'string') {
-          resolve(reader.result);
-        } else {
-          reject(new Error('Failed to read base64 data.'));
-        }
-      };
+        reader.onloadend = () => {
+          if (reader.result !== null && typeof reader.result === 'string') {
+            resolve(reader.result);
+          } else {
+            reject(new Error('Failed to read base64 data.'));
+          }
+        };
+      } else {
+        resolve(null);
+      }
     });
   }
 
