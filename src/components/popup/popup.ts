@@ -34,7 +34,17 @@ function setPopupPosition(popup: Overlay, coordinate: Coordinate, selectedFeatur
     } else if (selectedFeature?.getGeometry()?.getType() === 'Point') {
       popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
     } else {
-      popup.setPosition(coordinate);
+      const previousPosition = popup.getPosition();
+      if (previousPosition !== coordinate) {
+        popup.setPosition(coordinate);
+      } else {
+        // Force autopan to fit new popup content
+        popup.panIntoView({
+          animation: {
+            duration: 250,
+          },
+        });
+      }
     }
   }, 100);
 }
