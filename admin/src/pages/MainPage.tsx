@@ -119,7 +119,7 @@ const MainPage: React.FC = () => {
                     placeholder={translatedTextOrEmpty('search-placeholder')}
                     title={translatedTextOrEmpty('search-title')}
                     value={searchQuery}
-                    onIonChange={(e) => changeAction(e.detail.value)}
+                    onIonInput={(e) => changeAction(e.detail.value)}
                     ref={searchRef}
                   />
                   <ClearSearchButton clearInput={clearInput} disabled={!searchHasInput} />
