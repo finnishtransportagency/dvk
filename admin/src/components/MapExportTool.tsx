@@ -885,26 +885,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     console.timeEnd('Export pictures');
   };
 
-  const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
-    return new Promise((resolve) => {
-      if (dvkMap.getOrientationType()) {
-        (async () => {
-          try {
-            await uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
-            //won't resolve for some reason without this
-            dvkMap.olMap?.once('rendercomplete', async function () {
-              resolve(`External import for locale ${lang} done.`);
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        })();
-      } else {
-        Promise.reject(new Error(`External import for locale ${lang} failed.`));
-      }
-    });
-  };
-
   const importExternalImage = async () => {
     console.time('Import pictures');
     if (dvkMap.getOrientationType()) {
@@ -913,11 +893,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
       try {
         const picGroupId = Date.now();
-        const data = await fileUploader.getPictureBase64Data();
+        const base64Data = await fileUploader.getPictureBase64Data();
 
         for (const locale of locales) {
           if (locale !== curLang) setIsProcessingCurLang(false);
-          await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
+          await uploadPicture(base64Data as string, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, locale as Lang);
         }
       } catch (error) {
         console.log(error);
