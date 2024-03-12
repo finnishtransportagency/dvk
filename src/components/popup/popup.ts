@@ -1,6 +1,6 @@
 import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
-import Overlay from 'ol/Overlay';
+import Overlay, { PanIntoViewOptions } from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { FeatureLayerId, Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
@@ -26,6 +26,12 @@ import {
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
 
+const panOptions: PanIntoViewOptions = {
+  animation: {
+    duration: 250,
+  },
+};
+
 function setPopupPosition(popup: Overlay, coordinate: Coordinate, selectedFeature?: FeatureLike, popupPositioningCoordinate?: Coordinate) {
   /* Set timeout to make sure popup content is rendered before positioning, so autoPan works correctly */
   setTimeout(() => {
@@ -34,7 +40,13 @@ function setPopupPosition(popup: Overlay, coordinate: Coordinate, selectedFeatur
     } else if (selectedFeature?.getGeometry()?.getType() === 'Point') {
       popup.setPosition((selectedFeature.getGeometry() as Point).getCoordinates());
     } else {
-      popup.setPosition(coordinate);
+      const previousPosition = popup.getPosition();
+      if (previousPosition !== coordinate) {
+        popup.setPosition(coordinate);
+      } else {
+        // Force autopan to fit new popup content
+        popup.panIntoView(panOptions);
+      }
     }
   }, 100);
 }
@@ -117,11 +129,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const overlay = new Overlay({
     id: 'popup',
     element: container,
-    autoPan: {
-      animation: {
-        duration: 250,
-      },
-    },
+    autoPan: panOptions,
   });
   map.addOverlay(overlay);
 
