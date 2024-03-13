@@ -114,9 +114,16 @@ export function getMapCanvas(mapSize: number[]) {
   return mapCanvas;
 }
 
-export function setMap(viewResolution: number, mapSize: number[], lang: Lang) {
+export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang) {
   const dvkMap = getMap();
   dvkMap?.olMap?.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
   dvkMap?.olMap?.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
   dvkMap.setMapLanguage(lang);
+}
+
+export function resetMapProperties(viewResolution: number, mapSize: number[]) {
+  const dvkMap = getMap();
+  dvkMap.setMapLanguage('');
+  dvkMap.olMap?.setSize(mapSize);
+  dvkMap.olMap?.getView().setResolution(viewResolution);
 }

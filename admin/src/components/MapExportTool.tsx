@@ -41,7 +41,7 @@ import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
-import { getExportMapBase64Data, getMapCanvas, processCanvasElements, setMap, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
+import { getExportMapBase64Data, getMapCanvas, processCanvasElements, resetMapProperties, setMapProperties, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -780,7 +780,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
         const mapCanvas = getMapCanvas(mapSize);
         const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        setMap(viewResolution, mapSize, lang);
+        setMapProperties(viewResolution, mapSize, lang);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
@@ -800,9 +800,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
             mapScale?.innerHTML
           );
           // Reset original map properties
-          dvkMap.setMapLanguage('');
-          dvkMap.olMap?.setSize(mapSize);
-          dvkMap.olMap?.getView().setResolution(viewResolution);
+          resetMapProperties(viewResolution, mapSize);
           dvkMap.olMap?.once('rendercomplete', function () {
             resolve(`Map export for locale ${lang} done.`);
           });
