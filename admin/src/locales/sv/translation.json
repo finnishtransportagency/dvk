@@ -137,7 +137,9 @@
     "help-title-quay": "[sv] Laiturin sijainnin syöttö",
     "help-description-quay": "[sv] Syöttämällä laiturille sen sijaintitiedot, piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi.",
     "help-title-section": "[sv] Laituripaikan sijainnin syöttö",
-    "help-description-section": "[sv] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen."
+    "help-description-section": "[sv] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
+    "picture-upload-failed": "[sv] Tiedoston lataus epäonnistui",
+    "picture-errors": "[sv] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt."
   },
   "fairwaycard": {
     "name": "Farledskortets namn",
@@ -192,6 +194,9 @@
     "print-images-info-set-image-button": "[sv] Aseta kuva -painikkeella.",
     "print-images-info-select-image": "[sv] Valitse julkaistavat kuvat sekä niiden järjestys esikatselukuvien yläkulman",
     "print-images-info-select-image-button": "[sv] Aseta järjestysnumero -painikkeella.",
+    "print-images-info-upload-image": " [sv] Vaihtoehtoisesti voit ladata järjestelmän ulkopuolisen kuvan tulosteelle",
+    "print-images-info-upload-image-button-portrait": "[sv] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 810x563px ja se ei saa ylittää 2 Mt kokoa.",
+    "print-images-info-upload-image-button-landscape": "[sv] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 563x810px ja se ei saa ylittää 2 Mt kokoa.",
     "print-images-modified": "[sv] Kuva luotu",
     "print-images-language": "[sv] Kuvan kieli",
     "print-images-language-fi": "[sv] suomi",

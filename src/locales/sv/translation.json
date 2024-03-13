@@ -438,10 +438,11 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "featureList": {
-      "multipleFeatures": "[sv] Useita valittavia kohteita",
+      "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
+        "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",
         "mareograph": "Mareograf",
@@ -451,7 +452,7 @@
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
-        "section": "[sv] Laituripaikka",
+        "section": "Kajplats",
         "specialarea15": "Område med mötes- och omkörningsförbud",
         "specialarea2": "Ankringsområde",
         "vtsline": "VTS-område",

@@ -442,6 +442,7 @@
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
+        "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",
         "mareograph": "Mareografi",

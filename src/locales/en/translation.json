@@ -438,10 +438,11 @@
       "aisunspecified": "Unspecified vessel"
     },
     "featureList": {
-      "multipleFeatures": "[en] Useita valittavia kohteita",
+      "multipleFeatures": "Multiple items to select",
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
+        "calculated": "Calculated sea level",
         "harbor": "Harbour",
         "line": "Navigation line",
         "mareograph": "Mareograph",
@@ -451,7 +452,7 @@
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
-        "section": "[en] Laituripaikka",
+        "section": "Berth position",
         "specialarea15": "Meeting and overtaking prohibition area",
         "specialarea2": "Anchoring area",
         "vtsline": "VTS area",
