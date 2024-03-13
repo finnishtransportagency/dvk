@@ -41,7 +41,14 @@ import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
-import { getExportMapBase64Data, getMapCanvas, processCanvasElements, resetMapProperties, setMapProperties, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
+import {
+  getExportMapBase64Data,
+  getMapCanvas,
+  processCanvasElements,
+  resetMapProperties,
+  setMapProperties,
+  useUploadMapPictureMutation,
+} from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -640,6 +647,16 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
+  // Picture with input data waiting for upload
+  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
+  const [isOpen, setIsOpen] = useState(false);
+  const isFetching = useIsFetching();
+  const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
+  const [isMapDisabled, setIsMapDisabled] = useState(hasPrimaryIdError || disabled);
+  // Create uploadable images with every locale
+  const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
+
+  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
 
   InitDvkMap();
 
@@ -707,10 +724,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     specialArea15Layer,
   ]);
 
-  const isFetching = useIsFetching();
-  const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
-  const [isMapDisabled, setIsMapDisabled] = useState(hasPrimaryIdError || disabled);
-
   const dvkMap = getMap();
 
   const mapElement = useRef<HTMLDivElement | null>(null);
@@ -737,11 +750,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     };
     setSelectedFairwayCard(fairwayCard);
   }, [fairwayCardInput, fairways, harbours, initDone]);
-
-  // Picture with input data waiting for upload
-  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
-
-  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
 
   const uploadPicture = async (
     base64Data: string,
@@ -811,8 +819,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     });
   };
 
-  // Create uploadable images with every locale
-  const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
   const printCurrentMapView = async () => {
     console.time('Export pictures');
     if (dvkMap.olMap && dvkMap.getOrientationType()) {
@@ -855,8 +861,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     }
     console.timeEnd('Import pictures');
   };
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
