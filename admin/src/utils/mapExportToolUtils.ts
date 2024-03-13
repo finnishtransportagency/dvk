@@ -96,11 +96,11 @@ export function processCanvasElements(mapCanvas: HTMLCanvasElement) {
         mapContext.fillStyle = backgroundColor;
         mapContext.fillRect(0, 0, canvas.width, canvas.height);
       }
-      if (mapContext) mapContext.drawImage(canvas, 0, 0);
+      if (mapContext) {
+        mapContext.drawImage(canvas, 0, 0);
+        mapContext.globalAlpha = 1;
+        mapContext.setTransform(1, 0, 0, 1, 0, 0);
+      }
     }
   });
-  if (mapContext) {
-    mapContext.globalAlpha = 1;
-    mapContext.setTransform(1, 0, 0, 1, 0, 0);
-  }
 }
