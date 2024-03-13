@@ -1,7 +1,7 @@
 import { getMap } from '../components/map/DvkMap';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { FairwayCardInput, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
-import { ActionType, Lang, ValueType } from './constants';
+import { ActionType, Lang, MAP, ValueType } from './constants';
 
 export function useUploadMapPictureMutation(
   newPicture: (PictureInput & PictureUploadInput) | undefined,
@@ -44,4 +44,63 @@ export function useUploadMapPictureMutation(
     },
   });
   return { uploadMapPictureMutation, isLoadingMutation };
+}
+
+export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[]) {
+  // Crop the canvas and create image
+  const mapCanvasCropped = document.createElement('canvas');
+  mapCanvasCropped.width = canvasSizeCropped[0];
+  mapCanvasCropped.height = canvasSizeCropped[1];
+  const mapContextCropped = mapCanvasCropped.getContext('2d');
+  if (mapContextCropped) {
+    mapContextCropped.drawImage(
+      mapCanvas,
+      (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
+      (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
+      mapCanvasCropped.width,
+      mapCanvasCropped.height,
+      0,
+      0,
+      mapCanvasCropped.width,
+      mapCanvasCropped.height
+    );
+  }
+  return mapCanvasCropped.toDataURL('image/png');
+}
+
+export function getMatrix(canvas: HTMLCanvasElement) {
+  const transform = canvas.style.transform;
+  const matrix = transform
+    ? RegExp(/^matrix\(([^(]*)\)$/)
+        .exec(transform)?.[1]
+        .split(',')
+        .map(Number)
+    : [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
+  return matrix as DOMMatrix2DInit;
+}
+
+export function processCanvasElements(mapCanvas: HTMLCanvasElement) {
+  const dvkMap = getMap();
+  const mapContext = mapCanvas.getContext('2d');
+  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
+    if (canvas.width > 0) {
+      const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
+      if (mapContext) {
+        mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+      }
+      const matrix = getMatrix(canvas);
+      // Apply the transform to the export map context
+      CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, [matrix]);
+      const backgroundColor = canvas.parentNode.style.backgroundColor;
+      if (backgroundColor && mapContext) {
+        mapContext.fillStyle = backgroundColor;
+        mapContext.fillRect(0, 0, canvas.width, canvas.height);
+      }
+      if (mapContext) mapContext.drawImage(canvas, 0, 0);
+    }
+  });
+  if (mapContext) {
+    mapContext.globalAlpha = 1;
+    mapContext.setTransform(1, 0, 0, 1, 0, 0);
+  }
 }

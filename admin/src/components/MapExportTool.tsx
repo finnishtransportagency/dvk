@@ -41,7 +41,7 @@ import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
-import { useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
+import { getExportMapBase64Data, processCanvasElements, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -790,56 +790,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
           const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
-          const mapContext = mapCanvas.getContext('2d');
-          Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-            if (canvas.width > 0) {
-              const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-              if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-              let matrix;
-              const transform = canvas.style.transform;
-              if (transform) {
-                // Get the transform parameters from the style's transform matrix
-                matrix = transform
-                  .match(/^matrix\(([^(]*)\)$/)[1]
-                  .split(',')
-                  .map(Number);
-              } else {
-                matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
-              }
-              // Apply the transform to the export map context
-              CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-              const backgroundColor = canvas.parentNode.style.backgroundColor;
-              if (backgroundColor && mapContext) {
-                mapContext.fillStyle = backgroundColor;
-                mapContext.fillRect(0, 0, canvas.width, canvas.height);
-              }
-              if (mapContext) mapContext.drawImage(canvas, 0, 0);
-            }
-          });
-          if (mapContext) {
-            mapContext.globalAlpha = 1;
-            mapContext.setTransform(1, 0, 0, 1, 0, 0);
-          }
 
-          // Crop the canvas and create image
-          const mapCanvasCropped = document.createElement('canvas');
-          mapCanvasCropped.width = canvasSizeCropped[0];
-          mapCanvasCropped.height = canvasSizeCropped[1];
-          const mapContextCropped = mapCanvasCropped.getContext('2d');
-          if (mapContextCropped) {
-            mapContextCropped.drawImage(
-              mapCanvas,
-              (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
-              (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
-              mapCanvasCropped.width,
-              mapCanvasCropped.height,
-              0,
-              0,
-              mapCanvasCropped.width,
-              mapCanvasCropped.height
-            );
-          }
-          const base64Data = mapCanvasCropped.toDataURL('image/png');
+          processCanvasElements(mapCanvas);
+
+          const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
+
           await uploadPicture(
             base64Data,
             dvkMap.getOrientationType() || Orientation.Portrait,
