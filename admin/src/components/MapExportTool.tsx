@@ -28,7 +28,7 @@ import { fitSelectedFairwayCardOnMap, setSelectedFairwayCard } from './map/layer
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -41,7 +41,7 @@ import TextInputRow from './form/TextInputRow';
 import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
-import { getExportMapBase64Data, processCanvasElements, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
+import { getExportMapBase64Data, getMapCanvas, processCanvasElements, setMap, useUploadMapPictureMutation } from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -776,16 +776,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const exportMapByLang = (viewResolution: number, rotation: number, lang: Lang, picGroupId: number): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.olMap && dvkMap.getOrientationType()) {
-        // Merge canvases to one canvas
-        const mapCanvas = document.createElement('canvas');
         const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-        mapCanvas.width = mapSize[0] * MAP.PRINT.SCALE;
-        mapCanvas.height = mapSize[1] * MAP.PRINT.SCALE;
+        const mapCanvas = getMapCanvas(mapSize);
         const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        dvkMap.olMap.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
-        dvkMap.olMap.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
-        dvkMap.setMapLanguage(lang);
+        setMap(viewResolution, mapSize, lang);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');

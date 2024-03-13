@@ -104,3 +104,19 @@ export function processCanvasElements(mapCanvas: HTMLCanvasElement) {
     }
   });
 }
+
+export function getMapCanvas(mapSize: number[]) {
+  // Merge canvases to one canvas
+  const mapCanvas = document.createElement('canvas');
+  mapCanvas.width = mapSize[0] * MAP.PRINT.SCALE;
+  mapCanvas.height = mapSize[1] * MAP.PRINT.SCALE;
+
+  return mapCanvas;
+}
+
+export function setMap(viewResolution: number, mapSize: number[], lang: Lang) {
+  const dvkMap = getMap();
+  dvkMap?.olMap?.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
+  dvkMap?.olMap?.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
+  dvkMap.setMapLanguage(lang);
+}
