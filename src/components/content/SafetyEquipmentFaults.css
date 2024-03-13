@@ -57,10 +57,18 @@ div.equipmentAlertContent ion-grid.inlineHoverText:focus-visible {
 
 .faultSortingButton {
   position: relative;
-  top: 12px;
-  left: 20px;
+  top: 14px;
+  left: 25px;
+  background-color: transparent;
   --padding-top: 2px;
   --padding-bottom: 2px;
   --padding-start: 2px;
   --padding-end: 2px;
+}
+.faultSortingButton:hover {
+  background-color: var(--ion-color-lighter);
+  border-radius: 5px;
+}
+.faultSortingButton:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
 }

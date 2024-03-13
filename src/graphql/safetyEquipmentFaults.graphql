@@ -10,6 +10,7 @@ query findAllSafetyEquipmentFaults {
     type {
       fi
       sv
+      en
     }
     recordTime
     geometry {

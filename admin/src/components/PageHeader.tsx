@@ -55,10 +55,10 @@ const LogoutModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton href="/yllapito/api/logout" slot="end" size="large" onClick={() => logoutAction()} shape="round">
+          <IonButton href="/yllapito/api/logout" slot="end" onClick={() => logoutAction()} shape="round">
             {t('header.logout')}
           </IonButton>
         </IonToolbar>

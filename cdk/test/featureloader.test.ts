@@ -511,7 +511,7 @@ beforeEach(() => {
 it('should get navigation lines from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('line', '1,2'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -522,7 +522,7 @@ it('should get navigation lines from cache', async () => {
 it('should get navigation lines from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), ExpiresString: expires.toString() });
   ddbMock.on(ScanCommand).resolves({
     Items: [card],
   });
@@ -536,7 +536,7 @@ it('should get navigation lines from api when cache expired', async () => {
 it('should get navigation lines from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(linesCollection)), ExpiresString: expires.toString() });
   ddbMock.on(ScanCommand).resolves({
     Items: [card],
   });
@@ -565,7 +565,7 @@ it('should get bad request when invalid type', async () => {
 it('should get areas from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(areasCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(areasCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('area', '1,2'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -576,7 +576,7 @@ it('should get areas from cache', async () => {
 it('should get areas from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(areasCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(areasCollection)), ExpiresString: expires.toString() });
   ddbMock.on(ScanCommand).resolves({
     Items: [],
   });
@@ -590,7 +590,7 @@ it('should get areas from api when cache expired', async () => {
 it('should get warnings always from api when cache not expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('marinewarning'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -601,7 +601,7 @@ it('should get warnings always from api when cache not expired', async () => {
 it('should get warnings always from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('marinewarning'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -612,7 +612,7 @@ it('should get warnings always from api when cache expired', async () => {
 it('should get warnings from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(warningsCollection)), ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockALBEvent('marinewarning'));
   assert(response.body);
@@ -624,7 +624,7 @@ it('should get warnings from cache when api call fails', async () => {
 it('should get vts lines from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(vtsLinesCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(vtsLinesCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('vtsline'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -635,7 +635,7 @@ it('should get vts lines from cache', async () => {
 it('should get vts lines from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(vtsLinesCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(vtsLinesCollection)), ExpiresString: expires.toString() });
   ddbMock.on(ScanCommand).resolves({
     Items: [],
   });
@@ -649,7 +649,7 @@ it('should get vts lines from api when cache expired', async () => {
 it('should get harbors from DynamoDB', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), ExpiresString: expires.toString() });
   ddbMock
     .on(ScanCommand, { TableName: 'FairwayCard-mock' })
     .resolves({
@@ -669,7 +669,7 @@ it('should get harbors from DynamoDB', async () => {
 it('should get harbors from cache when DynamoDB api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), ExpiresString: expires.toString() });
   ddbMock
     .on(ScanCommand, { TableName: 'FairwayCard-mock' })
     .resolves({
@@ -687,7 +687,7 @@ it('should get harbors from cache when DynamoDB api call fails', async () => {
 it('should get mareographs from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(mareographsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(mareographsCollection)), ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockALBEvent('mareograph'));
   assert(response.body);
@@ -699,7 +699,7 @@ it('should get mareographs from cache when api call fails', async () => {
 it('should get mareographs from api', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(mareographsCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(mareographsCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('mareograph'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -710,7 +710,7 @@ it('should get mareographs from api', async () => {
 it('should get buoys from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(buoysCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(buoysCollection)), ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockALBEvent('buoy'));
   assert(response.body);
@@ -722,7 +722,7 @@ it('should get buoys from cache when api call fails', async () => {
 it('should get buoys from api', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(buoysCollection)), Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(buoysCollection)), ExpiresString: expires.toString() });
   const response = await handler(mockALBEvent('buoy'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);

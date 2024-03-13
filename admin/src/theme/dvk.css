@@ -167,6 +167,10 @@ ion-button.icon-only.xx-small {
   width: 16px;
   vertical-align: top;
 }
+ion-button.icon-only.labelButton {
+  margin-top: 2px;
+  margin-left: 4px;
+}
 ion-button.icon-only:hover {
   --background-hover: none;
   --color: var(--ion-color-primary-shade);
@@ -1080,6 +1084,9 @@ ion-grid.printInfo ol span.icon.target {
 }
 ion-grid.printInfo ol span.icon.takeScreenshot {
   background-image: url('./img/take_screenshot_icon.svg');
+}
+ion-grid.printInfo ol span.icon.uploadPicture {
+  background-image: url('./img/upload_image_icon.svg');
 }
 ion-grid.printInfo ol span.icon.select-image {
   width: 20px;

@@ -10,15 +10,21 @@
 
 .sortingButton {
   margin-top: 24px;
-  --padding-top: 2px;
-  --padding-bottom: 2px;
-  --padding-start: 2px;
-  --padding-end: 2px;
+  background-color: transparent;
+}
+.sortingButton:hover {
+  background-color: var(--ion-color-lighter);
+  border-radius: 5px;
+}
+.sortingButton:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
 }
 
 .sortingIcon {
+  position: relative;
   height: 26px;
   width: 26px;
+  padding: 2px 4px 4px 4px;
 }
 
 .flipped {

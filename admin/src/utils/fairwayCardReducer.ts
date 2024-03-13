@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
+import { sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -554,7 +555,7 @@ export const fairwayCardReducer = (
     case 'picture':
       newState = {
         ...state,
-        pictures: value as PictureInput[],
+        pictures: sortPictures(value as PictureInput[]),
       };
       break;
     case 'pictureDescription':

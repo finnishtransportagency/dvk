@@ -27,7 +27,7 @@ export enum ExternalAPI {
   VATU = 'VATU',
   WEATHER = 'Weather',
   AIS = 'AIS',
-  PILOTROUTE = 'PilotRoute'
+  PILOTROUTE = 'PilotRoute',
 }
 
 export function getFetchErrorMessage(api: ExternalAPI): string {

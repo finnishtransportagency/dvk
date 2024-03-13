@@ -91,6 +91,16 @@ export function getAreaStyle(color: string, width: number, fillColor: string, re
   });
 }
 
+export function getAreaStyleBySource(dataSource: FeatureLayerId, selected: boolean) {
+  if (dataSource === 'area12') {
+    return getAreaStyle('#EC0E0E', selected ? 1 : 0, selected ? 'rgba(236,14,14,0.5)' : 'rgba(236,14,14,0.3)');
+  } else if (dataSource === 'area3456') {
+    return getAreaStyle('#207A43', selected ? 1 : 0, selected ? 'rgba(32,122,67,0.5)' : 'rgba(32,122,67,0.3)');
+  } else {
+    return undefined;
+  }
+}
+
 export function getLineStyle(color: string, width: number) {
   return new Style({
     stroke: new Stroke({
@@ -282,58 +292,45 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, minReso
   });
 }
 
-function getArea12BorderLineStyle(feature: FeatureLike, resolution: number) {
+function getArea12BorderLineStyle(feature: FeatureLike) {
   const props = feature.getProperties();
   const a1Props = props.area1Properties;
   const a2Props = props.area2Properties;
-  if (resolution <= 100) {
-    if (!a1Props || !a2Props) {
-      return getLineStyle('#EC0E0E', 1);
-    } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
-      return undefined;
-    } else {
-      return getLineStyle('#EC0E0E', 0.5);
-    }
+  if (!a1Props || !a2Props) {
+    return getLineStyle('#EC0E0E', 1);
+  } else if (a1Props.typeCode === a2Props.typeCode && a1Props.depth === a2Props.depth) {
+    return undefined;
+  } else {
+    return getLineStyle('#EC0E0E', 0.5);
   }
-  return undefined;
 }
 
 function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const ds = feature.getProperties().dataSource as FeatureDataLayerId | 'area12Borderline';
-  if (ds === 'line12') {
-    return getLineStyle('#0000FF', 2);
-  } else if (ds === 'line3456') {
-    return getLineStyle('#0000FF', 2);
-  } else if (ds === 'area12' && resolution <= 100) {
-    if (feature.get('hoverStyle')) {
-      return getAreaStyle('#EC0E0E', 1, 'rgba(236,14,14,0.5)');
-    } else {
-      return new Style({
-        fill: new Fill({
-          color: 'rgba(236,14,14,0.3)',
-        }),
-      });
-    }
-  } else if (ds === 'area12Borderline' && resolution <= 100) {
-    return getArea12BorderLineStyle(feature, resolution);
-  } else if (ds === 'area3456' && resolution <= 100) {
-    return getAreaStyle('#207A43', 1, 'rgba(32,122,67,0.3)');
-  } else if (ds === 'specialarea2' || ds === 'specialarea15') {
-    if (feature.get('hoverStyle')) {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, true);
-    } else {
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, false);
-    }
-  } else if (ds === 'boardline12') {
-    return getBoardLineStyle('#000000', 1);
-  } else if (ds === 'safetyequipment') {
-    return getSafetyEquipmentStyle(feature, 1, false);
-  } else if (ds === 'harbor') {
-    return getHarborStyle(feature, resolution, 3);
-  } else if (ds === 'circle') {
-    return getCircleStyle(feature, resolution);
-  } else {
-    return undefined;
+  const highlighted = !!feature.get('hoverStyle');
+  switch (ds) {
+    case 'line12':
+    case 'line3456':
+      return getLineStyle('#0000FF', 2);
+    case 'area12':
+      return resolution <= 100 ? getAreaStyleBySource('area12', highlighted) : undefined;
+    case 'area12Borderline':
+      return resolution <= 100 ? getArea12BorderLineStyle(feature) : undefined;
+    case 'area3456':
+      return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted) : undefined;
+    case 'specialarea2':
+    case 'specialarea15':
+      return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
+    case 'boardline12':
+      return getBoardLineStyle('#000000', 1);
+    case 'safetyequipment':
+      return getSafetyEquipmentStyle(feature, 1, false);
+    case 'harbor':
+      return getHarborStyle(feature, resolution, 3);
+    case 'circle':
+      return getCircleStyle(feature, resolution);
+    default:
+      return undefined;
   }
 }
 
@@ -343,17 +340,29 @@ function getSelectedStyle(feature: FeatureLike, resolution: number) {
     : getSafetyEquipmentStyle(feature, 1, false);
 }
 
-function addFeatureVectorLayer(
-  map: Map,
-  id: FeatureLayerId,
-  maxResolution: number | undefined,
-  renderBuffer: number,
-  style: StyleLike,
-  minResolution: number | undefined = undefined,
+interface FeatureVectorLayerProps {
+  map: Map;
+  id: FeatureLayerId;
+  maxResolution: number | undefined;
+  renderBuffer: number;
+  style: StyleLike;
+  minResolution: number | undefined; //= undefined
+  opacity: number; // = 1
+  declutter: boolean; // = false
+  zIndex: number | undefined; //= undefined
+}
+
+function addFeatureVectorLayer({
+  map,
+  id,
+  maxResolution,
+  renderBuffer,
+  style,
+  minResolution = undefined,
   opacity = 1,
   declutter = false,
-  zIndex: number | undefined = undefined
-) {
+  zIndex = undefined,
+}: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
       source: new VectorSource(),
@@ -374,50 +383,220 @@ function addFeatureVectorLayer(
 
 export function addAPILayers(map: Map) {
   // Kartan nimistö
-  addFeatureVectorLayer(map, 'name', undefined, 1, getNameStyle, undefined, 1, true, 102);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'name',
+    maxResolution: undefined,
+    renderBuffer: 1,
+    style: getNameStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 102,
+  });
 
   // Kauppamerenkulku
-  addFeatureVectorLayer(map, 'area12', 75, 1, getFairwayArea12Style, undefined, 1, false, 201);
-  addFeatureVectorLayer(map, 'boardline12', 75, 1, getBoardLineStyle('#000000', 0.5), undefined, 1, false, 202);
-  addFeatureVectorLayer(map, 'line12', undefined, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 203);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'area12',
+    maxResolution: 75,
+    renderBuffer: 1,
+    style: getFairwayArea12Style,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'boardline12',
+    maxResolution: 75,
+    renderBuffer: 1,
+    style: getBoardLineStyle('#000000', 0.5),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 202,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'line12',
+    maxResolution: undefined,
+    renderBuffer: 1,
+    style: getLineStyle('#0000FF', 1),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 203,
+  });
   // Muu vesiliikenne
-  addFeatureVectorLayer(map, 'area3456', 30, 1, getFairwayArea3456Style, undefined, 1, false, 204);
-  addFeatureVectorLayer(map, 'line3456', 75, 1, getLineStyle('#0000FF', 1), undefined, 1, false, 205);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'area3456',
+    maxResolution: 30,
+    renderBuffer: 1,
+    style: getFairwayArea3456Style,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 204,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'line3456',
+    maxResolution: 75,
+    renderBuffer: 1,
+    style: getLineStyle('#0000FF', 1),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 205,
+  });
 
   // Nopeusrajoitus
-  addFeatureVectorLayer(map, 'speedlimit', 15, 2, getSpeedLimitStyle, undefined, 1, true, 301);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'speedlimit',
+    maxResolution: 15,
+    renderBuffer: 2,
+    style: getSpeedLimitStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 301,
+  });
   // Ankkurointialue
-  addFeatureVectorLayer(map, 'specialarea2', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea2',
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 302,
+  });
   // Kohtaamis- ja ohittamiskieltoalue
-  addFeatureVectorLayer(map, 'specialarea15', 75, 2, (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false), undefined, 1, true, 302);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea15',
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 302,
+  });
   // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer(map, 'selectedfairwaycard', undefined, 100, getSelectedFairwayCardStyle, undefined, 1, true, 303);
-  addFeatureVectorLayer(map, 'circle', 30, 2, getCircleStyle, undefined, 1, false, 303);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'selectedfairwaycard',
+    maxResolution: undefined,
+    renderBuffer: 100,
+    style: getSelectedFairwayCardStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 303,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'circle',
+    maxResolution: 30,
+    renderBuffer: 2,
+    style: getCircleStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 303,
+  });
   // Haraussyvyydet
-  addFeatureVectorLayer(map, 'depth12', 10, 50, getDepthStyle, undefined, 1, false, 304);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'depth12',
+    maxResolution: 10,
+    renderBuffer: 50,
+    style: getDepthStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 304,
+  });
   // Laiturit
-  addFeatureVectorLayer(map, 'quay', undefined, 50, getSelectedStyle, undefined, 1, false, 304);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'quay',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getSelectedStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 304,
+  });
   // Satamat
-  addFeatureVectorLayer(map, 'harbor', 300, 50, getHarborStyle, undefined, 1, true, 305);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'harbor',
+    maxResolution: 300,
+    renderBuffer: 50,
+    style: getHarborStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 305,
+  });
 
   // Turvalaitteet
-  addFeatureVectorLayer(
-    map,
-    'safetyequipment',
-    undefined,
-    50,
-    (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
-    undefined,
-    1,
-    false,
-    306
-  );
+  addFeatureVectorLayer({
+    map: map,
+    id: 'safetyequipment',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 306,
+  });
 
   // VTS linjat ja ilmoituspisteet
-  addFeatureVectorLayer(map, 'vtsline', undefined, 2, (feature) => getVtsStyle(feature, false), undefined, 1, false, 311);
-  addFeatureVectorLayer(map, 'vtspoint', 75, 50, (feature) => getVtsStyle(feature, false), undefined, 1, false, 312);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'vtsline',
+    maxResolution: undefined,
+    renderBuffer: 2,
+    style: (feature) => getVtsStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 311,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'vtspoint',
+    maxResolution: 75,
+    renderBuffer: 50,
+    style: (feature) => getVtsStyle(feature, false),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 312,
+  });
   // Luotsipaikat
-  addFeatureVectorLayer(map, 'pilot', undefined, 50, (feature) => getPilotStyle(feature.get('hoverStyle')), undefined, 1, false, 313);
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilot',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature) => getPilotStyle(feature.get('hoverStyle')),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 313,
+  });
 }
 
 function getFittingPadding() {

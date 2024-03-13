@@ -1,4 +1,4 @@
-import { Geometry } from 'geojson';
+import { Geometry, LineString } from 'geojson';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { FairwayCardIdName } from '../db/fairwayCardDBModel';
 
@@ -158,6 +158,7 @@ export type TurvalaiteVikatiedotAPIModel = {
   vikatyyppiKoodi: number;
   vikatyyppiFI: string;
   vikatyyppiSV?: string;
+  vikatyyppiEN?: string;
   kirjausAika: string;
 } & GeometryModel;
 
@@ -388,7 +389,7 @@ type RtzReittipiste = {
   geometriaTyyppi: string;
   muutosaikaleima: string;
   jarjestys: number;
-}
+};
 
 export type RtzData = {
   tunnus: number;
@@ -398,3 +399,12 @@ export type RtzData = {
   rtz: string;
   reittipisteet: Array<RtzReittipiste>;
 };
+
+export type RtzResponseData = Array<{
+  tunnus: number;
+  tila: number;
+  nimi: string;
+  tunniste: string;
+  rtz: string;
+  geometria: LineString;
+}>;

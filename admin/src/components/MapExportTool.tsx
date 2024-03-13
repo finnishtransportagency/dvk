@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonGrid, IonIcon, IonProgressBar, IonRow, IonSkeletonText, IonText, useIonViewWillEnter } from '@ionic/react';
 import { InitDvkMap, getMap } from './map/DvkMap';
 import {
@@ -29,7 +29,7 @@ import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -39,7 +39,10 @@ import LayerModal from './map/mapOverlays/LayerModal';
 import { easeOut } from 'ol/easing';
 import Alert from './Alert';
 import TextInputRow from './form/TextInputRow';
-import { radiansToDegrees } from '../utils/common';
+import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
+import FileUploader from '../utils/FileUploader';
+import infoIcon from '../theme/img/info-circle-solid.svg';
+import NotificationModal from './NotificationModal';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -79,6 +82,12 @@ export const PrintInfo: React.FC<PrintInfoProps> = ({ orientation, isFull }) => 
           {t('fairwaycard.print-images-info-select-image')} <span className="icon select-image" />{' '}
           {t('fairwaycard.print-images-info-select-image-button')}
         </li>
+        <li>
+          {t('fairwaycard.print-images-info-upload-image')} <span className="icon uploadPicture" />{' '}
+          {orientation === Orientation.Portrait
+            ? t('fairwaycard.print-images-info-upload-image-button-portrait')
+            : t('fairwaycard.print-images-info-upload-image-button-landscape')}
+        </li>
       </ol>
     </Alert>
   );
@@ -89,12 +98,35 @@ interface ExtMapControlProps {
   printDisabled?: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  fileUploader: FileUploader;
+  importExternalImage: () => void;
+  setErrors: Dispatch<SetStateAction<string[]>>;
 }
 
-const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, printDisabled, setIsOpen, isOpen }) => {
+const ExtMapControls: React.FC<ExtMapControlProps> = ({
+  printCurrentMapView,
+  printDisabled,
+  setIsOpen,
+  isOpen,
+  fileUploader,
+  importExternalImage,
+  setErrors,
+}) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handlePictureUpload = (event: ChangeEvent) => {
+    const fileErrors = fileUploader.addPicture(event);
+    if (fileErrors.length > 0) {
+      setErrors(fileErrors);
+    }
+
+    importExternalImage();
+    //so duplicates can be added
+    (event.target as HTMLInputElement).value = '';
+  };
 
   const handleOrientationChange = (orientation: Orientation) => {
     if (orientation === dvkMap.getOrientationType()) {
@@ -165,6 +197,28 @@ const ExtMapControls: React.FC<ExtMapControlProps> = ({ printCurrentMapView, pri
           title={t('homePage.map.controls.screenshot.tipLabel')}
           aria-label={t('homePage.map.controls.screenshot.tipLabel')}
         />
+      </div>
+      <div className="extControl uploadPictureControlContainer">
+        <button
+          className="uploadPictureControl"
+          type="button"
+          disabled={!dvkMap.getOrientationType()}
+          onClick={() => {
+            fileInputRef.current?.click();
+          }}
+          title={t('homePage.map.controls.upload.uploadPicture')}
+          aria-label={t('homePage.map.controls.upload.uploadPicture')}
+        >
+          <input
+            id="fileInput"
+            type="file"
+            ref={fileInputRef}
+            disabled={!dvkMap.getOrientationType()}
+            onChange={handlePictureUpload}
+            accept="image/png"
+            style={{ display: 'none' }}
+          />
+        </button>
       </div>
       <div className="extControl layerControlContainer">
         <button
@@ -248,7 +302,6 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
 
   const mainPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && (pic.lang === curLang || !pic.lang));
   const secondaryPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && pic.lang !== curLang);
-
   const groupedPicTexts: PictureGroup[] = [];
   fairwayCardInput.pictures?.map((pic) => {
     if (pic.groupId && !groupedPicTexts.some((p) => p.groupId === pic.groupId)) {
@@ -265,33 +318,14 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   });
 
   const toggleSequence = (picture: PictureInput) => {
-    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation);
+    const currentPicturesByOrientation = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation) ?? [];
     const currentOtherPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation !== orientation) ?? [];
     // Check if we need to add or remove the picture from sequence
-    let newSequencedPictures: PictureInput[] = [];
     const currentSequenceNumber = picture.sequenceNumber;
-    if (currentSequenceNumber) {
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-            pic.sequenceNumber = null;
-          } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-            pic.sequenceNumber--;
-          }
-          return pic;
-        }) ?? [];
-    } else {
-      const sequencedPictures = currentPicturesByOrientation?.filter((pic) => !!pic.sequenceNumber);
-      const maxSequenceNumber = sequencedPictures?.reduce((acc, pic) => {
-        return (acc = acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0);
-      }, 0);
-      newSequencedPictures =
-        currentPicturesByOrientation?.map((pic) => {
-          if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
-          return pic;
-        }) ?? [];
-    }
-    setPicture(newSequencedPictures.concat(currentOtherPictures), 'picture');
+    const newSequencedPictures = currentSequenceNumber
+      ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
+      : addSequence(picture, currentPicturesByOrientation);
+    setPicture([...newSequencedPictures, ...currentOtherPictures], 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {
@@ -412,8 +446,22 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                     <p>
                       <strong>{t('fairwaycard.print-images-rotation')}</strong>
                       <br />
-                      {radiansToDegrees(pic.rotation ?? 0)} °{' '}
-                      <img className="orientation" src={back_arrow} alt="" style={{ transform: 'rotate(' + pic.rotation?.toPrecision(2) + 'rad)' }} />
+                      {pic.rotation !== null ? (
+                        <>
+                          {radiansToDegrees(pic.rotation ?? 0)} °{' '}
+                          <img
+                            className="orientation"
+                            src={back_arrow}
+                            alt=""
+                            style={{ transform: 'rotate(' + pic.rotation?.toPrecision(2) + 'rad)' }}
+                          />
+                        </>
+                      ) : (
+                        <IonCol>
+                          <IonIcon className="infoIcon" icon={infoIcon} />
+                          <span className="infoText">{t('general.noDataSet')}</span>
+                        </IonCol>
+                      )}
                     </p>
                     {groupedPics && groupedPics?.length > 0 && (
                       <IonGrid className="formGrid">
@@ -423,7 +471,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           updateState={setPicture}
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
-                          required={!!(pic.text || groupedPics?.filter((gPic) => gPic.text).length)}
+                          required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={false}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
@@ -503,7 +551,6 @@ interface PrintImageProps {
 const PrintImages: React.FC<PrintImageProps> = ({ fairwayCardInput, setPicture, isLoading, disabled, validationErrors, isProcessingCurLang }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
-
   const dvkMap = getMap();
 
   const [showOrientationHelp, setShowOrientationHelp] = useState<Orientation | ''>('');
@@ -601,6 +648,8 @@ interface MapProps {
 const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
+  const [fileUploader] = useState<FileUploader>(() => new FileUploader());
+  const [picUploadErrors, setPicUploadErrors] = useState<string[]>([]);
 
   InitDvkMap();
 
@@ -699,45 +748,45 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     setSelectedFairwayCard(fairwayCard);
   }, [fairwayCardInput, fairways, harbours, initDone]);
 
-  // Upload map picture
-  const [toBeSavedPicture, setToBeSavedPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
+  // Picture with input data waiting for upload
+  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
 
   const { mutateAsync: uploadMapPictureMutation, isPending: isLoadingMutation } = useUploadMapPictureMutationQuery({
     onSuccess: () => {
-      if (toBeSavedPicture) {
-        const newPictureInput = {
-          id: toBeSavedPicture.id,
+      if (newPicture) {
+        const pictureInput = {
+          id: newPicture.id,
           orientation: dvkMap.getOrientationType() || Orientation.Portrait,
-          rotation: toBeSavedPicture.rotation,
+          rotation: newPicture.rotation ?? null,
           modificationTimestamp: Date.now(),
-          scaleWidth: toBeSavedPicture.scaleWidth,
-          scaleLabel: toBeSavedPicture.scaleLabel,
+          scaleWidth: newPicture.scaleWidth ?? null,
+          scaleLabel: newPicture.scaleLabel ?? null,
           sequenceNumber: null,
           text: null,
-          lang: toBeSavedPicture.lang,
-          groupId: toBeSavedPicture.groupId,
-          legendPosition: toBeSavedPicture.legendPosition,
+          lang: newPicture.lang ?? null,
+          groupId: newPicture.groupId,
+          legendPosition: newPicture.legendPosition,
         };
-        // Update fairwayCard state
-        setPicture(fairwayCardInput.pictures?.concat([newPictureInput]) ?? [], 'picture');
+        // Update fairwayCard state with uploaded picture data
+        setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
       }
     },
     onError: (error: Error) => {
       console.error(error.message);
     },
     onSettled: () => {
-      setToBeSavedPicture(undefined);
+      setNewPicture(undefined);
     },
   });
 
   const uploadPicture = async (
     base64Data: string,
     orientation: Orientation,
-    rotation: number,
     groupId: number,
+    lang?: string,
+    rotation?: number,
     scaleWidth?: string,
-    scaleLabel?: string,
-    lang?: string
+    scaleLabel?: string
   ) => {
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
@@ -752,8 +801,9 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       scaleLabel,
       lang,
       groupId,
+      legendPosition: POSITION.bottomLeft,
     };
-    setToBeSavedPicture({ ...picUploadObject, ...picInputObject });
+    setNewPicture({ ...picUploadObject, ...picInputObject });
     await uploadMapPictureMutation({
       picture: picUploadObject,
     });
@@ -829,11 +879,11 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           await uploadPicture(
             base64Data,
             dvkMap.getOrientationType() || Orientation.Portrait,
-            rotation,
             picGroupId,
+            lang,
+            rotation,
             mapScaleWidth,
-            mapScale?.innerHTML,
-            lang
+            mapScale?.innerHTML
           );
           // Reset original map properties
           dvkMap.setMapLanguage('');
@@ -844,7 +894,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
           });
         });
       } else {
-        Promise.reject(`Map export for locale ${lang} failed.`);
+        Promise.reject(new Error(`Map export for locale ${lang} failed.`));
       }
     });
   };
@@ -871,42 +921,101 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     console.timeEnd('Export pictures');
   };
 
+  const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      if (dvkMap.getOrientationType()) {
+        (async () => {
+          try {
+            await uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
+            //won't resolve for some reason without this
+            dvkMap.olMap?.once('rendercomplete', async function () {
+              resolve(`External import for locale ${lang} done.`);
+            });
+          } catch (error) {
+            reject(error);
+          }
+        })();
+      } else {
+        reject(new Error(`External import for locale ${lang} failed.`));
+      }
+    });
+  };
+
+  const importExternalImage = async () => {
+    console.time('Import pictures');
+    if (dvkMap.getOrientationType()) {
+      setIsMapDisabled(true);
+      setIsProcessingCurLang(true);
+
+      try {
+        const picGroupId = Date.now();
+        const data = await fileUploader.getPictureBase64Data();
+
+        if (data) {
+          for (const locale of locales) {
+            if (locale !== curLang) setIsProcessingCurLang(false);
+            await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+        setPicUploadErrors([...picUploadErrors, error as string]);
+      }
+      setIsMapDisabled(false);
+      setIsProcessingCurLang(false);
+      fileUploader.deleteFiles();
+    }
+    console.timeEnd('Import pictures');
+  };
+
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
-      <IonRow>
-        <IonCol>
-          <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
-          {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
-          {(!!isFetching || !initDone) && (
-            <IonProgressBar
-              value={percentDone}
-              buffer={percentDone}
-              type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
-              className={fetchError ? 'danger' : ''}
+    <>
+      <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
+        <IonRow>
+          <IonCol>
+            <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
+            {(!!isFetching || !initDone) && (
+              <IonProgressBar
+                value={percentDone}
+                buffer={percentDone}
+                type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+                className={fetchError ? 'danger' : ''}
+              />
+            )}
+            <ExtMapControls
+              printCurrentMapView={printCurrentMapView}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              printDisabled={isLoadingMutation || isMapDisabled}
+              fileUploader={fileUploader}
+              importExternalImage={importExternalImage}
+              setErrors={setPicUploadErrors}
             />
-          )}
-          <ExtMapControls
-            printCurrentMapView={printCurrentMapView}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            printDisabled={isLoadingMutation || isMapDisabled}
-          />
-          <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
-        </IonCol>
-        <IonCol>
-          <PrintImages
-            fairwayCardInput={fairwayCardInput}
-            setPicture={setPicture}
-            isLoading={isLoadingMutation}
-            isProcessingCurLang={isProcessingCurLang}
-            disabled={disabled}
-            validationErrors={validationErrors}
-          />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+            <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
+          </IonCol>
+          <IonCol>
+            <PrintImages
+              fairwayCardInput={fairwayCardInput}
+              setPicture={setPicture}
+              isLoading={isLoadingMutation}
+              isProcessingCurLang={isProcessingCurLang}
+              disabled={disabled}
+              validationErrors={validationErrors}
+            />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <NotificationModal
+        isOpen={picUploadErrors.length > 0}
+        closeAction={() => setPicUploadErrors([])}
+        closeTitle={t('general.close')}
+        header={t('modal.picture-upload-failed')}
+        message={t('modal.picture-errors')}
+      />
+    </>
   );
 };
 

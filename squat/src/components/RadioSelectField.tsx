@@ -5,6 +5,7 @@ import { useSquatContext } from '../hooks/squatContext';
 import { Action } from '../hooks/squatReducer';
 import Label from './Label';
 import { debounce } from 'lodash';
+import { removeSoftHyphen } from '../utils/helpers';
 
 export type OptionType = {
   id: number;
@@ -74,37 +75,40 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
       />
       <IonGrid className="no-padding" style={{ marginTop: '1px' }}>
         <IonRow>
-          {props.options.map((option) => (
-            <IonCol key={option.id} className={'col-radio' + (props.value !== option ? ' col-radio-unchecked' : '')} size={props.columnSize}>
-              <IonItem
-                lines="none"
-                className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center no-background-focused'}
-                onClick={() => (props.value !== option ? handleClick(option) : null)}
-              >
-                <IonGrid className="no-padding">
-                  <IonRow>
-                    <IonCol>
-                      <IonText className="ion-text-wrap radio">
-                        {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} />}
-                        <p>{props.translateOptions ? t(option.name) : option.name}</p>
-                      </IonText>
-                    </IonCol>
-                  </IonRow>
-                  <IonRow>
-                    <IonCol>
-                      <IonRadio
-                        id={t(option.name, { lng: 'en' })}
-                        name={t(option.name, { lng: 'en' })}
-                        aria-label={props.translateOptions ? t(option.name) : option.name}
-                        value={option}
-                        className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
-                      />
-                    </IonCol>
-                  </IonRow>
-                </IonGrid>
-              </IonItem>
-            </IonCol>
-          ))}
+          {props.options.map((option) => {
+            const optionName = props.translateOptions ? t(option.name) : option.name;
+            return (
+              <IonCol key={option.id} className={'col-radio' + (props.value !== option ? ' col-radio-unchecked' : '')} size={props.columnSize}>
+                <IonItem
+                  lines="none"
+                  className={(props.value === option ? '' : 'item-radio-unchecked ') + 'no-padding align-center no-background-focused'}
+                  onClick={() => (props.value !== option ? handleClick(option) : null)}
+                >
+                  <IonGrid className="no-padding">
+                    <IonRow>
+                      <IonCol>
+                        <IonText className="ion-text-wrap radio">
+                          {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} alt={removeSoftHyphen(optionName)} />}
+                          <p>{optionName}</p>
+                        </IonText>
+                      </IonCol>
+                    </IonRow>
+                    <IonRow>
+                      <IonCol>
+                        <IonRadio
+                          id={t(option.name, { lng: 'en' })}
+                          name={t(option.name, { lng: 'en' })}
+                          aria-label={removeSoftHyphen(optionName)}
+                          value={option}
+                          className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                        />
+                      </IonCol>
+                    </IonRow>
+                  </IonGrid>
+                </IonItem>
+              </IonCol>
+            );
+          })}
         </IonRow>
       </IonGrid>
     </IonRadioGroup>
