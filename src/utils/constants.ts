@@ -49,8 +49,7 @@ export type StaticFeatureDataId =
   | 'mml_jarvi'
   | 'mml_jarvi_rantaviiva'
   | 'mml_satamat'
-  | 'mml_laiturit'
-  | 'name';
+  | 'mml_laiturit';
 
 export type FeatureDataId =
   | 'area12'
@@ -77,12 +76,12 @@ export type FeatureDataId =
   | 'aislocation'
   | 'aisvessel'
   | 'vayla_water_area'
-  | 'pilotroute';
+  | 'pilotroute'
+  | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 
 export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
-  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
@@ -238,6 +237,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     id: 'pilotroute',
     url: new URL(pilotRoutesUrl),
     staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'name',
+    url: new URL(staticUrl + '/names.json.gz'),
+    staticUrl: new URL(staticUrl + '/names.json.gz'),
     persist: true,
   },
 ];
