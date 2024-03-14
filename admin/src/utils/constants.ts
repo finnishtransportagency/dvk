@@ -123,6 +123,10 @@ const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
 
+const pilotRoutesUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/pilotroutes'
+  : globalThis.location.origin + '/api/pilotroutes';
+
 export const imageUrl = import.meta.env.VITE_APP_IMAGE_URL ? import.meta.env.VITE_APP_IMAGE_URL : globalThis.location.origin + '/s3static/';
 
 export type BackgroundLayerId = 'finland' | 'balticsea' | 'mml_satamat';
@@ -146,7 +150,8 @@ export type FeatureDataId =
   | 'vtspoint'
   | 'circle'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'pilotroute';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -186,9 +191,10 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
   { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
+  { id: 'pilotroute', url: new URL(pilotRoutesUrl), staticUrl: new URL(staticUrl + '//pilotroutes.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -208,7 +214,8 @@ export type FeatureDataLayerId =
   | 'vtspoint'
   | 'circle'
   | 'specialarea2'
-  | 'specialarea15';
+  | 'specialarea15'
+  | 'pilotroute';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -248,13 +255,14 @@ export const MAP: MapType = {
     { id: 'speedlimit' },
     { id: 'specialarea2' },
     { id: 'specialarea15' },
-    { id: 'pilot' },
     { id: 'harbor' },
     { id: 'safetyequipment' },
     { id: 'depth12' },
     { id: 'boardline12' },
     { id: 'vtsline' },
     { id: 'vtspoint' },
+    { id: 'pilot' },
+    { id: 'pilotroute' },
     { id: 'name' },
     { id: 'circle' },
   ],

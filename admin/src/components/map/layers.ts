@@ -34,6 +34,7 @@ import { getVtsStyle } from './layerStyles/vtsStyles';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
 import { Geometry } from 'ol/geom';
+import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -596,6 +597,18 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 313,
+  });
+  //Luotsausreitit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotroute',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: getPilotRouteStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 314,
   });
 }
 

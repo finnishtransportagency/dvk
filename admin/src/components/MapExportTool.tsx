@@ -43,6 +43,7 @@ import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
 import NotificationModal from './NotificationModal';
+import { usePilotRouteLayer } from './map/PilotRouteFeatureLoader';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -664,6 +665,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
   const circleLayer = useCircleLayer();
+  const pilotRouteLayer = usePilotRouteLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
@@ -690,6 +692,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       bgFinlandLayer,
       bgMmlSatamatLayer,
       circleLayer,
+      pilotRouteLayer,
     ];
 
     let percent = 0;
@@ -715,6 +718,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,
+    pilotRouteLayer,
   ]);
 
   const isFetching = useIsFetching();
