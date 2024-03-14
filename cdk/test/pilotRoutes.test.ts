@@ -1,6 +1,5 @@
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import { RtzData } from '../lib/lambda/api/apiModels';
 import { gunzip, gzip } from 'zlib';
 import { Readable } from 'stream';
 import { sdkStreamMixin } from '@smithy/util-stream';
@@ -8,6 +7,8 @@ import { handler } from '../lib/lambda/api/pilotroute-handler';
 import { mockPilotRoutesALBEvent } from './mocks';
 import assert from 'assert';
 import pilotRoutesJson from './data/pilotroutes.json';
+import { FeatureCollection } from 'geojson';
+import { RtzData } from '../lib/lambda/api/apiModels';
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -18,7 +19,7 @@ jest.mock('../lib/lambda/environment', () => ({
   getPilotRoutesHeaders: () => {},
 }));
 
-const pilotRoutes: RtzData[] = [
+const pilotRoutesRtz: RtzData[] = [
   {
     tunnus: 11,
     tila: 1,
@@ -336,7 +337,82 @@ const pilotRoutes: RtzData[] = [
   },
 ];
 
-async function parseResponse(body: string): Promise<RtzData[]> {
+export const pilotRoutes: FeatureCollection = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      id: 10,
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [26.919513, 60.417641],
+          [26.9408, 60.424694],
+          [26.975418, 60.404075],
+          [26.981856, 60.390952],
+          [27.010772, 60.361969],
+          [27.064569, 60.345702],
+          [27.102449, 60.341925],
+          [27.146538, 60.342926],
+          [27.152175, 60.412304],
+          [27.136566, 60.435074],
+          [27.146839, 60.458342],
+          [27.131067, 60.480808],
+          [27.14778, 60.505289],
+          [27.172524, 60.517077],
+        ],
+      },
+      properties: {
+        featureType: 'pilotroute',
+        tunnus: 11,
+        tila: 1,
+        nimi: 'FIKMU-FIHMN (via Merikari)',
+        tunniste: 'urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd',
+        rtz: '<?xml version="1.0" encoding="UTF-8"?>\r\n<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">\r\n    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>\r\n    <waypoints>\r\n        <defaultWaypoint radius="0.50">\r\n            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>\r\n        </defaultWaypoint>\r\n        <waypoint id="14" name="FIKMU">\r\n            <position lat="60.41764100" lon="26.91951300"/>\r\n        </waypoint>\r\n        <waypoint id="13" name="Havouri">\r\n            <position lat="60.42469400" lon="26.94080000"/>\r\n        </waypoint>\r\n        <waypoint id="12" name="Lelleri">\r\n            <position lat="60.40407500" lon="26.97541800"/>\r\n        </waypoint>\r\n        <waypoint id="11" name="Hietakari">\r\n            <position lat="60.39095200" lon="26.98185600"/>\r\n        </waypoint>\r\n        <waypoint id="10" name="Retonpaasi">\r\n            <position lat="60.36196900" lon="27.01077200"/>\r\n        </waypoint>\r\n        <waypoint id="9" name="Pauhakarit">\r\n            <position lat="60.34570200" lon="27.06456900"/>\r\n        </waypoint>\r\n        <waypoint id="8" name="Merikari">\r\n            <position lat="60.34192500" lon="27.10244900"/>\r\n        </waypoint>\r\n        <waypoint id="7" name="Ahvenkari">\r\n            <position lat="60.34292600" lon="27.14653800"/>\r\n        </waypoint>\r\n        <waypoint id="6" name="Nimetön">\r\n            <position lat="60.41230400" lon="27.15217500"/>\r\n        </waypoint>\r\n        <waypoint id="5" name="Einonkari">\r\n            <position lat="60.43507400" lon="27.13656600"/>\r\n        </waypoint>\r\n        <waypoint id="4" name="Suur Musta">\r\n            <position lat="60.45834200" lon="27.14683900"/>\r\n        </waypoint>\r\n        <waypoint id="3" name="Sovinnonmatala">\r\n            <position lat="60.48080800" lon="27.13106700"/>\r\n        </waypoint>\r\n        <waypoint id="2" name="Hajaskari">\r\n            <position lat="60.50528900" lon="27.14778000"/>\r\n        </waypoint>\r\n        <waypoint id="1" name="FIHMN">\r\n            <position lat="60.51707700" lon="27.17252400"/>\r\n            <leg safetyContour="30.00"/>\r\n        </waypoint>\r\n    </waypoints>\r\n    <schedules>\r\n        <schedule id="0" name="Base Calculation"/>\r\n        <schedule id="1" name=""/>\r\n    </schedules>\r\n</route>\r\n',
+      },
+    },
+    {
+      type: 'Feature',
+      id: 20,
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [26.9, 60.4],
+          [26.91, 60.41],
+        ],
+      },
+      properties: {
+        featureType: 'pilotroute',
+        tunnus: 22,
+        tila: 1,
+        nimi: 'FIKMU-FIHMN (via Merikari)_2',
+        tunniste: 'urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd',
+        rtz: '<?xml version="1.0" encoding="UTF-8"?>\r\n<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">\r\n    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>\r\n    <waypoints>\r\n        <defaultWaypoint radius="0.50">\r\n            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>\r\n        </defaultWaypoint>\r\n        <waypoint id="14" name="FIKMU">\r\n            <position lat="60.41764100" lon="26.91951300"/>\r\n        </waypoint>\r\n        <waypoint id="13" name="Havouri">\r\n            <position lat="60.42469400" lon="26.94080000"/>\r\n        </waypoint>\r\n        <waypoint id="12" name="Lelleri">\r\n            <position lat="60.40407500" lon="26.97541800"/>\r\n        </waypoint>\r\n        <waypoint id="11" name="Hietakari">\r\n            <position lat="60.39095200" lon="26.98185600"/>\r\n        </waypoint>\r\n        <waypoint id="10" name="Retonpaasi">\r\n            <position lat="60.36196900" lon="27.01077200"/>\r\n        </waypoint>\r\n        <waypoint id="9" name="Pauhakarit">\r\n            <position lat="60.34570200" lon="27.06456900"/>\r\n        </waypoint>\r\n        <waypoint id="8" name="Merikari">\r\n            <position lat="60.34192500" lon="27.10244900"/>\r\n        </waypoint>\r\n        <waypoint id="7" name="Ahvenkari">\r\n            <position lat="60.34292600" lon="27.14653800"/>\r\n        </waypoint>\r\n        <waypoint id="6" name="Nimetön">\r\n            <position lat="60.41230400" lon="27.15217500"/>\r\n        </waypoint>\r\n        <waypoint id="5" name="Einonkari">\r\n            <position lat="60.43507400" lon="27.13656600"/>\r\n        </waypoint>\r\n        <waypoint id="4" name="Suur Musta">\r\n            <position lat="60.45834200" lon="27.14683900"/>\r\n        </waypoint>\r\n        <waypoint id="3" name="Sovinnonmatala">\r\n            <position lat="60.48080800" lon="27.13106700"/>\r\n        </waypoint>\r\n        <waypoint id="2" name="Hajaskari">\r\n            <position lat="60.50528900" lon="27.14778000"/>\r\n        </waypoint>\r\n        <waypoint id="1" name="FIHMN">\r\n            <position lat="60.51707700" lon="27.17252400"/>\r\n            <leg safetyContour="30.00"/>\r\n        </waypoint>\r\n    </waypoints>\r\n    <schedules>\r\n        <schedule id="0" name="Base Calculation"/>\r\n        <schedule id="1" name=""/>\r\n    </schedules>\r\n</route>\r\n',
+      },
+    },
+    {
+      type: 'Feature',
+      id: 30,
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [26.93, 60.43],
+          [26.93, 60.43],
+        ],
+      },
+      properties: {
+        featureType: 'pilotroute',
+        tunnus: 33,
+        tila: 1,
+        nimi: 'FIKMU-FIHMN (via Merikari)_3',
+        tunniste: 'urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd',
+        rtz: '<?xml version="1.0" encoding="UTF-8"?>\r\n<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">\r\n    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>\r\n    <waypoints>\r\n        <defaultWaypoint radius="0.50">\r\n            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>\r\n        </defaultWaypoint>\r\n        <waypoint id="14" name="FIKMU">\r\n            <position lat="60.41764100" lon="26.91951300"/>\r\n        </waypoint>\r\n        <waypoint id="13" name="Havouri">\r\n            <position lat="60.42469400" lon="26.94080000"/>\r\n        </waypoint>\r\n        <waypoint id="12" name="Lelleri">\r\n            <position lat="60.40407500" lon="26.97541800"/>\r\n        </waypoint>\r\n        <waypoint id="11" name="Hietakari">\r\n            <position lat="60.39095200" lon="26.98185600"/>\r\n        </waypoint>\r\n        <waypoint id="10" name="Retonpaasi">\r\n            <position lat="60.36196900" lon="27.01077200"/>\r\n        </waypoint>\r\n        <waypoint id="9" name="Pauhakarit">\r\n            <position lat="60.34570200" lon="27.06456900"/>\r\n        </waypoint>\r\n        <waypoint id="8" name="Merikari">\r\n            <position lat="60.34192500" lon="27.10244900"/>\r\n        </waypoint>\r\n        <waypoint id="7" name="Ahvenkari">\r\n            <position lat="60.34292600" lon="27.14653800"/>\r\n        </waypoint>\r\n        <waypoint id="6" name="Nimetön">\r\n            <position lat="60.41230400" lon="27.15217500"/>\r\n        </waypoint>\r\n        <waypoint id="5" name="Einonkari">\r\n            <position lat="60.43507400" lon="27.13656600"/>\r\n        </waypoint>\r\n        <waypoint id="4" name="Suur Musta">\r\n            <position lat="60.45834200" lon="27.14683900"/>\r\n        </waypoint>\r\n        <waypoint id="3" name="Sovinnonmatala">\r\n            <position lat="60.48080800" lon="27.13106700"/>\r\n        </waypoint>\r\n        <waypoint id="2" name="Hajaskari">\r\n            <position lat="60.50528900" lon="27.14778000"/>\r\n        </waypoint>\r\n        <waypoint id="1" name="FIHMN">\r\n            <position lat="60.51707700" lon="27.17252400"/>\r\n            <leg safetyContour="30.00"/>\r\n        </waypoint>\r\n    </waypoints>\r\n    <schedules>\r\n        <schedule id="0" name="Base Calculation"/>\r\n        <schedule id="1" name=""/>\r\n    </schedules>\r\n</route>\r\n',
+      },
+    },
+  ],
+};
+
+async function parseResponse(body: string): Promise<FeatureCollection> {
   const response = new Promise<Error | Buffer>((resolve, reject) =>
     gunzip(Buffer.from(body, 'base64'), (err, data) => {
       if (err) {
@@ -345,7 +421,7 @@ async function parseResponse(body: string): Promise<RtzData[]> {
       resolve(data);
     })
   );
-  return JSON.parse((await response).toString()) as RtzData[];
+  return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
 async function createCacheResponse(collectionJson: object) {
@@ -370,7 +446,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from PILOTROUTES api failed');
     }
-    return pilotRoutes;
+    return pilotRoutesRtz;
   },
 }));
 
@@ -387,15 +463,7 @@ it('should get pilotroutes from cache', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(2);
-  expect(responseObj).toMatchSnapshot();
-});
-
-it('should get vessels from api', async () => {
-  const response = await handler(mockPilotRoutesALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(3);
+  expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
 
@@ -406,11 +474,11 @@ it('should get pilotroutes from api when cache expired', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(3);
+  expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });
 
-it('should get vessels from cache when api call fails', async () => {
+it('should get pilotroutes from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
@@ -418,7 +486,7 @@ it('should get vessels from cache when api call fails', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(2);
+  expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
 

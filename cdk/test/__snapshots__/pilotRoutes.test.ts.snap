@@ -1,391 +1,395 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should get pilotroutes from api when cache expired 1`] = `
-[
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.91951,
-          60.41764,
-        ],
-        [
-          26.92814,
-          60.4205,
-        ],
-        [
-          26.92955,
-          60.42092,
-        ],
-        [
-          26.93105,
-          60.42127,
-        ],
-        [
-          26.93261,
-          60.42155,
-        ],
-        [
-          26.93421,
-          60.42175,
-        ],
-        [
-          26.93585,
-          60.42187,
-        ],
-        [
-          26.9375,
-          60.42191,
-        ],
-        [
-          26.93915,
-          60.42187,
-        ],
-        [
-          26.94079,
-          60.42176,
-        ],
-        [
-          26.9424,
-          60.42156,
-        ],
-        [
-          26.94396,
-          60.42129,
-        ],
-        [
-          26.94546,
-          60.42094,
-        ],
-        [
-          26.94688,
-          60.42052,
-        ],
-        [
-          26.94821,
-          60.42003,
-        ],
-        [
-          26.94944,
-          60.41949,
-        ],
-        [
-          26.95054,
-          60.4189,
-        ],
-        [
-          26.97294,
-          60.40555,
-        ],
-        [
-          26.97393,
-          60.40489,
-        ],
-        [
-          26.97479,
-          60.40419,
-        ],
-        [
-          26.9755,
-          60.40346,
-        ],
-        [
-          26.97607,
-          60.40269,
-        ],
-        [
-          26.97634,
-          60.4022,
-        ],
-        [
-          26.98142,
-          60.39184,
-        ],
-        [
-          26.98153,
-          60.39163,
-        ],
-        [
-          26.98204,
-          60.39086,
-        ],
-        [
-          26.9827,
-          60.39011,
-        ],
-        [
-          27.00863,
-          60.36412,
-        ],
-        [
-          27.00921,
-          60.36358,
-        ],
-        [
-          27.01012,
-          60.3629,
-        ],
-        [
-          27.01116,
-          60.36226,
-        ],
-        [
-          27.01232,
-          60.36168,
-        ],
-        [
-          27.01359,
-          60.36116,
-        ],
-        [
-          27.01496,
-          60.3607,
-        ],
-        [
-          27.06206,
-          60.34646,
-        ],
-        [
-          27.06285,
-          60.34624,
-        ],
-        [
-          27.06434,
-          60.34589,
-        ],
-        [
-          27.06589,
-          60.34561,
-        ],
-        [
-          27.06749,
-          60.34541,
-        ],
-        [
-          27.10043,
-          60.34213,
-        ],
-        [
-          27.10123,
-          60.34206,
-        ],
-        [
-          27.10287,
-          60.34197,
-        ],
-        [
-          27.10452,
-          60.34197,
-        ],
-        [
-          27.13111,
-          60.34258,
-        ],
-        [
-          27.13119,
-          60.34258,
-        ],
-        [
-          27.13284,
-          60.34266,
-        ],
-        [
-          27.13446,
-          60.34282,
-        ],
-        [
-          27.13604,
-          60.34306,
-        ],
-        [
-          27.13756,
-          60.34337,
-        ],
-        [
-          27.13902,
-          60.34376,
-        ],
-        [
-          27.14039,
-          60.34421,
-        ],
-        [
-          27.14166,
-          60.34473,
-        ],
-        [
-          27.14283,
-          60.34531,
-        ],
-        [
-          27.14388,
-          60.34595,
-        ],
-        [
-          27.14479,
-          60.34663,
-        ],
-        [
-          27.14557,
-          60.34735,
-        ],
-        [
-          27.1462,
-          60.3481,
-        ],
-        [
-          27.14667,
-          60.34888,
-        ],
-        [
-          27.14699,
-          60.34969,
-        ],
-        [
-          27.14715,
-          60.3505,
-        ],
-        [
-          27.15204,
-          60.41069,
-        ],
-        [
-          27.15206,
-          60.41135,
-        ],
-        [
-          27.15192,
-          60.41216,
-        ],
-        [
-          27.15163,
-          60.41297,
-        ],
-        [
-          27.15118,
-          60.41375,
-        ],
-        [
-          27.13807,
-          60.43288,
-        ],
-        [
-          27.13762,
-          60.43366,
-        ],
-        [
-          27.13732,
-          60.43447,
-        ],
-        [
-          27.13718,
-          60.43528,
-        ],
-        [
-          27.13721,
-          60.4361,
-        ],
-        [
-          27.1374,
-          60.43691,
-        ],
-        [
-          27.13756,
-          60.43732,
-        ],
-        [
-          27.14583,
-          60.45605,
-        ],
-        [
-          27.146,
-          60.45651,
-        ],
-        [
-          27.14619,
-          60.45732,
-        ],
-        [
-          27.1462,
-          60.45814,
-        ],
-        [
-          27.14606,
-          60.45895,
-        ],
-        [
-          27.14576,
-          60.45976,
-        ],
-        [
-          27.1453,
-          60.46054,
-        ],
-        [
-          27.13296,
-          60.47811,
-        ],
-        [
-          27.13249,
-          60.4789,
-        ],
-        [
-          27.13218,
-          60.4797,
-        ],
-        [
-          27.13204,
-          60.48052,
-        ],
-        [
-          27.13205,
-          60.48133,
-        ],
-        [
-          27.13223,
-          60.48214,
-        ],
-        [
-          27.13257,
-          60.48294,
-        ],
-        [
-          27.1329,
-          60.48349,
-        ],
-        [
-          27.14646,
-          60.50336,
-        ],
-        [
-          27.14706,
-          60.50412,
-        ],
-        [
-          27.14782,
-          60.50485,
-        ],
-        [
-          27.14871,
-          60.50554,
-        ],
-        [
-          27.14974,
-          60.50618,
-        ],
-        [
-          27.15072,
-          60.50669,
-        ],
-        [
-          27.17252,
-          60.51708,
-        ],
-      ],
-      "type": "LineString",
-    },
-    "nimi": "FIKMU-FIHMN (via Merikari)",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            26.91951,
+            60.41764,
+          ],
+          [
+            26.92814,
+            60.4205,
+          ],
+          [
+            26.92955,
+            60.42092,
+          ],
+          [
+            26.93105,
+            60.42127,
+          ],
+          [
+            26.93261,
+            60.42155,
+          ],
+          [
+            26.93421,
+            60.42175,
+          ],
+          [
+            26.93585,
+            60.42187,
+          ],
+          [
+            26.9375,
+            60.42191,
+          ],
+          [
+            26.93915,
+            60.42187,
+          ],
+          [
+            26.94079,
+            60.42176,
+          ],
+          [
+            26.9424,
+            60.42156,
+          ],
+          [
+            26.94396,
+            60.42129,
+          ],
+          [
+            26.94546,
+            60.42094,
+          ],
+          [
+            26.94688,
+            60.42052,
+          ],
+          [
+            26.94821,
+            60.42003,
+          ],
+          [
+            26.94944,
+            60.41949,
+          ],
+          [
+            26.95054,
+            60.4189,
+          ],
+          [
+            26.97294,
+            60.40555,
+          ],
+          [
+            26.97393,
+            60.40489,
+          ],
+          [
+            26.97479,
+            60.40419,
+          ],
+          [
+            26.9755,
+            60.40346,
+          ],
+          [
+            26.97607,
+            60.40269,
+          ],
+          [
+            26.97634,
+            60.4022,
+          ],
+          [
+            26.98142,
+            60.39184,
+          ],
+          [
+            26.98153,
+            60.39163,
+          ],
+          [
+            26.98204,
+            60.39086,
+          ],
+          [
+            26.9827,
+            60.39011,
+          ],
+          [
+            27.00863,
+            60.36412,
+          ],
+          [
+            27.00921,
+            60.36358,
+          ],
+          [
+            27.01012,
+            60.3629,
+          ],
+          [
+            27.01116,
+            60.36226,
+          ],
+          [
+            27.01232,
+            60.36168,
+          ],
+          [
+            27.01359,
+            60.36116,
+          ],
+          [
+            27.01496,
+            60.3607,
+          ],
+          [
+            27.06206,
+            60.34646,
+          ],
+          [
+            27.06285,
+            60.34624,
+          ],
+          [
+            27.06434,
+            60.34589,
+          ],
+          [
+            27.06589,
+            60.34561,
+          ],
+          [
+            27.06749,
+            60.34541,
+          ],
+          [
+            27.10043,
+            60.34213,
+          ],
+          [
+            27.10123,
+            60.34206,
+          ],
+          [
+            27.10287,
+            60.34197,
+          ],
+          [
+            27.10452,
+            60.34197,
+          ],
+          [
+            27.13111,
+            60.34258,
+          ],
+          [
+            27.13119,
+            60.34258,
+          ],
+          [
+            27.13284,
+            60.34266,
+          ],
+          [
+            27.13446,
+            60.34282,
+          ],
+          [
+            27.13604,
+            60.34306,
+          ],
+          [
+            27.13756,
+            60.34337,
+          ],
+          [
+            27.13902,
+            60.34376,
+          ],
+          [
+            27.14039,
+            60.34421,
+          ],
+          [
+            27.14166,
+            60.34473,
+          ],
+          [
+            27.14283,
+            60.34531,
+          ],
+          [
+            27.14388,
+            60.34595,
+          ],
+          [
+            27.14479,
+            60.34663,
+          ],
+          [
+            27.14557,
+            60.34735,
+          ],
+          [
+            27.1462,
+            60.3481,
+          ],
+          [
+            27.14667,
+            60.34888,
+          ],
+          [
+            27.14699,
+            60.34969,
+          ],
+          [
+            27.14715,
+            60.3505,
+          ],
+          [
+            27.15204,
+            60.41069,
+          ],
+          [
+            27.15206,
+            60.41135,
+          ],
+          [
+            27.15192,
+            60.41216,
+          ],
+          [
+            27.15163,
+            60.41297,
+          ],
+          [
+            27.15118,
+            60.41375,
+          ],
+          [
+            27.13807,
+            60.43288,
+          ],
+          [
+            27.13762,
+            60.43366,
+          ],
+          [
+            27.13732,
+            60.43447,
+          ],
+          [
+            27.13718,
+            60.43528,
+          ],
+          [
+            27.13721,
+            60.4361,
+          ],
+          [
+            27.1374,
+            60.43691,
+          ],
+          [
+            27.13756,
+            60.43732,
+          ],
+          [
+            27.14583,
+            60.45605,
+          ],
+          [
+            27.146,
+            60.45651,
+          ],
+          [
+            27.14619,
+            60.45732,
+          ],
+          [
+            27.1462,
+            60.45814,
+          ],
+          [
+            27.14606,
+            60.45895,
+          ],
+          [
+            27.14576,
+            60.45976,
+          ],
+          [
+            27.1453,
+            60.46054,
+          ],
+          [
+            27.13296,
+            60.47811,
+          ],
+          [
+            27.13249,
+            60.4789,
+          ],
+          [
+            27.13218,
+            60.4797,
+          ],
+          [
+            27.13204,
+            60.48052,
+          ],
+          [
+            27.13205,
+            60.48133,
+          ],
+          [
+            27.13223,
+            60.48214,
+          ],
+          [
+            27.13257,
+            60.48294,
+          ],
+          [
+            27.1329,
+            60.48349,
+          ],
+          [
+            27.14646,
+            60.50336,
+          ],
+          [
+            27.14706,
+            60.50412,
+          ],
+          [
+            27.14782,
+            60.50485,
+          ],
+          [
+            27.14871,
+            60.50553,
+          ],
+          [
+            27.14973,
+            60.50618,
+          ],
+          [
+            27.15073,
+            60.50669,
+          ],
+          [
+            27.17252,
+            60.51708,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 11,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -442,26 +446,31 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 11,
-  },
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.9,
-          60.4,
-        ],
-        [
-          26.91,
-          60.41,
-        ],
-      ],
-      "type": "LineString",
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 11,
+      },
+      "type": "Feature",
     },
-    "nimi": "FIKMU-FIHMN (via Merikari)_2",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            26.9,
+            60.4,
+          ],
+          [
+            26.91,
+            60.41,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 22,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -518,26 +527,31 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 22,
-  },
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.93,
-          60.43,
-        ],
-        [
-          26.93,
-          60.43,
-        ],
-      ],
-      "type": "LineString",
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 22,
+      },
+      "type": "Feature",
     },
-    "nimi": "FIKMU-FIHMN (via Merikari)_3",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            26.93,
+            60.43,
+          ],
+          [
+            26.93,
+            60.43,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": 33,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)_3",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -594,286 +608,87 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 33,
-  },
-]
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 33,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
 `;
 
 exports[`should get pilotroutes from cache 1`] = `
-[
-  {
-    "nimi": "FIKMU-FIHMN (via Merikari)",
-    "reittipisteet": [
-      {
-        "geometria": {
-          "coordinates": [
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
             26.919513,
             60.417641,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 1,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIKMU",
-        "reittitunnus": 11,
-        "rtzTunniste": 14,
-        "tunnus": 97,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.9408,
             60.424694,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 2,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Havouri",
-        "reittitunnus": 11,
-        "rtzTunniste": 13,
-        "tunnus": 98,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.975418,
             60.404075,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 3,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Lelleri",
-        "reittitunnus": 11,
-        "rtzTunniste": 12,
-        "tunnus": 99,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.981856,
             60.390952,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 4,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Hietakari",
-        "reittitunnus": 11,
-        "rtzTunniste": 11,
-        "tunnus": 100,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.010772,
             60.361969,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 5,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Retonpaasi",
-        "reittitunnus": 11,
-        "rtzTunniste": 10,
-        "tunnus": 101,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.064569,
             60.345702,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 6,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Pauhakarit",
-        "reittitunnus": 11,
-        "rtzTunniste": 9,
-        "tunnus": 102,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.102449,
             60.341925,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 7,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Merikari",
-        "reittitunnus": 11,
-        "rtzTunniste": 8,
-        "tunnus": 103,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.146538,
             60.342926,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 8,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Ahvenkari",
-        "reittitunnus": 11,
-        "rtzTunniste": 7,
-        "tunnus": 104,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.152175,
             60.412304,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 9,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Nimetön",
-        "reittitunnus": 11,
-        "rtzTunniste": 6,
-        "tunnus": 105,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.136566,
             60.435074,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 10,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Einonkari",
-        "reittitunnus": 11,
-        "rtzTunniste": 5,
-        "tunnus": 106,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.146839,
             60.458342,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 11,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Suur Musta",
-        "reittitunnus": 11,
-        "rtzTunniste": 4,
-        "tunnus": 107,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.131067,
             60.480808,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 12,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Sovinnonmatala",
-        "reittitunnus": 11,
-        "rtzTunniste": 3,
-        "tunnus": 108,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.14778,
             60.505289,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 13,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Hajaskari",
-        "reittitunnus": 11,
-        "rtzTunniste": 2,
-        "tunnus": 109,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.172524,
             60.517077,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 14,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIHMN",
-        "reittitunnus": 11,
-        "rtzTunniste": 1,
-        "tunnus": 110,
+        ],
+        "type": "LineString",
       },
-    ],
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+      "id": 10,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -930,53 +745,31 @@ exports[`should get pilotroutes from cache 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 11,
-  },
-  {
-    "nimi": "FIKMU-FIHMN (via Merikari)_2",
-    "reittipisteet": [
-      {
-        "geometria": {
-          "coordinates": [
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 10,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
             26.9,
             60.4,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 1,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIKMU2",
-        "reittitunnus": 21,
-        "rtzTunniste": 24,
-        "tunnus": 197,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.91,
             60.41,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 2,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Havouri2",
-        "reittitunnus": 21,
-        "rtzTunniste": 23,
-        "tunnus": 198,
+        ],
+        "type": "LineString",
       },
-    ],
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+      "id": 20,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -1033,887 +826,87 @@ exports[`should get pilotroutes from cache 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 22,
-  },
-]
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 20,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
 `;
 
-exports[`should get vessels from api 1`] = `
-[
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.91951,
-          60.41764,
-        ],
-        [
-          26.92814,
-          60.4205,
-        ],
-        [
-          26.92955,
-          60.42092,
-        ],
-        [
-          26.93105,
-          60.42127,
-        ],
-        [
-          26.93261,
-          60.42155,
-        ],
-        [
-          26.93421,
-          60.42175,
-        ],
-        [
-          26.93585,
-          60.42187,
-        ],
-        [
-          26.9375,
-          60.42191,
-        ],
-        [
-          26.93915,
-          60.42187,
-        ],
-        [
-          26.94079,
-          60.42176,
-        ],
-        [
-          26.9424,
-          60.42156,
-        ],
-        [
-          26.94396,
-          60.42129,
-        ],
-        [
-          26.94546,
-          60.42094,
-        ],
-        [
-          26.94688,
-          60.42052,
-        ],
-        [
-          26.94821,
-          60.42003,
-        ],
-        [
-          26.94944,
-          60.41949,
-        ],
-        [
-          26.95054,
-          60.4189,
-        ],
-        [
-          26.97294,
-          60.40555,
-        ],
-        [
-          26.97393,
-          60.40489,
-        ],
-        [
-          26.97479,
-          60.40419,
-        ],
-        [
-          26.9755,
-          60.40346,
-        ],
-        [
-          26.97607,
-          60.40269,
-        ],
-        [
-          26.97634,
-          60.4022,
-        ],
-        [
-          26.98142,
-          60.39184,
-        ],
-        [
-          26.98153,
-          60.39163,
-        ],
-        [
-          26.98204,
-          60.39086,
-        ],
-        [
-          26.9827,
-          60.39011,
-        ],
-        [
-          27.00863,
-          60.36412,
-        ],
-        [
-          27.00921,
-          60.36358,
-        ],
-        [
-          27.01012,
-          60.3629,
-        ],
-        [
-          27.01116,
-          60.36226,
-        ],
-        [
-          27.01232,
-          60.36168,
-        ],
-        [
-          27.01359,
-          60.36116,
-        ],
-        [
-          27.01496,
-          60.3607,
-        ],
-        [
-          27.06206,
-          60.34646,
-        ],
-        [
-          27.06285,
-          60.34624,
-        ],
-        [
-          27.06434,
-          60.34589,
-        ],
-        [
-          27.06589,
-          60.34561,
-        ],
-        [
-          27.06749,
-          60.34541,
-        ],
-        [
-          27.10043,
-          60.34213,
-        ],
-        [
-          27.10123,
-          60.34206,
-        ],
-        [
-          27.10287,
-          60.34197,
-        ],
-        [
-          27.10452,
-          60.34197,
-        ],
-        [
-          27.13111,
-          60.34258,
-        ],
-        [
-          27.13119,
-          60.34258,
-        ],
-        [
-          27.13284,
-          60.34266,
-        ],
-        [
-          27.13446,
-          60.34282,
-        ],
-        [
-          27.13604,
-          60.34306,
-        ],
-        [
-          27.13756,
-          60.34337,
-        ],
-        [
-          27.13902,
-          60.34376,
-        ],
-        [
-          27.14039,
-          60.34421,
-        ],
-        [
-          27.14166,
-          60.34473,
-        ],
-        [
-          27.14283,
-          60.34531,
-        ],
-        [
-          27.14388,
-          60.34595,
-        ],
-        [
-          27.14479,
-          60.34663,
-        ],
-        [
-          27.14557,
-          60.34735,
-        ],
-        [
-          27.1462,
-          60.3481,
-        ],
-        [
-          27.14667,
-          60.34888,
-        ],
-        [
-          27.14699,
-          60.34969,
-        ],
-        [
-          27.14715,
-          60.3505,
-        ],
-        [
-          27.15204,
-          60.41069,
-        ],
-        [
-          27.15206,
-          60.41135,
-        ],
-        [
-          27.15192,
-          60.41216,
-        ],
-        [
-          27.15163,
-          60.41297,
-        ],
-        [
-          27.15118,
-          60.41375,
-        ],
-        [
-          27.13807,
-          60.43288,
-        ],
-        [
-          27.13762,
-          60.43366,
-        ],
-        [
-          27.13732,
-          60.43447,
-        ],
-        [
-          27.13718,
-          60.43528,
-        ],
-        [
-          27.13721,
-          60.4361,
-        ],
-        [
-          27.1374,
-          60.43691,
-        ],
-        [
-          27.13756,
-          60.43732,
-        ],
-        [
-          27.14583,
-          60.45605,
-        ],
-        [
-          27.146,
-          60.45651,
-        ],
-        [
-          27.14619,
-          60.45732,
-        ],
-        [
-          27.1462,
-          60.45814,
-        ],
-        [
-          27.14606,
-          60.45895,
-        ],
-        [
-          27.14576,
-          60.45976,
-        ],
-        [
-          27.1453,
-          60.46054,
-        ],
-        [
-          27.13296,
-          60.47811,
-        ],
-        [
-          27.13249,
-          60.4789,
-        ],
-        [
-          27.13218,
-          60.4797,
-        ],
-        [
-          27.13204,
-          60.48052,
-        ],
-        [
-          27.13205,
-          60.48133,
-        ],
-        [
-          27.13223,
-          60.48214,
-        ],
-        [
-          27.13257,
-          60.48294,
-        ],
-        [
-          27.1329,
-          60.48349,
-        ],
-        [
-          27.14646,
-          60.50336,
-        ],
-        [
-          27.14706,
-          60.50412,
-        ],
-        [
-          27.14782,
-          60.50485,
-        ],
-        [
-          27.14871,
-          60.50553,
-        ],
-        [
-          27.14973,
-          60.50618,
-        ],
-        [
-          27.15073,
-          60.50669,
-        ],
-        [
-          27.17252,
-          60.51708,
-        ],
-      ],
-      "type": "LineString",
-    },
-    "nimi": "FIKMU-FIHMN (via Merikari)",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
-<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
-    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
-    <waypoints>
-        <defaultWaypoint radius="0.50">
-            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
-        </defaultWaypoint>
-        <waypoint id="14" name="FIKMU">
-            <position lat="60.41764100" lon="26.91951300"/>
-        </waypoint>
-        <waypoint id="13" name="Havouri">
-            <position lat="60.42469400" lon="26.94080000"/>
-        </waypoint>
-        <waypoint id="12" name="Lelleri">
-            <position lat="60.40407500" lon="26.97541800"/>
-        </waypoint>
-        <waypoint id="11" name="Hietakari">
-            <position lat="60.39095200" lon="26.98185600"/>
-        </waypoint>
-        <waypoint id="10" name="Retonpaasi">
-            <position lat="60.36196900" lon="27.01077200"/>
-        </waypoint>
-        <waypoint id="9" name="Pauhakarit">
-            <position lat="60.34570200" lon="27.06456900"/>
-        </waypoint>
-        <waypoint id="8" name="Merikari">
-            <position lat="60.34192500" lon="27.10244900"/>
-        </waypoint>
-        <waypoint id="7" name="Ahvenkari">
-            <position lat="60.34292600" lon="27.14653800"/>
-        </waypoint>
-        <waypoint id="6" name="Nimetön">
-            <position lat="60.41230400" lon="27.15217500"/>
-        </waypoint>
-        <waypoint id="5" name="Einonkari">
-            <position lat="60.43507400" lon="27.13656600"/>
-        </waypoint>
-        <waypoint id="4" name="Suur Musta">
-            <position lat="60.45834200" lon="27.14683900"/>
-        </waypoint>
-        <waypoint id="3" name="Sovinnonmatala">
-            <position lat="60.48080800" lon="27.13106700"/>
-        </waypoint>
-        <waypoint id="2" name="Hajaskari">
-            <position lat="60.50528900" lon="27.14778000"/>
-        </waypoint>
-        <waypoint id="1" name="FIHMN">
-            <position lat="60.51707700" lon="27.17252400"/>
-            <leg safetyContour="30.00"/>
-        </waypoint>
-    </waypoints>
-    <schedules>
-        <schedule id="0" name="Base Calculation"/>
-        <schedule id="1" name=""/>
-    </schedules>
-</route>
-",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 11,
-  },
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.9,
-          60.4,
-        ],
-        [
-          26.91,
-          60.41,
-        ],
-      ],
-      "type": "LineString",
-    },
-    "nimi": "FIKMU-FIHMN (via Merikari)_2",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
-<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
-    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
-    <waypoints>
-        <defaultWaypoint radius="0.50">
-            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
-        </defaultWaypoint>
-        <waypoint id="14" name="FIKMU">
-            <position lat="60.41764100" lon="26.91951300"/>
-        </waypoint>
-        <waypoint id="13" name="Havouri">
-            <position lat="60.42469400" lon="26.94080000"/>
-        </waypoint>
-        <waypoint id="12" name="Lelleri">
-            <position lat="60.40407500" lon="26.97541800"/>
-        </waypoint>
-        <waypoint id="11" name="Hietakari">
-            <position lat="60.39095200" lon="26.98185600"/>
-        </waypoint>
-        <waypoint id="10" name="Retonpaasi">
-            <position lat="60.36196900" lon="27.01077200"/>
-        </waypoint>
-        <waypoint id="9" name="Pauhakarit">
-            <position lat="60.34570200" lon="27.06456900"/>
-        </waypoint>
-        <waypoint id="8" name="Merikari">
-            <position lat="60.34192500" lon="27.10244900"/>
-        </waypoint>
-        <waypoint id="7" name="Ahvenkari">
-            <position lat="60.34292600" lon="27.14653800"/>
-        </waypoint>
-        <waypoint id="6" name="Nimetön">
-            <position lat="60.41230400" lon="27.15217500"/>
-        </waypoint>
-        <waypoint id="5" name="Einonkari">
-            <position lat="60.43507400" lon="27.13656600"/>
-        </waypoint>
-        <waypoint id="4" name="Suur Musta">
-            <position lat="60.45834200" lon="27.14683900"/>
-        </waypoint>
-        <waypoint id="3" name="Sovinnonmatala">
-            <position lat="60.48080800" lon="27.13106700"/>
-        </waypoint>
-        <waypoint id="2" name="Hajaskari">
-            <position lat="60.50528900" lon="27.14778000"/>
-        </waypoint>
-        <waypoint id="1" name="FIHMN">
-            <position lat="60.51707700" lon="27.17252400"/>
-            <leg safetyContour="30.00"/>
-        </waypoint>
-    </waypoints>
-    <schedules>
-        <schedule id="0" name="Base Calculation"/>
-        <schedule id="1" name=""/>
-    </schedules>
-</route>
-",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 22,
-  },
-  {
-    "geometria": {
-      "coordinates": [
-        [
-          26.93,
-          60.43,
-        ],
-        [
-          26.93,
-          60.43,
-        ],
-      ],
-      "type": "LineString",
-    },
-    "nimi": "FIKMU-FIHMN (via Merikari)_3",
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
-<route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
-    <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
-    <waypoints>
-        <defaultWaypoint radius="0.50">
-            <leg portsideXTD="0.03" starboardXTD="0.03" safetyContour="8.00" safetyDepth="30.00" geometryType="Loxodrome"/>
-        </defaultWaypoint>
-        <waypoint id="14" name="FIKMU">
-            <position lat="60.41764100" lon="26.91951300"/>
-        </waypoint>
-        <waypoint id="13" name="Havouri">
-            <position lat="60.42469400" lon="26.94080000"/>
-        </waypoint>
-        <waypoint id="12" name="Lelleri">
-            <position lat="60.40407500" lon="26.97541800"/>
-        </waypoint>
-        <waypoint id="11" name="Hietakari">
-            <position lat="60.39095200" lon="26.98185600"/>
-        </waypoint>
-        <waypoint id="10" name="Retonpaasi">
-            <position lat="60.36196900" lon="27.01077200"/>
-        </waypoint>
-        <waypoint id="9" name="Pauhakarit">
-            <position lat="60.34570200" lon="27.06456900"/>
-        </waypoint>
-        <waypoint id="8" name="Merikari">
-            <position lat="60.34192500" lon="27.10244900"/>
-        </waypoint>
-        <waypoint id="7" name="Ahvenkari">
-            <position lat="60.34292600" lon="27.14653800"/>
-        </waypoint>
-        <waypoint id="6" name="Nimetön">
-            <position lat="60.41230400" lon="27.15217500"/>
-        </waypoint>
-        <waypoint id="5" name="Einonkari">
-            <position lat="60.43507400" lon="27.13656600"/>
-        </waypoint>
-        <waypoint id="4" name="Suur Musta">
-            <position lat="60.45834200" lon="27.14683900"/>
-        </waypoint>
-        <waypoint id="3" name="Sovinnonmatala">
-            <position lat="60.48080800" lon="27.13106700"/>
-        </waypoint>
-        <waypoint id="2" name="Hajaskari">
-            <position lat="60.50528900" lon="27.14778000"/>
-        </waypoint>
-        <waypoint id="1" name="FIHMN">
-            <position lat="60.51707700" lon="27.17252400"/>
-            <leg safetyContour="30.00"/>
-        </waypoint>
-    </waypoints>
-    <schedules>
-        <schedule id="0" name="Base Calculation"/>
-        <schedule id="1" name=""/>
-    </schedules>
-</route>
-",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 33,
-  },
-]
-`;
-
-exports[`should get vessels from cache when api call fails 1`] = `
-[
-  {
-    "nimi": "FIKMU-FIHMN (via Merikari)",
-    "reittipisteet": [
-      {
-        "geometria": {
-          "coordinates": [
+exports[`should get pilotroutes from cache when api call fails 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
             26.919513,
             60.417641,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 1,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIKMU",
-        "reittitunnus": 11,
-        "rtzTunniste": 14,
-        "tunnus": 97,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.9408,
             60.424694,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 2,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Havouri",
-        "reittitunnus": 11,
-        "rtzTunniste": 13,
-        "tunnus": 98,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.975418,
             60.404075,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 3,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Lelleri",
-        "reittitunnus": 11,
-        "rtzTunniste": 12,
-        "tunnus": 99,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.981856,
             60.390952,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 4,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Hietakari",
-        "reittitunnus": 11,
-        "rtzTunniste": 11,
-        "tunnus": 100,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.010772,
             60.361969,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 5,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Retonpaasi",
-        "reittitunnus": 11,
-        "rtzTunniste": 10,
-        "tunnus": 101,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.064569,
             60.345702,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 6,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Pauhakarit",
-        "reittitunnus": 11,
-        "rtzTunniste": 9,
-        "tunnus": 102,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.102449,
             60.341925,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 7,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Merikari",
-        "reittitunnus": 11,
-        "rtzTunniste": 8,
-        "tunnus": 103,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.146538,
             60.342926,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 8,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Ahvenkari",
-        "reittitunnus": 11,
-        "rtzTunniste": 7,
-        "tunnus": 104,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.152175,
             60.412304,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 9,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Nimetön",
-        "reittitunnus": 11,
-        "rtzTunniste": 6,
-        "tunnus": 105,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.136566,
             60.435074,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 10,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Einonkari",
-        "reittitunnus": 11,
-        "rtzTunniste": 5,
-        "tunnus": 106,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.146839,
             60.458342,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 11,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Suur Musta",
-        "reittitunnus": 11,
-        "rtzTunniste": 4,
-        "tunnus": 107,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.131067,
             60.480808,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 12,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Sovinnonmatala",
-        "reittitunnus": 11,
-        "rtzTunniste": 3,
-        "tunnus": 108,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.14778,
             60.505289,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 13,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Hajaskari",
-        "reittitunnus": 11,
-        "rtzTunniste": 2,
-        "tunnus": 109,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             27.172524,
             60.517077,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 14,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIHMN",
-        "reittitunnus": 11,
-        "rtzTunniste": 1,
-        "tunnus": 110,
+        ],
+        "type": "LineString",
       },
-    ],
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+      "id": 10,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -1970,53 +963,31 @@ exports[`should get vessels from cache when api call fails 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 11,
-  },
-  {
-    "nimi": "FIKMU-FIHMN (via Merikari)_2",
-    "reittipisteet": [
-      {
-        "geometria": {
-          "coordinates": [
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 10,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
             26.9,
             60.4,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 1,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "FIKMU2",
-        "reittitunnus": 21,
-        "rtzTunniste": 24,
-        "tunnus": 197,
-      },
-      {
-        "geometria": {
-          "coordinates": [
+          [
             26.91,
             60.41,
           ],
-          "type": "Point",
-        },
-        "geometriaTyyppi": "Loxodrome",
-        "jarjestys": 2,
-        "kaarresade": 0.5,
-        "leveysOikea": 0.03,
-        "leveysVasen": 0.03,
-        "muutosaikaleima": "2024-01-10T11:11:37.000000+02:00",
-        "nimi": "Havouri2",
-        "reittitunnus": 21,
-        "rtzTunniste": 23,
-        "tunnus": 198,
+        ],
+        "type": "LineString",
       },
-    ],
-    "rtz": "<?xml version="1.0" encoding="UTF-8"?>
+      "id": 20,
+      "properties": {
+        "featureType": "pilotroute",
+        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
     <waypoints>
@@ -2073,9 +1044,13 @@ exports[`should get vessels from cache when api call fails 1`] = `
     </schedules>
 </route>
 ",
-    "tila": 1,
-    "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-    "tunnus": 22,
-  },
-]
+        "tila": 1,
+        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "tunnus": 20,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
 `;
