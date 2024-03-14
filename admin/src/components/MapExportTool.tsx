@@ -27,9 +27,8 @@ import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUp
 import { fitSelectedFairwayCardOnMap, setSelectedFairwayCard } from './map/layers';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
-import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, MAP, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
+import { ActionType, Lang, POSITION, PictureGroup, ValidationType, ValueType, imageUrl, locales } from '../utils/constants';
 import HelpModal from './HelpModal';
 import ImageModal from './ImageModal';
 import helpIcon from '../theme/img/help_icon.svg';
@@ -43,6 +42,14 @@ import { addSequence, radiansToDegrees, removeSequence } from '../utils/common';
 import FileUploader from '../utils/FileUploader';
 import infoIcon from '../theme/img/info-circle-solid.svg';
 import NotificationModal from './NotificationModal';
+import {
+  getExportMapBase64Data,
+  getMapCanvas,
+  processCanvasElements,
+  resetMapProperties,
+  setMapProperties,
+  useUploadMapPictureMutation,
+} from '../utils/mapExportToolUtils';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -650,6 +657,16 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
   const [picUploadErrors, setPicUploadErrors] = useState<string[]>([]);
+  // Picture with input data waiting for upload
+  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
+  const [isOpen, setIsOpen] = useState(false);
+  const isFetching = useIsFetching();
+  const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
+  const [isMapDisabled, setIsMapDisabled] = useState(hasPrimaryIdError || disabled);
+  // Create uploadable images with every locale
+  const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
+
+  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
 
   InitDvkMap();
 
@@ -717,10 +734,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     specialArea15Layer,
   ]);
 
-  const isFetching = useIsFetching();
-  const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
-  const [isMapDisabled, setIsMapDisabled] = useState(hasPrimaryIdError || disabled);
-
   const dvkMap = getMap();
 
   const mapElement = useRef<HTMLDivElement | null>(null);
@@ -747,37 +760,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     };
     setSelectedFairwayCard(fairwayCard);
   }, [fairwayCardInput, fairways, harbours, initDone]);
-
-  // Picture with input data waiting for upload
-  const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
-
-  const { mutateAsync: uploadMapPictureMutation, isPending: isLoadingMutation } = useUploadMapPictureMutationQuery({
-    onSuccess: () => {
-      if (newPicture) {
-        const pictureInput = {
-          id: newPicture.id,
-          orientation: dvkMap.getOrientationType() || Orientation.Portrait,
-          rotation: newPicture.rotation ?? null,
-          modificationTimestamp: Date.now(),
-          scaleWidth: newPicture.scaleWidth ?? null,
-          scaleLabel: newPicture.scaleLabel ?? null,
-          sequenceNumber: null,
-          text: null,
-          lang: newPicture.lang ?? null,
-          groupId: newPicture.groupId,
-          legendPosition: newPicture.legendPosition,
-        };
-        // Update fairwayCard state with uploaded picture data
-        setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
-      }
-    },
-    onError: (error: Error) => {
-      console.error(error.message);
-    },
-    onSettled: () => {
-      setNewPicture(undefined);
-    },
-  });
 
   const uploadPicture = async (
     base64Data: string,
@@ -812,70 +794,20 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const exportMapByLang = (viewResolution: number, rotation: number, lang: Lang, picGroupId: number): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.olMap && dvkMap.getOrientationType()) {
-        // Merge canvases to one canvas
-        const mapCanvas = document.createElement('canvas');
         const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-        mapCanvas.width = mapSize[0] * MAP.PRINT.SCALE;
-        mapCanvas.height = mapSize[1] * MAP.PRINT.SCALE;
+        const mapCanvas = getMapCanvas(mapSize);
         const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        dvkMap.olMap.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
-        dvkMap.olMap.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
-        dvkMap.setMapLanguage(lang);
+        setMapProperties(viewResolution, mapSize, lang);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
           const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
-          const mapContext = mapCanvas.getContext('2d');
-          Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-            if (canvas.width > 0) {
-              const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-              if (mapContext) mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-              let matrix;
-              const transform = canvas.style.transform;
-              if (transform) {
-                // Get the transform parameters from the style's transform matrix
-                matrix = transform
-                  .match(/^matrix\(([^(]*)\)$/)[1]
-                  .split(',')
-                  .map(Number);
-              } else {
-                matrix = [parseFloat(canvas.style.width) / canvas.width, 0, 0, parseFloat(canvas.style.height) / canvas.height, 0, 0];
-              }
-              // Apply the transform to the export map context
-              CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-              const backgroundColor = canvas.parentNode.style.backgroundColor;
-              if (backgroundColor && mapContext) {
-                mapContext.fillStyle = backgroundColor;
-                mapContext.fillRect(0, 0, canvas.width, canvas.height);
-              }
-              if (mapContext) mapContext.drawImage(canvas, 0, 0);
-            }
-          });
-          if (mapContext) {
-            mapContext.globalAlpha = 1;
-            mapContext.setTransform(1, 0, 0, 1, 0, 0);
-          }
 
-          // Crop the canvas and create image
-          const mapCanvasCropped = document.createElement('canvas');
-          mapCanvasCropped.width = canvasSizeCropped[0];
-          mapCanvasCropped.height = canvasSizeCropped[1];
-          const mapContextCropped = mapCanvasCropped.getContext('2d');
-          if (mapContextCropped) {
-            mapContextCropped.drawImage(
-              mapCanvas,
-              (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
-              (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
-              mapCanvasCropped.width,
-              mapCanvasCropped.height,
-              0,
-              0,
-              mapCanvasCropped.width,
-              mapCanvasCropped.height
-            );
-          }
-          const base64Data = mapCanvasCropped.toDataURL('image/png');
+          processCanvasElements(mapCanvas);
+
+          const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
+
           await uploadPicture(
             base64Data,
             dvkMap.getOrientationType() || Orientation.Portrait,
@@ -886,9 +818,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
             mapScale?.innerHTML
           );
           // Reset original map properties
-          dvkMap.setMapLanguage('');
-          dvkMap.olMap?.setSize(mapSize);
-          dvkMap.olMap?.getView().setResolution(viewResolution);
+          resetMapProperties(viewResolution, mapSize);
           dvkMap.olMap?.once('rendercomplete', function () {
             resolve(`Map export for locale ${lang} done.`);
           });
@@ -899,8 +829,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     });
   };
 
-  // Create uploadable images with every locale
-  const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
   const printCurrentMapView = async () => {
     console.time('Export pictures');
     if (dvkMap.olMap && dvkMap.getOrientationType()) {
@@ -921,26 +849,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     console.timeEnd('Export pictures');
   };
 
-  const exportExternalPicByLang = async (lang: Lang, picGroupId: number, exportedPic: string): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      if (dvkMap.getOrientationType()) {
-        (async () => {
-          try {
-            await uploadPicture(exportedPic, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, lang);
-            //won't resolve for some reason without this
-            dvkMap.olMap?.once('rendercomplete', async function () {
-              resolve(`External import for locale ${lang} done.`);
-            });
-          } catch (error) {
-            reject(error);
-          }
-        })();
-      } else {
-        reject(new Error(`External import for locale ${lang} failed.`));
-      }
-    });
-  };
-
   const importExternalImage = async () => {
     console.time('Import pictures');
     if (dvkMap.getOrientationType()) {
@@ -949,12 +857,12 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
 
       try {
         const picGroupId = Date.now();
-        const data = await fileUploader.getPictureBase64Data();
+        const base64Data = await fileUploader.getPictureBase64Data();
 
-        if (data) {
+        if (base64Data) {
           for (const locale of locales) {
             if (locale !== curLang) setIsProcessingCurLang(false);
-            await exportExternalPicByLang(locale as Lang, picGroupId, data as string);
+            await uploadPicture(base64Data as string, dvkMap.getOrientationType() || Orientation.Portrait, picGroupId, locale as Lang);
           }
         }
       } catch (error) {
@@ -967,8 +875,6 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     }
     console.timeEnd('Import pictures');
   };
-
-  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
