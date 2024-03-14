@@ -388,7 +388,9 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
       "id": 11,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "id": 11,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -446,9 +448,7 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 11,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -469,7 +469,9 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
       "id": 22,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "id": 22,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)_2",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -527,9 +529,7 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 22,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -550,7 +550,9 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
       "id": 33,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)_3",
+        "id": 33,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)_3",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -608,9 +610,7 @@ exports[`should get pilotroutes from api when cache expired 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 33,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -687,7 +687,9 @@ exports[`should get pilotroutes from cache 1`] = `
       "id": 10,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "id": 10,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -745,9 +747,7 @@ exports[`should get pilotroutes from cache 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 10,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -768,7 +768,9 @@ exports[`should get pilotroutes from cache 1`] = `
       "id": 20,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "id": 20,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)_2",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -826,9 +828,7 @@ exports[`should get pilotroutes from cache 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 20,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -905,7 +905,9 @@ exports[`should get pilotroutes from cache when api call fails 1`] = `
       "id": 10,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)",
+        "id": 10,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -963,9 +965,7 @@ exports[`should get pilotroutes from cache when api call fails 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 10,
+        "status": 1,
       },
       "type": "Feature",
     },
@@ -986,7 +986,9 @@ exports[`should get pilotroutes from cache when api call fails 1`] = `
       "id": 20,
       "properties": {
         "featureType": "pilotroute",
-        "nimi": "FIKMU-FIHMN (via Merikari)_2",
+        "id": 20,
+        "identifier": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
+        "name": "FIKMU-FIHMN (via Merikari)_2",
         "rtz": "<?xml version="1.0" encoding="UTF-8"?>
 <route version="1.0" xmlns="http://www.cirm.org/RTZ/1/0">
     <routeInfo routeName="FIKMU-FIHMN (via Merikari)" vesselVoyage="urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd"/>
@@ -1044,9 +1046,7 @@ exports[`should get pilotroutes from cache when api call fails 1`] = `
     </schedules>
 </route>
 ",
-        "tila": 1,
-        "tunniste": "urn:mrn:stm:voyage:id:transas:15f9c10e-957f-4b49-9ec7-23bd426e15bd",
-        "tunnus": 20,
+        "status": 1,
       },
       "type": "Feature",
     },

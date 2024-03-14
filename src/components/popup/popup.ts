@@ -137,6 +137,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   const types = [
     'aisvessel',
     'pilot',
+    'pilotroute',
     'vtspoint',
     'quay',
     'section',

@@ -449,6 +449,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
+        "pilotroute": "[en] Luotsausreitti",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",

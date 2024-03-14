@@ -449,6 +449,7 @@
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
         "pilot": "Luotsipaikka",
+        "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",

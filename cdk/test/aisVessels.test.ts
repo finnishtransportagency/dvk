@@ -131,7 +131,6 @@ it('should get vessels from api when cache expired', async () => {
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  console.log(responseObj);
   expect(responseObj.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });

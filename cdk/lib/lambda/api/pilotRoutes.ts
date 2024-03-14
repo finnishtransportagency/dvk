@@ -118,10 +118,10 @@ async function fetchPilotRouteData(): Promise<FeatureCollection> {
       geometry: roundGeometry(geometry, 5) as LineString,
       properties: {
         featureType: 'pilotroute',
-        tunnus: entry.tunnus,
-        tila: entry.tila,
-        nimi: entry.nimi,
-        tunniste: entry.tunniste,
+        id: entry.tunnus,
+        identifier: entry.tunniste,
+        name: entry.nimi,
+        status: entry.tila,
         rtz: entry.rtz,
       },
     };
