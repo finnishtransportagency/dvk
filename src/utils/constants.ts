@@ -77,6 +77,8 @@ export type FeatureDataId =
   | 'vayla_water_area'
   | 'pilotroute'
   | 'pilot'
+  | 'pilotageareaborder'
+  | 'pilotagelimit'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -237,6 +239,18 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     id: 'pilotroute',
     url: new URL(pilotRoutesUrl),
     staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'pilotageareaborder',
+    url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'pilotagelimit',
+    url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     persist: true,
   },
   {
