@@ -78,6 +78,7 @@ export type FeatureDataId =
   | 'pilotroute'
   | 'pilot'
   | 'pilotageareaborder'
+  | 'pilotagelimit'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -242,8 +243,14 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'pilotageareaborder',
-    url: new URL(featureLoaderUrl + '?type=vtsline'),
-    staticUrl: new URL(staticUrl + '/vtsline.json.gz'),
+    url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'pilotagelimit',
+    url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     persist: true,
   },
   {
