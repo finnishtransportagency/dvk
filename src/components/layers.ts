@@ -869,13 +869,13 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 325,
   });
-  // Luotsausreitit
+  // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
     map: map,
     id: 'pilotageareaborder',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: getLineStyle('#FE7C00', 2),
+    style: getLineStyle('#FE7C00', 4),
     minResolution: undefined,
     opacity: 1,
     declutter: false,

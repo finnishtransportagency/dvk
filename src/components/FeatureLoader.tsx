@@ -513,6 +513,6 @@ export function useVaylaWaterAreaData() {
   return useFeatureData('vayla_water_area');
 }
 
-export function usePilotageAreaBorderData() {
-  return useDataLayer('pilotageareaborder', 'pilotageareaborder');
+export function usePilotageAreaBorderLayer() {
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
 }
