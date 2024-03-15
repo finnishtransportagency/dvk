@@ -51,7 +51,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
             onMouseLeave={() => highlightArea(0)}
             onBlur={() => highlightArea(0)}
           >
-            <li className={fairwayAreas.length === idx + 1 ? 'inlineHoverText no-margin-bottom' : 'inlineHoverText'}>
+            <li className={fairwayAreas.length === idx + 1 ? 'group inlineHoverText no-margin-bottom' : 'group inlineHoverText'}>
               <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
               {isDraftAvailable && (
                 <>
