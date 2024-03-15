@@ -620,7 +620,7 @@ export function addAPILayers(map: Map) {
     minResolution: undefined,
     opacity: 1,
     declutter: false,
-    zIndex: 326,
+    zIndex: 104,
   });
 }
 
