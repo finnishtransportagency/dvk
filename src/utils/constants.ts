@@ -57,7 +57,6 @@ export type FeatureDataId =
   | 'line12'
   | 'line3456'
   | 'restrictionarea'
-  | 'pilot'
   | 'harbor'
   | 'safetyequipment'
   | 'depth12'
@@ -77,6 +76,7 @@ export type FeatureDataId =
   | 'aisvessel'
   | 'vayla_water_area'
   | 'pilotroute'
+  | 'pilot'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -135,12 +135,6 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     id: 'specialarea15',
     url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
-    persist: true,
-  },
-  {
-    id: 'pilot',
-    url: new URL(featureLoaderUrl + '?type=pilot'),
-    staticUrl: new URL(staticUrl + '/pilot.json.gz'),
     persist: true,
   },
   {
@@ -234,6 +228,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
   },
   {
+    id: 'pilot',
+    url: new URL(featureLoaderUrl + '?type=pilot'),
+    staticUrl: new URL(staticUrl + '/pilot.json.gz'),
+    persist: true,
+  },
+  {
     id: 'pilotroute',
     url: new URL(pilotRoutesUrl),
     staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
@@ -247,7 +247,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais' | 'piloting';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -256,7 +256,6 @@ export type FeatureDataLayerId =
   | 'line3456'
   | 'speedlimit'
   | 'specialarea'
-  | 'pilot'
   | 'harbor'
   | 'quay'
   | 'safetyequipment'
@@ -286,6 +285,7 @@ export type FeatureDataLayerId =
   | 'aisvesseltugandspecialcraft'
   | 'aisvesselpleasurecraft'
   | 'aisunspecified'
+  | 'pilot'
   | 'pilotroute';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
@@ -324,7 +324,6 @@ export const MAP: MapType = {
     { id: 'speedlimit', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea2', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea15', offlineSupport: true, localizedStyle: false },
-    { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
     { id: 'safetyequipmentfault', offlineSupport: true, localizedStyle: false },
@@ -351,6 +350,7 @@ export const MAP: MapType = {
     { id: 'aisvesseltugandspecialcraft', offlineSupport: false, localizedStyle: false },
     { id: 'aisvesselpleasurecraft', offlineSupport: false, localizedStyle: false },
     { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
+    { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
   ],
 };

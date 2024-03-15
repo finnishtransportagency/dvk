@@ -50,6 +50,7 @@ import {
   setMapProperties,
   useUploadMapPictureMutation,
 } from '../utils/mapExportToolUtils';
+import { usePilotRouteLayer } from './map/PilotRouteFeatureLoader';
 
 interface PrintInfoProps {
   orientation: Orientation;
@@ -681,6 +682,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
   const circleLayer = useCircleLayer();
+  const pilotRouteLayer = usePilotRouteLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
@@ -707,6 +709,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       bgFinlandLayer,
       bgMmlSatamatLayer,
       circleLayer,
+      pilotRouteLayer,
     ];
 
     let percent = 0;
@@ -732,6 +735,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,
+    pilotRouteLayer,
   ]);
 
   const dvkMap = getMap();
