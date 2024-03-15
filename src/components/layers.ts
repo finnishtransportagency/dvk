@@ -874,7 +874,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'pilotageareaborder',
     maxResolution: undefined,
-    renderBuffer: 50,
+    renderBuffer: 2,
     style: getLineStyle('#FE7C00', 4),
     minResolution: undefined,
     opacity: 1,

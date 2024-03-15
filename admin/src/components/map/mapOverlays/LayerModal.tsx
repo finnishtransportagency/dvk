@@ -67,7 +67,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
     {
       id: 'piloting',
       title: t('homePage.map.controls.layer.piloting'),
-      childLayers: [{ id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') }],
+      childLayers: [
+        { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
+        { id: 'pilotageareaborder', title: t('homePage.map.controls.layer.pilotageAreaBorders') },
+      ],
     },
     { id: 'name', title: t('homePage.map.controls.layer.name') },
   ];

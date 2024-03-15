@@ -610,6 +610,18 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 314,
   });
+  // Luotsauskäyttöalueen ulkorajat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotageareaborder',
+    maxResolution: undefined,
+    renderBuffer: 2,
+    style: getLineStyle('#FE7C00', 4),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 326,
+  });
 }
 
 function getFittingPadding() {

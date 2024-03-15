@@ -16,6 +16,7 @@ import {
   useLine3456Layer,
   useNameLayer,
   usePilotLayer,
+  usePilotageAreaBorderLayer,
   useSafetyEquipmentLayer,
   useSpecialArea15Layer,
   useSpecialArea2Layer,
@@ -683,6 +684,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
   const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
   const circleLayer = useCircleLayer();
   const pilotRouteLayer = usePilotRouteLayer();
+  const pilotageAreaBorderLayer = usePilotageAreaBorderLayer();
   /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
@@ -710,6 +712,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
       bgMmlSatamatLayer,
       circleLayer,
       pilotRouteLayer,
+      pilotageAreaBorderLayer,
     ];
 
     let percent = 0;
@@ -736,6 +739,7 @@ const MapExportTool: React.FC<MapProps> = ({ fairwayCardInput, fairways, harbour
     specialArea2Layer,
     specialArea15Layer,
     pilotRouteLayer,
+    pilotageAreaBorderLayer,
   ]);
 
   const dvkMap = getMap();
