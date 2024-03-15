@@ -70,6 +70,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         'aisunspecified',
         'safetyequipmentfault',
         'pilotroute',
+        'pilotareaborder',
       ].includes(id);
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };
