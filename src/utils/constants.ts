@@ -77,7 +77,7 @@ export type FeatureDataId =
   | 'vayla_water_area'
   | 'pilotroute'
   | 'pilot'
-  | 'pilotareaborder'
+  | 'pilotageareaborder'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -241,7 +241,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
   },
   {
-    id: 'pilotareaborder',
+    id: 'pilotageareaborder',
     url: new URL(featureLoaderUrl + '?type=vtsline'),
     staticUrl: new URL(staticUrl + '/vtsline.json.gz'),
     persist: true,
@@ -294,7 +294,7 @@ export type FeatureDataLayerId =
   | 'aisunspecified'
   | 'pilot'
   | 'pilotroute'
-  | 'pilotareaborder';
+  | 'pilotageareaborder';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -360,7 +360,7 @@ export const MAP: MapType = {
     { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
     { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
-    { id: 'pilotareaborder', offlineSupport: true, localizedStyle: false },
+    { id: 'pilotageareaborder', offlineSupport: true, localizedStyle: false },
   ],
 };
 

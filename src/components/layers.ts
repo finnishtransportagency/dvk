@@ -872,7 +872,7 @@ export function addAPILayers(map: Map) {
   // Luotsausreitit
   addFeatureVectorLayer({
     map: map,
-    id: 'pilotareaborder',
+    id: 'pilotageareaborder',
     maxResolution: undefined,
     renderBuffer: 50,
     style: getLineStyle('#FE7C00', 2),

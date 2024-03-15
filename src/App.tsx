@@ -35,7 +35,7 @@ import {
   useInitStaticDataLayer,
   useVaylaWaterAreaData,
   useNameLayer,
-  usePilotAreaBorderData,
+  usePilotageAreaBorderData,
 } from './components/FeatureLoader';
 import {
   useAisVesselCargoLayer,
@@ -197,7 +197,7 @@ const DvkIonApp: React.FC = () => {
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
   usePilotRouteLayer();
   useVaylaWaterAreaData();
-  usePilotAreaBorderData();
+  usePilotageAreaBorderData();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);

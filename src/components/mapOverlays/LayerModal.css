@@ -338,8 +338,8 @@ ion-modal#layerModalContainer::part(content) {
   margin-right: 3px;
 }
 
-#layerModalContainer ion-item .pilotareaborder {
-  border-top: 2px solid var(--ion-color-layer-pilotareaborder);
+#layerModalContainer ion-item .pilotageareaborder {
+  border-top: 2px solid var(--ion-color-layer-pilotageareaborder);
   height: 1px;
   vertical-align: middle;
   margin-bottom: 4px;

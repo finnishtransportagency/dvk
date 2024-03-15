@@ -267,7 +267,7 @@
           "piloting": "Luotsaus",
           "pilot": "Luotsipaikat",
           "pilotroutes": "Luotsausreitit",
-          "pilotAreaBorders": "Luotsinkäyttöalueen ulkoraja",
+          "pilotageAreaBorders": "Luotsinkäyttöalueen ulkoraja",
           "vtspoint": "VTS-ilmoituspisteet",
           "general": "Yleiset",
           "name": "Karttanimistö",
