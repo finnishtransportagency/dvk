@@ -21,6 +21,7 @@ import {
   MarineWarningFeatureProperties,
   ObservationFeatureProperties,
   PilotFeatureProperties,
+  PilotRouteFeatureProperties,
   QuayFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
@@ -290,6 +291,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return {
         header: [t('pilotPlace.header', { val: (props as PilotFeatureProperties).name[lang] })],
         featureType: t('featureList.featureType.pilot'),
+        className: type,
+      };
+    case 'pilotroute':
+      return {
+        header: [t('pilotRoute.header', { val: (props as PilotRouteFeatureProperties).name })],
+        featureType: t('featureList.featureType.pilotroute'),
         className: type,
       };
     case 'quay':

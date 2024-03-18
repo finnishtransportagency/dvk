@@ -309,6 +309,9 @@
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
     },
+    "pilotRoute": {
+      "header": "ROUTE: {{val}}"
+    },
     "quay": {
       "length": "Length of the quay",
       "depth": "Swept depth",
@@ -451,7 +454,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
-        "pilotroute": "[en] Luotsausreitti",
+        "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",

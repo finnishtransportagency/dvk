@@ -5,6 +5,7 @@ import { PilotRouteFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
+import { useTranslation } from 'react-i18next';
 
 type PilotRoutePopupContentProps = {
   pilotroute: PilotRouteProperties;
@@ -16,6 +17,8 @@ export type PilotRouteProperties = {
 };
 
 const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotroute, setPopupProperties }) => {
+  const { t } = useTranslation();
+
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
@@ -25,7 +28,7 @@ const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotro
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {pilotroute?.properties.name}
+          {t('popup.pilotRoute.header', { val: pilotroute?.properties.name })}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />

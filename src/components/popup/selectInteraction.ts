@@ -64,7 +64,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
     case 'pilot':
       return getPilotStyle(true);
     case 'pilotroute':
-      return getPilotRouteStyle(feature, resolution);
+      return getPilotRouteStyle(feature, resolution, true);
     case 'area':
       return getAreaStyleBySource(dataSource, true, selectedFairwayCard);
     case 'specialarea2':
