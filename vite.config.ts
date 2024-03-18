@@ -6,7 +6,7 @@ import svgr from 'vite-plugin-svgr';
 import { VitePWA } from 'vite-plugin-pwa';
 import eslintPlugin from 'vite-plugin-eslint';
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig((env) => ({
   build: {
     outDir: process.env.BUILD_PATH ? process.env.BUILD_PATH : 'build',
   },
@@ -61,11 +61,12 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
       },
     }),
-    eslintPlugin({
-      cache: false,
-      include: ['./src/**/*.ts', './src/**/*.tsx'],
-      exclude: [],
-    }),
+    env.mode !== 'test' &&
+      eslintPlugin({
+        cache: false,
+        include: ['./src/**/*.ts', './src/**/*.tsx'],
+        exclude: [],
+      }),
   ],
   test: {
     globals: true,
@@ -88,4 +89,4 @@ export default defineConfig({
   define: {
     VITE_APP_CONFIG: JSON.stringify('DVK'),
   },
-});
+}));

@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Text } from '../graphql/generated';
+import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
@@ -141,4 +141,41 @@ export const radiansToDegrees = (rads: number) => {
 export function openPreview(id: string, isCard: boolean) {
   const path = import.meta.env.VITE_APP_ENV === 'local' ? 'https://' + import.meta.env.VITE_APP_STATIC_URL : '';
   window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
+}
+
+export function removeSequence(picture: PictureInput, pictures: PictureInput[], currentSequenceNumber: number) {
+  return pictures.map((pic) => {
+    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
+      pic.sequenceNumber = null;
+    } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
+      pic.sequenceNumber--;
+    }
+    return pic;
+  });
+}
+
+export function addSequence(picture: PictureInput, pictures: PictureInput[]) {
+  const sequencedPictures = pictures.filter((pic) => !!pic.sequenceNumber);
+  const maxSequenceNumber = sequencedPictures.reduce((acc, pic) => {
+    return acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0;
+  }, 0);
+
+  return pictures.map((pic) => {
+    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
+      pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
+    }
+    return pic;
+  });
+}
+
+export function sortPictures(pictures: PictureInput[]) {
+  return pictures.sort((a, b) => {
+    if (a.orientation === b.orientation) {
+      return 0;
+    } else if (a.orientation === Orientation.Portrait) {
+      return -1;
+    } else {
+      return 1;
+    }
+  });
 }

@@ -116,10 +116,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => cancelAction()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => cancelAction()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" size="large" onClick={() => buttonAction()} shape="round">
+          <IonButton slot="end" onClick={() => buttonAction()} shape="round">
             {buttonTitle}
           </IonButton>
         </IonToolbar>

@@ -9,6 +9,7 @@ import {
   SafetyEquipmentFaultFilter,
 } from '../../utils/constants';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
+import { setNextFocusableElement, isOptionSelected, isIndeterminate, checkAllChildren, handleUncheck } from '../../utils/customSelectDropdownUtils';
 
 interface CustomSelectDropdownProps {
   triggerId: string;
@@ -48,65 +49,25 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: `${trigger.toLocaleLowerCase().includes('area') ? 'areas' : 'homePage.map.controls.layer'}` });
 
-  const isOptionSelected = (value: string) => {
-    if (value === undefined) {
-      return false;
+  const handleFocus = (e: KeyboardEvent | React.KeyboardEvent<HTMLIonCheckboxElement>) => {
+    const isTabPressed = e.key === 'Tab';
+    const isEnterPressed = e.key === 'Enter';
+
+    setNextFocusableElement(popoverRef, trigger, isTabPressed, isEnterPressed);
+
+    if (isEnterPressed) {
+      const checkbox = e.currentTarget as HTMLIonCheckboxElement;
+      const customEvent = {
+        bubbles: true,
+        composed: true,
+        target: e.currentTarget,
+        detail: {
+          checked: !checkbox.checked,
+          value: checkbox.value,
+        },
+      } as CheckboxCustomEvent;
+      handleCheckboxChange(customEvent);
     }
-    return selected.includes(value);
-  };
-
-  const isIndeterminate = (area: WarningFilter) => {
-    const values = area?.childAreas?.filter((a) => isOptionSelected(a.id)) ?? [];
-
-    return values.length < (area?.childAreas?.length ?? 0) && values.length !== 0;
-  };
-
-  const checkAllChildren = (value: string) => {
-    const array: string[] = [];
-    const parentItem = items.find((p) => p.id === value);
-    parentItem?.childAreas?.map((c) => {
-      if (!selected.includes(c.id)) {
-        array.push(c.id);
-        // Check child's children. Not the most elegant solution.
-        c.childAreas?.map((c2) => {
-          if (!selected.includes(c2.id)) {
-            array.push(c2.id);
-          }
-        });
-      }
-    });
-    return array;
-  };
-
-  // function for unchecking parents and parent's parent checkbox
-  const checkIfUncheckParents = (newArray: string[]) => {
-    const array: string[] = [];
-    // notice ! front of parent
-    const noChildrenChecked = !parent?.childAreas?.some((a) => newArray.includes(a.id));
-    if (noChildrenChecked) {
-      const removedParentArray = newArray.filter((i) => i !== parent?.id);
-      if (parent?.parent) {
-        // check if parent's parent has children checked, if has, then no unchecking
-        // atm this clause only used in warning areas, so hard coded structure. If needed in future for other use -> refactor
-        const noGrandParentsChildrenChecked = !marineWarningAreasStructure[0]?.childAreas?.some((a) => removedParentArray.includes(a.id));
-        array.push(...(noGrandParentsChildrenChecked ? removedParentArray.filter((i) => i !== parent.parent) : removedParentArray));
-      } else {
-        array.push(...removedParentArray);
-      }
-    }
-    return noChildrenChecked ? array : newArray;
-  };
-
-  const handleUncheck = (value: string, updatedValues: string[]) => {
-    const oldValues: string[] = [...updatedValues];
-    const parentItem = items.find((p) => p.id === value);
-    // get all children areas and children's children areas
-    const childArray = parentItem?.childAreas?.flatMap((c) => {
-      return c.childAreas ? [c.id.toString(), ...c.childAreas.map((area) => area.id.toString())] : [c.id.toString()];
-    });
-    const newArray = oldValues.filter((item) => !childArray?.includes(item));
-    const uncheckedParentsArray = checkIfUncheckParents(newArray);
-    return uncheckedParentsArray;
   };
 
   const handleCheckboxChange = (event: CheckboxCustomEvent) => {
@@ -114,14 +75,14 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
     let childElements: string[] = [];
     let updatedValues = checked ? [...selected, value] : selected.filter((selectedId) => selectedId !== value);
     if (checked) {
-      if (parent && !isOptionSelected(parent.id)) {
+      if (parent && !isOptionSelected(selected, parent.id)) {
         // if there's parent and it's unchecked, check the parent box aswell
-        updatedValues = [...updatedValues, parent.id, ...(parent.parent && !isOptionSelected(parent.parent) ? [parent.parent] : [])];
+        updatedValues = [...updatedValues, parent.id, ...(parent.parent && !isOptionSelected(selected, parent.parent) ? [parent.parent] : [])];
       }
-      childElements = checkAllChildren(value);
+      childElements = checkAllChildren(items, selected, value);
       setSelected([...updatedValues, ...childElements]);
     } else if (!checked) {
-      setSelected([...handleUncheck(value, updatedValues)]);
+      setSelected([...handleUncheck(value, updatedValues, items, parent)]);
     }
     // forcing the popover to be under the box
     setTimeout(() => {
@@ -135,18 +96,21 @@ const CheckBoxItems: React.FC<CheckBoxItemsProps> = ({
   return (
     <>
       {items.map((item) => {
-        const optionSelected = isOptionSelected(item.id);
-        const indeterminate = isIndeterminate(item);
+        const optionSelected = isOptionSelected(selected, item.id);
+        const indeterminate = isIndeterminate(selected, item);
         return (
           <React.Fragment key={item.id}>
             <IonItem key={item.id} lines="none" style={{ '--padding-start': `${padding}px` }}>
               <IonCheckbox
+                id={item.id}
+                aria-label={item.id}
                 checked={optionSelected}
                 indeterminate={indeterminate}
                 value={item.id}
                 justify="start"
                 labelPlacement="end"
                 onIonChange={handleCheckboxChange}
+                onKeyDown={handleFocus}
               >
                 <IonLabel>{t(`${item.id}`)}</IonLabel>
               </IonCheckbox>
@@ -174,14 +138,14 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
   let items: WarningFilter[] | SafetyEquipmentFaultFilter[];
 
   switch (true) {
+    case trigger.includes('equipment-area'):
+      items = equipmentAreasStructure;
+      break;
     case trigger.includes('area'):
       items = marineWarningAreasStructure;
       break;
     case trigger.includes('type'):
       items = marineWarningTypeStructure;
-      break;
-    case trigger.includes('equipmentArea'):
-      items = equipmentAreasStructure;
       break;
     default:
       // Handle the case when none of the conditions match
@@ -194,7 +158,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({ triggerRef, t
     <IonPopover
       ref={popover}
       trigger={trigger}
-      className={trigger.includes('area') ? 'customPopover tooLong' : 'customPopover'}
+      className={trigger.includes('container-area') ? 'customPopover tooLong' : 'customPopover'}
       isOpen={expanded}
       onDidDismiss={() => setExpanded(false)}
       showBackdrop={false}

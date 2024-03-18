@@ -81,8 +81,8 @@ function useAisFeatures() {
   const [ready, setReady] = useState(false);
   const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer.id)));
   const [aisFeatures, setAisFeatures] = useState<Feature<Geometry>[]>([]);
-  const vesselQuery = useFeatureData('aisvessel', true, 60 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
-  const locationQuery = useFeatureData('aislocation', true, 60 * 1000, enabled, 5 * 60 * 1000, 5 * 60 * 1000);
+  const vesselQuery = useFeatureData('aisvessel', true, 10 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const locationQuery = useFeatureData('aislocation', true, 10 * 1000, enabled, 5 * 60 * 1000, 5 * 60 * 1000);
   const dataUpdatedAt = Math.max(vesselQuery.dataUpdatedAt, locationQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(vesselQuery.errorUpdatedAt, locationQuery.errorUpdatedAt);
   const isPaused = vesselQuery.isPaused || locationQuery.isPaused;
@@ -209,6 +209,7 @@ function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geo
     /* Add vessel features */
     features.forEach((f) => {
       const feat = new Feature();
+      feat.setId(f.getId());
       feat.setProperties(f.getProperties(), true);
       feat.set('dataSource', id, true);
       feat.set('aisPoint', f.getGeometry()?.clone(), true);

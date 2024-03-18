@@ -22,6 +22,7 @@ const faults = [
     turvalaiteNimiSV: 'Kuusinen övre',
     vikatyyppiFI: 'Valo pimeä',
     vikatyyppiSV: 'Ljuset slocknat',
+    vikatyyppiEN: 'Light unlit',
     kirjausAika: '2020-06-07T18:33:04.711000',
     geometria: { type: 'Point', coordinates: [26.9622327773, 60.461115575] },
   },
@@ -47,7 +48,7 @@ it('should get faults from api', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler(mockVoidEvent);
   expect(response.length).toBe(1);
   expect(response).toMatchSnapshot();
@@ -57,9 +58,10 @@ it('should get faults from cache when api call fails', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler(mockVoidEvent);
+  console.log(response);
   expect(response.length).toBe(2);
   expect(response).toMatchSnapshot();
 });

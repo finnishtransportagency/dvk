@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonCol, IonContent, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
@@ -55,11 +55,14 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }
   };
 
-  // sets legend accordingly when opening a picture and if undefined sets box to bottom left corner
-  const setBoundingBoxAndLegend = () => {
+  // sets legend accordingly when opening a picture, if undefined sets box to bottom left corner
+  useEffect(() => {
+    const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
+    setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
+  }, [picture]);
+
+  const setCompassInfo = () => {
     if (compassInfo.current && compassNeedle.current) {
-      const pictureLegendPosition = (picture as PictureInput)?.legendPosition;
-      setLegendPosition(pictureLegendPosition ?? POSITION.bottomLeft);
       const bbox = compassNeedle.current.getBoundingClientRect();
       const sidePadding = 8;
       compassNeedle.current.style.marginLeft = bbox.width / 2 - sidePadding + 'px';
@@ -104,22 +107,24 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
       <IonContent className="ion-padding">
         <IonGrid className="ion-no-padding">
           <IonRow className="content">
-            <IonCol>
+            <IonCol className="imageWrapperParent">
               {picture && (
                 <div className="imageWrapper">
                   <img src={imageUrl + fairwayCardInput.id + '/' + picture.id} alt={picture.id} onLoad={() => setIsLoading(false)} />
                   {!isLoading && (
                     <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
-                      <div className="compassInfo" ref={compassInfo}>
-                        <img
-                          src={north_arrow}
-                          alt=""
-                          ref={compassNeedle}
-                          onLoad={() => setTimeout(() => setBoundingBoxAndLegend(), 50)}
-                          style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
-                        />
-                      </div>
+                      {picture.rotation !== null && (
+                        <div className="compassInfo" ref={compassInfo}>
+                          <img
+                            src={north_arrow}
+                            alt=""
+                            ref={compassNeedle}
+                            onLoad={() => setTimeout(() => setCompassInfo(), 50)}
+                            style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                          />
+                        </div>
+                      )}
                       <div className="cardInfo">
                         <IonText>
                           <h3>{getPictureTitle()}</h3>
@@ -130,13 +135,15 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                             {getTranslatedText('general.datetimeFormat', {
                               val: picture.modificationTimestamp ?? '-',
                             })}
-                            {fairwayCardInput.n2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW'}
+                            {picture.scaleLabel && picture.scaleWidth && (fairwayCardInput.n2000HeightSystem ? ' - N2000 (BSCD2000)' : ' - MW')}
                           </em>
                         )}
                         <em className="danger">{getTranslatedText('fairwaycard.notForNavigation')}</em>
-                        <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
-                          {picture.scaleLabel}
-                        </div>
+                        {picture.scaleLabel && picture.scaleWidth && (
+                          <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
+                            {picture.scaleLabel}
+                          </div>
+                        )}
                         {/* buttons for changing legend position, could be useful to refactor to its own component */}
                         <button
                           className={
@@ -179,7 +186,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
       </IonContent>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round">
             {t('general.close')}
           </IonButton>
         </IonToolbar>

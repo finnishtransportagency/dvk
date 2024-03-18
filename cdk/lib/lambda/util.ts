@@ -1,9 +1,9 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getFromCache } from './graphql/cache';
+import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
-import { RtzData, Vessel } from './api/apiModels';
+import { RtzResponseData, Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
 
 const GEOMETRY_DECIMALS = 5;
@@ -67,7 +67,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-export async function saveResponseToS3(features: FeatureCollection | Vessel[] | RtzData[], key: string): Promise<string> {
+export async function saveResponseToS3(features: FeatureCollection | Vessel[] | RtzResponseData, key: string): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);
@@ -127,6 +127,7 @@ export async function handleAisCall(
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
+      ...getCacheControlHeaders(key),
       'Content-Type': contentType,
     },
   };

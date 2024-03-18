@@ -119,7 +119,7 @@ it('should get warnings from api', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/warningsgraphql.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler();
   expect(response.length).toBe(2);
   expect(response).toMatchSnapshot();
@@ -129,7 +129,7 @@ it('should get warnings from cache when api call fails', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/warningsgraphql.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, Expires: expires });
+  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler();
   expect(response.length).toBe(1);

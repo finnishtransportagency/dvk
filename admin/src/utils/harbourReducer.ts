@@ -370,7 +370,8 @@ export const harbourReducer = (
         (error) =>
           error.id.startsWith('quayName-') ||
           error.id.startsWith('quayExtraInfo-') ||
-          error.id.startsWith('quayGeometry-') ||
+          error.id.startsWith('quayLat-') ||
+          error.id.startsWith('quayLon-') ||
           error.id.startsWith('sectionGeometry-')
       )
       .forEach((error) => {
@@ -390,7 +391,8 @@ export const harbourReducer = (
           (error) =>
             !error.id.startsWith('quayName-') &&
             !error.id.startsWith('quayExtraInfo-') &&
-            !error.id.startsWith('quayGeometry-') &&
+            !error.id.startsWith('quayLat-') &&
+            !error.id.startsWith('quayLon-') &&
             !error.id.startsWith('sectionGeometry-')
         )
         .concat(quayFieldErrors)
@@ -428,17 +430,31 @@ export const harbourReducer = (
         })
     );
   } else if (
-    (actionType === 'quayLat' || actionType === 'quayLon') &&
+    actionType === 'quayLat' &&
     actionTarget !== undefined &&
-    validationErrors.find((error) => error.id === 'quayGeometry-' + actionTarget)?.msg
+    validationErrors.find((error) => error.id === 'quayLat-' + actionTarget)?.msg
   ) {
     const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== 'quayGeometry-' + actionTarget)
+        .filter((error) => error.id !== 'quayLat-' + actionTarget)
         .concat({
-          id: 'quayGeometry-' + actionTarget,
-          msg: currentQuay?.geometry?.lat.trim() || currentQuay?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+          id: 'quayLat-' + actionTarget,
+          msg: !currentQuay?.geometry?.lat?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (
+    actionType === 'quayLon' &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'quayLon-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayLon-' + actionTarget)
+        .concat({
+          id: 'quayLon-' + actionTarget,
+          msg: !currentQuay?.geometry?.lon?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
   } else if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {

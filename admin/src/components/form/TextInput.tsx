@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonInput, IonLabel } from '@ionic/react';
+import { IonButton, IonInput, IonLabel, IonText } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
+import HelpIcon from '../../theme/img/help_icon.svg?react';
+import NotificationModal from '../NotificationModal';
 
 interface TextInputProps {
   label: string;
@@ -26,6 +28,8 @@ interface TextInputProps {
   name?: string;
   setValidity?: (actionType: ActionType, val: boolean) => void;
   maxCharLength?: number;
+  infoTitle?: string;
+  infoDescription?: string;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -50,12 +54,15 @@ const TextInput: React.FC<TextInputProps> = ({
   name,
   setValidity,
   maxCharLength,
+  infoTitle,
+  infoDescription,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const inputRef = useRef<HTMLIonInputElement>(null);
 
   const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const focusInput = () => {
     inputRef.current?.setFocus().catch((err) => {
@@ -68,7 +75,7 @@ const TextInput: React.FC<TextInputProps> = ({
       checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
     }
     if (!newVal) {
-      newVal = null;
+      newVal = '';
     }
     setValue(newVal as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
@@ -138,6 +145,10 @@ const TextInput: React.FC<TextInputProps> = ({
     return (1 / Math.pow(10, decimalCount ?? 0)).toString() || '0.1';
   };
 
+  const showInfoModal = () => {
+    setInfoModalOpen(true);
+  };
+
   useEffect(() => {
     if (isTouched) {
       checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
@@ -158,8 +169,21 @@ const TextInput: React.FC<TextInputProps> = ({
 
   return (
     <>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
-        {label} {required ? '*' : ''}
+      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
+        <IonText onClick={() => focusInput()}>
+          {label} {required ? '*' : ''}
+        </IonText>
+        {infoTitle && infoDescription && (
+          <IonButton
+            fill="clear"
+            className="icon-only xx-small labelButton"
+            onClick={() => showInfoModal()}
+            title={t('info') ?? ''}
+            aria-label={t('info') ?? ''}
+          >
+            <HelpIcon />
+          </IonButton>
+        )}
       </IonLabel>
       <IonInput
         ref={inputRef}
@@ -190,6 +214,13 @@ const TextInput: React.FC<TextInputProps> = ({
         step={inputType === 'number' ? getStep() : undefined}
         type={getInputType()}
         value={val}
+      />
+      <NotificationModal
+        isOpen={infoModalOpen}
+        closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('close')}
+        header={infoTitle ?? ''}
+        message={infoDescription ?? ''}
       />
     </>
   );
