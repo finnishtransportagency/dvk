@@ -49,13 +49,6 @@ class DvkPipelineMessagingStack extends cdk.Stack {
     new PipelineMessaging(this, 'DvkPipelineMessaging');
   }
 }
-class DvkPipelineLambdaStack extends cdk.Stack {
-  constructor(parent: App, id: string, props: StackProps) {
-    super(parent, id, props);
-
-    new PipelineLambda(this, 'DvkPipelineLambda');
-  }
-}
 
 class DvkPipelineLambdaVpcStack extends cdk.Stack {
   constructor(parent: App, id: string, props: StackProps) {
@@ -94,15 +87,6 @@ class SquatPipelineStack extends cdk.Stack {
 }
 
 const app = new cdk.App();
-
-new DvkPipelineLambdaStack(app, 'DvkPipelineLambdaStack', {
-  env: {
-    account: process.env.CDK_DEFAULT_ACCOUNT,
-    region: process.env.CDK_DEFAULT_REGION,
-  },
-  stackName: 'DvkPipelineLambdaStack',
-  tags: Config.tags,
-});
 
 new DvkPipelineLambdaVpcStack(app, 'DvkPipelineLambdaVpcStack', {
   env: {
