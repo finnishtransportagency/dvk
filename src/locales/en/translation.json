@@ -336,7 +336,7 @@
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "length": "Length {{val}}",
-      "direction": "True bearing {{val, number}}",
+      "direction": "True bearing",
       "fairways": "Navigation line is part of the fairway card",
       "width": "Fairway width in chosen place",
       "extra": "Additional information"

@@ -51,6 +51,10 @@ export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) 
   return geometry;
 }
 
+export function invertDegrees(angle: number | undefined) {
+  return angle ? (angle + 180) % 360 : undefined;
+}
+
 export function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
 }
