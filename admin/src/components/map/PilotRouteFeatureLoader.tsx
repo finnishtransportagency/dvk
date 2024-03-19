@@ -27,7 +27,7 @@ function usePilotRouteFeatures() {
   useEffect(() => {
     const pilotRouteData = pilotRouteQuery.data;
     if (pilotRouteData) {
-      const rtzData = pilotRouteData as unknown as RtzData[];
+      const rtzData = pilotRouteData as RtzData[];
       const features: Feature<Geometry>[] = [];
       rtzData.forEach((rtz) => {
         const routeLine = new LineString(rtz.geometria.coordinates);

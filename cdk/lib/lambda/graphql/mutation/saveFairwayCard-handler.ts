@@ -71,6 +71,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     anchorage: mapText(card.anchorage),
     iceCondition: mapText(card.iceCondition),
     attention: mapText(card.attention),
+    notice: mapText(card.notice),
     lineText: mapText(card.lineText),
     designSpeed: mapText(card.designSpeed),
     navigationCondition: mapText(card.navigationCondition),

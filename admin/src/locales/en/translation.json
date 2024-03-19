@@ -207,7 +207,9 @@
     "print-images-description": "Caption",
     "print-images-card-id-required": "[en] Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Not for navigational use",
-    "toggle-sequence": "[en] Aseta järjestysnumero"
+    "toggle-sequence": "[en] Aseta järjestysnumero",
+    "fairway-additional-info": "[en] Väliaikaisen huomion lisääminen väyläkortille",
+    "fairway-notice": "Notice"
   },
   "harbour": {
     "primary-id": "Harbour ID",

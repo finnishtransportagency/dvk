@@ -99,6 +99,8 @@ class FairwayCardDBModel {
 
   fairwayIds?: Maybe<string>;
 
+  notice?: Maybe<Text>;
+
   lineText?: Maybe<Text>;
 
   designSpeed?: Maybe<Text>;

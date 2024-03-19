@@ -83,7 +83,8 @@ export type FairwayCardActionType =
   | 'picture'
   | 'pictureDescription'
   | 'pictureLegendPosition'
-  | 'getState';
+  | 'getState'
+  | 'notice';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

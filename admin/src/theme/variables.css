@@ -168,7 +168,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-ice-consolidated: #910000;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   /*
    * Dark Colors
    * -------------------------------------------
