@@ -172,6 +172,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
 
             <IonText>
               <h4>
+                <strong>{t('additionalInfo')}</strong>
+              </h4>
+              <Paragraph bodyText={fairwayCard?.notice ?? undefined} />
+            </IonText>
+
+            <IonText>
+              <h4>
                 <strong>{t('trafficServices')}</strong>
               </h4>
             </IonText>

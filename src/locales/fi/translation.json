@@ -251,7 +251,8 @@
     "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
     "alert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.<br/><br/>Voit myös tarkistaa löytyykö etsimäsi väyläkortti <3>Väyläkortit</3>-listauksesta.",
     "previewAlert": "Hakemaasi \"{{ fairwayCardId }}\" väyläkorttia ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.",
-    "harborPreviewAlert": "Hakemaasi \"{{ harborId }}\" satamaa ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta."
+    "harborPreviewAlert": "Hakemaasi \"{{ harborId }}\" satamaa ei löytynyt. Tarkista sivuston osoite kirjoitusvirheiden varalta.",
+    "additionalInfo": "Lisätiedot"
   },
   "faults": {
     "title": "Turvalaiteviat",
