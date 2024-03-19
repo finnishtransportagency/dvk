@@ -337,7 +337,7 @@
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerad djup {{val, number}}",
       "length": "Längd {{val}}",
-      "direction": "Rättvisande kurs {{val, number}}",
+      "direction": "Rättvisande kurs",
       "fairways": "Navigationslinje är en del av farledskortet",
       "width": "Farledsbredd på det valda stället",
       "extra": "Tilläggsuppgift"

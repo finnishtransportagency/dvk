@@ -337,7 +337,7 @@
       "depth": "Haraussyvyys {{val, number}}",
       "draft": "Mitoitussyväys {{val, number}}",
       "length": "Pituus {{val}}",
-      "direction": "Tosisuunta {{val, number}}",
+      "direction": "Tosisuunta",
       "fairways": "Navigointilinja on osa väyläkorttia",
       "width": "Väyläleveys valitussa kohdassa",
       "extra": "Lisätieto"
