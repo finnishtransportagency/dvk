@@ -300,7 +300,8 @@ export type FeatureDataLayerId =
   | 'aisvesselpleasurecraft'
   | 'aisunspecified'
   | 'pilot'
-  | 'pilotroute';
+  | 'pilotroute'
+  | 'pilotageareaborder';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -366,6 +367,7 @@ export const MAP: MapType = {
     { id: 'aisunspecified', offlineSupport: false, localizedStyle: false },
     { id: 'pilot', offlineSupport: true, localizedStyle: false },
     { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
+    { id: 'pilotageareaborder', offlineSupport: true, localizedStyle: false },
   ],
 };
 

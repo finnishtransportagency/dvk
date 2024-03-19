@@ -302,3 +302,7 @@ export type EquipmentFault = {
 export function useSafetyEquipmentLayer(): DvkLayerState {
   return useDataLayer('safetyequipment', 'safetyequipment');
 }
+
+export function usePilotageAreaBorderLayer() {
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}
