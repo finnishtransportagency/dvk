@@ -869,6 +869,18 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 325,
   });
+  // Luotsinkäyttölinjat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotagelimit',
+    maxResolution: undefined,
+    renderBuffer: 2,
+    style: getLineStyle('#0000FF', 2),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 105,
+  });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
     map: map,
