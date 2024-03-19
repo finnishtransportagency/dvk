@@ -512,3 +512,7 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
 export function useVaylaWaterAreaData() {
   return useFeatureData('vayla_water_area');
 }
+
+export function usePilotageAreaBorderLayer() {
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}

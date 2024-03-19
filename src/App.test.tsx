@@ -134,6 +134,9 @@ vi.mock('./components/FeatureLoader', () => ({
   useNameLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  usePilotageAreaBorderLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
 }));
 
 vi.mock('./graphql/generated', async () => {

@@ -111,7 +111,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     {
       id: 'piloting',
       title: t('homePage.map.controls.layer.piloting'),
-      childLayers: [{ id: 'pilot', title: t('homePage.map.controls.layer.pilot') }],
+      childLayers: [
+        { id: 'pilot', title: t('homePage.map.controls.layer.pilot') },
+        { id: 'pilotageareaborder', title: t('homePage.map.controls.layer.pilotageAreaBorders') },
+      ],
     },
     {
       id: 'ais',

@@ -151,7 +151,9 @@ export type FeatureDataId =
   | 'circle'
   | 'specialarea2'
   | 'specialarea15'
-  | 'pilotroute';
+  | 'pilotroute'
+  | 'pilotageareaborder'
+  | 'pilotagelimit';
 
 export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
 
@@ -192,6 +194,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
   { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
   { id: 'pilotroute', url: new URL(pilotRoutesUrl), staticUrl: new URL(staticUrl + '//pilotroutes.json.gz') },
+  {
+    id: 'pilotageareaborder',
+    url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
+  },
+  { id: 'pilotagelimit', url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'), staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz') },
 ];
 
 export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting';
@@ -215,7 +223,8 @@ export type FeatureDataLayerId =
   | 'circle'
   | 'specialarea2'
   | 'specialarea15'
-  | 'pilotroute';
+  | 'pilotroute'
+  | 'pilotageareaborder';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -263,6 +272,7 @@ export const MAP: MapType = {
     { id: 'vtspoint' },
     { id: 'pilot' },
     { id: 'pilotroute' },
+    { id: 'pilotageareaborder' },
     { id: 'name' },
     { id: 'circle' },
   ],
