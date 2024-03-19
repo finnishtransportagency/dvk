@@ -58,7 +58,9 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     return n2000Value;
   };
 
-  const degreesToString = (degrees: number) => padNumber(degrees, 3, 1).replace('.', ',');
+  const degreesToString = (degrees: number) => padNumber(degrees, 3).replace('.', ',');
+  const direction1 = Math.min(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
+  const direction2 = Math.max(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
 
   const lineDepth = getValue(line.properties.n2000depth, line.properties.depth) as number;
   const lineDraft = getValue(line.properties.n2000draft, line.properties.draft) as number;
@@ -126,13 +128,13 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
           </IonCol>
         </IonRow>
       )}
-      {line.properties.direction && line.properties.oppositeDirection && (
+      {direction1 > 0 && direction2 > 0 && (
         <IonRow>
           <IonCol>
-            {t('popup.line.direction')} {degreesToString(line.properties.direction)}
+            {t('popup.line.direction')} {degreesToString(direction1)}
             <dd aria-label={t('fairwayCards.unit.degDesc_other')}>°</dd>
             {' - '}
-            {degreesToString(line.properties.oppositeDirection)}
+            {degreesToString(direction2)}
             <dd aria-label={t('fairwayCards.unit.degDesc_other')}>°</dd>
           </IonCol>
         </IonRow>

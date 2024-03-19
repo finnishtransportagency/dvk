@@ -51,8 +51,13 @@ export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) 
   return geometry;
 }
 
-export function invertDegrees(angle: number | undefined) {
-  return angle ? (angle + 180) % 360 : undefined;
+export function roundDecimals(n: number | null | undefined, decimals: number) {
+  const power = Math.pow(10, decimals);
+  return n ? Math.round(n * power) / power : n;
+}
+
+export function invertDegrees(angle: number | null | undefined) {
+  return angle ? (angle + 180) % 360 : angle;
 }
 
 export function getNumberValue(value: number | undefined): number | undefined {

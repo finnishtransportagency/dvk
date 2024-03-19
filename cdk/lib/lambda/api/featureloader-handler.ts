@@ -10,7 +10,7 @@ import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weathe
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees } from '../util';
+import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees, roundDecimals } from '../util';
 import {
   AlueAPIModel,
   KaantoympyraAPIModel,
@@ -277,8 +277,8 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
         id: line.id,
         featureType: 'line',
         depth: getNumberValue(line.harausSyvyys),
-        direction: line.tosisuunta,
-        oppositeDirection: invertDegrees(line.tosisuunta),
+        direction: roundDecimals(line.tosisuunta, 1) ?? undefined,
+        oppositeDirection: roundDecimals(invertDegrees(line.tosisuunta), 1) ?? undefined,
         draft: getNumberValue(line.mitoitusSyvays),
         length: getNumberValue(line.pituus),
         n2000depth: getNumberValue(line.n2000HarausSyvyys),
