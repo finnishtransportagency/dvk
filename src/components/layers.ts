@@ -875,7 +875,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'pilotagelimit',
     maxResolution: undefined,
-    renderBuffer: 2,
+    renderBuffer: 15,
     style: getPilotageLimitStyle,
     minResolution: undefined,
     opacity: 1,
