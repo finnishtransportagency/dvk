@@ -6,22 +6,26 @@ import arrowIconActive from '../../theme/img/pilotRouteArrow_active.svg';
 import { nauticalMilesToMeters } from '../../utils/conversions';
 import { Coordinate } from 'ol/coordinate';
 
-const pilotLineStyle = (color: string) => {
+export const PILOT_ROUTE_Z_INDEX = 325;
+
+const pilotLineStyle = (selected: boolean) => {
   return new Style({
     stroke: new Stroke({
-      color: color,
+      color: selected ? '#EC0E0E' : '#000000',
       width: 2,
     }),
+    zIndex: selected ? PILOT_ROUTE_Z_INDEX + 1 : PILOT_ROUTE_Z_INDEX,
   });
 };
 
-const arrowIconStyle = (iconSrc: string) => {
+const arrowIconStyle = (selected: boolean) => {
   return new Style({
     image: new Icon({
-      src: iconSrc,
+      src: selected ? arrowIconActive : arrowIcon,
       anchor: [1, 0.5],
       rotateWithView: true,
     }),
+    zIndex: selected ? PILOT_ROUTE_Z_INDEX + 1 : PILOT_ROUTE_Z_INDEX,
   });
 };
 
@@ -33,8 +37,8 @@ function getMileStoneImageRotation(start: Coordinate, end: Coordinate) {
 }
 
 export function getPilotRouteStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  const styles: Array<Style> = [pilotLineStyle(selected ? '#EC0E0E' : '#000000')];
-  const milestoneStyle = arrowIconStyle(selected ? arrowIconActive : arrowIcon);
+  const styles: Array<Style> = [pilotLineStyle(selected)];
+  const milestoneStyle = arrowIconStyle(selected);
   const lineString = feature.getGeometry() as LineString;
   const totalLength = lineString.getLength();
   let chunkLength = nauticalMilesToMeters(100);

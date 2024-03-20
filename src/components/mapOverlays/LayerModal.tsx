@@ -142,7 +142,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
-      featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
+      featureLayer?.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
