@@ -6,15 +6,13 @@ import arrowIconActive from '../../theme/img/pilotRouteArrow_active.svg';
 import { nauticalMilesToMeters } from '../../utils/conversions';
 import { Coordinate } from 'ol/coordinate';
 
-export const PILOT_ROUTE_Z_INDEX = 325;
-
 const pilotLineStyle = (selected: boolean) => {
   return new Style({
     stroke: new Stroke({
       color: selected ? '#EC0E0E' : '#000000',
       width: 2,
     }),
-    zIndex: selected ? PILOT_ROUTE_Z_INDEX + 1 : PILOT_ROUTE_Z_INDEX,
+    zIndex: selected ? 2 : 1,
   });
 };
 
@@ -25,7 +23,7 @@ const arrowIconStyle = (selected: boolean) => {
       anchor: [1, 0.5],
       rotateWithView: true,
     }),
-    zIndex: selected ? PILOT_ROUTE_Z_INDEX + 1 : PILOT_ROUTE_Z_INDEX,
+    zIndex: selected ? 2 : 1,
   });
 };
 

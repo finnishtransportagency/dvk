@@ -45,7 +45,7 @@ import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUt
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
-import { PILOT_ROUTE_Z_INDEX, getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
+import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -867,7 +867,7 @@ export function addAPILayers(map: Map) {
     minResolution: undefined,
     opacity: 1,
     declutter: false,
-    zIndex: PILOT_ROUTE_Z_INDEX,
+    zIndex: 325,
   });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
