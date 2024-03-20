@@ -13,6 +13,7 @@ import dvkMap from '../DvkMap';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { padNumber } from 'ol/string';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -50,12 +51,16 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     clearClickSelectionFeatures();
   };
 
-  function getValue(n2000Value: string | number | undefined, value: string | number | undefined) {
+  const getValue = (n2000Value: string | number | undefined, value: string | number | undefined) => {
     if (!showN2000HeightSystem || n2000Value === null || n2000Value === undefined) {
       return value;
     }
     return n2000Value;
-  }
+  };
+
+  const degreesToString = (degrees: number) => padNumber(degrees, 3).replace('.', ',');
+  const direction1 = Math.min(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
+  const direction2 = Math.max(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
 
   const lineDepth = getValue(line.properties.n2000depth, line.properties.depth) as number;
   const lineDraft = getValue(line.properties.n2000draft, line.properties.draft) as number;
@@ -123,11 +128,14 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
           </IonCol>
         </IonRow>
       )}
-      {line.properties.direction && (
+      {direction1 > 0 && direction2 > 0 && (
         <IonRow>
           <IonCol>
-            {t('popup.line.direction', { val: line.properties.direction })}{' '}
-            <dd aria-label={t('fairwayCards.unit.degDesc', { count: line.properties.direction })}>°</dd>
+            {t('popup.line.direction')} {degreesToString(direction1)}
+            <dd aria-label={t('fairwayCards.unit.degDesc_other')}>°</dd>
+            {' - '}
+            {degreesToString(direction2)}
+            <dd aria-label={t('fairwayCards.unit.degDesc_other')}>°</dd>
           </IonCol>
         </IonRow>
       )}

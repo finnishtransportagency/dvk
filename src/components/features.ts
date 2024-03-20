@@ -89,6 +89,7 @@ export type LineFeatureProperties = {
   referenceLevel?: string;
   n2000ReferenceLevel?: string;
   direction?: number;
+  oppositeDirection?: number;
   extra?: string;
   fairways?: LineFairway[];
 };

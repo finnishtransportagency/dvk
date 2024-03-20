@@ -40,7 +40,7 @@ const lines = [
     n2000MitoitusSyvays: null,
     n2000HarausSyvyys: null,
     n2000Vertaustaso: null,
-    tosisuunta: null,
+    tosisuunta: 175,
     pituus: 33,
     sade: 150,
     diaariNumero: '306/611/2000',
