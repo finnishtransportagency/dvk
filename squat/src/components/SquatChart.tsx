@@ -16,12 +16,19 @@ import { isEmbedded } from '../pages/Home';
 import SquatHeader from './SquatHeader';
 import { fieldParams } from '../hooks/squatReducer';
 
-const SquatChart: React.FC = () => {
+const NARROW_WIDTH = 675;
+const WIDE_WIDTH = 1000;
+
+interface SquatChartProps {
+  wideChart?: boolean;
+}
+
+const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
   const ref = useRef<SVGSVGElement>(null);
   const { state } = useSquatContext();
 
-  const [width, setWidth] = useState(1000);
+  const [width, setWidth] = useState(wideChart ? WIDE_WIDTH : NARROW_WIDTH);
   const [huuskaGuliev20, setHuuskaGuliev20] = useState(Array<[number, number]>);
   const [huuskaGuliev24, setHuuskaGuliev24] = useState(Array<[number, number]>);
   const [barrass, setBarrass] = useState(Array<[number, number]>);
@@ -37,7 +44,7 @@ const SquatChart: React.FC = () => {
         }).observe(ref.current);
       }
     }
-  }, []);
+  }, [wideChart]);
 
   useLayoutEffect(() => {
     const { showLimitedView: limitedView } = state.status;
@@ -90,7 +97,7 @@ const SquatChart: React.FC = () => {
     };
 
     const buildGraph = () => {
-      const height = Math.round(width / 2);
+      const height = Math.round(wideChart ? width / 2 : width / 1.35);
       const marginLeft = 50;
       const marginRight = 30;
       const marginTop = 30;
@@ -403,28 +410,32 @@ const SquatChart: React.FC = () => {
     if (width > 300) {
       buildGraph();
     }
-  }, [state, width, t]);
+  }, [state, width, t, wideChart]);
 
   return (
-    <IonGrid className="squatChartGrid" aria-hidden="true">
-      <IonRow className="squatChartRow">
-        <IonCol>
-          <IonText className="squatChartTitle">
-            <SquatHeader level={3} text={t('heading')} embedded={isEmbedded()}></SquatHeader>
-          </IonText>
-        </IonCol>
-      </IonRow>
-      <IonRow className="squatChartRow wideRow">
-        <IonCol>
-          <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
-        </IonCol>
-      </IonRow>
-      <IonRow className="squatChartRow wideRow">
-        <IonCol>
-          <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <>
+      <IonGrid className="squatChartGrid" aria-hidden="true">
+        <IonRow>
+          <IonCol>
+            <IonText className="squatChartTitle">
+              <SquatHeader level={3} text={t('heading')} embedded={isEmbedded()}></SquatHeader>
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow className="squatChartRow">
+          <IonCol>
+            <svg ref={ref} viewBox={`0 0 ${wideChart ? WIDE_WIDTH : NARROW_WIDTH} 500`} width="100%" />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <IonGrid className="squatDataGrid" aria-hidden="true">
+        <IonRow className="squatDataRow wideRow">
+          <IonCol>
+            <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </>
   );
 };
 

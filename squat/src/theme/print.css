@@ -277,7 +277,8 @@
     display: none !important;
   }
 
-  .squatChartGrid {
+  .squatChartGrid,
+  .squatDataGrid {
     break-inside: avoid;
   }
   .squatChartTitle {

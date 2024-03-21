@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonContent, IonFooter, IonGrid, IonItem, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import { IonCol, IonContent, IonFooter, IonGrid, IonItem, IonPage, IonRow, IonTitle, IonToolbar, isPlatform } from '@ionic/react';
 import Squat from '../components/Squat';
 import SquatChart from '../components/SquatChart';
 import { useTranslation } from 'react-i18next';
@@ -27,6 +27,10 @@ export const isEmbedded = (): boolean => {
   return !!param;
 };
 
+export const isMobile = () => {
+  return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
+};
+
 const Home: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
@@ -34,7 +38,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonContent className={isEmbedded() ? 'embedded' : undefined}>
         <Squat />
-        <SquatChart />
+        <SquatChart wideChart={!isMobile()} />
       </IonContent>
       {/*-- Fade Footer --*/}
       <IonFooter collapse="fade" className="small">
