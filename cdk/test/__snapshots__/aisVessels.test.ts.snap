@@ -5,8 +5,8 @@ exports[`should get vessels from api when cache expired 1`] = `
   {
     "callSign": "MC001",
     "destination": "KOTKA",
-    "draught": 0.32,
-    "eta": "00-00 00:00",
+    "draught": 3.2,
+    "eta": "03-06 19:00",
     "imo": 7734789,
     "mmsi": 11122233001,
     "name": "MOCK1",
@@ -21,8 +21,8 @@ exports[`should get vessels from api when cache expired 1`] = `
   {
     "callSign": "MC002",
     "destination": "TURKU",
-    "draught": 0.75,
-    "eta": "00-00 00:00",
+    "draught": 7.5,
+    "eta": "03-11 00:00",
     "imo": 9505508,
     "mmsi": 99988877001,
     "name": "MOCK2",
@@ -37,8 +37,8 @@ exports[`should get vessels from api when cache expired 1`] = `
   {
     "callSign": "MC003",
     "destination": "HELSINKI",
-    "draught": 0.5599999999999999,
-    "eta": "00-00 00:00",
+    "draught": 5.6,
+    "eta": "01-31 08:00",
     "imo": 9684823,
     "mmsi": 66655544001,
     "name": "MOCK3",

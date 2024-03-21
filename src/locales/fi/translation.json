@@ -41,14 +41,12 @@
           "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
           "specialAreas": "Erityisalueet",
-          "pilotPlaces": "Luotsipaikat",
           "marineWarnings": "Merivaroitukset",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
           "boaterWarning": "Varoituksia veneilijöille",
           "boardLines": "Taululinjat",
           "circles": "Kääntöympyrät",
-          "pilotroutes": "Luotsausreitit",
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
@@ -57,6 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS-alueet",
           "vtspoint": "VTS-ilmoituspisteet",
+          "piloting": "Luotsaus",
+          "pilot": "Luotsipaikat",
+          "pilotroutes": "Luotsausreitit",
+          "pilotageLimits": "Luotsinkäyttölinjat",
+          "pilotageAreaBorders": "Luotsinkäyttöalueen ulkoraja",
           "general": "Yleiset",
           "name": "Karttanimistö",
           "depthinfo": "Syvyystiedot",
@@ -307,6 +310,9 @@
       "coordinates": "Koordinaatit",
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
+    "pilotRoute": {
+      "header": "REITTI: {{val}}"
+    },
     "quay": {
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
@@ -334,7 +340,7 @@
       "depth": "Haraussyvyys {{val, number}}",
       "draft": "Mitoitussyväys {{val, number}}",
       "length": "Pituus {{val}}",
-      "direction": "Tosisuunta {{val, number}}",
+      "direction": "Tosisuunta",
       "fairways": "Navigointilinja on osa väyläkorttia",
       "width": "Väyläleveys valitussa kohdassa",
       "extra": "Lisätieto"
@@ -449,6 +455,7 @@
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
         "pilot": "Luotsipaikka",
+        "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",

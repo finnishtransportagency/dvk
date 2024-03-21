@@ -27,7 +27,7 @@ const OfflineSupport: React.FC = () => {
   const coastalWarningLayer = useFeatureData('marinewarning');
   const localWarningLayer = useFeatureData('marinewarning');
   const boaterWarningLayer = useFeatureData('marinewarning');
-  const nameLayer = useStaticDataLayer('name');
+  const nameLayer = useFeatureData('name');
   const boardLine12Layer = useFeatureData('boardline12');
   const bgLayerBa = useStaticDataLayer('balticsea');
   const bgLayerFi = useStaticDataLayer('finland');

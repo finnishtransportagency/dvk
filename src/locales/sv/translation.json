@@ -41,14 +41,12 @@
           "safetyEquipmentFaults": "Säkerhetsanordningsfelen",
           "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
-          "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
           "boaterWarning": "Navigationsvarningar för båtfarare",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
-          "pilotroutes": "Lotsningsrutter",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
@@ -57,6 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS-områden",
           "vtspoint": "VTS-trafikrapporteringspunkter",
+          "piloting": "[sv] Luotsaus",
+          "pilot": "Lotsplatser",
+          "pilotroutes": "Lotsningsrutter",
+          "pilotageLimits": "[sv] Luotsinkäyttölinjat",
+          "pilotageAreaBorders": "[sv] Luotsinkäyttöalueen ulkoraja",
           "general": "Allmänt",
           "name": "Kartnamn",
           "depthinfo": "Djup information",
@@ -307,6 +310,9 @@
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
     },
+    "pilotRoute": {
+      "header": "RUTT: {{val}}"
+    },
     "quay": {
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
@@ -334,7 +340,7 @@
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerad djup {{val, number}}",
       "length": "Längd {{val}}",
-      "direction": "Rättvisande kurs {{val, number}}",
+      "direction": "Rättvisande kurs",
       "fairways": "Navigationslinje är en del av farledskortet",
       "width": "Farledsbredd på det valda stället",
       "extra": "Tilläggsuppgift"
@@ -449,6 +455,7 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
+        "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",

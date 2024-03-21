@@ -41,14 +41,12 @@
           "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
-          "pilotPlaces": "Pilot boarding position",
           "marineWarnings": "Navigational warnings",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
           "boaterWarning": "Navigational warnings for yachtsmen",
           "boardLines": "Leading lines",
           "circles": "Turning circles",
-          "pilotroutes": "Pilot routes",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
@@ -57,6 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS areas",
           "vtspoint": "VTS reporting points",
+          "piloting": "[en] Luotsaus",
+          "pilot": "Pilot boarding position",
+          "pilotroutes": "Pilot routes",
+          "pilotageLimits": "[en] Luotsinkäyttölinjat",
+          "pilotageAreaBorders": "[en] Luotsinkäyttöalueen ulkoraja",
           "general": "General",
           "name": "Map names",
           "depthinfo": "Depth information",
@@ -307,6 +310,9 @@
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
     },
+    "pilotRoute": {
+      "header": "ROUTE: {{val}}"
+    },
     "quay": {
       "length": "Length of the quay",
       "depth": "Swept depth",
@@ -334,7 +340,7 @@
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "length": "Length {{val}}",
-      "direction": "True bearing {{val, number}}",
+      "direction": "True bearing",
       "fairways": "Navigation line is part of the fairway card",
       "width": "Fairway width in chosen place",
       "extra": "Additional information"
@@ -449,6 +455,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
+        "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
