@@ -44,7 +44,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         }).observe(ref.current);
       }
     }
-  }, [wideChart]);
+  }, []);
 
   useLayoutEffect(() => {
     const { showLimitedView: limitedView } = state.status;
