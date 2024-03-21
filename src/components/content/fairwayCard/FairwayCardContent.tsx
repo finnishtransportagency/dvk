@@ -27,7 +27,6 @@ import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
-import { AdditionalInfoAlert } from './AdditionalInfoAlert';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -112,7 +111,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
-          {fairwayCard.notice && <AdditionalInfoAlert additionalInfo={fairwayCard.notice[lang]}></AdditionalInfoAlert>}
           {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
             <div className="no-print">
               <SafetyEquipmentFaultAlert
@@ -170,13 +168,14 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel ?? undefined} showNoData />
             </IonText>
 
-            <IonText>
-              <h4>
-                <strong>{t('additionalInfo')}</strong>
-              </h4>
-              <Paragraph bodyText={fairwayCard?.notice ?? undefined} />
-            </IonText>
-
+            {fairwayCard?.additionalInfo && (
+              <IonText>
+                <h4>
+                  <strong>{t('additionalInfo')}</strong>
+                </h4>
+                <Paragraph bodyText={fairwayCard?.additionalInfo ?? undefined} />
+              </IonText>
+            )}
             <IonText>
               <h4>
                 <strong>{t('trafficServices')}</strong>

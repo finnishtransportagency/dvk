@@ -280,26 +280,3 @@ dd {
   display: inline;
   margin: 0;
 }
-
-ion-grid.additionalInfoAlert {
-  padding: 16px;
-  border: 1px solid var(--ion-color-light);
-  margin-bottom: 1em;
-  font-size: 14px;
-  line-height: 1.25rem;
-}
-ion-grid.additionalInfoAlert ion-col.icon {
-  display: flex;
-  align-items: center;
-  max-width: calc(54px - 16px);
-}
-
-ion-grid.additionalInfoAlert ion-icon {
-  height: 24px;
-  width: 24px;
-  color: var(--ion-color-primary);
-}
-
-ion-grid.additionalInfoAlert ion-text {
-  color: rgb(36, 34, 34);
-}

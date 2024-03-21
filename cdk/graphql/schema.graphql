@@ -57,7 +57,7 @@ input FairwayCardInput {
   fairwayIds: [Float!]!
   primaryFairwayId: Float
   secondaryFairwayId: Float
-  notice: TextInput
+  additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput
   generalInfo: TextInput
@@ -219,7 +219,7 @@ type FairwayCard {
   modificationTimestamp: Float
   fairwayIds: String
   fairways: [Fairway!]!
-  notice: Text
+  additionalInfo: Text
   lineText: Text
   designSpeed: Text
   generalInfo: Text

@@ -2,6 +2,7 @@
 
 exports[`should get draft card from the DynamoDB 1`] = `
 {
+  "additionalInfo": undefined,
   "anchorage": undefined,
   "attention": undefined,
   "creationTimestamp": Any<Number>,
@@ -30,7 +31,6 @@ exports[`should get draft card from the DynamoDB 1`] = `
     "sv": "Testsv2",
   },
   "navigationCondition": undefined,
-  "notice": undefined,
   "pictures": undefined,
   "seaLevel": undefined,
   "speedLimit": undefined,
@@ -56,6 +56,7 @@ exports[`should get draft card from the DynamoDB 1`] = `
 
 exports[`should get public card from the DynamoDB 1`] = `
 {
+  "additionalInfo": undefined,
   "anchorage": undefined,
   "attention": undefined,
   "creationTimestamp": Any<Number>,
@@ -84,7 +85,6 @@ exports[`should get public card from the DynamoDB 1`] = `
     "sv": "Testsv",
   },
   "navigationCondition": undefined,
-  "notice": undefined,
   "pictures": undefined,
   "seaLevel": undefined,
   "speedLimit": undefined,

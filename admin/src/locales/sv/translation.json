@@ -208,8 +208,7 @@
     "print-images-card-id-required": "[sv] Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Ej för navigation",
     "toggle-sequence": "[sv] Aseta järjestysnumero",
-    "fairway-additional-info": "[sv] Väliaikaisen huomion lisääminen väyläkortille",
-    "fairway-notice": "Uppmärksamhet"
+    "fairway-additional-info": "Ytterligare information"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

@@ -54,7 +54,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     id: '',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
-    notice: { fi: '', sv: '', en: '' },
+    additionalInfo: { fi: '', sv: '', en: '' },
     lineText: { fi: '', sv: '', en: '' },
     designSpeed: { fi: '', sv: '', en: '' },
     speedLimit: { fi: '', sv: '', en: '' },

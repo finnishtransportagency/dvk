@@ -2,6 +2,7 @@
 
 exports[`test mapFairwayCardToModel all 1`] = `
 {
+  "additionalInfo": null,
   "anchorage": {
     "en": "anchorageen",
     "fi": "anchorage",
@@ -156,6 +157,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
 
 exports[`test mapFairwayCardToModel minimal 1`] = `
 {
+  "additionalInfo": null,
   "anchorage": null,
   "attention": null,
   "creationTimestamp": Any<Number>,

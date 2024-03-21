@@ -27,13 +27,13 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
       </IonText>
       <IonGrid className="formGrid">
         <TextInputRow
-          labelKey="fairwaycard.fairway-notice"
-          value={state.notice}
+          labelKey="fairwaycard.fairway-additional-info"
+          value={state.additionalInfo}
           updateState={updateState}
-          actionType="notice"
-          required={!!state.notice?.fi || !!state.notice?.sv || !!state.notice?.en}
+          actionType="additionalInfo"
+          required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
           disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'notice')?.msg}
+          error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
           inputType="textarea"
         />
       </IonGrid>

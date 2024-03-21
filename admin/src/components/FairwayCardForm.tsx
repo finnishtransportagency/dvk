@@ -280,10 +280,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               fairwaySelection={fairwaySelection}
               harbourOptions={harbourOptions}
             />
-            <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <RecommendationsSection state={state} updateState={updateState} validationErrors={validationErrors} />
+            <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <TrafficServiceSection
               state={state}
               updateState={updateState}

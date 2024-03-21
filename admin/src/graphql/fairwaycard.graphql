@@ -23,7 +23,7 @@ fragment FairwayCardById on FairwayCard {
       primary
       secondary
     }
-    notice {
+    additionalInfo {
       fi
       sv
       en
