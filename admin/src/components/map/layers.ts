@@ -35,6 +35,7 @@ import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
 import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
+import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -609,6 +610,18 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 314,
+  });
+  // Luotsinkäyttölinjat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotagelimit',
+    maxResolution: undefined,
+    renderBuffer: 15,
+    style: getPilotageLimitStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 304,
   });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({

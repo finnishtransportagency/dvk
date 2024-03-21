@@ -46,6 +46,7 @@ import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
+import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -868,6 +869,18 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 325,
+  });
+  // Luotsinkäyttölinjat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotagelimit',
+    maxResolution: undefined,
+    renderBuffer: 15,
+    style: getPilotageLimitStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 304,
   });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
