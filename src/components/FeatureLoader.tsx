@@ -518,5 +518,10 @@ export function usePilotageAreaBorderLayer() {
 }
 
 export function usePilotageLimitLayer() {
-  return useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
+  const rv = useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
+  const source = dvkMap.getVectorSource('pilotagelimit');
+  source.forEachFeature((f) => {
+    f.set('featureType', 'pilotagelimit');
+  });
+  return rv;
 }

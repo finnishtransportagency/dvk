@@ -876,7 +876,7 @@ export function addAPILayers(map: Map) {
     id: 'pilotagelimit',
     maxResolution: undefined,
     renderBuffer: 15,
-    style: getPilotageLimitStyle,
+    style: (feature, resolution) => getPilotageLimitStyle(feature, resolution, feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
