@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FairwayCardInput, Status } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType } from '../../../utils/constants';
-import { IonGrid, IonText } from '@ionic/react';
+import { IonButton, IonGrid, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import TextInputRow from '../TextInputRow';
+import HelpIcon from '../../../theme/img/help_icon.svg?react';
+import NotificationModal from '../../NotificationModal';
 
 interface AdditionalInfoSectionProps {
   state: FairwayCardInput;
@@ -19,11 +21,27 @@ interface AdditionalInfoSectionProps {
 
 const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors }) => {
   const { t } = useTranslation();
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
+
+  const showInfoModal = () => {
+    setInfoModalOpen(true);
+  };
 
   return (
     <>
       <IonText>
-        <h2>{t('fairwaycard.fairway-additional-info')}</h2>
+        <h2>
+          {t('fairwaycard.fairway-additional-info')}
+          <IonButton
+            fill="clear"
+            className="icon-only xx-small labelButton"
+            onClick={() => showInfoModal()}
+            title={t('info') ?? ''}
+            aria-label={t('info') ?? ''}
+          >
+            <HelpIcon />
+          </IonButton>
+        </h2>
       </IonText>
       <IonGrid className="formGrid">
         <TextInputRow
@@ -37,6 +55,13 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
           inputType="textarea"
         />
       </IonGrid>
+      <NotificationModal
+        isOpen={infoModalOpen}
+        closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('general.close')}
+        header={t('fairwaycard.fairway-additional-info-notification-header') ?? ''}
+        message={t('fairwaycard.fairway-additional-info-notification-body') ?? ''}
+      />
     </>
   );
 };
