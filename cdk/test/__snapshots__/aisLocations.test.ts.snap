@@ -11,8 +11,10 @@ exports[`should get locations from api when cache expired 1`] = `
         ],
         "type": "Point",
       },
+      "id": 111222000,
       "properties": {
         "cog": 346.5,
+        "dataUpdatedTime": "2023-10-19T07:06:13Z",
         "featureType": "aisvessel",
         "heading": 79,
         "mmsi": 111222000,
@@ -34,8 +36,10 @@ exports[`should get locations from api when cache expired 1`] = `
         ],
         "type": "Point",
       },
+      "id": 333444000,
       "properties": {
         "cog": 205.7,
+        "dataUpdatedTime": "2023-10-19T07:06:13Z",
         "featureType": "aisvessel",
         "heading": 205,
         "mmsi": 333444000,
@@ -57,8 +61,10 @@ exports[`should get locations from api when cache expired 1`] = `
         ],
         "type": "Point",
       },
+      "id": 55666000,
       "properties": {
         "cog": 74.9,
+        "dataUpdatedTime": "2023-10-19T07:06:13Z",
         "featureType": "aisvessel",
         "heading": 76,
         "mmsi": 55666000,
