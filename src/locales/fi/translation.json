@@ -58,6 +58,7 @@
           "piloting": "Luotsaus",
           "pilot": "Luotsipaikat",
           "pilotroutes": "Luotsausreitit",
+          "pilotageLimits": "Luotsinkäyttölinjat",
           "pilotageAreaBorders": "Luotsinkäyttöalueen ulkoraja",
           "general": "Yleiset",
           "name": "Karttanimistö",
@@ -310,6 +311,9 @@
       "coordinates": "Koordinaatit",
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
+    "pilotRoute": {
+      "header": "REITTI: {{val}}"
+    },
     "quay": {
       "length": "Laiturin pituus",
       "depth": "Haraussyvyys",
@@ -337,7 +341,7 @@
       "depth": "Haraussyvyys {{val, number}}",
       "draft": "Mitoitussyväys {{val, number}}",
       "length": "Pituus {{val}}",
-      "direction": "Tosisuunta {{val, number}}",
+      "direction": "Tosisuunta",
       "fairways": "Navigointilinja on osa väyläkorttia",
       "width": "Väyläleveys valitussa kohdassa",
       "extra": "Lisätieto"
@@ -452,6 +456,7 @@
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
         "pilot": "Luotsipaikka",
+        "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",

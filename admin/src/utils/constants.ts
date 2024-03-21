@@ -225,7 +225,8 @@ export type FeatureDataLayerId =
   | 'specialarea2'
   | 'specialarea15'
   | 'pilotroute'
-  | 'pilotageareaborder';
+  | 'pilotageareaborder'
+  | 'pilotagelimit';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 
@@ -273,6 +274,7 @@ export const MAP: MapType = {
     { id: 'vtspoint' },
     { id: 'pilot' },
     { id: 'pilotroute' },
+    { id: 'pilotagelimit' },
     { id: 'pilotageareaborder' },
     { id: 'name' },
     { id: 'circle' },

@@ -8,6 +8,7 @@ import { Readable } from 'stream';
 import { gunzip, gzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
+import { VesselLocationFeatureCollection } from '../lib/lambda/api/apiModels';
 
 const s3Mock = mockClient(S3Client);
 const path = 'aislocations';
@@ -18,12 +19,13 @@ jest.mock('../lib/lambda/environment', () => ({
   getHeaders: () => {},
 }));
 
-const locations: FeatureCollection = {
+const locations: VesselLocationFeatureCollection = {
   type: 'FeatureCollection',
+  dataUpdatedTime: '2023-10-19T07:06:13Z',
   features: [
     {
       type: 'Feature',
-      id: 111222000,
+      mmsi: 111222000,
       geometry: {
         type: 'Point',
         coordinates: [20.85169, 55.770832],
@@ -38,14 +40,12 @@ const locations: FeatureCollection = {
         raim: true,
         heading: 79,
         timestamp: 59,
-        timestampExternal: new Date(1659212938646),
-        dataUpdatedTime: '2023-10-19T07:06:13Z',
-        featureType: 'aisvessel',
+        timestampExternal: 1659212938646,
       },
     },
     {
       type: 'Feature',
-      id: 333444000,
+      mmsi: 333444000,
       geometry: {
         type: 'Point',
         coordinates: [19.612433, 59.1802],
@@ -60,14 +60,12 @@ const locations: FeatureCollection = {
         raim: false,
         heading: 205,
         timestamp: 28,
-        timestampExternal: new Date(1638940711289),
-        dataUpdatedTime: '2023-10-19T07:06:13Z',
-        featureType: 'aisvessel',
+        timestampExternal: 1638940711289,
       },
     },
     {
       type: 'Feature',
-      id: 55666000,
+      mmsi: 55666000,
       geometry: {
         type: 'Point',
         coordinates: [30.190985, 59.886713],
@@ -82,9 +80,7 @@ const locations: FeatureCollection = {
         raim: true,
         heading: 76,
         timestamp: 45,
-        timestampExternal: new Date(1539814847556),
-        dataUpdatedTime: '2023-10-19T07:06:13Z',
-        featureType: 'aisvessel',
+        timestampExternal: 1539814847556,
       },
     },
   ],

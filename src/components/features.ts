@@ -38,6 +38,14 @@ export type PilotFeatureProperties = {
   fairwayCards: Card[];
 };
 
+export type PilotRouteFeatureProperties = {
+  id: number;
+  identifier: string;
+  name: string;
+  status: number;
+  rtz: string;
+};
+
 export type AreaFeatureProperties = {
   id: number;
   typeCode: number;
@@ -81,6 +89,7 @@ export type LineFeatureProperties = {
   referenceLevel?: string;
   n2000ReferenceLevel?: string;
   direction?: number;
+  oppositeDirection?: number;
   extra?: string;
   fairways?: LineFairway[];
 };

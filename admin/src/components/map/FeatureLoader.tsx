@@ -306,3 +306,7 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
 }
+
+export function usePilotageLimitLayer() {
+  return useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
+}
