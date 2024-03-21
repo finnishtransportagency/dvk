@@ -16,7 +16,7 @@ import { isEmbedded } from '../pages/Home';
 import SquatHeader from './SquatHeader';
 import { fieldParams } from '../hooks/squatReducer';
 
-const NARROW_WIDTH = 675;
+const NARROW_WIDTH = 600;
 const WIDE_WIDTH = 1000;
 
 interface SquatChartProps {
@@ -97,7 +97,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
     };
 
     const buildGraph = () => {
-      const height = Math.round(wideChart ? width / 2 : width / 1.35);
+      const height = Math.round(wideChart ? width / 2 : width / 1.2);
       const marginLeft = 50;
       const marginRight = 30;
       const marginTop = 30;
