@@ -309,6 +309,9 @@
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
     },
+    "pilotRoute": {
+      "header": "RUTT: {{val}}"
+    },
     "quay": {
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
@@ -451,6 +454,7 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
+        "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",

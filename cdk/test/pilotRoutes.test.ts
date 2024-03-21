@@ -1,6 +1,5 @@
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import { RtzData } from '../lib/lambda/api/apiModels';
 import { gunzip, gzip } from 'zlib';
 import { Readable } from 'stream';
 import { sdkStreamMixin } from '@smithy/util-stream';
@@ -8,6 +7,8 @@ import { handler } from '../lib/lambda/api/pilotroute-handler';
 import { mockPilotRoutesALBEvent } from './mocks';
 import assert from 'assert';
 import pilotRoutesJson from './data/pilotroutes.json';
+import { FeatureCollection } from 'geojson';
+import { RtzData } from '../lib/lambda/api/apiModels';
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -336,7 +337,7 @@ const pilotRoutes: RtzData[] = [
   },
 ];
 
-async function parseResponse(body: string): Promise<RtzData[]> {
+async function parseResponse(body: string): Promise<FeatureCollection> {
   const response = new Promise<Error | Buffer>((resolve, reject) =>
     gunzip(Buffer.from(body, 'base64'), (err, data) => {
       if (err) {
@@ -345,7 +346,7 @@ async function parseResponse(body: string): Promise<RtzData[]> {
       resolve(data);
     })
   );
-  return JSON.parse((await response).toString()) as RtzData[];
+  return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
 async function createCacheResponse(collectionJson: object) {
@@ -387,15 +388,7 @@ it('should get pilotroutes from cache', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(2);
-  expect(responseObj).toMatchSnapshot();
-});
-
-it('should get vessels from api', async () => {
-  const response = await handler(mockPilotRoutesALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(3);
+  expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
 
@@ -406,11 +399,11 @@ it('should get pilotroutes from api when cache expired', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(3);
+  expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });
 
-it('should get vessels from cache when api call fails', async () => {
+it('should get pilotroutes from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
@@ -418,7 +411,7 @@ it('should get vessels from cache when api call fails', async () => {
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.length).toBe(2);
+  expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
 

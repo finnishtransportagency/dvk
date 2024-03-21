@@ -3,7 +3,7 @@ import { gzip } from 'zlib';
 import { log } from './logger';
 import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
-import { RtzResponseData, Vessel } from './api/apiModels';
+import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
 
 const GEOMETRY_DECIMALS = 5;
@@ -76,7 +76,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-export async function saveResponseToS3(features: FeatureCollection | Vessel[] | RtzResponseData, key: string): Promise<string> {
+export async function saveResponseToS3(features: FeatureCollection | Vessel[], key: string): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);

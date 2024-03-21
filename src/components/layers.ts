@@ -863,7 +863,7 @@ export function addAPILayers(map: Map) {
     id: 'pilotroute',
     maxResolution: undefined,
     renderBuffer: 50,
-    style: getPilotRouteStyle,
+    style: (feature, resolution) => getPilotRouteStyle(feature, resolution, feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
