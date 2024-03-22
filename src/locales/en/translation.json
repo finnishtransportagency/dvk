@@ -252,7 +252,8 @@
     "opens-in-a-new-tab": "Opens in a new tab",
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
-    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
+    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
+    "additionalInfo": "Additional information"
   },
   "faults": {
     "title": "Defective navigation aids",

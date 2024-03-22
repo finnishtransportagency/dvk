@@ -100,6 +100,10 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
     { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? requiredMsg : '' },
     { id: 'group', msg: state.group.length < 1 ? requiredMsg : '' },
     {
+      id: 'additionalInfo',
+      msg: translationError(state.additionalInfo) ? requiredMsg : '',
+    },
+    {
       id: 'line',
       msg: translationError(state.lineText) ? requiredMsg : '',
     },

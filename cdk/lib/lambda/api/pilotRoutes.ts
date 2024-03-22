@@ -137,6 +137,7 @@ export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheResponse = await getFromCache(key);
+
   if (!cacheResponse.expired && cacheResponse.data) {
     base64Response = cacheResponse.data;
   } else {
