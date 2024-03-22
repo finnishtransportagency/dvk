@@ -252,8 +252,9 @@
     "opens-in-a-new-tab": "Opens in a new tab",
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
-    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
-  },
+    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
+    "pilotPlaceLocation": "[en] Luotsipaikan sijainti"
+},
   "faults": {
     "title": "Defective navigation aids",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
