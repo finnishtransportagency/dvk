@@ -253,7 +253,12 @@
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
     "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
-    "pilotPlaceLocation": "[en] Luotsipaikan sijainti"
+    "pilotPlaceLocation": "[en] Luotsipaikan sijainti",
+    "pilotageLimit": "[en] Luotsinkäyttölinja",
+    "pilotageLimitLocation": "[en] Linjan sijainti",
+    "pilotageLimitMaxDimensions": "[en] Alusten enimmäismitat joita linja koskee",
+    "draught": "Draught",
+    "width": "Width"
 },
   "faults": {
     "title": "Defective navigation aids",

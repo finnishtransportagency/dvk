@@ -1,8 +1,8 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
+import { Fairway, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
-import { MAP } from './constants';
-import { Geometry, SimpleGeometry } from 'ol/geom';
+import { MAP, PilotageLimit } from './constants';
+import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 
 export function setFairwayCardByPreview(
@@ -81,3 +81,32 @@ export const handleSafetyEquipmentLayerChange = () => {
     safetyEquipmentFaultSource.dispatchEvent('change');
   }
 };
+
+export function getPilotageLimitsByFairways(fairways: Fairway[]) {
+  const pilotageLimitFeatures = dvkMap.getVectorSource('pilotagelimit').getFeatures();
+  //eslint-disable-next-line
+  const pilotageLimits: PilotageLimit[] = [];
+
+  fairways.forEach((fairway) => {
+    pilotageLimitFeatures.forEach((pilotageLimit) => {
+      const limitProperties = pilotageLimit.getProperties();
+      const limitGeometry = pilotageLimit.getGeometry() as LineString;
+      // related fairways are in one string where commas separate different ids
+      const relatedIds = limitProperties.liittyyVayliin.split(',');
+      if (relatedIds.includes(String(fairway.id))) {
+        const pilotageLimitObject = {
+          fid: limitProperties.fid,
+          numero: limitProperties.numero,
+          liittyyVayliin: limitProperties.liittyyVayliin,
+          raja_fi: limitProperties.raja_fi,
+          raja_sv: limitProperties.raja_sv,
+          raja_en: limitProperties.raja_en,
+          alkukoordinaatti: limitGeometry.getFirstCoordinate(),
+          loppukoordinaatti: limitGeometry.getLastCoordinate(),
+        };
+        pilotageLimits.push(pilotageLimitObject);
+      }
+    });
+  });
+  return pilotageLimits;
+}

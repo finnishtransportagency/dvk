@@ -22,39 +22,40 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
     <p>
       {pilotPlaces?.map((place, idx) => {
         return (
-          <IonLabel
-            key={place.id}
-            className="hoverText"
-            onMouseEnter={() => highlightPilot(place.id)}
-            onFocus={() => highlightPilot(place.id)}
-            onMouseLeave={() => highlightPilot(0)}
-            onBlur={() => highlightPilot(0)}
-            tabIndex={0}
-            data-testid={idx < 1 ? 'pilotPlaceHover' : ''}
-          >
-            {place.geometry?.coordinates && (
-              <>
-                <strong>
-                  {t('pilotPlace')} {place.name[lang]}
-                </strong>
-                <br />
-                {t('pilotPlaceLocation')}:{' '}
-                {place.geometry?.coordinates[0] &&
-                  place.geometry?.coordinates[1] &&
-                  coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replace('N', 'N /')}
-                <br />
-                {place.pilotJourney && (
-                  <>
-                    {' '}
-                    {t('pilotageDistance')}: {place.pilotJourney.toLocaleString()}&nbsp;
-                    <dd aria-label={t('unit.nmDesc', { count: place.pilotJourney })}>{t('unit.nm')}</dd>
-                    <br />
-                    <br />
-                  </>
-                )}
-              </>
-            )}
-          </IonLabel>
+          <>
+            <IonLabel
+              key={place.id}
+              className="hoverText"
+              onMouseEnter={() => highlightPilot(place.id)}
+              onFocus={() => highlightPilot(place.id)}
+              onMouseLeave={() => highlightPilot(0)}
+              onBlur={() => highlightPilot(0)}
+              tabIndex={0}
+              data-testid={idx < 1 ? 'pilotPlaceHover' : ''}
+            >
+              {place.geometry?.coordinates && (
+                <>
+                  <strong>
+                    {t('pilotPlace')} {place.name[lang]}
+                  </strong>
+                  <br />
+                  {t('pilotPlaceLocation')}:{' '}
+                  {place.geometry?.coordinates[0] &&
+                    place.geometry?.coordinates[1] &&
+                    coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replace('N', 'N /')}
+                  <br />
+                  {place.pilotJourney && (
+                    <>
+                      {' '}
+                      {t('pilotageDistance')}: {place.pilotJourney.toLocaleString()}&nbsp;
+                      <dd aria-label={t('unit.nmDesc', { count: place.pilotJourney })}>{t('unit.nm')}</dd>
+                    </>
+                  )}
+                </>
+              )}
+            </IonLabel>
+            {idx !== pilotPlaces.length - 1 && <p />}
+          </>
         );
       })}
     </p>

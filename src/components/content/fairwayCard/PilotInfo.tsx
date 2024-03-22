@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Pilot } from '../../../graphql/generated';
-import { Lang, PILOTORDER_URL } from '../../../utils/constants';
+import { Fairway, Pilot } from '../../../graphql/generated';
+import { Lang, PILOTORDER_URL, PilotageLimit } from '../../../utils/constants';
 import PhoneNumber from './PhoneNumber';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
+import { getPilotageLimitsByFairways } from '../../../utils/fairwayCardUtils';
+import { PilotageLimitInfo } from './PilotageLimitInfo';
 
 type PilotInfoProps = {
+  fairways: Fairway[];
   data?: Pilot | null;
 };
 
-export const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
+export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
+  const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
+
+  useEffect(() => {
+    setPilotageLimits(getPilotageLimitsByFairways(fairways));
+  }, [fairways]);
 
   return (
     <>
@@ -43,6 +51,7 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ data }) => {
             )}
           </p>
           <PilotPlaceInfo pilotPlaces={data.places} />
+          <PilotageLimitInfo pilotLimits={pilotageLimits} />
         </IonText>
       )}
     </>
