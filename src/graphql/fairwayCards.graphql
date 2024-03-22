@@ -161,6 +161,11 @@ fragment FairwayCardParts on FairwayCard {
       id
     }
   }
+  additionalInfo {
+    fi
+    sv
+    en
+  }
   lineText {
     fi
     sv
