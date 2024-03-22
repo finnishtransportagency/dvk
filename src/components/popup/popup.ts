@@ -22,6 +22,7 @@ import {
   ObservationFeatureProperties,
   PilotFeatureProperties,
   PilotRouteFeatureProperties,
+  PilotageLimitFeatureProperties,
   QuayFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
@@ -118,6 +119,7 @@ export function showFeaturePopup(
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
         coordinates: geom.getCoordinates() as number[],
+        geometry: geom,
         properties: selectedFeature.getProperties(),
       },
     });
@@ -292,6 +294,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return {
         header: [t('pilotPlace.header', { val: (props as PilotFeatureProperties).name[lang] })],
         featureType: t('featureList.featureType.pilot'),
+        className: type,
+      };
+    case 'pilotagelimit':
+      return {
+        header: [t('pilotageLimit.header', { val: (props as PilotageLimitFeatureProperties).numero })],
+        featureType: t('featureList.featureType.pilotagelimit'),
         className: type,
       };
     case 'pilotroute':

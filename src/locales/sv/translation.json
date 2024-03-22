@@ -310,6 +310,11 @@
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
     },
+    "pilotageLimit": {
+      "header": "[sv] Luotsinkäyttölinja {{val}}",
+      "location": "[sv] Linjan sijainti",
+      "limit": "[sv] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)"
+    },
     "pilotRoute": {
       "header": "RUTT: {{val}}"
     },
@@ -455,6 +460,7 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
+        "pilotagelimit": "[sv] Luotsinkäyttölinja",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
