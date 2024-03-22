@@ -137,16 +137,13 @@ export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
   const cacheResponse = await getFromCache(key);
-  console.log('get from cache');
-  console.log(cacheResponse);
+
   if (!cacheResponse.expired && cacheResponse.data) {
     base64Response = cacheResponse.data;
   } else {
     try {
       const pilotRouteData = await fetchPilotRouteData();
       base64Response = await saveResponseToS3(pilotRouteData, key);
-      console.log('save response to');
-      console.log(base64Response);
     } catch (e) {
       const errorResult = handleLoaderError(cacheResponse, e);
       base64Response = errorResult.body;
