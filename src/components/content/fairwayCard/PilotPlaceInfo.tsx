@@ -40,9 +40,9 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                   </strong>
                   <br />
                   {t('pilotPlaceLocation')}:{' '}
-                  {place.geometry?.coordinates[0] &&
-                    place.geometry?.coordinates[1] &&
-                    coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replaceAll('N ', 'N / ')}
+                  {place.geometry?.coordinates[0] && place.geometry?.coordinates[1] && (
+                    <u>{coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replaceAll('N ', 'N / ')}</u>
+                  )}
                   <br />
                   {place.pilotJourney && (
                     <>

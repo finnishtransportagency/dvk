@@ -24,10 +24,6 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
         return pilotLimits[idx].raja_en;
     }
   };
-  /*const firstCoord = pilotLimits[0].alkukoordinaatti;
-  const lastCoord = pilotLimits[0].loppukoordinaatti;
-  const westCoord = firstCoord[0] <= lastCoord[0] ? firstCoord : lastCoord;
-  const eastCoord = firstCoord[0] > lastCoord[0] ? firstCoord : lastCoord;*/
 
   return (
     <div>
@@ -41,8 +37,10 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                 {t('pilotageLimit')} {limit.numero}
               </strong>
               <br />
-              {t('pilotageLimitLocation')}: {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} -
-              {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}
+              {t('pilotageLimitLocation')}:{' '}
+              <u>
+                {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} - {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}
+              </u>
               <br />
               {t('pilotageLimitMaxDimensions')}:
               <br />
