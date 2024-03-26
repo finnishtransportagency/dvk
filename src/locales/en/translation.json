@@ -311,6 +311,12 @@
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
     },
+    "pilotageLimit": {
+      "header": "[en] Luotsinkäyttölinja {{val}}",
+      "location": "[en] Linjan sijainti",
+      "limit": "[en] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "fairways": "[en] Linjaan liittyvät väyläkortit"
+    },
     "pilotRoute": {
       "header": "ROUTE: {{val}}"
     },
@@ -456,6 +462,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
+        "pilotagelimit": "[en] Luotsinkäyttölinja",
         "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",

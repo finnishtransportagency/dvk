@@ -311,6 +311,12 @@
       "coordinates": "Koordinaatit",
       "fairways": "Luotsipaikkaan liittyvät väyläkortit"
     },
+    "pilotageLimit": {
+      "header": "Luotsinkäyttölinja {{val}}",
+      "location": "Linjan sijainti",
+      "limit": "Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "fairways": "Linjaan liittyvät väyläkortit"
+    },
     "pilotRoute": {
       "header": "REITTI: {{val}}"
     },
@@ -456,6 +462,7 @@
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
         "pilot": "Luotsipaikka",
+        "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
         "safetyequipment": "Turvalaite",

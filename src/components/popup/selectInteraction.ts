@@ -16,10 +16,12 @@ import { getAisVesselLayerStyle } from '../layerStyles/aisStyles';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from '../layerStyles/pilotRouteStyles';
+import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 
 function getLayers() {
   return [
     dvkMap.getFeatureLayer('pilot'),
+    dvkMap.getFeatureLayer('pilotagelimit'),
     dvkMap.getFeatureLayer('pilotroute'),
     dvkMap.getFeatureLayer('quay'),
     dvkMap.getFeatureLayer('area12'),
@@ -63,6 +65,8 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getHarborStyle(feature, resolution, true, 0);
     case 'pilot':
       return getPilotStyle(true);
+    case 'pilotagelimit':
+      return getPilotageLimitStyle(feature, resolution, true);
     case 'pilotroute':
       return getPilotRouteStyle(feature, resolution, true);
     case 'area':
