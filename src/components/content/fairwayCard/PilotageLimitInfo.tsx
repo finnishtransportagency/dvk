@@ -23,12 +23,12 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
   };
 
   return (
-    <p>
+    <div>
       {pilotLimits?.map((limit, idx) => {
         return (
-          <>
-            <IonLabel key={limit.fid}>
-              <strong key={limit.fid}>
+          <p key={limit.fid}>
+            <IonLabel>
+              <strong>
                 {t('pilotageLimit')} {limit.numero}
               </strong>
               <br />
@@ -40,10 +40,9 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
               <br />
               {limitInfoByLang(idx).replaceAll('/', ' / ')}
             </IonLabel>
-            {idx !== pilotLimits.length - 1 && <div style={{ height: '1em' }} />}
-          </>
+          </p>
         );
       })}
-    </p>
+    </div>
   );
 };

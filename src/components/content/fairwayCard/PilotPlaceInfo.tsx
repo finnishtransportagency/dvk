@@ -19,10 +19,10 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
   };
 
   return (
-    <p>
+    <div>
       {pilotPlaces?.map((place, idx) => {
         return (
-          <>
+          <p key={place.id}>
             <IonLabel
               key={place.id}
               className="hoverText"
@@ -35,7 +35,7 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
             >
               {place.geometry?.coordinates && (
                 <>
-                  <strong key={place.id}>
+                  <strong key={place.id + idx}>
                     {t('pilotPlace')} {place.name[lang]}
                   </strong>
                   <br />
@@ -54,10 +54,9 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                 </>
               )}
             </IonLabel>
-            {idx !== pilotPlaces.length - 1 && <div style={{ height: '1em' }} />}
-          </>
+          </p>
         );
       })}
-    </p>
+    </div>
   );
 };
