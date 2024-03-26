@@ -9,6 +9,11 @@ import { useTranslation } from 'react-i18next';
 import { Geometry, LineString } from 'ol/geom';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { Lang } from '../../utils/constants';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import { FairwayCard } from '../../graphql/generated';
+import { Link } from 'react-router-dom';
+import InfoIcon from '../../theme/img/info.svg?react';
+import { useDvkContext } from '../../hooks/dvkContext';
 
 type PilotageLimitPopupContentProps = {
   pilotagelimit: PilotageLimitProperties;
@@ -23,6 +28,7 @@ export type PilotageLimitProperties = {
 const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ pilotagelimit, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -41,6 +47,25 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
   } else if (lang === 'en') {
     limit = pilotagelimit.properties.raja_en;
   }
+
+  const fairwayIds = pilotagelimit.properties.liittyyVayliin.split(',');
+
+  const { data } = useFairwayCardListData();
+
+  function getCards(fairwayCards: Array<FairwayCard>) {
+    const cards = fairwayCards.filter((fc) => {
+      const fcIds = fc.fairways.map((f) => f.id);
+      for (let i = 0; i < fcIds.length; i++) {
+        if (fairwayIds.includes('' + fcIds[i])) {
+          return true;
+        }
+      }
+      return false;
+    });
+    return cards;
+  }
+
+  const fairwayCards = data ? getCards(data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">
@@ -67,6 +92,31 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
       <IonRow>
         <IonCol>{limit}</IonCol>
       </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.pilotageLimit.fairways')}</IonCol>
+      </IonRow>
+      {fairwayCards.length > 0 ? (
+        fairwayCards?.map((card) => {
+          return (
+            <IonRow key={'cardlink' + card.id}>
+              <IonCol>
+                <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                  {card.name[lang]}
+                </Link>
+              </IonCol>
+            </IonRow>
+          );
+        })
+      ) : (
+        <IonRow>
+          <IonCol>
+            <p className="info use-flex ion-align-items-center">
+              <InfoIcon />
+              {t('popup.common.noFairwayCards')}
+            </p>
+          </IonCol>
+        </IonRow>
+      )}
     </IonGrid>
   );
 };

@@ -314,7 +314,8 @@
     "pilotageLimit": {
       "header": "[en] Luotsinkäyttölinja {{val}}",
       "location": "[en] Linjan sijainti",
-      "limit": "[en] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)"
+      "limit": "[en] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "fairways": "[en] Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
       "header": "ROUTE: {{val}}"
