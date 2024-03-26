@@ -1,22 +1,34 @@
 import React from 'react';
-import { PilotageLimit } from '../../../utils/constants';
+import { Lang, PilotageLimit } from '../../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { IonLabel } from '@ionic/react';
 
 interface PilotageLimitInfoProps {
-  pilotLimits: PilotageLimit[] | undefined | null;
+  pilotLimits: PilotageLimit[];
 }
 
 export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimits }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  console.log(pilotLimits);
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  const limitInfoByLang = (idx: number) => {
+    switch (lang) {
+      case 'fi':
+        return pilotLimits[idx].raja_fi;
+      case 'sv':
+        return pilotLimits[idx].raja_sv;
+      default:
+        return pilotLimits[idx].raja_en;
+    }
+  };
+
   return (
     <p>
       {pilotLimits?.map((limit, idx) => {
         return (
           <>
             <IonLabel key={limit.fid}>
-              <strong>
+              <strong key={limit.fid}>
                 {t('pilotageLimit')} {limit.numero}
               </strong>
               <br />
@@ -24,11 +36,11 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
               <br />
               {t('pilotageLimitMaxDimensions')}:
               <br />
-              {t('length').toLocaleLowerCase()} {t('width').toLocaleLowerCase()} {t('draught').toLocaleLowerCase()} (m)
+              {t('length').toLocaleLowerCase()} / {t('width').toLocaleLowerCase()} / {t('draught').toLocaleLowerCase()} (m)
               <br />
-              {limit.raja_fi}
+              {limitInfoByLang(idx).replaceAll('/', ' / ')}
             </IonLabel>
-            {idx !== pilotLimits.length - 1 && <p />}
+            {idx !== pilotLimits.length - 1 && <div style={{ height: '1em' }} />}
           </>
         );
       })}

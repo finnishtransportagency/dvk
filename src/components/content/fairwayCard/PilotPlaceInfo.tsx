@@ -35,14 +35,14 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
             >
               {place.geometry?.coordinates && (
                 <>
-                  <strong>
+                  <strong key={place.id}>
                     {t('pilotPlace')} {place.name[lang]}
                   </strong>
                   <br />
                   {t('pilotPlaceLocation')}:{' '}
                   {place.geometry?.coordinates[0] &&
                     place.geometry?.coordinates[1] &&
-                    coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replace('N', 'N /')}
+                    coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replaceAll('N ', 'N / ')}
                   <br />
                   {place.pilotJourney && (
                     <>
@@ -54,7 +54,7 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                 </>
               )}
             </IonLabel>
-            {idx !== pilotPlaces.length - 1 && <p />}
+            {idx !== pilotPlaces.length - 1 && <div style={{ height: '1em' }} />}
           </>
         );
       })}
