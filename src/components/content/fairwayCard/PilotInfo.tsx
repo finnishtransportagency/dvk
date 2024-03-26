@@ -2,16 +2,27 @@ import React, { useEffect, useState } from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Fairway, Pilot } from '../../../graphql/generated';
-import { Lang, PILOTORDER_URL, PilotageLimit } from '../../../utils/constants';
+import { Lang, PILOTORDER_URL } from '../../../utils/constants';
 import PhoneNumber from './PhoneNumber';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
 import { getPilotageLimitsByFairways } from '../../../utils/fairwayCardUtils';
 import { PilotageLimitInfo } from './PilotageLimitInfo';
+import { Geometry } from 'ol/geom';
 
 type PilotInfoProps = {
   fairways: Fairway[];
   data?: Pilot | null;
+};
+
+export type PilotageLimit = {
+  fid: number;
+  numero: number;
+  liittyyVayliin: string;
+  raja_fi: string;
+  raja_sv: string;
+  raja_en: string;
+  koordinaatit: Geometry;
 };
 
 export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {

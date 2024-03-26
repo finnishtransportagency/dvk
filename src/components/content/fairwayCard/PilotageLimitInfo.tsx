@@ -1,7 +1,10 @@
 import React from 'react';
-import { Lang, PilotageLimit } from '../../../utils/constants';
+import { Lang } from '../../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { IonLabel } from '@ionic/react';
+import { PilotageLimit } from './PilotInfo';
+import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
+import { LineString } from 'ol/geom';
 
 interface PilotageLimitInfoProps {
   pilotLimits: PilotageLimit[];
@@ -21,10 +24,16 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
         return pilotLimits[idx].raja_en;
     }
   };
+  /*const firstCoord = pilotLimits[0].alkukoordinaatti;
+  const lastCoord = pilotLimits[0].loppukoordinaatti;
+  const westCoord = firstCoord[0] <= lastCoord[0] ? firstCoord : lastCoord;
+  const eastCoord = firstCoord[0] > lastCoord[0] ? firstCoord : lastCoord;*/
 
   return (
     <div>
       {pilotLimits?.map((limit, idx) => {
+        const firstCoord = (limit.koordinaatit as LineString).getFirstCoordinate();
+        const lastCoord = (limit.koordinaatit as LineString).getLastCoordinate();
         return (
           <p key={limit.fid}>
             <IonLabel>
@@ -32,7 +41,8 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                 {t('pilotageLimit')} {limit.numero}
               </strong>
               <br />
-              {t('pilotageLimitLocation')}:
+              {t('pilotageLimitLocation')}: {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} -
+              {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}
               <br />
               {t('pilotageLimitMaxDimensions')}:
               <br />
