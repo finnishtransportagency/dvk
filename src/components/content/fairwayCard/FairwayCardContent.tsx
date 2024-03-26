@@ -168,6 +168,14 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel ?? undefined} showNoData />
             </IonText>
 
+            {fairwayCard?.additionalInfo && (
+              <IonText>
+                <h4>
+                  <strong>{t('additionalInfo')}</strong>
+                </h4>
+                <Paragraph bodyText={fairwayCard?.additionalInfo ?? undefined} />
+              </IonText>
+            )}
             <IonText>
               <h4>
                 <strong>{t('trafficServices')}</strong>

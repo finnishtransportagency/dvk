@@ -81,6 +81,7 @@
 
 .featureList ion-item .specialarea2,
 .featureList ion-item .specialarea15,
+.featureList ion-item .pilotagelimit,
 .featureList ion-item .pilotroute {
   width: 18px;
   height: 18px;
@@ -95,6 +96,9 @@
 }
 .featureList ion-item .specialarea15 {
   background-image: url('../../theme/img/kohtaamiskielto_ikoni.svg');
+}
+.featureList ion-item .pilotagelimit {
+  background: url('../../theme/img/pilotageLimit.svg') no-repeat center;
 }
 .featureList ion-item .pilotroute {
   background: url('../../theme/img/pilotRoute.svg') no-repeat center;

@@ -2,6 +2,7 @@
 
 exports[`should get card by id from the DynamoDB 1`] = `
 {
+  "additionalInfo": undefined,
   "anchorage": undefined,
   "attention": undefined,
   "creationTimestamp": Any<Number>,
@@ -72,6 +73,7 @@ exports[`should get card by id from the DynamoDB 1`] = `
 
 exports[`should get card by id from the DynamoDB when cache expired 1`] = `
 {
+  "additionalInfo": undefined,
   "anchorage": undefined,
   "attention": undefined,
   "creationTimestamp": Any<Number>,

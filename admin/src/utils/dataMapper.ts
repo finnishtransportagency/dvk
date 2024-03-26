@@ -21,6 +21,11 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     primaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.primary)?.id ?? 0,
     secondaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.secondary)?.id ?? 0,
+    additionalInfo: {
+      fi: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.fi),
+      sv: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.sv),
+      en: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.en),
+    },
     lineText: {
       fi: stringValueOrDefault(data?.fairwayCard?.lineText?.fi),
       sv: stringValueOrDefault(data?.fairwayCard?.lineText?.sv),

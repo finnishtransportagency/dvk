@@ -253,6 +253,7 @@
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
     "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
+    "additionalInfo": "Additional information",
     "pilotPlaceLocation": "[en] Luotsipaikan sijainti",
     "pilotageLimit": "[en] Luotsinkäyttölinja",
     "pilotageLimitLocation": "[en] Linjan sijainti",
@@ -315,6 +316,12 @@
       "header": "Pilot boarding position {{val}}",
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
+    },
+    "pilotageLimit": {
+      "header": "[en] Luotsinkäyttölinja {{val}}",
+      "location": "[en] Linjan sijainti",
+      "limit": "[en] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "fairways": "[en] Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
       "header": "ROUTE: {{val}}"
@@ -461,6 +468,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
+        "pilotagelimit": "[en] Luotsinkäyttölinja",
         "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
