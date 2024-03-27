@@ -377,7 +377,7 @@ type RtzGeometria = {
   coordinates: Coordinate;
 };
 
-type RtzReittipiste = {
+export type RtzReittipiste = {
   tunnus: number;
   nimi: string;
   rtzTunniste: number;
