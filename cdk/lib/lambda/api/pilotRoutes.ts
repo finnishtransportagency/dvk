@@ -3,7 +3,7 @@ import { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString } f
 import { getPilotRoutesHeaders } from '../environment';
 import { getFromCache } from '../graphql/cache';
 import { handleLoaderError, roundGeometry, saveResponseToS3 } from '../util';
-import { RtzData, RtzWaypoint, Coordinate } from './apiModels';
+import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
 import rhumbBearing from '@turf/rhumb-bearing';
@@ -64,6 +64,14 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
     return [middle];
   }
 
+  const touchPoint1Angle = rhumbBearing(center, touchPoint1.geometry);
+  const touchPoint2Angle = rhumbBearing(center, touchPoint2.geometry);
+
+  /* Do not calculate turning arc if touch point angle difference is less than one degrees */
+  if (Math.abs(touchPoint1Angle - touchPoint2Angle) < 1 || Math.abs(touchPoint1Angle - touchPoint2Angle) > 359) {
+    return [middle];
+  }
+
   /* Turf lineArc always returns arc coordinates clockwise, so if we are turning left we need to reverse coordinates */
   if (turningDirection === 'right') {
     const arc = lineArc(center, turningRadius, rhumbBearing(center, touchPoint1.geometry), rhumbBearing(center, touchPoint2.geometry));
@@ -97,7 +105,14 @@ function getRtzRoute(waypoints: Array<RtzWaypoint>): Array<Coordinate> {
 
 function getRouteLine(rtz: RtzData) {
   const waypoints: Array<RtzWaypoint> = [];
+  const reittipisteet: Array<RtzReittipiste> = [];
   rtz.reittipisteet.forEach((rp) => {
+    reittipisteet.push(rp);
+  });
+  reittipisteet.sort((a, b) => {
+     return a.jarjestys - b.jarjestys;
+  });
+  reittipisteet.forEach((rp) => {
     waypoints.push({ coordinate: rp.geometria.coordinates, turnRadius: rp.kaarresade * 1852 });
   });
   const coordinates = getRtzRoute(waypoints);
