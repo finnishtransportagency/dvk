@@ -1,3 +1,4 @@
+import { Coordinate } from 'ol/coordinate';
 import { Maybe } from '../graphql/generated';
 
 export const APP_CONFIG_DVK = 'DVK';
@@ -495,3 +496,14 @@ export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
     childAreas: [{ id: 'saimaa', parent: 'inlandAreas' }],
   },
 ];
+
+export type PilotageLimit = {
+  fid: number;
+  numero: number;
+  liittyyVayliin: string;
+  raja_fi: string;
+  raja_sv: string;
+  raja_en: string;
+  alkukoordinaatti: Coordinate;
+  loppukoordinaatti: Coordinate;
+};

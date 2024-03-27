@@ -253,7 +253,13 @@
     "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>.",
     "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
     "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel.",
-    "additionalInfo": "Ytterligare information"
+    "additionalInfo": "Ytterligare information",
+    "pilotPlaceLocation": "[sv] Luotsipaikan sijainti",
+    "pilotageLimit": "[sv] Luotsinkäyttölinja",
+    "pilotageLimitLocation": "[sv] Linjan sijainti",
+    "pilotageLimitMaxDimensions": "[sv] Alusten enimmäismitat joita linja koskee",
+    "draught": "Djupgående",
+    "width": "Bredd"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

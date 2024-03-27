@@ -181,7 +181,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <strong>{t('trafficServices')}</strong>
               </h4>
             </IonText>
-            <PilotInfo data={fairwayCard?.trafficService?.pilot} />
+            <PilotInfo fairways={fairwayCard.fairways} data={fairwayCard?.trafficService?.pilot} />
             <VTSInfo data={fairwayCard?.trafficService?.vts} />
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
