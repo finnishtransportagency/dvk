@@ -144,13 +144,15 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         .scaleLinear()
         .domain([minSpeed, maxSpeed])
         .range([0, width - marginLeft - marginRight]);
-      const xAxisGenerator = d3.axisBottom(xScale);
+      // approximately halving the ticks which results to even numbers showing
+      const xAxisGenerator = d3.axisBottom(xScale).ticks(maxSpeed / 2);
 
       const yScale = d3
         .scaleLinear()
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
-      const yAxisGenerator = d3.axisLeft(yScale);
+      // approximately halving the ticks which results to even numbers showing
+      const yAxisGenerator = d3.axisLeft(yScale).ticks(yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2);
 
       const svg = d3.select(ref.current);
       svg.attr('viewBox', `0 0 ${width} ${height}`);
