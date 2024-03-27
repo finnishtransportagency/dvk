@@ -121,7 +121,7 @@ function getRouteLine(rtz: RtzData) {
 
 async function fetchPilotRouteData(): Promise<FeatureCollection> {
   const data: RtzData[] = await fetchPilotRoutesApi();
-  const features: Feature<Geometry, GeoJsonProperties>[] = data?.map((entry) => {
+  const features: Feature<Geometry, GeoJsonProperties>[] = data?.filter((entry) => entry.tila === 1).map((entry) => {
     const geometry: LineString = {
       type: 'LineString',
       coordinates: getRouteLine(entry),
