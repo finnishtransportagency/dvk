@@ -146,16 +146,16 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         .scaleLinear()
         .domain([minSpeed, maxSpeed])
         .range([0, width - marginLeft - marginRight]);
-      // approximately halving the ticks which results to even numbers showing when not wide
-      const xAxisGenerator = wideChart ? d3.axisBottom(xScale) : d3.axisBottom(xScale).ticks(maxSpeed / 2);
+      // filter only every other tick when not widechart
+      const xAxisGenerator = wideChart ? d3.axisBottom(xScale) : d3.axisBottom(xScale).tickValues(xScale.ticks().filter((_, idx) => idx % 2 == 0));
 
       const yScale = d3
         .scaleLinear()
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
-      // approximately halving the ticks which results to even numbers showing when not wide
-      const yAxisTicks = yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2;
-      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).ticks(yAxisTicks);
+      // filter only every other tick when not widechart when yDomainWaterDepth set
+      const yAxisTicks = yDomainWaterDepth === 0 ? [0.0] : yScale.ticks().filter((_, idx) => idx % 2 == 0);
+      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).tickValues(yAxisTicks);
 
       const svg = d3.select(ref.current);
       svg.attr('viewBox', `0 0 ${width} ${height}`);
