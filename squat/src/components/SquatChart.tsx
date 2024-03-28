@@ -195,7 +195,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
           .attr('dominant-baseline', 'middle')
           .attr('x', (width - marginLeft - marginRight) / 2)
           .attr('y', attr.height / 2)
-          .attr('font-size', '0.8em')
+          .attr('font-size', wideChart ? '0.8em' : '0.6em')
           .attr('fill', attr.labelColor);
       };
 
