@@ -16,12 +16,19 @@ import { isEmbedded } from '../pages/Home';
 import SquatHeader from './SquatHeader';
 import { fieldParams } from '../hooks/squatReducer';
 
-const SquatChart: React.FC = () => {
+const NARROW_WIDTH = 600;
+const WIDE_WIDTH = 1000;
+
+interface SquatChartProps {
+  wideChart?: boolean;
+}
+
+const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
   const { t } = useTranslation('', { keyPrefix: 'homePage.squatChart' });
   const ref = useRef<SVGSVGElement>(null);
   const { state } = useSquatContext();
 
-  const [width, setWidth] = useState(1000);
+  const [width, setWidth] = useState(wideChart ? WIDE_WIDTH : NARROW_WIDTH);
   const [huuskaGuliev20, setHuuskaGuliev20] = useState(Array<[number, number]>);
   const [huuskaGuliev24, setHuuskaGuliev24] = useState(Array<[number, number]>);
   const [barrass, setBarrass] = useState(Array<[number, number]>);
@@ -90,10 +97,12 @@ const SquatChart: React.FC = () => {
     };
 
     const buildGraph = () => {
-      const height = Math.round(width / 2);
+      const height = Math.round(wideChart ? width / 2 : width / 1.2);
       const marginLeft = 50;
-      const marginRight = 30;
-      const marginTop = 30;
+      // leave empty space little as possible without breaking styles
+      const marginRight = wideChart ? 30 : 15;
+      // when not wide, leave room for legends on separate lines
+      const marginTop = wideChart ? 30 : 60;
       const marginBottom = 50;
 
       const squatHG20Color = '#0000ff';
@@ -137,13 +146,16 @@ const SquatChart: React.FC = () => {
         .scaleLinear()
         .domain([minSpeed, maxSpeed])
         .range([0, width - marginLeft - marginRight]);
-      const xAxisGenerator = d3.axisBottom(xScale);
+      // filter only every other tick when not widechart
+      const xAxisGenerator = wideChart ? d3.axisBottom(xScale) : d3.axisBottom(xScale).tickValues(xScale.ticks().filter((_, idx) => idx % 2 == 0));
 
       const yScale = d3
         .scaleLinear()
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
-      const yAxisGenerator = d3.axisLeft(yScale);
+      // filter only every other tick when not widechart when yDomainWaterDepth set
+      const yAxisTicks = yDomainWaterDepth === 0 ? [0.0] : yScale.ticks().filter((_, idx) => idx % 2 == 0);
+      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).tickValues(yAxisTicks);
 
       const svg = d3.select(ref.current);
       svg.attr('viewBox', `0 0 ${width} ${height}`);
@@ -185,7 +197,7 @@ const SquatChart: React.FC = () => {
           .attr('dominant-baseline', 'middle')
           .attr('x', (width - marginLeft - marginRight) / 2)
           .attr('y', attr.height / 2)
-          .attr('font-size', '0.8em')
+          .attr('font-size', wideChart ? '0.8em' : '0.6em')
           .attr('fill', attr.labelColor);
       };
 
@@ -299,30 +311,40 @@ const SquatChart: React.FC = () => {
 
         const box = legend20.node()?.getBBox();
         const legend20Width = box ? box.width : 0;
-
-        const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
-        legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG24Color);
+        // when not wide, add legend beneath the first one
+        const legend24 = container.append('g').attr('transform', `translate(${wideChart ? marginLeft + legend20Width + 15 : marginLeft}, 10)`);
+        legend24
+          .append('rect')
+          .attr('width', 10)
+          .attr('height', 10)
+          .attr('y', wideChart ? 0 : 25)
+          .attr('fill', squatHG24Color);
         legend24
           .append('text')
           .text(t('legends.squatHG24'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
-          .attr('y', 10 / 2)
+          .attr('y', wideChart ? 10 / 2 : 30)
           .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
 
       const addBarrassLegend = () => {
         const legend = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
-        legend.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatBarrassColor);
+        legend
+          .append('rect')
+          .attr('width', 10)
+          .attr('height', 10)
+          .attr('y', wideChart ? 0 : 25)
+          .attr('fill', squatBarrassColor);
         legend
           .append('text')
           .text(t('legends.squatBarrass'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
-          .attr('y', 10 / 2)
+          .attr('y', wideChart ? 10 / 2 : 30)
           .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
@@ -403,28 +425,32 @@ const SquatChart: React.FC = () => {
     if (width > 300) {
       buildGraph();
     }
-  }, [state, width, t]);
+  }, [state, width, t, wideChart]);
 
   return (
-    <IonGrid className="squatChartGrid" aria-hidden="true">
-      <IonRow className="squatChartRow">
-        <IonCol>
-          <IonText className="squatChartTitle">
-            <SquatHeader level={3} text={t('heading')} embedded={isEmbedded()}></SquatHeader>
-          </IonText>
-        </IonCol>
-      </IonRow>
-      <IonRow className="squatChartRow wideRow">
-        <IonCol>
-          <svg ref={ref} viewBox={`0 0 1000 500`} width="100%" />
-        </IonCol>
-      </IonRow>
-      <IonRow className="squatChartRow wideRow">
-        <IonCol>
-          <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+    <>
+      <IonGrid className="squatChartGrid" aria-hidden="true">
+        <IonRow>
+          <IonCol>
+            <IonText className="squatChartTitle">
+              <SquatHeader level={3} text={t('heading')} embedded={isEmbedded()}></SquatHeader>
+            </IonText>
+          </IonCol>
+        </IonRow>
+        <IonRow className="squatChartRow">
+          <IonCol>
+            <svg ref={ref} viewBox={`0 0 ${wideChart ? WIDE_WIDTH : NARROW_WIDTH} 500`} width="100%" />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+      <IonGrid className="squatDataGrid" aria-hidden="true">
+        <IonRow className="squatDataRow wideRow">
+          <IonCol>
+            <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </>
   );
 };
 
