@@ -39,7 +39,7 @@ export class DvkBackendStack extends Stack {
     this.siteSubDomain = env === 'prod' ? 'dvk' : 'dvk' + env;
     const api = new appsync.GraphqlApi(this, 'DVKGraphqlApi', {
       name: 'dvk-graphql-api-' + env,
-      schema: appsync.SchemaFile.fromAsset(path.join(__dirname, '../graphql/schema.graphql')),
+      definition: appsync.Definition.fromFile(path.join(__dirname, '../graphql/schema.graphql')),
       authorizationConfig: {
         defaultAuthorization: {
           authorizationType: appsync.AuthorizationType.API_KEY,
