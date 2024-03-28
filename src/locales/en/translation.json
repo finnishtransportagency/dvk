@@ -55,11 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS areas",
           "vtspoint": "VTS reporting points",
-          "piloting": "[en] Luotsaus",
+          "piloting": "Pilotage",
           "pilot": "Pilot boarding position",
           "pilotroutes": "Pilot routes",
-          "pilotageLimits": "[en] Luotsinkäyttölinjat",
-          "pilotageAreaBorders": "[en] Luotsinkäyttöalueen ulkoraja",
+          "pilotageLimits": "Compulsory pilotage limits",
+          "pilotageAreaBorders": "Outer limit of compulsory pilotage area",
           "general": "General",
           "name": "Map names",
           "depthinfo": "Depth information",
@@ -254,10 +254,10 @@
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
     "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
     "additionalInfo": "Additional information",
-    "pilotPlaceLocation": "[en] Luotsipaikan sijainti",
-    "pilotageLimit": "[en] Luotsinkäyttölinja",
-    "pilotageLimitLocation": "[en] Linjan sijainti",
-    "pilotageLimitMaxDimensions": "[en] Alusten enimmäismitat joita linja koskee",
+    "pilotPlaceLocation": "Location of pilotage boarding position",
+    "pilotageLimit": "Compulsory pilotage limit",
+    "pilotageLimitLocation": "Limit location",
+    "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
     "draught": "Draught",
     "width": "Width"
 },
@@ -318,10 +318,10 @@
       "fairways": "Fairway cards on the pilot boarding position"
     },
     "pilotageLimit": {
-      "header": "[en] Luotsinkäyttölinja {{val}}",
-      "location": "[en] Linjan sijainti",
-      "limit": "[en] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
-      "fairways": "[en] Linjaan liittyvät väyläkortit"
+      "header": "Compulsory pilotage limit {{val}}",
+      "location": "Limit location",
+      "limit": "Maximum dimensions of vessels the limit applies to length / width / draught (m)",
+      "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {
       "header": "ROUTE: {{val}}"
@@ -468,7 +468,7 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
-        "pilotagelimit": "[en] Luotsinkäyttölinja",
+        "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",

@@ -55,11 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS-områden",
           "vtspoint": "VTS-trafikrapporteringspunkter",
-          "piloting": "[sv] Luotsaus",
+          "piloting": "Lotsning",
           "pilot": "Lotsplatser",
           "pilotroutes": "Lotsningsrutter",
-          "pilotageLimits": "[sv] Luotsinkäyttölinjat",
-          "pilotageAreaBorders": "[sv] Luotsinkäyttöalueen ulkoraja",
+          "pilotageLimits": "Lotspliktslinjer",
+          "pilotageAreaBorders": "Yttre gränsen för lotspliktigt område",
           "general": "Allmänt",
           "name": "Kartnamn",
           "depthinfo": "Djup information",
@@ -254,10 +254,10 @@
     "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
     "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel.",
     "additionalInfo": "Ytterligare information",
-    "pilotPlaceLocation": "[sv] Luotsipaikan sijainti",
-    "pilotageLimit": "[sv] Luotsinkäyttölinja",
-    "pilotageLimitLocation": "[sv] Linjan sijainti",
-    "pilotageLimitMaxDimensions": "[sv] Alusten enimmäismitat joita linja koskee",
+    "pilotPlaceLocation": "Lotsplatsens läge",
+    "pilotageLimit": "Lotspliktslinje",
+    "pilotageLimitLocation": "Linjens läge",
+    "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
     "draught": "Djupgående",
     "width": "Bredd"
   },
@@ -318,10 +318,10 @@
       "fairways": "Farledskort angående lotsplatsen"
     },
     "pilotageLimit": {
-      "header": "[sv] Luotsinkäyttölinja {{val}}",
-      "location": "[sv] Linjan sijainti",
-      "limit": "[sv] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
-      "fairways": "[sv] Linjaan liittyvät väyläkortit"
+      "header": "Lotspliktslinje {{val}}",
+      "location": "Linjens läge",
+      "limit": "Gäller för fartyg med maximala mått längd / bredd / djupgående (m)",
+      "fairways": "Farledskort angående lotspliktslinje"
     },
     "pilotRoute": {
       "header": "RUTT: {{val}}"
@@ -468,7 +468,7 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
-        "pilotagelimit": "[sv] Luotsinkäyttölinja",
+        "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
