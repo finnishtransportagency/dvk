@@ -252,7 +252,14 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>.",
     "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
-    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel."
+    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel.",
+    "additionalInfo": "Ytterligare information",
+    "pilotPlaceLocation": "[sv] Luotsipaikan sijainti",
+    "pilotageLimit": "[sv] Luotsinkäyttölinja",
+    "pilotageLimitLocation": "[sv] Linjan sijainti",
+    "pilotageLimitMaxDimensions": "[sv] Alusten enimmäismitat joita linja koskee",
+    "draught": "Djupgående",
+    "width": "Bredd"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -309,6 +316,12 @@
       "header": "Lotsplats {{val}}",
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
+    },
+    "pilotageLimit": {
+      "header": "[sv] Luotsinkäyttölinja {{val}}",
+      "location": "[sv] Linjan sijainti",
+      "limit": "[sv] Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "fairways": "[sv] Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
       "header": "RUTT: {{val}}"
@@ -455,6 +468,7 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
+        "pilotagelimit": "[sv] Luotsinkäyttölinja",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",

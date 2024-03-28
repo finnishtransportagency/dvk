@@ -124,7 +124,7 @@ export class DvkSonarPipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.2'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.3'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
