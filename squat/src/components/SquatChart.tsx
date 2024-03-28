@@ -99,7 +99,9 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
     const buildGraph = () => {
       const height = Math.round(wideChart ? width / 2 : width / 1.2);
       const marginLeft = 50;
-      const marginRight = 30;
+      // leave empty space little as possible without breaking styles
+      const marginRight = wideChart ? 30 : 15;
+      // when not wide, leave room for legends on separate lines
       const marginTop = wideChart ? 30 : 60;
       const marginBottom = 50;
 
@@ -144,14 +146,14 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         .scaleLinear()
         .domain([minSpeed, maxSpeed])
         .range([0, width - marginLeft - marginRight]);
-      // approximately halving the ticks which results to even numbers showing when on mobile
+      // approximately halving the ticks which results to even numbers showing when not wide
       const xAxisGenerator = wideChart ? d3.axisBottom(xScale) : d3.axisBottom(xScale).ticks(maxSpeed / 2);
 
       const yScale = d3
         .scaleLinear()
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
-      // approximately halving the ticks which results to even numbers showing
+      // approximately halving the ticks which results to even numbers showing when not wide
       const yAxisTicks = yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2;
       const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).ticks(yAxisTicks);
 
@@ -309,7 +311,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
 
         const box = legend20.node()?.getBBox();
         const legend20Width = box ? box.width : 0;
-
+        // when not wide, add legend beneath the first one
         const legend24 = container.append('g').attr('transform', `translate(${wideChart ? marginLeft + legend20Width + 15 : marginLeft}, 10)`);
         legend24
           .append('rect')
