@@ -152,7 +152,8 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
       // approximately halving the ticks which results to even numbers showing
-      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).ticks(yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2);
+      const yAxisTicks = yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2;
+      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).ticks(yAxisTicks);
 
       const svg = d3.select(ref.current);
       svg.attr('viewBox', `0 0 ${width} ${height}`);
