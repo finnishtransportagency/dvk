@@ -100,7 +100,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
       const height = Math.round(wideChart ? width / 2 : width / 1.2);
       const marginLeft = 50;
       const marginRight = 30;
-      const marginTop = 30;
+      const marginTop = wideChart ? 30 : 60;
       const marginBottom = 50;
 
       const squatHG20Color = '#0000ff';
@@ -144,15 +144,15 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         .scaleLinear()
         .domain([minSpeed, maxSpeed])
         .range([0, width - marginLeft - marginRight]);
-      // approximately halving the ticks which results to even numbers showing
-      const xAxisGenerator = d3.axisBottom(xScale).ticks(maxSpeed / 2);
+      // approximately halving the ticks which results to even numbers showing when on mobile
+      const xAxisGenerator = wideChart ? d3.axisBottom(xScale) : d3.axisBottom(xScale).ticks(maxSpeed / 2);
 
       const yScale = d3
         .scaleLinear()
         .domain([0, yDomainWaterDepth])
         .range([0, height - marginTop - marginBottom - bottomLayerHeightPx]);
       // approximately halving the ticks which results to even numbers showing
-      const yAxisGenerator = d3.axisLeft(yScale).ticks(yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2);
+      const yAxisGenerator = wideChart ? d3.axisLeft(yScale) : d3.axisLeft(yScale).ticks(yDomainWaterDepth === 0 ? 1 : yDomainWaterDepth / 2);
 
       const svg = d3.select(ref.current);
       svg.attr('viewBox', `0 0 ${width} ${height}`);
@@ -309,29 +309,39 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         const box = legend20.node()?.getBBox();
         const legend20Width = box ? box.width : 0;
 
-        const legend24 = container.append('g').attr('transform', `translate(${marginLeft + legend20Width + 15}, 10)`);
-        legend24.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG24Color);
+        const legend24 = container.append('g').attr('transform', `translate(${wideChart ? marginLeft + legend20Width + 15 : marginLeft}, 10)`);
+        legend24
+          .append('rect')
+          .attr('width', 10)
+          .attr('height', 10)
+          .attr('y', wideChart ? 0 : 25)
+          .attr('fill', squatHG24Color);
         legend24
           .append('text')
           .text(t('legends.squatHG24'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
-          .attr('y', 10 / 2)
+          .attr('y', wideChart ? 10 / 2 : 30)
           .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
 
       const addBarrassLegend = () => {
         const legend = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
-        legend.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatBarrassColor);
+        legend
+          .append('rect')
+          .attr('width', 10)
+          .attr('height', 10)
+          .attr('y', wideChart ? 0 : 25)
+          .attr('fill', squatBarrassColor);
         legend
           .append('text')
           .text(t('legends.squatBarrass'))
           .attr('text-anchor', 'left')
           .attr('dominant-baseline', 'middle')
           .attr('x', 15)
-          .attr('y', 10 / 2)
+          .attr('y', wideChart ? 10 / 2 : 30)
           .attr('font-size', '12px')
           .attr('fill', '#000000');
       };
