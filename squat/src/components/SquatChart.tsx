@@ -15,6 +15,7 @@ import SquatDataTable from './SquatDataTable';
 import { isEmbedded } from '../pages/Home';
 import SquatHeader from './SquatHeader';
 import { fieldParams } from '../hooks/squatReducer';
+import SquatDataTableNarrow from './SquatDataTableNarrow';
 
 const NARROW_WIDTH = 600;
 const WIDE_WIDTH = 1000;
@@ -447,6 +448,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
         <IonRow className="squatDataRow wideRow">
           <IonCol>
             <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+            <SquatDataTableNarrow huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
           </IonCol>
         </IonRow>
       </IonGrid>
