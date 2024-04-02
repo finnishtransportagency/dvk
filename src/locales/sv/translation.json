@@ -41,14 +41,12 @@
           "safetyEquipmentFaults": "Säkerhetsanordningsfelen",
           "speedLimits": "Hastighetsbegränsningar",
           "specialAreas": "Specialområden",
-          "pilotPlaces": "Lotsplatser",
           "marineWarnings": "Navigationsvarningar",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
           "boaterWarning": "Navigationsvarningar för båtfarare",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
-          "pilotroutes": "Lotsningsrutter",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
@@ -57,6 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS-områden",
           "vtspoint": "VTS-trafikrapporteringspunkter",
+          "piloting": "Lotsning",
+          "pilot": "Lotsplatser",
+          "pilotroutes": "Lotsningsrutter",
+          "pilotageLimits": "Lotspliktslinjer",
+          "pilotageAreaBorders": "Yttre gränsen för lotspliktigt område",
           "general": "Allmänt",
           "name": "Kartnamn",
           "depthinfo": "Djup information",
@@ -249,7 +252,14 @@
     "opens-in-a-new-tab": "Öppnas i en ny flik",
     "alert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.<br/><br/>Du kan också granska om ditt sökta farledskort finns med på listan av <3>Farledskort</3>.",
     "previewAlert": "Ditt sökta “{{ fairwayCardId }}” farledskort hittas inte. Granska sidans adress för eventuellt skrivfel.",
-    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel."
+    "harborPreviewAlert": "Ditt sökta \"{{ harborId }}\" hamn hittas inte. Granska sidans adress för eventuellt skrivfel.",
+    "additionalInfo": "Ytterligare information",
+    "pilotPlaceLocation": "Lotsplatsens läge",
+    "pilotageLimit": "Lotspliktslinje",
+    "pilotageLimitLocation": "Linjens läge",
+    "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
+    "draught": "Djupgående",
+    "width": "Bredd"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -307,6 +317,15 @@
       "coordinates": "Koordinater",
       "fairways": "Farledskort angående lotsplatsen"
     },
+    "pilotageLimit": {
+      "header": "Lotspliktslinje {{val}}",
+      "location": "Linjens läge",
+      "limit": "Gäller för fartyg med maximala mått längd / bredd / djupgående (m)",
+      "fairways": "Farledskort angående lotspliktslinje"
+    },
+    "pilotRoute": {
+      "header": "RUTT: {{val}}"
+    },
     "quay": {
       "length": "Kajens längd",
       "depth": "Ramningsdjup",
@@ -334,7 +353,7 @@
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerad djup {{val, number}}",
       "length": "Längd {{val}}",
-      "direction": "Rättvisande kurs {{val, number}}",
+      "direction": "Rättvisande kurs",
       "fairways": "Navigationslinje är en del av farledskortet",
       "width": "Farledsbredd på det valda stället",
       "extra": "Tilläggsuppgift"
@@ -449,6 +468,8 @@
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
         "pilot": "Lotsplats",
+        "pilotagelimit": "Lotspliktslinje",
+        "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",

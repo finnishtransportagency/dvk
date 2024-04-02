@@ -7,7 +7,7 @@ import vesselsJson from './data/aisvessels.json';
 import { Readable } from 'stream';
 import { gunzip, gzip } from 'zlib';
 import assert from 'assert';
-import { Vessel } from '../lib/lambda/api/apiModels';
+import { Vessel, VesselAPIModel } from '../lib/lambda/api/apiModels';
 
 const s3Mock = mockClient(S3Client);
 const path = 'aisvessels';
@@ -18,16 +18,16 @@ jest.mock('../lib/lambda/environment', () => ({
   getHeaders: () => {},
 }));
 
-const vessels: Vessel[] = [
+const vessels: VesselAPIModel[] = [
   {
     name: 'MOCK1',
-    timestamp: new Date(1650652205774),
+    timestamp: 1650652205774,
     mmsi: 11122233001,
     callSign: 'MC001',
     imo: 7734789,
     shipType: 52,
-    draught: 3.2,
-    eta: '10-25 16:00',
+    draught: 32,
+    eta: 210112,
     posType: 1,
     referencePointA: 8,
     referencePointB: 20,
@@ -37,13 +37,13 @@ const vessels: Vessel[] = [
   },
   {
     name: 'MOCK2',
-    timestamp: new Date(1644101972418),
+    timestamp: 1644101972418,
     mmsi: 99988877001,
     callSign: 'MC002',
     imo: 9505508,
     shipType: 90,
-    draught: 7.5,
-    eta: '00-00 24:60',
+    draught: 75,
+    eta: 219136,
     posType: 1,
     referencePointA: 35,
     referencePointB: 63,
@@ -53,13 +53,13 @@ const vessels: Vessel[] = [
   },
   {
     name: 'MOCK3',
-    timestamp: new Date(1659503493045),
+    timestamp: 1659503493045,
     mmsi: 66655544001,
     callSign: 'MC003',
     imo: 9684823,
     shipType: 52,
-    draught: 5.6,
-    eta: '10-19 19:00',
+    draught: 56,
+    eta: 129536,
     posType: 3,
     referencePointA: 12,
     referencePointB: 12,

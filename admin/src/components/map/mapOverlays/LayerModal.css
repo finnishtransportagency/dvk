@@ -190,6 +190,31 @@ ion-modal#layerModalContainer .divider {
   margin-right: 3px;
 }
 
+#layerModalContainer ion-item .pilotroute {
+  width: 18px;
+  height: 18px;
+  background: url('../../../theme/img/pilotRoute.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+
+#layerModalContainer ion-item .pilotagelimit {
+  width: 16px;
+  height: 16px;
+  background: url('../../../theme/img/pilotageLimit.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+
+#layerModalContainer ion-item .pilotageareaborder {
+  border-top: 2px solid var(--ion-color-layer-pilotageareaborder);
+  height: 1px;
+  vertical-align: middle;
+  margin-bottom: 4px;
+}
+
 #layerModalContainer ion-checkbox {
   --size: 20px;
   --border-width: 1px;

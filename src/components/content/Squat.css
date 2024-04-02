@@ -61,31 +61,31 @@ ion-grid.info-accordion,
   --background: transparent;
 }
 
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow {
   overflow: auto;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col {
   min-width: 550px;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col:has(.dataTableGrid.no-data) {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col:has(.dataTableGrid.no-data) {
   min-width: 0;
 }
 
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col .dataTableGrid {
   font-size: 12px;
   padding: 5px 0;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataTableLegend {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col .dataTableGrid .dataTableLegend {
   padding: 5px 0;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataTableLegend > ion-col {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col .dataTableGrid .dataTableLegend > ion-col {
   padding: 5px;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .titleCol {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col .dataTableGrid .titleCol {
   padding: 6px 3px;
   min-width: 140px;
 }
-.squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow.wideRow > ion-col .dataTableGrid .dataCol {
+.squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col .dataTableGrid .dataCol {
   padding: 6px 3px;
 }
 
@@ -160,10 +160,10 @@ ion-modal.squatModal.large::part(content) {
     max-width: calc(calc(12 / var(--ion-grid-columns, 12)) * 100%) !important;
     padding: 0;
   }
-  .squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow {
+  .squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow {
     overflow: visible !important;
   }
-  .squatCalculatorContainer ion-grid.squatChartGrid ion-row.squatChartRow > ion-col {
+  .squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow > ion-col {
     min-width: unset;
   }
 }

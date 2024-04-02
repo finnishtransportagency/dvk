@@ -34,6 +34,9 @@ import {
   useSpecialArea15Layer,
   useInitStaticDataLayer,
   useVaylaWaterAreaData,
+  useNameLayer,
+  usePilotageLimitLayer,
+  usePilotageAreaBorderLayer,
 } from './components/FeatureLoader';
 import {
   useAisVesselCargoLayer,
@@ -118,6 +121,10 @@ idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea15"]');
 idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtsline"]');
 idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtspoint"]');
 
+/* Remove old static name and name-buster - moved to use tanstack query */
+idbAsyncStorage.removeItem('name');
+idbAsyncStorage.removeItem('name-buster');
+
 const queryFilter = (query: Query) => {
   // Defaults to true. Do not persist only if meta.persist === false
   return !(query.meta && query.meta.persist === false);
@@ -171,7 +178,7 @@ const DvkIonApp: React.FC = () => {
   useCoastalWarningLayer();
   useLocalWarningLayer();
   useBoaterWarningLayer();
-  useInitStaticDataLayer('name', 'name');
+  useNameLayer();
   useMareographLayer();
   useObservationLayer();
   useBuoyLayer();
@@ -191,6 +198,8 @@ const DvkIonApp: React.FC = () => {
   useInitStaticDataLayer('mml_laiturit', 'mml_laiturit');
   usePilotRouteLayer();
   useVaylaWaterAreaData();
+  usePilotageLimitLayer();
+  usePilotageAreaBorderLayer();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);

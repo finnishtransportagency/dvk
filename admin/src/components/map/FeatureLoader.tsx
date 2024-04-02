@@ -12,6 +12,7 @@ import { Text } from '../../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../../speedlimitworker/SpeedlimitUtils';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
+import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -73,7 +74,7 @@ function useStaticDataLayer(
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
+        const format = new GeoJSON({ featureClass: RenderFeature });
         const source = layer.getSource() as VectorSource;
         source.clear();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
@@ -87,7 +88,7 @@ function useStaticDataLayer(
 }
 
 export function useNameLayer() {
-  return useStaticDataLayer('name', 'name');
+  return useDataLayer('name', 'name', MAP.EPSG);
 }
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
@@ -300,4 +301,12 @@ export type EquipmentFault = {
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
   return useDataLayer('safetyequipment', 'safetyequipment');
+}
+
+export function usePilotageAreaBorderLayer() {
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}
+
+export function usePilotageLimitLayer() {
+  return useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
 }

@@ -41,14 +41,12 @@
           "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
           "specialAreas": "Special areas",
-          "pilotPlaces": "Pilot boarding position",
           "marineWarnings": "Navigational warnings",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
           "boaterWarning": "Navigational warnings for yachtsmen",
           "boardLines": "Leading lines",
           "circles": "Turning circles",
-          "pilotroutes": "Pilot routes",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
@@ -57,6 +55,11 @@
           "vts": "VTS",
           "vtsline": "VTS areas",
           "vtspoint": "VTS reporting points",
+          "piloting": "Pilotage",
+          "pilot": "Pilot boarding position",
+          "pilotroutes": "Pilot routes",
+          "pilotageLimits": "Compulsory pilotage limits",
+          "pilotageAreaBorders": "Outer limit of compulsory pilotage area",
           "general": "General",
           "name": "Map names",
           "depthinfo": "Depth information",
@@ -249,8 +252,15 @@
     "opens-in-a-new-tab": "Opens in a new tab",
     "alert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.<br/><br/>You can also check, if the fairway card you were looking for, is listed in the <3>fairway card</3> list.",
     "previewAlert": "The fairway card \"{{ fairwayCardId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
-    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors."
-  },
+    "harborPreviewAlert": "The harbour \"{{ harborId }}\" you were looking for could not be found. Please check the web-address for spelling errors.",
+    "additionalInfo": "Additional information",
+    "pilotPlaceLocation": "Location of pilotage boarding position",
+    "pilotageLimit": "Compulsory pilotage limit",
+    "pilotageLimitLocation": "Limit location",
+    "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
+    "draught": "Draught",
+    "width": "Width"
+},
   "faults": {
     "title": "Defective navigation aids",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",
@@ -307,6 +317,15 @@
       "coordinates": "Coordinates",
       "fairways": "Fairway cards on the pilot boarding position"
     },
+    "pilotageLimit": {
+      "header": "Compulsory pilotage limit {{val}}",
+      "location": "Limit location",
+      "limit": "Maximum dimensions of vessels the limit applies to length / width / draught (m)",
+      "fairways": "Fairway cards for the compulsory pilotage limit"
+    },
+    "pilotRoute": {
+      "header": "ROUTE: {{val}}"
+    },
     "quay": {
       "length": "Length of the quay",
       "depth": "Swept depth",
@@ -334,7 +353,7 @@
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "length": "Length {{val}}",
-      "direction": "True bearing {{val, number}}",
+      "direction": "True bearing",
       "fairways": "Navigation line is part of the fairway card",
       "width": "Fairway width in chosen place",
       "extra": "Additional information"
@@ -449,6 +468,8 @@
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
         "pilot": "Pilot boarding position",
+        "pilotagelimit": "Compulsory pilotage limit",
+        "pilotroute": "Pilot route",
         "quay": "Quay",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",

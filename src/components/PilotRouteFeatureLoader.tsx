@@ -1,20 +1,11 @@
 import { useEffect, useState } from 'react';
 import { MAP } from '../utils/constants';
 import { Feature } from 'ol';
-import { Geometry, LineString } from 'ol/geom';
+import { GeoJSON } from 'ol/format';
+import { Geometry } from 'ol/geom';
 import dvkMap from './DvkMap';
 import { useFeatureData } from '../utils/dataLoader';
 import { useDvkContext } from '../hooks/dvkContext';
-import { LineString as geojson_LineString } from 'geojson';
-
-type RtzData = {
-  tunnus: number;
-  tila: number;
-  nimi: string;
-  tunniste: string;
-  rtz: string;
-  geometria: geojson_LineString;
-};
 
 function usePilotRouteFeatures() {
   const { state } = useDvkContext();
@@ -34,14 +25,12 @@ function usePilotRouteFeatures() {
   useEffect(() => {
     const pilotRouteData = pilotRouteQuery.data;
     if (pilotRouteData) {
-      const rtzData = pilotRouteData as unknown as RtzData[];
-      const features: Feature<Geometry>[] = [];
-      rtzData.forEach((rtz) => {
-        const routeLine = new LineString(rtz.geometria.coordinates);
-        routeLine.transform('EPSG:4326', MAP.EPSG);
-        features.push(new Feature(routeLine));
-      });
-      setPilotRouteFeatures(features);
+      const format = new GeoJSON();
+      const pilotRouteFeatures = format.readFeatures(pilotRouteData, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: MAP.EPSG,
+      }) as Feature<Geometry>[];
+      setPilotRouteFeatures(pilotRouteFeatures);
       setReady(true);
     }
   }, [pilotRouteQuery.data]);

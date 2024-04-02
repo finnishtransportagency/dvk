@@ -3,7 +3,7 @@ import { gzip } from 'zlib';
 import { log } from './logger';
 import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
-import { RtzResponseData, Vessel } from './api/apiModels';
+import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
 
 const GEOMETRY_DECIMALS = 5;
@@ -51,6 +51,15 @@ export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) 
   return geometry;
 }
 
+export function roundDecimals(n: number | null | undefined, decimals: number) {
+  const power = Math.pow(10, decimals);
+  return n ? Math.round(n * power) / power : n;
+}
+
+export function invertDegrees(angle: number | null | undefined) {
+  return angle ? (angle + 180) % 360 : angle;
+}
+
 export function getNumberValue(value: number | undefined): number | undefined {
   return value && value > 0 ? value : undefined;
 }
@@ -67,7 +76,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-export async function saveResponseToS3(features: FeatureCollection | Vessel[] | RtzResponseData, key: string): Promise<string> {
+export async function saveResponseToS3(features: FeatureCollection | Vessel[], key: string): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);

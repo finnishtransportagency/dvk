@@ -543,6 +543,7 @@ exports[`should get navigation lines from api when cache expired 1`] = `
       "id": 69883,
       "properties": {
         "depth": 2.2,
+        "direction": 175,
         "draft": 1.8,
         "fairways": [
           {
@@ -569,6 +570,7 @@ exports[`should get navigation lines from api when cache expired 1`] = `
         "id": 69883,
         "length": 33,
         "n2000ReferenceLevel": null,
+        "oppositeDirection": 355,
         "referenceLevel": "NN+78.80",
       },
       "type": "Feature",
@@ -602,6 +604,7 @@ exports[`should get navigation lines from cache 1`] = `
       "id": 264222,
       "properties": {
         "depth": 12.5,
+        "direction": 45,
         "draft": 11,
         "fairways": [
           {
@@ -628,6 +631,7 @@ exports[`should get navigation lines from cache 1`] = `
         "id": 264222,
         "length": 2550,
         "n2000ReferenceLevel": null,
+        "oppositeDirection": 225,
         "referenceLevel": "MW2018",
       },
       "type": "Feature",
@@ -653,6 +657,7 @@ exports[`should get navigation lines from cache 1`] = `
       "id": 264272,
       "properties": {
         "depth": 10.2,
+        "direction": 8,
         "draft": 8,
         "fairways": [
           {
@@ -669,6 +674,7 @@ exports[`should get navigation lines from cache 1`] = `
         "id": 264272,
         "length": 631,
         "n2000ReferenceLevel": null,
+        "oppositeDirection": 188,
         "referenceLevel": "MW2005",
       },
       "type": "Feature",
@@ -702,6 +708,7 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
       "id": 264222,
       "properties": {
         "depth": 12.5,
+        "direction": 45,
         "draft": 11,
         "fairways": [
           {
@@ -728,6 +735,7 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
         "id": 264222,
         "length": 2550,
         "n2000ReferenceLevel": null,
+        "oppositeDirection": 225,
         "referenceLevel": "MW2018",
       },
       "type": "Feature",
@@ -753,6 +761,7 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
       "id": 264272,
       "properties": {
         "depth": 10.2,
+        "direction": 8,
         "draft": 8,
         "fairways": [
           {
@@ -769,6 +778,7 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
         "id": 264272,
         "length": 631,
         "n2000ReferenceLevel": null,
+        "oppositeDirection": 188,
         "referenceLevel": "MW2005",
       },
       "type": "Feature",

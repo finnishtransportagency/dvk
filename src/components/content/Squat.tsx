@@ -83,7 +83,7 @@ const Squat: React.FC<SquatProps> = ({ widePane }) => {
             </IonCol>
           </IonRow>
         </IonGrid>
-        <SquatChart />
+        <SquatChart wideChart={widePane} />
       </div>
     </SquatContext.Provider>
   );
