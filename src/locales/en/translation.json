@@ -5,6 +5,7 @@
       "closeMenu": "Close",
       "title": "Digital Fairway Card",
       "fairway-cards": "Fairway Cards",
+      "pilot-routes": "Pilot routes",
       "safety-equipment-faults": "Defective Navigation Aids",
       "marine-warnings": "Navigational Warnings",
       "squat": "Squat calculator",
@@ -260,7 +261,10 @@
     "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
     "draught": "Draught",
     "width": "Width"
-},
+  },
+  "routes": {
+    "title": "Pilot routes"
+  },
   "faults": {
     "title": "Defective navigation aids",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",

@@ -5,6 +5,7 @@
       "closeMenu": "Sulje",
       "title": "Digitaalinen väyläkortti",
       "fairway-cards": "Väyläkortit",
+      "pilot-routes": "Luotsausreitit",
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
@@ -260,6 +261,9 @@
     "pilotageLimitMaxDimensions": "Alusten enimmäismitat joita linja koskee",
     "draught": "Syväys",
     "width": "Leveys"
+  },
+  "routes": {
+    "title": "Luotsausreitit"
   },
   "faults": {
     "title": "Turvalaiteviat",

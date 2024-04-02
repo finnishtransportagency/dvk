@@ -5,6 +5,7 @@
       "closeMenu": "Stäng",
       "title": "Digital farledskort",
       "fairway-cards": "Farledskort",
+      "pilot-routes": "Lotsningsrutter",
       "safety-equipment-faults": "Säkerhetsanordningsfelen",
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
@@ -260,6 +261,9 @@
     "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
     "draught": "Djupgående",
     "width": "Bredd"
+  },
+  "routes": {
+    "title": "Lotsningsrutter"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
