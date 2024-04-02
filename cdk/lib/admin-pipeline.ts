@@ -17,8 +17,6 @@ export class AdminPipeline extends Construct {
     super(scope, id);
 
     const account = cdk.Stack.of(this).account;
-    const updatePipeline = '';
-    console.log(updatePipeline);
 
     const pipeline = new codepipeline.Pipeline(this, 'AdminPipeline', {
       crossAccountKeys: false,

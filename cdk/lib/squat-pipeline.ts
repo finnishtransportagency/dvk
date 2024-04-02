@@ -17,8 +17,6 @@ export class SquatPipeline extends Construct {
     super(scope, id);
 
     const account = cdk.Stack.of(this).account;
-    const updatePipeline = '';
-    console.log(updatePipeline);
 
     const pipeline = new codepipeline.Pipeline(this, 'SquatPipeline', {
       crossAccountKeys: false,
