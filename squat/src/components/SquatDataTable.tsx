@@ -4,12 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { isEmbedded } from '../pages/Home';
 import { calculateFroudeNumber, knotsToMetresPerSecond } from '../utils/calculations';
-import { DATACOLOR } from './DataTableDataCell';
+import DataTableDataCell, { DATACOLOR } from './DataTableDataCell';
 import DataTableTitleColumn from './DataTableTitleColumn';
 import './SquatDataTable.css';
 import { fieldParams } from '../hooks/squatReducer';
 import uniqueId from 'lodash/uniqueId';
-import DataTableDataCell from './DataTableDataCell';
 
 interface Props {
   huuskaGuliev24?: Array<[number, number]>;

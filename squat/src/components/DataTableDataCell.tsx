@@ -3,7 +3,7 @@ import React from 'react';
 
 interface Props {
   value: string | undefined;
-  row?: boolean | undefined;
+  row?: boolean;
   color?: DATACOLOR;
   lastCell?: boolean;
 }
