@@ -516,6 +516,7 @@
     "dataUpToDate": "Tjänstens iuppgifter är uppdaterad",
     "dataUpdateFailedAt": "Misslyckad uppdatering av data",
     "latestDataUpdateAt": "Senaste uppdateringen av data",
+    "modified": "Uppdaterat",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",

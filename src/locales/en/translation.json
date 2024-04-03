@@ -516,6 +516,7 @@
     "dataUpToDate": "Data up to date",
     "dataUpdateFailedAt": "Data update failed at",
     "latestDataUpdateAt": "Latest data update at",
+    "modified": "Updated",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Defective Navigation Aids",
     "marine-warnings": "Navigational Warnings",
