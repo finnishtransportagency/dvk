@@ -1,14 +1,14 @@
-import { IonCol, IonGrid, IonLabel, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSquatContext } from '../hooks/squatContext';
 import { isEmbedded } from '../pages/Home';
 import { calculateFroudeNumber, knotsToMetresPerSecond } from '../utils/calculations';
 import DataTableDataCell, { DATACOLOR } from './DataTableDataCell';
-import DataTableTitleColumn from './DataTableTitleColumn';
 import './SquatDataTable.css';
 import { fieldParams } from '../hooks/squatReducer';
 import uniqueId from 'lodash/uniqueId';
+import DataTableTitleRow from './DataTableTitleRow';
 
 interface Props {
   huuskaGuliev24?: Array<[number, number]>;
@@ -71,22 +71,22 @@ const SquatDataTable: React.FC<Props> = (props) => {
         <IonCol>
           <IonGrid className="ion-no-left-padding">
             <IonRow>
-              <IonCol size="2">
-                <IonLabel>{t('aluksen-nopeus-kn')}</IonLabel>
+              <IonCol size="1.78" className="dataTableCol">
+                <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
                 {speeds?.map((speed) => {
                   const uuid = uniqueId('col_');
                   return <DataTableDataCell key={uuid} value={speed.toFixed(1)} row={true} />;
                 })}
               </IonCol>
-              <IonCol size="2">
-                <IonLabel>{t('aluksen-nopeus-ms')}</IonLabel>
+              <IonCol size="1.78" className="dataTableCol">
+                <DataTableTitleRow value={t('aluksen-nopeus-ms')} />
                 {speeds?.map((speed) => {
                   const uuid = uniqueId('col_');
                   return <DataTableDataCell key={uuid} value={knotsToMetresPerSecond(speed).toFixed(1)} row={true} />;
                 })}
               </IonCol>
-              <IonCol size="2">
-                <IonLabel>{t('froude-syvyysluku')}</IonLabel>
+              <IonCol size="1.78" className="dataTableCol">
+                <DataTableTitleRow value={t('froude-syvyysluku')} />
                 {speeds?.map((speed) => {
                   const froudeNumber = calculateFroudeNumber(speed, sweptDepth, waterLevel);
                   const uuid = uniqueId('col_');
@@ -102,8 +102,8 @@ const SquatDataTable: React.FC<Props> = (props) => {
               </IonCol>
               {!state.status.showBarrass && (
                 <>
-                  <IonCol size="2">
-                    <DataTableTitleColumn
+                  <IonCol size="1.78" className="dataTableCol">
+                    <DataTableTitleRow
                       value={t('squat-max', {
                         kerroin: '2,0',
                       })}
@@ -113,21 +113,29 @@ const SquatDataTable: React.FC<Props> = (props) => {
                       return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} />;
                     })}
                   </IonCol>
-                  <IonCol size="2">
-                    <IonLabel>{t('squat-max', { kerroin: '2,4' })}</IonLabel>
+                  <IonCol size="1.78" className="dataTableCol">
+                    <DataTableTitleRow value={t('squat-max', { kerroin: '2,4' })} lastCell={true} />
                     {getPaddedHuuskaGuliev24Data().map((value) => {
                       const uuid = uniqueId('col_');
-                      return <DataTableDataCell key={uuid} value={value >= 0 ? value.toFixed(2) : '-'} row={true} color={DATACOLOR.SQUAT} />;
+                      return (
+                        <DataTableDataCell
+                          key={uuid}
+                          value={value >= 0 ? value.toFixed(2) : '-'}
+                          row={true}
+                          color={DATACOLOR.SQUAT}
+                          lastCell={true}
+                        />
+                      );
                     })}
                   </IonCol>
                 </>
               )}
               {state.status.showBarrass && (
-                <IonCol>
-                  <IonLabel>{t('squat-max', { kerroin: undefined })}</IonLabel>
+                <IonCol size="1.78" className="dataTableCol">
+                  <DataTableTitleRow value={t('squat-max', { kerroin: undefined })} lastCell={true} />
                   {props.barrass?.filter(filterSpeeds).map((values) => {
                     const uuid = uniqueId('col_');
-                    return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} />;
+                    return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} lastCell={true} />;
                   })}
                 </IonCol>
               )}

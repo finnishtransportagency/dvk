@@ -5,6 +5,7 @@ interface Props {
   value: string | undefined;
   row?: boolean | undefined;
   color?: DATACOLOR;
+  lastCell?: boolean;
 }
 export enum DATACOLOR {
   FROUDE = '#fdf6f6',
@@ -13,7 +14,9 @@ export enum DATACOLOR {
 }
 const DataTableDataCell: React.FC<Props> = (props) => {
   return props.row ? (
-    <IonRow style={{ backgroundColor: props.color }}>{props.value?.replace('.', ',')}</IonRow>
+    <IonRow className={props.lastCell ? 'dataRow' : 'dataRow cellRightBorder'} style={{ backgroundColor: props.color }}>
+      {props.value?.replace('.', ',')}
+    </IonRow>
   ) : (
     <IonCol size="0.818" className="dataCol" style={{ backgroundColor: props.color }}>
       {props.value?.replace('.', ',')}
