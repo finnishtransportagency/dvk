@@ -447,8 +447,11 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
       <IonGrid className="squatDataGrid" aria-hidden="true">
         <IonRow className="squatDataRow wideRow">
           <IonCol>
-            <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
-            <SquatDataTableNarrow huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+            {wideChart ? (
+              <SquatDataTable huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+            ) : (
+              <SquatDataTableNarrow huuskaGuliev20={huuskaGuliev20} huuskaGuliev24={huuskaGuliev24} barrass={barrass} />
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>
