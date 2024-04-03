@@ -59,13 +59,15 @@ const SquatDataTable: React.FC<Props> = (props) => {
     <IonGrid className={'dataTableGrid' + (speeds.length < 1 ? ' no-data' : '')}>
       <IonRow className="ion-align-items-center dataTableLegend" style={isEmbedded() ? { paddingLeft: '1px' } : undefined}>
         <IonCol size="auto">
-          <div className="squatSquare" />
+          <div className="squatSquareSmall" />
         </IonCol>
-        <IonCol size="auto">{t('froude-varoitus')}</IonCol>
+        <IonCol size="auto" className="legendCol">
+          {t('froude-varoitus')}
+        </IonCol>
         <IonCol size="auto">
-          <div className="froudeSquare" />
+          <div className="froudeSquareSmall" />
         </IonCol>
-        <IonCol size="4">{t('squat-tulokset')}</IonCol>
+        <IonCol className="legendCol">{t('squat-tulokset')}</IonCol>
       </IonRow>
       <IonRow>
         <IonCol>

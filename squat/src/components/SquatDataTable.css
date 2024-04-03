@@ -48,6 +48,19 @@ div.squatSquare {
   outline: solid 1px black;
 }
 
+div.froudeSquareSmall {
+  border: solid 3px #f5ffef;
+  width: 0px;
+  height: 0px;
+  outline: solid 1px black;
+}
+
+div.squatSquareSmall {
+  border: solid 3px #fdf6f6;
+  width: 0px;
+  height: 0px;
+  outline: solid 1px black;
+}
 
 .titleRow {
   font-size: 12px;
@@ -64,7 +77,6 @@ div.squatSquare {
   border-right: 1px solid lightgray;
 }
 
-
 .titleRow ion-label {
   font-weight: bold;
   padding: 5px;
@@ -73,4 +85,8 @@ div.squatSquare {
 .dataTableCol {
   flex-wrap: nowrap;
   padding: 0px;
+}
+
+.legendCol {
+  font-size: 12px;
 }
