@@ -65,12 +65,12 @@ const SquatDataTable: React.FC<Props> = (props) => {
         <IonCol size="auto">
           <div className="froudeSquare" />
         </IonCol>
-        <IonCol>{t('squat-tulokset')}</IonCol>
+        <IonCol size="4">{t('squat-tulokset')}</IonCol>
       </IonRow>
       <IonRow>
         <IonCol>
-          <IonGrid className="ion-no-left-padding">
-            <IonRow>
+          <IonGrid className="ion-no-padding">
+            <IonRow className="ion-no-padding">
               <IonCol size="1.78" className="dataTableCol">
                 <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
                 {speeds?.map((speed) => {

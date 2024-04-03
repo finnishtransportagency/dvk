@@ -48,22 +48,22 @@ div.squatSquare {
   outline: solid 1px black;
 }
 
-@media (max-width: 768px) {
-  .titleRow {
-    font-size: 12px;
-    min-height: 55px;
-  }
-  .dataRow {
-    font-size: 12px;
-    height: 27px;
-    padding-left: 10px;
-    padding-top: 7px;
-    border-top: 1px solid lightgray;
-  }
-  .cellRightBorder {
-    border-right: 1px solid lightgray;
-  }
+
+.titleRow {
+  font-size: 12px;
+  min-height: 55px;
 }
+.dataRow {
+  font-size: 12px;
+  height: 27px;
+  padding-left: 10px;
+  padding-top: 7px;
+  border-top: 1px solid lightgray;
+}
+.cellRightBorder {
+  border-right: 1px solid lightgray;
+}
+
 
 .titleRow ion-label {
   font-weight: bold;

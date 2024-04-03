@@ -444,7 +444,7 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
           </IonCol>
         </IonRow>
       </IonGrid>
-      <IonGrid className="squatDataGrid" aria-hidden="true">
+      <IonGrid className={wideChart ? 'squatDataGrid' : 'squatDataGridNoScroll'} aria-hidden="true">
         <IonRow className="squatDataRow wideRow">
           <IonCol>
             {wideChart ? (
