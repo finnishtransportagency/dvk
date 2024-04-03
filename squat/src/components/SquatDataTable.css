@@ -49,16 +49,17 @@ div.squatSquare {
 }
 
 div.froudeSquareSmall {
-  border: solid 3px #f5ffef;
+  border: solid 4px #f5ffef;
   width: 0px;
   height: 0px;
   outline: solid 1px black;
 }
 
 div.squatSquareSmall {
-  border: solid 3px #fdf6f6;
+  border: solid 4px #fdf6f6;
   width: 0px;
   height: 0px;
+  margin-left: 1px;
   outline: solid 1px black;
 }
 
@@ -85,8 +86,10 @@ div.squatSquareSmall {
 .dataTableCol {
   flex-wrap: nowrap;
   padding: 0px;
+  min-width: 74px;
 }
 
 .legendCol {
   font-size: 12px;
+  padding: 5px;
 }

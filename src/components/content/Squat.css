@@ -62,7 +62,7 @@ ion-grid.info-accordion,
 }
 
 .squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow {
-  overflow: auto;
+  overflow: hidden;
 }
 .squatCalculatorContainer ion-grid.squatDataGrid ion-row.squatDataRow.wideRow > ion-col {
   min-width: 550px;
