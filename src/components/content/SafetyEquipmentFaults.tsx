@@ -4,13 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
+import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign, zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import './SafetyEquipmentFaults.css';
-import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
@@ -35,12 +34,7 @@ function goto(id: number, selectedFairwayCard: boolean) {
     .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
     .getFeatureById(id) as Feature<Geometry>;
   if (feature) {
-    const geometry = feature.getGeometry();
-    if (geometry) {
-      const extent = olExtent.createEmpty();
-      olExtent.extend(extent, geometry.getExtent());
-      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
-    }
+    zoomToFeatureCoordinates(feature, undefined, undefined);
   }
 }
 

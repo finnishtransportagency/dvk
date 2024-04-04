@@ -7,12 +7,12 @@ import dvkMap from '../DvkMap';
 import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
 import { getMarineWarningDataLayerId, getWarningImgSource } from '../../utils/common';
-import * as olExtent from 'ol/extent';
 import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -21,25 +21,12 @@ type WarningListProps = {
 };
 
 function goto(warning: MarineWarning, layers: string[]) {
-  // Clear possible previous feature(s) from temporary layer
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  selectedFairwayCardSource.clear();
-
   const layerDataId = getMarineWarningDataLayerId(warning.type);
   const warningSource = dvkMap.getVectorSource(layerDataId);
   const feature = warningSource.getFeatureById(warning.id) as Feature<Geometry>;
 
   if (feature) {
-    // If warning layer is not visible, use selectedfairwaycard to show warning on map
-    if (!layers.includes(layerDataId)) {
-      selectedFairwayCardSource.addFeature(feature);
-    }
-    const geometry = feature.getGeometry();
-    if (geometry) {
-      const extent = olExtent.createEmpty();
-      olExtent.extend(extent, geometry.getExtent());
-      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
-    }
+    zoomToFeatureCoordinates(feature, layers, layerDataId);
   }
 }
 

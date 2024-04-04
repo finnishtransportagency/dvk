@@ -3,20 +3,36 @@ import { IonCol, IonGrid, IonRow, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
 import { useFeatureData } from '../../utils/dataLoader';
-import { FeatureLayerId, OFFLINE_STORAGE } from '../../utils/constants';
+import { FeatureDataLayerId, OFFLINE_STORAGE } from '../../utils/constants';
 import PageHeader from './PageHeader';
 import { PilotRouteFeatureProperties } from '../features';
 import { Feature, Geometry } from 'geojson';
+import { Feature as olFeature } from 'ol';
+import { Geometry as olGeometry } from 'ol/geom';
 import './PilotRoutes.css';
+import dvkMap from '../DvkMap';
+import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
+import { useDvkContext } from '../../hooks/dvkContext';
+import { Link } from 'react-router-dom';
 
 interface PilotRoutesProps {
   widePane?: boolean;
 }
 
-const layerId: FeatureLayerId = 'pilotroute';
+const layerId: FeatureDataLayerId = 'pilotroute';
+
+function goto(id: string | number | undefined, layers: string[]) {
+  if (id) {
+    const feature = dvkMap.getVectorSource(layerId).getFeatureById(id) as olFeature<olGeometry>;
+    if (feature) {
+      zoomToFeatureCoordinates(feature, layers, layerId);
+    }
+  }
+}
 
 const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
   const { t } = useTranslation();
+  const { state } = useDvkContext();
   const { data, dataUpdatedAt, isPending, isFetching, isSuccess } = useFeatureData(
     layerId,
     true,
@@ -55,7 +71,15 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
                 <IonGrid key={pilotRoute.id} className="group inlineHoverText ion-no-padding">
                   <IonRow className="header">
                     <IonCol>
-                      {t('routes.route')} {properties.name}
+                      <Link
+                        to="/luotsausreitit/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          goto(pilotRoute.id, state.layers);
+                        }}
+                      >
+                        {t('routes.route')} {properties.name}
+                      </Link>
                     </IonCol>
                   </IonRow>
                 </IonGrid>

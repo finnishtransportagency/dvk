@@ -7,6 +7,8 @@ import { Geometry } from 'ol/geom';
 import { Coordinate } from 'ol/coordinate';
 import { FeatureCollection } from 'geojson';
 import { GeoJSON } from 'ol/format';
+import { FeatureDataLayerId } from './constants';
+import * as olExtent from 'ol/extent';
 
 // See degreesToStringHDMS from openlayers /src/ol/coordinate.js for reference
 const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDigits = 0) => {
@@ -106,4 +108,24 @@ export function filterFeaturesInPolygonByArea(polygons: FeatureCollection, featu
     });
   });
   return filteredArray;
+}
+
+export function zoomToFeatureCoordinates(feature: Feature<Geometry>, layers: string[] | undefined, layerId: FeatureDataLayerId | undefined) {
+  const selectedFairwayCardSource = getMap().getVectorSource('selectedfairwaycard');
+
+  // If layer is not visible, use selectedfairwaycard to show feature on map
+  if (layerId && !layers?.includes(layerId)) {
+    // Clear possible previous feature(s) from temporary layer
+    selectedFairwayCardSource.clear();
+    selectedFairwayCardSource.addFeature(feature);
+  }
+
+  const geometry = feature.getGeometry();
+  if (geometry) {
+    const extent = olExtent.createEmpty();
+    olExtent.extend(extent, geometry.getExtent());
+    getMap()
+      .olMap?.getView()
+      .fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+  }
 }
