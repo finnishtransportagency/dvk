@@ -58,9 +58,7 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                   to={window.location.pathname}
                   onClick={(e) => {
                     e.preventDefault();
-                    if (limit.fid) {
-                      gotoFeature(limit.fid, 'selectedfairwaycard');
-                    }
+                    gotoFeature(limit.fid, 'selectedfairwaycard');
                   }}
                 >
                   {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} - {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}
