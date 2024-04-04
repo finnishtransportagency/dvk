@@ -101,7 +101,7 @@ export function getPilotPlacesByFairwayCardId(id: string) {
   return pilotPlaces;
 }
 
-export function getPilotageLimitsByFairways(fairways: Fairway[]) {
+export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?: boolean) {
   const source = dvkMap.getVectorSource('pilotagelimit');
   const pilotageLimitFeatures = source.getFeatures();
   const pilotageLimits: PilotageLimit[] = [];
@@ -113,16 +113,25 @@ export function getPilotageLimitsByFairways(fairways: Fairway[]) {
       // related fairways are in one string where commas separate different ids
       const relatedIds = limitProperties.liittyyVayliin.split(',');
       if (relatedIds.includes(String(fairway.id))) {
-        const pilotageLimitObject = {
-          fid: limitProperties.fid,
-          numero: limitProperties.numero,
-          liittyyVayliin: limitProperties.liittyyVayliin,
-          raja_fi: limitProperties.raja_fi,
-          raja_sv: limitProperties.raja_sv,
-          raja_en: limitProperties.raja_en,
-          koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
-        };
-        pilotageLimits.push(pilotageLimitObject);
+        let pilotageLimitObject;
+        // added to avoid unnecessary heavy transforming function when only numero is needed
+        if (getOnlyNumber) {
+          pilotageLimitObject = {
+            numero: limitProperties.numero,
+          };
+          pilotageLimits.push(pilotageLimitObject);
+        } else {
+          pilotageLimitObject = {
+            fid: limitProperties.fid,
+            numero: limitProperties.numero,
+            liittyyVayliin: limitProperties.liittyyVayliin,
+            raja_fi: limitProperties.raja_fi,
+            raja_sv: limitProperties.raja_sv,
+            raja_en: limitProperties.raja_en,
+            koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
+          };
+          pilotageLimits.push(pilotageLimitObject);
+        }
       }
     });
   });

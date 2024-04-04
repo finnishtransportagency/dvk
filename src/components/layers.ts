@@ -1166,7 +1166,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     }
 
     // no feature id set for pilotage limits, so has to be done this way around
-    const pilotageLimits = getPilotageLimitsByFairways(fairwayCard.fairways);
+    const pilotageLimits = getPilotageLimitsByFairways(fairwayCard.fairways, true);
     for (const f of pilotageLimitSource.getFeatures()) {
       const pilotageNumber = f.getProperties().numero;
       for (const limit of pilotageLimits) {
