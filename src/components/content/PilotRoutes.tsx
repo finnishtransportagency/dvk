@@ -14,6 +14,7 @@ import dvkMap from '../DvkMap';
 import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { Link } from 'react-router-dom';
+import { setSelectedPilotRoute } from '../layers';
 
 interface PilotRoutesProps {
   widePane?: boolean;
@@ -21,12 +22,10 @@ interface PilotRoutesProps {
 
 const layerId: FeatureDataLayerId = 'pilotroute';
 
-function goto(id: string | number | undefined, layers: string[]) {
-  if (id) {
-    const feature = dvkMap.getVectorSource(layerId).getFeatureById(id) as olFeature<olGeometry>;
-    if (feature) {
-      zoomToFeatureCoordinates(feature, layers, layerId);
-    }
+function goto(id: number, layers: string[]) {
+  const feature = dvkMap.getVectorSource(layerId).getFeatureById(id) as olFeature<olGeometry>;
+  if (feature) {
+    zoomToFeatureCoordinates(feature, layers, layerId);
   }
 }
 
@@ -68,14 +67,21 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
             {pilotRoutes.map((pilotRoute) => {
               const properties = pilotRoute.properties as PilotRouteFeatureProperties;
               return (
-                <IonGrid key={pilotRoute.id} className="group inlineHoverText ion-no-padding">
+                <IonGrid
+                  key={properties.id}
+                  className="group inlineHoverText ion-no-padding"
+                  onMouseEnter={() => setSelectedPilotRoute(properties.id, true)}
+                  onFocus={() => setSelectedPilotRoute(properties.id, true)}
+                  onMouseLeave={() => setSelectedPilotRoute(properties.id, false)}
+                  onBlur={() => setSelectedPilotRoute(properties.id, false)}
+                >
                   <IonRow className="header">
                     <IonCol>
                       <Link
                         to="/luotsausreitit/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goto(pilotRoute.id, state.layers);
+                          goto(properties.id, state.layers);
                         }}
                       >
                         {t('routes.route')} {properties.name}

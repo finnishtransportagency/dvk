@@ -1237,6 +1237,15 @@ export function setSelectedSafetyEquipment(id: number, selected: boolean) {
   highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
 }
 
+export function setSelectedPilotRoute(id: number, selected: boolean) {
+  const dvkMap = getMap();
+  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  highlightFeatures(pilotRouteSource, ['pilotroute'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['pilotroute'], id, 'id', selected);
+}
+
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
   const dvkMap = getMap();
   const harborLayer = dvkMap.getFeatureLayer('harbor');
