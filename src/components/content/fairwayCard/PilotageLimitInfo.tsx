@@ -46,7 +46,7 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
               <br />
               {t('length').toLocaleLowerCase()} / {t('width').toLocaleLowerCase()} / {t('draught').toLocaleLowerCase()} (m)
               <br />
-              {limitInfoByLang(idx).replaceAll('/', ' / ')}
+              {limitInfoByLang(idx)?.replaceAll('/', ' / ')}
             </IonLabel>
           </p>
         );

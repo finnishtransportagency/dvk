@@ -83,7 +83,25 @@ export const handleSafetyEquipmentLayerChange = () => {
   }
 };
 
-export function getPilotageLimitsByFairways(fairways: Fairway[]) {
+// returns features since actual pilot objects are not needed anywhere else (yet?)
+export function getPilotPlacesByFairwayCardId(id: string) {
+  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
+  const pilotPlaces: Feature<Geometry>[] = [];
+
+  pilotPlaceSource.getFeatures().forEach((f) => {
+    const props = f.getProperties();
+    const fairwayCards = props.fairwayCards;
+    for (const fairwayCard of fairwayCards) {
+      if (fairwayCard.name.fi === id) {
+        pilotPlaces.push(f);
+      }
+    }
+  });
+
+  return pilotPlaces;
+}
+
+export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?: boolean) {
   const source = dvkMap.getVectorSource('pilotagelimit');
   const pilotageLimitFeatures = source.getFeatures();
   const pilotageLimits: PilotageLimit[] = [];
@@ -95,15 +113,23 @@ export function getPilotageLimitsByFairways(fairways: Fairway[]) {
       // related fairways are in one string where commas separate different ids
       const relatedIds = limitProperties.liittyyVayliin.split(',');
       if (relatedIds.includes(String(fairway.id))) {
-        const pilotageLimitObject = {
-          fid: limitProperties.fid,
-          numero: limitProperties.numero,
-          liittyyVayliin: limitProperties.liittyyVayliin,
-          raja_fi: limitProperties.raja_fi,
-          raja_sv: limitProperties.raja_sv,
-          raja_en: limitProperties.raja_en,
-          koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
-        };
+        let pilotageLimitObject;
+        // added to avoid unnecessary heavy transforming function when only numero is needed
+        if (getOnlyNumber) {
+          pilotageLimitObject = {
+            numero: limitProperties.numero,
+          };
+        } else {
+          pilotageLimitObject = {
+            fid: limitProperties.fid,
+            numero: limitProperties.numero,
+            liittyyVayliin: limitProperties.liittyyVayliin,
+            raja_fi: limitProperties.raja_fi,
+            raja_sv: limitProperties.raja_sv,
+            raja_en: limitProperties.raja_en,
+            koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
+          };
+        }
         pilotageLimits.push(pilotageLimitObject);
       }
     });
