@@ -15,6 +15,7 @@ import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { Link } from 'react-router-dom';
 import { setSelectedPilotRoute } from '../layers';
+import VectorSource from 'ol/source/Vector';
 
 interface PilotRoutesProps {
   widePane?: boolean;
@@ -53,6 +54,22 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
       setPilotRoutes(features);
     }
   }, [data, isSuccess]);
+
+  useEffect(() => {
+    return () => {
+      // Cleanup: remove feature(s) from fairway card layer
+      const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    // If pilot route layer is not visible, show selected pilot route on fairway card layer
+    const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+    (fairwayCardLayer.getSource() as VectorSource).clear();
+    fairwayCardLayer.setVisible(!state.layers.includes(layerId));
+  }, [state.layers]);
 
   return (
     <>

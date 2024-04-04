@@ -336,6 +336,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
       return getCircleStyle(feature, resolution);
+    case 'pilotroute':
+      return getPilotRouteStyle(feature, resolution, highlighted);
     default:
       return undefined;
   }
