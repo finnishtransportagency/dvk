@@ -263,7 +263,8 @@
     "width": "Bredd"
   },
   "routes": {
-    "title": "Lotsningsrutter"
+    "title": "Lotsningsrutter",
+    "route": "Rutt"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
