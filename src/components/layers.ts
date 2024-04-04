@@ -44,7 +44,7 @@ import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
-import { getPilotageLimitsByFairways, getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import { getPilotPlacesByFairwayCardId, getPilotageLimitsByFairways, getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 
@@ -336,6 +336,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
       return getCircleStyle(feature, resolution);
+    case 'pilot':
+      return getPilotStyle(highlighted);
     case 'pilotagelimit':
       return getPilotageLimitStyle(feature, resolution, highlighted);
     default:
@@ -913,6 +915,7 @@ export function unsetSelectedFairwayCard() {
   const harborSource = dvkMap.getVectorSource('harbor');
   const circleSource = dvkMap.getVectorSource('circle');
   const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
@@ -951,6 +954,9 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'safetyequipmentfault':
         safetyEquipmentFaultSource.addFeature(feature);
+        break;
+      case 'pilot':
+        pilotPlaceSource.addFeature(feature);
         break;
       case 'pilotagelimit':
         pilotageLimitSource.addFeature(feature);
@@ -1057,6 +1063,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
     const harborSource = dvkMap.getVectorSource('harbor');
     const circleSource = dvkMap.getVectorSource('circle');
+    const pilotPlaceSource = dvkMap.getVectorSource('pilot');
     const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
     const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
     unsetSelectedFairwayCard();
@@ -1150,6 +1157,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         safetyEquipmentFaultSource.removeFeature(feature);
         fairwayFeatures.push(feature);
       }
+    }
+
+    const pilotPlaces = getPilotPlacesByFairwayCardId(String(fairwayCard.name.fi));
+    for (const feature of pilotPlaces) {
+      pilotPlaceSource.removeFeature(feature);
+      fairwayFeatures.push(feature);
     }
 
     // no feature id set for pilotage limits, so has to be done this way around

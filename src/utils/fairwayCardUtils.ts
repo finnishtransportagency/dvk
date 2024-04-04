@@ -83,6 +83,24 @@ export const handleSafetyEquipmentLayerChange = () => {
   }
 };
 
+// returns features since actual pilot objects are not needed anywhere else (yet?)
+export function getPilotPlacesByFairwayCardId(id: string) {
+  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
+  const pilotPlaces: Feature<Geometry>[] = [];
+
+  pilotPlaceSource.getFeatures().forEach((f) => {
+    const props = f.getProperties();
+    const fairwayCards = props.fairwayCards;
+    for (const fairwayCard of fairwayCards) {
+      if (fairwayCard.name.fi === id) {
+        pilotPlaces.push(f);
+      }
+    }
+  });
+
+  return pilotPlaces;
+}
+
 export function getPilotageLimitsByFairways(fairways: Fairway[]) {
   const source = dvkMap.getVectorSource('pilotagelimit');
   const pilotageLimitFeatures = source.getFeatures();
