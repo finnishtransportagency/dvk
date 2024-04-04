@@ -13,3 +13,9 @@ ion-text.squatChartTitle h3 {
     width: 540px;
   }
 }
+
+.squatDataGridNoScroll {
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
