@@ -5,6 +5,7 @@ import { IonLabel } from '@ionic/react';
 import { PilotageLimit } from './PilotInfo';
 import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
 import { LineString } from 'ol/geom';
+import { setSelectedPilotageLimit } from '../../layers';
 
 interface PilotageLimitInfoProps {
   pilotLimits: PilotageLimit[];
@@ -25,6 +26,10 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
     }
   };
 
+  const highlightPilotageLimit = (id?: string | number) => {
+    setSelectedPilotageLimit(id);
+  };
+
   return (
     <div>
       {pilotLimits?.map((limit, idx) => {
@@ -32,7 +37,15 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
         const lastCoord = (limit.koordinaatit as LineString).getLastCoordinate();
         return (
           <p key={limit.fid}>
-            <IonLabel>
+            <IonLabel
+              key={limit.fid}
+              className="hoverText"
+              onMouseEnter={() => highlightPilotageLimit(limit.fid)}
+              onFocus={() => highlightPilotageLimit(limit.fid)}
+              onMouseLeave={() => highlightPilotageLimit(0)}
+              onBlur={() => highlightPilotageLimit(0)}
+              tabIndex={0}
+            >
               <strong>
                 {t('pilotageLimit')} {limit.numero}
               </strong>

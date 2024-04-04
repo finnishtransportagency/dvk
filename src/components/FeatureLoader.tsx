@@ -522,6 +522,8 @@ export function usePilotageLimitLayer() {
   const source = dvkMap.getVectorSource('pilotagelimit');
   source.forEachFeature((f) => {
     f.set('featureType', 'pilotagelimit');
+    // set id so getByFeatureId can be used
+    f.setId(f.getProperties().fid);
   });
   return rv;
 }
