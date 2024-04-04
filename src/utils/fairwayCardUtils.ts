@@ -119,7 +119,6 @@ export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?:
           pilotageLimitObject = {
             numero: limitProperties.numero,
           };
-          pilotageLimits.push(pilotageLimitObject);
         } else {
           pilotageLimitObject = {
             fid: limitProperties.fid,
@@ -130,8 +129,8 @@ export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?:
             raja_en: limitProperties.raja_en,
             koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
           };
-          pilotageLimits.push(pilotageLimitObject);
         }
+        pilotageLimits.push(pilotageLimitObject);
       }
     });
   });
