@@ -17,7 +17,6 @@ interface Props {
   waterLevel: number;
   filterSpeeds: (value: [number, number], index: number) => boolean;
   getPaddedHuuskaGuliev24Data: () => Array<number>;
-  huuskaGuliev24?: Array<[number, number]>;
   huuskaGuliev20?: Array<[number, number]>;
   barrass?: Array<[number, number]>;
 }
@@ -255,7 +254,6 @@ const SquatDataTable: React.FC<SquatDataTableProps> = (props) => {
         filterSpeeds={filterSpeeds}
         getPaddedHuuskaGuliev24Data={getPaddedHuuskaGuliev24Data}
         huuskaGuliev20={props.huuskaGuliev20}
-        huuskaGuliev24={props.huuskaGuliev24}
         barrass={props.barrass}
       />
     );
@@ -268,7 +266,6 @@ const SquatDataTable: React.FC<SquatDataTableProps> = (props) => {
         filterSpeeds={filterSpeeds}
         getPaddedHuuskaGuliev24Data={getPaddedHuuskaGuliev24Data}
         huuskaGuliev20={props.huuskaGuliev20}
-        huuskaGuliev24={props.huuskaGuliev24}
         barrass={props.barrass}
       />
     );
