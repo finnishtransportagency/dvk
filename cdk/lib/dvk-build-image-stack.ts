@@ -43,7 +43,7 @@ export class DvkBuildImageStack extends Stack {
       actions: [sourceAction],
     });
     const account = cdk.Stack.of(this).account;
-    const buildProject = this.buildProject(account, imageRepoName, '1.0.5', '.', 'ImageBuild');
+    const buildProject = this.buildProject(account, imageRepoName, '1.0.6', '.', 'ImageBuild');
     const actions: IAction[] = [];
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
