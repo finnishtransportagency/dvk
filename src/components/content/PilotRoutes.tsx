@@ -67,8 +67,11 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
   useEffect(() => {
     // If pilot route layer is not visible, show selected pilot route on fairway card layer
     const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
-    (fairwayCardLayer.getSource() as VectorSource).clear();
-    fairwayCardLayer.setVisible(!state.layers.includes(layerId));
+    // Layer might not be ready on initial render, but we don't mind that since it's clear and hidden as it should be
+    if (fairwayCardLayer) {
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(!state.layers.includes(layerId));
+    }
   }, [state.layers]);
 
   return (
