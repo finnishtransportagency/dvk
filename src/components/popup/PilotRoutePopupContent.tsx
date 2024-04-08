@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import './popup.css';
 import { PilotRouteFeatureProperties } from '../features';
@@ -18,16 +18,14 @@ export type PilotRouteProperties = {
 };
 
 export const RtzFileDownload: React.FC<PilotRouteProperties> = ({ properties }) => {
+  const { t } = useTranslation();
+  const file = useMemo(() => new Blob([properties.rtz], { type: 'text/xml' }), [properties.rtz]);
   const fileName = `${properties.name}.rtz`;
 
-  const downloadFile = () => {
-    const blob = new Blob([properties.rtz], { type: 'text/xml' });
-    saveAs(blob, fileName);
-  };
-
   return (
-    <IonText className="fileDownload" onClick={() => downloadFile()}>
+    <IonText className="fileDownload" onClick={() => saveAs(file, fileName)}>
       {fileName}
+      <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
     </IonText>
   );
 };
