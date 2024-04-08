@@ -12,10 +12,11 @@ interface PageHeaderProps {
   isPending: boolean;
   isFetching: boolean;
   dataUpdatedAt: number;
+  updatedText?: string;
   children?: React.ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title, layerId, isPending, isFetching, dataUpdatedAt, children }) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ title, layerId, isPending, isFetching, dataUpdatedAt, updatedText, children }) => {
   const { t } = useTranslation();
   const alertProps = getAlertProperties(dataUpdatedAt, layerId);
 
@@ -31,7 +32,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, layerId, isPending, isFe
           <strong>{title}</strong>
         </h2>
         <em>
-          {t('common.modified')} {!isPending && !isFetching && <>{t('common.datetimeFormat', { val: dataUpdatedAt })}</>}
+          {updatedText ?? t('common.modified')} {!isPending && !isFetching && <>{t('common.datetimeFormat', { val: dataUpdatedAt })}</>}
           {(isPending || isFetching) && (
             <IonSkeletonText
               animated={true}

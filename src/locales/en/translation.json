@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Pilot routes",
-    "route": "Route"
+    "route": "Route",
+    "dataUpdated": "Data updated to device"
   },
   "faults": {
     "title": "Defective navigation aids",

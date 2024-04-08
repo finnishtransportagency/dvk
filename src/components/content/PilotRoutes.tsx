@@ -77,7 +77,14 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
   return (
     <>
       <Breadcrumb path={path} />
-      <PageHeader title={t('routes.title')} layerId={layerId} isPending={isPending} isFetching={isFetching} dataUpdatedAt={dataUpdatedAt} />
+      <PageHeader
+        title={t('routes.title')}
+        layerId={layerId}
+        isPending={isPending}
+        isFetching={isFetching}
+        dataUpdatedAt={dataUpdatedAt}
+        updatedText={t('routes.dataUpdated')}
+      />
 
       <div id="pilotRouteList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="pilotRouteList">
         {isPending ? (

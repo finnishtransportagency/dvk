@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Lotsningsrutter",
-    "route": "Rutt"
+    "route": "Rutt",
+    "dataUpdated": "Data laddat till enheten"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

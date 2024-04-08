@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Luotsausreitit",
-    "route": "Reitti"
+    "route": "Reitti",
+    "dataUpdated": "Tiedot ladattu laitteelle"
   },
   "faults": {
     "title": "Turvalaiteviat",
