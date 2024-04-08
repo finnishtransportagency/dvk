@@ -16,13 +16,13 @@ type PilotInfoProps = {
 };
 
 export type PilotageLimit = {
-  fid: number;
   numero: number;
-  liittyyVayliin: string;
-  raja_fi: string;
-  raja_sv: string;
-  raja_en: string;
-  koordinaatit: Geometry;
+  fid?: number;
+  liittyyVayliin?: string;
+  raja_fi?: string;
+  raja_sv?: string;
+  raja_en?: string;
+  koordinaatit?: Geometry;
 };
 
 export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
