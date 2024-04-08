@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import './popup.css';
 import { PilotRouteFeatureProperties } from '../features';
@@ -6,6 +6,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useTranslation } from 'react-i18next';
+import { RtzFileDownload } from '../RtzFileDownload';
 
 type PilotRoutePopupContentProps = {
   pilotroute: PilotRouteProperties;
@@ -14,30 +15,6 @@ type PilotRoutePopupContentProps = {
 
 export type PilotRouteProperties = {
   properties: PilotRouteFeatureProperties;
-};
-
-export const RtzFileDownload: React.FC<PilotRouteProperties> = ({ properties }) => {
-  const [fileUrl, setFileUrl] = useState('');
-
-  const file = useMemo(() => {
-    const fileName = `${properties.name}.rtz`;
-    return new File([properties.rtz], fileName, { type: 'text/xml' });
-  }, [properties.rtz, properties.name]);
-
-  useEffect(() => {
-    const url = URL.createObjectURL(file);
-    setFileUrl(url);
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
-  }, [file]);
-
-  return (
-    <a href={fileUrl} download={file.name} target="_blank" rel="noreferrer">
-      {file.name}
-    </a>
-  );
 };
 
 const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotroute, setPopupProperties }) => {
@@ -65,7 +42,7 @@ const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotro
           </IonRow>
           <IonRow>
             <IonCol>
-              <RtzFileDownload properties={pilotroute.properties} />
+              <RtzFileDownload name={pilotroute.properties.name} rtz={pilotroute.properties.rtz} />
             </IonCol>
           </IonRow>
         </>

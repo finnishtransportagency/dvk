@@ -73,6 +73,8 @@ a {
 }
 a[target='_blank'] {
   color: var(--ion-color-primary);
+}
+a:not(.fileDownload)[target='_blank'] {
   padding-right: 14px;
   background: url('./img/externalLink.svg') no-repeat right center;
 }
@@ -86,12 +88,12 @@ a:focus-visible {
 a[target='_blank']:focus-visible {
   outline: 1px solid var(--ion-color-primary);
 }
-.offline a[target='_blank'] {
+.offline a:not(.fileDownload)[target='_blank'] {
   pointer-events: none;
   cursor: default;
   opacity: 0.5;
 }
-.offline a[target='_blank']:focus-visible {
+.offline a:not(.fileDownload)[target='_blank']:focus-visible {
   outline: none;
 }
 
