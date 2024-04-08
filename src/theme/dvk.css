@@ -280,12 +280,3 @@ dd {
   display: inline;
   margin: 0;
 }
-
-ion-text.fileDownload {
-  color: var(--ion-color-primary);
-  text-decoration: underline;
-  cursor: pointer;
-}
-ion-text.fileDownload:hover {
-  text-decoration: none;
-}

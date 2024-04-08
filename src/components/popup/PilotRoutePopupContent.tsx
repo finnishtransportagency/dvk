@@ -1,12 +1,11 @@
-import React, { useMemo } from 'react';
-import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import './popup.css';
 import { PilotRouteFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useTranslation } from 'react-i18next';
-import { saveAs } from 'file-saver';
 
 type PilotRoutePopupContentProps = {
   pilotroute: PilotRouteProperties;
@@ -18,15 +17,26 @@ export type PilotRouteProperties = {
 };
 
 export const RtzFileDownload: React.FC<PilotRouteProperties> = ({ properties }) => {
-  const { t } = useTranslation();
-  const file = useMemo(() => new Blob([properties.rtz], { type: 'text/xml' }), [properties.rtz]);
-  const fileName = `${properties.name}.rtz`;
+  const [fileUrl, setFileUrl] = useState('');
+
+  const file = useMemo(() => {
+    const fileName = `${properties.name}.rtz`;
+    return new File([properties.rtz], fileName, { type: 'text/xml' });
+  }, [properties.rtz, properties.name]);
+
+  useEffect(() => {
+    const url = URL.createObjectURL(file);
+    setFileUrl(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [file]);
 
   return (
-    <IonText className="fileDownload" onClick={() => saveAs(file, fileName)}>
-      {fileName}
-      <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
-    </IonText>
+    <a href={fileUrl} download={file.name} target="_blank" rel="noreferrer">
+      {file.name}
+    </a>
   );
 };
 
