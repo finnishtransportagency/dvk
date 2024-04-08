@@ -2,23 +2,30 @@ import { FeatureLike } from 'ol/Feature';
 import { LineString, Point } from 'ol/geom';
 import { Style, Stroke, Icon } from 'ol/style';
 import arrowIcon from '../../theme/img/pilotRouteArrow.svg';
+import arrowIconActive from '../../theme/img/pilotRouteArrow_active.svg';
 import { nauticalMilesToMeters } from '../../utils/conversions';
 import { Coordinate } from 'ol/coordinate';
 
-const pilotLineStyle = new Style({
-  stroke: new Stroke({
-    color: '#000000',
-    width: 2,
-  }),
-});
+const pilotLineStyle = (selected: boolean) => {
+  return new Style({
+    stroke: new Stroke({
+      color: selected ? '#EC0E0E' : '#000000',
+      width: 2,
+    }),
+    zIndex: selected ? 2 : 1,
+  });
+};
 
-const milestoneStyle = new Style({
-  image: new Icon({
-    src: arrowIcon,
-    anchor: [1, 0.5],
-    rotateWithView: true,
-  }),
-});
+const arrowIconStyle = (selected: boolean) => {
+  return new Style({
+    image: new Icon({
+      src: selected ? arrowIconActive : arrowIcon,
+      anchor: [1, 0.5],
+      rotateWithView: true,
+    }),
+    zIndex: selected ? 2 : 1,
+  });
+};
 
 function getMileStoneImageRotation(start: Coordinate, end: Coordinate) {
   const dx = end[0] - start[0];
@@ -27,8 +34,9 @@ function getMileStoneImageRotation(start: Coordinate, end: Coordinate) {
   return -rotation;
 }
 
-export function getPilotRouteStyle(feature: FeatureLike, resolution: number) {
-  const styles: Array<Style> = [pilotLineStyle];
+export function getPilotRouteStyle(feature: FeatureLike, resolution: number, selected: boolean) {
+  const styles: Array<Style> = [pilotLineStyle(selected)];
+  const milestoneStyle = arrowIconStyle(selected);
   const lineString = feature.getGeometry() as LineString;
   const totalLength = lineString.getLength();
   let chunkLength = nauticalMilesToMeters(100);

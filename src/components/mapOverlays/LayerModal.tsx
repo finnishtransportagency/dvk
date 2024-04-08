@@ -108,7 +108,15 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'vtspoint', title: t('homePage.map.controls.layer.vtspoint') },
       ],
     },
-    { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
+    {
+      id: 'piloting',
+      title: t('homePage.map.controls.layer.piloting'),
+      childLayers: [
+        { id: 'pilot', title: t('homePage.map.controls.layer.pilot') },
+        { id: 'pilotagelimit', title: t('homePage.map.controls.layer.pilotageLimits') },
+        { id: 'pilotageareaborder', title: t('homePage.map.controls.layer.pilotageAreaBorders') },
+      ],
+    },
     {
       id: 'ais',
       title: t('homePage.map.controls.layer.ais'),
@@ -127,7 +135,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
   /* Add pilot route layer for testing purposes, if not production environment */
   if (import.meta.env.VITE_APP_ENV !== 'prod') {
-    layerStructure[0].childLayers?.push({ id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes') });
+    layerStructure[10].childLayers?.push({ id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes') });
   }
 
   useEffect(() => {
@@ -135,7 +143,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
       const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
-      featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
+      featureLayer?.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningNotificationLayer, isOffline]);

@@ -46,6 +46,7 @@ import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
+import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -800,7 +801,6 @@ export function addAPILayers(map: Map) {
     declutter: true,
     zIndex: 314,
   });
-
   // Turvalaiteviat
   addFeatureVectorLayer({
     map: map,
@@ -812,19 +812,6 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 315,
-  });
-
-  // Luotsausreitit
-  addFeatureVectorLayer({
-    map: map,
-    id: 'pilotroute',
-    maxResolution: undefined,
-    renderBuffer: 50,
-    style: getPilotRouteStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 316,
   });
 
   // AIS
@@ -870,6 +857,43 @@ export function addAPILayers(map: Map) {
     (feature, resolution) => getAisVesselLayerStyle('aisunspecified', feature, resolution, !!feature.get('hoverStyle')),
     324
   );
+
+  // Luotsausreitit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotroute',
+    maxResolution: undefined,
+    renderBuffer: 50,
+    style: (feature, resolution) => getPilotRouteStyle(feature, resolution, feature.get('hoverStyle')),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 325,
+  });
+  // Luotsinkäyttölinjat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotagelimit',
+    maxResolution: undefined,
+    renderBuffer: 15,
+    style: (feature, resolution) => getPilotageLimitStyle(feature, resolution, feature.get('hoverStyle')),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 304,
+  });
+  // Luotsauskäyttöalueen ulkorajat
+  addFeatureVectorLayer({
+    map: map,
+    id: 'pilotageareaborder',
+    maxResolution: undefined,
+    renderBuffer: 2,
+    style: getLineStyle('#FE7C00', 4),
+    minResolution: undefined,
+    opacity: 1,
+    declutter: false,
+    zIndex: 104,
+  });
 }
 
 export function unsetSelectedFairwayCard() {

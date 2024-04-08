@@ -16,6 +16,7 @@ import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { handleSafetyEquipmentLayerChange } from '../utils/fairwayCardUtils';
+import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -56,6 +57,10 @@ function useDataLayer(
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
+export function useNameLayer() {
+  return useDataLayer('name', 'name', MAP.EPSG);
+}
+
 export function useLine12Layer() {
   return useDataLayer('line12', 'line12');
 }
@@ -68,7 +73,7 @@ export function useCircleLayer() {
   return useDataLayer('circle', 'circle');
 }
 
-export function useStaticDataLayer(featureLayerId: FeatureDataLayerId | BackgroundLayerId) {
+export function useStaticDataLayer(featureLayerId: BackgroundLayerId) {
   const [ready, setReady] = useState(false);
   const [dataUpdatedAt, setDataUpdatedAt] = useState(0);
   const isPaused = false;
@@ -121,7 +126,7 @@ function useStaticFeatureDataCacheBusting(featureDataId: StaticFeatureDataId, bu
 
 export function useInitStaticDataLayer(
   featureDataId: StaticFeatureDataId,
-  featureLayerId: FeatureDataLayerId | BackgroundLayerId,
+  featureLayerId: BackgroundLayerId,
   dataProjection = MAP.EPSG
 ): DvkLayerState {
   const fds = StaticFeatureDataSources.find((fda) => fda.id === featureDataId);
@@ -138,14 +143,14 @@ export function useInitStaticDataLayer(
   useEffect(() => {
     const initLayer = (data: unknown) => {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
-      const format = new GeoJSON();
       const source = layer.getSource() as VectorSource;
-      source.clear();
+      const format = new GeoJSON({ featureClass: RenderFeature });
       const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+      source.clear(true);
       source.addFeatures(features);
       setDataUpdatedAt(Date.now());
-      layer.set('dataUpdatedAt', Date.now());
-      layer.set('status', 'ready');
+      layer.set('dataUpdatedAt', Date.now(), true);
+      layer.set('status', 'ready', true);
       setReady(true);
     };
 
@@ -506,4 +511,17 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
 
 export function useVaylaWaterAreaData() {
   return useFeatureData('vayla_water_area');
+}
+
+export function usePilotageAreaBorderLayer() {
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}
+
+export function usePilotageLimitLayer() {
+  const rv = useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
+  const source = dvkMap.getVectorSource('pilotagelimit');
+  source.forEachFeature((f) => {
+    f.set('featureType', 'pilotagelimit');
+  });
+  return rv;
 }

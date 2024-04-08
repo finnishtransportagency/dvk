@@ -27,9 +27,13 @@ import { initUserLocation, placeUserLocationMarker, removeUserLocationMarker } f
 import { useDvkContext } from '../../hooks/dvkContext';
 import AisVesselPopupContent, { AisVesselProperties } from '../popup/AisVesselPopupContent';
 import FeatureListPopupContent, { FeatureListProperties } from '../popup/FeatureListPopupContent';
+import PilotRoutePopupContent, { PilotRouteProperties } from '../popup/PilotRoutePopupContent';
+import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/PilotageLimitPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
+  pilotagelimit?: PilotageLimitProperties;
+  pilotroute?: PilotRouteProperties;
   quay?: QuayProperties;
   section?: QuayProperties;
   area?: AreaProperties;
@@ -138,6 +142,10 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
     <>
       <div id="popup" className="ol-popup">
         {popupProperties?.pilot && <PilotPopupContent pilot={popupProperties.pilot} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.pilotagelimit && (
+          <PilotageLimitPopupContent pilotagelimit={popupProperties.pilotagelimit} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.pilotroute && <PilotRoutePopupContent pilotroute={popupProperties.pilotroute} setPopupProperties={setPopupProperties} />}
         {popupProperties?.quay && <QuayPopupContent quay={popupProperties.quay} setPopupProperties={setPopupProperties} />}
         {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
         {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}

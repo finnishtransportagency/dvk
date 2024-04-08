@@ -64,9 +64,21 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
         { id: 'vtspoint', title: t('homePage.map.controls.layer.vtspoint') },
       ],
     },
-    { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
+    {
+      id: 'piloting',
+      title: t('homePage.map.controls.layer.piloting'),
+      childLayers: [
+        { id: 'pilot', title: t('homePage.map.controls.layer.pilotPlaces') },
+        { id: 'pilotagelimit', title: t('homePage.map.controls.layer.pilotageLimits') },
+        { id: 'pilotageareaborder', title: t('homePage.map.controls.layer.pilotageAreaBorders') },
+      ],
+    },
     { id: 'name', title: t('homePage.map.controls.layer.name') },
   ];
+
+  if (import.meta.env.VITE_APP_ENV !== 'prod') {
+    layerStructure[7].childLayers?.push({ id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes') });
+  }
 
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {

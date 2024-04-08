@@ -4,12 +4,12 @@ ion-text.squatChartTitle h3 {
 }
 
 @media (max-width: 576px) {
-  .squatChartGrid {
+  .squatDataGrid {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
   }
-  .squatChartRow {
+  .squatDataRow {
     width: 540px;
   }
 }

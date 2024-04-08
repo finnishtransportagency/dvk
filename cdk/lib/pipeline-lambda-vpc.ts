@@ -18,6 +18,8 @@ export class PipelineLambdaVpc extends Construct {
     const importedDVKPipelineNameTest = cdk.Fn.importValue('DvkPipeline-test');
     const importedAdminPipelineNameDev = cdk.Fn.importValue('AdminPipeline-dev');
     const importedAdminPipelineNameTest = cdk.Fn.importValue('AdminPipeline-test');
+    const importedPreviewPipelineNameDev = cdk.Fn.importValue('PreviewPipeline-dev');
+    const importedPreviewPipelineNameTest = cdk.Fn.importValue('PreviewPipeline-test');
     const importedBuildimagePipelineName = cdk.Fn.importValue('BuildimagePipeline');
     const storedGithubWebhookSecret = ssm.StringParameter.valueForStringParameter(this, '/github/WebhookSecret', 1);
 
@@ -48,6 +50,8 @@ export class PipelineLambdaVpc extends Construct {
         TEST_PIPELINE_DVK: importedDVKPipelineNameTest,
         DEV_PIPELINE_ADMIN: importedAdminPipelineNameDev,
         TEST_PIPELINE_ADMIN: importedAdminPipelineNameTest,
+        DEV_PIPELINE_PREVIEW: importedPreviewPipelineNameDev,
+        TEST_PIPELINE_PREVIEW: importedPreviewPipelineNameTest,
         BUILDIMAGE_PIPELINE: importedBuildimagePipelineName,
         WEBHOOK_SECRET: storedGithubWebhookSecret,
       },

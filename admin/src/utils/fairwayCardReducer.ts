@@ -91,6 +91,16 @@ export const fairwayCardReducer = (
     case 'group':
       newState = { ...state, group: value as string };
       break;
+    case 'additionalInfo':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        additionalInfo: {
+          ...(state.additionalInfo ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'line':
       if (!actionLang) return state;
       newState = {

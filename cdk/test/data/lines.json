@@ -7,24 +7,17 @@
       "geometry": {
         "type": "LineString",
         "coordinates": [
-          [
-            24.89501,
-            60.08965
-          ],
-          [
-            24.90439,
-            60.11076
-          ],
-          [
-            24.90495,
-            60.11199
-          ]
+          [24.89501, 60.08965],
+          [24.90439, 60.11076],
+          [24.90495, 60.11199]
         ]
       },
       "properties": {
         "id": 264222,
         "featureType": "line",
         "depth": 12.5,
+        "direction": 45,
+        "oppositeDirection": 225,
         "draft": 11,
         "length": 2550,
         "referenceLevel": "MW2018",
@@ -58,24 +51,17 @@
       "geometry": {
         "type": "LineString",
         "coordinates": [
-          [
-            24.90516,
-            60.12494
-          ],
-          [
-            24.9108,
-            60.12582
-          ],
-          [
-            24.916,
-            60.12663
-          ]
+          [24.90516, 60.12494],
+          [24.9108, 60.12582],
+          [24.916, 60.12663]
         ]
       },
       "properties": {
         "id": 264272,
         "featureType": "line",
         "depth": 10.2,
+        "direction": 8,
+        "oppositeDirection": 188,
         "draft": 8,
         "length": 631,
         "referenceLevel": "MW2005",
