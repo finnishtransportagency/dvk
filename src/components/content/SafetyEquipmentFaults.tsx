@@ -10,10 +10,9 @@ import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import Alert from '../Alert';
-import { getAlertProperties } from '../../utils/common';
+import { getAlertProperties, gotoFeature } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
-import * as olExtent from 'ol/extent';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
@@ -30,21 +29,6 @@ type FaultGroupProps = {
   selectedFairwayCard: boolean;
   sortNewFirst?: boolean;
 };
-
-function goto(id: number, selectedFairwayCard: boolean) {
-  const dvkMap = getMap();
-  const feature = dvkMap
-    .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
-    .getFeatureById(id) as Feature<Geometry>;
-  if (feature) {
-    const geometry = feature.getGeometry();
-    if (geometry) {
-      const extent = olExtent.createEmpty();
-      olExtent.extend(extent, geometry.getExtent());
-      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
-    }
-  }
-}
 
 export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
   const { t, i18n } = useTranslation();
@@ -112,7 +96,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goto(faultArray[0].equipmentId, selectedFairwayCard);
+                          gotoFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&
