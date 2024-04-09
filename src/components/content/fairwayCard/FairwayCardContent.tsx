@@ -198,25 +198,23 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(3)}>
-            <>
-              <IonText className="no-margin-top">
-                <h5>{t('commonInformation')}</h5>
-                <GeneralInfo data={fairwayCard?.fairways} />
-                <ProhibitionInfo data={fairwayCard?.fairways} />
-              </IonText>
-              <IonText>
-                <h5>{t('speedLimit')}</h5>
-                <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} />
-              </IonText>
-              <IonText>
-                <h5>{t('anchorage')}</h5>
-                <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
-              </IonText>
-              <IonText>
-                <h5>{t('fairwayAreas')}</h5>
-              </IonText>
-              <AreaInfo data={fairwayCard?.fairways} />
-            </>
+            <IonText className="no-margin-top">
+              <h5>{t('commonInformation')}</h5>
+              <GeneralInfo data={fairwayCard?.fairways} />
+              <ProhibitionInfo data={fairwayCard?.fairways} />
+            </IonText>
+            <IonText>
+              <h5>{t('speedLimit')}</h5>
+              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} />
+            </IonText>
+            <IonText>
+              <h5>{t('anchorage')}</h5>
+              <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
+            </IonText>
+            <IonText>
+              <h5>{t('fairwayAreas')}</h5>
+            </IonText>
+            <AreaInfo data={fairwayCard?.fairways} />
           </div>
           {!isMobile() && (
             <>
