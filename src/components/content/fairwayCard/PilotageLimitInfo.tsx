@@ -7,7 +7,7 @@ import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
 import { LineString } from 'ol/geom';
 import { setSelectedPilotageLimit } from '../../layers';
 import { Link } from 'react-router-dom';
-import { gotoFeature } from '../../../utils/common';
+import { goToFeature } from '../../../utils/common';
 
 interface PilotageLimitInfoProps {
   pilotLimits: PilotageLimit[];
@@ -58,7 +58,7 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                   to={window.location.pathname}
                   onClick={(e) => {
                     e.preventDefault();
-                    gotoFeature(limit.fid, 'selectedfairwaycard');
+                    goToFeature(limit.fid, 'selectedfairwaycard');
                   }}
                 >
                   {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} - {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}

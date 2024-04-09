@@ -7,28 +7,19 @@ import { FeatureDataLayerId, OFFLINE_STORAGE } from '../../utils/constants';
 import PageHeader from './PageHeader';
 import { PilotRouteFeatureProperties } from '../features';
 import { Feature, Geometry } from 'geojson';
-import { Feature as olFeature } from 'ol';
-import { Geometry as olGeometry } from 'ol/geom';
 import './PilotRoutes.css';
 import dvkMap from '../DvkMap';
-import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { Link } from 'react-router-dom';
 import { setSelectedPilotRoute } from '../layers';
 import VectorSource from 'ol/source/Vector';
+import { goToFeature } from '../../utils/common';
 
 interface PilotRoutesProps {
   widePane?: boolean;
 }
 
 const layerId: FeatureDataLayerId = 'pilotroute';
-
-function goto(id: number, layers: string[]) {
-  const feature = dvkMap.getVectorSource(layerId).getFeatureById(id) as olFeature<olGeometry>;
-  if (feature) {
-    zoomToFeatureCoordinates(feature, layers, layerId);
-  }
-}
 
 const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
   const { t } = useTranslation();
@@ -101,7 +92,7 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
                         to="/luotsausreitit/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goto(properties.id, state.layers);
+                          goToFeature(properties.id, layerId, state.layers);
                         }}
                       >
                         {t('routes.route')} {properties.name}

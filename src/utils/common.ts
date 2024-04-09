@@ -204,10 +204,19 @@ export function updateIceLayerOpacity() {
   }
 }
 
-export function gotoFeature(id: number | string | undefined, layerId: FeatureLayerId) {
+export function goToFeature(id: number | string | undefined, layerId: FeatureLayerId, layers?: string[]) {
   const dvkMap = getMap();
   const feature = dvkMap.getVectorSource(layerId).getFeatureById(id ?? '') as Feature<Geometry>;
+  const selectedFairwayCardSource = getMap().getVectorSource('selectedfairwaycard');
+
   if (feature) {
+    // If layer is not visible, use selectedfairwaycard to show feature on map
+    if (layers && !layers.includes(layerId)) {
+      // Clear possible previous feature(s) from temporary layer
+      selectedFairwayCardSource.clear();
+      selectedFairwayCardSource.addFeature(feature);
+    }
+
     const geometry = feature.getGeometry();
     if (geometry) {
       const extent = olExtent.createEmpty();

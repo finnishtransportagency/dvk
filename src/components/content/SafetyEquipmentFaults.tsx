@@ -4,14 +4,12 @@ import { useTranslation } from 'react-i18next';
 import { SafetyEquipmentFault } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../utils/dataLoader';
-import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign, zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
+import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
-import Alert from '../Alert';
-import { getAlertProperties, gotoFeature } from '../../utils/common';
-import alertIcon from '../../theme/img/alert_icon.svg';
+import { goToFeature } from '../../utils/common';
 import './SafetyEquipmentFaults.css';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
@@ -97,7 +95,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          gotoFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+                          goToFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&

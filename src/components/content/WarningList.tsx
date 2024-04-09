@@ -6,29 +6,18 @@ import { Lang } from '../../utils/constants';
 import dvkMap from '../DvkMap';
 import { AreaFairway, LineFairway } from '../features';
 import Paragraph, { InfoParagraph } from './Paragraph';
-import { getMarineWarningDataLayerId, getWarningImgSource } from '../../utils/common';
+import { getMarineWarningDataLayerId, getWarningImgSource, goToFeature } from '../../utils/common';
 import { Link } from 'react-router-dom';
 import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { zoomToFeatureCoordinates } from '../../utils/coordinateUtils';
 
 type WarningListProps = {
   data: MarineWarning[];
   loading?: boolean;
   sortNewFirst: boolean;
 };
-
-function goto(warning: MarineWarning, layers: string[]) {
-  const layerDataId = getMarineWarningDataLayerId(warning.type);
-  const warningSource = dvkMap.getVectorSource(layerDataId);
-  const feature = warningSource.getFeatureById(warning.id) as Feature<Geometry>;
-
-  if (feature) {
-    zoomToFeatureCoordinates(feature, layers, layerDataId);
-  }
-}
 
 export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNewFirst }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'warnings' });
@@ -83,7 +72,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                       to="/merivaroitukset/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goto(warning, state.layers);
+                        goToFeature(warning.id, getMarineWarningDataLayerId(warning.type), state.layers);
                       }}
                     >
                       {warning.location[lang] ?? warning.location.fi ?? t('noObjects')}
