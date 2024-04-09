@@ -9,6 +9,9 @@ import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
+import Alert from '../Alert';
+import { getAlertProperties, gotoFeature } from '../../utils/common';
+import alertIcon from '../../theme/img/alert_icon.svg';
 import './SafetyEquipmentFaults.css';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
@@ -27,16 +30,6 @@ type FaultGroupProps = {
   selectedFairwayCard: boolean;
   sortNewFirst?: boolean;
 };
-
-function goto(id: number, selectedFairwayCard: boolean) {
-  const dvkMap = getMap();
-  const feature = dvkMap
-    .getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault')
-    .getFeatureById(id) as Feature<Geometry>;
-  if (feature) {
-    zoomToFeatureCoordinates(feature, undefined, undefined);
-  }
-}
 
 export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
   const { t, i18n } = useTranslation();
@@ -104,7 +97,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goto(faultArray[0].equipmentId, selectedFairwayCard);
+                          gotoFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&

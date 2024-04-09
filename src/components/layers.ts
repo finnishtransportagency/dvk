@@ -1198,12 +1198,22 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
 export function setSelectedPilotPlace(id?: number | string) {
   const dvkMap = getMap();
-  const pilotSource = dvkMap.getVectorSource('pilot');
+  const pilotSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   for (const f of pilotSource.getFeatures()) {
     f.set('hoverStyle', id && f.getId() === id);
   }
   pilotSource.dispatchEvent('change');
+}
+
+export function setSelectedPilotageLimit(id?: number | string) {
+  const dvkMap = getMap();
+  const pilotageLimitSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of pilotageLimitSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  pilotageLimitSource.dispatchEvent('change');
 }
 
 export function setSelectedFairwayArea(id?: number | string) {
