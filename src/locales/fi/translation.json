@@ -557,5 +557,11 @@
     "saimaaCanal": "Saimaan kanava",
     "gulfOfBothnia": "Pohjanlahti",
     "inlandAreas": "Sisävesistöt"
+  },
+  "fileSize": {
+    "bytes": "tavua",
+    "KB": "kilotavua",
+    "MB": "megatavua",
+    "GB": "gigatavua"
   }
 }

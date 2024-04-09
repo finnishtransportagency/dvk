@@ -557,5 +557,11 @@
     "saimaaCanal": "Saima kanal",
     "gulfOfBothnia": "Bottenvik",
     "inlandAreas": "Inlandsfarvatten"
+  },
+  "fileSize": {
+    "bytes": "byte",
+    "KB": "kilobyte",
+    "MB": "megabyte",
+    "GB": "gigabyte"
   }
 }
