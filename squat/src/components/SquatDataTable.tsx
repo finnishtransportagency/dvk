@@ -148,7 +148,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
                       key={uuid}
                       value={froudeNumber.toFixed(2)}
                       row={true}
-                      {/* undefined results to default cell color */}
+                      /* undefined results to default cell color */
                       color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined}
                     />
                   );
