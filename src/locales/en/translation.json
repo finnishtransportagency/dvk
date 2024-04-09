@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Pilot routes",
-    "route": "Route"
+    "route": "Route",
+    "rtz": "[en] Reitin rtz tiedosto"
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -329,8 +330,7 @@
       "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {
-      "header": "ROUTE: {{val}}",
-      "rtz": "[en] Reitin rtz tiedosto"
+      "header": "ROUTE: {{val}}"
     },
     "quay": {
       "length": "Length of the quay",

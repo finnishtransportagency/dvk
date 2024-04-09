@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Lotsningsrutter",
-    "route": "Rutt"
+    "route": "Rutt",
+    "rtz": "[sv] Reitin rtz tiedosto"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -329,8 +330,7 @@
       "fairways": "Farledskort angående lotspliktslinje"
     },
     "pilotRoute": {
-      "header": "RUTT: {{val}}",
-      "rtz": "[sv] Reitin rtz tiedosto"
+      "header": "RUTT: {{val}}"
     },
     "quay": {
       "length": "Kajens längd",

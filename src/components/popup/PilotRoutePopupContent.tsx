@@ -38,7 +38,7 @@ const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotro
       {pilotroute.properties.rtz && (
         <>
           <IonRow>
-            <IonCol className="header">{t('popup.pilotRoute.rtz')}</IonCol>
+            <IonCol className="header">{t('routes.rtz')}</IonCol>
           </IonRow>
           <IonRow>
             <IonCol>
