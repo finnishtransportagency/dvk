@@ -124,21 +124,21 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
         <IonCol>
           <IonGrid className="ion-no-padding">
             <IonRow className="ion-no-padding">
-              <IonCol size="1.78" className="dataTableCol">
+              <IonCol size="auto" className="dataTableCol">
                 <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
                 {props.speeds?.map((speed) => {
                   const uuid = uniqueId('col_');
                   return <DataTableDataCell key={uuid} value={speed.toFixed(1)} row={true} />;
                 })}
               </IonCol>
-              <IonCol size="1.78" className="dataTableCol">
+              <IonCol className="dataTableCol">
                 <DataTableTitleRow value={t('aluksen-nopeus-ms')} />
                 {props.speeds?.map((speed) => {
                   const uuid = uniqueId('col_');
                   return <DataTableDataCell key={uuid} value={knotsToMetresPerSecond(speed).toFixed(1)} row={true} />;
                 })}
               </IonCol>
-              <IonCol size="1.78" className="dataTableCol">
+              <IonCol className="dataTableCol">
                 <DataTableTitleRow value={t('froude-syvyysluku')} />
                 {props.speeds?.map((speed) => {
                   const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
@@ -148,14 +148,14 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
                       key={uuid}
                       value={froudeNumber.toFixed(2)}
                       row={true}
-                      color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : DATACOLOR.NEUTRAL}
+                      color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined}
                     />
                   );
                 })}
               </IonCol>
               {!state.status.showBarrass && (
                 <>
-                  <IonCol size="1.78" className="dataTableCol">
+                  <IonCol className="dataTableCol">
                     <DataTableTitleRow
                       value={t('squat-max', {
                         kerroin: '2,0',
@@ -166,7 +166,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
                       return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} />;
                     })}
                   </IonCol>
-                  <IonCol size="1.78" className="dataTableCol">
+                  <IonCol className="dataTableCol">
                     <DataTableTitleRow value={t('squat-max', { kerroin: '2,4' })} lastCell={true} />
                     {props.getPaddedHuuskaGuliev24Data().map((value) => {
                       const uuid = uniqueId('col_');
@@ -184,7 +184,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
                 </>
               )}
               {state.status.showBarrass && (
-                <IonCol size="1.78" className="dataTableCol">
+                <IonCol size="auto" className="dataTableCol">
                   <DataTableTitleRow value={t('squat-max', { kerroin: undefined })} lastCell={true} />
                   {props.barrass?.filter(props.filterSpeeds).map((values) => {
                     const uuid = uniqueId('col_');

@@ -86,7 +86,7 @@ div.squatSquareSmall {
 .dataTableCol {
   flex-wrap: nowrap;
   padding: 0px;
-  min-width: 74px;
+  max-width: 80px;
 }
 
 .legendCol {
