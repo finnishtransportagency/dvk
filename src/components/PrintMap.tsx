@@ -127,7 +127,8 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
                         {t('modifiedDate', {
                           val: picture.modificationTimestamp ?? '-',
                         })}
-                        {picture.rotation && picture.scaleLabel && picture.scaleWidth && (isN2000 ? ' - N2000 (BSCD2000)' : ' - MW')}
+                        {/* external pictures don't have rotation/scaleLabel/scaleWidth so these are used to determine if it's printed or external*/}
+                        {picture.rotation !== undefined && picture.scaleLabel && picture.scaleWidth && (isN2000 ? ' - N2000 (BSCD2000)' : ' - MW')}
                       </em>
                     )}
                     <em className="danger">{t('notForNavigation')}</em>
