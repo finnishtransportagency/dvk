@@ -62,6 +62,7 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "squatlib": "file:./squat",
+    "swiper": "^11.1.0",
     "typescript": "^5.4.2",
     "web-vitals": "^3.5.2",
     "workbox-background-sync": "^7.0.0",
