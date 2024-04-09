@@ -5,6 +5,7 @@
       "closeMenu": "Sulje",
       "title": "Digitaalinen väyläkortti",
       "fairway-cards": "Väyläkortit",
+      "pilot-routes": "Luotsausreitit",
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
@@ -261,6 +262,10 @@
     "draught": "Syväys",
     "width": "Leveys"
   },
+  "routes": {
+    "title": "Luotsausreitit",
+    "route": "Reitti"
+  },
   "faults": {
     "title": "Turvalaiteviat",
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",
@@ -512,6 +517,7 @@
     "dataUpToDate": "Palvelun tiedot ovat ajan tasalla",
     "dataUpdateFailedAt": "Tietojen päivitys epäonnistui",
     "latestDataUpdateAt": "Tietoja päivitetty viimeksi",
+    "modified": "Päivitetty",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",

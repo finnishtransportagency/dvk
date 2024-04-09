@@ -21,6 +21,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import HarborPreview from './HarborPreview';
 import SquatCalculator from './SquatCalculator';
+import PilotRoutes from './PilotRoutes';
 
 interface ModalContentProps {
   modal: React.RefObject<HTMLIonModalElement>;
@@ -227,6 +228,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
     } else if (
       modalContent &&
       modalContent !== 'fairwayCardList' &&
+      modalContent !== 'pilotRouteList' &&
       modalContent !== 'safetyEquipmentFaultList' &&
       modalContent !== 'marineWarningList' &&
       modalContent !== 'squatCalculator' &&
@@ -319,6 +321,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
 
         {fairwayCardId && <FairwayCard id={fairwayCardId} />}
         {!fairwayCardId && modalContent === 'fairwayCardList' && <FairwayCards />}
+        {modalContent === 'pilotRouteList' && <PilotRoutes />}
         {modalContent === 'safetyEquipmentFaultList' && <SafetyEquipmentFaults />}
         {modalContent === 'marineWarningList' && <MarineWarnings />}
         {modalContent === 'squatCalculator' && <SquatCalculator />}

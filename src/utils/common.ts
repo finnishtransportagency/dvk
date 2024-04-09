@@ -1,13 +1,14 @@
 import { isPlatform } from '@ionic/react';
-import dvkMap from '../components/DvkMap';
+import dvkMap, { getMap } from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
-import { FeatureDataLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FeatureDataLayerId, FeatureLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
 import coastal from '../theme/img/coastal_warning_icon.svg';
 import local from '../theme/img/local_warning_icon.svg';
 import boaters from '../theme/img/warning_to_boaters_icon.svg';
+import * as olExtent from 'ol/extent';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -200,5 +201,27 @@ export function updateIceLayerOpacity() {
       opacity = 0.4;
     }
     dvkMap.getFeatureLayer('ice').setOpacity(opacity);
+  }
+}
+
+export function goToFeature(id: number | string | undefined, layerId: FeatureLayerId, layers?: string[]) {
+  const dvkMap = getMap();
+  const feature = dvkMap.getVectorSource(layerId).getFeatureById(id ?? '') as Feature<Geometry>;
+  const selectedFairwayCardSource = getMap().getVectorSource('selectedfairwaycard');
+
+  if (feature) {
+    // If layer is not visible, use selectedfairwaycard to show feature on map
+    if (layers && !layers.includes(layerId)) {
+      // Clear possible previous feature(s) from temporary layer
+      selectedFairwayCardSource.clear();
+      selectedFairwayCardSource.addFeature(feature);
+    }
+
+    const geometry = feature.getGeometry();
+    if (geometry) {
+      const extent = olExtent.createEmpty();
+      olExtent.extend(extent, geometry.getExtent());
+      dvkMap.olMap?.getView().fit(extent, { minResolution: 10, padding: [50, 50, 50, 50], duration: 1000 });
+    }
   }
 }
