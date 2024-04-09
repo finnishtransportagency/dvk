@@ -9,9 +9,7 @@ import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
 import { Card, EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
-import Alert from '../Alert';
-import { getAlertProperties, gotoFeature } from '../../utils/common';
-import alertIcon from '../../theme/img/alert_icon.svg';
+import { goToFeature } from '../../utils/common';
 import './SafetyEquipmentFaults.css';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
@@ -22,6 +20,7 @@ import { InfoParagraph } from './Paragraph';
 import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
 import CustomSelectDropdown from './CustomSelectDropdown';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
+import PageHeader from './PageHeader';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -96,7 +95,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          gotoFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+                          goToFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&
@@ -186,7 +185,6 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const { ready } = useSafetyEquipmentAndFaultLayer();
   const path = [{ title: t('faults.title') }];
-  const alertProps = getAlertProperties(dataUpdatedAt, 'safetyequipmentfault');
   const { dispatch, state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
@@ -198,11 +196,6 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     }
     return filterFeaturesInPolygonByArea(areaPolygons.data, data?.safetyEquipmentFaults, areaFilter);
   }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
-
-  const getLayerItemAlertText = useCallback(() => {
-    if (!alertProps?.duration) return t('warnings.viewLastUpdatedUnknown');
-    return t('warnings.lastUpdatedAt', { val: alertProps.duration });
-  }, [alertProps, t]);
 
   useEffect(() => {
     if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && ready) {
@@ -216,25 +209,14 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   return (
     <>
       <Breadcrumb path={path} />
+      <PageHeader
+        title={t('faults.title')}
+        layerId="safetyequipmentfault"
+        isPending={isPending}
+        isFetching={isFetching}
+        dataUpdatedAt={dataUpdatedAt}
+      />
 
-      <IonText className="fairwayTitle" id="mainPageContent">
-        <h2 className="no-margin-bottom">
-          <strong>{t('faults.title')}</strong>
-        </h2>
-        <em>
-          {t('faults.modified')} {!isPending && !isFetching && <>{t('faults.datetimeFormat', { val: dataUpdatedAt })}</>}
-          {(isPending || isFetching) && (
-            <IonSkeletonText
-              animated={true}
-              style={{ width: '85px', height: '12px', margin: '0 0 0 3px', display: 'inline-block', transform: 'skew(-15deg)' }}
-            />
-          )}
-        </em>
-      </IonText>
-
-      {alertProps && !isPending && !isFetching && (
-        <Alert icon={alertIcon} color={alertProps.color} className={'top-margin ' + alertProps.color} title={getLayerItemAlertText()} />
-      )}
       <IonGrid className="faultFilterContainer">
         <IonRow className="ion-align-items-center">
           <IonCol size="10.5">

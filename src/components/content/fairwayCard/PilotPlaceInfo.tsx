@@ -6,7 +6,7 @@ import { setSelectedPilotPlace } from '../../layers';
 import { PilotPlace } from '../../../graphql/generated';
 import { Lang } from '../../../utils/constants';
 import { Link } from 'react-router-dom';
-import { gotoFeature } from '../../../utils/common';
+import { goToFeature } from '../../../utils/common';
 
 interface PilotPlaceInfoProps {
   pilotPlaces: PilotPlace[] | undefined | null;
@@ -48,7 +48,7 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                         to={window.location.pathname}
                         onClick={(e) => {
                           e.preventDefault();
-                          gotoFeature(place.id, 'selectedfairwaycard');
+                          goToFeature(place.id, 'selectedfairwaycard');
                         }}
                       >
                         {coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replaceAll('N ', 'N / ')}

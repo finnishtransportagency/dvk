@@ -22,11 +22,12 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { useDvkContext } from '../../hooks/dvkContext';
 import HarborPreview from './HarborPreview';
 import SquatCalculator from './SquatCalculator';
+import PilotRoutes from './PilotRoutes';
 
 interface MainContentProps {
   fairwayCardId?: string;
   splitPane?: boolean;
-  target?: 'faults' | 'warnings' | 'squat' | 'harborPreview';
+  target?: 'routes' | 'faults' | 'warnings' | 'squat' | 'harborPreview';
 }
 
 const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, target }) => {
@@ -289,6 +290,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                 <img className="logo printable" src={i18n.language === 'en' ? vayla_logo_en : vayla_logo} alt={t('logo')} />
                 {fairwayCardId && <FairwayCard widePane={widePane} id={fairwayCardId} />}
                 {!fairwayCardId && !target && <FairwayCards widePane={widePane} />}
+                {target && target === 'routes' && <PilotRoutes widePane={widePane} />}
                 {target && target === 'faults' && <SafetyEquipmentFaults widePane={widePane} />}
                 {target && target === 'warnings' && <MarineWarnings widePane={widePane} />}
                 {target && target === 'squat' && <SquatCalculator widePane={widePane} />}
