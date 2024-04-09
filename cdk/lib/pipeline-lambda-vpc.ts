@@ -40,7 +40,7 @@ export class PipelineLambdaVpc extends Construct {
 
     const webhookLambda = new nodejsfunction.NodejsFunction(this, 'WebhookHandler', {
       vpc,
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       entry: 'lib/lambda/webhook-handler.ts',
       handler: 'handler',
       environment: {

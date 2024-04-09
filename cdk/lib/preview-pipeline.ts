@@ -39,7 +39,7 @@ export class PreviewPipeline extends Construct {
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
     const previewBuildProject = new codebuild.PipelineProject(this, 'PreviewBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.5'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.6'),
         environmentVariables: {
           VITE_APP_API_KEY: { value: importedAppSyncAPIKey },
           VITE_APP_ENV: { value: props.env },

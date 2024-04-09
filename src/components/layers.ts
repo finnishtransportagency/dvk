@@ -340,6 +340,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getPilotStyle(highlighted);
     case 'pilotagelimit':
       return getPilotageLimitStyle(feature, resolution, highlighted);
+    case 'pilotroute':
+      return getPilotRouteStyle(feature, resolution, highlighted);
     default:
       return undefined;
   }
@@ -1196,12 +1198,22 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
 export function setSelectedPilotPlace(id?: number | string) {
   const dvkMap = getMap();
-  const pilotSource = dvkMap.getVectorSource('pilot');
+  const pilotSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   for (const f of pilotSource.getFeatures()) {
     f.set('hoverStyle', id && f.getId() === id);
   }
   pilotSource.dispatchEvent('change');
+}
+
+export function setSelectedPilotageLimit(id?: number | string) {
+  const dvkMap = getMap();
+  const pilotageLimitSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of pilotageLimitSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  pilotageLimitSource.dispatchEvent('change');
 }
 
 export function setSelectedFairwayArea(id?: number | string) {
@@ -1267,6 +1279,15 @@ export function setSelectedSafetyEquipment(id: number, selected: boolean) {
 
   highlightFeatures(faultSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
   highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
+}
+
+export function setSelectedPilotRoute(id: number, selected: boolean) {
+  const dvkMap = getMap();
+  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  highlightFeatures(pilotRouteSource, ['pilotroute'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['pilotroute'], id, 'id', selected);
 }
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {

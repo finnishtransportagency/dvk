@@ -78,7 +78,7 @@ export class DvkBackendStack extends Stack {
 
     const dbStreamHandler = new NodejsFunction(this, 'dbStreamHandler', {
       functionName: `db-stream-handler-${env}`,
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       handler: 'handler',
       entry: `${__dirname}/lambda/db/dynamoStreamHandler.ts`,
       environment: {
@@ -117,7 +117,7 @@ export class DvkBackendStack extends Stack {
       const functionName = `${typeName}-${fieldName}-${env}`.toLocaleLowerCase();
       const backendLambda = new NodejsFunction(this, `GraphqlAPIHandler-${typeName}-${fieldName}-${env}`, {
         functionName,
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: lambda.Runtime.NODEJS_20_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         timeout: Duration.seconds(30),
@@ -190,7 +190,7 @@ export class DvkBackendStack extends Stack {
     let functionName = `cors-${env}`.toLocaleLowerCase();
     const corsLambda = new NodejsFunction(this, `APIHandler-CORS-${env}`, {
       functionName,
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       entry: path.join(__dirname, 'lambda/api/cors-handler.ts'),
       handler: 'handler',
       environment: {
@@ -213,7 +213,7 @@ export class DvkBackendStack extends Stack {
     functionName = `image-${env}`.toLocaleLowerCase();
     const imgLambda = new NodejsFunction(this, `APIHandler-Image-${env}`, {
       functionName,
-      runtime: lambda.Runtime.NODEJS_18_X,
+      runtime: lambda.Runtime.NODEJS_20_X,
       entry: path.join(__dirname, 'lambda/api/image-handler.ts'),
       handler: 'handler',
       environment: {
@@ -382,7 +382,7 @@ export class DvkBackendStack extends Stack {
       const functionName = `${lambdaName}-${env}`.toLocaleLowerCase();
       const backendLambda = new NodejsFunction(this, `APIHandler-${lambdaName}-${env}`, {
         functionName,
-        runtime: lambda.Runtime.NODEJS_18_X,
+        runtime: lambda.Runtime.NODEJS_20_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
         layers: [layer],
