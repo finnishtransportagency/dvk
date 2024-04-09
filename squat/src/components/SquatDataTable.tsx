@@ -124,7 +124,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
         <IonCol>
           <IonGrid className="ion-no-padding">
             <IonRow className="ion-no-padding">
-              <IonCol size="auto" className="dataTableCol">
+              <IonCol className="dataTableCol">
                 <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
                 {props.speeds?.map((speed) => {
                   const uuid = uniqueId('col_');
