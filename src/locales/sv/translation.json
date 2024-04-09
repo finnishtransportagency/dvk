@@ -5,6 +5,7 @@
       "closeMenu": "Stäng",
       "title": "Digital farledskort",
       "fairway-cards": "Farledskort",
+      "pilot-routes": "Lotsningsrutter",
       "safety-equipment-faults": "Säkerhetsanordningsfelen",
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
@@ -261,6 +262,10 @@
     "draught": "Djupgående",
     "width": "Bredd"
   },
+  "routes": {
+    "title": "Lotsningsrutter",
+    "route": "Rutt"
+  },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
     "notification": "OBS! Övergång till det nya höjdsystemet N2000 har inletts i samband med publicering av nya sjökort. Farledskorten uppdateras till det nya höjdsystemet i samma takt som publikationen av nya sjökort. Man bör försäkra sig om att sjökortet (Traficoms kustkort) och farledskortet som används alltid har samma höjdsystem.",
@@ -513,6 +518,7 @@
     "dataUpToDate": "Tjänstens iuppgifter är uppdaterad",
     "dataUpdateFailedAt": "Misslyckad uppdatering av data",
     "latestDataUpdateAt": "Senaste uppdateringen av data",
+    "modified": "Uppdaterat",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",

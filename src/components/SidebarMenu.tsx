@@ -27,22 +27,47 @@ import fairwaysIcon from '../theme/img/fairways_icon.svg';
 import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
+import routeIcon from '../theme/img/route_icon.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
 import { useDvkContext } from '../hooks/dvkContext';
 import { Lang, accessibilityUrl } from '../utils/constants';
 
 type SidebarMenuProps = {
-  isSourceOpen: boolean;
   setIsSourceOpen: (open: boolean) => void;
+};
+
+type RouteItemProps = {
+  routerLink: string;
+  icon: string;
+  title: string;
+  dataTestId: string;
+};
+
+const RouteItem: React.FC<RouteItemProps> = ({ routerLink, icon, title, dataTestId }) => {
+  const { state } = useDvkContext();
+  const router = useIonRouter();
+
+  return (
+    <IonItem
+      routerLink={routerLink}
+      detail={false}
+      lines="none"
+      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
+      onClick={async () => menuController.close()}
+      disabled={router.routeInfo.pathname === routerLink}
+      data-testid={dataTestId}
+    >
+      <IonIcon slot="start" src={icon} />
+      {title}
+    </IonItem>
+  );
 };
 
 const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
-  const router = useIonRouter();
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
-  const { state } = useDvkContext();
   const lang = i18n.resolvedLanguage as Lang;
 
   const handleTabFocus = useCallback((e: KeyboardEvent) => {
@@ -60,14 +85,12 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
         lastFocusableElement.current?.removeAttribute('tabIndex');
         e.preventDefault();
       }
-    } else {
+    } else if (document.activeElement === lastFocusableElement.current) {
       // eteenpain
-      if (document.activeElement === lastFocusableElement.current) {
-        firstFocusableElement.current?.setAttribute('tabIndex', '-1');
-        firstFocusableElement.current?.focus();
-        firstFocusableElement.current?.removeAttribute('tabIndex');
-        e.preventDefault();
-      }
+      firstFocusableElement.current?.setAttribute('tabIndex', '-1');
+      firstFocusableElement.current?.focus();
+      firstFocusableElement.current?.removeAttribute('tabIndex');
+      e.preventDefault();
     }
   }, []);
 
@@ -113,61 +136,19 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 </IonRow>
                 <IonRow className="ion-direction-column">
                   <IonCol size="auto">
-                    <IonItem
-                      routerLink="/kortit/"
-                      detail={false}
-                      lines="none"
-                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
-                      onClick={async () => menuController.close()}
-                      disabled={router.routeInfo.pathname === '/kortit/'}
-                      data-testid="fairwaysLink"
-                    >
-                      <IonIcon slot="start" src={fairwaysIcon} />
-                      {t('fairway-cards')}
-                    </IonItem>
+                    <RouteItem routerLink="/kortit/" icon={fairwaysIcon} title={t('fairway-cards')} dataTestId="fairwaysLink" />
                   </IonCol>
                   <IonCol size="auto">
-                    <IonItem
-                      routerLink="/turvalaiteviat/"
-                      detail={false}
-                      lines="none"
-                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
-                      onClick={async () => menuController.close()}
-                      disabled={router.routeInfo.pathname === '/turvalaiteviat/'}
-                      data-testid="faultsLink"
-                    >
-                      <IonIcon slot="start" src={alertIcon} />
-                      {t('safety-equipment-faults')}
-                    </IonItem>
+                    <RouteItem routerLink="/luotsausreitit/" icon={routeIcon} title={t('pilot-routes')} dataTestId="routesLink" />
                   </IonCol>
                   <IonCol size="auto">
-                    <IonItem
-                      routerLink="/merivaroitukset/"
-                      detail={false}
-                      lines="none"
-                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
-                      onClick={async () => menuController.close()}
-                      disabled={router.routeInfo.pathname === '/merivaroitukset/'}
-                      data-testid="warningsLink"
-                    >
-                      <IonIcon slot="start" src={weatherIcon} />
-                      {t('marine-warnings')}
-                    </IonItem>
+                    <RouteItem routerLink="/turvalaiteviat/" icon={alertIcon} title={t('safety-equipment-faults')} dataTestId="faultsLink" />
                   </IonCol>
                   <IonCol size="auto">
-                    <IonItem
-                      id="squatlink"
-                      routerLink="/squat/"
-                      detail={false}
-                      lines="none"
-                      className={state.preview ? 'ion-no-padding internal disabled' : 'ion-no-padding internal'}
-                      onClick={async () => menuController.close()}
-                      data-testid="squatLink"
-                      disabled={router.routeInfo.pathname === '/squat/'}
-                    >
-                      <IonIcon slot="start" src={calculateIcon} />
-                      {t('squat')}
-                    </IonItem>
+                    <RouteItem routerLink="/merivaroitukset/" icon={weatherIcon} title={t('marine-warnings')} dataTestId="warningsLink" />
+                  </IonCol>
+                  <IonCol size="auto">
+                    <RouteItem routerLink="/squat/" icon={calculateIcon} title={t('squat')} dataTestId="squatLink" />
                   </IonCol>
                 </IonRow>
                 <IonRow className="languageSelection">
