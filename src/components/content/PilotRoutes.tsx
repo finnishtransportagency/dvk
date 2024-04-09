@@ -100,12 +100,14 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
                       </Link>
                     </IonCol>
                   </IonRow>
-                  <IonRow>
-                    <IonCol>
-                      <IonText className="header">{`${t('routes.rtz')}: `}</IonText>
-                      <RtzFileDownload name={properties.name} rtz={properties.rtz} />
-                    </IonCol>
-                  </IonRow>
+                  {properties.rtz && (
+                    <IonRow>
+                      <IonCol>
+                        <IonText className="header">{`${t('routes.rtz')}: `}</IonText>
+                        <RtzFileDownload name={properties.name} rtz={properties.rtz} />
+                      </IonCol>
+                    </IonRow>
+                  )}
                 </IonGrid>
               );
             })}
