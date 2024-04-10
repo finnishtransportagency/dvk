@@ -58,7 +58,7 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
     return n2000Value;
   };
 
-  const degreesToString = (degrees: number) => padNumber(degrees, 3).replace('.', ',');
+  const degreesToString = (degrees: number) => padNumber(degrees, 3, 1).replace('.', ',');
   const direction1 = Math.min(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
   const direction2 = Math.max(line.properties.direction ?? -1, line.properties.oppositeDirection ?? -1);
 
