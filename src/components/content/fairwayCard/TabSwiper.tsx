@@ -2,16 +2,16 @@ import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import './TabSwiper.css';
-import { IonButton, IonLabel } from '@ionic/react';
+import { IonLabel, IonSegment, IonSegmentButton } from '@ionic/react';
 import { getTabLabel } from '../../../utils/fairwayCardUtils';
 import { useTranslation } from 'react-i18next';
 
 interface TabSwiperProps {
-  tab?: number;
+  tab: number;
   setTab: Dispatch<SetStateAction<number>>;
 }
 
-export const TabSwiper: React.FC<TabSwiperProps> = ({ setTab }) => {
+export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const swiperRef = useRef<SwiperContainer>(null);
 
@@ -36,16 +36,18 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ setTab }) => {
   }, []);
 
   return (
-    <div className="tabs">
+    <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
       <swiper-container ref={swiperRef} init={false}>
         {[1, 2, 3, 4].map((tabId) => (
           <swiper-slide key={tabId}>
-            <IonButton expand="full" fill="clear" onClick={() => setTab(tabId)}>
-              <IonLabel>{getTabLabel(t, tabId)}</IonLabel>
-            </IonButton>
+            <IonSegmentButton key={tabId} value={tabId}>
+              <IonLabel>
+                <h3>{getTabLabel(t, tabId)}</h3>
+              </IonLabel>
+            </IonSegmentButton>
           </swiper-slide>
         ))}
       </swiper-container>
-    </div>
+    </IonSegment>
   );
 };
