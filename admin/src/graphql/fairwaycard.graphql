@@ -164,6 +164,16 @@ fragment FairwayCardById on FairwayCard {
       groupId
       legendPosition
     }
+    pilotRoutes {
+      id
+      identifier
+      name {
+        fi
+        sv
+        en
+      }
+      status
+    }
 }
 
 query fairwayCardById($id: String!) {
