@@ -132,7 +132,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             ))}
           </IonSegment>
 
-          <TabSwiper setTab={setTab} />
+          <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
           <div className={getTabClassName(1)}>
             <IonText className="no-margin-top">

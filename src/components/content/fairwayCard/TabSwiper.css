@@ -5,9 +5,13 @@ swiper-container {
 swiper-slide {
   text-align: center;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   width: 29%;
+}
+
+.wide swiper-slide {
+  width: 25%;
 }
 
 div.tabs {
@@ -17,14 +21,30 @@ div.tabs {
 }
 
 .tabs ion-button {
-  --padding-start: 6px;
-  --padding-end: 6px;
   margin: 0;
+  width: 100%;
+}
+
+.tabs ion-button::part(native) {
+  padding-top: 16px;
 }
 
 .tabs ion-label {
   font-size: 12px;
-  font-weight: bold;
   letter-spacing: normal;
   color: var(--ion-color-dark);
+}
+
+.tabs .selected {
+  font-weight: bold;
+}
+
+.tab-indicator {
+  width: 40px;
+  height: 2px;
+  margin: 8px auto 0 auto;
+}
+
+.selected .tab-indicator {
+  background-color: var(--ion-color-primary);
 }
