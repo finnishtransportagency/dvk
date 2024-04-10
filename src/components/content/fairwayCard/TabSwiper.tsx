@@ -19,6 +19,7 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) =
   useEffect(() => {
     const params: SwiperOptions = {
       slidesPerView: 'auto',
+      watchSlidesProgress: true,
     };
 
     if (swiperRef.current) {
