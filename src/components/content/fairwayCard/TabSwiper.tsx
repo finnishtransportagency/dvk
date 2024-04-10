@@ -17,15 +17,6 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) =
   const swiperRef = useRef<SwiperContainer>(null);
 
   useEffect(() => {
-    // listen for Swiper events using addEventListener
-    /* swiperElRef.current.addEventListener('swiperprogress', (e) => {
-      const [swiper, progress] = e.detail;
-      console.log(progress);
-    }); */
-
-    /* swiperElRef.current.addEventListener('swiperslidechange', (e) => {
-      console.log('slide changed');
-    }); */
     const params: SwiperOptions = {
       slidesPerView: 'auto',
     };
@@ -35,6 +26,10 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) =
       swiperRef.current.initialize();
     }
   }, []);
+
+  useEffect(() => {
+    swiperRef.current?.swiper.slideTo(tab - 1);
+  }, [tab]);
 
   return (
     <div className="tabs">
