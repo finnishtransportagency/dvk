@@ -5,7 +5,26 @@ swiper-container {
 swiper-slide {
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  width: 30%;
+  width: 29%;
+}
+
+div.tabs {
+  border: 1px solid var(--ion-color-light);
+  border-width: 1px 0;
+  margin-top: 20px;
+}
+
+.tabs ion-button {
+  --padding-start: 6px;
+  --padding-end: 6px;
+  margin: 0;
+}
+
+.tabs ion-label {
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: normal;
+  color: var(--ion-color-dark);
 }
