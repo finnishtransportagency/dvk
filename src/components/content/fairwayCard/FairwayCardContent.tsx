@@ -27,6 +27,7 @@ import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { TabSwiper } from './TabSwiper';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -130,6 +131,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               </IonSegmentButton>
             ))}
           </IonSegment>
+
+          <TabSwiper setTab={setTab} />
 
           <div className={getTabClassName(1)}>
             <IonText className="no-margin-top">

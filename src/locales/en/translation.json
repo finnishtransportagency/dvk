@@ -137,6 +137,7 @@
     "gulfOfBothnia": "Gulf of Bothnia",
     "harboursTitle": "Fairway harbours",
     "areasTitle": "Fairway areas",
+    "routesTitle": "Pilot routes",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
     "starts": "Starts",
@@ -260,7 +261,7 @@
     "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
     "draught": "Draught",
     "width": "Width"
-},
+  },
   "faults": {
     "title": "Defective navigation aids",
     "notification": "NOTE! The transition to the new N2000 height system in nautical chart publications has begun. The fairway charts will be updated to use this height system at the same time as new coastal maps are published.  Users should ensure that their fairway chart uses the same height system as the coastal map. An updated fairway chart with the N2000 height system can be identified by the text N2000 (BSCD2000) at the top of the card.",

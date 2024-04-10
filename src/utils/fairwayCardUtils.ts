@@ -27,6 +27,8 @@ export function getTabLabel(t: TFunction, tabId: number): string {
       return t('harboursTitle');
     case 3:
       return t('areasTitle');
+    case 4:
+      return t('routesTitle');
     default:
       return '-';
   }
