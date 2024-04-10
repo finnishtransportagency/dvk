@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Luotsausreitit",
-    "route": "Reitti"
+    "route": "Reitti",
+    "rtz": "Reitin rtz tiedosto"
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -556,5 +557,11 @@
     "saimaaCanal": "Saimaan kanava",
     "gulfOfBothnia": "Pohjanlahti",
     "inlandAreas": "Sisävesistöt"
+  },
+  "fileSize": {
+    "bytes": "tavua",
+    "KB": "kilotavua",
+    "MB": "megatavua",
+    "GB": "gigatavua"
   }
 }

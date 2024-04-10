@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Pilot routes",
-    "route": "Route"
+    "route": "Route",
+    "rtz": "[en] Reitin rtz tiedosto"
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -555,5 +556,11 @@
     "saimaaCanal": "Saimaa Canal",
     "gulfOfBothnia": "Gulf of Bothnia",
     "inlandAreas": "Inland waterways"
+  },
+  "fileSize": {
+    "bytes": "bytes",
+    "KB": "kilobytes",
+    "MB": "megabytes",
+    "GB": "gigabytes"
   }
 }

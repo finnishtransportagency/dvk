@@ -264,7 +264,8 @@
   },
   "routes": {
     "title": "Lotsningsrutter",
-    "route": "Rutt"
+    "route": "Rutt",
+    "rtz": "[sv] Reitin rtz tiedosto"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -556,5 +557,11 @@
     "saimaaCanal": "Saima kanal",
     "gulfOfBothnia": "Bottenvik",
     "inlandAreas": "Inlandsfarvatten"
+  },
+  "fileSize": {
+    "bytes": "byte",
+    "KB": "kilobyte",
+    "MB": "megabyte",
+    "GB": "gigabyte"
   }
 }

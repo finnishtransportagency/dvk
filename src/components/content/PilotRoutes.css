@@ -1,10 +1,10 @@
 ion-grid.route-table {
   color: var(--ion-color-dark);
   font-size: 12px;
-  line-height: 24px;
+  line-height: 1.25rem;
 }
 
-ion-grid.route-table ion-row.header {
+ion-grid.route-table .header {
   font-weight: bold;
 }
 
@@ -23,4 +23,8 @@ ion-grid.inlineHoverText:hover {
 
 ion-grid.inlineHoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
+}
+
+.route-table ion-row {
+  padding: 4px 0;
 }

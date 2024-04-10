@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCol, IonGrid, IonRow, IonSkeletonText } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
 import { useFeatureData } from '../../utils/dataLoader';
@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import { setSelectedPilotRoute } from '../layers';
 import VectorSource from 'ol/source/Vector';
 import { goToFeature } from '../../utils/common';
+import { RtzFileDownload } from '../RtzFileDownload';
 
 interface PilotRoutesProps {
   widePane?: boolean;
@@ -99,6 +100,14 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
                       </Link>
                     </IonCol>
                   </IonRow>
+                  {properties.rtz && (
+                    <IonRow>
+                      <IonCol>
+                        <IonText className="header">{`${t('routes.rtz')}: `}</IonText>
+                        <RtzFileDownload name={properties.name} rtz={properties.rtz} />
+                      </IonCol>
+                    </IonRow>
+                  )}
                 </IonGrid>
               );
             })}

@@ -6,6 +6,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useTranslation } from 'react-i18next';
+import { RtzFileDownload } from '../RtzFileDownload';
 
 type PilotRoutePopupContentProps = {
   pilotroute: PilotRouteProperties;
@@ -28,12 +29,24 @@ const PilotRoutePopupContent: React.FC<PilotRoutePopupContentProps> = ({ pilotro
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {t('popup.pilotRoute.header', { val: pilotroute?.properties.name })}
+          {t('popup.pilotRoute.header', { val: pilotroute.properties.name })}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
+      {pilotroute.properties.rtz && (
+        <>
+          <IonRow>
+            <IonCol className="header">{t('routes.rtz')}</IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <RtzFileDownload name={pilotroute.properties.name} rtz={pilotroute.properties.rtz} />
+            </IonCol>
+          </IonRow>
+        </>
+      )}
     </IonGrid>
   );
 };
