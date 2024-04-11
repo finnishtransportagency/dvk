@@ -10,11 +10,13 @@ import {
   TextInput,
   TrafficService,
 } from '../../../graphql/generated';
+import { RtzData } from '../api/apiModels';
+import { fetchPilotRoutesApi } from '../api/axios';
 import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
 import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
-import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 
 const MAX_TEXT_LENGTH = 2000;
@@ -242,7 +244,7 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined) {
+export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined, pilotRoutes: RtzData[]) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {
@@ -274,7 +276,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     vesselRecommendation: dbModel.vesselRecommendation,
     trafficService: mapTrafficService(dbModel.trafficService, pilotMap),
     harbors: dbModel.harbors,
-    pilotRoutes: dbModel.pilotRoutes,
+    pilotRoutes: mapPilotRoutes(dbModel.pilotRoutes ?? [], pilotRoutes),
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
   };
@@ -305,4 +307,45 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     quays: dbModel.quays,
     status: dbModel.status,
   };
+}
+
+const pilotRoutesCacheKey = 'pilotRoutes';
+
+export async function getPilotRoutes() {
+  // get data (from cache or api) 
+  let response: CacheResponse | undefined;
+  let data: RtzData[] | undefined;
+  try {
+    response = await getFromCache(pilotRoutesCacheKey);
+    if (response.expired) {
+      log.debug('fetching pilot routes from api');
+      data = await fetchPilotRoutesApi();
+      await cacheResponse(pilotCacheKey, data);
+    } else if (response.data) {
+      log.debug('parsing pilot routes from cache');
+      data = JSON.parse(response.data) as RtzData[];
+    }
+  } catch (e) {
+    if (!data && response?.data) {
+      log.warn('parsing expired pilot routes from cache');
+      data = JSON.parse(response.data) as RtzData[];
+    }
+  }
+
+  return data ?? [];
+}
+
+// map the routes to fit the db model
+function mapPilotRoutes(pilotRoutes: PilotRoute[], rtzData: RtzData[]) {
+  const filteredRoutes = pilotRoutes.map((route) => {
+    const foundRtz = rtzData?.find((rtz) => rtz.tunnus === route.id);
+    if (foundRtz) {
+      return {
+        id: route.id,
+        name: foundRtz.nimi,
+      } as PilotRoute;
+    }
+  }) as PilotRoute[];
+
+  return filteredRoutes ?? [];
 }

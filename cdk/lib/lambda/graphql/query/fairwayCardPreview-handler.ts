@@ -2,7 +2,7 @@ import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger
 import { FairwayCard, QueryFairwayCardPreviewArgs, Status } from '../../../../graphql/generated';
 import { auditLog as log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
-import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
+import { getPilotPlaceMap, getPilotRoutes, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
 import { ADMIN_ROLE, getOptionalCurrentUser } from '../../api/login';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardPreviewArgs, FairwayCard | undefined> = async (
@@ -13,10 +13,11 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardPreviewArgs, Fairwa
 
   if (user?.roles.includes(ADMIN_ROLE)) {
     const pilotMap = await getPilotPlaceMap();
+    const pilotRoutes = await getPilotRoutes();
     const dbModel = await FairwayCardDBModel.get(event.arguments.id);
 
     if (dbModel?.status === Status.Draft || dbModel?.status === Status.Public) {
-      return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap, user);
+      return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap, user, pilotRoutes);
     }
   } else {
     log.error(`User missing required role ${ADMIN_ROLE}`);

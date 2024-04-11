@@ -541,7 +541,5 @@ type MarineWarning {
 
 type PilotRoute {
   id: Int!
-  identifier: String
-  name: Text
-  status: Int
+  name: String
 }

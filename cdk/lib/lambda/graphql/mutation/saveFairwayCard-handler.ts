@@ -14,6 +14,7 @@ import { auditLog, log } from '../../logger';
 import FairwayCardDBModel, { Picture } from '../../db/fairwayCardDBModel';
 import {
   getPilotPlaceMap,
+  getPilotRoutes,
   mapEmail,
   mapEmails,
   mapFairwayCardDBModelToGraphqlType,
@@ -205,5 +206,6 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     auditLog.info({ card: newModel, user: user.uid }, 'FairwayCard added');
   }
   const pilotMap = await getPilotPlaceMap();
-  return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
+  const pilotRoutes = await getPilotRoutes();
+  return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user, pilotRoutes);
 };

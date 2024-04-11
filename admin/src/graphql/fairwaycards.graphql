@@ -288,12 +288,6 @@ fragment FairwayCardParts on FairwayCard {
   }
   pilotRoutes {
     id
-    identifier
-    name {
-      fi
-      sv
-      en
-    }
-    status
+    name
   }
 }

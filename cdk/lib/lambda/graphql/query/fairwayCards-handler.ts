@@ -2,7 +2,7 @@ import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
 import { FairwayCard, QueryFairwayCardsArgs } from '../../../../graphql/generated';
 import { getOptionalCurrentUser } from '../../api/login';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
-import { getPilotPlaceMap, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
+import { getPilotPlaceMap, getPilotRoutes, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
 import { log } from '../../logger';
 
 export const handler = async (event: AppSyncResolverEvent<QueryFairwayCardsArgs>): Promise<FairwayCard[]> => {
@@ -12,8 +12,9 @@ export const handler = async (event: AppSyncResolverEvent<QueryFairwayCardsArgs>
   );
   log.debug('%d filtered fairway card(s) found', fairwayCards.length);
   const pilotMap = await getPilotPlaceMap();
+  const pilotRoutes = await getPilotRoutes();
   const user = await getOptionalCurrentUser(event);
   return fairwayCards.map((fairwayCard) => {
-    return mapFairwayCardDBModelToGraphqlType(fairwayCard, pilotMap, user);
+    return mapFairwayCardDBModelToGraphqlType(fairwayCard, pilotMap, user, pilotRoutes);
   });
 };

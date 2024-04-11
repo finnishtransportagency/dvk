@@ -196,13 +196,7 @@ query findFairwayCardById($id: String!) {
     }
     pilotRoutes {
       id
-      identifier
-      name {
-        fi
-        sv
-        en
-      }
-      status
+      name
     }
   }
 }
