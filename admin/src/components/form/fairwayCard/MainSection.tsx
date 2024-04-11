@@ -7,6 +7,8 @@ import TextInput from '../TextInput';
 import SelectInput from '../SelectInput';
 import SelectWithFilter from '../SelectWithFilter';
 import TextInputRow from '../TextInputRow';
+import { FeatureCollection } from 'geojson';
+import { featureCollectionToSelectOptions } from '../../../utils/common';
 
 interface MainSectionProps {
   state: FairwayCardInput;
@@ -24,7 +26,7 @@ interface MainSectionProps {
   fairwayOptions?: SelectOption[];
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
-  pilotRouteOptions?: SelectOption[];
+  pilotRouteOptions?: FeatureCollection | undefined;
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -156,11 +158,12 @@ const MainSection: React.FC<MainSectionProps> = ({
         <IonCol sizeMd="3">
           <SelectWithFilter
             label={t('fairwaycard.linked-pilot-routes')}
-            options={pilotRouteOptions ?? []}
+            options={featureCollectionToSelectOptions(pilotRouteOptions)}
             selected={state.pilotRoutes ?? []}
             setSelected={updateState}
             actionType="pilotRoutes"
             disabled={state.status === Status.Removed}
+            isLoading={!pilotRouteOptions}
           />
         </IonCol>
       </IonRow>

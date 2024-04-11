@@ -181,7 +181,7 @@ export function sortPictures(pictures: PictureInput[]) {
   });
 }
 
-export function FeatureCollectionToSelectOptions(collection: FeatureCollection) {
+export function featureCollectionToSelectOptions(collection: FeatureCollection | undefined) {
   const propertyArray: SelectOption[] = [];
   collection?.features?.map((route) => {
     const properties = route.properties;

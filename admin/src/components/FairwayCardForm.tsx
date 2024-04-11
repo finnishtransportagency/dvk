@@ -24,7 +24,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { FeatureCollectionToSelectOptions, openPreview } from '../utils/common';
+import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 
@@ -283,7 +283,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               fairwayOptions={fairwayList?.fairways}
               fairwaySelection={fairwaySelection}
               harbourOptions={harbourOptions}
-              pilotRouteOptions={FeatureCollectionToSelectOptions(pilotRouteList)}
+              pilotRouteOptions={pilotRouteList}
             />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
