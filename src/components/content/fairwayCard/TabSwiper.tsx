@@ -10,9 +10,10 @@ interface TabSwiperProps {
   tab: number;
   setTab: Dispatch<SetStateAction<number>>;
   widePane?: boolean;
+  disabled?: boolean;
 }
 
-export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) => {
+export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, disabled }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const swiperRef = useRef<SwiperContainer>(null);
   const [activeSlide, setActiveSlide] = useState<number | undefined>(0);
@@ -43,12 +44,20 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) =
     <div className="tabs">
       <swiper-container ref={swiperRef} init={false} className={widePane ? 'wide' : ''}>
         {[1, 2, 3, 4].map((tabId) => {
+          const selected = tabId === tab;
           // WatchSlidesProgress not working properly with React, so can't use 'slide-fully-visible' class, must apply own css class
           const slideNotVisible = activeSlide === 0 ? tabId === 4 : tabId === 1;
-          const cssClass = `${tabId === tab ? 'selected' : ''} ${slideNotVisible ? 'not-fully-visible' : ''}`;
+          const cssClass = `${selected ? 'selected' : ''} ${slideNotVisible && !widePane ? 'not-fully-visible' : ''}`;
           return (
             <swiper-slide key={tabId}>
-              <IonButton className={cssClass} expand="full" fill="clear" onClick={() => setTab(tabId)}>
+              <IonButton
+                className={cssClass}
+                expand="full"
+                fill="clear"
+                onClick={() => setTab(tabId)}
+                data-testid={`tabButton-${tabId}`}
+                disabled={disabled && !selected}
+              >
                 <div>
                   <IonLabel>{getTabLabel(t, tabId)}</IonLabel>
                   <div className="tab-indicator" />

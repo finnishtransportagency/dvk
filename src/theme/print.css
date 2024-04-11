@@ -99,7 +99,6 @@
     line-height: 1rem;
     text-transform: uppercase;
   }
-  ion-segment.tabs,
   div.tabs {
     display: none;
   }
