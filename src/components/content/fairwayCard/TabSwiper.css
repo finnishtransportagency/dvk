@@ -10,11 +10,11 @@ swiper-slide {
   width: 29%;
 }
 
-swiper-slide:not(.swiper-slide-fully-visible):first-child {
+swiper-slide:first-child .not-fully-visible {
   background: linear-gradient(to left, transparent, var(--ion-color-light));
 }
 
-swiper-slide:not(.swiper-slide-fully-visible):last-child {
+swiper-slide:last-child .not-fully-visible {
   background: linear-gradient(to right, transparent, var(--ion-color-light));
 }
 
