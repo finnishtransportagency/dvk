@@ -61,6 +61,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: pilotRouteList } = useFeatureData('pilotroute');
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
+      console.log(data);
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);

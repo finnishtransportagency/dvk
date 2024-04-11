@@ -274,6 +274,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     vesselRecommendation: dbModel.vesselRecommendation,
     trafficService: mapTrafficService(dbModel.trafficService, pilotMap),
     harbors: dbModel.harbors,
+    pilotRoutes: dbModel.pilotRoutes,
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
   };

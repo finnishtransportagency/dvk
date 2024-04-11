@@ -124,6 +124,10 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
       card.harbors?.map((id) => {
         return { id };
       }) ?? null,
+    pilotRoutes:
+      card.pilotRoutes?.map((id) => {
+        return { id };
+      }) ?? null,
     fairwayIds: mapIds(card.fairwayIds),
     expires: card.status === Status.Removed ? getExpires() : null,
     pictures:

@@ -158,7 +158,7 @@ const MainSection: React.FC<MainSectionProps> = ({
         <IonCol sizeMd="3">
           <SelectWithFilter
             label={t('fairwaycard.linked-pilot-routes')}
-            options={featureCollectionToSelectOptions(pilotRouteOptions)}
+            options={featureCollectionToSelectOptions(pilotRouteOptions) ?? []}
             selected={state.pilotRoutes ?? []}
             setSelected={updateState}
             actionType="pilotRoutes"
