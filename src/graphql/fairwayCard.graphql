@@ -194,5 +194,15 @@ query findFairwayCardById($id: String!) {
     harbors {
       ...HarborParts
     }
+    pilotRoutes {
+      id
+      identifier
+      name {
+        fi
+        sv
+        en
+      }
+      status
+    }
   }
 }

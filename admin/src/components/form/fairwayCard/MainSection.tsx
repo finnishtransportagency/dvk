@@ -24,6 +24,7 @@ interface MainSectionProps {
   fairwayOptions?: SelectOption[];
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
+  pilotRouteOptions?: SelectOption[];
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -36,6 +37,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   fairwayOptions,
   harbourOptions,
   fairwaySelection,
+  pilotRouteOptions,
 }) => {
   const { t } = useTranslation();
 
@@ -151,7 +153,16 @@ const MainSection: React.FC<MainSectionProps> = ({
             disabled={state.status === Status.Removed}
           />
         </IonCol>
-        <IonCol sizeMd="3"></IonCol>
+        <IonCol sizeMd="3">
+          <SelectWithFilter
+            label={t('fairwaycard.linked-pilot-routes')}
+            options={pilotRouteOptions ?? []}
+            selected={state.pilotRoutes ?? []}
+            setSelected={updateState}
+            actionType="pilotRoutes"
+            disabled={state.status === Status.Removed}
+          />
+        </IonCol>
       </IonRow>
     </IonGrid>
   );

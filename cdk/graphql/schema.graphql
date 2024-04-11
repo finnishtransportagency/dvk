@@ -74,6 +74,7 @@ input FairwayCardInput {
   trafficService: TrafficServiceInput
   harbors: [String!]
   pictures: [PictureInput!]
+  pilotRoutes: [Int!]
 }
 
 input PictureInput {
@@ -236,6 +237,7 @@ type FairwayCard {
   trafficService: TrafficService
   harbors: [Harbor!]
   pictures: [Picture!]
+  pilotRoutes: [PilotRoute!]
 }
 
 type Picture {
@@ -535,4 +537,11 @@ type MarineWarning {
   equipmentId: Float
   lineId: Float
   areaId: Float
+}
+
+type PilotRoute {
+  id: Int!
+  identifier: String
+  name: Text
+  status: Int
 }
