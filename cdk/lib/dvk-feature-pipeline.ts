@@ -84,7 +84,7 @@ export class DvkFeaturePipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkFeatureBuildImage', 'dvk-buildimage'), '1.0.5'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkFeatureBuildImage', 'dvk-buildimage'), '1.0.6'),
         privileged: true,
         computeType: ComputeType.MEDIUM,
         environmentVariables: {

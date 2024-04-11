@@ -36,6 +36,7 @@ import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAre
 import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
+import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -312,6 +313,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const highlighted = !!feature.get('hoverStyle');
   switch (ds) {
     case 'line12':
+      return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
       return getLineStyle('#0000FF', 2);
     case 'area12':
@@ -425,7 +427,7 @@ export function addAPILayers(map: Map) {
     id: 'line12',
     maxResolution: undefined,
     renderBuffer: 1,
-    style: getLineStyle('#0000FF', 1),
+    style: (feature, resolution) => getNavigationLine12Style(feature, resolution, false),
     minResolution: undefined,
     opacity: 1,
     declutter: false,

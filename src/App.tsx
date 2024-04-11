@@ -85,6 +85,7 @@ import DvkContext, { useDvkContext } from './hooks/dvkContext';
 import { ContentModal } from './components/content/MainContentWithModal';
 import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
+import PilotRoutePage from './pages/PilotRoutePage';
 
 setupIonicReact({
   mode: 'md',
@@ -288,7 +289,7 @@ const DvkIonApp: React.FC = () => {
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
-        <SidebarMenu isSourceOpen={isSourceOpen} setIsSourceOpen={setIsSourceOpen} />
+        <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
         {(!!isFetching || !initDone) && (
           <IonProgressBar
             value={percentDone}
@@ -308,6 +309,9 @@ const DvkIonApp: React.FC = () => {
               </Route>
               {!state.preview && (
                 <Switch>
+                  <Route path="/luotsausreitit">
+                    <PilotRoutePage setModalContent={setModalContent} />
+                  </Route>
                   <Route path="/turvalaiteviat">
                     <SafetyEquipmentFaultPage setModalContent={setModalContent} />
                   </Route>
