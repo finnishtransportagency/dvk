@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { SwiperContainer } from 'swiper/element';
 import { SwiperOptions } from 'swiper/types';
 import './TabSwiper.css';
@@ -15,17 +15,24 @@ interface TabSwiperProps {
 export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const swiperRef = useRef<SwiperContainer>(null);
+  const [activeSlide, setActiveSlide] = useState<number | undefined>(0);
 
   useEffect(() => {
     const params: SwiperOptions = {
       slidesPerView: 'auto',
+      keyboard: {
+        enabled: true,
+      },
     };
 
     if (swiperRef.current) {
       Object.assign(swiperRef.current, params);
       swiperRef.current.initialize();
-      console.log('hello init');
     }
+
+    swiperRef.current?.addEventListener('swiperslidechange', () => {
+      setActiveSlide(swiperRef.current?.swiper.activeIndex);
+    });
   }, []);
 
   useEffect(() => {
@@ -36,10 +43,9 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane }) =
     <div className="tabs">
       <swiper-container ref={swiperRef} init={false} className={widePane ? 'wide' : ''}>
         {[1, 2, 3, 4].map((tabId) => {
-          const selected = tabId === tab;
           // WatchSlidesProgress not working properly with React, so can't use 'slide-fully-visible' class, must apply own css class
-          const slideNotVisible = (tabId === 1 && !selected) || (tabId === 4 && tab === 1);
-          const cssClass = [selected ? 'selected' : '', slideNotVisible ? 'not-fully-visible' : ''].join(' ');
+          const slideNotVisible = activeSlide === 0 ? tabId === 4 : tabId === 1;
+          const cssClass = `${tabId === tab ? 'selected' : ''} ${slideNotVisible ? 'not-fully-visible' : ''}`;
           return (
             <swiper-slide key={tabId}>
               <IonButton className={cssClass} expand="full" fill="clear" onClick={() => setTab(tabId)}>
