@@ -80,7 +80,7 @@ export type Picture = {
 
 export type PilotRoute = {
   id: number;
-}
+};
 
 class FairwayCardDBModel {
   id: string;

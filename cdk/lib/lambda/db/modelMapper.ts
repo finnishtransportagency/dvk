@@ -244,7 +244,12 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined, pilotRoutes: RtzData[]) {
+export function mapFairwayCardDBModelToGraphqlType(
+  dbModel: FairwayCardDBModel,
+  pilotMap: Map<number, PilotPlace>,
+  user: CurrentUser | undefined,
+  pilotRoutes: RtzData[]
+) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {
@@ -312,7 +317,7 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
 const pilotRoutesCacheKey = 'pilotRoutes';
 
 export async function getPilotRoutes() {
-  // get data (from cache or api) 
+  // get data (from cache or api)
   let response: CacheResponse | undefined;
   let data: RtzData[] | undefined;
   try {
@@ -337,15 +342,17 @@ export async function getPilotRoutes() {
 
 // map the routes to fit the db model
 function mapPilotRoutes(pilotRoutes: PilotRoute[], rtzData: RtzData[]) {
-  const filteredRoutes = pilotRoutes.map((route) => {
+  const filteredRoutes: PilotRoute[] = [];
+
+  pilotRoutes.forEach((route) => {
     const foundRtz = rtzData?.find((rtz) => rtz.tunnus === route.id);
     if (foundRtz) {
-      return {
+      filteredRoutes.push({
         id: route.id,
         name: foundRtz.nimi,
-      } as PilotRoute;
+      } as PilotRoute);
     }
-  }) as PilotRoute[];
+  });
 
   return filteredRoutes ?? [];
 }
