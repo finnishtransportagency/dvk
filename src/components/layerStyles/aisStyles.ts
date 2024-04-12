@@ -2,7 +2,7 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Fill, Stroke } from 'ol/style';
 import { AisFeatureProperties, AisFeaturePathPredictorProperties } from '../features';
 import CircleStyle from 'ol/style/Circle';
-import { LineString, Point } from 'ol/geom';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import { asArray, Color } from 'ol/color';
 import { FeatureLayerId } from '../../utils/constants';
 import vesselCargoIcon from '../../theme/img/ais/ais_vessel_cargo.svg';
@@ -92,8 +92,11 @@ function getRealSizeVesselStyle(feature: FeatureLike, selected: boolean, stylePr
 
 function getMovingVesselIconStyle(feature: FeatureLike, selected: boolean, styleProps: AisVesselStyleProps) {
   const props = feature.getProperties() as AisFeatureProperties;
+  let geometry = feature.getGeometry() as Geometry;
+  if (geometry?.getType() === 'Polygon') {
+    geometry = (geometry as Polygon).getInteriorPoint();
+  }
   const vesselLength = props.vesselLength ?? 0;
-  const vesselWidth = props.vesselWidth ?? 0;
   let iconWidth = vesselLength > 50 ? 10 : 8;
   let iconHeight = vesselLength > 50 ? 25 : 18;
   if (selected) {
@@ -102,16 +105,11 @@ function getMovingVesselIconStyle(feature: FeatureLike, selected: boolean, style
   }
 
   return new Style({
-    geometry: props.aisPoint,
+    geometry: geometry,
     image: new Icon({
       src: styleProps.vesselIcon,
       width: iconWidth,
       height: iconHeight,
-      anchorOrigin: 'top-left',
-      anchor: [
-        props.referencePointC && props.referencePointC > 0 ? props.referencePointC / vesselWidth : 0.5,
-        props.referencePointA && props.referencePointA > 0 ? props.referencePointA / vesselLength : 0.5,
-      ],
       rotation: getRotation(feature as Feature),
       rotateWithView: true,
     }),
@@ -120,13 +118,17 @@ function getMovingVesselIconStyle(feature: FeatureLike, selected: boolean, style
 
 function getAnchoredVesselIconStyle(feature: FeatureLike, selected: boolean, styleProps: AisVesselStyleProps) {
   const props = feature.getProperties() as AisFeatureProperties;
+  let geometry = feature.getGeometry() as Geometry;
+  if (geometry?.getType() === 'Polygon') {
+    geometry = (geometry as Polygon).getInteriorPoint();
+  }
   const vesselLength = props.vesselLength ?? 0;
   let radius = vesselLength > 50 ? 8 : 5;
   if (selected) {
     radius += 1;
   }
   return new Style({
-    geometry: props.aisPoint,
+    geometry: geometry,
     image: new CircleStyle({
       radius: radius,
       fill: new Fill({ color: styleProps.fillColor }),
