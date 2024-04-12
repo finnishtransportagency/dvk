@@ -86,10 +86,26 @@ div.squatSquareSmall {
 .dataTableCol {
   flex-wrap: nowrap;
   padding: 0px;
-  min-width: 74px;
 }
 
 .legendCol {
   font-size: 12px;
   padding: 5px;
+}
+
+@media (max-width: 576px) {
+  .squatDataGrid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .squatDataRow {
+    width: 100%;
+  }
+}
+
+.squatDataGridNoScroll {
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }

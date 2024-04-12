@@ -59,9 +59,7 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
               {props.speeds?.map((speed) => {
                 const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
                 const uuid = uniqueId('col_');
-                return (
-                  <DataTableDataCell key={uuid} value={froudeNumber.toFixed(2)} color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : DATACOLOR.NEUTRAL} />
-                );
+                return <DataTableDataCell key={uuid} value={froudeNumber.toFixed(2)} color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined} />;
               })}
             </IonRow>
             {!state.status.showBarrass && (
@@ -107,7 +105,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
   const { state } = useSquatContext();
 
   return (
-    <IonGrid className={'dataTableGrid' + (props.speeds.length < 1 ? ' no-data' : '')}>
+    <IonGrid className={'dataTableGrid ion-no-padding' + (props.speeds.length < 1 ? ' no-data' : '')}>
       <IonRow className="ion-align-items-center dataTableLegend" style={isEmbedded() ? { paddingLeft: '1px' } : undefined}>
         <IonCol size="auto">
           <div className="squatSquareSmall" />
@@ -120,80 +118,73 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
         </IonCol>
         <IonCol className="legendCol">{t('squat-tulokset')}</IonCol>
       </IonRow>
-      <IonRow>
+      <IonRow style={{ padding: '5px 0px 0px 0px' }}>
         <IonCol>
-          <IonGrid className="ion-no-padding">
-            <IonRow className="ion-no-padding">
-              <IonCol size="1.78" className="dataTableCol">
-                <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
-                {props.speeds?.map((speed) => {
-                  const uuid = uniqueId('col_');
-                  return <DataTableDataCell key={uuid} value={speed.toFixed(1)} row={true} />;
-                })}
-              </IonCol>
-              <IonCol size="1.78" className="dataTableCol">
-                <DataTableTitleRow value={t('aluksen-nopeus-ms')} />
-                {props.speeds?.map((speed) => {
-                  const uuid = uniqueId('col_');
-                  return <DataTableDataCell key={uuid} value={knotsToMetresPerSecond(speed).toFixed(1)} row={true} />;
-                })}
-              </IonCol>
-              <IonCol size="1.78" className="dataTableCol">
-                <DataTableTitleRow value={t('froude-syvyysluku')} />
-                {props.speeds?.map((speed) => {
-                  const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
-                  const uuid = uniqueId('col_');
-                  return (
-                    <DataTableDataCell
-                      key={uuid}
-                      value={froudeNumber.toFixed(2)}
-                      row={true}
-                      color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : DATACOLOR.NEUTRAL}
-                    />
-                  );
-                })}
-              </IonCol>
-              {!state.status.showBarrass && (
-                <>
-                  <IonCol size="1.78" className="dataTableCol">
-                    <DataTableTitleRow
-                      value={t('squat-max', {
-                        kerroin: '2,0',
-                      })}
-                    />
-                    {props.huuskaGuliev20?.filter(props.filterSpeeds).map((values) => {
-                      const uuid = uniqueId('col_');
-                      return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} />;
+          <IonRow className="ion-no-padding">
+            <IonCol className="dataTableCol ion-no-padding">
+              <DataTableTitleRow value={t('aluksen-nopeus-kn')} />
+              {props.speeds?.map((speed) => {
+                const uuid = uniqueId('col_');
+                return <DataTableDataCell key={uuid} value={speed.toFixed(1)} row={true} />;
+              })}
+            </IonCol>
+            <IonCol className="dataTableCol">
+              <DataTableTitleRow value={t('aluksen-nopeus-ms')} />
+              {props.speeds?.map((speed) => {
+                const uuid = uniqueId('col_');
+                return <DataTableDataCell key={uuid} value={knotsToMetresPerSecond(speed).toFixed(1)} row={true} />;
+              })}
+            </IonCol>
+            <IonCol className="dataTableCol">
+              <DataTableTitleRow value={t('froude-syvyysluku')} />
+              {props.speeds?.map((speed) => {
+                const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
+                const uuid = uniqueId('col_');
+                return (
+                  <DataTableDataCell
+                    key={uuid}
+                    value={froudeNumber.toFixed(2)}
+                    row={true}
+                    /* undefined results to default cell color */
+                    color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined}
+                  />
+                );
+              })}
+            </IonCol>
+            {!state.status.showBarrass && (
+              <>
+                <IonCol className="dataTableCol">
+                  <DataTableTitleRow
+                    value={t('squat-max', {
+                      kerroin: '2,0',
                     })}
-                  </IonCol>
-                  <IonCol size="1.78" className="dataTableCol">
-                    <DataTableTitleRow value={t('squat-max', { kerroin: '2,4' })} lastCell={true} />
-                    {props.getPaddedHuuskaGuliev24Data().map((value) => {
-                      const uuid = uniqueId('col_');
-                      return (
-                        <DataTableDataCell
-                          key={uuid}
-                          value={value >= 0 ? value.toFixed(2) : '-'}
-                          row={true}
-                          color={DATACOLOR.SQUAT}
-                          lastCell={true}
-                        />
-                      );
-                    })}
-                  </IonCol>
-                </>
-              )}
-              {state.status.showBarrass && (
-                <IonCol size="1.78" className="dataTableCol">
-                  <DataTableTitleRow value={t('squat-max', { kerroin: undefined })} lastCell={true} />
-                  {props.barrass?.filter(props.filterSpeeds).map((values) => {
+                  />
+                  {props.huuskaGuliev20?.filter(props.filterSpeeds).map((values) => {
                     const uuid = uniqueId('col_');
-                    return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} lastCell={true} />;
+                    return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} />;
                   })}
                 </IonCol>
-              )}
-            </IonRow>
-          </IonGrid>
+                <IonCol className="dataTableCol">
+                  <DataTableTitleRow value={t('squat-max', { kerroin: '2,4' })} lastCell={true} />
+                  {props.getPaddedHuuskaGuliev24Data().map((value) => {
+                    const uuid = uniqueId('col_');
+                    return (
+                      <DataTableDataCell key={uuid} value={value >= 0 ? value.toFixed(2) : '-'} row={true} color={DATACOLOR.SQUAT} lastCell={true} />
+                    );
+                  })}
+                </IonCol>
+              </>
+            )}
+            {state.status.showBarrass && (
+              <IonCol size="auto" className="dataTableCol">
+                <DataTableTitleRow value={t('squat-max', { kerroin: undefined })} lastCell={true} />
+                {props.barrass?.filter(props.filterSpeeds).map((values) => {
+                  const uuid = uniqueId('col_');
+                  return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} row={true} color={DATACOLOR.SQUAT} lastCell={true} />;
+                })}
+              </IonCol>
+            )}
+          </IonRow>
         </IonCol>
       </IonRow>
     </IonGrid>
