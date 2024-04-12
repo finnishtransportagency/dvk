@@ -121,7 +121,7 @@ const NarrowSquatDataTable: React.FC<Props> = (props) => {
         <IonCol className="legendCol">{t('squat-tulokset')}</IonCol>
       </IonRow>
       <IonRow style={{ padding: '5px 0px 0px 0px' }}>
-        <IonCol className="ion-no-padding">
+        <IonCol>
           <IonRow className="ion-no-padding">
             <IonCol className="dataTableCol ion-no-padding">
               <DataTableTitleRow value={t('aluksen-nopeus-kn')} />

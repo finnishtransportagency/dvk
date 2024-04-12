@@ -10,7 +10,7 @@ ion-text.squatChartTitle h3 {
     overflow-y: hidden;
   }
   .squatDataRow {
-    width: 540px;
+    width: 100%;
   }
 }
 
