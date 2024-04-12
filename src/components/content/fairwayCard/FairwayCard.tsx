@@ -20,7 +20,6 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id, state.preview);
 
   const fairwayCard = setFairwayCardByPreview(state.preview, id, data, previewData);
-
   //for disabling printing icon
   useEffect(() => {
     const handleMoveStart = () => {
