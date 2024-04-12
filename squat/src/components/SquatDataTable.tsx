@@ -59,9 +59,7 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
               {props.speeds?.map((speed) => {
                 const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
                 const uuid = uniqueId('col_');
-                return (
-                  <DataTableDataCell key={uuid} value={froudeNumber.toFixed(2)} color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined} />
-                );
+                return <DataTableDataCell key={uuid} value={froudeNumber.toFixed(2)} color={froudeNumber > 0.7 ? DATACOLOR.FROUDE : undefined} />;
               })}
             </IonRow>
             {!state.status.showBarrass && (
