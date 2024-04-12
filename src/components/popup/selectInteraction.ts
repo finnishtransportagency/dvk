@@ -18,6 +18,7 @@ import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from '../layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles';
+import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
 
 function getLayers() {
   return [
@@ -76,7 +77,11 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
     case 'specialarea15':
       return getSpecialAreaStyle(feature, '#C57A11', 2, true, selectedFairwayCard);
     case 'line':
-      return getNavigationLine12Style(feature, resolution, true);
+      if (feature.getProperties().dataSource === 'line12') {
+        return getNavigationLine12Style(feature, resolution, true);
+      } else {
+        return getNavigationLine3456Style(true);
+      }
     case 'safetyequipment':
       return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
     case 'safetyequipmentfault':

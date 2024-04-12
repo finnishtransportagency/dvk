@@ -48,6 +48,7 @@ import { getPilotPlacesByFairwayCardId, getPilotageLimitsByFairways, getSafetyEq
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
+import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -316,7 +317,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'line12':
       return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
-      return getLineStyle('#0000FF', 2);
+      return getNavigationLine3456Style(true);
     case 'area12':
       return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
     case 'area12Borderline':
@@ -581,7 +582,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature) => getLineStyle('#0000FF', feature.get('hoverStyle') ? 2 : 1),
+    style: (feature) => getNavigationLine3456Style(!!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
