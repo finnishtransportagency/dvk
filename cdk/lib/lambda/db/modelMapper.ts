@@ -325,7 +325,7 @@ export async function getPilotRoutes() {
     if (response.expired) {
       log.debug('fetching pilot routes from api');
       data = await fetchPilotRoutesApi();
-      await cacheResponse(pilotCacheKey, data);
+      await cacheResponse(pilotRoutesCacheKey, data);
     } else if (response.data) {
       log.debug('parsing pilot routes from cache');
       data = JSON.parse(response.data) as RtzData[];
@@ -353,6 +353,7 @@ function mapPilotRoutes(pilotRoutes: PilotRoute[], rtzData: RtzData[]) {
       } as PilotRoute);
     }
   });
-
+  // if empty array is returned, it means that routes are not found 
+  // i api or cache
   return filteredRoutes ?? [];
 }
