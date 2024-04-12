@@ -162,7 +162,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             selected={state.pilotRoutes ?? []}
             setSelected={updateState}
             actionType="pilotRoutes"
-            disabled={state.status === Status.Removed}
+            disabled={state.status === Status.Removed || import.meta.env.VITE_APP_ENV === 'prod'}
             isLoading={!pilotRouteOptions}
           />
         </IonCol>
